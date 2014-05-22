@@ -1,0 +1,16 @@
+[
+{
+  "modid": "TropicraftMod",
+  "name": "Tropicraft",
+  "description": "Tropic Raft",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://tropicraft.net",
+  "updateUrl": "",
+  "authors": ["Cojomax99", "Corosus", "Fishtaco567", "Mr_okushama", "MrRube", "newthead", "303"],
+  "credits": "Insert huge list here",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
