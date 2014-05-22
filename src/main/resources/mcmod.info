@@ -6,9 +6,9 @@
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://tropicraft.net",
-  "updateUrl": "",
+  "updateUrl": "http://coros.us/versionchecker/tropiversion.txt",
   "authors": ["Cojomax99", "Corosus", "Fishtaco567", "Mr_okushama", "MrRube", "newthead", "303"],
-  "credits": "Insert huge list here",
+  "credits": "Kihira and others",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
