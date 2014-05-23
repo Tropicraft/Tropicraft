@@ -4,6 +4,10 @@ tile.tropicraft:chunkStairs.name=Chunk O' Head Stairs
 tile.tropicraft:oreEudialyte.name=Eudialyte Ore
 tile.tropicraft:oreZircon.name=Zircon Ore
 tile.tropicraft:oreAzurite.name=Azurite Ore
+tile.tropicraft:blockOre_Eudialyte.name=Eudialyte Block
+tile.tropicraft:blockOre_Zircon.name=Zircon Block
+tile.tropicraft:blockOre_Azurite.name=Azurite Block
+tile.tropicraft:blockOre_Zirconium.name=Block of Cubic Zirconium
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -27,3 +31,5 @@ item.tropicraft:ore_Zircon.name=Zircon Crystal
 item.tropicraft:ore_Azurite.name=Azurite Crystal
 item.tropicraft:ore_Zirconium.name=Zirconium Crystal
 item.tropicraft:ore_SmeltedZircon.name=Smelted Zircon Crystal
+item.tropicraft:waterWand.name=Water Wand
+item.tropicraft:fishingNet.name=Fishing Net

@@ -11,6 +11,8 @@ public class TCNames {
 	public static final String eudialyteOre = "oreEudialyte";
 	public static final String zirconOre = "oreZircon";
 	public static final String azuriteOre = "oreAzurite";
+	public static final String oreBlock = "blockOre";
+	public static final String[] oreBlockNames = new String[]{"Eudialyte", "Zircon", "Azurite", "Zirconium"};
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";
@@ -31,4 +33,6 @@ public class TCNames {
 	public static final String[] pearlNames = new String[]{"Solo", "Razzle"};
 	public static final String ore = "ore";
 	public static final String[] oreNames = new String[]{"Eudialyte", "Zircon", "Azurite", "Zirconium", "SmeltedZircon"};
+	public static final String waterWand = "waterWand";
+	public static final String fishingNet = "fishingNet";
 }

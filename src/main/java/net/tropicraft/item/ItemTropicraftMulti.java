@@ -29,6 +29,7 @@ public class ItemTropicraftMulti extends ItemTropicraft {
     /**
      * Gets an icon index based on an item's damage value
      */
+	@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int par1) {
         int j = MathHelper.clamp_int(par1, 0, names.length - 1);
@@ -39,6 +40,7 @@ public class ItemTropicraftMulti extends ItemTropicraft {
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      */
+	@Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, names.length - 1);
         return super.getUnlocalizedName() + "_" + names[i];

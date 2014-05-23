@@ -5,6 +5,7 @@ import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftMulti;
+import net.tropicraft.item.ItemWaterWand;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
@@ -32,6 +33,12 @@ public class TCItemRegistry {
 	public static final ItemTropicraft pearl = new ItemTropicraftMulti(TCNames.pearlNames);
 	public static final ItemTropicraft ore = new ItemTropicraftMulti(TCNames.oreNames);
 	
+	public static final ItemTropicraft waterWand = new ItemWaterWand();
+	public static final ItemTropicraft fishingNet = new ItemTropicraft();
+	
+	/**
+	 * Register all the items
+	 */
 	public static void init() {
 		registerItem(frogLeg, TCNames.frogLeg);
 		registerItem(cookedFrogLeg, TCNames.cookedFrogLeg);
@@ -55,8 +62,16 @@ public class TCItemRegistry {
 		
 		registerItem(pearl, TCNames.pearl);
 		registerItem(ore, TCNames.ore);
+		
+		registerItem(waterWand, TCNames.waterWand);
+		registerItem(fishingNet, TCNames.fishingNet);
 	}
 	
+	/**
+	 * Register an item with the game and give it a name
+	 * @param item Item to register
+	 * @param name Name to give
+	 */
 	private static void registerItem(Item item, String name) {
 		GameRegistry.registerItem(item, name);
 		item.setUnlocalizedName(name);
