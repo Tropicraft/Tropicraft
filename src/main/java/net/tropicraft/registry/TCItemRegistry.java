@@ -15,12 +15,23 @@ public class TCItemRegistry {
 	public static final ItemTropicraftFood freshMarlin = new ItemTropicraftFood(2, 0.3F);
 	public static final ItemTropicraftFood searedMarlin = new ItemTropicraftFood(8, 0.65F);
 	
+	public static final ItemTropicraftFood grapefruit = new ItemTropicraftFood(2, 0.2F);
+	public static final ItemTropicraftFood lemon = new ItemTropicraftFood(2, 0.2F);
+	public static final ItemTropicraftFood lime = new ItemTropicraftFood(2, 0.2F);
+	public static final ItemTropicraftFood orange = new ItemTropicraftFood(2, 0.2F);
+	
 	public static void init() {
 		registerItem(frogLeg, TCNames.frogLeg);
 		registerItem(cookedFrogLeg, TCNames.cookedFrogLeg);
 		registerItem(poisonFrogSkin, TCNames.poisonFrogSkin);
+		
 		registerItem(freshMarlin, TCNames.freshMarlin);
 		registerItem(searedMarlin, TCNames.searedMarlin);
+		
+		registerItem(grapefruit, TCNames.grapefruit);
+		registerItem(lemon, TCNames.lemon);
+		registerItem(lime, TCNames.lime);
+		registerItem(orange, TCNames.orange);
 	}
 	
 	private static void registerItem(Item item, String name) {

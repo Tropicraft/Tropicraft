@@ -18,4 +18,8 @@ public class TCNames {
 	public static final String poisonFrogSkin = "poisonFrogSkin";
 	public static final String freshMarlin = "freshMarlin";
 	public static final String searedMarlin = "searedMarlin";
+	public static final String grapefruit = "grapefruit";
+	public static final String lemon = "lemon";
+	public static final String lime = "lime";
+	public static final String orange = "orange";
 }
