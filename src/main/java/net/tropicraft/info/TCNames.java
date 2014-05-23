@@ -22,4 +22,7 @@ public class TCNames {
 	public static final String lemon = "lemon";
 	public static final String lime = "lime";
 	public static final String orange = "orange";
+	public static final String scale = "scale";
+	public static final String coconutChunk = "coconutChunk";
+	public static final String pineappleCubes = "pineappleCubes";
 }

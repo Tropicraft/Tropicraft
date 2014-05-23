@@ -20,6 +20,11 @@ public class TCItemRegistry {
 	public static final ItemTropicraftFood lime = new ItemTropicraftFood(2, 0.2F);
 	public static final ItemTropicraftFood orange = new ItemTropicraftFood(2, 0.2F);
 	
+	public static final ItemTropicraft scale = new ItemTropicraft();
+	
+	public static final ItemTropicraftFood coconutChunk = new ItemTropicraftFood(1, 0.1F);
+	public static final ItemTropicraftFood pineappleCubes = new ItemTropicraftFood(1, 0.1F);
+	
 	public static void init() {
 		registerItem(frogLeg, TCNames.frogLeg);
 		registerItem(cookedFrogLeg, TCNames.cookedFrogLeg);
@@ -32,6 +37,11 @@ public class TCItemRegistry {
 		registerItem(lemon, TCNames.lemon);
 		registerItem(lime, TCNames.lime);
 		registerItem(orange, TCNames.orange);
+		
+		registerItem(scale, TCNames.scale);
+		
+		registerItem(coconutChunk, TCNames.coconutChunk);
+		registerItem(pineappleCubes, TCNames.pineappleCubes);
 	}
 	
 	private static void registerItem(Item item, String name) {
