@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -12,8 +14,8 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
  * Mod file for the Tropicraft mod
  *
  */
-@Mod(modid = ModInfo.MODID, version = ModInfo.VERSION)
-public class TropicraftMod {
+@Mod(modid = ModInfo.MODID, name = ModInfo.NAME, version = ModInfo.VERSION)
+public class Tropicraft {
 	
 	/**
 	 * Triggered when a server starts
@@ -30,7 +32,8 @@ public class TropicraftMod {
 	 */
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-    	
+    	TCBlockRegistry.init();
+    	TCItemRegistry.init();
     }
 	
 	/**
