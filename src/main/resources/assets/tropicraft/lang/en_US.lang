@@ -1,5 +1,9 @@
 # Block localizations
 tile.tropicraft:chunk.name=Chunk O' Head
+tile.tropicraft:chunkStairs.name=Chunk O' Head Stairs
+tile.tropicraft:oreEudialyte.name=Eudialyte Ore
+tile.tropicraft:oreZircon.name=Zircon Ore
+tile.tropicraft:oreAzurite.name=Azurite Ore
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

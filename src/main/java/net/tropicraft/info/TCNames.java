@@ -6,7 +6,11 @@ package net.tropicraft.info;
 public class TCNames {
 
 	// Block names
-	public static final String chunkOHead = "chunk";	
+	public static final String chunkOHead = "chunk";
+	public static final String chunkStairs = "chunkStairs";
+	public static final String eudialyteOre = "oreEudialyte";
+	public static final String zirconOre = "oreZircon";
+	public static final String azuriteOre = "oreAzurite";
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";

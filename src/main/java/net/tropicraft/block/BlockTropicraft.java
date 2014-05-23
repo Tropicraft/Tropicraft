@@ -3,6 +3,7 @@ package net.tropicraft.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.tropicraft.info.TCInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,11 +14,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockTropicraft extends Block {
 
 	public BlockTropicraft() {
-		super(Material.rock);
+		this(Material.rock);
 	}
 	
 	public BlockTropicraft(Material material) {
 		super(material);
+		this.setCreativeTab(CreativeTabs.tabBlock);
 		//TODO set creative tab
 	}
 	
