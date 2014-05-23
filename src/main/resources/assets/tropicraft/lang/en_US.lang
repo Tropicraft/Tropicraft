@@ -1,2 +1,5 @@
-#Block localizations
+# Block localizations
 tile.tropicraft:chunk.name=Chunk O' Head
+
+# Item localizations
+item.tropicraft:frogLeg.name=Frog Leg

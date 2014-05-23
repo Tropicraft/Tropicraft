@@ -3,7 +3,7 @@ package net.tropicraft.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.tropicraft.ModInfo;
+import net.tropicraft.info.TCInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,7 +26,7 @@ public class BlockTropicraft extends Block {
 	 */
 	@Override
     public String getUnlocalizedName() {
-        return String.format("tile.%s%s", ModInfo.ICON_LOCATION, getActualName(super.getUnlocalizedName()));
+        return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(super.getUnlocalizedName()));
     }
 	
 	/**

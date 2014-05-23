@@ -1,9 +1,9 @@
-package net.tropicraft;
+package net.tropicraft.info;
 
 /**
  * Class containing info pertaining to the mod
  */
-public class ModInfo {
+public class TCInfo {
 	
 	/** Unique mod identifier */
 	public static final String MODID = "tropicraft";
