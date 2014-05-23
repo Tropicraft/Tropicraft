@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
+import net.tropicraft.item.ItemTropicraftMulti;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
@@ -25,6 +26,12 @@ public class TCItemRegistry {
 	public static final ItemTropicraftFood coconutChunk = new ItemTropicraftFood(1, 0.1F);
 	public static final ItemTropicraftFood pineappleCubes = new ItemTropicraftFood(1, 0.1F);
 	
+	public static final ItemTropicraft bambooStick = new ItemTropicraft();
+	public static final ItemTropicraftFood seaUrchinRoe = new ItemTropicraftFood(3, 0.3F);
+	
+	public static final ItemTropicraft pearl = new ItemTropicraftMulti(TCNames.pearlNames);
+	public static final ItemTropicraft ore = new ItemTropicraftMulti(TCNames.oreNames);
+	
 	public static void init() {
 		registerItem(frogLeg, TCNames.frogLeg);
 		registerItem(cookedFrogLeg, TCNames.cookedFrogLeg);
@@ -42,6 +49,12 @@ public class TCItemRegistry {
 		
 		registerItem(coconutChunk, TCNames.coconutChunk);
 		registerItem(pineappleCubes, TCNames.pineappleCubes);
+		
+		registerItem(bambooStick, TCNames.bambooStick);
+		registerItem(seaUrchinRoe, TCNames.seaUrchinRoe);
+		
+		registerItem(pearl, TCNames.pearl);
+		registerItem(ore, TCNames.ore);
 	}
 	
 	private static void registerItem(Item item, String name) {

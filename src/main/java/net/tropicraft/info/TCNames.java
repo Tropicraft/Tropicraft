@@ -25,4 +25,10 @@ public class TCNames {
 	public static final String scale = "scale";
 	public static final String coconutChunk = "coconutChunk";
 	public static final String pineappleCubes = "pineappleCubes";
+	public static final String bambooStick = "bambooStick";
+	public static final String seaUrchinRoe = "seaUrchinRoe";
+	public static final String pearl = "pearl";
+	public static final String[] pearlNames = new String[]{"Solo", "Razzle"};
+	public static final String ore = "ore";
+	public static final String[] oreNames = new String[]{"Eudialyte", "Zircon", "Azurite", "Zirconium", "SmeltedZircon"};
 }
