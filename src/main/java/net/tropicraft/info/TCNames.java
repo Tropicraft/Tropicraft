@@ -14,4 +14,6 @@ public class TCNames {
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";
+	public static final String cookedFrogLeg = "cookedFrogLeg";
+	public static final String poisonFrogSkin = "poisonFrogSkin";
 }
