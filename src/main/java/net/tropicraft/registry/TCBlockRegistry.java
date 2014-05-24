@@ -9,9 +9,12 @@ import net.minecraft.init.Blocks;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoral;
+import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTropicraft;
+import net.tropicraft.block.BlockTropicraftLog;
 import net.tropicraft.block.BlockTropicraftMulti;
 import net.tropicraft.block.BlockTropicraftOre;
+import net.tropicraft.block.BlockTropicraftPlank;
 import net.tropicraft.block.BlockTropicraftStairs;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
@@ -39,6 +42,9 @@ public class TCBlockRegistry {
 	public static final BlockTropicraftStairs palmStairs = new BlockTropicraftStairs(TCNames.palmStairs, planks, 0);
 	public static final BlockTropicraftStairs mahoganyStairs = new BlockTropicraftStairs(TCNames.mahoganyStairs, planks, 3);
 	
+//	public static final BlockTropicraft pineapple = new BlockPineapple();
+	public static final BlockTallFlowers tallFlowers = new BlockTallFlowers(TCNames.tallFlowerNames);
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -60,6 +66,7 @@ public class TCBlockRegistry {
 		registerBlock(thatchStairs, TCNames.thatchStairs);
 		registerBlock(palmStairs, TCNames.palmStairs);
 		registerBlock(mahoganyStairs, TCNames.mahoganyStairs);
+		registerMultiBlock(tallFlowers, TCNames.tallFlower, TCNames.tallFlowerNames);
 	}
 	
 	/**

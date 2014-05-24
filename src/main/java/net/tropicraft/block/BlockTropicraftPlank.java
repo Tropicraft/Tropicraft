@@ -1,7 +1,6 @@
-package net.tropicraft.registry;
+package net.tropicraft.block;
 
 import net.minecraft.block.material.Material;
-import net.tropicraft.block.BlockTropicraftMulti;
 import net.tropicraft.info.TCNames;
 
 public class BlockTropicraftPlank extends BlockTropicraftMulti {

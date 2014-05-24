@@ -25,6 +25,10 @@ public class TCNames {
 	public static final String mahoganyStairs = "mahoganyStairs";
 	public static final String bambooStairs = "bambooStairs";
 	public static final String thatchStairs = "thatchStairs";
+	public static final String pineapple = "pineapple";
+	public static final String stem = "stem";
+	public static final String tallFlower = "tallFlower";
+	public static final String[] tallFlowerNames = new String[]{"Iris"};
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";

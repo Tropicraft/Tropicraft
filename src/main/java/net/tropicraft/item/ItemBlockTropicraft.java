@@ -13,9 +13,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBlockTropicraft extends ItemBlock {
 
 	/** Names to associate with this ItemBlock */
-	private String[] names;
+	protected String[] names;
 	
-	private Block block;
+	/** Block this ItemBlock represents */
+	protected Block block;
 	
 	public ItemBlockTropicraft(Block block, ArrayList<String> names) {
 		super(block);
