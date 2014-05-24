@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
+import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftMulti;
 import net.tropicraft.block.BlockTropicraftOre;
@@ -25,6 +27,10 @@ public class TCBlockRegistry {
 	public static final BlockTropicraft azuriteOre = new BlockTropicraftOre();
 	
 	public static final BlockTropicraft oreBlocks = new BlockTropicraftMulti(TCNames.oreBlockNames);
+	public static final BlockTropicraft thatchBundle = new BlockBundle(TCNames.thatchBundle);
+	public static final BlockTropicraft coral = new BlockCoral(TCNames.coralNames);
+	public static final BlockTropicraft bambooBundle = (BlockTropicraft) new BlockBundle(TCNames.bambooBundle).setHardness(1.0F).setResistance(0.1F);
+	public static final BlockTropicraft logs = new BlockTropicraftLog(TCNames.logNames);
 	
 	/**
 	 * Register all the blocks
@@ -36,6 +42,10 @@ public class TCBlockRegistry {
 		registerBlock(zirconOre, TCNames.zirconOre);
 		registerBlock(azuriteOre, TCNames.azuriteOre);
 		registerMultiBlock(oreBlocks, TCNames.oreBlock, TCNames.oreBlockNames);
+		registerBlock(thatchBundle, TCNames.thatchBundle);
+		registerMultiBlock(coral, TCNames.coral, TCNames.coralNames);
+		registerBlock(bambooBundle, TCNames.bambooBundle);
+		registerMultiBlock(logs, TCNames.log, TCNames.logNames);
 	}
 	
 	/**

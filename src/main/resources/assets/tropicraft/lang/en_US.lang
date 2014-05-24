@@ -8,6 +8,16 @@ tile.tropicraft:blockOre_Eudialyte.name=Eudialyte Block
 tile.tropicraft:blockOre_Zircon.name=Zircon Block
 tile.tropicraft:blockOre_Azurite.name=Azurite Block
 tile.tropicraft:blockOre_Zirconium.name=Block of Cubic Zirconium
+tile.tropicraft:thatch.name=Thatch Bundle
+tile.tropicraft:coral_0.name=Coral Reef
+tile.tropicraft:coral_1.name=Coral Reef
+tile.tropicraft:coral_2.name=Coral Reef
+tile.tropicraft:coral_3.name=Coral Reef
+tile.tropicraft:coral_4.name=Coral Reef
+tile.tropicraft:coral_5.name=Coral Reef
+tile.tropicraft:bambooBundle.name=Bamboo Bundle
+tile.tropicraft:log_Palm.name=Palm Log
+tile.tropicraft:log_Mahogany.name=Mahogany Log
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

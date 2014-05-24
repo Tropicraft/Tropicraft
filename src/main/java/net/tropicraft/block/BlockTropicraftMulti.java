@@ -2,6 +2,7 @@ package net.tropicraft.block;
 
 import java.util.List;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -14,13 +15,18 @@ public class BlockTropicraftMulti extends BlockTropicraft {
 
 	/** Array of icons associated with this item */
 	@SideOnly(Side.CLIENT)
-	private IIcon[] icons;
+	protected IIcon[] icons;
 
 	/** Names of each of the images */
-	private String[] names;
+	protected String[] names;
 
 	public BlockTropicraftMulti(String[] names) {
 		super();
+		this.names = names;
+	}
+	
+	public BlockTropicraftMulti(String[] names, Material material) {
+		super(material);
 		this.names = names;
 	}
 
