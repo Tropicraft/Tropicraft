@@ -19,6 +19,12 @@ public class TCNames {
 	public static final String bambooBundle = "bambooBundle";
 	public static final String log = "log";
 	public static final String[] logNames = new String[]{"Palm", "Mahogany"};
+	public static final String plank = "plank";
+	public static final String[] plankNames = new String[]{"Palm", "Mahogany"};
+	public static final String palmStairs = "palmStairs";
+	public static final String mahoganyStairs = "mahoganyStairs";
+	public static final String bambooStairs = "bambooStairs";
+	public static final String thatchStairs = "thatchStairs";
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";

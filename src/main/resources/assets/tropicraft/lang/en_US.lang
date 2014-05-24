@@ -18,6 +18,12 @@ tile.tropicraft:coral_5.name=Coral Reef
 tile.tropicraft:bambooBundle.name=Bamboo Bundle
 tile.tropicraft:log_Palm.name=Palm Log
 tile.tropicraft:log_Mahogany.name=Mahogany Log
+tile.tropicraft:plank_Palm.name=Palm Planks
+tile.tropicraft:plank_Mahogany.name=Mahogany Planks
+tile.tropicraft:palmStairs.name=Palm Stairs
+tile.tropicraft:mahoganyStairs.name=Mahogany Stairs
+tile.tropicraft:bambooStairs.name=Bamboo Stairs
+tile.tropicraft:thatchStairs.name=Thatch Stairs
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

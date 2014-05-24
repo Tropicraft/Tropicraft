@@ -2,16 +2,17 @@ package net.tropicraft.registry;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.tropicraft.block.BlockTropicraftMulti;
 import net.tropicraft.info.TCNames;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTropicraftLog extends BlockTropicraftMulti {
 
@@ -26,6 +27,23 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
 		this.disableStats();
 		this.setHardness(2.0F);
 		this.setStepSound(soundTypeWood);
+	}
+	
+    /**
+     * Currently only called by fire when it is on top of this block.
+     * Returning true will prevent the fire from naturally dying during updating.
+     * Also prevents firing from dying from rain.
+     *
+     * @param world The current world
+     * @param x The blocks X position
+     * @param y The blocks Y position
+     * @param z The blocks Z position
+     * @param metadata The blocks current metadata
+     * @param side The face that the fire is coming from
+     * @return True if this block sustains fire, meaning it will never go out.
+     */
+	public boolean isFireSource(World world, int x, int y, int z, ForgeDirection side) {
+		return true;
 	}
 
 	/**

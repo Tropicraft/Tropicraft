@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoral;
@@ -31,6 +32,12 @@ public class TCBlockRegistry {
 	public static final BlockTropicraft coral = new BlockCoral(TCNames.coralNames);
 	public static final BlockTropicraft bambooBundle = (BlockTropicraft) new BlockBundle(TCNames.bambooBundle).setHardness(1.0F).setResistance(0.1F);
 	public static final BlockTropicraft logs = new BlockTropicraftLog(TCNames.logNames);
+	public static final BlockTropicraft planks = new BlockTropicraftPlank(TCNames.plankNames);
+	
+	public static final BlockTropicraftStairs bambooStairs = new BlockTropicraftStairs(TCNames.bambooStairs, bambooBundle, 0);
+	public static final BlockTropicraftStairs thatchStairs = new BlockTropicraftStairs(TCNames.thatchStairs, thatchBundle, 0);
+	public static final BlockTropicraftStairs palmStairs = new BlockTropicraftStairs(TCNames.palmStairs, planks, 0);
+	public static final BlockTropicraftStairs mahoganyStairs = new BlockTropicraftStairs(TCNames.mahoganyStairs, planks, 3);
 	
 	/**
 	 * Register all the blocks
@@ -46,6 +53,13 @@ public class TCBlockRegistry {
 		registerMultiBlock(coral, TCNames.coral, TCNames.coralNames);
 		registerBlock(bambooBundle, TCNames.bambooBundle);
 		registerMultiBlock(logs, TCNames.log, TCNames.logNames);
+		Blocks.fire.setFireInfo(TCBlockRegistry.logs, 5, 5);
+		registerMultiBlock(planks, TCNames.plank, TCNames.plankNames);
+		Blocks.fire.setFireInfo(TCBlockRegistry.planks, 5, 5);
+		registerBlock(bambooStairs, TCNames.bambooStairs);
+		registerBlock(thatchStairs, TCNames.thatchStairs);
+		registerBlock(palmStairs, TCNames.palmStairs);
+		registerBlock(mahoganyStairs, TCNames.mahoganyStairs);
 	}
 	
 	/**

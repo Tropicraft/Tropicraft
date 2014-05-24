@@ -64,5 +64,6 @@ public class BlockBundle extends BlockTropicraft {
     public void registerBlockIcons(IIconRegister iconRegister) {
         this.side = iconRegister.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + "_" + "Side");
         this.end = iconRegister.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + "_" + "End");
+        this.blockIcon = this.side;
     }
 }
