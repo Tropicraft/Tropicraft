@@ -24,8 +24,8 @@ tile.tropicraft:palmStairs.name=Palm Stairs
 tile.tropicraft:mahoganyStairs.name=Mahogany Stairs
 tile.tropicraft:bambooStairs.name=Bamboo Stairs
 tile.tropicraft:thatchStairs.name=Thatch Stairs
-tile.tropicraft:tallFlower_Pineapple.name=Pineapple Plant
 tile.tropicraft:tallFlower_Iris.name=Iris
+tile.tropicraft:pineapple.name=Pineapple Plant
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

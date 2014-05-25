@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -38,14 +39,12 @@ public class ItemBlockTropicraft extends ItemBlock {
      * different names based on their damage or NBT.
      */
 	@Override
-    public String getUnlocalizedName(ItemStack itemstack) {
-        if (this.names == null) {
-            return super.getUnlocalizedName(itemstack);
-        }
-        else {
-            int i = itemstack.getItemDamage();
-            return i >= 0 && i < this.names.length ? super.getUnlocalizedName(itemstack) + "_" + this.names[i] : super.getUnlocalizedName(itemstack);
-        }
+    public String getUnlocalizedName(ItemStack itemstack) {		
+		if (this.names == null) {
+			return super.getUnlocalizedName(itemstack);
+		}
+        int i = MathHelper.clamp_int(itemstack.getItemDamage(), 0, names.length - 1);
+        return super.getUnlocalizedName() + "_" + names[i];
     }
 	
     /**

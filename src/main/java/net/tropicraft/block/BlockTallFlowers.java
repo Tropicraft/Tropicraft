@@ -34,6 +34,7 @@ public class BlockTallFlowers extends BlockDoublePlant {
 		this.setBlockName(TCNames.tallFlower);
 		this.names = names;
 		this.setBlockTextureName(TCNames.tallFlower);
+		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	@Override
@@ -64,18 +65,17 @@ public class BlockTallFlowers extends BlockDoublePlant {
 	protected String getActualName(String unlocalizedName) {
 		return unlocalizedName.substring(unlocalizedName.indexOf('.') + 1);
 	}
-
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
+	
+    /**
+     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		for (int i = 0; i < this.topIcons.length; ++i) {
-			list.add(new ItemStack(item, 1, i + 1));
-		}
-	}
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    	for (int i = 0; i < names.length; i++) {
+    		list.add(new ItemStack(item, 1, i + 1));
+    	}
+    }
 
 	/**
 	 * Gets the block's texture. Args: side, meta
@@ -94,22 +94,17 @@ public class BlockTallFlowers extends BlockDoublePlant {
 
 	@Override
 	public Item getItemDropped(int meta, Random rand, int unused) {
-		if (func_149887_c(meta)) {
+		if (meta == 0) {
 			return null;
 		}
 		else {
-			int k = clamp(meta);
-			return k != 3 && k != 2 ? Item.getItemFromBlock(this) : null;
+			return Item.getItemFromBlock(this);
 		}
 	}
 
 	@Override
 	public int getRenderType() {
 		return 1;
-	}
-
-	private int clamp(int meta) {
-		return meta & (topIcons.length - 1);
 	}
 	
     /**

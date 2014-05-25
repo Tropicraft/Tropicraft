@@ -6,9 +6,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoral;
+import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftLog;
@@ -19,6 +21,7 @@ import net.tropicraft.block.BlockTropicraftStairs;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
+import net.tropicraft.item.ItemTallFlowers;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCBlockRegistry {
@@ -42,7 +45,7 @@ public class TCBlockRegistry {
 	public static final BlockTropicraftStairs palmStairs = new BlockTropicraftStairs(TCNames.palmStairs, planks, 0);
 	public static final BlockTropicraftStairs mahoganyStairs = new BlockTropicraftStairs(TCNames.mahoganyStairs, planks, 3);
 	
-//	public static final BlockTropicraft pineapple = new BlockPineapple();
+	public static final BlockPineapple pineapple = new BlockPineapple(TCNames.pineappleNames);
 	public static final BlockTallFlowers tallFlowers = new BlockTallFlowers(TCNames.tallFlowerNames);
 	
 	/**
@@ -67,6 +70,7 @@ public class TCBlockRegistry {
 		registerBlock(palmStairs, TCNames.palmStairs);
 		registerBlock(mahoganyStairs, TCNames.mahoganyStairs);
 		registerMultiBlock(tallFlowers, TCNames.tallFlower, TCNames.tallFlowerNames);
+	//	registerMultiBlock(pineapple, TCNames.pineapple, TCNames.pineappleNames);
 	}
 	
 	/**
@@ -78,7 +82,8 @@ public class TCBlockRegistry {
 	private static void registerMultiBlock(Block block, String name, String[] names) {
 		List<String> namesList = new ArrayList<String>();
 		Collections.addAll(namesList, names);
-		GameRegistry.registerBlock(block, ItemBlockTropicraft.class, "tile." + name, TCInfo.MODID, namesList);
+		Class<? extends ItemBlock> clazz = name.equals(TCNames.tallFlower) || name.equals(TCNames.pineapple) ? ItemTallFlowers.class : ItemBlockTropicraft.class;
+		GameRegistry.registerBlock(block, clazz, "tile." + name, TCInfo.MODID, namesList);
 		block.setBlockName(name);
 	}
 	
