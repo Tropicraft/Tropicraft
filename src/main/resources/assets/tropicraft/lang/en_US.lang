@@ -26,6 +26,11 @@ tile.tropicraft:bambooStairs.name=Bamboo Stairs
 tile.tropicraft:thatchStairs.name=Thatch Stairs
 tile.tropicraft:tallFlower_Iris.name=Iris
 tile.tropicraft:pineapple.name=Pineapple Plant
+tile.tropicraft:bambooFence.name=Bamboo Fence
+tile.tropicraft:chunkFence.name=Chunk O' Head Fence
+tile.tropicraft:thatchFence.name=Thatch Fence
+tile.tropicraft:palmFence.name=Palm Plank Fence
+tile.tropicraft:mahoganyFence.name=Mahogany Plank Fence
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

@@ -2,31 +2,28 @@ package net.tropicraft.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.IPlantable;
 import net.tropicraft.info.TCInfo;
-import net.tropicraft.info.TCNames;
 
-public class BlockPineapple extends BlockTallFlowers implements IPlantable {
+public class BlockTropicraftFence extends BlockFence {
 
-	public BlockPineapple(String[] names) {
-		super(names);
-		this.setBlockName(TCNames.pineapple);
-		this.setBlockTextureName(TCNames.tallFlower);
+	public BlockTropicraftFence(String name, String textureName, Material material) {
+		super(name, material);
+		this.setBlockName(name);
+		this.setBlockTextureName(textureName);
 	}
 	
+	/**
+	 * Register all the icons of the block
+	 * @param iconRegister Icon registry
+	 */
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {		
-		topIcons = new IIcon[names.length];
-
-		for (int i = 0 ; i < names.length ; i++) {
-			topIcons[i] = iconRegister.registerIcon(getActualName(getFormattedTextureName()));
-		}
-
-		bottomIcon = iconRegister.registerIcon(getActualName(getFormattedTextureName()) + "_" + TCNames.stem);
-	}
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        blockIcon = iconRegister.registerIcon(getActualName(getFormattedTextureName()));
+    }
 	
 	/**
 	 * 

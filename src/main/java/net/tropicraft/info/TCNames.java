@@ -30,6 +30,11 @@ public class TCNames {
 	public static final String stem = "Stem";
 	public static final String tallFlower = "tallFlower";
 	public static final String[] tallFlowerNames = new String[]{"Iris"};
+	public static final String bambooFence = "bambooFence";
+	public static final String thatchFence = "thatchFence";
+	public static final String chunkFence = "chunkFence";
+	public static final String palmFence = "palmFence";
+	public static final String mahoganyFence = "mahoganyFence";
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";
