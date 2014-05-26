@@ -2,6 +2,7 @@ package net.tropicraft.registry;
 
 import net.minecraft.item.Item;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.item.ItemCoffeeBean;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftMulti;
@@ -36,6 +37,8 @@ public class TCItemRegistry {
 	public static final ItemTropicraft waterWand = new ItemWaterWand();
 	public static final ItemTropicraft fishingNet = new ItemTropicraft();
 	
+	public static final ItemTropicraft coffeeBean = new ItemCoffeeBean();
+	
 	/**
 	 * Register all the items
 	 */
@@ -65,6 +68,8 @@ public class TCItemRegistry {
 		
 		registerItem(waterWand, TCNames.waterWand);
 		registerItem(fishingNet, TCNames.fishingNet);
+		
+		registerItem(coffeeBean, TCNames.coffeeBean);
 	}
 	
 	/**

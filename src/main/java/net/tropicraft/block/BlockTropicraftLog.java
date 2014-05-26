@@ -10,6 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,6 +27,7 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
 		this.disableStats();
 		this.setHardness(2.0F);
 		this.setStepSound(soundTypeWood);
+		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
 	}
 	
     /**

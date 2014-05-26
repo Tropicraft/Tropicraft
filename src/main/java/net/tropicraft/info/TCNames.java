@@ -37,6 +37,9 @@ public class TCNames {
 	public static final String mahoganyFence = "mahoganyFence";
 	public static final String sapling = "sapling";
 	public static final String[] saplingNames = new String[]{"Palm", "Mahogany", "Grapefruit", "Lemon", "Lime", "Orange"};
+	public static final String coffeePlant = "coffeePlant";
+	public static final String bambooFenceGate = "bambooFenceGate";
+	public static final String palmFenceGate = "palmFenceGate";
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";
@@ -59,4 +62,5 @@ public class TCNames {
 	public static final String[] oreNames = new String[]{"Eudialyte", "Zircon", "Azurite", "Zirconium", "SmeltedZircon"};
 	public static final String waterWand = "waterWand";
 	public static final String fishingNet = "fishingNet";
+	public static final String coffeeBean = "coffeeBean";
 }

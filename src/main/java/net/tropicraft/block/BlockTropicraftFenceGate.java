@@ -2,19 +2,19 @@ package net.tropicraft.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 
-public class BlockTropicraftFence extends BlockFence {
+public class BlockTropicraftFenceGate extends BlockFenceGate {
 
-	public BlockTropicraftFence(String name, String textureName, Material material) {
-		super(name, material);
+	public BlockTropicraftFenceGate(String name, String textureName, Material material) {
+		super();
 		this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
-		this.setBlockName(name);
-		this.setBlockTextureName(textureName);
+		setBlockName(name);
+		setBlockTextureName(textureName);	
 	}
 	
 	/**

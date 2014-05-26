@@ -10,14 +10,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
+import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftFence;
+import net.tropicraft.block.BlockTropicraftFenceGate;
 import net.tropicraft.block.BlockTropicraftLog;
 import net.tropicraft.block.BlockTropicraftMulti;
 import net.tropicraft.block.BlockTropicraftOre;
 import net.tropicraft.block.BlockTropicraftPlank;
+import net.tropicraft.block.BlockTropicraftSapling;
 import net.tropicraft.block.BlockTropicraftStairs;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
@@ -50,12 +53,17 @@ public class TCBlockRegistry {
 	public static final BlockTallFlowers tallFlowers = new BlockTallFlowers(TCNames.tallFlowerNames);
 	
 	public static final BlockTropicraftFence bambooFence = new BlockTropicraftFence(TCNames.bambooFence, TCNames.bambooBundle + "_Side", Material.plants);
-	public static final BlockTropicraftFence chunkFence = new BlockTropicraftFence(TCNames.chunkFence, TCNames.chunkOHead, Material.rock);
+//	public static final BlockTropicraftFence chunkFence = new BlockTropicraftFence(TCNames.chunkFence, TCNames.chunkOHead, Material.rock);
 	public static final BlockTropicraftFence palmFence = new BlockTropicraftFence(TCNames.palmFence, TCNames.plank + "_" + TCNames.plankNames[0], Material.wood);
-	public static final BlockTropicraftFence thatchFence = new BlockTropicraftFence(TCNames.thatchFence, TCNames.thatchBundle + "_Side", Material.plants);
-	public static final BlockTropicraftFence mahoganyFence = new BlockTropicraftFence(TCNames.mahoganyFence, TCNames.plank + "_" + TCNames.plankNames[1], Material.wood);
+//	public static final BlockTropicraftFence thatchFence = new BlockTropicraftFence(TCNames.thatchFence, TCNames.thatchBundle + "_Side", Material.plants);
+//	public static final BlockTropicraftFence mahoganyFence = new BlockTropicraftFence(TCNames.mahoganyFence, TCNames.plank + "_" + TCNames.plankNames[1], Material.wood);
+	
+	public static final BlockTropicraftFenceGate bambooFenceGate = new BlockTropicraftFenceGate(TCNames.bambooFenceGate, TCNames.bambooBundle + "_Side", Material.plants);
+	public static final BlockTropicraftFenceGate palmFenceGate = new BlockTropicraftFenceGate(TCNames.palmFenceGate, TCNames.plank + "_" + TCNames.plankNames[0], Material.wood);
 	
 	public static final BlockTropicraftSapling saplings = new BlockTropicraftSapling(TCNames.saplingNames);
+	public static final BlockTropicraft coffeePlant = new BlockCoffeePlant();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -80,11 +88,15 @@ public class TCBlockRegistry {
 		registerMultiBlock(tallFlowers, TCNames.tallFlower, TCNames.tallFlowerNames);
 		//registerMultiBlock2(pineapple, TCNames.pineapple, TCNames.pineappleNames);
 		registerBlockNoName(bambooFence, TCNames.bambooFence);
-		registerBlockNoName(chunkFence, TCNames.chunkFence);
-		registerBlockNoName(thatchFence, TCNames.thatchFence);
+	//	registerBlockNoName(chunkFence, TCNames.chunkFence);
+	//	registerBlockNoName(thatchFence, TCNames.thatchFence);
 		registerBlockNoName(palmFence, TCNames.palmFence);
-		registerBlockNoName(mahoganyFence, TCNames.mahoganyFence);
+	//	registerBlockNoName(mahoganyFence, TCNames.mahoganyFence);
 		registerMultiBlock(saplings, TCNames.sapling, TCNames.saplingNames);
+		registerBlock(coffeePlant, TCNames.coffeePlant);
+		registerBlockNoName(bambooFenceGate, TCNames.bambooFenceGate);
+		registerBlockNoName(palmFenceGate, TCNames.palmFenceGate);
+		Blocks.fire.setFireInfo(palmFenceGate, 5, 5);
 	}
 	
 	/**

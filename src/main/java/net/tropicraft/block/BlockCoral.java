@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 
@@ -22,6 +23,7 @@ public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 
 	public BlockCoral(String[] names) {
 		super(names, Material.water);
+		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
 		setLightLevel(0.3F);
 		setHardness(0.0F);
 		setTickRandomly(true);

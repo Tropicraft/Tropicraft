@@ -1,5 +1,137 @@
 package net.tropicraft.registry;
 
-public class TCCreativeTabRegistry {
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
+public class TCCreativeTabRegistry {
+	
+	public static final CreativeTabs tabBlock = new CreativeTabBlockTC("buildingBlocks");
+    public static final CreativeTabs tabFood = new CreativeTabFoodTC("food");
+  //  public static final CreativeTabs tabTools = new CreativeTabToolsTC("tools");
+  //  public static final CreativeTabs tabCombat = new CreativeTabCombatTC("combat");
+    public static final CreativeTabs tabDecorations = new CreativeTabDecoTC("decorations");
+  //  public static final CreativeTabs tabMaterials = new CreativeTabMaterialsTC("materials");
+  //  public static final CreativeTabs tabMusic = new CreativeTabMusicTC("music");
+    public static final CreativeTabs tabMisc = new CreativeTabMiscTC("misc");
+	
+	public static void init() {
+		
+	}
+	
+	public static class CreativeTabDecoTC extends CreativeTabs {
+
+        public CreativeTabDecoTC(String name) {
+            super(name);
+        }
+
+		@Override
+		public Item getTabIconItem() {
+			return TCItemRegistry.pearl;
+		}
+    }
+
+    public static class CreativeTabMiscTC extends CreativeTabs {
+
+        public CreativeTabMiscTC(String name) {
+            super(name);
+        }
+
+		@Override
+		public Item getTabIconItem() {
+			return TCItemRegistry.fishingNet;
+		}
+    }
+
+ /*   public static class CreativeTabToolsTC extends CreativeTabs {
+
+        public CreativeTabToolsTC(String name) {
+            super(name);
+        }
+
+        @SideOnly(Side.CLIENT)
+        *//**
+         * the itemID for the item to be displayed on the tab
+         *//*
+        public int getTabIconItemIndex()
+        {
+            return TropicraftItems.pickaxeEudialyte.itemID;
+        }
+    }
+
+    public static class CreativeTabCombatTC extends CreativeTabs {
+
+        public CreativeTabCombatTC(String name) {
+            super(name);
+        }
+
+        @SideOnly(Side.CLIENT)
+        *//**
+         * the itemID for the item to be displayed on the tab
+         *//*
+        public int getTabIconItemIndex()
+        {
+            return TropicraftItems.swordZircon.itemID;
+        }
+    }*/
+
+/*    public static class CreativeTabMaterialsTC extends CreativeTabs {
+
+        public CreativeTabMaterialsTC(String name) {
+            super(name);
+        }
+
+        @SideOnly(Side.CLIENT)
+        *//**
+         * the itemID for the item to be displayed on the tab
+         *//*
+        public int getTabIconItemIndex()
+        {
+            return TropicraftItems.fertilizer.itemID;
+        }
+    }*/
+
+    public static class CreativeTabBlockTC extends CreativeTabs {
+
+        public CreativeTabBlockTC(String name) {
+            super(name);
+        }
+
+		@Override
+		public Item getTabIconItem() {
+			ItemStack stack = new ItemStack(TCBlockRegistry.bambooBundle);
+			return stack.getItem();
+		}
+    }
+
+    public static class CreativeTabFoodTC extends CreativeTabs
+    {
+        public CreativeTabFoodTC(String par2Str)
+        {
+            super(par2Str);
+        }
+
+		@Override
+		public Item getTabIconItem() {
+			return TCItemRegistry.lime;
+		}
+    }
+
+    /*public static class CreativeTabMusicTC extends CreativeTabs
+    {
+        public CreativeTabMusicTC(String par2Str)
+        {
+            super(par2Str);
+            LanguageRegistry.instance().addStringLocalization("itemGroup.music", "Music");
+        }
+
+        @SideOnly(Side.CLIENT)
+        *//**
+         * the itemID for the item to be displayed on the tab
+         *//*
+        public int getTabIconItemIndex()
+        {
+            return TropicraftItems.recordEasternIsles.itemID;
+        }
+    }*/
 }

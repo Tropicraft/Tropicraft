@@ -2,15 +2,15 @@ package net.tropicraft.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
-import net.minecraft.creativetab.CreativeTabs;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class BlockTropicraftStairs extends BlockStairs {
 
 	public BlockTropicraftStairs(String name, Block block, int meta) {
 		super(block, meta);
 		this.setBlockName(name);
-		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package net.tropicraft.registry;
+package net.tropicraft.block;
 
 import java.util.List;
 import java.util.Random;
@@ -15,6 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 
@@ -30,6 +31,7 @@ public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 		this.names = names;
 		setTickRandomly(true);
 		disableStats();
+		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
 	}
 	
     /**

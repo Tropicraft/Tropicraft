@@ -16,4 +16,10 @@ public class TCInfo {
 	
 	/** Where to locate icons */
 	public static final String ICON_LOCATION = MODID + ":";
+
+	/** Client proxy location */
+	public static final String CLIENT_PROXY = "net.tropicraft.proxy.ClientProxy";
+	
+	/** Common proxy location */
+	public static final String SERVER_PROXY = "net.tropicraft.proxy.CommonProxy";
 }

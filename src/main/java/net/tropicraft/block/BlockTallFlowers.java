@@ -13,6 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,7 +35,7 @@ public class BlockTallFlowers extends BlockDoublePlant {
 		this.setBlockName(TCNames.tallFlower);
 		this.names = names;
 		this.setBlockTextureName(TCNames.tallFlower);
-		this.setCreativeTab(CreativeTabs.tabDecorations);
+		this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
 	}
 
 	@Override

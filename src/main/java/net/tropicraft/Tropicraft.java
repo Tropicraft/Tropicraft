@@ -1,10 +1,12 @@
 package net.tropicraft;
 
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.proxy.ISuperProxy;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -17,6 +19,9 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
  */
 @Mod(modid = TCInfo.MODID, name = TCInfo.NAME, version = TCInfo.VERSION)
 public class Tropicraft {
+	
+	@SidedProxy(clientSide = TCInfo.CLIENT_PROXY, serverSide = TCInfo.SERVER_PROXY)
+	public static ISuperProxy proxy;
 	
 	/**
 	 * Triggered when a server starts
@@ -43,7 +48,7 @@ public class Tropicraft {
 	 */
 	@EventHandler
     public void init(FMLInitializationEvent event) {
-		
+		proxy.initRenderHandlersAndIDs();
     }
 	
 	/**

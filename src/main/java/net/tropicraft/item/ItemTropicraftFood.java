@@ -6,11 +6,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class ItemTropicraftFood extends ItemFood {
 
 	public ItemTropicraftFood(int healAmt, float saturationModifier) {
 		super(healAmt, saturationModifier, false);
+		this.setCreativeTab(TCCreativeTabRegistry.tabFood);
 	}
 	
 	/**
