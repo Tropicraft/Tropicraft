@@ -11,7 +11,6 @@ import net.minecraft.item.ItemBlock;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoral;
-import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftFence;
@@ -56,6 +55,7 @@ public class TCBlockRegistry {
 	public static final BlockTropicraftFence thatchFence = new BlockTropicraftFence(TCNames.thatchFence, TCNames.thatchBundle + "_Side", Material.plants);
 	public static final BlockTropicraftFence mahoganyFence = new BlockTropicraftFence(TCNames.mahoganyFence, TCNames.plank + "_" + TCNames.plankNames[1], Material.wood);
 	
+	public static final BlockTropicraftSapling saplings = new BlockTropicraftSapling(TCNames.saplingNames);
 	/**
 	 * Register all the blocks
 	 */
@@ -84,6 +84,7 @@ public class TCBlockRegistry {
 		registerBlockNoName(thatchFence, TCNames.thatchFence);
 		registerBlockNoName(palmFence, TCNames.palmFence);
 		registerBlockNoName(mahoganyFence, TCNames.mahoganyFence);
+		registerMultiBlock(saplings, TCNames.sapling, TCNames.saplingNames);
 	}
 	
 	/**
