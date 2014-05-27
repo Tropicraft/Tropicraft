@@ -11,6 +11,11 @@ import net.minecraft.util.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * ItemTropicraft superclass that should be implemented if you want to make an item
+ * with different names for each damage value, and different images for each
+ * damage value as well.
+ */
 public class ItemTropicraftMulti extends ItemTropicraft {
 
 	/** Array of icons associated with this item */

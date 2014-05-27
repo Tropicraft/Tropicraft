@@ -63,4 +63,5 @@ public class TCNames {
 	public static final String waterWand = "waterWand";
 	public static final String fishingNet = "fishingNet";
 	public static final String coffeeBean = "coffeeBean";
+	public static final String[] coffeeBeanNames = new String[]{"Berry", "Roasted", "Raw"};
 }

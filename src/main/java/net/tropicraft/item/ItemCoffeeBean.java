@@ -15,18 +15,22 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.tropicraft.info.TCNames;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemCoffeeBean extends ItemTropicraft implements IPlantable {
+public class ItemCoffeeBean extends ItemTropicraftMulti implements IPlantable {
 
 	@SideOnly(Side.CLIENT)
     private IIcon[] icons;
 	
 	public ItemCoffeeBean() {
+		super(TCNames.coffeeBeanNames);
 		setHasSubtypes(true);
         setMaxDamage(0);
+        this.setCreativeTab(TCCreativeTabRegistry.tabFood);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -72,7 +76,7 @@ public class ItemCoffeeBean extends ItemTropicraft implements IPlantable {
 	
 	@Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float offsetX, float offsetY, float offsetZ) {
-        if (stack.getItemDamage() != 0) { // 0 = raw, 1 = roasted, 2 = cherry
+		if (stack.getItemDamage() != 0) { // 0 = raw, 1 = roasted, 2 = cherry
             return false;
         }
 

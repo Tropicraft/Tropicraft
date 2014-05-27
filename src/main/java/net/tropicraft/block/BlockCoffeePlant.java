@@ -47,7 +47,16 @@ public class BlockCoffeePlant extends BlockTropicraft {
 		super(Material.plants);
 		setTickRandomly(true);
 		disableStats();
+		this.setCreativeTab(null);
 	}
+	
+	   /**
+     * Gets an item for the block being called on. Args: world, x, y, z
+     */
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World world, int x, int y, int z) {
+        return TCItemRegistry.coffeeBean;
+    }
 
 	@Override
 	public IIcon getIcon(int side, int meta) {

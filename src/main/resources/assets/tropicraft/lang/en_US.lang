@@ -37,6 +37,7 @@ tile.tropicraft:sapling_Lemon.name=Lemon Tree Sapling
 tile.tropicraft:sapling_Lime.name=Lime Tree Sapling
 tile.tropicraft:sapling_Orange.name=Orange Tree Sapling
 tile.tropicraft:sapling_Mahogany.name=Mahogany Tree Sapling
+tile.tropicraft:coffeePlant.name=Coffee Plant
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -62,3 +63,6 @@ item.tropicraft:ore_Zirconium.name=Zirconium Crystal
 item.tropicraft:ore_SmeltedZircon.name=Smelted Zircon Crystal
 item.tropicraft:waterWand.name=Water Wand
 item.tropicraft:fishingNet.name=Fishing Net
+item.tropicraft:coffeeBean_Berry.name=Coffee Berry
+item.tropicraft:coffeeBean_Raw.name=Raw Coffee Bean
+item.tropicraft:coffeeBean_Roasted.name=Roasted Coffee Bean
