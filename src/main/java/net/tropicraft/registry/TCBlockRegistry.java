@@ -12,6 +12,7 @@ import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
+import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftFence;
@@ -49,17 +50,18 @@ public class TCBlockRegistry {
 	public static final BlockTropicraftStairs palmStairs = new BlockTropicraftStairs(TCNames.palmStairs, planks, 0);
 	public static final BlockTropicraftStairs mahoganyStairs = new BlockTropicraftStairs(TCNames.mahoganyStairs, planks, 3);
 	
-//TODO	public static final BlockPineapple pineapple = new BlockPineapple(TCNames.pineappleNames);
+	public static final BlockPineapple pineapple = new BlockPineapple(TCNames.pineappleNames);
 	public static final BlockTallFlowers tallFlowers = new BlockTallFlowers(TCNames.tallFlowerNames);
 	
-	public static final BlockTropicraftFence bambooFence = new BlockTropicraftFence(TCNames.bambooFence, TCNames.bambooBundle + "_Side", Material.plants);
+	public static final BlockTropicraftFenceGate bambooFenceGate = new BlockTropicraftFenceGate(bambooBundle, 0, TCNames.bambooFenceGate, Material.plants);
+	public static final BlockTropicraftFenceGate palmFenceGate = new BlockTropicraftFenceGate(planks, 1, TCNames.palmFenceGate, Material.wood);
+	
+	public static final BlockTropicraftFence bambooFence = new BlockTropicraftFence(TCNames.bambooFence, TCNames.bambooBundle + "_Side", bambooFenceGate, Material.plants);
 //	public static final BlockTropicraftFence chunkFence = new BlockTropicraftFence(TCNames.chunkFence, TCNames.chunkOHead, Material.rock);
-	public static final BlockTropicraftFence palmFence = new BlockTropicraftFence(TCNames.palmFence, TCNames.plank + "_" + TCNames.plankNames[0], Material.wood);
+	public static final BlockTropicraftFence palmFence = new BlockTropicraftFence(TCNames.palmFence, TCNames.plank + "_" + TCNames.plankNames[0], palmFenceGate, Material.wood);
 //	public static final BlockTropicraftFence thatchFence = new BlockTropicraftFence(TCNames.thatchFence, TCNames.thatchBundle + "_Side", Material.plants);
 //	public static final BlockTropicraftFence mahoganyFence = new BlockTropicraftFence(TCNames.mahoganyFence, TCNames.plank + "_" + TCNames.plankNames[1], Material.wood);
 	
-	public static final BlockTropicraftFenceGate bambooFenceGate = new BlockTropicraftFenceGate(TCNames.bambooFenceGate, TCNames.bambooBundle + "_Side", Material.plants);
-	public static final BlockTropicraftFenceGate palmFenceGate = new BlockTropicraftFenceGate(TCNames.palmFenceGate, TCNames.plank + "_" + TCNames.plankNames[0], Material.wood);
 	
 	public static final BlockTropicraftSapling saplings = new BlockTropicraftSapling(TCNames.saplingNames);
 	public static final BlockTropicraft coffeePlant = new BlockCoffeePlant();
@@ -86,7 +88,7 @@ public class TCBlockRegistry {
 		registerBlock(palmStairs, TCNames.palmStairs);
 		registerBlock(mahoganyStairs, TCNames.mahoganyStairs);
 		registerMultiBlock(tallFlowers, TCNames.tallFlower, TCNames.tallFlowerNames);
-		//registerMultiBlock2(pineapple, TCNames.pineapple, TCNames.pineappleNames);
+		registerMultiBlock(pineapple, TCNames.pineapple, TCNames.pineappleNames);
 		registerBlockNoName(bambooFence, TCNames.bambooFence);
 	//	registerBlockNoName(chunkFence, TCNames.chunkFence);
 	//	registerBlockNoName(thatchFence, TCNames.thatchFence);
@@ -94,8 +96,8 @@ public class TCBlockRegistry {
 	//	registerBlockNoName(mahoganyFence, TCNames.mahoganyFence);
 		registerMultiBlock(saplings, TCNames.sapling, TCNames.saplingNames);
 		registerBlock(coffeePlant, TCNames.coffeePlant);
-		registerBlockNoName(bambooFenceGate, TCNames.bambooFenceGate);
-		registerBlockNoName(palmFenceGate, TCNames.palmFenceGate);
+		registerBlock(bambooFenceGate, TCNames.bambooFenceGate);
+		registerBlock(palmFenceGate, TCNames.palmFenceGate);
 		Blocks.fire.setFireInfo(palmFenceGate, 5, 5);
 	}
 	
@@ -111,20 +113,6 @@ public class TCBlockRegistry {
 		Class<? extends ItemBlock> clazz = name.equals(TCNames.tallFlower) || name.equals(TCNames.pineapple) ? ItemTallFlowers.class : ItemBlockTropicraft.class;
 		GameRegistry.registerBlock(block, clazz, "tile." + name, TCInfo.MODID, namesList);
 		block.setBlockName(name);
-	}
-	
-	/**
-	 * Register a block with metadata
-	 * @param block Block being registered
-	 * @param name Name of the image prefix
-	 * @param names Names of the images
-	 */
-	private static void registerMultiBlock2(Block block, String name, String[] names) {
-		List<String> namesList = new ArrayList<String>();
-		Collections.addAll(namesList, names);
-		Class<? extends ItemBlock> clazz = name.equals(TCNames.tallFlower) || name.equals(TCNames.pineapple) ? ItemTallFlowers.class : ItemBlockTropicraft.class;
-		GameRegistry.registerBlock(block, clazz, "tile." + name, TCInfo.MODID, namesList);
-	//	block.setBlockName(name);
 	}
 	
 	/**

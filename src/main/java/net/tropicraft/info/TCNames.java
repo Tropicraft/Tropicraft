@@ -26,7 +26,7 @@ public class TCNames {
 	public static final String bambooStairs = "bambooStairs";
 	public static final String thatchStairs = "thatchStairs";
 	public static final String pineapple = "pineapple";
-	public static final String[] pineappleNames = new String[]{"pineapple"};
+	public static final String[] pineappleNames = new String[]{"Pineapple"};
 	public static final String stem = "Stem";
 	public static final String tallFlower = "tallFlower";
 	public static final String[] tallFlowerNames = new String[]{"Iris"};

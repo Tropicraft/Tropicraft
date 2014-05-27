@@ -1,20 +1,36 @@
 package net.tropicraft.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCCreativeTabRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTropicraftFenceGate extends BlockFenceGate {
 
-	public BlockTropicraftFenceGate(String name, String textureName, Material material) {
+	private Block blockForTexture;
+	
+	private int textureMeta;
+	
+	public BlockTropicraftFenceGate(Block block, int meta, String name, Material material) {
 		super();
+		this.blockForTexture = block;
+		this.textureMeta = meta;
 		this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
-		setBlockName(name);
-		setBlockTextureName(textureName);	
+		//setBlockTextureName(textureName);	
+	}
+	
+	/**
+	 * Gets the block's texture. Args: side, meta
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(int side, int meta) {
+		return blockForTexture.getIcon(side, textureMeta);
 	}
 	
 	/**
@@ -24,16 +40,8 @@ public class BlockTropicraftFenceGate extends BlockFenceGate {
 	@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        blockIcon = iconRegister.registerIcon(getActualName(getFormattedTextureName()));
+       // blockIcon = block.get;
     }
-	
-	/**
-	 * 
-	 * @return Tropicraft-mod formattted texture name/location
-	 */
-	protected String getFormattedTextureName() {
-		return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(this.getTextureName()));
-	}
 	
 	/**
 	 * @return The unlocalized block name

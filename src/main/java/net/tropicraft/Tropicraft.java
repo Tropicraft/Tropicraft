@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import net.minecraftforge.common.MinecraftForge;
+import net.tropicraft.event.TCBlockEvents;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.proxy.ISuperProxy;
 import net.tropicraft.registry.TCBlockRegistry;
@@ -49,6 +51,7 @@ public class Tropicraft {
 	@EventHandler
     public void init(FMLInitializationEvent event) {
 		proxy.initRenderHandlersAndIDs();
+		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
     }
 	
 	/**

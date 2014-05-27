@@ -25,7 +25,7 @@ tile.tropicraft:mahoganyStairs.name=Mahogany Stairs
 tile.tropicraft:bambooStairs.name=Bamboo Stairs
 tile.tropicraft:thatchStairs.name=Thatch Stairs
 tile.tropicraft:tallFlower_Iris.name=Iris
-tile.tropicraft:pineapple.name=Pineapple Plant
+tile.tropicraft:tallFlower_Pineapple.name=Pineapple Plant
 tile.tropicraft:bambooFence.name=Bamboo Fence
 tile.tropicraft:chunkFence.name=Chunk O' Head Fence
 tile.tropicraft:thatchFence.name=Thatch Fence
@@ -38,6 +38,8 @@ tile.tropicraft:sapling_Lime.name=Lime Tree Sapling
 tile.tropicraft:sapling_Orange.name=Orange Tree Sapling
 tile.tropicraft:sapling_Mahogany.name=Mahogany Tree Sapling
 tile.tropicraft:coffeePlant.name=Coffee Plant
+tile.tropicraft:bambooFenceGate.name=Bamboo Fence Gate
+tile.tropicraft:palmFenceGate.name=Palm Plank Fence Gate
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
