@@ -1,12 +1,17 @@
 package net.tropicraft.registry;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemCoffeeBean;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftMulti;
 import net.tropicraft.item.ItemWaterWand;
+import net.tropicraft.item.armor.ItemFireArmor;
+import net.tropicraft.item.armor.ItemScaleArmor;
+import net.tropicraft.item.armor.ItemTropicraftArmor;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
@@ -39,6 +44,19 @@ public class TCItemRegistry {
 	
 	public static final ItemTropicraft coffeeBean = new ItemCoffeeBean();
 	
+	// Armor	
+	public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", 18, new int[]{2, 6, 5, 2}, 9);
+	public static final ItemTropicraftArmor scaleBoots = new ItemScaleArmor(materialScaleArmor, 0, 3);
+	public static final ItemTropicraftArmor scaleLeggings = new ItemScaleArmor(materialScaleArmor, 0, 2);
+	public static final ItemTropicraftArmor scaleChestplate = new ItemScaleArmor(materialScaleArmor, 0, 1);
+	public static final ItemTropicraftArmor scaleHelmet = new ItemScaleArmor(materialScaleArmor, 0, 0);
+	
+	public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", 12, new int[]{2, 4, 5, 6}, 9);
+	public static final ItemTropicraftArmor fireBoots = new ItemFireArmor(materialFireArmor, 0, 3);
+	public static final ItemTropicraftArmor fireLeggings = new ItemFireArmor(materialFireArmor, 0, 2);
+	public static final ItemTropicraftArmor fireChestplate = new ItemFireArmor(materialFireArmor, 0, 1);
+	public static final ItemTropicraftArmor fireHelmet = new ItemFireArmor(materialFireArmor, 0, 0);
+	
 	/**
 	 * Register all the items
 	 */
@@ -70,6 +88,17 @@ public class TCItemRegistry {
 		registerItem(fishingNet, TCNames.fishingNet);
 		
 		registerItem(coffeeBean, TCNames.coffeeBean);
+		
+		// Armor
+		registerItem(scaleBoots, TCNames.scaleBoots);
+		registerItem(scaleLeggings, TCNames.scaleLeggings);
+		registerItem(scaleChestplate, TCNames.scaleChestplate);
+		registerItem(scaleHelmet, TCNames.scaleHelmet);
+		
+		registerItem(fireBoots, TCNames.fireBoots);
+		registerItem(fireLeggings, TCNames.fireLeggings);
+		registerItem(fireChestplate, TCNames.fireChestplate);
+		registerItem(fireHelmet, TCNames.fireHelmet);
 	}
 	
 	/**

@@ -64,4 +64,12 @@ public class TCNames {
 	public static final String fishingNet = "fishingNet";
 	public static final String coffeeBean = "coffeeBean";
 	public static final String[] coffeeBeanNames = new String[]{"Berry", "Roasted", "Raw"};
+	public static final String scaleBoots = "scaleBoots";
+	public static final String scaleLeggings = "scaleLeggings";
+	public static final String scaleChestplate = "scaleChestplate";
+	public static final String scaleHelmet = "scaleHelmet";
+	public static final String fireBoots = "fireBoots";
+	public static final String fireLeggings = "fireLeggings";
+	public static final String fireChestplate = "fireChestplate";
+	public static final String fireHelmet = "fireHelmet";
 }

@@ -16,6 +16,9 @@ public class TCInfo {
 	
 	/** Where to locate icons */
 	public static final String ICON_LOCATION = MODID + ":";
+	
+	/** Where to locate armor textures */
+	public static final String ARMOR_LOCATION = MODID + ":textures/armor/";
 
 	/** Client proxy location */
 	public static final String CLIENT_PROXY = "net.tropicraft.proxy.ClientProxy";
