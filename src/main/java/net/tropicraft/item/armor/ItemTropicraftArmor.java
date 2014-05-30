@@ -1,6 +1,7 @@
 package net.tropicraft.item.armor;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.info.TCInfo;
@@ -9,8 +10,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTropicraftArmor extends ItemArmor {
 
+	/** Name of the armor, eg "scale" or "fire", used in getArmorTexture */
+	private String modArmorName;
+	
 	public ItemTropicraftArmor(ArmorMaterial material, int renderIndex, int armorType) {
 		super(material, renderIndex, armorType);
+		this.modArmorName = material.name();
 	}
 
 	/**
@@ -51,6 +56,11 @@ public class ItemTropicraftArmor extends ItemArmor {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
 		itemIcon = iconRegister.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
+	}
+	
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+		return getTexturePath(String.format("%s_layer_" + (slot == 2 ? 2 : 1) + ".png", modArmorName));
 	}
 
 }

@@ -29,7 +29,6 @@ public class BlockTropicraftFence extends BlockFence {
 		if (block != this && block != fenceGate) {
 			return block != null && block.getMaterial().isOpaque() && block.renderAsNormalBlock() ? block.getMaterial() != Material.gourd : false;
 		} else {
-			System.out.println("true here!");
 			return true;
 		}
 	}
