@@ -14,6 +14,7 @@ import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockTallFlowers;
+import net.tropicraft.block.BlockTikiTorch;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftFence;
 import net.tropicraft.block.BlockTropicraftFenceGate;
@@ -66,6 +67,8 @@ public class TCBlockRegistry {
 	public static final BlockTropicraftSapling saplings = new BlockTropicraftSapling(TCNames.saplingNames);
 	public static final BlockTropicraft coffeePlant = new BlockCoffeePlant();
 	
+	public static final BlockTropicraft tikiTorch = new BlockTikiTorch();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -99,6 +102,7 @@ public class TCBlockRegistry {
 		registerBlock(bambooFenceGate, TCNames.bambooFenceGate);
 		registerBlock(palmFenceGate, TCNames.palmFenceGate);
 		Blocks.fire.setFireInfo(palmFenceGate, 5, 5);
+		registerBlock(tikiTorch, TCNames.tikiTorch);
 	}
 	
 	/**

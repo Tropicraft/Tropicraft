@@ -8,6 +8,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemCoffeeBean;
+import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftMulti;
@@ -87,6 +88,8 @@ public class TCItemRegistry {
 	public static final ItemSword swordZircon = new ItemTropicraftSword(materialZirconTools, TCNames.swordZircon);
 	// End Tools
 	
+	public static final ItemTropicraft tikiTorch = new ItemTikiTorch();
+	
 	/**
 	 * Register all the items
 	 */
@@ -141,6 +144,8 @@ public class TCItemRegistry {
 		registerItem(pickaxeZircon, TCNames.pickaxeZircon);
 		registerItem(shovelZircon, TCNames.shovelZircon);
 		registerItem(swordZircon, TCNames.swordZircon);
+		
+		registerItem(tikiTorch, TCNames.tikiTorch);
 	}
 	
 	/**

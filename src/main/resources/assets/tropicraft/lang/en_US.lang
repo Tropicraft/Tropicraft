@@ -40,6 +40,7 @@ tile.tropicraft:sapling_Mahogany.name=Mahogany Tree Sapling
 tile.tropicraft:coffeePlant.name=Coffee Plant
 tile.tropicraft:bambooFenceGate.name=Bamboo Fence Gate
 tile.tropicraft:palmFenceGate.name=Palm Plank Fence Gate
+tile.tropicraft:tikiTorch.name=Tiki Torch
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -86,3 +87,4 @@ item.tropicraft:hoeZircon.name=Zircon Hoe
 item.tropicraft:pickaxeZircon.name=Zircon Pickaxe
 item.tropicraft:shovelZircon.name=Zircon Shovel
 item.tropicraft:swordZircon.name=Zircon Spear
+item.tropicraft:tikiTorch.name=Tiki Torch
