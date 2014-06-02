@@ -1,7 +1,10 @@
 package net.tropicraft.registry;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemCoffeeBean;
@@ -12,6 +15,12 @@ import net.tropicraft.item.ItemWaterWand;
 import net.tropicraft.item.armor.ItemFireArmor;
 import net.tropicraft.item.armor.ItemScaleArmor;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
+import net.tropicraft.item.tool.ItemTropicraftAxe;
+import net.tropicraft.item.tool.ItemTropicraftHoe;
+import net.tropicraft.item.tool.ItemTropicraftPickaxe;
+import net.tropicraft.item.tool.ItemTropicraftShovel;
+import net.tropicraft.item.tool.ItemTropicraftSword;
+import net.tropicraft.item.tool.ItemTropicraftTool;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
@@ -56,6 +65,27 @@ public class TCItemRegistry {
 	public static final ItemTropicraftArmor fireLeggings = new ItemFireArmor(materialFireArmor, 0, 2);
 	public static final ItemTropicraftArmor fireChestplate = new ItemFireArmor(materialFireArmor, 0, 1);
 	public static final ItemTropicraftArmor fireHelmet = new ItemFireArmor(materialFireArmor, 0, 0);
+	// End Armor
+	
+	// Tools
+	public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 2, 250, 6.0F, 2.0F, 14);
+	public static ToolMaterial materialEudialyteTools = EnumHelper.addToolMaterial("eudialyte", 2, 250, 6.0F, 2.0F, 14);
+	
+	public static final ItemHoe hoeEudialyte = new ItemTropicraftHoe(materialEudialyteTools, TCNames.hoeEudialyte);
+	public static final ItemHoe hoeZircon = new ItemTropicraftHoe(materialZirconTools, TCNames.hoeZircon);
+	
+	public static final ItemTropicraftTool shovelEudialyte = new ItemTropicraftShovel(materialEudialyteTools, TCNames.shovelEudialyte);
+	public static final ItemTropicraftTool shovelZircon = new ItemTropicraftShovel(materialZirconTools, TCNames.shovelZircon);
+	
+	public static final ItemTropicraftTool pickaxeEudialyte = new ItemTropicraftPickaxe(materialEudialyteTools, TCNames.pickaxeEudialyte);
+	public static final ItemTropicraftTool pickaxeZircon = new ItemTropicraftPickaxe(materialZirconTools, TCNames.pickaxeZircon);
+	
+	public static final ItemTropicraftTool axeEudialyte = new ItemTropicraftAxe(materialEudialyteTools, TCNames.axeEudialyte);
+	public static final ItemTropicraftTool axeZircon = new ItemTropicraftAxe(materialZirconTools, TCNames.axeZircon);
+	
+	public static final ItemSword swordEudialyte = new ItemTropicraftSword(materialEudialyteTools, TCNames.swordEudialyte);
+	public static final ItemSword swordZircon = new ItemTropicraftSword(materialZirconTools, TCNames.swordZircon);
+	// End Tools
 	
 	/**
 	 * Register all the items
@@ -99,6 +129,18 @@ public class TCItemRegistry {
 		registerItem(fireLeggings, TCNames.fireLeggings);
 		registerItem(fireChestplate, TCNames.fireChestplate);
 		registerItem(fireHelmet, TCNames.fireHelmet);
+		
+		registerItem(axeEudialyte, TCNames.axeEudialyte);
+		registerItem(hoeEudialyte, TCNames.hoeEudialyte);
+		registerItem(pickaxeEudialyte, TCNames.pickaxeEudialyte);
+		registerItem(shovelEudialyte, TCNames.shovelEudialyte);
+		registerItem(swordEudialyte, TCNames.swordEudialyte);
+		
+		registerItem(axeZircon, TCNames.axeZircon);
+		registerItem(hoeZircon, TCNames.hoeZircon);
+		registerItem(pickaxeZircon, TCNames.pickaxeZircon);
+		registerItem(shovelZircon, TCNames.shovelZircon);
+		registerItem(swordZircon, TCNames.swordZircon);
 	}
 	
 	/**

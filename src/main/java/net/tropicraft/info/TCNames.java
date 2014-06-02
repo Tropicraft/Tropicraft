@@ -72,4 +72,14 @@ public class TCNames {
 	public static final String fireLeggings = "fireLeggings";
 	public static final String fireChestplate = "fireChestplate";
 	public static final String fireHelmet = "fireHelmet";
+	public static final String axeEudialyte = "axeEudialyte";
+	public static final String hoeEudialyte = "hoeEudialyte";
+	public static final String pickaxeEudialyte = "pickaxeEudialyte";
+	public static final String shovelEudialyte = "shovelEudialyte";
+	public static final String swordEudialyte = "swordEudialyte";
+	public static final String axeZircon = "axeZircon";
+	public static final String hoeZircon = "hoeZircon";
+	public static final String pickaxeZircon = "pickaxeZircon";
+	public static final String shovelZircon = "shovelZircon";
+	public static final String swordZircon = "swordZircon";
 }

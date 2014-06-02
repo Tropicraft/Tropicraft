@@ -1,23 +1,20 @@
-package net.tropicraft.item;
+package net.tropicraft.item.tool;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.tropicraft.info.TCInfo;
-import net.tropicraft.registry.TCCreativeTabRegistry;
+import java.util.Set;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
-/**
- * Base class for most Tropicraft items to extend
- */
-public class ItemTropicraft extends Item {
+public class ItemTropicraftTool extends ItemTool {
 
-	public ItemTropicraft() {
-		super();
-		this.maxStackSize = 1;
-		this.setNoRepair();
-		this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
+	public ItemTropicraftTool(float damageModifier, ToolMaterial toolMaterial, Set<?> effectiveBlocks) {
+		super(damageModifier, toolMaterial, effectiveBlocks);
+		this.setCreativeTab(TCCreativeTabRegistry.tabTools);
 	}
 
 	/**
@@ -53,6 +50,6 @@ public class ItemTropicraft extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister) {
-		itemIcon = iconRegister.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
+		itemIcon = iconRegister.registerIcon(TCInfo.TOOL_ICON_LOCATION + this.getIconString());
 	}
 }
