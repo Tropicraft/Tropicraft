@@ -43,6 +43,7 @@ public class TCNames {
 	public static final String tikiTorch = "tikiTorch";
 	public static final String tikiUpper = tikiTorch + "_Upper";
 	public static final String tikiLower = tikiTorch + "_Lower";
+	public static final String bambooDoor = "bambooDoor";
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";

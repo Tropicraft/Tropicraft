@@ -7,6 +7,7 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.item.ItemBambooDoor;
 import net.tropicraft.item.ItemCoffeeBean;
 import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
@@ -89,6 +90,7 @@ public class TCItemRegistry {
 	// End Tools
 	
 	public static final ItemTropicraft tikiTorch = new ItemTikiTorch();
+	public static final ItemTropicraft bambooDoor = new ItemBambooDoor();
 	
 	/**
 	 * Register all the items
@@ -146,6 +148,7 @@ public class TCItemRegistry {
 		registerItem(swordZircon, TCNames.swordZircon);
 		
 		registerItem(tikiTorch, TCNames.tikiTorch);
+		registerItem(bambooDoor, TCNames.bambooDoor);
 	}
 	
 	/**

@@ -41,6 +41,7 @@ tile.tropicraft:coffeePlant.name=Coffee Plant
 tile.tropicraft:bambooFenceGate.name=Bamboo Fence Gate
 tile.tropicraft:palmFenceGate.name=Palm Plank Fence Gate
 tile.tropicraft:tikiTorch.name=Tiki Torch
+tile.tropicraft:bambooDoor.name=Bamboo Door
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -88,3 +89,4 @@ item.tropicraft:pickaxeZircon.name=Zircon Pickaxe
 item.tropicraft:shovelZircon.name=Zircon Shovel
 item.tropicraft:swordZircon.name=Zircon Spear
 item.tropicraft:tikiTorch.name=Tiki Torch
+item.tropicraft:bambooDoor.name=Bamboo Door

@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
+import net.tropicraft.block.BlockBambooDoor;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoffeePlant;
@@ -24,7 +26,6 @@ import net.tropicraft.block.BlockTropicraftOre;
 import net.tropicraft.block.BlockTropicraftPlank;
 import net.tropicraft.block.BlockTropicraftSapling;
 import net.tropicraft.block.BlockTropicraftStairs;
-import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
 import net.tropicraft.item.ItemTallFlowers;
@@ -68,6 +69,7 @@ public class TCBlockRegistry {
 	public static final BlockTropicraft coffeePlant = new BlockCoffeePlant();
 	
 	public static final BlockTropicraft tikiTorch = new BlockTikiTorch();
+	public static final BlockDoor bambooDoor = new BlockBambooDoor();
 	
 	/**
 	 * Register all the blocks
@@ -103,6 +105,7 @@ public class TCBlockRegistry {
 		registerBlock(palmFenceGate, TCNames.palmFenceGate);
 		Blocks.fire.setFireInfo(palmFenceGate, 5, 5);
 		registerBlock(tikiTorch, TCNames.tikiTorch);
+		registerBlock(bambooDoor, TCNames.bambooDoor);
 	}
 	
 	/**
@@ -115,7 +118,7 @@ public class TCBlockRegistry {
 		List<String> namesList = new ArrayList<String>();
 		Collections.addAll(namesList, names);
 		Class<? extends ItemBlock> clazz = name.equals(TCNames.tallFlower) || name.equals(TCNames.pineapple) ? ItemTallFlowers.class : ItemBlockTropicraft.class;
-		GameRegistry.registerBlock(block, clazz, "tile." + name, TCInfo.MODID, namesList);
+		GameRegistry.registerBlock(block, clazz, "tile." + name, namesList);
 		block.setBlockName(name);
 	}
 	
