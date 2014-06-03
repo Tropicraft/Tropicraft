@@ -42,6 +42,10 @@ tile.tropicraft:bambooFenceGate.name=Bamboo Fence Gate
 tile.tropicraft:palmFenceGate.name=Palm Plank Fence Gate
 tile.tropicraft:tikiTorch.name=Tiki Torch
 tile.tropicraft:bambooDoor.name=Bamboo Door
+tile.tropicraft:singleSlabs_Bamboo.name=Bamboo Slab
+tile.tropicraft:singleSlabs_Chunk.name=Chunk O' Head Slab
+tile.tropicraft:singleSlabs_Palm.name=Palm Plank Slab
+tile.tropicraft:singleSlabs_Thatch.name=Thatch Slab
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

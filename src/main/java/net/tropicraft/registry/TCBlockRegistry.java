@@ -2,13 +2,17 @@ package net.tropicraft.registry;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
 import net.tropicraft.block.BlockBambooDoor;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
@@ -25,13 +29,24 @@ import net.tropicraft.block.BlockTropicraftMulti;
 import net.tropicraft.block.BlockTropicraftOre;
 import net.tropicraft.block.BlockTropicraftPlank;
 import net.tropicraft.block.BlockTropicraftSapling;
+import net.tropicraft.block.BlockTropicraftSlab;
 import net.tropicraft.block.BlockTropicraftStairs;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
 import net.tropicraft.item.ItemTallFlowers;
+import net.tropicraft.item.ItemTropicraftSlab;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCBlockRegistry {
+	
+	private static final Map<String, Class<? extends ItemBlock>> multiBlockMap = new HashMap<String, Class<? extends ItemBlock>>();
+	
+	static {
+		multiBlockMap.put(TCNames.pineapple, ItemTallFlowers.class);
+		multiBlockMap.put(TCNames.tallFlower, ItemTallFlowers.class);
+		multiBlockMap.put(TCNames.singleSlabs, ItemSlab.class);
+		multiBlockMap.put(TCNames.doubleSlabs, ItemSlab.class);
+	}
 	
 	public static final BlockTropicraft chunkOHead = new BlockChunkOHead();
 	public static final BlockTropicraftStairs chunkStairs = new BlockTropicraftStairs(TCNames.chunkStairs, chunkOHead, 0);
@@ -70,6 +85,8 @@ public class TCBlockRegistry {
 	
 	public static final BlockTropicraft tikiTorch = new BlockTikiTorch();
 	public static final BlockDoor bambooDoor = new BlockBambooDoor();
+	public static final BlockSlab singleSlabs = new BlockTropicraftSlab(false);
+	public static final BlockSlab doubleSlabs = new BlockTropicraftSlab(true);
 	
 	/**
 	 * Register all the blocks
@@ -106,6 +123,13 @@ public class TCBlockRegistry {
 		Blocks.fire.setFireInfo(palmFenceGate, 5, 5);
 		registerBlock(tikiTorch, TCNames.tikiTorch);
 		registerBlock(bambooDoor, TCNames.bambooDoor);
+		registerMultiBlock(singleSlabs, TCNames.singleSlabs, ItemTropicraftSlab.class, new Object[]{singleSlabs, doubleSlabs, false});
+		registerMultiBlock(doubleSlabs, TCNames.doubleSlabs, ItemTropicraftSlab.class, new Object[]{doubleSlabs, singleSlabs, true});
+	}
+	
+	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
+		GameRegistry.registerBlock(block, c, "tile." + name, params);
+		block.setBlockName(name);
 	}
 	
 	/**
@@ -117,7 +141,8 @@ public class TCBlockRegistry {
 	private static void registerMultiBlock(Block block, String name, String[] names) {
 		List<String> namesList = new ArrayList<String>();
 		Collections.addAll(namesList, names);
-		Class<? extends ItemBlock> clazz = name.equals(TCNames.tallFlower) || name.equals(TCNames.pineapple) ? ItemTallFlowers.class : ItemBlockTropicraft.class;
+		Class<? extends ItemBlock> clazz;
+		clazz = multiBlockMap.containsKey(name) ? multiBlockMap.get(name) : ItemBlockTropicraft.class;
 		GameRegistry.registerBlock(block, clazz, "tile." + name, namesList);
 		block.setBlockName(name);
 	}

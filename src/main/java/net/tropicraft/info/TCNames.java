@@ -44,6 +44,9 @@ public class TCNames {
 	public static final String tikiUpper = tikiTorch + "_Upper";
 	public static final String tikiLower = tikiTorch + "_Lower";
 	public static final String bambooDoor = "bambooDoor";
+	public static final String singleSlabs = "singleSlabs";
+	public static final String doubleSlabs = "doubleSlabs";
+	public static final String[] slabTypes = new String[]{"Bamboo", "Thatch", "Chunk", "Palm"};
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";
