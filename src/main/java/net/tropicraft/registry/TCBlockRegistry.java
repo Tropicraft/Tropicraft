@@ -31,6 +31,7 @@ import net.tropicraft.block.BlockTropicraftPlank;
 import net.tropicraft.block.BlockTropicraftSapling;
 import net.tropicraft.block.BlockTropicraftSlab;
 import net.tropicraft.block.BlockTropicraftStairs;
+import net.tropicraft.block.BlockTropicsWater;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
 import net.tropicraft.item.ItemTallFlowers;
@@ -88,6 +89,8 @@ public class TCBlockRegistry {
 	public static final BlockSlab singleSlabs = new BlockTropicraftSlab(false);
 	public static final BlockSlab doubleSlabs = new BlockTropicraftSlab(true);
 	
+	public static final BlockTropicsWater tropicsWater = new BlockTropicsWater(TCFluidRegistry.tropicsWater, Material.water);
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -125,6 +128,7 @@ public class TCBlockRegistry {
 		registerBlock(bambooDoor, TCNames.bambooDoor);
 		registerMultiBlock(singleSlabs, TCNames.singleSlabs, ItemTropicraftSlab.class, new Object[]{singleSlabs, doubleSlabs, false});
 		registerMultiBlock(doubleSlabs, TCNames.doubleSlabs, ItemTropicraftSlab.class, new Object[]{doubleSlabs, singleSlabs, true});
+		registerBlock(tropicsWater, TCNames.stillWater);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

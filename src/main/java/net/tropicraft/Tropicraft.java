@@ -2,9 +2,11 @@ package net.tropicraft;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.tropicraft.event.TCBlockEvents;
+import net.tropicraft.event.TCItemEvents;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.proxy.ISuperProxy;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -40,8 +42,10 @@ public class Tropicraft {
 	 */
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+    	TCFluidRegistry.init();
     	TCBlockRegistry.init();
     	TCItemRegistry.init();
+    	TCFluidRegistry.postInit();
     }
 	
 	/**
@@ -52,6 +56,7 @@ public class Tropicraft {
     public void init(FMLInitializationEvent event) {
 		proxy.initRenderHandlersAndIDs();
 		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
+		MinecraftForge.EVENT_BUS.register(new TCItemEvents());
     }
 	
 	/**

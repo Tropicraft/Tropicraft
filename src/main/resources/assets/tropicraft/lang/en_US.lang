@@ -46,6 +46,7 @@ tile.tropicraft:singleSlabs_Bamboo.name=Bamboo Slab
 tile.tropicraft:singleSlabs_Chunk.name=Chunk O' Head Slab
 tile.tropicraft:singleSlabs_Palm.name=Palm Plank Slab
 tile.tropicraft:singleSlabs_Thatch.name=Thatch Slab
+tile.tropicraft:tropicsWater.name=Tropics Water
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -94,3 +95,4 @@ item.tropicraft:shovelZircon.name=Zircon Shovel
 item.tropicraft:swordZircon.name=Zircon Spear
 item.tropicraft:tikiTorch.name=Tiki Torch
 item.tropicraft:bambooDoor.name=Bamboo Door
+item.tropicraft:bucketTropicsWater.name=Tropics Water Bucket

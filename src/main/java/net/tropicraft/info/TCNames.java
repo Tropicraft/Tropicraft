@@ -47,6 +47,8 @@ public class TCNames {
 	public static final String singleSlabs = "singleSlabs";
 	public static final String doubleSlabs = "doubleSlabs";
 	public static final String[] slabTypes = new String[]{"Bamboo", "Thatch", "Chunk", "Palm"};
+	public static final String stillWater = "tropicsWater";
+	public static final String flowingWater = "flowingTropicsWater";
 	
 	// Item names
 	public static final String frogLeg = "frogLeg";
@@ -89,4 +91,5 @@ public class TCNames {
 	public static final String pickaxeZircon = "pickaxeZircon";
 	public static final String shovelZircon = "shovelZircon";
 	public static final String swordZircon = "swordZircon";
+	public static final String bucketTropicsWater = "bucketTropicsWater";
 }

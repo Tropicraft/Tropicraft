@@ -13,6 +13,7 @@ import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftMulti;
+import net.tropicraft.item.ItemTropicsWaterBucket;
 import net.tropicraft.item.ItemWaterWand;
 import net.tropicraft.item.armor.ItemFireArmor;
 import net.tropicraft.item.armor.ItemScaleArmor;
@@ -91,6 +92,7 @@ public class TCItemRegistry {
 	
 	public static final ItemTropicraft tikiTorch = new ItemTikiTorch();
 	public static final ItemTropicraft bambooDoor = new ItemBambooDoor();
+	public static final ItemTropicsWaterBucket bucketTropicsWater = new ItemTropicsWaterBucket();
 	
 	/**
 	 * Register all the items
@@ -149,6 +151,7 @@ public class TCItemRegistry {
 		
 		registerItem(tikiTorch, TCNames.tikiTorch);
 		registerItem(bambooDoor, TCNames.bambooDoor);
+		registerItem(bucketTropicsWater, TCNames.bucketTropicsWater);
 	}
 	
 	/**
