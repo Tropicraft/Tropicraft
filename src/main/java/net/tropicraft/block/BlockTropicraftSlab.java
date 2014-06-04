@@ -3,10 +3,12 @@ package net.tropicraft.block;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -20,6 +22,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTropicraftSlab extends BlockSlab {
 
+	public static Block[] modelBlocks = new Block[]{
+        TCBlockRegistry.bambooBundle,
+        TCBlockRegistry.thatchBundle,
+        TCBlockRegistry.chunkOHead,
+        TCBlockRegistry.palmStairs};
+	
 	@SideOnly(Side.CLIENT)
 	private IIcon bambooIcon, thatchIcon, chunkIcon, palmIcon;
 
@@ -50,6 +58,32 @@ public class BlockTropicraftSlab extends BlockSlab {
 		}
 	}
 	
+	/**
+     * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
+     * EntityPlayer.
+     */
+    @Override
+    public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer, World par2World, int j, int k, int l) {
+        int type = par2World.getBlockMetadata(j, k, l) & 7;
+
+        if (type < modelBlocks.length) {
+            return modelBlocks[type].getPlayerRelativeBlockHardness(par1EntityPlayer, par2World, j, k, l);
+        } else {
+            return super.getPlayerRelativeBlockHardness(par1EntityPlayer, par2World, j, k, l);
+        }
+    }
+
+    @Override
+    public boolean canHarvestBlock(EntityPlayer player, int meta) {
+        int type = meta & 7;
+        if (type < modelBlocks.length) {
+            return modelBlocks[type].canHarvestBlock(player, meta);
+        } else {
+            return super.canHarvestBlock(player, meta);
+        }
+    }
+
+	
     /**
      * Returns an item stack containing a single instance of the current block type. 'meta' is the block's subtype/damage
      * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
@@ -71,7 +105,7 @@ public class BlockTropicraftSlab extends BlockSlab {
 			meta = 0;
 		}
 
-		return super.getUnlocalizedName() + "." + TCNames.slabTypes[meta];
+		return getUnlocalizedName() + "_" + TCNames.slabTypes[meta];
 	}
 
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
