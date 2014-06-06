@@ -96,3 +96,6 @@ item.tropicraft:swordZircon.name=Zircon Spear
 item.tropicraft:tikiTorch.name=Tiki Torch
 item.tropicraft:bambooDoor.name=Bamboo Door
 item.tropicraft:bucketTropicsWater.name=Tropics Water Bucket
+
+#Entity localizations
+entity.tropicraft:beachChair.name=Beach Chair

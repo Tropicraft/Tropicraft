@@ -9,4 +9,9 @@ public interface ISuperProxy {
 	 * Register all block and item render handlers here and ids associated with them
 	 */
 	public void initRenderHandlersAndIDs();
+	
+	/**
+	 * Initializes TCRenderRegistry (for entities)
+	 */
+	public void initRenderRegistry();
 }

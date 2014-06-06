@@ -16,7 +16,6 @@ public class TCItemEvents {
 
 	@SubscribeEvent
 	public void handleBucketFillEvent(FillBucketEvent event) {
-		System.out.println("initial trigger");
 		ItemStack iHazBucket = new ItemStack(TCItemRegistry.bucketTropicsWater);
 
 		World world = event.world;
@@ -30,7 +29,6 @@ public class TCItemEvents {
 
 		if (fluid != null) {
 			if (fluid == TCFluidRegistry.tropicsWater && meta == 0) {
-				System.out.println("filled with glee");
 				TCItemRegistry.bucketTropicsWater.fill(iHazBucket, new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), true);
 
 				world.setBlockToAir(x, y, z);

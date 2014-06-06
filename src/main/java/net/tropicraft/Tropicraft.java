@@ -6,6 +6,7 @@ import net.tropicraft.event.TCItemEvents;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.proxy.ISuperProxy;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCEntityRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.common.Mod;
@@ -26,6 +27,9 @@ public class Tropicraft {
 	
 	@SidedProxy(clientSide = TCInfo.CLIENT_PROXY, serverSide = TCInfo.SERVER_PROXY)
 	public static ISuperProxy proxy;
+	
+	@Mod.Instance(TCInfo.MODID)
+    public static Tropicraft instance;
 	
 	/**
 	 * Triggered when a server starts
@@ -55,6 +59,8 @@ public class Tropicraft {
 	@EventHandler
     public void init(FMLInitializationEvent event) {
 		proxy.initRenderHandlersAndIDs();
+		TCEntityRegistry.init();
+		proxy.initRenderRegistry();
 		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
 		MinecraftForge.EVENT_BUS.register(new TCItemEvents());
     }

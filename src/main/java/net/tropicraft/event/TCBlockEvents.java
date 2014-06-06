@@ -27,9 +27,9 @@ public class TCBlockEvents {
 		if (world.isRemote)
 			return;
 		
-		System.out.printf("At the start: id=%s meta=%d idabove=%s idbelow=%s\n", 
+/*		System.out.printf("At the start: id=%s meta=%d idabove=%s idbelow=%s\n", 
 				world.getBlock(x, y, z), world.getBlockMetadata(x, y, z), world.getBlock(x, y + 1, z),
-				world.getBlock(x, y - 1, z));
+				world.getBlock(x, y - 1, z));*/
 		
 		//int meta = world.getBlockMetadata(x, y, z);
 

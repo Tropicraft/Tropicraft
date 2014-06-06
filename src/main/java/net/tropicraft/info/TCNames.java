@@ -92,4 +92,5 @@ public class TCNames {
 	public static final String shovelZircon = "shovelZircon";
 	public static final String swordZircon = "swordZircon";
 	public static final String bucketTropicsWater = "bucketTropicsWater";
+	public static final String chair = "chair";
 }

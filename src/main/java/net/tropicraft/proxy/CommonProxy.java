@@ -11,4 +11,9 @@ public class CommonProxy implements ISuperProxy {
 
 	}
 
+	@Override
+	public void initRenderRegistry() {
+
+	}
+
 }
