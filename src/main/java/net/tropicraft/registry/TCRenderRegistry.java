@@ -2,8 +2,8 @@ package net.tropicraft.registry;
 
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.tropicraft.client.entity.render.EntityChair;
 import net.tropicraft.client.entity.render.RenderChair;
+import net.tropicraft.entity.placeable.EntityChair;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class TCRenderRegistry {

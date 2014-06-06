@@ -2,7 +2,7 @@ package net.tropicraft.registry;
 
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.client.entity.render.EntityChair;
+import net.tropicraft.entity.placeable.EntityChair;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class TCEntityRegistry {

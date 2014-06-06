@@ -96,6 +96,23 @@ item.tropicraft:swordZircon.name=Zircon Spear
 item.tropicraft:tikiTorch.name=Tiki Torch
 item.tropicraft:bambooDoor.name=Bamboo Door
 item.tropicraft:bucketTropicsWater.name=Tropics Water Bucket
+item.tropicraft:chair_black.name=Black Beach Chair
+item.tropicraft:chair_red.name=Red Beach Chair
+item.tropicraft:chair_green.name=Green Beach Chair
+item.tropicraft:chair_brown.name=Brown Beach Chair
+item.tropicraft:chair_blue.name=Blue Beach Chair
+item.tropicraft:chair_purple.name=Purple Beach Chair
+item.tropicraft:chair_cyan.name=Cyan Beach Chair
+item.tropicraft:chair_silver.name=Silver Beach Chair
+item.tropicraft:chair_gray.name=Gray Beach Chair
+item.tropicraft:chair_pink.name=Pink Beach Chair
+item.tropicraft:chair_lime.name=Lime Beach Chair
+item.tropicraft:chair_yellow.name=Yellow Beach Chair
+item.tropicraft:chair_lightBlue.name=Light Blue Beach Chair
+item.tropicraft:chair_magenta.name=Magenta Beach Chair
+item.tropicraft:chair_orange.name=Orange Beach Chair
+item.tropicraft:chair_white.name=White Beach Chair
+
 
 #Entity localizations
 entity.tropicraft:beachChair.name=Beach Chair

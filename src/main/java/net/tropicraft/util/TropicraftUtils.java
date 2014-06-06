@@ -35,4 +35,8 @@ public class TropicraftUtils {
 	public static int getColor(float red, float green, float blue) {
 		return ((int)(red * 255) << 16) | ((int)(green * 255) << 8) | (int)(blue * 255);
 	}
+	
+	public static int getColor(float[] rgb) {
+		return getColor(rgb[0], rgb[1], rgb[2]);
+	}
 }

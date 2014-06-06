@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.client.entity.model.ModelChair;
+import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.util.TropicraftUtils;
 
 import org.lwjgl.BufferUtils;
@@ -27,6 +28,10 @@ public class RenderChair extends Render {
 	public void renderChair(EntityChair entitychair, double d, double d1, double d2, float f, float f1) {
 		GL11.glPushMatrix();
 
+		red = TropicraftUtils.getRed(entitychair.getColor());
+		green = TropicraftUtils.getGreen(entitychair.getColor());
+		blue = TropicraftUtils.getBlue(entitychair.getColor());
+
 		GL11.glTranslatef((float) d, (float) d1 + .3125F, (float) d2);
 		GL11.glRotatef(f + (180 - f)*2, 0.0F, 1.0F, 0.0F);
 
@@ -34,7 +39,7 @@ public class RenderChair extends Render {
 		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("chairLayer"));
 		GL11.glScalef(-1F, -1F, 1.0F);
 		modelChair.render(entitychair, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
-		
+
 		// Draw the colored part of the chair
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_BLEND);
@@ -45,14 +50,14 @@ public class RenderChair extends Render {
 		color.position(0);
 		// Color it
 		GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, color);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("chairColorLayerInvertedBright"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("chairColorLayer"));
 		modelChair.render(entitychair, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glDisable(GL11.GL_BLEND);
 		// Change the color mode back to modulation
 		GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
-		
+
 		// loldisco
-		if (red <= 1.0F)
+		/*if (red <= 1.0F)
 			red += 0.005F;
 		else
 			if (green <= 1.0F)
@@ -63,7 +68,7 @@ public class RenderChair extends Render {
 				else {
 					red = green = blue = 0.0F;
 				}
-		
+		 */		
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}

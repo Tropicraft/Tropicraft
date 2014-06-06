@@ -61,18 +61,13 @@ public class TCBlockEvents {
 				dropBlockAsItem(world, x, y, z, drop);
 		} else
 			if (meta <= 7) {
-				//System.out.println("wut");
 				if (world.getBlockMetadata(x, y + 1, z) == 8) {
-					System.out.println("wut 1");
 					world.setBlockToAir(x, y + 1, z);
 					dropBlockAsItem(world, x, y + 1, z, drop);
 				} else {
-					System.out.println("wut 2 " + meta + " " + world.getBlockMetadata(x, y - 1, z) + " " + 
-				world.getBlock(x, y - 1, z));
 					world.setBlockToAir(x, y, z);
 				}
 			} else {
-				System.out.println("wut in the but");
 				world.setBlockToAir(x, y, z);
 				world.setBlockToAir(x, y - 1, z);
 			}
