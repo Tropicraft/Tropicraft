@@ -9,6 +9,8 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooDoor;
 import net.tropicraft.item.ItemCoffeeBean;
+import net.tropicraft.item.ItemFertilizer;
+import net.tropicraft.item.ItemFlowerPot;
 import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
@@ -87,18 +89,21 @@ public class TCItemRegistry {
 	
 	public static final ItemTropicraftTool axeEudialyte = new ItemTropicraftAxe(materialEudialyteTools, TCNames.axeEudialyte);
 	public static final ItemTropicraftTool axeZircon = new ItemTropicraftAxe(materialZirconTools, TCNames.axeZircon);
-	
+
 	public static final ItemSword swordEudialyte = new ItemTropicraftSword(materialEudialyteTools, TCNames.swordEudialyte);
 	public static final ItemSword swordZircon = new ItemTropicraftSword(materialZirconTools, TCNames.swordZircon);
 	// End Tools
-	
+
 	public static final ItemTropicraft tikiTorch = new ItemTikiTorch();
 	public static final ItemTropicraft bambooDoor = new ItemBambooDoor();
 	public static final ItemTropicsWaterBucket bucketTropicsWater = new ItemTropicsWaterBucket();
-	
+
 	public static final ItemChair chair = new ItemChair();
 	public static final ItemUmbrella umbrella = new ItemUmbrella();
-	
+
+	public static final ItemFlowerPot flowerPot = new ItemFlowerPot(TCBlockRegistry.flowerPot);
+	public static final ItemFertilizer fertilizer = new ItemFertilizer();
+
 	/**
 	 * Register all the items
 	 */
@@ -160,6 +165,9 @@ public class TCItemRegistry {
 		
 		registerItem(chair, TCNames.chair);
 		registerItem(umbrella, TCNames.umbrella);
+		
+		registerItem(flowerPot, TCNames.flowerPot);
+		registerItem(fertilizer, TCNames.fertilizer);
 	}
 	
 	/**

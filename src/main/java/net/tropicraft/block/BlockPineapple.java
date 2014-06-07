@@ -58,30 +58,30 @@ public class BlockPineapple extends BlockTallFlowers implements IGrowable {
 
 		bottomIcon = iconRegister.registerIcon(getActualName(getFormattedTextureName()) + "_" + TCNames.stem);
 	}
-	
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+
+	/**
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-    	list.add(new ItemStack(item, 1, 0));
-    }
-    
-    /**
-     * checks if the block can stay, if not drop as item
-     */
-    protected void checkAndDropBlock(World p_149855_1_, int p_149855_2_, int p_149855_3_, int p_149855_4_) {
-    	// Overriding superclass because derp behavior
-    }
-    
-    /**
-     * Called when the block is attempted to be harvested
-     */
-    public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_) {
-    	// Overriding superclass because derp behavior
-    }
-    
+	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+		list.add(new ItemStack(item, 1, 0));
+	}
+
+	/**
+	 * checks if the block can stay, if not drop as item
+	 */
+	protected void checkAndDropBlock(World p_149855_1_, int p_149855_2_, int p_149855_3_, int p_149855_4_) {
+		// Overriding superclass because derp behavior
+	}
+
+	/**
+	 * Called when the block is attempted to be harvested
+	 */
+	public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_) {
+		// Overriding superclass because derp behavior
+	}
+
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		checkFlowerChange(world, i, j, k);
@@ -102,14 +102,14 @@ public class BlockPineapple extends BlockTallFlowers implements IGrowable {
 			}
 		}
 	}
-	
-    /**
-     * Called when the block is placed in the world.
-     */
-	@Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemstack) {
 
-    }
+	/**
+	 * Called when the block is placed in the world.
+	 */
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemstack) {
+
+	}
 
 	@Override
 	public Item getItemDropped(int meta, Random rand, int unused) {
@@ -145,24 +145,48 @@ public class BlockPineapple extends BlockTallFlowers implements IGrowable {
 	 * 
 	 * @return Tropicraft-mod formattted texture name/location
 	 */
-	 protected String getFormattedTextureName() {
-		 return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(this.getTextureName()));
-	 }
+	protected String getFormattedTextureName() {
+		return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(this.getTextureName()));
+	}
 
-	 /**
-	  * @return The unlocalized block name
-	  */
-	 @Override
-	 public String getUnlocalizedName() {
-		 return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(this.getTextureName()));
-	 }
+	/**
+	 * @return The unlocalized block name
+	 */
+	@Override
+	public String getUnlocalizedName() {
+		return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(this.getTextureName()));
+	}
 
-	 /**
-	  * Get the true name of the block
-	  * @param unlocalizedName tile.%truename%
-	  * @return The actual name of the block, rather than tile.%truename%
-	  */
-	 protected String getActualName(String unlocalizedName) {
-		 return unlocalizedName.substring(unlocalizedName.indexOf('.') + 1);
-	 }
+	/**
+	 * Get the true name of the block
+	 * @param unlocalizedName tile.%truename%
+	 * @return The actual name of the block, rather than tile.%truename%
+	 */
+	protected String getActualName(String unlocalizedName) {
+		return unlocalizedName.substring(unlocalizedName.indexOf('.') + 1);
+	}
+
+	/**
+	 * canFertilize
+	 */
+	@Override
+	public boolean func_149851_a(World world, int x, int y, int z, boolean var5) {
+		return true;
+	}
+
+	/**
+	 * shouldFertilize
+	 */
+	@Override
+	public boolean func_149852_a(World world, Random rand, int x, int y, int z) {
+		return world.getBlockMetadata(x, y, z) <= 7 && world.isAirBlock(x, y + 1, z);
+	}
+
+	/**
+	 * fertilize
+	 */
+	@Override
+	public void func_149853_b(World world, Random rand, int x, int y, int z) {
+		world.setBlock(x, y + 1, z, this, 8, 3);
+	}
 }

@@ -15,7 +15,7 @@ public class TCNames {
 	public static final String[] oreBlockNames = new String[]{"Eudialyte", "Zircon", "Azurite", "Zirconium"};
 	public static final String thatchBundle = "thatch";
 	public static final String coral = "coral";
-	public static final String[] coralNames = new String[]{"0", "1", "2", "3", "4", "5"};
+	public static final String[] coralNames = new String[]{"0", "1", "2", "3", "4", "5", "6"};
 	public static final String bambooBundle = "bambooBundle";
 	public static final String log = "log";
 	public static final String[] logNames = new String[]{"Palm", "Mahogany"};
@@ -50,7 +50,13 @@ public class TCNames {
 	public static final String stillWater = "tropicsWater";
 	public static final String flowingWater = "flowingTropicsWater";
 	public static final String rainStopper = "rainStopper";
-	
+	public static final String flower = "flower";
+	public static final String[] flowerIndices = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+		"12", "13", "14"};
+	public static final String[] flowerDisplayNames = {"Commelina Diffusa", "Crocosmia", "Orchid", "Canna", "Anemone", "Orange Anthurium", "Red Anthurium", "Magic Mushroom", "Pathos", "Acai Vine",
+        "Croton", "Dracaena", "Fern", "Foilage", "Bromeliad"};
+	public static final String flowerPot = "flowerPot";
+
 	// Item names
 	public static final String frogLeg = "frogLeg";
 	public static final String cookedFrogLeg = "cookedFrogLeg";
@@ -95,4 +101,5 @@ public class TCNames {
 	public static final String bucketTropicsWater = "bucketTropicsWater";
 	public static final String chair = "chair";
 	public static final String umbrella = "umbrella";
+	public static final String fertilizer = "fertilizer";
 }

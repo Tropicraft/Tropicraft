@@ -121,20 +121,17 @@ public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 	}
 
 	@Override
-	public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
-	{
+	public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
 		return EnumPlantType.Water;
 	}
 
 	@Override
-	public Block getPlant(IBlockAccess world, int x, int y, int z)
-	{
+	public Block getPlant(IBlockAccess world, int x, int y, int z) {
 		return this;
 	}
 
 	@Override
-	public int getPlantMetadata(IBlockAccess world, int x, int y, int z)
-	{
+	public int getPlantMetadata(IBlockAccess world, int x, int y, int z) {
 		return world.getBlockMetadata(x, y, z);
 	}
 
