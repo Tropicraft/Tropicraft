@@ -9,6 +9,7 @@ import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCEntityRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
+import net.tropicraft.util.ColorHelper;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -46,6 +47,7 @@ public class Tropicraft {
 	 */
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+    	ColorHelper.init();
     	TCFluidRegistry.init();
     	TCBlockRegistry.init();
     	TCItemRegistry.init();

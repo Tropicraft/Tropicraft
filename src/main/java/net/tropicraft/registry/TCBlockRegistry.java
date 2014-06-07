@@ -19,6 +19,7 @@ import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockPineapple;
+import net.tropicraft.block.BlockRainStopper;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTikiTorch;
 import net.tropicraft.block.BlockTropicraft;
@@ -91,6 +92,8 @@ public class TCBlockRegistry {
 	
 	public static final BlockTropicsWater tropicsWater = new BlockTropicsWater(TCFluidRegistry.tropicsWater, Material.water);
 	
+	public static final BlockTropicraft rainStopper = new BlockRainStopper();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -129,6 +132,7 @@ public class TCBlockRegistry {
 		registerMultiBlock(singleSlabs, TCNames.singleSlabs, ItemTropicraftSlab.class, new Object[]{singleSlabs, doubleSlabs, false});
 		registerMultiBlock(doubleSlabs, TCNames.doubleSlabs, ItemTropicraftSlab.class, new Object[]{doubleSlabs, singleSlabs, true});
 		registerBlock(tropicsWater, TCNames.stillWater);
+		registerBlock(rainStopper, TCNames.rainStopper);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

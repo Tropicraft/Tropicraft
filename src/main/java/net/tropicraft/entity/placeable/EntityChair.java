@@ -9,7 +9,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -17,11 +16,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.registry.TCItemRegistry;
+import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftUtils;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,16 +39,6 @@ public class EntityChair extends Entity {
 
 	/** The time to count down from since the last time entity was hit. */
 	private static final int DATAWATCHER_TIME_SINCE_HIT = 6;
-
-	/** List of metadata of wool (or just a unique identifier for colors) to an integer color */
-	public static BiMap<Integer, Integer> woolValues = HashBiMap.create();
-
-	//TODO NOTE THIS CAN PROBABLY BE MOVED TO AN EXTERNAL CLASS
-	static {
-		for (int i = 0; i < ItemDye.field_150922_c.length; i++) {
-			woolValues.put(Integer.valueOf(ItemDye.field_150922_c[i]), i);
-		}
-	}
 
 	/** Is any entity sitting in the chair? */
 	public boolean isChairEmpty;
@@ -95,19 +81,6 @@ public class EntityChair extends Entity {
 		prevPosZ = z;
 		setColor(color);		
 		rotationYaw = this.getAngleToPlayer(player);
-	}
-
-	public EntityChair(World world, double x, double y, double z)
-	{
-		this(world);
-		this.setPosition(x, y + (double)this.yOffset, z);
-		this.motionX = 0.0D;
-		this.motionY = 0.0D;
-		this.motionZ = 0.0D;
-		this.prevPosX = x;
-		this.prevPosY = y;
-		this.prevPosZ = z;
-
 	}
 
 	/**
@@ -330,7 +303,7 @@ public class EntityChair extends Entity {
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(DATAWATCHER_COLOR, new Integer(1973019));
+		this.dataWatcher.addObject(DATAWATCHER_COLOR, new Integer(ColorHelper.DEFAULT_VALUE));
 		this.dataWatcher.addObject(DATAWATCHER_DAMAGE, new Float(0));
 		this.dataWatcher.addObject(DATAWATCHER_COMESAILAWAY, new Byte((byte)0));
 		this.dataWatcher.addObject(DATAWATCHER_FORWARD_DIRECTION, new Integer(1));
@@ -370,8 +343,7 @@ public class EntityChair extends Entity {
 				}
 
 				if (!flag) {
-					System.out.println("trying to get" + this.getColor() + " from the list");
-					this.entityDropItem(new ItemStack(TCItemRegistry.chair, 1, woolValues.get(Integer.valueOf(this.getColor()))), 0.0F);
+					this.entityDropItem(new ItemStack(TCItemRegistry.chair, 1,  getDamageFromColor()), 0.0F);
 				}
 
 				this.setDead();
@@ -381,6 +353,13 @@ public class EntityChair extends Entity {
 		} else {
 			return true;
 		}
+	}
+	
+	/**
+	 * @return Returns the damage value associated with the color of this chair
+	 */
+	public int getDamageFromColor() {
+		return ColorHelper.getDamageFromColor(this.getColor());
 	}
 
 	/**
@@ -555,7 +534,7 @@ public class EntityChair extends Entity {
 					int l;
 
 					for (l = 0; l < 3; ++l) {
-						this.entityDropItem(new ItemStack(Item.getItemFromBlock(Blocks.wool), 1, woolValues.get(Integer.valueOf(this.getColor()))), 0.0F);
+						this.entityDropItem(new ItemStack(Item.getItemFromBlock(Blocks.wool), 1, getDamageFromColor()), 0.0F);
 					}
 
 					for (l = 0; l < rand.nextInt(5) + 1; ++l) {

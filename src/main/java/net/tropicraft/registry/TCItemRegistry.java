@@ -19,6 +19,7 @@ import net.tropicraft.item.armor.ItemFireArmor;
 import net.tropicraft.item.armor.ItemScaleArmor;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
 import net.tropicraft.item.placeable.ItemChair;
+import net.tropicraft.item.placeable.ItemUmbrella;
 import net.tropicraft.item.tool.ItemTropicraftAxe;
 import net.tropicraft.item.tool.ItemTropicraftHoe;
 import net.tropicraft.item.tool.ItemTropicraftPickaxe;
@@ -94,7 +95,9 @@ public class TCItemRegistry {
 	public static final ItemTropicraft tikiTorch = new ItemTikiTorch();
 	public static final ItemTropicraft bambooDoor = new ItemBambooDoor();
 	public static final ItemTropicsWaterBucket bucketTropicsWater = new ItemTropicsWaterBucket();
+	
 	public static final ItemChair chair = new ItemChair();
+	public static final ItemUmbrella umbrella = new ItemUmbrella();
 	
 	/**
 	 * Register all the items
@@ -154,7 +157,9 @@ public class TCItemRegistry {
 		registerItem(tikiTorch, TCNames.tikiTorch);
 		registerItem(bambooDoor, TCNames.bambooDoor);
 		registerItem(bucketTropicsWater, TCNames.bucketTropicsWater);
+		
 		registerItem(chair, TCNames.chair);
+		registerItem(umbrella, TCNames.umbrella);
 	}
 	
 	/**

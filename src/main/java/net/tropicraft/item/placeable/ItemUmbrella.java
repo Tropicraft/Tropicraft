@@ -9,21 +9,22 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.tropicraft.entity.placeable.EntityChair;
+import net.tropicraft.entity.placeable.EntityUmbrella;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemTropicraftColored;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.util.ColorHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemChair extends ItemTropicraftColored {
+public class ItemUmbrella extends ItemTropicraftColored {
 
 	@SideOnly(Side.CLIENT)
 	private IIcon overlayIcon;
 
-	public ItemChair() {
+	public ItemUmbrella() {
 		super();
-		this.setTextureName(TCNames.chair);
+		this.setTextureName(TCNames.umbrella);
 	}
 
 	@Override
@@ -60,7 +61,17 @@ public class ItemChair extends ItemTropicraftColored {
 					j--;
 				}
 
-				world.spawnEntityInWorld(new EntityChair(world, i, j + 1.01, k, color, entityplayer));
+				world.spawnEntityInWorld(new EntityUmbrella(world, i, j + 1.01, k, color));
+				
+				// Place RAIN STOPPERS!!!
+				
+				int y = j + 4;
+				
+				for (int x = i - 3; x <= i + 2; x++) {
+					for (int z = k - 3; z <= k + 2; z++) {
+						world.setBlock(x, y, z, TCBlockRegistry.rainStopper);
+					}
+				}
 
 			}
 
