@@ -103,6 +103,8 @@ public class TCItemRegistry {
 
 	public static final ItemFlowerPot flowerPot = new ItemFlowerPot(TCBlockRegistry.flowerPot);
 	public static final ItemFertilizer fertilizer = new ItemFertilizer();
+	
+//TODO	public static final ItemTropicraft coconutBomb = new ItemCoconutBomb();
 
 	/**
 	 * Register all the items

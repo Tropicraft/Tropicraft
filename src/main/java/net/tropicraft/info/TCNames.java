@@ -102,4 +102,6 @@ public class TCNames {
 	public static final String chair = "chair";
 	public static final String umbrella = "umbrella";
 	public static final String fertilizer = "fertilizer";
+	public static final String coconut = "coconut";
+	public static final String coconutBomb = "coconutBomb";
 }

@@ -16,6 +16,7 @@ import net.minecraft.item.ItemSlab;
 import net.tropicraft.block.BlockBambooDoor;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
+import net.tropicraft.block.BlockCoconut;
 import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockPineapple;
@@ -99,6 +100,8 @@ public class TCBlockRegistry {
 	public static final BlockTropicraftFlower flowers = new BlockTropicraftFlower(TCNames.flowerIndices);
 	public static final BlockTropicraftFlowerPot flowerPot = new BlockTropicraftFlowerPot();
 	
+	public static final BlockCoconut coconut = new BlockCoconut();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -140,6 +143,7 @@ public class TCBlockRegistry {
 		registerBlock(rainStopper, TCNames.rainStopper);
 		registerMultiBlock(flowers, TCNames.flower, TCNames.flowerIndices);
 		registerBlock(flowerPot, TCNames.flowerPot);
+		registerBlock(coconut, TCNames.coconut);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
