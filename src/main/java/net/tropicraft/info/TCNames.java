@@ -104,4 +104,5 @@ public class TCNames {
 	public static final String fertilizer = "fertilizer";
 	public static final String coconut = "coconut";
 	public static final String coconutBomb = "coconutBomb";
+	public static final String innerTube = "innerTube";
 }

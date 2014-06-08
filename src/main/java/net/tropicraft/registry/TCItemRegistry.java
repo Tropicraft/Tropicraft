@@ -21,6 +21,7 @@ import net.tropicraft.item.armor.ItemFireArmor;
 import net.tropicraft.item.armor.ItemScaleArmor;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
 import net.tropicraft.item.placeable.ItemChair;
+import net.tropicraft.item.placeable.ItemPoolFloat;
 import net.tropicraft.item.placeable.ItemUmbrella;
 import net.tropicraft.item.tool.ItemTropicraftAxe;
 import net.tropicraft.item.tool.ItemTropicraftHoe;
@@ -100,6 +101,7 @@ public class TCItemRegistry {
 
 	public static final ItemChair chair = new ItemChair();
 	public static final ItemUmbrella umbrella = new ItemUmbrella();
+	public static final ItemPoolFloat innerTube = new ItemPoolFloat();
 
 	public static final ItemFlowerPot flowerPot = new ItemFlowerPot(TCBlockRegistry.flowerPot);
 	public static final ItemFertilizer fertilizer = new ItemFertilizer();
@@ -167,6 +169,7 @@ public class TCItemRegistry {
 		
 		registerItem(chair, TCNames.chair);
 		registerItem(umbrella, TCNames.umbrella);
+		registerItem(innerTube, TCNames.innerTube);
 		
 		registerItem(flowerPot, TCNames.flowerPot);
 		registerItem(fertilizer, TCNames.fertilizer);
