@@ -26,6 +26,7 @@ import net.tropicraft.block.BlockTikiTorch;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftFence;
 import net.tropicraft.block.BlockTropicraftFenceGate;
+import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockTropicraftFlower;
 import net.tropicraft.block.BlockTropicraftFlowerPot;
 import net.tropicraft.block.BlockTropicraftLog;
@@ -100,6 +101,8 @@ public class TCBlockRegistry {
 	public static final BlockTropicraftFlower flowers = new BlockTropicraftFlower(TCNames.flowerIndices);
 	public static final BlockTropicraftFlowerPot flowerPot = new BlockTropicraftFlowerPot();
 	
+	public static final Block firePit = new BlockFirePit();
+	
 	public static final BlockCoconut coconut = new BlockCoconut();
 	
 	/**
@@ -144,6 +147,7 @@ public class TCBlockRegistry {
 		registerMultiBlock(flowers, TCNames.flower, TCNames.flowerIndices);
 		registerBlock(flowerPot, TCNames.flowerPot);
 		registerBlock(coconut, TCNames.coconut);
+		registerBlock(firePit, TCNames.firePit);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

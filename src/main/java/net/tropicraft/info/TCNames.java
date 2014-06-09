@@ -56,6 +56,7 @@ public class TCNames {
 	public static final String[] flowerDisplayNames = {"Commelina Diffusa", "Crocosmia", "Orchid", "Canna", "Anemone", "Orange Anthurium", "Red Anthurium", "Magic Mushroom", "Pathos", "Acai Vine",
         "Croton", "Dracaena", "Fern", "Foilage", "Bromeliad"};
 	public static final String flowerPot = "flowerPot";
+	public static final String firePit = "firePit";
 
 	// Item names
 	public static final String frogLeg = "frogLeg";
