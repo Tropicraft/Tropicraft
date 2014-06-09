@@ -53,8 +53,8 @@ public class TileEntityFirePit extends TileEntity {
         	double speed = 0.15D;
         	
         	EntityRotFX entityfx = pm.spawnNewParticleIconFX(worldObj, ParticleRegistry.smoke, xCoord + rand.nextDouble(), yCoord + 0.2D + rand.nextDouble() * 0.2D, zCoord + rand.nextDouble(), (rand.nextDouble() - rand.nextDouble()) * speed, 0.03D, (rand.nextDouble() - rand.nextDouble()) * speed);
-        	pm.setParticleRandoms(entityfx, true, true);
-        	pm.setParticleFire(entityfx);
+        	ParticleBehaviors.setParticleRandoms(entityfx, true, true);
+        	ParticleBehaviors.setParticleFire(entityfx);
         	entityfx.setMaxAge(100+rand.nextInt(300));
 			entityfx.spawnAsWeatherEffect();
 			pm.particles.add(entityfx);

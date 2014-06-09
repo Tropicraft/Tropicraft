@@ -1,22 +1,11 @@
 package net.tropicraft.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntityFirePit;
-import net.tropicraft.block.tileentity.TileEntityTropicraftFlowerPot;
 import net.tropicraft.info.TCNames;
-import net.tropicraft.info.TCRenderIDs;
-import net.tropicraft.registry.TCBlockRegistry;
-import net.tropicraft.registry.TCItemRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFirePit extends BlockTropicraft implements ITileEntityProvider {
 

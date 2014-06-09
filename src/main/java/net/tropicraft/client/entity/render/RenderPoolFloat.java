@@ -1,11 +1,7 @@
 package net.tropicraft.client.entity.render;
 
 import static org.lwjgl.opengl.GL11.*;
-
-import java.nio.FloatBuffer;
-
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

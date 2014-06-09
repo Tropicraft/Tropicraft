@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -31,7 +30,8 @@ public class RotatingEffectRenderer
 	
     public int layers = 6;
     public World worldObj;
-    public List[] fxLayers = new List[layers];
+    @SuppressWarnings("unchecked")
+	public List<EntityFX>[] fxLayers = new List[layers];
     //public RenderEngine renderer;
     public TextureManager renderer;
     public Random rand = new Random();
@@ -52,7 +52,7 @@ public class RotatingEffectRenderer
 
         for (int var3 = 0; var3 < layers; ++var3)
         {
-            this.fxLayers[var3] = new ArrayList();
+            this.fxLayers[var3] = new ArrayList<EntityFX>();
         }
     }
 
@@ -188,7 +188,8 @@ public class RotatingEffectRenderer
                     GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
                     
                     //nehe way for particles
-                    if (false) {
+                  /* TODO commented out so there are no warnings
+                   *  if (false) {
 	                    GL11.glShadeModel(GL11.GL_SMOOTH);						// Enables Smooth Shading
 	                    GL11.glClearColor(0.0f,0.0f,0.0f,0.0f);					// Black Background
 	                    GL11.glClearDepth(1.0f);							// Depth Buffer Setup
@@ -197,7 +198,7 @@ public class RotatingEffectRenderer
 	                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);					// Type Of Blending To Perform
 	                    GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);			// Really Nice Perspective Calculations
 	                    GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST);
-                    }
+                    }*/
                     
                     GL11.glDisable(GL11.GL_CULL_FACE);
                     //GL11.glRotatef(180.0F - RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);

@@ -7,7 +7,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 public class CommonProxy implements IGuiHandler
 {
     public World mainWorld;
-    private int entityId = 0;
+   //TODO unused private int entityId = 0;
 
     public ExtendedRenderer mod;
 
