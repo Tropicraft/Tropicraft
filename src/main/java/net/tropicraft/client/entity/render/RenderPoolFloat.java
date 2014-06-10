@@ -37,6 +37,9 @@ public class RenderPoolFloat extends Render {
 		glTranslated(x, y + 0.3, z);
 		glRotated(90.0F, 1.0F, 0.0F, 0.0F);
 		glDisable(GL_CULL_FACE);
+	//	glDepthFunc(GL_LEQUAL);
+	//	glEnable(GL_ALPHA_TEST);
+	//	glAlphaFunc(GL_GREATER, 10);
 	//	glDisable(GL_DEPTH_TEST);
 
 		// Radius for a torus is a follows:
@@ -53,14 +56,16 @@ public class RenderPoolFloat extends Render {
 			this.compileDisplayList(1);
 		}
 
-	//	glEnable(GL_BLEND);
-	//	glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR);
+	/*	glEnable(GL_BLEND);
+		glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_DST_COLOR);*/
 		glColor4f(red, green, blue, alpha);
 		glCallList(this.displayList);
 /*		glBlendFunc(GL_ONE, GL_SRC_ALPHA);
 		glColor4f(0.0F, 0.5F, 0.5F, 1.0F);
 		glCallList(this.displayList);*/
 
+	//	glAlphaFunc(GL_GREATER, 0.1F);
+	//	glDepthFunc(GL_EQUAL);
 	//	glEnable(GL_DEPTH_TEST);
 	//	glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);

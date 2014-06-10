@@ -23,6 +23,11 @@ import net.tropicraft.item.armor.ItemTropicraftArmor;
 import net.tropicraft.item.placeable.ItemChair;
 import net.tropicraft.item.placeable.ItemPoolFloat;
 import net.tropicraft.item.placeable.ItemUmbrella;
+import net.tropicraft.item.scuba.ItemScubaChestplate;
+import net.tropicraft.item.scuba.ItemScubaFlippers;
+import net.tropicraft.item.scuba.ItemScubaGear;
+import net.tropicraft.item.scuba.ItemScubaHelmet;
+import net.tropicraft.item.scuba.ItemScubaLeggings;
 import net.tropicraft.item.tool.ItemTropicraftAxe;
 import net.tropicraft.item.tool.ItemTropicraftHoe;
 import net.tropicraft.item.tool.ItemTropicraftPickaxe;
@@ -107,6 +112,20 @@ public class TCItemRegistry {
 	public static final ItemFertilizer fertilizer = new ItemFertilizer();
 	
 //TODO	public static final ItemTropicraft coconutBomb = new ItemCoconutBomb();
+	
+	public static final ArmorMaterial materialDrySuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
+	public static final ItemTropicraftArmor dryFlippers = new ItemScubaFlippers(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 3);
+	public static final ItemTropicraftArmor dryLeggings = new ItemScubaLeggings(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 2);
+	public static final ItemTropicraftArmor dryChestplate = new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
+	public static final ItemTropicraftArmor dryChestplateGear = new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
+	public static final ItemTropicraftArmor dryHelmet = new ItemScubaHelmet(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 0);
+	
+	public static final ArmorMaterial materialWetSuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
+	public static final ItemTropicraftArmor wetFlippers = new ItemScubaFlippers(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 3);
+	public static final ItemTropicraftArmor wetLeggings = new ItemScubaLeggings(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 2);
+	public static final ItemTropicraftArmor wetChestplate = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
+	public static final ItemTropicraftArmor wetChestplateGear = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
+	public static final ItemTropicraftArmor wetHelmet = new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 0);
 
 	/**
 	 * Register all the items
@@ -173,6 +192,19 @@ public class TCItemRegistry {
 		
 		registerItem(flowerPot, TCNames.flowerPot);
 		registerItem(fertilizer, TCNames.fertilizer);
+		
+		registerItem(dryFlippers, TCNames.dryFlippers);
+		registerItem(dryLeggings, TCNames.dryLeggings);
+		registerItem(dryChestplate, TCNames.dryChestplate);
+		registerItem(dryChestplateGear, TCNames.dryChestplateGear);
+		registerItem(dryHelmet, TCNames.dryHelmet);
+		
+		registerItem(wetFlippers, TCNames.wetFlippers);
+		registerItem(wetLeggings, TCNames.wetLeggings);
+		registerItem(wetChestplate, TCNames.wetChestplate);
+		registerItem(wetChestplateGear, TCNames.wetChestplateGear);
+		registerItem(wetHelmet, TCNames.wetHelmet);
+		
 	}
 	
 	/**

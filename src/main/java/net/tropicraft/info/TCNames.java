@@ -106,4 +106,17 @@ public class TCNames {
 	public static final String coconut = "coconut";
 	public static final String coconutBomb = "coconutBomb";
 	public static final String innerTube = "innerTube";
+	
+	// Scuba
+	public static final String dryFlippers = "dryFlippers";
+	public static final String dryLeggings = "dryLeggings";
+	public static final String dryChestplate = "dryChestplate";
+	public static final String dryHelmet = "dryHelmet";
+	public static final String dryChestplateGear = "dryChestplateGear";
+	
+	public static final String wetFlippers = "wetFlippers";
+	public static final String wetLeggings = "wetLeggings";
+	public static final String wetChestplate = "wetChestplate";
+	public static final String wetHelmet = "wetHelmet";
+	public static final String wetChestplateGear = "wetChestplateGear";
 }
