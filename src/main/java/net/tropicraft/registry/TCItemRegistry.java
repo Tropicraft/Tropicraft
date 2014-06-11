@@ -24,6 +24,7 @@ import net.tropicraft.item.placeable.ItemChair;
 import net.tropicraft.item.placeable.ItemPoolFloat;
 import net.tropicraft.item.placeable.ItemUmbrella;
 import net.tropicraft.item.scuba.ItemScubaChestplate;
+import net.tropicraft.item.scuba.ItemScubaChestplateGear;
 import net.tropicraft.item.scuba.ItemScubaFlippers;
 import net.tropicraft.item.scuba.ItemScubaGear;
 import net.tropicraft.item.scuba.ItemScubaHelmet;
@@ -118,14 +119,14 @@ public class TCItemRegistry {
 	public static final ItemTropicraftArmor dryFlippers = new ItemScubaFlippers(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 3);
 	public static final ItemTropicraftArmor dryLeggings = new ItemScubaLeggings(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 2);
 	public static final ItemTropicraftArmor dryChestplate = new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
-	public static final ItemTropicraftArmor dryChestplateGear = new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
+	public static final ItemTropicraftArmor dryChestplateGear = new ItemScubaChestplateGear(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
 	public static final ItemTropicraftArmor dryHelmet = new ItemScubaHelmet(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 0);
 	
 	public static final ArmorMaterial materialWetSuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
 	public static final ItemTropicraftArmor wetFlippers = new ItemScubaFlippers(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 3);
 	public static final ItemTropicraftArmor wetLeggings = new ItemScubaLeggings(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 2);
 	public static final ItemTropicraftArmor wetChestplate = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
-	public static final ItemTropicraftArmor wetChestplateGear = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
+	public static final ItemTropicraftArmor wetChestplateGear = new ItemScubaChestplateGear(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
 	public static final ItemTropicraftArmor wetHelmet = new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 0);
 	
 	public static final ItemScubaTank scubaTank = new ItemScubaTank();

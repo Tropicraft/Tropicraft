@@ -152,6 +152,16 @@ item.tropicraft:fertilizer.name=Tropics Fertilizer
 item.tropicraft:coconut.name=Coconut
 item.tropicraft:coconutBomb.name=Coconut Bomb
 item.tropicraft:scubaTank.name=Scuba Tank
+item.tropicraft:dryHelmet.name=Dry Suit Headgear
+item.tropicraft:wetHelmet.name=Wet Suit Headgear
+item.tropicraft:dryLeggings.name=Dry Suit Leggings
+item.tropicraft:wetLeggings.name=Wet Suit Leggings
+item.tropicraft:dryChestplate.name=Dry Suit Chestpiece
+item.tropicraft:wetChestplate.name=Wet Suit Chestpiece
+item.tropicraft:dryChestplateGear.name=Dry Suit Chestpiece w/Gear
+item.tropicraft:wetChestplateGear.name=Wet Suit Chestpiece w/Gear
+item.tropicraft:dryFlippers.name=Dry Suit Flippers
+item.tropicraft:wetFlippers.name=Wet Suit Flippers
 
 #Entity localizations
 entity.tropicraft:beachChair.name=Beach Chair
@@ -163,3 +173,9 @@ gui.tropicraft:airType=Air Type
 gui.tropicraft:maxAirCapacity=Max Air Capacity
 gui.tropicraft:airRemaining=Air Remaining
 gui.tropicraft:useEfficiency=Use Efficiency
+gui.tropicraft:numTanks=# Tanks
+gui.tropicraft:suitType=Suit Type
+gui.tropicraft:temperature=Temp
+gui.tropicraft:currentDepth=Current Depth
+gui.tropicraft:maxDepth=Max Depth
+gui.tropicraft:timeRemaining=Time Remaining

@@ -17,7 +17,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.util.ColorHelper;
-import net.tropicraft.util.TropicraftUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -556,7 +555,7 @@ public class EntityChair extends Entity {
 	}
 
 	public void setColor(float red, float green, float blue) {
-		this.dataWatcher.updateObject(DATAWATCHER_COLOR, Integer.valueOf(TropicraftUtils.getColor(red, green, blue)));
+		this.dataWatcher.updateObject(DATAWATCHER_COLOR, Integer.valueOf(ColorHelper.getColor(red, green, blue)));
 	}
 
 	public int getColor() {

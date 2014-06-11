@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpecialArmor {
 
@@ -14,6 +15,7 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 	public ItemScubaGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, int armorType) {
 		super(material, renderIndex, armorType);
 		this.scubaMaterial = scubaMaterial;
+		this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
 	}
 	
 	/**
@@ -33,8 +35,8 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 	
 	public static enum ScubaMaterial {
 		
-		DRY(0, "dry"),
-		WET(35, "wet");
+		DRY(0, "dry", "Dry"),
+		WET(35, "wet", "Wet");
 		
 		/** The y-level that a player can safely dive to while wearing this gear material */
 		private int maxDepth;
@@ -42,9 +44,13 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 		/** The image prefix of this material type */
 		private String imagePrefix;
 		
-		private ScubaMaterial(int maxDepth, String imagePrefix) {
+		/** The name to be displayed when figuring out what type of gear this is */
+		private String displayName;
+		
+		private ScubaMaterial(int maxDepth, String imagePrefix, String displayName) {
 			this.maxDepth = maxDepth;
 			this.imagePrefix = imagePrefix;
+			this.displayName = displayName;
 		}
 		
 		public int getMaxDepth() {
@@ -53,6 +59,10 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 		
 		public String getImagePrefix() {
 			return this.imagePrefix;
+		}
+		
+		public String getDisplayName() {
+			return this.displayName;
 		}
 	}
 	

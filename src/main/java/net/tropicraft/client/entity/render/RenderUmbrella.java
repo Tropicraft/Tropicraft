@@ -10,6 +10,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.client.entity.model.ModelUmbrella;
 import net.tropicraft.entity.placeable.EntityUmbrella;
+import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftUtils;
 
 import org.lwjgl.BufferUtils;
@@ -43,9 +44,9 @@ public class RenderUmbrella extends Render {
 		GL11.glScalef(f4, f4, f4);
 		GL11.glScalef(1.0F / f4, 1.0F / f4, 1.0F / f4);
 
-		red = TropicraftUtils.getRed(entityUmbrella.getColor());
-		green = TropicraftUtils.getGreen(entityUmbrella.getColor());
-		blue = TropicraftUtils.getBlue(entityUmbrella.getColor());
+		red = ColorHelper.getRed(entityUmbrella.getColor());
+		green = ColorHelper.getGreen(entityUmbrella.getColor());
+		blue = ColorHelper.getBlue(entityUmbrella.getColor());
 
 		// Draw arms of umbrella
 		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("umbrellaLayer"));

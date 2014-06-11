@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.client.entity.model.ModelChair;
 import net.tropicraft.entity.placeable.EntityChair;
+import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftUtils;
 
 import org.lwjgl.BufferUtils;
@@ -28,9 +29,9 @@ public class RenderChair extends Render {
 	public void renderChair(EntityChair entitychair, double d, double d1, double d2, float f, float f1) {
 		GL11.glPushMatrix();
 
-		red = TropicraftUtils.getRed(entitychair.getColor());
-		green = TropicraftUtils.getGreen(entitychair.getColor());
-		blue = TropicraftUtils.getBlue(entitychair.getColor());
+		red = ColorHelper.getRed(entitychair.getColor());
+		green = ColorHelper.getGreen(entitychair.getColor());
+		blue = ColorHelper.getBlue(entitychair.getColor());
 
 		GL11.glTranslatef((float) d, (float) d1 + .3125F, (float) d2);
 		GL11.glRotatef(f + (180 - f)*2, 0.0F, 1.0F, 0.0F);

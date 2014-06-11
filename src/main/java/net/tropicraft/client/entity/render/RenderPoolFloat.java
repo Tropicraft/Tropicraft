@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.entity.pool.EntityPoolFloat;
-import net.tropicraft.util.TropicraftUtils;
+import net.tropicraft.util.ColorHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,9 +29,9 @@ public class RenderPoolFloat extends Render {
 	}
 
 	private void renderPoolFloat(EntityPoolFloat entity, double x, double y, double z, float var8, float var9) {
-		red = TropicraftUtils.getRed(entity.getColor());
-		green = TropicraftUtils.getGreen(entity.getColor());
-		blue = TropicraftUtils.getBlue(entity.getColor());
+		red = ColorHelper.getRed(entity.getColor());
+		green = ColorHelper.getGreen(entity.getColor());
+		blue = ColorHelper.getBlue(entity.getColor());
 
 		glPushMatrix();
 		glTranslated(x, y + 0.3, z);
