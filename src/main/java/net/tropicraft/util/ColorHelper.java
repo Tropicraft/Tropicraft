@@ -20,6 +20,9 @@ public class ColorHelper {
 	
 	/** Value used in entityInit methods as a 'default' value */
 	public static int DEFAULT_VALUE;
+	
+	/** The character used in mc to color code chat */
+	public static final char COLOR_CHARACTER = '\u00a7';
 
 	public static void init() {
 		// Get all the existing wool colors into the color array
@@ -33,6 +36,14 @@ public class ColorHelper {
 		for (int i = 0; i < colorValues.size(); i++) {
 			woolValues.put(Integer.valueOf(ItemDye.field_150922_c[i]), i);
 		}
+	}
+	
+	/**
+	 * @param val Color value 0-15
+	 * @return Returns a formatted String for a minecraft color
+	 */
+	public static String color(int val) {
+		return new StringBuilder().append(COLOR_CHARACTER).append(val).toString();
 	}
 	
 	/**

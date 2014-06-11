@@ -151,8 +151,15 @@ item.tropicraft:flowerPot.name=Bamboo Flower Pot
 item.tropicraft:fertilizer.name=Tropics Fertilizer
 item.tropicraft:coconut.name=Coconut
 item.tropicraft:coconutBomb.name=Coconut Bomb
+item.tropicraft:scubaTank.name=Scuba Tank
 
 #Entity localizations
 entity.tropicraft:beachChair.name=Beach Chair
 entity.tropicraft:umbrella.name=Umbrella
 entity.tropicraft:coconutBomb.name=Coconut Bomb
+
+#Gui localizations
+gui.tropicraft:airType=Air Type
+gui.tropicraft:maxAirCapacity=Max Air Capacity
+gui.tropicraft:airRemaining=Air Remaining
+gui.tropicraft:useEfficiency=Use Efficiency

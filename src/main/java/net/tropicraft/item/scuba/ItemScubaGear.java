@@ -2,6 +2,7 @@ package net.tropicraft.item.scuba;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
@@ -13,6 +14,18 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 	public ItemScubaGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, int armorType) {
 		super(material, renderIndex, armorType);
 		this.scubaMaterial = scubaMaterial;
+	}
+	
+	/**
+	 * Retrives an existing nbt tag compound or creates a new one if it is null
+	 * @param stack
+	 * @return
+	 */
+	public NBTTagCompound getTagCompound(ItemStack stack) {
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		
+		return stack.getTagCompound();
 	}
 	
 	@Override
@@ -45,8 +58,8 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 	
 	public static enum AirType {
 		
-		REGULAR(3200, 0.005F),
-		TRIMIX(3200, 0.0005F);
+		REGULAR(3200, 0.005F, "Regular"),
+		TRIMIX(3200, 0.0005F, "Trimix");
 		
 		/** The max amount of psi one tank of this air type can hold */
 		private int maxCapacity;
@@ -54,9 +67,13 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 		/** The average amount of air that escapes one tank of this air per tick */
 		private float usageRate;
 		
-		private AirType(int maxCapacity, float usageRate) {
+		/** The name that shows up in the GUI when this air type is used */
+		private String displayName;
+		
+		private AirType(int maxCapacity, float usageRate, String displayName) {
 			this.maxCapacity = maxCapacity;
 			this.usageRate = usageRate;
+			this.displayName = displayName;
 		}
 		
 		public int getMaxCapacity() {
@@ -65,6 +82,10 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 		
 		public float getUsageRate() {
 			return this.usageRate;
+		}
+		
+		public String getDisplayName() {
+			return this.displayName;
 		}
 	}
 

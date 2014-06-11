@@ -119,4 +119,5 @@ public class TCNames {
 	public static final String wetChestplate = "wetChestplate";
 	public static final String wetHelmet = "wetHelmet";
 	public static final String wetChestplateGear = "wetChestplateGear";
+	public static final String scubaTank = "scubaTank";
 }

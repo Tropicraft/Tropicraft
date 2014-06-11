@@ -28,6 +28,7 @@ import net.tropicraft.item.scuba.ItemScubaFlippers;
 import net.tropicraft.item.scuba.ItemScubaGear;
 import net.tropicraft.item.scuba.ItemScubaHelmet;
 import net.tropicraft.item.scuba.ItemScubaLeggings;
+import net.tropicraft.item.scuba.ItemScubaTank;
 import net.tropicraft.item.tool.ItemTropicraftAxe;
 import net.tropicraft.item.tool.ItemTropicraftHoe;
 import net.tropicraft.item.tool.ItemTropicraftPickaxe;
@@ -126,6 +127,8 @@ public class TCItemRegistry {
 	public static final ItemTropicraftArmor wetChestplate = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
 	public static final ItemTropicraftArmor wetChestplateGear = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
 	public static final ItemTropicraftArmor wetHelmet = new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 0);
+	
+	public static final ItemScubaTank scubaTank = new ItemScubaTank();
 
 	/**
 	 * Register all the items
@@ -204,6 +207,8 @@ public class TCItemRegistry {
 		registerItem(wetChestplate, TCNames.wetChestplate);
 		registerItem(wetChestplateGear, TCNames.wetChestplateGear);
 		registerItem(wetHelmet, TCNames.wetHelmet);
+		
+		registerItem(scubaTank, TCNames.scubaTank);
 		
 	}
 	
