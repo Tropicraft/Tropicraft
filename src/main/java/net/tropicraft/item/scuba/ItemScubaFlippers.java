@@ -1,6 +1,5 @@
 package net.tropicraft.item.scuba;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

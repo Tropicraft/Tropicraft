@@ -4,7 +4,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.tropicraft.entity.underdasea.EntitySeahorse;
 
 public class ItemWaterWand extends ItemTropicraft {
 
@@ -23,7 +22,7 @@ public class ItemWaterWand extends ItemTropicraft {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
 		double inc = Math.PI/12;
 		if(!world.isRemote){
-		/*	for(double lat = 0; lat < 2 * Math.PI; lat += inc){
+			for(double lat = 0; lat < 2 * Math.PI; lat += inc){
 				for( double lng = 0; lng < 2 * Math.PI; lng += inc){
 					for(double len = 1; len < 3; len += 0.5D){
 						int x1 = (int)(Math.cos(lat) * len);
@@ -35,14 +34,7 @@ public class ItemWaterWand extends ItemTropicraft {
 					}
 				}
 			}
-			player.setItemInUse(itemstack, 1);*/
-
-			if (!world.isRemote) {
-				EntitySeahorse seahorse = new EntitySeahorse(world, world.rand.nextInt(6));
-				seahorse.setLocationAndAngles(player.posX, player.posY - 2, player.posZ, 0, 0);
-				world.spawnEntityInWorld(seahorse);
-			}
-
+			player.setItemInUse(itemstack, 1);
 
 		}
 

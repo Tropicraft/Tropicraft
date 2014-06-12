@@ -23,6 +23,8 @@ import net.tropicraft.item.armor.ItemTropicraftArmor;
 import net.tropicraft.item.placeable.ItemChair;
 import net.tropicraft.item.placeable.ItemPoolFloat;
 import net.tropicraft.item.placeable.ItemUmbrella;
+import net.tropicraft.item.scuba.ItemBCD;
+import net.tropicraft.item.scuba.ItemDiveComputer;
 import net.tropicraft.item.scuba.ItemScubaChestplate;
 import net.tropicraft.item.scuba.ItemScubaChestplateGear;
 import net.tropicraft.item.scuba.ItemScubaFlippers;
@@ -130,6 +132,8 @@ public class TCItemRegistry {
 	public static final ItemTropicraftArmor wetHelmet = new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 0);
 	
 	public static final ItemScubaTank scubaTank = new ItemScubaTank();
+	public static final ItemDiveComputer diveComputer = new ItemDiveComputer();
+	public static final ItemBCD bcd = new ItemBCD();
 
 	/**
 	 * Register all the items
@@ -210,6 +214,8 @@ public class TCItemRegistry {
 		registerItem(wetHelmet, TCNames.wetHelmet);
 		
 		registerItem(scubaTank, TCNames.scubaTank);
+		registerItem(diveComputer, TCNames.diveComputer);
+		registerItem(bcd, TCNames.bcd);
 		
 	}
 	

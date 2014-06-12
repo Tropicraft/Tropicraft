@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.util.TropicraftUtils;
 
 import org.lwjgl.opengl.GL11;
@@ -42,9 +43,13 @@ public class ItemScubaHelmet extends ItemScubaGear {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks, boolean hasScreen, int mouseX, int mouseY) {
-		// Check to see if player inventory contains bcd
+		// Check to see if player inventory contains dive computer
+		
+		if (!player.inventory.hasItem(TCItemRegistry.diveComputer))
+			return;
 
 		// TODO http://www.dansdiveshop.ca/dstore/images/cobalt.jpg
+		// TODO show time of day / cool compass type thing?
 
 		int airRemaining;
 

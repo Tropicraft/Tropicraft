@@ -120,4 +120,6 @@ public class TCNames {
 	public static final String wetHelmet = "wetHelmet";
 	public static final String wetChestplateGear = "wetChestplateGear";
 	public static final String scubaTank = "scubaTank";
+	public static final String diveComputer = "diveComputer";
+	public static final String bcd = "bcd";
 }

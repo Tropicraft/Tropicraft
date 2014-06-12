@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.tropicraft.util.ColorHelper;
@@ -16,12 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemScubaChestplateGear extends ItemScubaGear {
-
-	/** Number of ticks between updates */
-	public static final int UPDATE_RATE = 20;
-
-	/** Number of ticks until the next update */
-	public int ticksUntilUpdate = UPDATE_RATE;
 
 	public ItemScubaChestplateGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, int armorType) {
 		super(material, scubaMaterial, renderIndex, armorType);
@@ -83,83 +76,22 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player,
 			ItemStack armor, DamageSource source, double damage, int slot) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public void damageArmor(EntityLivingBase entity, ItemStack stack,
-			DamageSource source, int damage, int slot) {
-		// TODO Auto-generated method stub
+	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
 	}
 
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack itemstack) {
-		if (!isFullyUnderwater(world, player))
-			return;
-		
-		if (!armorCheck(world, player, itemstack))
-			return;
 
-		if (world.getWorldTime() % UPDATE_RATE == 0) {
-			player.setAir(300);
-			
-			int air = getTagCompound(itemstack).getInteger("AirContained");
-			AirType airType = itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
-
-			getTagCompound(itemstack).setInteger("AirContained", MathHelper.floor_float(air - airType.getUsageRate()));
-
-			int currentDepth = MathHelper.floor_double(player.posY);
-
-			if (currentDepth < getTagCompound(itemstack).getInteger("MaxDepth") || getTagCompound(itemstack).getInteger("MaxDepth") == 0)
-				itemstack.getTagCompound().setInteger("MaxDepth", currentDepth);
-
-			itemstack.getTagCompound().setInteger("CurrentDepth", currentDepth);			
-		}
-	}
-	
-	private boolean isFullyUnderwater(World world, EntityPlayer player) {
-		int x = MathHelper.ceiling_double_int(player.posX);
-		int y = MathHelper.ceiling_double_int(player.posY + player.height);
-		int z = MathHelper.ceiling_double_int(player.posZ);
-		
-		return world.getBlock(x, y, z).getMaterial().isLiquid();
-	}
-	
-	private boolean armorCheck(World world, EntityPlayer player, ItemStack itemstack) {
-		ItemStack helmetStack = player.getEquipmentInSlot(4);
-		ItemStack chestplateStack = itemstack;
-		ItemStack leggingsStack = player.getEquipmentInSlot(2);
-		ItemStack flippersStack = player.getEquipmentInSlot(1);
-
-		if (helmetStack == null || chestplateStack == null || leggingsStack == null || flippersStack == null)
-			return false;
-
-		if (!(helmetStack.getItem() instanceof ItemScubaHelmet))
-			return false;
-
-		if (!(leggingsStack.getItem() instanceof ItemScubaLeggings))
-			return false;
-
-		if (!(flippersStack.getItem() instanceof ItemScubaFlippers))
-			return false;
-		
-		ItemScubaHelmet helmet = (ItemScubaHelmet)helmetStack.getItem();
-		ItemScubaLeggings leggings = (ItemScubaLeggings)leggingsStack.getItem();
-		ItemScubaFlippers flippers = (ItemScubaFlippers)flippersStack.getItem();
-		
-		if (helmet.scubaMaterial == leggings.scubaMaterial && leggings.scubaMaterial == flippers.scubaMaterial
-				&& flippers.scubaMaterial == this.scubaMaterial)
-			return true;
-		
-		return false;
 	}
 
 }

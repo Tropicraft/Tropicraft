@@ -162,6 +162,8 @@ item.tropicraft:dryChestplateGear.name=Dry Suit Chestpiece w/Gear
 item.tropicraft:wetChestplateGear.name=Wet Suit Chestpiece w/Gear
 item.tropicraft:dryFlippers.name=Dry Suit Flippers
 item.tropicraft:wetFlippers.name=Wet Suit Flippers
+item.tropicraft:diveComputer.name=Dive Computer
+item.tropicraft:bcd.name=Buoyancy Compensator
 
 #Entity localizations
 entity.tropicraft:beachChair.name=Beach Chair
