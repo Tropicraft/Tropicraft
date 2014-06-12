@@ -28,7 +28,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean par4) {
 		AirType airType = itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
-		String airRemaining = getTagCompound(itemstack).getInteger("AirContained") + " psi";
+		String airRemaining = getTagCompound(itemstack).getFloat("AirContained") + " psi";
 		String numTanks = String.valueOf(itemstack.getItemDamage() % 2 != 0 ? 2 : 1);
 		String suitType = this.scubaMaterial.getDisplayName();
 
@@ -57,19 +57,19 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		ItemStack singleTankRegular = new ItemStack(item, 1, 0);
-		getTagCompound(singleTankRegular).setInteger("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
+		getTagCompound(singleTankRegular).setFloat("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
 		list.add(singleTankRegular);
 
 		ItemStack doubleTankRegular = new ItemStack(item, 1, 1);
-		getTagCompound(doubleTankRegular).setInteger("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity() * 2);
+		getTagCompound(doubleTankRegular).setFloat("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity() * 2);
 		list.add(doubleTankRegular);
 
 		ItemStack singleTankTrimix = new ItemStack(item, 1, 2);
-		getTagCompound(singleTankTrimix).setInteger("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
+		getTagCompound(singleTankTrimix).setFloat("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
 		list.add(singleTankTrimix);
 
 		ItemStack doubleTankTrimix = new ItemStack(item, 1, 3);
-		getTagCompound(doubleTankTrimix).setInteger("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity() * 2);
+		getTagCompound(doubleTankTrimix).setFloat("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity() * 2);
 		list.add(doubleTankTrimix);
 	}
 

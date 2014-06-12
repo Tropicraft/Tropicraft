@@ -1,12 +1,15 @@
 package net.tropicraft.event;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.common.eventhandler.Event.Result;
@@ -37,5 +40,20 @@ public class TCItemEvents {
 				event.setResult(Result.ALLOW);
 			}
 		}
+	}
+	
+	@SubscribeEvent
+	public void changeTropicsWaterFogDensity(EntityViewRenderEvent.FogDensity event) {
+	    int x = MathHelper.floor_double(event.entity.posX);
+	    int y = MathHelper.ceiling_double_int(event.entity.posY + event.entity.height - 0.5F);
+	    int z = MathHelper.floor_double(event.entity.posZ);
+	    
+	  //  System.out.println("hi");
+	    
+	    if (event.block.getMaterial().isLiquid()) {
+	        event.density = 0.0005F;
+	        event.setCanceled(true);
+	       // System.out.println("3hi");
+	    }
 	}
 }

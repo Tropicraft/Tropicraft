@@ -2,14 +2,14 @@ package net.tropicraft.item.scuba;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.scuba.ItemScubaGear.AirType;
 
-public class ItemDiveComputer extends ItemTropicraft {
+public class ItemDiveComputer extends ItemMap {
 
 	/** Number of ticks between updates */
 	public static final int UPDATE_RATE = 20;
@@ -26,6 +26,9 @@ public class ItemDiveComputer extends ItemTropicraft {
      * update it's contents.
      */
     public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5) {
+        if (world.isRemote)
+            return;
+        
     	EntityPlayer player;
     	
     	if (entity instanceof EntityPlayer)
@@ -44,21 +47,24 @@ public class ItemDiveComputer extends ItemTropicraft {
 		if (!armorCheck(world, player, helmetStack, chestplateStack, leggingsStack, flippersStack))
 			return;
 
-		if (world.getWorldTime() % UPDATE_RATE == 0) {
+		if (ticksUntilUpdate <= 0) {
 			player.setAir(300);
 			
-			int air = getTagCompound(chestplateStack).getInteger("AirContained");
+			float air = getTagCompound(chestplateStack).getFloat("AirContained");
 			AirType airType = chestplateStack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
 
-			chestplateStack.getTagCompound().setInteger("AirContained", MathHelper.floor_float(air - airType.getUsageRate()));
+			chestplateStack.getTagCompound().setFloat("AirContained", air - airType.getUsageRate());
 
 			int currentDepth = MathHelper.floor_double(player.posY);
 
 			if (currentDepth < chestplateStack.getTagCompound().getInteger("MaxDepth") || chestplateStack.getTagCompound().getInteger("MaxDepth") == 0)
 				chestplateStack.getTagCompound().setInteger("MaxDepth", currentDepth);
 
-			chestplateStack.getTagCompound().setInteger("CurrentDepth", currentDepth);			
-		}
+			chestplateStack.getTagCompound().setInteger("CurrentDepth", currentDepth);
+			
+			ticksUntilUpdate = UPDATE_RATE;
+		} else
+		    ticksUntilUpdate--;
     }
     
 	/**
@@ -75,7 +81,7 @@ public class ItemDiveComputer extends ItemTropicraft {
     
     private boolean isFullyUnderwater(World world, EntityPlayer player) {
 		int x = MathHelper.ceiling_double_int(player.posX);
-		int y = MathHelper.ceiling_double_int(player.posY + player.height);
+		int y = MathHelper.ceiling_double_int(player.posY + player.height - 0.5F);
 		int z = MathHelper.ceiling_double_int(player.posZ);
 		
 		return world.getBlock(x, y, z).getMaterial().isLiquid();

@@ -69,12 +69,12 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpec
 	public static enum AirType {
 		
 		REGULAR(3200, 0.005F, "Regular"),
-		TRIMIX(3200, 0.0005F, "Trimix");
+		TRIMIX(3200, 1.185F, "Trimix");
 		
 		/** The max amount of psi one tank of this air type can hold */
 		private int maxCapacity;
 		
-		/** The average amount of air that escapes one tank of this air per tick */
+		/** The average amount of air that escapes one tank of this air per second */
 		private float usageRate;
 		
 		/** The name that shows up in the GUI when this air type is used */

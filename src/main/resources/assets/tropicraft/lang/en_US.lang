@@ -180,4 +180,4 @@ gui.tropicraft:suitType=Suit Type
 gui.tropicraft:temperature=Temp
 gui.tropicraft:currentDepth=Current Depth
 gui.tropicraft:maxDepth=Max Depth
-gui.tropicraft:timeRemaining=Time Remaining
+gui.tropicraft:timeRemaining=Gas Time

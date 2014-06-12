@@ -53,7 +53,7 @@ public class ItemScubaFlippers extends ItemScubaGear {
 	
 	private boolean isFullyUnderwater(World world, EntityPlayer player) {
 		int x = MathHelper.ceiling_double_int(player.posX);
-		int y = MathHelper.ceiling_double_int(player.posY + player.height);
+		int y = MathHelper.ceiling_double_int(player.posY + player.height - 0.5F);
 		int z = MathHelper.ceiling_double_int(player.posZ);
 		
 		return world.getBlock(x, y, z).getMaterial().isLiquid();
