@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.item.scuba.ItemScubaGear.AirType;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class ItemDiveComputer extends ItemMap {
 
@@ -18,7 +19,7 @@ public class ItemDiveComputer extends ItemMap {
 	public int ticksUntilUpdate = UPDATE_RATE;
 	
 	public ItemDiveComputer() {
-		
+		this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
 	}
 	
     /**

@@ -179,5 +179,5 @@ gui.tropicraft:numTanks=# Tanks
 gui.tropicraft:suitType=Suit Type
 gui.tropicraft:temperature=Temp
 gui.tropicraft:currentDepth=Current Depth
-gui.tropicraft:maxDepth=Max Depth
+gui.tropicraft:maxDepth=Max
 gui.tropicraft:timeRemaining=Gas Time
