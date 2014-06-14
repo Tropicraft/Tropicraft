@@ -19,14 +19,15 @@ import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoconut;
 import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
+import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockPineapple;
+import net.tropicraft.block.BlockPortalWall;
 import net.tropicraft.block.BlockRainStopper;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTikiTorch;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.BlockTropicraftFence;
 import net.tropicraft.block.BlockTropicraftFenceGate;
-import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockTropicraftFlower;
 import net.tropicraft.block.BlockTropicraftFlowerPot;
 import net.tropicraft.block.BlockTropicraftLog;
@@ -36,6 +37,7 @@ import net.tropicraft.block.BlockTropicraftPlank;
 import net.tropicraft.block.BlockTropicraftSapling;
 import net.tropicraft.block.BlockTropicraftSlab;
 import net.tropicraft.block.BlockTropicraftStairs;
+import net.tropicraft.block.BlockTropicsPortal;
 import net.tropicraft.block.BlockTropicsWater;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
@@ -104,6 +106,9 @@ public class TCBlockRegistry {
 	public static final Block firePit = new BlockFirePit();
 	
 	public static final BlockCoconut coconut = new BlockCoconut();
+	
+	public static final BlockPortalWall tropicsPortalWall = new BlockPortalWall();
+	public static final BlockTropicsPortal tropicsPortal = new BlockTropicsPortal(TCFluidRegistry.tropicsPortal, Material.water);
 	
 	/**
 	 * Register all the blocks
