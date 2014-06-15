@@ -4,12 +4,14 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.client.entity.model.ModelSeahorse;
 import net.tropicraft.client.entity.render.RenderChair;
 import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeahorse;
 import net.tropicraft.client.entity.render.RenderUmbrella;
+import net.tropicraft.client.tileentity.TileEntityAirCompressorRenderer;
 import net.tropicraft.client.tileentity.TileEntityBambooChestRenderer;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
@@ -29,6 +31,7 @@ public class TCRenderRegistry {
 	
 	public static void initTileEntityRenderers() {
 	    registerTileEntityRenderer(TileEntityBambooChest.class, new TileEntityBambooChestRenderer());
+	    registerTileEntityRenderer(TileEntityAirCompressor.class, new TileEntityAirCompressorRenderer());
 	}
 	
 	private static void registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, 

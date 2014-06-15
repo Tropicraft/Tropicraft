@@ -1,212 +1,165 @@
 package net.tropicraft.block.tileentity;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
+import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
+import net.tropicraft.item.scuba.ItemScubaGear.AirType;
+import net.tropicraft.item.scuba.ItemScubaTank;
+import net.tropicraft.util.TropicraftUtils;
 
-public class TileEntityAirCompressor extends TileEntity implements ISidedInventory {
+public class TileEntityAirCompressor extends TileEntity {
 
-	public int timeCompressed;
-	
-	public int timeRemaining;
-	
-	/** index 0 is the power source, the rest are the item(s) being filled */
-	private ItemStack[] itemStacks = new ItemStack[2];
-	
-    private static final int[] slotsTop = new int[] {0};
-    private static final int[] slotsBottom = new int[] {2, 1};
-    private static final int[] slotsSides = new int[] {1};
-	
-	public TileEntityAirCompressor() {
+    /** Is the compressor currently giving air */
+    public boolean compressing;
+    
+    /** Number of ticks compressed so far */
+    private int ticks;
 
-	}
-	
-	/**
-	 * @return Is the air compressor currently filling something?
-	 */
-	public boolean isFilling() {
-		return this.timeRemaining > 0;
-	}
+    /** Amount of PSI to fill per tick */
+    private static final float fillRate = 0.10F;
 
-	@Override
-	public int getSizeInventory() {
-		return itemStacks.length;
-	}
+    /** The tank that is currently being filled */
+    private ItemStack tank;
 
-	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return itemStacks[slot];
-	}
+    /** Max air capacity of the tank */
+    private float maxCapacity;
 
-	/**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
-	@Override
-    public ItemStack decrStackSize(int slot, int numToRemove) {
-        if (this.itemStacks[slot] != null) {
-            ItemStack itemstack;
-
-            if (this.itemStacks[slot].stackSize <= numToRemove) {
-                itemstack = this.itemStacks[slot];
-                this.itemStacks[slot] = null;
-                return itemstack;
-            } else {
-                itemstack = this.itemStacks[slot].splitStack(numToRemove);
-
-                if (this.itemStacks[slot].stackSize == 0) {
-                    this.itemStacks[slot] = null;
-                }
-
-                return itemstack;
-            }
-        } else {
-            return null;
-        }
+    public TileEntityAirCompressor() {
     }
 
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        if (this.itemStacks[slot] != null) {
-            ItemStack itemstack = this.itemStacks[slot];
-            this.itemStacks[slot] = null;
-            return itemstack;
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        this.compressing = nbt.getBoolean("Compressing");
+        this.ticks = nbt.getInteger("Ticks");
+
+        if (nbt.hasKey("Tank")) {
+            this.tank = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Tank"));
+            maxCapacity = this.tank.getItemDamage() == 1 ? AirType.TRIMIX.getMaxCapacity() : AirType.REGULAR.getMaxCapacity();
         } else {
-            return null;
+            this.tank = null;
         }
     }
 
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
-    public void setInventorySlotContents(int slot, ItemStack itemstack)
-    {
-        this.itemStacks[slot] = itemstack;
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setBoolean("Compressing", compressing);
+        nbt.setInteger("Ticks", ticks);
 
-        if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit())
-        {
-            itemstack.stackSize = this.getInventoryStackLimit();
+        if (this.tank != null) {
+            NBTTagCompound var4 = new NBTTagCompound();
+            this.tank.writeToNBT(var4);
+            nbt.setTag("Tank", var4);
         }
     }
 
+    @Override
+    public void updateEntity() {
+        if (tank == null)
+            return;
+        
+       // System.out.println(compressing);
+        
+        float airContained = getTagCompound(tank).getFloat("AirContained");
 
-	@Override
-	public String getInventoryName() {
-		return StatCollector.translateToLocal("gui.tropicraft:airCompressor");
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-		return true;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 1;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
-	}
-
-	@Override
-	public void openInventory() {
-	}
-
-	@Override
-	public void closeInventory() {
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		return slot == 2 ? false : (slot == 1 ? isItemFuel(itemstack) : true);
-	}
-	
-    public boolean isItemFuel(ItemStack itemstack)
-    {
-        /**
-         * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-         * fuel
-         */
-        return getItemBurnTime(itemstack) > 0;
+        if (compressing && airContained < AirType.REGULAR.getMaxCapacity()) {
+            if (airContained + fillRate >= AirType.REGULAR.getMaxCapacity()) {
+                tank.getTagCompound().setFloat("AirContained", AirType.REGULAR.getMaxCapacity());
+                ticks++;
+                finishCompressing();                    
+            } else {
+                tank.getTagCompound().setFloat("AirContained", airContained + fillRate);
+                ticks++;
+            }
+        }
     }
     
     /**
-     * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-     * fuel
+     * Retrives an existing nbt tag compound or creates a new one if it is null
+     * @param stack
      */
-    public static int getItemBurnTime(ItemStack itemstack)
-    {
-        if (itemstack == null)
-        {
-            return 0;
-        }
-        else
-        {
-            Item item = itemstack.getItem();
+    public NBTTagCompound getTagCompound(ItemStack stack) {
+        if (!stack.hasTagCompound())
+            stack.setTagCompound(new NBTTagCompound());
 
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air)
-            {
-                Block block = Block.getBlockFromItem(item);
-
-                if (block == Blocks.wooden_slab)
-                {
-                    return 150;
-                }
-
-                if (block.getMaterial() == Material.wood)
-                {
-                    return 300;
-                }
-
-                if (block == Blocks.coal_block)
-                {
-                    return 16000;
-                }
-            }
-
-            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item == Items.stick) return 100;
-            if (item == Items.coal) return 1600;
-            if (item == Items.lava_bucket) return 20000;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
-            if (item == Items.blaze_rod) return 2400;
-            return GameRegistry.getFuelValue(itemstack);
-        }
+        return stack.getTagCompound();
+    }
+    
+    
+    /**
+     * Called when you receive a TileEntityData packet for the location this
+     * TileEntity is currently in. On the client, the NetworkManager will always
+     * be the remote server. On the server, it will be whomever is responsible for
+     * sending the packet.
+     *
+     * @param net The NetworkManager the packet originated from
+     * @param pkt The data packet
+     */
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        this.readFromNBT(pkt.func_148857_g());
+    }
+    
+    public void sync() {
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-		return side == 0 ? slotsBottom : (side == 1 ? slotsTop : slotsSides);
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-		return this.isItemValidForSlot(slot, itemstack);
-	}
-
-	@Override
-	public boolean canExtractItem(int slot, ItemStack var2, int side) {
-		return side != 0 || slot != 1;
-	}
-
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbttagcompound = new NBTTagCompound();
+        this.writeToNBT(nbttagcompound);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 5, nbttagcompound);
+    }
+    
+    public boolean addTank(ItemStack stack) {
+        if (tank == null && stack.getItem() != null && stack.getItem() instanceof ItemScubaTank) {
+            this.tank = stack;
+            this.compressing = true;
+            sync();
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public void ejectTank() {
+        if (tank != null) {
+            EntityItem tankItem = new EntityItem(worldObj, xCoord, yCoord, zCoord, tank);
+            worldObj.spawnEntityInWorld(tankItem);
+            tank = null;
+        }
+        
+        this.ticks = 0;
+        this.compressing = false;
+        sync();
+    }
+    
+    public boolean isDoneCompressing() {
+        return this.ticks > 0 && !this.compressing;
+    }
+    
+    public float getTickRatio() {
+        return this.ticks / (AirType.REGULAR.getMaxCapacity() * fillRate);
+    }
+    
+    public boolean isCompressing() {
+        return this.compressing;
+    }
+    
+    public void startCompressing() {
+        this.compressing = true;
+        sync();
+    }
+    
+    public void finishCompressing() {
+        this.compressing = false;
+        sync();
+    }
 }

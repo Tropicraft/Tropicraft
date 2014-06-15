@@ -2,15 +2,32 @@ package net.tropicraft.util;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.Packet;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.tropicraft.info.TCInfo;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class TropicraftUtils {
+    
+    /**
+     * NOTE: REPLACED WITH world.markBlockForUpdate
+     * Helper method for syncing a TileEntity's data
+     * @param packet
+     * @param dimensionID
+     */
+    public static void sync(Packet packet, int dimensionID) {
+        FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendPacketToAllPlayersInDimension(packet, dimensionID);
+    }
+    
     public static ResourceLocation getTexture(String path) {
         ResourceLocation derp = new ResourceLocation(TCInfo.MODID, path);
         return derp;
+    }
+
+    public static ResourceLocation getTextureArmor(String path) {
+        return getTexture(String.format("textures/models/armor/%s.png", path));
     }
 
     public static ResourceLocation getTextureBlock(String path) {
@@ -25,8 +42,27 @@ public class TropicraftUtils {
         return getTexture(String.format("textures/gui/%s.png", path));
     }
     
+    public static ResourceLocation getTextureTE(String path) {
+        return getTexture(String.format("textures/blocks/te/%s.png", path));
+    }
+    
+    public static ResourceLocation bindTextureArmor(String path) {
+        return bindTexture(getTextureArmor(path));
+    }
+    
+    public static ResourceLocation bindTextureEntity(String path) {
+        return bindTexture(getTextureEntity(path));
+    }
+    
+    public static ResourceLocation bindTextureTE(String path) {
+        return bindTexture(getTextureTE(path));
+    }
+    
     public static ResourceLocation bindTextureBlock(String path) {
-        ResourceLocation resource = getTextureBlock(path);
+        return bindTexture(getTextureBlock(path));
+    }
+    
+    public static ResourceLocation bindTexture(ResourceLocation resource) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
         return resource;
     }

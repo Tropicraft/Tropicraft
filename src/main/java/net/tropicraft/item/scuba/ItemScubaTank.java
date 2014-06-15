@@ -18,61 +18,65 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemScubaTank extends ItemTropicraft {
 
-	public ItemScubaTank() {
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
-		this.maxStackSize = 1;
-		this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
-	}
+    public ItemScubaTank() {
+        this.setHasSubtypes(true);
+        this.setMaxDamage(0);
+        this.maxStackSize = 1;
+        this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
+    }
 
-	/**
-	 * Called when item is crafted/smelted. Used only by maps so far.
-	 */
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+    /**
+     * Called when item is crafted/smelted. Used only by maps so far.
+     */
+    public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 
-	}
+    }
 
-	/**
-	 * allows items to add custom lines of information to the mouseover description
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean par4) {
-		AirType airType = itemstack.getItemDamage() == 1 ? AirType.TRIMIX : AirType.REGULAR;
-		String airRemaining = getTagCompound(itemstack).getInteger("AirContained") + " psi";
+    /**
+     * allows items to add custom lines of information to the mouseover description
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean par4) {
+        AirType airType = itemstack.getItemDamage() == 1 ? AirType.TRIMIX : AirType.REGULAR;
+        String airRemaining = getTagCompound(itemstack).getInteger("AirContained") + " psi";
 
-		list.add(ColorHelper.color(9) + StatCollector.translateToLocal("gui.tropicraft:airType") + ": " + ColorHelper.color(7) + airType.getDisplayName());
-		list.add(ColorHelper.color(9) + StatCollector.translateToLocal("gui.tropicraft:maxAirCapacity") + ": " + ColorHelper.color(7) + airType.getMaxCapacity() + " psi");
-		list.add(ColorHelper.color(9) + StatCollector.translateToLocal("gui.tropicraft:airRemaining") + ": " + ColorHelper.color(7) + airRemaining);
-		list.add(ColorHelper.color(9) + String.format("%s: %s%.3f psi/sec", StatCollector.translateToLocal("gui.tropicraft:useEfficiency"),  ColorHelper.color(7), (airType.getUsageRate() * 20)));
-	}
+        list.add(ColorHelper.color(9) + StatCollector.translateToLocal("gui.tropicraft:airType") + ": " + ColorHelper.color(7) + airType.getDisplayName());
+        list.add(ColorHelper.color(9) + StatCollector.translateToLocal("gui.tropicraft:maxAirCapacity") + ": " + ColorHelper.color(7) + airType.getMaxCapacity() + " psi");
+        list.add(ColorHelper.color(9) + StatCollector.translateToLocal("gui.tropicraft:airRemaining") + ": " + ColorHelper.color(7) + airRemaining);
+        list.add(ColorHelper.color(9) + String.format("%s: %s%.3f psi/sec", StatCollector.translateToLocal("gui.tropicraft:useEfficiency"),  ColorHelper.color(7), (airType.getUsageRate() * 20)));
+    }
 
-	/**
-	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
-		ItemStack singleTankRegular = new ItemStack(item, 1, 0);
-		getTagCompound(singleTankRegular).setInteger("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
-		list.add(singleTankRegular);
+    /**
+     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
+        ItemStack singleTankRegular = new ItemStack(item, 1, 0);
+        getTagCompound(singleTankRegular).setInteger("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
+        list.add(singleTankRegular);
 
-		ItemStack singleTankTrimix = new ItemStack(item, 1, 1);
-		getTagCompound(singleTankTrimix).setInteger("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
-		list.add(singleTankTrimix);
-	}
+        ItemStack singleTankTrimix = new ItemStack(item, 1, 1);
+        getTagCompound(singleTankTrimix).setInteger("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
+        list.add(singleTankTrimix);
 
-	/**
-	 * Retrives an existing nbt tag compound or creates a new one if it is null
-	 * @param stack
-	 */
-	public NBTTagCompound getTagCompound(ItemStack stack) {
-		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
+        ItemStack singleTankTrimix2 = new ItemStack(item, 1, 2);
+        getTagCompound(singleTankTrimix2).setInteger("AirContained", 0);
+        list.add(singleTankTrimix2);
+    }
 
-		return stack.getTagCompound();
-	}
+    /**
+     * Retrives an existing nbt tag compound or creates a new one if it is null
+     * @param stack
+     */
+    public NBTTagCompound getTagCompound(ItemStack stack) {
+        if (!stack.hasTagCompound())
+            stack.setTagCompound(new NBTTagCompound());
+
+        return stack.getTagCompound();
+    }
 
 }

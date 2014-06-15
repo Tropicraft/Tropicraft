@@ -3,6 +3,7 @@ package net.tropicraft.proxy;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.tropicraft.client.entity.model.ModelScubaGear;
+import net.tropicraft.client.renderer.block.AirCompressorRenderHandler;
 import net.tropicraft.client.renderer.block.BambooChestRenderHandler;
 import net.tropicraft.client.renderer.block.CoffeePlantRenderHandler;
 import net.tropicraft.client.renderer.block.FlowerPotRenderHandler;
@@ -25,11 +26,13 @@ public class ClientProxy implements ISuperProxy {
         TCRenderIDs.tikiTorch = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.flowerPot = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.bambooChest = RenderingRegistry.getNextAvailableRenderId();
+        TCRenderIDs.airCompressor = RenderingRegistry.getNextAvailableRenderId();
 
         RenderingRegistry.registerBlockHandler(new CoffeePlantRenderHandler());
         RenderingRegistry.registerBlockHandler(new TikiTorchRenderHandler());
         RenderingRegistry.registerBlockHandler(new FlowerPotRenderHandler());
         RenderingRegistry.registerBlockHandler(new BambooChestRenderHandler());
+        RenderingRegistry.registerBlockHandler(new AirCompressorRenderHandler());
 
         MinecraftForgeClient.registerItemRenderer(TCItemRegistry.diveComputer, new ItemDiveComputerRenderer());
     }
