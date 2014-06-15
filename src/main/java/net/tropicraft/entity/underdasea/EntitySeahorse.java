@@ -7,12 +7,13 @@ import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class EntitySeahorse extends EntityWaterMob {
+public class EntitySeahorse extends EntityTropicraftWaterMob {
 
 	private static final int DATAWATCHER_COLOR = 30;
 
 	public EntitySeahorse(World par1World) {
 		super(par1World);
+		this.type = WaterMobType.OCEAN_DWELLER;
 		this.setSize(0.75F, 1.1F);
 	}
 
@@ -20,58 +21,6 @@ public class EntitySeahorse extends EntityWaterMob {
 		this (par1World);
 		this.setColor((byte)color);
 	}
-
-	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-	}
-
-	protected void updateEntityActionState()
-	{
-		if (this.fleeingTick > 0 && --this.fleeingTick == 0)
-		{
-			IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
-			iattributeinstance.removeModifier(field_110181_i);
-		}
-
-		this.updateWanderPath();
-
-	//	super.updateEntityActionState();
-	}
-
-	/**
-	 * Returns the sound this mob makes while it's alive.
-	 */
-	@Override
-	protected String getLivingSound() {
-		return null;
-	}
-
-	/**
-	 * Returns the sound this mob makes when it is hurt.
-	 */
-	@Override
-	protected String getHurtSound() {
-		return null;
-	}
-
-	/**
-	 * Returns the sound this mob makes on death.
-	 */
-	@Override
-	protected String getDeathSound() {
-		return null;
-	}
-
-	/**
-	 * Returns the volume for the sounds this mob makes.
-	 */
-	@Override
-	protected float getSoundVolume() {
-		return 0.4F;
-	}
-
 
 	@Override
 	public void entityInit() {
@@ -116,31 +65,5 @@ public class EntitySeahorse extends EntityWaterMob {
 		default:
 			return "razz";
 		}
-	}
-
-	/**
-	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-	 * prevent them from trampling crops
-	 */
-	@Override
-	protected boolean canTriggerWalking() {
-		return false;
-	}
-
-	/**
-	 * Checks if this entity is inside water (if inWater field is true as a result of handleWaterMovement() returning
-	 * true)
-	 */
-	@Override
-	public boolean isInWater() {
-		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), Material.water, this);
-	}
-
-	/**
-	 * Checks if the entity's current position is a valid location to spawn this entity.
-	 */
-	@Override
-	public boolean getCanSpawnHere() {
-		return this.posY > 45.0D && this.posY < 63.0D && super.getCanSpawnHere();
 	}
 }

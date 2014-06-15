@@ -51,7 +51,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(TropicraftUtils.bindTextureGui("snorkel"));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TropicraftUtils.getTextureGui("snorkel"));
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(0.0D, (double)height, -90.0D, 0.0D, 1.0D);

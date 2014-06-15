@@ -37,9 +37,9 @@ public class RenderSeahorse extends RenderLiving {
 			seahorse = (EntitySeahorse)entity;
 		
 		if (seahorse == null)
-			return TropicraftUtils.bindTextureEntity("seahorse/razz");
+			return TropicraftUtils.getTextureEntity("seahorse/razz");
 		else
-			return TropicraftUtils.bindTextureEntity(String.format("seahorse/%s", seahorse.getColorName()));
+			return TropicraftUtils.getTextureEntity(String.format("seahorse/%s", seahorse.getColorName()));
 	}
 
 }

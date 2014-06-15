@@ -49,7 +49,7 @@ public class RenderUmbrella extends Render {
 		blue = ColorHelper.getBlue(entityUmbrella.getColor());
 
 		// Draw arms of umbrella
-		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("umbrellaLayer"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.getTextureEntity("umbrellaLayer"));
 		GL11.glScalef(-1F, -1F, 1.0F);
 		modelUmbrella.render(entityUmbrella, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.25F);
 
@@ -63,7 +63,7 @@ public class RenderUmbrella extends Render {
 		color.position(0);
 		// Color it
 		GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, color);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("umbrellaColorLayer"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.getTextureEntity("umbrellaColorLayer"));
 		modelUmbrella.render(entityUmbrella, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.25F);
 		GL11.glDisable(GL11.GL_BLEND);
 		// Change the color mode back to modulation

@@ -37,7 +37,7 @@ public class RenderChair extends Render {
 		GL11.glRotatef(f + (180 - f)*2, 0.0F, 1.0F, 0.0F);
 
 		// Draw arms of chair
-		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("chairLayer"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.getTextureEntity("chairLayer"));
 		GL11.glScalef(-1F, -1F, 1.0F);
 		modelChair.render(entitychair, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
 
@@ -51,7 +51,7 @@ public class RenderChair extends Render {
 		color.position(0);
 		// Color it
 		GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, color);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.bindTextureEntity("chairColorLayer"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftUtils.getTextureEntity("chairColorLayer"));
 		modelChair.render(entitychair, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glDisable(GL11.GL_BLEND);
 		// Change the color mode back to modulation
@@ -85,6 +85,6 @@ public class RenderChair extends Render {
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return TropicraftUtils.bindTextureEntity("chairBlue");
+		return TropicraftUtils.getTextureEntity("chairBlue");
 	}
 }

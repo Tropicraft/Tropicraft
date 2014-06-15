@@ -57,6 +57,7 @@ public class TCNames {
         "Croton", "Dracaena", "Fern", "Foilage", "Bromeliad"};
 	public static final String flowerPot = "flowerPot";
 	public static final String firePit = "firePit";
+	public static final String bambooChest = "bambooChest";
 
 	// Item names
 	public static final String frogLeg = "frogLeg";
@@ -122,4 +123,5 @@ public class TCNames {
 	public static final String scubaTank = "scubaTank";
 	public static final String diveComputer = "diveComputer";
 	public static final String bcd = "bcd";
+    public static final String airCompressor = "airCompressor";
 }

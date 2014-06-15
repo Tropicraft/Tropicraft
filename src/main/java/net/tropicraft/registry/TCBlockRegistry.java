@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
+import net.tropicraft.block.BlockBambooChest;
 import net.tropicraft.block.BlockBambooDoor;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
@@ -39,6 +40,7 @@ import net.tropicraft.block.BlockTropicraftSlab;
 import net.tropicraft.block.BlockTropicraftStairs;
 import net.tropicraft.block.BlockTropicsPortal;
 import net.tropicraft.block.BlockTropicsWater;
+import net.tropicraft.block.scuba.BlockAirCompressor;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
 import net.tropicraft.item.ItemTallFlowers;
@@ -110,6 +112,10 @@ public class TCBlockRegistry {
 	public static final BlockPortalWall tropicsPortalWall = new BlockPortalWall();
 	public static final BlockTropicsPortal tropicsPortal = new BlockTropicsPortal(TCFluidRegistry.tropicsPortal, Material.water);
 	
+	public static final BlockAirCompressor airCompressor = new BlockAirCompressor();
+	
+	public static final BlockBambooChest bambooChest = new BlockBambooChest();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -153,6 +159,8 @@ public class TCBlockRegistry {
 		registerBlock(flowerPot, TCNames.flowerPot);
 		registerBlock(coconut, TCNames.coconut);
 		registerBlock(firePit, TCNames.firePit);
+		registerBlock(airCompressor, TCNames.airCompressor);
+		registerBlock(bambooChest, TCNames.bambooChest);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

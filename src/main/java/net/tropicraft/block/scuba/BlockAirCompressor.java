@@ -8,12 +8,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class BlockAirCompressor extends BlockTropicraft implements ITileEntityProvider {
 
 	public BlockAirCompressor() {
 		super(Material.rock);
 		this.isBlockContainer = true;
+		this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
 	}
 	
     /**

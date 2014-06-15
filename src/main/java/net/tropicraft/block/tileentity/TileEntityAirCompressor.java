@@ -16,7 +16,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 
-public class TileEntityAirCompressor extends TileEntity implements ISidedInventory{
+public class TileEntityAirCompressor extends TileEntity implements ISidedInventory {
 
 	public int timeCompressed;
 	

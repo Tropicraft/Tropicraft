@@ -66,6 +66,8 @@ tile.tropicraft:flower_14.name=Bromeliad
 tile.tropicraft:flowerPot.name=Bamboo Flower Pot
 tile.tropicraft:coconut.name=Coconut
 tile.tropicraft:firePit.name=Fire Pit
+tile.tropicraft:airCompressor.name=Air Compressor
+tile.tropicraft:bambooChest.name=Bamboo Chest
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
