@@ -166,6 +166,9 @@ item.tropicraft:dryFlippers.name=Dry Suit Flippers
 item.tropicraft:wetFlippers.name=Wet Suit Flippers
 item.tropicraft:diveComputer.name=Dive Computer
 item.tropicraft:bcd.name=Buoyancy Compensator
+item.tropicraft:dart.name=Dart
+item.tropicraft:curare.name=Curare
+item.tropicraft:blowGun.name=Blow Gun
 
 #Entity localizations
 entity.tropicraft:beachChair.name=Beach Chair
@@ -183,3 +186,16 @@ gui.tropicraft:temperature=Temp
 gui.tropicraft:currentDepth=Current Depth
 gui.tropicraft:maxDepth=Max
 gui.tropicraft:timeRemaining=Gas Time
+
+#Tooltip localizations
+dart.tropicraft:prefix.name=Dart of
+dart.tropicraft:paralyze.name=Paralysis
+dart.tropicraft:poison.name=Poison
+dart.tropicraft:moveSlowdown.name=Slow Movement
+dart.tropicraft:harm.name=Harm
+dart.tropicraft:confusion.name=Confusion
+dart.tropicraft:hunger.name=Hunger
+dart.tropicraft:weakness.name=Weakness
+
+#Other localizations
+death.attack.dart.item=Dart

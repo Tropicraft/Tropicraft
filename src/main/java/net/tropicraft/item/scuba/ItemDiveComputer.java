@@ -38,8 +38,10 @@ public class ItemDiveComputer extends ItemMap {
             else
                 return;
 
-            if (!isFullyUnderwater(world, player))
+            if (!isFullyUnderwater(world, player)) {
+                System.out.println("Not fully underwater");
                 return;
+            }
 
             ItemStack helmetStack = player.getEquipmentInSlot(4);
             ItemStack chestplateStack = player.getEquipmentInSlot(3);
@@ -63,7 +65,7 @@ public class ItemDiveComputer extends ItemMap {
 
             int waterBlocksAbove = 0, waterBlocksBelow = 0;
             int x = MathHelper.floor_double(player.posX);
-            int y = MathHelper.floor_double(player.posY);
+            int y = MathHelper.floor_double(player.posY + player.height - 0.5);
             int z = MathHelper.floor_double(player.posZ);
 
             while (world.getBlock(x, y + waterBlocksAbove + 1, z).getMaterial().isLiquid()) {

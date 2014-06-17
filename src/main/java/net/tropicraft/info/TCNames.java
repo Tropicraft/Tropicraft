@@ -107,6 +107,11 @@ public class TCNames {
 	public static final String coconut = "coconut";
 	public static final String coconutBomb = "coconutBomb";
 	public static final String innerTube = "innerTube";
+	public static final String dart = "dart";
+	public static final String dartOverlay = "dartOverlay";
+	public static final String curare = "curare";
+	public static final String curareOverlay = "curareOverlay";
+	public static final String dartGun = "blowGun";
 	
 	// Scuba
 	public static final String dryFlippers = "dryFlippers";

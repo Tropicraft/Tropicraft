@@ -12,20 +12,15 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityAirCompressorRenderer extends TileEntitySpecialRenderer {
 
-    /**
-     * EIHMixer model instance
-     */
     private ModelAirCompressor model = new ModelAirCompressor();
     private ModelScubaTank modelScubaTank = new ModelScubaTank();
-    //private EntityItem dummyEntityItem = new EntityItem((World)null, 0.0, 0.0, 0.0, new ItemStack(Item.sugar));
-   // private RenderItem renderItem = new RenderItem();
 
     public TileEntityAirCompressorRenderer() {
-      //  renderItem.setRenderManager(RenderManager.instance);
+
     }
 
     /**
-     * All rendering of EIH mixer done here
+     * All rendering of Air Compressor done here
      * @param te TileEntityEIHMixer instance
      * @param x xCoord
      * @param y yCoord
@@ -69,14 +64,16 @@ public class TileEntityAirCompressorRenderer extends TileEntitySpecialRenderer {
 
         if (te.isCompressing()) {
             GL11.glPushMatrix();
+            GL11.glScalef(1.1F, 1.1F, 1.1F);
            // GL11.glScalef(10.0F, 10.0F, 10.0F);
-            GL11.glTranslatef(-0.4f, 0.55f, -0.40f);
+            GL11.glTranslatef(-0.35f, 0.9f, 0.4f);
 /*            if (te.isDoneMixing()) {
                 modelBambooMug.renderLiquid = true;
                 modelBambooMug.liquidColor = ItemCocktail.getCocktailColor(te.result);
             } else {
                 modelBambooMug.renderLiquid = false;
             }*/
+            GL11.glRotatef(180, 1, 0, 0);
             TropicraftUtils.bindTextureArmor("scubaGearPink");
             modelScubaTank.renderBambooMug();
             GL11.glPopMatrix();

@@ -8,6 +8,7 @@ import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.client.entity.model.ModelSeahorse;
 import net.tropicraft.client.entity.render.RenderChair;
+import net.tropicraft.client.entity.render.RenderDart;
 import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeahorse;
 import net.tropicraft.client.entity.render.RenderUmbrella;
@@ -16,6 +17,7 @@ import net.tropicraft.client.tileentity.TileEntityBambooChestRenderer;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
 import net.tropicraft.entity.pool.EntityPoolFloat;
+import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -27,6 +29,7 @@ public class TCRenderRegistry {
 		registerEntityRender(EntityUmbrella.class, new RenderUmbrella());
 		registerEntityRender(EntityPoolFloat.class, new RenderPoolFloat());
 		registerEntityRender(EntitySeahorse.class, new RenderSeahorse(new ModelSeahorse(), 0.75F));
+		registerEntityRender(EntityDart.class, new RenderDart());
 	}
 	
 	public static void initTileEntityRenderers() {

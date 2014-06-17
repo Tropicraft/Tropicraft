@@ -139,24 +139,24 @@ public class ItemDiveComputerRenderer implements IItemRenderer {
         GL11.glPushMatrix();
         GL11.glScalef(1.3F, 1.3F, 1.0F);
         Minecraft.getMinecraft().fontRenderer.drawString(String.format("%.0f", airRemaining), 70, 14, 0x00ccde);
-        drawString(currentDepth, 46, 79, 0xbbbbff);
+        drawString(blocksAbove, 46, 79, 0xbbbbff);  // Current depth
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glScalef(0.6F, 0.6F, 1.0F);
-        if (isFullyUnderwater(player)) {
+/*        if (isFullyUnderwater(player)) {
             drawString("Blocks Above", 2, 58, 0xabcdef);
             drawString(blocksAbove, 33, 66, 0xffaabb);
 
             drawString("Blocks Below", 168, 58, 0xabcdef);
             drawString(blocksBelow, 200, 66, 0xffaabb);
-        }
+        }*/
         drawString(String.format("%.0f %s", timeRemaining, timeUnits), 29, 30, 0xF6EB12);
         drawString(TropicraftUtils.translateGUI("maxDepth") + ": " + maxDepth, 194, 150, 0xffffffff);
         drawString(airTemp + " F", 6, 150, 0xffffffff);
         GL11.glPopMatrix();
         GL11.glScalef(0.5F, 0.5F, 1.0F);
-        drawString("Y", 151, 215, 0xffffff);
+   //     drawString("Y", 151, 215, 0xffffff);
         drawString("psi", 245, 47, 0xffffff);
         drawString("Air", 206, 24, 0xffffff);
         drawString(TropicraftUtils.translateGUI("timeRemaining"), 34, 24, 0xffffff);
@@ -172,7 +172,7 @@ public class ItemDiveComputerRenderer implements IItemRenderer {
 
     private boolean isFullyUnderwater(EntityPlayer player) {
         int x = MathHelper.ceiling_double_int(player.posX);
-        int y = MathHelper.ceiling_double_int(player.posY);
+        int y = MathHelper.ceiling_double_int(player.posY + player.height - 2.3F);
         int z = MathHelper.ceiling_double_int(player.posZ);
 
         return player.worldObj.getBlock(x, y, z).getMaterial().isLiquid();

@@ -9,6 +9,9 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooDoor;
 import net.tropicraft.item.ItemCoffeeBean;
+import net.tropicraft.item.ItemCurare;
+import net.tropicraft.item.ItemDart;
+import net.tropicraft.item.ItemDartGun;
 import net.tropicraft.item.ItemFertilizer;
 import net.tropicraft.item.ItemFlowerPot;
 import net.tropicraft.item.ItemTikiTorch;
@@ -134,6 +137,10 @@ public class TCItemRegistry {
 	public static final ItemScubaTank scubaTank = new ItemScubaTank();
 	public static final ItemDiveComputer diveComputer = new ItemDiveComputer();
 	public static final ItemBCD bcd = new ItemBCD();
+	
+	public static final ItemCurare curare = new ItemCurare();
+	public static final ItemDart dart = new ItemDart();
+	public static final ItemDartGun blowGun = new ItemDartGun();
 
 	/**
 	 * Register all the items
@@ -217,6 +224,9 @@ public class TCItemRegistry {
 		registerItem(diveComputer, TCNames.diveComputer);
 		registerItem(bcd, TCNames.bcd);
 		
+		registerItem(curare, TCNames.curare);
+		registerItem(dart, TCNames.dart);
+		registerItem(blowGun, TCNames.dartGun);
 	}
 	
 	/**
