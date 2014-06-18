@@ -6,11 +6,13 @@ import net.tropicraft.event.TCItemEvents;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.proxy.ISuperProxy;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCCommandRegistry;
 import net.tropicraft.registry.TCEntityRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.registry.TCTileEntityRegistry;
 import net.tropicraft.util.ColorHelper;
+import net.tropicraft.util.TropicraftWorldUtils;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -39,7 +41,7 @@ public class Tropicraft {
 	 */
 	@EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-
+		TCCommandRegistry.init(event);
     }
 
 	/**
@@ -67,6 +69,7 @@ public class Tropicraft {
 		proxy.initRenderRegistry();
 		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
 		MinecraftForge.EVENT_BUS.register(new TCItemEvents());
+		TropicraftWorldUtils.initializeDimension();
     }
 	
 	/**
