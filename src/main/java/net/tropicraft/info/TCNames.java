@@ -58,6 +58,8 @@ public class TCNames {
 	public static final String flowerPot = "flowerPot";
 	public static final String firePit = "firePit";
 	public static final String bambooChest = "bambooChest";
+	public static final String portal = "portal";
+	public static final String portalWall = "portalWall";
 
 	// Item names
 	public static final String frogLeg = "frogLeg";

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -23,10 +24,11 @@ import net.tropicraft.world.WorldProviderTropicraft;
 
 public class TeleporterTropics extends Teleporter {
 
-	private final static Block PORTAL_WALL_BLOCK = TCBlockRegistry.tropicsPortalWall;
-	private final static Block PORTAL_BLOCK = TCBlockRegistry.tropicsPortal;
+	private static Block PORTAL_WALL_BLOCK;
+	private static Block PORTAL_BLOCK;
 	
 	private final WorldServer world;
+	private final Random random;
 
 	/** Stores successful portal placement locations for rapid lookup. */
 	private final LongHashMap destinationCoordinateCache = new LongHashMap();
@@ -39,15 +41,16 @@ public class TeleporterTropics extends Teleporter {
 
 	public TeleporterTropics(WorldServer world) {
 		super(world);
+		PORTAL_BLOCK = TCBlockRegistry.tropicsPortal;
+		PORTAL_WALL_BLOCK = TCBlockRegistry.tropicsPortalWall;
 		this.world = world;
+		this.random = new Random(world.getSeed());
 	}
 
 	@Override
-	public void placeInPortal(Entity entity, double d, double d2, double d3, float f)
-	{
+	public void placeInPortal(Entity entity, double d, double d2, double d3, float f) {
 		long startTime = System.currentTimeMillis();
-		if (!placeInExistingPortal(entity, d, d2, d3, f))
-		{
+		if (!placeInExistingPortal(entity, d, d2, d3, f)) {
 			makePortal(entity);
 			placeInExistingPortal(entity, d, d2, d3, f);
 		}

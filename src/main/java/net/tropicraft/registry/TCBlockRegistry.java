@@ -161,6 +161,8 @@ public class TCBlockRegistry {
 		registerBlock(firePit, TCNames.firePit);
 		registerBlock(airCompressor, TCNames.airCompressor);
 		registerBlock(bambooChest, TCNames.bambooChest);
+		registerBlock(tropicsPortal, TCNames.portal);
+		registerBlock(tropicsPortalWall, TCNames.portalWall);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

@@ -17,6 +17,7 @@ public class BlockTropicsWater extends BlockFluidClassic {
 	
 	public BlockTropicsWater(Fluid fluid, Material material) {
 		super(fluid, material);
+		this.lightOpacity = 0;
 		this.setCreativeTab(null);
 	}
 

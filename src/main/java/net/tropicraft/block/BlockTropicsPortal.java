@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.util.TropicraftWorldUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -49,10 +51,10 @@ public class BlockTropicsPortal extends BlockFluidClassic {
                 if (player.isPotionActive(Potion.confusion.id)) {
                     player.timeUntilPortal = 0;
                     player.removePotionEffect(Potion.confusion.id);
-           //TODO         TropicraftWorldUtils.teleportPlayer(player);
+                    TropicraftWorldUtils.teleportPlayer(player);
                 } else {
                     player.timeUntilPortal = 0;
-           //TODO         player.addChatMessage("You should drink a pi\u00f1a colada before teleporting!");
+                    player.addChatMessage(new ChatComponentText("You should drink a pi\u00f1a colada before teleporting!"));
                 }
             }
         }
