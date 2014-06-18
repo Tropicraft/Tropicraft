@@ -22,24 +22,13 @@ public abstract class TCGenBase extends WorldGenerator {
         2, 0, 0, 1, 2, 1
     };
 	
-	/** Should this only generate in rainforests? */
-	boolean isRainforestOnly;
-	
 	/**Blocks normally checked in the check methods*/
 	List<Block> standardAllowedBlocks = Arrays.asList(Blocks.air, Blocks.leaves, Blocks.tallgrass, Blocks.snow_layer);
-	
-	public TCGenBase(World world, Random random, boolean isRainforestOnly)
-	{
-		worldObj = world;
-		rand = random;
-		this.isRainforestOnly = isRainforestOnly;
-	}
 	
 	public TCGenBase(World world, Random random)
 	{
 		worldObj = world;
 		rand = random;
-		this.isRainforestOnly = true;
 	}
 	
 	/** Checks if the ID is that of a leaf block*/
