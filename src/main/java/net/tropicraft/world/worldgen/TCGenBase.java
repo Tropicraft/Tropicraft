@@ -101,8 +101,9 @@ public abstract class TCGenBase extends WorldGenerator {
 				double d = (i - x) * (i - x) + (k - z) * (k - z);
 				if(d <= outerRadius * outerRadius && d >= innerRadius * innerRadius)
 				{
-					if(!allowedBlockList.contains(worldObj.getBlock(x, j, z)));
+					if(!allowedBlockList.contains(worldObj.getBlock(x, j, z)))
 					{
+						System.out.println("t2");
 						return false;
 					}
 				}
@@ -340,8 +341,10 @@ public abstract class TCGenBase extends WorldGenerator {
             	return null;
             }
         }
+        k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
+            System.out.println("watwat");
             ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
             ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
             ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
