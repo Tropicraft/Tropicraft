@@ -60,6 +60,11 @@ public class TCNames {
 	public static final String bambooChest = "bambooChest";
 	public static final String portal = "portal";
 	public static final String portalWall = "portalWall";
+	public static final String fruitLeaves = "fruitLeaves";
+	public static final String palmLeaves = "palmLeaves";
+	public static final String kapokLeaves = "kapokLeaves";
+	public static final String leaf = "leaf";
+	public static final String[] fruitLeafNames = new String[]{"Grapefruit", "Lemon", "Lime", "Orange"};
 
 	// Item names
 	public static final String frogLeg = "frogLeg";
