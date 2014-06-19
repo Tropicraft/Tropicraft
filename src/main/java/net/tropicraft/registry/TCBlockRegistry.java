@@ -12,7 +12,6 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemSlab;
 import net.tropicraft.block.BlockBambooChest;
 import net.tropicraft.block.BlockBambooDoor;
@@ -23,6 +22,7 @@ import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockFruitLeaves;
+import net.tropicraft.block.BlockPalmLeaves;
 import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockPortalWall;
 import net.tropicraft.block.BlockRainStopper;
@@ -119,7 +119,7 @@ public class TCBlockRegistry {
 	public static final BlockBambooChest bambooChest = new BlockBambooChest();
 	
 	public static final BlockFruitLeaves fruitLeaves = new BlockFruitLeaves();
-	//public static final BlockPalmLeaves palmLeaves = new BlockPalmLeaves();
+	public static final BlockPalmLeaves palmLeaves = new BlockPalmLeaves();
 	//public static final BlockKapokLeaves kapokLeaves = new BlockKapokLeaves();
 	
 	/**
@@ -170,6 +170,9 @@ public class TCBlockRegistry {
 		registerBlock(tropicsPortal, TCNames.portal);
 		registerBlock(tropicsPortalWall, TCNames.portalWall);
 		registerMultiBlock(fruitLeaves, TCNames.leaf, TCNames.fruitLeafNames);
+		Blocks.fire.setFireInfo(TCBlockRegistry.fruitLeaves, 30, 60);
+		registerBlock(palmLeaves, TCNames.palmLeaves);
+		Blocks.fire.setFireInfo(TCBlockRegistry.palmLeaves, 30, 60);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
