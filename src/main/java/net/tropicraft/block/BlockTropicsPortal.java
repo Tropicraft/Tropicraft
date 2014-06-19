@@ -16,6 +16,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.util.TropicraftWorldUtils;
 import cpw.mods.fml.relauncher.Side;
@@ -32,6 +33,23 @@ public class BlockTropicsPortal extends BlockFluidClassic {
         setTickRandomly(true);
         this.setBlockUnbreakable();
         this.setResistance(6000000.0F);
+    }
+    
+    /**
+     * @return The unlocalized block name
+     */
+    @Override
+    public String getUnlocalizedName() {
+        return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(super.getUnlocalizedName()));
+    }
+    
+    /**
+     * Get the true name of the block
+     * @param unlocalizedName tile.%truename%
+     * @return The actual name of the block, rather than tile.%truename%
+     */
+    protected String getActualName(String unlocalizedName) {
+        return unlocalizedName.substring(unlocalizedName.indexOf('.') + 1);
     }
     
     /**

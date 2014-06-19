@@ -120,7 +120,7 @@ public class TCBlockRegistry {
 	
 	public static final BlockFruitLeaves fruitLeaves = new BlockFruitLeaves();
 	public static final BlockPalmLeaves palmLeaves = new BlockPalmLeaves();
-	//public static final BlockKapokLeaves kapokLeaves = new BlockKapokLeaves();
+	public static final BlockRainforestLeaves rainforestLeaves = new BlockRainforestLeaves();
 	
 	/**
 	 * Register all the blocks
@@ -173,6 +173,7 @@ public class TCBlockRegistry {
 		Blocks.fire.setFireInfo(TCBlockRegistry.fruitLeaves, 30, 60);
 		registerBlock(palmLeaves, TCNames.palmLeaves);
 		Blocks.fire.setFireInfo(TCBlockRegistry.palmLeaves, 30, 60);
+		registerMultiBlock(rainforestLeaves, TCNames.leafRainforest, TCNames.rainforestLeafNames);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
