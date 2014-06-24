@@ -5,29 +5,31 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerTropicraftRiverInit extends GenLayerTropicraft {
-
-	private int oceanID = BiomeGenTropicraft.tropicsOcean.biomeID;
-	private int landID = BiomeGenTropicraft.tropics.biomeID;
 	
-	public GenLayerTropicraftRiverInit(long par1) {
-		super(par1);
+	private static final int AREAS = 4;
+	
+	public GenLayerTropicraftRiverInit(long seed) {
+		super(seed);
+		this.setZoom(1);
 	}
-	
-	public int[] getInts(int i, int j, int k, int l)
-    {
-        int[] aint1 = IntCache.getIntCache(k * l);
 
-        for (int i1 = 0; i1 < l; ++i1)
-        {
-            for (int j1 = 0; j1 < k; ++j1)
-            {
-                this.initChunkSeed((long)(j1 + i), (long)(i1 + j));
-                aint1[j1 + i1 * k] = this.nextInt(2) + 1;
-            }
-        }
+	public int[] getInts(int x, int y, int width, int length) {
+		int[] resultMap = IntCache.getIntCache(width * length);
 
-        return aint1;
-    }
-	
+		for(int j = 0; j < length; ++j) {
+			for(int i = 0; i < width; ++i) {
+				this.initChunkSeed((long) (i + x), (long) (j + y));
+				resultMap[i + j * width] = this.nextInt(AREAS) + 1;
+			}
+		}
+
+		return resultMap;
+	}
+
+	@Override
+	public void setZoom(int zoom) {
+		this.zoom = zoom;
+	}
+
 }
 

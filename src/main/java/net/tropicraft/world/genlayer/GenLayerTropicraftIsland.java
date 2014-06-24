@@ -5,30 +5,35 @@ import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerTropicraftIsland extends GenLayerTropicraft {
 	
-	public GenLayerTropicraftIsland(long i) {
-		super(i);
+	private static final int CHANCE_OF_LAND = 10;
+	
+	public GenLayerTropicraftIsland(long seed) {
+		super(seed);
+		this.setZoom(1);
 	}
 
 	@Override
-	public int[] getInts(int i, int j, int k, int l) {
+	public int[] getInts(int x, int y, int width, int length) {
 		
-		int[] aint = IntCache.getIntCache(k * l);
+		int[] resultMap = IntCache.getIntCache(width * length);
 
-        for (int i1 = 0; i1 < l; ++i1)
-        {
-            for (int j1 = 0; j1 < k; ++j1)
-            {
-                this.initChunkSeed((long)(i + j1), (long)(j + i1));
-                aint[j1 + i1 * k] = this.nextInt(10) == 0 ? landID : oceanID;
-            }
-        }
+		for(int j = 0; j < length; ++j) {
+			for(int i = 0; i < width; ++i) {
+				this.initChunkSeed((long) (x + i), (long) (y + j));
+				resultMap[i + j * width] = this.nextInt(CHANCE_OF_LAND) == 0 ? landID : oceanID;
+			}
+		}
 
-        if (i > -k && i <= 0 && j > -l && j <= 0)
-        {
-            aint[-i + -j * k] = landID;
-        }
+		if(x > -width && x <= 0 && y > -length && y <= 0) {
+			resultMap[-x + -y * width] = landID;
+		}
 
-        return aint;
+		return resultMap;
 	}
 
+	@Override
+	public void setZoom(int zoom) {
+		this.zoom = zoom;
+	}
+	
 }

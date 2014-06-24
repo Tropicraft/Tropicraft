@@ -9,37 +9,38 @@ public class GenLayerTropicraftAddSubBiomes extends GenLayerTropicraft {
 	private int baseID;
 	private int[] subBiomeIDs;
 	
-	public GenLayerTropicraftAddSubBiomes(long par1, GenLayer parent, int baseID, int[] subBiomeIDs) {
-		super(par1);
+	public GenLayerTropicraftAddSubBiomes(long seed, GenLayerTropicraft parent, int baseID, int[] subBiomeIDs) {
+		super(seed);
 		this.parent = parent;
 		this.baseID = baseID;
 		this.subBiomeIDs = subBiomeIDs;
 	}
 
 	@Override
-	public int[] getInts(int i, int j, int k, int l) {
-		int[] aint = this.parent.getInts(i, j, k, l);
-        int[] aint1 = IntCache.getIntCache(k * l);
+	public int[] getInts(int x, int y, int width, int length) {
+		int[] parentMap = this.parent.getInts(x, y, width, length);
+        int[] resultMap = IntCache.getIntCache(width * length);
 
-        for (int i1 = 0; i1 < l; ++i1)
-        {
-            for (int j1 = 0; j1 < k; ++j1)
-            {
-                this.initChunkSeed((long)(j1 + i), (long)(i1 + j));
-                int k1 = aint[j1 + i1 * k];
+		for(int j = 0; j < length; ++j) {
+			for(int i = 0; i < width; ++i) {
+				this.initChunkSeed((long) (i + x), (long) (j + y));
+				int cur = parentMap[i + j * width];
 
-                if (k1 == BiomeGenTropicraft.rainforestPlains.biomeID)
-                {
-                    aint1[j1 + i1 * k] = k1 + nextInt(3);
-                }
-                else
-                {
-                    aint1[j1 + i1 * k] = k1;
-                }
-            }
-        }
+				if(cur == baseID) {
+					resultMap[i + j * width] = subBiomeIDs[this.nextInt(subBiomeIDs.length)];
+				} else {
+					resultMap[i + j * width] = cur;
+				}
+			}
+		}
 
-        return aint1;
+        return resultMap;
+	}
+
+	@Override
+	public void setZoom(int zoom) {
+		this.zoom = zoom;
+		this.parent.setZoom(zoom);
 	}
 	
 }

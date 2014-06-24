@@ -5,46 +5,46 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
-public class GenLayerTropicraftRiverMix extends GenLayer
-{
-	private int oceanID = BiomeGenTropicraft.tropicsOcean.biomeID;
+public class GenLayerTropicraftRiverMix extends GenLayerTropicraft {
 	private int lakeID = BiomeGenTropicraft.tropicsLake.biomeID;
-	
-    private GenLayer parentBiome;
-    private GenLayer parentRiver;
 
-    public GenLayerTropicraftRiverMix(long par1, GenLayer par3GenLayer, GenLayer par4GenLayer)
-    {
-        super(par1);
-        this.parentBiome = par3GenLayer;
-        this.parentRiver = par4GenLayer;
-    }
+	private GenLayerTropicraft parentBiome;
+	private GenLayerTropicraft parentRiver;
 
-    public void initWorldGenSeed(long par1)
-    {
-        this.parentBiome.initWorldGenSeed(par1);
-        this.parentRiver.initWorldGenSeed(par1);
-        super.initWorldGenSeed(par1);
-    }
+	public GenLayerTropicraftRiverMix(long seed, GenLayerTropicraft parentBiome, GenLayerTropicraft parentRiver) {
+		super(seed);
+		this.parentBiome = parentBiome;
+		this.parentRiver = parentRiver;
+		this.setZoom(1);
+	}
 
-    public int[] getInts(int i, int j, int k, int l)
-    {
-        int[] aint = this.parentBiome.getInts(i, j, k, l);
-        int[] aint1 = this.parentRiver.getInts(i, j, k, l);
-        int[] aint2 = IntCache.getIntCache(k * l);
+	public void initWorldGenSeed(long par1) {
+		this.parentBiome.initWorldGenSeed(par1);
+		this.parentRiver.initWorldGenSeed(par1);
+		super.initWorldGenSeed(par1);
+	}
 
-        for (int i1 = 0; i1 < k * l; ++i1)
-        {
-        	if(aint1[i1] != -1 && aint[i1] != oceanID && aint[i1] != lakeID)
-        	{
-        		aint2[i1] = aint1[i1];
-        	}
-        	else
-        	{
-        		aint2[i1] = aint[i1];
-        	}
-        }
+	public int[] getInts(int x, int y, int width, int length) {
+		int[] biomeMap = this.parentBiome.getInts(x, y, width, length);
+		int[] riverMap = this.parentRiver.getInts(x, y, width, length);
+		int[] resultMap = IntCache.getIntCache(width * length);
 
-        return aint2;
-    }
+		for(int index = 0; index < width * length; ++index) {
+			if(riverMap[index] != -1 && biomeMap[index] != oceanID && biomeMap[index] != lakeID) {
+				resultMap[index] = riverMap[index];
+			} else {
+				resultMap[index] = biomeMap[index];
+			}
+		}
+
+		return resultMap;
+	}
+
+	@Override
+	public void setZoom(int zoom) {
+		this.zoom = zoom;
+		this.parentBiome.setZoom(zoom);
+		this.parentRiver.setZoom(zoom);
+	}
+
 }

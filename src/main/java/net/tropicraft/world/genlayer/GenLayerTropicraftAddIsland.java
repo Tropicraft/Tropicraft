@@ -9,46 +9,48 @@ public class GenLayerTropicraftAddIsland extends GenLayerTropicraft {
 	
 	private int oceanID = BiomeGenTropicraft.tropicsOcean.biomeID;
 	private int landID = BiomeGenTropicraft.tropics.biomeID;
-	private int num;
+	private int chance;
 	
-	public GenLayerTropicraftAddIsland(long i, GenLayer parent, int j, int landID) {
-		super(i);
+	public GenLayerTropicraftAddIsland(long seed, GenLayerTropicraft parent, int chance, int landID) {
+		super(seed);
 		this.parent = parent;
-		this.num = j;
+		this.chance = chance;
 		this.landID = landID;
 	}
 
 	@Override
-	public int[] getInts(int i, int j, int k, int l) {
-		int i1 = i - 1;
-        int j1 = j - 1;
-        int k1 = k + 2;
-        int l1 = l + 2;
-        int[] aint = this.parent.getInts(i1, j1, k1, l1);
-        int[] aint1 = IntCache.getIntCache(k * l);
+	public int[] getInts(int x, int y, int width, int length) {
+		int x2 = x - 1;
+        int y2 = y - 1;
+        int width2 = width + 2;
+        int length2 = length + 2;
+        int[] parentMap = this.parent.getInts(x2, y2, width2, length2);
+        int[] resultMap = IntCache.getIntCache(width * length);
 
-        for (int i2 = 0; i2 < l; ++i2)
-        {
-            for (int j2 = 0; j2 < k; ++j2)
-            {
-                int k2 = aint[j2 + 0 + (i2 + 0) * k1];
-                int l2 = aint[j2 + 2 + (i2 + 0) * k1];
-                int i3 = aint[j2 + 0 + (i2 + 2) * k1];
-                int j3 = aint[j2 + 2 + (i2 + 2) * k1];
-                int k3 = aint[j2 + 1 + (i2 + 1) * k1];
-                this.initChunkSeed((long)(j2 + i), (long)(i2 + j));
+		for(int i2 = 0; i2 < length; ++i2) {
+			for(int j2 = 0; j2 < width; ++j2) {
+				int backX = parentMap[j2 + 0 + (i2 + 1) * width2];
+				int forwardX = parentMap[j2 + 2 + (i2 + 1) * width2];
+				int backY = parentMap[j2 + 1 + (i2 + 0) * width2];
+				int forwardY = parentMap[j2 + 1 + (i2 + 2) * width2];
+				int cur = parentMap[j2 + 1 + (i2 + 1) * width2];
+				this.initChunkSeed((long) (j2 + x), (long) (i2 + y));
 
-                if(k2 != landID && l2 != landID && i3 != landID && j3 != landID && k3 != landID && this.nextInt(num) == 0)
-                {
-                    aint1[j2 + i2 * k] = landID;
-                }
-                else
-                {
-                    aint1[j2 + i2 * k] = k3;
-                }
-            }
-        }
+				if(backX != landID && forwardX != landID && backY != landID && forwardY != landID && cur != landID && this.nextInt(chance) == 0) {
+					resultMap[j2 + i2 * width] = landID;
+				} else {
+					resultMap[j2 + i2 * width] = cur;
+				}
+			}
+		}
 
-        return aint1;
+        return resultMap;
 	}
+
+	@Override
+	public void setZoom(int zoom) {
+		this.zoom = zoom;
+		this.parent.setZoom(zoom);
+	}
+
 }
