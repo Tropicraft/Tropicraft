@@ -48,12 +48,23 @@ public class TCItemEvents {
 	    int y = MathHelper.ceiling_double_int(event.entity.posY + event.entity.height - 0.5F);
 	    int z = MathHelper.floor_double(event.entity.posZ);
 	    
-	  //  System.out.println("hi");
-	    
-	    if (event.block.getMaterial().isLiquid()) {
-	        event.density = 0.0005F;
+	    if (event.block.getMaterial().isLiquid() && event.block.getUnlocalizedName().equals(TCBlockRegistry.tropicsWater.getUnlocalizedName())) {
+	      //  System.out.println("hello?");
+	        event.density = 0.0115F;
 	        event.setCanceled(true);
-	       // System.out.println("3hi");
 	    }
 	}
+	
+	   @SubscribeEvent
+	    public void changeTropicsWaterFogColor(EntityViewRenderEvent.FogColors event) {
+	        int x = MathHelper.floor_double(event.entity.posX);
+	        int y = MathHelper.ceiling_double_int(event.entity.posY + event.entity.height - 0.5F);
+	        int z = MathHelper.floor_double(event.entity.posZ);
+	        
+	        if (event.block.getMaterial().isLiquid() && event.block.getUnlocalizedName().equals(TCBlockRegistry.tropicsWater.getUnlocalizedName())) {
+	            event.red = 0.2F;
+	            event.green = 0.8F;
+	            event.blue = 0.5F;
+	        }
+	    }
 }

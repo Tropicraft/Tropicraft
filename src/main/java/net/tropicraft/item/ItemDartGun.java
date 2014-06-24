@@ -69,7 +69,7 @@ public class ItemDartGun extends ItemTropicraft {
             if (f > 1.0F) {
                 f = 1.0F;
             }
-
+            System.out.println("FIRE");
             EntityDart dart = new EntityDart(world, entityplayer, f * 2.0F, (short)(itemstack.getItemDamage() - 1));
 
             itemstack.damageItem(1, entityplayer);
@@ -90,6 +90,11 @@ public class ItemDartGun extends ItemTropicraft {
                 world.spawnEntityInWorld(entitydart);
             }
         }
+    }
+    
+    @Override
+    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+        return par1ItemStack;
     }
 
     @Override

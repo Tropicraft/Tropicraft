@@ -21,6 +21,8 @@ public class ItemBlockTropicraft extends ItemBlock {
 	
 	public ItemBlockTropicraft(Block block, ArrayList<String> names) {
 		super(block);
+		this.setHasSubtypes(true);
+		this.setMaxDamage(0);
 		this.block = block;
 		this.names = names.toArray(new String[names.size()]);
 		this.setCreativeTab(CreativeTabs.tabBlock);

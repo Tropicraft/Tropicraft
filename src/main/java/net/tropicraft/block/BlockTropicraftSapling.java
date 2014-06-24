@@ -3,8 +3,6 @@ package net.tropicraft.block;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,8 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCCreativeTabRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 
@@ -106,7 +107,30 @@ public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
      * "Grow Tree"
      */
     public void func_149878_d(World world, int x, int y, int z, Random rand) {
-    	
+        int type = world.getBlockMetadata(x, y, z);
+        WorldGenerator gen = null;
+
+        if (type == 0) {
+     /*  TODO     int b = rand.nextInt(3);
+            if (b == 0) {
+                gen = new net.tropicraft.world.worldgen.WorldGenTropicraftLargePalmTrees(true);
+            } else if (b == 1) {
+                gen = new net.tropicraft.world.worldgen.WorldGenTropicraftCurvedPalm(true);
+            } else if (b == 2) {
+                gen = new net.tropicraft.world.worldgen.WorldGenTropicraftNormalPalms(true);
+            }*/
+        } else if (type < 5) {
+        //TODO    gen = new net.tropicraft.world.worldgen.WorldGenTropicraftFruitTrees(true, type - 1);
+        } else if (type == 5) {
+          //TODO  gen = randomRainforestTreeGen(world);
+        }
+
+        if (gen != null) {
+            world.setBlockToAir(x, y, z);
+            if (!gen.generate(world, rand, x, y, z)) {
+                world.setBlock(x, y, z, this, type, 3);
+            }
+        }
     }
     
     /**

@@ -68,6 +68,15 @@ tile.tropicraft:coconut.name=Coconut
 tile.tropicraft:firePit.name=Fire Pit
 tile.tropicraft:airCompressor.name=Air Compressor
 tile.tropicraft:bambooChest.name=Bamboo Chest
+tile.tropicraft:leaf_Grapefruit.name=Grapefruit Leaves
+tile.tropicraft:leaf_Lemon.name=Lemon Leaves
+tile.tropicraft:leaf_Lime.name=Lime Leaves
+tile.tropicraft:leaf_Orange.name=Orange Leaves
+tile.tropicraft:leafPalm.name=Palm Leaves
+tile.tropicraft:leafRainforest_Kapok.name=Kapok Leaves
+tile.tropicraft:leafRainforest_Mahogany.name=Mahogany Leaves
+tile.tropicraft:portal.name=Tropics Portal
+tile.tropicraft:portalWall.name=Tropics Portal Wall
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
