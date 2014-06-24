@@ -56,7 +56,7 @@ public class Gradient extends NoiseModule {
 		k *= this.frequency;
 		double val = 0;
 		double curAmplitude = this.amplitude;
-		//for(int n = 0; n < numOctaves; n++)
+		for(int n = 0; n < numOctaves; n++)
 		{
 			val += this.noiseGen.noise3d(i + this.offsetX, j + this.offsetY, k + this.offsetZ) * curAmplitude;
 			i *= 2;
