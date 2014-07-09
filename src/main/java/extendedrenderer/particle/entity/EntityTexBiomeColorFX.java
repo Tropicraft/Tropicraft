@@ -2,11 +2,8 @@ package extendedrenderer.particle.entity;
 
 import java.awt.Color;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -150,9 +147,6 @@ public class EntityTexBiomeColorFX extends EntityRotFX
         float br = ((0.9F + (mc.gameSettings.gammaSetting * 0.1F)) - (mc.theWorld.calculateSkylightSubtracted(var2) * 0.03F)) * mc.theWorld.getSunBrightness(1F);
         br = 0.55F * Math.max(0.3F, br) * (2F);
         
-        EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
-        //System.out.println("brightness: " + adjSubtracted);
-        //System.out.println(this.worldObj.calculateSkylightSubtracted(var2) * 0.12F);
         var1.setColorOpaque_F(this.particleRed * br, this.particleGreen * br, this.particleBlue * br);
         var1.addVertexWithUV((double)(var13 - var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 - var5 * var12 - var7 * var12), (double)var9, (double)var11);
         var1.addVertexWithUV((double)(var13 - var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 - var5 * var12 + var7 * var12), (double)var9, (double)var10);

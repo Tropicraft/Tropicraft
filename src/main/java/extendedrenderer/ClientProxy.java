@@ -39,12 +39,10 @@ public class ClientProxy extends CommonProxy
     {
         super.init(pMod);
         
-        RenderingRegistry rr = RenderingRegistry.instance();
-        
         //rr.registerEntityRenderingHandler(StormCluster.class, new RenderNull());
-        rr.registerEntityRenderingHandler(EntityTexFX.class, new RenderNull());
-        rr.registerEntityRenderingHandler(EntityTexBiomeColorFX.class, new RenderNull());
-        rr.registerEntityRenderingHandler(EntityRotFX.class, new RenderNull());
+        RenderingRegistry.registerEntityRenderingHandler(EntityTexFX.class, new RenderNull());
+        RenderingRegistry.registerEntityRenderingHandler(EntityTexBiomeColorFX.class, new RenderNull());
+        RenderingRegistry.registerEntityRenderingHandler(EntityRotFX.class, new RenderNull());
         //rr.registerEntityRenderingHandler(EntityFallingRainFX.class, new RenderNull());
         //rr.registerEntityRenderingHandler(EntityWaterfallFX.class, new RenderNull());
         //rr.registerEntityRenderingHandler(EntitySnowFX.class, new RenderNull());

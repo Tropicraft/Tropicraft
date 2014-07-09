@@ -2,9 +2,7 @@ package extendedrenderer.particle.entity;
 
 import java.awt.Color;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -127,9 +125,6 @@ public class EntityTexFX extends EntityRotFX
         /*this.getBrightness(var2) * */
         var16 = (1F + FMLClientHandler.instance().getClient().gameSettings.gammaSetting) - (this.worldObj.calculateSkylightSubtracted(var2) * 0.13F);
         //var16 = 2f;
-        EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
-        //System.out.println(this.getBrightness(var2));
-        //System.out.println(this.worldObj.calculateSkylightSubtracted(var2) * 0.12F);
         var1.setColorOpaque_F(this.particleRed * var16, this.particleGreen * var16, this.particleBlue * var16);
         var1.addVertexWithUV((double)(var13 - var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 - var5 * var12 - var7 * var12), (double)var9, (double)var11);
         var1.addVertexWithUV((double)(var13 - var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 - var5 * var12 + var7 * var12), (double)var9, (double)var10);

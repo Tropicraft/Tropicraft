@@ -60,12 +60,12 @@ public class ParticleBehaviors {
 		
 			
 		double centerX = particle.posX;
-		double centerY = particle.posY;
+		//double centerY = particle.posY;
 		double centerZ = particle.posZ;
 		
 		if (coordSource != null) {
 			centerX = coordSource.xCoord/* + 0.5D*/;
-			centerY = coordSource.yCoord/* + 0.5D*/;
+			//centerY = coordSource.yCoord/* + 0.5D*/;
 			centerZ = coordSource.zCoord/* + 0.5D*/;
 		}
 		
@@ -100,7 +100,6 @@ public class ParticleBehaviors {
 			particle.motionZ += (rand.nextDouble() - rand.nextDouble()) * speed2;
 			
 		}
-		int cycle = 40;
 		
 		float brightnessShiftRate = rateDarken;
 		
