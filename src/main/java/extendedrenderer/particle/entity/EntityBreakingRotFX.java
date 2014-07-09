@@ -1,5 +1,6 @@
 package extendedrenderer.particle.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;

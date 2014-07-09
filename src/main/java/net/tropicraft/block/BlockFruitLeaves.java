@@ -16,6 +16,7 @@ import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import net.tropicraft.registry.TCItemRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,12 +26,16 @@ public class BlockFruitLeaves extends BlockLeaves {
     public static final String[] treeNames = new String[] {"grapefruit", "lemon", "lime", "orange"};
     
     @SideOnly(Side.CLIENT)
-    protected IIcon[][] icons = new IIcon[2][];
+    protected IIcon[][] icons;
     
     public BlockFruitLeaves() {
         super();
         this.disableStats();
         setCreativeTab(TCCreativeTabRegistry.tabBlock);
+        
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+        	icons = new IIcon[2][];
+        }
     }
     
     @Override

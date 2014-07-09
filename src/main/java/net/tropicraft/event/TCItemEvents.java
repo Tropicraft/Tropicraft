@@ -14,6 +14,8 @@ import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TCItemEvents {
 
@@ -43,6 +45,7 @@ public class TCItemEvents {
 	}
 	
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void changeTropicsWaterFogDensity(EntityViewRenderEvent.FogDensity event) {
 	    int x = MathHelper.floor_double(event.entity.posX);
 	    int y = MathHelper.ceiling_double_int(event.entity.posY + event.entity.height - 0.5F);
@@ -56,6 +59,7 @@ public class TCItemEvents {
 	}
 	
 	   @SubscribeEvent
+	   @SideOnly(Side.CLIENT)
 	    public void changeTropicsWaterFogColor(EntityViewRenderEvent.FogColors event) {
 	        int x = MathHelper.floor_double(event.entity.posX);
 	        int y = MathHelper.ceiling_double_int(event.entity.posY + event.entity.height - 0.5F);

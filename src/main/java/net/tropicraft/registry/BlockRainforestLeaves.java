@@ -3,8 +3,6 @@ package net.tropicraft.registry;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.tropicraft.info.TCInfo;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockRainforestLeaves extends BlockLeaves {
 
@@ -20,11 +21,15 @@ public class BlockRainforestLeaves extends BlockLeaves {
     public static final String[] treeNames = new String[] {"kapok", "mahogany"};
     
     @SideOnly(Side.CLIENT)
-    protected IIcon[][] icons = new IIcon[2][];
+    protected IIcon[][] icons;
     
     public BlockRainforestLeaves() {
         this.disableStats();
         setCreativeTab(TCCreativeTabRegistry.tabBlock);
+        
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+        	icons = new IIcon[2][];
+        }
     }
     
     @Override
