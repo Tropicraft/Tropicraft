@@ -22,22 +22,22 @@ public class ClientProxy extends CommonProxy
     }
     
     @Override
-    public void preInit(ExtendedRenderer pMod)
+    public void preInit()
     {
-    	super.preInit(pMod);
+    	super.preInit();
     }
     
     @Override
-    public void postInit(ExtendedRenderer pMod)
+    public void postInit()
     {
-    	super.postInit(pMod);
+    	super.postInit();
     	ExtendedRenderer.rotEffRenderer = new RotatingEffectRenderer(mc.theWorld, mc.renderEngine);
     }
 
     @Override
-    public void init(ExtendedRenderer pMod)
+    public void init()
     {
-        super.init(pMod);
+        super.init();
         
         //rr.registerEntityRenderingHandler(StormCluster.class, new RenderNull());
         RenderingRegistry.registerEntityRenderingHandler(EntityTexFX.class, new RenderNull());

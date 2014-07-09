@@ -40,13 +40,13 @@ public class ExtendedRenderer {
     @EventHandler
     public void load(FMLInitializationEvent event)
     {
-    	proxy.init(this);
+    	proxy.init();
     	MinecraftForge.EVENT_BUS.register(new extendedrenderer.EventHandler());
     }
     
     @EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-    	proxy.postInit(this);
+    	proxy.postInit();
 	}
 
     public ExtendedRenderer() {

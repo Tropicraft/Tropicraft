@@ -11,21 +11,19 @@ public class CommonProxy implements IGuiHandler
     {
     }
 
-    public void preInit(ExtendedRenderer pMod)
+    public void preInit()
     {
     	
     }
     
-    public void postInit(ExtendedRenderer pMod)
+    public void postInit()
     {
     	
     }
     
-    public void init(ExtendedRenderer pMod)
+    public void init()
     {
-        mod = pMod;
         
-    	
     }
 
 	@Override
