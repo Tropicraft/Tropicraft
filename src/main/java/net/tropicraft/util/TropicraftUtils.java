@@ -2,6 +2,8 @@ package net.tropicraft.util;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.network.Packet;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -80,5 +82,14 @@ public class TropicraftUtils {
     public static String translateGUI(String word) {
         return StatCollector.translateToLocal(String.format("gui.tropicraft:%s", word));
     }
+    
+    public static int getSlotOfItemWithDamage(InventoryPlayer inventory, Item item, int damage) {
+        for (int j = 0; j < inventory.mainInventory.length; ++j) {
+            if (inventory.mainInventory[j] != null && inventory.mainInventory[j].getItem() == item && inventory.mainInventory[j].getItemDamage() == damage) {
+                return j;
+            }
+        }
 
+        return -1;
+    }
 }

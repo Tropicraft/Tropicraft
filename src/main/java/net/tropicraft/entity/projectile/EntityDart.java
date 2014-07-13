@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -33,6 +35,7 @@ public class EntityDart extends Entity implements IProjectile {
     public boolean doesDartBelongToPlayer;
     public int dartShake;
     private boolean hasRidden;
+    public static int[] potions;
 
     public EntityDart(World world) {
         super(world);
@@ -194,7 +197,7 @@ public class EntityDart extends Entity implements IProjectile {
 
                             if (!this.worldObj.isRemote)
                             {
-                                //TODO deal poison stuff here, I think
+                                entitylivingbase.addPotionEffect(new PotionEffect(potions[this.dartType], MAX_HIT_TIME, 1));
                             }
 
                             if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)
@@ -322,6 +325,7 @@ public class EntityDart extends Entity implements IProjectile {
 
     @Override
     protected void entityInit() {
+        potions = new int[]{Potion.blindness.id, Potion.poison.id, Potion.moveSlowdown.id, Potion.harm.id, Potion.confusion.id, Potion.hunger.id, Potion.weakness.id};
         dataWatcher.addObject(17, new Short(MAX_HIT_TIME));
         dataWatcher.addObject(18, new Byte((byte) 0));
     }
@@ -333,6 +337,7 @@ public class EntityDart extends Entity implements IProjectile {
         nbttagcompound.setBoolean("player", doesDartBelongToPlayer);
         nbttagcompound.setBoolean("hit", getIsHit());
         nbttagcompound.setShort("hitTime", (short) getHitTimer());
+        nbttagcompound.setShort("dartType", dartType);
     }
 
     @Override
@@ -342,6 +347,7 @@ public class EntityDart extends Entity implements IProjectile {
         doesDartBelongToPlayer = nbttagcompound.getBoolean("player");
         setIsHit(nbttagcompound.getBoolean("hit"));
         setHitTimer(nbttagcompound.getShort("hitTime"));
+        dartType = nbttagcompound.getShort("dartType");
     }
 
     public void setIsHit(boolean set) {

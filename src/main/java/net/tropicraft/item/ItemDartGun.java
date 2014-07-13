@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import net.tropicraft.registry.TCItemRegistry;
+import net.tropicraft.util.TropicraftUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -56,7 +57,6 @@ public class ItemDartGun extends ItemTropicraft {
     
     @Override
     public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityPlayer entityplayer, int i) {
-        System.out.println("henk");
         if (entityplayer.capabilities.isCreativeMode || itemstack.getItemDamage() > 0) {
             int j = getMaxItemUseDuration(itemstack) - i;
             float f = (float) j / 20F;
@@ -69,7 +69,7 @@ public class ItemDartGun extends ItemTropicraft {
             if (f > 1.0F) {
                 f = 1.0F;
             }
-            System.out.println("FIRE");
+
             EntityDart dart = new EntityDart(world, entityplayer, f * 2.0F, (short)(itemstack.getItemDamage() - 1));
 
             itemstack.damageItem(1, entityplayer);
@@ -83,9 +83,13 @@ public class ItemDartGun extends ItemTropicraft {
                 }
                 slot++;
             }
+            
+            slot = TropicraftUtils.getSlotOfItemWithDamage(entityplayer.inventory, TCItemRegistry.dart, itemstack.getItemDamage() - 1);
 
             if (!world.isRemote) {
-                entityplayer.inventory.mainInventory[slot].stackSize--;
+                if (slot > -1)
+                    entityplayer.inventory.mainInventory[slot].stackSize--;
+                
                 EntityDart entitydart = new EntityDart(world, entityplayer, f * 2.0F, (short)(itemstack.getItemDamage() - 1));
                 world.spawnEntityInWorld(entitydart);
             }
@@ -99,9 +103,7 @@ public class ItemDartGun extends ItemTropicraft {
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-        System.out.println("henk1");
-        if (!world.isRemote && (entityplayer.capabilities.isCreativeMode || itemstack.getItemDamage() > 0)) {
-            System.out.println("henk2");
+        if (entityplayer.capabilities.isCreativeMode || itemstack.getItemDamage() > 0) {
             entityplayer.setItemInUse(itemstack, getMaxItemUseDuration(itemstack));
         }
         return itemstack;
