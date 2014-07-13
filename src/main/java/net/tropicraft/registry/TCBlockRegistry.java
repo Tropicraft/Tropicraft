@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
 import net.tropicraft.block.BlockBambooChest;
+import net.tropicraft.block.BlockBambooChute;
 import net.tropicraft.block.BlockBambooDoor;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
@@ -26,6 +27,7 @@ import net.tropicraft.block.BlockPalmLeaves;
 import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockPortalWall;
 import net.tropicraft.block.BlockRainStopper;
+import net.tropicraft.block.BlockRainforestLeaves;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTikiTorch;
 import net.tropicraft.block.BlockTropicraft;
@@ -122,6 +124,8 @@ public class TCBlockRegistry {
 	public static final BlockPalmLeaves palmLeaves = new BlockPalmLeaves();
 	public static final BlockRainforestLeaves rainforestLeaves = new BlockRainforestLeaves();
 	
+	public static final BlockBambooChute bambooChute = new BlockBambooChute();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -174,6 +178,7 @@ public class TCBlockRegistry {
 		registerBlock(palmLeaves, TCNames.palmLeaves);
 		Blocks.fire.setFireInfo(TCBlockRegistry.palmLeaves, 30, 60);
 		registerMultiBlock(rainforestLeaves, TCNames.leafRainforest, TCNames.rainforestLeafNames);
+		registerBlock(bambooChute, TCNames.bambooChute);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

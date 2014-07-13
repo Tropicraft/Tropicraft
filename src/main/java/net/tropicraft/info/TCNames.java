@@ -66,6 +66,7 @@ public class TCNames {
 	public static final String[] rainforestLeafNames = new String[]{"Kapok", "Mahogany"};
 	public static final String leaf = "leaf";
 	public static final String[] fruitLeafNames = new String[]{"Grapefruit", "Lemon", "Lime", "Orange"};
+	public static final String bambooChute = "bambooChute";
 
 	// Item names
 	public static final String frogLeg = "frogLeg";

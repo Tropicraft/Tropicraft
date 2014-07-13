@@ -1,4 +1,4 @@
-package net.tropicraft.registry;
+package net.tropicraft.block;
 
 import java.util.List;
 import java.util.Random;
@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
