@@ -65,9 +65,9 @@ public class TCBlockRegistry {
 	public static final BlockTropicraft chunkOHead = new BlockChunkOHead();
 	public static final BlockTropicraftStairs chunkStairs = new BlockTropicraftStairs(TCNames.chunkStairs, chunkOHead, 0);
 	
-	public static final BlockTropicraft eudialyteOre = new BlockTropicraftOre();
-	public static final BlockTropicraft zirconOre = new BlockTropicraftOre();
-	public static final BlockTropicraft azuriteOre = new BlockTropicraftOre();
+	public static final Block eudialyteOre = new BlockTropicraftOre().setHardness(3.0F).setResistance(5.0F);
+	public static final Block zirconOre = new BlockTropicraftOre().setHardness(4.0F).setResistance(5.0F);
+	public static final Block azuriteOre = new BlockTropicraftOre().setHardness(3.0F).setResistance(5.0F);
 	
 	public static final BlockTropicraft oreBlocks = new BlockTropicraftMulti(TCNames.oreBlockNames);
 	public static final BlockTropicraft thatchBundle = new BlockBundle(TCNames.thatchBundle);

@@ -28,6 +28,7 @@ public class ItemTropicraftMulti extends ItemTropicraft {
 	public ItemTropicraftMulti(String[] names) {
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
+        this.maxStackSize = 64;
 		this.names = names;
 	}
 	
