@@ -15,22 +15,16 @@ import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.world.biomes.BiomeGenTropicraft;
 
-public class WorldGenForestAltarRuin extends TCGenBase {
-
-	private int x, z;
-	
-	private final int DIR;
+public class WorldGenForestAltarRuin extends TCDirectionalGen {
 	
 	public WorldGenForestAltarRuin(World world, Random random) {
-		super(world, random);
-		DIR = this.rand.nextInt(4);
+		super(world, random, random.nextInt(4));
 	}
 
 	@Override
 	public boolean generate(int i, int j, int k) {
-		x = i;
 		j = Integer.MAX_VALUE;
-		z = k;
+		this.setOrigin(i, k);
 		
 		final int width = (rand.nextInt(2) + 3) * 2;
 		final int length = rand.nextInt(6) + 10;
@@ -95,7 +89,7 @@ public class WorldGenForestAltarRuin extends TCGenBase {
 						this.placeBlockWithDir(x, y + 2, z, TCBlockRegistry.tikiTorch, 1);
 						this.placeBlockWithDir(x, y + 3, z, TCBlockRegistry.tikiTorch, 0);
 					} else if(x != halfWidth - 1 && x != halfWidth) {
-						this.placeBlockWithDir(x, y + 1, z, TCBlockRegistry.palmStairs, this.DIR);
+						this.placeBlockWithDir(x, y + 1, z, TCBlockRegistry.palmStairs, this.dir);
 						if(!hasGennedTunnel) {
 							generateTunnel(x, y, z);
 							hasGennedTunnel = true;
@@ -196,51 +190,6 @@ public class WorldGenForestAltarRuin extends TCGenBase {
 		{
 			return new ItemStack(TCItemRegistry.blowGun, 1);
 		}
-	}
-	
-	private void placeBlockWithDir(int i, int j, int k, Block block, int meta) {
-		switch(this.DIR) {
-			case 2:
-				this.worldObj.setBlock(this.x + i, j, this.z + k, block, meta, 3);
-				return;
-			case 0:
-				this.worldObj.setBlock(this.x + k, j, this.z + i, block, meta, 3);
-				return;
-			case 3:
-				this.worldObj.setBlock(this.x - i, j, this.z - k, block, meta, 3);
-				return;
-			case 1:
-				this.worldObj.setBlock(this.x - k, j, this.z - i, block, meta, 3);
-				return;
-		}
-	}
-	
-	private TileEntity getTEWithDir(int i, int j, int k) {
-		switch(this.DIR) {
-			case 2:
-				return this.worldObj.getTileEntity(this.x + i, j, this.z + k);
-			case 0:
-				return this.worldObj.getTileEntity(this.x + k, j, this.z + i);
-			case 3:
-				return this.worldObj.getTileEntity(this.x - i, j, this.z - k);
-			case 1:
-				return this.worldObj.getTileEntity(this.x - k, j, this.z - i);
-		}
-		return null;
-	}
-	
-	private int getTerrainHeightWithDir(int i, int k) {
-		switch(this.DIR) {
-			case 2:
-				return this.getTerrainHeightAt(this.x + i, this.z + k);
-			case 0:
-				return this.getTerrainHeightAt(this.x + k, this.z + i);
-			case 3:
-				return this.getTerrainHeightAt(this.x - i, this.z - k);
-			case 1:
-				return this.getTerrainHeightAt(this.x - k, this.z - i);
-		}
-		return 64;
 	}
 	
 }

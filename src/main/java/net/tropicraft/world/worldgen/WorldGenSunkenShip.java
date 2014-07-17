@@ -13,21 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class WorldGenSunkenShip extends TCGenBase {
-
-	private int x, z;
-	
-	private final int DIR;
+public class WorldGenSunkenShip extends TCDirectionalGen {
 
 	public WorldGenSunkenShip(World world, Random random) {
-		super(world, random);
-		DIR = this.rand.nextInt(4);
+		super(world, random, random.nextInt(4));
 	}
 
 	@Override
 	public boolean generate(int i, int j, int k) {
-		this.x = i;
-		this.z = k;
+		this.setOrigin(i, k);
 		
 		j = this.getTerrainHeightAt(i, k);
 		
@@ -100,37 +94,6 @@ public class WorldGenSunkenShip extends TCGenBase {
 		}
 		
 		return false;
-	}
-	
-	private void placeBlockWithDir(int i, int j, int k, Block block, int meta) {
-		switch(this.DIR) {
-			case 2:
-				this.worldObj.setBlock(this.x + i, j, this.z + k, block, meta, 3);
-				return;
-			case 0:
-				this.worldObj.setBlock(this.x + k, j, this.z + i, block, meta, 3);
-				return;
-			case 3:
-				this.worldObj.setBlock(this.x - i, j, this.z - k, block, meta, 3);
-				return;
-			case 1:
-				this.worldObj.setBlock(this.x - k, j, this.z - i, block, meta, 3);
-				return;
-		}
-	}
-	
-	private TileEntity getTEWithDir(int i, int j, int k) {
-		switch(this.DIR) {
-			case 2:
-				return this.worldObj.getTileEntity(this.x + i, j, this.z + k);
-			case 0:
-				return this.worldObj.getTileEntity(this.x + k, j, this.z + i);
-			case 3:
-				return this.worldObj.getTileEntity(this.x - i, j, this.z - k);
-			case 1:
-				return this.worldObj.getTileEntity(this.x - k, j, this.z - i);
-		}
-		return null;
 	}
 	
 	public ItemStack randLoot()
