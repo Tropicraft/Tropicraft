@@ -180,9 +180,10 @@ item.tropicraft:curare.name=Curare
 item.tropicraft:blowGun.name=Blow Gun
 
 #Entity localizations
-entity.tropicraft:beachChair.name=Beach Chair
-entity.tropicraft:umbrella.name=Umbrella
-entity.tropicraft:coconutBomb.name=Coconut Bomb
+entity.tropicraft.beachChair.name=Beach Chair
+entity.tropicraft.umbrella.name=Umbrella
+entity.tropicraft.coconutBomb.name=Coconut Bomb
+entity.tropicraft.iguana.name=Iguana
 
 #Gui localizations
 gui.tropicraft:airType=Air Type
