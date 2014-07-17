@@ -32,7 +32,6 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
 
     public EntityTropicraftWaterMob(World world) {
         super(world);
-
         important1 = 0.0F;       
         randomMotionSpeed = 0.0F;
         important2 = 0.0F;
@@ -49,6 +48,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
         horFactor = .1F;
         climbFactor = .1F;
         this.experienceValue = 5;
+        this.type = WaterMobType.OCEAN_DWELLER;
     }
 
     public EntityTropicraftWaterMob(World par1World, WaterMobType type) {
@@ -156,7 +156,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
     @Override
     protected void updateEntityActionState() {
         ++this.entityAge;
-        //     this.despawnEntity();
+            // this.despawnEntity();
 
         if(targetEntity != null) {
             if(targetEntity.isDead || !targetEntity.isInWater() || this.getDistanceToEntity(targetEntity) > 10) {
@@ -342,13 +342,8 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000000298023224D);
+    //    this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000000298023224D);
     }
-    /*  
-    @Override
-    public void moveEntityWithHeading(float f, float f1) {
-        moveEntity(motionX, motionY, motionZ);
-    }*/
 
     public WaterMobType getType() {
         return this.type;
@@ -369,6 +364,11 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
         return 1 + worldObj.rand.nextInt(3);
     }
 
+    @Override
+    public void moveEntityWithHeading(float f, float f1) {
+        moveEntity(motionX, motionY, motionZ);
+    }
+    
     /**
      * Returns the sound this mob makes while it's alive.
      */
@@ -405,7 +405,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
         //TODO CHANGE THIS TO BE THE WATER HEIGHT LEVEL IN THE TROPICS!
         SURFACE_TROPICS(90, 88),
         SURFACE_OVERWORLD(63, 62),
-        OCEAN_DWELLER(63, 32);
+        OCEAN_DWELLER(62, 32);
 
         /** The highest this water mob can go in the water (eg, the highest y-value) */
         final int shallowDepth;

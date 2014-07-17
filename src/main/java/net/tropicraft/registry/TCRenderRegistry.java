@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.client.entity.model.ModelEIH;
+import net.tropicraft.client.entity.model.ModelEagleRay;
 import net.tropicraft.client.entity.model.ModelIguana;
 import net.tropicraft.client.entity.model.ModelSeaTurtle;
 import net.tropicraft.client.entity.model.ModelSeahorse;
@@ -15,6 +16,7 @@ import net.tropicraft.client.entity.model.ModelTurtleEgg;
 import net.tropicraft.client.entity.render.RenderChair;
 import net.tropicraft.client.entity.render.RenderDart;
 import net.tropicraft.client.entity.render.RenderEIH;
+import net.tropicraft.client.entity.render.RenderEagleRay;
 import net.tropicraft.client.entity.render.RenderIguana;
 import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeaTurtle;
@@ -32,6 +34,7 @@ import net.tropicraft.entity.placeable.EntityUmbrella;
 import net.tropicraft.entity.pool.EntityPoolFloat;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
+import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
 import net.tropicraft.entity.underdasea.EntityTurtleEgg;
@@ -55,6 +58,7 @@ public class TCRenderRegistry {
         registerEntityRender(EntityPoisonBlot.class, new RenderPoisonBlot());
         registerEntityRender(EntitySeaTurtle.class, new RenderSeaTurtle(new ModelSeaTurtle(), 0.75F));
         registerEntityRender(EntityTurtleEgg.class, new RenderTurtleEgg(new ModelTurtleEgg(), 0.75F));
+        registerEntityRender(EntityEagleRay.class, new RenderEagleRay());
     }
 
     /**
