@@ -1,11 +1,11 @@
 package net.tropicraft.item;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.tropicraft.entity.hostile.EntityTreeFrog;
-import net.tropicraft.entity.passive.EntityTreeFrogGreen;
+import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 
 public class ItemWaterWand extends ItemTropicraft {
 
@@ -37,7 +37,7 @@ public class ItemWaterWand extends ItemTropicraft {
 				}
 			}*/
 		//	player.setItemInUse(itemstack, 1);
-			EntityTreeFrog seahorse = new EntityTreeFrogGreen(world);
+			Entity seahorse = new EntitySeaTurtle(world);
 			seahorse.setLocationAndAngles(player.posX, player.posY, player.posZ, 0, 0);
 			world.spawnEntityInWorld(seahorse);
 		}

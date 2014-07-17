@@ -11,7 +11,7 @@ import net.tropicraft.registry.TCCreativeTabRegistry;
 public class BlockPurifiedSand extends BlockFalling {
 
     public BlockPurifiedSand() {
-        super();
+        super(Material.sand);
         this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
     }
     

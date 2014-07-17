@@ -186,6 +186,11 @@ entity.tropicraft.umbrella.name=Umbrella
 entity.tropicraft.coconutBomb.name=Coconut Bomb
 entity.tropicraft.Iguana.name=Iguana
 entity.tropicraft.EIH.name=EIH
+entity.tropicraft.Seahorse.name=Seahorse
+entity.tropicraft.SeaTurtle.name=Sea Turtle
+entity.tropicraft.SeaTurtleEgg.name=Sea Turtle Egg
+entity.tropicraft.PoisonBlot.name=Dart Frog Poison Blot
+entity.tropicraft.Dart.name=Poison Dart
 
 #Gui localizations
 gui.tropicraft:airType=Air Type
