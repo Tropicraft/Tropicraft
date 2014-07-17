@@ -19,7 +19,5 @@ public abstract class EntityTropicraftAnimal extends EntityAnimal {
     protected String tcSound(String postfix) {
         return String.format("%s:%s", TCInfo.MODID, postfix);
     }
-    
-    public abstract EnumTropiMobType getMobType();
 
 }

@@ -105,11 +105,6 @@ public class EntityIguana extends EntityTropicraftAnimal {
     }
 
     @Override
-    public EnumTropiMobType getMobType() {
-        return EnumTropiMobType.REPTILE;
-    }
-
-    @Override
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);

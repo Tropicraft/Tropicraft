@@ -4,7 +4,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.tropicraft.entity.hostile.EntityEIH;
+import net.tropicraft.entity.hostile.EntityTreeFrog;
+import net.tropicraft.entity.passive.EntityTreeFrogGreen;
 
 public class ItemWaterWand extends ItemTropicraft {
 
@@ -36,7 +37,7 @@ public class ItemWaterWand extends ItemTropicraft {
 				}
 			}*/
 		//	player.setItemInUse(itemstack, 1);
-			EntityEIH seahorse = new EntityEIH(world);
+			EntityTreeFrog seahorse = new EntityTreeFrogGreen(world);
 			seahorse.setLocationAndAngles(player.posX, player.posY, player.posZ, 0, 0);
 			world.spawnEntityInWorld(seahorse);
 		}
