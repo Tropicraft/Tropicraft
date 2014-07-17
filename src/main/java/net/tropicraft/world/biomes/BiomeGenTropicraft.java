@@ -8,10 +8,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
 import net.tropicraft.world.worldgen.WorldGenEIH;
+import net.tropicraft.world.worldgen.WorldGenSunkenShip;
 
 public class BiomeGenTropicraft extends BiomeGenBase {
 
-	private static final int EIH_CHANCE = 25;
+	private static final int EIH_CHANCE = 20;
+	private static final int SHIPWRECK_CHANCE = 200;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -55,8 +57,12 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	public void decorate(World world, Random rand, int x, int z) {		
 		new WorldGenBamboo(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
 		
-		if(rand.nextInt(2) == 0) {
+		if(rand.nextInt(EIH_CHANCE) == 0) {
 			new WorldGenEIH(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+		}
+		
+		if(rand.nextInt(SHIPWRECK_CHANCE) == 0) {
+			new WorldGenSunkenShip(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
 		}
 	}
 	
