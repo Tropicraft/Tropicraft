@@ -10,11 +10,6 @@ public abstract class EntityLand extends EntityCreature {
         super(world);
         setSize(.7F, 1.95F);
     }
-    
-    @Override
-    public void applyEntityAttributes() {
-        super.applyEntityAttributes();
-    }
 
     @Override
     public boolean isAIEnabled() {
@@ -29,8 +24,6 @@ public abstract class EntityLand extends EntityCreature {
     protected String tcSound(String postfix) {
         return String.format("%s:%s", TCInfo.MODID, postfix);
     }
-    
-    public abstract EnumTropiMobType getMobType();
     
     public static enum EnumTropiMobType {
         WATER, FIRE, REPTILE

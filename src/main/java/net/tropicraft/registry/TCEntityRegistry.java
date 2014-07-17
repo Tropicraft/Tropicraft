@@ -2,6 +2,7 @@ package net.tropicraft.registry;
 
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
@@ -21,6 +22,7 @@ public class TCEntityRegistry {
 		registerEntity(EntitySeahorse.class, "Seahorse", 120, 5, true);
 		registerEntity(EntityDart.class, "Dart", 120, 4, true);
 		registerEntity(EntityIguana.class, "Iguana", 80, 3, true);
+		registerEntity(EntityEIH.class, "EIH", 80, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

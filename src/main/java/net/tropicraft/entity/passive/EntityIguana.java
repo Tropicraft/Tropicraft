@@ -2,15 +2,10 @@ package net.tropicraft.entity.passive;
 
 import java.util.List;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -27,7 +22,7 @@ public class EntityIguana extends EntityTropicraftAnimal {
     public EntityIguana(World world) {
         super(world);
         this.isImmuneToFire = true;
-        setSize(0.3F, 0.4F);
+        setSize(1.0F, 0.4F);
     }
 
     /**
@@ -103,7 +98,7 @@ public class EntityIguana extends EntityTropicraftAnimal {
 
     @Override
     protected void dropFewItems(boolean recentlyHit, int looting) {
-        int numDrops = this.rand.nextInt(3);
+        int numDrops = 3 + this.rand.nextInt(1 + looting);
 
         for (int i = 0; i < numDrops; i++)
             this.dropItem(TCItemRegistry.scale, 1);
@@ -164,5 +159,10 @@ public class EntityIguana extends EntityTropicraftAnimal {
     @Override
     public EntityAgeable createChild(EntityAgeable var1) {
         return new EntityIguana(worldObj);
+    }
+    
+    @Override
+    public int getMaxSpawnedInChunk() {
+        return 6;
     }
 }

@@ -6,16 +6,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.client.entity.model.ModelEIH;
 import net.tropicraft.client.entity.model.ModelIguana;
 import net.tropicraft.client.entity.model.ModelSeahorse;
 import net.tropicraft.client.entity.render.RenderChair;
 import net.tropicraft.client.entity.render.RenderDart;
+import net.tropicraft.client.entity.render.RenderEIH;
 import net.tropicraft.client.entity.render.RenderIguana;
 import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeahorse;
 import net.tropicraft.client.entity.render.RenderUmbrella;
 import net.tropicraft.client.tileentity.TileEntityAirCompressorRenderer;
 import net.tropicraft.client.tileentity.TileEntityBambooChestRenderer;
+import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
@@ -37,6 +40,7 @@ public class TCRenderRegistry {
 		registerEntityRender(EntitySeahorse.class, new RenderSeahorse(new ModelSeahorse(), 0.75F));
 		registerEntityRender(EntityDart.class, new RenderDart());
 		registerEntityRender(EntityIguana.class, new RenderIguana(new ModelIguana(), 0.75F));
+		registerEntityRender(EntityEIH.class, new RenderEIH(new ModelEIH(), 0.75F));
 	}
 	
 	/**

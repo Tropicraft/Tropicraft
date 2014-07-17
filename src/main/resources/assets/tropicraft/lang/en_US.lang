@@ -183,7 +183,8 @@ item.tropicraft:blowGun.name=Blow Gun
 entity.tropicraft.beachChair.name=Beach Chair
 entity.tropicraft.umbrella.name=Umbrella
 entity.tropicraft.coconutBomb.name=Coconut Bomb
-entity.tropicraft.iguana.name=Iguana
+entity.tropicraft.Iguana.name=Iguana
+entity.tropicraft.EIH.name=EIH
 
 #Gui localizations
 gui.tropicraft:airType=Air Type
