@@ -77,6 +77,7 @@ tile.tropicraft:leafRainforest_Kapok.name=Kapok Leaves
 tile.tropicraft:leafRainforest_Mahogany.name=Mahogany Leaves
 tile.tropicraft:portal.name=Tropics Portal
 tile.tropicraft:portalWall.name=Tropics Portal Wall
+tile.tropicraft:purifiedSand.name=Purified Sand
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
