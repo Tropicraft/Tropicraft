@@ -6,14 +6,17 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
 import net.tropicraft.world.worldgen.WorldGenEIH;
 import net.tropicraft.world.worldgen.WorldGenSunkenShip;
+import net.tropicraft.world.worldgen.WorldGenTallFlower;
 
 public class BiomeGenTropicraft extends BiomeGenBase {
 
 	private static final int EIH_CHANCE = 20;
 	private static final int SHIPWRECK_CHANCE = 200;
+	private static final int FLOWERS_CHANCE = 2;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -59,6 +62,14 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 		
 		if(rand.nextInt(EIH_CHANCE) == 0) {
 			new WorldGenEIH(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+		}
+		
+		if(rand.nextInt(FLOWERS_CHANCE) == 0) {
+			(new WorldGenTallFlower(world, rand, TCBlockRegistry.tallFlowers, 0, 1)).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+		}
+		
+		if(rand.nextInt(FLOWERS_CHANCE) == 0) {
+			(new WorldGenTallFlower(world, rand, TCBlockRegistry.pineapple, 7, 8)).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
 		}
 		
 		if(rand.nextInt(SHIPWRECK_CHANCE) == 0) {
