@@ -17,6 +17,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	private static final int EIH_CHANCE = 20;
 	private static final int SHIPWRECK_CHANCE = 200;
 	private static final int FLOWERS_CHANCE = 2;
+	private static final int BAMBOO_CHANCE = 2;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -57,24 +58,49 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	}
 	
 	@Override
-	public void decorate(World world, Random rand, int x, int z) {		
-		new WorldGenBamboo(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+	public void decorate(World world, Random rand, int x, int z) {	
+		if(rand.nextInt(BAMBOO_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenBamboo(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
 		
 		if(rand.nextInt(EIH_CHANCE) == 0) {
-			new WorldGenEIH(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenEIH(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
 		if(rand.nextInt(FLOWERS_CHANCE) == 0) {
-			(new WorldGenTallFlower(world, rand, TCBlockRegistry.tallFlowers, 0, 1)).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			(new WorldGenTallFlower(world, rand, TCBlockRegistry.tallFlowers, 0, 1)).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
 		if(rand.nextInt(FLOWERS_CHANCE) == 0) {
-			(new WorldGenTallFlower(world, rand, TCBlockRegistry.pineapple, 7, 8)).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			(new WorldGenTallFlower(world, rand, TCBlockRegistry.pineapple, 7, 8)).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
 		if(rand.nextInt(SHIPWRECK_CHANCE) == 0) {
-			new WorldGenSunkenShip(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenSunkenShip(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
+	}
+	
+	public int getTerrainHeightAt(World world, int x, int z)
+	{
+		for(int y = 256; y > 0; y--)
+		{
+			Block id = world.getBlock(x, y, z);
+			if(id == Blocks.grass || id == Blocks.dirt || id == Blocks.sand)
+			{
+				return y + 1;
+			}
+		}
+		return 0;
 	}
 	
 	public final int randCoord(Random rand, int base, int variance) {

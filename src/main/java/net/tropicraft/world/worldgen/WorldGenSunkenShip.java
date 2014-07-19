@@ -23,8 +23,6 @@ public class WorldGenSunkenShip extends TCDirectionalGen {
 	public boolean generate(int i, int j, int k) {
 		this.setOrigin(i, k);
 		
-		j = this.getTerrainHeightAt(i, k);
-		
 		if(this.worldObj.getBlock(i, j + 4, k) != TCBlockRegistry.tropicsWater) { // Must be water 4 blocks above the sea floor
 			return false;
 		}

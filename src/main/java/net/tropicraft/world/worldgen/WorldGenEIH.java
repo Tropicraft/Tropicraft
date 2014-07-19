@@ -26,8 +26,6 @@ public class WorldGenEIH extends TCGenBase
      * @param k z coordinate
      */
     public boolean generate(int i, int j, int k) {
-    	j = this.getTerrainHeightAt(i, k);
-    	
         byte height = 5;
         
         if(j < 1 || j + height + 1 > CHUNK_SIZE_Y) {
