@@ -12,6 +12,10 @@ import java.util.Random;
 
 public class WorldGenTallTree extends TCGenBase {
 
+	private static final int VINE_CHANCE = 5;
+	private static final int SMALL_LEAF_CHANCE = 3;
+	private static final int SECOND_CANOPY_CHANCE = 3;
+	
 	private boolean gen;
 	private Block woodBlock = TCBlockRegistry.logs;
 	private int woodMetadata = 1;
@@ -79,53 +83,45 @@ public class WorldGenTallTree extends TCGenBase {
 			worldObj.setBlock(i + 1, y, k, woodBlock, woodMetadata, 3);
 			worldObj.setBlock(i, y, k - 1, woodBlock, woodMetadata, 3);
 			worldObj.setBlock(i, y, k + 1, woodBlock, woodMetadata, 3);
-			if(y - j > height / 2 && rand.nextInt(3) == 0)
+			if(y - j > height / 2 && rand.nextInt(SMALL_LEAF_CHANCE) == 0)
 			{
-				int ox = rand.nextInt(3) - 1 + i;
-				int oz = rand.nextInt(3) - 1 + k;
-				genCircle(ox, y + 1, oz, 1, 0, leafBlock, 3, false);
-				genCircle(ox, y, oz, 2, 1, leafBlock, 3, false);
-				checkAndPlaceBlockLine(new int[] {i, y, k}, new int[] {ox, y, oz}, woodBlock, 1, Arrays.asList(0, leafBlock, Blocks.vine));
-				for(int x = i - 3; x <= i + 3; x++)
+				int nx = rand.nextInt(3) - 1 + i;
+				int nz = rand.nextInt(3) - 1 + k;
+				
+				genCircle(nx, y + 1, nz, 1, 0, leafBlock, 3, false);
+				genCircle(nx, y, nz, 2, 1, leafBlock, 3, false);
+				
+				for(int x = nx - 3; x <= nx + 3; x++)
 				{
-					for(int z = k - 3; z <= k + 3; z++)
+					for(int z = nz - 3; z <= nz + 3; z++)
 					{
-						for(int y1 = y - 1; y1 <= y + 1; y1++)
+						for(int y1 = y - 1; y1 <= y; y1++)
 						{
-							if(rand.nextInt(5) == 0)
+							if(rand.nextInt(VINE_CHANCE) == 0)
 								genVines(x, y1, z);
 						}
 					}
 				}
 			}
-			if(y - j > height - (height / 4) && y - j < height - 3 && rand.nextInt(3) == 0)
+			if(y - j > height - (height / 4) && y - j < height - 3 && rand.nextInt(SECOND_CANOPY_CHANCE) == 0)
 			{
-				int ox = i + rand.nextInt(9) - 4;
-				int oz = k + rand.nextInt(9) - 4;
+				int nx = i + rand.nextInt(9) - 4;
+				int nz = k + rand.nextInt(9) - 4;
 				
 				int leafSize = rand.nextInt(3) + 5;
 				
-				genCircle(ox, y + 3, oz, leafSize - 2, 0, leafBlock, 3, false);
-				genCircle(ox, y + 2, oz, leafSize - 1, leafSize - 3, leafBlock, 3, false);
-				genCircle(ox, y + 1, oz, leafSize, leafSize - 1, leafBlock, 3, false);
+				genCircle(nx, y + 3, nz, leafSize - 2, 0, leafBlock, 3, false);
+				genCircle(nx, y + 2, nz, leafSize - 1, leafSize - 3, leafBlock, 3, false);
+				genCircle(nx, y + 1, nz, leafSize, leafSize - 1, leafBlock, 3, false);
 				
-				int bn = rand.nextInt(4) + 4;
-				
-				for(int b = 0; b < bn; b++)
+				placeBlockLine(new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, woodBlock, woodMetadata);
+				for(int x = nx - leafSize; x <= nx + leafSize; x++)
 				{
-					double randAngle = randAngle();
-					int branchLength = rand.nextInt(leafSize - 4) + 3;
-					int ax = (int) Math.round((branchLength * Math.sin(randAngle)) + ox);
-					int az = (int) Math.round((branchLength * Math.cos(randAngle)) + oz); 
-					checkAndPlaceBlockLine(new int[] {i, y, k}, new int[] {ax, y, az}, woodBlock, 1, Arrays.asList(0, leafBlock, Blocks.vine));
-				}
-				for(int x = i - leafSize; x <= i + leafSize; x++)
-				{
-					for(int z = k - leafSize; z <= k + leafSize; z++)
+					for(int z = nz - leafSize; z <= nz + leafSize; z++)
 					{
-						for(int y1 = y; y1 <= y + 3; y1++)
+						for(int y1 = y; y1 <= y + 2; y1++)
 						{
-							if(rand.nextInt(4) == 0)
+							if(rand.nextInt(VINE_CHANCE) == 0)
 								genVines(x, y1, z);
 						}
 					}
@@ -135,27 +131,17 @@ public class WorldGenTallTree extends TCGenBase {
 		
 		int leafSize = rand.nextInt(5) + 9;
 		
-		genCircle(i, j + height /*+ 6*/, k, leafSize - 2, 0, leafBlock, 3, false);
-		genCircle(i, j + height - 1/*5*/, k, leafSize - 1, leafSize - 4, leafBlock, 3, false);
-		genCircle(i, j + height - 2/*4*/, k, leafSize, leafSize - 1, leafBlock, 3, false);
+		genCircle(i, j + height, k, leafSize - 2, 0, leafBlock, 3, false);
+		genCircle(i, j + height - 1, k, leafSize - 1, leafSize - 4, leafBlock, 3, false);
+		genCircle(i, j + height - 2, k, leafSize, leafSize - 1, leafBlock, 3, false);
 		
-		int bn = rand.nextInt(4) + 6;
-		
-		for(int b = 0; b < bn; b++)
-		{
-			double randAngle = randAngle();
-			int branchLength = rand.nextInt(leafSize - 6) + 3;
-			int ax = (int) Math.round((branchLength * Math.sin(randAngle)) + i);
-			int az = (int) Math.round((branchLength * Math.cos(randAngle)) + k); 
-			checkAndPlaceBlockLine(new int[] {i, j + height - 1, k}, new int[] {ax, j + height + 5, az}, woodBlock, 1, Arrays.asList(0, leafBlock, Blocks.vine));
-		}
 		for(int x = i - leafSize; x <= i + leafSize; x++)
 		{
 			for(int z = k - leafSize; z <= k + leafSize; z++)
 			{
 				for(int y1 = j + height + 3; y1 <= j + height + 6; y1++)
 				{
-					if(rand.nextInt(4) == 0)
+					if(rand.nextInt(VINE_CHANCE) == 0)
 						genVines(x, y1, z);
 				}
 			}
