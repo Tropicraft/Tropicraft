@@ -41,6 +41,7 @@ import net.tropicraft.item.tool.ItemTropicraftPickaxe;
 import net.tropicraft.item.tool.ItemTropicraftShovel;
 import net.tropicraft.item.tool.ItemTropicraftSword;
 import net.tropicraft.item.tool.ItemTropicraftTool;
+import net.tropicraft.item.tool.ItemUnderwaterPickaxe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
@@ -147,6 +148,9 @@ public class TCItemRegistry {
     public static final ItemCurare curare = new ItemCurare();
     public static final ItemDart dart = new ItemDart();
     public static final ItemDartGun blowGun = new ItemDartGun();
+    
+    public static ToolMaterial materialUnderwaterTools = EnumHelper.addToolMaterial("underwater", 2, 500, 6.5F, 2.5F, 14);
+    public static final ItemTropicraftTool underwaterPickaxe = new ItemUnderwaterPickaxe(materialUnderwaterTools, "underwater pick");
 
     /**
      * Register all the items
@@ -239,6 +243,8 @@ public class TCItemRegistry {
         registerItem(pickaxeZirconium, TCNames.pickaxeZirconium);
         registerItem(shovelZirconium, TCNames.shovelZirconium);
         registerItem(swordZirconium, TCNames.swordZirconium);
+        
+        registerItem(underwaterPickaxe, "underwater pick");
     }
 
     /**
