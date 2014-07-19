@@ -6,10 +6,14 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.registry.TCCreativeTabRegistry;
@@ -22,6 +26,25 @@ public class BlockMineralSands extends BlockFalling {
     public BlockMineralSands() {
         super(Material.sand);
         this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
+    }
+    
+    @Override
+    public void onEntityWalking(World world, int x, int y, int z, Entity entity) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        
+        // If not black sands
+        if (metadata != 2) return;
+        
+        if (entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)entity;
+            
+            ItemStack stack = player.getEquipmentInSlot(1);
+            
+            if (stack == null)
+                player.attackEntityFrom(DamageSource.lava, 0.5F);
+        } else {
+            entity.attackEntityFrom(DamageSource.lava, 0.5F);
+        }
     }
     
     /**
@@ -40,9 +63,8 @@ public class BlockMineralSands extends BlockFalling {
     public int getRenderColor(int meta) {
         int color = CoralColors.getColor(meta);
         
+        // Don't colorize black
         return meta == 2 ? color : color | ColorizerGrass.getGrassColor(0.1, 1.0);
-        
-   //     return CoralColors.getColor(meta) | ColorizerGrass.getGrassColor(0.1, 1.0);
     }
 
     @Override
