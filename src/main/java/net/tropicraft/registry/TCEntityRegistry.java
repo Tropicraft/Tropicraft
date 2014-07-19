@@ -2,6 +2,7 @@ package net.tropicraft.registry;
 
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.hostile.EntityTreeFrogBlue;
 import net.tropicraft.entity.hostile.EntityTreeFrogRed;
@@ -39,6 +40,7 @@ public class TCEntityRegistry {
 		registerEntity(EntitySeaTurtle.class, "SeaTurtle", 80, 3, true);
 		registerEntity(EntityTurtleEgg.class, "SeaTurtleEgg", 80, 5, false);
 		registerEntity(EntityEagleRay.class, "EagleRay", 80, 1, true);
+		registerEntity(EntityAshenHunter.class, "AshenHunter", 80, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

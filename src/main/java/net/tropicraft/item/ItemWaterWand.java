@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.tropicraft.entity.underdasea.EntityEagleRay;
+import net.tropicraft.entity.hostile.EntityAshenHunter;
 
 public class ItemWaterWand extends ItemTropicraft {
 
@@ -37,7 +37,7 @@ public class ItemWaterWand extends ItemTropicraft {
 				}
 			}*/
 		//	player.setItemInUse(itemstack, 1);
-			Entity seahorse = new EntityEagleRay(world);
+			Entity seahorse = new EntityAshenHunter(world);
 			seahorse.setLocationAndAngles(player.posX, player.posY, player.posZ, 0, 0);
 			world.spawnEntityInWorld(seahorse);
 		}

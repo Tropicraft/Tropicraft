@@ -15,7 +15,7 @@ import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class ItemScubaGear extends ItemTropicraftArmor implements ISpecialArmor {
+public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     protected ScubaMaterial scubaMaterial;
 

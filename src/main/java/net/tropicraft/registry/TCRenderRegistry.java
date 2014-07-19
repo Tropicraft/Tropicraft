@@ -6,13 +6,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.client.entity.model.ModelAshen;
 import net.tropicraft.client.entity.model.ModelEIH;
-import net.tropicraft.client.entity.model.ModelEagleRay;
 import net.tropicraft.client.entity.model.ModelIguana;
 import net.tropicraft.client.entity.model.ModelSeaTurtle;
 import net.tropicraft.client.entity.model.ModelSeahorse;
 import net.tropicraft.client.entity.model.ModelTreeFrog;
 import net.tropicraft.client.entity.model.ModelTurtleEgg;
+import net.tropicraft.client.entity.render.RenderAshen;
 import net.tropicraft.client.entity.render.RenderChair;
 import net.tropicraft.client.entity.render.RenderDart;
 import net.tropicraft.client.entity.render.RenderEIH;
@@ -26,6 +27,7 @@ import net.tropicraft.client.entity.render.RenderTurtleEgg;
 import net.tropicraft.client.entity.render.RenderUmbrella;
 import net.tropicraft.client.tileentity.TileEntityAirCompressorRenderer;
 import net.tropicraft.client.tileentity.TileEntityBambooChestRenderer;
+import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.hostile.EntityTreeFrog;
 import net.tropicraft.entity.passive.EntityIguana;
@@ -59,6 +61,7 @@ public class TCRenderRegistry {
         registerEntityRender(EntitySeaTurtle.class, new RenderSeaTurtle(new ModelSeaTurtle(), 0.75F));
         registerEntityRender(EntityTurtleEgg.class, new RenderTurtleEgg(new ModelTurtleEgg(), 0.75F));
         registerEntityRender(EntityEagleRay.class, new RenderEagleRay());
+        registerEntityRender(EntityAshenHunter.class, new RenderAshen(new ModelAshen(), 0.75F));
     }
 
     /**
