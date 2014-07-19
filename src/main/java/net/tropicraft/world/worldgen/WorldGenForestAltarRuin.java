@@ -40,10 +40,22 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen {
 			}
 		}
 		
+		for(int y = j; worldObj.getBlock(i, y, k) != Blocks.air; y++) {
+			if(worldObj.getBlock(i, y, k) == TCBlockRegistry.tropicsWater) {
+				return false;
+			}
+		}
+		
 		for(int z = 0; z < length; z++) {
-			for(int x = 0; x < width; x++) {
+			mainloop:
+			for(int x = 0; x < width; x++) {				
 				for(int y = 0; y < 4; y++) {
-					this.placeBlockWithDir(x, y + j, z, Blocks.air, 0);
+					if(worldObj.getBlock(x, y + j, z) == TCBlockRegistry.logs) {
+						continue mainloop;
+					}
+					if(rand.nextInt(4) != 0) {
+						this.placeBlockWithDir(x, y + j, z, Blocks.air, 0);
+					}
 				}
 				int y = j;
 				this.placeBlockWithDir(x, y, z, TCBlockRegistry.logs, 1);
