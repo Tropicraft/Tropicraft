@@ -24,7 +24,6 @@ public class WorldGenTallFlower extends TCGenBase {
 
     @Override
     public boolean generate(int i, int j, int k) {
-    	j = this.getTerrainHeightAt(i, k);
         for(int l = 0; l < FLOWER_TRIES; l++) {
             int i1 = (i + rand.nextInt(8)) - rand.nextInt(8);
             int j1 = (j + rand.nextInt(3)) - rand.nextInt(3);

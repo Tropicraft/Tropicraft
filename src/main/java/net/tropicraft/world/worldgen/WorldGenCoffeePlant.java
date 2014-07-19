@@ -23,8 +23,6 @@ public class WorldGenCoffeePlant extends TCGenBase {
 	
 	@Override
 	public boolean generate(int x, int y, int z) {
-		y = this.getTerrainHeightAt(x, z);
-		
 		int nx = (x + rand.nextInt(8)) - rand.nextInt(8);
 		int nz = (z + rand.nextInt(8)) - rand.nextInt(8);
 		
