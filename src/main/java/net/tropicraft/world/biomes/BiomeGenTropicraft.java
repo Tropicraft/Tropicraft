@@ -93,7 +93,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 		{ //For scope
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
-			new WorldGenTropicraftFlowers(world, world.rand, TCBlockRegistry.flowers, DEFAULT_FLOWER_META).generate(i, getTerrainHeightAt(world, i, k), k);
+			new WorldGenTropicraftFlowers(world, rand, TCBlockRegistry.flowers, DEFAULT_FLOWER_META).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
 		if(rand.nextInt(SHIPWRECK_CHANCE) == 0) {
