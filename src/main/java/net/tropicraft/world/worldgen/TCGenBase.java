@@ -519,7 +519,7 @@ public abstract class TCGenBase extends WorldGenerator {
 	 */
 	public int getTerrainHeightAt(int x, int z)
 	{
-		for(int y = 256; y > 0; y--)
+		for(int y = worldObj.getHeightValue(x, z) + 1; y > 0; y--)
 		{
 			Block block = worldObj.getBlock(x, y, z);
 			if(block == Blocks.dirt || block == Blocks.grass || block == Blocks.sand || block == Blocks.stone)
