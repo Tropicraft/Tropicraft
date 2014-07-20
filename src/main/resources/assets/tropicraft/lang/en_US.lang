@@ -82,6 +82,7 @@ tile.tropicraft:mineralSand_Coral.name=Coral Sands
 tile.tropicraft:mineralSand_Green.name=Foamy Sands
 tile.tropicraft:mineralSand_Black.name=Black Sands
 tile.tropicraft:mineralSand_Mineral.name=Mineral Sands
+tile.tropicraft:sifter.name=Sifter
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

@@ -70,6 +70,7 @@ public class TCNames {
     public static final String purifiedSand = "purifiedSand";
     public static final String mineralSand = "mineralSand";
     public static final String[] mineralSandNames = new String[]{"Coral", "Green", "Black", "Mineral"};
+    public static final String sifter = "sifter";
 
     // Item names
     public static final String frogLeg = "frogLeg";
@@ -130,6 +131,8 @@ public class TCNames {
     public static final String curare = "curare";
     public static final String curareOverlay = "curareOverlay";
     public static final String dartGun = "blowGun";
+    public static final String shell = "shell";
+    public static final String[] shellNames = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

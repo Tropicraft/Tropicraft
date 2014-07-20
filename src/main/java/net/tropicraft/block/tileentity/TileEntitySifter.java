@@ -5,7 +5,9 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,6 +16,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCItemRegistry;
 
 public class TileEntitySifter extends TileEntity {
 
@@ -62,54 +65,68 @@ public class TileEntitySifter extends TileEntity {
             double y = this.yCoord + worldObj.rand.nextDouble()*1.4;
             double z = this.zCoord + worldObj.rand.nextDouble()*1.4;
 
-            // TODO determine what to spawn
-
-            if (isHeatedSifter()) {
-                dumpResults(x, y, z, SiftType.HEATED);
-            }
+            dumpResults(x, y, z, isHeatedSifter() ? SiftType.HEATED : SiftType.REGULAR);
 
             currentSiftTime = SIFT_TIME;
-            this.setSifting(false);
+            this.setSifting(false, 0, -1);
         }
     }
 
+    /**
+     * Drop all the necessary blocks/items from the sifter after sifting is complete
+     */
     public void dumpResults(double x, double y, double z, SiftType type) {
-        float refinedAmt = getTagCompound(siftItem).getFloat("AmtRefined");
+        if (type == SiftType.HEATED) {
+            float refinedAmt = getTagCompound(siftItem).getFloat("AmtRefined");
 
-        refinedAmt = refine(refinedAmt);
+            if (siftItem.getItem() == TCItemRegistry.ore)
+                refinedAmt = refine(refinedAmt);
 
-        // If this is an unrefined ore
-        if (refinedAmt > 0) {
+            if (siftItem.getItem() == Item.getItemFromBlock(TCBlockRegistry.mineralSands) && siftItem.getItemDamage() == 2)
+                siftItem = new ItemStack(TCItemRegistry.ore, 1, 5);
+
+            // If unrefined ore -> raftous ore ( fully refined )
+            if (refinedAmt == 100) {
+                siftItem = new ItemStack(TCItemRegistry.ore, 1, 6);
+            }
+
+            // Set the refined % tag and spawn the item and some purified sand
             getTagCompound(siftItem).setFloat("AmtRefined", refinedAmt);
-            spawn(siftItem, x, y, z);
+            spawn(siftItem, x, y, z);            
+            spawn(new ItemStack(TCBlockRegistry.purifiedSand), x, y, z);
         } else {
             dumpBeachResults(x, y, z);
         }
     }
 
+    /**
+     * Dump the items involved in regular sifting
+     */
     private void dumpBeachResults(double x, double y, double z) {
-        int dumpCount = rand.nextInt(3) + 3;
+        int dumpCount = rand.nextInt(3) + 1;
         ItemStack stack;
-        
+
+        spawn(new ItemStack(TCBlockRegistry.purifiedSand), x, y, z);
+
         while (dumpCount > 0) {
             dumpCount--;
-            
+
             if (rand.nextInt(10) == 0) {
                 stack = getRareItem();
             } else {
                 stack = getCommonItem();
             }
-            
+
             spawn(stack, x, y, z);
         }
     }
-    
+
     /**
      * Spawns an EntityItem with the given ItemStack at the given coordinates
      */
     private void spawn(ItemStack stack, double x, double y, double z) {
         if (worldObj.isRemote) return;
-        
+
         EntityItem eitem = new EntityItem(worldObj, x, y, z, stack);
         eitem.setLocationAndAngles(x, y, z, 0, 0);
         worldObj.spawnEntityInWorld(eitem);
@@ -123,18 +140,19 @@ public class TileEntitySifter extends TileEntity {
         case 1:
         case 2:
         case 4:
-            //     return new ItemStack(TCItemRegistry.shells, 1, dmg);
-        default:
-            return new ItemStack(TCBlockRegistry.purifiedSand, 1);
+        case 5:
+            return new ItemStack(TCItemRegistry.shells, 1, dmg);
         }
+
+        return getRareItem();
     }
 
     private ItemStack getRareItem() {
-        int dmg = rand.nextInt(6);
+        int dmg = rand.nextInt(8);
 
         switch (dmg) {
         case 0:
-            //TODO  return new ItemStack(TCItemRegistry.shells, 1, 3); //rube nautilus
+            return new ItemStack(TCItemRegistry.shells, 1, 3); //rube nautilus
         case 1:
             return new ItemStack(Items.gold_nugget, 1);
         case 2:
@@ -143,10 +161,12 @@ public class TileEntitySifter extends TileEntity {
             return new ItemStack(Items.wooden_shovel, 1);
         case 4:
             return new ItemStack(Items.glass_bottle, 1);
+        case 5:
+            return new ItemStack(TCItemRegistry.pearl, 1, 0);
+        case 6:
+            return new ItemStack(TCItemRegistry.pearl, 1, 1);
         default:
-            //TODO       return new ItemStack(TCItemRegistry.shells, 1, 3); //rube nautilus
-
-            return new ItemStack(Items.diamond, 1);
+            return new ItemStack(TCItemRegistry.shells, 1, 3); //rube nautilus
         }
     }
 
@@ -176,11 +196,19 @@ public class TileEntitySifter extends TileEntity {
         return block.getMaterial() == Material.fire || block.getMaterial() == Material.lava;
     }
 
-    public void setSifting(boolean flag) {
+    public void setSifting(boolean flag, int type, float refined) {
         this.isSifting = flag;
-        sync();
+        this.siftItem = type == -1 ? null : type == 1 ? new ItemStack(Blocks.sand) : 
+            type == 2 ? new ItemStack(TCBlockRegistry.mineralSands, 1, 2) : new ItemStack(TCItemRegistry.ore, 1, 5);
+
+            if (this.siftItem.getItem() == TCItemRegistry.ore)
+                getTagCompound(this.siftItem).setFloat("AmtRefined", refined);
+            else
+                System.err.println("stack is null : (");
+
+            sync();
     }
-    
+
     public boolean isSifting() {
         return this.isSifting;
     }

@@ -4,6 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.block.tileentity.TileEntityFirePit;
+import net.tropicraft.block.tileentity.TileEntitySifter;
 import net.tropicraft.block.tileentity.TileEntityTropicraftFlowerPot;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -14,6 +15,7 @@ public class TCTileEntityRegistry {
 		registerTE(TileEntityFirePit.class, "TCFirePit");
 		registerTE(TileEntityAirCompressor.class, "TCAirCompressor");
 		registerTE(TileEntityBambooChest.class, "TCBambooChest");
+		registerTE(TileEntitySifter.class, "TCSifter");
 	}
 	
 	private static void registerTE(Class<? extends TileEntity> clazz, String name) {

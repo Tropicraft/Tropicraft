@@ -32,14 +32,7 @@ public class ItemTropicraftOre extends ItemTropicraftMulti {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         int i = MathHelper.clamp_int(stack.getItemDamage(), 0, names.length - 1);
-        String uname = super.getUnlocalizedName() + "_" + names[i];
-/*        
-        if (stack.getItemDamage() == 5) {
-            int ui = getUnrefinedIndex(stack);
-            uname += ui > 0 ? ui : "";
-        }*/
-        
-        return uname;
+        return super.getUnlocalizedName() + "_" + names[i];
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
