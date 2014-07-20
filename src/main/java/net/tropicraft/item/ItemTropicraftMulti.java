@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -20,10 +21,10 @@ public class ItemTropicraftMulti extends ItemTropicraft {
 
 	/** Array of icons associated with this item */
 	@SideOnly(Side.CLIENT)
-	private IIcon[] icons;
+	protected IIcon[] icons;
 	
 	/** Names of each of the images */
-	private String[] names;
+	protected String[] names;
 	
 	public ItemTropicraftMulti(String[] names) {
         this.setHasSubtypes(true);
@@ -77,5 +78,15 @@ public class ItemTropicraftMulti extends ItemTropicraft {
 			icons[i] = iconRegister.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + "_" + names[i]);
 		}
 	}
+	
+    /**
+     * Retrives an existing nbt tag compound or creates a new one if it is null
+     * @param stack
+     */
+    public NBTTagCompound getTagCompound(ItemStack stack) {
+        if (!stack.hasTagCompound())
+            stack.setTagCompound(new NBTTagCompound());
 
+        return stack.getTagCompound();
+    }
 }

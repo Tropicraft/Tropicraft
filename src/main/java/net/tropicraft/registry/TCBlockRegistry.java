@@ -31,6 +31,7 @@ import net.tropicraft.block.BlockPortalWall;
 import net.tropicraft.block.BlockPurifiedSand;
 import net.tropicraft.block.BlockRainStopper;
 import net.tropicraft.block.BlockRainforestLeaves;
+import net.tropicraft.block.BlockSifter;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTikiTorch;
 import net.tropicraft.block.BlockTropicraft;
@@ -131,6 +132,7 @@ public class TCBlockRegistry {
 	public static final BlockFalling purifiedSand = new BlockPurifiedSand();
 	
 	public static final BlockMineralSands mineralSands = new BlockMineralSands();
+	public static final BlockSifter sifter = new BlockSifter();
 	
 	/**
 	 * Register all the blocks
@@ -187,6 +189,7 @@ public class TCBlockRegistry {
 		registerBlock(bambooChute, TCNames.bambooChute);
 		registerBlock(purifiedSand, TCNames.purifiedSand);
 		registerMultiBlock(mineralSands, TCNames.mineralSand, TCNames.mineralSandNames);
+		registerBlock(sifter, TCNames.sifter);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

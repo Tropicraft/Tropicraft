@@ -82,6 +82,7 @@ tile.tropicraft:mineralSand_Coral.name=Coral Sands
 tile.tropicraft:mineralSand_Green.name=Foamy Sands
 tile.tropicraft:mineralSand_Black.name=Black Sands
 tile.tropicraft:mineralSand_Mineral.name=Mineral Sands
+tile.tropicraft:sifter.name=Sifter
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -183,6 +184,9 @@ item.tropicraft:bcd.name=Buoyancy Compensator
 item.tropicraft:dart.name=Dart
 item.tropicraft:curare.name=Curare
 item.tropicraft:blowGun.name=Blow Gun
+item.tropicraft:ore_Unrefined.name=Unrefined Mineral Sands
+item.tropicraft:ore_Raftous.name=Raftous Ore
+item.tropicraft:ore_Souzium.name=Souzium Ore
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair
@@ -207,6 +211,7 @@ gui.tropicraft:temperature=Temp
 gui.tropicraft:currentDepth=Current Depth
 gui.tropicraft:maxDepth=Max
 gui.tropicraft:timeRemaining=Gas Time
+gui.tropicraft:amtRefined=Percentage Refined
 
 #Tooltip localizations
 dart.tropicraft:prefix.name=Dart of
