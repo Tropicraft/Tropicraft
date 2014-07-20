@@ -52,8 +52,7 @@ public class WorldGenSunkenShip extends TCDirectionalGen {
 				
 				if(width >= 0) {
 					for(int z = -width; z <= width; z++) {
-						if(rand.nextInt(5) < 3) 
-						{
+						if(rand.nextInt(5) < 3) {
 							if(y == j || x == length - 1) {
 								this.placeBlockWithDir(x, y, z, TCBlockRegistry.planks, 1);
 								if(z == -width || z == width || x == length - 1) {
@@ -94,43 +93,26 @@ public class WorldGenSunkenShip extends TCDirectionalGen {
 		return false;
 	}
 	
-	public ItemStack randLoot()
-	{
+	public ItemStack randLoot() {
 		int picker = rand.nextInt(18);
-		if(picker < 6)
-		{
+		if(picker < 6) {
 			return new ItemStack(TCBlockRegistry.bambooChute, rand.nextInt(20) + 1);
-		}
-		/*else if(picker < 8)
+		} /*else if(picker < 8)
 		{
 			return new ItemStack(TropicraftItems.coconutBomb, rand.nextInt(3) + 1); TODO
-		}*/ 
-		else if(picker < 10)
-		{
+		}*/ else if(picker < 10) {
 			return new ItemStack(TCItemRegistry.scale, rand.nextInt(3) + 1);
-		}
-		else if(picker < 12)
-		{
+		} else if(picker < 12) {
 			return new ItemStack(Items.gold_ingot, rand.nextInt(4) + 2);
-		}
-		else if(picker < 15)
-		{
-			return new ItemStack(TCItemRegistry.cookedFrogLeg, rand.nextInt(4) + 1);
-		}
-		/*else if(picker == 14)
-		{
+		} else if(picker < 15) {
+			return new ItemStack(TCItemRegistry.shells, rand.nextInt(5) + 1, rand.nextInt(6));
+		} /*else if(picker == 14) {
 			return new ItemStack(TropicraftItems.ashenMasks, 1, rand.nextInt(7)); TODO
-		}
-		else if(picker == 15)
-		{
+		} else if(picker == 15) {
 			return new ItemStack(TropicraftItems.recordTradeWinds, 1);
-		}
-		else if(picker == 16)
-		{
+		} else if(picker == 16) {
 			return new ItemStack(TropicraftItems.recordEasternIsles, 1);
-		}*/
-		else
-		{
+		}*/ else {
 			return new ItemStack(TCItemRegistry.blowGun, 1);
 		}
 	}

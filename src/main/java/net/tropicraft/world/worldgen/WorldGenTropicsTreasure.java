@@ -108,9 +108,9 @@ public class WorldGenTropicsTreasure extends TCGenBase {
             return new ItemStack(loot, rand.nextInt(40) + 1);
         } else if (loot == TCItemRegistry.ore) {
         	return new ItemStack(loot, rand.nextInt(10) + 5, rand.nextInt(5));
-        } /* else if (loot == TCItemRegistry.shells) {
-        	return new ItemStack(loot, rand.nextInt(4) + 2, rand.nextInt(6)); TODO: Add shells
-        }*/
+        }  else if (loot == TCItemRegistry.shells) {
+        	return new ItemStack(loot, rand.nextInt(4) + 2, rand.nextInt(6));
+        }
         
         return new ItemStack(loot);
         
@@ -146,7 +146,7 @@ public class WorldGenTropicsTreasure extends TCGenBase {
         treasureList.add(Items.diamond);
         treasureList.add(TCItemRegistry.ore);
         
-        //treasureList.add(TCItemRegistry.shells); TODO: Add shells
+        treasureList.add(TCItemRegistry.shells);
         
         treasureList.add(TCItemRegistry.scaleHelmet);
         treasureList.add(TCItemRegistry.scaleBoots);
