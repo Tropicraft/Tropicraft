@@ -70,7 +70,12 @@ public class WorldGenTallTree extends TCGenBase {
 				}
 			}
 		}
-		
+
+		worldObj.setBlock(i, j, k, Blocks.dirt, 0, 3);
+		worldObj.setBlock(i - 1, j, k, Blocks.dirt, 0, 3);
+		worldObj.setBlock(i + 1, j, k, Blocks.dirt, 0, 3);
+		worldObj.setBlock(i, j, k - 1, Blocks.dirt, 0, 3);
+		worldObj.setBlock(i, j, k + 1, Blocks.dirt, 0, 3);
 		for(int y = j; y < j + height; y++) {
 			worldObj.setBlock(i, y, k, WOOD_BLOCK, WOOD_META, 3);
 			worldObj.setBlock(i - 1, y, k, WOOD_BLOCK, WOOD_META, 3);

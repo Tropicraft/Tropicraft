@@ -8,13 +8,18 @@ import net.tropicraft.world.worldgen.WorldGenCoffeePlant;
 import net.tropicraft.world.worldgen.WorldGenForestAltarRuin;
 import net.tropicraft.world.worldgen.WorldGenTCUndergrowth;
 import net.tropicraft.world.worldgen.WorldGenTallTree;
+import net.tropicraft.world.worldgen.WorldGenTualang;
+import net.tropicraft.world.worldgen.WorldGenUpTree;
 
 public class BiomeGenRainforest extends BiomeGenTropicraft {
 
 	private static final int COFFEE_PLANT_AMOUNT = 2;
 	private static final int ALTAR_CHANCE = 70;
 	private static final int TALL_TREE_CHANCE = 2;
+	private static final int UP_TREE_CHANCE = 2;
 	private static final int UNDERGROWTH_AMOUNT = 15;
+	private static final int SMALL_TUALANG_AMOUNT = 4;
+	private static final int LARGE_TUALANG_AMOUNT = 2;
 	
 	public BiomeGenRainforest(int biomeID) {
 		super(biomeID);
@@ -30,6 +35,24 @@ public class BiomeGenRainforest extends BiomeGenTropicraft {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenTallTree(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(UP_TREE_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenUpTree(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);			
+		}
+		
+		for(int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTualang(world, rand, 9, 16).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		for(int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTualang(world, rand, 11, 25).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
 		for(int a = 0; a < UNDERGROWTH_AMOUNT; a++) {
