@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class WorldGenTallFlower extends TCGenBase {
 
-	private int FLOWER_TRIES = 20;
+	private int FLOWER_TRIES = 12;
 	
     private Block plantBlock;
     private int plantBottomMeta;

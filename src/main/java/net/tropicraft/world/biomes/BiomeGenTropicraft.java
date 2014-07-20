@@ -20,7 +20,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	
 	private static final int EIH_CHANCE = 20;
 	private static final int SHIPWRECK_CHANCE = 200;
-	private static final int TALL_FLOWERS_CHANCE = 2;
+	private static final int TALL_FLOWERS_CHANCE = 3;
 	private static final int BAMBOO_CHANCE = 2;
 	public static final int CURVED_PALM_CHANCE = 2;
 	
