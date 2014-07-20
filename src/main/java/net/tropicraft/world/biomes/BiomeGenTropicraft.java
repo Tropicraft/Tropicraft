@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
 import net.tropicraft.world.worldgen.WorldGenEIH;
@@ -22,7 +23,8 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	private static final int SHIPWRECK_CHANCE = 200;
 	private static final int TALL_FLOWERS_CHANCE = 3;
 	private static final int BAMBOO_CHANCE = 2;
-	public static final int CURVED_PALM_CHANCE = 2;
+	public static final int CURVED_PALM_CHANCE = 3;
+	public static final int TALL_GRASS_CHANCE = 4;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -104,6 +106,12 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenTropicraftCurvedPalm().generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(TALL_GRASS_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTallGrass(Blocks.tallgrass, 1).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
 		}
 	}
 	
