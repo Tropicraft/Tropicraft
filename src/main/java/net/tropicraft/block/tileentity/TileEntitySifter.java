@@ -3,9 +3,10 @@ package net.tropicraft.block.tileentity;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFire;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -13,6 +14,12 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntitySifter extends TileEntity {
 
+    public static enum SiftType {
+        REGULAR,
+        HEATED,
+        ;
+    }
+    
     /** Number of seconds to sift multiplied by the number of ticks per second */
     public static final int SIFT_TIME = 4 * 20;
 
@@ -26,6 +33,8 @@ public class TileEntitySifter extends TileEntity {
 
     public double yaw;
     public double yaw2 = 0.0D;
+    
+    public ItemStack siftItem;
     
     public TileEntitySifter() {
         rand = new Random();
@@ -51,10 +60,18 @@ public class TileEntitySifter extends TileEntity {
             double z = this.zCoord + worldObj.rand.nextDouble()*1.4;
 
            // TODO determine what to spawn
+            
+            if (isHeatedSifter()) {
+                dumpResults(x, y, z, SiftType.HEATED);
+            }
 
             currentSiftTime = SIFT_TIME;
             this.setSifting(false);
         }
+    }
+    
+    public void dumpResults(double x, double y, double z, SiftType type) {
+        
     }
 
     /**
@@ -76,12 +93,38 @@ public class TileEntitySifter extends TileEntity {
         super.readFromNBT(nbt);
         isSifting = nbt.getBoolean("isSifting");
         currentSiftTime = nbt.getInteger("currentSiftTime");
+        
+        NBTTagList itemtaglist = nbt.getTagList("Item", 10);
+        
+        NBTTagCompound itemtagcompound = itemtaglist.getCompoundTagAt(0);
+        this.siftItem = ItemStack.loadItemStackFromNBT(itemtagcompound);
     }
 
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("isSifting", isSifting);
         nbt.setInteger("currentSiftTime", currentSiftTime);
+        
+        NBTTagList nbttaglist = new NBTTagList();
+
+        if (this.siftItem != null) {
+            NBTTagCompound siftItemTagCompound = new NBTTagCompound();
+            this.siftItem.writeToNBT(siftItemTagCompound);
+            nbttaglist.appendTag(siftItemTagCompound);
+        }
+        
+        nbt.setTag("Item", nbttaglist);
+    }
+    
+    /**
+     * Retrives an existing nbt tag compound or creates a new one if it is null
+     * @param stack
+     */
+    public NBTTagCompound getTagCompound(ItemStack stack) {
+        if (!stack.hasTagCompound())
+            stack.setTagCompound(new NBTTagCompound());
+
+        return stack.getTagCompound();
     }
 
     /**

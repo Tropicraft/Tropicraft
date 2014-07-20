@@ -18,6 +18,7 @@ import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftMulti;
+import net.tropicraft.item.ItemTropicraftOre;
 import net.tropicraft.item.ItemTropicsWaterBucket;
 import net.tropicraft.item.ItemWaterWand;
 import net.tropicraft.item.armor.ItemFireArmor;
@@ -67,7 +68,7 @@ public class TCItemRegistry {
     public static final ItemTropicraftFood seaUrchinRoe = new ItemTropicraftFood(3, 0.3F);
 
     public static final ItemTropicraft pearl = new ItemTropicraftMulti(TCNames.pearlNames);
-    public static final ItemTropicraft ore = new ItemTropicraftMulti(TCNames.oreNames);
+    public static final ItemTropicraft ore = new ItemTropicraftOre(TCNames.oreNames);
 
     public static final ItemTropicraft waterWand = new ItemWaterWand();
     public static final ItemTropicraft fishingNet = new ItemTropicraft();
