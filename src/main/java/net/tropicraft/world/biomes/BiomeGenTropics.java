@@ -29,6 +29,8 @@ public class BiomeGenTropics extends BiomeGenTropicraft {
 			int k = randCoord(rand, z, 16);
 			new WorldGenTropicraftFruitTrees(world, world.rand, treeType).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
+		
+		super.decorate(world, rand, x, z);
 	}
 
 }

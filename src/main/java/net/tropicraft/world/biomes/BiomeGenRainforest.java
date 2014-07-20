@@ -43,6 +43,8 @@ public class BiomeGenRainforest extends BiomeGenTropicraft {
 			int k = randCoord(rand, z, 16);
 			new WorldGenCoffeePlant(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
+		
+		super.decorate(world, rand, x, z);
 	}
 	
 }
