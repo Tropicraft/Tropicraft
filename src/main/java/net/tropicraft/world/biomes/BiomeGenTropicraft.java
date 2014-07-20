@@ -12,12 +12,15 @@ import net.tropicraft.world.worldgen.WorldGenEIH;
 import net.tropicraft.world.worldgen.WorldGenSunkenShip;
 import net.tropicraft.world.worldgen.WorldGenTallFlower;
 import net.tropicraft.world.worldgen.WorldGenTropicraftCurvedPalm;
+import net.tropicraft.world.worldgen.WorldGenTropicraftFlowers;
 
 public class BiomeGenTropicraft extends BiomeGenBase {
 
+	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+	
 	private static final int EIH_CHANCE = 20;
 	private static final int SHIPWRECK_CHANCE = 200;
-	private static final int FLOWERS_CHANCE = 2;
+	private static final int TALL_FLOWERS_CHANCE = 2;
 	private static final int BAMBOO_CHANCE = 2;
 	public static final int CURVED_PALM_CHANCE = 2;
 	
@@ -73,16 +76,22 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 			new WorldGenEIH(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(FLOWERS_CHANCE) == 0) {
+		if(rand.nextInt(TALL_FLOWERS_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			(new WorldGenTallFlower(world, rand, TCBlockRegistry.tallFlowers, 0, 1)).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(FLOWERS_CHANCE) == 0) {
+		if(rand.nextInt(TALL_FLOWERS_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			(new WorldGenTallFlower(world, rand, TCBlockRegistry.pineapple, 7, 8)).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		{ //For scope
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTropicraftFlowers(world, world.rand, TCBlockRegistry.flowers, DEFAULT_FLOWER_META).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
 		if(rand.nextInt(SHIPWRECK_CHANCE) == 0) {
