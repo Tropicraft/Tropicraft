@@ -11,6 +11,7 @@ import net.tropicraft.world.worldgen.WorldGenBamboo;
 import net.tropicraft.world.worldgen.WorldGenEIH;
 import net.tropicraft.world.worldgen.WorldGenSunkenShip;
 import net.tropicraft.world.worldgen.WorldGenTallFlower;
+import net.tropicraft.world.worldgen.WorldGenTropicraftCurvedPalm;
 
 public class BiomeGenTropicraft extends BiomeGenBase {
 
@@ -18,6 +19,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	private static final int SHIPWRECK_CHANCE = 200;
 	private static final int FLOWERS_CHANCE = 2;
 	private static final int BAMBOO_CHANCE = 2;
+	public static final int CURVED_PALM_CHANCE = 2;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -88,11 +90,17 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 			int k = randCoord(rand, z, 16);
 			new WorldGenSunkenShip(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
+		
+		if(rand.nextInt(CURVED_PALM_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTropicraftCurvedPalm().generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
+		}
 	}
 	
 	public int getTerrainHeightAt(World world, int x, int z)
 	{
-		for(int y = 256; y > 0; y--)
+		for(int y = world.getHeightValue(x, z) + 1; y > 0; y--)
 		{
 			Block id = world.getBlock(x, y, z);
 			if(id == Blocks.grass || id == Blocks.dirt || id == Blocks.sand)
