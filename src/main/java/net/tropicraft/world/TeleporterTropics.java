@@ -10,17 +10,14 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.LongHashMap;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Teleporter;
-import net.minecraft.world.Teleporter.PortalPosition;
 import net.minecraft.world.WorldServer;
 import net.tropicraft.registry.TCBlockRegistry;
 //import net.tropicraft.block.tileentity.TileEntityBambooChest; TODO
 //import net.tropicraft.item.TropicraftItems; TODO
-import net.tropicraft.world.WorldProviderTropicraft;
 
 public class TeleporterTropics extends Teleporter {
 
@@ -57,13 +54,13 @@ public class TeleporterTropics extends Teleporter {
 
 		long finishTime = System.currentTimeMillis();
 
-		System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete", (finishTime - startTime) / 1000.0F);
+		System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0F);
 	}
 
 	@Override
 	public boolean placeInExistingPortal(Entity entity, double d, double d2, double d3, float f)
 	{
-		int searchArea = 128;
+		int searchArea = 148;
 		double closestPortal = -1D;
 		int foundX = 0;
 		int foundY = 0;
@@ -279,28 +276,49 @@ public class TeleporterTropics extends Teleporter {
 				}
 		}
 
-		// If we can't find a spot (e.g. we're in the middle of the ocean),
-		// just put the portal at sea level
-		if(closestSpot < 0.0D) {
-			// Perhaps this was the culprit
-			/*	Random r = new Random();
-			foundX += r.nextInt(16) - 8;
-			foundZ += r.nextInt(16) - 8;*/
-			foundY = world.getActualHeight();
-		}
-
-		//		System.out.printf("Buliding teleporter at x:<%d>, y:<%d>, z:<%d>\n", foundX, foundY, foundZ);
-
-		entity.setLocationAndAngles(foundX, foundY + 2, foundZ, entity.rotationYaw, 0.0F);
 		int worldSpawnX = MathHelper.floor_double(foundX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
 		int worldSpawnZ = MathHelper.floor_double(foundZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-		int worldSpawnY = world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
+		int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
+		
+	      // If we can't find a spot (e.g. we're in the middle of the ocean),
+        // just put the portal at sea level
+        if(closestSpot < 0.0D) {
+            // Perhaps this was the culprit
+            /*  Random r = new Random();
+            foundX += r.nextInt(16) - 8;
+            foundZ += r.nextInt(16) - 8;*/
+            foundY = worldSpawnY - 2;
+        }
+
+        //      System.out.printf("Buliding teleporter at x:<%d>, y:<%d>, z:<%d>\n", foundX, foundY, foundZ);
+
+        entity.setLocationAndAngles(foundX, foundY + 2, foundZ, entity.rotationYaw, 0.0F);
+		
 		world.getWorldInfo().setSpawnPosition(worldSpawnX, worldSpawnY, worldSpawnZ);
 
 		buildTeleporterAt(worldSpawnX, worldSpawnY + 1, worldSpawnZ, entity);
 
 		return true;
 	}
+	
+	/**
+     * Gets the terrain height at the specified coordinates
+     * @param x The x coordinate
+     * @param z The z coordinate
+     * @return The terrain height at the specified coordinates
+     */
+    public int getTerrainHeightAt(int x, int z) {
+        for(int y = 100; y > 0; y--)
+        {
+            Block block = world.getBlock(x, y, z);
+            if(block == Blocks.dirt || block == Blocks.grass || block == Blocks.sand || block == Blocks.stone ||
+                    block == TCBlockRegistry.tropicsWater || block == TCBlockRegistry.purifiedSand)
+            {
+                return y;
+            }
+        }
+        return 0;
+    }
 
 	public void buildTeleporterAt(int x, int y, int z, Entity entity) {
 		y = y < 9 ? 9 : y;
@@ -396,6 +414,6 @@ public class TeleporterTropics extends Teleporter {
 	 * @return List of valid block ids to build portal on
 	 */
 	private List<Block> getValidBuildBlocks() {
-		return Arrays.asList(Blocks.sand, Blocks.grass, Blocks.dirt); //TODO Add purified sand
+		return Arrays.asList(Blocks.sand, Blocks.grass, Blocks.dirt, TCBlockRegistry.purifiedSand);
 	}
 }
