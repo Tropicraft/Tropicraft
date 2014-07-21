@@ -207,6 +207,7 @@ entity.tropicraft.SeaTurtle.name=Sea Turtle
 entity.tropicraft.SeaTurtleEgg.name=Sea Turtle Egg
 entity.tropicraft.PoisonBlot.name=Dart Frog Poison Blot
 entity.tropicraft.Dart.name=Poison Dart
+entity.tropicraft.CoconutBomb.name=Coconut Bomb
 
 #Gui localizations
 gui.tropicraft:airType=Air Type
@@ -233,3 +234,4 @@ dart.tropicraft:weakness.name=Weakness
 
 #Other localizations
 death.attack.dart.item=Dart
+tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!

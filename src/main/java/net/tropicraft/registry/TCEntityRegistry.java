@@ -12,6 +12,7 @@ import net.tropicraft.entity.passive.EntityTreeFrogGreen;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
 import net.tropicraft.entity.pool.EntityPoolFloat;
+import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
@@ -41,6 +42,7 @@ public class TCEntityRegistry {
 		registerEntity(EntityTurtleEgg.class, "SeaTurtleEgg", 80, 5, false);
 		registerEntity(EntityEagleRay.class, "EagleRay", 80, 1, true);
 		registerEntity(EntityAshenHunter.class, "AshenHunter", 80, 3, true);
+		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

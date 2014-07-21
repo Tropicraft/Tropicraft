@@ -1,6 +1,7 @@
 package net.tropicraft.registry;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -38,6 +39,7 @@ import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
 import net.tropicraft.entity.pool.EntityPoolFloat;
+import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
@@ -66,6 +68,7 @@ public class TCRenderRegistry {
         registerEntityRender(EntityTurtleEgg.class, new RenderTurtleEgg(new ModelTurtleEgg(), 0.75F));
         registerEntityRender(EntityEagleRay.class, new RenderEagleRay());
         registerEntityRender(EntityAshenHunter.class, new RenderAshen(new ModelAshen(), 0.75F));
+        registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(TCItemRegistry.coconutBomb));
     }
 
     /**

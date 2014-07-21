@@ -130,7 +130,7 @@ public class TCItemRegistry {
     public static final ItemFlowerPot flowerPot = new ItemFlowerPot(TCBlockRegistry.flowerPot);
     public static final ItemFertilizer fertilizer = new ItemFertilizer();
 
-    //TODO	public static final ItemTropicraft coconutBomb = new ItemCoconutBomb();
+    public static final ItemTropicraft coconutBomb = new ItemCoconutBomb();
 
     public static final ArmorMaterial materialDrySuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
     public static final ItemTropicraftArmor dryFlippers = new ItemScubaFlippers(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 3);
@@ -263,6 +263,7 @@ public class TCItemRegistry {
         registerItem(aquaShovel, TCNames.aquaShovel);
         registerItem(shells, TCNames.shell);
         registerItem(bambooSpear, TCNames.bambooSpear);
+        registerItem(coconutBomb, TCNames.coconutBomb);
     }
 
     /**
