@@ -108,7 +108,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 		if(rand.nextInt(CURVED_PALM_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
-			new WorldGenTropicraftCurvedPalm().generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
+			new WorldGenTropicraftCurvedPalm(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
 		}
 		
 		if(rand.nextInt(TALL_GRASS_CHANCE) == 0) {
