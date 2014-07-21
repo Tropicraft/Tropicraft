@@ -163,7 +163,7 @@ public class WorldGenTropicsTreasure extends TCGenBase {
         treasureList.add(Items.map);
         treasureList.add(Items.spider_eye);
         
-        /*treasureList.add(TCItemRegistry.recordTradeWinds); TODO: Add records
+        /*treasureList.add(TCItemReg istry.recordTradeWinds); TODO: Add records
         treasureList.add(TCItemRegistry.recordEasternIsles);
         treasureList.add(TCItemRegistry.recordBuriedTreasure);
         treasureList.add(TCItemRegistry.recordLowTide);

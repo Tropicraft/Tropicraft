@@ -8,12 +8,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.world.WorldProviderTropicraft;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
 import net.tropicraft.world.worldgen.WorldGenEIH;
 import net.tropicraft.world.worldgen.WorldGenSunkenShip;
 import net.tropicraft.world.worldgen.WorldGenTallFlower;
 import net.tropicraft.world.worldgen.WorldGenTropicraftCurvedPalm;
 import net.tropicraft.world.worldgen.WorldGenTropicraftFlowers;
+import net.tropicraft.world.worldgen.WorldGenWaterfall;
 
 public class BiomeGenTropicraft extends BiomeGenBase {
 
@@ -23,8 +25,9 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	private static final int SHIPWRECK_CHANCE = 200;
 	private static final int TALL_FLOWERS_CHANCE = 3;
 	private static final int BAMBOO_CHANCE = 2;
+	private static final int WATERFALL_AMOUNT = 25;
+	private static final int TALL_GRASS_CHANCE = 4;
 	public static final int CURVED_PALM_CHANCE = 3;
-	public static final int TALL_GRASS_CHANCE = 4;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -113,6 +116,10 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 			int k = randCoord(rand, z, 16);
 			new WorldGenTallGrass(Blocks.tallgrass, 1).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
 		}
+		
+		for(int a = 0; a < WATERFALL_AMOUNT; a++) {
+			new WorldGenWaterfall(world, rand).generate(randCoord(rand, x, 16), WorldProviderTropicraft.MID_HEIGHT + rand.nextInt(WorldProviderTropicraft.INTER_HEIGHT), randCoord(rand, z, 16));
+		}
 	}
 	
 	public int getTerrainHeightAt(World world, int x, int z)
@@ -129,7 +136,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	}
 	
 	public final int randCoord(Random rand, int base, int variance) {
-		return base + rand.nextInt(variance) + (variance / 2);
+		return base + rand.nextInt(variance);
 	}
 	
 }

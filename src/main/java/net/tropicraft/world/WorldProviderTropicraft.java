@@ -7,6 +7,10 @@ import net.tropicraft.world.chunk.ChunkProviderTropicraft;
 
 public class WorldProviderTropicraft extends WorldProvider {
 
+	public static final int MID_HEIGHT = 63;
+	public static final int MAX_HEIGHT = 256;
+	public static final int INTER_HEIGHT = MAX_HEIGHT - MID_HEIGHT;
+	
     protected void registerWorldChunkManager()
     {
         this.worldChunkMgr = new WorldChunkManagerTropicraft(worldObj.getSeed(), terrainType);

@@ -11,14 +11,22 @@ public abstract class TCDirectionalGen extends TCGenBase {
 	public int originX, originZ;
 	public int dir;
 	
-	public TCDirectionalGen(World world, Random random, int dir) {
-		super(world, random);
+	public TCDirectionalGen(World world, Random rand) {
+		super(world, rand);
+	}
+	
+	public TCDirectionalGen(World world, Random rand, int dir) {
+		super(world, rand);
 		this.dir = dir;
 	}
 	
-	protected void setOrigin(int originX, int originZ) {
+	public void setOrigin(int originX, int originZ) {
 		this.originX = originX;
 		this.originZ = originZ;
+	}
+	
+	public void setDir(int dir) {
+		this.dir = dir;
 	}
 	
 	public Block getBlockWithDir(int i, int j, int k) {
