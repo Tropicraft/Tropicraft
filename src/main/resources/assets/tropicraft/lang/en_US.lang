@@ -82,6 +82,10 @@ tile.tropicraft:mineralSand_Green.name=Foamy Sands
 tile.tropicraft:mineralSand_Black.name=Black Sands
 tile.tropicraft:mineralSand_Mineral.name=Mineral Sands
 tile.tropicraft:sifter.name=Sifter
+tile.tropicraft:curareBowl.name=Curare Bowl
+tile.tropicraft:bongoDrum_Small.name=Small Bongo Drum
+tile.tropicraft:bongoDrum_Medium.name=Medium Bongo Drum
+tile.tropicraft:bongoDrum_Large.name=Large Bongo Drum
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg

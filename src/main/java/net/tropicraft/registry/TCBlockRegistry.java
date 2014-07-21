@@ -10,20 +10,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
 import net.tropicraft.block.BlockBambooChest;
 import net.tropicraft.block.BlockBambooChute;
 import net.tropicraft.block.BlockBambooDoor;
+import net.tropicraft.block.BlockBongoDrum;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
 import net.tropicraft.block.BlockCoconut;
 import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
+import net.tropicraft.block.BlockCurareBowl;
 import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockFruitLeaves;
 import net.tropicraft.block.BlockMineralSands;
@@ -136,6 +136,9 @@ public class TCBlockRegistry {
 	public static final BlockMineralSands mineralSands = new BlockMineralSands();
 	public static final BlockSifter sifter = new BlockSifter();
 	
+	public static final BlockCurareBowl curareBowl = new BlockCurareBowl();
+	public static final BlockBongoDrum bongoDrum = new BlockBongoDrum(TCNames.bongoDrumNames);
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -192,6 +195,8 @@ public class TCBlockRegistry {
 		registerBlock(purifiedSand, TCNames.purifiedSand);
 		registerMultiBlock(mineralSands, TCNames.mineralSand, TCNames.mineralSandNames);
 		registerBlock(sifter, TCNames.sifter);
+		registerBlock(curareBowl, TCNames.curareBowl);
+		registerMultiBlock(bongoDrum, TCNames.bongoDrum, TCNames.bongoDrumNames);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.block.tileentity.TileEntityCurareBowl;
 import net.tropicraft.block.tileentity.TileEntitySifter;
 import net.tropicraft.client.entity.model.ModelAshen;
 import net.tropicraft.client.entity.model.ModelEIH;
@@ -28,6 +29,7 @@ import net.tropicraft.client.entity.render.RenderTurtleEgg;
 import net.tropicraft.client.entity.render.RenderUmbrella;
 import net.tropicraft.client.tileentity.TileEntityAirCompressorRenderer;
 import net.tropicraft.client.tileentity.TileEntityBambooChestRenderer;
+import net.tropicraft.client.tileentity.TileEntityCurareBowlRenderer;
 import net.tropicraft.client.tileentity.TileEntitySifterRenderer;
 import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
@@ -73,6 +75,7 @@ public class TCRenderRegistry {
         registerTileEntityRenderer(TileEntityBambooChest.class, new TileEntityBambooChestRenderer());
         registerTileEntityRenderer(TileEntityAirCompressor.class, new TileEntityAirCompressorRenderer());
         registerTileEntityRenderer(TileEntitySifter.class, new TileEntitySifterRenderer());
+        registerTileEntityRenderer(TileEntityCurareBowl.class, new TileEntityCurareBowlRenderer());
     }
 
     private static void registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, 

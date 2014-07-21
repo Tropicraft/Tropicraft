@@ -7,6 +7,7 @@ import net.tropicraft.client.renderer.block.AirCompressorRenderHandler;
 import net.tropicraft.client.renderer.block.BambooChestRenderHandler;
 import net.tropicraft.client.renderer.block.BambooChuteRenderHandler;
 import net.tropicraft.client.renderer.block.CoffeePlantRenderHandler;
+import net.tropicraft.client.renderer.block.CurareBowlRenderHandler;
 import net.tropicraft.client.renderer.block.FlowerPotRenderHandler;
 import net.tropicraft.client.renderer.block.TikiTorchRenderHandler;
 import net.tropicraft.client.renderer.item.ItemDiveComputerRenderer;
@@ -29,6 +30,7 @@ public class ClientProxy implements ISuperProxy {
         TCRenderIDs.bambooChest = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.airCompressor = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.bambooChute = RenderingRegistry.getNextAvailableRenderId();
+        TCRenderIDs.curareBowl = RenderingRegistry.getNextAvailableRenderId();
 
         RenderingRegistry.registerBlockHandler(new CoffeePlantRenderHandler());
         RenderingRegistry.registerBlockHandler(new TikiTorchRenderHandler());
@@ -36,6 +38,7 @@ public class ClientProxy implements ISuperProxy {
         RenderingRegistry.registerBlockHandler(new BambooChestRenderHandler());
         RenderingRegistry.registerBlockHandler(new AirCompressorRenderHandler());
         RenderingRegistry.registerBlockHandler(new BambooChuteRenderHandler());
+        RenderingRegistry.registerBlockHandler(new CurareBowlRenderHandler());
 
         MinecraftForgeClient.registerItemRenderer(TCItemRegistry.diveComputer, new ItemDiveComputerRenderer());
     }

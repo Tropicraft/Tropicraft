@@ -7,4 +7,5 @@ public class TCRenderIDs {
 	public static int tikiTorch;
 	public static int flowerPot;
 	public static int bambooChute;
+	public static int curareBowl;
 }

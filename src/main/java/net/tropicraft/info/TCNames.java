@@ -71,6 +71,9 @@ public class TCNames {
     public static final String mineralSand = "mineralSand";
     public static final String[] mineralSandNames = new String[]{"Coral", "Green", "Black", "Mineral"};
     public static final String sifter = "sifter";
+    public static final String curareBowl = "curareBowl";
+    public static final String bongoDrum = "bongoDrum";
+    public static final String[] bongoDrumNames = new String[]{"Small", "Medium", "Large"};
 
     // Item names
     public static final String frogLeg = "frogLeg";
