@@ -6,6 +6,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooDoor;
 import net.tropicraft.item.ItemCoffeeBean;
@@ -269,5 +270,6 @@ public class TCItemRegistry {
     private static void registerItem(Item item, String name) {
         GameRegistry.registerItem(item, name);
         item.setUnlocalizedName(name);
+        //TODO OreDictionary.registerOre(name, item);
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -21,7 +22,6 @@ public class BlockTropicraftFenceGate extends BlockFenceGate {
 		this.blockForTexture = block;
 		this.textureMeta = meta;
 		this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
-		//setBlockTextureName(textureName);	
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class BlockTropicraftFenceGate extends BlockFenceGate {
 	@Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-       // blockIcon = block.get;
+	    
     }
 	
 	/**

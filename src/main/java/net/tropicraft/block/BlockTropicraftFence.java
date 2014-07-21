@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,7 +27,7 @@ public class BlockTropicraftFence extends BlockFence {
 	@Override
 	public boolean canConnectFenceTo(IBlockAccess world, int x, int y, int z) {
 		Block block = world.getBlock(x, y, z);
-		if (block != this && block != fenceGate) {
+		if (block != this && block != TCBlockRegistry.bambooFenceGate && block != TCBlockRegistry.palmFenceGate) {
 			return block != null && block.getMaterial().isOpaque() && block.renderAsNormalBlock() ? block.getMaterial() != Material.gourd : false;
 		} else {
 			return true;

@@ -21,6 +21,7 @@ public class BlockTropicsWater extends BlockFluidClassic {
 		this.lightOpacity = 0;
 		this.setCreativeTab(null);
 		this.displacements.put(TCBlockRegistry.coral, Boolean.valueOf(false));
+		this.displacements.put(TCBlockRegistry.bambooFence, Boolean.valueOf(false));
 	}
 
 	@Override
