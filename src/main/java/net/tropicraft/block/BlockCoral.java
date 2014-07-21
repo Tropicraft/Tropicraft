@@ -8,12 +8,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
-import net.minecraftforge.common.IPlantable;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 
-public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
+public class BlockCoral extends BlockTropicraftMulti {
 
 	/** Brightness value of coral blocks during the day */
 	private static final float BRIGHTNESS_DAY = 0.3F;
@@ -32,7 +31,7 @@ public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 
 	@Override
 	public int damageDropped(int i) {
-		return i & (names.length - 1);
+		return i & 7;
 	}
 
 	@Override
@@ -42,7 +41,7 @@ public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 	}
 
 	protected boolean canThisPlantGrowOnThisBlock(Block b) {
-		return b == Blocks.grass || b == Blocks.dirt || b == Blocks.sand /*|| b == TCBlocks.purifiedSand*/;
+		return b == Blocks.grass || b == Blocks.dirt || b == Blocks.sand || b == TCBlockRegistry.purifiedSand;
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random) {
 		checkFlowerChange(world, i, j, k);
-
+		
 		//  if(!world.isRemote)
 		//TODO	   generateTropicalFish(world,i,j,k,random);
 	}
@@ -79,7 +78,7 @@ public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 		return null;
 	}
 
-	protected final void checkFlowerChange(World world, int i, int j, int k) {
+	protected void checkFlowerChange(World world, int i, int j, int k) {
 		if (!canBlockStay(world, i, j, k)) {
 			dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k) & 7, 0);
 			world.setBlockToAir(i, j, k);
@@ -114,25 +113,10 @@ public class BlockCoral extends BlockTropicraftMulti implements IPlantable {
 	/**
 	 * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
 	 */
+	@Override
 	public boolean canBlockStay(World world, int x, int y, int z) {
-		return (world.getBlock(x, y, z).getMaterial() == Material.water && 
-				world.getBlock(x, y + 1, z).getMaterial() == Material.water) &&
+		return (world.getBlock(x, y, z).getMaterial().isLiquid() && 
+				world.getBlock(x, y + 1, z).getMaterial().isLiquid()) &&
 				canThisPlantGrowOnThisBlock(world.getBlock(x, y - 1, z));
 	}
-
-	@Override
-	public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
-		return EnumPlantType.Water;
-	}
-
-	@Override
-	public Block getPlant(IBlockAccess world, int x, int y, int z) {
-		return this;
-	}
-
-	@Override
-	public int getPlantMetadata(IBlockAccess world, int x, int y, int z) {
-		return world.getBlockMetadata(x, y, z);
-	}
-
 }

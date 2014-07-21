@@ -1,7 +1,6 @@
 package net.tropicraft.event;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -14,6 +13,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.tropicraft.item.tool.IUnderwaterTool;
+import net.tropicraft.item.tool.ItemUnderwaterShovel;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
@@ -81,22 +81,21 @@ public class TCItemEvents {
     public void handleUnderwaterTools(PlayerEvent.BreakSpeed event) {
         EntityPlayer player = (EntityPlayer)event.entityPlayer;
         ItemStack itemstack = player.getHeldItem();
-        
-        if (isFullyUnderwater(player.worldObj, player)) {
-            if (itemstack != null && itemstack.getItem() != null) {
-                if (itemstack.getItem() instanceof IUnderwaterTool) {
+
+        if (itemstack != null && itemstack.getItem() != null) {
+            if (itemstack.getItem() instanceof IUnderwaterTool) {
+                if (isFullyUnderwater(player.worldObj, player)) {
                     event.newSpeed = event.originalSpeed * (player.onGround ? 5F : 10F);
+                } else { // Nerf underwater tools above water
+                    event.newSpeed = event.originalSpeed / 14F;
+                    if (itemstack.getItem() instanceof ItemUnderwaterShovel)
+                        event.newSpeed /= 5F;
                 }
             }
         }
     }
 
     private boolean isFullyUnderwater(World world, EntityPlayer player) {
-        int x = MathHelper.ceiling_double_int(player.posX);
-        int y = MathHelper.ceiling_double_int(player.posY + player.height - 0.5F);
-        int z = MathHelper.ceiling_double_int(player.posZ);
-
-        //return world.getBlock(x, y, z).getMaterial().isLiquid();
         return player.isInsideOfMaterial(Material.water);
     }
 }

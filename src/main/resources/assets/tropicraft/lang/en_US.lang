@@ -15,7 +15,6 @@ tile.tropicraft:coral_2.name=Coral Reef
 tile.tropicraft:coral_3.name=Coral Reef
 tile.tropicraft:coral_4.name=Coral Reef
 tile.tropicraft:coral_5.name=Coral Reef
-tile.tropicraft:coral_6.name=Dinopherous Coral
 tile.tropicraft:bambooBundle.name=Bamboo Bundle
 tile.tropicraft:log_Palm.name=Palm Log
 tile.tropicraft:log_Mahogany.name=Mahogany Log
@@ -170,7 +169,7 @@ item.tropicraft:coconut.name=Coconut
 item.tropicraft:coconutBomb.name=Coconut Bomb
 item.tropicraft:scubaTank.name=Scuba Tank
 item.tropicraft:dryHelmet.name=Dry Suit Headgear
-item.tropicraft:wetHelmet.name=Wet Suit Headgear
+item.tropicraft:wetHelmet.name=Wet Suit Mask
 item.tropicraft:dryLeggings.name=Dry Suit Leggings
 item.tropicraft:wetLeggings.name=Wet Suit Leggings
 item.tropicraft:dryChestplate.name=Dry Suit Chestpiece
@@ -187,6 +186,10 @@ item.tropicraft:blowGun.name=Blow Gun
 item.tropicraft:ore_Unrefined.name=Unrefined Mineral Sands
 item.tropicraft:ore_Raftous.name=Raftous Ore
 item.tropicraft:ore_Souzium.name=Souzium Ore
+item.tropicraft:aquaAxe.name=Souzium Aqua Axe
+item.tropicraft:aquaHoe.name=Souzium Aqua Hoe
+item.tropicraft:aquaPickaxe.name=Souzium Aqua Pickaxe
+item.tropicraft:aquaShovel.name=Souzium Aqua Shovel
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair

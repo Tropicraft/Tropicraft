@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCBlockRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -19,6 +20,7 @@ public class BlockTropicsWater extends BlockFluidClassic {
 		super(fluid, material);
 		this.lightOpacity = 0;
 		this.setCreativeTab(null);
+		this.displacements.put(TCBlockRegistry.coral, Boolean.valueOf(false));
 	}
 
 	@Override

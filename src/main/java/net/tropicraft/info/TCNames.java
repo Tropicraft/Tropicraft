@@ -15,7 +15,7 @@ public class TCNames {
     public static final String[] oreBlockNames = new String[]{"Eudialyte", "Zircon", "Azurite", "Zirconium"};
     public static final String thatchBundle = "thatch";
     public static final String coral = "coral";
-    public static final String[] coralNames = new String[]{"0", "1", "2", "3", "4", "5", "6"};
+    public static final String[] coralNames = new String[]{"0", "1", "2", "3", "4", "5"};
     public static final String bambooBundle = "bambooBundle";
     public static final String log = "log";
     public static final String[] logNames = new String[]{"Palm", "Mahogany"};
@@ -133,6 +133,10 @@ public class TCNames {
     public static final String dartGun = "blowGun";
     public static final String shell = "shell";
     public static final String[] shellNames = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};
+    public static final String aquaAxe = "aquaAxe";
+    public static final String aquaHoe = "aquaHoe";
+    public static final String aquaPickaxe = "aquaPickaxe";
+    public static final String aquaShovel = "aquaShovel";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

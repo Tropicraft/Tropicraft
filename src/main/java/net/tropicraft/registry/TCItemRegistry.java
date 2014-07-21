@@ -43,7 +43,10 @@ import net.tropicraft.item.tool.ItemTropicraftPickaxe;
 import net.tropicraft.item.tool.ItemTropicraftShovel;
 import net.tropicraft.item.tool.ItemTropicraftSword;
 import net.tropicraft.item.tool.ItemTropicraftTool;
+import net.tropicraft.item.tool.ItemUnderwaterAxe;
+import net.tropicraft.item.tool.ItemUnderwaterHoe;
 import net.tropicraft.item.tool.ItemUnderwaterPickaxe;
+import net.tropicraft.item.tool.ItemUnderwaterShovel;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
@@ -151,8 +154,11 @@ public class TCItemRegistry {
     public static final ItemDart dart = new ItemDart();
     public static final ItemDartGun blowGun = new ItemDartGun();
     
-    public static ToolMaterial materialUnderwaterTools = EnumHelper.addToolMaterial("underwater", 2, 500, 6.5F, 2.5F, 14);
-    public static final ItemTropicraftTool underwaterPickaxe = new ItemUnderwaterPickaxe(materialUnderwaterTools, "underwater pick");
+    public static ToolMaterial materialUnderwaterTools = EnumHelper.addToolMaterial("tcaqua", 2, 500, 6.5F, 2.5F, 14);
+    public static final ItemTropicraftTool aquaAxe = new ItemUnderwaterAxe(materialUnderwaterTools, TCNames.aquaAxe);
+    public static final ItemUnderwaterHoe aquaHoe = new ItemUnderwaterHoe(materialUnderwaterTools, TCNames.aquaHoe);
+    public static final ItemTropicraftTool aquaPickaxe = new ItemUnderwaterPickaxe(materialUnderwaterTools, TCNames.aquaPickaxe);
+    public static final ItemTropicraftTool aquaShovel = new ItemUnderwaterShovel(materialUnderwaterTools, TCNames.aquaShovel);
     
     public static final Item shells = new ItemShell(TCNames.shellNames);
 
@@ -248,7 +254,10 @@ public class TCItemRegistry {
         registerItem(shovelZirconium, TCNames.shovelZirconium);
         registerItem(swordZirconium, TCNames.swordZirconium);
         
-        registerItem(underwaterPickaxe, "underwater pick");
+        registerItem(aquaAxe, TCNames.aquaAxe);
+        registerItem(aquaHoe, TCNames.aquaHoe);
+        registerItem(aquaPickaxe, TCNames.aquaPickaxe);
+        registerItem(aquaShovel, TCNames.aquaShovel);
         registerItem(shells, TCNames.shell);
     }
 

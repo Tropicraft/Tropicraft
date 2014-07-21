@@ -5,7 +5,5 @@ public class ItemUnderwaterPickaxe extends ItemTropicraftPickaxe implements IUnd
 
     public ItemUnderwaterPickaxe(ToolMaterial toolMaterial, String textureName) {
         super(toolMaterial, textureName);
-    }
-
-    
+    }    
 }
