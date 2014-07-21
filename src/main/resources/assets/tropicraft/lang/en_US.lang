@@ -194,6 +194,7 @@ item.tropicraft:aquaAxe.name=Souzium Aqua Axe
 item.tropicraft:aquaHoe.name=Souzium Aqua Hoe
 item.tropicraft:aquaPickaxe.name=Souzium Aqua Pickaxe
 item.tropicraft:aquaShovel.name=Souzium Aqua Shovel
+item.tropicraft:bambooSpear.name=Bamboo Spear
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair

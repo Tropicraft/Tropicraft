@@ -6,7 +6,6 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooDoor;
 import net.tropicraft.item.ItemCoffeeBean;
@@ -162,6 +161,9 @@ public class TCItemRegistry {
     public static final ItemTropicraftTool aquaShovel = new ItemUnderwaterShovel(materialUnderwaterTools, TCNames.aquaShovel);
     
     public static final Item shells = new ItemShell(TCNames.shellNames);
+    
+    public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
+    public static final Item bambooSpear = new ItemTropicraftSword(materialBambooTools, TCNames.bambooSpear);
 
     /**
      * Register all the items
@@ -260,6 +262,7 @@ public class TCItemRegistry {
         registerItem(aquaPickaxe, TCNames.aquaPickaxe);
         registerItem(aquaShovel, TCNames.aquaShovel);
         registerItem(shells, TCNames.shell);
+        registerItem(bambooSpear, TCNames.bambooSpear);
     }
 
     /**
