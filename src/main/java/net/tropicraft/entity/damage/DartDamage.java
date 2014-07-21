@@ -1,4 +1,4 @@
-package net.tropicraft.entity;
+package net.tropicraft.entity.damage;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EntityDamageSourceIndirect;

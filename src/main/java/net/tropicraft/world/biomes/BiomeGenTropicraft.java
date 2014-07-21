@@ -6,12 +6,28 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.gen.feature.WorldGenTallGrass;
+import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.world.WorldProviderTropicraft;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
 import net.tropicraft.world.worldgen.WorldGenEIH;
+import net.tropicraft.world.worldgen.WorldGenSunkenShip;
+import net.tropicraft.world.worldgen.WorldGenTallFlower;
+import net.tropicraft.world.worldgen.WorldGenTropicraftCurvedPalm;
+import net.tropicraft.world.worldgen.WorldGenTropicraftFlowers;
+import net.tropicraft.world.worldgen.WorldGenWaterfall;
 
 public class BiomeGenTropicraft extends BiomeGenBase {
 
-	private static final int EIH_CHANCE = 25;
+	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+	
+	private static final int EIH_CHANCE = 20;
+	private static final int SHIPWRECK_CHANCE = 200;
+	private static final int TALL_FLOWERS_CHANCE = 3;
+	private static final int BAMBOO_CHANCE = 2;
+	private static final int WATERFALL_AMOUNT = 25;
+	private static final int TALL_GRASS_CHANCE = 4;
+	public static final int CURVED_PALM_CHANCE = 3;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -52,16 +68,75 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	}
 	
 	@Override
-	public void decorate(World world, Random rand, int x, int z) {		
-		new WorldGenBamboo(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+	public void decorate(World world, Random rand, int x, int z) {	
+		if(rand.nextInt(BAMBOO_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenBamboo(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
 		
-		if(rand.nextInt(2) == 0) {
-			new WorldGenEIH(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, z, 16));
+		if(rand.nextInt(EIH_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenEIH(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(TALL_FLOWERS_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			(new WorldGenTallFlower(world, rand, TCBlockRegistry.tallFlowers, 0, 1)).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(TALL_FLOWERS_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			(new WorldGenTallFlower(world, rand, TCBlockRegistry.pineapple, 7, 8)).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		{ //For scope
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTropicraftFlowers(world, rand, TCBlockRegistry.flowers, DEFAULT_FLOWER_META).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(SHIPWRECK_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenSunkenShip(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(CURVED_PALM_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTropicraftCurvedPalm().generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(TALL_GRASS_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTallGrass(Blocks.tallgrass, 1).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
+		}
+		
+		for(int a = 0; a < WATERFALL_AMOUNT; a++) {
+			new WorldGenWaterfall(world, rand).generate(randCoord(rand, x, 16), WorldProviderTropicraft.MID_HEIGHT + rand.nextInt(WorldProviderTropicraft.INTER_HEIGHT), randCoord(rand, z, 16));
 		}
 	}
 	
+	public int getTerrainHeightAt(World world, int x, int z)
+	{
+		for(int y = world.getHeightValue(x, z) + 1; y > 0; y--)
+		{
+			Block id = world.getBlock(x, y, z);
+			if(id == Blocks.grass || id == Blocks.dirt || id == Blocks.sand)
+			{
+				return y + 1;
+			}
+		}
+		return 0;
+	}
+	
 	public final int randCoord(Random rand, int base, int variance) {
-		return base + rand.nextInt(variance) - (variance / 2);
+		return base + rand.nextInt(variance);
 	}
 	
 }

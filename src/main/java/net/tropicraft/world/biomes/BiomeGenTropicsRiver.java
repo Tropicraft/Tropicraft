@@ -13,6 +13,7 @@ public class BiomeGenTropicsRiver extends BiomeGenTropicraft {
 	@Override
 	public void decorate(World world, Random rand, int x, int z) {
 		//TODO: Add tropics river generation
+		super.decorate(world, rand, x, z);
 	}
 
 }

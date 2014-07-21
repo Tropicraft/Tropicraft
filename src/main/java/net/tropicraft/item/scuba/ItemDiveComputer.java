@@ -1,5 +1,6 @@
 package net.tropicraft.item.scuba;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMap;
@@ -39,7 +40,7 @@ public class ItemDiveComputer extends ItemMap {
                 return;
 
             if (!isFullyUnderwater(world, player)) {
-                System.out.println("Not fully underwater");
+            //    System.out.println("Not fully underwater");
                 return;
             }
 
@@ -101,7 +102,8 @@ public class ItemDiveComputer extends ItemMap {
         int y = MathHelper.ceiling_double_int(player.posY + player.height - 0.5F);
         int z = MathHelper.ceiling_double_int(player.posZ);
 
-        return world.getBlock(x, y, z).getMaterial().isLiquid();
+       // return world.getBlock(x, y, z).getMaterial().isLiquid();
+        return player.isInsideOfMaterial(Material.water);
     }
 
     private boolean armorCheck(World world, EntityPlayer player, ItemStack helmetStack, ItemStack chestplateStack,

@@ -77,6 +77,12 @@ tile.tropicraft:leafRainforest_Kapok.name=Kapok Leaves
 tile.tropicraft:leafRainforest_Mahogany.name=Mahogany Leaves
 tile.tropicraft:portal.name=Tropics Portal
 tile.tropicraft:portalWall.name=Tropics Portal Wall
+tile.tropicraft:purifiedSand.name=Purified Sand
+tile.tropicraft:mineralSand_Coral.name=Coral Sands
+tile.tropicraft:mineralSand_Green.name=Foamy Sands
+tile.tropicraft:mineralSand_Black.name=Black Sands
+tile.tropicraft:mineralSand_Mineral.name=Mineral Sands
+tile.tropicraft:sifter.name=Sifter
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -178,11 +184,21 @@ item.tropicraft:bcd.name=Buoyancy Compensator
 item.tropicraft:dart.name=Dart
 item.tropicraft:curare.name=Curare
 item.tropicraft:blowGun.name=Blow Gun
+item.tropicraft:ore_Unrefined.name=Unrefined Mineral Sands
+item.tropicraft:ore_Raftous.name=Raftous Ore
+item.tropicraft:ore_Souzium.name=Souzium Ore
 
 #Entity localizations
-entity.tropicraft:beachChair.name=Beach Chair
-entity.tropicraft:umbrella.name=Umbrella
-entity.tropicraft:coconutBomb.name=Coconut Bomb
+entity.tropicraft.beachChair.name=Beach Chair
+entity.tropicraft.umbrella.name=Umbrella
+entity.tropicraft.coconutBomb.name=Coconut Bomb
+entity.tropicraft.Iguana.name=Iguana
+entity.tropicraft.EIH.name=EIH
+entity.tropicraft.Seahorse.name=Seahorse
+entity.tropicraft.SeaTurtle.name=Sea Turtle
+entity.tropicraft.SeaTurtleEgg.name=Sea Turtle Egg
+entity.tropicraft.PoisonBlot.name=Dart Frog Poison Blot
+entity.tropicraft.Dart.name=Poison Dart
 
 #Gui localizations
 gui.tropicraft:airType=Air Type
@@ -195,6 +211,7 @@ gui.tropicraft:temperature=Temp
 gui.tropicraft:currentDepth=Current Depth
 gui.tropicraft:maxDepth=Max
 gui.tropicraft:timeRemaining=Gas Time
+gui.tropicraft:amtRefined=Percentage Refined
 
 #Tooltip localizations
 dart.tropicraft:prefix.name=Dart of

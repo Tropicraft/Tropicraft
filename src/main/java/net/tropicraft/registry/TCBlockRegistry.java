@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -23,11 +24,14 @@ import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockFruitLeaves;
+import net.tropicraft.block.BlockMineralSands;
 import net.tropicraft.block.BlockPalmLeaves;
 import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockPortalWall;
+import net.tropicraft.block.BlockPurifiedSand;
 import net.tropicraft.block.BlockRainStopper;
 import net.tropicraft.block.BlockRainforestLeaves;
+import net.tropicraft.block.BlockSifter;
 import net.tropicraft.block.BlockTallFlowers;
 import net.tropicraft.block.BlockTikiTorch;
 import net.tropicraft.block.BlockTropicraft;
@@ -65,9 +69,9 @@ public class TCBlockRegistry {
 	public static final BlockTropicraft chunkOHead = new BlockChunkOHead();
 	public static final BlockTropicraftStairs chunkStairs = new BlockTropicraftStairs(TCNames.chunkStairs, chunkOHead, 0);
 	
-	public static final BlockTropicraft eudialyteOre = new BlockTropicraftOre();
-	public static final BlockTropicraft zirconOre = new BlockTropicraftOre();
-	public static final BlockTropicraft azuriteOre = new BlockTropicraftOre();
+	public static final Block eudialyteOre = new BlockTropicraftOre().setHardness(3.0F).setResistance(5.0F);
+	public static final Block zirconOre = new BlockTropicraftOre().setHardness(4.0F).setResistance(5.0F);
+	public static final Block azuriteOre = new BlockTropicraftOre().setHardness(3.0F).setResistance(5.0F);
 	
 	public static final BlockTropicraft oreBlocks = new BlockTropicraftMulti(TCNames.oreBlockNames);
 	public static final BlockTropicraft thatchBundle = new BlockBundle(TCNames.thatchBundle);
@@ -125,6 +129,10 @@ public class TCBlockRegistry {
 	public static final BlockRainforestLeaves rainforestLeaves = new BlockRainforestLeaves();
 	
 	public static final BlockBambooChute bambooChute = new BlockBambooChute();
+	public static final BlockFalling purifiedSand = new BlockPurifiedSand();
+	
+	public static final BlockMineralSands mineralSands = new BlockMineralSands();
+	public static final BlockSifter sifter = new BlockSifter();
 	
 	/**
 	 * Register all the blocks
@@ -179,6 +187,9 @@ public class TCBlockRegistry {
 		Blocks.fire.setFireInfo(TCBlockRegistry.palmLeaves, 30, 60);
 		registerMultiBlock(rainforestLeaves, TCNames.leafRainforest, TCNames.rainforestLeafNames);
 		registerBlock(bambooChute, TCNames.bambooChute);
+		registerBlock(purifiedSand, TCNames.purifiedSand);
+		registerMultiBlock(mineralSands, TCNames.mineralSand, TCNames.mineralSandNames);
+		registerBlock(sifter, TCNames.sifter);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
