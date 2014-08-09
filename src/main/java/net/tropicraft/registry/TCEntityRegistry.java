@@ -7,8 +7,18 @@ import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.hostile.EntityTreeFrogBlue;
 import net.tropicraft.entity.hostile.EntityTreeFrogRed;
 import net.tropicraft.entity.hostile.EntityTreeFrogYellow;
+import net.tropicraft.entity.hostile.EntityTropiCreeper;
+import net.tropicraft.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.entity.hostile.SpiderAdult;
+import net.tropicraft.entity.hostile.SpiderChild;
+import net.tropicraft.entity.hostile.SpiderEgg;
+import net.tropicraft.entity.koa.EntityKoaFisher;
+import net.tropicraft.entity.koa.EntityKoaHunter;
+import net.tropicraft.entity.koa.EntityKoaShaman;
+import net.tropicraft.entity.koa.EntityKoaTrader;
 import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.passive.EntityTreeFrogGreen;
+import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
 import net.tropicraft.entity.pool.EntityPoolFloat;
@@ -43,6 +53,17 @@ public class TCEntityRegistry {
 		registerEntity(EntityEagleRay.class, "EagleRay", 80, 1, true);
 		registerEntity(EntityAshenHunter.class, "AshenHunter", 80, 3, true);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
+		registerEntity(EntityTropiCreeper.class, "TropiCreeper", 80, 3, true);
+		registerEntity(EntityTropiSkeleton.class, "TropiSkeleton", 80, 3, true);
+		registerEntity(EntityTropiCreeper.class, "TropiCreeper", 80, 3, true);
+		registerEntity(SpiderAdult.class, "SpiderAdult", 48, 3, true);
+		registerEntity(SpiderChild.class, "SpiderChild", 48, 3, true);
+		registerEntity(SpiderEgg.class, "SpiderEgg", 48, 3, true);
+		registerEntity(VMonkey.class, "VMonkey", 64, 3, true);
+		registerEntity(EntityKoaHunter.class, "KoaHunter", 64, 3, true);
+		registerEntity(EntityKoaFisher.class, "KoaFisher", 64, 3, true);
+		registerEntity(EntityKoaTrader.class, "KoaTrader", 64, 3, true);
+		registerEntity(EntityKoaShaman.class, "KoaShaman", 64, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

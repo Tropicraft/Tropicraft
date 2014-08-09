@@ -30,6 +30,9 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
     public int surfaceTick;
     public int targetHeightTick = 120;
 
+    //TODO: Implement for fishing
+	public int outOfWaterTick;
+
     public EntityTropicraftWaterMob(World world) {
         super(world);
         important1 = 0.0F;       
