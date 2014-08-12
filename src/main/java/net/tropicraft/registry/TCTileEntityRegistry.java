@@ -5,6 +5,8 @@ import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.block.tileentity.TileEntityCurareBowl;
 import net.tropicraft.block.tileentity.TileEntityFirePit;
+import net.tropicraft.block.tileentity.TileEntityKoaChest;
+import net.tropicraft.block.tileentity.TileEntityPurchasePlate;
 import net.tropicraft.block.tileentity.TileEntitySifter;
 import net.tropicraft.block.tileentity.TileEntityTropicraftFlowerPot;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -18,6 +20,8 @@ public class TCTileEntityRegistry {
 		registerTE(TileEntityBambooChest.class, "TCBambooChest");
 		registerTE(TileEntitySifter.class, "TCSifter");
 		registerTE(TileEntityCurareBowl.class, "TCCurareBowl");
+		registerTE(TileEntityKoaChest.class, "TCKoaChest");
+		registerTE(TileEntityPurchasePlate.class, "TCTradePlate");
 	}
 	
 	private static void registerTE(Class<? extends TileEntity> clazz, String name) {

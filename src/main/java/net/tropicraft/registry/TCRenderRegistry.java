@@ -8,6 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.block.tileentity.TileEntityCurareBowl;
+import net.tropicraft.block.tileentity.TileEntityKoaChest;
+import net.tropicraft.block.tileentity.TileEntityPurchasePlate;
 import net.tropicraft.block.tileentity.TileEntitySifter;
 import net.tropicraft.client.entity.model.ModelAshen;
 import net.tropicraft.client.entity.model.ModelEIH;
@@ -40,6 +42,8 @@ import net.tropicraft.client.entity.render.RenderVMonkey;
 import net.tropicraft.client.tileentity.TileEntityAirCompressorRenderer;
 import net.tropicraft.client.tileentity.TileEntityBambooChestRenderer;
 import net.tropicraft.client.tileentity.TileEntityCurareBowlRenderer;
+import net.tropicraft.client.tileentity.TileEntityKoaChestRenderer;
+import net.tropicraft.client.tileentity.TileEntityPurchasePlateRenderer;
 import net.tropicraft.client.tileentity.TileEntitySifterRenderer;
 import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
@@ -102,6 +106,8 @@ public class TCRenderRegistry {
         registerTileEntityRenderer(TileEntityAirCompressor.class, new TileEntityAirCompressorRenderer());
         registerTileEntityRenderer(TileEntitySifter.class, new TileEntitySifterRenderer());
         registerTileEntityRenderer(TileEntityCurareBowl.class, new TileEntityCurareBowlRenderer());
+        registerTileEntityRenderer(TileEntityKoaChest.class, new TileEntityKoaChestRenderer());
+        registerTileEntityRenderer(TileEntityPurchasePlate.class, new TileEntityPurchasePlateRenderer());
     }
 
     private static void registerTileEntityRenderer(Class<? extends TileEntity> tileEntityClass, 

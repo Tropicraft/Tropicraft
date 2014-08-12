@@ -26,10 +26,12 @@ import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockCurareBowl;
 import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockFruitLeaves;
+import net.tropicraft.block.BlockKoaChest;
 import net.tropicraft.block.BlockMineralSands;
 import net.tropicraft.block.BlockPalmLeaves;
 import net.tropicraft.block.BlockPineapple;
 import net.tropicraft.block.BlockPortalWall;
+import net.tropicraft.block.BlockPurchasePlate;
 import net.tropicraft.block.BlockPurifiedSand;
 import net.tropicraft.block.BlockRainStopper;
 import net.tropicraft.block.BlockRainforestLeaves;
@@ -139,6 +141,9 @@ public class TCBlockRegistry {
 	public static final BlockCurareBowl curareBowl = new BlockCurareBowl();
 	public static final BlockBongoDrum bongoDrum = new BlockBongoDrum(TCNames.bongoDrumNames);
 	
+	public static final BlockKoaChest koaChest = new BlockKoaChest();
+	public static final BlockPurchasePlate purchasePlate = new BlockPurchasePlate();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -197,6 +202,8 @@ public class TCBlockRegistry {
 		registerBlock(sifter, TCNames.sifter);
 		registerBlock(curareBowl, TCNames.curareBowl);
 		registerMultiBlock(bongoDrum, TCNames.bongoDrum, TCNames.bongoDrumNames);
+		registerBlock(koaChest, TCNames.koaChest);
+		registerBlock(purchasePlate, TCNames.purchasePlate);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

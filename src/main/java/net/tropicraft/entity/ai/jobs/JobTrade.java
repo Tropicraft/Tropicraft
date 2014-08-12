@@ -108,7 +108,7 @@ public class JobTrade extends JobBase {
 			/*if (ent.worldObj.getWorldTime() % 10 == 0) */tradeBlockPos = tickFind(idTradeBlock, 25);
 			
 			if (tradeBlockPos != null) {
-				TileEntity tile = ent.worldObj.getBlockTileEntity(tradeBlockPos.posX, tradeBlockPos.posY, tradeBlockPos.posZ);
+				TileEntity tile = ent.worldObj.getTileEntity(tradeBlockPos.posX, tradeBlockPos.posY, tradeBlockPos.posZ);
 				
 				if (tile != null) {
 					((TileEntityPurchasePlate)tile).tradeKoa = entInt;
