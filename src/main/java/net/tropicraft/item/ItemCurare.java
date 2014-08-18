@@ -2,18 +2,20 @@ package net.tropicraft.item;
 
 import java.util.List;
 
-import com.sun.imageio.plugins.common.I18N;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
+import net.tropicraft.curare.CurareMix;
+import net.tropicraft.curare.CurareMixRegistry;
+import net.tropicraft.curare.CurareType;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
+import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -54,7 +56,54 @@ public class ItemCurare extends ItemTropicraft {
         list.add(tooltipText[itemstack.getItemDamage()] + 
                 TropicraftUtils.translate("dart.tropicraft:" + effectNames[itemstack.getItemDamage()] + ".name") + " " + 
                 TropicraftUtils.translate("item.tropicraft:curare.name"));
-       // list.add()
+        list.add(TropicraftUtils.translate("curare.tropicraft:how.name") + ":");
+        
+        int count = 0;
+        int previous = Integer.MIN_VALUE;
+        CurareMix mix = CurareMixRegistry.getInstance().getCurareMixFromType(CurareType.getCurareFromDamage(itemstack.getItemDamage()));
+        
+        if (mix == null) {
+            list.add(TropicraftUtils.translate("curare.tropicraft:nomix.name"));
+            return;
+        }
+        
+        for (int i : mix.getSortedDamageVals()) {
+            // If number is same as previous index
+            if (i == previous) {
+                count++;
+                previous = i;
+                continue;
+            }
+            
+            previous = i;
+            // Otherwise if number is new
+            ItemStack flower = new ItemStack(TCBlockRegistry.flowers, 1, previous);
+            list.add(count + " " + ColorHelper.color(getColorValueFromDamage(previous)) + flower.getDisplayName());
+            count = 1;
+        }
+    }
+    
+    private int getColorValueFromDamage(int damage) {
+        switch(damage) {
+        case 0:
+            return 9; // Commelina Diffusa - blue
+        case 1:
+            return 6; // Crocosmia - orange/gold
+        case 2:
+            return 13; // Orchid - purple
+        case 3:
+            return 14; // Canna - yellow
+        case 4:
+            return 15; // Anemone - white
+        case 7:
+            return 7; // Magic Mushroom - grey/gray
+        case 8:
+            return 10; // Pathos - green
+        case 9:
+            return 5; // Acai - dark purple
+        default:
+            return 15; // Return white by default
+        }
     }
 
     @Override

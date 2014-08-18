@@ -22,9 +22,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TCCraftingRegistry {
 
     public static void init() {
-        addRecipes();
+   //     addRecipes();
         initCurareMixes();
-        initDartRecipes(true);
+   //     initDartRecipes(true);
     }
 
     private static void initCurareMixes() {
@@ -361,14 +361,14 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
         createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
             "X", "Y", "Z",
             'X', TCItemRegistry.coconutChunk,
-            'Y', new ItemStack(TCItemRegistry.tallFlower, 1, 9),
+            'Y', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
             'Z', TCItemRegistry.bambooMugEmpty
         });
 
         createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
             "Y", "X", "Z",
             'X', TCItemRegistry.coconutChunk,
-            'Y', new ItemStack(TCItemRegistry.tallFlower, 1, 9),
+            'Y', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
             'Z', TCItemRegistry.bambooMugEmpty
         });
 

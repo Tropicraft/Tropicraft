@@ -1,8 +1,10 @@
 package net.tropicraft.curare;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
@@ -16,10 +18,10 @@ public class CurareMixRegistry {
     /**
      * List of recipes for use in the mixer
      */
-    private List<CurareMix> recipes;
+    private Map<CurareType, CurareMix> recipes;
 
     private CurareMixRegistry() {
-        recipes = new LinkedList<CurareMix>();
+        recipes = new HashMap<CurareType, CurareMix>();
     }
 
     /**
@@ -39,11 +41,15 @@ public class CurareMixRegistry {
      * @param recipe MixerRecipe instance to register
      */
     public void registerRecipe(CurareMix recipe) {
-        recipes.add(recipe);
+        recipes.put(recipe.getResult(), recipe);
     }
     
-    public List<CurareMix> getRecipes() {
-        return recipes;
+    public Collection<CurareMix> getRecipes() {
+        return recipes.values();
+    }
+    
+    public CurareMix getCurareMixFromType(CurareType type) {
+        return recipes.get(type);
     }
     
     public int[] getSortedDamageVals(ItemStack[] ingredients) {
@@ -71,7 +77,7 @@ public class CurareMixRegistry {
         
    //     System.out.println("Ingredients.length" + ingredients.length);
    //     System.out.println("Recipes.length" + recipes.size());
-        for (CurareMix mix : recipes) {
+        for (CurareMix mix : getRecipes()) {
    //         for (int i : mix.getSortedDamageVals())
    //             System.out.print("mix " + i + " ");
             

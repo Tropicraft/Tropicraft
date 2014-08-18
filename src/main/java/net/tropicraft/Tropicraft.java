@@ -63,7 +63,7 @@ public class Tropicraft {
     	TCFluidRegistry.postInit();
     	TCKoaCurrencyRegistry.init();
     	TCCraftingRegistry.init();
-    	proxy.preInit(); // On client, this initializes the encyclopedia
+    //TODO	proxy.preInit(); // On client, this initializes the encyclopedia
     }
 	
 	/**
