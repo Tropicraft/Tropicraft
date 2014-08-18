@@ -1,31 +1,33 @@
-package tropicraft.items;
+package net.tropicraft.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import tropicraft.EnumToolMaterialTropics;
-import tropicraft.creative.TropiCreativeTabs;
 
-public class ItemDagger extends ItemTropicraftImpl {
+public class ItemDagger extends ItemTropicraft {
 
-    private int weaponDamage;
-	
-	public ItemDagger(int par1, String imageName, EnumToolMaterialTropics enumtoolmaterial) {
-		super(par1, imageName, TropiCreativeTabs.tabCombat);
+    private float weaponDamage;
+
+    public ItemDagger(ToolMaterial enumtoolmaterial) {
+        super();
         maxStackSize = 1;
         setMaxDamage(enumtoolmaterial.getMaxUses());
         weaponDamage = 4 + enumtoolmaterial.getDamageVsEntity();
-	}
-	
+    }
 
-    @Override
-    public float getStrVsBlock(ItemStack itemstack, Block block) {
-        return block.blockID != Block.web.blockID ? 1.5F : 15F;
+    /**
+     * Metadata-sensitive version of getStrVsBlock
+     * @param itemstack The Item Stack
+     * @param block The block the item is trying to break
+     * @param metadata The items current metadata
+     * @return The damage strength
+     */
+    public float getDigSpeed(ItemStack itemstack, Block block, int metadata) {
+        return block != Blocks.web ? 1.5F : 15F;
     }
 
     @Override
@@ -35,22 +37,16 @@ public class ItemDagger extends ItemTropicraftImpl {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack par1ItemStack, World par2World, int par3, int par4, int par5, int par6, EntityLivingBase par7EntityLiving)
-    {
+    public boolean onBlockDestroyed(ItemStack par1ItemStack, World par2World, Block block, int par4, int par5, int par6, EntityLivingBase par7EntityLiving) {
         return true;
     }
 
-  //  @Override
- //   public int getDamageVsEntity(Entity entity) {
-  //  public float func_82803_g() {
-   //     return weaponDamage;
-        //TODO
- //  }
-    
-    public float func_82803_g()
-    {
-        return weaponDamage;
-    }
+    //  @Override
+    //   public int getDamageVsEntity(Entity entity) {
+    //  public float func_82803_g() {
+    //     return weaponDamage;
+    //TODO
+    //  }
 
     @Override
     public boolean isFull3D() {
@@ -74,8 +70,8 @@ public class ItemDagger extends ItemTropicraftImpl {
     }
 
     @Override
-    public boolean canHarvestBlock(Block block) {
-        return block.blockID == Block.web.blockID;
+    public boolean canHarvestBlock(Block block, ItemStack stack) {
+        return block == Blocks.web;
     }
 
 }

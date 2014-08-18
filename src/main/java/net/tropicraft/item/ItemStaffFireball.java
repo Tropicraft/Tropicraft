@@ -1,40 +1,40 @@
 package net.tropicraft.item;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.tropicraft.entity.projectile.EntityFireBall;
+import net.tropicraft.info.TCInfo;
 
 /* extends to allow inner logic fixes to still happen */
-public class ItemStaffFireball extends Item
-{
+public class ItemStaffFireball extends Item {
 	//public Icon particles[] = new Icon[8];
 	
-    public ItemStaffFireball()
-    {
+    public ItemStaffFireball() {
         super();
         maxStackSize = 1;
         setMaxDamage(100);
     }
     
     @Override
-    public void registerIcons(IconRegister par1IconRegister) {
+    public void registerIcons(IIconRegister par1IconRegister) {
     	//particles[0] = par1IconRegister.registerIcon(ModInfo.ICONLOCATION + "particle_firetrail");
-    	this.itemIcon = par1IconRegister.registerIcon(ModInfo.ICONLOCATION + "staff_fire");
+    	this.itemIcon = par1IconRegister.registerIcon(TCInfo.ICON_LOCATION + "staff_fire");
     }
 
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
-        if (!entityplayer.capabilities.isCreativeMode)
-        {
+    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+        if (!entityplayer.capabilities.isCreativeMode) {
         	itemstack.damageItem(1, entityplayer);
         }
+        
         world.playSoundAtEntity(entityplayer, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-        if (!world.isRemote)
-        {
+        
+        if (!world.isRemote) {
             world.spawnEntityInWorld(new EntityFireBall(world, entityplayer));
         }
+        
         return itemstack;
     }
 }

@@ -145,7 +145,7 @@ public class TileEntityKoaChest extends TileEntityChest
     public int getHomeKoaCount() {
     	float dist = 160;
         
-        List<ICoroAI> ents = this.worldObj.getEntitiesWithinAABB(ICoroAI.class, AxisAlignedBB.getAABBPool().getAABB((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(dist, dist/2, dist));
+        List<ICoroAI> ents = this.worldObj.getEntitiesWithinAABB(ICoroAI.class, AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(dist, dist/2, dist));
         
         hunters = 0;
         fishers = 0;

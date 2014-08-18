@@ -1,28 +1,28 @@
 package net.tropicraft.item;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.tropicraft.entity.projectile.EntityTameBall;
+import net.tropicraft.info.TCInfo;
 
 /* extends to allow inner logic fixes to still happen */
-public class ItemStaffOfTaming extends Item
-{
-    public ItemStaffOfTaming()
-    {
+public class ItemStaffOfTaming extends Item {
+    
+    public ItemStaffOfTaming() {
         super();
         maxStackSize = 1;
     }
     
     @Override
-    public void registerIcons(IconRegister par1IconRegister) {
-    	this.itemIcon = par1IconRegister.registerIcon(ModInfo.ICONLOCATION + "staff_taming");
+    public void registerIcons(IIconRegister par1IconRegister) {
+    	this.itemIcon = par1IconRegister.registerIcon(TCInfo.ICON_LOCATION + "staff_taming");
     }
 
-    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer)
-    {
+    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
     	if (!entityplayer.capabilities.isCreativeMode)
         {
         	itemstack.damageItem(1, entityplayer);
@@ -36,8 +36,7 @@ public class ItemStaffOfTaming extends Item
     }
     
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player,
-    		Entity entity) {
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
     	if (!player.worldObj.isRemote) {
     		if (player.isSneaking()) {
     			if (!(entity instanceof EntityPlayer)) {
