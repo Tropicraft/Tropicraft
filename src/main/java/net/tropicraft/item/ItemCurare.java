@@ -2,6 +2,8 @@ package net.tropicraft.item;
 
 import java.util.List;
 
+import com.sun.imageio.plugins.common.I18N;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,8 +52,9 @@ public class ItemCurare extends ItemTropicraft {
     public void addInformation(ItemStack itemstack, EntityPlayer ent, List list, boolean wat) {
         list.clear();
         list.add(tooltipText[itemstack.getItemDamage()] + 
-                StatCollector.translateToLocal("dart.tropicraft:" + effectNames[itemstack.getItemDamage()] + ".name") + " " + 
-                StatCollector.translateToLocal("item.tropicraft:curare.name"));
+                TropicraftUtils.translate("dart.tropicraft:" + effectNames[itemstack.getItemDamage()] + ".name") + " " + 
+                TropicraftUtils.translate("item.tropicraft:curare.name"));
+       // list.add()
     }
 
     @Override

@@ -1,12 +1,14 @@
 package net.tropicraft;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.tropicraft.encyclopedia.Encyclopedia;
 import net.tropicraft.event.TCBlockEvents;
 import net.tropicraft.event.TCItemEvents;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.proxy.ISuperProxy;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCommandRegistry;
+import net.tropicraft.registry.TCCraftingRegistry;
 import net.tropicraft.registry.TCEntityRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
@@ -19,7 +21,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -36,6 +37,8 @@ public class Tropicraft {
 	
 	@Mod.Instance(TCInfo.MODID)
     public static Tropicraft instance;
+	
+	public static Encyclopedia encyclopedia;
 	
 	/**
 	 * Triggered when a server starts
@@ -59,6 +62,7 @@ public class Tropicraft {
     	TCItemRegistry.init();
     	TCFluidRegistry.postInit();
     	TCKoaCurrencyRegistry.init();
+    	TCCraftingRegistry.init();
     }
 	
 	/**

@@ -28,6 +28,7 @@ import net.tropicraft.client.entity.render.RenderEIH;
 import net.tropicraft.client.entity.render.RenderEagleRay;
 import net.tropicraft.client.entity.render.RenderIguana;
 import net.tropicraft.client.entity.render.RenderKoaMan;
+import net.tropicraft.client.entity.render.RenderPoisonBlot;
 import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeaTurtle;
 import net.tropicraft.client.entity.render.RenderSeahorse;

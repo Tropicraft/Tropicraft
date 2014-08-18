@@ -1,10 +1,10 @@
-package net.tropicraft.registry;
+package net.tropicraft.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
-import net.tropicraft.item.ItemTropicraft;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class ItemCoconutBomb extends ItemTropicraft {
 

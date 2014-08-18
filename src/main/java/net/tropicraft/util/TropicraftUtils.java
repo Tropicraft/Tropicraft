@@ -92,4 +92,13 @@ public class TropicraftUtils {
 
         return -1;
     }
+    
+    /**
+     * Translates an unlocalized String to be localized, returns it. Implementation can be changed accordingly.
+     * @param toBeTranslated
+     * @return
+     */
+    public static String translate(String toBeTranslated) {
+        return StatCollector.translateToLocal(toBeTranslated);
+    }
 }

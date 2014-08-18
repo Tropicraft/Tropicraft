@@ -7,7 +7,9 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.item.ItemBambooChute;
 import net.tropicraft.item.ItemBambooDoor;
+import net.tropicraft.item.ItemCoconutBomb;
 import net.tropicraft.item.ItemCoffeeBean;
 import net.tropicraft.item.ItemCurare;
 import net.tropicraft.item.ItemDagger;
@@ -170,12 +172,14 @@ public class TCItemRegistry {
     public static final Item bambooSpear = new ItemTropicraftSword(materialBambooTools, TCNames.bambooSpear);
     
     public static Item leafBall;// = (new ItemTropicraftLeafballNew()).setUnlocalizedName(ModInfo.ICONLOCATION + "leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
-    public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");;
+    public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");
 	public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
 	//public static ItemStaffIceball staffIce;
 	public static ItemStaffOfTaming staffTaming = (ItemStaffOfTaming) (new ItemStaffOfTaming()).setUnlocalizedName("staff_taming").setCreativeTab(TCCreativeTabRegistry.tabCombat);
 
 	public static Item fishingRodTropical = (new ItemTropicalFishingRod()).setUnlocalizedName("FishingRodTropical");
+	
+	public static Item bambooChute = new ItemBambooChute(TCBlockRegistry.bambooChute).setUnlocalizedName("BambooChute");
 
     /**
      * Register all the items
@@ -276,6 +280,8 @@ public class TCItemRegistry {
         registerItem(shells, TCNames.shell);
         registerItem(bambooSpear, TCNames.bambooSpear);
         registerItem(coconutBomb, TCNames.coconutBomb);
+        
+        registerItem(bambooChute, TCNames.bambooChute);
     }
 
     /**

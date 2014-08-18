@@ -1,4 +1,4 @@
-package net.tropicraft.registry;
+package net.tropicraft.client.entity.render;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
