@@ -21,4 +21,9 @@ public interface ISuperProxy {
 	 * Returns a ModelBiped for a given custom armor id
 	 */
 	public ModelBiped getArmorModel(int id);
+	
+	/**
+	 * Perform all pre-initializations here
+	 */
+	public void preInit();
 }

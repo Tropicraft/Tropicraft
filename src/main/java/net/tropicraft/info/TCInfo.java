@@ -22,10 +22,13 @@ public class TCInfo {
 	
 	/** Where to locate armor textures */
 	public static final String ARMOR_LOCATION = MODID + ":textures/models/armor/";
+	
+	/** Where to locate gui textures */
+	public static final String TEXTURE_GUI_LOC = "/assets/" + MODID + "/gui/";
 
 	/** Client proxy location */
 	public static final String CLIENT_PROXY = "net.tropicraft.proxy.ClientProxy";
 	
 	/** Common proxy location */
-	public static final String SERVER_PROXY = "net.tropicraft.proxy.CommonProxy";
+	public static final String SERVER_PROXY = "net.tropicraft.proxy.ServerProxy";
 }

@@ -2,7 +2,7 @@ package net.tropicraft.proxy;
 
 import net.minecraft.client.model.ModelBiped;
 
-public class CommonProxy implements ISuperProxy {
+public abstract class CommonProxy implements ISuperProxy {
 
 	public CommonProxy() {
 
@@ -21,6 +21,10 @@ public class CommonProxy implements ISuperProxy {
     @Override
     public ModelBiped getArmorModel(int id) {
         return null;
-    }
+    }    
 
+    @Override
+    public void preInit() {
+        
+    }
 }

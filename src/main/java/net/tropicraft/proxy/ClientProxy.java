@@ -2,6 +2,7 @@ package net.tropicraft.proxy;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.client.entity.model.ModelScubaGear;
 import net.tropicraft.client.renderer.block.AirCompressorRenderHandler;
 import net.tropicraft.client.renderer.block.BambooChestRenderHandler;
@@ -11,12 +12,15 @@ import net.tropicraft.client.renderer.block.CurareBowlRenderHandler;
 import net.tropicraft.client.renderer.block.FlowerPotRenderHandler;
 import net.tropicraft.client.renderer.block.TikiTorchRenderHandler;
 import net.tropicraft.client.renderer.item.ItemDiveComputerRenderer;
+import net.tropicraft.encyclopedia.Encyclopedia;
+import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCRenderIDs;
+import net.tropicraft.registry.TCCraftingRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.registry.TCRenderRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-public class ClientProxy implements ISuperProxy {
+public class ClientProxy extends CommonProxy {
 
     public ClientProxy() {
 
@@ -56,6 +60,16 @@ public class ClientProxy implements ISuperProxy {
         }
 
         return null;
+    }
+    
+    @Override
+    public void preInit() {
+        Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat", 
+                TCInfo.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt", 
+                "encyclopediaTropica", 
+                "encyclopediaTropicaInside");
+        
+        TCCraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
     }
 
 }
