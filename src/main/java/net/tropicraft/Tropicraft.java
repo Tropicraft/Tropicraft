@@ -10,6 +10,7 @@ import net.tropicraft.registry.TCCommandRegistry;
 import net.tropicraft.registry.TCEntityRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
+import net.tropicraft.registry.TCKoaCurrencyRegistry;
 import net.tropicraft.registry.TCTileEntityRegistry;
 import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftWorldUtils;
@@ -18,6 +19,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -56,6 +58,7 @@ public class Tropicraft {
     	TCTileEntityRegistry.init();
     	TCItemRegistry.init();
     	TCFluidRegistry.postInit();
+    	TCKoaCurrencyRegistry.init();
     }
 	
 	/**
@@ -87,6 +90,14 @@ public class Tropicraft {
 	 */
     @EventHandler
     public void handleIMCMessages(IMCEvent event) {
-
+    	//this event is for non runtime messages
+    	
+    }
+    
+    public static void dbg(Object obj) {
+    	boolean consoleDebug = true;
+    	if (consoleDebug) {
+    		System.out.println(obj);
+    	}
     }
 }

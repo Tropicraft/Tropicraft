@@ -34,9 +34,10 @@ public class EntityKoaFisher extends EntityKoaBase {
 	public IEntityLivingData onSpawnWithEgg(
 			IEntityLivingData par1EntityLivingData) {
 		
-		agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.dagger));
+		System.out.println("TODO: fisherman inventory");
+		/*agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.dagger));
 		agent.entInv.inventory.setInventorySlotContents(1, new ItemStack(TCItemRegistry.leafBall));
-		agent.entInv.inventory.setInventorySlotContents(2, new ItemStack(TCItemRegistry.fishingRodTropical));
+		agent.entInv.inventory.setInventorySlotContents(2, new ItemStack(TCItemRegistry.fishingRodTropical));*/
 		
 		//sync to vanilla system
 		agent.entInv.syncToClient();

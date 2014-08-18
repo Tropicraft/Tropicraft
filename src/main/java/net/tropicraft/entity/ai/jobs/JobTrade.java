@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,14 +13,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
-import tropicraft.blocks.TropicraftBlocks;
-import tropicraft.blocks.tileentities.TileEntityPurchasePlate;
-import tropicraft.economy.ItemEntry;
-import tropicraft.economy.ItemValueEntries;
-import tropicraft.economy.ItemValues;
-import tropicraft.entities.items.EntityTCItemFrame;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.block.tileentity.TileEntityPurchasePlate;
+import net.tropicraft.economy.ItemEntry;
+import net.tropicraft.economy.ItemValues;
+import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCKoaCurrencyRegistry;
 import CoroUtil.componentAI.jobSystem.JobBase;
 import CoroUtil.componentAI.jobSystem.JobManager;
+import CoroUtil.util.CoroUtilBlock;
 
 public class JobTrade extends JobBase {
 
@@ -28,7 +31,7 @@ public class JobTrade extends JobBase {
 	public int tradeLastItemOffer;
 	
 	public ChunkCoordinates tradeBlockPos;
-	public ChunkCoordinates frameBlockPos;
+	//public ChunkCoordinates frameBlockPos;
 	
 	public TileEntityPurchasePlate tradePlate;
 	
@@ -36,7 +39,7 @@ public class JobTrade extends JobBase {
 	
 	public ArrayList<ItemStack> offeredItems = new ArrayList();
 	
-	public int idTradeBlock;
+	public Block idTradeBlock;
 	
 	public JobTrade(JobManager jm) {
 		super(jm);
@@ -48,14 +51,14 @@ public class JobTrade extends JobBase {
 		
 		int leftToConvert = newCredit;
 		
-		while (leftToConvert > ItemValueEntries.currency.getMaxStackSize()) {
-			offeredItems.add(new ItemStack(ItemValueEntries.currency.getItem(), ItemValueEntries.currency.getMaxStackSize()));
+		while (leftToConvert > TCKoaCurrencyRegistry.currency.getMaxStackSize()) {
+			offeredItems.add(new ItemStack(TCKoaCurrencyRegistry.currency.getItem(), TCKoaCurrencyRegistry.currency.getMaxStackSize()));
 			//activeTrader.inventory.addItemStackToInventory();
-			leftToConvert -= ItemValueEntries.currency.getMaxStackSize();
+			leftToConvert -= TCKoaCurrencyRegistry.currency.getMaxStackSize();
 		}
 		
 		if (leftToConvert > 0) {
-			offeredItems.add(new ItemStack(ItemValueEntries.currency.getItem(), leftToConvert));
+			offeredItems.add(new ItemStack(TCKoaCurrencyRegistry.currency.getItem(), leftToConvert));
 		}
 	}
 	
@@ -98,7 +101,7 @@ public class JobTrade extends JobBase {
 		//setJobState(EnumJobState.IDLE);
 		
 		//TEMP!!!!!!!!
-		idTradeBlock = TropicraftBlocks.tradeBlock.blockID;
+		idTradeBlock = TCBlockRegistry.purchasePlate;
 		
 		
 		ai.maxDistanceFromHome = 0.5F;
@@ -120,7 +123,12 @@ public class JobTrade extends JobBase {
 				ai.homeY = tradeBlockPos.posY;
 				ai.homeZ = tradeBlockPos.posZ;
 			}
-		} else if (frameBlockPos == null) {
+		}/* else if (frameBlockPos == null) {
+			
+		}*/
+		
+		//TODO: koa item frame usage
+		/*if (ent.worldObj.getTotalWorldTime() % 100 == 0) {
 			List list = ent.worldObj.getEntitiesWithinAABBExcludingEntity(ent, ent.boundingBox.expand(6, 3, 6));
 			
 			for(int j = 0; j < list.size(); j++)
@@ -132,7 +140,7 @@ public class JobTrade extends JobBase {
 	            	}
 	            }
 	        }
-		}
+		}*/
 		
 		if (activeTrader == null) {
 			activeTrader = ent.worldObj.getClosestPlayerToEntity(ent, tradeDistTrigger);
@@ -196,12 +204,12 @@ public class JobTrade extends JobBase {
 			tradePlate.credit = 0;
 			tradePlate.activeTrader = null;
 		}
-		System.out.println("trade reset");
+		Tropicraft.dbg("trade reset");
 	}
 	
 	public void tradeTick() {
 		TileEntity tEnt = null;//
-		if (tradeBlockPos != null) tEnt = ent.worldObj.getBlockTileEntity(tradeBlockPos.posX, tradeBlockPos.posY, tradeBlockPos.posZ);
+		if (tradeBlockPos != null) tEnt = ent.worldObj.getTileEntity(tradeBlockPos.posX, tradeBlockPos.posY, tradeBlockPos.posZ);
 		if (tradeBlockPos != null && tEnt == null) {
 			tradeBlockPos = null;
 		} else {
@@ -211,17 +219,17 @@ public class JobTrade extends JobBase {
 		}
 	}
 	
-	public ChunkCoordinates tickFind(int id, int range) {
+	public ChunkCoordinates tickFind(Block id, int range) {
 		
 		for (int i = 0; i < 30; i++) {
 			int randX = (int) ent.posX+ent.worldObj.rand.nextInt(range) - (range/2);
 			int randY = (int) ent.posY+ent.worldObj.rand.nextInt(range) - (range/2);
 			int randZ = (int) ent.posZ+ent.worldObj.rand.nextInt(range) - (range/2);
 			
-			int foundID = ent.worldObj.getBlockId(randX, randY, randZ);
+			Block foundID = ent.worldObj.getBlock(randX, randY, randZ);
 			
 			if (foundID == id) {
-				System.out.println("found trade block");
+				Tropicraft.dbg("found trade block");
 				return new ChunkCoordinates(randX, randY, randZ);
 			} else {
 				//System.out.println("fail");
@@ -282,7 +290,7 @@ public class JobTrade extends JobBase {
 			if (tradeBlockPos != null && ent.worldObj.rand.nextInt(100) == 0) {
 				int tryX = tradeBlockPos.posX;// - 1 + rand.nextInt(2);
 				int tryZ = tradeBlockPos.posZ;// - 1 + rand.nextInt(2);
-				if (ent.worldObj.getBlockId(tryX, MathHelper.floor_double(ent.posY-1), tryZ) != 0/* && ent.worldObj.getBlockId(tryX, MathHelper.floor_double(ent.posY+1), tryZ) == 0*/) {
+				if (!CoroUtilBlock.isAir(ent.worldObj.getBlock(tryX, MathHelper.floor_double(ent.posY-1), tryZ))/* && ent.worldObj.getBlockId(tryX, MathHelper.floor_double(ent.posY+1), tryZ) == 0*/) {
 					ai.walkTo(ent, tradeBlockPos.posX, MathHelper.floor_double(ent.posY), tradeBlockPos.posZ, ai.maxPFRange, 600);
 				}
 				

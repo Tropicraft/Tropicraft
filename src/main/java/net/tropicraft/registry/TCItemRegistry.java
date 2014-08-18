@@ -6,6 +6,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
+import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooDoor;
 import net.tropicraft.item.ItemCoffeeBean;
@@ -15,9 +16,12 @@ import net.tropicraft.item.ItemDartGun;
 import net.tropicraft.item.ItemFertilizer;
 import net.tropicraft.item.ItemFlowerPot;
 import net.tropicraft.item.ItemShell;
+import net.tropicraft.item.ItemStaffFireball;
+import net.tropicraft.item.ItemStaffOfTaming;
 import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
+import net.tropicraft.item.ItemTropicraftLeafballNew;
 import net.tropicraft.item.ItemTropicraftMulti;
 import net.tropicraft.item.ItemTropicraftOre;
 import net.tropicraft.item.ItemTropicsWaterBucket;
@@ -47,6 +51,7 @@ import net.tropicraft.item.tool.ItemUnderwaterAxe;
 import net.tropicraft.item.tool.ItemUnderwaterHoe;
 import net.tropicraft.item.tool.ItemUnderwaterPickaxe;
 import net.tropicraft.item.tool.ItemUnderwaterShovel;
+import CoroUtil.entity.ItemTropicalFishingRod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
@@ -164,6 +169,14 @@ public class TCItemRegistry {
     
     public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
     public static final Item bambooSpear = new ItemTropicraftSword(materialBambooTools, TCNames.bambooSpear);
+    
+    public static Item leafBall;// = (new ItemTropicraftLeafballNew()).setUnlocalizedName(ModInfo.ICONLOCATION + "leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+    public static Item dagger;// = (new ItemDagger("dagger", EnumToolMaterialTropics.ZIRCON)).setUnlocalizedName("dagger");;
+	public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+	//public static ItemStaffIceball staffIce;
+	public static ItemStaffOfTaming staffTaming = (ItemStaffOfTaming) (new ItemStaffOfTaming()).setUnlocalizedName("staff_taming").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+
+	public static Item fishingRodTropical = (new ItemTropicalFishingRod()).setUnlocalizedName("FishingRodTropical");
 
     /**
      * Register all the items

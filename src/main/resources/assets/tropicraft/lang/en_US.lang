@@ -15,6 +15,7 @@ tile.tropicraft:coral_2.name=Coral Reef
 tile.tropicraft:coral_3.name=Coral Reef
 tile.tropicraft:coral_4.name=Coral Reef
 tile.tropicraft:coral_5.name=Coral Reef
+tile.tropicraft:coral_6.name=Dinopherous Coral
 tile.tropicraft:bambooBundle.name=Bamboo Bundle
 tile.tropicraft:log_Palm.name=Palm Log
 tile.tropicraft:log_Mahogany.name=Mahogany Log
@@ -81,11 +82,6 @@ tile.tropicraft:mineralSand_Coral.name=Coral Sands
 tile.tropicraft:mineralSand_Green.name=Foamy Sands
 tile.tropicraft:mineralSand_Black.name=Black Sands
 tile.tropicraft:mineralSand_Mineral.name=Mineral Sands
-tile.tropicraft:sifter.name=Sifter
-tile.tropicraft:curareBowl.name=Curare Bowl
-tile.tropicraft:bongoDrum_Small.name=Small Bongo Drum
-tile.tropicraft:bongoDrum_Medium.name=Medium Bongo Drum
-tile.tropicraft:bongoDrum_Large.name=Large Bongo Drum
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -173,7 +169,7 @@ item.tropicraft:coconut.name=Coconut
 item.tropicraft:coconutBomb.name=Coconut Bomb
 item.tropicraft:scubaTank.name=Scuba Tank
 item.tropicraft:dryHelmet.name=Dry Suit Headgear
-item.tropicraft:wetHelmet.name=Wet Suit Mask
+item.tropicraft:wetHelmet.name=Wet Suit Headgear
 item.tropicraft:dryLeggings.name=Dry Suit Leggings
 item.tropicraft:wetLeggings.name=Wet Suit Leggings
 item.tropicraft:dryChestplate.name=Dry Suit Chestpiece
@@ -190,11 +186,6 @@ item.tropicraft:blowGun.name=Blow Gun
 item.tropicraft:ore_Unrefined.name=Unrefined Mineral Sands
 item.tropicraft:ore_Raftous.name=Raftous Ore
 item.tropicraft:ore_Souzium.name=Souzium Ore
-item.tropicraft:aquaAxe.name=Souzium Aqua Axe
-item.tropicraft:aquaHoe.name=Souzium Aqua Hoe
-item.tropicraft:aquaPickaxe.name=Souzium Aqua Pickaxe
-item.tropicraft:aquaShovel.name=Souzium Aqua Shovel
-item.tropicraft:bambooSpear.name=Bamboo Spear
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair
@@ -207,7 +198,6 @@ entity.tropicraft.SeaTurtle.name=Sea Turtle
 entity.tropicraft.SeaTurtleEgg.name=Sea Turtle Egg
 entity.tropicraft.PoisonBlot.name=Dart Frog Poison Blot
 entity.tropicraft.Dart.name=Poison Dart
-entity.tropicraft.CoconutBomb.name=Coconut Bomb
 
 #Gui localizations
 gui.tropicraft:airType=Air Type
@@ -234,4 +224,3 @@ dart.tropicraft:weakness.name=Weakness
 
 #Other localizations
 death.attack.dart.item=Dart
-tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!
