@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntityCurareBowl;
+import net.tropicraft.factory.TileEntityFactory;
 import net.tropicraft.registry.TCBlockRegistry;
 
 public class BlockCurareBowl extends BlockTropicraft implements ITileEntityProvider {
@@ -21,7 +22,7 @@ public class BlockCurareBowl extends BlockTropicraft implements ITileEntityProvi
 
     @Override
     public TileEntity createNewTileEntity(World var1, int var2) {
-        return new TileEntityCurareBowl();
+        return TileEntityFactory.getCurareBowlTE();
     }
 
     /**

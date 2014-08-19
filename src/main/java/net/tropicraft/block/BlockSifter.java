@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntitySifter;
+import net.tropicraft.factory.TileEntityFactory;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 
@@ -23,7 +24,7 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 
     @Override
     public TileEntity createNewTileEntity(World var1, int var2) {
-        return new TileEntitySifter();
+        return TileEntityFactory.getSifterTE();
     }
 
     @Override

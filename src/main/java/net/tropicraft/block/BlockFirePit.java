@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntityFirePit;
+import net.tropicraft.factory.TileEntityFactory;
 import net.tropicraft.info.TCNames;
 
 public class BlockFirePit extends BlockTropicraft implements ITileEntityProvider {
@@ -39,7 +40,7 @@ public class BlockFirePit extends BlockTropicraft implements ITileEntityProvider
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityFirePit();
+		return TileEntityFactory.getFirePitTE();
 	}
 
 }

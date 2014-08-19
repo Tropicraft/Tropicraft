@@ -14,6 +14,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.block.BlockTropicraft;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
+import net.tropicraft.factory.TileEntityFactory;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCRenderIDs;
 import net.tropicraft.registry.TCCreativeTabRegistry;
@@ -132,7 +133,7 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityAirCompressor();
+		return TileEntityFactory.getAirCompressorTE();
 	}
 	
 	/**

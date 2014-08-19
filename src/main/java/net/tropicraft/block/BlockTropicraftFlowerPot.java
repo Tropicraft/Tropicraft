@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntityTropicraftFlowerPot;
+import net.tropicraft.factory.TileEntityFactory;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.info.TCRenderIDs;
 import net.tropicraft.registry.TCBlockRegistry;
@@ -254,7 +255,7 @@ public class BlockTropicraftFlowerPot extends BlockTropicraft implements ITileEn
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityTropicraftFlowerPot();
+		return TileEntityFactory.getFlowerPotTE();
 	}
 
 }
