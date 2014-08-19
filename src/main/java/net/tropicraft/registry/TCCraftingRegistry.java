@@ -72,7 +72,7 @@ public class TCCraftingRegistry {
     private static void initDartRecipes(boolean isServer) {       
 
         //register all blow types
-        for (int damage = 0; damage < TCNames.dartNames.length; damage++) {
+        for (int damage = 0; damage < ItemCurare.effectNames.length; damage++) {
             createRecipe(isServer, true, new ItemStack(TCItemRegistry.blowGun, 1, damage), new Object[]{
                 "X  ", " I ", "  X",
                 'X', TCItemRegistry.bambooStick,

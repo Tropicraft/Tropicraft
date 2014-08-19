@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,6 +28,7 @@ public class BlockTropicraftFlower extends BlockBush {
 		super(Material.plants);
 		this.names = names;
 		this.setBlockTextureName(TCNames.flower);
+		this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
 	}
 	
 	/**

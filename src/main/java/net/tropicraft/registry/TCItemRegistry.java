@@ -6,6 +6,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
+import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooChute;
 import net.tropicraft.item.ItemBambooDoor;
@@ -16,13 +17,16 @@ import net.tropicraft.item.ItemDagger;
 import net.tropicraft.item.ItemDart;
 import net.tropicraft.item.ItemDartGun;
 import net.tropicraft.item.ItemFertilizer;
+import net.tropicraft.item.ItemFlippers;
 import net.tropicraft.item.ItemFlowerPot;
 import net.tropicraft.item.ItemShell;
+import net.tropicraft.item.ItemSnorkel;
 import net.tropicraft.item.ItemStaffFireball;
 import net.tropicraft.item.ItemStaffOfTaming;
 import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
+import net.tropicraft.item.ItemTropicraftLeafballNew;
 import net.tropicraft.item.ItemTropicraftMulti;
 import net.tropicraft.item.ItemTropicraftOre;
 import net.tropicraft.item.ItemTropicsWaterBucket;
@@ -171,7 +175,7 @@ public class TCItemRegistry {
     public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
     public static final Item bambooSpear = new ItemTropicraftSword(materialBambooTools, TCNames.bambooSpear);
     
-    public static Item leafBall;// = (new ItemTropicraftLeafballNew()).setUnlocalizedName(ModInfo.ICONLOCATION + "leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+    public static Item leafBall = (new ItemTropicraftLeafballNew()).setUnlocalizedName(TCInfo.ICON_LOCATION + "leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
     public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");
 	public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
 	//public static ItemStaffIceball staffIce;
@@ -180,6 +184,10 @@ public class TCItemRegistry {
 	public static Item fishingRodTropical = (new ItemTropicalFishingRod()).setUnlocalizedName("FishingRodTropical");
 	
 	public static Item bambooChute = new ItemBambooChute(TCBlockRegistry.bambooChute).setUnlocalizedName("BambooChute");
+	
+	public static final ArmorMaterial materialSnorkelGear = EnumHelper.addArmorMaterial("watergear", 40, new int[]{2, 4, 5, 6}, 9);
+	public static Item flippers = new ItemFlippers(materialSnorkelGear, 0, 3);
+	public static Item snorkel = new ItemSnorkel(materialSnorkelGear, 0, 0);
 
     /**
      * Register all the items
@@ -282,6 +290,8 @@ public class TCItemRegistry {
         registerItem(coconutBomb, TCNames.coconutBomb);
         
         registerItem(bambooChute, TCNames.bambooChute);
+        registerItem(snorkel, TCNames.snorkel);
+        registerItem(flippers, TCNames.flippers);
     }
 
     /**
