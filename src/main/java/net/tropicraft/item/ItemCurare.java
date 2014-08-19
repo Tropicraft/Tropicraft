@@ -31,7 +31,7 @@ public class ItemCurare extends ItemTropicraft {
 
     @SideOnly(Side.CLIENT)
     private IIcon backImage;
-    
+
     public ItemCurare() {
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
@@ -56,33 +56,40 @@ public class ItemCurare extends ItemTropicraft {
         list.add(tooltipText[itemstack.getItemDamage()] + 
                 TropicraftUtils.translate("dart.tropicraft:" + effectNames[itemstack.getItemDamage()] + ".name") + " " + 
                 TropicraftUtils.translate("item.tropicraft:curare.name"));
-        list.add(TropicraftUtils.translate("curare.tropicraft:how.name") + ":");
-        
+        list.add(TropicraftUtils.translate("curare.tropicraft:mix.name") + ":");
+
         int count = 0;
+        int totalcount = 0;
         int previous = Integer.MIN_VALUE;
         CurareMix mix = CurareMixRegistry.getInstance().getCurareMixFromType(CurareType.getCurareFromDamage(itemstack.getItemDamage()));
-        
+
         if (mix == null) {
             list.add(TropicraftUtils.translate("curare.tropicraft:nomix.name"));
             return;
         }
-        
-        for (int i : mix.getSortedDamageVals()) {
-            // If number is same as previous index
-            if (i == previous) {
-                count++;
+
+        int[] damages = mix.getSortedDamageVals();
+
+        for (int i : damages) {
+            totalcount++;
+            if (previous == Integer.MIN_VALUE || previous == i) {
                 previous = i;
+                count++;
                 continue;
             }
-            
-            previous = i;
-            // Otherwise if number is new
+
             ItemStack flower = new ItemStack(TCBlockRegistry.flowers, 1, previous);
             list.add(count + " " + ColorHelper.color(getColorValueFromDamage(previous)) + flower.getDisplayName());
+            previous = i;
             count = 1;
+
+            if (totalcount == damages.length) {
+                flower = new ItemStack(TCBlockRegistry.flowers, 1, i);
+                list.add(count + " " + ColorHelper.color(getColorValueFromDamage(i)) + flower.getDisplayName());
+            }
         }
     }
-    
+
     private int getColorValueFromDamage(int damage) {
         switch(damage) {
         case 0:
