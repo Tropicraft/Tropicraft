@@ -1,6 +1,12 @@
 # gradle stuff
 build
 .gradle
+gradle
+gradlew
+gradlew.bat
+
+#forge stuff
+/*.txt
 
 # eclipse stuff
 .classpath
@@ -8,6 +14,7 @@ build
 .settings
 bin
 logs
+eclipse
 
 # run place
 run
