@@ -59,19 +59,6 @@ public class RenderTropiSkeleton extends RenderBiped {
 
                 this.renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack1, 0);
             }
-            else if (item == Items.skull)
-            {
-                f1 = 1.0625F;
-                GL11.glScalef(f1, -f1, -f1);
-                String s = "";
-
-                if (itemstack1.hasTagCompound() && itemstack1.getTagCompound().hasKey("SkullOwner", 8))
-                {
-                    s = itemstack1.getTagCompound().getString("SkullOwner");
-                }
-
-                TileEntitySkullRenderer.field_147536_b.func_147530_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack1.getItemDamage(), s);
-            }
 
             GL11.glPopMatrix();
         }
