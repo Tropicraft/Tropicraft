@@ -291,16 +291,13 @@ public class TCItemRegistry {
         registerItem(coconutBomb, TCNames.coconutBomb);
         
         registerItem(bambooChute, TCNames.bambooChute);
-<<<<<<< Updated upstream
         registerItem(snorkel, TCNames.snorkel);
         registerItem(flippers, TCNames.flippers);
-=======
         
         registerItem(dagger, TCNames.dagger);
         registerItem(staffFire, TCNames.staffFire);
         registerItem(staffTaming, TCNames.staffTaming);
         registerItem(fishingRodTropical, TCNames.fishingRodTropical);
->>>>>>> Stashed changes
     }
 
     /**
