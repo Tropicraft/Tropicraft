@@ -36,8 +36,8 @@ public class EntityKoaBase extends EntityCoroAI {
 		//agent.setMoveSpeed(0.35F);
 		//agent.fleeSpeed = 0.4F;
 		agent.dipl_info = TeamTypes.getType("koa");
-		/*agent.entInv.shouldLookForPickups = true;
-		agent.entInv.grabItems = true;*/
+		/*agent.entInv.shouldLookForPickups = true;*/
+		agent.entInv.grabItems = true;
 		agent.scanForHomeChest = true;
 		agent.shouldFixBadYPathing = true;
 		//agent.PFRangePathing = 64;

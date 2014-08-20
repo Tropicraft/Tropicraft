@@ -29,6 +29,7 @@ import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
 import net.tropicraft.entity.underdasea.EntityTurtleEgg;
+import CoroUtil.entity.EntityTropicalFishHook;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class TCEntityRegistry {
@@ -64,6 +65,8 @@ public class TCEntityRegistry {
 		registerEntity(EntityKoaFisher.class, "KoaFisher", 64, 3, true);
 		registerEntity(EntityKoaTrader.class, "KoaTrader", 64, 3, true);
 		registerEntity(EntityKoaShaman.class, "KoaShaman", 64, 3, true);
+		registerEntity(EntityTropicalFishHook.class, "TropiFishHook", 64, 1, true);
+		
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

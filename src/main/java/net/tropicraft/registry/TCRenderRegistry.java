@@ -1,5 +1,6 @@
 package net.tropicraft.registry;
 
+import CoroUtil.entity.EntityTropicalFishHook;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -26,6 +27,7 @@ import net.tropicraft.client.entity.render.RenderChair;
 import net.tropicraft.client.entity.render.RenderDart;
 import net.tropicraft.client.entity.render.RenderEIH;
 import net.tropicraft.client.entity.render.RenderEagleRay;
+import net.tropicraft.client.entity.render.RenderFishHook;
 import net.tropicraft.client.entity.render.RenderIguana;
 import net.tropicraft.client.entity.render.RenderKoaMan;
 import net.tropicraft.client.entity.render.RenderPoisonBlot;
@@ -97,6 +99,7 @@ public class TCRenderRegistry {
         registerEntityRender(SpiderEgg.class, new RenderSpiderEgg(new ModelSpiderEgg(), 0.5F));
         registerEntityRender(VMonkey.class, new RenderVMonkey(new ModelVMonkey(), 0.5F));
         registerEntityRender(EntityKoaBase.class, new RenderKoaMan(new ModelKoaMan(), 0.7F));
+        registerEntityRender(EntityTropicalFishHook.class, new RenderFishHook());
     }
 
     /**

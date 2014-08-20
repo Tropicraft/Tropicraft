@@ -345,6 +345,7 @@ public class JobFish extends JobBase {
 		int count = 0;
 		count += CoroUtilInventory.getItemCount(ai.entInv.inventory, Item.itemRegistry.getNameForObject(Items.fish));
 		count += CoroUtilInventory.getItemCount(ai.entInv.inventory, Item.itemRegistry.getNameForObject(TCItemRegistry.freshMarlin));
+		System.out.println("fish count: " + count);
 		return count;
 	}
 	
