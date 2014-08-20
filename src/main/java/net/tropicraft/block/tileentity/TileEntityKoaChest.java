@@ -97,6 +97,7 @@ public class TileEntityKoaChest extends TileEntityChest
 	            	addToList(var2);
 	            	
 	                this.worldObj.spawnEntityInWorld(var2);
+	                var2.onSpawnWithEgg(null);
 	                var2.getAIAgent().spawnedOrNBTReloadedInit();
 	                //this.worldObj.playAuxSFX(2004, this.xCoord, this.yCoord, this.zCoord, 0);
 	

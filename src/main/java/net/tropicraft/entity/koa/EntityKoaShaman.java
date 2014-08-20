@@ -1,9 +1,11 @@
 package net.tropicraft.entity.koa;
 
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.tropicraft.entity.ai.jobs.JobQuestGiver;
+import net.tropicraft.registry.TCItemRegistry;
 
 public class EntityKoaShaman extends EntityKoaBase {
 
@@ -27,6 +29,19 @@ public class EntityKoaShaman extends EntityKoaBase {
 		return 10;
 	}
 
+	@Override
+	public IEntityLivingData onSpawnWithEgg(
+			IEntityLivingData par1EntityLivingData) {
+		
+		agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.bambooSpear));
+		agent.entInv.inventory.setInventorySlotContents(1, new ItemStack(TCItemRegistry.staffFire));
+		
+		//sync to vanilla system
+		agent.entInv.syncToClient();
+		
+		return super.onSpawnWithEgg(par1EntityLivingData);
+	}
+	
 	/*@Override
 	public void postInitFakePlayer() {
 		super.postInitFakePlayer();

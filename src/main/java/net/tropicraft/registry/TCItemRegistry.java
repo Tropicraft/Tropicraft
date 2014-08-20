@@ -175,8 +175,9 @@ public class TCItemRegistry {
     public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
     public static final Item bambooSpear = new ItemTropicraftSword(materialBambooTools, TCNames.bambooSpear);
     
-    public static Item leafBall = (new ItemTropicraftLeafballNew()).setUnlocalizedName(TCInfo.ICON_LOCATION + "leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
-    public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");
+    public static Item leafBall = (new ItemTropicraftLeafballNew()).setUnlocalizedName("leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+    public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");;
+
 	public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
 	//public static ItemStaffIceball staffIce;
 	public static ItemStaffOfTaming staffTaming = (ItemStaffOfTaming) (new ItemStaffOfTaming()).setUnlocalizedName("staff_taming").setCreativeTab(TCCreativeTabRegistry.tabCombat);
@@ -290,8 +291,16 @@ public class TCItemRegistry {
         registerItem(coconutBomb, TCNames.coconutBomb);
         
         registerItem(bambooChute, TCNames.bambooChute);
+<<<<<<< Updated upstream
         registerItem(snorkel, TCNames.snorkel);
         registerItem(flippers, TCNames.flippers);
+=======
+        
+        registerItem(dagger, TCNames.dagger);
+        registerItem(staffFire, TCNames.staffFire);
+        registerItem(staffTaming, TCNames.staffTaming);
+        registerItem(fishingRodTropical, TCNames.fishingRodTropical);
+>>>>>>> Stashed changes
     }
 
     /**

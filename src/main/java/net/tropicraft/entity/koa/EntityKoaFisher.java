@@ -11,7 +11,6 @@ import CoroUtil.entity.EntityTropicalFishHook;
 
 public class EntityKoaFisher extends EntityKoaBase {
 
-	public EntityTropicalFishHook fishEntity;
 	public float castingStrength = 1F;
 	
 	public EntityKoaFisher(World par1World) {
@@ -34,15 +33,27 @@ public class EntityKoaFisher extends EntityKoaBase {
 	public IEntityLivingData onSpawnWithEgg(
 			IEntityLivingData par1EntityLivingData) {
 		
-		System.out.println("TODO: fisherman inventory");
-		/*agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.dagger));
+		agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.dagger));
 		agent.entInv.inventory.setInventorySlotContents(1, new ItemStack(TCItemRegistry.leafBall));
-		agent.entInv.inventory.setInventorySlotContents(2, new ItemStack(TCItemRegistry.fishingRodTropical));*/
+		agent.entInv.inventory.setInventorySlotContents(2, new ItemStack(TCItemRegistry.fishingRodTropical));
 		
 		//sync to vanilla system
 		agent.entInv.syncToClient();
 		
 		return super.onSpawnWithEgg(par1EntityLivingData);
+	}
+	
+	@Override
+	public void onUpdate() {
+		
+		if (!worldObj.isRemote) {
+			agent.entInv.setSlotActive(0);
+			agent.entInv.setSlotActive(2);
+		} else {
+			//System.out.println(this.getEquipmentInSlot(0));
+		}
+		
+		super.onUpdate();
 	}
 
 	/*@Override

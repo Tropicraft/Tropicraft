@@ -1,7 +1,9 @@
 package net.tropicraft.entity.koa;
 
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.tropicraft.registry.TCItemRegistry;
 
 public class EntityKoaHunter extends EntityKoaBase {
 
@@ -14,6 +16,20 @@ public class EntityKoaHunter extends EntityKoaBase {
 	@Override
 	public int getCooldownRanged() {
 		return 10;
+	}
+	
+	@Override
+	public IEntityLivingData onSpawnWithEgg(
+			IEntityLivingData par1EntityLivingData) {
+		
+		agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.dagger));
+		agent.entInv.inventory.setInventorySlotContents(1, new ItemStack(TCItemRegistry.leafBall));
+		agent.entInv.inventory.setInventorySlotContents(2, new ItemStack(TCItemRegistry.fishingRodTropical));
+		
+		//sync to vanilla system
+		agent.entInv.syncToClient();
+		
+		return super.onSpawnWithEgg(par1EntityLivingData);
 	}
 
 	/*@Override

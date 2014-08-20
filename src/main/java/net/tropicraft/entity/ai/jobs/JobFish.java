@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.entity.koa.EntityKoaFisher;
 import net.tropicraft.entity.underdasea.EntityTropicraftWaterMob;
 import net.tropicraft.registry.TCItemRegistry;
@@ -50,6 +51,12 @@ public class JobFish extends JobBase {
 	}
 	
 	@Override
+	public void setJobState(EnumJobState ekos) {
+		super.setJobState(ekos);
+		Tropicraft.dbg(ekos);
+	}
+	
+	@Override
 	public void onLowHealth() {
 		super.onLowHealth();
 		if (hitAndRunDelay == 0 && ent.getDistanceToEntity(ai.lastFleeEnt) > 3F) {
@@ -70,7 +77,7 @@ public class JobFish extends JobBase {
 	public void tick() {
 		super.tick();
 		
-		//System.out.println("fisher state: " + state);
+		//Tropicraft.dbg("fisher state: " + state);
 		
 		if (ai.entInv.inventory == null) return;
 		
@@ -169,6 +176,9 @@ public class JobFish extends JobBase {
 			}
 			
 			if (getFishEntity() == null || fishingTimeout <= 0 || (getFishEntity() != null && (getFishEntity().inGround || (getFishEntity().ticksCatchable > 0 && getFishEntity().ticksCatchable < 10)))) {
+				
+				System.out.println("fish entity: " + getFishEntity());
+				
 				if (getFishEntity() != null) {
 					catchFish();
 				}
@@ -312,20 +322,22 @@ public class JobFish extends JobBase {
 	}
 	
 	public EntityTropicalFishHook getFishEntity() {
-		if (ai.ent instanceof EntityKoaFisher) {
-			return ((EntityKoaFisher)ai.ent).fishEntity;
+		return ai.entInv.fishEntity;
+		/*if (ai.ent instanceof EntityKoaFisher) {
+			return ai.fishEntity;
 		} else {
 			System.out.println("JobFish used by unsupported entity type, not getting fish entity");
 		}
-		return null;
+		return null;*/
 	}
 	
 	public void setFishEntity(EntityTropicalFishHook parEnt) {
-		if (ai.ent instanceof EntityKoaFisher) {
-			((EntityKoaFisher)ai.ent).fishEntity = parEnt;
+		ai.entInv.fishEntity = parEnt;
+		/*if (ai.ent instanceof EntityKoaFisher) {
+			ai.fishEntity = parEnt;
 		} else {
 			System.out.println("JobFish used by unsupported entity type, not setting fish entity");
-		}
+		}*/
 	}
 	
 	protected int getFishCount() {

@@ -145,6 +145,10 @@ public class TCNames {
     public static final String bambooSpear = "bambooSpear";
     public static final String snorkel = "snorkel";
     public static final String flippers = "flippers";
+    public static final String dagger = "dagger";
+    public static final String staffFire = "staffFire";
+    public static final String staffTaming = "staffTaming";
+    public static final String fishingRodTropical = "fishingRodTropical";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";
