@@ -72,16 +72,16 @@ public class BlockBongoDrum extends BlockTropicraftMulti {
     }
     
     private void playHighBongo(World world, int x, int y, int z) {
-        world.playSoundEffect(x, y, z, "bongohigh", 1.0f, 1.0f);
+        world.playSoundEffect(x, y, z, TCInfo.MODID + ":bongohigh", 1.0f, 1.0f);
     }
     
     private void playMediumBongo(World world, int x, int y, int z) {
-        world.playSoundEffect(x, y, z, "bongomedium", 1.0f, 1.0f);
+        world.playSoundEffect(x, y, z, TCInfo.MODID + ":bongomedium", 1.0f, 1.0f);
         
     }
 
     private void playLowBongo(World world, int x, int y, int z) {
-        world.playSoundEffect(x, y, z, "bongolow", 1.0f, 1.0f);
+        world.playSoundEffect(x, y, z, TCInfo.MODID + ":bongolow", 1.0f, 1.0f);
     }
 
     @Override

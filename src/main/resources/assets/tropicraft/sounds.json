@@ -1,0 +1,20 @@
+{
+  "bongohigh": {
+    "category": "block",
+    "sounds": [
+      "bongohigh"
+    ]
+  },
+  "bongomedium": {
+    "category": "block",
+    "sounds": [
+      "bongomedium"
+    ]
+  },
+  "bongolow": {
+    "category": "block",
+    "sounds": [
+      "bongolow"
+    ]
+  }
+}
