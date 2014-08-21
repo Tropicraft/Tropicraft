@@ -28,6 +28,7 @@ import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftLeafballNew;
 import net.tropicraft.item.ItemTropicraftMulti;
+import net.tropicraft.item.ItemTropicraftMusicDisk;
 import net.tropicraft.item.ItemTropicraftOre;
 import net.tropicraft.item.ItemTropicsWaterBucket;
 import net.tropicraft.item.ItemWaterWand;
@@ -189,6 +190,13 @@ public class TCItemRegistry {
 	public static final ArmorMaterial materialSnorkelGear = EnumHelper.addArmorMaterial("watergear", 40, new int[]{2, 4, 5, 6}, 9);
 	public static Item flippers = new ItemFlippers(materialSnorkelGear, 0, 3);
 	public static Item snorkel = new ItemSnorkel(materialSnorkelGear, 0, 0);
+	
+	public static Item recordBuriedTreasure = new ItemTropicraftMusicDisk("buriedtreasure", "buriedtreasure", "Punchaface").setUnlocalizedName("Buried Treasure");
+	public static Item recordEasternIsles = new ItemTropicraftMusicDisk("easternisles", "easternisles", "Frox").setUnlocalizedName("Eastern Isles");
+	public static Item recordLowTide = new ItemTropicraftMusicDisk("lowtide", "lowtide", "Frox").setUnlocalizedName("Low Tide");
+	public static Item recordSummering = new ItemTropicraftMusicDisk("summering", "summering", "Frox").setUnlocalizedName("Summering");
+	public static Item recordTheTribe = new ItemTropicraftMusicDisk("thetribe", "thetribe", "Frox").setUnlocalizedName("The Tribe");
+	public static Item recordTradeWinds = new ItemTropicraftMusicDisk("tradewinds", "tradewinds", "Frox").setUnlocalizedName("Trade Winds");
 
     /**
      * Register all the items
@@ -298,6 +306,12 @@ public class TCItemRegistry {
         registerItem(staffFire, TCNames.staffFire);
         registerItem(staffTaming, TCNames.staffTaming);
         registerItem(fishingRodTropical, TCNames.fishingRodTropical);
+        registerItem(recordBuriedTreasure, TCNames.recordBuriedTreasure);
+        registerItem(recordEasternIsles, TCNames.recordEasternIsles);
+        registerItem(recordLowTide, TCNames.recordLowTide);
+        registerItem(recordSummering, TCNames.recordSummering);
+        registerItem(recordTheTribe, TCNames.recordTheTribe);
+        registerItem(recordTradeWinds, TCNames.recordTradeWinds);
     }
 
     /**

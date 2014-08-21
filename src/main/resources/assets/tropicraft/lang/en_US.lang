@@ -234,6 +234,15 @@ dart.tropicraft:weakness.name=Weakness
 curare.tropicraft:mix.name=Mix Ingredients
 curare.tropicraft:nomix.name=No Mix Exists
 
+#Record localizations
+item.tropicraft:record_buriedtreasure.name=Buried Treasure
+item.tropicraft:record_easternisles.name=Eastern Isles
+item.tropicraft:record_lowtide.name=Low Tide
+item.tropicraft:record_summering.name=Summering
+item.tropicraft:record_thetribe.name=The Tribe
+item.tropicraft:record_tradewinds.name=Trade Winds
+
 #Other localizations
 death.attack.dart.item=Dart
 tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!
+itemGroup.music=Music

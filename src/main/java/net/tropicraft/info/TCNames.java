@@ -149,6 +149,12 @@ public class TCNames {
     public static final String staffFire = "staffFire";
     public static final String staffTaming = "staffTaming";
     public static final String fishingRodTropical = "fishingRodTropical";
+    public static final String recordBuriedTreasure = "record_buriedtreasure";
+    public static final String recordEasternIsles = "record_easternisles";
+    public static final String recordLowTide = "record_lowtide";
+    public static final String recordSummering = "record_summering";
+    public static final String recordTheTribe = "record_thetribe";
+    public static final String recordTradeWinds = "record_tradewinds";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

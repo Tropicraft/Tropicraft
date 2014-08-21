@@ -25,6 +25,9 @@ public class TCInfo {
 	
 	/** Where to locate gui textures */
 	public static final String TEXTURE_GUI_LOC = "/assets/" + MODID + "/gui/";
+	
+	/** Folder to find records in */
+	public static final String RECORDS_LOCATION = ICON_LOCATION + "sounds/records/";
 
 	/** Client proxy location */
 	public static final String CLIENT_PROXY = "net.tropicraft.proxy.ClientProxy";
