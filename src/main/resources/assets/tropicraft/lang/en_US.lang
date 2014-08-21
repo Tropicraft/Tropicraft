@@ -195,6 +195,7 @@ item.tropicraft:aquaHoe.name=Souzium Aqua Hoe
 item.tropicraft:aquaPickaxe.name=Souzium Aqua Pickaxe
 item.tropicraft:aquaShovel.name=Souzium Aqua Shovel
 item.tropicraft:bambooSpear.name=Bamboo Spear
+item.tropicraft:portalEnchanter.name=Portal Enchanter
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair
@@ -246,3 +247,5 @@ item.tropicraft:record_tradewinds.name=Trade Winds
 death.attack.dart.item=Dart
 tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!
 itemGroup.music=Music
+portalenchanter.type_0=Mode: Portal Build Mode
+portalenchanter.type_1=Mode: Instant Teleport Mode

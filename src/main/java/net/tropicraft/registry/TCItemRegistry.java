@@ -6,7 +6,6 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
-import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooChute;
 import net.tropicraft.item.ItemBambooDoor;
@@ -19,6 +18,7 @@ import net.tropicraft.item.ItemDartGun;
 import net.tropicraft.item.ItemFertilizer;
 import net.tropicraft.item.ItemFlippers;
 import net.tropicraft.item.ItemFlowerPot;
+import net.tropicraft.item.ItemPortalEnchanter;
 import net.tropicraft.item.ItemShell;
 import net.tropicraft.item.ItemSnorkel;
 import net.tropicraft.item.ItemStaffFireball;
@@ -197,6 +197,8 @@ public class TCItemRegistry {
 	public static Item recordSummering = new ItemTropicraftMusicDisk("summering", "summering", "Frox").setUnlocalizedName("Summering");
 	public static Item recordTheTribe = new ItemTropicraftMusicDisk("thetribe", "thetribe", "Frox").setUnlocalizedName("The Tribe");
 	public static Item recordTradeWinds = new ItemTropicraftMusicDisk("tradewinds", "tradewinds", "Frox").setUnlocalizedName("Trade Winds");
+	
+	public static Item portalEnchanter = new ItemPortalEnchanter();
 
     /**
      * Register all the items
@@ -312,6 +314,8 @@ public class TCItemRegistry {
         registerItem(recordSummering, TCNames.recordSummering);
         registerItem(recordTheTribe, TCNames.recordTheTribe);
         registerItem(recordTradeWinds, TCNames.recordTradeWinds);
+        
+        registerItem(portalEnchanter, TCNames.portalEnchanter);
     }
 
     /**

@@ -18,12 +18,7 @@ public class TCCreativeTabRegistry {
     public static final CreativeTabs tabMusic = new CreativeTabMusicTC("music");
     public static final CreativeTabs tabMisc = new CreativeTabMiscTC("misc");
 
-    public static void init() {
-
-    }
-
     public static class CreativeTabDecoTC extends CreativeTabs {
-
         public CreativeTabDecoTC(String name) {
             super(name);
         }
@@ -35,7 +30,6 @@ public class TCCreativeTabRegistry {
     }
 
     public static class CreativeTabMiscTC extends CreativeTabs {
-
         public CreativeTabMiscTC(String name) {
             super(name);
         }
@@ -47,7 +41,6 @@ public class TCCreativeTabRegistry {
     }
 
     public static class CreativeTabToolsTC extends CreativeTabs {
-
         public CreativeTabToolsTC(String name) {
             super(name);
         }
@@ -63,7 +56,6 @@ public class TCCreativeTabRegistry {
     }
 
     public static class CreativeTabCombatTC extends CreativeTabs {
-
         public CreativeTabCombatTC(String name) {
             super(name);
         }
@@ -75,7 +67,6 @@ public class TCCreativeTabRegistry {
     }
 
     public static class CreativeTabMaterialsTC extends CreativeTabs {
-
         public CreativeTabMaterialsTC(String name) {
             super(name);
         }
@@ -88,7 +79,6 @@ public class TCCreativeTabRegistry {
     }
 
     public static class CreativeTabBlockTC extends CreativeTabs {
-
         public CreativeTabBlockTC(String name) {
             super(name);
         }
@@ -100,10 +90,8 @@ public class TCCreativeTabRegistry {
         }
     }
 
-    public static class CreativeTabFoodTC extends CreativeTabs
-    {
-        public CreativeTabFoodTC(String par2Str)
-        {
+    public static class CreativeTabFoodTC extends CreativeTabs {
+        public CreativeTabFoodTC(String par2Str) {
             super(par2Str);
         }
 
@@ -113,12 +101,9 @@ public class TCCreativeTabRegistry {
         }
     }
 
-    public static class CreativeTabMusicTC extends CreativeTabs
-    {
-        public CreativeTabMusicTC(String par2Str)
-        {
+    public static class CreativeTabMusicTC extends CreativeTabs {
+        public CreativeTabMusicTC(String par2Str) {
             super(par2Str);
-     //TODO       LanguageRegistry.instance().addStringLocalization("itemGroup.music", "Music");
         }
 
         @SideOnly(Side.CLIENT)

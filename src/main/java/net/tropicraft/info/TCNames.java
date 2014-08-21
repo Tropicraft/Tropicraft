@@ -155,6 +155,7 @@ public class TCNames {
     public static final String recordSummering = "record_summering";
     public static final String recordTheTribe = "record_thetribe";
     public static final String recordTradeWinds = "record_tradewinds";
+    public static final String portalEnchanter = "portalEnchanter";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";
