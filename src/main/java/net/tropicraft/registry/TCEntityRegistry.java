@@ -2,6 +2,7 @@ package net.tropicraft.registry;
 
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.hostile.EntityTreeFrogBlue;
@@ -66,6 +67,7 @@ public class TCEntityRegistry {
 		registerEntity(EntityKoaTrader.class, "KoaTrader", 64, 3, true);
 		registerEntity(EntityKoaShaman.class, "KoaShaman", 64, 3, true);
 		registerEntity(EntityTropicalFishHook.class, "TropiFishHook", 64, 1, true);
+		registerEntity(EntityTCItemFrame.class, "TCItemFrame", 64, 10, false);
 		
 	}
 	

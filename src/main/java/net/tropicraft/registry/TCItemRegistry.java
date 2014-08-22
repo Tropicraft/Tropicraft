@@ -6,6 +6,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
+import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooChute;
 import net.tropicraft.item.ItemBambooDoor;
@@ -23,6 +24,7 @@ import net.tropicraft.item.ItemShell;
 import net.tropicraft.item.ItemSnorkel;
 import net.tropicraft.item.ItemStaffFireball;
 import net.tropicraft.item.ItemStaffOfTaming;
+import net.tropicraft.item.ItemTCItemFrame;
 import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
@@ -199,6 +201,10 @@ public class TCItemRegistry {
 	public static Item recordTradeWinds = new ItemTropicraftMusicDisk("tradewinds", "tradewinds", "Frox").setUnlocalizedName("Trade Winds");
 	
 	public static Item portalEnchanter = new ItemPortalEnchanter();
+	public static Item bambooMug = new ItemTropicraft().setMaxStackSize(16);
+	
+    public static Item tropiFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, true)).setUnlocalizedName("tropiFrame");
+    public static Item koaFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, false)).setUnlocalizedName("koaFrame");
 
     /**
      * Register all the items
@@ -316,6 +322,10 @@ public class TCItemRegistry {
         registerItem(recordTradeWinds, TCNames.recordTradeWinds);
         
         registerItem(portalEnchanter, TCNames.portalEnchanter);
+        registerItem(bambooMug, TCNames.bambooMug);
+        
+        registerItem(tropiFrame, TCNames.tropiFrame);
+        registerItem(koaFrame, TCNames.koaFrame);
     }
 
     /**

@@ -1,6 +1,5 @@
 package net.tropicraft.registry;
 
-import CoroUtil.entity.EntityTropicalFishHook;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -35,6 +34,7 @@ import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeaTurtle;
 import net.tropicraft.client.entity.render.RenderSeahorse;
 import net.tropicraft.client.entity.render.RenderSpiderEgg;
+import net.tropicraft.client.entity.render.RenderTCItemFrame;
 import net.tropicraft.client.entity.render.RenderTreeFrog;
 import net.tropicraft.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.client.entity.render.RenderTropiSkeleton;
@@ -48,6 +48,7 @@ import net.tropicraft.client.tileentity.TileEntityCurareBowlRenderer;
 import net.tropicraft.client.tileentity.TileEntityKoaChestRenderer;
 import net.tropicraft.client.tileentity.TileEntityPurchasePlateRenderer;
 import net.tropicraft.client.tileentity.TileEntitySifterRenderer;
+import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.hostile.EntityTreeFrog;
@@ -69,6 +70,7 @@ import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
 import net.tropicraft.entity.underdasea.EntityTurtleEgg;
+import CoroUtil.entity.EntityTropicalFishHook;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -100,6 +102,7 @@ public class TCRenderRegistry {
         registerEntityRender(VMonkey.class, new RenderVMonkey(new ModelVMonkey(), 0.5F));
         registerEntityRender(EntityKoaBase.class, new RenderKoaMan(new ModelKoaMan(), 0.7F));
         registerEntityRender(EntityTropicalFishHook.class, new RenderFishHook());
+        registerEntityRender(EntityTCItemFrame.class, new RenderTCItemFrame());
     }
 
     /**

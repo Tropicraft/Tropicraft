@@ -156,6 +156,9 @@ public class TCNames {
     public static final String recordTheTribe = "record_thetribe";
     public static final String recordTradeWinds = "record_tradewinds";
     public static final String portalEnchanter = "portalEnchanter";
+    public static final String bambooMug = "bambooMug";
+    public static final String koaFrame = "koaFrame";
+    public static final String tropiFrame = "tropiFrame";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

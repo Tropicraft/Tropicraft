@@ -166,7 +166,7 @@ ashenmask.desc  = These masks are the source of an Ashen's identity. Without a m
 
         Tropicraft.encyclopedia.includeItem("azurite", new ItemStack(TCItemRegistry.ore, 1, 2));
         Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(TCItemRegistry.bambooChute));
-        Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(TCItemRegistry.bambooMugEmpty));
+        Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(TCItemRegistry.bambooMug));
         Tropicraft.encyclopedia.includeItem("bambooblock", new ItemStack(TCBlockRegistry.bambooBundle));
         Tropicraft.encyclopedia.includeItem("bamboochest", new ItemStack(TCBlockRegistry.bambooChest));
         Tropicraft.encyclopedia.includeItem("bamboodoor", new ItemStack(TCItemRegistry.bambooDoor));
@@ -353,7 +353,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
             '#', new ItemStack(TCBlockRegistry.logs, 1, 0)
         });
 
-        createRecipe(true, new ItemStack(TCItemRegistry.bambooMugEmpty, 1), new Object[]{
+        createRecipe(true, new ItemStack(TCItemRegistry.bambooMug, 1), new Object[]{
             "X X", "X X", "XXX",
             'X', TCItemRegistry.bambooChute
         });
@@ -362,14 +362,14 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
             "X", "Y", "Z",
             'X', TCItemRegistry.coconutChunk,
             'Y', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
-            'Z', TCItemRegistry.bambooMugEmpty
+            'Z', TCItemRegistry.bambooMug
         });
 
         createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
             "Y", "X", "Z",
             'X', TCItemRegistry.coconutChunk,
             'Y', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
-            'Z', TCItemRegistry.bambooMugEmpty
+            'Z', TCItemRegistry.bambooMug
         });
 
         createRecipe(true, new ItemStack(TCItemRegistry.scaleHelmet, 1), new Object[]{
@@ -826,7 +826,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
                 new Object[]{
                     TCItemRegistry.coconutChunk,
                     new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
-                    TCItemRegistry.bambooMugEmpty
+                    TCItemRegistry.bambooMug
                 });
 
 

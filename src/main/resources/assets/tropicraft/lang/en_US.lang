@@ -196,6 +196,9 @@ item.tropicraft:aquaPickaxe.name=Souzium Aqua Pickaxe
 item.tropicraft:aquaShovel.name=Souzium Aqua Shovel
 item.tropicraft:bambooSpear.name=Bamboo Spear
 item.tropicraft:portalEnchanter.name=Portal Enchanter
+item.tropicraft:bambooMug.name=Bamboo Mug
+item.tropicraft:koaFrame.name=Koa Item Frame
+item.tropicraft:tropiFrame.name=Tropics Item Frame
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair
