@@ -1,6 +1,7 @@
 package net.tropicraft;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.tropicraft.drinks.MixerRecipes;
 import net.tropicraft.encyclopedia.Encyclopedia;
 import net.tropicraft.event.TCBlockEvents;
 import net.tropicraft.event.TCItemEvents;
@@ -75,6 +76,7 @@ public class Tropicraft {
 		proxy.initRenderHandlersAndIDs();
 		TCEntityRegistry.init();
 		proxy.initRenderRegistry();
+		MixerRecipes.addMixerRecipes();
 		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
 		MinecraftForge.EVENT_BUS.register(new TCItemEvents());
 		TropicraftWorldUtils.initializeDimension();

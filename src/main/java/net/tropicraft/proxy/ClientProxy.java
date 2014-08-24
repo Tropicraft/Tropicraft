@@ -9,6 +9,7 @@ import net.tropicraft.client.renderer.block.BambooChestRenderHandler;
 import net.tropicraft.client.renderer.block.BambooChuteRenderHandler;
 import net.tropicraft.client.renderer.block.CoffeePlantRenderHandler;
 import net.tropicraft.client.renderer.block.CurareBowlRenderHandler;
+import net.tropicraft.client.renderer.block.EIHMixerRenderHandler;
 import net.tropicraft.client.renderer.block.FlowerPotRenderHandler;
 import net.tropicraft.client.renderer.block.TikiTorchRenderHandler;
 import net.tropicraft.client.renderer.item.ItemDiveComputerRenderer;
@@ -35,6 +36,7 @@ public class ClientProxy extends CommonProxy {
         TCRenderIDs.airCompressor = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.bambooChute = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.curareBowl = RenderingRegistry.getNextAvailableRenderId();
+        TCRenderIDs.eihMixer = RenderingRegistry.getNextAvailableRenderId();
 
         RenderingRegistry.registerBlockHandler(new CoffeePlantRenderHandler());
         RenderingRegistry.registerBlockHandler(new TikiTorchRenderHandler());
@@ -43,6 +45,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new AirCompressorRenderHandler());
         RenderingRegistry.registerBlockHandler(new BambooChuteRenderHandler());
         RenderingRegistry.registerBlockHandler(new CurareBowlRenderHandler());
+        RenderingRegistry.registerBlockHandler(new EIHMixerRenderHandler());
 
         MinecraftForgeClient.registerItemRenderer(TCItemRegistry.diveComputer, new ItemDiveComputerRenderer());
     }

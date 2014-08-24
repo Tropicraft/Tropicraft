@@ -17,6 +17,7 @@ import net.minecraft.item.ItemSlab;
 import net.tropicraft.block.BlockBambooChest;
 import net.tropicraft.block.BlockBambooChute;
 import net.tropicraft.block.BlockBambooDoor;
+import net.tropicraft.block.BlockBambooMug;
 import net.tropicraft.block.BlockBongoDrum;
 import net.tropicraft.block.BlockBundle;
 import net.tropicraft.block.BlockChunkOHead;
@@ -144,6 +145,8 @@ public class TCBlockRegistry {
 	public static final BlockKoaChest koaChest = new BlockKoaChest();
 	public static final BlockPurchasePlate purchasePlate = new BlockPurchasePlate();
 	
+	public static final BlockBambooMug bambooMug = new BlockBambooMug();
+	
 	/**
 	 * Register all the blocks
 	 */
@@ -204,6 +207,7 @@ public class TCBlockRegistry {
 		registerMultiBlock(bongoDrum, TCNames.bongoDrum, TCNames.bongoDrumNames);
 		registerBlock(koaChest, TCNames.koaChest);
 		registerBlock(purchasePlate, TCNames.purchasePlate);
+		registerBlock(bambooMug, TCNames.bambooMug);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

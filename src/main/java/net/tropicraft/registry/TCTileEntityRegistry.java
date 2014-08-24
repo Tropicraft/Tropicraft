@@ -3,7 +3,9 @@ package net.tropicraft.registry;
 import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.block.tileentity.TileEntityBambooMug;
 import net.tropicraft.block.tileentity.TileEntityCurareBowl;
+import net.tropicraft.block.tileentity.TileEntityEIHMixer;
 import net.tropicraft.block.tileentity.TileEntityFirePit;
 import net.tropicraft.block.tileentity.TileEntityKoaChest;
 import net.tropicraft.block.tileentity.TileEntityPurchasePlate;
@@ -22,6 +24,8 @@ public class TCTileEntityRegistry {
 		registerTE(TileEntityCurareBowl.class, "TCCurareBowl");
 		registerTE(TileEntityKoaChest.class, "TCKoaChest");
 		registerTE(TileEntityPurchasePlate.class, "TCTradePlate");
+		registerTE(TileEntityBambooMug.class, "TCBambooMug");
+		registerTE(TileEntityEIHMixer.class, "TCEIHMixer");
 	}
 	
 	private static void registerTE(Class<? extends TileEntity> clazz, String name) {

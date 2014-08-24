@@ -10,6 +10,7 @@ import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooChute;
 import net.tropicraft.item.ItemBambooDoor;
+import net.tropicraft.item.ItemCocktail;
 import net.tropicraft.item.ItemCoconutBomb;
 import net.tropicraft.item.ItemCoffeeBean;
 import net.tropicraft.item.ItemCurare;
@@ -205,6 +206,8 @@ public class TCItemRegistry {
 	
     public static Item tropiFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, true)).setUnlocalizedName("tropiFrame");
     public static Item koaFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, false)).setUnlocalizedName("koaFrame");
+    
+    public static Item cocktail = new ItemCocktail(TCCreativeTabRegistry.tabFood);
 
     /**
      * Register all the items
@@ -326,6 +329,8 @@ public class TCItemRegistry {
         
         registerItem(tropiFrame, TCNames.tropiFrame);
         registerItem(koaFrame, TCNames.koaFrame);
+        
+        registerItem(cocktail, TCNames.cocktail);
     }
 
     /**

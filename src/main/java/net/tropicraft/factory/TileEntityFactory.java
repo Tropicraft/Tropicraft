@@ -4,6 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.block.tileentity.TileEntityBambooMug;
 import net.tropicraft.block.tileentity.TileEntityCurareBowl;
 import net.tropicraft.block.tileentity.TileEntityFirePit;
 import net.tropicraft.block.tileentity.TileEntitySifter;
@@ -20,6 +21,10 @@ public class TileEntityFactory {
 
     public static TileEntity getBambooChestTE() {
         return new TileEntityBambooChest();
+    }
+    
+    public static TileEntity getBambooMugTE() {
+        return new TileEntityBambooMug();
     }
 
     public static TileEntity getCurareBowlTE() {

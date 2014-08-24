@@ -11,6 +11,8 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.curare.CurareMix;
 import net.tropicraft.curare.CurareMixRegistry;
 import net.tropicraft.curare.CurareType;
+import net.tropicraft.drinks.Drink;
+import net.tropicraft.drinks.MixerRecipes;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemCurare;
 import cpw.mods.fml.common.FMLCommonHandler;
