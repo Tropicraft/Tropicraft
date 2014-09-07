@@ -14,6 +14,8 @@ public class BlockFirePit extends BlockTropicraft implements ITileEntityProvider
 		super(Material.circuits);
 		this.setBlockTextureName(TCNames.firePit);
 		this.setBlockBoundsForItemRender();
+		
+		this.lightValue = (int)(15.0F);
 	}
 	
     /**

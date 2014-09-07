@@ -160,6 +160,7 @@ public class TCNames {
     public static final String koaFrame = "koaFrame";
     public static final String tropiFrame = "tropiFrame";
     public static final String cocktail = "cocktail";
+    public static final String leafBall = "leafBall";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

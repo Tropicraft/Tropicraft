@@ -331,6 +331,7 @@ public class TCItemRegistry {
         registerItem(koaFrame, TCNames.koaFrame);
         
         registerItem(cocktail, TCNames.cocktail);
+        registerItem(leafBall, TCNames.leafBall);
     }
 
     /**

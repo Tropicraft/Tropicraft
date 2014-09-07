@@ -1,13 +1,13 @@
 package net.tropicraft.factory;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.tropicraft.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.block.tileentity.TileEntityBambooMug;
 import net.tropicraft.block.tileentity.TileEntityCurareBowl;
 import net.tropicraft.block.tileentity.TileEntityFirePit;
 import net.tropicraft.block.tileentity.TileEntitySifter;
+import net.tropicraft.block.tileentity.TileEntityTropicraftFlowerPot;
 
 /**
  * Class to get TileEntity instances for Tropicraft. Should make updating a little less painful having
@@ -36,7 +36,7 @@ public class TileEntityFactory {
     }
 
     public static TileEntity getFlowerPotTE() {
-        return new TileEntityFlowerPot();
+        return new TileEntityTropicraftFlowerPot();
     }
 
     public static TileEntity getSifterTE() {

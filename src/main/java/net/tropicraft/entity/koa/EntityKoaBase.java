@@ -44,6 +44,8 @@ public class EntityKoaBase extends EntityCoroAI {
 		
 		agent.collideResistClose = agent.collideResistFormation = agent.collideResistPathing = entityCollisionReduction = 0.9F;
 		this.experienceValue = 15;
+		
+		this.func_110163_bv();
 	}
 	
 	@Override

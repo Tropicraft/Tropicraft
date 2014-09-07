@@ -70,6 +70,7 @@ import net.tropicraft.entity.pool.EntityPoolFloat;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
+import net.tropicraft.entity.projectile.EntityTropicraftLeafballNew;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
@@ -107,6 +108,7 @@ public class TCRenderRegistry {
         registerEntityRender(EntityKoaBase.class, new RenderKoaMan(new ModelKoaMan(), 0.7F));
         registerEntityRender(EntityTropicalFishHook.class, new RenderFishHook());
         registerEntityRender(EntityTCItemFrame.class, new RenderTCItemFrame());
+        registerEntityRender(EntityTropicraftLeafballNew.class, new RenderSnowball(TCItemRegistry.leafBall));
     }
 
     /**

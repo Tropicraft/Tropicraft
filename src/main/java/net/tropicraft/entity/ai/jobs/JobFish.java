@@ -53,7 +53,7 @@ public class JobFish extends JobBase {
 	@Override
 	public void setJobState(EnumJobState ekos) {
 		super.setJobState(ekos);
-		Tropicraft.dbg(ekos);
+		//Tropicraft.dbg(ekos);
 	}
 	
 	@Override
@@ -177,7 +177,7 @@ public class JobFish extends JobBase {
 			
 			if (getFishEntity() == null || fishingTimeout <= 0 || (getFishEntity() != null && (getFishEntity().inGround || (getFishEntity().ticksCatchable > 0 && getFishEntity().ticksCatchable < 10)))) {
 				
-				System.out.println("fish entity: " + getFishEntity());
+				//System.out.println("fish entity: " + getFishEntity());
 				
 				if (getFishEntity() != null) {
 					catchFish();
@@ -345,7 +345,7 @@ public class JobFish extends JobBase {
 		int count = 0;
 		count += CoroUtilInventory.getItemCount(ai.entInv.inventory, Item.itemRegistry.getNameForObject(Items.fish));
 		count += CoroUtilInventory.getItemCount(ai.entInv.inventory, Item.itemRegistry.getNameForObject(TCItemRegistry.freshMarlin));
-		System.out.println("fish count: " + count);
+		//System.out.println("fish count: " + count);
 		return count;
 	}
 	

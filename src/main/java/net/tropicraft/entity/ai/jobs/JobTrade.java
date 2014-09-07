@@ -337,6 +337,7 @@ public class JobTrade extends JobBase {
 					
 					if (tradePlate != null) {
 						tradePlate.credit = getOfferedItemsValue();
+						System.out.println("VERIFY THIS CODE IN hookInteract()");
 						MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(tradePlate.getDescriptionPacket());
 					}
 				}

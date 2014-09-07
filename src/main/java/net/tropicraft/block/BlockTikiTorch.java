@@ -32,6 +32,8 @@ public class BlockTikiTorch extends BlockTropicraft {
 		super(Material.circuits);
 		this.setTickRandomly(true);
 		this.setCreativeTab(null);
+		
+		this.lightValue = (int)(15.0F);
 
 		float w = 0.0625F;
 		setBlockBounds(0.5F - w, 0.0F, 0.5F - w, 0.5F + w, 0.9F, 0.5F + w);
