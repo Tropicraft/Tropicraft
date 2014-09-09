@@ -16,6 +16,7 @@ import net.tropicraft.entity.koa.EntityKoaHunter;
 import net.tropicraft.entity.koa.EntityKoaShaman;
 import net.tropicraft.entity.koa.EntityKoaTrader;
 import CoroUtil.util.CoroUtilFile;
+import CoroUtil.world.location.SpawnLocationData;
 import CoroUtil.world.location.town.TownObject;
 import build.BuildServerTicks;
 import build.ICustomGen;
@@ -37,7 +38,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 	//1: trader
 	//2-11: fishers
 	//12-21: hunters
-	public List<ChunkCoordinates> listCoordsSpawn = new ArrayList<ChunkCoordinates>();
+	//public List<ChunkCoordinates> listCoordsSpawn = new ArrayList<ChunkCoordinates>();
 	
 	public TownKoaVillage() {
 		super();
@@ -48,7 +49,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		super.tickUpdate();
 		
 		if (getWorld().getTotalWorldTime() % 20 == 0) {
-			//System.out.println("koa village tick - " + spawn);
+			System.out.println("koa village tick - " + spawn.posX + ", " + spawn.posZ + " - E/PE: " + listLoadedEntities.size() + "/" + listPersistantEntities.size());
 		}
 	}
 	
@@ -56,7 +57,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 	public void initFirstTime() {
 		super.initFirstTime();
 		
-		
+		generateSpawnCoords();
 		
 		genStructure();
 	}
@@ -95,30 +96,35 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		BuildServerTicks.buildMan.addBuild(bj);
 	}
 	
-	public void spawnEntities() {
-		
-		System.out.println("TEMP SETTING VILLAGE SIZE");
-		areaLength = TownKoaVillageGenHelper.areaLength = 76; //Z for rot 0
-		areaWidth = TownKoaVillageGenHelper.areaWidth = 86; //X for rot 0
-		areaHeight = TownKoaVillageGenHelper.areaHeight = 16;
+	public void spawnEntitiesForce() {
 		
 		System.out.println("Spawning koa village population for village: " + spawn);
+		tickMonitorPersistantMembers();
 		
-		int spawnRadius = 1;
+		
+		
+		/*System.out.println("TEMP SETTING VILLAGE SIZE");
+		areaLength = TownKoaVillageGenHelper.areaLength = 76; //Z for rot 0
+		areaWidth = TownKoaVillageGenHelper.areaWidth = 86; //X for rot 0
+		areaHeight = TownKoaVillageGenHelper.areaHeight = 16;*/
+		
+		
+		
+		//int spawnRadius = 1;
 		
 		//stuff spawned in the relative positive directions needs a -1 for z, but not ALL of them, wtf?
 		
-		int fix = 0;
+		//int fix = 0;
 		
-		generateSpawnCoords();
 		
-		spawnEntityRel("shaman", 0);
+		
+		/*spawnEntityRel("shaman", 0);
 		spawnEntityRel("trader", 1);
 		
 		for (int i = 2; i < listCoordsSpawn.size(); i++) {
 			spawnEntityRel("hunter", i);
 			spawnEntityRel("fisher", i);
-		}
+		}*/
 		
 		//spawnEntityRel("hunter", 3);
 		//spawnEntityRel("hunter", 4);
@@ -128,24 +134,27 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		
 		int y = 2;
 		
-		listCoordsSpawn.clear();
+		
+		
+		//listCoordsSpawn.clear();
 		//shaman
 		//listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(34, 2+y, 0));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(77, 2+y, 37));
+		//listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(77, 2+y, 37));
+		registerSpawnLocation(new SpawnLocationData(getRotatedCoordsWithRelFromCorner(77, 2+y, 37), "shaman"));
 		//trader
 		//listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(-17, y, 0));
 		//25 37 is true position for trader best spot in rotation 0 for double odd sized village
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(25, y, 37));
+		registerSpawnLocation(new SpawnLocationData(getRotatedCoordsWithRelFromCorner(25, y, 37), "trader"));
 		//listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(26, y, 38));
 		
 		//listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(24, y, 37));
 		
 		//huts, left side front to back
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(23, 1+y, 20));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(38, 1+y, 14));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(57, 1+y, 3));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(63, 1+y, 17));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(69, 1+y, 3));
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(23, 1+y, 20), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(38, 1+y, 14), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(57, 1+y, 3), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(63, 1+y, 17), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(69, 1+y, 3), "fisher", "hunter");
 		//-787 88 -233
 		//-768 88 -244
 		//-762 -230
@@ -157,11 +166,11 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		//-768 -176
 		//-762 -190
 		//-756 -176
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(23, 1+y, 54));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(38, 1+y, 60));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(57, 1+y, 71));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(63, 1+y, 57));
-		listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(69, 1+y, 71));
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(23, 1+y, 54), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(38, 1+y, 60), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(57, 1+y, 71), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(63, 1+y, 57), "fisher", "hunter");
+		registerSpawnLocation(getRotatedCoordsWithRelFromCorner(69, 1+y, 71), "fisher", "hunter");
 		
 		//test koa
 		//listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(0, y, 0));
@@ -182,13 +191,13 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 				Vec3.createVectorHelper(areaWidth, areaHeight, areaLength));
 	}
 	
-	public void spawnEntityRel(String parType, int memberID) {
+	/*public void spawnEntityRel(String parType, int memberID) {
 		
 		ChunkCoordinates coords = listCoordsSpawn.get(memberID);
 		
-		/*ChunkCoordinates coords = BuildManager.rotateNew(new ChunkCoordinates(MathHelper.floor_double(parCoords.xCoord), MathHelper.floor_double(parCoords.yCoord), MathHelper.floor_double(parCoords.zCoord)), direction, 
+		ChunkCoordinates coords = BuildManager.rotateNew(new ChunkCoordinates(MathHelper.floor_double(parCoords.xCoord), MathHelper.floor_double(parCoords.yCoord), MathHelper.floor_double(parCoords.zCoord)), direction, 
 				Vec3.createVectorHelper(spawn.posX, spawn.posY, spawn.posZ), 
-				Vec3.createVectorHelper(areaWidth, areaHeight, areaLength));*/
+				Vec3.createVectorHelper(areaWidth, areaHeight, areaLength));
 		
 		EntityKoaBase ent = null;
 		
@@ -207,20 +216,48 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 			ent.setPosition(spawn.posX + coords.posX + 0.5F, spawn.posY + coords.posY, spawn.posZ + coords.posZ + 0.5F);
 			//ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
 			getWorld().spawnEntityInWorld(ent);
+			addEntity(parType, ent);
 			ent.onSpawnWithEgg(null);
 		}
 		
 		//TODO: register entities with managedlocation, how are ids managed?
-	}
+	}*/
 	
 	public void addEntity(String unitType, EntityLivingBase ent, int parMemberID) {
 		super.addEntity(unitType, ent);
+	}
+	
+	@Override
+	public void spawnMemberAtSpawnLocation(SpawnLocationData parData) {
+		super.spawnMemberAtSpawnLocation(parData);
+		
+		EntityKoaBase ent = null;
+		
+		if (parData.type.equals("fisher")) {
+			ent = new EntityKoaFisher(getWorld());
+		} else if (parData.type.equals("hunter")) {
+			ent = new EntityKoaHunter(getWorld());
+		} else if (parData.type.equals("trader")) {
+			ent = new EntityKoaTrader(getWorld());
+		} else if (parData.type.equals("shaman")) {
+			ent = new EntityKoaShaman(getWorld());
+		}
+		
+		if (ent != null) {
+			ent.getAIAgent().setManagedLocation(this);
+			ent.setPosition(spawn.posX + parData.coords.posX + 0.5F, spawn.posY + parData.coords.posY, spawn.posZ + parData.coords.posZ + 0.5F);
+			//ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
+			getWorld().spawnEntityInWorld(ent);
+			addEntity(parData.type, ent);
+			parData.entityUUID = ent.getPersistentID();
+			ent.onSpawnWithEgg(null);
+		}
 	}
 
 	@Override
 	public void genPassPre(World world, BuildJob parBuildJob, int parPass) {
 		if (parPass == -1) {
-			spawnEntities();
+			spawnEntitiesForce();
 		}
 	}
 

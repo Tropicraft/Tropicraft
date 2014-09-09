@@ -46,6 +46,12 @@ public class EntityCoroAI extends EntityLand implements ICoroAI, IMob {
 		agent.setSpeedNormalBase(0.5F);
 		agent.applyEntityAttributes();
 	}
+	
+	@Override
+	public void setDead() {
+		super.setDead();
+		agent.hookSetDead();
+	}
 
 	@Override
 	public void cleanup() {
