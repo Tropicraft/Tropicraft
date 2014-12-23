@@ -30,8 +30,8 @@ public class WorldGenTallFlower extends TCGenBase {
             int k1 = (k + rand.nextInt(8)) - rand.nextInt(8);
             if (worldObj.isAirBlock(i1, j1, k1) && worldObj.isAirBlock(i1, j1 + 1, k1) &&
                     plantBlock.canBlockStay(worldObj, i1, j1, k1)) {
-                worldObj.setBlock(i1, j1, k1, plantBlock, plantBottomMeta, 3);
-                worldObj.setBlock(i1, j1 + 1, k1, plantBlock, plantTopMeta, 3);
+                worldObj.setBlock(i1, j1, k1, plantBlock, plantBottomMeta, blockGenNotifyFlag);
+                worldObj.setBlock(i1, j1 + 1, k1, plantBlock, plantTopMeta, blockGenNotifyFlag);
             }
         }
 

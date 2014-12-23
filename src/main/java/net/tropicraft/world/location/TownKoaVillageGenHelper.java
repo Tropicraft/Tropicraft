@@ -107,8 +107,12 @@ public class TownKoaVillageGenHelper {
 		int sizeHorizMax = areaWidth;
 		int sizeMiddle = areaWidth/2;
 		
-		int topYBeach = parWorld.getHeightValue(parCoords.posX, parCoords.posZ) - 1;
+		int topYBeach = WorldProviderTropicraft.MID_HEIGHT - 1;//parWorld.getHeightValue(parCoords.posX, parCoords.posZ) - 1;
+		
+		//if (topYBeach < WorldProviderTropicraft.MID_HEIGHT) return false;//topYBeach = WorldProviderTropicraft.MID_HEIGHT+1;
+		
 		Block blockScanBeach = parWorld.getBlock(parCoords.posX, topYBeach, parCoords.posZ);
+		
 		
 		if (blockScanBeach.getMaterial() == Material.sand) {
 			//tropiwater isnt counted in getHeightValue apparently so lets hardcode the observed water height val

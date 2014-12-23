@@ -23,7 +23,7 @@ public class WorldGenWaterfall extends TCDirectionalGen {
 				int dir = this.worldObj.getBlock(i, j, k + 1) == Blocks.stone ? 1 : -1;
 				size *= dir;
 				for(int x = 0; x < size; x += dir) {
-					this.worldObj.setBlock(i, j, k + x, WATER_BLOCK);
+					this.worldObj.setBlock(i, j, k + x, WATER_BLOCK, 0, blockGenNotifyFlag);
 					if(this.worldObj.getBlock(i + 1, j, k + x + dir) != Blocks.air || this.worldObj.getBlock(i + x + dir, j, k) != Blocks.stone) {
 						break;
 					}
@@ -34,7 +34,7 @@ public class WorldGenWaterfall extends TCDirectionalGen {
 				int dir = this.worldObj.getBlock(i, j, k + 1) == Blocks.stone ? 1 : -1;
 				size *= dir;
 				for(int x = 0; x < size; x += dir) {
-					this.worldObj.setBlock(i, j, k + x, WATER_BLOCK);
+					this.worldObj.setBlock(i, j, k + x, WATER_BLOCK, 0, blockGenNotifyFlag);
 					if(this.worldObj.getBlock(i - 1, j, k + x + dir) != Blocks.air || this.worldObj.getBlock(i + x + dir, j, k) != Blocks.stone) {
 						break;
 					}
@@ -45,7 +45,7 @@ public class WorldGenWaterfall extends TCDirectionalGen {
 				int dir = this.worldObj.getBlock(i + 1, j, k) == Blocks.stone ? 1 : -1;
 				size *= dir;
 				for(int x = 0; x < size; x += dir) {
-					this.worldObj.setBlock(i + x, j, k, WATER_BLOCK);
+					this.worldObj.setBlock(i + x, j, k, WATER_BLOCK, 0, blockGenNotifyFlag);
 					if(this.worldObj.getBlock(i + x + dir, j, k + 1) != Blocks.air || this.worldObj.getBlock(i + x + dir, j, k) != Blocks.stone) {
 						break;
 					}
@@ -56,7 +56,7 @@ public class WorldGenWaterfall extends TCDirectionalGen {
 				int dir = this.worldObj.getBlock(i + 1, j, k) == Blocks.stone ? 1 : -1;
 				size *= dir;
 				for(int x = 0; x < size; x += dir) {
-					this.worldObj.setBlock(i + x, j, k, WATER_BLOCK);
+					this.worldObj.setBlock(i + x, j, k, WATER_BLOCK, 0, blockGenNotifyFlag);
 					if(this.worldObj.getBlock(i + x + dir, j, k + 1) != Blocks.air || this.worldObj.getBlock(i + x + dir, j, k) != Blocks.stone) {
 						break;
 					}

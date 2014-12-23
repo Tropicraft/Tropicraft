@@ -19,6 +19,10 @@ public class BiomeGenTropics extends BiomeGenTropicraft {
 	
 	@Override
 	public void decorate(World world, Random rand, int x, int z) {
+		if (DISABLEDECORATION) {
+			System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
+			return;
+		}
 		{ //For scope, extra flowers for the tropics biome
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);

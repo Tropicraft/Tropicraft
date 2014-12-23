@@ -51,16 +51,16 @@ public abstract class TCDirectionalGen extends TCGenBase {
 	public void placeBlockWithDir(int i, int j, int k, Block block, int meta) {
 		switch(this.dir) {
 			case 2:
-				this.worldObj.setBlock(this.originX + i, j, this.originZ + k, block, meta, 3);
+				this.worldObj.setBlock(this.originX + i, j, this.originZ + k, block, meta, blockGenNotifyFlag);
 				return;
 			case 0:
-				this.worldObj.setBlock(this.originX + k, j, this.originZ - i, block, meta, 3);
+				this.worldObj.setBlock(this.originX + k, j, this.originZ - i, block, meta, blockGenNotifyFlag);
 				return;
 			case 3:
-				this.worldObj.setBlock(this.originX - i, j, this.originZ - k, block, meta, 3);
+				this.worldObj.setBlock(this.originX - i, j, this.originZ - k, block, meta, blockGenNotifyFlag);
 				return;
 			case 1:
-				this.worldObj.setBlock(this.originX - k, j, this.originZ + i, block, meta, 3);
+				this.worldObj.setBlock(this.originX - k, j, this.originZ + i, block, meta, blockGenNotifyFlag);
 				return;
 		}
 	}

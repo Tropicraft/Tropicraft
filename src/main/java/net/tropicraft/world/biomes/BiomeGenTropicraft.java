@@ -53,6 +53,8 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	public Block sandBlock;
 	public short sandMetadata;
 	
+	public static boolean DISABLEDECORATION = false;
+	
 	public BiomeGenTropicraft(int biomeID) {
 		super(biomeID);
 		

@@ -25,6 +25,10 @@ public abstract class TCGenBase extends WorldGenerator {
 	/**Blocks normally checked in the check methods*/
 	List<Block> standardAllowedBlocks = Arrays.asList(Blocks.air, Blocks.leaves, Blocks.tallgrass, Blocks.snow_layer);
 	
+	/** Added by Corosus to reduce/remove the many second client side stallout, was either because of lighting updates or just general client side chunk update spam 
+	 * Setting to 0 solves the issue and doesn't seem to cause much issue server side block notify wise as far as I can tell, refine more if it does **/
+	public static int blockGenNotifyFlag = 0;
+	
 	public TCGenBase(World world, Random random)
 	{
 		worldObj = world;
@@ -71,7 +75,7 @@ public abstract class TCGenBase extends WorldGenerator {
 				{
 					if(worldObj.isAirBlock(i, y, k) || solid)
 					{
-						if(worldObj.setBlock(i, y, k, block, meta, 3))
+						if(worldObj.setBlock(i, y, k, block, meta, blockGenNotifyFlag))
 						{
 							hasGenned = true;
 						}
@@ -218,7 +222,7 @@ public abstract class TCGenBase extends WorldGenerator {
             ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
             ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
             ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
-            worldObj.setBlock(ai3[0], ai3[1], ai3[2], block, meta, 3);
+            worldObj.setBlock(ai3[0], ai3[1], ai3[2], block, meta, blockGenNotifyFlag);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
         }
         return places;
@@ -415,7 +419,7 @@ public abstract class TCGenBase extends WorldGenerator {
             ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
             ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
             ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
-            worldObj.setBlock(ai3[0], ai3[1], ai3[2], block, meta, 3);
+            worldObj.setBlock(ai3[0], ai3[1], ai3[2], block, meta, blockGenNotifyFlag);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
         }
         return places;
@@ -503,7 +507,7 @@ public abstract class TCGenBase extends WorldGenerator {
 	
 		                 if(distance1 <= outerRadius)
 		                 {
-		                	 worldObj.setBlock(i, j, k, block, meta, 3);
+		                	 worldObj.setBlock(i, j, k, block, meta, blockGenNotifyFlag);
 		                 }
                	 	}
 	            }

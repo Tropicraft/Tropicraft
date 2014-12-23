@@ -27,6 +27,12 @@ public class BiomeGenRainforest extends BiomeGenTropicraft {
 	
 	@Override
 	public void decorate(World world, Random rand, int x, int z) {
+		
+		if (DISABLEDECORATION) {
+			System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
+			return;
+		}
+		
 		if(rand.nextInt(ALTAR_CHANCE) == 0) {
 			new WorldGenForestAltarRuin(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, x, 16));
 		}

@@ -36,21 +36,21 @@ public class WorldGenUpTree extends TCGenBase {
 		}
 		
 		for(int y = j; y < j + height; y++) {
-			this.worldObj.setBlock(i, y, k, WOOD_BLOCK, WOOD_META, 3);
+			this.worldObj.setBlock(i, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
 			if(rand.nextInt(5) == 0) {
 				int x = rand.nextInt(3) - 1 + i;
 				int z = k;
 				if(x - i == 0) {
 					z += rand.nextBoolean() ? 1 : -1;
 				}
-				this.worldObj.setBlock(x, y, z, LEAF_BLOCK, LEAF_META, 3);
+				this.worldObj.setBlock(x, y, z, LEAF_BLOCK, LEAF_META, blockGenNotifyFlag);
 			}
 			
 			if(y == j + height - 1) {
-				this.worldObj.setBlock(i + 1, y, k, WOOD_BLOCK, WOOD_META, 3);
-				this.worldObj.setBlock(i - 1, y, k, WOOD_BLOCK, WOOD_META, 3);
-				this.worldObj.setBlock(i, y, k + 1, WOOD_BLOCK, WOOD_META, 3);
-				this.worldObj.setBlock(i, y, k - 1, WOOD_BLOCK, WOOD_META, 3);
+				this.worldObj.setBlock(i + 1, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+				this.worldObj.setBlock(i - 1, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+				this.worldObj.setBlock(i, y, k + 1, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+				this.worldObj.setBlock(i, y, k - 1, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
 			}
 		}
 		

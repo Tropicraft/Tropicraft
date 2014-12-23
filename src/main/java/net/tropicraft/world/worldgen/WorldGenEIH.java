@@ -257,6 +257,6 @@ public class WorldGenEIH extends TCGenBase
 	    		break;
     	}
         
-    	worldObj.setBlock(x, y, z, block, meta, 3);
+    	worldObj.setBlock(x, y, z, block, meta, blockGenNotifyFlag);
     }   
 }

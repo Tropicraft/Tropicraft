@@ -29,7 +29,7 @@ public class WorldGenTCUndergrowth extends TCGenBase {
         	return false;
         }
         
-        worldObj.setBlock(i, j, k, WOOD_BLOCK, WOOD_META, 3);
+        worldObj.setBlock(i, j, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
 
         int size = 2;
         if(rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
@@ -43,7 +43,7 @@ public class WorldGenTCUndergrowth extends TCGenBase {
                 for (int z = k - bushWidth; z < k + bushWidth; z++) {
                     int zVariance = z - k;
                     if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && !worldObj.getBlock(x, y, z).isOpaqueCube()) {
-                        worldObj.setBlock(x, y, z, LEAF_BLOCK, LEAF_META, 3);
+                        worldObj.setBlock(x, y, z, LEAF_BLOCK, LEAF_META, blockGenNotifyFlag);
                     }
                 }
             }

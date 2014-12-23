@@ -56,7 +56,8 @@ public class CommandTropicraft extends CommandBase {
 			} else if (args[0].equals("village_try")) {
 				int x = MathHelper.floor_double(player.posX);
 				int z = MathHelper.floor_double(player.posZ);
-				int y = player.worldObj.getHeightValue(x, z);
+				int y = player.worldObj.getTopSolidOrLiquidBlock(x, z);
+				if (y < WorldProviderTropicraft.MID_HEIGHT) y = WorldProviderTropicraft.MID_HEIGHT+1;
 				TownKoaVillageGenHelper.hookTryGenVillage(new ChunkCoordinates(x, y, z), player.worldObj);
 			} else if (args[0].equals("village_clear")) {
 				WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.worldObj);

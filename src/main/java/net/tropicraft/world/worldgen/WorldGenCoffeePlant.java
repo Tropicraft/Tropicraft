@@ -84,12 +84,12 @@ public class WorldGenCoffeePlant extends TCGenBase {
 			return false;
 		}
 		
-		worldObj.setBlock(nx + viableDirection.offsetX, ny - 1, nz + viableDirection.offsetZ, Blocks.water, 0, 3);
-		worldObj.setBlock(nx, ny - 1, nz, Blocks.farmland, 7, 3);
+		worldObj.setBlock(nx + viableDirection.offsetX, ny - 1, nz + viableDirection.offsetZ, Blocks.water, 0, blockGenNotifyFlag);
+		worldObj.setBlock(nx, ny - 1, nz, Blocks.farmland, 7, blockGenNotifyFlag);
 		
 		for (int i = 0; i < 3; ++i) {
 			if (worldObj.isAirBlock(nx, ny + i, nz)) {
-				worldObj.setBlock(nx, ny + i, nz, TCBlockRegistry.coffeePlant, 6, 3);
+				worldObj.setBlock(nx, ny + i, nz, TCBlockRegistry.coffeePlant, 6, blockGenNotifyFlag);
 			} else {
 				break;
 			}

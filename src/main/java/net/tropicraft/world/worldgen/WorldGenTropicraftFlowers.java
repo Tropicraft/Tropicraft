@@ -28,7 +28,7 @@ public class WorldGenTropicraftFlowers extends TCGenBase {
 			int z = (k + rand.nextInt(8)) - rand.nextInt(8);
 			if(worldObj.isAirBlock(x, y, z) && TCBlockRegistry.flowers.canBlockStay(this.worldObj, x, y, z)) {
 				if (rand.nextInt(3) == 0) {
-					worldObj.setBlock(x, y, z, plantBlock, metadata[rand.nextInt(metadata.length)], 3);
+					worldObj.setBlock(x, y, z, plantBlock, metadata[rand.nextInt(metadata.length)], blockGenNotifyFlag);
 				}
 			}
 		}

@@ -41,7 +41,7 @@ public class WorldGenBamboo extends TCGenBase {
 			int height = rand.nextInt(MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
 			for(int h = 0; h < height; h++) {
 				if(worldObj.isAirBlock(x, y + h, z)/* && TropicraftBlocks.bambooChute.canBlockStay(world, x, y + h, z)*/) { //TODO: Can block stay code
-                    worldObj.setBlock(x, y + h, z, BAMBOO_BLOCK);
+                    worldObj.setBlock(x, y + h, z, BAMBOO_BLOCK, 0, blockGenNotifyFlag);
                 } else {
                 	break;
                 }

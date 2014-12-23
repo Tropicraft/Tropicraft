@@ -33,6 +33,7 @@ public class WorldGenTallTree extends TCGenBase {
 	
 	@Override
 	public boolean generate(int i, int j, int k) {		
+		
 		Block blockUnder = worldObj.getBlock(i, j - 1, k);
 		if(blockUnder != Blocks.dirt && blockUnder != Blocks.grass) {
 			return false;
@@ -71,17 +72,17 @@ public class WorldGenTallTree extends TCGenBase {
 			}
 		}
 
-		worldObj.setBlock(i, j, k, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i - 1, j, k, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i + 1, j, k, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i, j, k - 1, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i, j, k + 1, Blocks.dirt, 0, 3);
+		worldObj.setBlock(i, j, k, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i - 1, j, k, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i + 1, j, k, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i, j, k - 1, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i, j, k + 1, Blocks.dirt, 0, blockGenNotifyFlag);
 		for(int y = j; y < j + height; y++) {
-			worldObj.setBlock(i, y, k, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i - 1, y, k, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i + 1, y, k, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i, y, k - 1, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i, y, k + 1, WOOD_BLOCK, WOOD_META, 3);
+			worldObj.setBlock(i, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i - 1, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i + 1, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i, y, k - 1, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i, y, k + 1, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
 			if(y - j > height / 2 && rand.nextInt(SMALL_LEAF_CHANCE) == 0) {
 				int nx = rand.nextInt(3) - 1 + i;
 				int nz = rand.nextInt(3) - 1 + k;
@@ -149,7 +150,7 @@ public class WorldGenTallTree extends TCGenBase {
             }
 
             if (Blocks.vine.canPlaceBlockOnSide(worldObj, i, j, k, m) && worldObj.getBlock(i, j, k) == Blocks.air) {
-                worldObj.setBlock(i, j, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], 3);
+                worldObj.setBlock(i, j, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], blockGenNotifyFlag);
                 break;
             }
 
@@ -161,7 +162,7 @@ public class WorldGenTallTree extends TCGenBase {
         
         for(int y = j - 1; y > j - length; y--) {
         	if(worldObj.getBlock(i, y, k) == Blocks.air) {
-        		worldObj.setBlock(i, y, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], 3);        	
+        		worldObj.setBlock(i, y, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], blockGenNotifyFlag);        	
         	} else {
         		return true;
         	}

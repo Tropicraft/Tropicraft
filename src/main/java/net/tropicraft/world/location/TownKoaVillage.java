@@ -49,7 +49,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		super.tickUpdate();
 		
 		if (getWorld().getTotalWorldTime() % 20 == 0) {
-			System.out.println("koa village tick - " + spawn.posX + ", " + spawn.posZ + " - E/PE: " + listLoadedEntities.size() + "/" + listPersistantEntities.size());
+			//System.out.println("koa village tick - " + spawn.posX + ", " + spawn.posZ + " - E/PE: " + listLoadedEntities.size() + "/" + listPersistantEntities.size());
 		}
 	}
 	

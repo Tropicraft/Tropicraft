@@ -60,18 +60,18 @@ public class WorldGenTualang extends TCGenBase {
 			}
 		}
 
-		worldObj.setBlock(i, j, k, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i - 1, j, k, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i + 1, j, k, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i, j, k - 1, Blocks.dirt, 0, 3);
-		worldObj.setBlock(i, j, k + 1, Blocks.dirt, 0, 3);
+		worldObj.setBlock(i, j, k, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i - 1, j, k, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i + 1, j, k, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i, j, k - 1, Blocks.dirt, 0, blockGenNotifyFlag);
+		worldObj.setBlock(i, j, k + 1, Blocks.dirt, 0, blockGenNotifyFlag);
 		
 		for(int y = j; y < height; y++) {
-			worldObj.setBlock(i, y, k, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i - 1, y, k, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i + 1, y, k, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i, y, k - 1, WOOD_BLOCK, WOOD_META, 3);
-			worldObj.setBlock(i, y, k + 1, WOOD_BLOCK, WOOD_META, 3);
+			worldObj.setBlock(i, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i - 1, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i + 1, y, k, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i, y, k - 1, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
+			worldObj.setBlock(i, y, k + 1, WOOD_BLOCK, WOOD_META, blockGenNotifyFlag);
 		}
 		
 		for(int x = 0; x < branches; x++)

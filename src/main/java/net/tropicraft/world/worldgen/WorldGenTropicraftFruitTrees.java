@@ -57,7 +57,7 @@ public class WorldGenTropicraftFruitTrees extends TCGenBase {
 			return false;
 		}
 
-		worldObj.setBlock(i, j - 1, k, Blocks.dirt);
+		worldObj.setBlock(i, j - 1, k, Blocks.dirt, 0, blockGenNotifyFlag);
 
 		for (int y = (j - 3) + height; y <= j + height; y++) {
 			int presizeMod = y - (j + height);
@@ -69,10 +69,10 @@ public class WorldGenTropicraftFruitTrees extends TCGenBase {
 					if ((Math.abs(localX) != size || Math.abs(localZ) != size || rand.nextInt(2) != 0 && presizeMod != 0) && !worldObj.getBlock(x, y, z).isOpaqueCube()) {
 						if (rand.nextBoolean()) {
 							// Set fruit-bearing leaves here
-							worldObj.setBlock(x, y, z, LEAF_BLOCK, treeType, 3);
+							worldObj.setBlock(x, y, z, LEAF_BLOCK, treeType, blockGenNotifyFlag);
 						} else {
 							// Set plain fruit tree leaves here
-							worldObj.setBlock(x, y, z, LEAF_BLOCK, 1, 3); //TODO Change to normal leaf
+							worldObj.setBlock(x, y, z, LEAF_BLOCK, 1, blockGenNotifyFlag); //TODO Change to normal leaf
 						}
 					}
 				}
@@ -82,7 +82,7 @@ public class WorldGenTropicraftFruitTrees extends TCGenBase {
 		for (int y = 0; y < height; y++) {
 			Block k2 = worldObj.getBlock(i, j + y, k);
 			if (k2 == Blocks.air || k2.getMaterial() == Material.leaves) {
-				worldObj.setBlock(i, j + y, k, WOOD_BLOCK, 0, 3);
+				worldObj.setBlock(i, j + y, k, WOOD_BLOCK, 0, blockGenNotifyFlag);
 			}
 		}
 
