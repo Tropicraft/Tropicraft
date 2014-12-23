@@ -86,6 +86,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		bj.useFirstPass = false; //skip air setting pass
 		bj.useRotationBuild = true;
 		bj.build_rate = 1600;
+		bj.notifyFlag = 0;
 		bj.setDirection(direction);
 		bj.customGenCallback = this;
 		//bj.blockIDsNoBuildOver.add(HostileWorlds.blockSourceStructure);

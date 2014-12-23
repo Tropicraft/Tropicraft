@@ -7,6 +7,20 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
+import net.tropicraft.entity.hostile.EntityAshenHunter;
+import net.tropicraft.entity.hostile.EntityEIH;
+import net.tropicraft.entity.hostile.EntityTreeFrogBlue;
+import net.tropicraft.entity.hostile.EntityTreeFrogRed;
+import net.tropicraft.entity.hostile.EntityTreeFrogYellow;
+import net.tropicraft.entity.hostile.EntityTropiCreeper;
+import net.tropicraft.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.entity.hostile.SpiderAdult;
+import net.tropicraft.entity.passive.EntityIguana;
+import net.tropicraft.entity.passive.EntityTreeFrogGreen;
+import net.tropicraft.entity.passive.VMonkey;
+import net.tropicraft.entity.underdasea.EntityEagleRay;
+import net.tropicraft.entity.underdasea.EntitySeaTurtle;
+import net.tropicraft.entity.underdasea.EntitySeahorse;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.world.WorldProviderTropicraft;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
@@ -67,6 +81,30 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 		this.spawnableWaterCreatureList.clear();
 		
 		//TODO: Add mobs that spawn in all biomes here
+		if (biomeID == rainforestMountainsID) {
+        	this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogBlue.class, 25, 1, 2));
+            this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogGreen.class, 25, 1, 2));
+            this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogRed.class, 25, 1, 2));
+            this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogYellow.class, 25, 1, 2));
+        }
+        
+        this.spawnableMonsterList.add(new SpawnListEntry(VMonkey.class, 20, 1, 3));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityIguana.class, 20, 1, 1));
+        
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiCreeper.class, 2, 1, 2));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEIH.class, 10, 1, 1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiSkeleton.class, 25, 1, 8));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityAshenHunter.class, 2, 3, 12));
+        
+        //this.spawnableMonsterList.add(new SpawnListEntry(Failgull.class, 30, 5, 20));
+        //this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTropicalFish.class, 10, 1 ,12));
+        //this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityMarlin.class, 10, 1 ,16));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 1 ,3));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaTurtle.class, 6, 1 ,3));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeahorse.class, 6, 1 ,3));
+        
+        
+        this.spawnableMonsterList.add(new SpawnListEntry(SpiderAdult.class, 50, 1, 3));
 	}
 	
 	@Override
