@@ -733,7 +733,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
         });
 
         createRecipe(true, new ItemStack(TCItemRegistry.tropiFrame, 1), new Object[] {
-            "###", "#X#", "###", '#', TCItemRegistry.bambooChute, 'X', Item.leather
+            "###", "#X#", "###", '#', TCItemRegistry.bambooChute, 'X', Items.leather
         });
 
         createRecipe(true, new ItemStack(TCItemRegistry.portalEnchanter, 1), new Object[] {
