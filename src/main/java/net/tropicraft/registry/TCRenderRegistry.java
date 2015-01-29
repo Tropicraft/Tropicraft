@@ -15,6 +15,7 @@ import net.tropicraft.block.tileentity.TileEntityPurchasePlate;
 import net.tropicraft.block.tileentity.TileEntitySifter;
 import net.tropicraft.client.entity.model.ModelAshen;
 import net.tropicraft.client.entity.model.ModelEIH;
+import net.tropicraft.client.entity.model.ModelFish;
 import net.tropicraft.client.entity.model.ModelIguana;
 import net.tropicraft.client.entity.model.ModelKoaMan;
 import net.tropicraft.client.entity.model.ModelSeaTurtle;
@@ -41,6 +42,7 @@ import net.tropicraft.client.entity.render.RenderTreeFrog;
 import net.tropicraft.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.client.entity.render.RenderTropiSpider;
+import net.tropicraft.client.entity.render.RenderTropicalFish;
 import net.tropicraft.client.entity.render.RenderTurtleEgg;
 import net.tropicraft.client.entity.render.RenderUmbrella;
 import net.tropicraft.client.entity.render.RenderVMonkey;
@@ -74,6 +76,7 @@ import net.tropicraft.entity.projectile.EntityTropicraftLeafballNew;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
+import net.tropicraft.entity.underdasea.EntityTropicalFish;
 import net.tropicraft.entity.underdasea.EntityTurtleEgg;
 import CoroUtil.entity.EntityTropicalFishHook;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -109,6 +112,7 @@ public class TCRenderRegistry {
         registerEntityRender(EntityTropicalFishHook.class, new RenderFishHook());
         registerEntityRender(EntityTCItemFrame.class, new RenderTCItemFrame());
         registerEntityRender(EntityTropicraftLeafballNew.class, new RenderSnowball(TCItemRegistry.leafBall));
+        registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish(new ModelFish(), 0.25F));
     }
 
     /**

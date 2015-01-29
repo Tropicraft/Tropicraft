@@ -1,5 +1,8 @@
 package net.tropicraft.entity.underdasea;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -31,7 +34,16 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
     public int targetHeightTick = 120;
 
     //TODO: Implement for fishing
-	public int outOfWaterTick;
+	public boolean isCatchable;
+    public int outOfWaterTick = 0;
+    public double fishingMaxLookDist = 10D;
+    public int fishingImmediateDispatchOdds = 10;
+    public int fishingInterestOdds = 10;
+    public int fishingBreakLineOdds = 500;
+    public float fishingApproachSpeed = 1.4f;
+    public float fishingEscapeSpeed = 2.4f;
+    public static boolean fishingDebug = false;
+    public List<String> fishingLog = new ArrayList<String>();
 
     public EntityTropicraftWaterMob(World world) {
         super(world);
@@ -58,6 +70,8 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
         this(par1World);
         this.type = type;
     }
+    
+    protected abstract int attackStrength();
 
     @Override
     public void onLivingUpdate() {
@@ -346,6 +360,17 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
     //    this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000000298023224D);
+    }
+    
+    @Override
+    public void applyEntityCollision(Entity entity){
+        super.applyEntityCollision(entity);
+        if(targetEntity != null && entity.equals(targetEntity)){
+            if(attackStrength() != 0){
+                targetEntity.attackEntityFrom(DamageSource.causeMobDamage(this), attackStrength());
+                attackTime = 60;
+            }
+        }
     }
 
     public WaterMobType getType() {

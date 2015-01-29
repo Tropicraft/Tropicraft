@@ -30,6 +30,7 @@ import net.tropicraft.entity.projectile.EntityTropicraftLeafballNew;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
+import net.tropicraft.entity.underdasea.EntityTropicalFish;
 import net.tropicraft.entity.underdasea.EntityTurtleEgg;
 import CoroUtil.entity.EntityTropicalFishHook;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -70,6 +71,7 @@ public class TCEntityRegistry {
 		registerEntity(EntityTropicalFishHook.class, "TropiFishHook", 64, 1, true);
 		registerEntity(EntityTCItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityTropicraftLeafballNew.class, "TropiLeafball", 64, 1, true);
+		registerEntity(EntityTropicalFish.class, "TropicalFish", 80, 3, true);
 		
 	}
 	

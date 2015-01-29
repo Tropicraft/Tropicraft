@@ -18,6 +18,7 @@ import net.tropicraft.item.ItemDagger;
 import net.tropicraft.item.ItemDart;
 import net.tropicraft.item.ItemDartGun;
 import net.tropicraft.item.ItemFertilizer;
+import net.tropicraft.item.ItemFishBucket;
 import net.tropicraft.item.ItemFlippers;
 import net.tropicraft.item.ItemFlowerPot;
 import net.tropicraft.item.ItemPortalEnchanter;
@@ -136,6 +137,7 @@ public class TCItemRegistry {
     public static final ItemTropicraft tikiTorch = new ItemTikiTorch();
     public static final ItemTropicraft bambooDoor = new ItemBambooDoor();
     public static final ItemTropicsWaterBucket bucketTropicsWater = new ItemTropicsWaterBucket();
+    public static final ItemFishBucket fishBucket = new ItemFishBucket();
 
     public static final ItemChair chair = new ItemChair();
     public static final ItemUmbrella umbrella = new ItemUmbrella();
@@ -167,46 +169,46 @@ public class TCItemRegistry {
     public static final ItemCurare curare = new ItemCurare();
     public static final ItemDart dart = new ItemDart();
     public static final ItemDartGun blowGun = new ItemDartGun();
-    
+
     public static ToolMaterial materialUnderwaterTools = EnumHelper.addToolMaterial("tcaqua", 2, 500, 6.5F, 2.5F, 14);
     public static final ItemTropicraftTool aquaAxe = new ItemUnderwaterAxe(materialUnderwaterTools, TCNames.aquaAxe);
     public static final ItemUnderwaterHoe aquaHoe = new ItemUnderwaterHoe(materialUnderwaterTools, TCNames.aquaHoe);
     public static final ItemTropicraftTool aquaPickaxe = new ItemUnderwaterPickaxe(materialUnderwaterTools, TCNames.aquaPickaxe);
     public static final ItemTropicraftTool aquaShovel = new ItemUnderwaterShovel(materialUnderwaterTools, TCNames.aquaShovel);
-    
+
     public static final Item shells = new ItemShell(TCNames.shellNames);
-    
+
     public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
     public static final Item bambooSpear = new ItemTropicraftSword(materialBambooTools, TCNames.bambooSpear);
-    
+
     public static Item leafBall = (new ItemTropicraftLeafballNew()).setUnlocalizedName("leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
     public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");;
 
-	public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
-	//public static ItemStaffIceball staffIce;
-	public static ItemStaffOfTaming staffTaming = (ItemStaffOfTaming) (new ItemStaffOfTaming()).setUnlocalizedName("staff_taming").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+    public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+    //public static ItemStaffIceball staffIce;
+    public static ItemStaffOfTaming staffTaming = (ItemStaffOfTaming) (new ItemStaffOfTaming()).setUnlocalizedName("staff_taming").setCreativeTab(TCCreativeTabRegistry.tabCombat);
 
-	public static Item fishingRodTropical = (new ItemTropicalFishingRod()).setUnlocalizedName("FishingRodTropical");
-	
-	public static Item bambooChute = new ItemBambooChute(TCBlockRegistry.bambooChute).setUnlocalizedName("BambooChute");
-	
-	public static final ArmorMaterial materialSnorkelGear = EnumHelper.addArmorMaterial("watergear", 40, new int[]{2, 4, 5, 6}, 9);
-	public static Item flippers = new ItemFlippers(materialSnorkelGear, 0, 3);
-	public static Item snorkel = new ItemSnorkel(materialSnorkelGear, 0, 0);
-	
-	public static Item recordBuriedTreasure = new ItemTropicraftMusicDisk("buriedtreasure", "buriedtreasure", "Punchaface").setUnlocalizedName("Buried Treasure");
-	public static Item recordEasternIsles = new ItemTropicraftMusicDisk("easternisles", "easternisles", "Frox").setUnlocalizedName("Eastern Isles");
-	public static Item recordLowTide = new ItemTropicraftMusicDisk("lowtide", "lowtide", "Frox").setUnlocalizedName("Low Tide");
-	public static Item recordSummering = new ItemTropicraftMusicDisk("summering", "summering", "Frox").setUnlocalizedName("Summering");
-	public static Item recordTheTribe = new ItemTropicraftMusicDisk("thetribe", "thetribe", "Frox").setUnlocalizedName("The Tribe");
-	public static Item recordTradeWinds = new ItemTropicraftMusicDisk("tradewinds", "tradewinds", "Frox").setUnlocalizedName("Trade Winds");
-	
-	public static Item portalEnchanter = new ItemPortalEnchanter();
-	public static Item bambooMug = new ItemTropicraft().setMaxStackSize(16);
-	
+    public static Item fishingRodTropical = (new ItemTropicalFishingRod()).setUnlocalizedName("FishingRodTropical");
+
+    public static Item bambooChute = new ItemBambooChute(TCBlockRegistry.bambooChute).setUnlocalizedName("BambooChute");
+
+    public static final ArmorMaterial materialSnorkelGear = EnumHelper.addArmorMaterial("watergear", 40, new int[]{2, 4, 5, 6}, 9);
+    public static Item flippers = new ItemFlippers(materialSnorkelGear, 0, 3);
+    public static Item snorkel = new ItemSnorkel(materialSnorkelGear, 0, 0);
+
+    public static Item recordBuriedTreasure = new ItemTropicraftMusicDisk("buriedtreasure", "buriedtreasure", "Punchaface").setUnlocalizedName("Buried Treasure");
+    public static Item recordEasternIsles = new ItemTropicraftMusicDisk("easternisles", "easternisles", "Frox").setUnlocalizedName("Eastern Isles");
+    public static Item recordLowTide = new ItemTropicraftMusicDisk("lowtide", "lowtide", "Frox").setUnlocalizedName("Low Tide");
+    public static Item recordSummering = new ItemTropicraftMusicDisk("summering", "summering", "Frox").setUnlocalizedName("Summering");
+    public static Item recordTheTribe = new ItemTropicraftMusicDisk("thetribe", "thetribe", "Frox").setUnlocalizedName("The Tribe");
+    public static Item recordTradeWinds = new ItemTropicraftMusicDisk("tradewinds", "tradewinds", "Frox").setUnlocalizedName("Trade Winds");
+
+    public static Item portalEnchanter = new ItemPortalEnchanter();
+    public static Item bambooMug = new ItemTropicraft().setMaxStackSize(16);
+
     public static Item tropiFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, true)).setUnlocalizedName("tropiFrame");
     public static Item koaFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, false)).setUnlocalizedName("koaFrame");
-    
+
     public static Item cocktail = new ItemCocktail(TCCreativeTabRegistry.tabFood);
 
     /**
@@ -294,13 +296,13 @@ public class TCItemRegistry {
         registerItem(curare, TCNames.curare);
         registerItem(dart, TCNames.dart);
         registerItem(blowGun, TCNames.dartGun);
-        
+
         registerItem(axeZirconium, TCNames.axeZirconium);
         registerItem(hoeZirconium, TCNames.hoeZirconium);
         registerItem(pickaxeZirconium, TCNames.pickaxeZirconium);
         registerItem(shovelZirconium, TCNames.shovelZirconium);
         registerItem(swordZirconium, TCNames.swordZirconium);
-        
+
         registerItem(aquaAxe, TCNames.aquaAxe);
         registerItem(aquaHoe, TCNames.aquaHoe);
         registerItem(aquaPickaxe, TCNames.aquaPickaxe);
@@ -308,11 +310,11 @@ public class TCItemRegistry {
         registerItem(shells, TCNames.shell);
         registerItem(bambooSpear, TCNames.bambooSpear);
         registerItem(coconutBomb, TCNames.coconutBomb);
-        
+
         registerItem(bambooChute, TCNames.bambooChute);
         registerItem(snorkel, TCNames.snorkel);
         registerItem(flippers, TCNames.flippers);
-        
+
         registerItem(dagger, TCNames.dagger);
         registerItem(staffFire, TCNames.staffFire);
         registerItem(staffTaming, TCNames.staffTaming);
@@ -323,15 +325,17 @@ public class TCItemRegistry {
         registerItem(recordSummering, TCNames.recordSummering);
         registerItem(recordTheTribe, TCNames.recordTheTribe);
         registerItem(recordTradeWinds, TCNames.recordTradeWinds);
-        
+
         registerItem(portalEnchanter, TCNames.portalEnchanter);
         registerItem(bambooMug, TCNames.bambooMug);
-        
+
         registerItem(tropiFrame, TCNames.tropiFrame);
         registerItem(koaFrame, TCNames.koaFrame);
-        
+
         registerItem(cocktail, TCNames.cocktail);
         registerItem(leafBall, TCNames.leafBall);
+        
+        registerItem(fishBucket, TCNames.fishBucket);
     }
 
     /**
