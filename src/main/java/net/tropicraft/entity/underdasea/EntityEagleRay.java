@@ -114,4 +114,9 @@ public class EntityEagleRay extends EntityTropicraftWaterMob {
     public void readEntityFromNBT(NBTTagCompound nbttagcompound) {
         super.readEntityFromNBT(nbttagcompound);
     }
+
+    @Override
+    protected int attackStrength() {
+        return 0;
+    }
 }

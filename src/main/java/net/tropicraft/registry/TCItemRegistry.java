@@ -210,6 +210,10 @@ public class TCItemRegistry {
     public static Item koaFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, false)).setUnlocalizedName("koaFrame");
 
     public static Item cocktail = new ItemCocktail(TCCreativeTabRegistry.tabFood);
+    public static Item rodOld = new ItemRod(ModIds.ITEM_OLDROD).setType(ItemRod.TYPE_OLD).setUnlocalizedName("rodOld");
+    public static Item rodGood = new ItemRod(ModIds.ITEM_GOODROD).setType(ItemRod.TYPE_GOOD).setUnlocalizedName("rodGood");
+    public static Item rodSuper = new ItemRod(ModIds.ITEM_SUPERROD).setType(ItemRod.TYPE_SUPER).setUnlocalizedName("rodSuper");
+    public static Item lureSuper = new ItemTropicraftImpl(ModIds.ITEM_LURESUPER, "fishingLure").setUnlocalizedName("lureSuper");
 
     /**
      * Register all the items

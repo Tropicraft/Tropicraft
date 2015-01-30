@@ -66,4 +66,9 @@ public class EntitySeahorse extends EntityTropicraftWaterMob {
 			return "razz";
 		}
 	}
+
+    @Override
+    protected int attackStrength() {
+        return 0;
+    }
 }
