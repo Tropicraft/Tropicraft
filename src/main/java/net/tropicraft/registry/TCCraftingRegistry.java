@@ -207,7 +207,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
         Tropicraft.encyclopedia.includeItem("dracaena", new ItemStack(TCBlockRegistry.flowers, 1, 11));
         Tropicraft.encyclopedia.includeItem("easternisles", new ItemStack(TCItemRegistry.recordEasternIsles));
         //  Tropicraft.encyclopedia.includeItem("enchantwand", new ItemStack(TCItemRegistry.enchantWand));
-        Tropicraft.encyclopedia.includeItem("encyclopedia", new ItemStack(TCItemRegistry.encTropica));
+        //Tropicraft.encyclopedia.includeItem("encyclopedia", new ItemStack(TCItemRegistry.encTropica));
         Tropicraft.encyclopedia.includeItem("eudialyte", new ItemStack(TCItemRegistry.ore, 1, 0));
         Tropicraft.encyclopedia.includeItem("fern", new ItemStack(TCBlockRegistry.flowers, 1, 12));
         Tropicraft.encyclopedia.includeItem("fertilizer", new ItemStack(TCItemRegistry.fertilizer));
@@ -273,7 +273,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
         Tropicraft.encyclopedia.includeItem("seaurchinroe", new ItemStack(TCItemRegistry.seaUrchinRoe));
         Tropicraft.encyclopedia.includeItem("sifter", new ItemStack(TCBlockRegistry.sifter));
         Tropicraft.encyclopedia.includeItem("smeltedzircon", new ItemStack(TCItemRegistry.ore, 1, 4));
-        Tropicraft.encyclopedia.includeItem("snaretrap", new ItemStack(TCItemRegistry.snareTrap));
+        //Tropicraft.encyclopedia.includeItem("snaretrap", new ItemStack(TCItemRegistry.snareTrap));
         Tropicraft.encyclopedia.includeItem("snorkel", new ItemStack(TCItemRegistry.snorkel));
         Tropicraft.encyclopedia.includeItem("solonoxshell", new ItemStack(TCItemRegistry.shells, 1, 0));
         Tropicraft.encyclopedia.includeItem("starfishshell", new ItemStack(TCItemRegistry.shells, 1, 4));
@@ -698,11 +698,11 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
             '#', new ItemStack(TCBlockRegistry.logs, 1, 1)
         });
 
-        createRecipe(true, new ItemStack(TCItemRegistry.encTropica, 1), new Object[]{
+        /*createRecipe(true, new ItemStack(TCItemRegistry.encTropica, 1), new Object[]{
             "###", "#$#", "###",
             '#', TCItemRegistry.bambooChute,
             '$', Items.book
-        });
+        });*/
 
         createRecipe(true, new ItemStack(Items.wooden_door, 1), new Object[]{
             "XX", "XX", "XX",
@@ -720,9 +720,9 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
         createRecipe(true, new ItemStack(TCItemRegistry.waterWand), new Object[]{
             "  X", " Y ", "Y  ", 'X', new ItemStack(TCItemRegistry.ore, 1, 2), 'Y', Items.gold_ingot
         });
-        createRecipe(true, new ItemStack(TCItemRegistry.snareTrap), new Object[] {
+        /*createRecipe(true, new ItemStack(TCItemRegistry.snareTrap), new Object[] {
             "  X", "XX ", "XX ", 'X', Items.string
-        });
+        });*/
 
         createRecipe(true, new ItemStack(TCItemRegistry.flowerPot), new Object[] {
             "# #", " # ", '#', TCItemRegistry.bambooChute
@@ -761,9 +761,9 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
             "###", "#X#", "###", '#', new ItemStack(TCItemRegistry.ore, 1, 3), 'X', TCBlockRegistry.bambooChest
         });
 
-        createRecipe(true, new ItemStack(TCBlockRegistry.eihMixer), new Object[] {
+        /*createRecipe(true, new ItemStack(TCBlockRegistry.eihMixer), new Object[] {
             "XXX", "X X", "XXX", 'X', TCBlockRegistry.chunkOHead
-        });
+        });*/
 
         createRecipe(true, new ItemStack(TCBlockRegistry.curareBowl), new Object[] {
             "X X", " X ", 'X', TCBlockRegistry.chunkOHead

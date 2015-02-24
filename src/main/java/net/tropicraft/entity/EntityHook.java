@@ -1,7 +1,8 @@
-package tropicraft.fishing;
+package net.tropicraft.entity;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -10,7 +11,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
@@ -20,12 +21,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import tropicraft.entities.EntityTropicraftWaterMob;
-import weather.system.wind.WindHandler;
+import net.tropicraft.entity.underdasea.EntityTropicraftWaterMob;
+import net.tropicraft.item.ItemRod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityHook extends EntityFishHook implements WindHandler
+public class EntityHook extends EntityFishHook implements CoroUtil.api.weather.WindHandler
 {
     /** The tile this entity is on, X position */
     private int xTile;
@@ -244,7 +245,7 @@ public class EntityHook extends EntityFishHook implements WindHandler
     private Entity getEntById(World w, int i){
 		List<Entity> ents = w.loadedEntityList;
 		for(Entity e : ents){
-			if(e.entityId == i){
+			if(e.getEntityId() == i){
 				return e;
 			}
 		}
@@ -347,16 +348,17 @@ public class EntityHook extends EntityFishHook implements WindHandler
     		if(this.isInWater()){
     			hasLanded = true;
     		}
-    		if(this.angler != null && this.getAnglerID() != this.angler.entityId){
-    			this.setAnglerID(this.angler.entityId);
+    		if(this.angler != null && this.getAnglerID() != this.angler.getEntityId()){
+    			this.setAnglerID(this.angler.getEntityId());
     		}
     		
     		if(this.bobber != null){
     			if(bobber instanceof EntityTropicraftWaterMob){
 					EntityTropicraftWaterMob fish = (EntityTropicraftWaterMob) bobber;
-					if(fish.getHookID() == -1){
-						fish.setHookID(entityId);
-					}
+					//TODO: Fish hooks
+					/*if(fish.getHookID() == -1){
+						fish.setHookID(getEntityId());
+					}*/
 					//if(fish.motionX != 0 && fish.motionZ != 0)
 					//setWireLength(getWireLength()+fish.fishingEscapeSpeed);
 					if(!fish.isInWater()){
@@ -521,7 +523,7 @@ public class EntityHook extends EntityFishHook implements WindHandler
 
             if (this.inGround)
             {
-                int i = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+                int i = Block.getIdFromBlock(this.worldObj.getBlock(this.xTile, this.yTile, this.zTile));
 
                 if (i == this.inTile)
                 {
@@ -547,15 +549,15 @@ public class EntityHook extends EntityFishHook implements WindHandler
                 ++this.ticksInAir;
             }
 
-            Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-            Vec3 vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition movingobjectposition = this.worldObj.clip(vec3, vec31);
-            vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-            vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+            Vec3 vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
+            vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+            vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
             if (movingobjectposition != null)
             {
-                vec31 = this.worldObj.getWorldVec3Pool().getVecFromPool(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                vec31 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
             }
 
             Entity entity = null;
@@ -649,7 +651,7 @@ public class EntityHook extends EntityFishHook implements WindHandler
                 {
                     double d7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(k + 0) / (double)b0 - 0.125D + 0.125D;
                     double d8 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(k + 1) / (double)b0 - 0.125D + 0.125D;
-                    AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getAABBPool().getAABB(this.boundingBox.minX, d7, this.boundingBox.minZ, this.boundingBox.maxX, d8, this.boundingBox.maxZ);
+                    AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getBoundingBox(this.boundingBox.minX, d7, this.boundingBox.minZ, this.boundingBox.maxX, d8, this.boundingBox.maxZ);
 
                     if (this.worldObj.isAABBInMaterial(axisalignedbb1, Material.water))
                     {
@@ -781,7 +783,7 @@ public class EntityHook extends EntityFishHook implements WindHandler
             }
             else if (this.ticksCatchable > 0)
             {
-                EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.fishRaw));
+                EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Items.fish));
                 double d5 = this.angler.posX - this.posX;
                 double d6 = this.angler.posY - this.posY;
                 double d7 = this.angler.posZ - this.posZ;

@@ -4,16 +4,19 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.tropicraft.entity.EntityHook;
 import net.tropicraft.fishing.FishingEvent;
 import net.tropicraft.fishing.FishingEventReelComplete;
 import net.tropicraft.fishing.FishingManager;
 import net.tropicraft.fishing.LinkedRods;
+import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemRod extends Item
 {
     @SideOnly(Side.CLIENT)
-    private Icon theIcon;
+    private IIcon theIcon;
 
     public static int TYPE_OLD = 0, TYPE_GOOD = 1, TYPE_SUPER = 2;
     public int rodType;
@@ -132,20 +135,20 @@ public class ItemRod extends Item
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
+    public void registerIcons(IIconRegister par1IconRegister)
     {
         //super.registerIcons(par1IconRegister);
-        this.theIcon = par1IconRegister.registerIcon(ModInfo.MODID + ":fishingRod");
-        this.oldIcon = par1IconRegister.registerIcon(ModInfo.MODID + ":fishingRodOld");
-        this.superIcon = par1IconRegister.registerIcon(ModInfo.MODID + ":fishingRodSuper");
-        this.goodIcon = par1IconRegister.registerIcon(ModInfo.MODID + ":fishingRodGood");
+        this.theIcon = par1IconRegister.registerIcon(TCInfo.MODID + ":fishingRod");
+        this.oldIcon = par1IconRegister.registerIcon(TCInfo.MODID + ":fishingRodOld");
+        this.superIcon = par1IconRegister.registerIcon(TCInfo.MODID + ":fishingRodSuper");
+        this.goodIcon = par1IconRegister.registerIcon(TCInfo.MODID + ":fishingRodGood");
 
     }
 
-    public Icon oldIcon, goodIcon, superIcon;
+    public IIcon oldIcon, goodIcon, superIcon;
 
 
-    public Icon getType(int i){
+    public IIcon getType(int i){
         switch(i){
         case 0:
             return oldIcon;
@@ -162,14 +165,14 @@ public class ItemRod extends Item
     // in slot
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int par1)
+    public IIcon getIconFromDamage(int par1)
     {
         return getType(rodType);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamageForRenderPass(int par1, int par2)
+    public IIcon getIconFromDamageForRenderPass(int par1, int par2)
     {
         // TODO Auto-generated method stub
         //  return Item.appleGold.getIconFromDamageForRenderPass(par1, par2);
@@ -184,7 +187,7 @@ public class ItemRod extends Item
             if(e instanceof EntityHook){
                 EntityHook hook = (EntityHook)e;
                 if(hook.angler != null)
-                    if(hook.angler.entityId == p.entityId){
+                    if(hook.angler.getEntityId() == p.getEntityId()){
                         return true;
                     }
             }
@@ -195,7 +198,7 @@ public class ItemRod extends Item
 
     //in hand
     @Override
-    public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player,
+    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player,
             ItemStack usingItem, int useRemaining)
     {
         if(this.playerHasLureOutHybrid(player)){
@@ -208,7 +211,7 @@ public class ItemRod extends Item
     }
 
     @Override
-    public Icon getIcon(ItemStack stack, int pass)
+    public IIcon getIcon(ItemStack stack, int pass)
     {
         // TODO Auto-generated method stub
         return theIcon;

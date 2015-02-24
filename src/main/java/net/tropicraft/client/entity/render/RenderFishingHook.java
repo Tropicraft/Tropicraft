@@ -1,4 +1,4 @@
-package tropicraft.fishing;
+package net.tropicraft.client.entity.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -7,11 +7,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.entity.EntityHook;
+import net.tropicraft.info.TCInfo;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import tropicraft.Tropicraft;
 
 public class RenderFishingHook extends Render {
 
@@ -24,7 +25,7 @@ public class RenderFishingHook extends Render {
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return new ResourceLocation(Tropicraft.modID, "textures/lures.png");
+		return new ResourceLocation(TCInfo.MODID, "textures/lures.png");
 	}
 
 	public void doRenderFish(EntityHook par1EntityFishHook, double par2, double par4, double par6, float par8, float par9)
@@ -62,7 +63,7 @@ public class RenderFishingHook extends Render {
 		{
 			float f9 = par1EntityFishHook.angler.getSwingProgress(par9);
 			float f10 = MathHelper.sin(MathHelper.sqrt_float(f9) * (float)Math.PI);
-			Vec3 vec3 = par1EntityFishHook.worldObj.getWorldVec3Pool().getVecFromPool(-0.5D, 0.03D, 0.8D);
+			Vec3 vec3 = Vec3.createVectorHelper(-0.5D, 0.03D, 0.8D);
 			vec3.rotateAroundX(-(par1EntityFishHook.angler.prevRotationPitch + (par1EntityFishHook.angler.rotationPitch - par1EntityFishHook.angler.prevRotationPitch) * par9) * (float)Math.PI / 180.0F);
 			vec3.rotateAroundY(-(par1EntityFishHook.angler.prevRotationYaw + (par1EntityFishHook.angler.rotationYaw - par1EntityFishHook.angler.prevRotationYaw) * par9) * (float)Math.PI / 180.0F);
 			vec3.rotateAroundY(f10 * 0.5F);

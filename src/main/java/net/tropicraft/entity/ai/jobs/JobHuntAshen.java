@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
+import net.tropicraft.entity.hostile.EntityLostMask;
 import CoroUtil.componentAI.jobSystem.JobBase;
 import CoroUtil.componentAI.jobSystem.JobManager;
 import CoroUtil.entity.EnumJobState;
@@ -85,7 +86,7 @@ public class JobHuntAshen extends JobBase {
 		//make him lose mask
 		if (ent.getDataWatcher().getWatchableObjectInt(16) != -1) {
 			panicTicks = 40;
-			LostMask mask = new LostMask(ent.worldObj, ent.getDataWatcher().getWatchableObjectInt(16),  ent.posX, ent.posY + 1, ent.posZ, ent.rotationYaw);
+			EntityLostMask mask = new EntityLostMask(ent.worldObj, ent.getDataWatcher().getWatchableObjectInt(16),  ent.posX, ent.posY + 1, ent.posZ, ent.rotationYaw);
 			ent.getDataWatcher().updateObject(16, -1);
 			ent.worldObj.spawnEntityInWorld(mask);
 		}
@@ -130,7 +131,7 @@ public class JobHuntAshen extends JobBase {
 	public boolean avoid(boolean actOnTrue) {
 		int range = 25;
 		boolean seesMask = false;
-		LostMask clEnt = null;
+		EntityLostMask clEnt = null;
 		float closest = 9999F;
 		
 		if (panicTicks > 0) panicTicks--;
@@ -138,10 +139,10 @@ public class JobHuntAshen extends JobBase {
 		if (ent.worldObj.getWorldTime() % 5 == 0) {
 			if (panicTicks <= 0) {
 			
-				List list = ent.worldObj.getEntitiesWithinAABB(LostMask.class, ent.boundingBox.expand(range, range/2, range));
+				List list = ent.worldObj.getEntitiesWithinAABB(EntityLostMask.class, ent.boundingBox.expand(range, range/2, range));
 		        for(int j = 0; j < list.size(); j++)
 		        {
-		        	LostMask entity1 = (LostMask)list.get(j);
+		        	EntityLostMask entity1 = (EntityLostMask)list.get(j);
 		            if(!entity1.isDead) {
 		        		seesMask = true;
 		        		float dist = ent.getDistanceToEntity(entity1);

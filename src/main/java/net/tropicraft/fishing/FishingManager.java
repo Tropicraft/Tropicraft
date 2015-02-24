@@ -1,4 +1,4 @@
-package tropicraft.fishing;
+package net.tropicraft.fishing;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ public class FishingManager {
 	public static ArrayList<FishingEvent> getEventsForPlayer(EntityPlayer p){
 		ArrayList<FishingEvent> match = new ArrayList<FishingEvent>();
 		for(FishingEvent evt : fishingEvents){
-			if(evt.thePlayer.entityId == p.entityId){
+			if(evt.thePlayer.getEntityId() == p.getEntityId()){
 				match.add(evt);
 			}
 		}

@@ -3,6 +3,7 @@ package net.tropicraft.fishing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.tropicraft.entity.EntityHook;
@@ -27,18 +28,22 @@ public class FishingEventReelComplete extends FishingEvent {
 			if (entity instanceof EntityLiving) {
 
 				if (entity instanceof EntityCreeper) {
-					((EntityCreeper) entity.
+					//((EntityCreeper) entity.
 				}
 
 				entity.rotationYaw = entity.prevRotationYaw;
 				if (entity instanceof EntityCreature) {
-					EntityDartHelper.setEntityToAttack((EntityCreature) entity,
-							null);
+					/*EntityDartHelper.setEntityToAttack((EntityCreature) entity,
+							null);*/
+					((EntityCreature) entity).setAttackTarget(null);
 				}
 
-				EntityDartHelper.setEntityAttackTime((EntityLiving) entity, 60);
-				EntityDartHelper.setEntityMoveSpeed((EntityLiving) entity, 0);
-				EntityDartHelper.setIsEntityJumping((EntityLiving) entity, false);
+				//EntityDartHelper.setEntityAttackTime((EntityLiving) entity, 60);
+				((EntityLiving) entity).attackTime = 60;
+				//EntityDartHelper.setEntityMoveSpeed((EntityLiving) entity, 0);
+				((EntityLiving) entity).setAIMoveSpeed(0);
+				//EntityDartHelper.setIsEntityJumping((EntityLiving) entity, false);
+				((EntityLiving) entity).setJumping(false);
 
 				if (entity.onGround) {
 					entity.motionX = 0;
@@ -64,7 +69,7 @@ public class FishingEventReelComplete extends FishingEvent {
 					}
 				}
 
-				EntityDartHelper.setEntityAITasks((EntityLiving) entity, null);
+				//EntityDartHelper.setEntityAITasks((EntityLiving) entity, null);
 			}
 	}
 

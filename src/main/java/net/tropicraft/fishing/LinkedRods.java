@@ -1,4 +1,4 @@
-package tropicraft.fishing;
+package net.tropicraft.fishing;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.tropicraft.entity.EntityHook;
 
 public class LinkedRods {
 	
@@ -14,15 +15,15 @@ public class LinkedRods {
 	
 	
 	public void createLink(EntityHook h, EntityPlayer p){
-		if(floats.get(p.entityId) == null){
-			floats.put(p.entityId, h);
+		if(floats.get(p.getEntityId()) == null){
+			floats.put(p.getEntityId(), h);
 		//	System.out.println("Created Float link!");
 		}
 	}
 	
 	public void destroyLink(EntityHook k, EntityPlayer p){
-		if(floats.get(p.entityId) != null){
-			floats.remove(p.entityId);
+		if(floats.get(p.getEntityId()) != null){
+			floats.remove(p.getEntityId());
 		//	System.out.println("Removed Float link!");
 		}
 	}
@@ -30,7 +31,7 @@ public class LinkedRods {
 	private Entity getEntById(World w, int i){
 		List<Entity> ents = w.loadedEntityList;
 		for(Entity e : ents){
-			if(e.entityId == i){
+			if(e.getEntityId() == i){
 				return e;
 			}
 		}
@@ -40,7 +41,7 @@ public class LinkedRods {
 	public EntityPlayer getLinkedPlayer(EntityHook h){
 		EntityPlayer p = null;
 		for(int a : floats.keySet()){
-			if(floats.get(a).entityId == h.entityId){
+			if(floats.get(a).getEntityId() == h.getEntityId()){
 			//	System.out.println("Got linked player!");
 				return (EntityPlayer) getEntById(h.worldObj, a);
 			}
@@ -50,7 +51,7 @@ public class LinkedRods {
 	
 	public boolean playerHasFloat(EntityPlayer p){
 		boolean b = false;
-		if(floats.get(p.entityId) != null){
+		if(floats.get(p.getEntityId()) != null){
 			b = true;
 		}
 		return b;
@@ -59,7 +60,7 @@ public class LinkedRods {
 	public EntityHook getLinkedHook(EntityPlayer p){
 		EntityHook h = null;
 		for(int a : floats.keySet()){
-			if(a == p.entityId){
+			if(a == p.getEntityId()){
 			//	System.out.println("Got linked hook!");
 				return floats.get(a);
 			}

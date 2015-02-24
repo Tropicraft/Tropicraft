@@ -30,7 +30,7 @@ public class JobQuestGiver extends JobBase {
 			ActiveQuest quest = PlayerQuestManager.i().getPlayerQuests(par1EntityPlayer).getFirstQuestByStatus(EnumQuestState.CONCLUDING);
 			if (quest == null) {
 				int randID = 0;//par1EntityPlayer.worldObj.rand.nextInt(QuestCreator.curQuestCount);
-				PlayerQuestManager.i().giveQuest(randID, CoroUtilEntity.getName(par1EntityPlayer), false);
+				//PlayerQuestManager.i().giveQuest(randID, CoroUtilEntity.getName(par1EntityPlayer), false);
 			} else {
 				quest.eventComplete();
 				questComplete(par1EntityPlayer);
