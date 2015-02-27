@@ -1,5 +1,9 @@
 package net.tropicraft.world.worldgen;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -10,10 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCItemRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class WorldGenTropicsTreasure extends TCGenBase {
     

@@ -8,9 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.util.TropicraftUtils;
 
 import org.lwjgl.opengl.GL11;

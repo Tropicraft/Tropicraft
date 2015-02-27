@@ -3,7 +3,6 @@ package net.tropicraft.client.entity.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 
 import org.lwjgl.opengl.GL11;

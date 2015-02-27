@@ -1,7 +1,5 @@
 package net.tropicraft.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.IconFlipped;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,6 +9,8 @@ import net.tropicraft.info.TCNames;
 import net.tropicraft.info.TCRenderIDs;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBambooChute extends BlockTropicraft {
     @SideOnly(Side.CLIENT)

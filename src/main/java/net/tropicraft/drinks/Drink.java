@@ -1,15 +1,10 @@
 package net.tropicraft.drinks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.StringTranslate;
 
 public class Drink {
     public static final Drink[] drinkList = new Drink[128];

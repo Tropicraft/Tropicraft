@@ -1,9 +1,7 @@
 package net.tropicraft.world.genlayer;
 
-import net.tropicraft.world.biomes.BiomeGenTropicraft;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
+import net.tropicraft.world.biomes.BiomeGenTropicraft;
 
 public class GenLayerTropicraftRiverMix extends GenLayerTropicraft {
 	private int lakeID = BiomeGenTropicraft.tropicsLake.biomeID;

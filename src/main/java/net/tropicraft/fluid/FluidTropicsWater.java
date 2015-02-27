@@ -1,9 +1,9 @@
 package net.tropicraft.fluid;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.fluids.Fluid;
 import net.tropicraft.block.BlockTropicsWater;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class FluidTropicsWater extends Fluid {
 

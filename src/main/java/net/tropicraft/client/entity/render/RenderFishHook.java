@@ -1,6 +1,5 @@
 package net.tropicraft.client.entity.render;
 
-import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

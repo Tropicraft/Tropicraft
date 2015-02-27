@@ -6,7 +6,6 @@ import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.tropicraft.block.BlockBambooChest;
 import net.tropicraft.block.tileentity.TileEntityKoaChest;
 import net.tropicraft.util.TropicraftUtils;
 

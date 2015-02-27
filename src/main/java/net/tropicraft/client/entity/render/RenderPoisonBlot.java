@@ -3,7 +3,6 @@ package net.tropicraft.client.entity.render;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.util.TropicraftUtils;

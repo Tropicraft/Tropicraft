@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.block.tileentity.TileEntityPurchasePlate;
 import net.tropicraft.economy.ItemEntry;

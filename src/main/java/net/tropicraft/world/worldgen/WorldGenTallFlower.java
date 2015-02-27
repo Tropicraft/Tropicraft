@@ -1,11 +1,9 @@
 package net.tropicraft.world.worldgen;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.tropicraft.registry.TCBlockRegistry;
-
-import java.util.Random;
 
 public class WorldGenTallFlower extends TCGenBase {
 

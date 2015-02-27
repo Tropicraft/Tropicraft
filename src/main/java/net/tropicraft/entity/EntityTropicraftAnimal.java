@@ -2,7 +2,6 @@ package net.tropicraft.entity;
 
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.world.World;
-import net.tropicraft.entity.EntityLand.EnumTropiMobType;
 import net.tropicraft.info.TCInfo;
 
 public abstract class EntityTropicraftAnimal extends EntityAnimal {

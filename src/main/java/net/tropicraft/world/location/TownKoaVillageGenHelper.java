@@ -2,17 +2,15 @@ package net.tropicraft.world.location;
 
 import java.util.Iterator;
 
-import build.world.BuildDirectionHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.world.WorldProviderTropicraft;
 import CoroUtil.world.WorldDirector;
 import CoroUtil.world.WorldDirectorManager;
 import CoroUtil.world.location.ManagedLocation;
+import build.world.BuildDirectionHelper;
 
 public class TownKoaVillageGenHelper {
 

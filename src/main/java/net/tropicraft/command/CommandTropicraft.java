@@ -2,7 +2,6 @@ package net.tropicraft.command;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -12,10 +11,8 @@ import net.minecraft.util.MathHelper;
 import net.tropicraft.world.WorldProviderTropicraft;
 import net.tropicraft.world.location.TownKoaVillage;
 import net.tropicraft.world.location.TownKoaVillageGenHelper;
-import CoroUtil.forge.CoroAI;
 import CoroUtil.world.WorldDirector;
 import CoroUtil.world.WorldDirectorManager;
-import CoroUtil.world.grid.chunk.PlayerDataGrid;
 import CoroUtil.world.location.ManagedLocation;
 
 public class CommandTropicraft extends CommandBase {

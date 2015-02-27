@@ -1,13 +1,10 @@
 package net.tropicraft.world.location;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.tropicraft.entity.koa.EntityKoaBase;

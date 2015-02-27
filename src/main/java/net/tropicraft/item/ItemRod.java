@@ -2,8 +2,6 @@ package net.tropicraft.item;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

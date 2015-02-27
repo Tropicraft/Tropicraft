@@ -1,12 +1,12 @@
 package net.tropicraft.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCCreativeTabRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTropicraftFood extends ItemFood {
 

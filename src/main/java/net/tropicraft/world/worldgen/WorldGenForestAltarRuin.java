@@ -2,18 +2,13 @@ package net.tropicraft.world.worldgen;
 
 import java.util.Random;
 
-import scala.collection.generic.BitOperations.Int;
-
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.block.tileentity.TileEntityTropicraftFlowerPot;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCItemRegistry;
-import net.tropicraft.world.biomes.BiomeGenTropicraft;
 
 public class WorldGenForestAltarRuin extends TCDirectionalGen {
 	

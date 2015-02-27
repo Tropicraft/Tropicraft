@@ -5,8 +5,6 @@ import java.util.Random;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.tropicraft.Tropicraft;
-import net.tropicraft.entity.koa.EntityKoaFisher;
 import net.tropicraft.entity.underdasea.EntityTropicraftWaterMob;
 import net.tropicraft.registry.TCItemRegistry;
 import CoroUtil.componentAI.jobSystem.JobBase;

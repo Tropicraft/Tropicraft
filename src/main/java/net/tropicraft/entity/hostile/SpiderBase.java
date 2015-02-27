@@ -2,7 +2,6 @@ package net.tropicraft.entity.hostile;
 
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.tropicraft.entity.EntityCoroAI;
 import net.tropicraft.entity.ai.jobs.JobAttackTargetShare;

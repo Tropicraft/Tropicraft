@@ -7,7 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.entity.EntityHook;
 import net.tropicraft.info.TCInfo;
 

@@ -1,17 +1,14 @@
 package net.tropicraft.block.tileentity;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.tropicraft.item.scuba.ItemScubaGear.AirType;
 import net.tropicraft.item.scuba.ItemScubaTank;
-import net.tropicraft.util.TropicraftUtils;
 
 public class TileEntityAirCompressor extends TileEntity {
 

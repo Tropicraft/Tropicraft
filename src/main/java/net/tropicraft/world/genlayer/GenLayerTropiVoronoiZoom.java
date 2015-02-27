@@ -1,6 +1,5 @@
 package net.tropicraft.world.genlayer;
 
-import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerTropiVoronoiZoom extends GenLayerTropicraft {

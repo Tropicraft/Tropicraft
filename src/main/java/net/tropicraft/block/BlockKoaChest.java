@@ -8,8 +8,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntityKoaChest;
 import net.tropicraft.registry.TCCreativeTabRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockKoaChest extends BlockChest implements ITileEntityProvider {
 

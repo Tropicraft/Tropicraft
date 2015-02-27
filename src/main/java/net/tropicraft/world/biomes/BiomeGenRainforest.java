@@ -3,7 +3,6 @@ package net.tropicraft.world.biomes;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.tropicraft.world.worldgen.WorldGenBamboo;
 import net.tropicraft.world.worldgen.WorldGenCoffeePlant;
 import net.tropicraft.world.worldgen.WorldGenForestAltarRuin;
 import net.tropicraft.world.worldgen.WorldGenTCUndergrowth;

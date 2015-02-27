@@ -4,7 +4,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.tropicraft.block.tileentity.TileEntityFirePit;
 import net.tropicraft.factory.TileEntityFactory;
 import net.tropicraft.info.TCNames;
 

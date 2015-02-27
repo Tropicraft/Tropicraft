@@ -1,9 +1,5 @@
 package net.tropicraft.entity.underdasea;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 

@@ -6,7 +6,6 @@ import CoroUtil.componentAI.jobSystem.JobManager;
 import CoroUtil.quest.EnumQuestState;
 import CoroUtil.quest.PlayerQuestManager;
 import CoroUtil.quest.quests.ActiveQuest;
-import CoroUtil.util.CoroUtilEntity;
 
 public class JobQuestGiver extends JobBase {
 

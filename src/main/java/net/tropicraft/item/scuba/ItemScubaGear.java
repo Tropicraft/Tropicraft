@@ -7,8 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ISpecialArmor;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
 import net.tropicraft.registry.TCCreativeTabRegistry;

@@ -3,7 +3,6 @@ package net.tropicraft.world.biomes;
 import java.util.Random;
 
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.world.WorldProviderTropicraft;
 import net.tropicraft.world.location.TownKoaVillageGenHelper;

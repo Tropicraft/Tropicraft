@@ -2,8 +2,6 @@ package net.tropicraft.entity.pool;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -20,6 +18,8 @@ import net.minecraft.world.World;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.util.ColorHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityPoolFloat extends Entity {
 

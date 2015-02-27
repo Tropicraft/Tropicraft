@@ -1,6 +1,5 @@
 package net.tropicraft.util;
 
-import net.minecraft.world.EnumDifficulty;
 
 /**
  * Class that contains color constants of coral. NOTE: Most colors are in argb format because Minecraft

@@ -1,7 +1,5 @@
 package net.tropicraft.world.genlayer;
 
-import net.tropicraft.world.biomes.BiomeGenTropicraft;
-import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerTropicraftRiverInit extends GenLayerTropicraft {

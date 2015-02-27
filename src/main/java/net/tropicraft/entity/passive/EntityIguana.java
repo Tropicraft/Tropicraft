@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.tropicraft.entity.EntityLand.EnumTropiMobType;
 import net.tropicraft.entity.EntityTropicraftAnimal;
 import net.tropicraft.registry.TCItemRegistry;
 
