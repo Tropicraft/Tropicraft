@@ -24,7 +24,7 @@ public class EntityKoaHunter extends EntityKoaBase {
 		
 		agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.dagger));
 		agent.entInv.inventory.setInventorySlotContents(1, new ItemStack(TCItemRegistry.leafBall));
-		agent.entInv.inventory.setInventorySlotContents(2, new ItemStack(TCItemRegistry.fishingRodTropical));
+		//agent.entInv.inventory.setInventorySlotContents(2, new ItemStack(TCItemRegistry.fishingRodTropical));
 		
 		//sync to vanilla system
 		agent.entInv.syncToClient();
