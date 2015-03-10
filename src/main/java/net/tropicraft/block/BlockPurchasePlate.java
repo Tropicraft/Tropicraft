@@ -1,15 +1,19 @@
 package net.tropicraft.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.tropicraft.block.tileentity.TileEntityPurchasePlate;
+import net.tropicraft.info.TCInfo;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class BlockPurchasePlate extends BlockContainer
@@ -189,5 +193,32 @@ public class BlockPurchasePlate extends BlockContainer
     public int getMobilityFlag()
     {
         return 1;
+    }
+    
+    /**
+	 * @return The unlocalized block name
+	 */
+	@Override
+    public String getUnlocalizedName() {
+        return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(super.getUnlocalizedName()));
+    }
+	
+	/**
+	 * Get the true name of the block
+	 * @param unlocalizedName tile.%truename%
+	 * @return The actual name of the block, rather than tile.%truename%
+	 */
+	protected String getActualName(String unlocalizedName) {
+		return unlocalizedName.substring(unlocalizedName.indexOf('.') + 1);
+	}
+	
+	/**
+	 * Register all the icons of the block
+	 * @param iconRegister Icon registry
+	 */
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        blockIcon = iconRegister.registerIcon(String.format("%s", getActualName(this.getUnlocalizedName())));
     }
 }

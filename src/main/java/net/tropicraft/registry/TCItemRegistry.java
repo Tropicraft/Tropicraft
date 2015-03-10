@@ -183,7 +183,7 @@ public class TCItemRegistry {
     public static final Item bambooSpear = new ItemTropicraftSword(materialBambooTools, TCNames.bambooSpear);
 
     public static Item leafBall = (new ItemTropicraftLeafballNew()).setUnlocalizedName("leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
-    public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");;
+    public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");
 
     public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
     //public static ItemStaffIceball staffIce;
