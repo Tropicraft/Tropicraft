@@ -1,9 +1,7 @@
 # gradle stuff
-build
+build/
 .gradle
-gradle
-gradlew
-gradlew.bat
+gradle/
 
 #forge stuff
 /*.txt
