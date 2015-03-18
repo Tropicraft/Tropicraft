@@ -32,6 +32,7 @@ import net.tropicraft.client.entity.render.RenderEagleRay;
 import net.tropicraft.client.entity.render.RenderFishHook;
 import net.tropicraft.client.entity.render.RenderIguana;
 import net.tropicraft.client.entity.render.RenderKoaMan;
+import net.tropicraft.client.entity.render.RenderLostMask;
 import net.tropicraft.client.entity.render.RenderPoisonBlot;
 import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeaTurtle;
@@ -57,6 +58,7 @@ import net.tropicraft.client.tileentity.TileEntitySifterRenderer;
 import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
+import net.tropicraft.entity.hostile.EntityLostMask;
 import net.tropicraft.entity.hostile.EntityTreeFrog;
 import net.tropicraft.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.entity.hostile.EntityTropiSkeleton;
@@ -113,6 +115,7 @@ public class TCRenderRegistry {
         registerEntityRender(EntityTCItemFrame.class, new RenderTCItemFrame());
         registerEntityRender(EntityTropicraftLeafballNew.class, new RenderSnowball(TCItemRegistry.leafBall));
         registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish(new ModelFish(), 0.25F));
+        registerEntityRender(EntityLostMask.class, new RenderLostMask());
     }
 
     /**

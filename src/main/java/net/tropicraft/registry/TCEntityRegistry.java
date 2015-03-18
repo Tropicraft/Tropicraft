@@ -5,6 +5,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
+import net.tropicraft.entity.hostile.EntityLostMask;
 import net.tropicraft.entity.hostile.EntityTreeFrogBlue;
 import net.tropicraft.entity.hostile.EntityTreeFrogRed;
 import net.tropicraft.entity.hostile.EntityTreeFrogYellow;
@@ -72,6 +73,8 @@ public class TCEntityRegistry {
 		registerEntity(EntityTCItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityTropicraftLeafballNew.class, "TropiLeafball", 64, 1, true);
 		registerEntity(EntityTropicalFish.class, "TropicalFish", 80, 3, true);
+		registerEntity(EntityLostMask.class, "LostMask", 64, 3, true);
+		
 		
 	}
 	

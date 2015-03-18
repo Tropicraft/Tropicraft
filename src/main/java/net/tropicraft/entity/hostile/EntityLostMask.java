@@ -29,10 +29,10 @@ public class EntityLostMask extends Entity implements WindHandler{
 	 * @param z Z position
 	 * @param angle Use the "attackers" rotationYaw
 	 */
-	public EntityLostMask(World world, int color, double x, double y, double z, double angle){
+	public EntityLostMask(World world, int type, double x, double y, double z, double angle){
 		this(world);
 		this.setPosition(x, y, z);		
-		this.setType(color);
+		this.setType(type);
 		motionX = Math.cos(Math.toRadians(angle + 90))*launchedSpeed;
 		motionZ = Math.sin(Math.toRadians(angle + 90))*launchedSpeed;
 		double subAngle = MathHelper.wrapAngleTo180_double(angle);
