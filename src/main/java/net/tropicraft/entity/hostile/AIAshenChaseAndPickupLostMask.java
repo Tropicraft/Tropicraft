@@ -16,6 +16,7 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
     public AIAshenChaseAndPickupLostMask(EntityAshen ashen, double speed) {
         this.ashen = ashen;
         this.speed = speed;
+        this.setMutexBits(3);
     }
 
     @Override
