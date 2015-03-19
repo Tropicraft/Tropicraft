@@ -94,13 +94,15 @@ public class ItemDartGun extends ItemTropicraft {
             slot = TropicraftUtils.getSlotOfItem(entityplayer.inventory, TCItemRegistry.dart);
 
             if (!world.isRemote) {
-                if (slot > -1) {
+                if (slot > -1 || entityplayer.capabilities.isCreativeMode) {
                 	ItemStack dartStack = entityplayer.inventory.mainInventory[slot];
-                	if (dartStack.stackSize > 1) {
-                		dartStack.stackSize--;
-                	} else {
-                		entityplayer.inventory.mainInventory[slot] = null;
-                		entityplayer.inventoryContainer.detectAndSendChanges();
+                	if (!entityplayer.capabilities.isCreativeMode) {
+	                	if (dartStack.stackSize > 1) {
+	                		dartStack.stackSize--;
+	                	} else {
+	                		entityplayer.inventory.mainInventory[slot] = null;
+	                		entityplayer.inventoryContainer.detectAndSendChanges();
+	                	}
                 	}
                     
                 
@@ -123,9 +125,9 @@ public class ItemDartGun extends ItemTropicraft {
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-        if (entityplayer.capabilities.isCreativeMode/* || itemstack.getItemDamage() > 0*/) {
-            entityplayer.setItemInUse(itemstack, getMaxItemUseDuration(itemstack));
-        }
+        //if (entityplayer.capabilities.isCreativeMode/* || itemstack.getItemDamage() > 0*/) {
+        entityplayer.setItemInUse(itemstack, getMaxItemUseDuration(itemstack));
+        //}
         return itemstack;
     }
 }

@@ -2,6 +2,7 @@ package net.tropicraft.entity.projectile;
 
 import java.util.List;
 
+import CoroUtil.packet.PacketHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -19,7 +20,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.entity.damage.TCDamageSource;
+import net.tropicraft.util.EffectHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -201,7 +204,21 @@ public class EntityDart extends Entity implements IProjectile {
 
                             if (!this.worldObj.isRemote)
                             {
-                                entitylivingbase.addPotionEffect(new PotionEffect(potions[this.dartType], MAX_HIT_TIME, 1));
+	                            if (this.dartType == 0) {
+	                        		System.out.println("client?: " + worldObj.isRemote);
+	                        		//do custom paralyse
+	                        		if (entitylivingbase instanceof EntityPlayerMP) {
+	                        			//Player, send to client
+	                        			NBTTagCompound nbt = new NBTTagCompound();
+	                        			nbt.setInteger("effectID", this.dartType);
+	                        			Tropicraft.eventChannel.sendTo(PacketHelper.getNBTPacket(nbt, Tropicraft.eventChannelName), (EntityPlayerMP) entitylivingbase);
+	                        		} else {
+	                        			//AI
+	                        			EffectHelper.addEntry(entitylivingbase);
+	                        		}
+	                        	} else {	
+		                            entitylivingbase.addPotionEffect(new PotionEffect(potions[this.dartType], MAX_HIT_TIME, 1));
+	                        	}
                             }
 
                             if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)

@@ -3,6 +3,7 @@ package net.tropicraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.tropicraft.drinks.MixerRecipes;
 import net.tropicraft.encyclopedia.Encyclopedia;
+import net.tropicraft.event.TCPacketEvents;
 import net.tropicraft.event.TCBlockEvents;
 import net.tropicraft.event.TCItemEvents;
 import net.tropicraft.event.TCMiscEvents;
@@ -18,6 +19,7 @@ import net.tropicraft.registry.TCKoaCurrencyRegistry;
 import net.tropicraft.registry.TCTileEntityRegistry;
 import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftWorldUtils;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -26,6 +28,8 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 /**
  * Mod file for the Tropicraft mod
@@ -41,6 +45,9 @@ public class Tropicraft {
     public static Tropicraft instance;
 	
 	public static Encyclopedia encyclopedia;
+	
+	public static String eventChannelName = "tropicraft";
+	public static final FMLEventChannel eventChannel = NetworkRegistry.INSTANCE.newEventDrivenChannel(eventChannelName);
 	
 	/**
 	 * Triggered when a server starts
@@ -65,6 +72,7 @@ public class Tropicraft {
     	TCFluidRegistry.postInit();
     	TCKoaCurrencyRegistry.init();
     	TCCraftingRegistry.init();
+    	eventChannel.register(new TCPacketEvents());
     //TODO	proxy.preInit(); // On client, this initializes the encyclopedia
     }
 	
@@ -80,7 +88,9 @@ public class Tropicraft {
 		MixerRecipes.addMixerRecipes();
 		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
 		MinecraftForge.EVENT_BUS.register(new TCItemEvents());
-		MinecraftForge.EVENT_BUS.register(new TCMiscEvents());
+		TCMiscEvents misc = new TCMiscEvents();
+		MinecraftForge.EVENT_BUS.register(misc);
+		FMLCommonHandler.instance().bus().register(misc);
 		TropicraftWorldUtils.initializeDimension();
     }
 	

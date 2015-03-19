@@ -215,6 +215,8 @@ public class TCItemRegistry {
     public static Item rodGood = new ItemRod().setType(ItemRod.TYPE_GOOD).setUnlocalizedName("rodGood");
     public static Item rodSuper = new ItemRod().setType(ItemRod.TYPE_SUPER).setUnlocalizedName("rodSuper");
     public static Item lureSuper = new ItemTropicraft().setUnlocalizedName("lureSuper");
+    
+    //public static Item ashenMasks = new ItemAshenMask(ModIds.ITEM_ASHENMASK_ID, getMaskDisplayNames(), getMaskImageNames()).setUnlocalizedName("ashenMasks");
 
     /**
      * Register all the items
