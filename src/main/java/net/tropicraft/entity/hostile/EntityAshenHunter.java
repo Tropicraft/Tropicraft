@@ -41,7 +41,7 @@ public class EntityAshenHunter extends EntityAshen {
     		this.faceEntity(getAttackTarget(), 180, 180);
     		EntityDart entitydart = new EntityDart(worldObj, this, 3.0F, (short)(6));
         	worldObj.spawnEntityInWorld(entitydart);
-        	System.out.println("shoot!");
+        	//System.out.println("shoot!");
     	}
     }
     

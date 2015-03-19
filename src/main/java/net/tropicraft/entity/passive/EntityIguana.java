@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -13,7 +14,7 @@ import net.minecraft.world.World;
 import net.tropicraft.entity.EntityTropicraftAnimal;
 import net.tropicraft.registry.TCItemRegistry;
 
-public class EntityIguana extends EntityTropicraftAnimal {
+public class EntityIguana extends EntityTropicraftAnimal implements IMob {
 
     /** Timer for how much longer the iggy will be enraged */
     private int angerLevel;

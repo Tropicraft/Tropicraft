@@ -111,7 +111,7 @@ public class EntityDart extends Entity implements IProjectile {
         }
         
         if (!worldObj.isRemote) {
-        	System.out.println("motion: " + motionX + " - " + motionZ);
+        	//System.out.println("motion: " + motionX + " - " + motionZ);
         }
 
         if (this.inGround) {

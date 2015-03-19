@@ -93,6 +93,16 @@ public class TropicraftUtils {
         return -1;
     }
     
+    public static int getSlotOfItem(InventoryPlayer inventory, Item item) {
+        for (int j = 0; j < inventory.mainInventory.length; ++j) {
+            if (inventory.mainInventory[j] != null && inventory.mainInventory[j].getItem() == item) {
+                return j;
+            }
+        }
+
+        return -1;
+    }
+    
     /**
      * Translates an unlocalized String to be localized, returns it. Implementation can be changed accordingly.
      * @param toBeTranslated
