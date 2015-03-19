@@ -3,6 +3,7 @@ package net.tropicraft.entity.hostile;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIArrowAttack;
@@ -44,7 +45,7 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
         actionPicker = 0;
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new AIAshenChaseAndPickupLostMask(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 60, 10.0F));
+        this.tasks.addTask(3, new EntityAIMeleeAndRangedAttack(this, 1.0D, 60, 5F));
         this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -109,14 +110,14 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
     }
     
     public void dropMask() {
-    	System.out.println("drop");
+    	//System.out.println("drop");
     	setActionState(1);
     	maskToTrack = new EntityLostMask(worldObj, getMaskType(), posX, posY, posZ, rotationYaw);
     	worldObj.spawnEntityInWorld(maskToTrack);
     }
     
     public void pickupMask(EntityLostMask mask) {
-    	System.out.println("pickup");
+    	//System.out.println("pickup");
     	setActionState(2);
     	maskToTrack = null;
     	setMaskType(mask.type);
@@ -134,9 +135,6 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
     
     @Override
     public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
-    	
-    	
-    	
     	boolean wasHit = super.attackEntityFrom(p_70097_1_, p_70097_2_);
     	
     	if (!worldObj.isRemote) {

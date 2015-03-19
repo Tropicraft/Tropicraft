@@ -32,6 +32,7 @@ public class ItemDart extends ItemTropicraft {
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         setCreativeTab(TCCreativeTabRegistry.tabCombat);
+        setMaxStackSize(64);
     }
 
     /**

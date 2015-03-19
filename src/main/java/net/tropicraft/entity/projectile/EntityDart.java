@@ -109,6 +109,10 @@ public class EntityDart extends Entity implements IProjectile {
         if (this.dartShake > 0) {
             --this.dartShake;
         }
+        
+        if (!worldObj.isRemote) {
+        	System.out.println("motion: " + motionX + " - " + motionZ);
+        }
 
         if (this.inGround) {
             this.setDead();
@@ -189,7 +193,7 @@ public class EntityDart extends Entity implements IProjectile {
                         damagesource = TCDamageSource.causeDartDamage(this, this.shootingEntity);
                     }
 
-                    if (movingobjectposition.entityHit.attackEntityFrom(damagesource, (float)0))
+                    if (movingobjectposition.entityHit.attackEntityFrom(damagesource, (float)2))
                     {
                         if (movingobjectposition.entityHit instanceof EntityLivingBase)
                         {
@@ -279,6 +283,12 @@ public class EntityDart extends Entity implements IProjectile {
             this.setPosition(this.posX, this.posY, this.posZ);
             this.func_145775_I();
         }
+    }
+    
+    @Override
+    public void setDead() {
+    	// TODO Auto-generated method stub
+    	super.setDead();
     }
 
     @Override

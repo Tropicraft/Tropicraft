@@ -79,7 +79,7 @@ public class TCItemRegistry {
     public static final ItemTropicraftFood lime = new ItemTropicraftFood(2, 0.2F);
     public static final ItemTropicraftFood orange = new ItemTropicraftFood(2, 0.2F);
 
-    public static final ItemTropicraft scale = new ItemTropicraft();
+    public static final ItemTropicraft scale = (ItemTropicraft) new ItemTropicraft().setMaxStackSize(64);
 
     public static final ItemTropicraftFood coconutChunk = new ItemTropicraftFood(1, 0.1F);
     public static final ItemTropicraftFood pineappleCubes = new ItemTropicraftFood(1, 0.1F);
