@@ -37,7 +37,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 
 	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 	
-	private static final int EIH_CHANCE = 20;
+	private static final int EIH_CHANCE = 50;
 	private static final int SHIPWRECK_CHANCE = 200;
 	private static final int TALL_FLOWERS_CHANCE = 3;
 	private static final int BAMBOO_CHANCE = 2;
