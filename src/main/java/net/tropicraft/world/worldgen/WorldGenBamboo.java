@@ -14,7 +14,7 @@ public class WorldGenBamboo extends TCGenBase {
 	private static final int MIN_HEIGHT = 4;
 	private static final int MAX_HEIGHT = 8;
 	
-	private static final Block BAMBOO_BLOCK = TCBlockRegistry.bambooBundle; //TODO: Change to bamboo chutes
+	private static final Block BAMBOO_BLOCK = TCBlockRegistry.bambooChute;
 	
 	public WorldGenBamboo(World world, Random random) {
 		super(world, random);

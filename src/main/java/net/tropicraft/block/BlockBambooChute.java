@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBambooChute extends BlockTropicraft {
+	
     @SideOnly(Side.CLIENT)
 	private IIcon sideIcon;
     
@@ -67,18 +68,18 @@ public class BlockBambooChute extends BlockTropicraft {
 		leafFlippedIcon = new IconFlipped(leafIcon, true, false);
 	}
 	
-	public static IIcon getBambooIcon(String what) {
-		if (what.equals("side")) {
+	public static IIcon getBambooIcon(String iconString) {
+		if (iconString.equals("side")) {
 			return TCBlockRegistry.bambooChute.sideIcon;
-		} else if (what.equals("top")) {
+		} else if (iconString.equals("top")) {
 			return TCBlockRegistry.bambooChute.topIcon;
-		} else if (what.equals("bottom")) {
+		} else if (iconString.equals("bottom")) {
 			return TCBlockRegistry.bambooChute.bottomIcon;
-		} else if (what.equals("indent")) {
+		} else if (iconString.equals("indent")) {
 			return TCBlockRegistry.bambooChute.indentIcon;
-		} else if (what.equals("leaf")) {
+		} else if (iconString.equals("leaf")) {
 			return TCBlockRegistry.bambooChute.leafIcon;
-		} else if (what.equals("leafFlipped")) {
+		} else if (iconString.equals("leafFlipped")) {
 			return TCBlockRegistry.bambooChute.leafFlippedIcon;
 		} else {
 			return null;
