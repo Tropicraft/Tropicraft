@@ -107,7 +107,7 @@ public class ItemDartGun extends ItemTropicraft {
                     
                 
 	                if (itemstack.getItemDamage() == 0) {
-	                	EntityDart entitydart = new EntityDart(world, entityplayer, f * 2.0F, (short)(dartStack.getItemDamage() - 1));
+	                	EntityDart entitydart = new EntityDart(world, entityplayer, f * 2.0F, (short)(dartStack.getItemDamage()));
 	                    world.spawnEntityInWorld(entitydart);
 	                } else {
 	                	EntityDart entitydart = new EntityDart(world, entityplayer, f * 2.0F, (short)(itemstack.getItemDamage() - 1));
