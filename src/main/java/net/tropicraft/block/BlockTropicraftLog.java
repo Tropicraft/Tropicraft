@@ -10,6 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,20 +30,52 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
 		this.setStepSound(soundTypeWood);
 		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
 	}
-	
-    /**
-     * Currently only called by fire when it is on top of this block.
-     * Returning true will prevent the fire from naturally dying during updating.
-     * Also prevents firing from dying from rain.
-     *
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param side The face that the fire is coming from
-     * @return True if this block sustains fire, meaning it will never go out.
-     */
+
+	public static void spawnCoconuts(World world, int i, int j, int k, Random random, int chance) {
+		if (world.getBlock(i, j + 1, k) == TCBlockRegistry.palmLeaves || world.getBlock(i, j + 2, k) == TCBlockRegistry.palmLeaves) {
+			if (world.isAirBlock(i + 1, j, k) && random.nextInt(chance) == 0) {
+				world.setBlock(i + 1, j, k, TCBlockRegistry.coconut);
+				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+
+			}
+			if (world.isAirBlock(i - 1, j, k) && random.nextInt(chance) == 0) {
+				world.setBlock(i - 1, j, k, TCBlockRegistry.coconut);
+				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+
+
+			}
+			if (world.isAirBlock(i, j, k - 1) && random.nextInt(chance) == 0) {
+				world.setBlock(i, j, k - 1, TCBlockRegistry.coconut);
+				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+
+
+			}
+			if (world.isAirBlock(i, j, k + 1) && random.nextInt(chance) == 0) {
+				world.setBlock(i, j, k + 1, TCBlockRegistry.coconut);
+				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+			}
+
+			if (world.isAirBlock(i, j - 1, k) && random.nextInt(chance) == 0) {
+				world.setBlock(i, j - 1, k, TCBlockRegistry.coconut);
+				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+			}
+		} 
+
+	}
+
+	/**
+	 * Currently only called by fire when it is on top of this block.
+	 * Returning true will prevent the fire from naturally dying during updating.
+	 * Also prevents firing from dying from rain.
+	 *
+	 * @param world The current world
+	 * @param x The blocks X position
+	 * @param y The blocks Y position
+	 * @param z The blocks Z position
+	 * @param metadata The blocks current metadata
+	 * @param side The face that the fire is coming from
+	 * @return True if this block sustains fire, meaning it will never go out.
+	 */
 	public boolean isFireSource(World world, int x, int y, int z, ForgeDirection side) {
 		return true;
 	}

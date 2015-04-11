@@ -67,7 +67,7 @@ public class TownKoaVillageGenHelper {
 			
 			return true;
 		} else {
-			System.out.println("test fail!");
+			//System.out.println("test fail!");
 		}
 		
 		return false;

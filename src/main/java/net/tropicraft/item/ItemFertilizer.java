@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.tropicraft.block.BlockTropicraftSapling;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 
@@ -20,14 +21,13 @@ public class ItemFertilizer extends ItemTropicraft {
 	 @Override
 	    public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int l, float par8, float par9, float par10) {
 	        Block block = world.getBlock(i, j, k);
-	   //     int meta = world.getBlockMetadata(i, j, k);
-/*	TODO ?         if (block == TCBlockRegistry.saplings) {
-	            if (!world.isRemote) {
-	                ((BlockTropicraftSapling) TCBlockRegistry.saplings).growTree(world, i, j, k, world.rand);
-	                itemstack.stackSize--;
-	            }
-	            return true;
-	        }*/
+	        if (block == TCBlockRegistry.saplings) {
+	        	if (!world.isRemote) {
+	        		((BlockTropicraftSapling) TCBlockRegistry.saplings).markOrGrowMarked(world, i, j, k, world.rand);
+	        		itemstack.stackSize--;
+	        	}
+	        	return true;
+	        }
 	        
 	         if (block instanceof IGrowable)
 	         {
@@ -80,8 +80,6 @@ public class ItemFertilizer extends ItemTropicraft {
 	                            if (itemRand.nextInt(7) == 1) {
 	                                world.setBlock(k1, l1, i2, Blocks.red_flower);
 	                            }*/
-	                        
-	                        System.out.println("here");
 
 	                     /*   if (itemRand.nextInt(9) == 0) {
 	                            world.setBlock(k1, l1, i2, TCBlockRegistry.flowers, 0, 3);

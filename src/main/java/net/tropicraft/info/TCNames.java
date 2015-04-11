@@ -63,7 +63,7 @@ public class TCNames {
     public static final String fruitLeaves = "fruitLeaves";
     public static final String palmLeaves = "leafPalm";
     public static final String leafRainforest = "leafRainforest";
-    public static final String[] rainforestLeafNames = new String[]{"Kapok", "Mahogany"};
+    public static final String[] rainforestLeafNames = new String[]{"Kapok", "Mahogany", "Fruit"};
     public static final String leaf = "leaf";
     public static final String[] fruitLeafNames = new String[]{"Grapefruit", "Lemon", "Lime", "Orange"};
     public static final String bambooChute = "bambooChute";

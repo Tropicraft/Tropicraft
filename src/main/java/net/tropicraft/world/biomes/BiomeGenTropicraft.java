@@ -29,6 +29,8 @@ import net.tropicraft.world.worldgen.WorldGenSunkenShip;
 import net.tropicraft.world.worldgen.WorldGenTallFlower;
 import net.tropicraft.world.worldgen.WorldGenTropicraftCurvedPalm;
 import net.tropicraft.world.worldgen.WorldGenTropicraftFlowers;
+import net.tropicraft.world.worldgen.WorldGenTropicraftLargePalmTrees;
+import net.tropicraft.world.worldgen.WorldGenTropicraftNormalPalms;
 import net.tropicraft.world.worldgen.WorldGenWaterfall;
 
 public class BiomeGenTropicraft extends BiomeGenBase {
@@ -42,6 +44,8 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	private static final int WATERFALL_AMOUNT = 25;
 	private static final int TALL_GRASS_CHANCE = 4;
 	public static final int CURVED_PALM_CHANCE = 3;
+	public static final int LARGE_PALM_CHANCE = 3;
+	public static final int NORMAL_PALM_CHANCE = 3;
 	
 	//TODO: Add config
 	public static int tropicsOceanID = 60;
@@ -149,6 +153,18 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenTropicraftCurvedPalm(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(LARGE_PALM_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTropicraftLargePalmTrees(false).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
+		}
+		
+		if(rand.nextInt(NORMAL_PALM_CHANCE) == 0) {
+			int i = randCoord(rand, x, 16);
+			int k = randCoord(rand, z, 16);
+			new WorldGenTropicraftNormalPalms(false).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
 		}
 		
 		if(rand.nextInt(TALL_GRASS_CHANCE) == 0) {

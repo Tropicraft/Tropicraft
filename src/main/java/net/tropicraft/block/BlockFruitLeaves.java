@@ -43,7 +43,6 @@ public class BlockFruitLeaves extends BlockLeaves {
             if (par1World.rand.nextInt(3) == 0) {
                 Item item = this.getItemDropped(meta, par1World.rand, par7);
                 if(item == Item.getItemFromBlock(TCBlockRegistry.saplings)) {
-                    System.out.println("heh" + this.damageDropped(meta));
                     super.dropBlockAsItem(par1World, x, y, z, new ItemStack(item, 1, this.damageDropped(meta) + 2));
                 } else {
                     super.dropBlockAsItem(par1World, x, y, z, new ItemStack(item, 1, this.damageDropped(meta)));

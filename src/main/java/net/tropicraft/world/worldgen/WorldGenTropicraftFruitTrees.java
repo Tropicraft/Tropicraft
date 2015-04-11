@@ -11,7 +11,8 @@ import net.tropicraft.registry.TCBlockRegistry;
 public class WorldGenTropicraftFruitTrees extends TCGenBase {
 
 	private static final Block WOOD_BLOCK = Blocks.log;
-	private static final Block LEAF_BLOCK = TCBlockRegistry.fruitLeaves;
+	private static final Block FRUIT_LEAF_BLOCK = TCBlockRegistry.fruitLeaves;
+	private static final Block REGULAR_LEAF_BLOCK = TCBlockRegistry.rainforestLeaves;
 	
 	int treeType;
 
@@ -39,7 +40,7 @@ public class WorldGenTropicraftFruitTrees extends TCGenBase {
 				for (int z = k - size; z <= k + size && canGenerate; z++) {
 					if (y >= 0 && y < worldObj.getHeight()) {
 						Block block = worldObj.getBlock(x, y, z);
-						if (block != Blocks.air && block != LEAF_BLOCK) {
+						if (block != Blocks.air && block != FRUIT_LEAF_BLOCK) {
 							canGenerate = false;
 						}
 					} else {
@@ -69,10 +70,10 @@ public class WorldGenTropicraftFruitTrees extends TCGenBase {
 					if ((Math.abs(localX) != size || Math.abs(localZ) != size || rand.nextInt(2) != 0 && presizeMod != 0) && !worldObj.getBlock(x, y, z).isOpaqueCube()) {
 						if (rand.nextBoolean()) {
 							// Set fruit-bearing leaves here
-							worldObj.setBlock(x, y, z, LEAF_BLOCK, treeType, blockGenNotifyFlag);
+							worldObj.setBlock(x, y, z, FRUIT_LEAF_BLOCK, treeType, blockGenNotifyFlag);
 						} else {
 							// Set plain fruit tree leaves here
-							worldObj.setBlock(x, y, z, LEAF_BLOCK, 1, blockGenNotifyFlag); //TODO Change to normal leaf
+							worldObj.setBlock(x, y, z, REGULAR_LEAF_BLOCK, 2, blockGenNotifyFlag);
 						}
 					}
 				}
