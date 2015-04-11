@@ -162,6 +162,7 @@ public class TCNames {
     public static final String cocktail = "cocktail";
     public static final String leafBall = "leafBall";
     public static final String fishBucket = "fishBucket";
+    public static final String snareTrap = "snareTrap";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

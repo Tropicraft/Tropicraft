@@ -24,6 +24,7 @@ import net.tropicraft.item.ItemFlowerPot;
 import net.tropicraft.item.ItemPortalEnchanter;
 import net.tropicraft.item.ItemRod;
 import net.tropicraft.item.ItemShell;
+import net.tropicraft.item.ItemSnareTrap;
 import net.tropicraft.item.ItemSnorkel;
 import net.tropicraft.item.ItemStaffFireball;
 import net.tropicraft.item.ItemStaffOfTaming;
@@ -218,6 +219,8 @@ public class TCItemRegistry {
     
     //public static Item ashenMasks = new ItemAshenMask(ModIds.ITEM_ASHENMASK_ID, getMaskDisplayNames(), getMaskImageNames()).setUnlocalizedName("ashenMasks");
 
+    public static Item snareTrap = new ItemSnareTrap().setUnlocalizedName("snareTrap");
+    
     /**
      * Register all the items
      */
@@ -343,6 +346,7 @@ public class TCItemRegistry {
         registerItem(leafBall, TCNames.leafBall);
         
         registerItem(fishBucket, TCNames.fishBucket);
+        registerItem(snareTrap, TCNames.snareTrap);
     }
 
     /**
