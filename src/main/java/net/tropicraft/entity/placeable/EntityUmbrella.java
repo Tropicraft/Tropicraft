@@ -11,6 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.util.ColorHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -74,6 +75,26 @@ public class EntityUmbrella extends Entity {
 		setColor(color);
 		idk = 4;
 	}
+	
+    /**
+     * Destroy the umbrella blocks
+     */
+	@Override
+    public void setDead() {
+        this.isDead = true;
+        
+        int i = (int)posX;
+        int j = (int)posY;
+        int k = (int)posZ;
+        
+		int y = j + 4;
+		
+		for (int x = i - 3; x <= i + 2; x++) {
+			for (int z = k - 3; z <= k + 2; z++) {
+				worldObj.setBlockToAir(i, y, k);
+			}
+		}
+    }
 
 	@Override
 	protected void entityInit() {
