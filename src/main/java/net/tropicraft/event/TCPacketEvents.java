@@ -26,9 +26,9 @@ public class TCPacketEvents {
 			
 			System.out.println("Tropicraft packet command from server: " + packetCommand);
 			
-			//if (packetCommand.equals("effect")) {
+			if (packetCommand.equals("effect")) {
 				EffectHelper.addEntry(Minecraft.getMinecraft().thePlayer);
-			//}
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

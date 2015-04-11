@@ -209,7 +209,9 @@ public class EntityDart extends Entity implements IProjectile {
 	                        		//do custom paralyse
 	                        		if (entitylivingbase instanceof EntityPlayerMP) {
 	                        			//Player, send to client
+	                        			
 	                        			NBTTagCompound nbt = new NBTTagCompound();
+	                        			nbt.setString("packetCommand", "effect");
 	                        			nbt.setInteger("effectID", this.dartType);
 	                        			Tropicraft.eventChannel.sendTo(PacketHelper.getNBTPacket(nbt, Tropicraft.eventChannelName), (EntityPlayerMP) entitylivingbase);
 	                        		} else {
