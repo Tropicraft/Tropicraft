@@ -11,7 +11,7 @@ import net.tropicraft.world.worldgen.WorldGenTropicsTreasure;
 public class BiomeGenTropics extends BiomeGenTropicraft {
 
 	private static final int FRUIT_TREE_CHANCE = 2;
-	private static final int TREASURE_CHANCE = 300;
+	private static final int TREASURE_CHANCE = 25;
 	
 	public BiomeGenTropics(int biomeID) {
 		super(biomeID);

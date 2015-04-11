@@ -10,7 +10,7 @@ import net.tropicraft.world.worldgen.WorldGenTropicsTreasure;
 
 public class BiomeGenTropicsBeach extends BiomeGenTropicraft {
 
-	private static final int TREASURE_CHANCE = 150;
+	private static final int TREASURE_CHANCE = 25;
 	private static final int VILLAGE_CHANGE = 1;
 	
 	public BiomeGenTropicsBeach(int biomeID) {
