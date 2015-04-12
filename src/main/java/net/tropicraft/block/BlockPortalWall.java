@@ -1,6 +1,7 @@
 package net.tropicraft.block;
 
 import net.minecraft.block.BlockSandStone;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBucket;
@@ -37,8 +38,8 @@ public class BlockPortalWall extends BlockSandStone {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return Blocks.sandstone.getIcon(p_149691_1_, p_149691_2_);
+    public IIcon getIcon(int side, int meta) {
+        return Blocks.sandstone.getIcon(side, 0);
     }
     
     @Override
@@ -51,4 +52,9 @@ public class BlockPortalWall extends BlockSandStone {
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_)
+    {
+    	
+    }
 }

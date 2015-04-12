@@ -25,7 +25,10 @@ import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntityManOWar;
 import net.tropicraft.entity.underdasea.EntityMarlin;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
+import net.tropicraft.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
+import net.tropicraft.entity.underdasea.EntityStarfish;
+import net.tropicraft.entity.underdasea.EntityTropicalFish;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.world.WorldProviderTropicraft;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
@@ -89,12 +92,14 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 		this.spawnableMonsterList.add(new SpawnListEntry(EntityAshenHunter.class, 2, 3, 12));
 
 		this.spawnableMonsterList.add(new SpawnListEntry(Failgull.class, 30, 5, 15));
-		//this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTropicalFish.class, 10, 1 ,12));
+		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTropicalFish.class, 10, 1, 12));
 		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 1 ,3));
 		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaTurtle.class, 6, 1 ,3));
 		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeahorse.class, 6, 1 ,3));
 		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityMarlin.class, 10, 1, 3));
 		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityManOWar.class, 4, 1, 2));
+		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityStarfish.class, 4, 1, 4));
+		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaUrchin.class, 4, 1, 4));
 
 		this.spawnableMonsterList.add(new SpawnListEntry(SpiderAdult.class, 50, 1, 3));
 	}

@@ -165,6 +165,10 @@ public class TCNames {
     public static final String fishBucket = "fishBucket";
     public static final String snareTrap = "snareTrap";
     public static final String encTropica = "encTropica";
+	public static final String[] eggTextureNames = {"iguana", "starfish", "greenfrog", "redfrog", "yellowfrog", "bluefrog",
+				"eih", "marlin", "fish", "ashen", "turtle", "mow", "monkey", "koa", "tropicreeper",
+				"tropiskelly", "eagleray", "failgull", "seaurchin"};
+	public static final String egg = "egg";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

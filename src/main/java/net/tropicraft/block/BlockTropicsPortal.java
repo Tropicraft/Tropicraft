@@ -3,6 +3,7 @@ package net.tropicraft.block;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -197,5 +198,11 @@ public class BlockTropicsPortal extends BlockFluidClassic {
                 world.spawnParticle("splash", i + random.nextDouble(), j + 0.9, k + random.nextDouble(), 0D, 0D, 0D);
             }
         }
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_)
+    {
+
     }
 }
