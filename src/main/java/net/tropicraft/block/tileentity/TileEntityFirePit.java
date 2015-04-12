@@ -1,5 +1,6 @@
 package net.tropicraft.block.tileentity;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
@@ -11,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import extendedrenderer.ExtendedRenderer;
 import extendedrenderer.particle.ParticleRegistry;
 import extendedrenderer.particle.behavior.ParticleBehaviors;
 import extendedrenderer.particle.entity.EntityRotFX;
