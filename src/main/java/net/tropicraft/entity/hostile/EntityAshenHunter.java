@@ -53,6 +53,7 @@ public class EntityAshenHunter extends EntityAshen {
 
     @Override
     protected double getAttackStrength() {
+    	if (worldObj == null) return 0;
         switch (worldObj.difficultySetting) {
         case EASY:
             return 1;
