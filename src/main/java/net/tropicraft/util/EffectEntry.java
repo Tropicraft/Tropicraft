@@ -10,6 +10,7 @@ public class EffectEntry {
 	private Vec3 startPos;
 	private EntityLivingBase entity;
 	private int effectID;
+	//a value of -1 means forever
 	private int effectTime = 100;
 	
 	public EffectEntry(EntityLivingBase entity) {
@@ -19,6 +20,14 @@ public class EffectEntry {
 		init();
 	}
 	
+	public int getEffectTime() {
+		return effectTime;
+	}
+
+	public void setEffectTime(int effectTime) {
+		this.effectTime = effectTime;
+	}
+
 	public EntityLivingBase getEntity() {
 		return entity;
 	}
@@ -52,7 +61,7 @@ public class EffectEntry {
 	}
 	
 	public boolean isFinished() {
-		return effectTime <= 0;
+		return effectTime == 0;
 	}
 	
 	public void cleanup() {
@@ -61,16 +70,19 @@ public class EffectEntry {
 	}
 	
 	public void tickServerAI() {
-		effectTime--;
+		if (effectTime > 0) effectTime--;
 		EntityLiving ent = (EntityLiving) entity;
 		
 		ent.motionX = ent.motionZ = 0;
 		if (ent.motionY > 0) ent.motionY = 0;
 		ent.setPosition(startPos.xCoord, startPos.yCoord, startPos.zCoord);
+		
+		//TODO: AI task manip perhaps
+		//TODO: preventing creepers from exploding
 	}
 	
 	public void tickClientPlayer() {
-		effectTime--;
+		if (effectTime > 0) effectTime--;
 		EntityPlayer ent = (EntityPlayer) entity;
 		
 		ent.motionX = ent.motionZ = 0;

@@ -3,10 +3,12 @@ package net.tropicraft.item;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.tropicraft.entity.placeable.EntitySnareTrap;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 
 public class ItemSnareTrap extends ItemTropicraft {
@@ -58,7 +60,7 @@ public class ItemSnareTrap extends ItemTropicraft {
 	 */
 	private int getHeight(World world, int x, int y, int z) {
 		int height = 0;
-		while (y >= 0 && world.getBlockId(x, y, z) == 0) {
+		while (y >= 0 && world.getBlock(x, y, z) == Blocks.air) {
 			y--;
 			height++;
 		}

@@ -211,12 +211,13 @@ public class EntityDart extends Entity implements IProjectile {
 	                        			//Player, send to client
 	                        			
 	                        			NBTTagCompound nbt = new NBTTagCompound();
-	                        			nbt.setString("packetCommand", "effect");
+	                        			nbt.setString("packetCommand", "effectAdd");
 	                        			nbt.setInteger("effectID", this.dartType);
+	                        			nbt.setInteger("effectTime", 100);
 	                        			Tropicraft.eventChannel.sendTo(PacketHelper.getNBTPacket(nbt, Tropicraft.eventChannelName), (EntityPlayerMP) entitylivingbase);
 	                        		} else {
 	                        			//AI
-	                        			EffectHelper.addEntry(entitylivingbase);
+	                        			EffectHelper.addEntry(entitylivingbase, 100);
 	                        		}
 	                        	} else {	
 		                            entitylivingbase.addPotionEffect(new PotionEffect(potions[this.dartType], MAX_HIT_TIME, 1));

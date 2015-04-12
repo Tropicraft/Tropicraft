@@ -22,6 +22,7 @@ import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.passive.EntityTreeFrogGreen;
 import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
+import net.tropicraft.entity.placeable.EntitySnareTrap;
 import net.tropicraft.entity.placeable.EntityUmbrella;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
@@ -74,6 +75,7 @@ public class TCEntityRegistry {
 		registerEntity(EntityTropicalFish.class, "TropicalFish", 80, 3, true);
 		registerEntity(EntityLostMask.class, "LostMask", 64, 3, true);
 		registerEntity(EntityMarlin.class, "Marlin", 80, 3, true);
+		registerEntity(EntitySnareTrap.class, "SnareTrap", 80, 20, false);
 		
 		
 	}

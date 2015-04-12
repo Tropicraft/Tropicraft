@@ -5,7 +5,9 @@ import io.netty.buffer.ByteBuf;
 import java.util.Collections;
 import java.util.List;
 
+import CoroUtil.packet.PacketHelper;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -13,14 +15,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.entity.EntityDartHelper;
 import net.tropicraft.registry.TCItemRegistry;
+import net.tropicraft.util.EffectHelper;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnData {
@@ -112,8 +117,8 @@ public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnDat
 			}
 			
 			// if the client player is trapped, prevent them from moving
-			EntityPlayer player = Tropicraft.proxy.getClientPlayer();
-			if (getUsername().equals(player.username)) {
+			EntityPlayer player = getClientPlayer();
+			if (getUsername().equals(player.getGameProfile().getName())) {
 				player.setLocationAndAngles(trapPosX+0.5, trapPosY, trapPosZ+0.5, player.rotationYaw, player.rotationPitch);
 			}
 			return;
@@ -128,7 +133,7 @@ public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnDat
 				List ents = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(5.0, 5.0, 5.0));
 				for (Object obj: ents) {
 					Entity ent = (Entity)obj;
-					if (ent instanceof EntityLiving && ((EntityLiving)ent).isEntityAlive() && ent.posX >= trapPosX && ent.posX <= trapPosX+1 && ent.posZ >= trapPosZ && ent.posZ <= trapPosZ+1 && Math.abs(trapPosY-ent.posY) < 0.01) {
+					if (ent instanceof EntityLivingBase && ((EntityLivingBase)ent).isEntityAlive() && ent.posX >= trapPosX && ent.posX <= trapPosX+1 && ent.posZ >= trapPosZ && ent.posZ <= trapPosZ+1 && Math.abs(trapPosY-ent.posY) < 0.01) {
 						boolean alreadyTrapped = false;
 						
 						for (Object trapObj: ents) {
@@ -143,7 +148,7 @@ public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnDat
 						}
 						
 						if (!alreadyTrapped) {
-							catchEntity((EntityLiving)ent);
+							catchEntity((EntityLivingBase)ent);
 						}
 					}
 				}
@@ -170,6 +175,11 @@ public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnDat
 			setDead();
 		}
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().thePlayer;
+	}
 
 	public void catchEntity(EntityLivingBase ent) {
 		caughtEntity = ent;
@@ -180,12 +190,21 @@ public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnDat
 		setLocationAndAngles(trapPosX+0.5, trapPosY+ent.height+ent.yOffset, trapPosZ+0.5, 0f, 0f);
 		
 		if (ent instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)ent;
-			setUsername(player.username);
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setString("packetCommand", "effectAdd");
+			nbt.setInteger("effectID", 0);
+			nbt.setInteger("effectTime", -1);
+			Tropicraft.eventChannel.sendTo(PacketHelper.getNBTPacket(nbt, Tropicraft.eventChannelName), (EntityPlayerMP) ent);
+			
+			/*EntityPlayer player = (EntityPlayer)ent;
+			setUsername(player.getGameProfile().getName());
 			PacketDispatcher.sendPacketToAllPlayers(TropicraftPacketHandler.getSnareTrapPacket(false, true, Collections.singleton(player.username)));
-			Tropicraft.proxy.getUpsideDownUsernames().add(player.username);
+			Tropicraft.proxy.getUpsideDownUsernames().add(player.getGameProfile().getName());*/
 		} else if (ent instanceof EntityLiving) {
-			caughtEntityMoveSpeed = EntityDartHelper.getEntityMoveSpeed(ent);
+			
+			EffectHelper.addEntry(ent, -1);
+			
+			/*caughtEntityMoveSpeed = EntityDartHelper.getEntityMoveSpeed(ent);
 			caughtEntityAITasks = EntityDartHelper.getEntityAITasks((EntityLiving) ent);
 			EntityDartHelper.setEntityAITasks(ent, null);
 			EntityDartHelper.setEntityMoveSpeed(ent, 0);
@@ -195,7 +214,7 @@ public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnDat
 			}
 			if (ent instanceof EntityCreeper) {
 				EntityDartHelper.setCreeperIgnitionTime((EntityCreeper) ent, 0);
-			}
+			}*/
 		}
 	}
 	
@@ -206,13 +225,19 @@ public class EntitySnareTrap extends Entity implements IEntityAdditionalSpawnDat
 		setSize(0.6f, trapHeight-0.5f);
 		setLocationAndAngles(trapPosX+0.5, trapPosY, trapPosZ+0.5, 0f, 0f);
 		if (caughtEntity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer)caughtEntity;
+			
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setString("packetCommand", "effectRemove");
+			Tropicraft.eventChannel.sendTo(PacketHelper.getNBTPacket(nbt, Tropicraft.eventChannelName), (EntityPlayerMP) caughtEntity);
+			
+			/*EntityPlayer player = (EntityPlayer)caughtEntity;
 			PacketDispatcher.sendPacketToAllPlayers(TropicraftPacketHandler.getSnareTrapPacket(false, false, Collections.singleton(player.username)));
-			Tropicraft.proxy.getUpsideDownUsernames().remove(player.username);
+			Tropicraft.proxy.getUpsideDownUsernames().remove(player.getGameProfile().getName());*/
 		} else {
-			EntityDartHelper.setEntityMoveSpeed(caughtEntity, caughtEntityMoveSpeed);
+			EffectHelper.removeEntry(caughtEntity);
+			/*EntityDartHelper.setEntityMoveSpeed(caughtEntity, caughtEntityMoveSpeed);
 			EntityDartHelper.setEntityAITasks(caughtEntity, caughtEntityAITasks);
-			caughtEntityAITasks = null;
+			caughtEntityAITasks = null;*/
 		}
 		caughtEntity = null;
 	}
