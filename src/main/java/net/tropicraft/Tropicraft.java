@@ -4,6 +4,7 @@ import modconfig.ConfigMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.tropicraft.config.ConfigBiomes;
 import net.tropicraft.config.ConfigGenRates;
+import net.tropicraft.config.ConfigMisc;
 import net.tropicraft.drinks.MixerRecipes;
 import net.tropicraft.encyclopedia.Encyclopedia;
 import net.tropicraft.event.TCBlockEvents;
@@ -69,6 +70,7 @@ public class Tropicraft {
     public void preInit(FMLPreInitializationEvent event) {
     	ConfigMod.addConfigFile(event, "tc_biomes", new ConfigBiomes());
     	ConfigMod.addConfigFile(event, "tc_genrates", new ConfigGenRates());
+    	ConfigMod.addConfigFile(event, "tc_misc", new ConfigMisc());
     	ColorHelper.init();
     	TCFluidRegistry.init();
     	TCBlockRegistry.init();
