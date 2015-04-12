@@ -22,12 +22,11 @@ import net.tropicraft.item.ItemFertilizer;
 import net.tropicraft.item.ItemFishBucket;
 import net.tropicraft.item.ItemFlippers;
 import net.tropicraft.item.ItemFlowerPot;
+import net.tropicraft.item.ItemMobEgg;
 import net.tropicraft.item.ItemPortalEnchanter;
 import net.tropicraft.item.ItemShell;
 import net.tropicraft.item.ItemSnareTrap;
 import net.tropicraft.item.ItemSnorkel;
-import net.tropicraft.item.ItemStaffFireball;
-import net.tropicraft.item.ItemStaffOfTaming;
 import net.tropicraft.item.ItemTCItemFrame;
 import net.tropicraft.item.ItemTikiTorch;
 import net.tropicraft.item.ItemTropBook;
@@ -210,6 +209,8 @@ public class TCItemRegistry {
     
     public static Item encTropica = new ItemTropBook("encTropica").setUnlocalizedName("encTropica");
     
+    public static Item mobEgg = new ItemMobEgg(TCNames.eggTextureNames);
+    
     /**
      * Register all the items
      */
@@ -336,6 +337,7 @@ public class TCItemRegistry {
         registerItem(fishBucket, TCNames.fishBucket);
         registerItem(snareTrap, TCNames.snareTrap);
         registerItem(encTropica, TCNames.encTropica);
+        registerItem(mobEgg, TCNames.egg);
     }
 
     /**
