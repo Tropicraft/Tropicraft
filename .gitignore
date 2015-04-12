@@ -5,7 +5,6 @@ gradle/
 
 #forge stuff
 /*.txt
-config/
 saves/
 
 # eclipse stuff
