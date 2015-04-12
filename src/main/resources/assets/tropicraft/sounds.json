@@ -1,5 +1,5 @@
 {
-  "tropicraft:bongohigh": {
+  "bongohigh": {
     "category": "block",
     "sounds": [
       "bongohigh"
@@ -108,24 +108,6 @@
     "category": "neutral",
     "sounds": [
       "ashenLaugh"
-    ]
-  },
-  "bongohigh": { 
-    "category": "neutral",
-    "sounds": [
-      "bongohigh"
-    ]
-  },
-  "bongolow": { 
-    "category": "neutral",
-    "sounds": [
-      "bongolow"
-    ]
-  },
-  "bongomedium": { 
-    "category": "neutral",
-    "sounds": [
-      "bongomedium"
     ]
   },
   "dartblow": { 
