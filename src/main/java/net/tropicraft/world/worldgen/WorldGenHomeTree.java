@@ -313,9 +313,9 @@ public class WorldGenHomeTree extends TCGenBase {
 		{
 			if(meta == 0)				
 			{
-				return worldObj.setBlock(i, j, k, woodID2);
+				return worldObj.setBlock(i, j, k, woodID2, 0, 0);
 			}
-			return worldObj.setBlock(i, j, k, woodID2, meta, 3);
+			return worldObj.setBlock(i, j, k, woodID2, meta, 0);
 		}
 		return false;
 	}
