@@ -57,15 +57,15 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 
         if (tileentitysifta != null && stack != null && !tileentitysifta.isSifting()) {
             Item helditem = stack.getItem();
-            if (helditem == Item.getItemFromBlock(Blocks.sand) || /* unrefined raftous ore */(helditem == TCItemRegistry.ore && stack.getItemDamage() == 5)
-                    || /* black sands */(helditem == Item.getItemFromBlock(TCBlockRegistry.mineralSands) && stack.getItemDamage() == 2)) {
+            if (helditem == Item.getItemFromBlock(Blocks.sand) ||  /*unrefined raftous ore */(helditem == TCItemRegistry.ore && stack.getItemDamage() == 5)
+                    || /* mineral sands */(helditem == Item.getItemFromBlock(TCBlockRegistry.mineralSands) && stack.getItemDamage() == 3)) {
                 entityplayer.getCurrentEquippedItem().stackSize--;
 
                 if (helditem == TCItemRegistry.ore) {
                     float percent = getTagCompound(stack).getFloat("AmtRefined");
                     tileentitysifta.setSifting(true, helditem == Item.getItemFromBlock(Blocks.sand) ? 1 : 
                         helditem == Item.getItemFromBlock(TCBlockRegistry.mineralSands) ? 2 : 3, percent);
-                } else {             
+                } else {
                     tileentitysifta.setSifting(true, helditem == Item.getItemFromBlock(Blocks.sand) ? 1 : 
                         helditem == Item.getItemFromBlock(TCBlockRegistry.mineralSands) ? 2 : 3, -1);
                 }

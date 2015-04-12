@@ -82,7 +82,7 @@ public class TileEntitySifter extends TileEntity {
             if (siftItem.getItem() == TCItemRegistry.ore)
                 refinedAmt = refine(refinedAmt);
 
-            if (siftItem.getItem() == Item.getItemFromBlock(TCBlockRegistry.mineralSands) && siftItem.getItemDamage() == 2)
+            if (siftItem.getItem() == Item.getItemFromBlock(TCBlockRegistry.mineralSands) && siftItem.getItemDamage() == 3)
                 siftItem = new ItemStack(TCItemRegistry.ore, 1, 5);
 
             // If unrefined ore -> raftous ore ( fully refined )
@@ -199,7 +199,7 @@ public class TileEntitySifter extends TileEntity {
     public void setSifting(boolean flag, int type, float refined) {
         this.isSifting = flag;
         this.siftItem = type == -1 ? null : type == 1 ? new ItemStack(Blocks.sand) : 
-            type == 2 ? new ItemStack(TCBlockRegistry.mineralSands, 1, 2) : new ItemStack(TCItemRegistry.ore, 1, 5);
+            type == 2 ? new ItemStack(TCBlockRegistry.mineralSands, 1, 3) : new ItemStack(TCItemRegistry.ore, 1, 5);
 
             if (this.siftItem.getItem() == TCItemRegistry.ore)
                 getTagCompound(this.siftItem).setFloat("AmtRefined", refined);

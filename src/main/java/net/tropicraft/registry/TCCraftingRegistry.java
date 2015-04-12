@@ -183,6 +183,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		}
 
 		Tropicraft.encyclopedia.includeItem("blackcoffee", MixerRecipes.getItemStack(Drink.blackCoffee));
+		Tropicraft.encyclopedia.includeItem("blacksand", new ItemStack(TCBlockRegistry.mineralSands, 1, 2));
 		Tropicraft.encyclopedia.includeItem("blowgun", new ItemStack(TCItemRegistry.blowGun, 1, 0));
 		Tropicraft.encyclopedia.includeItem("bromeliad", new ItemStack(TCBlockRegistry.flowers, 1, 14));
 		Tropicraft.encyclopedia.includeItem("caipirinha", MixerRecipes.getItemStack(Drink.caipirinha));
@@ -197,7 +198,8 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		for (int i = 0; i < TCNames.coralNames.length; i++) {
 			Tropicraft.encyclopedia.includeItem("coral", new ItemStack(TCBlockRegistry.coral, 1, i));
 		}
-
+		
+		Tropicraft.encyclopedia.includeItem("coralsand", new ItemStack(TCBlockRegistry.mineralSands, 1, 0));
 		Tropicraft.encyclopedia.includeItem("crocosmia", new ItemStack(TCBlockRegistry.flowers, 1, 1));
 		Tropicraft.encyclopedia.includeItem("croton", new ItemStack(TCBlockRegistry.flowers, 1, 10));
 		for (int i = 0; i < ItemCurare.effectNames.length; i++) {
@@ -231,6 +233,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		Tropicraft.encyclopedia.includeItem("froxconch", new ItemStack(TCItemRegistry.shells, 1, 1));
 		Tropicraft.encyclopedia.includeItem("grapefruit", new ItemStack(TCItemRegistry.grapefruit));
 		Tropicraft.encyclopedia.includeItem("grapefruitsapling", new ItemStack(TCBlockRegistry.saplings, 1, 1));
+		Tropicraft.encyclopedia.includeItem("greensand", new ItemStack(TCBlockRegistry.mineralSands, 1, 1));
 		//Tropicraft.encyclopedia.includeItem("icestaff", new ItemStack(TCItemRegistry.staffIce));
 		Tropicraft.encyclopedia.includeItem("iggyscale", new ItemStack(TCItemRegistry.scale));
 		Tropicraft.encyclopedia.includeItem("iris", new ItemStack(TCBlockRegistry.tallFlowers, 1, 1));
@@ -250,6 +253,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		Tropicraft.encyclopedia.includeItem("mahogany", new ItemStack(TCBlockRegistry.logs, 1, 1));
 		Tropicraft.encyclopedia.includeItem("marlinmeat", new ItemStack(TCItemRegistry.freshMarlin));
 		Tropicraft.encyclopedia.includeItem("marlincooked", new ItemStack(TCItemRegistry.searedMarlin));
+		Tropicraft.encyclopedia.includeItem("mineralsand", new ItemStack(TCBlockRegistry.mineralSands, 1, 3));
 		Tropicraft.encyclopedia.includeItem("mixer", new ItemStack(TCBlockRegistry.eihMixer));
 		//  Tropicraft.encyclopedia.includeItem("nigeljournal", new ItemStack(TCItemRegistry.nigelJournal));
 		Tropicraft.encyclopedia.includeItem("orange", new ItemStack(TCItemRegistry.orange));
@@ -868,7 +872,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 		GameRegistry.addSmelting((TCBlockRegistry.logs), new ItemStack(Items.coal, 1, 1), 3); // metadata 1 = charcoal
 		FurnaceRecipes.smelting().func_151396_a(TCItemRegistry.coffeeBean, new ItemStack(TCItemRegistry.coffeeBean, 1, 1), 0.15f);
 		//zircon -> smelted zircon
-		FurnaceRecipes.smelting().func_151396_a(TCItemRegistry.ore, new ItemStack(TCItemRegistry.ore, 1, 4), 3F);
+		FurnaceRecipes.smelting().func_151394_a(new ItemStack(TCItemRegistry.ore, 1, 1), new ItemStack(TCItemRegistry.ore, 1, 4), 3F);
 
 		// Custom fuel burn times!
 		GameRegistry.registerFuelHandler(new IFuelHandler() {

@@ -43,6 +43,9 @@ beachumbrella.desc  = A beach getaway is not complete until there is an umbrella
 blackcoffee.title = Black Coffee
 blackcoffee.desc = Who doesn't like coffee? Brew yourself a nice cup o' joe and watch the sunrise from your bungalow.
 
+blacksand.title = Tar Sands
+blacksand.dec = Tread lightly on this sand...or don't at all. If you aren't wearing any scale or fire armor, you better be ready to run reaaaaaaaaally fast.
+
 blowgun.title = Blow Gun
 blowgun.desc  = This tube of bamboo is used to shoot neurotoxin-laced darts at your pray. You will be surprised how a far and fast you can shoot a dart with a hefty blow.
 
@@ -71,16 +74,19 @@ coffeebean.title = Coffee Bean
 coffeebean.desc = The pit inside the red or purple fruit often referred to as a cherry. This is the seed for the coffee plants found throughout the tropics.
 
 commelina.title = Co. Diffusa
-commelina.desc  = Commelina Diffusa adds a pleasant blue to the landscape of the Tropics. 
+commelina.desc = Commelina Diffusa adds a pleasant blue to the landscape of the Tropics. 
 
 coral.title = Coral
-coral.desc  = While these bioluminescent lifeforms are at home in the ocean, they are well suited for lighting up an aquarium. 
+coral.desc = While these bioluminescent lifeforms are at home in the ocean, they are well suited for lighting up an aquarium.
+
+coralsand.title = Coral Sands
+coralsand.dec = It is rumored that hundreds of years ago, these coral sands were washed ashore during a tornado.
 
 crocosmia.title = Crocosmia
-crocosmia.desc  = These fiery little flowers are like miniature suns resting on the ground. 
+crocosmia.desc = These fiery little flowers are like miniature suns resting on the ground. 
 
 croton.title = Croton
-croton.desc  = Go ahead and try to figure out what color this is. I DARE you.
+croton.desc = Go ahead and try to figure out what color this is. I DARE you.
 
 curare.title = Curare
 curare.desc = Mix various types of flowers together to make different types of curare, which can be used to make darts with all sorts of potion effects.
@@ -157,6 +163,9 @@ grapefruit.desc  = Tasty grapefruit citrus fruit that drops from Grapefruit leav
 grapefruitsapling.title = Grapefruit Sapling
 grapefruitsapling.desc  = Grows into a grapefruit tree, where you can get yummy grapefruits from!
 
+greensand.title = Green Sands
+greensand.desc = These rare beaches are rumored to have formed long ago when the Tropics were first emerging from the depths of the ocean.
+
 iggyscale.title = Iguana Scale
 iggyscale.desc  = The adorable iguanas that inhabit the tropics drop scales. What is unique about these scales is that they are fire retardant. Wearing armor made of scales will allow you venture into some pretty hot places.
 
@@ -207,6 +216,9 @@ marlinmeat.desc  = Flesh of the elusive marlin. Cook this to get Seared Marlin.
 
 marlincooked.title = Seared Marlin
 marlincooked.desc  = Mmmm. Yummy in my tummy. This is what you get when you cook Fresh Marlin.
+
+mineralsand.title = Mineral Sands
+mineralsand.dec = This special type of sand is rumored to contain various minerals. Their use is currently unknown.
 
 mixer.title = EIH Mixer
 mixer.desc = Mix various types of fruits with this to get different cocktails. You could have your own bar!
