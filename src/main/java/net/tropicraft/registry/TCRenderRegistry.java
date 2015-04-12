@@ -18,6 +18,7 @@ import net.tropicraft.client.entity.model.ModelEIH;
 import net.tropicraft.client.entity.model.ModelFish;
 import net.tropicraft.client.entity.model.ModelIguana;
 import net.tropicraft.client.entity.model.ModelKoaMan;
+import net.tropicraft.client.entity.model.ModelMarlin;
 import net.tropicraft.client.entity.model.ModelSeaTurtle;
 import net.tropicraft.client.entity.model.ModelSeahorse;
 import net.tropicraft.client.entity.model.ModelSpiderEgg;
@@ -33,6 +34,7 @@ import net.tropicraft.client.entity.render.RenderFishHook;
 import net.tropicraft.client.entity.render.RenderIguana;
 import net.tropicraft.client.entity.render.RenderKoaMan;
 import net.tropicraft.client.entity.render.RenderLostMask;
+import net.tropicraft.client.entity.render.RenderMarlin;
 import net.tropicraft.client.entity.render.RenderPoisonBlot;
 import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeaTurtle;
@@ -76,6 +78,7 @@ import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.entity.projectile.EntityTropicraftLeafballNew;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
+import net.tropicraft.entity.underdasea.EntityMarlin;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
 import net.tropicraft.entity.underdasea.EntityTropicalFish;
@@ -116,6 +119,7 @@ public class TCRenderRegistry {
         registerEntityRender(EntityTropicraftLeafballNew.class, new RenderSnowball(TCItemRegistry.leafBall));
         registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish(new ModelFish(), 0.25F));
         registerEntityRender(EntityLostMask.class, new RenderLostMask());
+        registerEntityRender(EntityMarlin.class, new RenderMarlin(new ModelMarlin(), 0.25F));
     }
 
     /**

@@ -31,7 +31,7 @@ public class VMonkey extends EntityCoroAI {
 		setSize(0.8F, 0.8F);
 		
 		//TODO: change to coctail for tame item
-		agent.jobMan.addJob(new JobTamable(agent.jobMan, new ItemStack(TCItemRegistry.axeEudialyte)));
+		agent.jobMan.addJob(new JobTamable(agent.jobMan, new ItemStack(TCItemRegistry.cocktail)));
 		agent.jobMan.addJob(new JobPlay(agent.jobMan));
 		agent.dipl_info = TeamTypes.getType("animal");
 		this.experienceValue = 4;

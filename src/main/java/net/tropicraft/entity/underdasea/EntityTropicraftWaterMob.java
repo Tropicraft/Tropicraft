@@ -5,12 +5,16 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.entity.EntityHook;
+import CoroUtil.entity.EntityTropicalFishHook;
 
 public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
 
@@ -457,5 +461,250 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
         public int getDeepDepth() {
             return this.deepDepth;
         }
+    }
+    
+    @Override
+	public void entityInit(){
+		this.dataWatcher.addObject(26, Integer.valueOf(-1));
+		super.entityInit();
+	}
+	
+	
+	public int getHookID(){
+		return this.dataWatcher.getWatchableObjectInt(26);
+	}
+	
+	public void setHookID(int i){
+		this.dataWatcher.updateObject(26, Integer.valueOf(i));
+	}
+	
+	public boolean fishingIsInterested = false;
+	
+	public void onFishingUpdate(){
+		// If we're hooked, check the validity of it
+		if(this.getHookID() != -1){
+			List<Entity> l = worldObj.loadedEntityList;
+			for(Entity e : l){
+				if(e.getEntityId() == getHookID()){
+					if(e.isDead){
+						// invalid, so set un-hooked
+						//System.out.println("Gross");
+						setHookID(-1);
+					}
+					if(rand.nextInt(this.fishingBreakLineOdds) == 0){
+						if(!worldObj.isRemote){
+							//fishDebug("I managed to get your hook, see ya ;D");
+							//e.setDead();
+						}
+					}
+				}
+			}
+		}
+		
+		List<Entity> l = worldObj.loadedEntityList;
+		for(Entity entity : l){
+			
+			// we're up against the player's fishing rod
+			if(entity instanceof EntityHook && !worldObj.isRemote){
+				EntityHook hook = (EntityHook)entity;
+				if(hook.isDead){ 
+					continue;
+				}
+				 if(hook.bobber == null){
+					// this.isSurfacing = true;
+					 // fish collision with bobber
+					if(hook.boundingBox.expand(1f, 1f, 1f).intersectsWith(this.boundingBox) /*&& rand.nextInt(this.fishingImmediateDispatchOdds) == 0*/){
+						hook.bobber = this;
+						fishDebug("I'm hooked!");
+						// hook fish to the bobber, also set the hook id for reference
+						this.posX = hook.posX;
+						this.posY = hook.posY;
+						this.posZ = hook.posZ;
+						this.setHookID(hook.getEntityId());
+						continue;
+					}else{
+						if(this.getDistanceToEntity(hook) < fishingMaxLookDist && this.canEntityBeSeen(hook) && rand.nextInt(this.fishingInterestOdds) == 0)
+						{
+							if(!isInWater()){
+								fishingIsInterested = false;
+								return;
+							}
+							fishingIsInterested = true;
+							fishDebug("Okay player, I want your hook!");
+							this.reachedTarget = false;
+							this.faceEntity(hook, 100f, 100f);
+							motionX = -((fishingApproachSpeed / 10) * Math.sin(Math.toRadians(rotationYaw)));
+							motionZ = ((fishingApproachSpeed / 10) * Math.cos(Math.toRadians(rotationYaw)));
+						//	if(this.getDistanceToEntity(hook) < 4D)
+							motionY = (hook.posY > this.posY + this.height ? 0.2f : -0.2F);
+							//this.isSurfacing = true;
+						}else{
+							fishingIsInterested = false;
+						}
+					}
+				 }
+			}
+			
+			// we're up against a koa's fishing rod
+			if(entity instanceof EntityTropicalFishHook && !worldObj.isRemote){
+				EntityTropicalFishHook hook = (EntityTropicalFishHook)entity;
+				if(hook.isDead){ 
+					continue;
+				}
+				 if(hook.bobber == null){
+					 // fish collision with bobber
+					 if(rand.nextInt(this.fishingImmediateDispatchOdds) == 0){
+						 fishDebug("I escaped the Koa's clutches!");
+						 return;
+					 }
+					if(hook.boundingBox.expand(2d, 2d, 2d).intersectsWith(this.boundingBox)){
+						hook.bobber = this;
+						// hook fish to the bobber, also set the hook id for reference
+						fishDebug("Hooked by a Koa!");
+						this.setHookID(hook.getEntityId());
+						continue;
+					}else{
+						if(this.getDistanceToEntity(hook) < fishingMaxLookDist && this.canEntityBeSeen(hook) && rand.nextInt(this.fishingInterestOdds) == 0)
+						{
+							if(!isInWater()){
+								return;
+							}
+							fishDebug("I see a Koa hook worth going for!");
+							this.reachedTarget = false;
+							this.faceEntity(hook, 100f, 100f);
+							motionX = -((fishingApproachSpeed / 10) * Math.sin(Math.toRadians(rotationYaw)));
+							motionZ = ((fishingApproachSpeed / 10) * Math.cos(Math.toRadians(rotationYaw)));
+							motionY = hook.posY > this.posY + this.height ? 0.2f : -0.2F;
+							this.isSurfacing = true;
+						}
+					}
+				 }
+			}
+		}
+		
+		// Resist once grabbed
+		if(this.getHookID() != -1){
+			l = worldObj.loadedEntityList;
+			for(Entity e : l){
+				if(e instanceof EntityHook){
+					EntityHook hook = (EntityHook) e;
+					if(e.getEntityId() == getHookID() && hook.bobber != this){
+						fishDebug("Taking this player's hook for a swim \\o/!");
+						if(this.isInWater()){
+							//motionX += -((fishingEscapeSpeed) * Math.sin(Math.toRadians(rotationYaw)));
+							//motionZ += ((fishingEscapeSpeed) * Math.cos(Math.toRadians(rotationYaw)));
+						}
+						double y = hook.getVecToPlayer().yCoord;
+						if(y > 0){
+						//	hook.angler.faceEntity(this, 1f, 1f);
+						}
+						
+						//if(!this.isCollidedVertically)
+						//motionY = -0.05F;
+					}
+				}
+				if(e instanceof EntityTropicalFishHook){
+					EntityTropicalFishHook hook = (EntityTropicalFishHook) e;
+					if(e.getEntityId() == getHookID() && hook.bobber != null && hook.angler != null){
+						this.faceEntity(hook.angler, 100f, 100f);
+						faceEntity(hook.angler, this, 100f, 100f);
+						fishDebug("D: KOA'S ARE GONNA KILL AND EAT ME!!!");
+						motionX = -((fishingEscapeSpeed / 10) * Math.sin(Math.toRadians(rotationYaw)));
+						motionZ = ((fishingEscapeSpeed / 10) * Math.cos(Math.toRadians(rotationYaw)));
+						motionY = (hook.angler.posY+(hook.angler.height/2)) > this.posY + this.height ? 0.2f : -0.2F;
+						hook.posX = this.posX;
+						hook.posY = this.posY;
+						hook.posZ = this.posZ;
+						//hook.motionY = 0;
+						if(this.getDistanceToEntity(hook.angler) < 3D){
+							fishDebug("This is it for me, farewell...");
+							hook.angler.swingItem();
+							hook.angler.attackEntityAsMob(this);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void fishDebug(String s){
+		try{
+		if(fishingDebug && !worldObj.isRemote){
+			String out = "<"+this.getEntityString().split("\\.")[1]+this.getEntityId()+">: "+s;
+			if(fishingLog.contains(out)){
+				//System.out.println(out);
+				return;
+			}
+			System.out.println(out);
+			//net.minecraft.server.MinecraftServer.getServer().getConfigurationManager().sendChatMsg(ChatMessageComponent.createFromTranslationKey(out));
+			fishingLog.add(out);
+		}
+		}catch(Exception e){
+			
+		}
+	}
+	
+	public void faceEntity(Entity par1Entity, float par2, float par3)
+    {
+        double d0 = par1Entity.posX - this.posX;
+        double d1 = par1Entity.posZ - this.posZ;
+        double d2;
+
+        if (par1Entity instanceof EntityLiving)
+        {
+            EntityLiving entityliving = (EntityLiving)par1Entity;
+            d2 = entityliving.posY + (double)entityliving.getEyeHeight() - (this.posY + (double)this.getEyeHeight());
+        }
+        else
+        {
+            d2 = (par1Entity.boundingBox.minY + par1Entity.boundingBox.maxY) / 2.0D - (this.posY + (double)this.getEyeHeight());
+        }
+
+        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+        float f2 = (float)(Math.atan2(d1, d0) * 180.0D / Math.PI) - 90.0F;
+        float f3 = (float)(-(Math.atan2(d2, d3) * 180.0D / Math.PI));
+        this.rotationPitch = this.updateRotation(this.rotationPitch, f3, par3);
+        this.renderYawOffset = this.updateRotation(this.renderYawOffset, f2, par2);
+        this.rotationYaw = this.renderYawOffset;
+    }
+	
+	public void faceEntity(EntityLivingBase entSource, Entity par1Entity, float par2, float par3)
+    {
+        double d0 = par1Entity.posX - entSource.posX;
+        double d1 = par1Entity.posZ - entSource.posZ;
+        double d2;
+
+        if (par1Entity instanceof EntityLivingBase)
+        {
+            EntityLivingBase entitylivingbase = (EntityLivingBase)par1Entity;
+            d2 = entitylivingbase.posY + (double)entitylivingbase.getEyeHeight() - (entSource.posY + (double)entSource.getEyeHeight());
+        }
+        else
+        {
+            d2 = (par1Entity.boundingBox.minY + par1Entity.boundingBox.maxY) / 2.0D - (entSource.posY + (double)entSource.getEyeHeight());
+        }
+
+        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d1 * d1);
+        float f2 = (float)(Math.atan2(d1, d0) * 180.0D / Math.PI) - 90.0F;
+        float f3 = (float)(-(Math.atan2(d2, d3) * 180.0D / Math.PI));
+        entSource.rotationPitch = updateRotation(entSource.rotationPitch, f3, par3);
+        entSource.rotationYaw = updateRotation(entSource.rotationYaw, f2, par2);
+    }
+	
+	public float updateRotation(float p_70663_1_, float p_70663_2_, float p_70663_3_)
+    {
+        float f3 = MathHelper.wrapAngleTo180_float(p_70663_2_ - p_70663_1_);
+
+        if (f3 > p_70663_3_)
+        {
+            f3 = p_70663_3_;
+        }
+
+        if (f3 < -p_70663_3_)
+        {
+            f3 = -p_70663_3_;
+        }
+
+        return p_70663_1_ + f3;
     }
 }
