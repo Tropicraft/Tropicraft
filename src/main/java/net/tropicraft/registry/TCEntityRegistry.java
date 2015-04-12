@@ -25,6 +25,7 @@ import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntitySnareTrap;
 import net.tropicraft.entity.placeable.EntityUmbrella;
+import net.tropicraft.entity.placeable.EntityWallStarfish;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
@@ -33,7 +34,11 @@ import net.tropicraft.entity.underdasea.EntityEagleRay;
 import net.tropicraft.entity.underdasea.EntityManOWar;
 import net.tropicraft.entity.underdasea.EntityMarlin;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
+import net.tropicraft.entity.underdasea.EntitySeaUrchin;
+import net.tropicraft.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
+import net.tropicraft.entity.underdasea.EntityStarfish;
+import net.tropicraft.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.entity.underdasea.EntityTropicalFish;
 import net.tropicraft.entity.underdasea.EntityTurtleEgg;
 import CoroUtil.entity.EntityTropicalFishHook;
@@ -80,6 +85,11 @@ public class TCEntityRegistry {
 		registerEntity(EntitySnareTrap.class, "SnareTrap", 80, 20, false);
 		registerEntity(Failgull.class, "Failgull", 64, 3, true);
 		registerEntity(EntityManOWar.class, "MOW", 64, 3, true);
+		registerEntity(EntitySeaUrchin.class, "SeaUrchin", 64, 3, true);
+		registerEntity(EntitySeaUrchinEgg.class, "SeaUrchinEgg", 64, 3, false);
+		registerEntity(EntityStarfish.class, "Starfish", 64, 3, false);
+		registerEntity(EntityStarfishEgg.class, "StarfishEgg", 64, 3, false);
+		registerEntity(EntityWallStarfish.class, "WallStarfish", 160, Integer.MAX_VALUE, false);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
