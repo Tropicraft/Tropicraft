@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -12,6 +13,7 @@ public class ItemBambooChute extends ItemReed {
 
     public ItemBambooChute(Block block) {
         super(block);
+        this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
     }
     
     /**
