@@ -97,12 +97,7 @@ public class WorldGenTropicsTreasure extends TCGenBase {
             return new ItemStack(loot, rand.nextInt(46) + 1);
         } else if (loot == Items.diamond) {
             return new ItemStack(loot, rand.nextInt(24) + 6);
-        } /*else if (loot == TCItemRegistry.recordTradeWinds) {
-            if (rand.nextFloat() >= 0.5f) {
-                return null; TODO: Add records
-            }
-            return new ItemStack(loot);
-        }*/ else if (loot == Items.arrow) {
+        } else if (loot == Items.arrow) {
             return new ItemStack(loot, rand.nextInt(45) + 1);
         } else if (loot == Items.gold_nugget) {
             return new ItemStack(loot, rand.nextInt(40) + 1);
@@ -163,12 +158,12 @@ public class WorldGenTropicsTreasure extends TCGenBase {
         treasureList.add(Items.map);
         treasureList.add(Items.spider_eye);
         
-        /*treasureList.add(TCItemReg istry.recordTradeWinds); TODO: Add records
+        treasureList.add(TCItemRegistry.recordTradeWinds);
         treasureList.add(TCItemRegistry.recordEasternIsles);
         treasureList.add(TCItemRegistry.recordBuriedTreasure);
         treasureList.add(TCItemRegistry.recordLowTide);
         treasureList.add(TCItemRegistry.recordSummering);
-        treasureList.add(TCItemRegistry.recordTheTribe);*/
+        treasureList.add(TCItemRegistry.recordTheTribe);
         
         sandBlocks.add(Blocks.sand);
         sandBlocks.add(Blocks.sandstone);
