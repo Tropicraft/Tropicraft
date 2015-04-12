@@ -23,7 +23,6 @@ import net.tropicraft.entity.passive.EntityTreeFrogGreen;
 import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
-import net.tropicraft.entity.pool.EntityPoolFloat;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
@@ -44,7 +43,6 @@ public class TCEntityRegistry {
 	public static void init() {
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
-		registerEntity(EntityPoolFloat.class, "poolFloat", 120, 10, false);
 		registerEntity(EntitySeahorse.class, "Seahorse", 120, 3, true);
 		registerEntity(EntityDart.class, "Dart", 120, 4, true);
 		registerEntity(EntityIguana.class, "Iguana", 80, 3, true);
