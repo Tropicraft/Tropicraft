@@ -221,7 +221,11 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		Tropicraft.encyclopedia.includeItem("firechestplate", new ItemStack(TCItemRegistry.fireChestplate));
 		Tropicraft.encyclopedia.includeItem("firehelm", new ItemStack(TCItemRegistry.fireHelmet));
 		Tropicraft.encyclopedia.includeItem("fireleggings", new ItemStack(TCItemRegistry.fireLeggings));
-		Tropicraft.encyclopedia.includeItem("firestaff", new ItemStack(TCItemRegistry.staffFire));
+	//	Tropicraft.encyclopedia.includeItem("firestaff", new ItemStack(TCItemRegistry.staffFire));
+		/*
+		 * firestaff.title = Fire Staff
+firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows the holder to shoot fireballs that resemble meteors from the Catacombs
+		 */
 		Tropicraft.encyclopedia.includeItem("fishbucket", new ItemStack(TCItemRegistry.fishBucket));
 		Tropicraft.encyclopedia.includeItem("fishingnet", new ItemStack(TCItemRegistry.fishingNet));
 		Tropicraft.encyclopedia.includeItem("flippers", new ItemStack(TCItemRegistry.flippers));

@@ -97,7 +97,7 @@ public class TCNames {
     public static final String[] pearlNames = new String[]{"Solo", "Razzle"};
     public static final String ore = "ore";
     public static final String[] oreNames = new String[]{"Eudialyte", "Zircon", "Azurite", "Zirconium", "SmeltedZircon", 
-        "Unrefined", "Raftous", "Souzium"};
+        "Unrefined", "Raftous"};
     public static final String waterWand = "waterWand";
     public static final String fishingNet = "fishingNet";
     public static final String coffeeBean = "coffeeBean";

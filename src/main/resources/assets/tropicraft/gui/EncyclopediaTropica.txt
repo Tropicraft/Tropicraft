@@ -130,9 +130,6 @@ firehelm.desc = Helmet constructed of an unknown material that gains durability 
 fireleggings.title = Fire Leggings
 fireleggings.desc = Leggings constructed of an unknown material that gains durability when in fire, but don't stand in the fire too long, or you will be burned!
 
-firestaff.title = Fire Staff
-firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows the holder to shoot fireballs that resemble meteors from the Catacombs
-
 fishbucket.title = Fish in a Bucket
 fishbucket.desc  = Use this to place the fish that you catch in the wild. Make an aquarium, perhaps!
 

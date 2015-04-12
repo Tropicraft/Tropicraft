@@ -127,7 +127,7 @@ public class TCBlockRegistry {
 	public static final BlockPortalWall tropicsPortalWall = new BlockPortalWall();
 	public static final BlockTropicsPortal tropicsPortal = new BlockTropicsPortal(TCFluidRegistry.tropicsPortal, Material.water);
 	
-	public static final BlockAirCompressor airCompressor = new BlockAirCompressor();
+	//TODO SCUBA public static final BlockAirCompressor airCompressor = new BlockAirCompressor();
 	
 	public static final BlockBambooChest bambooChest = new BlockBambooChest();
 	
@@ -193,7 +193,7 @@ public class TCBlockRegistry {
 		registerBlock(flowerPot, TCNames.flowerPot);
 		registerBlock(coconut, TCNames.coconut);
 		registerBlock(firePit, TCNames.firePit);
-		registerBlock(airCompressor, TCNames.airCompressor);
+	//TODO SCUBA	registerBlock(airCompressor, TCNames.airCompressor);
 		registerBlock(bambooChest, TCNames.bambooChest);
 		registerBlock(tropicsPortal, TCNames.portal);
 		registerBlock(tropicsPortalWall, TCNames.portalWall);

@@ -42,7 +42,7 @@ public class ClientProxy extends CommonProxy {
         TCRenderIDs.tikiTorch = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.flowerPot = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.bambooChest = RenderingRegistry.getNextAvailableRenderId();
-        TCRenderIDs.airCompressor = RenderingRegistry.getNextAvailableRenderId();
+     //TODO SCUBA   TCRenderIDs.airCompressor = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.bambooChute = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.curareBowl = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.eihMixer = RenderingRegistry.getNextAvailableRenderId();
@@ -51,12 +51,12 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new TikiTorchRenderHandler());
         RenderingRegistry.registerBlockHandler(new FlowerPotRenderHandler());
         RenderingRegistry.registerBlockHandler(new BambooChestRenderHandler());
-        RenderingRegistry.registerBlockHandler(new AirCompressorRenderHandler());
+     //   RenderingRegistry.registerBlockHandler(new AirCompressorRenderHandler());
         RenderingRegistry.registerBlockHandler(new BambooChuteRenderHandler());
         RenderingRegistry.registerBlockHandler(new CurareBowlRenderHandler());
         RenderingRegistry.registerBlockHandler(new EIHMixerRenderHandler());
 
-        MinecraftForgeClient.registerItemRenderer(TCItemRegistry.diveComputer, new ItemDiveComputerRenderer());
+      //  MinecraftForgeClient.registerItemRenderer(TCItemRegistry.diveComputer, new ItemDiveComputerRenderer());
     }
 
     @Override

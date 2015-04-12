@@ -34,7 +34,7 @@ public class EntityKoaShaman extends EntityKoaBase {
 			IEntityLivingData par1EntityLivingData) {
 		
 		agent.entInv.inventory.setInventorySlotContents(0, new ItemStack(TCItemRegistry.bambooSpear));
-		agent.entInv.inventory.setInventorySlotContents(1, new ItemStack(TCItemRegistry.staffFire));
+		agent.entInv.inventory.setInventorySlotContents(1, new ItemStack(TCItemRegistry.swordZirconium));
 		
 		//sync to vanilla system
 		agent.entInv.syncToClient();

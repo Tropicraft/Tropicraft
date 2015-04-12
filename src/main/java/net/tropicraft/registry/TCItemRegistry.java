@@ -44,15 +44,6 @@ import net.tropicraft.item.armor.ItemScaleArmor;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
 import net.tropicraft.item.placeable.ItemChair;
 import net.tropicraft.item.placeable.ItemUmbrella;
-import net.tropicraft.item.scuba.ItemBCD;
-import net.tropicraft.item.scuba.ItemDiveComputer;
-import net.tropicraft.item.scuba.ItemScubaChestplate;
-import net.tropicraft.item.scuba.ItemScubaChestplateGear;
-import net.tropicraft.item.scuba.ItemScubaFlippers;
-import net.tropicraft.item.scuba.ItemScubaGear;
-import net.tropicraft.item.scuba.ItemScubaHelmet;
-import net.tropicraft.item.scuba.ItemScubaLeggings;
-import net.tropicraft.item.scuba.ItemScubaTank;
 import net.tropicraft.item.tool.ItemTropicraftAxe;
 import net.tropicraft.item.tool.ItemTropicraftHoe;
 import net.tropicraft.item.tool.ItemTropicraftPickaxe;
@@ -145,7 +136,7 @@ public class TCItemRegistry {
 
     public static final ItemTropicraft coconutBomb = (ItemTropicraft) new ItemCoconutBomb().setMaxStackSize(64);
 
-    public static final ArmorMaterial materialDrySuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
+/*    public static final ArmorMaterial materialDrySuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
     public static final ItemTropicraftArmor dryFlippers = new ItemScubaFlippers(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 3);
     public static final ItemTropicraftArmor dryLeggings = new ItemScubaLeggings(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 2);
     public static final ItemTropicraftArmor dryChestplate = new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
@@ -161,7 +152,7 @@ public class TCItemRegistry {
 
     public static final ItemScubaTank scubaTank = new ItemScubaTank();
     public static final ItemDiveComputer diveComputer = new ItemDiveComputer();
-    public static final ItemBCD bcd = new ItemBCD();
+    public static final ItemBCD bcd = new ItemBCD();*/
 
     public static final ItemCurare curare = new ItemCurare();
     public static final ItemDart dart = new ItemDart();
@@ -182,9 +173,9 @@ public class TCItemRegistry {
     public static Item leafBall = (new ItemTropicraftLeafballNew()).setUnlocalizedName("leaf_green").setCreativeTab(TCCreativeTabRegistry.tabCombat);
     public static Item dagger = (new ItemDagger(materialZirconTools)).setUnlocalizedName("dagger");
 
-    public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+    //public static ItemStaffFireball staffFire = (ItemStaffFireball) (new ItemStaffFireball()).setUnlocalizedName("staff_fire").setCreativeTab(TCCreativeTabRegistry.tabCombat);
     //public static ItemStaffIceball staffIce;
-    public static ItemStaffOfTaming staffTaming = (ItemStaffOfTaming) (new ItemStaffOfTaming()).setUnlocalizedName("staff_taming").setCreativeTab(TCCreativeTabRegistry.tabCombat);
+    //public static ItemStaffOfTaming staffTaming = (ItemStaffOfTaming) (new ItemStaffOfTaming()).setUnlocalizedName("staff_taming").setCreativeTab(TCCreativeTabRegistry.tabCombat);
 
     public static Item fishingRodTropical = (new ItemTropicalFishingRod()).setUnlocalizedName("FishingRodTropical");
 
@@ -284,7 +275,7 @@ public class TCItemRegistry {
         registerItem(flowerPot, TCNames.flowerPot);
         registerItem(fertilizer, TCNames.fertilizer);
 
-        registerItem(dryFlippers, TCNames.dryFlippers);
+     /*   registerItem(dryFlippers, TCNames.dryFlippers);
         registerItem(dryLeggings, TCNames.dryLeggings);
         registerItem(dryChestplate, TCNames.dryChestplate);
         registerItem(dryChestplateGear, TCNames.dryChestplateGear);
@@ -298,7 +289,7 @@ public class TCItemRegistry {
 
         registerItem(scubaTank, TCNames.scubaTank);
         registerItem(diveComputer, TCNames.diveComputer);
-        registerItem(bcd, TCNames.bcd);
+        registerItem(bcd, TCNames.bcd);*/
 
         registerItem(curare, TCNames.curare);
         registerItem(dart, TCNames.dart);
@@ -323,8 +314,8 @@ public class TCItemRegistry {
         registerItem(flippers, TCNames.flippers);
 
         registerItem(dagger, TCNames.dagger);
-        registerItem(staffFire, TCNames.staffFire);
-        registerItem(staffTaming, TCNames.staffTaming);
+    //    registerItem(staffFire, TCNames.staffFire);
+    //    registerItem(staffTaming, TCNames.staffTaming);
         registerItem(fishingRodTropical, TCNames.fishingRodTropical);
         registerItem(recordBuriedTreasure, TCNames.recordBuriedTreasure);
         registerItem(recordEasternIsles, TCNames.recordEasternIsles);
