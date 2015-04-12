@@ -7,6 +7,11 @@ public abstract class CommonProxy implements ISuperProxy {
 	public CommonProxy() {
 
 	}
+	
+	@Override
+	public void registerBooks() {
+		
+	}
 
 	@Override
 	public void initRenderHandlersAndIDs() {

@@ -164,6 +164,7 @@ public class TCNames {
     public static final String leafBall = "leafBall";
     public static final String fishBucket = "fishBucket";
     public static final String snareTrap = "snareTrap";
+    public static final String encTropica = "encTropica";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

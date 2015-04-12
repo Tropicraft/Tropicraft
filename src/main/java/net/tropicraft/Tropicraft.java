@@ -74,9 +74,11 @@ public class Tropicraft {
     	TCItemRegistry.init();
     	TCFluidRegistry.postInit();
     	TCKoaCurrencyRegistry.init();
+		MixerRecipes.addMixerRecipes();
+		proxy.registerBooks();
+		// register encyclopedia ^ before crafting v
     	TCCraftingRegistry.init();
     	eventChannel.register(new TCPacketEvents());
-    //TODO	proxy.preInit(); // On client, this initializes the encyclopedia
     }
 	
 	/**
@@ -88,7 +90,6 @@ public class Tropicraft {
 		proxy.initRenderHandlersAndIDs();
 		TCEntityRegistry.init();
 		proxy.initRenderRegistry();
-		MixerRecipes.addMixerRecipes();
 		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
 		MinecraftForge.EVENT_BUS.register(new TCItemEvents());
 		TCMiscEvents misc = new TCMiscEvents();

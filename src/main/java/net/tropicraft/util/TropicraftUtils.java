@@ -56,6 +56,10 @@ public class TropicraftUtils {
         return bindTexture(getTextureEntity(path));
     }
     
+    public static ResourceLocation bindTextureGui(String path) {
+    	return bindTexture(getTextureGui(path));
+    }
+    
     public static ResourceLocation bindTextureTE(String path) {
         return bindTexture(getTextureTE(path));
     }

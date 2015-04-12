@@ -113,7 +113,7 @@ public class BlockTallFlowers extends BlockDoublePlant {
      */
 	@Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemstack) {
-        world.setBlock(x, y + 1, z, this, itemstack.getItemDamage(), 2);
+        world.setBlock(x, y + 1, z, this, itemstack.getItemDamage(), 3);
     }
 	
 	/**

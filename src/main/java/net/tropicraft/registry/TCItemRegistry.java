@@ -29,6 +29,7 @@ import net.tropicraft.item.ItemStaffFireball;
 import net.tropicraft.item.ItemStaffOfTaming;
 import net.tropicraft.item.ItemTCItemFrame;
 import net.tropicraft.item.ItemTikiTorch;
+import net.tropicraft.item.ItemTropBook;
 import net.tropicraft.item.ItemTropicraft;
 import net.tropicraft.item.ItemTropicraftFood;
 import net.tropicraft.item.ItemTropicraftLeafballNew;
@@ -218,6 +219,8 @@ public class TCItemRegistry {
 
     public static Item snareTrap = new ItemSnareTrap().setUnlocalizedName("snareTrap");
     
+    public static Item encTropica = new ItemTropBook("encTropica").setUnlocalizedName("encTropica");
+    
     /**
      * Register all the items
      */
@@ -343,6 +346,7 @@ public class TCItemRegistry {
         
         registerItem(fishBucket, TCNames.fishBucket);
         registerItem(snareTrap, TCNames.snareTrap);
+        registerItem(encTropica, TCNames.encTropica);
     }
 
     /**

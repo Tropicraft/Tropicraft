@@ -26,6 +26,15 @@ public class ClientProxy extends CommonProxy {
     public ClientProxy() {
 
     }
+    
+    @Override
+    public void registerBooks() {
+    	Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat",
+				TCInfo.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt", 
+				"encyclopediaTropica", 
+				"encyclopediaTropicaInside");
+    	TCCraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
+    }
 
     @Override
     public void initRenderHandlersAndIDs() {
@@ -67,12 +76,7 @@ public class ClientProxy extends CommonProxy {
     
     @Override
     public void preInit() {
-        Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat", 
-                TCInfo.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt", 
-                "encyclopediaTropica", 
-                "encyclopediaTropicaInside");
-        
-        TCCraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
+
     }
 
 }

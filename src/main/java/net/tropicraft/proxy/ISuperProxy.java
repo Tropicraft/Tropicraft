@@ -7,6 +7,12 @@ import net.minecraft.client.model.ModelBiped;
  * the necessary methods.
  */
 public interface ISuperProxy {
+	
+	/**
+	 * Register books here
+	 */
+	public void registerBooks();
+	
 	/**
 	 * Register all block and item render handlers here and ids associated with them
 	 */

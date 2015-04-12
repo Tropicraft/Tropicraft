@@ -223,6 +223,7 @@ item.tropicraft:snorkel.name=Snorkel
 item.tropicraft:flippers.name=Flippers
 item.tropicraft:dagger.name=Dagger
 item.tropicraft:cocktail.name=Tropical Cocktail
+item.tropicraft:encTropica.name=Encyclopedia Tropica
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair
