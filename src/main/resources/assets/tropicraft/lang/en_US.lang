@@ -74,6 +74,7 @@ tile.tropicraft:leaf_Orange.name=Orange Leaves
 tile.tropicraft:leafPalm.name=Palm Leaves
 tile.tropicraft:leafRainforest_Kapok.name=Kapok Leaves
 tile.tropicraft:leafRainforest_Mahogany.name=Mahogany Leaves
+tile.tropicraft:leafRainforest_Fruit.name=Fruit Leaves
 tile.tropicraft:portal.name=Tropics Portal
 tile.tropicraft:portalWall.name=Tropics Portal Wall
 tile.tropicraft:purifiedSand.name=Purified Sand
@@ -86,6 +87,9 @@ tile.tropicraft:curareBowl.name=Curare Bowl
 tile.tropicraft:bongoDrum_Small.name=Small Bongo Drum
 tile.tropicraft:bongoDrum_Medium.name=Medium Bongo Drum
 tile.tropicraft:bongoDrum_Large.name=Large Bongo Drum
+tile.tropicraft:bambooChute.name=Bamboo Chute
+tile.tropicraft:koaChest.name=Koa Chest
+tile.tropicraft:purchasePlate.name=Koa Trader Purchase Plate
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -204,6 +208,19 @@ item.tropicraft:portalEnchanter.name=Portal Enchanter
 item.tropicraft:bambooMug.name=Bamboo Mug
 item.tropicraft:koaFrame.name=Koa Item Frame
 item.tropicraft:tropiFrame.name=Tropics Item Frame
+item.tropicraft:leafBall.name=Leaf Ball
+item.tropicraft:snareTrap.name=Snare Trap
+item.tropicraft:tropiFrame.name=Bamboo Item Frame
+item.tropicraft:koaFrame.name=Koa Item Frame
+item.tropicraft:shell_Solo.name=Solonox Shell
+item.tropicraft:shell_Frox.name=Frox Conch
+item.tropicraft:shell_Pab.name=Pab Shell
+item.tropicraft:shell_Rube.name=Rube Nautilus
+item.tropicraft:shell_Starfish.name=Starfish Shell
+item.tropicraft:shell_Turtle.name=Turtle Shell
+item.tropicraft:snorkel.name=Snorkel
+item.tropicraft:flippers.name=Flippers
+item.tropicraft:dagger.name=Dagger
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair
