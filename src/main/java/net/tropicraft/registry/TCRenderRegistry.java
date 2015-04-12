@@ -36,7 +36,6 @@ import net.tropicraft.client.entity.render.RenderKoaMan;
 import net.tropicraft.client.entity.render.RenderLostMask;
 import net.tropicraft.client.entity.render.RenderMarlin;
 import net.tropicraft.client.entity.render.RenderPoisonBlot;
-import net.tropicraft.client.entity.render.RenderPoolFloat;
 import net.tropicraft.client.entity.render.RenderSeaTurtle;
 import net.tropicraft.client.entity.render.RenderSeahorse;
 import net.tropicraft.client.entity.render.RenderSpiderEgg;
@@ -72,7 +71,6 @@ import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntityUmbrella;
-import net.tropicraft.entity.pool.EntityPoolFloat;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
@@ -95,7 +93,6 @@ public class TCRenderRegistry {
     public static void initEntityRenderers() {
         registerEntityRender(EntityChair.class, new RenderChair());
         registerEntityRender(EntityUmbrella.class, new RenderUmbrella());
-        registerEntityRender(EntityPoolFloat.class, new RenderPoolFloat());
         registerEntityRender(EntitySeahorse.class, new RenderSeahorse(new ModelSeahorse(), 0.75F));
         registerEntityRender(EntityDart.class, new RenderDart());
         registerEntityRender(EntityIguana.class, new RenderIguana(new ModelIguana(), 0.75F));
