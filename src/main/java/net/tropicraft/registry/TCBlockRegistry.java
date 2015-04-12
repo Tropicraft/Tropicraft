@@ -14,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
+import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.block.BlockBambooChest;
 import net.tropicraft.block.BlockBambooChute;
 import net.tropicraft.block.BlockBambooDoor;
@@ -216,7 +217,7 @@ public class TCBlockRegistry {
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
 		GameRegistry.registerBlock(block, c, "tile." + name, params);
 		block.setBlockName(name);
-	//TODO	OreDictionary.registerOre(name, block);
+		OreDictionary.registerOre(name, block);
 	}
 	
 	/**

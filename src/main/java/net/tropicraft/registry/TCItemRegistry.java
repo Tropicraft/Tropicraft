@@ -6,6 +6,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooChute;
@@ -58,10 +59,6 @@ import net.tropicraft.item.tool.ItemTropicraftPickaxe;
 import net.tropicraft.item.tool.ItemTropicraftShovel;
 import net.tropicraft.item.tool.ItemTropicraftSword;
 import net.tropicraft.item.tool.ItemTropicraftTool;
-import net.tropicraft.item.tool.ItemUnderwaterAxe;
-import net.tropicraft.item.tool.ItemUnderwaterHoe;
-import net.tropicraft.item.tool.ItemUnderwaterPickaxe;
-import net.tropicraft.item.tool.ItemUnderwaterShovel;
 import CoroUtil.entity.ItemTropicalFishingRod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -170,12 +167,13 @@ public class TCItemRegistry {
     public static final ItemDart dart = new ItemDart();
     public static final ItemDartGun blowGun = new ItemDartGun();
 
+/* TODO
     public static ToolMaterial materialUnderwaterTools = EnumHelper.addToolMaterial("tcaqua", 2, 500, 6.5F, 2.5F, 14);
     public static final ItemTropicraftTool aquaAxe = new ItemUnderwaterAxe(materialUnderwaterTools, TCNames.aquaAxe);
     public static final ItemUnderwaterHoe aquaHoe = new ItemUnderwaterHoe(materialUnderwaterTools, TCNames.aquaHoe);
     public static final ItemTropicraftTool aquaPickaxe = new ItemUnderwaterPickaxe(materialUnderwaterTools, TCNames.aquaPickaxe);
     public static final ItemTropicraftTool aquaShovel = new ItemUnderwaterShovel(materialUnderwaterTools, TCNames.aquaShovel);
-
+*/
     public static final Item shells = new ItemShell(TCNames.shellNames);
 
     public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
@@ -312,10 +310,10 @@ public class TCItemRegistry {
         registerItem(shovelZirconium, TCNames.shovelZirconium);
         registerItem(swordZirconium, TCNames.swordZirconium);
 
-        registerItem(aquaAxe, TCNames.aquaAxe);
+/*        registerItem(aquaAxe, TCNames.aquaAxe);
         registerItem(aquaHoe, TCNames.aquaHoe);
         registerItem(aquaPickaxe, TCNames.aquaPickaxe);
-        registerItem(aquaShovel, TCNames.aquaShovel);
+        registerItem(aquaShovel, TCNames.aquaShovel);*/
         registerItem(shells, TCNames.shell);
         registerItem(bambooSpear, TCNames.bambooSpear);
         registerItem(coconutBomb, TCNames.coconutBomb);
@@ -357,6 +355,6 @@ public class TCItemRegistry {
     private static void registerItem(Item item, String name) {
         GameRegistry.registerItem(item, name);
         item.setUnlocalizedName(name);
-        //TODO OreDictionary.registerOre(name, item);
+        OreDictionary.registerOre(name, item);
     }
 }
