@@ -20,6 +20,7 @@ import net.tropicraft.entity.koa.EntityKoaShaman;
 import net.tropicraft.entity.koa.EntityKoaTrader;
 import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.passive.EntityTreeFrogGreen;
+import net.tropicraft.entity.passive.Failgull;
 import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntitySnareTrap;
@@ -29,6 +30,7 @@ import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.entity.projectile.EntityTropicraftLeafballNew;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
+import net.tropicraft.entity.underdasea.EntityManOWar;
 import net.tropicraft.entity.underdasea.EntityMarlin;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
@@ -76,8 +78,8 @@ public class TCEntityRegistry {
 		registerEntity(EntityLostMask.class, "LostMask", 64, 3, true);
 		registerEntity(EntityMarlin.class, "Marlin", 80, 3, true);
 		registerEntity(EntitySnareTrap.class, "SnareTrap", 80, 20, false);
-		
-		
+		registerEntity(Failgull.class, "Failgull", 64, 3, true);
+		registerEntity(EntityManOWar.class, "MOW", 64, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
