@@ -18,6 +18,7 @@ import net.tropicraft.client.entity.model.ModelEIH;
 import net.tropicraft.client.entity.model.ModelFish;
 import net.tropicraft.client.entity.model.ModelIguana;
 import net.tropicraft.client.entity.model.ModelKoaMan;
+import net.tropicraft.client.entity.model.ModelManOWar;
 import net.tropicraft.client.entity.model.ModelMarlin;
 import net.tropicraft.client.entity.model.ModelSeaTurtle;
 import net.tropicraft.client.entity.model.ModelSeahorse;
@@ -30,10 +31,12 @@ import net.tropicraft.client.entity.render.RenderChair;
 import net.tropicraft.client.entity.render.RenderDart;
 import net.tropicraft.client.entity.render.RenderEIH;
 import net.tropicraft.client.entity.render.RenderEagleRay;
+import net.tropicraft.client.entity.render.RenderFailgull;
 import net.tropicraft.client.entity.render.RenderFishHook;
 import net.tropicraft.client.entity.render.RenderIguana;
 import net.tropicraft.client.entity.render.RenderKoaMan;
 import net.tropicraft.client.entity.render.RenderLostMask;
+import net.tropicraft.client.entity.render.RenderManOWar;
 import net.tropicraft.client.entity.render.RenderMarlin;
 import net.tropicraft.client.entity.render.RenderPoisonBlot;
 import net.tropicraft.client.entity.render.RenderSeaTurtle;
@@ -69,6 +72,7 @@ import net.tropicraft.entity.hostile.SpiderChild;
 import net.tropicraft.entity.hostile.SpiderEgg;
 import net.tropicraft.entity.koa.EntityKoaBase;
 import net.tropicraft.entity.passive.EntityIguana;
+import net.tropicraft.entity.passive.Failgull;
 import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntitySnareTrap;
@@ -78,6 +82,7 @@ import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.entity.projectile.EntityTropicraftLeafballNew;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
+import net.tropicraft.entity.underdasea.EntityManOWar;
 import net.tropicraft.entity.underdasea.EntityMarlin;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
@@ -120,6 +125,8 @@ public class TCRenderRegistry {
         registerEntityRender(EntityLostMask.class, new RenderLostMask());
         registerEntityRender(EntityMarlin.class, new RenderMarlin(new ModelMarlin(), 0.25F));
         registerEntityRender(EntitySnareTrap.class, new RenderSnareTrap());
+        registerEntityRender(Failgull.class, new RenderFailgull(0.5F));
+        registerEntityRender(EntityManOWar.class, new RenderManOWar(new ModelManOWar(32, 20, true), new ModelManOWar(0, 20, false), .35F));
     }
 
     /**
