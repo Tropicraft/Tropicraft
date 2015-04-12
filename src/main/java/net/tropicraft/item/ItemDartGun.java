@@ -30,7 +30,7 @@ public class ItemDartGun extends ItemTropicraft {
         setCreativeTab(TCCreativeTabRegistry.tabCombat);
     }
 
-    @SideOnly(Side.CLIENT)
+/*    @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer ent, List list, boolean wat) {
         if (itemstack.getItemDamage() == 0)
@@ -38,7 +38,7 @@ public class ItemDartGun extends ItemTropicraft {
         
         list.clear();
         list.add("Blow Gun of " + StatCollector.translateToLocal("dart.tropicraft:" + ItemCurare.effectNames[itemstack.getItemDamage() - 1] + ".name"));
-    }
+    }*/
     
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
@@ -47,9 +47,9 @@ public class ItemDartGun extends ItemTropicraft {
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(item, 1, 0));
         
-        for (int i = 0; i < ItemDart.dartNames.length; ++i) {
+/*        for (int i = 0; i < ItemDart.dartNames.length; ++i) {
             par3List.add(new ItemStack(item, 1, i + 1));
-        }
+        }*/
     }
     
     @Override
@@ -95,7 +95,12 @@ public class ItemDartGun extends ItemTropicraft {
 
             if (!world.isRemote) {
                 if (slot > -1 || entityplayer.capabilities.isCreativeMode) {
-                	ItemStack dartStack = entityplayer.inventory.mainInventory[slot];
+                	ItemStack dartStack;
+                	if (slot > -1)
+                		dartStack = entityplayer.inventory.mainInventory[slot];
+                	else 
+                		dartStack = new ItemStack(TCItemRegistry.dart, 1, world.rand.nextInt(ItemDart.dartNames.length));
+                	
                 	if (!entityplayer.capabilities.isCreativeMode) {
 	                	if (dartStack.stackSize > 1) {
 	                		dartStack.stackSize--;

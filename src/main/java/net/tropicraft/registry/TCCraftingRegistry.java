@@ -25,7 +25,7 @@ public class TCCraftingRegistry {
 	public static void init() {
 		addRecipes();
 		initCurareMixes();
-		//     initDartRecipes(true);
+		initDartRecipes(true);
 	}
 
 	private static void initCurareMixes() {
@@ -73,13 +73,11 @@ public class TCCraftingRegistry {
 	private static void initDartRecipes(boolean isServer) {       
 
 		//register all blow types
-		for (int damage = 0; damage < ItemCurare.effectNames.length; damage++) {
-			createRecipe(isServer, true, new ItemStack(TCItemRegistry.blowGun, 1, damage), new Object[]{
-				"X  ", " I ", "  X",
-				'X', TCItemRegistry.bambooStick,
-				'I', new ItemStack(TCItemRegistry.curare, 1, damage)
-			});
-		}
+		createRecipe(isServer, true, new ItemStack(TCItemRegistry.blowGun, 1, 0), new Object[]{
+			"X  ", " I ", "  X",
+			'X', TCItemRegistry.bambooStick,
+			'I', new ItemStack(TCItemRegistry.curare, 1, 0)
+		});
 
 		//keep classic paralysis dart recipe, use for poison frog skin for now :/
 		createRecipe(isServer, true, new ItemStack(TCItemRegistry.dart, 4), new Object[]{
@@ -185,9 +183,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		}
 
 		Tropicraft.encyclopedia.includeItem("blackcoffee", MixerRecipes.getItemStack(Drink.blackCoffee));
-		for (int i = 0; i < ItemCurare.effectNames.length; i++) {
-			Tropicraft.encyclopedia.includeItem("blowgun", new ItemStack(TCItemRegistry.blowGun, 1, i));
-		}
+		Tropicraft.encyclopedia.includeItem("blowgun", new ItemStack(TCItemRegistry.blowGun, 1, 0));
 		Tropicraft.encyclopedia.includeItem("bromeliad", new ItemStack(TCBlockRegistry.flowers, 1, 14));
 		Tropicraft.encyclopedia.includeItem("caipirinha", MixerRecipes.getItemStack(Drink.caipirinha));
 		Tropicraft.encyclopedia.includeItem("canna", new ItemStack(TCBlockRegistry.flowers, 1, 3));
