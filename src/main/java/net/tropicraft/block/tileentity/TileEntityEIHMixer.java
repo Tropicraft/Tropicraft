@@ -210,6 +210,7 @@ public class TileEntityEIHMixer extends TileEntity {
             if (ingredient.getItem() != TCItemRegistry.cocktail) {
                 Ingredient i = findMatchingIngredient(ingredient);
                 if (i == null || !i.isPrimary()) {
+                	System.err.println("fail");
                     return false;
                 }
             }
@@ -217,7 +218,7 @@ public class TileEntityEIHMixer extends TileEntity {
             sync();
             return true;
         } else if (this.ingredients[1] == null) {
-            if (ingredient.getItem() != TCItemRegistry.cocktail) {
+            if (ingredient.getItem() == TCItemRegistry.cocktail) {
                 // prevent mixing multiple primary ingredients
                 // all cocktails already contain one
                 return false;

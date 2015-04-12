@@ -90,6 +90,7 @@ tile.tropicraft:bongoDrum_Large.name=Large Bongo Drum
 tile.tropicraft:bambooChute.name=Bamboo Chute
 tile.tropicraft:koaChest.name=Koa Chest
 tile.tropicraft:purchasePlate.name=Koa Trader Purchase Plate
+tile.tropicraft:eihMixer.name=Drink Mixer
 
 # Item localizations
 item.tropicraft:frogLeg.name=Frog Leg
@@ -221,6 +222,7 @@ item.tropicraft:shell_Turtle.name=Turtle Shell
 item.tropicraft:snorkel.name=Snorkel
 item.tropicraft:flippers.name=Flippers
 item.tropicraft:dagger.name=Dagger
+item.tropicraft:cocktail.name=Tropical Cocktail
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair

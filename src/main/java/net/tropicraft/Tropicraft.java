@@ -88,7 +88,7 @@ public class Tropicraft {
 		proxy.initRenderHandlersAndIDs();
 		TCEntityRegistry.init();
 		proxy.initRenderRegistry();
-		//MixerRecipes.addMixerRecipes();
+		MixerRecipes.addMixerRecipes();
 		MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
 		MinecraftForge.EVENT_BUS.register(new TCItemEvents());
 		TCMiscEvents misc = new TCMiscEvents();

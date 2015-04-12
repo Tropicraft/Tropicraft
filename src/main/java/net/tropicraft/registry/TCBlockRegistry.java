@@ -25,6 +25,7 @@ import net.tropicraft.block.BlockCoconut;
 import net.tropicraft.block.BlockCoffeePlant;
 import net.tropicraft.block.BlockCoral;
 import net.tropicraft.block.BlockCurareBowl;
+import net.tropicraft.block.BlockEIHMixer;
 import net.tropicraft.block.BlockFirePit;
 import net.tropicraft.block.BlockFruitLeaves;
 import net.tropicraft.block.BlockKoaChest;
@@ -146,6 +147,7 @@ public class TCBlockRegistry {
 	public static final BlockPurchasePlate purchasePlate = new BlockPurchasePlate();
 	
 	public static final BlockBambooMug bambooMug = new BlockBambooMug();
+	public static final BlockEIHMixer eihMixer = new BlockEIHMixer();
 	
 	/**
 	 * Register all the blocks
@@ -208,6 +210,7 @@ public class TCBlockRegistry {
 		registerBlock(koaChest, TCNames.koaChest);
 		registerBlock(purchasePlate, TCNames.purchasePlate);
 		registerBlock(bambooMug, TCNames.bambooMug);
+		registerBlock(eihMixer, TCNames.eihMixer);
 	}
 	
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {

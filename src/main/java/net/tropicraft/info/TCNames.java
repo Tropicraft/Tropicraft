@@ -76,6 +76,7 @@ public class TCNames {
     public static final String[] bongoDrumNames = new String[]{"Small", "Medium", "Large"};
     public static final String koaChest = "koaChest";
     public static final String purchasePlate = "purchasePlate";
+    public static final String eihMixer = "eihMixer";
 
     // Item names
     public static final String frogLeg = "frogLeg";

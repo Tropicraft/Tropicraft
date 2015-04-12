@@ -359,7 +359,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
             'X', TCItemRegistry.bambooChute
         });
 
-/*        createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+ /*       createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
             "X", "Y", "Z",
             'X', TCItemRegistry.coconutChunk,
             'Y', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
@@ -790,9 +790,9 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
             "###", "#X#", "###", '#', new ItemStack(TCItemRegistry.ore, 1, 3), 'X', TCBlockRegistry.bambooChest
         });
 
-        /*createRecipe(true, new ItemStack(TCBlockRegistry.eihMixer), new Object[] {
+        createRecipe(true, new ItemStack(TCBlockRegistry.eihMixer), new Object[] {
             "XXX", "X X", "XXX", 'X', TCBlockRegistry.chunkOHead
-        });*/
+        });
 
         createRecipe(true, new ItemStack(TCBlockRegistry.curareBowl), new Object[] {
             "X X", " X ", 'X', TCBlockRegistry.chunkOHead
@@ -856,10 +856,10 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
                 MixerRecipes.getItemStack(Drink.pinaColada),
                 new Object[]{
                     TCItemRegistry.coconutChunk,
-                    new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
+                    new ItemStack(TCBlockRegistry.pineapple),
                     TCItemRegistry.bambooMug
-                });*/
-
+                });
+*/
 
         // Smelting recipes go here //
         GameRegistry.addSmelting(TCItemRegistry.frogLeg, new ItemStack(TCItemRegistry.cookedFrogLeg), 3);

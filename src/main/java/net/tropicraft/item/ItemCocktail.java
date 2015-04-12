@@ -61,6 +61,7 @@ public class ItemCocktail extends ItemTropicraft {
             //int count = ingredient.getShort("Count");
             int id = ingredient.getByte("IngredientID");
             String ingredientName = Ingredient.ingredientsList[id].getIngredient().getDisplayName();
+            int ingredientColor = Ingredient.ingredientsList[id].getColor();
             //String lvl = StatCollector.translateToLocal("enchantment.level." + count);
             //par3List.add(ingredientName + " " + lvl);
             par3List.add(ingredientName);

@@ -23,7 +23,7 @@ public class Ingredient implements Comparable<Ingredient> {
     public static final Ingredient lime = new Ingredient(6, new ItemStack(TCItemRegistry.lime), true, 0x7fff00).addAction(new DrinkActionFood(2, 0.2f));
     public static final Ingredient orange = new Ingredient(7, new ItemStack(TCItemRegistry.orange), true, 0xffa500).addAction(new DrinkActionFood(3, 0.2f));
     public static final Ingredient grapefruit = new Ingredient(8, new ItemStack(TCItemRegistry.grapefruit), true, 0xff6347).addAction(new DrinkActionFood(4, 0.2f));
-    public static final Ingredient pineapple = new Ingredient(9, new ItemStack(TCBlockRegistry.tallFlowers, 1, 9), true, 0xeeff00).addAction(new DrinkActionFood(1, 0.1f));
+    public static final Ingredient pineapple = new Ingredient(9, new ItemStack(TCBlockRegistry.pineapple, 1, 0), true, 0xeeff00).addAction(new DrinkActionFood(1, 0.1f));
     public static final Ingredient pineappleChunks = new Ingredient(10, new ItemStack(TCItemRegistry.pineappleCubes), false, 0xeeff00, 0.1f).addAction(new DrinkActionFood(1, 0.1f));
     public static final Ingredient coconut = new Ingredient(11, new ItemStack(TCBlockRegistry.coconut), true, 0xefefef).addAction(new DrinkActionFood(1, 0.1f));
     public static final Ingredient coconutChunk = new Ingredient(12, new ItemStack(TCItemRegistry.coconutChunk), false, 0xefefef, 0.1f).addAction(new DrinkActionFood(1, 0.1f));
