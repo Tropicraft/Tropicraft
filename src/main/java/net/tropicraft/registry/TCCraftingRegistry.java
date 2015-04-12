@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TCCraftingRegistry {
 
     public static void init() {
-   //     addRecipes();
+        addRecipes();
         initCurareMixes();
    //     initDartRecipes(true);
     }
@@ -123,7 +123,7 @@ public class TCCraftingRegistry {
 
     @SideOnly(Side.CLIENT)
     public static void addToEncyclopedia(ItemStack itemstack, Object obj[]) {
-        Tropicraft.encyclopedia.includeRecipe(itemstack, obj);
+        //TODO Tropicraft.encyclopedia.includeRecipe(itemstack, obj);
     }
 
     public static void createRecipe(boolean addToEncyclopedia, ItemStack itemstack, Object obj[]) {
@@ -184,10 +184,10 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
             Tropicraft.encyclopedia.includeItem("beachumbrella", new ItemStack(TCItemRegistry.umbrella, 1, i));
         }
 
-        Tropicraft.encyclopedia.includeItem("blackcoffee", MixerRecipes.getItemStack(Drink.blackCoffee));
+    //    Tropicraft.encyclopedia.includeItem("blackcoffee", MixerRecipes.getItemStack(Drink.blackCoffee));
         Tropicraft.encyclopedia.includeItem("blowgun", new ItemStack(TCItemRegistry.blowGun));
         Tropicraft.encyclopedia.includeItem("bromeliad", new ItemStack(TCBlockRegistry.flowers, 1, 14));
-        Tropicraft.encyclopedia.includeItem("caipirinha", MixerRecipes.getItemStack(Drink.caipirinha));
+   //     Tropicraft.encyclopedia.includeItem("caipirinha", MixerRecipes.getItemStack(Drink.caipirinha));
         Tropicraft.encyclopedia.includeItem("canna", new ItemStack(TCBlockRegistry.flowers, 1, 3));
         Tropicraft.encyclopedia.includeItem("chunkohead", new ItemStack(TCBlockRegistry.chunkOHead));
         Tropicraft.encyclopedia.includeItem("coconut", new ItemStack(TCBlockRegistry.coconut));
@@ -236,10 +236,10 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
         Tropicraft.encyclopedia.includeItem("leafball", new ItemStack(TCItemRegistry.leafBall));
         Tropicraft.encyclopedia.includeItem("leather", new ItemStack(Items.leather));
         Tropicraft.encyclopedia.includeItem("lemon", new ItemStack(TCItemRegistry.lemon));
-        Tropicraft.encyclopedia.includeItem("lemonade", MixerRecipes.getItemStack(Drink.lemonade));
+     //   Tropicraft.encyclopedia.includeItem("lemonade", MixerRecipes.getItemStack(Drink.lemonade));
         Tropicraft.encyclopedia.includeItem("lemonsapling", new ItemStack(TCBlockRegistry.saplings, 1, 2));
         Tropicraft.encyclopedia.includeItem("lime", new ItemStack(TCItemRegistry.lime));
-        Tropicraft.encyclopedia.includeItem("limeade", MixerRecipes.getItemStack(Drink.limeade));
+  //      Tropicraft.encyclopedia.includeItem("limeade", MixerRecipes.getItemStack(Drink.limeade));
         Tropicraft.encyclopedia.includeItem("limesapling", new ItemStack(TCBlockRegistry.saplings, 1, 4));
         Tropicraft.encyclopedia.includeItem("lowtide", new ItemStack(TCItemRegistry.recordLowTide));
         Tropicraft.encyclopedia.includeItem("magicmushroom", new ItemStack(TCBlockRegistry.flowers, 1, 7));
@@ -248,7 +248,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
         Tropicraft.encyclopedia.includeItem("marlincooked", new ItemStack(TCItemRegistry.searedMarlin));
         //  Tropicraft.encyclopedia.includeItem("nigeljournal", new ItemStack(TCItemRegistry.nigelJournal));
         Tropicraft.encyclopedia.includeItem("orange", new ItemStack(TCItemRegistry.orange));
-        Tropicraft.encyclopedia.includeItem("orangeade", MixerRecipes.getItemStack(Drink.orangeade));
+    //    Tropicraft.encyclopedia.includeItem("orangeade", MixerRecipes.getItemStack(Drink.orangeade));
         Tropicraft.encyclopedia.includeItem("orangesapling", new ItemStack(TCBlockRegistry.saplings, 1, 3));
         Tropicraft.encyclopedia.includeItem("pabshell", new ItemStack(TCItemRegistry.shells, 1, 2));
         Tropicraft.encyclopedia.includeItem("palmplanks", new ItemStack(TCBlockRegistry.planks, 1, 0)); //0 is palm, 1 is mahogany
@@ -260,7 +260,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
         Tropicraft.encyclopedia.includeItem("pearlw", new ItemStack(TCItemRegistry.pearl, 1, 0));
         Tropicraft.encyclopedia.includeItem("pineapple", new ItemStack(TCBlockRegistry.tallFlowers, 1, 9));
         Tropicraft.encyclopedia.includeItem("pineapplecubes", new ItemStack(TCItemRegistry.pineappleCubes));
-        Tropicraft.encyclopedia.includeItem("pinacolada", MixerRecipes.getItemStack(Drink.pinaColada));
+  //TODO      Tropicraft.encyclopedia.includeItem("pinacolada", MixerRecipes.getItemStack(Drink.pinaColada));
         Tropicraft.encyclopedia.includeItem("portalstarter",  new ItemStack(TCItemRegistry.portalEnchanter));
         Tropicraft.encyclopedia.includeItem("purifiedsand", new ItemStack(TCBlockRegistry.purifiedSand));
         Tropicraft.encyclopedia.includeItem("reeds", new ItemStack(Items.reeds));
@@ -359,7 +359,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
             'X', TCItemRegistry.bambooChute
         });
 
-        createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+/*        createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
             "X", "Y", "Z",
             'X', TCItemRegistry.coconutChunk,
             'Y', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
@@ -371,7 +371,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
             'X', TCItemRegistry.coconutChunk,
             'Y', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
             'Z', TCItemRegistry.bambooMug
-        });
+        });*/
 
         createRecipe(true, new ItemStack(TCItemRegistry.scaleHelmet, 1), new Object[]{
             "XXX", "X X",
@@ -546,6 +546,36 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
         createRecipe(true, new ItemStack(TCItemRegistry.shovelZircon), new Object[]{
             "X", "I", "I",
             'X', new ItemStack(TCItemRegistry.ore, 1, 1),
+            'I', TCItemRegistry.bambooStick
+        });
+        
+        createRecipe(true, new ItemStack(TCItemRegistry.pickaxeZirconium), new Object[]{
+            "XXX", " I ", " I ",
+            'X', new ItemStack(TCItemRegistry.ore, 1, 3),
+            'I', TCItemRegistry.bambooStick
+        });
+
+        createRecipe(true, new ItemStack(TCItemRegistry.axeZirconium), new Object[]{
+            "XX", "XI", " I",
+            'X', new ItemStack(TCItemRegistry.ore, 1, 3),
+            'I', TCItemRegistry.bambooStick
+        });
+
+        createRecipe(true, new ItemStack(TCItemRegistry.hoeZirconium), new Object[]{
+            "XX", " I", " I",
+            'X', new ItemStack(TCItemRegistry.ore, 1, 3),
+            'I', TCItemRegistry.bambooStick
+        });
+
+        createRecipe(true, new ItemStack(TCItemRegistry.swordZirconium), new Object[]{
+            "X", "X", "I",
+            'X', new ItemStack(TCItemRegistry.ore, 1, 3),
+            'I', TCItemRegistry.bambooStick
+        });
+
+        createRecipe(true, new ItemStack(TCItemRegistry.shovelZirconium), new Object[]{
+            "X", "I", "I",
+            'X', new ItemStack(TCItemRegistry.ore, 1, 3),
             'I', TCItemRegistry.bambooStick
         });
 
@@ -751,9 +781,9 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
                 new Object[] {"#", "#", '#', TCItemRegistry.bambooChute});
 
         createRecipe(true, new ItemStack(TCItemRegistry.ore, 1, 3), new Object[] {
-            " # ", "#$#", " # ",
-            '#', Items.diamond,
-            '$', new ItemStack(TCItemRegistry.ore, 1, 4)  //smelted zircon
+            "###", "#$#", "###",
+            '$', Items.diamond,
+            '#', new ItemStack(TCItemRegistry.ore, 1, 4)  //smelted zircon
         });
 
         createRecipe(true, new ItemStack(TCBlockRegistry.koaChest, 1), new Object[] {
@@ -822,13 +852,13 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
                     new ItemStack(TCBlockRegistry.flowers, 1, 10)
                 });
 
-        GameRegistry.addShapelessRecipe(
+/*        GameRegistry.addShapelessRecipe(
                 MixerRecipes.getItemStack(Drink.pinaColada),
                 new Object[]{
                     TCItemRegistry.coconutChunk,
                     new ItemStack(TCBlockRegistry.tallFlowers, 1, 9),
                     TCItemRegistry.bambooMug
-                });
+                });*/
 
 
         // Smelting recipes go here //

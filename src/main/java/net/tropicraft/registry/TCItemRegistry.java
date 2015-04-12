@@ -85,7 +85,7 @@ public class TCItemRegistry {
     public static final ItemTropicraftFood coconutChunk = new ItemTropicraftFood(1, 0.1F);
     public static final ItemTropicraftFood pineappleCubes = new ItemTropicraftFood(1, 0.1F);
 
-    public static final ItemTropicraft bambooStick = new ItemTropicraft();
+    public static final ItemTropicraft bambooStick = (ItemTropicraft) new ItemTropicraft().setMaxStackSize(64);
     public static final ItemTropicraftFood seaUrchinRoe = new ItemTropicraftFood(3, 0.3F);
 
     public static final ItemTropicraft pearl = new ItemTropicraftMulti(TCNames.pearlNames);
