@@ -236,6 +236,10 @@ entity.tropicraft.SeaTurtleEgg.name=Sea Turtle Egg
 entity.tropicraft.PoisonBlot.name=Dart Frog Poison Blot
 entity.tropicraft.Dart.name=Poison Dart
 entity.tropicraft.CoconutBomb.name=Coconut Bomb
+entity.tropicraft.KoaFisher.name=Koa Fisher
+entity.tropicraft.KoaHunter.name=Koa Hunter
+entity.tropicraft.KoaShaman.name=Koa Shaman
+entity.tropicraft.AshenHunter.name=Ashen Hunter
 
 #Gui localizations
 gui.tropicraft:airType=Air Type

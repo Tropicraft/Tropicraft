@@ -2,13 +2,13 @@ package net.tropicraft;
 
 import modconfig.ConfigMod;
 import net.minecraftforge.common.MinecraftForge;
-import net.tropicraft.config.ConfigStuff;
+import net.tropicraft.config.ConfigBiomes;
 import net.tropicraft.drinks.MixerRecipes;
 import net.tropicraft.encyclopedia.Encyclopedia;
-import net.tropicraft.event.TCPacketEvents;
 import net.tropicraft.event.TCBlockEvents;
 import net.tropicraft.event.TCItemEvents;
 import net.tropicraft.event.TCMiscEvents;
+import net.tropicraft.event.TCPacketEvents;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.proxy.ISuperProxy;
 import net.tropicraft.registry.TCBlockRegistry;
@@ -66,7 +66,7 @@ public class Tropicraft {
 	 */
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-    	ConfigMod.addConfigFile(event, "tc", new ConfigStuff());
+    	ConfigMod.addConfigFile(event, "tc_biomes", new ConfigBiomes());
     	ColorHelper.init();
     	TCFluidRegistry.init();
     	TCBlockRegistry.init();
