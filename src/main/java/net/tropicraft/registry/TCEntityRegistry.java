@@ -29,6 +29,7 @@ import net.tropicraft.entity.projectile.EntityDart;
 import net.tropicraft.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.entity.projectile.EntityTropicraftLeafballNew;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
+import net.tropicraft.entity.underdasea.EntityMarlin;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
 import net.tropicraft.entity.underdasea.EntityTropicalFish;
@@ -74,6 +75,7 @@ public class TCEntityRegistry {
 		registerEntity(EntityTropicraftLeafballNew.class, "TropiLeafball", 64, 1, true);
 		registerEntity(EntityTropicalFish.class, "TropicalFish", 80, 3, true);
 		registerEntity(EntityLostMask.class, "LostMask", 64, 3, true);
+		registerEntity(EntityMarlin.class, "Marlin", 80, 3, true);
 		
 		
 	}

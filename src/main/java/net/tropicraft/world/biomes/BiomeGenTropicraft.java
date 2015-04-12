@@ -19,6 +19,7 @@ import net.tropicraft.entity.passive.EntityIguana;
 import net.tropicraft.entity.passive.EntityTreeFrogGreen;
 import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.underdasea.EntityEagleRay;
+import net.tropicraft.entity.underdasea.EntityMarlin;
 import net.tropicraft.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.entity.underdasea.EntitySeahorse;
 import net.tropicraft.registry.TCBlockRegistry;
@@ -106,6 +107,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 1 ,3));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaTurtle.class, 6, 1 ,3));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeahorse.class, 6, 1 ,3));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityMarlin.class, 6, 1 ,3));
         
         
         this.spawnableMonsterList.add(new SpawnListEntry(SpiderAdult.class, 50, 1, 3));
