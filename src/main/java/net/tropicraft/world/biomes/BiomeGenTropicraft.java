@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
 import net.tropicraft.config.ConfigBiomes;
+import net.tropicraft.config.ConfigGenRates;
 import net.tropicraft.entity.hostile.EntityAshenHunter;
 import net.tropicraft.entity.hostile.EntityEIH;
 import net.tropicraft.entity.hostile.EntityTreeFrogBlue;
@@ -39,15 +40,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 
 	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 	
-	private static final int EIH_CHANCE = 50;
-	private static final int SHIPWRECK_CHANCE = 200;
-	private static final int TALL_FLOWERS_CHANCE = 3;
-	private static final int BAMBOO_CHANCE = 2;
-	private static final int WATERFALL_AMOUNT = 25;
-	private static final int TALL_GRASS_CHANCE = 4;
-	public static final int CURVED_PALM_CHANCE = 3;
-	public static final int LARGE_PALM_CHANCE = 3;
-	public static final int NORMAL_PALM_CHANCE = 3;
+	
 	
 	
 	public static BiomeGenBase tropicsOcean = new BiomeGenTropicraft(ConfigBiomes.tropicsOceanID).setHeight(new Height(-1.0F, 0.4F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical Ocean");
@@ -106,25 +99,25 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	
 	@Override
 	public void decorate(World world, Random rand, int x, int z) {	
-		if(rand.nextInt(BAMBOO_CHANCE) == 0) {
+		if(ConfigGenRates.BAMBOO_CHANCE != 0 && rand.nextInt(ConfigGenRates.BAMBOO_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenBamboo(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(EIH_CHANCE) == 0) {
+		if(ConfigGenRates.EIH_CHANCE != 0 && rand.nextInt(ConfigGenRates.EIH_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenEIH(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(TALL_FLOWERS_CHANCE) == 0) {
+		if(ConfigGenRates.TALL_FLOWERS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_FLOWERS_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			(new WorldGenTallFlower(world, rand, TCBlockRegistry.tallFlowers, 0, 1)).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(TALL_FLOWERS_CHANCE) == 0) {
+		if(ConfigGenRates.TALL_FLOWERS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_FLOWERS_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			(new WorldGenTallFlower(world, rand, TCBlockRegistry.pineapple, 7, 8)).generate(i, getTerrainHeightAt(world, i, k), k);
@@ -136,37 +129,37 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 			new WorldGenTropicraftFlowers(world, rand, TCBlockRegistry.flowers, DEFAULT_FLOWER_META).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(SHIPWRECK_CHANCE) == 0) {
+		if(ConfigGenRates.SHIPWRECK_CHANCE != 0 && rand.nextInt(ConfigGenRates.SHIPWRECK_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenSunkenShip(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(CURVED_PALM_CHANCE) == 0) {
+		if(ConfigGenRates.CURVED_PALM_CHANCE != 0 && rand.nextInt(ConfigGenRates.CURVED_PALM_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenTropicraftCurvedPalm(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(LARGE_PALM_CHANCE) == 0) {
+		if(ConfigGenRates.LARGE_PALM_CHANCE != 0 && rand.nextInt(ConfigGenRates.LARGE_PALM_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenTropicraftLargePalmTrees(false).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(NORMAL_PALM_CHANCE) == 0) {
+		if(ConfigGenRates.NORMAL_PALM_CHANCE != 0 && rand.nextInt(ConfigGenRates.NORMAL_PALM_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenTropicraftNormalPalms(false).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(TALL_GRASS_CHANCE) == 0) {
+		if(ConfigGenRates.TALL_GRASS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_GRASS_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
 			new WorldGenTallGrass(Blocks.tallgrass, 1).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
 		}
 		
-		for(int a = 0; a < WATERFALL_AMOUNT; a++) {
+		for(int a = 0; a < ConfigGenRates.WATERFALL_AMOUNT; a++) {
 			new WorldGenWaterfall(world, rand).generate(randCoord(rand, x, 16), WorldProviderTropicraft.MID_HEIGHT + rand.nextInt(WorldProviderTropicraft.INTER_HEIGHT), randCoord(rand, z, 16));
 		}
 	}
