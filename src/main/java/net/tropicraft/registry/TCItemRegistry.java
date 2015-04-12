@@ -22,7 +22,6 @@ import net.tropicraft.item.ItemFishBucket;
 import net.tropicraft.item.ItemFlippers;
 import net.tropicraft.item.ItemFlowerPot;
 import net.tropicraft.item.ItemPortalEnchanter;
-import net.tropicraft.item.ItemRod;
 import net.tropicraft.item.ItemShell;
 import net.tropicraft.item.ItemSnareTrap;
 import net.tropicraft.item.ItemSnorkel;
@@ -210,10 +209,10 @@ public class TCItemRegistry {
     public static Item koaFrame = (new ItemTCItemFrame(EntityTCItemFrame.class, false)).setUnlocalizedName("koaFrame");
 
     public static Item cocktail = new ItemCocktail(TCCreativeTabRegistry.tabFood);
-    public static Item rodOld = new ItemRod().setType(ItemRod.TYPE_OLD).setUnlocalizedName("rodOld");
-    public static Item rodGood = new ItemRod().setType(ItemRod.TYPE_GOOD).setUnlocalizedName("rodGood");
-    public static Item rodSuper = new ItemRod().setType(ItemRod.TYPE_SUPER).setUnlocalizedName("rodSuper");
-    public static Item lureSuper = new ItemTropicraft().setUnlocalizedName("lureSuper");
+ //   public static Item rodOld = new ItemRod().setType(ItemRod.TYPE_OLD).setUnlocalizedName("rodOld");
+ //   public static Item rodGood = new ItemRod().setType(ItemRod.TYPE_GOOD).setUnlocalizedName("rodGood");
+ //   public static Item rodSuper = new ItemRod().setType(ItemRod.TYPE_SUPER).setUnlocalizedName("rodSuper");
+ //   public static Item lureSuper = new ItemTropicraft().setUnlocalizedName("lureSuper");
     
     //public static Item ashenMasks = new ItemAshenMask(ModIds.ITEM_ASHENMASK_ID, getMaskDisplayNames(), getMaskImageNames()).setUnlocalizedName("ashenMasks");
 

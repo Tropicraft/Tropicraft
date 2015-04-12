@@ -798,7 +798,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
             "X X", " X ", 'X', TCBlockRegistry.chunkOHead
         });
 
-        createRecipe(true, new ItemStack(TCItemRegistry.rodOld), new Object[]{
+    /*    createRecipe(true, new ItemStack(TCItemRegistry.rodOld), new Object[]{
             "  I",
             " IX",
             "I V",
@@ -834,7 +834,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
             " X ",
             'X', Items.iron_ingot,
             'O', new ItemStack(Items.dye, 1, 5)
-        });
+        });*/
 
         createOreBlockRecipe(2, 0); //eudialyte
         createOreBlockRecipe(3, 1); //zircon

@@ -13,8 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.tropicraft.entity.EntityHook;
-import CoroUtil.entity.EntityTropicalFishHook;
 
 public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
 
@@ -501,7 +499,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
 			}
 		}
 		
-		List<Entity> l = worldObj.loadedEntityList;
+	/*	List<Entity> l = worldObj.loadedEntityList;
 		for(Entity entity : l){
 			
 			// we're up against the player's fishing rod
@@ -513,7 +511,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
 				 if(hook.bobber == null){
 					// this.isSurfacing = true;
 					 // fish collision with bobber
-					if(hook.boundingBox.expand(1f, 1f, 1f).intersectsWith(this.boundingBox) /*&& rand.nextInt(this.fishingImmediateDispatchOdds) == 0*/){
+					if(hook.boundingBox.expand(1f, 1f, 1f).intersectsWith(this.boundingBox) && rand.nextInt(this.fishingImmediateDispatchOdds) == 0){
 						hook.bobber = this;
 						fishDebug("I'm hooked!");
 						// hook fish to the bobber, also set the hook id for reference
@@ -624,7 +622,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void fishDebug(String s){
