@@ -11,7 +11,7 @@ import net.tropicraft.world.worldgen.WorldGenTropicsTreasure;
 public class BiomeGenTropicsBeach extends BiomeGenTropicraft {
 
 	private static final int TREASURE_CHANCE = 25;
-	private static final int VILLAGE_CHANGE = 1;
+	private static final int VILLAGE_CHANCE = 40;
 	
 	public BiomeGenTropicsBeach(int biomeID) {
 		super(biomeID);
@@ -25,7 +25,7 @@ public class BiomeGenTropicsBeach extends BiomeGenTropicraft {
 			new WorldGenTropicsTreasure(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 		
-		if(rand.nextInt(VILLAGE_CHANGE) == 0) {
+		if(rand.nextInt(VILLAGE_CHANCE) == 0) {
 			boolean success = false;
 			for (int ii = 0; ii < 3 && !success; ii++) {
 				int i = randCoord(rand, x, 16);

@@ -14,7 +14,7 @@ public class WorldGenSunkenShip extends TCDirectionalGen {
 
 	public WorldGenSunkenShip(World world, Random random) {
 		super(world, random, random.nextInt(4));
-		System.out.println(dir);
+		//System.out.println(dir);
 	}
 
 	@Override
