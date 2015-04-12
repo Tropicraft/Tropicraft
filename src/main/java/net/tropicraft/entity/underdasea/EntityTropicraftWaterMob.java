@@ -106,7 +106,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
             surfaceTick--;
         }
 
-        if(isInWater()) {    
+        if(isInWater()) {
             if(!isSurfacing) {
                 // Wander
                 if(important1 < 3.141593F) {
@@ -148,7 +148,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
             	this.setAir(20 * 20);
             //}
 
-            if(!isInWater() && deathTime == 0){             
+            if(!isInWater() && deathTime == 0) {
                 //motionY += .50;
                 /*this.attackEntityFrom(DamageSource.drown, 1);
                 int d = 1;

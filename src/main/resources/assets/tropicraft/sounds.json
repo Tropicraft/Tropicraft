@@ -1,5 +1,5 @@
 {
-  "bongohigh": {
+  "tropicraft:bongohigh": {
     "category": "block",
     "sounds": [
       "bongohigh"
@@ -68,6 +68,231 @@
       {
         "name":"records/tradewinds",
         "stream":true
+      }
+    ]
+  },
+  "ambient.tropicraft.portal": { 
+    "category": "neutral",
+    "sounds": [
+      "ambient/tropicraft/portal1",
+      "ambient/tropicraft/portal2",
+      "ambient/tropicraft/portal3",
+      "ambient/tropicraft/portal4"
+    ]
+  },
+  "ambient.tropicraft.rainforest": { 
+    "category": "neutral",
+    "sounds": [
+      "ambient/tropicraft/rainforest1",
+      "ambient/tropicraft/rainforest10",
+      "ambient/tropicraft/rainforest2",
+      "ambient/tropicraft/rainforest3",
+      "ambient/tropicraft/rainforest4",
+      "ambient/tropicraft/rainforest5",
+      "ambient/tropicraft/rainforest6",
+      "ambient/tropicraft/rainforest7",
+      "ambient/tropicraft/rainforest8",
+      "ambient/tropicraft/rainforest9"
+    ]
+  },
+  "ambient.tropicraft.softwaves": { 
+    "category": "neutral",
+    "sounds": [
+      "ambient/tropicraft/softwaves1",
+      "ambient/tropicraft/softwaves2",
+      "ambient/tropicraft/softwaves3",
+      "ambient/tropicraft/softwaves4"
+    ]
+  },
+  "ashenLaugh": { 
+    "category": "neutral",
+    "sounds": [
+      "ashenLaugh"
+    ]
+  },
+  "bongohigh": { 
+    "category": "neutral",
+    "sounds": [
+      "bongohigh"
+    ]
+  },
+  "bongolow": { 
+    "category": "neutral",
+    "sounds": [
+      "bongolow"
+    ]
+  },
+  "bongomedium": { 
+    "category": "neutral",
+    "sounds": [
+      "bongomedium"
+    ]
+  },
+  "dartblow": { 
+    "category": "neutral",
+    "sounds": [
+      "dartblow"
+    ]
+  },
+  "darthit": { 
+    "category": "neutral",
+    "sounds": [
+      "darthit"
+    ]
+  },
+  "frogspit": { 
+    "category": "neutral",
+    "sounds": [
+      "frogspit"
+    ]
+  },
+  "headattack": { 
+    "category": "neutral",
+    "sounds": [
+      "headattack"
+    ]
+  },
+  "headdeath": { 
+    "category": "neutral",
+    "sounds": [
+      "headdeath"
+    ]
+  },
+  "headlaughing": { 
+    "category": "neutral",
+    "sounds": [
+      "headlaughing2"
+    ]
+  },
+  "headmed": { 
+    "category": "neutral",
+    "sounds": [
+      "headmed"
+    ]
+  },
+  "headpain": { 
+    "category": "neutral",
+    "sounds": [
+      "headpain"
+    ]
+  },
+  "headshort": { 
+    "category": "neutral",
+    "sounds": [
+      "headshort"
+    ]
+  },
+  "iggyattack": { 
+    "category": "neutral",
+    "sounds": [
+      "iggyattack"
+    ]
+  },
+  "iggydeath": { 
+    "category": "neutral",
+    "sounds": [
+      "iggydeath"
+    ]
+  },
+  "iggyliving": { 
+    "category": "neutral",
+    "sounds": [
+      "iggyliving"
+    ]
+  },
+  "mine": { 
+    "category": "neutral",
+    "sounds": [
+      "mine"
+    ]
+  },
+  "monkeyangry": { 
+    "category": "neutral",
+    "sounds": [
+      "monkeyangry"
+    ]
+  },
+  "monkeydrinking": { 
+    "category": "neutral",
+    "sounds": [
+      "monkeydrinking"
+    ]
+  },
+  "monkeyhiccup": { 
+    "category": "neutral",
+    "sounds": [
+      "monkeyhiccup"
+    ]
+  },
+  "monkeyhurt": { 
+    "category": "neutral",
+    "sounds": [
+      "monkeyhurt"
+    ]
+  },
+  "monkeyliving": { 
+    "category": "neutral",
+    "sounds": [
+      "monkeyliving"
+    ]
+  },
+  "pageFlip": { 
+    "category": "neutral",
+    "sounds": [
+      "pageFlip"
+    ]
+  },
+  "records.buriedtreasure": { 
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/buriedtreasure",
+        "stream": true
+      }
+    ]
+  },
+  "records.easternisles": { 
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/easternisles",
+        "stream": true
+      }
+    ]
+  },
+  "records.lowtide": { 
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/lowtide",
+        "stream": true
+      }
+    ]
+  },
+  "records.summering": { 
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/summering",
+        "stream": true
+      }
+    ]
+  },
+  "records.thetribe": { 
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/thetribe",
+        "stream": true
+      }
+    ]
+  },
+  "records.tradewinds": { 
+    "category": "record",
+    "sounds": [
+      {
+        "name": "records/tradewinds",
+        "stream": true
       }
     ]
   }
