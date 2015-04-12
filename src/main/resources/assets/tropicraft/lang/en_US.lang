@@ -225,6 +225,25 @@ item.tropicraft:dagger.name=Dagger
 item.tropicraft:cocktail.name=Tropical Cocktail
 item.tropicraft:encTropica.name=Encyclopedia Tropica
 item.tropicraft:bambooChute.name=Bamboo Chute
+item.tropicraft:egg_iguana.name=Iguana Egg
+item.tropicraft:egg_starfish.name=Starfish Egg
+item.tropicraft:egg_greenfrog.name=Green Frog
+item.tropicraft:egg_redfrog.name=Poisonous Red Frog
+item.tropicraft:egg_bluefrog.name=Poisonous Blue Frog
+item.tropicraft:egg_yellowfrog.name=Poisonous Yellow Frog
+item.tropicraft:egg_eih.name=Eye of Head
+item.tropicraft:egg_marlin.name=Marlin Egg
+item.tropicraft:egg_fish.name=Tropical Fish Eggs
+item.tropicraft:egg_ashen.name=Ashen Ash
+item.tropicraft:egg_turtle.name=Sea Turtle Egg
+item.tropicraft:egg_mow.name=Man O' War
+item.tropicraft:egg_monkey.name=Monkey Paw
+item.tropicraft:egg_koa.name=Koa Headband
+item.tropicraft:egg_tropicreeper.name=TropiCreeper Hat
+item.tropicraft:egg_tropiskelly.name=TropiSkelly Skirt
+item.tropicraft:egg_eagleray.name=Spotted Eagle Ray
+item.tropicraft:egg_failgull.name=Failgull
+item.tropicraft:egg_seaurchin.name=Sea Urchin
 
 #Entity localizations
 entity.tropicraft.beachChair.name=Beach Chair
