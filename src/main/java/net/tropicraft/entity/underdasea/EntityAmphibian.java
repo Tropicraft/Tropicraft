@@ -207,7 +207,7 @@ public class EntityAmphibian extends EntityCreature {
     protected int getDistanceToBase(int i, int height) {
         if (i == 5) return i;
 
-        if (worldObj.getBlock((int)posX, height - i, (int)posZ).getMaterial().isLiquid()) {
+        if (worldObj.getBlock(MathHelper.floor_double(posX), height - i, MathHelper.floor_double(posZ)).getMaterial().isLiquid()) {
             return getDistanceToBase(i + 1, height);
         } else {           
             return i;

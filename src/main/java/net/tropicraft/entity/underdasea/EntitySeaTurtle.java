@@ -56,12 +56,15 @@ public class EntitySeaTurtle extends EntityAmphibian {
     @Override
     public boolean interact(EntityPlayer entityplayer) {
         if (!super.interact(entityplayer)) {
-            if (getAmphibianAge() >= 1 && !isUserRiding() && !worldObj.isRemote && (riddenByEntity == null || riddenByEntity == entityplayer)) {
-                entityplayer.mountEntity(this);
-                return true;
-            } else {
-                return false;
-            }
+        	if (!worldObj.isRemote) {
+	            if (getAmphibianAge() >= 1 && !isUserRiding() && !worldObj.isRemote && (riddenByEntity == null || riddenByEntity == entityplayer)) {
+	                entityplayer.mountEntity(this);
+	                return true;
+	            } else {
+	                return false;
+	            }
+        	}
+        	return false;
         } else {
             return true;
         }

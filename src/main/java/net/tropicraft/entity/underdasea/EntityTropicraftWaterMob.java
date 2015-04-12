@@ -143,10 +143,14 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
             if(surfaceTick == 0){
                 isSurfacing = false;
             }
+            
+            //if (isInWater()) {
+            	this.setAir(20 * 20);
+            //}
 
-            if(onGround && deathTime == 0){             
-                motionY += .50;
-                this.attackEntityFrom(DamageSource.drown, 1);
+            if(!isInWater() && deathTime == 0){             
+                //motionY += .50;
+                /*this.attackEntityFrom(DamageSource.drown, 1);
                 int d = 1;
                 int e = 1;
                 if(rand.nextInt(2) == 0){
@@ -156,7 +160,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
                     e = -1;
                 }
                 motionZ = rand.nextFloat()*.20F *d;
-                motionX = rand.nextFloat()*.20F*e;
+                motionX = rand.nextFloat()*.20F*e;*/
             }
 
             if(!inWater){
@@ -230,7 +234,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
     }
 
     protected int getDistanceToBase(int i, int height) {
-        if (worldObj.getBlock((int)posX, height - i, (int)posZ).getMaterial().isLiquid()) {
+        if (worldObj.getBlock(MathHelper.floor_double(posX), height - i, MathHelper.floor_double(posZ)).getMaterial().isLiquid()) {
             //System.out.println("I = " + i);
             return getDistanceToBase(i + 1, height);
         } else {           
@@ -244,7 +248,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
      * @return
      */
     protected int getDistanceToSurface(int i){
-        if(worldObj.getBlock((int)posX, (int)posY + i, (int)posZ).getMaterial().isLiquid()) {
+        if(worldObj.getBlock(MathHelper.floor_double(posX), (int)posY + i, MathHelper.floor_double(posZ)).getMaterial().isLiquid()) {
             return getDistanceToSurface(i + 1);
         } 
         else {

@@ -13,7 +13,7 @@ public class EffectEntry {
 	private int effectTime = 100;
 	
 	public EffectEntry(EntityLivingBase entity) {
-		System.out.println("new entry: " + entity);
+		//System.out.println("new entry: " + entity);
 		this.entity = entity;
 		startPos = Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ);
 		init();
@@ -56,7 +56,7 @@ public class EffectEntry {
 	}
 	
 	public void cleanup() {
-		System.out.println("remove entry: " + entity);
+		//System.out.println("remove entry: " + entity);
 		entity = null;
 	}
 	
@@ -64,7 +64,8 @@ public class EffectEntry {
 		effectTime--;
 		EntityLiving ent = (EntityLiving) entity;
 		
-		ent.motionX = ent.motionY = ent.motionZ = 0;
+		ent.motionX = ent.motionZ = 0;
+		if (ent.motionY > 0) ent.motionY = 0;
 		ent.setPosition(startPos.xCoord, startPos.yCoord, startPos.zCoord);
 	}
 	
@@ -72,7 +73,8 @@ public class EffectEntry {
 		effectTime--;
 		EntityPlayer ent = (EntityPlayer) entity;
 		
-		ent.motionX = ent.motionY = ent.motionZ = 0;
+		ent.motionX = ent.motionZ = 0;
+		if (ent.motionY > 0) ent.motionY = 0;
 		ent.setPosition(startPos.xCoord, startPos.yCoord, startPos.zCoord);
 	}
 }

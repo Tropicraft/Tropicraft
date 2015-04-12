@@ -25,6 +25,7 @@ public class RenderSeahorse extends RenderLiving {
 	private void renderSeahorse(EntitySeahorse seahorse, double x, double y, double z, float f, float f1) {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y - 2.2, z);
+		//GL11.glRotatef(90F, 0, 1, 0);
 		super.doRender(seahorse, x, y, z, f, f1);
 		GL11.glPopMatrix();
 	}
