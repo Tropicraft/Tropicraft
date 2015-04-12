@@ -198,7 +198,7 @@ public class TCItemRegistry {
 
     public static Item recordBuriedTreasure = new ItemTropicraftMusicDisk("buriedtreasure", "buriedtreasure", "Punchaface").setUnlocalizedName("Buried Treasure");
     public static Item recordEasternIsles = new ItemTropicraftMusicDisk("easternisles", "easternisles", "Frox").setUnlocalizedName("Eastern Isles");
-    public static Item recordLowTide = new ItemTropicraftMusicDisk("lowtide", "lowtide", "Frox").setUnlocalizedName("Low Tide");
+    public static Item recordLowTide = new ItemTropicraftMusicDisk("lowtide", "lowtide", "Punchaface").setUnlocalizedName("Low Tide");
     public static Item recordSummering = new ItemTropicraftMusicDisk("summering", "summering", "Billy Christiansen").setUnlocalizedName("Summering");
     public static Item recordTheTribe = new ItemTropicraftMusicDisk("thetribe", "thetribe", "Emile Van Krieken").setUnlocalizedName("The Tribe");
     public static Item recordTradeWinds = new ItemTropicraftMusicDisk("tradewinds", "tradewinds", "Frox").setUnlocalizedName("Trade Winds");
