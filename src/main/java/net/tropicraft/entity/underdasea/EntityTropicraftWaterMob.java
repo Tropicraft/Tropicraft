@@ -3,6 +3,7 @@ package net.tropicraft.entity.underdasea;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -10,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -108,29 +110,31 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
             surfaceTick--;
         }
 
-        if(isInWater()) {
-            if(!isSurfacing) {
-                // Wander
-                if(important1 < 3.141593F) {
-                    float f = important1 / 3.141593F;
-                    if((double)f > 0.75D) {
-                        randomMotionSpeed = 1.0F;
-                    } 
-                } else {
-                    randomMotionSpeed = randomMotionSpeed * 0.95F;
-                }
-
-                if(!worldObj.isRemote && targetEntity == null) {
-                    motionX = randomMotionVecX * randomMotionSpeed;
-                    motionY = randomMotionVecY * randomMotionSpeed;
-                    motionZ = randomMotionVecZ * randomMotionSpeed;
-                }
-
-                if(targetEntity == null){
-                    renderYawOffset += ((-(float)Math.atan2(motionX, motionZ) * 180F) / 3.141593F - renderYawOffset) * 0.1F;
-                    rotationYaw = renderYawOffset;
-                }
+        if(!isSurfacing) {
+            // Wander
+            if(important1 < 3.141593F) {
+                float f = important1 / 3.141593F;
+                if((double)f > 0.75D) {
+                    randomMotionSpeed = 1.0F;
+                } 
+            } else {
+                randomMotionSpeed = randomMotionSpeed * 0.95F;
             }
+
+            if(!worldObj.isRemote && targetEntity == null) {
+                motionX = randomMotionVecX * randomMotionSpeed;
+                motionY = randomMotionVecY * randomMotionSpeed;
+                motionZ = randomMotionVecZ * randomMotionSpeed;
+            }
+
+            if(targetEntity == null){
+                renderYawOffset += ((-(float)Math.atan2(motionX, motionZ) * 180F) / 3.141593F - renderYawOffset) * 0.1F;
+                rotationYaw = renderYawOffset;
+            }
+        }
+        
+        if(isInWater()) {
+            
         } else
         {
             // Rise to surface
@@ -165,8 +169,15 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
                 motionX = rand.nextFloat()*.20F*e;*/
             }
 
-            if(!inWater){
-                motionY -= 0.080000000000000002D;
+            Block blockUnder = worldObj.getBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 1), MathHelper.floor_double(posZ));
+            Block blockAt = worldObj.getBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ));
+            if (!blockUnder.getMaterial().isSolid()) {
+	            if(blockAt == Blocks.air){
+	                motionY -= 0.080000000000000002D;
+	            }
+            } else {
+            	motionY += 0.2D;
+            	this.moveEntity(motionX, motionY, motionZ);
             }
         }
     }
@@ -350,7 +361,7 @@ public abstract class EntityTropicraftWaterMob extends EntityWaterMob {
      */
     @Override
     public boolean isInWater() {
-        return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), Material.water, this);
+        return super.isInWater();//this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), Material.water, this);
     }
 
     /**

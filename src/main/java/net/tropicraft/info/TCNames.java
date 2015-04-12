@@ -169,6 +169,7 @@ public class TCNames {
 				"eih", "marlin", "fish", "ashen", "turtle", "mow", "monkey", "koa", "tropicreeper",
 				"tropiskelly", "eagleray", "failgull", "seaurchin"};
 	public static final String egg = "egg";
+    public static final String ashenMask = "ashenMask";
 
     // Scuba
     public static final String dryFlippers = "dryFlippers";

@@ -38,6 +38,7 @@ import net.tropicraft.item.ItemTropicraftMusicDisk;
 import net.tropicraft.item.ItemTropicraftOre;
 import net.tropicraft.item.ItemTropicsWaterBucket;
 import net.tropicraft.item.ItemWaterWand;
+import net.tropicraft.item.armor.ItemAshenMask;
 import net.tropicraft.item.armor.ItemFireArmor;
 import net.tropicraft.item.armor.ItemScaleArmor;
 import net.tropicraft.item.armor.ItemTropicraftArmor;
@@ -94,6 +95,9 @@ public class TCItemRegistry {
     public static final ItemTropicraftArmor fireLeggings = new ItemFireArmor(materialFireArmor, 0, 2);
     public static final ItemTropicraftArmor fireChestplate = new ItemFireArmor(materialFireArmor, 0, 1);
     public static final ItemTropicraftArmor fireHelmet = new ItemFireArmor(materialFireArmor, 0, 0);
+    
+    public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", 18, new int[]{2, 6, 5, 2}, 9);
+    public static final ItemTropicraftArmor ashenMask = (ItemTropicraftArmor) new ItemAshenMask(materialMaskArmor, 0, 0, getMaskDisplayNames(), getMaskImageNames()).setCreativeTab(TCCreativeTabRegistry.tabDecorations);
     // End Armor
 
     // Tools
@@ -338,6 +342,8 @@ public class TCItemRegistry {
         registerItem(snareTrap, TCNames.snareTrap);
         registerItem(encTropica, TCNames.encTropica);
         registerItem(mobEgg, TCNames.egg);
+        
+        registerItem(ashenMask, TCNames.ashenMask);
     }
 
     /**
@@ -350,4 +356,20 @@ public class TCItemRegistry {
         item.setUnlocalizedName(name);
         OreDictionary.registerOre(name, item);
     }
+    
+    public static String[] getShellImageNames() {
+		return new String[]{"shell_solo", "shell_frox", "shell_pab", "shell_rube", "shell_starfish", "shell_turtle"};
+	}
+
+	public static String[] getMaskDisplayNames() {
+		return new String[] {"Square Zord", "Horn Monkey", "Oblongatron", "Headinator", "Square Horn", "Screw Attack", "The Brain", "Bat Boy", "Ashen Mask", "Ashen Mask", "Ashen Mask", "Ashen Mask", "Ashen Mask"};
+	}
+
+	public static String[] getMaskImageNames() {
+		String[] strArr = new String[getMaskDisplayNames().length];
+		for (int i = 0; i < strArr.length; i++) {
+			strArr[i] = "mask_" + i;
+		}
+		return strArr;
+	}
 }
