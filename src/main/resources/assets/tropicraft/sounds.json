@@ -17,60 +17,6 @@
       "bongolow"
     ]
   },
-  "buriedtreasure": {
-    "category": "record",
-    "sounds": [
-      {
-        "name":"records/buriedtreasure",
-        "stream":true
-      }
-    ]
-  },
-  "easternisles": {
-  	"category": "record",
-  	"sounds": [
-    	{
-    		"name":"records/easternisles",
-    		"stream":true
-    	}
-  	]
-  },
-  "lowtide": {
-    "category": "record",
-    "sounds": [
-      {
-        "name":"records/lowtide",
-        "stream":true
-      }
-    ]
-  },
-  "summering": {
-    "category": "record",
-    "sounds": [
-      {
-        "name":"records/summering",
-        "stream":true
-      }
-    ]
-  },
-  "thetribe": {
-    "category": "record",
-    "sounds": [
-      {
-        "name":"records/thetribe",
-        "stream":true
-      }
-    ]
-  },
-  "tradewinds": {
-    "category": "record",
-    "sounds": [
-      {
-        "name":"records/tradewinds",
-        "stream":true
-      }
-    ]
-  },
   "ambient.tropicraft.portal": { 
     "category": "neutral",
     "sounds": [

@@ -85,6 +85,7 @@ public class ItemTropicraftMusicDisk extends ItemRecord {
      */
     @Override
     public ResourceLocation getRecordResource(String name) {
-        return new ResourceLocation(TCInfo.RECORDS_LOCATION + name.substring(8) + ".ogg");
+    	name = ("tropicraft:records/" + name.substring(8)).replace("/", ".");
+        return new ResourceLocation(name);
     }
 }
