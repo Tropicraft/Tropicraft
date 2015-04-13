@@ -3,10 +3,12 @@ package net.tropicraft.block;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -14,6 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import net.tropicraft.world.worldgen.TCGenBase;
 import net.tropicraft.world.worldgen.WorldGenTallTree;
@@ -43,6 +46,15 @@ public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
 	}
 
+    /**
+     * is the block grass, dirt or farmland
+     */
+    protected boolean canPlaceBlockOn(Block block)
+    {
+        return block == Blocks.grass || block == Blocks.dirt || block == Blocks.farmland
+        		|| block == Blocks.sand || block == TCBlockRegistry.purifiedSand || block == TCBlockRegistry.mineralSands;
+    }
+	
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
