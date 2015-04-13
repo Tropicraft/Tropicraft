@@ -19,7 +19,6 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.world.biomes.BiomeGenTropicraft;
-import net.tropicraft.world.biomes.BiomeGenTropicsOcean;
 import net.tropicraft.world.mapgen.MapGenTropicsCaves;
 import net.tropicraft.world.mapgen.MapGenUndergroundGrove;
 import net.tropicraft.world.mapgen.MapGenVolcano;
@@ -331,7 +330,7 @@ public class ChunkProviderTropicraft implements IChunkProvider { //NOTE: THIS WI
 		Block sandBlock;
 		short sandMetadata;
 
-		int sandType = rand.nextInt(50);
+		int sandType = rand.nextInt(200);
 
 		switch(sandType) {
 		case 0:

@@ -62,4 +62,30 @@ public class ItemTCItemFrame extends ItemHangingEntity {
     public void registerIcons(IIconRegister iconRegistry) {
         this.itemIcon = iconRegistry.registerIcon(TCInfo.ICON_LOCATION + "itemframe");
     }
+    
+    /**
+	 * @return The unlocalized item name
+	 */
+	@Override
+	public String getUnlocalizedName() {
+		return String.format("item.%s%s", TCInfo.ICON_LOCATION, getActualName(super.getUnlocalizedName()));
+	}
+
+	/**
+	 * @param itemStack ItemStack instance of this item
+	 * @return The unlocalized item name
+	 */
+	@Override
+	public String getUnlocalizedName(ItemStack itemStack) {
+		return String.format("item.%s%s", TCInfo.ICON_LOCATION, getActualName(super.getUnlocalizedName()));
+	}
+
+	/**
+	 * Get the actual name of the block
+	 * @param unlocalizedName Unlocalized name of the block
+	 * @return Actual name of the block, without the "tile." prefix
+	 */
+	protected String getActualName(String unlocalizedName) {
+		return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
+	}
 }

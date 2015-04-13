@@ -5,7 +5,7 @@ import modconfig.IConfigCategory;
 public class ConfigGenRates implements IConfigCategory {
 
 	public static final int EIH_CHANCE = 50;
-	public static final int SHIPWRECK_CHANCE = 200;
+	public static final int SHIPWRECK_CHANCE = 300;
 	public static final int TALL_FLOWERS_CHANCE = 3;
 	public static final int BAMBOO_CHANCE = 2;
 	public static final int WATERFALL_AMOUNT = 25;

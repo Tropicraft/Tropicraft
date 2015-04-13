@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -16,7 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.registry.TCBlockRegistry;
-import net.tropicraft.registry.TCCreativeTabRegistry;
+import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -260,5 +261,10 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
 	@Override
 	public int getPlantMetadata(IBlockAccess world, int x, int y, int z) {
 		return world.getBlockMetadata(x, y, z);
+	}
+	
+	@Override
+	public Item getItemDropped(int meta, Random rand, int unused) {
+		return TCItemRegistry.bambooChute;
 	}
 }
