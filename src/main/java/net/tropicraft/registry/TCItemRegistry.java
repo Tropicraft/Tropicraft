@@ -343,7 +343,7 @@ public class TCItemRegistry {
         registerItem(encTropica, TCNames.encTropica);
         registerItem(mobEgg, TCNames.egg);
         
-        registerItem(ashenMask, TCNames.ashenMask);
+        //registerItem(ashenMask, TCNames.ashenMask);
     }
 
     /**
