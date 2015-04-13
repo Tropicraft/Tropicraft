@@ -12,6 +12,7 @@ public class BlockPurifiedSand extends BlockFalling {
 
     public BlockPurifiedSand() {
         super(Material.sand);
+        this.setHardness(0.5F);
         this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
     }
     

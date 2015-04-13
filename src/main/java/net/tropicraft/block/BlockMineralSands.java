@@ -1,6 +1,7 @@
 package net.tropicraft.block;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
@@ -16,7 +17,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
+import net.tropicraft.registry.TCItemRegistry;
 import net.tropicraft.util.CoralColors;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,7 +29,22 @@ public class BlockMineralSands extends BlockFalling {
     public BlockMineralSands() {
         super(Material.sand);
         this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
+        this.setHardness(0.5F);
     }
+    
+    /**
+     * Determines the damage on the item the block drops. Used in cloth and wood.
+     */
+    @Override
+    public int damageDropped(int p_149692_1_)
+    {
+        return p_149692_1_;
+    }
+        
+	@Override
+	public Item getItemDropped(int meta, Random rand, int unused) {
+		return Item.getItemFromBlock(TCBlockRegistry.mineralSands);
+	}
     
     @Override
     public void onEntityWalking(World world, int x, int y, int z, Entity entity) {

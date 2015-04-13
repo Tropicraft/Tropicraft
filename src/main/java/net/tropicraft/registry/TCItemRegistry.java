@@ -55,9 +55,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCItemRegistry {
 
-    public static final ItemTropicraft frogLeg = new ItemTropicraft();
+    public static final ItemTropicraft frogLeg = (ItemTropicraft) new ItemTropicraft().setMaxStackSize(64);
     public static final ItemTropicraftFood cookedFrogLeg = new ItemTropicraftFood(2, 0.15F);
-    public static final ItemTropicraft poisonFrogSkin = new ItemTropicraft();
+    public static final ItemTropicraft poisonFrogSkin = (ItemTropicraft) new ItemTropicraft().setMaxStackSize(64);
 
     public static final ItemTropicraftFood freshMarlin = new ItemTropicraftFood(2, 0.3F);
     public static final ItemTropicraftFood searedMarlin = new ItemTropicraftFood(8, 0.65F);
@@ -81,7 +81,7 @@ public class TCItemRegistry {
     public static final ItemTropicraft waterWand = new ItemWaterWand();
     public static final ItemTropicraft fishingNet = new ItemTropicraft();
 
-    public static final ItemTropicraft coffeeBean = new ItemCoffeeBean();
+    public static final ItemTropicraft coffeeBean = (ItemTropicraft) new ItemCoffeeBean().setMaxStackSize(64);
 
     // Armor	
     public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", 18, new int[]{2, 6, 5, 2}, 9);
