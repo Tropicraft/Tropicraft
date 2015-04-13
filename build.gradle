@@ -19,7 +19,7 @@ apply plugin: 'forge'
 
 version = "6.0"
 group= "net.tropicraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Tropicraft"
+archivesBaseName = "tropicraft"
 
 minecraft {
     version = "1.7.10-10.13.0.1180"
@@ -27,7 +27,8 @@ minecraft {
 }
 
 dependencies {
-	compile files("lib/coroutil-1.1.2.jar")
+	//compile files("lib/coroutil-1.1.2.jar")
+	compile files("../forge-1.7.10-CoroUtil/build/classes/main/")
 }
 
 processResources

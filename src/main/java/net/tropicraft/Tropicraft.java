@@ -23,6 +23,7 @@ import net.tropicraft.registry.TCKoaCurrencyRegistry;
 import net.tropicraft.registry.TCTileEntityRegistry;
 import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftWorldUtils;
+import net.tropicraft.world.TCWorldGenerator;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -34,6 +35,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * Mod file for the Tropicraft mod
@@ -99,6 +101,7 @@ public class Tropicraft {
 		TCMiscEvents misc = new TCMiscEvents();
 		MinecraftForge.EVENT_BUS.register(misc);
 		FMLCommonHandler.instance().bus().register(misc);
+		GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
 		TropicraftWorldUtils.initializeDimension();
     }
 	

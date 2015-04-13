@@ -8,7 +8,8 @@ public class TCCommandRegistry {
 
 	public static void init(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandTropicsTeleport());
-		event.registerServerCommand(new CommandTropicraft());
+		//for debug only
+		//event.registerServerCommand(new CommandTropicraft());
 	}
 	
 }
