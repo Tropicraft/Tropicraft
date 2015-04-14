@@ -154,7 +154,7 @@ public class BlockPineapple extends BlockTallFlowers implements IGrowable {
 	 */
 	@Override
 	public String getUnlocalizedName() {
-		return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(this.getTextureName()));
+		return String.format("tile.%s%s", TCInfo.ICON_LOCATION, getActualName(TCNames.tallFlower));
 	}
 
 	/**
