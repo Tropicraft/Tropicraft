@@ -354,7 +354,6 @@ public class TCItemRegistry {
     private static void registerItem(Item item, String name) {
         GameRegistry.registerItem(item, name);
         item.setUnlocalizedName(name);
-        OreDictionary.registerOre(name, item);
     }
     
     public static String[] getShellImageNames() {

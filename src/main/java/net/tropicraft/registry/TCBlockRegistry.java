@@ -12,9 +12,14 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.tropicraft.block.BlockBambooChest;
 import net.tropicraft.block.BlockBambooChute;
 import net.tropicraft.block.BlockBambooDoor;
@@ -55,7 +60,6 @@ import net.tropicraft.block.BlockTropicraftSlab;
 import net.tropicraft.block.BlockTropicraftStairs;
 import net.tropicraft.block.BlockTropicsPortal;
 import net.tropicraft.block.BlockTropicsWater;
-import net.tropicraft.block.scuba.BlockAirCompressor;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
 import net.tropicraft.item.ItemTallFlowers;
@@ -63,93 +67,95 @@ import net.tropicraft.item.ItemTropicraftSlab;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCBlockRegistry {
-	
+
 	private static final Map<String, Class<? extends ItemBlock>> multiBlockMap = new HashMap<String, Class<? extends ItemBlock>>();
-	
+
 	static {
 		multiBlockMap.put(TCNames.pineapple, ItemTallFlowers.class);
 		multiBlockMap.put(TCNames.tallFlower, ItemTallFlowers.class);
 		multiBlockMap.put(TCNames.singleSlabs, ItemSlab.class);
 		multiBlockMap.put(TCNames.doubleSlabs, ItemSlab.class);
 	}
-	
+
 	public static final BlockTropicraft chunkOHead = new BlockChunkOHead();
 	public static final BlockTropicraftStairs chunkStairs = new BlockTropicraftStairs(TCNames.chunkStairs, chunkOHead, 0);
-	
+
 	public static final Block eudialyteOre = new BlockTropicraftOre().setHardness(3.0F).setResistance(5.0F);
 	public static final Block zirconOre = new BlockTropicraftOre().setHardness(4.0F).setResistance(5.0F);
 	public static final Block azuriteOre = new BlockTropicraftOre().setHardness(3.0F).setResistance(5.0F);
-	
+
 	public static final BlockTropicraft oreBlocks = new BlockTropicraftMulti(TCNames.oreBlockNames);
 	public static final BlockTropicraft thatchBundle = new BlockBundle(TCNames.thatchBundle);
 	public static final BlockTropicraft coral = new BlockCoral(TCNames.coralNames);
 	public static final BlockTropicraft bambooBundle = (BlockTropicraft) new BlockBundle(TCNames.bambooBundle).setHardness(1.0F).setResistance(0.1F);
 	public static final BlockTropicraft logs = new BlockTropicraftLog(TCNames.logNames);
 	public static final BlockTropicraft planks = new BlockTropicraftPlank(TCNames.plankNames);
-	
+
 	public static final BlockTropicraftStairs bambooStairs = new BlockTropicraftStairs(TCNames.bambooStairs, bambooBundle, 0);
 	public static final BlockTropicraftStairs thatchStairs = new BlockTropicraftStairs(TCNames.thatchStairs, thatchBundle, 0);
 	public static final BlockTropicraftStairs palmStairs = new BlockTropicraftStairs(TCNames.palmStairs, planks, 0);
 	public static final BlockTropicraftStairs mahoganyStairs = new BlockTropicraftStairs(TCNames.mahoganyStairs, planks, 3);
-	
+
 	public static final BlockPineapple pineapple = new BlockPineapple(TCNames.pineappleNames);
 	public static final BlockTallFlowers tallFlowers = new BlockTallFlowers(TCNames.tallFlowerNames);
-	
+
 	public static final BlockTropicraftFenceGate bambooFenceGate = new BlockTropicraftFenceGate(bambooBundle, 0, TCNames.bambooFenceGate, Material.wood);
 	public static final BlockTropicraftFenceGate palmFenceGate = new BlockTropicraftFenceGate(planks, 1, TCNames.palmFenceGate, Material.wood);
-	
+
 	public static final BlockTropicraftFence bambooFence = new BlockTropicraftFence(TCNames.bambooFence, TCNames.bambooBundle + "_Side", bambooFenceGate, Material.wood);
-//	public static final BlockTropicraftFence chunkFence = new BlockTropicraftFence(TCNames.chunkFence, TCNames.chunkOHead, Material.rock);
+	//	public static final BlockTropicraftFence chunkFence = new BlockTropicraftFence(TCNames.chunkFence, TCNames.chunkOHead, Material.rock);
 	public static final BlockTropicraftFence palmFence = new BlockTropicraftFence(TCNames.palmFence, TCNames.plank + "_" + TCNames.plankNames[0], palmFenceGate, Material.wood);
-//	public static final BlockTropicraftFence thatchFence = new BlockTropicraftFence(TCNames.thatchFence, TCNames.thatchBundle + "_Side", Material.plants);
-//	public static final BlockTropicraftFence mahoganyFence = new BlockTropicraftFence(TCNames.mahoganyFence, TCNames.plank + "_" + TCNames.plankNames[1], Material.wood);
-	
-	
+	//	public static final BlockTropicraftFence thatchFence = new BlockTropicraftFence(TCNames.thatchFence, TCNames.thatchBundle + "_Side", Material.plants);
+	//	public static final BlockTropicraftFence mahoganyFence = new BlockTropicraftFence(TCNames.mahoganyFence, TCNames.plank + "_" + TCNames.plankNames[1], Material.wood);
+
+
 	public static final BlockTropicraftSapling saplings = new BlockTropicraftSapling(TCNames.saplingNames);
 	public static final BlockTropicraft coffeePlant = new BlockCoffeePlant();
-	
+
 	public static final BlockTropicraft tikiTorch = new BlockTikiTorch();
 	public static final BlockDoor bambooDoor = new BlockBambooDoor();
 	public static final BlockSlab singleSlabs = new BlockTropicraftSlab(false);
 	public static final BlockSlab doubleSlabs = new BlockTropicraftSlab(true);
-	
+
 	public static final BlockTropicsWater tropicsWater = new BlockTropicsWater(TCFluidRegistry.tropicsWater, Material.water);
-	
+
 	public static final BlockTropicraft rainStopper = new BlockRainStopper();
-	
+
 	public static final BlockTropicraftFlower flowers = new BlockTropicraftFlower(TCNames.flowerIndices);
 	public static final BlockTropicraftFlowerPot flowerPot = new BlockTropicraftFlowerPot();
-	
+
 	public static final Block firePit = new BlockFirePit();
-	
+
 	public static final BlockCoconut coconut = new BlockCoconut();
-	
+
 	public static final BlockPortalWall tropicsPortalWall = new BlockPortalWall();
 	public static final BlockTropicsPortal tropicsPortal = new BlockTropicsPortal(TCFluidRegistry.tropicsPortal, Material.water);
-	
+
 	//TODO SCUBA public static final BlockAirCompressor airCompressor = new BlockAirCompressor();
-	
+
 	public static final BlockBambooChest bambooChest = new BlockBambooChest();
-	
+
 	public static final BlockFruitLeaves fruitLeaves = new BlockFruitLeaves();
 	public static final BlockPalmLeaves palmLeaves = new BlockPalmLeaves();
 	public static final BlockRainforestLeaves rainforestLeaves = new BlockRainforestLeaves();
-	
+
 	public static final BlockBambooChute bambooChute = new BlockBambooChute();
 	public static final BlockFalling purifiedSand = new BlockPurifiedSand();
-	
+
 	public static final BlockMineralSands mineralSands = new BlockMineralSands();
 	public static final BlockSifter sifter = new BlockSifter();
-	
+
 	public static final BlockCurareBowl curareBowl = new BlockCurareBowl();
 	public static final BlockBongoDrum bongoDrum = new BlockBongoDrum(TCNames.bongoDrumNames);
-	
+
 	public static final BlockKoaChest koaChest = new BlockKoaChest();
 	public static final BlockPurchasePlate purchasePlate = new BlockPurchasePlate();
-	
+
 	public static final BlockBambooMug bambooMug = new BlockBambooMug();
 	public static final BlockEIHMixer eihMixer = new BlockEIHMixer();
-	
+
+	public static final Fluid TROPICS_WATER = new Fluid("waterTropics").setBlock(TCBlockRegistry.tropicsWater).setUnlocalizedName(tropicsWater.getUnlocalizedName());
+
 	/**
 	 * Register all the blocks
 	 */
@@ -174,10 +180,10 @@ public class TCBlockRegistry {
 		registerMultiBlock(tallFlowers, TCNames.tallFlower, TCNames.tallFlowerNames);
 		registerMultiBlock(pineapple, TCNames.pineapple, TCNames.pineappleNames);
 		registerBlockNoName(bambooFence, TCNames.bambooFence);
-	//	registerBlockNoName(chunkFence, TCNames.chunkFence);
-	//	registerBlockNoName(thatchFence, TCNames.thatchFence);
+		//	registerBlockNoName(chunkFence, TCNames.chunkFence);
+		//	registerBlockNoName(thatchFence, TCNames.thatchFence);
 		registerBlockNoName(palmFence, TCNames.palmFence);
-	//	registerBlockNoName(mahoganyFence, TCNames.mahoganyFence);
+		//	registerBlockNoName(mahoganyFence, TCNames.mahoganyFence);
 		registerMultiBlock(saplings, TCNames.sapling, TCNames.saplingNames);
 		registerBlock(coffeePlant, TCNames.coffeePlant);
 		registerBlock(bambooFenceGate, TCNames.bambooFenceGate);
@@ -193,7 +199,7 @@ public class TCBlockRegistry {
 		registerBlock(flowerPot, TCNames.flowerPot);
 		registerBlock(coconut, TCNames.coconut);
 		registerBlock(firePit, TCNames.firePit);
-	//TODO SCUBA	registerBlock(airCompressor, TCNames.airCompressor);
+		//TODO SCUBA	registerBlock(airCompressor, TCNames.airCompressor);
 		registerBlock(bambooChest, TCNames.bambooChest);
 		registerBlock(tropicsPortal, TCNames.portal);
 		registerBlock(tropicsPortalWall, TCNames.portalWall);
@@ -212,14 +218,15 @@ public class TCBlockRegistry {
 		registerBlock(purchasePlate, TCNames.purchasePlate);
 		registerBlock(bambooMug, TCNames.bambooMug);
 		registerBlock(eihMixer, TCNames.eihMixer);
+
+		liquidDictInit();
 	}
-	
+
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
 		GameRegistry.registerBlock(block, c, "tile." + name, params);
 		block.setBlockName(name);
-		OreDictionary.registerOre(name, block);
 	}
-	
+
 	/**
 	 * Register a block with metadata
 	 * @param block Block being registered
@@ -234,7 +241,7 @@ public class TCBlockRegistry {
 		GameRegistry.registerBlock(block, clazz, "tile." + name, namesList);
 		block.setBlockName(name);
 	}
-	
+
 	/**
 	 * Helper method for registering a block with Forge
 	 * @param block Block instance
@@ -244,7 +251,7 @@ public class TCBlockRegistry {
 		GameRegistry.registerBlock(block, "tile." + name);
 		block.setBlockName(name);
 	}
-	
+
 	/**
 	 * Helper method for registering a block with Forge w/o setting the block name
 	 * @param block Block instance
@@ -253,5 +260,10 @@ public class TCBlockRegistry {
 	private static void registerBlockNoName(Block block, String name) {
 		GameRegistry.registerBlock(block, "tile." + name);
 		//block.setBlockName(name);
+	}
+
+	private static void liquidDictInit() {
+		FluidRegistry.registerFluid(TROPICS_WATER);
+		FluidContainerRegistry.registerFluidContainer(TROPICS_WATER, new ItemStack(TCItemRegistry.bucketTropicsWater), new ItemStack(Items.bucket));
 	}
 }
