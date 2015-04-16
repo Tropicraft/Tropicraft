@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "6.0.2"
+version = "6.0.3"
 group= "net.tropicraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "tropicraft"
 
