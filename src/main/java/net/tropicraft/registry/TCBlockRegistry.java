@@ -13,7 +13,6 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
@@ -154,7 +153,7 @@ public class TCBlockRegistry {
 	public static final BlockBambooMug bambooMug = new BlockBambooMug();
 	public static final BlockEIHMixer eihMixer = new BlockEIHMixer();
 
-	public static final Fluid TROPICS_WATER = new Fluid("waterTropics").setBlock(TCBlockRegistry.tropicsWater).setUnlocalizedName(tropicsWater.getUnlocalizedName());
+	public static final Fluid fluidTropicsWater = new Fluid("waterTropics").setBlock(TCBlockRegistry.tropicsWater).setUnlocalizedName(tropicsWater.getUnlocalizedName());
 
 	/**
 	 * Register all the blocks
@@ -263,7 +262,7 @@ public class TCBlockRegistry {
 	}
 
 	private static void liquidDictInit() {
-		FluidRegistry.registerFluid(TROPICS_WATER);
-		FluidContainerRegistry.registerFluidContainer(TROPICS_WATER, new ItemStack(TCItemRegistry.bucketTropicsWater), new ItemStack(Items.bucket));
+		FluidRegistry.registerFluid(fluidTropicsWater);
+		FluidContainerRegistry.registerFluidContainer(fluidTropicsWater, new ItemStack(TCItemRegistry.bucketTropicsWater), new ItemStack(Items.bucket));
 	}
 }

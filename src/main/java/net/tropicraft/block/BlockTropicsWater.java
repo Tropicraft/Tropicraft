@@ -28,6 +28,7 @@ public class BlockTropicsWater extends BlockFluidClassic {
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		stillIcon = iconRegister.registerIcon(TCInfo.ICON_LOCATION + TCNames.stillWater);
 		flowingIcon = iconRegister.registerIcon(TCInfo.ICON_LOCATION + TCNames.flowingWater);
+		TCBlockRegistry.fluidTropicsWater.setIcons(stillIcon, flowingIcon);
 	}
 
 	@Override
