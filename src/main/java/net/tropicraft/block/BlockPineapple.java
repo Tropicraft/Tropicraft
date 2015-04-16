@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockPineapple extends BlockTallFlowers implements IGrowable {
 
 	/** Number of total ticks it takes for this pineapple to grow */
-	private static final int TOTAL_GROW_TICKS = 7;
+	public static final int TOTAL_GROW_TICKS = 7;
 
 	/** 
 	 * Constant value that holds the metadata value of the pineapple
@@ -65,7 +65,7 @@ public class BlockPineapple extends BlockTallFlowers implements IGrowable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		list.add(new ItemStack(item, 1, 8));
+		list.add(new ItemStack(item, 1, 0));
 	}
 
 	/**

@@ -6,7 +6,6 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.entity.EntityTCItemFrame;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBambooChute;

@@ -61,6 +61,7 @@ import net.tropicraft.block.BlockTropicsPortal;
 import net.tropicraft.block.BlockTropicsWater;
 import net.tropicraft.info.TCNames;
 import net.tropicraft.item.ItemBlockTropicraft;
+import net.tropicraft.item.ItemPineapple;
 import net.tropicraft.item.ItemTallFlowers;
 import net.tropicraft.item.ItemTropicraftSlab;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -70,7 +71,7 @@ public class TCBlockRegistry {
 	private static final Map<String, Class<? extends ItemBlock>> multiBlockMap = new HashMap<String, Class<? extends ItemBlock>>();
 
 	static {
-		multiBlockMap.put(TCNames.pineapple, ItemTallFlowers.class);
+		multiBlockMap.put(TCNames.pineapple, ItemPineapple.class);
 		multiBlockMap.put(TCNames.tallFlower, ItemTallFlowers.class);
 		multiBlockMap.put(TCNames.singleSlabs, ItemSlab.class);
 		multiBlockMap.put(TCNames.doubleSlabs, ItemSlab.class);
