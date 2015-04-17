@@ -73,7 +73,7 @@ public class TCWorldGenerator implements IWorldGenerator {
 
 				//*********** HERE TO BOTTOM ARE THINGS NECESSARY TO GET TO THE TROPICS ***********//
 
-				if (ConfigGenRates.genPalmsInOverworld) {
+				if (ConfigGenRates.genPalmsInOverworld && random.nextInt(12) == 0) {
 					BiomeGenBase biome = world.getWorldChunkManager().getBiomeGenAt(cx, cz);					
 
 					if ((ConfigGenRates.genOverworldPalmsInBeachOnly && biome == BiomeGenBase.beach) || !ConfigGenRates.genOverworldPalmsInBeachOnly)
@@ -93,9 +93,9 @@ public class TCWorldGenerator implements IWorldGenerator {
 				}
 
 				// Pineapples
-				if (ConfigGenRates.genPineapplesInOverworld) {
+				if (ConfigGenRates.genPineapplesInOverworld && random.nextInt(8) == 0) {
 					l = random.nextInt(62) + 64;
-					(new WorldGenTallFlower(world, random, TCBlockRegistry.tallFlowers, 0, 1)).generate(world, random, k, l, i1);
+					(new WorldGenTallFlower(world, random, TCBlockRegistry.pineapple, 7, 8)).generate(world, random, k, l, i1);
 				}
 
 				// Bamboo

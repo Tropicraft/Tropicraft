@@ -37,6 +37,22 @@ public class BlockTallFlowers extends BlockDoublePlant {
 		this.setBlockTextureName(TCNames.tallFlower);
 		this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
 	}
+	
+    /**
+     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
+     */
+    /**
+     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
+     */
+    public boolean canBlockStay(World world, int x, int y, int z)
+    {
+        if (world.getBlock(x, y, z) != this) 
+        	return super.canBlockStay(world, x, y, z); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+        int l = world.getBlockMetadata(x, y, z);
+        return l > 0 ? world.getBlock(x, y - 1, z) == this :
+        	world.getBlock(x, y + 1, z) == this && 
+        	super.canBlockStay(world, x, y, z);
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)
