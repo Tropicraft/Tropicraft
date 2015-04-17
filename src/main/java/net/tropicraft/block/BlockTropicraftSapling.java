@@ -122,7 +122,7 @@ public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 		 } else {*/
 			 this.func_149878_d(world, x, y, z, rand);
 	//	 }
-		TCGenBase.blockGenNotifyFlag = 0;
+		TCGenBase.blockGenNotifyFlag = TCGenBase.BLOCK_GEN_NOTIFY_FLAG_DEFAULT;
 	 }
 
 	 /**

@@ -25,9 +25,12 @@ public abstract class TCGenBase extends WorldGenerator {
 	/**Blocks normally checked in the check methods*/
 	List<Block> standardAllowedBlocks = Arrays.asList(Blocks.air, Blocks.leaves, Blocks.tallgrass, Blocks.snow_layer);
 	
+	/** Default flag for the blockGenNotifyFlag below */
+	public static final int BLOCK_GEN_NOTIFY_FLAG_DEFAULT = 2;
+	
 	/** Added by Corosus to reduce/remove the many second client side stallout, was either because of lighting updates or just general client side chunk update spam 
-	 * Setting to 0 solves the issue and doesn't seem to cause much issue server side block notify wise as far as I can tell, refine more if it does **/
-	public static int blockGenNotifyFlag = 0;
+	 * Setting to 0 solves the issue and doesn't seem to cause much issue server side block notify wise as far as I can tell, refine more if it does */	
+	public static int blockGenNotifyFlag = BLOCK_GEN_NOTIFY_FLAG_DEFAULT;
 	
 	public TCGenBase(World world, Random random)
 	{
