@@ -23,7 +23,7 @@ public class EntityEIH extends EntityLand implements IMob {
     public EntityEIH(World world) {
         super(world);
         this.isImmuneToFire = true;
-        setSize(1.0F, 3.0F);
+        setSize(1.4F, 4.0F);
         this.experienceValue = 10;
     }
 

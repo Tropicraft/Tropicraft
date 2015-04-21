@@ -73,7 +73,7 @@ public class ItemMobEgg extends ItemTropicraftMulti {
 				s = "TreeFrogBlue";
 				break;
 			case 6:
-				s = "EIH";
+				s = "Easter Island Head";
 				break;
 			case 7:
 				s = "Marlin";

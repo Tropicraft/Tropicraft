@@ -54,7 +54,7 @@ public class TCEntityRegistry {
 		registerEntity(EntitySeahorse.class, "Seahorse", 120, 3, true);
 		registerEntity(EntityDart.class, "Dart", 120, 4, true);
 		registerEntity(EntityIguana.class, "Iguana", 80, 3, true);
-		registerEntity(EntityEIH.class, "EIH", 80, 3, true);
+		registerEntity(EntityEIH.class, "Easter Island Head", 80, 3, true);
 		registerEntity(EntityTreeFrogGreen.class, "TreeFrogGreen", 80, 3, true);
 		registerEntity(EntityTreeFrogRed.class, "TreeFrogRed", 80, 3, true);
 		registerEntity(EntityTreeFrogBlue.class, "TreeFrogBlue", 80, 3, true);
