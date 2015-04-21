@@ -82,6 +82,7 @@ public class BlockRainforestLeaves extends BlockLeaves {
     }
     
     @Override
+    @SideOnly(Side.SERVER)
     public Item getItemDropped(int metadata, Random random, int j) {
     	if (metadata < 2)
     		return Item.getItemFromBlock(TCBlockRegistry.saplings);
