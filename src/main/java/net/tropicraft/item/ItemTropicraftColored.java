@@ -78,7 +78,7 @@ public class ItemTropicraftColored extends ItemTropicraft {
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
 		String name = ("" + StatCollector.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", TCInfo.MODID)).split(":")[0]
-				+ ":" + this.getIconString() + "_" + ItemDye.field_150923_a[itemstack.getItemDamage()] + ".name")).trim();
+				+ ":" + this.iconString + "_" + ItemDye.field_150923_a[itemstack.getItemDamage()] + ".name")).trim();
 
 		return name;
 	}
