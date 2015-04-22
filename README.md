@@ -13,10 +13,18 @@
   <strong><a href="http://tropicraft.net/">Website</a> | <a href="http://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
 </p>
 <!-- I apologize for the HTML but it looks so pretty :) -->
+
 FAQ
 ===
 **How do I contact the team?**
 Visit us on our IRC channel: [#Tropicraft on EsperNet](webchat.esper.net/?channels=tropicraft)
+
+**Can I use Tropicraft in my public/private mod pack?**
+Probably! Find Cojo on IRC to receive permission and find out what is required from you.
+
+Licensing
+=========
+**Tropicraft** and its associated source code is licensed under the [Mozilla Public License v2](https://www.mozilla.org/MPL/2.0/).
 
 Contributing
 ============
