@@ -16,6 +16,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
+import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.world.biomes.BiomeGenTropicraft;
@@ -66,10 +67,14 @@ public class ChunkProviderTropicraft implements IChunkProvider { //NOTE: THIS WI
 		volcanoGen = new MapGenVolcano(worldObj, true);
 		groveGen = new MapGenUndergroundGrove(worldObj);
 
+		coalGen = new WorldGenMinable(Blocks.coal_ore, 16);
+		lapisGen = new WorldGenMinable(Blocks.lapis_ore, 6);
+		ironGen = new WorldGenMinable(Blocks.iron_ore, 8);
+		eudialyteGen = new WorldGenMinable(TCBlockRegistry.eudialyteOre, 6);
+		zirconGen = new WorldGenMinable(TCBlockRegistry.zirconOre, 4);
+		azuriteGen = new WorldGenMinable(TCBlockRegistry.azuriteOre, 2);
+
 		this.seed = seed;
-
-
-
 	}
 
 	public Chunk provideChunk(int x, int z)
@@ -453,6 +458,8 @@ public class ChunkProviderTropicraft implements IChunkProvider { //NOTE: THIS WI
 		rand.setSeed((long)i * l1 + (long)j * l2 ^ worldObj.getSeed());
 
 		biome.decorate(worldObj, rand, x, z);
+		
+		generateOres(x,z);
 
 		//boolean flag = villageGenerator.generateStructuresInChunk(worldObj, rand, i, j); TODO
 
@@ -467,6 +474,34 @@ public class ChunkProviderTropicraft implements IChunkProvider { //NOTE: THIS WI
 		SpawnerAnimals.performWorldGenSpawning(worldObj, biome, x + 8, z + 8, 16, 16, rand);
 
 		BlockSand.fallInstantly = false;
+	}
+
+	public void generateOres(int x, int z) {
+		genStandardOre1(19, coalGen, 0, 128, x, z);
+		genStandardOre1(10, ironGen, 0, 128 / 2,x,z);
+		genStandardOre1(15, zirconGen, 0, 128 / 4, x, z);
+		genStandardOre1(20, eudialyteGen, 0, 128 / 2,x,z);
+		genStandardOre1(10, azuriteGen, 0, 128, x, z);
+		genStandardOre2(1, lapisGen, 128 / 8, 128 / 8,x,z);
+	}
+
+	public void genStandardOre1(int i, WorldGenerator worldgenerator, int j, int k, int x, int z) {
+		for (int l = 0; l < i; l++) {
+			int i1 = x + rand.nextInt(16);
+			int j1 = rand.nextInt(k - j) + j;
+			int k1 = z + rand.nextInt(16);
+			System.err.println("Generating ore at " + i1 + " " + j1 + " " + k1);
+			worldgenerator.generate(worldObj, rand, i1, j1, k1);
+		}
+	}
+
+	public void genStandardOre2(int i, WorldGenerator worldgenerator, int j, int k,int x, int z) {
+		for (int l = 0; l < i; l++) {
+			int i1 = x + rand.nextInt(16);
+			int j1 = rand.nextInt(k) + rand.nextInt(k) + (j - k);
+			int k1 = z + rand.nextInt(16);
+			worldgenerator.generate(worldObj, rand, i1, j1, k1);
+		}
 	}
 
 	/**
