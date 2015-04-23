@@ -63,13 +63,13 @@ public class BiomeGenRainforest extends BiomeGenTropicraft {
 		for(int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
-			new WorldGenTualang(world, rand, 9, 16).generate(i, getTerrainHeightAt(world, i, k), k);
+			new WorldGenTualang(world, rand, 16, 9).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 
 		for(int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
-			new WorldGenTualang(world, rand, 11, 25).generate(i, getTerrainHeightAt(world, i, k), k);
+			new WorldGenTualang(world, rand, 25, 11).generate(i, getTerrainHeightAt(world, i, k), k);
 		}
 
 		for(int a = 0; a < UNDERGROWTH_AMOUNT; a++) {

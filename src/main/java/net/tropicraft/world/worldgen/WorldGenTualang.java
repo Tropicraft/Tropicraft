@@ -16,7 +16,7 @@ public class WorldGenTualang extends TCGenBase {
 	private int baseHeight;
 	private int maxHeight;
 	
-	public WorldGenTualang(World world, Random random, int baseHeight, int maxHeight) {
+	public WorldGenTualang(World world, Random random, int maxHeight, int baseHeight) {
 		super(world, random);
 		this.baseHeight = baseHeight;
 		this.maxHeight = maxHeight;
