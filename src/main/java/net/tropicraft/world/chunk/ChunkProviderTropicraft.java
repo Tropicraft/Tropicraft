@@ -490,7 +490,6 @@ public class ChunkProviderTropicraft implements IChunkProvider { //NOTE: THIS WI
 			int i1 = x + rand.nextInt(16);
 			int j1 = rand.nextInt(k - j) + j;
 			int k1 = z + rand.nextInt(16);
-			System.err.println("Generating ore at " + i1 + " " + j1 + " " + k1);
 			worldgenerator.generate(worldObj, rand, i1, j1, k1);
 		}
 	}
