@@ -36,7 +36,7 @@ public class ItemTropicsWaterBucket extends ItemFluidContainer {
     public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
 		ItemStack fluid = new ItemStack(item);
 
-		this.fill(fluid, new FluidStack(TCFluidRegistry.tropicsWater, FluidContainerRegistry.BUCKET_VOLUME), true); 
+		this.fill(fluid, new FluidStack(TCFluidRegistry.tropicsWater, FluidContainerRegistry.BUCKET_VOLUME), true);
 		list.add(fluid);
 	}
 	
