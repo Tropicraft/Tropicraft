@@ -1,6 +1,7 @@
 package net.tropicraft.registry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
@@ -198,7 +199,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		for (int i = 0; i < TCNames.coralNames.length; i++) {
 			Tropicraft.encyclopedia.includeItem("coral", new ItemStack(TCBlockRegistry.coral, 1, i));
 		}
-		
+
 		Tropicraft.encyclopedia.includeItem("coralsand", new ItemStack(TCBlockRegistry.mineralSands, 1, 0));
 		Tropicraft.encyclopedia.includeItem("crocosmia", new ItemStack(TCBlockRegistry.flowers, 1, 1));
 		Tropicraft.encyclopedia.includeItem("croton", new ItemStack(TCBlockRegistry.flowers, 1, 10));
@@ -221,7 +222,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
 		Tropicraft.encyclopedia.includeItem("firechestplate", new ItemStack(TCItemRegistry.fireChestplate));
 		Tropicraft.encyclopedia.includeItem("firehelm", new ItemStack(TCItemRegistry.fireHelmet));
 		Tropicraft.encyclopedia.includeItem("fireleggings", new ItemStack(TCItemRegistry.fireLeggings));
-	//	Tropicraft.encyclopedia.includeItem("firestaff", new ItemStack(TCItemRegistry.staffFire));
+		//	Tropicraft.encyclopedia.includeItem("firestaff", new ItemStack(TCItemRegistry.staffFire));
 		/*
 		 * firestaff.title = Fire Staff
 firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows the holder to shoot fireballs that resemble meteors from the Catacombs
@@ -435,21 +436,18 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 			'X', TCItemRegistry.bambooStick
 		});
 
-		// Blowgun recipe used to be here
-
 		// List of wool colors to use for chair/float/umbrella
-		int[] beachItemColors = new int[] {3, 14, 4, 2, 5};
-		for (int i = 0; i < beachItemColors.length; i++) {
+		for (int i = 0; i < 16; i++) {
 
-			createRecipe(true, new ItemStack(TCItemRegistry.chair, 1, i), new Object[]{
+			createRecipe(true, new ItemStack(TCItemRegistry.chair, 1, BlockColored.func_150031_c(i)), new Object[]{
 				"XIX", "XIX", "XIX",
 				'X', TCItemRegistry.bambooStick,
-				'I', new ItemStack(Blocks.wool, 1, beachItemColors[i])
+				'I', new ItemStack(Blocks.wool, 1, i)
 			});
 
-			createRecipe(true, new ItemStack(TCItemRegistry.umbrella, 1, i), new Object[]{
+			createRecipe(true, new ItemStack(TCItemRegistry.umbrella, 1, BlockColored.func_150031_c(i)), new Object[]{
 				"XXX", " I ", " I ",
-				'X', new ItemStack(Blocks.wool, 1, beachItemColors[i]),
+				'X', new ItemStack(Blocks.wool, 1, i),
 				'I', TCItemRegistry.bambooStick
 			});
 
