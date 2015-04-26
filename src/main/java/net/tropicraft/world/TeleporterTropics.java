@@ -10,12 +10,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.LongHashMap;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+import net.tropicraft.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCItemRegistry;
 //import net.tropicraft.block.tileentity.TileEntityBambooChest; TODO
 //import net.tropicraft.item.TropicraftItems; TODO
 
@@ -160,9 +163,7 @@ public class TeleporterTropics extends Teleporter {
 				EntityPlayer player = (EntityPlayer) entity;
 				if (world.provider instanceof WorldProviderTropicraft) {
 					//TODO improve this logical check to an NBT tag or something?
-					//TODO: ADD ENCYCLOPEDIA SPAWNING
-					/*if (!player.inventory.hasItem(TropicraftItems.encTropica.itemID)) {
-						System.out.println(worldSpawnY);
+					if (!player.inventory.hasItem(TCItemRegistry.encTropica)) {
 						// Search for the spawn chest
 						TileEntityBambooChest chest = null;
 						int chestX = MathHelper.floor_double(newLocX);
@@ -171,9 +172,8 @@ public class TeleporterTropics extends Teleporter {
 							for (int searchX = -3; searchX < 4; searchX++) {
 								for (int searchZ = -3; searchZ < 4; searchZ++) {
 									for (int searchY = -4; searchY < 5; searchY++) {
-										if (world.getBlockId(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ) == TropicraftBlocks.bambooChest.blockID) {
-											chest = (TileEntityBambooChest)world.getBlockTileEntity(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
-											System.out.println(chest.isUnbreakable());
+										if (world.getBlock(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ) == TCBlockRegistry.bambooChest) {
+											chest = (TileEntityBambooChest)world.getTileEntity(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
 											if (chest != null && chest.isUnbreakable()) {
 												break chestSearch;
 											}
@@ -187,7 +187,7 @@ public class TeleporterTropics extends Teleporter {
 							boolean hasEncyclopedia = false;
 							for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
 								ItemStack stack = chest.getStackInSlot(inv);
-								if (stack != null && stack.getItem() == TropicraftItems.encTropica) {
+								if (stack != null && stack.getItem() == TCItemRegistry.encTropica) {
 									hasEncyclopedia = true;
 								}
 							}
@@ -197,13 +197,13 @@ public class TeleporterTropics extends Teleporter {
 								for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
 									ItemStack stack = chest.getStackInSlot(inv);
 									if (stack == null) {
-										chest.setInventorySlotContents(inv, new ItemStack(TropicraftItems.encTropica, 1));
+										chest.setInventorySlotContents(inv, new ItemStack(TCItemRegistry.encTropica, 1));
 										break;
 									}
 								}
 							}
 						}
-					}*/
+					}
 				}
 			}
 
@@ -343,7 +343,7 @@ public class TeleporterTropics extends Teleporter {
 							world.setBlock(blockX, blockY, blockZ, PORTAL_WALL_BLOCK);
 						} else {
 							// Set inside of portal
-							int metadata = yOffset == -6 ? 8 : 0;
+							int metadata = yOffset <= -5 ? 8 : 0;
 							world.setBlock(blockX, blockY, blockZ, PORTAL_BLOCK, metadata, 3);
 						}
 					}
@@ -359,17 +359,17 @@ public class TeleporterTropics extends Teleporter {
 			}
 		}
 
-		//TODO: Add chest
-		/*// Add an unbreakable chest to place encyclopedia in
+		// Add chest
+		// Add an unbreakable chest to place encyclopedia in
 		// NOTE: using instanceof instead of world.getWorldInfo().getDimension()
 		// because getWorldInfo() may not be set/correct yet
 		if (world.provider instanceof WorldProviderTropicraft) {
-			world.setBlock(x + 2, y + 1, z, TropicraftBlocks.bambooChest.blockID, 1, 3);
-			TileEntityBambooChest tile = (TileEntityBambooChest)world.getBlockTileEntity(x + 2, y + 1, z);
+			world.setBlock(x + 2, y + 1, z, TCBlockRegistry.bambooChest, 1, 3);
+			TileEntityBambooChest tile = (TileEntityBambooChest)world.getTileEntity(x + 2, y + 1, z);
 			if (tile != null) {
 				tile.setIsUnbreakable(true);
 			}
-		}*/
+		}
 
 		for (int yOffset = 5; yOffset >= -7; yOffset--) {
 			for (int zOffset = -2; zOffset <= 2; zOffset++) {

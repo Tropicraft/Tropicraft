@@ -26,7 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockTropicsPortal extends BlockFluidClassic {
     
     /** Amount of time player must spend in teleport block to teleport */
-    private static final int TIME_UNTIL_TELEPORT = 250;
+    private static final int TIME_UNTIL_TELEPORT = 20;
+    
+    public int messageTick;
 
     public BlockTropicsPortal(Fluid fluid, Material material) {
         super(fluid, material);
@@ -58,22 +60,24 @@ public class BlockTropicsPortal extends BlockFluidClassic {
      */
     @Override
     public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
-        if (!world.isRemote && entity instanceof EntityPlayerMP && world.getBlockMetadata(i, j, k) == 8) {
+        if (!world.isRemote && entity instanceof EntityPlayerMP) {
             EntityPlayerMP player = (EntityPlayerMP)entity;
             entity.setAir(300);
             player.timeUntilPortal++;
 
-            // DEBUG:      System.out.println(((EntityPlayerMP)entity).timeUntilPortal);
-
-            if (player.timeUntilPortal > TIME_UNTIL_TELEPORT)
+            if (player.timeUntilPortal > TIME_UNTIL_TELEPORT && world.getBlockMetadata(i, j, k) == 1)
             {
                 if (player.isPotionActive(Potion.confusion.id)) {
+                	messageTick = 0;
                     player.timeUntilPortal = 0;
                     player.removePotionEffect(Potion.confusion.id);
                     TropicraftWorldUtils.teleportPlayer(player);
                 } else {
+                	messageTick++;
                     player.timeUntilPortal = 0;
-                    player.addChatMessage(new ChatComponentText("You should drink a pi\u00f1a colada before teleporting!"));
+                    
+                    if (messageTick % 50 == 0)
+                    	player.addChatMessage(new ChatComponentText("You should drink a pi\u00f1a colada before teleporting!"));
                 }
             }
         }
