@@ -32,6 +32,7 @@ import net.tropicraft.entity.underdasea.EntityTropicalFish;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.world.WorldProviderTropicraft;
 import net.tropicraft.world.worldgen.WorldGenBamboo;
+import net.tropicraft.world.worldgen.WorldGenCoral;
 import net.tropicraft.world.worldgen.WorldGenEIH;
 import net.tropicraft.world.worldgen.WorldGenSunkenShip;
 import net.tropicraft.world.worldgen.WorldGenTallFlower;
@@ -44,9 +45,6 @@ import net.tropicraft.world.worldgen.WorldGenWaterfall;
 public class BiomeGenTropicraft extends BiomeGenBase {
 
 	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-
-
-
 
 	public static BiomeGenBase tropicsOcean = new BiomeGenTropicraft(ConfigBiomes.tropicsOceanID).setHeight(new Height(-1.0F, 0.4F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical Ocean");
 	public static BiomeGenBase tropics = new BiomeGenTropics(ConfigBiomes.tropicsID).setHeight(new Height(0.15F, 0.15F)).setTemperatureRainfall(2.0F, 1.5F).setBiomeName("Tropics");
@@ -105,7 +103,15 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 	}
 
 	@Override
-	public void decorate(World world, Random rand, int x, int z) {	
+	public void decorate(World world, Random rand, int x, int z) {
+		BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
+		
+		if (biome == tropicsOcean) {
+			if(rand.nextInt(5) == 0) {
+				new WorldGenCoral().generate(world, rand, x + 6 + rand.nextInt(4), 64, z + 6 + rand.nextInt(4));
+			}
+		}
+		
 		if(ConfigGenRates.BAMBOO_CHANCE != 0 && rand.nextInt(ConfigGenRates.BAMBOO_CHANCE) == 0) {
 			int i = randCoord(rand, x, 16);
 			int k = randCoord(rand, z, 16);
