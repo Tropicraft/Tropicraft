@@ -9,7 +9,7 @@ public class TCInfo {
 	public static final String MODID = "tropicraft";
 	
 	/** Mod version */
-	public static final String VERSION = "v6.0";
+	public static final String VERSION = "v6.0.4";
 	
 	/** Name of the mod */
 	public static final String NAME = "Tropicraft";
