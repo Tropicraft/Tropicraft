@@ -29,6 +29,7 @@ public class BlockTropicraftFlower extends BlockBush {
 		this.names = names;
 		this.setBlockTextureName(TCNames.flower);
 		this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
+		this.setStepSound(soundTypeGrass);
 	}
 	
 	/**
