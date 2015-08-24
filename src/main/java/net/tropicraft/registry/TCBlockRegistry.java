@@ -152,9 +152,7 @@ public class TCBlockRegistry {
 	public static final BlockPurchasePlate purchasePlate = new BlockPurchasePlate();
 
 	public static final BlockBambooMug bambooMug = new BlockBambooMug();
-	public static final BlockEIHMixer eihMixer = new BlockEIHMixer();
-
-	public static final Fluid fluidTropicsWater = new Fluid("waterTropics").setBlock(TCBlockRegistry.tropicsWater).setUnlocalizedName(tropicsWater.getUnlocalizedName());
+	public static final BlockEIHMixer eihMixer = new BlockEIHMixer();;
 
 	/**
 	 * Register all the blocks
@@ -218,8 +216,6 @@ public class TCBlockRegistry {
 		registerBlock(purchasePlate, TCNames.purchasePlate);
 		registerBlock(bambooMug, TCNames.bambooMug);
 		registerBlock(eihMixer, TCNames.eihMixer);
-
-		liquidDictInit();
 	}
 
 	private static void registerMultiBlock(Block block, String name, Class<? extends ItemBlock> c, Object[] params) {
@@ -260,10 +256,5 @@ public class TCBlockRegistry {
 	private static void registerBlockNoName(Block block, String name) {
 		GameRegistry.registerBlock(block, "tile." + name);
 		//block.setBlockName(name);
-	}
-
-	private static void liquidDictInit() {
-		FluidRegistry.registerFluid(fluidTropicsWater);
-		FluidContainerRegistry.registerFluidContainer(fluidTropicsWater, new ItemStack(TCItemRegistry.bucketTropicsWater), new ItemStack(Items.bucket));
 	}
 }
