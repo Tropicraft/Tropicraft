@@ -44,10 +44,11 @@ public class ItemTallFlowers extends ItemBlockTropicraft {
 	@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int damage) {
-        int inRange = java.lang.Math.min(damage - 1, icons.length);
-        return damage > 0 ? icons[inRange] : icons[0];
+//        int inRange = java.lang.Math.min(damage - 1, icons.length);
+//        return damage > 0 ? icons[inRange] : icons[0];
+        return icons[MathHelper.clamp_int(meta, 0, Names.Items.ALCHEMICAL_FUEL_SUBTYPES.length - 1)];
     }
-    
+
     /**
      * Called to actually place the block, after the location is determined
      * and all permission checks have been made.
