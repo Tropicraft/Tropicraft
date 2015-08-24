@@ -293,9 +293,6 @@ public class TeleporterTropics extends Teleporter {
         //      System.out.printf("Buliding teleporter at x:<%d>, y:<%d>, z:<%d>\n", foundX, foundY, foundZ);
 
         entity.setLocationAndAngles(foundX, foundY + 2, foundZ, entity.rotationYaw, 0.0F);
-		
-		world.getWorldInfo().setSpawnPosition(worldSpawnX, worldSpawnY, worldSpawnZ);
-
 		buildTeleporterAt(worldSpawnX, worldSpawnY + 1, worldSpawnZ, entity);
 
 		return true;
