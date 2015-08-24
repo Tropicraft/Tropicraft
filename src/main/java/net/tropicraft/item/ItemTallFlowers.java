@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,9 +45,9 @@ public class ItemTallFlowers extends ItemBlockTropicraft {
 	@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int damage) {
-        return damage > 0 ? icons[damage - 1] : icons[damage];
+        return icons[MathHelper.clamp_int(damage, 0, icons.length - 1)];
     }
-    
+
     /**
      * Called to actually place the block, after the location is determined
      * and all permission checks have been made.
