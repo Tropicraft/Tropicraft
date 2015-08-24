@@ -44,7 +44,8 @@ public class ItemTallFlowers extends ItemBlockTropicraft {
 	@Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int damage) {
-        return damage > 0 ? icons[damage - 1] : icons[damage];
+        int inRange = java.lang.Math.min(damage - 1, icons.length);
+        return damage > 0 ? icons[inRange] : icons[0];
     }
     
     /**
