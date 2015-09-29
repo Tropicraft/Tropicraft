@@ -46,20 +46,32 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 
 	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 
-	public static BiomeGenBase tropicsOcean = new BiomeGenTropicraft(ConfigBiomes.tropicsOceanID).setHeight(new Height(-1.0F, 0.4F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical Ocean");
-	public static BiomeGenBase tropics = new BiomeGenTropics(ConfigBiomes.tropicsID).setHeight(new Height(0.15F, 0.15F)).setTemperatureRainfall(2.0F, 1.5F).setBiomeName("Tropics");
-	public static BiomeGenBase rainforestPlains = new BiomeGenRainforest(ConfigBiomes.rainforestPlainsID).setHeight(new Height(0.25F, 0.1F)).setColor(0x11882f).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Rainforest Plains");
-	public static BiomeGenBase rainforestHills = new BiomeGenRainforest(ConfigBiomes.rainforestHillsID).setHeight(new Height(0.45F, 0.425F)).setColor(0x11882f).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Rainforest Hills");
-	public static BiomeGenBase rainforestMountains = new BiomeGenRainforest(ConfigBiomes.rainforestMountainsID).setHeight(new Height(1.0F, 1.2F)).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Rainforest Mountains");
-	public static BiomeGenBase islandMountains = new BiomeGenRainforest(ConfigBiomes.islandMountainsID).setHeight(new Height(0.1F, 2.5F)).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Extreme Rainforest Mountains");
-	public static BiomeGenBase tropicsRiver = new BiomeGenTropicsRiver(ConfigBiomes.tropicsRiverID).setHeight(new Height(-0.7F, 0.05F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical River");
-	public static BiomeGenBase tropicsBeach = new BiomeGenTropicsBeach(ConfigBiomes.tropicsBeachID).setHeight(new Height(-0.1F, 0.1F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical Beach");
-	public static BiomeGenBase tropicsLake = new BiomeGenTropicsOcean(ConfigBiomes.tropicsLakeID).setHeight(new Height(-0.6F, 0.1F)).setTemperatureRainfall(1.5F, 1.5F).setBiomeName("Tropical Lake");
+	public static BiomeGenBase tropicsOcean;
+	public static BiomeGenBase tropics;
+	public static BiomeGenBase rainforestPlains;
+	public static BiomeGenBase rainforestHills;
+	public static BiomeGenBase rainforestMountains;
+	public static BiomeGenBase islandMountains;
+	public static BiomeGenBase tropicsRiver;
+	public static BiomeGenBase tropicsBeach;
+	public static BiomeGenBase tropicsLake;
 
 	public Block sandBlock;
 	public short sandMetadata;
 
 	public static boolean DISABLEDECORATION = false;
+	
+	public static void registerBiomes() {
+		tropicsOcean = new BiomeGenTropicraft(ConfigBiomes.tropicsOceanID).setHeight(new Height(-1.0F, 0.4F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical Ocean");
+		tropics = new BiomeGenTropics(ConfigBiomes.tropicsID).setHeight(new Height(0.15F, 0.15F)).setTemperatureRainfall(2.0F, 1.5F).setBiomeName("Tropics");
+		rainforestPlains = new BiomeGenRainforest(ConfigBiomes.rainforestPlainsID).setHeight(new Height(0.25F, 0.1F)).setColor(0x11882f).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Rainforest Plains");
+		rainforestHills = new BiomeGenRainforest(ConfigBiomes.rainforestHillsID).setHeight(new Height(0.45F, 0.425F)).setColor(0x11882f).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Rainforest Hills");
+		rainforestMountains = new BiomeGenRainforest(ConfigBiomes.rainforestMountainsID).setHeight(new Height(1.0F, 1.2F)).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Rainforest Mountains");
+		islandMountains = new BiomeGenRainforest(ConfigBiomes.islandMountainsID).setHeight(new Height(0.1F, 2.5F)).setTemperatureRainfall(1.5F, 2.0F).setBiomeName("Extreme Rainforest Mountains");
+		tropicsRiver = new BiomeGenTropicsRiver(ConfigBiomes.tropicsRiverID).setHeight(new Height(-0.7F, 0.05F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical River");
+		tropicsBeach = new BiomeGenTropicsBeach(ConfigBiomes.tropicsBeachID).setHeight(new Height(-0.1F, 0.1F)).setTemperatureRainfall(1.5F, 1.25F).setBiomeName("Tropical Beach");
+		tropicsLake = new BiomeGenTropicsOcean(ConfigBiomes.tropicsLakeID).setHeight(new Height(-0.6F, 0.1F)).setTemperatureRainfall(1.5F, 1.5F).setBiomeName("Tropical Lake");
+	}
 
 	public BiomeGenTropicraft(int biomeID) {
 		super(biomeID);
