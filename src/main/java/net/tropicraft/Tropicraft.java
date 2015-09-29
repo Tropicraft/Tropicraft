@@ -24,6 +24,7 @@ import net.tropicraft.registry.TCTileEntityRegistry;
 import net.tropicraft.util.ColorHelper;
 import net.tropicraft.util.TropicraftWorldUtils;
 import net.tropicraft.world.TCWorldGenerator;
+import net.tropicraft.world.biomes.BiomeGenTropicraft;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
