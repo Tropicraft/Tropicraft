@@ -82,14 +82,14 @@ public class TCCraftingRegistry {
 
 		//keep classic paralysis dart recipe, use for poison frog skin for now :/
 		createRecipe(isServer, true, new ItemStack(TCItemRegistry.dart, 4), new Object[]{
-			"XI", " C",
+			"IX", "C ",
 			'X', Items.iron_ingot,
 			'I', TCItemRegistry.poisonFrogSkin,
 			'C', Items.feather
 		});
 
 		createRecipe(isServer, true, new ItemStack(TCItemRegistry.dart, 4), new Object[]{
-			"X ", "IC",
+			" X", "CI",
 			'X', Items.iron_ingot,
 			'I', TCItemRegistry.poisonFrogSkin,
 			'C', Items.feather
@@ -98,14 +98,14 @@ public class TCCraftingRegistry {
 		//register all types of curare, including paralysis
 		for (int damage = 0; damage < ItemCurare.effectNames.length; damage++) {
 			createRecipe(isServer, true, new ItemStack(TCItemRegistry.dart, 4, damage), new Object[] {
-				"XI", " C",
+				"IX", "C ",
 				'X', Items.iron_ingot,
 				'I', new ItemStack(TCItemRegistry.curare, 1, damage),
 				'C', Items.feather
 			});
 
 			createRecipe(isServer, true, new ItemStack(TCItemRegistry.dart, 4, damage), new Object[] {
-				"X ", "IC",
+				" X", "CI",
 				'X', Items.iron_ingot,
 				'I', new ItemStack(TCItemRegistry.curare, 1, damage),
 				'C', Items.feather
@@ -113,10 +113,16 @@ public class TCCraftingRegistry {
 		}
 	}
 
-	private static void createOreBlockRecipe(int i, int j) {
-		createRecipe(true, new ItemStack(TCBlockRegistry.oreBlocks, 1, i), new Object[] {
+	private static void createOreBlockRecipe(int blockDmg, int oreDmg) {
+		createRecipe(true, new ItemStack(TCBlockRegistry.oreBlocks, 1, blockDmg), new Object[] {
 			"%%%", "%%%", "%%%",
-			'%', new ItemStack(TCItemRegistry.ore, 1, j)
+			'%', new ItemStack(TCItemRegistry.ore, 1, oreDmg)
+		});
+	}
+	
+	private static void createOreRecipe(int blockDmg, int oreDmg) {
+		createShapelessRecipe(true, new ItemStack(TCItemRegistry.ore, 9, oreDmg), new Object[] {
+			new ItemStack(TCBlockRegistry.oreBlocks, 1, blockDmg)
 		});
 	}
 
@@ -137,6 +143,14 @@ public class TCCraftingRegistry {
 			addToEncyclopedia(itemstack, obj);
 		}
 		GameRegistry.addRecipe(itemstack, obj);
+	}
+	
+	public static void createShapelessRecipe(boolean addToEncyclopedia, ItemStack itemstack, Object obj[]) {
+		//cannot add shapeless recipes to the encyclopedia yet
+		/*if (addToEncyclopedia && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+			addToEncyclopedia(itemstack, obj);
+		}*/
+		GameRegistry.addShapelessRecipe(itemstack, obj);
 	}
 
 	/**
@@ -342,9 +356,8 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 		});
 
 		// Thatch slab
-		createRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 1, 1), new Object[]{//
-			"X",
-			'X', new ItemStack(TCBlockRegistry.thatchBundle, 1, 0)
+		createShapelessRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 1, 1), new Object[]{//
+			new ItemStack(TCBlockRegistry.thatchBundle, 1, 0)
 		});
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 1, 0), new Object[]{//
@@ -352,34 +365,18 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 			'X', TCItemRegistry.bambooShoot
 		});
 
-		createRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 2, 0), new Object[]{//
-			"X",
-			'X', TCBlockRegistry.bambooBundle
+		createShapelessRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 2, 0), new Object[]{//
+			TCBlockRegistry.bambooBundle
 		});
 
 		// Palm  planks -> Palm logs
-		createRecipe(true, new ItemStack(TCBlockRegistry.planks, 4, 0), new Object[]{
-			"#",
-			'#', new ItemStack(TCBlockRegistry.logs, 1, 0)
+		createShapelessRecipe(true, new ItemStack(TCBlockRegistry.planks, 4, 0), new Object[]{
+			new ItemStack(TCBlockRegistry.logs, 1, 0)
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.bambooMug, 1), new Object[]{
 			"X X", "X X", "XXX",
 			'X', TCItemRegistry.bambooShoot
-		});
-
-		createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
-			"X", "Y", "Z",
-			'X', TCItemRegistry.coconutChunk,
-			'Y', new ItemStack(TCBlockRegistry.pineapple, 1, 8).getItem(),
-			'Z', TCItemRegistry.bambooMug
-		});
-
-		createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
-			"Y", "X", "Z",
-			'X', TCItemRegistry.coconutChunk,
-			'Y', new ItemStack(TCBlockRegistry.pineapple, 1, 8).getItem(),
-			'Z', TCItemRegistry.bambooMug
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.scaleHelmet, 1), new Object[]{
@@ -409,13 +406,13 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.tikiTorch, 2), new Object[]{
-			"Y  ", " X ", "  X",
+			"  Y", " X ", "X  ",
 			'Y', Items.coal,
 			'X', TCItemRegistry.bambooStick
 		});
 
 		createRecipe(false, new ItemStack(TCItemRegistry.tikiTorch, 2), new Object[]{
-			"Y  ", " X ", "  X",
+			"  Y", " X ", "X  ",
 			'Y', new ItemStack(Items.coal, 1, 1),
 			'X', TCItemRegistry.bambooStick
 		});
@@ -482,9 +479,8 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 		 */
 
 		// Chunk slab
-		createRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 2, 2), new Object[]{
-			"X",
-			'X', TCBlockRegistry.chunkOHead
+		createShapelessRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 2, 2), new Object[]{
+			TCBlockRegistry.chunkOHead
 		});
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.chunkStairs, 4), new Object[]{
@@ -493,9 +489,8 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 		});
 
 		// Palm slab
-		createRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 2, 3), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.planks, 1, 0)
+		createShapelessRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 2, 3), new Object[]{
+			new ItemStack(TCBlockRegistry.planks, 1, 0)
 		});
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.palmStairs, 4), new Object[]{
@@ -515,14 +510,12 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 			'I', new ItemStack(TCBlockRegistry.planks, 1, 1)
 		});
 
-		createRecipe(true, new ItemStack(TCItemRegistry.pearl, 1, 0), new Object[]{
-			"I",
-			'I', new ItemStack(TCItemRegistry.shells, 1, 0)
+		createShapelessRecipe(true, new ItemStack(TCItemRegistry.pearl, 1, 0), new Object[]{
+			new ItemStack(TCItemRegistry.shells, 1, 0)
 		});
 
-		createRecipe(true, new ItemStack(TCItemRegistry.pearl, 1, 1), new Object[]{
-			"I",
-			'I', new ItemStack(TCItemRegistry.shells, 1, 1)
+		createShapelessRecipe(true, new ItemStack(TCItemRegistry.pearl, 1, 1), new Object[]{
+			new ItemStack(TCItemRegistry.shells, 1, 1)
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.pickaxeZircon), new Object[]{
@@ -615,10 +608,13 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 			'I', TCItemRegistry.bambooStick
 		});
 
-		createRecipe(true, new ItemStack(TCItemRegistry.pineappleCubes), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.tallFlowers, 1, 9)
+		createShapelessRecipe(true, new ItemStack(TCItemRegistry.pineappleCubes), new Object[]{
+			new ItemStack(TCBlockRegistry.pineapple)
 		});
+		
+		createShapelessRecipe(true, new ItemStack(TCItemRegistry.coconutChunk), new Object[]{
+				new ItemStack(TCBlockRegistry.coconut)
+			});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.flippers), new Object[]{
 			"XIX", "X X",
@@ -658,34 +654,28 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 
 		//para dart recipes were here
 
-		createRecipe(true, new ItemStack(Items.dye, 4, 5), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.tallFlowers, 1, 15)
+		createShapelessRecipe(true, new ItemStack(Items.dye, 4, 5), new Object[]{
+			new ItemStack(TCBlockRegistry.tallFlowers, 1, 15)
 		});
 
-		createRecipe(true, new ItemStack(Items.dye, 2, 1), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.flowers, 1, 6)//r antherium
+		createShapelessRecipe(true, new ItemStack(Items.dye, 2, 1), new Object[]{
+			new ItemStack(TCBlockRegistry.flowers, 1, 6)//r antherium
 		});
 
-		createRecipe(true, new ItemStack(Items.dye, 2, 14), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.flowers, 1, 5)//o antherium
+		createShapelessRecipe(true, new ItemStack(Items.dye, 2, 14), new Object[]{
+			new ItemStack(TCBlockRegistry.flowers, 1, 5)//o antherium
 		});
 
-		createRecipe(true, new ItemStack(Items.dye, 2, 12), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.flowers, 1, 0)//fern
+		createShapelessRecipe(true, new ItemStack(Items.dye, 2, 12), new Object[]{
+			new ItemStack(TCBlockRegistry.flowers, 1, 0)//fern
 		});
 
-		createRecipe(true, new ItemStack(Items.dye, 2, 2), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.flowers, 1, 12)//c. diffusa
+		createShapelessRecipe(true, new ItemStack(Items.dye, 2, 2), new Object[]{
+			new ItemStack(TCBlockRegistry.flowers, 1, 12)//c. diffusa
 		});
 
-		createRecipe(true, new ItemStack(Items.dye, 2, 11), new Object[]{
-			"X",
-			'X', new ItemStack(TCBlockRegistry.flowers, 1, 3) //canna
+		createShapelessRecipe(true, new ItemStack(Items.dye, 2, 11), new Object[]{
+			new ItemStack(TCBlockRegistry.flowers, 1, 3) //canna
 		});
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.bambooChest, 1), new Object[]{
@@ -728,9 +718,8 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 			'#', Items.stick
 		});
 
-		createRecipe(true, new ItemStack(Blocks.planks, 4, 3), new Object[] {
-			"#",
-			'#', new ItemStack(TCBlockRegistry.logs, 1, 1)
+		createShapelessRecipe(true, new ItemStack(Blocks.planks, 4, 3), new Object[] {
+			new ItemStack(TCBlockRegistry.logs, 1, 1)
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.encTropica, 1), new Object[]{
@@ -763,8 +752,8 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 			"# #", " # ", '#', TCItemRegistry.bambooShoot
 		});
 
-		createRecipe(true, new ItemStack(TCItemRegistry.coffeeBean, 1, 0), new Object[] {
-			"X", 'X', new ItemStack(TCItemRegistry.coffeeBean, 0, 2)
+		createShapelessRecipe(true, new ItemStack(TCItemRegistry.coffeeBean, 1, 0), new Object[] {
+			new ItemStack(TCItemRegistry.coffeeBean, 1, 2)
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.tropiFrame, 1), new Object[] {
@@ -802,6 +791,23 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.curareBowl), new Object[] {
 			"X X", " X ", 'X', TCBlockRegistry.chunkOHead
+		});
+		
+		createShapelessRecipe(true, new ItemStack(TCItemRegistry.fertilizer, 3), new Object[]{
+			new ItemStack(TCBlockRegistry.flowers, 1, 7),
+			new ItemStack(TCBlockRegistry.flowers, 1, 10)
+		});
+		
+		createShapelessRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+			TCItemRegistry.coconutChunk,
+			new ItemStack(TCBlockRegistry.pineapple),
+			TCItemRegistry.bambooMug
+		});
+
+		createShapelessRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+			TCItemRegistry.coconutChunk,
+			TCItemRegistry.pineappleCubes,
+			TCItemRegistry.bambooMug
 		});
 
 		/*    createRecipe(true, new ItemStack(TCItemRegistry.rodOld), new Object[]{
@@ -842,29 +848,18 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
             'O', new ItemStack(Items.dye, 1, 5)
         });*/
 
-		createOreBlockRecipe(2, 0); //eudialyte
-		createOreBlockRecipe(3, 1); //zircon
-		createOreBlockRecipe(4, 2); //azurite
-		createOreBlockRecipe(5, 3); //zirconium
+		createOreBlockRecipe(0, 0); //eudialyte
+		createOreBlockRecipe(1, 1); //zircon
+		createOreBlockRecipe(2, 2); //azurite
+		createOreBlockRecipe(3, 3); //zirconium
+		
+		createOreRecipe(0, 0); //eudialyte
+		createOreRecipe(1, 1); //zircon
+		createOreRecipe(2, 2); //azurite
+		createOreRecipe(3, 3); //zirconium
 
 		//     CurareRecipes.addRecipes(true);
 		//    CurareRecipes.addCurareMixerRecipes();
-
-		// Shapeless recipes go here //
-		GameRegistry.addShapelessRecipe(
-				new ItemStack(TCItemRegistry.fertilizer, 3),
-				new Object[]{
-					new ItemStack(TCBlockRegistry.flowers, 1, 7),
-					new ItemStack(TCBlockRegistry.flowers, 1, 10)
-				});
-
-		GameRegistry.addShapelessRecipe(
-				MixerRecipes.getItemStack(Drink.pinaColada),
-				new Object[]{
-					TCItemRegistry.coconutChunk,
-					TCItemRegistry.pineappleCubes,
-					TCItemRegistry.bambooMug
-				});
 
 
 		// Smelting recipes go here //
