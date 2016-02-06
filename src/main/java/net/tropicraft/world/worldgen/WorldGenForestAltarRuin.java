@@ -163,7 +163,7 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen {
 		int picker = rand.nextInt(18);
 		if(picker < 6)
 		{
-			return new ItemStack(TCBlockRegistry.bambooChute, rand.nextInt(20) + 1);
+			return new ItemStack(TCBlockRegistry.bambooShoot, rand.nextInt(20) + 1);
 		}
 		//else if(picker < 8)
 		//{

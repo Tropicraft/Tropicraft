@@ -13,7 +13,7 @@ anthuriumr.desc  = This strong red colored flower has an orange counterpart.
 azurite.title = Azurite
 azurite.desc  = This soft mineral is actually an ore of copper. It owes it's pretty blue color to the weathering of copper ore deposits.
 
-bamboo.title = Bamboo Chute
+bamboo.title = Bamboo Shoot
 bamboo.desc  = Bamboo is by far the most versatile item in the Tropics. You can craft weapons, blocks, and mugs from this sustainable resource.
 
 bamboomug.title = Bamboo Mug

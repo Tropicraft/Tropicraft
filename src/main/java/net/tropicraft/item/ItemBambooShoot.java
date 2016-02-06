@@ -9,9 +9,9 @@ import net.tropicraft.registry.TCCreativeTabRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBambooChute extends ItemReed {
+public class ItemBambooShoot extends ItemReed {
 
-    public ItemBambooChute(Block block) {
+    public ItemBambooShoot(Block block) {
         super(block);
         this.setCreativeTab(TCCreativeTabRegistry.tabDecorations);
     }

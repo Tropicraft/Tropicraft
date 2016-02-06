@@ -168,7 +168,7 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
                         blawk = this.worldObj.getBlock(var3 + var6, var4 + var7, this.field_146062_d);
                     }
 
-                    if (!var8.isSolid() && blawk != null && !(blawk == TCBlockRegistry.bambooChute)) {
+                    if (!var8.isSolid() && blawk != null && !(blawk == TCBlockRegistry.bambooShoot)) {
                         //                       System.err.println("invalid surface2");
                         return false;
                     }

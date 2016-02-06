@@ -165,7 +165,7 @@ ashenmask.desc  = These masks are the source of an Ashen's identity. Without a m
 		 */
 
 		Tropicraft.encyclopedia.includeItem("azurite", new ItemStack(TCItemRegistry.ore, 1, 2));
-		Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(TCItemRegistry.bambooChute));
+		Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(TCItemRegistry.bambooShoot));
 		Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(TCItemRegistry.bambooMug));
 		Tropicraft.encyclopedia.includeItem("bambooblock", new ItemStack(TCBlockRegistry.bambooBundle));
 		Tropicraft.encyclopedia.includeItem("bamboochest", new ItemStack(TCBlockRegistry.bambooChest));
@@ -312,7 +312,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.bambooBundle, 1), new Object[]{
 			"XX", "XX",
-			'X', TCItemRegistry.bambooChute
+			'X', TCItemRegistry.bambooShoot
 		});
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.thatchStairs, 1), new Object[]{//
@@ -327,7 +327,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.bambooStairs, 1), new Object[]{//
 			"X ", "XX",
-			'X', TCItemRegistry.bambooChute
+			'X', TCItemRegistry.bambooShoot
 		});
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.bambooStairs, 4), new Object[]{//
@@ -349,7 +349,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 1, 0), new Object[]{//
 			"XX",
-			'X', TCItemRegistry.bambooChute
+			'X', TCItemRegistry.bambooShoot
 		});
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.singleSlabs, 2, 0), new Object[]{//
@@ -365,7 +365,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 
 		createRecipe(true, new ItemStack(TCItemRegistry.bambooMug, 1), new Object[]{
 			"X X", "X X", "XXX",
-			'X', TCItemRegistry.bambooChute
+			'X', TCItemRegistry.bambooShoot
 		});
 
 		createRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
@@ -628,7 +628,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 
 		createRecipe(true, new ItemStack(TCItemRegistry.snorkel), new Object[]{
 			"X  ", "XII",
-			'X', TCItemRegistry.bambooChute,
+			'X', TCItemRegistry.bambooShoot,
 			'I', Blocks.glass_pane
 		});
 
@@ -646,7 +646,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 
 		createRecipe(true, new ItemStack(TCItemRegistry.fishingNet), new Object[]{
 			"  X", " XI", "XII",
-			'X', TCItemRegistry.bambooChute,
+			'X', TCItemRegistry.bambooShoot,
 			'I', Items.string
 		});
 
@@ -690,7 +690,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 
 		createRecipe(true, new ItemStack(TCBlockRegistry.bambooChest, 1), new Object[]{
 			"XXX", "X X", "XXX",
-			'X', TCItemRegistry.bambooChute
+			'X', TCItemRegistry.bambooShoot
 		});
 
 		createRecipe(true, new ItemStack(Items.stick, 4), new Object[] {
@@ -735,7 +735,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 
 		createRecipe(true, new ItemStack(TCItemRegistry.encTropica, 1), new Object[]{
 			"###", "#$#", "###",
-			'#', TCItemRegistry.bambooChute,
+			'#', TCItemRegistry.bambooShoot,
 			'$', Items.book
 		});
 
@@ -760,7 +760,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.flowerPot), new Object[] {
-			"# #", " # ", '#', TCItemRegistry.bambooChute
+			"# #", " # ", '#', TCItemRegistry.bambooShoot
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.coffeeBean, 1, 0), new Object[] {
@@ -768,7 +768,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.tropiFrame, 1), new Object[] {
-			"###", "#X#", "###", '#', TCItemRegistry.bambooChute, 'X', Items.leather
+			"###", "#X#", "###", '#', TCItemRegistry.bambooShoot, 'X', Items.leather
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.portalEnchanter, 1), new Object[] {
@@ -784,7 +784,7 @@ enchantwand.desc = Make a 2 block wide, 2 block long, 1 block high square of tro
 		});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.bambooStick, 4),
-				new Object[] {"#", "#", '#', TCItemRegistry.bambooChute});
+				new Object[] {"#", "#", '#', TCItemRegistry.bambooShoot});
 
 		createRecipe(true, new ItemStack(TCItemRegistry.ore, 1, 3), new Object[] {
 			"###", "#$#", "###",

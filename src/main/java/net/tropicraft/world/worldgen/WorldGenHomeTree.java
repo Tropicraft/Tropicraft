@@ -463,7 +463,7 @@ public class WorldGenHomeTree extends TCGenBase {
 		int picker = rand.nextInt(18);
 		if(picker < 6)
 		{
-			return new ItemStack(TCItemRegistry.bambooChute, rand.nextInt(20) + 1);
+			return new ItemStack(TCItemRegistry.bambooShoot, rand.nextInt(20) + 1);
 		}
 		else if(picker < 8)
 		{
