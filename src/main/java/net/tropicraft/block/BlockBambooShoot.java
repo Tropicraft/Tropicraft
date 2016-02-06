@@ -21,7 +21,7 @@ import net.tropicraft.registry.TCItemRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockBambooChute extends BlockTropicraft implements IPlantable {
+public class BlockBambooShoot extends BlockTropicraft implements IPlantable {
 	
     @SideOnly(Side.CLIENT)
 	private IIcon sideIcon;
@@ -41,7 +41,7 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
     @SideOnly(Side.CLIENT)
     private IIcon leafFlippedIcon;
 	
-	public BlockBambooChute() {
+	public BlockBambooShoot() {
 		super(Material.plants);
 //		setHardness(1.0F);
 //		setResistance(4.0F);
@@ -49,7 +49,7 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
         this.setTickRandomly(true);
         this.setCreativeTab(null);
-        this.setBlockTextureName(TCNames.bambooChute);
+        this.setBlockTextureName(TCNames.bambooShoot);
 	}
 	
     @Override
@@ -64,7 +64,7 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
 
 	@Override
     public int getRenderType() {
-       // return TCRenderIDs.bambooChute;
+       // return TCRenderIDs.bambooShoot;
 		return 1;
     }
 
@@ -82,17 +82,17 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
 	public static IIcon getBambooIcon(String iconString) {
 		return null;
 /*		if (iconString.equals("side")) {
-			return TCBlockRegistry.bambooChute.sideIcon;
+			return TCBlockRegistry.bambooShoot.sideIcon;
 		} else if (iconString.equals("top")) {
-			return TCBlockRegistry.bambooChute.topIcon;
+			return TCBlockRegistry.bambooShoot.topIcon;
 		} else if (iconString.equals("bottom")) {
-			return TCBlockRegistry.bambooChute.bottomIcon;
+			return TCBlockRegistry.bambooShoot.bottomIcon;
 		} else if (iconString.equals("indent")) {
-			return TCBlockRegistry.bambooChute.indentIcon;
+			return TCBlockRegistry.bambooShoot.indentIcon;
 		} else if (iconString.equals("leaf")) {
-			return TCBlockRegistry.bambooChute.leafIcon;
+			return TCBlockRegistry.bambooShoot.leafIcon;
 		} else if (iconString.equals("leafFlipped")) {
-			return TCBlockRegistry.bambooChute.leafFlippedIcon;
+			return TCBlockRegistry.bambooShoot.leafFlippedIcon;
 		} else {
 			return null;
 		}*/
@@ -110,12 +110,12 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
 	public void updateTick(World world, int x, int y, int z, Random random) {
 		if (world.isAirBlock(x, y + 1, z)) {
 			int plantHeight;	//number of blocks tall
-			for (plantHeight = 1; world.getBlock(x, y - plantHeight, z) == TCBlockRegistry.bambooChute; plantHeight++) {
+			for (plantHeight = 1; world.getBlock(x, y - plantHeight, z) == TCBlockRegistry.bambooShoot; plantHeight++) {
 			}
 			if (plantHeight < 12) {
 				int meta = world.getBlockMetadata(x, y, z);
 				if (meta == 8) {
-					world.setBlock(x, y + 1, z, TCBlockRegistry.bambooChute);
+					world.setBlock(x, y + 1, z, TCBlockRegistry.bambooShoot);
 					world.setBlockMetadataWithNotify(x, y, z, 0, 3);
 				} else {
 					world.setBlockMetadataWithNotify(x, y, z, meta + 1, 3);
@@ -136,7 +136,7 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
 		Block idAdjacentZ1 = world.getBlock(i, j - 1, k - 1);
 		Block idAdjacentZ2 = world.getBlock(i, j - 1, k + 1);
 		
-		if (idBelow == TCBlockRegistry.bambooChute) {
+		if (idBelow == TCBlockRegistry.bambooShoot) {
 			return true;
 		}
 		if (idBelow != Blocks.grass && idBelow != Blocks.dirt && idBelow != Blocks.sand) {
@@ -221,12 +221,12 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
         Block plantID = plant.getPlant(world, x, y + 1, z);
         EnumPlantType plantType = plant.getPlantType(world, x, y + 1, z);
 
-        if (plantID == TCBlockRegistry.bambooChute)
+        if (plantID == TCBlockRegistry.bambooShoot)
         {
             return true;
         }
         
-    	Block blockID = TCBlockRegistry.bambooChute;
+    	Block blockID = TCBlockRegistry.bambooShoot;
     	
         switch (plantType)
         {
@@ -255,7 +255,7 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
 
 	@Override
 	public Block getPlant(IBlockAccess world, int x, int y, int z) {
-		return TCBlockRegistry.bambooChute;
+		return TCBlockRegistry.bambooShoot;
 	}
 
 	@Override
@@ -265,6 +265,6 @@ public class BlockBambooChute extends BlockTropicraft implements IPlantable {
 	
 	@Override
 	public Item getItemDropped(int meta, Random rand, int unused) {
-		return TCItemRegistry.bambooChute;
+		return TCItemRegistry.bambooShoot;
 	}
 }

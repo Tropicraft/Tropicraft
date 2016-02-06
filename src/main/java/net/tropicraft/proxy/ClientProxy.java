@@ -6,7 +6,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.client.entity.model.ModelScubaGear;
 import net.tropicraft.client.renderer.block.AirCompressorRenderHandler;
 import net.tropicraft.client.renderer.block.BambooChestRenderHandler;
-import net.tropicraft.client.renderer.block.BambooChuteRenderHandler;
+import net.tropicraft.client.renderer.block.BambooShootRenderHandler;
 import net.tropicraft.client.renderer.block.CoffeePlantRenderHandler;
 import net.tropicraft.client.renderer.block.CurareBowlRenderHandler;
 import net.tropicraft.client.renderer.block.EIHMixerRenderHandler;
@@ -43,7 +43,7 @@ public class ClientProxy extends CommonProxy {
         TCRenderIDs.flowerPot = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.bambooChest = RenderingRegistry.getNextAvailableRenderId();
      //TODO SCUBA   TCRenderIDs.airCompressor = RenderingRegistry.getNextAvailableRenderId();
-        TCRenderIDs.bambooChute = RenderingRegistry.getNextAvailableRenderId();
+        TCRenderIDs.bambooShoot = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.curareBowl = RenderingRegistry.getNextAvailableRenderId();
         TCRenderIDs.eihMixer = RenderingRegistry.getNextAvailableRenderId();
 
@@ -52,7 +52,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new FlowerPotRenderHandler());
         RenderingRegistry.registerBlockHandler(new BambooChestRenderHandler());
      //   RenderingRegistry.registerBlockHandler(new AirCompressorRenderHandler());
-        RenderingRegistry.registerBlockHandler(new BambooChuteRenderHandler());
+        RenderingRegistry.registerBlockHandler(new BambooShootRenderHandler());
         RenderingRegistry.registerBlockHandler(new CurareBowlRenderHandler());
         RenderingRegistry.registerBlockHandler(new EIHMixerRenderHandler());
 

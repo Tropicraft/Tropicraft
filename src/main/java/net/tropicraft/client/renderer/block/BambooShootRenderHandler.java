@@ -6,12 +6,12 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.tropicraft.block.BlockBambooChute;
+import net.tropicraft.block.BlockBambooShoot;
 import net.tropicraft.info.TCRenderIDs;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class BambooChuteRenderHandler implements ISimpleBlockRenderingHandler {
-    public BambooChuteRenderHandler() {
+public class BambooShootRenderHandler implements ISimpleBlockRenderingHandler {
+    public BambooShootRenderHandler() {
     }
     
     @Override
@@ -44,12 +44,12 @@ public class BambooChuteRenderHandler implements ISimpleBlockRenderingHandler {
             tessellator.setColorOpaque_F(f, f1, f2);
             
             float sixteenth = 1f/16f;
-            IIcon sideTex = BlockBambooChute.getBambooIcon("side");
-            IIcon topTex = BlockBambooChute.getBambooIcon("top");
-            IIcon bottomTex = BlockBambooChute.getBambooIcon("bottom");
-            IIcon indentTex = BlockBambooChute.getBambooIcon("indent");
-            IIcon leafTex = BlockBambooChute.getBambooIcon("leaf");
-            IIcon leafFlippedTex = BlockBambooChute.getBambooIcon("leafFlipped");
+            IIcon sideTex = BlockBambooShoot.getBambooIcon("side");
+            IIcon topTex = BlockBambooShoot.getBambooIcon("top");
+            IIcon bottomTex = BlockBambooShoot.getBambooIcon("bottom");
+            IIcon indentTex = BlockBambooShoot.getBambooIcon("indent");
+            IIcon leafTex = BlockBambooShoot.getBambooIcon("leaf");
+            IIcon leafFlippedTex = BlockBambooShoot.getBambooIcon("leafFlipped");
 
             // indent 1
             renderer.renderFaceYNeg(block, x+sixteenth/2f, y, z+sixteenth/2f, bottomTex);
@@ -109,7 +109,7 @@ public class BambooChuteRenderHandler implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return TCRenderIDs.bambooChute;
+        return TCRenderIDs.bambooShoot;
     }
 
 }
