@@ -273,9 +273,10 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 	}
 	
 	@Override
-	public void writeToNBT(NBTTagCompound var1) {
+	public NBTTagCompound writeToNBT(NBTTagCompound var1) {
 		super.writeToNBT(var1);
 		var1.setInteger("direction", direction);
+		return var1;
 	}
 
 }

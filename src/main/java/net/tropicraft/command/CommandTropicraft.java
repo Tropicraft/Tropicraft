@@ -2,6 +2,7 @@ package net.tropicraft.command;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -13,6 +14,7 @@ import net.tropicraft.world.location.TownKoaVillage;
 import net.tropicraft.world.location.TownKoaVillageGenHelper;
 import CoroUtil.world.WorldDirector;
 import CoroUtil.world.WorldDirectorManager;
+import CoroUtil.world.location.ISimulationTickable;
 import CoroUtil.world.location.ManagedLocation;
 
 public class CommandTropicraft extends CommandBase {
@@ -59,7 +61,7 @@ public class CommandTropicraft extends CommandBase {
 			} else if (args[0].equals("village_clear")) {
 				WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.worldObj);
 				
-				for (Map.Entry<Integer, ManagedLocation> entry : wd.lookupTickingManagedLocations.entrySet()) {
+				for (Entry<Integer, ISimulationTickable> entry : wd.lookupTickingManagedLocations.entrySet()) {
 					entry.getValue().cleanup();
 					wd.removeTickingLocation(entry.getValue());
 				}
