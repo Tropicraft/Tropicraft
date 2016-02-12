@@ -1,9 +1,12 @@
 package net.tropicraft.event;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -17,16 +20,47 @@ import net.tropicraft.item.tool.ItemUnderwaterShovel;
 import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import net.tropicraft.registry.TCItemRegistry;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TCItemEvents {
-
+	
+    public Map<Block, Item> buckets = new HashMap<Block, Item>();
+    
+    public TCItemEvents() {
+    	buckets.put(TCBlockRegistry.tropicsWater, TCItemRegistry.bucketTropicsWater);
+    }
+    
     @SubscribeEvent
+    public void onBucketFill(FillBucketEvent event) {
+
+            ItemStack result = fillCustomBucket(event.world, event.target);
+
+            if (result != null) {
+                event.result = result;
+                event.setResult(Result.ALLOW);
+            }
+    }
+    
+    private ItemStack fillCustomBucket(World world, MovingObjectPosition pos) {
+        Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+        Item bucket = buckets.get(block);
+
+        if (bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
+            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            return new ItemStack(bucket);
+        } else return null;
+    }
+    
+    /*@SubscribeEvent
     public void handleBucketFillEvent(FillBucketEvent event) {
-        ItemStack iHazBucket = new ItemStack(TCItemRegistry.bucketTropicsWater);
+        ItemStack bucket = new ItemStack(TCItemRegistry.bucketTropicsWater);
 
         World world = event.world;
 
@@ -39,15 +73,15 @@ public class TCItemEvents {
 
         if (fluid != null) {
             if (fluid == TCFluidRegistry.tropicsWater && meta == 0) {
-                TCItemRegistry.bucketTropicsWater.fill(iHazBucket, new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), true);
+                TCItemRegistry.bucketTropicsWater.fill(bucket, new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), true);
 
                 world.setBlockToAir(x, y, z);
 
-                event.result = iHazBucket;
+                event.result = bucket;
                 event.setResult(Result.ALLOW);
             }
         }
-    }
+    }*/
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)

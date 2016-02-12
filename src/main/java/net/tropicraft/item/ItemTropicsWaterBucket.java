@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -18,29 +19,31 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.ItemFluidContainer;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
+import net.tropicraft.registry.TCBlockRegistry;
 import net.tropicraft.registry.TCCreativeTabRegistry;
 import net.tropicraft.registry.TCFluidRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemTropicsWaterBucket extends ItemFluidContainer {
+public class ItemTropicsWaterBucket extends ItemBucket {
 
 	public ItemTropicsWaterBucket() {
-		super(0, FluidContainerRegistry.BUCKET_VOLUME);
+		super(TCBlockRegistry.tropicsWater);
 		this.maxStackSize = 1;
 		this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
+		this.setContainerItem(Items.bucket);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	/*@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
 		ItemStack fluid = new ItemStack(item);
 
 		this.fill(fluid, new FluidStack(TCFluidRegistry.tropicsWater, FluidContainerRegistry.BUCKET_VOLUME), true);
 		list.add(fluid);
-	}
+	}*/
 	
-	@Override
+	/*@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
 		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, false);
 
@@ -83,9 +86,9 @@ public class ItemTropicsWaterBucket extends ItemFluidContainer {
 		}
 
 		return itemStack;
-	}
+	}*/
 
-    public boolean tryPlaceContainedLiquid(ItemStack itemStack, World world, int x, int y, int z) {
+    /*public boolean tryPlaceContainedLiquid(ItemStack itemStack, World world, int x, int y, int z) {
     	FluidStack fluid = this.getFluid(itemStack);
     	
         if (fluid == null || fluid.amount == 0) {
@@ -108,9 +111,9 @@ public class ItemTropicsWaterBucket extends ItemFluidContainer {
 
             return true;
         }
-    }
+    }*/
 	
-	@Override
+	/*@Override
     public IIcon getIcon(ItemStack itemStack, int renderPass) {
         FluidStack fluid = this.getFluid(itemStack);
         
@@ -120,7 +123,7 @@ public class ItemTropicsWaterBucket extends ItemFluidContainer {
         }
         
         return Items.bucket.getIconFromDamage(0);
-    }
+    }*/
 	
 	@Override
 	public void registerIcons(IIconRegister iconRegister) {
@@ -133,7 +136,7 @@ public class ItemTropicsWaterBucket extends ItemFluidContainer {
         return true;
     }
 
-    @Override
+    /*@Override
 	public String getItemStackDisplayName(ItemStack itemStack) {
     	FluidStack fluid = this.getFluid(itemStack);
     	
@@ -143,6 +146,6 @@ public class ItemTropicsWaterBucket extends ItemFluidContainer {
     	}
         
         return Items.bucket.getUnlocalizedName() + ".name";
-    }
+    }*/
 
 }
