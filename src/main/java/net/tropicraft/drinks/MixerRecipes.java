@@ -20,8 +20,8 @@ public final class MixerRecipes {
         registerMixerRecipe(Drink.orangeade, Ingredient.orange, Ingredient.sugar, Ingredient.waterBucket);
         registerMixerRecipe(Drink.lemonade, Ingredient.lemon, Ingredient.sugar, Ingredient.waterBucket);
         registerMixerRecipe(Drink.blackCoffee, Ingredient.roastedCoffeeBean, Ingredient.waterBucket);
-        registerMixerRecipe(Drink.pinaColada, Ingredient.pineapple, Ingredient.coconutChunk);
-        registerMixerRecipe(Drink.pinaColada, Ingredient.pineappleChunks, Ingredient.coconut);
+        //registerMixerRecipe(Drink.pinaColada, Ingredient.pineapple, Ingredient.coconutChunk);
+        registerMixerRecipe(Drink.pinaColada, Ingredient.pineappleCubes, Ingredient.coconutChunk);
     }
 
     /**

@@ -13,7 +13,7 @@ public class Drink {
     public static final Drink orangeade = new Drink(3, 0xf3be36, "Orangeade").addAction(new DrinkActionPotion(Potion.moveSpeed.id, 5, 1));
     public static final Drink caipirinha = new Drink(4, 0x94ff36, "Caipirinha").addAction(new DrinkActionPotion(Potion.moveSpeed.id, 5, 1)).setHasUmbrella(true);
     public static final Drink blackCoffee = new Drink(5, 0x68442c, "Black Coffee");
-    public static final Drink pinaColada = new Drink(6, 0xeeff00, "Pi\u00f1a Colada").addAction(new DrinkActionPotion(Potion.confusion.id, 10, 0)).setAlwaysEdible(true);
+    public static final Drink pinaColada = new Drink(6, 0xefefef, "Pi\u00f1a Colada").addAction(new DrinkActionPotion(Potion.confusion.id, 10, 0)).setAlwaysEdible(true);
     
     public int drinkId;
     public int color;
