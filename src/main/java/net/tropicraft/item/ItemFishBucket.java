@@ -36,8 +36,8 @@ public class ItemFishBucket extends ItemTropicraft {
 		}
 
 		ItemStack stack = new ItemStack(TCItemRegistry.bucketTropicsWater);
-		TCItemRegistry.bucketTropicsWater.fill(stack, new FluidStack(TCFluidRegistry.tropicsWater, FluidContainerRegistry.BUCKET_VOLUME), true);
-
+		//TCItemRegistry.bucketTropicsWater.fill(stack, new FluidStack(TCFluidRegistry.tropicsWater, FluidContainerRegistry.BUCKET_VOLUME), true);
+        
 		return stack;
 	}
 

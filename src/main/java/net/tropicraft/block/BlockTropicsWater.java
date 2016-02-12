@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.tropicraft.info.TCInfo;
@@ -48,5 +49,17 @@ public class BlockTropicsWater extends BlockFluidClassic {
     {
         Material material = world.getBlock(x, y, z).getMaterial();
         return material == this.blockMaterial ? false : (side == 1 ? true : super.shouldSideBeRendered(world, x, y, z, side));
+    }
+    
+    @Override
+    public boolean canDisplace(IBlockAccess world, int x, int y, int z) {
+        if (world.getBlock(x,  y,  z).getMaterial().isLiquid()) return false;
+        return super.canDisplace(world, x, y, z);
+    }
+    
+    @Override
+    public boolean displaceIfPossible(World world, int x, int y, int z) {
+        if (world.getBlock(x,  y,  z).getMaterial().isLiquid()) return false;
+        return super.displaceIfPossible(world, x, y, z);
     }
 }
