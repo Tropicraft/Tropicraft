@@ -27,7 +27,7 @@ minecraft {
 }
 
 dependencies {
-	compile files("lib/coroutil-1.1.2.jar")
+	compile files("lib/coroutil.jar")
 	//compile files("../forge-1.7.10-CoroUtil/build/classes/main/")
 }
 
