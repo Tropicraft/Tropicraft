@@ -3,6 +3,7 @@ package net.tropicraft.block.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.AxisAlignedBB;
 import net.tropicraft.block.BlockBambooChest;
 
 public class TileEntityBambooChest extends TileEntityChest {
@@ -65,21 +66,19 @@ public class TileEntityBambooChest extends TileEntityChest {
                 this.adjacentChestZPos = (TileEntityBambooChest)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
             }
 
+            // func_90009_a is called here
             if (this.adjacentChestZNeg != null)
             {
                 this.adjacentChestZNeg.updateContainingBlockInfo();
             }
-
             if (this.adjacentChestZPos != null)
             {
                 this.adjacentChestZPos.updateContainingBlockInfo();
             }
-
             if (this.adjacentChestXPos != null)
             {
                 this.adjacentChestXPos.updateContainingBlockInfo();
             }
-
             if (this.adjacentChestXNeg != null)
             {
                 this.adjacentChestXNeg.updateContainingBlockInfo();
@@ -127,10 +126,15 @@ public class TileEntityBambooChest extends TileEntityChest {
         }
     }
 
-    private boolean func_94044_a(int par1, int par2, int par3)
+    /*
+     * Neighbour is the same block?
+     */
+    private boolean func_94044_a(int x, int y, int z)
     {
-        Block block = worldObj.getBlock(par1, par2, par3);
-        return block != null && block instanceof BlockBambooChest ? ((BlockBambooChest)block).field_149956_a == this.func_145980_j() : false;
+        Block block = worldObj.getBlock(x, y, z);
+        return block != null && 
+        		block instanceof BlockBambooChest ? 
+        				((BlockBambooChest)block).field_149956_a == this.func_145980_j() : false;
     }
 
     /**
@@ -149,4 +153,27 @@ public class TileEntityBambooChest extends TileEntityChest {
         unbreakable = flag;
     }
 
+    @Override
+    public AxisAlignedBB getRenderBoundingBox ()
+    {
+    	/**
+    	 * The rendering bounding box needs to be bigger for large chests,
+    	 * since these are two blocks wide.
+    	 */
+    	
+    	checkForAdjacentChests();
+
+    	if (this.adjacentChestZPos != null)
+    	{
+    		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 2);
+    	}
+    	else if (this.adjacentChestXPos != null)
+        {
+    		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 1, zCoord + 1);
+        }
+    	else
+    	{
+    		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+    	}
+    }
 }
