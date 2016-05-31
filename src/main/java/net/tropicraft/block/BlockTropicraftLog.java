@@ -2,9 +2,14 @@ package net.tropicraft.block;
 
 import java.util.Random;
 
+import java.util.List;
+
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -29,6 +34,23 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
 		this.setHardness(2.0F);
 		this.setStepSound(soundTypeWood);
 		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
+		
+		this.setTickRandomly(true);
+	}
+	
+	@Override
+	public void updateTick(World world, int i, int j, int k, Random random)
+	{
+		/*
+		 * The following code makes existing palm trees spawn coconuts.
+		 * Not just newly grown ones.
+		 */
+		
+		int meta = world.getBlockMetadata(i, j, k);
+		if (meta % 4 == 0) // palm log
+		{
+			spawnCoconuts(world, i, j, k, random, 5);
+		}
 	}
 
 	public static void spawnCoconuts(World world, int i, int j, int k, Random random, int chance) {
