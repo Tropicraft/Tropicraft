@@ -2,6 +2,7 @@ package net.tropicraft.block;
 
 import java.util.Random;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -14,7 +15,7 @@ public class BlockTropicraftOre extends BlockTropicraft {
     private Random rand = new Random();
     
 	public BlockTropicraftOre() {
-		super();
+		super(Material.rock); // closest to ore
 	}
 	
 	@Override

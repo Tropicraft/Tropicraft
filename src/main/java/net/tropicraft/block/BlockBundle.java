@@ -1,5 +1,6 @@
 package net.tropicraft.block;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -15,7 +16,7 @@ public class BlockBundle extends BlockTropicraft {
 	private IIcon side;
 	
 	public BlockBundle(String name) {
-		super();
+		super(Material.plants); // closest to thatch
 		this.setBlockTextureName(name);
 		this.setBlockName(name);
 	}
