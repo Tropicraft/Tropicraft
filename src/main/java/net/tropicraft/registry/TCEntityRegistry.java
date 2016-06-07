@@ -25,6 +25,8 @@ import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntitySnareTrap;
 import net.tropicraft.entity.placeable.EntityUmbrella;
+import net.tropicraft.entity.placeable.EntityWallMask;
+import net.tropicraft.entity.placeable.EntityWallShell;
 import net.tropicraft.entity.placeable.EntityWallStarfish;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
@@ -90,6 +92,8 @@ public class TCEntityRegistry {
 		registerEntity(EntityStarfish.class, "Starfish", 64, 3, false);
 		registerEntity(EntityStarfishEgg.class, "StarfishEgg", 64, 3, false);
 		registerEntity(EntityWallStarfish.class, "WallStarfish", 160, Integer.MAX_VALUE, false);
+		registerEntity(EntityWallShell.class, "WallShell", 160, Integer.MAX_VALUE, false);
+		registerEntity(EntityWallMask.class, "WallMask", 160, Integer.MAX_VALUE, false);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

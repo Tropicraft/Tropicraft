@@ -4,17 +4,27 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityHanging;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.client.entity.render.RenderArmorMask;
+import net.tropicraft.entity.placeable.EntityWallMask;
+import net.tropicraft.entity.placeable.EntityWallShell;
 import net.tropicraft.info.TCInfo;
+import net.tropicraft.item.ItemTropicraftMulti;
 
 
 public class ItemAshenMask extends ItemTropicraftArmor {
@@ -95,4 +105,63 @@ public class ItemAshenMask extends ItemTropicraftArmor {
 
 	}
 
+	/**
+	 * Returns a custom model for rendering the mask.
+	 */
+	@Override
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot){
+		
+		if (armorSlot == 0) // head
+			return new RenderArmorMask (itemStack.getItemDamage());
+		else
+			return null;
+	}
+
+    
+	/**
+     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
+     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+     */
+	@Override
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player,
+    		World world, int x, int y, int z,
+    		int side, float local_px, float local_py, float local_pz)
+    {		
+        if (side == 0)
+        {
+            return false;
+        }
+        else if (side == 1)
+        {
+            return false;
+        }
+        else // It's a wall, place the mask on it.
+        {        	
+        	int type = itemStack.getItemDamage();
+        	
+            int direction = Direction.facingToDirection[side];
+
+            // Must set the world coordinates here, or onValidSurface will be false.
+            EntityHanging entityhanging = new EntityWallMask(world, x, y, z, direction, type);
+
+            if (!player.canPlayerEdit(x, y, z, side, itemStack))
+            {
+                return false;
+            }
+            else
+            {        		
+                if (entityhanging != null && entityhanging.onValidSurface())
+                {              		
+                    if (!world.isRemote)
+                    {                  		
+                        world.spawnEntityInWorld(entityhanging);
+                    }
+
+                    --itemStack.stackSize;
+                }
+                
+                return true;
+            }
+        }
+    }
 }

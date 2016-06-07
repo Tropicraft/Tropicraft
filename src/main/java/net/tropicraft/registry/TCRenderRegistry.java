@@ -1,6 +1,7 @@
 package net.tropicraft.registry;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -55,6 +56,8 @@ import net.tropicraft.client.entity.render.RenderTropicalFish;
 import net.tropicraft.client.entity.render.RenderTurtleEgg;
 import net.tropicraft.client.entity.render.RenderUmbrella;
 import net.tropicraft.client.entity.render.RenderVMonkey;
+import net.tropicraft.client.entity.render.RenderWallMask;
+import net.tropicraft.client.entity.render.RenderWallShell;
 import net.tropicraft.client.entity.render.RenderWallStarfish;
 import net.tropicraft.client.tileentity.TileEntityAirCompressorRenderer;
 import net.tropicraft.client.tileentity.TileEntityBambooChestRenderer;
@@ -81,6 +84,8 @@ import net.tropicraft.entity.passive.VMonkey;
 import net.tropicraft.entity.placeable.EntityChair;
 import net.tropicraft.entity.placeable.EntitySnareTrap;
 import net.tropicraft.entity.placeable.EntityUmbrella;
+import net.tropicraft.entity.placeable.EntityWallMask;
+import net.tropicraft.entity.placeable.EntityWallShell;
 import net.tropicraft.entity.placeable.EntityWallStarfish;
 import net.tropicraft.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.entity.projectile.EntityDart;
@@ -141,6 +146,8 @@ public class TCRenderRegistry {
         registerEntityRender(EntitySeaUrchin.class, new RenderSeaUrchin());
         registerEntityRender(EntitySeaUrchinEgg.class, new RenderEchinodermEgg());
         registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
+        registerEntityRender(EntityWallShell.class, new RenderWallShell());
+        registerEntityRender(EntityWallMask.class, new RenderWallMask());
     }
 
     /**

@@ -3,10 +3,12 @@ package net.tropicraft.entity.hostile;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.registry.TCItemRegistry;
 import CoroUtil.api.weather.WindHandler;
 
 public class EntityLostMask extends Entity implements WindHandler{
@@ -127,8 +129,7 @@ public class EntityLostMask extends Entity implements WindHandler{
         }
     }
 	public void dropItemStack() {
-		//TODO: Ashen masks
-		//this.entityDropItem(new ItemStack(TCItemRegistry.ashenMasks, 1, getColor()), 0.0F);
+		this.entityDropItem(new ItemStack(TCItemRegistry.ashenMask, 1, getColor()), 0.0F);
 	}
 	private void setRotator(int[] a){
 		this.dataWatcher.updateObject(18, new Integer(a[0]));
