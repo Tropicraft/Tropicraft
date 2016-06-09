@@ -129,7 +129,8 @@ public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 	  * "Grow Tree"
 	  */
 	 public void func_149878_d(World world, int x, int y, int z, Random rand) {
-		 int type = world.getBlockMetadata(x, y, z);
+         // the first 3 bits determine the sapling type
+		 int type = world.getBlockMetadata(x, y, z) & 7;
 		 WorldGenerator gen = null;
 
 		 if (type == 0) {
@@ -179,10 +180,12 @@ public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 	 @Override
 	 @SideOnly(Side.CLIENT)
 	 public IIcon getIcon(int id, int metadata) {
-		 if (metadata < 0 || metadata > names.length - 1)
-			 metadata = names.length - 1;
+		 // the first 3 bits determine the sapling type
+		 int type = metadata & 7;
+		 if (type < 0 || type > (names.length - 1))
+			 type = names.length - 1; // if out of range, orange sapling
 
-		 return icons[metadata];
+		 return icons[type];
 	 }
 
 	 /**
@@ -190,7 +193,11 @@ public class BlockTropicraftSapling extends BlockSapling implements IGrowable {
 	  */
 	 @Override
 	 public int damageDropped(int meta) {
-		 return meta;
+        /*
+            The 4th metadata bit is a growth flag, set by minecraft.
+            Don't let it affect the item dropped.
+         */
+        return meta & 7;
 	 }
 
 	 /**
