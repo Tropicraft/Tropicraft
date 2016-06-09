@@ -169,6 +169,13 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
 		return palmEnd;
 	}
 
+    @Override
+    public int damageDropped (int meta)
+    {
+        // 0 for palm, 1 for mahogany
+        return meta % 2;
+    }
+
 	/**
 	 * Returns the quantity of items to drop on block destruction.
 	 */
