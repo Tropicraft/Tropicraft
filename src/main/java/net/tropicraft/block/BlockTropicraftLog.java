@@ -29,6 +29,23 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
 		this.setHardness(2.0F);
 		this.setStepSound(soundTypeWood);
 		this.setCreativeTab(TCCreativeTabRegistry.tabBlock);
+		
+		this.setTickRandomly(true);
+	}
+	
+	@Override
+	public void updateTick(World world, int i, int j, int k, Random random)
+	{
+		/*
+		 * The following code makes existing palm trees spawn coconuts.
+		 * Not just newly grown ones.
+		 */
+		
+		int meta = world.getBlockMetadata(i, j, k);
+		if (meta % 4 == 0) // palm log
+		{
+			spawnCoconuts(world, i, j, k, random, 5);
+		}
 	}
 
 	public static void spawnCoconuts(World world, int i, int j, int k, Random random, int chance) {
