@@ -81,8 +81,12 @@ public class BlockRainforestLeaves extends BlockLeaves {
         list.add(new ItemStack(item, 1, 2));	// Fruit
     }
     
+    /*
+     * The Server only annotation made the leaves drop birch saplings in offline worlds.
+     * So I disabled it.
+     */
     @Override
-    @SideOnly(Side.SERVER)
+    //@SideOnly(Side.SERVER)
     public Item getItemDropped(int metadata, Random random, int j) {
     	if (metadata < 2)
     		return Item.getItemFromBlock(TCBlockRegistry.saplings);
