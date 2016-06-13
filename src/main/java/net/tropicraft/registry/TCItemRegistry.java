@@ -1,5 +1,6 @@
 package net.tropicraft.registry;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -96,7 +97,7 @@ public class TCItemRegistry {
     public static final ItemTropicraftArmor fireHelmet = new ItemFireArmor(materialFireArmor, 0, 0);
     
     public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", 18, new int[]{2, 6, 5, 2}, 9);
-    public static final ItemTropicraftArmor ashenMask = (ItemTropicraftArmor) new ItemAshenMask(materialMaskArmor, 0, 0, getMaskDisplayNames(), getMaskImageNames()).setCreativeTab(TCCreativeTabRegistry.tabDecorations);
+    public static final ItemTropicraftArmor ashenMask = (ItemTropicraftArmor) new ItemAshenMask(materialMaskArmor, 0, 0, getMaskNames(), getMaskImageNames()).setCreativeTab(TCCreativeTabRegistry.tabDecorations);
     // End Armor
 
     // Tools
@@ -342,7 +343,7 @@ public class TCItemRegistry {
         registerItem(encTropica, TCNames.encTropica);
         registerItem(mobEgg, TCNames.egg);
         
-        //registerItem(ashenMask, TCNames.ashenMask);
+        registerItem(ashenMask, TCNames.ashenMask);
     }
 
     /**
@@ -359,12 +360,13 @@ public class TCItemRegistry {
 		return new String[]{"shell_solo", "shell_frox", "shell_pab", "shell_rube", "shell_starfish", "shell_turtle"};
 	}
 
-	public static String[] getMaskDisplayNames() {
-		return new String[] {"Square Zord", "Horn Monkey", "Oblongatron", "Headinator", "Square Horn", "Screw Attack", "The Brain", "Bat Boy", "Ashen Mask", "Ashen Mask", "Ashen Mask", "Ashen Mask", "Ashen Mask"};
+	public static String[] getMaskNames() {
+		return new String[] {"squareZord", "hornMonkey", "oblongatron", "headinator", "squareHorn", "screwAttack", "theBrain",
+							 "batBoy", "butterfly", "ashenMask", "tusks", "ashenMask", "ashenMask"};
 	}
 
 	public static String[] getMaskImageNames() {
-		String[] strArr = new String[getMaskDisplayNames().length];
+		String[] strArr = new String[getMaskNames().length];
 		for (int i = 0; i < strArr.length; i++) {
 			strArr[i] = "mask_" + i;
 		}

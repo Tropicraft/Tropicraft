@@ -1,10 +1,14 @@
 package net.tropicraft.item;
 
+import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
+import net.tropicraft.entity.placeable.EntityWallShell;
 import net.tropicraft.entity.placeable.EntityWallStarfish;
+import net.tropicraft.entity.underdasea.StarfishType;
 
 public class ItemShell extends ItemTropicraftMulti {
 
@@ -17,41 +21,41 @@ public class ItemShell extends ItemTropicraftMulti {
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
 	@Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-    {
-		// If not starfish, return (for now!)
-		if (par1ItemStack.getItemDamage() != 4) return false;
-		
-        if (par7 == 0)
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player,
+    		World world, int x, int y, int z,
+    		int side, float local_px, float local_py, float local_pz)
+    {		
+        if (side == 0)
         {
             return false;
         }
-        else if (par7 == 1)
+        else if (side == 1)
         {
             return false;
         }
-        else
-        {    
-            int i1 = Direction.facingToDirection[par7];
+        else // It's a wall, place the shell on it.
+        {
+            int direction = Direction.facingToDirection[side];
 
-            EntityWallStarfish entityhanging = new EntityWallStarfish(par3World);
+            // Must set the world coordinates here, or onValidSurface will be false.
+            EntityHanging entityhanging = new EntityWallShell(world, x, y, z, direction, itemStack.getItemDamage());
 
-            if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
+            if (!player.canPlayerEdit(x, y, z, side, itemStack))
             {
                 return false;
             }
             else
             {
                 if (entityhanging != null && entityhanging.onValidSurface())
-                {
-                    if (!par3World.isRemote)
-                    {
-                        par3World.spawnEntityInWorld(entityhanging);
+                {                	
+                    if (!world.isRemote)
+                    {                    	
+                        world.spawnEntityInWorld(entityhanging);
                     }
 
-                    --par1ItemStack.stackSize;
+                    --itemStack.stackSize;
                 }
-
+                
                 return true;
             }
         }

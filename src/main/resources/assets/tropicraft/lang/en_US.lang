@@ -93,6 +93,17 @@ tile.tropicraft:purchasePlate.name=Koa Trader Purchase Plate
 tile.tropicraft:eihMixer.name=Drink Mixer
 
 # Item localizations
+item.tropicraft:ashenMask.squareZord.name=Ashen Mask: Square Zord
+item.tropicraft:ashenMask.hornMonkey.name=Ashen Mask: Horn Monkey
+item.tropicraft:ashenMask.oblongatron.name=Ashen Mask: Oblongatron
+item.tropicraft:ashenMask.headinator.name=Ashen Mask: Headinator
+item.tropicraft:ashenMask.squareHorn.name=Ashen Mask: Square Horn
+item.tropicraft:ashenMask.screwAttack.name=Ashen Mask: Screw Attack
+item.tropicraft:ashenMask.batBoy.name=Ashen Mask: Bat Boy
+item.tropicraft:ashenMask.theBrain.name=Ashen Mask: The Brain
+item.tropicraft:ashenMask.butterfly.name=Ashen Mask: Butterfly
+item.tropicraft:ashenMask.tusks.name=Ashen Mask: Tusks
+item.tropicraft:ashenMask.ashenMask.name=Ashen Mask
 item.tropicraft:frogLeg.name=Frog Leg
 item.tropicraft:cookedFrogLeg.name=Cooked Frog Leg
 item.tropicraft:poisonFrogSkin.name=Poison Frog Skin
