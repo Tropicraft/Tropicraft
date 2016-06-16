@@ -1,0 +1,26 @@
+# gradle stuff
+build/
+.gradle
+gradle/
+
+#forge stuff
+/*.txt
+config/
+saves/
+
+# eclipse stuff
+.classpath
+.project
+.settings
+bin
+logs
+eclipse
+*.launch
+
+# run place
+run
+
+# intellij stuff
+.idea
+out
+*.iml

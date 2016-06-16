@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "variant=blockoreazurite": { "model": "tropicraft:blockOreAzurite" },
+        "variant=blockoreeudialyte": { "model": "tropicraft:blockOreEudialyte" },
+        "variant=blockorezircon": { "model": "tropicraft:blockOreZircon" }
+    }
+}

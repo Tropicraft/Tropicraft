@@ -1,0 +1,55 @@
+# Block localizations
+tile.tropicraft:chunk.name=Chunk O' Head
+tile.tropicraft:chunkStairs.name=Chunk O' Head Stairs
+tile.tropicraft:oreEudialyte.name=Eudialyte Ore
+tile.tropicraft:oreZircon.name=Zircon Ore
+tile.tropicraft:oreAzurite.name=Azurite Ore
+tile.tropicraft:oreblock_azurite.name=Azurite Block
+tile.tropicraft:oreblock_eudialyte.name=Eudialyte Block
+tile.tropicraft:oreblock_zircon.name=Zircon Block
+tile.tropicraft:flower_commelina_diffusa.name=Commelina Diffusa
+tile.tropicraft:flower_crocosmia.name=Crocosmia
+tile.tropicraft:flower_orchid.name=Orchid
+tile.tropicraft:flower_canna.name=Canna
+tile.tropicraft:flower_anemone.name=Anemone
+tile.tropicraft:flower_orange_anthurium.name=Orange Anthurium
+tile.tropicraft:flower_red_anthurium.name=Red Anthurium
+tile.tropicraft:flower_magic_mushroom.name=Magic Mushroom
+tile.tropicraft:flower_pathos.name=Pathos
+tile.tropicraft:flower_acai_vine.name=Acai Vine
+tile.tropicraft:flower_croton.name=Croton
+tile.tropicraft:flower_dracaena.name=Dracaena
+tile.tropicraft:flower_fern.name=Fern
+tile.tropicraft:flower_foliage.name=Foliage
+tile.tropicraft:flower_bromeliad.name=Bromeliad
+tile.tropicraft:log_mahogany.name=Mahogany Log
+tile.tropicraft:log_palm.name=Palm Log
+tile.tropicraft:coral_pink.name=Pink Coral
+tile.tropicraft:coral_tealy.name=Tealy Coral
+tile.tropicraft:coral_brain.name=Brain Coral
+tile.tropicraft:coral_fire.name=Fire Coral
+tile.tropicraft:coral_green.name=Green Coral
+tile.tropicraft:coral_spiral.name=Spiral Coral
+tile.tropicraft:coral_hotpink.name=Hot Pink Coral
+
+# Item localizations
+item.tropicraft:eudialyte.name=Eudialyte Shard
+item.tropicraft:zircon.name=Zircon Crystal
+item.tropicraft:azurite.name=Azurite Crystal
+item.tropicraft:grapefruit.name=Grapefruit
+item.tropicraft:lemon.name=Lemon
+item.tropicraft:lime.name=Lime
+item.tropicraft:orange.name=Orange
+item.tropicraft:axe_eudialyte.name=Eudialyte Axe
+item.tropicraft:hoe_eudialyte.name=Eudialyte Hoe
+item.tropicraft:pickaxe_eudialyte.name=Eudialyte Pickaxe
+item.tropicraft:shovel_eudialyte.name=Eudialyte Shovel
+item.tropicraft:sword_eudialyte.name=Eudialyte Sword
+item.tropicraft:axe_zircon.name=Zircon Axe
+item.tropicraft:hoe_zircon.name=Zircon Hoe
+item.tropicraft:pickaxe_zircon.name=Zircon Pickaxe
+item.tropicraft:shovel_zircon.name=Zircon Shovel
+item.tropicraft:sword_zircon.name=Zircon Spear
+
+# Menu localizations
+itemGroup.tropicraft=Tropicraft
