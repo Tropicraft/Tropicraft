@@ -1,0 +1,7 @@
+{
+    "parent": "block/column_side",
+    "textures": {
+        "end": "tropicraft:blocks/thatch_End",
+        "side": "tropicraft:blocks/thatch_Side"
+    }
+}

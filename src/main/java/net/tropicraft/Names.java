@@ -12,4 +12,5 @@ public final class Names {
         "croton", "dracaena", "fern", "foliage", "bromeliad"};
     public static final String[] LOG_NAMES = {"palm", "mahogany"};
     public static final String[] CORAL_NAMES = {"pink", "tealy", "brain", "fire", "green", "spiral", "hotpink"};
+    public static final String[] BUNDLE_NAMES = {"thatch", "bamboo"};
 }

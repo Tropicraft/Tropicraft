@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "tropicraft:blocks/bamboo_End",
+        "side": "tropicraft:blocks/bamboo_Side"
+    }
+}

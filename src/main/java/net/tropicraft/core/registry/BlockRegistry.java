@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Stack;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -18,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
@@ -43,7 +45,11 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block logs;
 	public static Block coral;
 	// purified sand AND mineral sands. Oh variants, what can't you do?
-	public static Block sand;
+	// TODO
+	public static Block sands;
+
+	/** Thatch and bamboo bundles */
+	public static Block bundles;
 
 	/**
 	 * Register blocks in preInit
@@ -58,6 +64,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		flowers = registerMultiBlock(new BlockTropicsFlowers(Names.FLOWER_NAMES), ItemBlockTropicraft.class, "flower", asList(Names.FLOWER_NAMES));
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
+		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
 	}
 
 	public static void init() {
