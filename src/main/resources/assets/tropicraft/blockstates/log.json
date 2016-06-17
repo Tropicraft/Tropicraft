@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "axis=y,variant=mahogany_log": { "model": "tropicraft:mahogany_log" },
+        "axis=z,variant=mahogany_log": { "model": "tropicraft:mahogany_log_side" },
+        "axis=x,variant=mahogany_log": { "model": "tropicraft:mahogany_log_side", "y": 90 },
+        "axis=none,variant=mahogany_log": { "model": "tropicraft:mahogany_bark" },
+        "axis=y,variant=palm_log": { "model": "tropicraft:palm_log" },
+        "axis=z,variant=palm_log": { "model": "tropicraft:palm_log_side" },
+        "axis=x,variant=palm_log": { "model": "tropicraft:palm_log_side", "y": 90 },
+        "axis=none,variant=palm_log": { "model": "tropicraft:palm_bark" }
+    }
+}

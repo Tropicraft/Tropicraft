@@ -1,0 +1,7 @@
+{
+    "parent": "block/column_side",
+    "textures": {
+        "end": "tropicraft:blocks/log_Palm_End",
+        "side": "tropicraft:blocks/log_Palm_Side"
+    }
+}

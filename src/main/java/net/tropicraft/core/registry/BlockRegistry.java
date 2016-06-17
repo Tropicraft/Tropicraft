@@ -19,9 +19,12 @@ import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.BlockChunkOHead;
+import net.tropicraft.core.common.block.BlockCoral;
+import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
+import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 
@@ -36,6 +39,12 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block oreAzurite, oreEudialyte, oreZircon;
 	public static Block oreBlock;
 
+	public static Block flowers;
+	public static Block logs;
+	public static Block coral;
+	// purified sand AND mineral sands. Oh variants, what can't you do?
+	public static Block sand;
+
 	/**
 	 * Register blocks in preInit
 	 */
@@ -46,16 +55,19 @@ public class BlockRegistry extends TropicraftRegistry {
 		oreEudialyte = registerBlock(new BlockTropicraftOre(), Names.BLOCK_EUDIALYTE_ORE);
 		oreZircon = registerBlock(new BlockTropicraftOre(), Names.BLOCK_ZIRCON_ORE);
 		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(Names.BLOCK_ORE_NAMES), ItemBlockTropicraft.class, "oreblock", asList(Names.BLOCK_ORE_NAMES));
+		flowers = registerMultiBlock(new BlockTropicsFlowers(Names.FLOWER_NAMES), ItemBlockTropicraft.class, "flower", asList(Names.FLOWER_NAMES));
+		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
+		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
 	}
 
 	public static void init() {
 
 	}
-	
+
 	private static <T> List<T> asList(T[] objects) {
 		List<T> objList = new ArrayList<T>();
 		Collections.addAll(objList, objects);
-		
+
 		return objList;
 	}
 
@@ -87,12 +99,12 @@ public class BlockRegistry extends TropicraftRegistry {
 		try {
 			// Some nice code borrowed from old FML and repurposed
 			Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
-            ctorArgClasses[0] = Block.class;
-            for (int idx = 1; idx < ctorArgClasses.length; idx++)
-            {
-                ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
-            }
-            Constructor<? extends ItemBlock> itemConstructor = clazz.getConstructor(ctorArgClasses);
+			ctorArgClasses[0] = Block.class;
+			for (int idx = 1; idx < ctorArgClasses.length; idx++)
+			{
+				ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
+			}
+			Constructor<? extends ItemBlock> itemConstructor = clazz.getConstructor(ctorArgClasses);
 			ItemBlock itemBlockInstance = itemConstructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
 
 			block = registerBlock(block, itemBlockInstance, name, false);
@@ -109,7 +121,7 @@ public class BlockRegistry extends TropicraftRegistry {
 				for (IBlockState state : presets) {
 					String stateName = tcBlock.getStateName(state);
 					int stateMeta = block.getMetaFromState(state);
-					System.err.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
+					// System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
 					registerBlockVariant(block, name, stateMeta, stateName);
 				}
 			}
