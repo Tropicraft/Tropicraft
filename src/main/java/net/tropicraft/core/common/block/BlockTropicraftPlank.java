@@ -13,33 +13,23 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.enums.TropicraftOreBlocks;
+import net.tropicraft.core.common.enums.TropicraftPlanks;
 
-public class BlockTropicraftOreBlock extends BlockTropicraft implements ITropicraftBlock {
+public class BlockTropicraftPlank extends BlockTropicraft implements ITropicraftBlock {
 
-    public static final PropertyEnum<TropicraftOreBlocks> VARIANT = PropertyEnum.create("variant", TropicraftOreBlocks.class);
+    public static final PropertyEnum<TropicraftPlanks> VARIANT = PropertyEnum.create("variant", TropicraftPlanks.class);
     public String[] names;
-    
-    @Override
-    protected BlockStateContainer createBlockState() {
-    	return new BlockStateContainer(this, VARIANT);
-    }
-    
-    @Override
-    public String getStateName(IBlockState state) {
-        return ((TropicraftOreBlocks) state.getValue(VARIANT)).getName();
-    }
 	
-	public BlockTropicraftOreBlock(String[] names) {
-		super(Material.ROCK);
+	public BlockTropicraftPlank(Material mat, String[] names) {
+		super(mat);
 		this.names = names;
-        this.setHardness(5.0F);
-        this.setResistance(10.0F);
-        this.setSoundType(SoundType.STONE);
-        this.setHarvestLevel("pickaxe", 1);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftOreBlocks.ZIRCON));
+		this.disableStats();
+		this.setHardness(2.0F);
+		this.setSoundType(SoundType.WOOD);
+        this.setHarvestLevel("axe", 0);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftPlanks.MAHOGANY));
 	}
-
+	
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
@@ -51,19 +41,30 @@ public class BlockTropicraftOreBlock extends BlockTropicraft implements ITropicr
     }
 
     @Override
+    protected BlockStateContainer createBlockState() {
+    	return new BlockStateContainer(this, VARIANT);
+    }
+    
+    @Override
+    public String getStateName(IBlockState state) {
+        return ((TropicraftPlanks) state.getValue(VARIANT)).getName();
+    }
+    
+    @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(VARIANT, TropicraftOreBlocks.VALUES[meta]);
+        return this.getDefaultState().withProperty(VARIANT, TropicraftPlanks.VALUES[meta]);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((TropicraftOreBlocks) state.getValue(VARIANT)).ordinal();
+        return ((TropicraftPlanks) state.getValue(VARIANT)).ordinal();
     }
 
     @Override
     public int damageDropped(IBlockState state) {
         return this.getMetaFromState(state);
     }
+
 
 	@Override
 	public IProperty[] getProperties() {

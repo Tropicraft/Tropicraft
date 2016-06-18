@@ -19,12 +19,14 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
+import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.ITropicraftBlock;
@@ -51,6 +53,12 @@ public class BlockRegistry extends TropicraftRegistry {
 	/** Thatch and bamboo bundles */
 	public static Block bundles;
 
+	/** Log planks */
+	public static Block planks;
+
+	/** Bamboo chute (plant) */
+	public static BlockBambooShoot bambooShoot;
+
 	/**
 	 * Register blocks in preInit
 	 */
@@ -65,6 +73,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
 		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
+		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD, Names.LOG_NAMES), ItemBlockTropicraft.class, "plank", asList(Names.LOG_NAMES));
+		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT);
 	}
 
 	public static void init() {

@@ -31,6 +31,11 @@ tile.tropicraft:coral_fire.name=Fire Coral
 tile.tropicraft:coral_green.name=Green Coral
 tile.tropicraft:coral_spiral.name=Spiral Coral
 tile.tropicraft:coral_hotpink.name=Hot Pink Coral
+tile.tropicraft:bundle_thatch.name=Thatch Bundle
+tile.tropicraft:bundle_bamboo.name=Bamboo Bundle
+tile.tropicraft:plank_mahogany.name=Mahogany Plank
+tile.tropicraft:plank_palm.name=Palm Plank
+tile.tropicraft:bamboo_shoot.name=Bamboo Shoot
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
@@ -50,6 +55,7 @@ item.tropicraft:hoe_zircon.name=Zircon Hoe
 item.tropicraft:pickaxe_zircon.name=Zircon Pickaxe
 item.tropicraft:shovel_zircon.name=Zircon Shovel
 item.tropicraft:sword_zircon.name=Zircon Spear
+item.tropicraft:bamboo_shoot.name=Bamboo Shoot
 
 # Menu localizations
 itemGroup.tropicraft=Tropicraft

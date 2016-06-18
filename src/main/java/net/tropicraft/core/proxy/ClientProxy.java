@@ -1,8 +1,15 @@
 package net.tropicraft.core.proxy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.tropicraft.Info;
 
@@ -36,6 +43,27 @@ public class ClientProxy extends CommonProxy {
 			// ModelResourceLocation mrl = new ModelResourceLocation(Info.MODID + ":" + registryName, variantName);
 			// ModelLoader.setCustomModelResourceLocation(item, metadata, mrl);
 			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + variantName, null));
+		}
+	}
+
+	// Another nice method based on code from BoP. Those guys rock :D
+	/**
+	 * Registers an item (in ItemRegistry) that has damage values
+	 */
+	@Override
+	public void registerItemWithSubtypes(Item item, CreativeTabs tab) {
+		if (item.getHasSubtypes()) {
+			List<ItemStack> subItems = new ArrayList<ItemStack>();
+			item.getSubItems(item, tab, subItems);
+			for (ItemStack subItem : subItems) {
+				String subItemName = item.getUnlocalizedName(subItem);
+				subItemName =  subItemName.substring(subItemName.indexOf(".") + 1); // remove 'item.' from the front
+
+				registerItemVariantModel(item, subItemName, subItem.getMetadata());
+			}
+		}
+		else {
+			registerItemVariantModel(item, item.delegate.name().getResourcePath(), 0);
 		}
 	}
 }

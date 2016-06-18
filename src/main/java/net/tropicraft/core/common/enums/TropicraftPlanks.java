@@ -2,14 +2,14 @@ package net.tropicraft.core.common.enums;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum TropicraftOres implements IStringSerializable {
-    AZURITE, EUDIALYTE, ZIRCON;
+public enum TropicraftPlanks implements IStringSerializable {
+    MAHOGANY, PALM;
     
-    public static final TropicraftOres VALUES[] = values();
+    public static final TropicraftPlanks VALUES[] = values();
 
     @Override
     public String getName() {
-    	return this.name().toLowerCase() + "_oreblock";
+    	return this.name().toLowerCase() + "_plank";
     }
     
     @Override
