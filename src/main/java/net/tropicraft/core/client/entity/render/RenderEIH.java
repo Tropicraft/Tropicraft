@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL11;
 public class RenderEIH extends RenderLiving {
 
 	private static final ResourceLocation TEXTURE_SLEEP = new ResourceLocation(Info.MODID + ":textures/entity/eih/headtext.png");
+	private static final ResourceLocation TEXTURE_AWARE = new ResourceLocation(Info.MODID + ":textures/entity/eih/headawaretext.png");
+	private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation(Info.MODID + ":textures/entity/eih/headangrytext.png");
 	
     public RenderEIH() {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelEIH(), 0.75F);
@@ -39,7 +41,15 @@ public class RenderEIH extends RenderLiving {
     protected ResourceLocation getEntityTexture(Entity entity) {
         EntityEIH eih = (EntityEIH)entity;
         //TODO: sync anger/awake state to client for texture swap
-        return TEXTURE_SLEEP;
+        int state = eih.getState();
+        if (state == 1) {
+        	return TEXTURE_AWARE;
+        } else if (state == 2) {
+        	return TEXTURE_ANGRY;
+        } else {
+        	return TEXTURE_SLEEP;
+        }
+        
         /*String texture_path = "eih/head" + (eih.isAngry() ? "angry" : eih.isAwake() ? "aware" : "") + "text";
         return TropicraftUtils.bindTextureEntity(texture_path);*/
     }

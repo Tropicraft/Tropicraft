@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
+import net.tropicraft.core.common.entity.passive.EntityIguana;
 
 public class EntityRegistry {
 
@@ -12,6 +13,7 @@ public class EntityRegistry {
 	public static void init() {
 		registerEntity(EntityEIH.class, "Easter Island Head", 80, 3, true);
 		registerEntity(EntityTropiCreeper.class, "TropiCreeper", 80, 3, true);
+		registerEntity(EntityIguana.class, "Iguana", 80, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
