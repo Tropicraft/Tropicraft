@@ -12,11 +12,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.tropicraft.Info;
+import net.tropicraft.core.registry.EntityRenderRegistry;
 
 public class ClientProxy extends CommonProxy {
 
 	public ClientProxy() {
 
+	}
+	
+	@Override
+	public void init() {
+		super.init();
+		
+		EntityRenderRegistry.init();
 	}
 
 	public void registerItemRender(Item item, int meta, String unlocalizedName) {
