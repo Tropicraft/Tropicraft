@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,7 @@ import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.ITropicraftBlock;
+import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 
 import com.google.common.collect.ImmutableSet;
@@ -38,7 +40,6 @@ import com.google.common.collect.ObjectArrays;
 public class BlockRegistry extends TropicraftRegistry {
 
 	public static Block chunk;
-	public static Block chunkStairs;
 
 	public static Block oreAzurite, oreEudialyte, oreZircon;
 	public static Block oreBlock;
@@ -46,6 +47,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block flowers;
 	public static Block logs;
 	public static Block coral;
+
 	// purified sand AND mineral sands. Oh variants, what can't you do?
 	// TODO
 	public static Block sands;
@@ -58,6 +60,11 @@ public class BlockRegistry extends TropicraftRegistry {
 
 	/** Bamboo chute (plant) */
 	public static BlockBambooShoot bambooShoot;
+
+	/** Stairs */
+	public static Block chunkStairs;
+	public static Block thatchStairs;
+	public static Block bambooStairs;
 
 	/**
 	 * Register blocks in preInit
@@ -73,8 +80,12 @@ public class BlockRegistry extends TropicraftRegistry {
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
 		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
+
 		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD, Names.LOG_NAMES), ItemBlockTropicraft.class, "plank", asList(Names.LOG_NAMES));
-		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT);
+		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT, null);
+		
+		thatchStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS);
+		bambooStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS);
 	}
 
 	public static void init() {
@@ -88,11 +99,11 @@ public class BlockRegistry extends TropicraftRegistry {
 		return objList;
 	}
 
-	public static <T extends Block> T registerBlock(T block, ItemBlock itemBlock, String name, boolean registerDefaultVariant) {
+	public static <T extends Block> T registerBlock(T block, ItemBlock itemBlock, String name, boolean registerDefaultVariant, CreativeTabs tab) {
 		block.setUnlocalizedName(getNamePrefixed(name));
 		block.setRegistryName(new ResourceLocation(Info.MODID, name));
 		GameRegistry.register(block);
-		block.setCreativeTab(CreativeTabRegistry.tropicraftTab);
+		block.setCreativeTab(tab);
 
 		if (itemBlock != null) {
 			itemBlock.setRegistryName(new ResourceLocation(Info.MODID, name));
@@ -124,7 +135,7 @@ public class BlockRegistry extends TropicraftRegistry {
 			Constructor<? extends ItemBlock> itemConstructor = clazz.getConstructor(ctorArgClasses);
 			ItemBlock itemBlockInstance = itemConstructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
 
-			block = registerBlock(block, itemBlockInstance, name, false);
+			block = registerBlock(block, itemBlockInstance, name, false, CreativeTabRegistry.tropicraftTab);
 
 			// get the preset blocks variants
 			ImmutableSet<IBlockState> presets = getBlockPresets(block);
@@ -170,9 +181,13 @@ public class BlockRegistry extends TropicraftRegistry {
 		Item item = Item.getItemFromBlock(block);
 		Tropicraft.proxy.registerItemVariantModel(item, registryName, stateMeta, variantName);
 	}
-
+	
 	public static <T extends Block> T registerBlock(T block, String name) {
-		return registerBlock(block, new ItemBlock(block), name, true);
+		return registerBlock(block, new ItemBlock(block), name, true, CreativeTabRegistry.tropicraftTab);
+	}
+
+	public static <T extends Block> T registerBlock(T block, String name, CreativeTabs tab) {
+		return registerBlock(block, new ItemBlock(block), name, true, tab);
 	}
 
 	public static void registerOreDictWildcard(String oreDictName, Block block) {

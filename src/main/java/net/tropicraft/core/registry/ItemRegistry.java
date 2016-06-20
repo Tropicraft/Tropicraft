@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
@@ -23,6 +24,10 @@ public class ItemRegistry extends TropicraftRegistry {
 
 	// Yummy delicious fruits
 	public static Item grapefruit, lemon, lime, orange;
+	
+	// Foodstuffs
+    public static Item freshMarlin;
+    public static Item searedMarlin;
 
 	// Tool materials
 	public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 1, 200, 4.5F, 1.0F, 14);
@@ -41,8 +46,9 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item swordEudialyte;
 	public static Item swordZircon;
 
-	// Plants
+	// Bamboo n stuff
 	public static Item bambooShoot;
+	public static Item bambooStick;
 
 	public static void preInit() {
 		azurite = registerItem(new ItemTropicsOre(), "azurite");
@@ -65,7 +71,11 @@ public class ItemRegistry extends TropicraftRegistry {
 		swordEudialyte = registerItem(new ItemSword(materialEudialyteTools), "sword_eudialyte");
 		swordZircon = registerItem(new ItemSword(materialZirconTools), "sword_zircon");
 
-		bambooShoot = registerItem( new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
+		bambooShoot = registerItem(new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
+		bambooStick = registerItem(new ItemTropicraft(), "bamboo_stick");
+		
+		freshMarlin = registerItem(new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
+		searedMarlin = registerItem(new ItemTropicraftFood(8, 0.65F), "seared_marlin");
 	}
 
 	public static void init() {
