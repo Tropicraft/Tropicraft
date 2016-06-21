@@ -3,13 +3,14 @@ package net.tropicraft.core.proxy;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.tropicraft.Info;
 import net.tropicraft.core.registry.EntityRenderRegistry;
@@ -19,11 +20,11 @@ public class ClientProxy extends CommonProxy {
 	public ClientProxy() {
 
 	}
-	
+
 	@Override
 	public void init() {
 		super.init();
-		
+
 		EntityRenderRegistry.init();
 	}
 
@@ -73,5 +74,19 @@ public class ClientProxy extends CommonProxy {
 		else {
 			registerItemVariantModel(item, item.delegate.name().getResourcePath(), 0);
 		}
+	}
+
+	// Yet another method inspired by BoP :)
+	@Override
+	public void registerFluidBlockRendering(Block block, String name) {
+		final ModelResourceLocation fluidLocation = new ModelResourceLocation(Info.MODID + ":" + name, name);
+
+		// use a custom state mapper which will ignore the LEVEL property
+		ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return fluidLocation;
+			}
+		});
 	}
 }

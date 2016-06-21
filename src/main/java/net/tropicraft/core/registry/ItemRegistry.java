@@ -1,8 +1,10 @@
 package net.tropicraft.core.registry;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlockSpecial;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemSword;
@@ -24,10 +26,10 @@ public class ItemRegistry extends TropicraftRegistry {
 
 	// Yummy delicious fruits
 	public static Item grapefruit, lemon, lime, orange;
-	
+
 	// Foodstuffs
-    public static Item freshMarlin;
-    public static Item searedMarlin;
+	public static Item freshMarlin;
+	public static Item searedMarlin;
 
 	// Tool materials
 	public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 1, 200, 4.5F, 1.0F, 14);
@@ -49,6 +51,9 @@ public class ItemRegistry extends TropicraftRegistry {
 	// Bamboo n stuff
 	public static Item bambooShoot;
 	public static Item bambooStick;
+
+	// Buckets
+	public static Item tropicsWaterBucket;
 
 	public static void preInit() {
 		azurite = registerItem(new ItemTropicsOre(), "azurite");
@@ -73,9 +78,11 @@ public class ItemRegistry extends TropicraftRegistry {
 
 		bambooShoot = registerItem(new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
 		bambooStick = registerItem(new ItemTropicraft(), "bamboo_stick");
-		
+
 		freshMarlin = registerItem(new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
 		searedMarlin = registerItem(new ItemTropicraftFood(8, 0.65F), "seared_marlin");
+
+		tropicsWaterBucket = registerItem((new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
 	}
 
 	public static void init() {

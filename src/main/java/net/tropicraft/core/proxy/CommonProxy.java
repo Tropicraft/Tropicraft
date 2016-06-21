@@ -1,6 +1,7 @@
 package net.tropicraft.core.proxy;
 
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -25,4 +26,5 @@ public class CommonProxy {
 	public void registerItemVariantModel(Item item, String name, int metadata) {}
 	public void registerItemVariantModel(Item item, String registryName, int metadata, String variantName) {}
 	public void registerItemWithSubtypes(Item item, CreativeTabs tabs) {}
+	public void registerFluidBlockRendering(Block block, String name) {}
 }

@@ -30,6 +30,7 @@ import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
 import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
+import net.tropicraft.core.common.block.BlockTropicsWater;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
@@ -66,6 +67,9 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block thatchStairs;
 	public static Block bambooStairs;
 
+	/** Fluids */
+	public static BlockTropicsWater tropicsWater;
+
 	/**
 	 * Register blocks in preInit
 	 */
@@ -83,9 +87,12 @@ public class BlockRegistry extends TropicraftRegistry {
 
 		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD, Names.LOG_NAMES), ItemBlockTropicraft.class, "plank", asList(Names.LOG_NAMES));
 		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT, null);
-		
+
 		thatchStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS);
 		bambooStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS);
+
+		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER, false);
+		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);
 	}
 
 	public static void init() {
@@ -181,9 +188,17 @@ public class BlockRegistry extends TropicraftRegistry {
 		Item item = Item.getItemFromBlock(block);
 		Tropicraft.proxy.registerItemVariantModel(item, registryName, stateMeta, variantName);
 	}
-	
+
 	public static <T extends Block> T registerBlock(T block, String name) {
 		return registerBlock(block, new ItemBlock(block), name, true, CreativeTabRegistry.tropicraftTab);
+	}
+
+	public static <T extends Block> T registerBlock(T block, String name, boolean registerDefaultVariant) {
+		return registerBlock(block, new ItemBlock(block), name, registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
+	}
+
+	public static <T extends Block> T registerBlockNoItem(T block, String name, boolean registerDefaultVariant) {
+		return registerBlock(block, null, name, registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
 	}
 
 	public static <T extends Block> T registerBlock(T block, String name, CreativeTabs tab) {
