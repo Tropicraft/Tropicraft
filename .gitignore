@@ -1,7 +1,6 @@
 # gradle stuff
 build/
 .gradle
-gradle/
 
 #forge stuff
 /*.txt
