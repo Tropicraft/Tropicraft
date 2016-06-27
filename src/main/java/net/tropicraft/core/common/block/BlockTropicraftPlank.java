@@ -17,54 +17,53 @@ import net.tropicraft.core.common.enums.TropicraftPlanks;
 
 public class BlockTropicraftPlank extends BlockTropicraft implements ITropicraftBlock {
 
-    public static final PropertyEnum<TropicraftPlanks> VARIANT = PropertyEnum.create("variant", TropicraftPlanks.class);
-    public String[] names;
-	
+	public static final PropertyEnum<TropicraftPlanks> VARIANT = PropertyEnum.create("variant", TropicraftPlanks.class);
+	public String[] names;
+
 	public BlockTropicraftPlank(Material mat, String[] names) {
 		super(mat);
 		this.names = names;
 		this.disableStats();
 		this.setHardness(2.0F);
 		this.setSoundType(SoundType.WOOD);
-        this.setHarvestLevel("axe", 0);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftPlanks.MAHOGANY));
+		this.setHarvestLevel("axe", 0);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftPlanks.MAHOGANY));
 	}
-	
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-        for (int i = 0; i < names.length; i++) {
-        	list.add(new ItemStack(item, 1, i));
-        }
-    }
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-    	return new BlockStateContainer(this, VARIANT);
-    }
-    
-    @Override
-    public String getStateName(IBlockState state) {
-        return ((TropicraftPlanks) state.getValue(VARIANT)).getName();
-    }
-    
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(VARIANT, TropicraftPlanks.VALUES[meta]);
-    }
+	/**
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+	 */
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+		for (int i = 0; i < names.length; i++) {
+			list.add(new ItemStack(item, 1, i));
+		}
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return ((TropicraftPlanks) state.getValue(VARIANT)).ordinal();
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
+	}
 
-    @Override
-    public int damageDropped(IBlockState state) {
-        return this.getMetaFromState(state);
-    }
+	@Override
+	public String getStateName(IBlockState state) {
+		return ((TropicraftPlanks) state.getValue(VARIANT)).getName();
+	}
 
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return this.getDefaultState().withProperty(VARIANT, TropicraftPlanks.VALUES[meta]);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return ((TropicraftPlanks) state.getValue(VARIANT)).ordinal();
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return this.getMetaFromState(state);
+	}
 
 	@Override
 	public IProperty[] getProperties() {

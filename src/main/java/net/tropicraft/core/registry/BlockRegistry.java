@@ -24,6 +24,7 @@ import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoral;
+import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
@@ -69,6 +70,9 @@ public class BlockRegistry extends TropicraftRegistry {
 
 	/** Fluids */
 	public static BlockTropicsWater tropicsWater;
+	
+	/** Leaves */
+	public static Block leaves;
 
 	/**
 	 * Register blocks in preInit
@@ -93,6 +97,8 @@ public class BlockRegistry extends TropicraftRegistry {
 
 		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER, false);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);
+		
+		leaves = registerMultiBlock(new BlockTropicraftLeaves(Names.LEAF_NAMES), ItemBlockTropicraft.class, "leaves", asList(Names.LEAF_NAMES));
 	}
 
 	public static void init() {

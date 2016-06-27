@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSand;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +19,8 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.tropicraft.core.common.block.BlockBundle;
+import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS WILL MOST LIKELY BE COMPLETELY REDONE
@@ -138,79 +141,91 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
 	private void setBlocksInChunk(int x, int z, ChunkPrimer primer)
 	{
+		System.err.println("Set blocks in chunk start");
 		byte chunkSizeGenXZ = 4;
 		byte chunkSizeGenY = 16;
 		byte midHeight = 63;
-		int k = chunkSizeGenXZ + 1;
+		int k_size = chunkSizeGenXZ + 1;
 		byte b3 = 17;
-		int l = chunkSizeGenXZ + 1;
-		this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, k + 5, l + 5);
+		int l_size = chunkSizeGenXZ + 1;
+		this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, k_size + 5, l_size + 5);
 		double[] noiseArray = null;
-		noiseArray = this.initializeNoiseField(noiseArray, x * chunkSizeGenXZ, 0, z * chunkSizeGenXZ, k, b3, l);
+		noiseArray = this.initializeNoiseField(noiseArray, x * chunkSizeGenXZ, 0, z * chunkSizeGenXZ, k_size, b3, l_size);
+		
+//        for (int i = 0; i < 30; ++i)
+//        {
+//            IBlockState iblockstate = BlockRegistry.bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.BAMBOO);
+//
+//            if (iblockstate != null)
+//            {
+//                for (int j = 0; j < 16; ++j)
+//                {
+//                    for (int k = 0; k < 16; ++k)
+//                    {
+//                        primer.setBlockState(j, i, k, iblockstate);
+//                    }
+//                }
+//            }
+//        }
 
-		for (int i1 = 0; i1 < chunkSizeGenXZ; ++i1)
+		for (int genX = 0; genX < chunkSizeGenXZ; ++genX)
 		{
-			for (int j1 = 0; j1 < chunkSizeGenXZ; ++j1)
+            
+			for (int genY = 0; genY < chunkSizeGenXZ; ++genY)
 			{
-				for (int k1 = 0; k1 < chunkSizeGenY; ++k1)
+                
+				for (int genZ = 0; genZ < chunkSizeGenY; ++genZ)
 				{
 					double d0 = 0.125D;
-					double d1 = noiseArray[((i1 + 0) * l + j1 + 0) * b3 + k1 + 0];
-					double d2 = noiseArray[((i1 + 0) * l + j1 + 1) * b3 + k1 + 0];
-					double d3 = noiseArray[((i1 + 1) * l + j1 + 0) * b3 + k1 + 0];
-					double d4 = noiseArray[((i1 + 1) * l + j1 + 1) * b3 + k1 + 0];
-					double d5 = (noiseArray[((i1 + 0) * l + j1 + 0) * b3 + k1 + 1] - d1) * d0;
-					double d6 = (noiseArray[((i1 + 0) * l + j1 + 1) * b3 + k1 + 1] - d2) * d0;
-					double d7 = (noiseArray[((i1 + 1) * l + j1 + 0) * b3 + k1 + 1] - d3) * d0;
-					double d8 = (noiseArray[((i1 + 1) * l + j1 + 1) * b3 + k1 + 1] - d4) * d0;
+					double d1 = noiseArray[((genX + 0) * l_size + genY + 0) * b3 + genZ + 0];
+					double d2 = noiseArray[((genX + 0) * l_size + genY + 1) * b3 + genZ + 0];
+					double d3 = noiseArray[((genX + 1) * l_size + genY + 0) * b3 + genZ + 0];
+					double d4 = noiseArray[((genX + 1) * l_size + genY + 1) * b3 + genZ + 0];
+					double d5 = (noiseArray[((genX + 0) * l_size + genY + 0) * b3 + genZ + 1] - d1) * d0;
+					double d6 = (noiseArray[((genX + 0) * l_size + genY + 1) * b3 + genZ + 1] - d2) * d0;
+					double d7 = (noiseArray[((genX + 1) * l_size + genY + 0) * b3 + genZ + 1] - d3) * d0;
+					double d8 = (noiseArray[((genX + 1) * l_size + genY + 1) * b3 + genZ + 1] - d4) * d0;
+					
+					for (int j2 = 0; j2 < 8; ++j2)
+                    {
+                        double d9 = 0.25D;
+                        double d10 = d1;
+                        double d11 = d2;
+                        double d12 = (d3 - d1) * d9;
+                        double d13 = (d4 - d2) * d9;
 
-					for (int l1 = 0; l1 < 8; ++l1)
-					{
-						double d9 = 0.25D;
-						double d10 = d1;
-						double d11 = d2;
-						double d12 = (d3 - d1) * d9;
-						double d13 = (d4 - d2) * d9;
+                        for (int k2 = 0; k2 < 4; ++k2)
+                        {
+                            double d14 = 0.25D;
+                            double d15 = (d11 - d10) * d14;
+                            double d16 = d10 - d15;
 
-						for (int i2 = 0; i2 < 4; ++i2)
-						{
-							double d14 = 0.25D;
-							double d15 = (d11 - d10) * d14;
-							double d16 = d10 - d15;
+                            for (int l2 = 0; l2 < 4; ++l2)
+                            {
+                                if ((d16 += d15) > 0.0D)
+                                {
+                                    primer.setBlockState(genX * 4 + k2, genZ * 8 + j2, genY * 4 + l2, Blocks.SAND.getDefaultState());
+                                }
+                                else if (genZ * 8 + j2 < 64)
+                                {
+                                    primer.setBlockState(genX * 4 + k2, genZ * 8 + j2, genY * 4 + l2, BlockRegistry.tropicsWater.getDefaultState());
+                                }
+                            }
 
-							for (int k2 = 0; k2 < 4; ++k2)
-							{
-								int index =  (i1 * 4 + i2) * CHUNK_SIZE_Y * 16 | (j1 * 4 + k2) * CHUNK_SIZE_Y | (k1 * 8 + l1);
+                            d10 += d12;
+                            d11 += d13;
+                        }
 
-								if ((d16 += d15) > 0.0D)
-								{
-									primer.setBlockState((i1 * 4 + i2), (j1 * 4 + k2), (k1 * 8 + l1), Blocks.STONE.getDefaultState());
-									//blocks[index] = Blocks.STONE;
-								}
-								else if (k1 * 8 + l1 < midHeight)
-								{
-									//blocks[index] = TCBlockRegistry.tropicsWater;
-									primer.setBlockState((i1 * 4 + i2), (j1 * 4 + k2), (k1 * 8 + l1), Blocks.SPONGE.getDefaultState());
-								}
-								else
-								{
-									//blocks[index] = Blocks.air;
-									primer.setBlockState((i1 * 4 + i2), (j1 * 4 + k2), (k1 * 8 + l1), Blocks.AIR.getDefaultState());
-								}
-							}
-
-							d10 += d12;
-							d11 += d13;
-						}
-
-						d1 += d5;
-						d2 += d6;
-						d3 += d7;
-						d4 += d8;
-					}
+                        d1 += d5;
+                        d2 += d6;
+                        d3 += d7;
+                        d4 += d8;
+                    }
 				}
 			}
 		}
+		
+		System.err.println("Set blocks in chunk end");
 	}
 
 	private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)

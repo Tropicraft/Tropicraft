@@ -51,6 +51,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	// Bamboo n stuff
 	public static Item bambooShoot;
 	public static Item bambooStick;
+	public static Item bambooMug;
 
 	// Buckets
 	public static Item tropicsWaterBucket;
@@ -78,6 +79,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
 		bambooShoot = registerItem(new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
 		bambooStick = registerItem(new ItemTropicraft(), "bamboo_stick");
+		bambooMug = registerItem(new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
 		freshMarlin = registerItem(new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
 		searedMarlin = registerItem(new ItemTropicraftFood(8, 0.65F), "seared_marlin");

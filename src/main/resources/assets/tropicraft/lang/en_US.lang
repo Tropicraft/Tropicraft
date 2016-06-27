@@ -61,6 +61,8 @@ item.tropicraft:bamboo_shoots.name=Bamboo Shoot
 item.tropicraft:fresh_marlin.name=Fresh Marlin
 item.tropicraft:seared_marlin.name=Seared Marlin
 item.tropicraft:bamboo_stick.name=Bamboo Stick
+item.tropicraft:bamboo_mug.name=Bamboo Mug
+item.tropicraft:tropics_water_bucket.name=Tropics Water Bucket
 
 # Menu localizations
 itemGroup.tropicraft=Tropicraft

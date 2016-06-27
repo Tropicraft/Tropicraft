@@ -20,12 +20,12 @@ public class TropicraftWorldUtils {
 	{
 		long time = System.currentTimeMillis();
 		if (player.dimension == TROPICS_DIMENSION_ID) {
-			Teleporter tropicsTeleporter = new Teleporter(player.getServer().worldServerForDimension(0));
+			Teleporter tropicsTeleporter = new TeleporterTropics(player.getServer().worldServerForDimension(0));
 			PlayerList pl = player.getServer().getPlayerList();
 			pl.transferPlayerToDimension(player, 0, tropicsTeleporter);
 		} 
 		else {
-			Teleporter tropicsTeleporter = new Teleporter(player.getServer().worldServerForDimension(TROPICS_DIMENSION_ID));
+			Teleporter tropicsTeleporter = new TeleporterTropics(player.getServer().worldServerForDimension(TROPICS_DIMENSION_ID));
 			PlayerList pl = player.getServer().getPlayerList();
 			pl.transferPlayerToDimension(player, TROPICS_DIMENSION_ID, tropicsTeleporter);
 		}

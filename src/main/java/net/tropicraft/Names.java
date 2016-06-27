@@ -17,6 +17,7 @@ public final class Names {
 	public static final String[] BUNDLE_NAMES = {"thatch", "bamboo"};
 	public static final String BAMBOO_SHOOT = "bamboo_shoot";
 	public static final String TROPICS_WATER = "tropics_water";
+	public static final String[] LEAF_NAMES = {"mahogany", "palm"};
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};
