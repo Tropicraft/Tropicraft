@@ -557,4 +557,28 @@ public abstract class TCGenBase extends WorldGenerator {
 	protected BlockPos getBlockPos(int[] xyz) {
 		return new BlockPos(xyz[0], xyz[1], xyz[2]);
 	}
+	
+	protected Block getBlock(int x, int y, int z) {
+		return getBlock(new BlockPos(x, y, z));
+	}
+	
+	protected Block getBlock(BlockPos pos) {
+		return worldObj.getBlockState(pos).getBlock();
+	}
+	
+	protected IBlockState getBlockState(BlockPos pos) {
+		return worldObj.getBlockState(pos);
+	}
+	
+	protected IBlockState getBlockState(int x, int y, int z) {
+		return getBlockState(new BlockPos(x, y, z));
+	}
+	
+	protected boolean isAirBlock(int x, int y, int z) {
+		return isAirBlock(new BlockPos(x, y, z));
+	}
+	
+	protected boolean isAirBlock(BlockPos pos) {
+		return worldObj.isAirBlock(pos);
+	}
 }
