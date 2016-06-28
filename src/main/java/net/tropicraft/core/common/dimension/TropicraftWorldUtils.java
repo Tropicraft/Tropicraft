@@ -10,7 +10,7 @@ public class TropicraftWorldUtils {
 
 	// TODO make configurable
 	public static final int TROPICS_DIMENSION_ID = -127;
-	public static final DimensionType tropicsDimension = DimensionType.register("Tropics", "_tropics", -127, WorldProviderTropicraft.class, false);
+	public static final DimensionType tropicsDimension = DimensionType.register("Tropics", "_tropics", -127, WorldProviderTropicraft.class, true);
 
 	public static void initializeDimension() {
 		DimensionManager.registerDimension(TROPICS_DIMENSION_ID, tropicsDimension);

@@ -13,6 +13,11 @@ public class WorldProviderTropicraft extends WorldProvider {
 	protected void registerWorldChunkManager() {
 		this.biomeProvider = new BiomeProviderTropicraft(worldObj.getWorldInfo());
 	}
+	
+	@Override
+    protected void createBiomeProvider() {
+    	this.biomeProvider = new BiomeProviderTropicraft(worldObj.getWorldInfo());
+    }
 
 	@Override
 	public IChunkGenerator createChunkGenerator() {

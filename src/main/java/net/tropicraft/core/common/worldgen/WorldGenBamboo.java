@@ -28,9 +28,6 @@ public class WorldGenBamboo extends TCGenBase {
 		
 		if(!worldObj.isAirBlock(pos)) {
 			return false;
-		} else if((getBlockState(i + 1, j - 1, k).getMaterial() != Material.WATER && getBlockState(i - 1, j - 1, k).getMaterial() != Material.WATER &&
-				getBlockState(i, j - 1, k + 1).getMaterial() != Material.WATER && getBlockState(i, j - 1, k - 1).getMaterial() != Material.WATER)) {
-			return false;
 		}
 		
 		int amount = rand.nextInt(MAX_BAMBOO - MIN_BAMBOO) + MIN_BAMBOO;
