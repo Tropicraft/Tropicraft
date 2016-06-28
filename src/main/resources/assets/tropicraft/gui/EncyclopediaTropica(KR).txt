@@ -1,0 +1,338 @@
+﻿﻿acaivine.title = 아사이 덩굴
+acaivine.desc  = 땅에서 시작해서 썩은 나뭇가지에 자라나는 이 덩굴은 아사이 베리로 자라나곤 합니다.
+
+anenome.title = 아네모네
+anenome.desc  = 이 순백색의 식물은 대지에 곱디고운 순수함과 따뜻한 색상을 더해줍니다.
+
+anthuriumo.title = 오렌지 안스리움
+anthuriumo.desc  = 짙은 오렌지 안스리움 꽃은 레드 안스리움과 짝을 이룹니다.
+
+anthuriumr.title = 레드 안스리움
+anthuriumr.desc  = 짙은 레드 안스리움 꽃은 오렌지 안스리움과 짝을 이룹니다.
+
+azurite.title = 남동석
+azurite.desc  = 이 부드러운 광석은 사실 구리 광물입니다. 이것은 구리 광상에서 풍화작용으로 생성되어 예쁜 파란색을 띄고 있습니다.
+
+bamboo.title = 대나무
+bamboo.desc  = 대나무는 열대지역에서 정말로 가장 많이 쓰이는 아이템 입니다. 이 지속가능한 자원으로 당신은 무기, 블록, 그리고 머그컵을 만들 수 있습니다.
+
+bamboomug.title = 대나무 머그
+bamboomug.desc  = 대나무 머그는 열대 음료를 담기에 적절합니다. 파인애플과 코코넛을 찾아 생기를 돋게 해주는 피나 콜라다를 직접 만들어 보는건 어떻습니까.
+
+bambooblock.title = 대나무 블록
+bambooblock.desc  = 이 정말 만들기 쉬운 블록은 자원으로 계속 얻을 수 있는 대나무로 만들어 집니다. 조심하세요, 이 블록은 그리 강하진 않습니다.
+
+bamboochest.title = 대나무 상자
+bamboochest.desc  = 상자가 대나무로 만들어 졌습니다! 당신의 열대 테마의 집에 어울릴 것입니다!
+
+bamboodoor.title = 대나무 문
+bamboodoor.desc  = 대나무와 짚으로 만든 이 문은 당신을 황무지에서 벗어나게 해주는 완벽한 것입니다. 조심하세요, 이 문은 그리 강하진 않습니다.
+
+bamboospear.title = 대나무 스피어
+bamboospear.desc  = 이 날카로운 막대기는 처음 만들어 질 때 극도로 강합니다. 그렇지만 주의하세요, 이 스피어는 재빠르게 날카로움을 잃습니다.
+
+bamboostick.title = 대나무 막대기
+bamboostick.desc = 대나무로 만들어진 막대기 입니다. 열대 제품 제작에 많이 사용되며 막대기를 대신합니다.
+
+beachchair.title = 비치체어
+beachchair.desc  = 어... 따뜻한 푸른 바다를 응시하고, 느리게 다가오는 물고기떼를 보면서, 이 모든 것을 사치스런 비치체어로 할 수 있습니다! 5가지 색상의 의자에 뒤로 젖쳐 앉아 쉬세요.
+
+beachumbrella.title = 파라솔
+beachumbrella.desc  = 해변 휴가는 완전하지 않습니다, 당신을 햇볕에서 가릴 수 있는 파라솔이 없다면 말이죠! 역시 5가지의 다른 색상이 있습니다.
+
+blackcoffee.title = 블랙 커피
+blackcoffee.desc = 누가 커피를 좋아하지 않겠습니까? 멋진 커피 한 잔을 끓이며 당신의 방갈로에서 해돋이를 바라보세요.
+
+blacksand.title = 타르 모래
+blacksand.dec = 이 모래를 조금만 사뿐히 밟거나...또는 밟지 마십시오. 만약 당신이 어떤 비늘 갑옷이나 화염 갑옷을 입지 않았다면, 당신은 정어어엉말로 빠르게 달려 도망치는게 나을겁니다.
+
+blowgun.title = 블로우 건
+blowgun.desc  = 대나무 튜브로 된 이것은 먹잇감에 알코올이 첨가된 신경마비 다트를 쏘는 것에 사용됩니다. 당신은 어느 정도 멀리 그리고 빠르게 쏠 수 있게 힘겹게 불어야 하는 것에 놀랄것입니다.
+
+bromeliad.title = 브로멜리아드
+bromeliad.desc  = 이 이국적인 빨간 꽃은 광활한 열대우림에 있는 청개구리들 사이와 촉촉한 습진 환경에서 잘 자랍니다.
+
+caipirinha.title = 카이피리냐
+caipirinha.desc = 코아 원주민들은 이런 시트러스향의 음료를 좋아하지 않지만, 라임과 사탕수수로 구성된 이 칵테일은 열대의 아름다운 석양을 덧붙여줍니다.
+
+canna.title = 칸나
+canna.desc  = 이 노란 오렌지색의 꽃은 열대 지역과 잘 어울리며, 레드 안스리움의 직접적인 빨간색을 보완해줍니다.
+
+chunkohead.title = Chunk O' Head
+chunkohead.desc = Easter Island Heads가 이 블록으로 만들어 진걸로 보입니다. 이 블록은 신성한 것으로서 Heads를 건축하는 사람에게는, 신성 모독을 한 것으로 간주됩니다.
+
+coconut.title = 코코넛
+coconut.desc  = 코코넛은 열대의 야자 나무에서 자라납니다. 칼로 자르게 되면 당신은 코코넛 덩어리를 얻어 간단하게 끼니를 떼울 수 있습니다. 코코넛의 단단한 껍데기 조각을 쉽게 얻어서, 대단한 폭발성 물질로 만들 수 있습니다.
+
+coconutchunks.title = 코코넛 덩어리
+coconutchunks.desc  = 당신은 맛난 간식인 코코넛을 칼로 잘라 얻을 수 있습니다. 파인애플과 대나무 머그로 조합하여, 당신은 활기를 돋우는 피나 콜라다를 만들 수 있습니다.
+
+coconutbomb.title = 코코넛 폭탄
+coconutbomb.desc = 이 폭발적인 코코넛 폭탄은 당신에게 다가가려는 누구든지, 또는 어떤 것이든 없앨 수 있는 대단한 물건 입니다.
+
+coffeebean.title = 커피 열매
+coffeebean.desc = 안쪽에 구멍이 있는 빨간색 또는 보라색의 이것은 종종 체리로 언급되곤 합니다. 이것은 열대에서 찾을 수 있는 커피 나무의 씨앗입니다.
+
+commelina.title = 코멜리나 디퓨사
+commelina.desc = 코멜리나 디퓨사는 열대 풍경에 쾌적한 파란색을 더해줍니다.
+
+coral.title = 산호
+coral.desc = 이 발광하는 생물체는 바다가 고향인 동시에, 수족관에서 빛을 밝혀주기에 알맞기도 합니다.
+
+coralsand.title = 산호 모래
+coralsand.dec = 수백년된 풍문에 따르면, 이 산호 모래는 토네이도가 지나는 동안 해안가를 청소해준다고 합니다.
+
+crocosmia.title = 크로코스미아
+crocosmia.desc = 이 열정적인 작은 꽃은 마치 땅에서 쉬고있는 작은 태양 모형입니다.
+
+croton.title = 크로톤
+croton.desc = 다가가서 저 색깔이 무엇인지 이해를 해보세요. 어서.
+
+curare.title = 쿠라레
+curare.desc = 다양한 유형의 꽃을 섞은 뒤 색다른 종류의 쿠라레를 만들어, 모든 종류의 포션 효과와 같은 다트를 제작하는데 사용될 수 있습니다.
+
+curarebowl.title = 쿠라레 접시
+curarebowl.desc = 다양한 유형의 꽃을 이 접시에 섞은 뒤 색다른 종류의 쿠라레를 만들어, 모든 종류의 포션 효과와 같은 다트를 제작하는데 사용될 수 있습니다.
+
+dagger.title = 단검
+dagger.desc  = 코아 원주민이 휘두르는 이 칼은 그들이 사냥하거나 공격을 받을 때 사용합니다.
+
+dart.title = 다트
+dart.desc  = 알코올이 가미된 신경독소 다트는 대부분의 몬스터 들이 지나가는 길에서 멈추게 할 수 있습니다. 조심하세요, 효과는 일시적입니다. 다트로 다양한 일시적인 포션 효과를 가지게 할 수 있습니다.
+
+dracaena.title = 드라세나
+dracaena.desc  = 흥미로운 복숭아색과 녹색 색상을 가진 이 식물은 유일하게 열대우림에서 찾을 수 있습니다.
+
+easternisles.title = Eastern Isles
+easternisles.desc  = 드럼과 베이스로 이루어진 이 멋진 음반은 Frox가 제작했습니다. 긴장을 풀고 즐겨보세요.
+
+encyclopedia.title = 열대 백과사전
+encyclopedia.desc  = 열대 백과사전은 열대지역의 다양한 아이템에 대한 정보를 제공합니다. 마법 잉크로 인쇄되어 있어서, 이 책은 당신이 특정 아이템을 획득했을 때 스스로 기록되고, 당신은 책 측면에 있는 탭버튼으로 페이지를 탐색할 수 있습니다. 이 아이템으로 제작할 수 있는 조합법도 모루 모양 탭에 있습니다.
+
+eudialyte.title = 유디아라이트
+eudialyte.desc  = 이 분홍빛의 다채로운 결정은 유디아라라이트 광석을 캐어 찾을 수 있으며, 트로피크래프트 세계의 지하에서 찾을 수 있습니다. 도구를 만들기에 딱 좋은 물질이지요.
+
+fern.title = 양치식물
+fern.desc  = 양치식물은 어떤 세계에서든 열대우림에서 찾을 수 있습니다.
+
+fertilizer.title = 열대 비료
+fertilizer.desc  = 열대 비료는 뼛가루와 비슷한 기능을 하지만, 열대 꽃과 파인애플 같은 과일 식물 또한 자라나게 합니다.
+
+fireboots.title = 화염 부츠
+fireboots.desc = 이 부츠는 알 수 없는 물질로 만들어 졌으며 화염에 데일 때 내구도를 얻습니다, 그러나 오랫동안 불 위에 있지 마십시오, 그렇지 않으면 당신은 화상을 입습니다!
+
+firechestplate.title = 화염 갑옷
+firechestplate.desc = 이 갑옷은 알 수 없는 물질로 만들어 졌으며 화염에 데일 때 내구도를 얻습니다, 그러나 오랫동안 불 위에 있지 마십시오, 그렇지 않으면 당신은 화상을 입습니다!
+
+firehelm.title = 화염 투구
+firehelm.desc = 이 투구는 알 수 없는 물질로 만들어 졌으며 화염에 데일 때 내구도를 얻습니다, 그러나 오랫동안 불 위에 있지 마십시오, 그렇지 않으면 당신은 화상을 입습니다!
+
+fireleggings.title = 화염 레깅스
+fireleggings.desc = 이 레깅스는 알 수 없는 물질로 만들어 졌으며 화염에 데일 때 내구도를 얻습니다, 그러나 오랫동안 불 위에 있지 마십시오, 그렇지 않으면 당신은 화상을 입습니다!
+
+fishbucket.title = 양동이에 든 물고기
+fishbucket.desc  = 양동이로 당신이 야생에서 잡은 물고기를 놓아두세요. 아쿠아리움을 만들 수 있습니다, 아마도요!
+
+fishingnet.title = 어망
+fishingnet.desc  = 이 튼튼한 어망은 열대를 서식지로 하는 작은 물고기들을 잡기에 좋습니다. 물을 채운 양동이를 가지고 있는지 확인하세요, 그렇지 않으면 당신은 어떠한 공간에도 물고기를 놓아둘 수 없을 것입니다.
+
+flippers.title = 물갈퀴
+flippers.desc  = 만약 당신이 물갈퀴를 착용하고 땅에서 걷는다면, 당신은 더욱 늦게 걸을 것입니다; 하지만, 당신이 물갈퀴를 착용하고 물에 있는다면, 돌고래같이 빠르게 수영할 수 있을 것입니다!
+
+flowerpot.title = 화분
+flowerpot.desc = 화분은 어떠한 열대 꽃, 식물, 또는 묘목을 이곳에 심어 정원을 아름답게 하는데 사용될 수 있습니다.
+
+froglegs.title = 개구리 다리
+froglegs.desc  = 순수한 상태의 청개구리의 다리는 살제로 먹을 수 있습니다, 하지만, 조리를 먼저 하는 것이 필요합니다.
+
+froglegscooked.title = 구워진 개구리 다리
+froglegscooked.desc  = 이 드물게 맛있는 것은 개구리 다리를 구워서 얻을 수 있습니다.
+
+frogskin.title = 독개구리 비늘
+frogskin.desc  = 유독성을 가진 청개구리들은 피부에 마비시키는 독을 분비합니다. 이것을 조합해 다트로 만듬으로서, 당신은 간단히 적을 마비시킬 수 있습니다. 
+
+froxconch.title = Frox 소라
+froxconch.desc  =트로피크래프트의 "Trade Winds" 테마곡의 제작자 중 한명의 닉네임으로 지어진, Solonox shell은 껍질 안에 진주나 흑진주가 있을 가능성이 있으므로, 눈을 크게 뜨고 찾아보세요!
+
+grapefruit.title = 그레이프후르츠
+grapefruit.desc  = 맛있는 그레이프후르츠 감귤류 열매는 그레이프후르츠 잎으로 부터 얻어집니다.
+
+grapefruitsapling.title = 그레이프후르츠 묘목
+grapefruitsapling.desc  = 그레이프후르츠 나무를 자라게 하세요, 맛있는 그레이프후르츠를 얻기 위해 말이죠!
+
+greensand.title = 거품고무 모래
+greensand.desc = 해변에서 드물게 발견되는 이 모래는 오래 전 트로피크래프트 세계가 처음 드러났을 때 바다의 깊은 곳에서부터 형성되었다는 소문이 있습니다.
+
+iggyscale.title = 이구아나 비늘
+iggyscale.desc  = 열대에 서식하는 사랑스런 아구아나들은 비늘을 드랍합니다. 이 비늘의 독특한 점은 화염 저항이 있다는 것입니다. 비늘로 만든 갑옷을 착용하여 당신이 꽤 뜨거운 장소를 모험하게 할 것입니다.
+
+iris.title = 아이리스
+iris.desc  = 이 기다란 보라색 꽃은 자주 눈에 띕니다. 이것들은 쉽게 다시 심을 수 있습니다. 
+
+kapok.title = 케이폭 잎
+kapok.desc  = 이 잎은 거대한 나무에서 찾을 수 있으며 이런 나무들은 열대우림 바이옴에서 드물게 발견됩니다.
+
+koachest.title = 코아 상자
+koachest.desc = 이 상자는 코아 원주민을 소환할 수 있습니다. 주민들을 마을 또는 방갈로에 거주하기 위해 사용하세요!
+
+leafball.title = 잎사귀 뭉치
+leafball.desc  = 잎사귀 뭉치는 단지 코아 원주민과의 거래를 통해서만 얻을 수 있습니다. 당신이 잎사귀 뭉치를 던질 때, 그 즉시 많은 잎사귀로 흩어집니다.
+
+leather.title = 가죽
+leather.desc = 가죽은 스타일리시한 부츠를 만드는데 좋을 뿐만 아니라, 물갈퀴를 만들 때도 사용됩니다.
+
+lemon.title = 레몬
+lemon.desc  = 맛있는 레몬 감귤류 열매는 레몬 잎으로부터 얻을 수 있습니다.
+
+lemonade.title = 레몬에이드
+lemonade.desc = 맛있는 레몬 시트러스향 음료. 더 이상의 자세한 설명은 생략한다.
+
+lemonsapling.title = 레몬 묘목
+lemonsapling.desc  = 자라면 레몬 나무가 됩니다. 서식하는 곳에 당신은 레몬 묘목을 얻어서, 레몬 나무를...만들 수 있습니다?
+
+lime.title = 라임
+lime.desc  = 감귤류 열매인 맛있는 라임은 라임 잎으로부터 얻을 수 있습니다.
+
+limeade.title = 라임에이드
+limeade.desc = 레몬에이드와 비슷한, 그러나 라임으로 만들었습니다!
+
+limesapling.title = 라임 묘목
+limesapling.desc = 자라면 라임 나무가 됩니다. 당신의 혀를 오므리게 하는, 라임은 미친 뒷맛을 남기고 갑니다. 일단 당신이 라임 묘목을 나무로 자라게 하면 말이죠!
+
+lowtide.title = Low Tide
+lowtide.desc = Punchaface가 제작한, 이 차가운 느낌의 일렉트로니카 음반은 묵직한 베이스 라인-드라이빙 멜로디로 열대를 어느 때든 환하게 해줄 것입니다.
+
+magicmushroom.title = 마법의 버섯
+magicmushroom.desc  = 열대우림에만 발견할 수 있는, 이 버섯은 이해하기 힘드며, 더욱 탐구해야할 필요가 있습니다.
+
+mahogany.title = 마호가니 나무
+mahogany.desc  = 이 아름다운 색을 가진 나무는 모든 트로피크래프트의 열대우림 나무로 구성되어 있으며 어떠한 열대적인 낙원에도 아름다움을 더해줍니다.
+
+marlinmeat.title = 청새치 살
+marlinmeat.desc  = 청새치 살은 찾기 힘듭니다. 이걸 구워서 구운 청새치를 얻을 수 있습니다.
+
+marlincooked.title = 구워진 청새치 살
+marlincooked.desc  = 으음. 내가 가장 좋아하는 음식입니다. 이것은 당신이 신선한 청새치 살을 요리하여 얻습니다.
+
+mineralsand.title = 무기질 모래
+mineralsand.dec = 이 특별한 유형의 모래는 다양한 무기질을 포함한다는 소문이 있습니다. 이것을 어찌 사용하는지는 아직 모릅니다.
+
+mixer.title = EIH 믹서기
+mixer.desc = 다양한 종류의 과일을 섞어서 색다른 칵테일을 만들어보세요. 당신은 개인 바를 소유할 수 있을지도 모릅니다!
+
+orange.title = 오렌지
+orange.desc  = 감귤류 열매인 맛있는 오렌지는 오렌지 잎으로부터 얻을 수 있습니다.
+
+orangeade.title = 오렌지에이드
+orangeade.desc = 레몬에이드와 비슷한, 그러나 오렌지로 만들었습니다!
+
+orangesapling.title = 오렌지 묘목
+orangesapling.desc  = 이 오렌지 묘목을 심으면, 곧 당신은 완전히 꽃이 핀 오렌지 나무를 볼 수 있습니다! 오렌지 잎을 부수어, 오렌지를 수확하세요. ??? 개이득!
+
+orchid.title = 난초
+orchid.desc  = 난초는 아마도 열대의 모든 꽃 중 진귀한 식물일겁니다. 우아한 분홍색과 흰색 꽃잎은 당신집에 우아한 느김을 더해줄것을 확신합니다. 
+
+pabshell.title = Pab 껍데기
+pabshell.desc  = 트로피크래프트의 초기 모드 제작자 중 한 명, Pablomittens의 이름을 따서 지어진 Pab 껍데기는 트로피크래프트 v1.0부터 존재했던 초기의 아이템이지만, 현재는 아무 용도로도 사용되지 않습니다..
+
+palmplanks.title = 야자나무 목재
+palmplanks.desc  = 야자나무 목재는 야자 나무로부터 원목을 가공해 얻습니다!
+
+palmwood.title = 야자 나무
+palmwood.desc  = 야자 나무는 놀라울정도로 견고한 원목입니다. 또한 이것으로 여러 개의 목재로 가공할 수 있습니다.
+
+palmsapling.title = 야자나무 묘목
+palmsapling.desc  = 이 묘목은 단지 모래 위에서만 자랄 수 있습니다. 다른 나무와 같이, 그들은 넓고 탁 트인 곳에서 잘 자라며 뼛가루를 사용해 빨리 자라게 할 수 있습니다.
+
+pathos.title = 파토스
+pathos.desc  = 파토스는 그리스어로 '감성적인 호소'라는 의미를 지닙니다. 이 식물은 열대우림에서만 찾을 수 있습니다.
+
+pearlb.title = 진주, 흑색
+pearlb.desc  = 코아 부족들과 거래할 때 매우 높은 가치를 가지고 있습니다; Frox 소라고둥에서 드문 경우에 찾을 수 있습니다.
+
+pearlw.title = 진주, 백색
+pearlw.desc  = 코아 부족드로가 거래할 때 거의 높은 가치를 가지고 있습니다; Solonox 껍데기 안에서 찾을 수 있습니다.
+
+pineapple.title = 파인애플
+pineapple.desc  = 이제는 파인애플을 계속 얻을 수 있기 때문에, 파인애플은 모든 음식에서 좋은 원재료로 쓰입니다. 만약 당신이 검을 이용하여 줄기 위의 열매를 자르면, 파인애플 큐브를 얻을 수 있습니다. 대나무 머그잔과 코코넛 덩어리와 조합해서, 당신은 활력을 북돋여 줄 피나 콜라다를 만들 수 있습니다.
+
+pineapplecubes.title = 파인애플 큐브
+pineapplecubes.desc  = 좋은 원재료인 파인애플 큐브는 손쉽게 검으로 잘라서 얻을 수 있습니다.
+
+pinacolada.title = 피나 콜라다
+pinacolada.desc  = 이 활력을 북돋아 주는 음료는 대나무 머그잔에 파인애플과 코코넛 덩어리를 섞어서 만듭니다. 조심하세요, 당신이 피나 콜라다를 좋아하는 만큼 원숭이들이 피나 콜라다를 즐깁니다. 
+
+portalstarter.title = 트로피크래프트 포탈 생성기
+portalstarter.desc = 이 물건은, 정제된 남동석과 지르콘으로 만들 수 있으며, 트로피크래프트 세계와 오버월드를 오고갈 수 있는 텔레포트 포탈을 만드며, 우클릭을 하면 3x3 크기의 안에 물이 채워진 평면 정사각형의 사암 포탈이 생성됩니다.
+
+purifiedsand.title = 정제된 모래
+purifiedsand.desc  = 정제된 모래는 사람들이 모래를 이동시키면서 만들어진 결과물로, sifter가 되거나 다른 것으로 변합니다.
+
+reeds.title = 사탕수수
+reeds.desc  = 트로피크래프트에서는 사탕수수를 새로운 방법으로 사용할 수 있습니다: 짚으로 말이죠.
+
+rubenautilus.title = Rube Nautilus
+rubenautilus.desc  = 트로피크래프트의 초기 모드 제작자 중 한 명, MrRube의 이름을 따서 지어진 Rube Nautilus는 사실 트로피크래프트 v1.0에서 MrRube가 만든 아이템이지만, 어떠한 용도로도 사용되지 않았습니다...지금까지도 말이죠!
+
+scaleboots.title = 비늘 부츠
+scaleboots.desc = 이구아나 가죽으로 만들어 낸 부츠는 누구든지 착용하는 사람에게 화염 저항을 제공합니다.
+
+scalechestplate.title = 비늘 갑옷
+scalechestplate.desc = 이구아나 가죽으로 만들어 낸 갑옷은 누구든지 착용하는 사람에게 화염 저항을 제공합니다.
+
+scalehelm.title = 비늘 투구
+scalehelm.desc = 이구아나 가죽으로 만들어 낸 투구는 누구든지 착용하는 사람에게 화염 저항을 제공합니다.
+
+scaleleggings.title = 비늘 레깅스
+scaleleggings.desc = 이구아나 가죽으로 만들어 낸 레깅스는 누구든지 착용하는 사람에게 화염 저항을 제공합니다.
+
+seaurchinroe.title = 성게알
+seaurchinroe.desc = 성게알이에요. 오메가-3 지방산의 훌륭한 원천이죠. 이것이 당신이 알아야 할 것이겠죠.
+
+sifter.title = Sifter
+sifter.desc  = Sifter로 평범한 모래를 우클릭하면, 10 초 뒤 3번 정도 튀어 오릅니다. 모래가 정제된 모래로 변할 것이고, 드문 조개 껍데기와, 심지어는 금괴도 발견할 수 있습니다!
+
+smeltedzircon.title = 제련된 지르콘
+smeltedzircon.desc = 이것을 가지고 있다면, 당신은 4개의 다이아몬드를 배치해서 지르코늄을 얻을 수 있습니다.
+
+snaretrap.title = 사냥용 덫
+snaretrap.desc = 이 장치로 몬스터나 플레이어를 함정에 빠뜨리는데 사용합니다. 움직이지 못하도록 말이죠.
+
+snorkel.title = 스노클
+snorkel.desc  = 이것을 가지고 당신은 열대지역의 수정같이 맑은물에 빠져버리는 공포에 지를 것 없이 다이빙 할 수 있습니다! 스노클을 착용하면 4번 정도 수면 아래에서 더 오래 머무를 수 있습니다!
+
+solonoxshell.title = Solonox 껍데기
+solonoxshell.desc  = 트로피크래프트의 "Trade Winds" 테마곡의 제작자 중 한명의 닉네임으로 지어진, Solonox 껍데기 안에 진주나 흑진주가 있을 가능성이 있으므로, 눈을 크게 뜨고 찾아보세요!
+
+starfishshell.title = 블가사리 껍데기
+starfishshell.desc  = 불가사리 모양의 껍데기는 당신이 불가사리를 죽이면 드롭하는 아이템입니다. 벽에 설치할 수 있습니다.
+
+summering.title = Summering
+summering.desc = 다운템포의 여름 음색에 어울리는 이 음악은 Billy Christiansen이 만들었습니다. 그냥 쭉 펴고 앉아서, 피나 콜라다 한 잔을 만들고, 음악을 들으며 당신의 열대적인 휴식 경험을 향상시켜 보세요.
+
+tikitorch.title = 티키 횃불
+tikitorch.desc  = 기다란 티키 횃불은 해변을 밝혀주기에 완벽합니다.
+
+thatchblock.title = 짚 블록
+thatchblock.desc  = 만들기도 쉽고 부수기도 쉬운, 이 짚 블록은 열대 지역에서 건축 재료로 지속적으로 쓰입니다. 계단이나 반블럭으로도 제작할 수 있습니다.
+
+thetribe.title = The Tribe
+thetribe.desc = 업비트의 열대적인 음색을 Emile van Krieken이 당신에게 가져다 드립니다. 곡을 들으면서 코아 마을을 둘러보면 당신은 스스로 가장 좋아하는 주민을 찾을 수 있을 것입니다.
+
+tradewinds.title = Trade winds
+tradewinds.desc  = Frox가 제작한 칠아웃 음악입니다. 136 bpm의 Trade winds는 당신의 휴가에 휴식을 도와줄 것입니다.
+
+tropiframe.title = 트로피크래프트 아이템 액자
+tropiframe.desc = 이 아이템 액자는 바닐라 아이템 액자와 같은 용도로 쓰이지만 테두리가 대나무로 이루어져 있습니다.
+
+turtleshell.title = 거북 껍데기
+turtleshell.desc  = 이 껍데기는 당신의 해변 방갈로에 느낌을 더해줄 훌륭한 물건입니다.
+
+waterwand.title = 방수 원드
+waterwand.desc  = 이 신비로운 막대기는 1000블럭의 물을 흡수할 수 있는 독특한 능력을 가집니다. 이것을 이용하면 물 아래에 집을 지을 때 딱 완벽하겠네요. 
+
+zircon.title = 지르콘
+zircon.desc  = 이 신비스러운 붉은 수정은 지르콘 광석을 캐면 얻을 수 있으며, 트로피크래프트 세계의 깊은 지하에서 찾을 수 있습니다.
+
+zirconium.title = 지르코늄
+zirconium.desc = 흔하지 않은 이 수정으로, 남동석과 조합시키면, 고대의 힘을 열 수 있다는 소문이 있습니다. 또한 지르코늄으로 도구를 만들면 신비스러운 힘도 얻을 수 있습니다!
