@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +25,8 @@ public abstract class TCGenBase extends WorldGenerator {
 	static final byte otherCoordPairs[] = {
         2, 0, 0, 1, 2, 1
     };
+	
+	public static final int MAX_CHUNK_HEIGHT = 256;
 	
 	/**Blocks normally checked in the check methods*/
 	protected List<Block> standardAllowedBlocks = Arrays.asList(Blocks.AIR, Blocks.LEAVES, Blocks.TALLGRASS, Blocks.SNOW_LAYER, Blocks.SNOW);
@@ -54,6 +57,10 @@ public abstract class TCGenBase extends WorldGenerator {
 		worldObj = world;
 		this.rand = rand;
 		return generate(pos);
+	}
+	
+	protected boolean genCircle(int x, int y, int z, double outerRadius, double innerRadius, IBlockState state, boolean solid) {
+		return genCircle(new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
 	}
 	
 	/** 
@@ -175,11 +182,10 @@ public abstract class TCGenBase extends WorldGenerator {
 	 * Places a line from coords ai to coords ai1
 	 * @param ai One end of the line
 	 * @param ai1 The other end of the line
-	 * @param block The block to place
-	 * @param meta The block metadata to place
+	 * @param state IBlockState to place
 	 * @return The coords that blocks were placed on
 	 */
-	public ArrayList<int[]> placeBlockLine(int ai[], int ai1[], Block block, IBlockState state)
+	public ArrayList<int[]> placeBlockLine(int ai[], int ai1[], IBlockState state)
     {
 		ArrayList<int[]> places = new ArrayList<int[]>();
         int ai2[] = {
@@ -590,11 +596,31 @@ public abstract class TCGenBase extends WorldGenerator {
 		return setBlock(new BlockPos(x, y, z), block);
 	}
 	
+	protected boolean setBlockState(BlockPos pos, IBlockState state, int flags) {
+		return worldObj.setBlockState(pos, state, flags);
+	}
+	
 	protected boolean setBlockState(BlockPos pos, IBlockState state) {
 		return worldObj.setBlockState(pos, state);
 	}
 	
 	protected boolean setBlockState(int x, int y, int z, IBlockState state) {
 		return setBlockState(new BlockPos(x, y, z), state);
+	}
+	
+	protected boolean setBlockState(int x, int y, int z, IBlockState state, int flags) {
+		return worldObj.setBlockState(new BlockPos(x, y, z), state, flags);
+	}
+	
+	protected Material getMaterial(int x, int y, int z) {
+		return worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial();
+	}
+	
+	protected Material getMaterial(BlockPos pos) {
+		return worldObj.getBlockState(pos).getMaterial();
+	}
+	
+	protected int getHeight(int x, int z) {
+		return worldObj.getHeight(new BlockPos(x, 0, z)).getY();
 	}
 }

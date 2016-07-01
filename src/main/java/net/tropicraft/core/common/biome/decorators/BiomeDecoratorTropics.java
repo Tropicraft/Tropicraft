@@ -6,9 +6,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
+import net.tropicraft.config.ConfigGenRates;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenBamboo;
-import net.tropicraft.core.common.worldgen.WorldGenTropicraftNormalPalms;
+import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
+import net.tropicraft.core.common.worldgen.WorldGenEIH;
+import net.tropicraft.core.common.worldgen.WorldGenLargePalmTrees;
+import net.tropicraft.core.common.worldgen.WorldGenNormalPalms;
+import net.tropicraft.core.common.worldgen.WorldGenTropicalFlowers;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 
@@ -31,30 +37,47 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 	}
 
 	public void genDecorations(Biome biome, World world, Random rand) {
-		System.out.println("decorate");
+		int i = 0;
+		int k = 0;
+
 		if (BiomeGenTropicraft.DISABLEDECORATION) {
 			System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
 			return;
 		}
 		
-	//	if(ConfigGenRates.BAMBOO_CHANCE != 0 && rand.nextInt(ConfigGenRates.BAMBOO_CHANCE) == 0) {
-		int i = randCoord(rand, chunkPos.getX(), 16);
-		int k = randCoord(rand, chunkPos.getZ(), 16);
-		System.out.println(i + " " + k);
-		new WorldGenBamboo(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
-	//	}
+		if (ConfigGenRates.BAMBOO_CHANCE != 0 && rand.nextInt(ConfigGenRates.BAMBOO_CHANCE) == 0) {
+			i = randCoord(rand, chunkPos.getX(), 16);
+			k = randCoord(rand, chunkPos.getZ(), 16);
+			new WorldGenBamboo(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
 		
-			//	if (ConfigGenRates.NORMAL_PALM_CHANCE != 0 && rand.nextInt(ConfigGenRates.NORMAL_PALM_CHANCE) == 0) {
+		if (ConfigGenRates.NORMAL_PALM_CHANCE != 0 && rand.nextInt(ConfigGenRates.NORMAL_PALM_CHANCE) == 0) {
+			i = randCoord(rand, chunkPos.getX(), 16);
+			k = randCoord(rand, chunkPos.getZ(), 16);
+			new WorldGenNormalPalms(world, rand).generate(new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
+		}
+		
+		if (ConfigGenRates.CURVED_PALM_CHANCE != 0 && rand.nextInt(ConfigGenRates.CURVED_PALM_CHANCE) == 0) {
+			i = randCoord(rand, chunkPos.getX(), 16);
+			k = randCoord(rand, chunkPos.getZ(), 16);
+			new WorldGenCurvedPalms(world, rand).generate(new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
+		}
+		
+		if (ConfigGenRates.EIH_CHANCE != 0 && rand.nextInt(ConfigGenRates.EIH_CHANCE) == 0) {
+			i = randCoord(rand, chunkPos.getX(), 16);
+			k = randCoord(rand, chunkPos.getZ(), 16);
+			new WorldGenEIH(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
+
 		i = randCoord(rand, chunkPos.getX(), 16);
 		k = randCoord(rand, chunkPos.getZ(), 16);
-		new WorldGenTropicraftNormalPalms(world, rand).generate(new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
-				//}
-
-		//		{ //For scope, extra flowers for the tropics biome
-		//			int i = randCoord(rand, x, 16);
-		//			int k = randCoord(rand, z, 16);
-		//			new WorldGenTropicraftFlowers(world, rand, TCBlockRegistry.flowers, DEFAULT_FLOWER_META).generate(i, getTerrainHeightAt(world, i, k), k);
-		//		}
+		new WorldGenTropicalFlowers(world, rand, BlockRegistry.flowers).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		
+		if (ConfigGenRates.LARGE_PALM_CHANCE != 0 && rand.nextInt(ConfigGenRates.LARGE_PALM_CHANCE) == 0) {
+			i = randCoord(rand, chunkPos.getX(), 16);
+			k = randCoord(rand, chunkPos.getZ(), 16);
+			new WorldGenLargePalmTrees(world, rand).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
+		}
 		//		
 		//		if(rand.nextInt(FRUIT_TREE_CHANCE) == 0) {
 		//			int treeType = new Random((long)(x >> 2) << 32 | (long)(z >> 2)).nextInt(4);

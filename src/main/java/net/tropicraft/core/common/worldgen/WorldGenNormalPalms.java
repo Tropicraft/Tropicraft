@@ -12,9 +12,9 @@ import net.tropicraft.core.common.enums.TropicraftLeaves;
 import net.tropicraft.core.common.enums.TropicraftLogs;
 import net.tropicraft.core.registry.BlockRegistry;
 
-public class WorldGenTropicraftNormalPalms extends TCGenBase {
+public class WorldGenNormalPalms extends TCGenBase {
 
-	public WorldGenTropicraftNormalPalms(World world, Random random) {
+	public WorldGenNormalPalms(World world, Random random) {
 		super(world, random);
 	}
 

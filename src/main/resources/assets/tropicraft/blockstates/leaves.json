@@ -7,6 +7,10 @@
 		"check_decay=true,decayable=true,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
 		"check_decay=true,decayable=false,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
 		"check_decay=false,decayable=true,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
-		"check_decay=false,decayable=false,variant=palm_leaves": { "model": "tropicraft:palm_leaves" }
+		"check_decay=false,decayable=false,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
+		"check_decay=true,decayable=true,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" },
+		"check_decay=true,decayable=false,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" },
+		"check_decay=false,decayable=true,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" },
+		"check_decay=false,decayable=false,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" }
     }
 }

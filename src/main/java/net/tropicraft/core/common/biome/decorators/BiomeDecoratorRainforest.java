@@ -7,6 +7,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.worldgen.WorldGenTallTree;
+import net.tropicraft.core.common.worldgen.WorldGenTualang;
+import net.tropicraft.core.common.worldgen.WorldGenUndergrowth;
 
 public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
@@ -41,6 +44,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
     public void genDecorations(Biome biome, World world, Random rand) {
     	int x = chunkPos.getX();
 		int z = chunkPos.getZ();
+		int i = 0; int k = 0;
 
 		if (BiomeGenTropicraft.DISABLEDECORATION) {
 			System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
@@ -61,11 +65,11 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 //			new WorldGenForestAltarRuin(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, x, 16));
 //		}
 //
-//		if(rand.nextInt(TALL_TREE_CHANCE) == 0) {
-//			int i = randCoord(rand, x, 16);
-//			int k = randCoord(rand, z, 16);
-//			new WorldGenTallTree(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
-//		}
+		//if(rand.nextInt(TALL_TREE_CHANCE) == 0) {
+			i = randCoord(rand, x, 16);
+			k = randCoord(rand, z, 16);
+			new WorldGenTallTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		//}
 //
 //		if(rand.nextInt(UP_TREE_CHANCE) == 0) {
 //			int i = randCoord(rand, x, 16);
@@ -73,23 +77,23 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 //			new WorldGenUpTree(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);			
 //		}
 //
-//		for(int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
-//			int i = randCoord(rand, x, 16);
-//			int k = randCoord(rand, z, 16);
-//			new WorldGenTualang(world, rand, 16, 9).generate(i, getTerrainHeightAt(world, i, k), k);
-//		}
+		for(int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
+			i = randCoord(rand, x, 16);
+			k = randCoord(rand, z, 16);
+			new WorldGenTualang(world, rand, 16, 9).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
+
+		for(int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
+			i = randCoord(rand, x, 16);
+			k = randCoord(rand, z, 16);
+			new WorldGenTualang(world, rand, 25, 11).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
 //
-//		for(int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
-//			int i = randCoord(rand, x, 16);
-//			int k = randCoord(rand, z, 16);
-//			new WorldGenTualang(world, rand, 25, 11).generate(i, getTerrainHeightAt(world, i, k), k);
-//		}
-//
-//		for(int a = 0; a < UNDERGROWTH_AMOUNT; a++) {
-//			int i = randCoord(rand, x, 16);
-//			int k = randCoord(rand, z, 16);
-//			new WorldGenTCUndergrowth(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
-//		}
+		for(int a = 0; a < UNDERGROWTH_AMOUNT; a++) {
+			i = randCoord(rand, x, 16);
+			k = randCoord(rand, z, 16);
+			new WorldGenUndergrowth(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
 //
 //		for(int a = 0; a < COFFEE_PLANT_AMOUNT; a++) {
 //			int i = randCoord(rand, x, 16);

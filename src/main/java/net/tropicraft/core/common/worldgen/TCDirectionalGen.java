@@ -36,6 +36,10 @@ public abstract class TCDirectionalGen extends TCGenBase {
 		this.dir = dir;
 	}
 	
+	public Block getBlockWithDir(int x, int y, int z) {
+		return getBlockWithDir(new BlockPos(x, y, z));
+	}
+	
 	public Block getBlockWithDir(BlockPos pos) {
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 		switch(this.dir) {
@@ -51,22 +55,25 @@ public abstract class TCDirectionalGen extends TCGenBase {
 		return null;
 	}
 	
-	public void placeBlockWithDir(BlockPos pos, IBlockState state) {
-		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
+	public void placeBlockWithDir(int x, int y, int z, IBlockState state) {
 		switch(this.dir) {
-			case 2:
-				this.worldObj.setBlockState(pos(this.originX + i, j, this.originZ + k), state, blockGenNotifyFlag);
-				return;
-			case 0:
-				this.worldObj.setBlockState(pos(this.originX + k, j, this.originZ - i), state, blockGenNotifyFlag);
-				return;
-			case 3:
-				this.worldObj.setBlockState(pos(this.originX - i, j, this.originZ - k), state, blockGenNotifyFlag);
-				return;
-			case 1:
-				this.worldObj.setBlockState(pos(this.originX - k, j, this.originZ + i), state, blockGenNotifyFlag);
-				return;
-		}
+		case 2:
+			this.worldObj.setBlockState(pos(this.originX + x, y, this.originZ + z), state, blockGenNotifyFlag);
+			return;
+		case 0:
+			this.worldObj.setBlockState(pos(this.originX + z, y, this.originZ - x), state, blockGenNotifyFlag);
+			return;
+		case 3:
+			this.worldObj.setBlockState(pos(this.originX - x, y, this.originZ - z), state, blockGenNotifyFlag);
+			return;
+		case 1:
+			this.worldObj.setBlockState(pos(this.originX - z, y, this.originZ + x), state, blockGenNotifyFlag);
+			return;
+	}
+	}
+	
+	public void placeBlockWithDir(BlockPos pos, IBlockState state) {
+		placeBlockWithDir(pos.getX(), pos.getY(), pos.getZ(), state);
 	}
 	
 	public TileEntity getTEWithDir(BlockPos pos) {

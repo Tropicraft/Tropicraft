@@ -3,7 +3,7 @@ package net.tropicraft.core.common.enums;
 import net.minecraft.util.IStringSerializable;
 
 public enum TropicraftLeaves implements IStringSerializable {
-    MAHOGANY(0), PALM(1);
+    MAHOGANY(0), PALM(1), KAPOK(2);
     
     private static final TropicraftLeaves[] META_LOOKUP = new TropicraftLeaves[values().length];
     private final int meta;

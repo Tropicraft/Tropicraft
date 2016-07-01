@@ -4,10 +4,13 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockReed;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -27,6 +30,38 @@ public class BlockBambooShoot extends BlockReed implements IPlantable {
 		setHarvestLevel("axe", 0);
 		setCreativeTab(null);
 	}
+	
+	@Override
+    public boolean canPlaceBlockAt(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos.down());
+        Block block = state.getBlock();
+        if (block.canSustainPlant(state, world, pos.down(), EnumFacing.UP, this)) return true;
+
+        int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
+    	Block idBelow = world.getBlockState(pos.down()).getBlock();
+		Block idAdjacentX1 = world.getBlockState(new BlockPos(i - 1, j - 1, k)).getBlock();
+		Block idAdjacentX2 = world.getBlockState(new BlockPos(i + 1, j - 1, k)).getBlock();
+		Block idAdjacentZ1 = world.getBlockState(new BlockPos(i, j - 1, k - 1)).getBlock();
+		Block idAdjacentZ2 = world.getBlockState(new BlockPos(i, j - 1, k + 1)).getBlock();
+		
+		if (idBelow == BlockRegistry.bambooShoot) {
+			return true;
+		}
+		if (idBelow != Blocks.GRASS && idBelow != Blocks.DIRT && idBelow != Blocks.SAND) {
+			return false;
+		}
+		if (idAdjacentX1 == Blocks.DIRT || idAdjacentX1 == Blocks.GRASS || idAdjacentX1 == Blocks.SAND) {
+			return true;
+		}
+		if (idAdjacentX2 == Blocks.DIRT || idAdjacentX2 == Blocks.GRASS || idAdjacentX2 == Blocks.SAND) {
+			return true;
+		}
+		if (idAdjacentZ1 == Blocks.DIRT || idAdjacentZ1 == Blocks.GRASS || idAdjacentZ1 == Blocks.SAND) {
+			return true;
+		} else {
+			return idAdjacentZ2 == Blocks.GRASS;
+		}
+    }
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

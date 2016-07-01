@@ -3,7 +3,6 @@ package net.tropicraft.core.common.worldgen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -25,6 +24,7 @@ public class WorldGenBamboo extends TCGenBase {
 	public boolean generate(BlockPos pos) {
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 		j = this.getTerrainHeightAt(i, k);
+		pos = new BlockPos(i, j, k);
 		
 		if(!worldObj.isAirBlock(pos)) {
 			return false;
@@ -36,12 +36,14 @@ public class WorldGenBamboo extends TCGenBase {
 		for(int l = 0; l < amount; l++) {
 			int x = i + rand.nextInt(spread) - rand.nextInt(spread);
 			int z = k + rand.nextInt(spread) - rand.nextInt(spread);
-			int y = this.getTerrainHeightAt(x, z);
+			int y = this.getTerrainHeightAt(x, z) - 1;
 			int height = rand.nextInt(MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
+			BlockPos bpos = new BlockPos(x, y, z);
 			for(int h = 0; h < height; h++) {
-				BlockPos bpos = new BlockPos(x, y + h, z);
-				if(isAirBlock(bpos) && BlockRegistry.bambooShoot.canBlockStay(worldObj, bpos)) {
-                    worldObj.setBlockState(pos, BAMBOO_BLOCK.getDefaultState(), blockGenNotifyFlag);
+				bpos = bpos.up();
+				boolean canPlace = BlockRegistry.bambooShoot.canBlockStay(worldObj, bpos);
+				if(isAirBlock(bpos) && canPlace) {
+                    worldObj.setBlockState(bpos, BAMBOO_BLOCK.getDefaultState(), blockGenNotifyFlag);
                 } else {
                 	break;
                 }
