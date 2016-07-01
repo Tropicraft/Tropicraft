@@ -38,9 +38,10 @@ tile.tropicraft:plank_palm.name=Palm Plank
 tile.tropicraft:bamboo_shoot.name=Bamboo Shoot
 tile.tropicraft:thatchStairs.name=Thatch Stairs
 tile.tropicraft:bambooStairs.name=Bamboo Stairs
-tile.tropicraft.leaves_mahogany.name=Mahogany Leaves
-tile.tropicraft.leaves_palm.name=Palm Leaves
-tile.tropicraft.leaves_kapok.name=Kapok Leaves
+tile.tropicraft:leaves_mahogany.name=Mahogany Leaves
+tile.tropicraft:leaves_palm.name=Palm Leaves
+tile.tropicraft:leaves_kapok.name=Kapok Leaves
+tile.tropicraft:bamboo_chest.name=Bamboo Chest
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard

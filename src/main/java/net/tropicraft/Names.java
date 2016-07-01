@@ -18,7 +18,11 @@ public final class Names {
 	public static final String BAMBOO_SHOOT = "bamboo_shoot";
 	public static final String TROPICS_WATER = "tropics_water";
 	public static final String[] LEAF_NAMES = {"mahogany", "palm", "kapok"};
+	public static final String BAMBOO_CHEST = "bamboo_chest";
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};
+
+	// Tile Entity Names
+	public static final String TE_BAMBOO_CHEST = "te_bamboo_chest";
 }

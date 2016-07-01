@@ -21,7 +21,7 @@ public class CraftingRegistry {
 			"XX", "XX",
 			'X', Items.REEDS
 		});
-		
+
 		// And back
 		createRecipe(true, new ItemStack(Items.REEDS, 4), new Object[] {
 			"XX", "XX",
@@ -33,7 +33,7 @@ public class CraftingRegistry {
 			"XX", "XX",
 			'X', ItemRegistry.bambooShoot
 		});
-		
+
 		// And back
 		createRecipe(true, new ItemStack(ItemRegistry.bambooShoot, 4), new Object[] {
 			"XX", "XX",
@@ -69,99 +69,105 @@ public class CraftingRegistry {
 			"X  ", "XX ", "XXX",
 			'X', BlockRegistry.chunk
 		});
-		
+
 		// Bamboo stick
 		createRecipe(true, new ItemStack(ItemRegistry.bambooStick, 4), new Object[] {
 			"#", "#",
 			'#', ItemRegistry.bambooShoot
 		});
-		
+
 		// Zircon pickaxe
-		createRecipe(true, new ItemStack(ItemRegistry.pickaxeZircon), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.pickaxeZircon), new Object[] {
 			"XXX", " I ", " I ",
 			'X', new ItemStack(ItemRegistry.zircon, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
-		
+
 		// Zircon axe
-		createRecipe(true, new ItemStack(ItemRegistry.axeZircon), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.axeZircon), new Object[] {
 			"XX", "XI", " I",
 			'X', new ItemStack(ItemRegistry.zircon, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Zircon hoe
-		createRecipe(true, new ItemStack(ItemRegistry.hoeZircon), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.hoeZircon), new Object[] {
 			"XX", " I", " I",
 			'X', new ItemStack(ItemRegistry.zircon, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Zircon sword
-		createRecipe(true, new ItemStack(ItemRegistry.swordZircon), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.swordZircon), new Object[] {
 			"X", "X", "I",
 			'X', new ItemStack(ItemRegistry.zircon, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Zircon shovel
-		createRecipe(true, new ItemStack(ItemRegistry.shovelZircon), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.shovelZircon), new Object[] {
 			"X", "I", "I",
 			'X', new ItemStack(ItemRegistry.zircon, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Eudialyte pickaxe
-		createRecipe(true, new ItemStack(ItemRegistry.pickaxeEudialyte), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.pickaxeEudialyte), new Object[] {
 			"XXX", " I ", " I ",
 			'X', new ItemStack(ItemRegistry.eudialyte, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Eudialyte axe
-		createRecipe(true, new ItemStack(ItemRegistry.axeEudialyte), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.axeEudialyte), new Object[] {
 			"XX", "XI", " I",
 			'X', new ItemStack(ItemRegistry.eudialyte, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Eudialyte hoe
-		createRecipe(true, new ItemStack(ItemRegistry.hoeEudialyte), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.hoeEudialyte), new Object[] {
 			"XX", " I", " I",
 			'X', new ItemStack(ItemRegistry.eudialyte, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Eudialyte sword
-		createRecipe(true, new ItemStack(ItemRegistry.swordEudialyte), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.swordEudialyte), new Object[] {
 			"X", "X", "I",
 			'X', new ItemStack(ItemRegistry.eudialyte, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
 
 		// Eudialyte shovel
-		createRecipe(true, new ItemStack(ItemRegistry.shovelEudialyte), new Object[]{
+		createRecipe(true, new ItemStack(ItemRegistry.shovelEudialyte), new Object[] {
 			"X", "I", "I",
 			'X', new ItemStack(ItemRegistry.eudialyte, 1, 0),
 			'I', ItemRegistry.bambooStick
 		});
-		
+
+		// Bamboo chest
+		createRecipe(true, new ItemStack(BlockRegistry.bambooChest, 1), new Object[] {
+			"XXX", "X X", "XXX",
+			'X', ItemRegistry.bambooShoot
+		});
+
 		// planks -> logs
 		int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");
 		int palm_meta = TropicraftLogs.getMetaByName("palm_log");
 
-		createShapelessRecipe(true, new ItemStack(BlockRegistry.planks, 4, palm_meta), new Object[]{
+		createShapelessRecipe(true, new ItemStack(BlockRegistry.planks, 4, palm_meta), new Object[] {
 			new ItemStack(BlockRegistry.logs, 1, palm_meta)
 		});
-		
-		createShapelessRecipe(true, new ItemStack(BlockRegistry.planks, 4, mahogany_meta), new Object[]{
+
+		createShapelessRecipe(true, new ItemStack(BlockRegistry.planks, 4, mahogany_meta), new Object[] {
 			new ItemStack(BlockRegistry.logs, 1, mahogany_meta)
 		});
-		
+
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.zircon, 2);
-		
+
 		createOreRecipe(ItemRegistry.azurite, 0);
 		createOreRecipe(ItemRegistry.eudialyte, 1);
 		createOreRecipe(ItemRegistry.zircon, 2);

@@ -1,0 +1,8 @@
+{
+  	"variants": {
+    	"facing=east": { "model": "tropicraft:bamboo_chest" },
+    	"facing=west": { "model": "tropicraft:bamboo_chest" },
+    	"facing=north": { "model": "tropicraft:bamboo_chest" },
+    	"facing=south": { "model": "tropicraft:bamboo_chest" }
+ 	}
+}

@@ -20,6 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.block.BlockBambooChest;
 import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
@@ -70,9 +71,11 @@ public class BlockRegistry extends TropicraftRegistry {
 
 	/** Fluids */
 	public static BlockTropicsWater tropicsWater;
-	
+
 	/** Leaves */
 	public static Block leaves;
+
+	public static Block bambooChest;
 
 	/**
 	 * Register blocks in preInit
@@ -97,8 +100,10 @@ public class BlockRegistry extends TropicraftRegistry {
 
 		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER, false);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);
-		
+
 		leaves = registerMultiBlock(new BlockTropicraftLeaves(Names.LEAF_NAMES), ItemBlockTropicraft.class, "leaves", asList(Names.LEAF_NAMES));
+
+		bambooChest = registerBlock(new BlockBambooChest(), Names.BAMBOO_CHEST);
 	}
 
 	public static void init() {

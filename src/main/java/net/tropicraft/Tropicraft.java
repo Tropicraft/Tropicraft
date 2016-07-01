@@ -18,6 +18,7 @@ import net.tropicraft.core.registry.CraftingRegistry;
 import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
+import net.tropicraft.core.registry.TileEntityRegistry;
 
 @Mod(modid = Info.MODID, version = Info.VERSION)
 public class Tropicraft {
@@ -32,6 +33,7 @@ public class Tropicraft {
 	public void preInit(FMLPreInitializationEvent event) {
 		FluidRegistry.preInit();
 		BlockRegistry.preInit();
+		TileEntityRegistry.init();
 		ItemRegistry.preInit();
 		CraftingRegistry.preInit();
 	}

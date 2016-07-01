@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.tropicraft.Info;
 import net.tropicraft.core.registry.EntityRenderRegistry;
+import net.tropicraft.core.registry.TileEntityRenderRegistry;
 
 public class ClientProxy extends CommonProxy {
 
@@ -26,6 +27,7 @@ public class ClientProxy extends CommonProxy {
 		super.init();
 
 		EntityRenderRegistry.init();
+		TileEntityRenderRegistry.init();
 	}
 
 	public void registerItemRender(Item item, int meta, String unlocalizedName) {
