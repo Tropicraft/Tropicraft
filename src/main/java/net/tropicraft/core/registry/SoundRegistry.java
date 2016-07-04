@@ -1,23 +1,37 @@
 package net.tropicraft.core.registry;
 
+import java.util.HashMap;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
 
 public class SoundRegistry {
-
-	public static SoundEvent EIH_LAUGH;
+	
+	private static HashMap<String, SoundEvent> lookupStringToEvent = new HashMap<String, SoundEvent>();
 	
 	public static void init() {
-		EIH_LAUGH = register("headlaughing");
+		register("headlaughing");
+		register("headattack");
+		register("headshort");
+		register("headmed");
+		register("headpain");
+		register("headdeath");
 	}
 	
-	public static SoundEvent register(String soundPath) {
+	public static void register(String soundPath) {
 		ResourceLocation resLoc = new ResourceLocation(Info.MODID, soundPath);
 		SoundEvent event = new SoundEvent(resLoc);
 		GameRegistry.register(event, resLoc);
-		return event;
+		if (lookupStringToEvent.containsKey(soundPath)) {
+			System.out.println("TCWARNING: duplicate sound registration for " + soundPath);
+		}
+		lookupStringToEvent.put(soundPath, event);
+	}
+	
+	public static SoundEvent get(String soundPath) {
+		return lookupStringToEvent.get(soundPath);
 	}
 	
 }

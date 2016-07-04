@@ -4,8 +4,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
+import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,14 +29,15 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 	
 	//0 = sleep, 1 = aware, 2 = angry
 	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityEIH.class, DataSerializers.VARINT);
-	public byte STATE_SLEEP = 0;
-	public byte STATE_AWARE = 1;
-	public byte STATE_ANGRY = 2;
+	public int STATE_SLEEP = 0;
+	//this state was never actually used
+	public int STATE_AWARE = 1;
+	public int STATE_ANGRY = 2;
 
     public EntityEIH(World world) {
         super(world);
+        setSize(1.2F, 4.0F);
         this.isImmuneToFire = true;
-        setSize(1.4F, 4.0F);
         this.experienceValue = 10;
         
     }
@@ -43,14 +46,16 @@ public class EntityEIH extends EntityLandHostile implements IMob {
     protected void applyEntityAttributes() {
     	super.applyEntityAttributes();
     	
+    	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
     	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
+    	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7);
+    	this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100.0D);
     }
     
     @Override
     protected void initEntityAI() {
     	super.initEntityAI();
     	
-    	//this.tasks.addTask(1, new EntityAISwimming(this));
     	this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false) {
     		public boolean shouldExecute() {
     			if (getState() != STATE_ANGRY) return false;
@@ -58,16 +63,18 @@ public class EntityEIH extends EntityLandHostile implements IMob {
     		}
     	});
     	
-    	EntityAILeapAtTarget leap = new EntityAILeapAtTarget(this, 0.6F);
+    	EntityAILeapAtTarget leap = new EntityAILeapAtTarget(this, 0.4F);
     	leap.setMutexBits(0);
         this.tasks.addTask(3, leap);
-        //this.tasks.addTask(4, new EntitySpider.AISpiderAttack(this));
-        //this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
-        //this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        //this.tasks.addTask(6, new EntityAILookIdle(this));
+    	
+    	this.tasks.addTask(5, new EntityAIWander(this, 0.8D) {
+    		public boolean shouldExecute() {
+    			if (getState() != STATE_ANGRY) return false;
+    			return super.shouldExecute();
+    		}
+    	});
+    	
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-        //this.targetTasks.addTask(2, new EntitySpider.AISpiderTarget(this, EntityPlayer.class));
-        //this.targetTasks.addTask(3, new EntitySpider.AISpiderTarget(this, EntityIronGolem.class));
     }
     
     @Override
@@ -83,14 +90,19 @@ public class EntityEIH extends EntityLandHostile implements IMob {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
     	
+    	this.getDataManager().set(STATE, STATE_ANGRY);
+    	
     	if (source.getSourceOfDamage() instanceof EntityPlayer) {
     		EntityPlayer player = (EntityPlayer) source.getSourceOfDamage();
     		ItemStack heldItem = player.getHeldItemMainhand();
-    		if (heldItem != null && heldItem.getItem() instanceof ItemPickaxe) {
-    			this.getDataManager().set(STATE, Integer.valueOf(2));
+    		if (heldItem != null && heldItem.getItem().canHarvestBlock(Blocks.IRON_ORE.getDefaultState())) {
     			return super.attackEntityFrom(source, amount);
+    		} else {
+    			this.playSound(SoundRegistry.get("headlaughing"), this.getSoundVolume(), this.getSoundPitch());
     		}
     	}
+    	
+    	
     	
     	return true;
     }
@@ -111,6 +123,29 @@ public class EntityEIH extends EntityLandHostile implements IMob {
     
     @Override
     protected SoundEvent getAmbientSound() {
-    	return SoundRegistry.EIH_LAUGH;
+    	//aware was never properly used, so I've adjusted this code to use short noise for angry but without target
+    	if (getState() == STATE_ANGRY && getAttackTarget() != null) {
+    		return rand.nextInt(10) == 0 ? SoundRegistry.get("headmed") : null;
+    	} else if (getState() == STATE_ANGRY) {
+    		return rand.nextInt(10) == 0 ? SoundRegistry.get("headshort") : null;
+    	} else {
+    		return null;
+    	}
+    	
+    }
+    
+    @Override
+    protected SoundEvent getHurtSound() {
+    	return SoundRegistry.get("headpain");
+    }
+    
+    @Override
+    protected SoundEvent getDeathSound() {
+    	return SoundRegistry.get("headdeath");
+    }
+    
+    @Override
+    protected float getSoundVolume() {
+    	return 0.4F;
     }
 }
