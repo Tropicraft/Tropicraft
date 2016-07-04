@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Info;
+import net.tropicraft.core.registry.SoundRegistry;
 
 public class CommonProxy {
 
@@ -13,7 +14,9 @@ public class CommonProxy {
 
 	}
 
-	public void init() {}
+	public void init() {
+		SoundRegistry.init();
+	}
 
 	public static ResourceLocation getResource(String name) {
 		return new ResourceLocation(Info.MODID, name);

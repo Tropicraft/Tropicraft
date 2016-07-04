@@ -13,9 +13,11 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLand;
 import net.tropicraft.core.common.entity.EntityLandHostile;
+import net.tropicraft.core.registry.SoundRegistry;
 
 public class EntityEIH extends EntityLandHostile implements IMob {
 
@@ -105,5 +107,10 @@ public class EntityEIH extends EntityLandHostile implements IMob {
     	super.readEntityFromNBT(compound);
     	
     	this.getDataManager().set(STATE, (int)compound.getByte("state"));
+    }
+    
+    @Override
+    protected SoundEvent getAmbientSound() {
+    	return SoundRegistry.EIH_LAUGH;
     }
 }
