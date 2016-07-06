@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
-import net.tropicraft.config.ConfigGenRates;
+import net.tropicraft.configuration.ConfigGenRates;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenBamboo;
 import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
