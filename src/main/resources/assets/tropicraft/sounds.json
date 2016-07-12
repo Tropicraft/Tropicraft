@@ -1,0 +1,9 @@
+{
+	"headlaughing": { "category": "entity", "sounds": [ "tropicraft:headlaughing", "tropicraft:headlaughing2" ] },
+	"headattack": { "category": "entity", "sounds": [ "tropicraft:headattack" ] }, 
+	"headshort": { "category": "entity", "sounds": [ "tropicraft:headshort" ] }, 
+	"headmed": { "category": "entity", "sounds": [ "tropicraft:headmed" ] }, 
+	"headpain": { "category": "entity", "sounds": [ "tropicraft:headpain" ] }, 
+	"headdeath": { "category": "entity", "sounds": [ "tropicraft:headdeath" ] }
+	
+}
