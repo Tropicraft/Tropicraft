@@ -1,0 +1,16 @@
+{
+    "variants": {
+    	"stage=0,variant=mahogany_sapling": { "model": "tropicraft:mahogany_sapling" },
+        "stage=1,variant=mahogany_sapling": { "model": "tropicraft:mahogany_sapling" },
+        "stage=0,variant=palm_sapling": { "model": "tropicraft:palm_sapling" },
+        "stage=1,variant=palm_sapling": { "model": "tropicraft:palm_sapling" },
+        "stage=0,variant=grapefruit_sapling": { "model": "tropicraft:grapefruit_sapling" },
+        "stage=1,variant=grapefruit_sapling": { "model": "tropicraft:grapefruit_sapling" },
+        "stage=0,variant=lemon_sapling": { "model": "tropicraft:lemon_sapling" },
+        "stage=1,variant=lemon_sapling": { "model": "tropicraft:lemon_sapling" },
+        "stage=0,variant=lime_sapling": { "model": "tropicraft:lime_sapling" },
+        "stage=1,variant=lime_sapling": { "model": "tropicraft:lime_sapling" },
+        "stage=0,variant=orange_sapling": { "model": "tropicraft:orange_sapling" },
+        "stage=1,variant=orange_sapling": { "model": "tropicraft:orange_sapling" }
+    }
+}

@@ -1,6 +1,10 @@
 package net.tropicraft.core.common.block;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
@@ -16,9 +20,11 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftLeaves;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlock {
 
@@ -28,7 +34,38 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 
 	public BlockTropicraftLeaves(String[] names) {
 		this.names = names;
-		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, true));
+		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, true).withProperty(VARIANT, TropicraftLeaves.MAHOGANY));
+	}
+
+	/**
+	 * Get the Item that this Block should drop when harvested.
+	 */
+	@Nullable
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Item.getItemFromBlock(BlockRegistry.saplings);
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+		Random rand = world instanceof World ? ((World)world).rand : new Random();
+		int chance = this.getSaplingDropChance(state);
+
+		if (fortune > 0) {
+			chance -= 2 << fortune;
+			if (chance < 10) chance = 10;
+		}
+
+		chance = 200;
+		if (fortune > 0) {
+			chance -= 10 << fortune;
+			if (chance < 40) chance = 40;
+		}
+
+		this.captureDrops(true);
+
+		ret.addAll(this.captureDrops(false));
+		return ret;
 	}
 
 	@Override
@@ -78,20 +115,14 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 		}
 	}
 
-	//   TODO: 
-	//	 @Override
-	//    public int quantityDropped(Random random) {
-	//        return random.nextInt(20) != 0 ? 0 : 1;
-	//    }
-	//
-	//    @Override
-	//    public Item getItemDropped(int metadata, Random random, int j) {
-	//        return Item.getItemFromBlock(BlockRegistry.saplings);
-	//    }
-
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { CHECK_DECAY, DECAYABLE, VARIANT });
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return this.getMetaFromState(state);
 	}
 
 	@Override
@@ -100,9 +131,16 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 	}
 
 	@Override
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world,
-			BlockPos pos, int fortune) {
-		return null;
+	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+		List<ItemStack> items = new ArrayList<ItemStack>();
+		IBlockState state = world.getBlockState(pos);
+
+		if (state.getBlock() == this) {
+			int meta = this.getMetaFromState(state);
+			items.add(new ItemStack(this, 1, meta));
+		}
+
+		return items;
 	}
 
 	@Override

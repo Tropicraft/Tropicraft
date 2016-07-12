@@ -214,7 +214,6 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 	}
 
 	private void setBlocksInChunk(int x, int z, ChunkPrimer primer) {
-		System.err.println("Set blocks in chunk start");
 		byte chunkSizeGenXZ = 4;
 		byte chunkSizeGenY = 16;
 		byte midHeight = 63;
@@ -281,8 +280,6 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 				}
 			}
 		}
-		
-		System.err.println("Set blocks in chunk end");
 	}
 
 	private double[] initializeNoiseField(double[] par1ArrayOfDouble, int par2, int par3, int par4, int par5, int par6, int par7)

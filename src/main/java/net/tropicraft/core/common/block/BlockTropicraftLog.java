@@ -9,10 +9,11 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,9 +22,9 @@ import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 
-    public static final PropertyEnum<TropicraftLogs> VARIANT = PropertyEnum.create("variant", TropicraftLogs.class);
-    public String[] names;
-	
+	public static final PropertyEnum<TropicraftLogs> VARIANT = PropertyEnum.create("variant", TropicraftLogs.class);
+	public String[] names;
+
 	public BlockTropicraftLog(String[] logNames) {
 		super();
 		this.names = logNames;
@@ -32,120 +33,130 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftLogs.MAHOGANY).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
 	}
-	
+
+	/**
+	 * Called when a user uses the creative pick block button on this block
+	 *
+	 * @param target The full target the player is looking at
+	 * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
+	 */
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(state.getBlock(), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
+	}
+
 	public static void spawnCoconuts(World world, BlockPos pos, Random random, int chance) {
 		if (world.getBlockState(pos.up()).getBlock() == BlockRegistry.leaves ||
 				world.getBlockState(pos.up(2)).getBlock() == BlockRegistry.leaves) {
-// TODO		if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
-//				world.setBlock(i + 1, j, k, BlockRegistry.coconut);
-//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-//
-//			}
-//			if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
-//				world.setBlock(i - 1, j, k, BlockRegistry.coconut);
-//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-//
-//
-//			}
-//			if (world.isAirBlock(i, j, k - 1) && random.nextInt(chance) == 0) {
-//				world.setBlock(i, j, k - 1, BlockRegistry.coconut);
-//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-//
-//
-//			}
-//			if (world.isAirBlock(i, j, k + 1) && random.nextInt(chance) == 0) {
-//				world.setBlock(i, j, k + 1, BlockRegistry.coconut);
-//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-//			}
-//
-//			if (world.isAirBlock(i, j - 1, k) && random.nextInt(chance) == 0) {
-//				world.setBlock(i, j - 1, k, BlockRegistry.coconut);
-//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-//			}
+			// TODO		if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
+			//				world.setBlock(i + 1, j, k, BlockRegistry.coconut);
+			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+			//
+			//			}
+			//			if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
+			//				world.setBlock(i - 1, j, k, BlockRegistry.coconut);
+			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+			//
+			//
+			//			}
+			//			if (world.isAirBlock(i, j, k - 1) && random.nextInt(chance) == 0) {
+			//				world.setBlock(i, j, k - 1, BlockRegistry.coconut);
+			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+			//
+			//
+			//			}
+			//			if (world.isAirBlock(i, j, k + 1) && random.nextInt(chance) == 0) {
+			//				world.setBlock(i, j, k + 1, BlockRegistry.coconut);
+			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+			//			}
+			//
+			//			if (world.isAirBlock(i, j - 1, k) && random.nextInt(chance) == 0) {
+			//				world.setBlock(i, j - 1, k, BlockRegistry.coconut);
+			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
+			//			}
 		} 
 
 	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-    	return new BlockStateContainer(this, new IProperty[] { LOG_AXIS, VARIANT });
-    }
-    
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-        for (int i = 0; i < names.length; i++) {
-        	list.add(new ItemStack(item, 1, i));
-        }
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { LOG_AXIS, VARIANT });
+	}
 
-    /**
-     * Convert the given metadata into a BlockState for this Block
-     */
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, TropicraftLogs.byMetadata((meta & 3)));
+	/**
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+	 */
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
+		for (int i = 0; i < names.length; i++) {
+			list.add(new ItemStack(item, 1, i));
+		}
+	}
 
-        switch (meta & 12) {
-            case 0:
-                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
-                break;
-            case 4:
-                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
-                break;
-            case 8:
-                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
-                break;
-            default:
-                iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
-        }
+	/**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, TropicraftLogs.byMetadata((meta & 3)));
 
-        return iblockstate;
-    }
+		switch (meta & 12) {
+		case 0:
+			iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
+			break;
+		case 4:
+			iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
+			break;
+		case 8:
+			iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+			break;
+		default:
+			iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+		}
 
-    
-    /**
-     * Convert the BlockState into the correct metadata value
-     */
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
+		return iblockstate;
+	}
 
-        switch ((BlockLog.EnumAxis)state.getValue(LOG_AXIS)) {
-            case X:
-                i |= 4;
-                break;
-            case Z:
-                i |= 8;
-                break;
-            case NONE:
-                i |= 12;
-            default:
-            	break;
-        }
 
-        return i;
-    }
-    
-    @Override
-    public int damageDropped(IBlockState state) {
-        return ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
-    }
-    
-    @Override
-    protected ItemStack createStackedBlock(IBlockState state) {
-        return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
-    }
-    
-    // ITropicraftBlock methods
-    @Override
-    public String getStateName(IBlockState state) {
-        return ((TropicraftLogs) state.getValue(VARIANT)).getName();
-    }
-    
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = 0;
+		i = i | ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
+
+		switch ((BlockLog.EnumAxis)state.getValue(LOG_AXIS)) {
+		case X:
+			i |= 4;
+			break;
+		case Z:
+			i |= 8;
+			break;
+		case NONE:
+			i |= 12;
+		default:
+			break;
+		}
+
+		return i;
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
+	}
+
+	@Override
+	protected ItemStack createStackedBlock(IBlockState state) {
+		return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
+	}
+
+	// ITropicraftBlock methods
+	@Override
+	public String getStateName(IBlockState state) {
+		return ((TropicraftLogs) state.getValue(VARIANT)).getName();
+	}
+
 	@Override
 	public IProperty[] getProperties() {
 		return new IProperty[] {VARIANT, LOG_AXIS};

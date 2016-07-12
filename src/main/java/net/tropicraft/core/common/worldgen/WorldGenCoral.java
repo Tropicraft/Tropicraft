@@ -24,10 +24,10 @@ public class WorldGenCoral extends WorldGenerator {
             int y;
             for (y = pos.getY(); (world.isAirBlock(pos.add(x, y, z)) || world.getBlockState(pos.add(x, y, z).down()).getMaterial() == Material.WATER) && y > 0; y--) {}
 
-            if (((BlockCoral)BlockRegistry.coral).canBlockStay(world, pos.add(x, y, z))) {
+            BlockPos pos2 = new BlockPos(x, y, z);
+            if (((BlockCoral)BlockRegistry.coral).canBlockStay(world, pos2)) {
             	int meta = random.nextInt(TropicraftCorals.VALUES.length);
-                world.setBlockState(new BlockPos(x, y, z),
-                		BlockRegistry.coral.getDefaultState().withProperty(BlockCoral.VARIANT, TropicraftCorals.byMetadata(meta)), 3);
+                world.setBlockState(pos2, BlockRegistry.coral.getDefaultState().withProperty(BlockCoral.VARIANT, TropicraftCorals.byMetadata(meta)), 3);
             }
         }
 

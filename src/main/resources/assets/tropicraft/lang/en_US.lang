@@ -41,7 +41,18 @@ tile.tropicraft:bambooStairs.name=Bamboo Stairs
 tile.tropicraft:leaves_mahogany.name=Mahogany Leaves
 tile.tropicraft:leaves_palm.name=Palm Leaves
 tile.tropicraft:leaves_kapok.name=Kapok Leaves
+tile.tropicraft:leaves_fruit.name=Fruit Leaves
 tile.tropicraft:bamboo_chest.name=Bamboo Chest
+tile.tropicraft:leaves_fruit_grapefruit.name=Grapefruit Leaves
+tile.tropicraft:leaves_fruit_lemon.name=Lemon Leaves
+tile.tropicraft:leaves_fruit_lime.name=Lime Leaves
+tile.tropicraft:leaves_fruit_orange.name=Orange Leaves
+tile.tropicraft:sapling_palm.name=Palm Tree Sapling
+tile.tropicraft:sapling_mahogany.name=Mahogany Sapling
+tile.tropicraft:sapling_grapefruit.name=Grapefruit Sapling
+tile.tropicraft:sapling_lemon.name=Lemon Sapling
+tile.tropicraft:sapling_lime.name=Lime Sapling
+tile.tropicraft:sapling_orange.name=Orange Sapling
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
