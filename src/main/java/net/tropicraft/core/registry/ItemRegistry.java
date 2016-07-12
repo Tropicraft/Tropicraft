@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
@@ -55,8 +56,22 @@ public class ItemRegistry extends TropicraftRegistry {
 
 	// Buckets
 	public static Item tropicsWaterBucket;
+	
+	// Music
+    public static Item recordBuriedTreasure;
+    public static Item recordEasternIsles;
+    public static Item recordLowTide;
+    public static Item recordSummering;
+    public static Item recordTheTribe;
+    public static Item recordTradeWinds;
 
 	public static void preInit() {
+		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
+		recordEasternIsles = registerItem(new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");
+		recordSummering = registerItem(new ItemMusicDisc("summering", "Billy Christiansen", SoundRegistry.get("summering")), "summering");
+		recordTheTribe = registerItem(new ItemMusicDisc("the_tribe", "Emile Van Krieken", SoundRegistry.get("the_tribe")), "the_tribe");
+		recordLowTide = registerItem(new ItemMusicDisc("low_tide", "Punchaface", SoundRegistry.get("low_tide")), "low_tide");
+		recordTradeWinds = registerItem(new ItemMusicDisc("trade_winds", "Frox", SoundRegistry.get("trade_winds")), "trade_winds");
 		azurite = registerItem(new ItemTropicsOre(), "azurite");
 		eudialyte = registerItem(new ItemTropicsOre(), "eudialyte");
 		zircon = registerItem(new ItemTropicsOre(), "zircon");

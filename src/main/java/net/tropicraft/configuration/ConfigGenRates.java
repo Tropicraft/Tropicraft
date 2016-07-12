@@ -13,6 +13,8 @@ public class ConfigGenRates implements IConfigCategory {
 	public static final int CURVED_PALM_CHANCE = 3;
 	public static final int LARGE_PALM_CHANCE = 3;
 	public static final int NORMAL_PALM_CHANCE = 3;
+	public static final int FRUIT_TREE_CHANCE = 2;
+	public static final int TREASURE_CHANCE = 225;
 	
 	public static boolean genPalmsInOverworld = true;
 	public static boolean genOverworldPalmsInBeachOnly = false;

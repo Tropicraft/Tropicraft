@@ -79,5 +79,13 @@ item.tropicraft:bamboo_stick.name=Bamboo Stick
 item.tropicraft:bamboo_mug.name=Bamboo Mug
 item.tropicraft:tropics_water_bucket.name=Tropics Water Bucket
 
+# Record localizations
+item.tropicraft:buried_treasure.name=Buried Treasure
+item.tropicraft:eastern_isles.name=Eastern Isles
+item.tropicraft:low_tide.name=Low Tide
+item.tropicraft:summering.name=Summering
+item.tropicraft:the_tribe.name=The Tribe
+item.tropicraft:trade_winds.name=Trade Winds
+
 # Menu localizations
 itemGroup.tropicraft=Tropicraft
