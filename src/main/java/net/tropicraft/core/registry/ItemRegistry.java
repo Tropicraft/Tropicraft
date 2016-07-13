@@ -31,6 +31,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	// Foodstuffs
 	public static Item freshMarlin;
 	public static Item searedMarlin;
+	public static Item coconutChunk;
 
 	// Tool materials
 	public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 1, 200, 4.5F, 1.0F, 14);
@@ -56,14 +57,14 @@ public class ItemRegistry extends TropicraftRegistry {
 
 	// Buckets
 	public static Item tropicsWaterBucket;
-	
+
 	// Music
-    public static Item recordBuriedTreasure;
-    public static Item recordEasternIsles;
-    public static Item recordLowTide;
-    public static Item recordSummering;
-    public static Item recordTheTribe;
-    public static Item recordTradeWinds;
+	public static Item recordBuriedTreasure;
+	public static Item recordEasternIsles;
+	public static Item recordLowTide;
+	public static Item recordSummering;
+	public static Item recordTheTribe;
+	public static Item recordTradeWinds;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -101,6 +102,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		searedMarlin = registerItem(new ItemTropicraftFood(8, 0.65F), "seared_marlin");
 
 		tropicsWaterBucket = registerItem((new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
+
+		coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
 	}
 
 	public static void init() {

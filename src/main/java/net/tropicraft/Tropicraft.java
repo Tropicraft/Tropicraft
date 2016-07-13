@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
+import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
 import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -45,6 +46,7 @@ public class Tropicraft {
 		EntityRegistry.init();
 		proxy.init();
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
+		MinecraftForge.EVENT_BUS.register(new BlockEvents());
 		BiomeGenTropicraft.registerBiomes();
 		TropicraftWorldUtils.initializeDimension();
 	}

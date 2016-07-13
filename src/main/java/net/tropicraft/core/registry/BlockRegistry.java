@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -24,6 +27,7 @@ import net.tropicraft.core.common.block.BlockBambooChest;
 import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
+import net.tropicraft.core.common.block.BlockCoconut;
 import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockFruitLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
@@ -38,9 +42,6 @@ import net.tropicraft.core.common.block.BlockTropicsWater;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
 
 public class BlockRegistry extends TropicraftRegistry {
 
@@ -81,6 +82,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block bambooChest;
 	
 	public static Block saplings;
+	
+	public static Block coconut;
 
 	/**
 	 * Register blocks in preInit
@@ -112,6 +115,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		bambooChest = registerBlock(new BlockBambooChest(), Names.BAMBOO_CHEST);
 		
 		saplings = registerMultiBlock(new BlockTropicsSapling(Names.SAPLING_NAMES), ItemBlockTropicraft.class, "sapling", asList(Names.SAPLING_NAMES));
+		
+		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
 	}
 
 	public static void init() {

@@ -53,6 +53,7 @@ tile.tropicraft:sapling_grapefruit.name=Grapefruit Sapling
 tile.tropicraft:sapling_lemon.name=Lemon Sapling
 tile.tropicraft:sapling_lime.name=Lime Sapling
 tile.tropicraft:sapling_orange.name=Orange Sapling
+tile.tropicraft:coconut.name=Coconut
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
@@ -78,6 +79,7 @@ item.tropicraft:seared_marlin.name=Seared Marlin
 item.tropicraft:bamboo_stick.name=Bamboo Stick
 item.tropicraft:bamboo_mug.name=Bamboo Mug
 item.tropicraft:tropics_water_bucket.name=Tropics Water Bucket
+item.tropicraft:coconut_chunk.name=Coconut Chunk
 
 # Record localizations
 item.tropicraft:buried_treasure.name=Buried Treasure

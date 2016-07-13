@@ -21,6 +21,7 @@ public final class Names {
 	public static final String BAMBOO_CHEST = "bamboo_chest";
 	public static final String[] FRUIT_LEAF_NAMES = {"grapefruit", "lemon", "lime", "orange"};
 	public static final String[] SAPLING_NAMES = {"palm", "mahogany", "grapefruit", "lemon", "lime", "orange"};
+	public static final String COCONUT = "coconut";
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};
