@@ -7,42 +7,42 @@
 	"headdeath": { "category": "entity", "sounds": [ "tropicraft:headdeath" ] },
 	"summering": { "category": "record", "sounds": [
 			{
-				"name": "tropicraft:summering",
+				"name": "tropicraft:music/summering",
 				"stream": true
 			}
 		]
 	},
 	"low_tide": { "category": "record", "sounds": [
 			{
-				"name": "tropicraft:low_tide",
+				"name": "tropicraft:music/low_tide",
 				"stream": true
 			}
 		]
 	},
 	"eastern_isles": { "category": "record", "sounds": [
 			{
-				"name": "tropicraft:eastern_isles",
+				"name": "tropicraft:music/eastern_isles",
 				"stream": true
 			}
 		]
 	},
 	"buried_treasure": { "category": "record", "sounds": [
 			{
-				"name": "tropicraft:buried_treasure",
+				"name": "tropicraft:music/buried_treasure",
 				"stream": true
 			}
 		]
 	},
 	"the_tribe": { "category": "record", "sounds": [
 			{
-				"name": "tropicraft:the_tribe",
+				"name": "tropicraft:music/the_tribe",
 				"stream": true
 			}
 		]
 	},
 	"trade_winds": { "category": "record", "sounds": [
 			{
-				"name": "tropicraft:trade_winds",
+				"name": "tropicraft:music/trade_winds",
 				"stream": true
 			}
 		]

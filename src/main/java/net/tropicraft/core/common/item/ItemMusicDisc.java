@@ -31,7 +31,7 @@ public class ItemMusicDisc extends ItemRecord {
 	private String songName;
 
 	public ItemMusicDisc(String recordName, String artistName, SoundEvent soundIn) {
-		super(recordName, soundIn);
+		super("tropicraft:" + recordName, soundIn);
 		this.songName = recordName;
 		this.artistName = artistName;
 	}
@@ -50,7 +50,7 @@ public class ItemMusicDisc extends ItemRecord {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced){
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, playerIn, tooltip, advanced);
         String[] extraInfo = RecordInformation.getInformation(songName);
         
@@ -61,39 +61,9 @@ public class ItemMusicDisc extends ItemRecord {
         }
     }
     
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        IBlockState iblockstate = worldIn.getBlockState(pos);
-
-        if (iblockstate.getBlock() == Blocks.JUKEBOX && !((Boolean)iblockstate.getValue(BlockJukebox.HAS_RECORD)).booleanValue())
-        {
-            if (!worldIn.isRemote)
-            {
-                ((BlockJukebox)Blocks.JUKEBOX).insertRecord(worldIn, pos, iblockstate, stack);
-                worldIn.playEvent((EntityPlayer)null, 1010, pos, Item.getIdFromItem(this));
-                --stack.stackSize;
-                playerIn.addStat(StatList.RECORD_PLAYED);
-            }
-
-            System.out.println("success yo");
-            return EnumActionResult.SUCCESS;
-        }
-        else
-        {
-            return EnumActionResult.PASS;
-        }
-    }
-    
-    /**
-     * Retrieves the resource location of the sound to play for this record.
-     * 
-     * @param name The name of the record to play
-     * @return The resource location for the audio, null to use default.
-     */
+    /** I don't think this is used */
     @Override
     public ResourceLocation getRecordResource(String name) {
-    	System.err.println("Getting record resource: " + name);
-    	name = "tropicraft:records/" + name;
-        return new ResourceLocation(name);
+        return new ResourceLocation("tropicraft:" + songName);
     }
 }

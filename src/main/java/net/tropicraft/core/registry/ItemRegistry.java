@@ -72,6 +72,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		recordTheTribe = registerItem(new ItemMusicDisc("the_tribe", "Emile Van Krieken", SoundRegistry.get("the_tribe")), "the_tribe");
 		recordLowTide = registerItem(new ItemMusicDisc("low_tide", "Punchaface", SoundRegistry.get("low_tide")), "low_tide");
 		recordTradeWinds = registerItem(new ItemMusicDisc("trade_winds", "Frox", SoundRegistry.get("trade_winds")), "trade_winds");
+
 		azurite = registerItem(new ItemTropicsOre(), "azurite");
 		eudialyte = registerItem(new ItemTropicsOre(), "eudialyte");
 		zircon = registerItem(new ItemTropicsOre(), "zircon");
