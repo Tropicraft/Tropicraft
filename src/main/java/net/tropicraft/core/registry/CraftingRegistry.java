@@ -152,6 +152,36 @@ public class CraftingRegistry {
 			'X', ItemRegistry.bambooShoot
 		});
 
+		// Scale helmet
+		createRecipe(true, new ItemStack(ItemRegistry.scaleHelmet, 1), new Object[]{
+			"XXX", "X X",
+			'X', ItemRegistry.scale
+		});
+
+		// Scale chestplate
+		createRecipe(true, new ItemStack(ItemRegistry.scaleChestplate, 1), new Object[]{
+			"X X", "XXX", "XXX",
+			'X', ItemRegistry.scale
+		});
+
+		// Scale leggings
+		createRecipe(true, new ItemStack(ItemRegistry.scaleLeggings, 1), new Object[]{
+			"XXX", "X X", "X X",
+			'X', ItemRegistry.scale
+		});
+
+		// Scale boots
+		createRecipe(true, new ItemStack(ItemRegistry.scaleBoots, 1), new Object[]{
+			"X X", "X X",
+			'X', ItemRegistry.scale
+		});
+
+		// Bamboo mug
+		createRecipe(true, new ItemStack(ItemRegistry.bambooMug, 1), new Object[]{
+			"X X", "X X", "XXX",
+			'X', ItemRegistry.bambooShoot
+		});
+
 		// planks -> logs
 		int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");
 		int palm_meta = TropicraftLogs.getMetaByName("palm_log");
@@ -171,7 +201,7 @@ public class CraftingRegistry {
 		createOreRecipe(ItemRegistry.azurite, 0);
 		createOreRecipe(ItemRegistry.eudialyte, 1);
 		createOreRecipe(ItemRegistry.zircon, 2);
-		
+
 		GameRegistry.addSmelting(ItemRegistry.frogLeg, new ItemStack(ItemRegistry.cookedFrogLeg), 3);
 	}
 
