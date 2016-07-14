@@ -29,7 +29,6 @@ public class WorldGenTallTree extends TCGenBase {
 
 	@Override
 	public boolean generate(BlockPos pos) {	
-		System.out.println("gen");
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 		Block blockUnder = getBlock(i, j - 1, k);
 		if(blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
@@ -51,8 +50,6 @@ public class WorldGenTallTree extends TCGenBase {
 		if(blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
 			return false;
 		}
-		
-		System.out.println("Made it this far");
 
 		int height = rand.nextInt(15) + 15;
 

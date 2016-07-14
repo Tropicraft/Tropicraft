@@ -26,8 +26,8 @@ public class Info {
 	public static final String RECORDS_LOCATION = ICON_LOCATION + "sounds/records/";
 
 	/** Client proxy location */
-	public static final String CLIENT_PROXY = "net.tropicraft.proxy.ClientProxy";
+	public static final String CLIENT_PROXY = "net.tropicraft.core.proxy.ClientProxy";
 	
 	/** Common proxy location */
-	public static final String SERVER_PROXY = "net.tropicraft.proxy.ServerProxy";
+	public static final String SERVER_PROXY = "net.tropicraft.core.proxy.ServerProxy";
 }

@@ -25,7 +25,7 @@ import net.tropicraft.core.registry.TileEntityRegistry;
 @Mod(modid = Info.MODID, version = Info.VERSION)
 public class Tropicraft {
 
-	@SidedProxy(clientSide = "net.tropicraft.core.proxy.ClientProxy", serverSide = "net.tropicraft.core.proxy.CommonProxy")
+	@SidedProxy(clientSide = Info.CLIENT_PROXY, serverSide = Info.SERVER_PROXY)
 	public static CommonProxy proxy;
 
 	@Mod.Instance(Info.MODID)

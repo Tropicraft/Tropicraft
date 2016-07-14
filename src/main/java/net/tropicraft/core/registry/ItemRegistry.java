@@ -1,8 +1,11 @@
 package net.tropicraft.core.registry;
 
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemHoe;
@@ -19,6 +22,8 @@ import net.tropicraft.core.common.item.ItemTropicraftAxe;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
+import net.tropicraft.core.common.item.armor.ItemScaleArmor;
+import net.tropicraft.core.common.item.armor.ItemTropicraftArmor;
 
 public class ItemRegistry extends TropicraftRegistry {
 
@@ -70,6 +75,15 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item frogLeg;
 	public static Item cookedFrogLeg;
 	public static Item poisonFrogSkin;
+	
+	public static Item scale;
+	
+    // Armor	
+    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+    public static Item scaleBoots;
+    public static Item scaleLeggings;
+    public static Item scaleChestplate;
+    public static Item scaleHelmet;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -113,6 +127,13 @@ public class ItemRegistry extends TropicraftRegistry {
 		frogLeg = registerItem(new ItemTropicraft().setMaxStackSize(64), "frog_leg");
 		cookedFrogLeg = registerItem(new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
 		poisonFrogSkin = registerItem(new ItemTropicraft().setMaxStackSize(64), "poison_frog_skin");
+		
+		scale = registerItem(new ItemTropicraft().setMaxStackSize(64), "scale");
+		
+		scaleBoots = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.FEET), "scale_boots");
+		scaleLeggings = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.LEGS), "scale_leggings");
+		scaleChestplate = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.CHEST), "scale_chestplate");
+		scaleHelmet = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.HEAD), "scale_helmet");
 	}
 
 	public static void init() {
