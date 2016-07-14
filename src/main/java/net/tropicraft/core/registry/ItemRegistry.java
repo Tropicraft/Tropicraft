@@ -65,6 +65,11 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item recordSummering;
 	public static Item recordTheTribe;
 	public static Item recordTradeWinds;
+	
+	// Frogs
+	public static Item frogLeg;
+	public static Item cookedFrogLeg;
+	public static Item poisonFrogSkin;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -104,6 +109,10 @@ public class ItemRegistry extends TropicraftRegistry {
 		tropicsWaterBucket = registerItem((new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
 
 		coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
+		
+		frogLeg = registerItem(new ItemTropicraft().setMaxStackSize(64), "frog_leg");
+		cookedFrogLeg = registerItem(new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
+		poisonFrogSkin = registerItem(new ItemTropicraft().setMaxStackSize(64), "poison_frog_skin");
 	}
 
 	public static void init() {

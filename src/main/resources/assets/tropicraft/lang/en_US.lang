@@ -80,6 +80,9 @@ item.tropicraft:bamboo_stick.name=Bamboo Stick
 item.tropicraft:bamboo_mug.name=Bamboo Mug
 item.tropicraft:tropics_water_bucket.name=Tropics Water Bucket
 item.tropicraft:coconut_chunk.name=Coconut Chunk
+item.tropicraft:frog_leg.name=Frog Leg
+item.tropicraft:cooked_frog_leg.name=Cooked Frog Leg
+item.tropicraft:poison_frog_skin.name=Poison Frog Skin
 
 # Record localizations
 item.tropicraft:buried_treasure.name=Buried Treasure

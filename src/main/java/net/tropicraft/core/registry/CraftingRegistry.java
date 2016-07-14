@@ -171,6 +171,8 @@ public class CraftingRegistry {
 		createOreRecipe(ItemRegistry.azurite, 0);
 		createOreRecipe(ItemRegistry.eudialyte, 1);
 		createOreRecipe(ItemRegistry.zircon, 2);
+		
+		GameRegistry.addSmelting(ItemRegistry.frogLeg, new ItemStack(ItemRegistry.cookedFrogLeg), 3);
 	}
 
 	private static void createFullSingleBlockRecipe(Block out, Item ingredient, int blockDmg) {
