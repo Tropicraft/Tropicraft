@@ -10,6 +10,7 @@ import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenTallTree;
 import net.tropicraft.core.common.worldgen.WorldGenTualang;
 import net.tropicraft.core.common.worldgen.WorldGenUndergrowth;
+import net.tropicraft.core.common.worldgen.WorldGenUpTree;
 
 public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
@@ -65,31 +66,31 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 //			new WorldGenForestAltarRuin(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, x, 16));
 //		}
 //
-		//if(rand.nextInt(TALL_TREE_CHANCE) == 0) {
+		if (rand.nextInt(TALL_TREE_CHANCE) == 0) {
 			i = randCoord(rand, x, 16);
 			k = randCoord(rand, z, 16);
 			new WorldGenTallTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
-		//}
-//
-//		if(rand.nextInt(UP_TREE_CHANCE) == 0) {
-//			int i = randCoord(rand, x, 16);
-//			int k = randCoord(rand, z, 16);
-//			new WorldGenUpTree(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);			
-//		}
-//
-		for(int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
+		}
+
+		if (rand.nextInt(UP_TREE_CHANCE) == 0) {
+			i = randCoord(rand, x, 16);
+			k = randCoord(rand, z, 16);
+			new WorldGenUpTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));			
+		}
+
+		for (int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
 			i = randCoord(rand, x, 16);
 			k = randCoord(rand, z, 16);
 			new WorldGenTualang(world, rand, 16, 9).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
-		for(int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
+		for (int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
 			i = randCoord(rand, x, 16);
 			k = randCoord(rand, z, 16);
 			new WorldGenTualang(world, rand, 25, 11).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 //
-		for(int a = 0; a < UNDERGROWTH_AMOUNT; a++) {
+		for (int a = 0; a < UNDERGROWTH_AMOUNT; a++) {
 			i = randCoord(rand, x, 16);
 			k = randCoord(rand, z, 16);
 			new WorldGenUndergrowth(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
