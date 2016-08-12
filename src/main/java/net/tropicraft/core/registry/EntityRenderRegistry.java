@@ -10,11 +10,11 @@ import net.tropicraft.core.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
+import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBase;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
-import net.tropicraft.core.common.entity.hostile.EntityVMonkey;
-import net.tropicraft.core.common.entity.passive.EntityIguana;
+import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 
 public class EntityRenderRegistry {
 

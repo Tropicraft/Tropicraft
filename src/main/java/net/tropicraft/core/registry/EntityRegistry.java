@@ -3,14 +3,14 @@ package net.tropicraft.core.registry;
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
+import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBlue;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogGreen;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogRed;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogYellow;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
-import net.tropicraft.core.common.entity.hostile.EntityVMonkey;
-import net.tropicraft.core.common.entity.passive.EntityIguana;
+import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 
 public class EntityRegistry {

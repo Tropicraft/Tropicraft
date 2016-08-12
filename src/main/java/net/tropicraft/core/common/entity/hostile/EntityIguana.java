@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.entity.passive;
+package net.tropicraft.core.common.entity.hostile;
 
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.monster.IMob;

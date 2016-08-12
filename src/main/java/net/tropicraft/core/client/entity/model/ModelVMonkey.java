@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
-import net.tropicraft.core.common.entity.hostile.EntityVMonkey;
+import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 
 public class ModelVMonkey extends ModelBase {
 
@@ -163,7 +163,7 @@ public class ModelVMonkey extends ModelBase {
     public void setLivingAnimations(EntityLivingBase entityliving, float f, float f1, float f2) {
         EntityVMonkey entityvmonkey = (EntityVMonkey) entityliving;
 
-        if (entityvmonkey.isSitting) {
+        if (entityvmonkey.isSitting()) {
 
             body.setRotationPoint(0F, 20F, 0F);
             body.rotateAngleX = 0.9320058F;

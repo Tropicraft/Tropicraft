@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
 import net.tropicraft.Info;
 
@@ -18,5 +19,13 @@ public abstract class EntityLand extends EntityCreature {
      */
     protected String tcSound(String postfix) {
         return String.format("%s:%s", Info.MODID, postfix);
+    }
+    
+    @Override
+    protected void applyEntityAttributes() {
+    	super.applyEntityAttributes();
+
+    	//give a default that isnt 1 since thats crazy fast
+    	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
     }
 }
