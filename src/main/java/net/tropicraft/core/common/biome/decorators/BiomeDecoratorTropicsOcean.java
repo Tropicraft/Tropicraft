@@ -6,7 +6,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
+import net.tropicraft.configuration.ConfigGenRates;
 import net.tropicraft.core.common.worldgen.WorldGenCoral;
+import net.tropicraft.core.common.worldgen.WorldGenSunkenShip;
 
 public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
 
@@ -30,11 +32,17 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
     }
     
     public void genDecorations(Biome biome, World world, Random rand) {
-		if(rand.nextInt(5) == 0) {
+		if (rand.nextInt(5) == 0) {
             int j = rand.nextInt(16) + 8;
             int k = rand.nextInt(16) + 8;
             BlockPos pos = chunkPos.add(j, 0, k);
 			new WorldGenCoral().generate(world, rand, pos);
+		}
+
+		if (ConfigGenRates.SHIPWRECK_CHANCE != 0 /*&& rand.nextInt(ConfigGenRates.SHIPWRECK_CHANCE) == 0*/) {
+			int i = randCoord(rand, chunkPos.getX(), 16);
+			int k = randCoord(rand, chunkPos.getZ(), 16);
+			new WorldGenSunkenShip(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
     }
 

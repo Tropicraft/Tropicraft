@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Info;
 import net.tropicraft.core.client.entity.model.ModelTropiSkeleton;
 import net.tropicraft.core.client.entity.model.ModelVMonkey;
-import net.tropicraft.core.common.entity.hostile.EntityVMonkey;
+import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 
 public class RenderVMonkey extends RenderLiving<EntityVMonkey> {
 

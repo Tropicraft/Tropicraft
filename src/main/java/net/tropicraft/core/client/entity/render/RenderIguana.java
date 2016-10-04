@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Info;
 import net.tropicraft.core.client.entity.model.ModelIguana;
-import net.tropicraft.core.common.entity.passive.EntityIguana;
+import net.tropicraft.core.common.entity.hostile.EntityIguana;
 
 public class RenderIguana extends RenderLiving<EntityIguana> {
 	

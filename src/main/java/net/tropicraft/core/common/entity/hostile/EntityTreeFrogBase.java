@@ -39,7 +39,6 @@ public class EntityTreeFrogBase extends EntityLand implements IMob, IRangedAttac
     protected void initEntityAI() {
     	super.initEntityAI();
     	
-    	this.experienceValue = 5;
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAttackRanged(this, 1.0D, 60, 10.0F));
         this.tasks.addTask(2, new EntityAIWander(this, 1.0D));

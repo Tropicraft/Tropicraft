@@ -84,6 +84,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block saplings;
 	
 	public static Block coconut;
+	
+	public static Block pineapple;
 
 	/**
 	 * Register blocks in preInit
@@ -117,6 +119,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		saplings = registerMultiBlock(new BlockTropicsSapling(Names.SAPLING_NAMES), ItemBlockTropicraft.class, "sapling", asList(Names.SAPLING_NAMES));
 		
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
+		//pineapple = registerMultiBlock(new BlockPineapple(Names.PINEAPPLE_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.PINEAPPLE_NAMES));
 	}
 
 	public static void init() {
