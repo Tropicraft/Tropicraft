@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.tropicraft.Info;
-import net.tropicraft.core.client.TropicraftWaterOverlay;
+import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.registry.EntityRenderRegistry;
 import net.tropicraft.core.registry.TileEntityRenderRegistry;
@@ -32,7 +32,7 @@ public class ClientProxy extends CommonProxy {
 		EntityRenderRegistry.init();
 		TileEntityRenderRegistry.init();
 		
-		MinecraftForge.EVENT_BUS.register(new TropicraftWaterOverlay());
+		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 	}
 	
 	public void registerColoredBlock(Block block) {

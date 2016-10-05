@@ -8,12 +8,13 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.Info;
 import net.tropicraft.core.registry.BlockRegistry;
 
-public class TropicraftWaterOverlay {
+public class TropicraftWaterRenderFixer {
 
     private static final ResourceLocation RES_UNDERWATER_OVERLAY = new ResourceLocation(Info.MODID, "textures/misc/underwater.png");
 
@@ -55,5 +56,14 @@ public class TropicraftWaterOverlay {
             }
         }
     }
-
+    
+    @SubscribeEvent
+    public void onFogDensity(FogDensity event) {
+        if (event.getState().getBlock() == BlockRegistry.tropicsWater) {
+            event.setCanceled(true);
+            
+            GlStateManager.setFog(GlStateManager.FogMode.EXP);
+            event.setDensity(0.02f);
+        }
+    }
 }
