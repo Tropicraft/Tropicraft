@@ -6,9 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -43,6 +40,9 @@ import net.tropicraft.core.common.block.BlockTropicsWater;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 
 public class BlockRegistry extends TropicraftRegistry {
 
