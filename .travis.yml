@@ -1,7 +1,7 @@
 language: java
 
 install:
-  - TERM=dumb gradlew assemble
+  - TERM=dumb ./gradlew assemble
 
 script:
-  - TERM=dumb gradlew check
+  - TERM=dumb ./gradlew check
