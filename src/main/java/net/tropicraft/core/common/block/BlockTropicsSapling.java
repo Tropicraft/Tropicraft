@@ -12,6 +12,8 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -197,5 +199,15 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
 		for (TropicraftSaplings sapling : TropicraftSaplings.VALUES) {
 			list.add(new ItemStack(itemIn, 1, sapling.getMetadata()));
 		}
+	}
+
+	@Override
+	public IBlockColor getBlockColor() {
+		return null;
+	}
+
+	@Override
+	public IItemColor getItemColor() {
+		return null;
 	}
 }

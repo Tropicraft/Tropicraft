@@ -35,6 +35,7 @@ import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
 import net.tropicraft.core.common.block.BlockTropicraftPlank;
+import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.BlockTropicsSapling;
@@ -86,6 +87,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block coconut;
 	
 	public static Block pineapple;
+	public static Block sand;
 
 	/**
 	 * Register blocks in preInit
@@ -119,11 +121,19 @@ public class BlockRegistry extends TropicraftRegistry {
 		saplings = registerMultiBlock(new BlockTropicsSapling(Names.SAPLING_NAMES), ItemBlockTropicraft.class, "sapling", asList(Names.SAPLING_NAMES));
 		
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
+
 		//pineapple = registerMultiBlock(new BlockPineapple(Names.PINEAPPLE_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.PINEAPPLE_NAMES));
+		
+		sand = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
+
 	}
 
 	public static void init() {
 
+	}
+	
+	private static Block registerMultiColoredBlock(Block block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
+		return registerMultiBlock(block, clazz, name, itemCtorArgs);
 	}
 
 	private static <T> List<T> asList(T[] objects) {

@@ -1,8 +1,8 @@
-package net.tropicraft.core.common.block;
+		package net.tropicraft.core.common.block;
 
 import java.util.List;
 
-import net.minecraft.block.SoundType;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -15,51 +15,47 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.enums.TropicraftPlanks;
+import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.common.enums.TropicraftSands;
 
-public class BlockTropicraftPlank extends BlockTropicraft implements ITropicraftBlock {
+public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlock {
 
-	public static final PropertyEnum<TropicraftPlanks> VARIANT = PropertyEnum.create("variant", TropicraftPlanks.class);
+	public static final PropertyEnum<TropicraftSands> VARIANT = PropertyEnum.create("variant", TropicraftSands.class);
 	public String[] names;
-
-	public BlockTropicraftPlank(Material mat, String[] names) {
-		super(mat);
+	
+	public BlockTropicraftSands(String[] names) {
+		super(Material.SAND);
 		this.names = names;
-		this.disableStats();
-		this.setHardness(2.0F);
-		this.setSoundType(SoundType.WOOD);
-		this.setHarvestLevel("axe", 0);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftPlanks.MAHOGANY));
 	}
-
+	
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
 		for (int i = 0; i < names.length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
-
+	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, VARIANT);
+		return new BlockStateContainer(this, new IProperty[] { VARIANT });
 	}
 
 	@Override
 	public String getStateName(IBlockState state) {
-		return ((TropicraftPlanks) state.getValue(VARIANT)).getName();
+		return ((TropicraftSands) state.getValue(VARIANT)).getName();
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, TropicraftPlanks.VALUES[meta]);
+		return this.getDefaultState().withProperty(VARIANT, TropicraftSands.values()[meta]);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((TropicraftPlanks) state.getValue(VARIANT)).ordinal();
+		return ((TropicraftSands) state.getValue(VARIANT)).ordinal();
 	}
 
 	@Override
@@ -74,11 +70,11 @@ public class BlockTropicraftPlank extends BlockTropicraft implements ITropicraft
 
 	@Override
 	public IBlockColor getBlockColor() {
-		return null;
+		return TropicraftRenderUtils.SAND_COLORING;
 	}
 
 	@Override
 	public IItemColor getItemColor() {
-		return null;
+		return TropicraftRenderUtils.BLOCK_ITEM_COLORING;
 	}
 }

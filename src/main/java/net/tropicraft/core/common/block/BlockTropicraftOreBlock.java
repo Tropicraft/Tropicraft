@@ -8,6 +8,8 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -68,5 +70,15 @@ public class BlockTropicraftOreBlock extends BlockTropicraft implements ITropicr
 	@Override
 	public IProperty[] getProperties() {
 		return new IProperty[] {VARIANT};
+	}
+
+	@Override
+	public IBlockColor getBlockColor() {
+		return null;
+	}
+
+	@Override
+	public IItemColor getItemColor() {
+		return null;
 	}
 }

@@ -54,6 +54,11 @@ tile.tropicraft:sapling_lemon.name=Lemon Sapling
 tile.tropicraft:sapling_lime.name=Lime Sapling
 tile.tropicraft:sapling_orange.name=Orange Sapling
 tile.tropicraft:coconut.name=Coconut
+tile.tropicraft:sand_purified.name=Purified Sand
+tile.tropicraft:sand_green.name=Foamy Sands
+tile.tropicraft:sand_black.name=Volcanic Sands
+tile.tropicraft:sand_mineral.name=Mineral Sands
+tile.tropicraft:sand_coral.name=Coral Sands
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard

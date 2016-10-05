@@ -23,7 +23,6 @@ import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
-import net.tropicraft.core.common.item.armor.ItemTropicraftArmor;
 
 public class ItemRegistry extends TropicraftRegistry {
 

@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
 import net.tropicraft.Info;
+import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.registry.EntityRenderRegistry;
 import net.tropicraft.core.registry.TileEntityRenderRegistry;
 
@@ -28,6 +29,17 @@ public class ClientProxy extends CommonProxy {
 
 		EntityRenderRegistry.init();
 		TileEntityRenderRegistry.init();
+	}
+	
+	public void registerColoredBlock(Block block) {
+		ITropicraftBlock tcBlock = (ITropicraftBlock)block;
+		if (tcBlock.getBlockColor() != null) {
+			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(tcBlock.getBlockColor(), block);
+		}
+		
+		if (tcBlock.getItemColor() != null) {
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(tcBlock.getItemColor(), block);
+		}
 	}
 
 	public void registerItemRender(Item item, int meta, String unlocalizedName) {

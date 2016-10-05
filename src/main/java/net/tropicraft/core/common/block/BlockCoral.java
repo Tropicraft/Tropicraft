@@ -12,6 +12,8 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -170,5 +172,15 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
 		}
+	}
+
+	@Override
+	public IBlockColor getBlockColor() {
+		return null;
+	}
+
+	@Override
+	public IItemColor getItemColor() {
+		return null;
 	}
 }

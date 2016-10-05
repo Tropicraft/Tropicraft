@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "variant=purified_sand": { "model": "tropicraft:purified_sand" },
+        "variant=coral_sand": { "model": "tropicraft:coral_sand" },
+        "variant=green_sand": { "model": "tropicraft:green_sand" },
+        "variant=black_sand": { "model": "tropicraft:black_sand" },
+        "variant=mineral_sand": { "model": "tropicraft:mineral_sand" }
+    }
+}
