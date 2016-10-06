@@ -104,3 +104,6 @@ item.tropicraft:trade_winds.name=Trade Winds
 
 # Menu localizations
 itemGroup.tropicraft=Tropicraft
+
+# Entity localizations
+entity.tropicraft.Iguana.name=Iguana

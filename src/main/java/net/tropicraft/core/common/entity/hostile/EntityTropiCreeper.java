@@ -27,6 +27,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -62,6 +63,15 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
 		super(world);
 		this.setSize(0.6F, 1.7F);
 	}
+	
+    /**
+     * Creates an explosion as determined by this creeper's power and explosion radius.
+     */
+    private void explode() {
+        if (!this.worldObj.isRemote) {
+            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D, new int[0]);
+        }
+    }
 	
 	@Override
     protected void initEntityAI() {
@@ -170,6 +180,7 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
 
 			if (this.timeSinceIgnited >= this.fuseTime) {
 				this.timeSinceIgnited = this.fuseTime;
+				this.explode();
 				this.onDeathBySelf();
 				this.setDead();
 			}
