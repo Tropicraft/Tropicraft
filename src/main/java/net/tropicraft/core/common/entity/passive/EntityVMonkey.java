@@ -102,6 +102,7 @@ public class EntityVMonkey extends EntityLandTameable implements IMob {
 		return null;
 	}
 	
+	@Override
 	public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
     {
         if (this.isTamed())
