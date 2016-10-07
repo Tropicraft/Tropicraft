@@ -1,14 +1,10 @@
 package net.tropicraft.core.common.entity.hostile;
 
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.entity.EntityLand;
+import net.tropicraft.core.common.entity.EntityLandHostile;
 
-public class EntityTropiSkeleton extends EntityLand implements IMob {
+public class EntityTropiSkeleton extends EntityLandHostile implements IMob {
 
     public EntityTropiSkeleton(World world) {
         super(world);

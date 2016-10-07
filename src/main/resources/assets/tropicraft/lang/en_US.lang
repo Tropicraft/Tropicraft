@@ -107,3 +107,13 @@ itemGroup.tropicraft=Tropicraft
 
 # Entity localizations
 entity.tropicraft.Iguana.name=Iguana
+entity.tropicraft.TropiSkeleton.name=TropiSkelly
+entity.tropicraft.EasterIslandHead.name=Easter Island Head
+entity.tropicraft.TreeFrogGreen.name=Green Tree Frog
+entity.tropicraft.TreeFrogRed.name=Poisonous Red Tree Frog
+entity.tropicraft.TreeFrogBlue.name=Poisonous Blue Tree Frog
+entity.tropicraft.TreeFrogYellow.name=Poisonous Yellow Tree Frog
+entity.tropicraft.TropiCreeper.name=TropiCreeper
+entity.tropicraft.VMonkey.name=Vervet Monkey
+entity.tropicraft.PoisonBlot.name=Poisonous Blot
+entity.tropicraft.Marlin.name=Marlin

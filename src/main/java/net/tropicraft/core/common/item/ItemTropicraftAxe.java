@@ -1,13 +1,6 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.world.World;
-import net.tropicraft.core.common.entity.hostile.EntityIguana;
 
 /**
  * This class literally only exists because ItemAxe's constructor is protected. Go figure!
@@ -27,15 +20,5 @@ public class ItemTropicraftAxe extends ItemAxe {
 	public ItemTropicraftAxe(ToolMaterial material, float damage, float speed) {
 		super(material, damage, speed);
 	}
-	
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
-    {
-    	if (!worldIn.isRemote) {
-	    	EntityIguana creeper = new EntityIguana(worldIn);
-	    	creeper.setPosition(playerIn.posX, playerIn.posY, playerIn.posZ);
-	    	worldIn.spawnEntityInWorld(creeper);
-    	}
-        return new ActionResult(EnumActionResult.PASS, itemStackIn);
-    }
 
 }

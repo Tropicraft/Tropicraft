@@ -52,7 +52,9 @@ public class EntityIguana extends EntityLandHostile implements IMob {
         int numDrops = 3 + this.rand.nextInt(1 + lootingModifier);
 
         for (int i = 0; i < numDrops; i++) {
-            this.dropItem(ItemRegistry.scale, 1);
+        	if (!worldObj.isRemote) {
+                this.dropItem(ItemRegistry.scale, 1);	
+        	}
         }
     }
 

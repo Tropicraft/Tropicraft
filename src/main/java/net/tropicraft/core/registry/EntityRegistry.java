@@ -12,13 +12,14 @@ import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
+import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 
 public class EntityRegistry {
 
 	private static int entityID = 0;
 
 	public static void init() {
-		registerEntity(EntityEIH.class, "Easter Island Head", 80, 3, true);
+		registerEntity(EntityEIH.class, "EasterIslandHead", 80, 3, true);
 		registerEntity(EntityTropiCreeper.class, "TropiCreeper", 80, 3, true);
 		registerEntity(EntityIguana.class, "Iguana", 80, 3, true);
 		registerEntity(EntityTreeFrogGreen.class, "TreeFrogGreen", 80, 3, true);
@@ -28,6 +29,7 @@ public class EntityRegistry {
 		registerEntity(EntityTropiSkeleton.class, "TropiSkeleton", 80, 3, true);
 		registerEntity(EntityVMonkey.class, "VMonkey", 80, 3, true);
 		registerEntity(EntityPoisonBlot.class, "PoisonBlot", 32, 1, true);
+		registerEntity(EntityMarlin.class, "Marlin", 80, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
