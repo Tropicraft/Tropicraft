@@ -32,7 +32,7 @@ public class TropicraftWaterRenderFixer {
                 Tessellator tessellator = Tessellator.getInstance();
                 VertexBuffer vertexbuffer = tessellator.getBuffer();
                 float f = mc.thePlayer.getBrightness(event.getRenderPartialTicks());
-                GlStateManager.color(f, f, f, 0.5F);
+                GlStateManager.color(f, f, f, 0.6F);
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GlStateManager.pushMatrix();
@@ -63,7 +63,7 @@ public class TropicraftWaterRenderFixer {
             event.setCanceled(true);
             
             GlStateManager.setFog(GlStateManager.FogMode.EXP);
-            event.setDensity(0.02f);
+            event.setDensity(0.0115F);
         }
     }
 }
