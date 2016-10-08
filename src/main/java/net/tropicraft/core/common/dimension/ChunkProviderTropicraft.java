@@ -20,6 +20,7 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.worldgen.mapgen.MapGenVolcano;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS WILL MOST LIKELY BE COMPLETELY REDONE
@@ -44,6 +45,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 	private NoiseGeneratorOctaves noiseGen4;
 	private NoiseGeneratorOctaves noiseGen5;
 
+	private MapGenVolcano volcanoGen;
+
 	public ChunkProviderTropicraft(World world, long seed, boolean mapFeaturesEnabled) {
 		this.worldObj = world;
 		this.rand = new Random(seed);
@@ -55,6 +58,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		this.noiseGen3 = new NoiseGeneratorOctaves(this.rand, 8);
 		this.noiseGen4 = new NoiseGeneratorOctaves(this.rand, 10);
 		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 16);
+
+		volcanoGen = new MapGenVolcano(worldObj, true);
 	}
 
 	@Override
@@ -110,6 +115,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		this.biomesForGeneration = this.worldObj.getBiomeProvider().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16);
 		this.replaceBiomeBlocks(x, z, chunkprimer, this.biomesForGeneration);
 
+		this.volcanoGen.generate(x, z, chunkprimer);
 
 		Chunk chunk = new Chunk(this.worldObj, chunkprimer, x, z);
 		byte[] abyte = chunk.getBiomeArray();
@@ -138,9 +144,9 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		{
 			for (int zValue = 0; zValue < 16; ++zValue)
 			{
-//				Biome biome = biomesIn[j + i * 16];
-//				biome.genTerrainBlocks(this.worldObj, this.rand, primer, x * 16 + i, z * 16 + j, this.depthBuffer[j + i * 16]);
-				
+				//				Biome biome = biomesIn[j + i * 16];
+				//				biome.genTerrainBlocks(this.worldObj, this.rand, primer, x * 16 + i, z * 16 + j, this.depthBuffer[j + i * 16]);
+
 				BiomeGenTropicraft biome = (BiomeGenTropicraft)biomesIn[zValue + xValue * 16];
 				Block top = biome.topBlock.getBlock();
 				Block filler = biome.fillerBlock.getBlock();
@@ -176,7 +182,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 						{
 							flag = true;
 						}
-						
+
 						if(flag)
 						{
 							if(a < 5) {
@@ -226,10 +232,10 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
 		for (int genX = 0; genX < chunkSizeGenXZ; ++genX)
 		{
-            
+
 			for (int genY = 0; genY < chunkSizeGenXZ; ++genY)
 			{
-                
+
 				for (int genZ = 0; genZ < chunkSizeGenY; ++genZ)
 				{
 					double d0 = 0.125D;
@@ -241,42 +247,42 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 					double d6 = (noiseArray[((genX + 0) * l_size + genY + 1) * b3 + genZ + 1] - d2) * d0;
 					double d7 = (noiseArray[((genX + 1) * l_size + genY + 0) * b3 + genZ + 1] - d3) * d0;
 					double d8 = (noiseArray[((genX + 1) * l_size + genY + 1) * b3 + genZ + 1] - d4) * d0;
-					
+
 					for (int j2 = 0; j2 < 8; ++j2)
-                    {
-                        double d9 = 0.25D;
-                        double d10 = d1;
-                        double d11 = d2;
-                        double d12 = (d3 - d1) * d9;
-                        double d13 = (d4 - d2) * d9;
+					{
+						double d9 = 0.25D;
+						double d10 = d1;
+						double d11 = d2;
+						double d12 = (d3 - d1) * d9;
+						double d13 = (d4 - d2) * d9;
 
-                        for (int k2 = 0; k2 < 4; ++k2)
-                        {
-                            double d14 = 0.25D;
-                            double d15 = (d11 - d10) * d14;
-                            double d16 = d10 - d15;
+						for (int k2 = 0; k2 < 4; ++k2)
+						{
+							double d14 = 0.25D;
+							double d15 = (d11 - d10) * d14;
+							double d16 = d10 - d15;
 
-                            for (int l2 = 0; l2 < 4; ++l2)
-                            {
-                                if ((d16 += d15) > 0.0D)
-                                {
-                                    primer.setBlockState(genX * 4 + k2, genZ * 8 + j2, genY * 4 + l2, Blocks.STONE.getDefaultState());
-                                }
-                                else if (genZ * 8 + j2 < 64)
-                                {
-                                    primer.setBlockState(genX * 4 + k2, genZ * 8 + j2, genY * 4 + l2, BlockRegistry.tropicsWater.getDefaultState());
-                                }
-                            }
+							for (int l2 = 0; l2 < 4; ++l2)
+							{
+								if ((d16 += d15) > 0.0D)
+								{
+									primer.setBlockState(genX * 4 + k2, genZ * 8 + j2, genY * 4 + l2, Blocks.STONE.getDefaultState());
+								}
+								else if (genZ * 8 + j2 < 64)
+								{
+									primer.setBlockState(genX * 4 + k2, genZ * 8 + j2, genY * 4 + l2, BlockRegistry.tropicsWater.getDefaultState());
+								}
+							}
 
-                            d10 += d12;
-                            d11 += d13;
-                        }
+							d10 += d12;
+							d11 += d13;
+						}
 
-                        d1 += d5;
-                        d2 += d6;
-                        d3 += d7;
-                        d4 += d8;
-                    }
+						d1 += d5;
+						d2 += d6;
+						d3 += d7;
+						d4 += d8;
+					}
 				}
 			}
 		}
