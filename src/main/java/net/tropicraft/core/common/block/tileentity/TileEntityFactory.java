@@ -35,4 +35,8 @@ public class TileEntityFactory {
 //    public static TileEntity getSifterTE() {
 //        return new TileEntitySifter();
 //    }
+    
+    public static TileEntity getVolcanoTE() {
+    	return new TileEntityVolcano();
+    }
 }

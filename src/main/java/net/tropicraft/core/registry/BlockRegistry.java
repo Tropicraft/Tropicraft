@@ -37,6 +37,7 @@ import net.tropicraft.core.common.block.BlockTropicraftStairs;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.BlockTropicsSapling;
 import net.tropicraft.core.common.block.BlockTropicsWater;
+import net.tropicraft.core.common.block.BlockVolcano;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
@@ -88,6 +89,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	
 	public static Block pineapple;
 	public static Block sand;
+	
+	public static Block volcano;
 
 	/**
 	 * Register blocks in preInit
@@ -125,6 +128,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		//pineapple = registerMultiBlock(new BlockPineapple(Names.PINEAPPLE_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.PINEAPPLE_NAMES));
 		
 		sand = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
+		
+		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
 
 	}
 

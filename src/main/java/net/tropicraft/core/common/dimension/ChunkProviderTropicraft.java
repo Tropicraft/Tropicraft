@@ -61,6 +61,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
 		volcanoGen = new MapGenVolcano(worldObj, true);
 	}
+	
+	private static boolean hasSpawned = false;
 
 	@Override
 	public void populate(int x, int z) {
@@ -77,6 +79,17 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		ChunkPos chunkpos = new ChunkPos(i, j);
 
 		biome.decorate(worldObj, rand, blockpos);
+
+		if (!hasSpawned) {
+			BlockPos volcanoCoords = volcanoGen.getVolcanoNear(worldObj, i, j);
+			if (volcanoCoords != null) {
+				BlockPos posVolcanoTE = new BlockPos(volcanoCoords.getX(), 1, volcanoCoords.getZ());
+				if (worldObj.getBlockState(posVolcanoTE).getBlock() != BlockRegistry.volcano) {
+					worldObj.setBlockState(posVolcanoTE, BlockRegistry.volcano.getDefaultState());	
+				}
+			}
+			hasSpawned = true;
+		}
 
 		// generateOres(x,z);
 

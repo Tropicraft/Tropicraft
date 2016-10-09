@@ -24,10 +24,12 @@ public final class Names {
 	public static final String COCONUT = "coconut";
 	public static final String[] PINEAPPLE_NAMES = {"stem", "plant"};
 	public static final String[] SAND_NAMES = {"purified", "coral", "green", "black", "mineral"};
+	public static final String VOLCANO = "volcano";
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};
 
 	// Tile Entity Names
 	public static final String TE_BAMBOO_CHEST = "te_bamboo_chest";
+	public static final String TE_VOLCANO = "te_volcano";
 }
