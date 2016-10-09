@@ -81,14 +81,14 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		biome.decorate(worldObj, rand, blockpos);
 
 		if (!hasSpawned) {
-			BlockPos volcanoCoords = volcanoGen.getVolcanoNear(worldObj, i, j);
+			BlockPos volcanoCoords = volcanoGen.getVolcanoNear(worldObj, x, z);
 			if (volcanoCoords != null) {
 				BlockPos posVolcanoTE = new BlockPos(volcanoCoords.getX(), 1, volcanoCoords.getZ());
 				if (worldObj.getBlockState(posVolcanoTE).getBlock() != BlockRegistry.volcano) {
-					worldObj.setBlockState(posVolcanoTE, BlockRegistry.volcano.getDefaultState());	
+					worldObj.setBlockState(posVolcanoTE, BlockRegistry.volcano.getDefaultState());
+					hasSpawned = true;
 				}
 			}
-			hasSpawned = true;
 		}
 
 		// generateOres(x,z);

@@ -40,9 +40,9 @@ public class MapGenVolcano {
 	private final static int LAND_STEEPNESS_MOD = 4;
 	private final static int OCEAN_STEEPNESS_MOD = 8;
 	private final static int CALDERA_CUTOFF = 110; //The Y level where if the height of the volcano would pass becomes the caldera
-	private final static int VOLCANO_TOP = 103; //The Y level cut off of the sides of the volcano
-	private final static int VOLCANO_CRUST = 100; //The Y level where the crust of the volcano generates
-	private final static int LAVA_LEVEL = 95; //The Y level where the top of the lava column is
+	public final static int VOLCANO_TOP = 103; //The Y level cut off of the sides of the volcano
+	public final static int VOLCANO_CRUST = 100; //The Y level where the crust of the volcano generates
+	public final static int LAVA_LEVEL = 79; //The Y level where the top of the lava column is
 	private final static int CRUST_HOLE_CHANCE = 15; //1 / x chance a certain block of the crust will be missing
 
 	private final static IBlockState VOLCANO_BLOCK = BlockRegistry.chunk.getDefaultState();
