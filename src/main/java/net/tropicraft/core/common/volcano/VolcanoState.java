@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.volcano;
 
 public enum VolcanoState {
-	DORMANT(600), SMOKING(600), RISING(600), ERUPTING(600), RETREATING(600);
+	DORMANT(6000), SMOKING(1200), RISING(1200), ERUPTING(3000), RETREATING(2000);
 	
 	private final int duration;
 	

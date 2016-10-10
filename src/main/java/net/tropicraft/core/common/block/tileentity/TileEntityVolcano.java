@@ -45,10 +45,10 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-		if (!worldObj.isRemote) {
-			System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
-			System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
-		}
+//		if (!worldObj.isRemote) {
+//			System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
+//			System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
+//		}
 
 		// If radius needs to be initialized
 		if (radius == -1) {
@@ -66,34 +66,34 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 			break;
 		case ERUPTING:
 			if (!worldObj.isRemote) {
-			//	if ((ticksUntilRetreating % (worldObj.rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
-					if (worldObj.rand.nextInt(3) == 0)
-						throwLavaFromCaldera((worldObj.rand.nextDouble() * 0.5) + (lavaLevel > 90 ? 1.25 : 0.75));
-			//	}
+				//	if ((ticksUntilRetreating % (worldObj.rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
+				if (worldObj.rand.nextInt(15) == 0)
+					throwLavaFromCaldera((worldObj.rand.nextDouble() * 0.5) + (lavaLevel > 90 ? 1 : 0.75));
+				//	}
 
-			//	if ((ticksUntilRetreating % (worldObj.rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
-					if (worldObj.rand.nextInt(3) == 0)
-						throwLavaFromCaldera((worldObj.rand.nextDouble() * 0.5) + (lavaLevel > 90 ? 1.25 : 0.75));
-			//	}
+				//	if ((ticksUntilRetreating % (worldObj.rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
+				if (worldObj.rand.nextInt(15) == 0)
+					throwLavaFromCaldera((worldObj.rand.nextDouble() * 0.5) + (lavaLevel > 90 ? 1 : 0.75));
+				//	}
 			}
 			break;
 		case RETREATING:
 			if (ticksUntilDormant % 30 == 0) {
-				lowerLavaLevels();	
+				lowerLavaLevels();
 			}
 			break;
 		case RISING:
 			if (worldObj.isRemote) {
 				spewSmoke();
 			}
+
 			if (ticksUntilEruption % 20 == 0) {
 				if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION) {
 					raiseLavaLevels();	
 				} else {
 					ticksUntilEruption = 0;
 					worldObj.playSound(this.pos.getX(), 73, this.pos.getY(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1.0F, worldObj.rand.nextFloat() / 4 + 0.825F, false);
-					//int balls = worldObj.rand.nextInt(25) + 35;
-					int balls = 2;
+					int balls = worldObj.rand.nextInt(25) + 15;
 
 					for (int i = 0; i < balls; i++) {
 						throwLavaFromCaldera((worldObj.rand.nextDouble() * 0.5) + 1.25);
@@ -106,8 +106,8 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 			// TODO: Client only in the future if this is particles
 			if (worldObj.isRemote) {
 				//if (ticksUntilRising % 100 == 0) {
-					//if (worldObj.rand.nextInt(10) == 0)
-						spewSmoke();
+				//if (worldObj.rand.nextInt(10) == 0)
+				spewSmoke();
 				//}
 			}
 			break;
@@ -115,14 +115,14 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 			break;
 		}
 	}
-	
+
 	public void cleanUpFromEruption() {
 		int xPos = this.pos.getX();
 		int zPos = this.pos.getZ();
 
 		for (int x = xPos - (radius * 2); x < xPos + (radius * 2); x++) {
 			for (int z = zPos - (radius * 2); z < zPos + (radius * 2); z++) {
-				for (int y = 64; y < 120; y++) {
+				for (int y = LAVA_BASE_LEVEL; y < 120; y++) {
 					BlockPos outBlockPos = new BlockPos(x, y, z);
 					if (worldObj.getBlockState(outBlockPos).getBlock() == Blocks.LAVA) {
 						worldObj.setBlockToAir(outBlockPos);
@@ -137,7 +137,7 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 		double z = worldObj.rand.nextInt(radius) - (radius / 2) + this.pos.getZ(); 
 		double motX = ((worldObj.rand.nextDouble() / 2) + 0.5) * (worldObj.rand.nextBoolean() ? -1 : 1) * force;
 		double motZ = ((worldObj.rand.nextDouble() / 2) + 0.5) * (worldObj.rand.nextBoolean() ? -1 : 1) * force;
-		throwLava(x, lavaLevel + 2, z, motX, 1.0, motZ);
+		throwLava(x, lavaLevel + 2, z, motX, 0.86, motZ);
 	}
 
 	public void throwLava(double i, double j, double k, double xMot, double yMot, double zMot) {
@@ -149,14 +149,14 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 	private void raiseLavaLevels() {
 		if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION) {
 			lavaLevel++;
-			setBlocksOnLavaLevel(Blocks.LAVA.getDefaultState(), 0);	
+			setBlocksOnLavaLevel(Blocks.LAVA.getDefaultState(), 3);	
 		}
 	}
 
 	private void lowerLavaLevels() {
 		if (lavaLevel > LAVA_BASE_LEVEL) {
-			lavaLevel--;
 			setBlocksOnLavaLevel(Blocks.AIR.getDefaultState(), 3);
+			lavaLevel--;
 		}
 	}
 
@@ -170,28 +170,28 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 					BlockPos botPos = new BlockPos(x, 10, z);
 					if (worldObj.getBlockState(botPos).getBlock() == Blocks.LAVA) {
 						BlockPos pos2 = new BlockPos(x, lavaLevel, z);
-						
+
 						if (lavaLevel >= MAX_LAVA_LEVEL_DURING_RISE && lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION) {
 							if (worldObj.getBlockState(pos2).getBlock() != BlockRegistry.chunk) {
 								worldObj.setBlockState(pos2, state, updateFlag);
-							}	
+							}
 						} else {
 							worldObj.setBlockState(pos2, state, updateFlag);
-							System.out.println("Setting block " + x + " " + lavaLevel + " " + z + " to whatever");	
+							// System.out.println("Setting block " + x + " " + lavaLevel + " " + z + " to whatever");
 						}
 						//worldObj.setBlockWithNotify(x, lavaLevel, z, falling ? 0 : lavaLevel >= 95 ? TropicraftMod.tempLavaMoving.blockID : Block.lavaStill.blockID);
 					}
 				}
 			}
 		}
-		
-		if (updateFlag == 0) {
-			//worldObj.markBlockRangeForRenderUpdate(xPos - radius, lavaLevel, zPos - radius, xPos + radius, lavaLevel, zPos + radius);
-		}
+
+		//		if (updateFlag == 0) {
+		//			worldObj.markBlockRangeForRenderUpdate(xPos - radius, lavaLevel, zPos - radius, xPos + radius, lavaLevel, zPos + radius);
+		//		}
 	}
 
 	public void spewSmoke() {
-		System.out.println("Spewing smoke");
+		// System.out.println("Spewing smoke");
 		int n = worldObj.rand.nextInt(100) + 4;
 		for (int i = 0; i < n; i++) {
 			// worldObj.spawnEntityInWorld(new EntitySmoke(worldObj, xPos + rand.nextInt(10) - 5, lavaLevel + rand.nextInt(4), zPos + rand.nextInt(10) - 5));
@@ -251,8 +251,9 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 
 			// If it's time to go to sleep, then let's do it
 			if (ticksUntilDormant <= 0) {
+				// cleanUpFromEruption();
 				state = VolcanoState.DORMANT;
-				ticksUntilDormant = VolcanoState.getTimeBefore(VolcanoState.DORMANT)/* + worldObj.rand.nextInt(RAND_DORMANT_DURATION)*/;
+				ticksUntilDormant = VolcanoState.getTimeBefore(VolcanoState.DORMANT) + worldObj.rand.nextInt(RAND_DORMANT_DURATION);
 			}
 			break;
 		default:
