@@ -22,7 +22,7 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 
 	private static final int RAND_DORMANT_DURATION = 4000;
 	private static final int MAX_LAVA_LEVEL_DURING_RISE = MapGenVolcano.VOLCANO_CRUST - 1;
-	private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = MapGenVolcano.VOLCANO_TOP + 1;
+	private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = MapGenVolcano.VOLCANO_CRUST + 1;
 	private static final int LAVA_BASE_LEVEL = 79;
 
 	private int ticksUntilEruption = VolcanoState.getTimeBefore(VolcanoState.ERUPTING);
@@ -45,10 +45,10 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
-//		if (!worldObj.isRemote) {
-//			System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
-//			System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
-//		}
+		if (!worldObj.isRemote) {
+			System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
+			System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
+		}
 
 		// If radius needs to be initialized
 		if (radius == -1) {
@@ -122,7 +122,7 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 
 		for (int x = xPos - (radius * 2); x < xPos + (radius * 2); x++) {
 			for (int z = zPos - (radius * 2); z < zPos + (radius * 2); z++) {
-				for (int y = LAVA_BASE_LEVEL; y < 120; y++) {
+				for (int y = LAVA_BASE_LEVEL; y < 140; y++) {
 					BlockPos outBlockPos = new BlockPos(x, y, z);
 					if (worldObj.getBlockState(outBlockPos).getBlock() == Blocks.LAVA) {
 						worldObj.setBlockToAir(outBlockPos);

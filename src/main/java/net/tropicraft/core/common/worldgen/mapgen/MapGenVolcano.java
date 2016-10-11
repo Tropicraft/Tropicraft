@@ -37,11 +37,11 @@ public class MapGenVolcano {
 	private final static int CHUNK_SIZE_Y = 256;
 	private final static int MAX_RADIUS = 65;
 	private final static int MIN_RADIUS = 45;
-	private final static int LAND_STEEPNESS_MOD = 4;
+	private final static int LAND_STEEPNESS_MOD = 2; //usually 4
 	private final static int OCEAN_STEEPNESS_MOD = 8;
-	private final static int CALDERA_CUTOFF = 110; //The Y level where if the height of the volcano would pass becomes the caldera
-	public final static int VOLCANO_TOP = 103; //The Y level cut off of the sides of the volcano
-	public final static int VOLCANO_CRUST = 100; //The Y level where the crust of the volcano generates
+	private final static int CALDERA_CUTOFF = 124; //The Y level where if the height of the volcano would pass becomes the caldera
+	public final static int VOLCANO_TOP = CALDERA_CUTOFF - 7; //The Y level cut off of the sides of the volcano
+	public final static int VOLCANO_CRUST = VOLCANO_TOP - 3; //The Y level where the crust of the volcano generates
 	public final static int LAVA_LEVEL = 79; //The Y level where the top of the lava column is
 	private final static int CRUST_HOLE_CHANCE = 15; //1 / x chance a certain block of the crust will be missing
 
@@ -101,9 +101,12 @@ public class MapGenVolcano {
 
 				float distanceSquared = ((relativeX / radiusX) * (relativeX / radiusX) + (relativeZ / radiusZ) * (relativeZ / radiusZ));
 
-				float perlin = (float)volcNoise.getNoise(relativeX * 0.05 + 0.0001, relativeZ * 0.05 + 0.0001) + 1;
+				//float perlin = (float)volcNoise.getNoise(relativeX * 0.05 + 0.0001, relativeZ * 0.05 + 0.0001) + 1;
+				float perlin = (float)volcNoise.getNoise(relativeX * 0.21 + 0.01, relativeZ * 0.21 + 0.01) + 1;
 
-				double volcanoHeight = steepnessMod / (distanceSquared) * perlin - steepnessMod - 2;
+				//double volcanoHeight = steepnessMod / (distanceSquared) * perlin - steepnessMod - 2;
+				double steepness = 10.2;
+				double volcanoHeight = steepness / distanceSquared * perlin - steepness - 2;
 
 				int groundHeight = heightmap[x * 16 + z];
 				if (distanceSquared < 1) {
@@ -113,11 +116,16 @@ public class MapGenVolcano {
 								if (y <= volcanoHeight + groundHeight && y >= groundHeight) {
 									placeBlock(x, y, z, VOLCANO_BLOCK, primer);
 								}
+							} else if (y == VOLCANO_CRUST - 1) {
+								if (worldObj.rand.nextInt(3) != 0) {
+									placeBlock(x, y, z, VOLCANO_BLOCK, primer);
+								}
 							} else if(y <= VOLCANO_TOP) {
 								placeBlock(x, y, z, VOLCANO_BLOCK, primer);
 							}
 						} else {
-							if (y == VOLCANO_CRUST && rand.nextInt(CRUST_HOLE_CHANCE) != 0) {
+							// Flat area on top of the volcano
+							if (y == VOLCANO_CRUST  && rand.nextInt(CRUST_HOLE_CHANCE) != 0) {
 								placeBlock(x, y, z, VOLCANO_BLOCK, primer);
 							}
 

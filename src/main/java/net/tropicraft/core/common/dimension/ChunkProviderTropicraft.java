@@ -62,7 +62,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		volcanoGen = new MapGenVolcano(worldObj, true);
 	}
 	
-	private static boolean hasSpawned = false;
+	private boolean hasSpawned = false;
 
 	@Override
 	public void populate(int x, int z) {
