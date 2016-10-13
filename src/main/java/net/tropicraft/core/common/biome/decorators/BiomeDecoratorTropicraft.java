@@ -18,14 +18,11 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 	/**
 	 * Leave this for each tropics biome decorator to figure out
 	 */
-	public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
-	{
-		if (this.decorating)
-		{
+	@Override
+	public void decorate(World worldIn, Random random, Biome biome, BlockPos pos) {
+		if (this.decorating) {
 			throw new RuntimeException("Already decorating");
-		}
-		else
-		{
+		} else {
 			this.chunkPos = pos;
 			this.decorating = false;
 		}

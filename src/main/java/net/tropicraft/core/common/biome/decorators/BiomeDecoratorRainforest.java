@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
+import net.tropicraft.configuration.ConfigGenRates;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenTallTree;
 import net.tropicraft.core.common.worldgen.WorldGenTualang;
@@ -89,11 +90,24 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 			k = randCoord(rand, z, 16);
 			new WorldGenTualang(world, rand, 25, 11).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
-//
+
 		for (int a = 0; a < UNDERGROWTH_AMOUNT; a++) {
 			i = randCoord(rand, x, 16);
 			k = randCoord(rand, z, 16);
 			new WorldGenUndergrowth(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
+		
+		if (ConfigGenRates.TALL_GRASS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_GRASS_CHANCE) == 0) {
+			for (int a = 0; a < 10; a++) {
+		        int xRand = rand.nextInt(16) + 8;
+		        int zRand = rand.nextInt(16) + 8;
+		        int yRand = world.getHeight(this.chunkPos.add(xRand, 0, zRand)).getY() * 2;
+
+		        if (yRand > 0) {
+		            int rando = rand.nextInt(yRand);
+		            biome.getRandomWorldGenForGrass(rand).generate(world, rand, this.chunkPos.add(xRand, rando, zRand));
+		        }	
+			}
 		}
 //
 //		for(int a = 0; a < COFFEE_PLANT_AMOUNT; a++) {

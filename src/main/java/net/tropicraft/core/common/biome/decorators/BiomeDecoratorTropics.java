@@ -77,11 +77,24 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 			new WorldGenLargePalmTrees(world, rand).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
 		}
 
-		if (ConfigGenRates.FRUIT_TREE_CHANCE != 0 &&  rand.nextInt(ConfigGenRates.FRUIT_TREE_CHANCE) == 0) {
+		if (ConfigGenRates.FRUIT_TREE_CHANCE != 0 && rand.nextInt(ConfigGenRates.FRUIT_TREE_CHANCE) == 0) {
 			int treeType = new Random((long)(chunkPos.getX() >> 2) << 32 | (long)(chunkPos.getZ() >> 2)).nextInt(4);
 			i = randCoord(rand, chunkPos.getX(), 16);
 			k = randCoord(rand, chunkPos.getZ(), 16);
 			new WorldGenFruitTrees(world, rand, treeType).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
+
+		if (ConfigGenRates.TALL_GRASS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_GRASS_CHANCE) == 0) {
+			for (int a = 0; a < 10; a++) {
+		        int xRand = rand.nextInt(16) + 8;
+		        int zRand = rand.nextInt(16) + 8;
+		        int yRand = world.getHeight(this.chunkPos.add(xRand, 0, zRand)).getY() * 2;
+
+		        if (yRand > 0) {
+		            int rando = rand.nextInt(yRand);
+		            biome.getRandomWorldGenForGrass(rand).generate(world, rand, this.chunkPos.add(xRand, rando, zRand));
+		        }	
+			}
 		}
 
 		//		if(rand.nextInt(TREASURE_CHANCE) == 0) {
