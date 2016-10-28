@@ -11,6 +11,7 @@ import net.tropicraft.core.common.entity.hostile.EntityTreeFrogRed;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogYellow;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
@@ -34,6 +35,7 @@ public class EntityRegistry {
 		registerEntity(EntityMarlin.class, "Marlin", 80, 3, true);
 		registerEntity(EntityLavaBall.class, "Lava Ball", 120, 4, true);
 		registerEntity(EntitySeahorse.class, "Seahorse", 80, 3, true);
+		registerEntity(EntityFailgull.class, "Failgull", 80, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
