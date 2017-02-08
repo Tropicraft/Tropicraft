@@ -30,4 +30,5 @@ public class CommonProxy {
 	public void registerItemWithSubtypes(Item item, CreativeTabs tabs) {}
 	public void registerFluidBlockRendering(Block block, String name) {}
 	public void registerColoredBlock(Block block) {}
+	public void registerColoredItem(Item item) {}
 }
