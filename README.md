@@ -17,7 +17,7 @@
 FAQ
 ===
 **How do I contact the team?**
-Visit us on our IRC channel: [#Tropicraft on EsperNet](webchat.esper.net/?channels=tropicraft)
+Visit us on our IRC channel: [#Tropicraft on EsperNet](https://webchat.esper.net/?nick=Tropi....&channels=tropicraft)
 
 **Can I use Tropicraft in my public/private mod pack?**
 Probably! Find Cojo on IRC to receive permission and find out what is required from you.
