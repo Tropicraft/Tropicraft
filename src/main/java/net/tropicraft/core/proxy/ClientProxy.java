@@ -18,6 +18,7 @@ import net.tropicraft.Info;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.item.ItemTropicraftColored;
+import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.EntityRenderRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.TileEntityRenderRegistry;
@@ -36,6 +37,7 @@ public class ClientProxy extends CommonProxy {
 		TileEntityRenderRegistry.init();
 		
 		ItemRegistry.clientProxyInit();
+		BlockRegistry.clientProxyInit();
 		
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 	}

@@ -32,9 +32,9 @@ public class TileEntityFactory {
 //        return new TileEntityTropicraftFlowerPot();
 //    }
 //
-//    public static TileEntity getSifterTE() {
-//        return new TileEntitySifter();
-//    }
+    public static TileEntity getSifterTE() {
+        return new TileEntitySifter();
+    }
     
     public static TileEntity getVolcanoTE() {
     	return new TileEntityVolcano();

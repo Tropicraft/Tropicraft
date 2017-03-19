@@ -55,7 +55,6 @@ public class Tropicraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		FluidRegistry.postInit();
-		Tropicraft.proxy.registerColoredBlock(BlockRegistry.sand);
 	}
 
 	/**

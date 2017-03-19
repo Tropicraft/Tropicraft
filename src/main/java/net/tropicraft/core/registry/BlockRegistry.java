@@ -88,7 +88,6 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block coconut;
 	
 	public static Block pineapple;
-	public static Block sand;
 	
 	public static Block volcano;
 
@@ -127,14 +126,17 @@ public class BlockRegistry extends TropicraftRegistry {
 
 		//pineapple = registerMultiBlock(new BlockPineapple(Names.PINEAPPLE_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.PINEAPPLE_NAMES));
 		
-		sand = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
+		sands = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
-
 	}
 
 	public static void init() {
 
+	}
+	
+	public static void clientProxyInit() {
+		Tropicraft.proxy.registerColoredBlock(sands);
 	}
 	
 	private static Block registerMultiColoredBlock(Block block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
