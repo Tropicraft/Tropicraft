@@ -8,6 +8,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemBucket;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemSword;
@@ -16,12 +17,14 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
+import net.tropicraft.core.common.item.ItemUmbrella;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
 
 public class ItemRegistry extends TropicraftRegistry {
@@ -83,6 +86,9 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item scaleLeggings;
     public static Item scaleChestplate;
     public static Item scaleHelmet;
+    
+    public static Item chair;
+    public static Item umbrella;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -133,10 +139,32 @@ public class ItemRegistry extends TropicraftRegistry {
 		scaleLeggings = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.LEGS), "scale_leggings");
 		scaleChestplate = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.CHEST), "scale_chestplate");
 		scaleHelmet = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.HEAD), "scale_helmet");
+		
+		chair = registerMultiItem(new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
+		umbrella = registerMultiItem(new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);
 	}
 
 	public static void init() {
-
+		
+	}
+	
+	public static void clientProxyInit() {
+		Tropicraft.proxy.registerColoredItem(chair);
+		Tropicraft.proxy.registerColoredItem(umbrella);
+	}
+	
+	private static Item registerMultiItem(Item item, String name, int numPlaces) {
+		item.setUnlocalizedName(getNamePrefixed(name));
+		item.setRegistryName(new ResourceLocation(Info.MODID, name));
+		
+		GameRegistry.register(item);
+		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
+		
+		for (int metadata = 0; metadata < numPlaces; metadata++) {
+			Tropicraft.proxy.registerItemVariantModel(item, name, metadata);
+		}
+		
+		return item;
 	}
 
 	private static Item registerItem(Item item, String name) {

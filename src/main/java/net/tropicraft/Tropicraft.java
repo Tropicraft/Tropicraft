@@ -33,6 +33,7 @@ public class Tropicraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		ColorHelper.init();
 		SoundRegistry.init();
 		FluidRegistry.preInit();
 		BlockRegistry.preInit();
@@ -54,7 +55,6 @@ public class Tropicraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		FluidRegistry.postInit();
-		Tropicraft.proxy.registerColoredBlock(BlockRegistry.sand);
 	}
 
 	/**

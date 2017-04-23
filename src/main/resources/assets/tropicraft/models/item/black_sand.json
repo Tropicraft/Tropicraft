@@ -1,5 +1,5 @@
 {
-    "parent": "tropicraft:blocks/black_sand",
+    "parent": "tropicraft:block/black_sand",
     "textures": {
         "layer0": "tropicraft:blocks/sand"
     },

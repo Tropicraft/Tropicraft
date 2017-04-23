@@ -1,8 +1,9 @@
-		package net.tropicraft.core.common.block;
+package net.tropicraft.core.common.block;
 
 import java.util.List;
 
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -22,12 +23,14 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 
 	public static final PropertyEnum<TropicraftSands> VARIANT = PropertyEnum.create("variant", TropicraftSands.class);
 	public String[] names;
-	
+
 	public BlockTropicraftSands(String[] names) {
 		super(Material.SAND);
 		this.names = names;
+		this.setSoundType(SoundType.SAND);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSands.PURIFIED));
 	}
-	
+
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
@@ -37,7 +40,7 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { VARIANT });
@@ -50,7 +53,7 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, TropicraftSands.values()[meta]);
+		return this.getDefaultState().withProperty(VARIANT, TropicraftSands.byMetadata(meta));
 	}
 
 	@Override
