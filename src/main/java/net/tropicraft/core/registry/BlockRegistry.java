@@ -27,6 +27,7 @@ import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoconut;
 import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockFruitLeaves;
+import net.tropicraft.core.common.block.BlockPineapple;
 import net.tropicraft.core.common.block.BlockTallPlant;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
@@ -125,7 +126,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
 
-		pineapple = registerMultiBlock(new BlockTallPlant(Names.PINEAPPLE_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.PINEAPPLE_NAMES));
+		pineapple = registerMultiBlock(new BlockPineapple(Names.PINEAPPLE_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.PINEAPPLE_NAMES));
 		
 		sands = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
 		

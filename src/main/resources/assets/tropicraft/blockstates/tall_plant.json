@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "half=upper,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
-        "half=lower,variant=pineapple": { "model": "tropicraft:pineapple_lower" },
-        "half=upper,variant=iris": { "model": "tropicraft:iris_upper" },
-        "half=lower,variant=iris": { "model": "tropicraft:iris_lower" }
-    }
-}

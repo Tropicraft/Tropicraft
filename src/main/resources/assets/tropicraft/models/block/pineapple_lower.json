@@ -1,6 +1,6 @@
 {
     "parent": "block/cross",
     "textures": {
-        "cross": "tropicraft:blocks/pienapple_lower"
+        "cross": "tropicraft:blocks/pineapple_lower"
     }
 }

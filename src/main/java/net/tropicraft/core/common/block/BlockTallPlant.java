@@ -3,6 +3,8 @@ package net.tropicraft.core.common.block;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -17,13 +19,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.tropicraft.core.common.enums.TropicraftTallPlants;
 
-public class BlockTallPlant extends BlockBush implements IGrowable, IShearable, ITropicraftBlock {
+public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlock {
 
 	public static enum PlantHalf implements IStringSerializable {
 		LOWER, UPPER;
@@ -41,54 +44,21 @@ public class BlockTallPlant extends BlockBush implements IGrowable, IShearable, 
 	public static final PropertyEnum<TropicraftTallPlants> VARIANT = PropertyEnum.create("variant", TropicraftTallPlants.class);
 	public static final PropertyEnum<PlantHalf> HALF = PropertyEnum.create("half", PlantHalf.class);
 
-	public BlockTallPlant() {
+	public BlockTallPlant(String[] names) {
 		super(Material.PLANTS);
 		this.setHardness(0.0F);
 		this.setSoundType(SoundType.GROUND);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftTallPlants.PINEAPPLE).withProperty(HALF, PlantHalf.LOWER));
 	}
-
-	@Override
-	public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) {
-		return false;
-	}
-
-	@Override
-	public List<ItemStack> onSheared(ItemStack item, IBlockAccess world,
-			BlockPos pos, int fortune) {
-		return null;
-	}
-
-	@Override
-	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state,
-			boolean isClient) {
-		return false;
-	}
-
-	@Override
-	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos,
-			IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-
-	}
-
+	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { VARIANT, HALF });
+		return new BlockStateContainer(this, getProperties());
 	}
 
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftTallPlants) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return null;
 	}
 
 	@Override
@@ -136,12 +106,11 @@ public class BlockTallPlant extends BlockBush implements IGrowable, IShearable, 
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(HALF, PlantHalf.LOWER);
 	}
+	
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+        return NULL_AABB;
+    }
 
-	// Called by ItemBlock after the (lower) block has been placed
-	// Use it to add the top half of the block
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		worldIn.setBlockState(pos.up(), this.getStateFromMeta(stack.getMetadata()).withProperty(HALF, PlantHalf.UPPER), 3);
-	}
 
 }
