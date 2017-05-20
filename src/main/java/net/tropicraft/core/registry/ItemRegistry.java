@@ -39,6 +39,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item freshMarlin;
 	public static Item searedMarlin;
 	public static Item coconutChunk;
+	public static Item pineappleCubes;
 
 	// Tool materials
 	public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 1, 200, 4.5F, 1.0F, 14);
@@ -128,6 +129,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		tropicsWaterBucket = registerItem((new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
 
 		coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
+		pineappleCubes = registerItem(new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
 		
 		frogLeg = registerItem(new ItemTropicraft().setMaxStackSize(64), "frog_leg");
 		cookedFrogLeg = registerItem(new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");

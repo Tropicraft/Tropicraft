@@ -14,6 +14,7 @@ import net.tropicraft.core.common.worldgen.WorldGenEIH;
 import net.tropicraft.core.common.worldgen.WorldGenFruitTrees;
 import net.tropicraft.core.common.worldgen.WorldGenLargePalmTrees;
 import net.tropicraft.core.common.worldgen.WorldGenNormalPalms;
+import net.tropicraft.core.common.worldgen.WorldGenTallFlower;
 import net.tropicraft.core.common.worldgen.WorldGenTropicalFlowers;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -95,6 +96,24 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 		            biome.getRandomWorldGenForGrass(rand).generate(world, rand, this.chunkPos.add(xRand, rando, zRand));
 		        }	
 			}
+		}
+		
+		// Pineapples
+		if (ConfigGenRates.TALL_FLOWERS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_FLOWERS_CHANCE) == 0) {
+			i = randCoord(rand, chunkPos.getX(), 16);
+	        int y = getTerrainHeightAt(world, i, k);
+	        k = randCoord(rand, chunkPos.getZ(), 16);
+			BlockPos pos = new BlockPos(i, y, k);
+			(new WorldGenTallFlower(world, rand, BlockRegistry.pineapple.getDefaultState())).generate(pos);
+		}
+		
+		// Irises
+		if (ConfigGenRates.TALL_FLOWERS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_FLOWERS_CHANCE) == 0) {
+			i = randCoord(rand, chunkPos.getX(), 16);
+	        int y = getTerrainHeightAt(world, i, k);
+	        k = randCoord(rand, chunkPos.getZ(), 16);
+			BlockPos pos = new BlockPos(i, y, k);
+			(new WorldGenTallFlower(world, rand, BlockRegistry.iris.getDefaultState())).generate(pos);
 		}
 
 		//		if(rand.nextInt(TREASURE_CHANCE) == 0) {

@@ -1,14 +1,9 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -16,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -23,10 +19,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
-import net.tropicraft.core.common.enums.TropicraftTallPlants;
 
-public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlock {
+public class BlockIris extends BlockBush implements ITropicraftBlock {
 
 	public static enum PlantHalf implements IStringSerializable {
 		LOWER, UPPER;
@@ -41,16 +35,27 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 		}
 	};
 
-	public static final PropertyEnum<TropicraftTallPlants> VARIANT = PropertyEnum.create("variant", TropicraftTallPlants.class);
 	public static final PropertyEnum<PlantHalf> HALF = PropertyEnum.create("half", PlantHalf.class);
 
-	public BlockTallPlant(String[] names) {
-		super(Material.PLANTS);
-		this.setHardness(0.0F);
-		this.setSoundType(SoundType.GROUND);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftTallPlants.PINEAPPLE).withProperty(HALF, PlantHalf.LOWER));
+	public BlockIris(String[] names) {
+		super();
+		this.setDefaultState(this.blockState.getBaseState().
+				withProperty(HALF, PlantHalf.LOWER)
+				);
 	}
-	
+
+	@Override
+	public IProperty[] getProperties() {
+		return new IProperty[] {HALF};
+	}
+
+	// Called by ItemBlock after the (lower) block has been placed
+	// Use it to add the top half of the block
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		worldIn.setBlockState(pos.up(), this.getStateFromMeta(stack.getMetadata()).withProperty(HALF, PlantHalf.UPPER), 3);
+	}
+
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, getProperties());
@@ -58,7 +63,7 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 
 	@Override
 	public String getStateName(IBlockState state) {
-		return ((TropicraftTallPlants) state.getValue(VARIANT)).getName();
+		return "iris";
 	}
 
 	@Override
@@ -73,12 +78,12 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(HALF, PlantHalf.values()[meta >> 3]).withProperty(VARIANT, TropicraftTallPlants.byMetadata(meta & 7));
+		return this.getDefaultState().withProperty(HALF, PlantHalf.values()[meta >> 3]);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((PlantHalf) state.getValue(HALF)).ordinal() * 8 + ((TropicraftTallPlants) state.getValue(VARIANT)).ordinal();
+		return ((PlantHalf) state.getValue(HALF)).ordinal() * 8;
 	}
 
 	public BlockPos getLowerPos(IBlockAccess world, BlockPos pos) {
@@ -106,11 +111,36 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(HALF, PlantHalf.LOWER);
 	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+		return NULL_AABB;
+	}
+
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		IBlockState state = worldIn.getBlockState(pos.down());
+		Block block = state.getBlock();
+
+		if (block.canSustainPlant(state, worldIn, pos.down(), EnumFacing.UP, this)) {
+			return true;
+		}
+
+		return false;
+	}
 	
-    @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-        return NULL_AABB;
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
+        if (state.getBlock() != this) return super.canBlockStay(worldIn, pos, state); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+        if (state.getValue(HALF) == PlantHalf.UPPER) {
+            return worldIn.getBlockState(pos.down()).getBlock() == this;
+        } else {
+            IBlockState iblockstate = worldIn.getBlockState(pos.up());
+            return iblockstate.getBlock() == this && super.canBlockStay(worldIn, pos, iblockstate);
+        }
     }
-
-
+    
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+    	super.onBlockHarvested(worldIn, pos, state, player);
+    	System.out.println("harvests");
+    }
 }

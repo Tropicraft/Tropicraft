@@ -90,7 +90,6 @@ public class WorldGenCurvedPalms extends TCDirectionalGen {
 			this.placeBlockWithDir(2, y + 2 + j, 1, leafState);
 			this.placeBlockWithDir(1, y + 2 + j, 2, leafState);
 			this.placeBlockWithDir(2, y + 3 + j, 2, leafState);
-			System.out.println("WorldGenTropicraftCurvedPalm: " + this.getActualXAt(1, 1) + ", " + this.getActualZAt(1, 1) + ", dir" + curDir);
 			
 			for(int x = 1; x < 5; x++) {
 				if(x == 4) {

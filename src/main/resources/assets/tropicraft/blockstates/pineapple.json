@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "half=upper,stage=1,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
+        "half=upper,stage=2,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
+        "half=upper,stage=3,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
+        "half=upper,stage=4,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
+        "half=upper,stage=5,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
+        "half=upper,stage=6,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
+        "half=upper,stage=7,variant=pineapple": { "model": "tropicraft:pineapple_upper" },
+        "half=lower,stage=1,variant=pineapple": { "model": "tropicraft:pineapple_lower" },
+        "half=lower,stage=2,variant=pineapple": { "model": "tropicraft:pineapple_lower" },
+        "half=lower,stage=3,variant=pineapple": { "model": "tropicraft:pineapple_lower" },
+        "half=lower,stage=4,variant=pineapple": { "model": "tropicraft:pineapple_lower" },
+        "half=lower,stage=5,variant=pineapple": { "model": "tropicraft:pineapple_lower" },
+        "half=lower,stage=6,variant=pineapple": { "model": "tropicraft:pineapple_lower" },
+        "half=lower,stage=7,variant=pineapple": { "model": "tropicraft:pineapple_lower" }
+    }
+}
