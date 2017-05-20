@@ -46,8 +46,8 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 	@Override
 	public void update() {
 		if (!worldObj.isRemote) {
-			System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
-			System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
+			//System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
+			//System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
 		}
 
 		// If radius needs to be initialized
@@ -327,7 +327,6 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 
 	@Override
 	public boolean receiveClientEvent(int id, int type) {
-		System.out.println("CLIENT EVENT RECEIVED");
 		return super.receiveClientEvent(id, type);
 	}
 }

@@ -19,7 +19,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlantable {
 
 	/** Number of total ticks it takes for this pineapple to grow */
-	public static final int TOTAL_GROW_TICKS = 8;
+	public static final int TOTAL_GROW_TICKS = 7;
 
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 1, TOTAL_GROW_TICKS);
 
