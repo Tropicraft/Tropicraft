@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockSandStone;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,12 +18,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPortalWall extends BlockSandStone {
+public class BlockPortalWall extends BlockTropicraft {
 
     public BlockPortalWall() {
+    	super(Material.ROCK);
         this.setBlockUnbreakable();
         this.setResistance(6000000.0F);
-        //this.setCreativeTab(null);
+        this.setCreativeTab(null);
     }
     
     /**

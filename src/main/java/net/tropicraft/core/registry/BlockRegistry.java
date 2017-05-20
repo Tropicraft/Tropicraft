@@ -32,6 +32,7 @@ import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockFruitLeaves;
 import net.tropicraft.core.common.block.BlockIris;
 import net.tropicraft.core.common.block.BlockPineapple;
+import net.tropicraft.core.common.block.BlockPortalWall;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
@@ -79,6 +80,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	/** Fluids */
 	public static BlockTropicsWater tropicsWater;
     public static BlockTropicsPortal tropicsPortal;
+    public static BlockPortalWall portalWall;
 
 	/** Leaves */
 	public static Block leaves;
@@ -120,6 +122,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		tropicsPortal = registerBlockNoItem(new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER), Names.TROPICS_PORTAL, false);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortal, Names.TROPICS_PORTAL);
+		portalWall = registerBlock(new BlockPortalWall(), Names.PORTAL_WALL);
 
 		leaves = registerMultiBlock(new BlockTropicraftLeaves(Names.LEAF_NAMES), ItemBlockTropicraft.class, "leaves", asList(Names.LEAF_NAMES));
 		fruitLeaves = registerMultiBlock(new BlockFruitLeaves(Names.FRUIT_LEAF_NAMES), ItemBlockTropicraft.class, "leaves_fruit", asList(Names.FRUIT_LEAF_NAMES));
