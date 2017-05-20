@@ -22,9 +22,10 @@ public final class Names {
 	public static final String[] FRUIT_LEAF_NAMES = {"grapefruit", "lemon", "lime", "orange"};
 	public static final String[] SAPLING_NAMES = {"palm", "mahogany", "grapefruit", "lemon", "lime", "orange"};
 	public static final String COCONUT = "coconut";
-	public static final String[] PINEAPPLE_NAMES = {"stem", "plant"};
+	public static final String[] TALL_PLANT_NAMES = {"stem", "plant"};
 	public static final String[] SAND_NAMES = {"purified", "coral", "green", "black", "mineral"};
 	public static final String VOLCANO = "volcano";
+	public static final String[] IRIS_NAMES = {"iris_stem", "iris_plant"};
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};

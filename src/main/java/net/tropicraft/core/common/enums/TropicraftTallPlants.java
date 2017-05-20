@@ -4,7 +4,7 @@ import net.minecraft.util.IStringSerializable;
 
 public enum TropicraftTallPlants implements IStringSerializable {
 
-	PINEAPPLE(0), IRIS(1);
+	PINEAPPLE(0);
 
 	private final int meta;
 	private static final TropicraftTallPlants[] META_LOOKUP = new TropicraftTallPlants[values().length];

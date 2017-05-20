@@ -1,6 +1,6 @@
 {
     "parent": "block/cross",
     "textures": {
-        "cross": "tropicraft:blocks/iris_lower"
+        "cross": "tropicraft:blocks/iris_upper"
     }
 }
