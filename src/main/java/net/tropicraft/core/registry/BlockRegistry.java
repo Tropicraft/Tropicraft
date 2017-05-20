@@ -59,7 +59,6 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block coral;
 
 	// purified sand AND mineral sands. Oh variants, what can't you do?
-	// TODO
 	public static Block sands;
 
 	/** Thatch and bamboo bundles */

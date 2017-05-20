@@ -6,9 +6,9 @@ package net.tropicraft;
  */
 public enum SandColors {
 	PURIFIED(0, 16777215),
-    CORAL(1, 0xffff98b1),
-    GREEN(2, 0xff33ffc5),
-    BLACK(3, 0xff545454),
+    CORAL(1, 0xddff98b1),
+    GREEN(2, 0xdd57f298),
+    BLACK(3, 0xdd545454),
     MINERAL(4, 16777215);
     
     private static final SandColors[] sandColors = new SandColors[values().length];

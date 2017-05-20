@@ -12,10 +12,17 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.SandColors;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.enums.TropicraftSands;
 
@@ -29,6 +36,30 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 		this.names = names;
 		this.setSoundType(SoundType.SAND);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSands.PURIFIED));
+	}
+
+	@Override
+	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+		IBlockState state = world.getBlockState(pos);
+		int metadata = this.getMetaFromState(state);
+
+		// If not black sands
+		if (metadata != SandColors.BLACK.metadata) {
+			return;
+		}
+
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer)entity;
+
+			ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+
+			// If player isn't wearing anything on their feetsies
+			if (stack == null) {
+				player.attackEntityFrom(DamageSource.lava, 0.5F);
+			}
+		} else {
+			entity.attackEntityFrom(DamageSource.lava, 0.5F);
+		}
 	}
 
 	/**
