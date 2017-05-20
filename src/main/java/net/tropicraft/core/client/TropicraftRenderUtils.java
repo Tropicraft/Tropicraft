@@ -80,10 +80,7 @@ public class TropicraftRenderUtils {
     public static final IItemColor BLOCK_ITEM_COLORING = new IItemColor() {
         @Override
         public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-            IBlockState state = ((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
-            IBlockColor blockColor = ((ITropicraftBlock)state.getBlock()).getBlockColor();
-            return SandColors.getColor(state.getBlock().getMetaFromState(state));
-            //return blockColor == null ? 0xFFFFFF : blockColor.colorMultiplier(state, null, null, tintIndex);
+            return SandColors.getColor(tintIndex);
         }
     };
 }

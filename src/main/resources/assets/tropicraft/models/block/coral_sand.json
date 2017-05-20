@@ -2,5 +2,18 @@
     "parent": "block/cube_all",
     "textures": {
         "all": "tropicraft:blocks/sand"
-    }
+    },
+    "elements": [
+		{   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "up":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 2 },
+				"north":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 2 },
+				"east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 2 },
+				"south":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 2 },
+				"west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 2 },
+				"down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#all", "tintindex": 2 }
+            }
+        }
+    ]
 }
