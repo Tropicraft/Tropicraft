@@ -128,7 +128,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
 
 		pineapple = registerMultiBlock(new BlockPineapple(Names.TALL_PLANT_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.TALL_PLANT_NAMES));
-		iris = registerMultiBlock(new BlockIris(Names.IRIS_NAMES), ItemBlockTropicraft.class, "iris", asList(Names.IRIS_NAMES));
+		iris = registerMultiBlock(new BlockIris(Names.TALL_PLANT_NAMES), ItemBlockTropicraft.class, "iris", asList(Names.TALL_PLANT_NAMES));
 		
 		sands = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
 		

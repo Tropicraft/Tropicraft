@@ -59,6 +59,10 @@ tile.tropicraft:sand_green.name=Foamy Sands
 tile.tropicraft:sand_black.name=Volcanic Sands
 tile.tropicraft:sand_mineral.name=Mineral Sands
 tile.tropicraft:sand_coral.name=Coral Sands
+tile.tropicraft:iris_stem.name=Iris
+tile.tropicraft:iris_plant.name=Iris
+tile.tropicraft:pineapple_stem.name=Pineapple
+tile.tropicraft:pineapple_plant.name=Pineapple
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
