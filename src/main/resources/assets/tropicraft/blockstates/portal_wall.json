@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "portal_wall_normal" }
+    }
+}

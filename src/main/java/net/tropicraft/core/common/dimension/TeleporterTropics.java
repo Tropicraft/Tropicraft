@@ -1,25 +1,25 @@
 package net.tropicraft.core.common.dimension;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+import net.tropicraft.core.common.block.BlockTropicsPortal;
 import net.tropicraft.core.registry.BlockRegistry;
 //import net.tropicraft.block.tileentity.TileEntityBambooChest; TODO
 //import net.tropicraft.item.TropicraftItems; TODO
@@ -43,8 +43,8 @@ public class TeleporterTropics extends Teleporter {
 
 	public TeleporterTropics(WorldServer world) {
 		super(world);
-		PORTAL_BLOCK = Blocks.PORTAL;//BlockRegistry.tropicsPortal;
-		PORTAL_WALL_BLOCK = Blocks.SANDSTONE;//BlockRegistry.tropicsPortalWall;
+		PORTAL_BLOCK = BlockRegistry.tropicsPortal;
+		PORTAL_WALL_BLOCK = BlockRegistry.portalWall;
 		this.world = world;
 		this.random = new Random(world.getSeed());
 	}
@@ -349,8 +349,14 @@ public class TeleporterTropics extends Teleporter {
 							world.setBlockState(pos, PORTAL_WALL_BLOCK.getDefaultState());
 						} else {
 							// Set inside of portal
-							int metadata = yOffset <= -5 ? 8 : 0;
-							world.setBlockState(pos, PORTAL_BLOCK.getDefaultState());
+							boolean isTeleportBlock = yOffset <= -5;
+							if (isTeleportBlock) {
+								IBlockState state = PORTAL_BLOCK.getDefaultState().withProperty(BlockTropicsPortal.TELEPORTABLE, Integer.valueOf(1));
+								world.setBlockState(pos, state);								
+							} else {
+								world.setBlockState(pos, PORTAL_BLOCK.getDefaultState());
+							}
+
 						}
 					}
 //
