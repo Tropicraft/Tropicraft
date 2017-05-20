@@ -65,157 +65,156 @@ public class TeleporterTropics extends Teleporter {
 	@Override
 	public boolean placeInExistingPortal(Entity entity, float f)
 	{
-		return true;
-//		int searchArea = 148;
-//		double closestPortal = -1D;
-//		int foundX = 0;
-//		int foundY = 0;
-//		int foundZ = 0;
-//		int entityX = MathHelper.floor_double(entity.posX);
-//		int entityZ = MathHelper.floor_double(entity.posZ);
-//		BlockPos blockpos = BlockPos.ORIGIN;
-//		boolean notInCache = true;
-//
-//		long j1 = ChunkPos.chunkXZ2Int(entityX, entityZ);
-//
-//		if (destinationCoordinateCache.containsKey(j1)) {
-//			//	System.out.println("Setting closest portal to 0");
-//			PortalPosition portalposition = (PortalPosition)destinationCoordinateCache.get(j1);
-//			closestPortal = 0.0D;
-//			blockpos = portalposition;
-//			portalposition.lastUpdateTime = world.getTotalWorldTime();
-//			notInCache = false;
-//		} else {
-//			for (int x = entityX - searchArea; x <= entityX + searchArea; x ++)
-//			{
-//				double distX = x + 0.5D - entity.posX;
-//
-//				for (int z = entityZ - searchArea; z <= entityZ + searchArea; z ++)
-//				{
-//					double distZ = z + 0.5D - entity.posZ;
-//
-//					for (int y = world.getActualHeight() - 1; y >= 0; y--)
-//					{
-//						BlockPos pos = new BlockPos(x, y, z);
-//						if (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
-//						{
-//							pos = pos.down();
-//							while (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
-//							{
-//								--y;
-//								pos = pos.down();
+		int searchArea = 148;
+		double closestPortal = -1D;
+		int foundX = 0;
+		int foundY = 0;
+		int foundZ = 0;
+		int entityX = MathHelper.floor_double(entity.posX);
+		int entityZ = MathHelper.floor_double(entity.posZ);
+		BlockPos blockpos = BlockPos.ORIGIN;
+		boolean notInCache = true;
+
+		long j1 = ChunkPos.chunkXZ2Int(entityX, entityZ);
+
+		if (destinationCoordinateCache.containsKey(j1)) {
+			//	System.out.println("Setting closest portal to 0");
+			PortalPosition portalposition = (PortalPosition)destinationCoordinateCache.get(j1);
+			closestPortal = 0.0D;
+			blockpos = portalposition;
+			portalposition.lastUpdateTime = world.getTotalWorldTime();
+			notInCache = false;
+		} else {
+			for (int x = entityX - searchArea; x <= entityX + searchArea; x ++)
+			{
+				double distX = x + 0.5D - entity.posX;
+
+				for (int z = entityZ - searchArea; z <= entityZ + searchArea; z ++)
+				{
+					double distZ = z + 0.5D - entity.posZ;
+
+					for (int y = world.getActualHeight() - 1; y >= 0; y--)
+					{
+						BlockPos pos = new BlockPos(x, y, z);
+						if (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
+						{
+							pos = pos.down();
+							while (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
+							{
+								--y;
+								pos = pos.down();
+							}
+
+							double distY = y + 0.5D - entity.posY;
+							double distance = distX * distX + distY * distY + distZ * distZ;
+							if (closestPortal < 0.0D || distance < closestPortal)
+							{
+								closestPortal = distance;
+								foundX = x;
+								foundY = y;
+								foundZ = z;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		//	System.out.println("Setting closest portal to " + closestPortal);
+
+		if (closestPortal >= 0.0D)
+		{
+			if (notInCache) {
+				this.destinationCoordinateCache.put(j1, new Teleporter.PortalPosition(blockpos, this.world.getTotalWorldTime()));
+			}
+
+			int x = foundX;
+			int y = foundY;
+			int z = foundZ;
+			double newLocX = x + 0.5D;
+			double newLocY = y + 0.5D;
+			double newLocZ = z + 0.5D;
+			
+			BlockPos pos = new BlockPos(x, y, z);
+
+			if (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == PORTAL_BLOCK)
+			{
+				newLocX -= 0.5D;
+			}
+			if (world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == PORTAL_BLOCK)
+			{
+				newLocX += 0.5D;
+			}
+			if (world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == PORTAL_BLOCK)
+			{
+				newLocZ -= 0.5D;
+			}
+			if (world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == PORTAL_BLOCK)
+			{
+				newLocZ += 0.5D;
+			}
+			entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
+			int worldSpawnX = MathHelper.floor_double(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+			int worldSpawnZ = MathHelper.floor_double(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+			int worldSpawnY = world.getHeight(new BlockPos(worldSpawnX, 0, worldSpawnZ)).getY() + 3;
+
+			entity.motionX = entity.motionY = entity.motionZ = 0.0D;
+
+			// If the player is entering the tropics, spawn an Encyclopedia Tropica
+			// in the spawn portal chest (if they don't already have one AND one isn't
+			// already in the chest)
+			if (entity instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) entity;
+				if (world.provider instanceof WorldProviderTropicraft) {
+					//TODO improve this logical check to an NBT tag or something?
+//					if (!player.inventory.hasItem(TCItemRegistry.encTropica)) {
+//						// Search for the spawn chest
+//						TileEntityBambooChest chest = null;
+//						int chestX = MathHelper.floor_double(newLocX);
+//						int chestZ = MathHelper.floor_double(newLocZ);
+//						chestSearch:
+//							for (int searchX = -3; searchX < 4; searchX++) {
+//								for (int searchZ = -3; searchZ < 4; searchZ++) {
+//									for (int searchY = -4; searchY < 5; searchY++) {
+//										if (world.getBlock(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ) == TCBlockRegistry.bambooChest) {
+//											chest = (TileEntityBambooChest)world.getTileEntity(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
+//											if (chest != null && chest.isUnbreakable()) {
+//												break chestSearch;
+//											}
+//										}
+//									}
+//								}
 //							}
 //
-//							double distY = y + 0.5D - entity.posY;
-//							double distance = distX * distX + distY * distY + distZ * distZ;
-//							if (closestPortal < 0.0D || distance < closestPortal)
-//							{
-//								closestPortal = distance;
-//								foundX = x;
-//								foundY = y;
-//								foundZ = z;
+//						// Make sure chest doesn't have the encyclopedia
+//						if (chest!= null && chest.isUnbreakable()) {
+//							boolean hasEncyclopedia = false;
+//							for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
+//								ItemStack stack = chest.getStackInSlot(inv);
+//								if (stack != null && stack.getItem() == TCItemRegistry.encTropica) {
+//									hasEncyclopedia = true;
+//								}
+//							}
+//
+//							// Give out a new encyclopedia
+//							if (!hasEncyclopedia) {
+//								for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
+//									ItemStack stack = chest.getStackInSlot(inv);
+//									if (stack == null) {
+//										chest.setInventorySlotContents(inv, new ItemStack(TCItemRegistry.encTropica, 1));
+//										break;
+//									}
+//								}
 //							}
 //						}
 //					}
-//				}
-//			}
-//		}
-//
-//		//	System.out.println("Setting closest portal to " + closestPortal);
-//
-//		if (closestPortal >= 0.0D)
-//		{
-//			if (notInCache) {
-//				this.destinationCoordinateCache.put(j1, new Teleporter.PortalPosition(blockpos, this.world.getTotalWorldTime()));
-//			}
-//
-//			int x = foundX;
-//			int y = foundY;
-//			int z = foundZ;
-//			double newLocX = x + 0.5D;
-//			double newLocY = y + 0.5D;
-//			double newLocZ = z + 0.5D;
-//			
-//			BlockPos pos = new BlockPos(x, y, z);
-//
-//			if (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == PORTAL_BLOCK)
-//			{
-//				newLocX -= 0.5D;
-//			}
-//			if (world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == PORTAL_BLOCK)
-//			{
-//				newLocX += 0.5D;
-//			}
-//			if (world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == PORTAL_BLOCK)
-//			{
-//				newLocZ -= 0.5D;
-//			}
-//			if (world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == PORTAL_BLOCK)
-//			{
-//				newLocZ += 0.5D;
-//			}
-//			entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
-//			int worldSpawnX = MathHelper.floor_double(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-//			int worldSpawnZ = MathHelper.floor_double(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-//			int worldSpawnY = world.getHeight(new BlockPos(worldSpawnX, 0, worldSpawnZ)).getY() + 3;
-//
-//			entity.motionX = entity.motionY = entity.motionZ = 0.0D;
-//
-//			// If the player is entering the tropics, spawn an Encyclopedia Tropica
-//			// in the spawn portal chest (if they don't already have one AND one isn't
-//			// already in the chest)
-//			if (entity instanceof EntityPlayer) {
-//				EntityPlayer player = (EntityPlayer) entity;
-//				if (world.provider instanceof WorldProviderTropicraft) {
-//					//TODO improve this logical check to an NBT tag or something?
-////					if (!player.inventory.hasItem(TCItemRegistry.encTropica)) {
-////						// Search for the spawn chest
-////						TileEntityBambooChest chest = null;
-////						int chestX = MathHelper.floor_double(newLocX);
-////						int chestZ = MathHelper.floor_double(newLocZ);
-////						chestSearch:
-////							for (int searchX = -3; searchX < 4; searchX++) {
-////								for (int searchZ = -3; searchZ < 4; searchZ++) {
-////									for (int searchY = -4; searchY < 5; searchY++) {
-////										if (world.getBlock(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ) == TCBlockRegistry.bambooChest) {
-////											chest = (TileEntityBambooChest)world.getTileEntity(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
-////											if (chest != null && chest.isUnbreakable()) {
-////												break chestSearch;
-////											}
-////										}
-////									}
-////								}
-////							}
-////
-////						// Make sure chest doesn't have the encyclopedia
-////						if (chest!= null && chest.isUnbreakable()) {
-////							boolean hasEncyclopedia = false;
-////							for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-////								ItemStack stack = chest.getStackInSlot(inv);
-////								if (stack != null && stack.getItem() == TCItemRegistry.encTropica) {
-////									hasEncyclopedia = true;
-////								}
-////							}
-////
-////							// Give out a new encyclopedia
-////							if (!hasEncyclopedia) {
-////								for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-////									ItemStack stack = chest.getStackInSlot(inv);
-////									if (stack == null) {
-////										chest.setInventorySlotContents(inv, new ItemStack(TCItemRegistry.encTropica, 1));
-////										break;
-////									}
-////								}
-////							}
-////						}
-////					}
-//				}
-//			}
-//
-//			return true;
-//		} else {
-//			return false;
-//		}
+				}
+			}
+
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
