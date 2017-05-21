@@ -37,15 +37,6 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 		list.add(I18n.translateToLocal("portalenchanter.type_" + itemstack.getItemDamage()));
 	}
 
-	/**
-	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-	 */
-	@Override
-	public void getSubItems(Item item, CreativeTabs tabs, List list) {
-		list.add(new ItemStack(item, 1, 0));
-		list.add(new ItemStack(item, 1, 1));
-	}
-
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer, EnumHand hand) {
 		if (!world.isRemote && (itemstack.getItemDamage() == 1 || entityplayer.capabilities.isCreativeMode)) {
