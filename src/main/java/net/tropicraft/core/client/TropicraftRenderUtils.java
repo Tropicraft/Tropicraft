@@ -80,7 +80,7 @@ public class TropicraftRenderUtils {
     public static final IItemColor BLOCK_ITEM_COLORING = new IItemColor() {
         @Override
         public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-            return SandColors.getColor(tintIndex);
+            return SandColors.getColor(tintIndex - 1);
         }
     };
 }
