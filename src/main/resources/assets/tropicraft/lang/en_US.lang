@@ -129,6 +129,7 @@ item.tropicraft:umbrella_lightBlue.name=Light Blue Beach Umbrella
 item.tropicraft:umbrella_magenta.name=Magenta Beach Umbrella
 item.tropicraft:umbrella_orange.name=Orange Beach Umbrella
 item.tropicraft:umbrella_white.name=White Beach Umbrella
+item.tropicraft:portal_enchanter.name=Tropics Portal Enchanter Wand
 
 # Record localizations
 item.tropicraft:buried_treasure.name=Buried Treasure
