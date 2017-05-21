@@ -30,7 +30,7 @@ public final class Names {
 	public static final String PORTAL_WALL = "portal_wall";
 
 	// Item names
-	public static final String[] SHELL_NAMES = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};
+	public static final String[] SHELL_NAMES = new String[]{"solo", "frox", "pab", "rube", "starfish", "turtle"};
 
 	// Tile Entity Names
 	public static final String TE_BAMBOO_CHEST = "te_bamboo_chest";

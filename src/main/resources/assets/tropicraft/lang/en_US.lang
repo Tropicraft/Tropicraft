@@ -130,6 +130,12 @@ item.tropicraft:umbrella_magenta.name=Magenta Beach Umbrella
 item.tropicraft:umbrella_orange.name=Orange Beach Umbrella
 item.tropicraft:umbrella_white.name=White Beach Umbrella
 item.tropicraft:portal_enchanter.name=Tropics Portal Enchanter Wand
+item.tropicraft:shell_solo.name=Solonox Shell
+item.tropicraft:shell_frox.name=Frox Conch
+item.tropicraft:shell_pab.name=Pab Shell
+item.tropicraft:shell_rube.name=Rube Nautilus
+item.tropicraft:shell_starfish.name=Starfish Shell
+item.tropicraft:shell_turtle.name=Turtle Shell
 
 # Record localizations
 item.tropicraft:buried_treasure.name=Buried Treasure

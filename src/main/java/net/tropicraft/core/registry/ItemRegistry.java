@@ -16,10 +16,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
+import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
+import net.tropicraft.core.common.item.ItemShell;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
@@ -74,25 +76,32 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item recordSummering;
 	public static Item recordTheTribe;
 	public static Item recordTradeWinds;
-	
+
 	// Frogs
 	public static Item frogLeg;
 	public static Item cookedFrogLeg;
 	public static Item poisonFrogSkin;
-	
+
 	public static Item scale;
-	
-    // Armor	
-    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
-    public static Item scaleBoots;
-    public static Item scaleLeggings;
-    public static Item scaleChestplate;
-    public static Item scaleHelmet;
-    
-    public static Item chair;
-    public static Item umbrella;
-    
-    public static Item portalEnchanter;
+
+	// Armor	
+	public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+	public static Item scaleBoots;
+	public static Item scaleLeggings;
+	public static Item scaleChestplate;
+	public static Item scaleHelmet;
+
+	public static Item chair;
+	public static Item umbrella;
+
+	public static Item portalEnchanter;
+
+	public static Item shellFrox;
+	public static Item shellPab;
+	public static Item shellRube;
+	public static Item shellSolo;
+	public static Item shellStarfish;
+	public static Item shellTurtle;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -133,44 +142,51 @@ public class ItemRegistry extends TropicraftRegistry {
 
 		coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
 		pineappleCubes = registerItem(new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
-		
+
 		frogLeg = registerItem(new ItemTropicraft().setMaxStackSize(64), "frog_leg");
 		cookedFrogLeg = registerItem(new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
 		poisonFrogSkin = registerItem(new ItemTropicraft().setMaxStackSize(64), "poison_frog_skin");
-		
+
 		scale = registerItem(new ItemTropicraft().setMaxStackSize(64), "scale");
-		
+
 		scaleBoots = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.FEET), "scale_boots");
 		scaleLeggings = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.LEGS), "scale_leggings");
 		scaleChestplate = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.CHEST), "scale_chestplate");
 		scaleHelmet = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.HEAD), "scale_helmet");
-		
+
 		chair = registerMultiItem(new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
 		umbrella = registerMultiItem(new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);
-		
+
 		portalEnchanter = registerItem(new ItemPortalEnchanter(), "portal_enchanter");
+
+		shellFrox = registerItem(new ItemShell(), "shell_frox");
+		shellPab = registerItem(new ItemShell(), "shell_pab");
+		shellRube = registerItem(new ItemShell(), "shell_rube");
+		shellSolo = registerItem(new ItemShell(), "shell_solo");
+		shellStarfish = registerItem(new ItemShell(), "shell_starfish");
+		shellTurtle = registerItem(new ItemShell(), "shell_turtle");
 	}
 
 	public static void init() {
-		
+
 	}
-	
+
 	public static void clientProxyInit() {
 		Tropicraft.proxy.registerColoredItem(chair);
 		Tropicraft.proxy.registerColoredItem(umbrella);
 	}
-	
+
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {
 		item.setUnlocalizedName(getNamePrefixed(name));
 		item.setRegistryName(new ResourceLocation(Info.MODID, name));
-		
+
 		GameRegistry.register(item);
 		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
-		
+
 		for (int metadata = 0; metadata < numPlaces; metadata++) {
 			Tropicraft.proxy.registerItemVariantModel(item, name, metadata);
 		}
-		
+
 		return item;
 	}
 
