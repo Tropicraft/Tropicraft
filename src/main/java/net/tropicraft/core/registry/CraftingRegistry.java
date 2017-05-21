@@ -181,6 +181,34 @@ public class CraftingRegistry {
 			"X X", "X X", "XXX",
 			'X', ItemRegistry.bambooShoot
 		});
+		
+		// Tiki torch (coal) - diagonal recipe
+		createRecipe(true, new ItemStack(BlockRegistry.tikiTorch, 2, 2), new Object[]{
+			"  Y", " X ", "X  ",
+			'Y', Items.COAL,
+			'X', ItemRegistry.bambooStick
+		});
+		
+		// Tiki torch (coal) - vertical recipe
+		createRecipe(true, new ItemStack(BlockRegistry.tikiTorch, 2, 2), new Object[]{
+			" Y ", " X ", " X ",
+			'Y', Items.COAL,
+			'X', ItemRegistry.bambooStick
+		});
+
+		// Tiki torch (charcoal) - diagonal recipe
+		createRecipe(false, new ItemStack(BlockRegistry.tikiTorch, 2, 2), new Object[]{
+			"  Y", " X ", "X  ",
+			'Y', new ItemStack(Items.COAL, 1, 1),
+			'X', ItemRegistry.bambooStick
+		});
+		
+		// Tiki torch (charcoal) - vertical recipe
+		createRecipe(false, new ItemStack(BlockRegistry.tikiTorch, 2, 2), new Object[]{
+			" Y ", " X ", " X ",
+			'Y', new ItemStack(Items.COAL, 1, 1),
+			'X', ItemRegistry.bambooStick
+		});
 
 		// planks -> logs
 		int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");

@@ -28,6 +28,7 @@ public final class Names {
 	public static final String VOLCANO = "volcano";
 	public static final String[] IRIS_NAMES = {"iris_stem", "iris_plant"};
 	public static final String PORTAL_WALL = "portal_wall";
+	public static final String TIKI_TORCH = "tiki_torch";
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"solo", "frox", "pab", "rube", "starfish", "turtle"};
