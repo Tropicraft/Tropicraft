@@ -17,6 +17,7 @@ public final class Names {
 	public static final String[] BUNDLE_NAMES = {"thatch", "bamboo"};
 	public static final String BAMBOO_SHOOT = "bamboo_shoot";
 	public static final String TROPICS_WATER = "tropics_water";
+	public static final String TROPICS_PORTAL = "tropics_portal";
 	public static final String[] LEAF_NAMES = {"mahogany", "palm", "kapok", "fruit"};
 	public static final String BAMBOO_CHEST = "bamboo_chest";
 	public static final String[] FRUIT_LEAF_NAMES = {"grapefruit", "lemon", "lime", "orange"};
@@ -26,6 +27,7 @@ public final class Names {
 	public static final String[] SAND_NAMES = {"purified", "coral", "green", "black", "mineral"};
 	public static final String VOLCANO = "volcano";
 	public static final String[] IRIS_NAMES = {"iris_stem", "iris_plant"};
+	public static final String PORTAL_WALL = "portal_wall";
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"Solo", "Frox", "Pab", "Rube", "Starfish", "Turtle"};

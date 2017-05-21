@@ -19,6 +19,7 @@ import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemMusicDisc;
+import net.tropicraft.core.common.item.ItemPortalEnchanter;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
@@ -90,6 +91,8 @@ public class ItemRegistry extends TropicraftRegistry {
     
     public static Item chair;
     public static Item umbrella;
+    
+    public static Item portalEnchanter;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -144,6 +147,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		
 		chair = registerMultiItem(new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
 		umbrella = registerMultiItem(new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);
+		
+		portalEnchanter = registerItem(new ItemPortalEnchanter(), "portal_enchanter");
 	}
 
 	public static void init() {

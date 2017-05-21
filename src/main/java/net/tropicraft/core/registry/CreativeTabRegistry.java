@@ -1,7 +1,6 @@
 package net.tropicraft.core.registry;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 public class CreativeTabRegistry {
@@ -15,7 +14,7 @@ public class CreativeTabRegistry {
 		
 		@Override
 		public Item getTabIconItem() {
-			return Items.APPLE;
+			return Item.getItemFromBlock(BlockRegistry.pineapple);
 		}
 	}
 }

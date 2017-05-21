@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "normal": { "model": "tropicraft:portal_wall_normal" }
+    }
+}
