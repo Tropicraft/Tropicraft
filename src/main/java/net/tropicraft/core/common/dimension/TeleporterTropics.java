@@ -19,6 +19,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+import net.tropicraft.core.common.block.BlockTikiTorch;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
 import net.tropicraft.core.registry.BlockRegistry;
 //import net.tropicraft.block.tileentity.TileEntityBambooChest; TODO
@@ -359,13 +360,13 @@ public class TeleporterTropics extends Teleporter {
 
 						}
 					}
-//
-//					boolean isCorner = (xOffset == -2 || xOffset == 2) && (zOffset == -2 || zOffset == 2);
-//					if (yOffset == 0 && isCorner) {
-//						world.setBlockState(blockX, blockY + 1, blockZ, TCBlockRegistry.tikiTorch, 1, 3);
-//						world.setBlock(blockX, blockY + 2, blockZ, TCBlockRegistry.tikiTorch, 1, 3);
-//						world.setBlock(blockX, blockY + 3, blockZ, TCBlockRegistry.tikiTorch, 0, 3);
-//					}
+
+					boolean isCorner = (xOffset == -2 || xOffset == 2) && (zOffset == -2 || zOffset == 2);
+					if (yOffset == 0 && isCorner) {
+						world.setBlockState(pos.up(), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.LOWER), 3);
+						world.setBlockState(pos.up(2), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.MIDDLE), 3);
+						world.setBlockState(pos.up(3), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.UPPER), 3);
+					}
 
 				}
 			}

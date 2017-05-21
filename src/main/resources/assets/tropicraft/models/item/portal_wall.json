@@ -1,5 +1,5 @@
 {
-    "parent": "minecraft:block/sandstone",
+    "parent": "minecraft:block/sandstone_normal",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

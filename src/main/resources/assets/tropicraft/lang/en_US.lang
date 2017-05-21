@@ -63,6 +63,9 @@ tile.tropicraft:iris_stem.name=Iris
 tile.tropicraft:iris_plant.name=Iris
 tile.tropicraft:pineapple_stem.name=Pineapple
 tile.tropicraft:pineapple_plant.name=Pineapple
+tile.tropicraft:tiki_torch_lower.name=Tiki Torch
+tile.tropicraft:tiki_torch_middle.name=Tiki Torch Middle
+tile.tropicraft:tiki_torch_upper.name=Tiki Torch Torch
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard

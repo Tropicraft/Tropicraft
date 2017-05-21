@@ -6,9 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -33,6 +30,7 @@ import net.tropicraft.core.common.block.BlockFruitLeaves;
 import net.tropicraft.core.common.block.BlockIris;
 import net.tropicraft.core.common.block.BlockPineapple;
 import net.tropicraft.core.common.block.BlockPortalWall;
+import net.tropicraft.core.common.block.BlockTikiTorch;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
@@ -48,6 +46,9 @@ import net.tropicraft.core.common.block.BlockVolcano;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 
 public class BlockRegistry extends TropicraftRegistry {
 
@@ -96,6 +97,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block iris;
 	
 	public static Block volcano;
+	
+	public static Block tikiTorch;
 
 	/**
 	 * Register blocks in preInit
@@ -139,6 +142,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		sands = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
+		
+		tikiTorch = registerMultiBlock(new BlockTikiTorch(), ItemBlockTropicraft.class, "tiki_torch", asList(new String[]{"upper", "middle", "lower"}));
 	}
 
 	public static void init() {
