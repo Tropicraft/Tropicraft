@@ -15,7 +15,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.tropicraft.ColorHelper;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
@@ -24,6 +23,12 @@ public class ItemChair extends ItemTropicraftColored {
 
 	public ItemChair() {
 		super("chair");
+	}
+	
+	@Override
+	public int getColor(ItemStack itemstack, int pass) {
+		Integer color = ColorHelper.getColorFromDamage(itemstack.getItemDamage());
+		return (pass == 0 ? 16777215 : color.intValue());
 	}
 
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)

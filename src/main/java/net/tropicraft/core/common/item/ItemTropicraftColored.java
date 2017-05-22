@@ -19,7 +19,7 @@ import net.tropicraft.core.registry.CreativeTabRegistry;
  * 
  * NOTE: To ensure this class functions correctly, make sure to set the texture name accordingly
  */
-public class ItemTropicraftColored extends ItemTropicraft {
+public abstract class ItemTropicraftColored extends ItemTropicraft {
 
 	/** Item name used to determine name via itemstack damage */
 	private String itemName;
@@ -48,10 +48,7 @@ public class ItemTropicraftColored extends ItemTropicraft {
 //		return (pass == 0 ? 16777215 : color.intValue());
 //	}
 */
-	public int getColor(ItemStack itemstack, int pass) {
-		Integer color = ColorHelper.getColorFromDamage(itemstack.getItemDamage());
-		return (pass == 0 ? 16777215 : color.intValue());
-	}
+	public abstract int getColor(ItemStack itemstack, int pass);
 	
 	/**
 	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)

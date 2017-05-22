@@ -16,9 +16,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
-import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.item.ItemChair;
+import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
 import net.tropicraft.core.common.item.ItemShell;
@@ -102,6 +103,8 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item shellSolo;
 	public static Item shellStarfish;
 	public static Item shellTurtle;
+	
+	public static Item cocktail;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -165,6 +168,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		shellSolo = registerItem(new ItemShell(), "shell_solo");
 		shellStarfish = registerItem(new ItemShell(), "shell_starfish");
 		shellTurtle = registerItem(new ItemShell(), "shell_turtle");
+		
+		cocktail = registerMultiItem(new ItemCocktail(), "cocktail", Drink.drinkList.length);
 	}
 
 	public static void init() {
@@ -174,6 +179,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static void clientProxyInit() {
 		Tropicraft.proxy.registerColoredItem(chair);
 		Tropicraft.proxy.registerColoredItem(umbrella);
+		Tropicraft.proxy.registerColoredItem(cocktail);
 	}
 
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {
