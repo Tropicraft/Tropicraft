@@ -4,7 +4,9 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.tropicraft.core.client.tileentity.TileEntityBambooChestRenderer;
+import net.tropicraft.core.client.tileentity.TileEntityDrinkMixerRenderer;
 import net.tropicraft.core.common.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 
 public class TileEntityRenderRegistry {
 
@@ -13,6 +15,7 @@ public class TileEntityRenderRegistry {
 	 */
 	public static void init() {
 		registerTileEntityRenderer(TileEntityBambooChest.class, new TileEntityBambooChestRenderer());
+		registerTileEntityRenderer(TileEntityDrinkMixer.class, new TileEntityDrinkMixerRenderer());
 	}
 
 	private static <T extends TileEntity> void registerTileEntityRenderer(Class<T> tileEntityClass, 

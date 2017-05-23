@@ -2,8 +2,10 @@ package net.tropicraft.core.common.drinks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
@@ -22,6 +24,7 @@ public final class MixerRecipes {
         //registerMixerRecipe(Drink.blackCoffee, Ingredient.roastedCoffeeBean, Ingredient.waterBucket);
         //registerMixerRecipe(Drink.pinaColada, Ingredient.pineapple, Ingredient.coconutChunk);
         registerMixerRecipe(Drink.pinaColada, Ingredient.pineappleCubes, Ingredient.coconutChunk);
+        registerMixerRecipe(Drink.coconutWater, Ingredient.coconut, Ingredient.waterBucket);
     }
 
     /**
@@ -47,5 +50,30 @@ public final class MixerRecipes {
         }
         
         return DrinkMixerRegistry.getResult(stack.toArray(new ItemStack[stack.size()]));
+    }
+    
+    public static boolean isValidRecipe(ItemStack...ingredientStacks) {
+    	Set<Ingredient> ingredients = new HashSet<Ingredient>();
+    	
+    	for (ItemStack stack : ingredientStacks) {
+    		Ingredient ingredient = Ingredient.findMatchingIngredient(stack);
+    		if (ingredient == null)
+    			return false;
+    		
+    		ingredients.add(ingredient);
+    		
+    		for (MixerRecipe recipe : DrinkMixerRegistry.getRecipes()) {
+    			Set<Ingredient> recipeIngredientSet = new HashSet<Ingredient>();
+    			for (Ingredient i : recipe.getIngredients()) {
+    				recipeIngredientSet.add(i);
+    			}
+    			
+    			if (ingredients.equals(recipeIngredientSet)) {
+    				return true;
+    			}
+    		}
+    	}
+    	
+    	return false;
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.tropicraft.Info;
@@ -19,6 +20,7 @@ import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.common.block.ITropicraftBlock;
+import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemTropicraftColored;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -27,7 +29,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.TileEntityRenderRegistry;
 
 public class ClientProxy extends CommonProxy {
-
+	
 	public ClientProxy() {
 
 	}
@@ -43,6 +45,9 @@ public class ClientProxy extends CommonProxy {
 		BlockRegistry.clientProxyInit();
 		
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
+		
+		// For rendering drink mixer in inventory
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
 	}
 	
 	public void registerColoredBlock(Block block) {

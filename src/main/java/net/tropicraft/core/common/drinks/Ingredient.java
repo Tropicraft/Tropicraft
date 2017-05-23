@@ -30,7 +30,7 @@ public class Ingredient implements Comparable<Ingredient> {
 	public static final Ingredient coconutChunk = new Ingredient(12, new ItemStack(ItemRegistry.coconutChunk), true, 0xefefef/*, 0.1f*/).addAction(new DrinkActionFood(1, 0.1f));
 	public static final Ingredient sugarcane = new Ingredient(13, new ItemStack(Items.REEDS), false, 0xb1ff6b, 0.1f);
 	//public static final Ingredient roastedCoffeeBean = new Ingredient(14, new ItemStack(TCItemRegistry.coffeeBean, 1, 1), false, 0x68442c, 0.95f).addAction(new DrinkActionFood(4, 0.2f)).addAction(new DrinkActionPotion(Potion.moveSpeed.id, 5, 1));
-	public static final Ingredient waterBucket = new Ingredient(15, new ItemStack(ItemRegistry.tropicsWaterBucket), true, 0xffffff);
+	public static final Ingredient waterBucket = new Ingredient(15, new ItemStack(ItemRegistry.tropicsWaterBucket), false, 0xffffff);
 	public static final Ingredient milkBucket = new Ingredient(16, new ItemStack(Items.MILK_BUCKET), false, 0xffffff, 0.1f).addAction(new DrinkActionFood(2, 0.2f));
 	public static final Ingredient cocoaBean = new Ingredient(17, new ItemStack(Items.DYE, 1, 3), false, 0x805A3E, 0.95f).addAction(new DrinkActionFood(4, 0.2f));
 

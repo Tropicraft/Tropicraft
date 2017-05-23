@@ -66,6 +66,7 @@ tile.tropicraft:pineapple_plant.name=Pineapple
 tile.tropicraft:tiki_torch_lower.name=Tiki Torch
 tile.tropicraft:tiki_torch_middle.name=Tiki Torch Middle
 tile.tropicraft:tiki_torch_upper.name=Tiki Torch Torch
+tile.tropicraft:drink_mixer.name=Drink Mixer
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
@@ -139,6 +140,15 @@ item.tropicraft:shell_pab.name=Pab Shell
 item.tropicraft:shell_rube.name=Rube Nautilus
 item.tropicraft:shell_starfish.name=Starfish Shell
 item.tropicraft:shell_turtle.name=Turtle Shell
+item.tropicraft:cocktail.name=Tropical Cocktail
+item.tropicraft:pineapple_cubes.name=Pineapple Cubes
+
+# Cocktail localizations
+item.tropicraft:cocktail_Lemonade.name=Lemonade
+item.tropicraft:cocktail_Limeade.name=Limeade
+item.tropicraft:cocktail_Orangeade.name=Orangeade
+item.tropicraft:cocktail_Caipirinha.name=Caipirinha
+item.tropicraft:cocktail_Coconut Water.name=Coconut Water
 
 # Record localizations
 item.tropicraft:buried_treasure.name=Buried Treasure

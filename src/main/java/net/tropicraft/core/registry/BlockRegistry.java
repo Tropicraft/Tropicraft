@@ -26,6 +26,7 @@ import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoconut;
 import net.tropicraft.core.common.block.BlockCoral;
+import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.block.BlockFruitLeaves;
 import net.tropicraft.core.common.block.BlockIris;
 import net.tropicraft.core.common.block.BlockPineapple;
@@ -99,6 +100,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block volcano;
 	
 	public static Block tikiTorch;
+	
+	public static Block drinkMixer;
 
 	/**
 	 * Register blocks in preInit
@@ -144,6 +147,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
 		
 		tikiTorch = registerMultiBlock(new BlockTikiTorch(), ItemBlockTropicraft.class, "tiki_torch", asList(new String[]{"upper", "middle", "lower"}));
+		
+		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 	}
 
 	public static void init() {

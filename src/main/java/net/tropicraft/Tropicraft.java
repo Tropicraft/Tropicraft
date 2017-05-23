@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
+import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
 import net.tropicraft.core.proxy.CommonProxy;
@@ -39,6 +40,7 @@ public class Tropicraft {
 		BlockRegistry.preInit();
 		TileEntityRegistry.init();
 		ItemRegistry.preInit();
+		MixerRecipes.addMixerRecipes();
 		CraftingRegistry.preInit();
 	}
 

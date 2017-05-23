@@ -39,4 +39,8 @@ public class TileEntityFactory {
     public static TileEntity getVolcanoTE() {
     	return new TileEntityVolcano();
     }
+    
+    public static TileEntity getDrinkMixerTE() {
+    	return new TileEntityDrinkMixer();
+    }
 }

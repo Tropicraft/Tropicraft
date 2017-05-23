@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.item;
 
+import java.io.UnsupportedEncodingException;
+import java.text.Normalizer;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,11 +20,15 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.tropicraft.Info;
 import net.tropicraft.core.common.drinks.ColorMixer;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipe;
+import net.tropicraft.core.registry.DrinkMixerRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class ItemCocktail extends ItemTropicraftColored {
@@ -46,8 +52,15 @@ public class ItemCocktail extends ItemTropicraftColored {
 
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		par3List.clear();
 		if (par1ItemStack.getTagCompound() == null) {
 			return;
+		}
+
+		Drink drink = Drink.drinkList[par1ItemStack.getTagCompound().getByte("DrinkID")];
+
+		if (drink != null) {
+			par3List.add(drink.textFormatting.toString() + TextFormatting.BOLD.toString() + drink.displayName);
 		}
 
 		NBTTagList ingredients = par1ItemStack.getTagCompound().getTagList("Ingredients", 10);
@@ -62,19 +75,13 @@ public class ItemCocktail extends ItemTropicraftColored {
 			//par3List.add(ingredientName + " " + lvl);
 			par3List.add(ingredientName);
 		}
-
-		Drink drink = Drink.drinkList[par1ItemStack.getTagCompound().getByte("DrinkID")];
-
-		if (drink != null) {
-			par3List.add("\247o" + drink.displayName);
-		}
 	}
 
 	@Override
 	public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List list) {
-		//        for (MixerRecipe recipe: DrinkMixerRegistry.getInstance().getRecipes()) {
-		//            list.add(makeCocktail(recipe));
-		//        }
+        for (MixerRecipe recipe: DrinkMixerRegistry.getRecipes()) {
+            list.add(makeCocktail(recipe));
+        }
 	}
 
 	@Override
@@ -191,68 +198,86 @@ public class ItemCocktail extends ItemTropicraftColored {
 		return Drink.drinkList[nbt.getByte("DrinkID")];
 	}
 
-    @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-        return 32;
-    }
-   
-    @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        return EnumAction.DRINK;
-    }
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 32;
+	}
 
-    public ItemStack onFoodEaten(ItemStack itemstack, World world, EntityPlayer player) {
-    	world.playSound(player, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
-        
-        for (Ingredient ingredient: getIngredients(itemstack)) {
-            ingredient.onDrink(player);
-        }
-        
-        Drink drink = getDrink(itemstack);
-        
-        if (drink != null) {
-            drink.onDrink(player);
-        }
-        
-        return new ItemStack(ItemRegistry.bambooMug);
-    }
+	@Override
+	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+		return EnumAction.DRINK;
+	}
 
-    /**
-     * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
-     * the Item before the action is complete.
-     */
-    @Nullable
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
-    {
-        if (entityLiving instanceof EntityPlayer)
-        {
-            EntityPlayer entityplayer = (EntityPlayer)entityLiving;
-            this.onFoodEaten(stack, worldIn, entityplayer);
-        }
+	public ItemStack onFoodEaten(ItemStack itemstack, World world, EntityPlayer player) {
+		world.playSound(player, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 
-        return stack;
-    }
-    
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        Drink drink = getDrink(itemStackIn);
-        
-        if (drink != null) {
-            if (!playerIn.canEat(drink.alwaysEdible)) {
-            	return new ActionResult(EnumActionResult.FAIL, itemStackIn);
-            }
-        } else if (!playerIn.canEat(false)) {
-        	return new ActionResult(EnumActionResult.FAIL, itemStackIn);
-        }
-        
-        playerIn.setActiveHand(hand);
+		for (Ingredient ingredient: getIngredients(itemstack)) {
+			ingredient.onDrink(player);
+		}
 
-        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
-    }
+		Drink drink = getDrink(itemstack);
+
+		if (drink != null) {
+			drink.onDrink(player);
+		}
+
+		return new ItemStack(ItemRegistry.bambooMug);
+	}
+
+	/**
+	 * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
+	 * the Item before the action is complete.
+	 */
+	@Nullable
+	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+		if (entityLiving instanceof EntityPlayer) {
+			EntityPlayer entityplayer = (EntityPlayer)entityLiving;
+			this.onFoodEaten(stack, worldIn, entityplayer);
+		}
+
+		return stack;
+	}
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		Drink drink = getDrink(itemStackIn);
+
+		if (drink != null) {
+			if (!playerIn.canEat(drink.alwaysEdible)) {
+				return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+			}
+		} else if (!playerIn.canEat(false)) {
+			return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+		}
+
+		playerIn.setActiveHand(hand);
+
+		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+	}
 
 	@Override
 	public int getColor(ItemStack itemstack, int tintIndex) {
 		Drink drink = getDrink(itemstack);
-		return drink.color;
+		return (tintIndex == 0 ? 16777215 : drink.color);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public String getItemStackDisplayName(ItemStack itemstack) {
+		String name = null;
+		Drink drink = getDrink(itemstack);
+		if (itemstack == null || drink == null) {
+			name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
+					+ ":" + "cocktail.name")).trim();			
+		} else {
+			if (drink.drinkId == Drink.pinaColada.drinkId) {
+				name = drink.displayName;
+			} else {
+				name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
+						+ ":" + "cocktail.name")).trim();
+			}
+		}
+		
+		return name;
 	}
 }
