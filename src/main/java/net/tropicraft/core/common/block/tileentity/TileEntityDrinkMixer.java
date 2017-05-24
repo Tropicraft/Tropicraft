@@ -162,6 +162,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
             if (this.ingredients[i] != null) {
                 dropItem(this.ingredients[i], at);
+                this.ingredients[i] = null;
 			}
 		}
 
