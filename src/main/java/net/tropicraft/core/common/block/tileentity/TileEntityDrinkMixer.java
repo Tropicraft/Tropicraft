@@ -174,13 +174,13 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.ingredients[1] = null;
 		this.ingredients[2] = null;
 		this.result = null;
-		this.ticks = 0;
-		this.mixing = false;
 		this.sync();
 	}
 
 	public void finishMixing() {
 		result = getResult(getIngredients());
+		this.mixing = false;
+		this.ticks = 0;
 		this.sync();
 	}
 

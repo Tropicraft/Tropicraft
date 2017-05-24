@@ -57,7 +57,7 @@ public class TileEntityDrinkMixerRenderer extends TileEntitySpecialRenderer<Tile
 		}
 
 		if (te != null && te.isMixing()) {
-			float angle = MathHelper.sin((float)(25f * 2f * Math.PI * te.ticks / TileEntityDrinkMixer.TICKS_TO_MIX)) * 15f;
+			float angle = MathHelper.sin((float)(25f * 2f * Math.PI * (te.ticks + partialTicks) / TileEntityDrinkMixer.TICKS_TO_MIX)) * 15f;
 			GlStateManager.rotate(angle, 0f, 1f, 0f);
 		}
 
@@ -100,7 +100,7 @@ public class TileEntityDrinkMixerRenderer extends TileEntitySpecialRenderer<Tile
 				}
 			}
 	
-			if (te.isMixing()) {
+			if (te.isMixing() || te.result != null) {
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(-0.2f, -0.25f, 0.0f);
 				if (te.isDoneMixing()) {
