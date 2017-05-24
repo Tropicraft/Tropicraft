@@ -221,16 +221,32 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 			TorchSection section = state.getValue(SECTION);
 			if (section == TorchSection.LOWER) {
 				dropBlockAsItem(world, pos, state, 0);
-				world.setBlockToAir(pos.up());
-				world.setBlockToAir(pos.up(2));
+				if (world.getBlockState(pos.up()).getBlock() == this) {
+					world.setBlockToAir(pos.up());
+				}
+
+				if (world.getBlockState(pos.up(2)).getBlock() == this) {
+					world.setBlockToAir(pos.up(2));
+				}
 			} else if (section == TorchSection.MIDDLE){
 				dropBlockAsItem(world, pos.down(), world.getBlockState(pos.down()), 0);
-				world.setBlockToAir(pos.down());
-				world.setBlockToAir(pos.up());
+				if (world.getBlockState(pos.down()).getBlock() == this) {
+					world.setBlockToAir(pos.down());
+				}
+
+				if (world.getBlockState(pos.up()).getBlock() == this) {
+					world.setBlockToAir(pos.up());
+				}
 			} else {
 				dropBlockAsItem(world, pos.down(2), world.getBlockState(pos.down(2)), 0);
-				world.setBlockToAir(pos.down());
-				world.setBlockToAir(pos.down(2));
+
+				if (world.getBlockState(pos.down()).getBlock() == this) {
+					world.setBlockToAir(pos.down());
+				}
+
+				if (world.getBlockState(pos.down(2)).getBlock() == this) {
+					world.setBlockToAir(pos.down(2));
+				}
 			}
 		}
 	}
