@@ -1,10 +1,10 @@
-package net.tropicraft;
+package net.tropicraft.core.client;
 
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.core.common.item.ItemTropicraftColored;
 
-public class ChairColorHandler implements IItemColor {
+public class CocktailColorHandler implements IItemColor {
 
 	@Override
 	public int getColorFromItemstack(ItemStack stack, int tintIndex) {

@@ -66,6 +66,7 @@ tile.tropicraft:pineapple_plant.name=Pineapple
 tile.tropicraft:tiki_torch_lower.name=Tiki Torch
 tile.tropicraft:tiki_torch_middle.name=Tiki Torch Middle
 tile.tropicraft:tiki_torch_upper.name=Tiki Torch Torch
+tile.tropicraft:drink_mixer.name=Drink Mixer
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
@@ -139,6 +140,15 @@ item.tropicraft:shell_pab.name=Pab Shell
 item.tropicraft:shell_rube.name=Rube Nautilus
 item.tropicraft:shell_starfish.name=Starfish Shell
 item.tropicraft:shell_turtle.name=Turtle Shell
+item.tropicraft:cocktail.name=Tropical Cocktail
+item.tropicraft:pineapple_cubes.name=Pineapple Cubes
+
+# Cocktail localizations
+item.tropicraft:cocktail_Lemonade.name=Lemonade
+item.tropicraft:cocktail_Limeade.name=Limeade
+item.tropicraft:cocktail_Orangeade.name=Orangeade
+item.tropicraft:cocktail_Caipirinha.name=Caipirinha
+item.tropicraft:cocktail_Coconut Water.name=Coconut Water
 
 # Record localizations
 item.tropicraft:buried_treasure.name=Buried Treasure
@@ -163,3 +173,9 @@ entity.tropicraft.TropiCreeper.name=TropiCreeper
 entity.tropicraft.VMonkey.name=Vervet Monkey
 entity.tropicraft.PoisonBlot.name=Poisonous Blot
 entity.tropicraft.Marlin.name=Marlin
+
+# Achievement localizations
+achievement.tc_craft_pina_colada=If you like pina coladas...
+achievement.tc_craft_pina_colada.desc=(Who doesn't?)
+achievement.tc_drink_pina_colada=Caught in the rain
+achievement.tc_drink_pina_colada.desc=(Did you forget your umbrella?)

@@ -1,7 +1,7 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "#torch",
+        "particle": "tropicraft:blocks/tiki_torch_upper",
         "torch": "tropicraft:blocks/tiki_torch_upper"
     },
     "elements": [

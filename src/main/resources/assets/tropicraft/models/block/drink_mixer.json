@@ -1,0 +1,7 @@
+{
+    "parent": "block/block",
+    "textures": {
+    	"particle": "tropicraft:blocks/chunk",
+        "texture": "tropicraft:blocks/te/drink_mixer"
+    }
+}

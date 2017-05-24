@@ -26,6 +26,12 @@ public class ItemUmbrella extends ItemTropicraftColored {
 	}
 	
 	@Override
+	public int getColor(ItemStack itemstack, int pass) {
+		Integer color = ColorHelper.getColorFromDamage(itemstack.getItemDamage());
+		return (pass == 0 ? 16777215 : color.intValue());
+	}
+	
+	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		float f = 1.0F;
 		float f1 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * f;
