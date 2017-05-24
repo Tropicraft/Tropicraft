@@ -1,18 +1,22 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.ItemCocktail;
@@ -139,13 +143,20 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.mixing = true;
 		this.sync();
 	}
+	
+	private void dropItem(@Nonnull ItemStack stack, @Nullable EntityPlayer at) {
+        if (at == null) {
+            BlockPos pos = getPos().offset(getWorld().getBlockState(getPos()).getValue(BlockDrinkMixer.FACING));
+            InventoryHelper.spawnItemStack(getWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
+        } else {
+            InventoryHelper.spawnItemStack(getWorld(), at.posX, at.posY, at.posZ, stack);
+        }
+	}
 
-	public void emptyMixer() {
-		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-			if (this.ingredients[i] != null) {
-				EntityItem item = new EntityItem(worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), ingredients[i]);
-				worldObj.spawnEntityInWorld(item);
-				this.ingredients[i] = null;
+    public void emptyMixer(@Nullable EntityPlayer at) {
+        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
+            if (this.ingredients[i] != null) {
+                dropItem(this.ingredients[i], at);
 			}
 		}
 
@@ -154,9 +165,12 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.sync();
 	}
 
-	public void retrieveResult() {
-		EntityItem e = new EntityItem(worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), result);
-		worldObj.spawnEntityInWorld(e);
+	public void retrieveResult(@Nullable EntityPlayer at) {
+	    if (result == null) {
+	        return;
+	    }
+	    
+		dropItem(result, at);
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
 			// If we're not using one of the ingredient slots, just move along
@@ -165,8 +179,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 			ItemStack container = ingredients[i].getItem().getContainerItem(ingredients[i]);
 
 			if (container != null) {
-				e = new EntityItem(worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), container);
-				worldObj.spawnEntityInWorld(e);
+				dropItem(container, at);
 			}
 		}
 
