@@ -9,11 +9,13 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.block.model.ModelBambooMug;
 import net.tropicraft.core.client.block.model.ModelDrinkMixer;
+import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
 
@@ -43,17 +45,8 @@ public class TileEntityDrinkMixerRenderer extends TileEntitySpecialRenderer<Tile
 		if (te == null || te.getWorld() == null) {
 			GlStateManager.rotate(180f, 0f, 1f, 0f);
 		} else {
-			int meta = te.getBlockMetadata();
-
-			if (meta == 2) {
-				GlStateManager.rotate(0f, 0f, 1f, 0f);
-			} else if (meta == 3) {
-				GlStateManager.rotate(180f, 0f, 1f, 0f);
-			} else if (meta == 4) {
-				GlStateManager.rotate(270f, 0f, 1f, 0f);
-			} else if (meta == 5) {
-				GlStateManager.rotate(90f, 0f, 1f, 0f);
-			}
+			EnumFacing facing = getWorld().getBlockState(te.getPos()).getValue(BlockDrinkMixer.FACING);
+			GlStateManager.rotate(facing.getHorizontalAngle(), 0, 1, 0);
 		}
 
 		if (te != null && te.isMixing()) {
