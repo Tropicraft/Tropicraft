@@ -145,24 +145,24 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.ticks = 0;
 		this.mixing = true;
 		if (!getWorld().isRemote) {
-		    TCPacketHandler.INSTANCE.sendToDimension(new MessageMixerStart(this), getWorld().provider.getDimension());
+			TCPacketHandler.INSTANCE.sendToDimension(new MessageMixerStart(this), getWorld().provider.getDimension());
 		}
 	}
 	
 	private void dropItem(@Nonnull ItemStack stack, @Nullable EntityPlayer at) {
-        if (at == null) {
-            BlockPos pos = getPos().offset(getWorld().getBlockState(getPos()).getValue(BlockDrinkMixer.FACING));
-            InventoryHelper.spawnItemStack(getWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
-        } else {
-            InventoryHelper.spawnItemStack(getWorld(), at.posX, at.posY, at.posZ, stack);
-        }
+		if (at == null) {
+			BlockPos pos = getPos().offset(getWorld().getBlockState(getPos()).getValue(BlockDrinkMixer.FACING));
+			InventoryHelper.spawnItemStack(getWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
+		} else {
+			InventoryHelper.spawnItemStack(getWorld(), at.posX, at.posY, at.posZ, stack);
+		}
 	}
 
-    public void emptyMixer(@Nullable EntityPlayer at) {
-        for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            if (this.ingredients[i] != null) {
-                dropItem(this.ingredients[i], at);
-                this.ingredients[i] = null;
+	public void emptyMixer(@Nullable EntityPlayer at) {
+		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
+			if (this.ingredients[i] != null) {
+				dropItem(this.ingredients[i], at);
+				this.ingredients[i] = null;
 			}
 		}
 

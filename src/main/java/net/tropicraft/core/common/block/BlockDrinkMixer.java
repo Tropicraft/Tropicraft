@@ -83,7 +83,7 @@ ITileEntityProvider {
 		if (stack == null) {
 			mixer.emptyMixer(entityPlayer);
 			return true;
-		}	
+		}
 
 		ItemStack ingredientStack = stack.copy();
 		ingredientStack.stackSize = 1;
@@ -110,10 +110,10 @@ ITileEntityProvider {
 
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-	    IBlockState ret = super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
-	    return ret.withProperty(FACING, placer.getHorizontalFacing());
+		IBlockState ret = super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+		return ret.withProperty(FACING, placer.getHorizontalFacing());
 	}
-	
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));

@@ -8,24 +8,24 @@ import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.network.TCPacketHandler;
 
 public class MessageMixerStart extends MessageTileEntity<TileEntityDrinkMixer> {
-    
-    public MessageMixerStart() {
-        super();
-    }
-    
-    public MessageMixerStart(TileEntityDrinkMixer mixer) {
-        super(mixer);
-    }
 
-    public static final class Handler implements IMessageHandler<MessageMixerStart, IMessage> {
-        
-        @Override
-        public IMessage onMessage(MessageMixerStart message, MessageContext ctx) {
-            TileEntityDrinkMixer te = message.getTileEntity(Minecraft.getMinecraft().theWorld);
-            if (te != null) {
-                te.startMixing();
-            }
-            return null;
-        }
-    }
+	public MessageMixerStart() {
+		super();
+	}
+
+	public MessageMixerStart(TileEntityDrinkMixer mixer) {
+		super(mixer);
+	}
+
+	public static final class Handler implements IMessageHandler<MessageMixerStart, IMessage> {
+
+		@Override
+		public IMessage onMessage(MessageMixerStart message, MessageContext ctx) {
+			TileEntityDrinkMixer te = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			if (te != null) {
+				te.startMixing();
+			}
+			return null;
+		}
+	}
 }
