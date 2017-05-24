@@ -1,21 +1,28 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.tropicraft.core.common.block.BlockDrinkMixer;
+import net.tropicraft.core.common.block.tileentity.message.MessageMixerInventory;
+import net.tropicraft.core.common.block.tileentity.message.MessageMixerStart;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.ItemCocktail;
+import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -137,26 +144,39 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 	public void startMixing() {
 		this.ticks = 0;
 		this.mixing = true;
-		this.sync();
+		if (!getWorld().isRemote) {
+			TCPacketHandler.INSTANCE.sendToDimension(new MessageMixerStart(this), getWorld().provider.getDimension());
+		}
+	}
+	
+	private void dropItem(@Nonnull ItemStack stack, @Nullable EntityPlayer at) {
+		if (at == null) {
+			BlockPos pos = getPos().offset(getWorld().getBlockState(getPos()).getValue(BlockDrinkMixer.FACING));
+			InventoryHelper.spawnItemStack(getWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
+		} else {
+			InventoryHelper.spawnItemStack(getWorld(), at.posX, at.posY, at.posZ, stack);
+		}
 	}
 
-	public void emptyMixer() {
+	public void emptyMixer(@Nullable EntityPlayer at) {
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
 			if (this.ingredients[i] != null) {
-				EntityItem item = new EntityItem(worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), ingredients[i]);
-				worldObj.spawnEntityInWorld(item);
+				dropItem(this.ingredients[i], at);
 				this.ingredients[i] = null;
 			}
 		}
 
 		this.ticks = TICKS_TO_MIX;
 		this.mixing = false;
-		this.sync();
+		this.syncInventory();
 	}
 
-	public void retrieveResult() {
-		EntityItem e = new EntityItem(worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), result);
-		worldObj.spawnEntityInWorld(e);
+	public void retrieveResult(@Nullable EntityPlayer at) {
+	    if (result == null) {
+	        return;
+	    }
+	    
+		dropItem(result, at);
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
 			// If we're not using one of the ingredient slots, just move along
@@ -165,8 +185,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 			ItemStack container = ingredients[i].getItem().getContainerItem(ingredients[i]);
 
 			if (container != null) {
-				e = new EntityItem(worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), container);
-				worldObj.spawnEntityInWorld(e);
+				dropItem(container, at);
 			}
 		}
 
@@ -174,14 +193,14 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.ingredients[1] = null;
 		this.ingredients[2] = null;
 		this.result = null;
-		this.ticks = 0;
-		this.mixing = false;
-		this.sync();
+		this.syncInventory();
 	}
 
 	public void finishMixing() {
 		result = getResult(getIngredients());
-		this.sync();
+		this.mixing = false;
+		this.ticks = 0;
+		this.syncInventory();
 	}
 
 	public boolean addToMixer(ItemStack ingredient) {
@@ -195,7 +214,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 				}
 			}
 			this.ingredients[0] = ingredient;
-			sync();
+			syncInventory();
 			return true;
 		} else if (this.ingredients[1] == null) {
 			if (ingredient.getItem() == ItemRegistry.cocktail) {
@@ -213,7 +232,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 			}
 
 			this.ingredients[1] = ingredient;
-			sync();
+			syncInventory();
 			return true;
 		} else if (this.ingredients[2] == null) {
 			if (ingredient.getItem() == ItemRegistry.cocktail) {
@@ -232,7 +251,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 			}
 
 			this.ingredients[2] = ingredient;
-			sync();
+			syncInventory();
 			return true;
 		} else {
 			return false;
@@ -266,8 +285,8 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 
-	public void sync() {
-		worldObj.notifyBlockUpdate(pos, this.worldObj.getBlockState(pos), this.worldObj.getBlockState(pos), 3);
+	protected void syncInventory() {
+		TCPacketHandler.INSTANCE.sendToDimension(new MessageMixerInventory(this), getWorld().provider.getDimension());
 	}
 
 	@Override

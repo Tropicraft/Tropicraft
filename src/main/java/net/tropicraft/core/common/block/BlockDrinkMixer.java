@@ -76,14 +76,14 @@ ITileEntityProvider {
 		TileEntityDrinkMixer mixer = (TileEntityDrinkMixer)world.getTileEntity(pos);
 
 		if (mixer.isDoneMixing()) {
-			mixer.retrieveResult();
+			mixer.retrieveResult(entityPlayer);
 			return true;
 		}
 
 		if (stack == null) {
-			mixer.emptyMixer();
+			mixer.emptyMixer(entityPlayer);
 			return true;
-		}	
+		}
 
 		ItemStack ingredientStack = stack.copy();
 		ingredientStack.stackSize = 1;
@@ -108,63 +108,20 @@ ITileEntityProvider {
 		return true;    	
 	}
 
-	/**
-	 * Called when the block is placed in the world.
-	 */
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		int var6 = MathHelper.floor_double((double)(placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-		EnumFacing dir = null;
-		if (var6 == 0) {
-			dir = EnumFacing.NORTH;
-		} else if (var6 == 1) {
-			dir = EnumFacing.EAST;
-		} else if (var6 == 2) {
-			dir = EnumFacing.SOUTH;
-		} else if (var6 == 3) {
-			dir = EnumFacing.WEST;
-		} else {
-			dir = null;
-		}
-
-		worldIn.setBlockState(pos, state.withProperty(FACING, dir));
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		IBlockState ret = super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+		return ret.withProperty(FACING, placer.getHorizontalFacing());
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing dir = null;
-		switch(meta) {
-		case 0:
-			dir = EnumFacing.NORTH;
-			break;
-		case 1:
-			dir = EnumFacing.EAST;
-			break;
-		case 2:
-			dir = EnumFacing.SOUTH;
-			break;
-		default:
-			dir = EnumFacing.WEST;
-			break;
-		}
-
-		return this.getDefaultState().withProperty(FACING, dir);
+		return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		EnumFacing dir = (EnumFacing) state.getValue(FACING);
-		switch(dir) {
-		case NORTH:
-			return 0;
-		case EAST:
-			return 1;
-		case SOUTH:
-			return 2;
-		default:
-			return 3;
-		}
+		return state.getValue(FACING).getHorizontalIndex();
 	}
 
 }

@@ -14,6 +14,7 @@ import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
+import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.registry.AchievementRegistry;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -48,6 +49,7 @@ public class Tropicraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		TCPacketHandler.init();
 		AchievementRegistry.init();
 		EntityRegistry.init();
 		proxy.init();
