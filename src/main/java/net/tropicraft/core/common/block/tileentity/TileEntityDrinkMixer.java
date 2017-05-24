@@ -17,9 +17,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.block.BlockDrinkMixer;
+import net.tropicraft.core.common.block.tileentity.message.MessageMixerInventory;
+import net.tropicraft.core.common.block.tileentity.message.MessageMixerStart;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.ItemCocktail;
+import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -141,7 +144,9 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 	public void startMixing() {
 		this.ticks = 0;
 		this.mixing = true;
-		this.sync();
+		if (!getWorld().isRemote) {
+		    TCPacketHandler.INSTANCE.sendToDimension(new MessageMixerStart(this), getWorld().provider.getDimension());
+		}
 	}
 	
 	private void dropItem(@Nonnull ItemStack stack, @Nullable EntityPlayer at) {
@@ -162,7 +167,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 
 		this.ticks = TICKS_TO_MIX;
 		this.mixing = false;
-		this.sync();
+		this.syncInventory();
 	}
 
 	public void retrieveResult(@Nullable EntityPlayer at) {
@@ -187,14 +192,14 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.ingredients[1] = null;
 		this.ingredients[2] = null;
 		this.result = null;
-		this.sync();
+		this.syncInventory();
 	}
 
 	public void finishMixing() {
 		result = getResult(getIngredients());
 		this.mixing = false;
 		this.ticks = 0;
-		this.sync();
+		this.syncInventory();
 	}
 
 	public boolean addToMixer(ItemStack ingredient) {
@@ -208,7 +213,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 				}
 			}
 			this.ingredients[0] = ingredient;
-			sync();
+			syncInventory();
 			return true;
 		} else if (this.ingredients[1] == null) {
 			if (ingredient.getItem() == ItemRegistry.cocktail) {
@@ -226,7 +231,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 			}
 
 			this.ingredients[1] = ingredient;
-			sync();
+			syncInventory();
 			return true;
 		} else if (this.ingredients[2] == null) {
 			if (ingredient.getItem() == ItemRegistry.cocktail) {
@@ -245,7 +250,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 			}
 
 			this.ingredients[2] = ingredient;
-			sync();
+			syncInventory();
 			return true;
 		} else {
 			return false;
@@ -279,8 +284,8 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 
-	public void sync() {
-		worldObj.notifyBlockUpdate(pos, this.worldObj.getBlockState(pos), this.worldObj.getBlockState(pos), 3);
+	protected void syncInventory() {
+		TCPacketHandler.INSTANCE.sendToDimension(new MessageMixerInventory(this), getWorld().provider.getDimension());
 	}
 
 	@Override
