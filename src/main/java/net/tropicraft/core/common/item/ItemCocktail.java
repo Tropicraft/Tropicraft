@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import java.io.UnsupportedEncodingException;
-import java.text.Normalizer;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ import net.tropicraft.core.common.drinks.ColorMixer;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipe;
+import net.tropicraft.core.registry.AchievementRegistry;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -79,9 +78,9 @@ public class ItemCocktail extends ItemTropicraftColored {
 
 	@Override
 	public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List list) {
-        for (MixerRecipe recipe: DrinkMixerRegistry.getRecipes()) {
-            list.add(makeCocktail(recipe));
-        }
+		for (MixerRecipe recipe: DrinkMixerRegistry.getRecipes()) {
+			list.add(makeCocktail(recipe));
+		}
 	}
 
 	@Override
@@ -231,8 +230,14 @@ public class ItemCocktail extends ItemTropicraftColored {
 	@Nullable
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
 		if (entityLiving instanceof EntityPlayer) {
-			EntityPlayer entityplayer = (EntityPlayer)entityLiving;
-			this.onFoodEaten(stack, worldIn, entityplayer);
+			EntityPlayer player = (EntityPlayer)entityLiving;
+			this.onFoodEaten(stack, worldIn, player);
+
+			Drink drink = getDrink(stack);
+
+			if (worldIn.isRainingAt(player.getPosition()) && drink == Drink.pinaColada) {
+				player.addStat(AchievementRegistry.drinkPinaColada);
+			}
 		}
 
 		return stack;
@@ -258,9 +263,9 @@ public class ItemCocktail extends ItemTropicraftColored {
 	@Override
 	public int getColor(ItemStack itemstack, int tintIndex) {
 		Drink drink = getDrink(itemstack);
-		return (tintIndex == 0 ? 16777215 : drink.color);
+		return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
@@ -277,7 +282,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 						+ ":" + "cocktail.name")).trim();
 			}
 		}
-		
+
 		return name;
 	}
 }

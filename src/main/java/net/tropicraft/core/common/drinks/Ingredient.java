@@ -26,8 +26,8 @@ public class Ingredient implements Comparable<Ingredient> {
 	public static final Ingredient grapefruit = new Ingredient(8, new ItemStack(ItemRegistry.grapefruit), true, 0xff6347).addAction(new DrinkActionFood(4, 0.2f));
 	public static final Ingredient pineapple = new Ingredient(9, new ItemStack(BlockRegistry.pineapple, 1, 0), false, 0xeeff00).addAction(new DrinkActionFood(1, 0.1f));
 	public static final Ingredient pineappleCubes = new Ingredient(10, new ItemStack(ItemRegistry.pineappleCubes), false, 0xeeff00, 0.1f).addAction(new DrinkActionFood(1, 0.1f));
-	public static final Ingredient coconut = new Ingredient(11, new ItemStack(BlockRegistry.coconut), true, 0xefefef).addAction(new DrinkActionFood(1, 0.1f));
-	public static final Ingredient coconutChunk = new Ingredient(12, new ItemStack(ItemRegistry.coconutChunk), true, 0xefefef/*, 0.1f*/).addAction(new DrinkActionFood(1, 0.1f));
+	public static final Ingredient coconut = new Ingredient(11, new ItemStack(BlockRegistry.coconut), false, 0xefefef).addAction(new DrinkActionFood(1, 0.1f));
+	public static final Ingredient coconutChunk = new Ingredient(12, new ItemStack(ItemRegistry.coconutChunk), false, 0xefefef/*, 0.1f*/).addAction(new DrinkActionFood(1, 0.1f));
 	public static final Ingredient sugarcane = new Ingredient(13, new ItemStack(Items.REEDS), false, 0xb1ff6b, 0.1f);
 	//public static final Ingredient roastedCoffeeBean = new Ingredient(14, new ItemStack(TCItemRegistry.coffeeBean, 1, 1), false, 0x68442c, 0.95f).addAction(new DrinkActionFood(4, 0.2f)).addAction(new DrinkActionPotion(Potion.moveSpeed.id, 5, 1));
 	public static final Ingredient waterBucket = new Ingredient(15, new ItemStack(ItemRegistry.tropicsWaterBucket), false, 0xffffff);

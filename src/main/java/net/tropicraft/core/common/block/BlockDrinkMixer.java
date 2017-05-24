@@ -20,19 +20,23 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
+import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.registry.AchievementRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockDrinkMixer extends BlockTropicraft implements
-		ITileEntityProvider {
-	
+ITileEntityProvider {
+
 	public static final PropertyEnum<EnumFacing> FACING = BlockHorizontal.FACING;
 
 	public BlockDrinkMixer() {
 		super(Material.ROCK);
-		
+		this.setHardness(2.0F);
+		this.setResistance(30F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { FACING });
@@ -42,7 +46,7 @@ public class BlockDrinkMixer extends BlockTropicraft implements
 	public boolean isFullyOpaque(IBlockState state) {
 		return false;
 	}
-	
+
 	/**
 	 * Used to determine ambient occlusion and culling when rebuilding chunks for render
 	 */
@@ -91,11 +95,19 @@ public class BlockDrinkMixer extends BlockTropicraft implements
 		if (stack.getItem() == ItemRegistry.bambooMug && mixer.canMix()) {
 			mixer.startMixing();
 			entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
+
+			ItemStack[] ingredients = mixer.ingredients;
+			Drink craftedDrink = MixerRecipes.getDrink(ingredients);
+			Drink pinaColada = Drink.pinaColada;
+
+			if (craftedDrink != null && craftedDrink.drinkId == pinaColada.drinkId) {
+				entityPlayer.addStat(AchievementRegistry.craftPinaColada);
+			}
 		}
 
 		return true;    	
 	}
-	
+
 	/**
 	 * Called when the block is placed in the world.
 	 */
@@ -118,7 +130,7 @@ public class BlockDrinkMixer extends BlockTropicraft implements
 
 		worldIn.setBlockState(pos, state.withProperty(FACING, dir));
 	}
-	
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing dir = null;

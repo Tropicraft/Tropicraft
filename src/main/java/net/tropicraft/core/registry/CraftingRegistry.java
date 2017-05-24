@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.enums.TropicraftLogs;
 
 public class CraftingRegistry {
@@ -181,14 +183,14 @@ public class CraftingRegistry {
 			"X X", "X X", "XXX",
 			'X', ItemRegistry.bambooShoot
 		});
-		
+
 		// Tiki torch (coal) - diagonal recipe
 		createRecipe(true, new ItemStack(BlockRegistry.tikiTorch, 2, 2), new Object[]{
 			"  Y", " X ", "X  ",
 			'Y', Items.COAL,
 			'X', ItemRegistry.bambooStick
 		});
-		
+
 		// Tiki torch (coal) - vertical recipe
 		createRecipe(true, new ItemStack(BlockRegistry.tikiTorch, 2, 2), new Object[]{
 			" Y ", " X ", " X ",
@@ -202,12 +204,40 @@ public class CraftingRegistry {
 			'Y', new ItemStack(Items.COAL, 1, 1),
 			'X', ItemRegistry.bambooStick
 		});
-		
+
 		// Tiki torch (charcoal) - vertical recipe
 		createRecipe(false, new ItemStack(BlockRegistry.tikiTorch, 2, 2), new Object[]{
 			" Y ", " X ", " X ",
 			'Y', new ItemStack(Items.COAL, 1, 1),
 			'X', ItemRegistry.bambooStick
+		});
+
+		// Pina Colada
+		createShapelessRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+			ItemRegistry.coconutChunk,
+			new ItemStack(BlockRegistry.pineapple),
+			ItemRegistry.bambooMug
+		});
+
+		// Pina Colada
+		createShapelessRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+			ItemRegistry.coconutChunk,
+			ItemRegistry.pineappleCubes,
+			ItemRegistry.bambooMug
+		});
+
+		// Pina Colada
+		createShapelessRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+			new ItemStack(BlockRegistry.coconut),
+			ItemRegistry.pineappleCubes,
+			ItemRegistry.bambooMug
+		});
+
+		// Pina Colada
+		createShapelessRecipe(true, MixerRecipes.getItemStack(Drink.pinaColada), new Object[]{
+			new ItemStack(BlockRegistry.coconut),
+			new ItemStack(BlockRegistry.pineapple),
+			ItemRegistry.bambooMug
 		});
 
 		// planks -> logs
