@@ -67,6 +67,7 @@ tile.tropicraft:tiki_torch_lower.name=Tiki Torch
 tile.tropicraft:tiki_torch_middle.name=Tiki Torch Middle
 tile.tropicraft:tiki_torch_upper.name=Tiki Torch Torch
 tile.tropicraft:drink_mixer.name=Drink Mixer
+tile.tropicraft:sifter.name=Sifter
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
@@ -142,6 +143,8 @@ item.tropicraft:shell_starfish.name=Starfish Shell
 item.tropicraft:shell_turtle.name=Turtle Shell
 item.tropicraft:cocktail.name=Tropical Cocktail
 item.tropicraft:pineapple_cubes.name=Pineapple Cubes
+item.tropicraft:white_pearl.name=Solo Pearl
+item.tropicraft:black_pearl.name=Pearl of Razzle
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade
