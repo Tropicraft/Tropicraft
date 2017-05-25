@@ -105,6 +105,9 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item shellTurtle;
 	
 	public static Item cocktail;
+	
+	public static Item whitePearl;
+	public static Item blackPearl;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -170,6 +173,9 @@ public class ItemRegistry extends TropicraftRegistry {
 		shellTurtle = registerItem(new ItemShell(), "shell_turtle");
 		
 		cocktail = registerMultiItem(new ItemCocktail(), "cocktail", Drink.drinkList.length);
+		
+		whitePearl = registerItem(new ItemTropicraft().setMaxStackSize(64), "white_pearl");
+		blackPearl = registerItem(new ItemTropicraft().setMaxStackSize(64), "black_pearl");
 	}
 
 	public static void init() {

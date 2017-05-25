@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
-import net.tropicraft.core.common.network.TCPacketHandler;
 
 public class MessageMixerStart extends MessageTileEntity<TileEntityDrinkMixer> {
 

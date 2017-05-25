@@ -9,6 +9,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.block.tileentity.message.MessageMixerInventory;
 import net.tropicraft.core.common.block.tileentity.message.MessageMixerStart;
+import net.tropicraft.core.common.block.tileentity.message.MessageSifterInventory;
+import net.tropicraft.core.common.block.tileentity.message.MessageSifterStart;
 
 /**
  * Taken from <a href="https://github.com/SleepyTrousers/EnderCore">EnderCore</a>, with permission.
@@ -22,6 +24,8 @@ public class TCPacketHandler {
 	public static void init() {
 		INSTANCE.registerMessage(MessageMixerInventory.Handler.class, MessageMixerInventory.class, 0, Side.CLIENT);
 		INSTANCE.registerMessage(MessageMixerStart.Handler.class, MessageMixerStart.class, 1, Side.CLIENT);
+		INSTANCE.registerMessage(MessageSifterInventory.Handler.class, MessageSifterInventory.class, 2, Side.CLIENT);
+		INSTANCE.registerMessage(MessageSifterStart.Handler.class, MessageSifterStart.class, 3, Side.CLIENT);
 	}
 
 	public static void sendToAllAround(IMessage message, TileEntity te, int range) {
