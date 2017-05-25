@@ -31,4 +31,5 @@ public class CommonProxy {
 	public void registerFluidBlockRendering(Block block, String name) {}
 	public void registerColoredBlock(Block block) {}
 	public void registerColoredItem(Item item) {}
+	public void registerBooks() {}
 }

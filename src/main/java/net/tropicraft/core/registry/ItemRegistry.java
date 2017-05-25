@@ -20,6 +20,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
+import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
@@ -111,6 +112,8 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item blackPearl;
 
 	public static Item fertilizer;
+	
+	public static Item encyclopedia;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -181,6 +184,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		blackPearl = registerItem(new ItemTropicraft().setMaxStackSize(64), "black_pearl");
 
 		fertilizer = registerItem(new ItemFertilizer(), "fertilizer");
+		
+		encyclopedia = registerItem(new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
 	}
 
 	public static void init() {

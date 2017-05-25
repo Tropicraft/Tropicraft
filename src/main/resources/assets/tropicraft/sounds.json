@@ -46,5 +46,6 @@
 				"stream": true
 			}
 		]
-	}
+	},
+	"pageFlip": { "category": "master", "sounds": [ "tropicraft:pageFlip" ] }
 }

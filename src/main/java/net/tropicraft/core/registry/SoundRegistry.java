@@ -25,6 +25,8 @@ public class SoundRegistry {
 		register("summering");
 		register("the_tribe");
 		register("trade_winds");
+
+		register("pageFlip");
 	}
 
 	public static void register(String soundPath) {
