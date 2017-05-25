@@ -15,6 +15,7 @@ import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
 import net.tropicraft.core.common.network.TCPacketHandler;
+import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.registry.AchievementRegistry;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -34,6 +35,8 @@ public class Tropicraft {
 
 	@Mod.Instance(Info.MODID)
 	public static Tropicraft instance;
+	
+	public static Encyclopedia encyclopedia;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -44,6 +47,7 @@ public class Tropicraft {
 		TileEntityRegistry.init();
 		ItemRegistry.preInit();
 		MixerRecipes.addMixerRecipes();
+		proxy.registerBooks();
 		CraftingRegistry.preInit();
 	}
 

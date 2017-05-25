@@ -16,6 +16,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.tropicraft.Info;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
@@ -23,13 +24,15 @@ import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemTropicraftColored;
+import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.registry.BlockRegistry;
+import net.tropicraft.core.registry.CraftingRegistry;
 import net.tropicraft.core.registry.EntityRenderRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.TileEntityRenderRegistry;
 
 public class ClientProxy extends CommonProxy {
-	
+
 	public ClientProxy() {
 
 	}
@@ -40,27 +43,27 @@ public class ClientProxy extends CommonProxy {
 
 		EntityRenderRegistry.init();
 		TileEntityRenderRegistry.init();
-		
+
 		ItemRegistry.clientProxyInit();
 		BlockRegistry.clientProxyInit();
-		
+
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
-		
+
 		// For rendering drink mixer in inventory
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
 	}
-	
+
 	public void registerColoredBlock(Block block) {
 		ITropicraftBlock tcBlock = (ITropicraftBlock)block;
 		if (tcBlock.getBlockColor() != null) {
 			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(tcBlock.getBlockColor(), block);
 		}
-		
+
 		if (tcBlock.getItemColor() != null) {
 			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(tcBlock.getItemColor(), block);
 		}
 	}
-	
+
 	public void registerColoredItem(Item item) {
 		IItemColor itemColor = null;
 		if (item instanceof ItemTropicraftColored) {
@@ -135,5 +138,14 @@ public class ClientProxy extends CommonProxy {
 				return fluidLocation;
 			}
 		});
+	}
+
+	@Override
+	public void registerBooks() {
+		Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat",
+				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt", 
+				"encyclopediaTropica", 
+				"encyclopediaTropicaInside");
+		CraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
 	}
 }
