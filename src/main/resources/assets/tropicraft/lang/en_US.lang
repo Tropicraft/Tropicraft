@@ -145,6 +145,7 @@ item.tropicraft:cocktail.name=Tropical Cocktail
 item.tropicraft:pineapple_cubes.name=Pineapple Cubes
 item.tropicraft:white_pearl.name=Solo Pearl
 item.tropicraft:black_pearl.name=Pearl of Razzle
+item.tropicraft:fertilizer.name=Fertilizer
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade
