@@ -13,6 +13,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.tropicraft.configuration.ConfigGenRates;
 import net.tropicraft.core.common.entity.EntityLavaBall;
 import net.tropicraft.core.common.volcano.VolcanoState;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenVolcano;
@@ -45,6 +46,8 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 
 	@Override
 	public void update() {
+		if (!ConfigGenRates.allowVolcanoEruption) return;
+
 		if (!worldObj.isRemote) {
 			//System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
 			//System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
