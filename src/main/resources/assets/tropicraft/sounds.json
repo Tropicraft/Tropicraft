@@ -47,10 +47,5 @@
 			}
 		]
 	},
-	"pageFlip": {
-		"category": "master",
-		"sounds": [
-			"name": "tropicraft:pageFlip"
-		]
-	}
+	"pageFlip": { "category": "master", "sounds": [ "tropicraft:pageFlip" ] }
 }
