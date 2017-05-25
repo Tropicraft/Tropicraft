@@ -13,7 +13,7 @@ public class BlockVolcano extends Block implements ITileEntityProvider {
 		super(Material.ROCK);
 		this.setBlockUnbreakable();
 		this.setResistance(Integer.MAX_VALUE);
-		//TODO: this.setCreativeTab(null);
+		this.setCreativeTab(null);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ public class ConfigGenRates implements IConfigCategory {
 	public static boolean genTropicraftInOverworld = true;
 	public static boolean genPineapplesInOverworld = true;
 	public static boolean genBambooInOverworld = true;
+	public static boolean allowVolcanoEruption = true;
 	
 	@Override
 	public String getConfigFileName() {
