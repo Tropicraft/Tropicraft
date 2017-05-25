@@ -386,7 +386,7 @@ public class GuiTropicalBook extends GuiScreen {
 			GlStateManager.enableRescaleNormal();
 			RenderHelper.enableGUIStandardItemLighting();
 			itemRenderer.renderItemIntoGUI(recipe.output, newx / 3 + 60, newy / 3 + 11);
-			itemRenderer.renderItemOverlayIntoGUI(fontRendererObj, recipe.output, newx / 3 + 60, newy / 3 + 11, recipe.output.getDisplayName());
+			itemRenderer.renderItemOverlayIntoGUI(fontRendererObj, recipe.output, newx / 3 + 60, newy / 3 + 11, "");
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
@@ -399,26 +399,17 @@ public class GuiTropicalBook extends GuiScreen {
 		}
 	}
 
-
+	/**
+	 * Draw the name of an item when it's hovered over in game
+	 * @param itemstack ItemStack being hovered over
+	 * @param k x coord
+	 * @param l y coord
+	 * @param size size...of something idk what :D
+	 */
 	private void checkMouseHover(ItemStack itemstack, int k, int l, int size) {
-
-		float scale;
-		switch (mc.gameSettings.guiScale) {
-		case 1:
-			scale = 4F;
-			break;
-		case 2:
-			scale = 2F;
-			break;
-		case 3:
-			scale = 3F;
-			break;
-		default:
-			scale = 2F;
-		}
-
-		int i = (int) (Mouse.getEventX() / scale);
-		int j = (int) (height - Mouse.getEventY() / scale);
+        int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+		
 		boolean flag = (i >= k && j >= l && i < k + size && j < l + size);
 		if (itemstack != null && flag) {
 			String s = itemstack.getItem().getItemStackDisplayName(itemstack);
