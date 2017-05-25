@@ -32,7 +32,7 @@ public class TileEntitySifterRenderer extends TileEntitySpecialRenderer<TileEnti
 			item.setWorld(sifter.getWorld());    //allows entity to be placed into world
 			//f1=size of object inside spawner
 			float f1 = 0.4375F;                     
-			GlStateManager.translate(0.0F, 0.7F, 0.0F);        //height of thing inside spawner
+			GlStateManager.translate(0.0F, 0.6F, 0.0F);        //height of thing inside spawner
 			GlStateManager.scale(f1 * 3, f1 * 3, f1 * 3);            //size of thing inside spawner, scaled    
 			GlStateManager.rotate((float)(sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double)partialTicks) * 10.0F, 0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(-20F, 1.0F, 0.0F, 0.0F);

@@ -49,23 +49,16 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 			return true;
 		}
 
-		ItemStack stack = entityPlayer.inventory.getCurrentItem();
+		ItemStack stack = entityPlayer.getHeldItemMainhand();
 
 		TileEntitySifter tileentitysifta = (TileEntitySifter) world.getTileEntity(pos);
 
 		if (tileentitysifta != null && stack != null && !tileentitysifta.isSifting()) {
 			Item helditem = stack.getItem();
-			if (helditem == Item.getItemFromBlock(Blocks.SAND) /*unrefined raftous ore || (helditem == TCItemRegistry.ore && stack.getItemDamage() == 5) */
-					|| /* mineral sands */(helditem == Item.getItemFromBlock(BlockRegistry.sands) && stack.getItemDamage() == 3)) {
+			if (helditem == Item.getItemFromBlock(Blocks.SAND) || (helditem == Item.getItemFromBlock(BlockRegistry.sands))) {
 				entityPlayer.getHeldItemMainhand().stackSize--;
-
-				//                if (helditem == ItemRegistry.) {
-				//                    float percent = getTagCompound(stack).getFloat("AmtRefined");
-				//                    tileentitysifta.setSifting(true, helditem == Item.getItemFromBlock(Blocks.SAND) ? 1 : 
-				//                        helditem == Item.getItemFromBlock(TCBlockRegistry.mineralSands) ? 2 : 3, percent);
-				//                } else {
-				tileentitysifta.setSifting(true, helditem == Item.getItemFromBlock(Blocks.SAND) ? 1 : 
-					helditem == Item.getItemFromBlock(BlockRegistry.sands) ? 2 : 3, -1);
+				tileentitysifta.addItemToSifter(stack);
+				tileentitysifta.startSifting();
 			}
 		}
 		return true;
