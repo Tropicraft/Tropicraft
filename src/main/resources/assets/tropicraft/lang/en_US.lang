@@ -147,6 +147,10 @@ item.tropicraft:white_pearl.name=Solo Pearl
 item.tropicraft:black_pearl.name=Pearl of Razzle
 item.tropicraft:fertilizer.name=Fertilizer
 item.tropicraft:encyclopedia_tropica.name=Encyclopedia Tropica
+item.tropicraft:bamboo_spear.name=Bamboo Spear
+item.tropicraft:dagger.name=Dagger
+item.tropicraft:leaf_ball.name=Leaf Ball
+item.tropicraft:coconut_bomb.name=Coconut Bomb
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade
@@ -184,3 +188,6 @@ achievement.tc_craft_pina_colada=If you like pina coladas...
 achievement.tc_craft_pina_colada.desc=(Who doesn't?)
 achievement.tc_drink_pina_colada=Caught in the rain
 achievement.tc_drink_pina_colada.desc=(Did you forget your umbrella?)
+
+# Misc localizations
+tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!

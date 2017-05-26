@@ -1,6 +1,8 @@
 package net.tropicraft.core.registry;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
@@ -27,6 +29,7 @@ import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
+import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
 
@@ -45,6 +48,9 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityFailgull.class, new RenderFailgull(0.25F));
 		registerEntityRender(EntityChair.class, new RenderChair());
 		registerEntityRender(EntityUmbrella.class, new RenderUmbrella());
+		registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
+																			ItemRegistry.coconutBomb,
+																			Minecraft.getMinecraft().getRenderItem()));
 	}
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {

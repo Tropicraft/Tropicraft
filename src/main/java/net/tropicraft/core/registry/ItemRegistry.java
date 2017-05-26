@@ -20,6 +20,8 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
+import net.tropicraft.core.common.item.ItemCoconutBomb;
+import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
 import net.tropicraft.core.common.item.ItemMusicDisc;
@@ -51,6 +53,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 1, 200, 4.5F, 1.0F, 14);
 	public static ToolMaterial materialEudialyteTools = EnumHelper.addToolMaterial("eudialyte", 2, 750, 6.0F, 2.0F, 14);
 	public static ToolMaterial materialZirconiumTools = EnumHelper.addToolMaterial("zirconium", 3, 1800, 8.5F, 3.0F, 10);
+	public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
 
 	// Tools and weapons
 	public static Item hoeEudialyte;
@@ -63,6 +66,10 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item axeZircon;
 	public static Item swordEudialyte;
 	public static Item swordZircon;
+	public static Item bambooSpear;
+	public static Item dagger;
+	//TODO public static Item leafBall;
+	public static Item coconutBomb;
 
 	// Bamboo n stuff
 	public static Item bambooShoot;
@@ -186,6 +193,10 @@ public class ItemRegistry extends TropicraftRegistry {
 		fertilizer = registerItem(new ItemFertilizer(), "fertilizer");
 		
 		encyclopedia = registerItem(new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
+		
+		dagger = registerItem(new ItemDagger(materialZirconTools), "dagger");
+		bambooSpear = registerItem(new ItemSword(materialBambooTools), "bamboo_spear");
+		coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
 	}
 
 	public static void init() {
