@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.tropicraft.core.client.entity.model.ModelFish;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
 import net.tropicraft.core.client.entity.render.RenderChair;
@@ -17,6 +18,7 @@ import net.tropicraft.core.client.entity.render.RenderSeahorse;
 import net.tropicraft.core.client.entity.render.RenderTreeFrog;
 import net.tropicraft.core.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
+import net.tropicraft.core.client.entity.render.RenderTropicalFish;
 import net.tropicraft.core.client.entity.render.RenderUmbrella;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
 import net.tropicraft.core.common.entity.EntityLavaBall;
@@ -32,6 +34,7 @@ import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 
 public class EntityRenderRegistry {
 
@@ -51,6 +54,7 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
 																			ItemRegistry.coconutBomb,
 																			Minecraft.getMinecraft().getRenderItem()));
+		registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish(new ModelFish(), 0.25F));
 	}
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
