@@ -33,6 +33,7 @@ import net.tropicraft.core.common.block.BlockPineapple;
 import net.tropicraft.core.common.block.BlockPortalWall;
 import net.tropicraft.core.common.block.BlockSifter;
 import net.tropicraft.core.common.block.BlockTikiTorch;
+import net.tropicraft.core.common.block.BlockTropicraftFlowerPot;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
@@ -104,6 +105,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	
 	public static Block drinkMixer;
 	public static Block sifter;
+	public static Block flowerPot;
 
 	/**
 	 * Register blocks in preInit
@@ -152,6 +154,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
+		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
 	}
 
 	public static void init() {

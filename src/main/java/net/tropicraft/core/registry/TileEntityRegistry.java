@@ -6,6 +6,7 @@ import net.tropicraft.Names;
 import net.tropicraft.core.common.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.TileEntitySifter;
+import net.tropicraft.core.common.block.tileentity.TileEntityTropicraftFlowerPot;
 import net.tropicraft.core.common.block.tileentity.TileEntityVolcano;
 
 public class TileEntityRegistry {
@@ -15,6 +16,7 @@ public class TileEntityRegistry {
 		registerTE(TileEntityVolcano.class, Names.TE_VOLCANO);
 		registerTE(TileEntityDrinkMixer.class, Names.TE_DRINK_MIXER);
 		registerTE(TileEntitySifter.class, Names.TE_SIFTER);
+		registerTE(TileEntityTropicraftFlowerPot.class, Names.TE_FLOWER_POT);
 	}
 	
 	private static void registerTE(Class<? extends TileEntity> clazz, String name) {

@@ -68,6 +68,7 @@ tile.tropicraft:tiki_torch_middle.name=Tiki Torch Middle
 tile.tropicraft:tiki_torch_upper.name=Tiki Torch Torch
 tile.tropicraft:drink_mixer.name=Drink Mixer
 tile.tropicraft:sifter.name=Sifter
+tile.tropicraft:flower_pot.name=Flower Pot
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
@@ -151,6 +152,7 @@ item.tropicraft:bamboo_spear.name=Bamboo Spear
 item.tropicraft:dagger.name=Dagger
 item.tropicraft:leaf_ball.name=Leaf Ball
 item.tropicraft:coconut_bomb.name=Coconut Bomb
+item.tropicraft:flower_pot.name=Flower Pot
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade

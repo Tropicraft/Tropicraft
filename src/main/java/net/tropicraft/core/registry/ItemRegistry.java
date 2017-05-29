@@ -29,6 +29,7 @@ import net.tropicraft.core.common.item.ItemPortalEnchanter;
 import net.tropicraft.core.common.item.ItemShell;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
+import net.tropicraft.core.common.item.ItemTropicraftBlockSpecial;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
@@ -121,6 +122,9 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item fertilizer;
 	
 	public static Item encyclopedia;
+	
+	// Decorations
+	public static Item flowerPot;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -197,6 +201,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		dagger = registerItem(new ItemDagger(materialZirconTools), "dagger");
 		bambooSpear = registerItem(new ItemSword(materialBambooTools), "bamboo_spear");
 		coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
+		
+		flowerPot = registerItem(new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
 	}
 
 	public static void init() {

@@ -242,6 +242,11 @@ public class CraftingRegistry {
 			new ItemStack(BlockRegistry.pineapple),
 			ItemRegistry.bambooMug
 		});
+		
+		// Flower Pot
+		createRecipe(true, new ItemStack(ItemRegistry.flowerPot), new Object[] {
+			"# #", " # ", '#', ItemRegistry.bambooShoot
+		});
 
 		// planks -> logs
 		int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");
@@ -371,7 +376,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 		//TODO Tropicraft.encyclopedia.includeItem("fishingnet", new ItemStack(ItemRegistry.fishingNet));
 		//TODO Tropicraft.encyclopedia.includeItem("flippers", new ItemStack(ItemRegistry.flippers));
 		//TODO Tropicraft.encyclopedia.includeItem("flippers", new ItemStack(Items.LEATHER));
-		//TODO Tropicraft.encyclopedia.includeItem("flowerpot", new ItemStack(ItemRegistry.flowerPot));
+		Tropicraft.encyclopedia.includeItem("flowerpot", new ItemStack(ItemRegistry.flowerPot));
 		Tropicraft.encyclopedia.includeItem("froglegs", new ItemStack(ItemRegistry.frogLeg));
 		Tropicraft.encyclopedia.includeItem("froglegscooked", new ItemStack(ItemRegistry.cookedFrogLeg));
 		Tropicraft.encyclopedia.includeItem("frogskin", new ItemStack(ItemRegistry.poisonFrogSkin));
