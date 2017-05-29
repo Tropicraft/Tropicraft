@@ -1,19 +1,14 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
-import org.lwjgl.opengl.GL11;
-
 public class TropicraftSpecialRenderHelper {
 
-    private Minecraft mc;
-
     public void renderMask(int i) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         Tessellator tessellator = Tessellator.getInstance();
         int j = i;
         float f = ((float) ((j % 8) * 32) + 0.0F) / 256F;
@@ -24,26 +19,20 @@ public class TropicraftSpecialRenderHelper {
         float f3shifted = ((float) ((j / 8) * 32) + 159.99F) / 256F;
         float f4 = 0.0F;
         float f5 = 0.3F;
-        GL11.glEnable(32826 /*
-                 * GL_RESCALE_NORMAL_EXT
-                 */);
-        GL11.glTranslatef(-f4, -f5, 0.0F);
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.translate(-f4, -f5, 0.0F);
         float f6 = 1.7F;
-        GL11.glScalef(f6, f6, f6);
-        GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, 0.0F);
+        GlStateManager.scale(f6, f6, f6);
+        GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translate(-0.5F, -0.5F, 0.0F);
         popper(tessellator, f1, f2, f, f3, f1shifted, f3shifted);
-
-        GL11.glDisable(32826 /*
-                 * GL_RESCALE_NORMAL_EXT
-                 */);
-
-        GL11.glPopMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     public void renderFish(int i) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         Tessellator tessellator = Tessellator.getInstance();
         int j = i;
         float f = ((float) ((j % 8) * 32) + 0.0F) / 256F;
@@ -52,26 +41,20 @@ public class TropicraftSpecialRenderHelper {
         float f3 = ((float) ((j / 8) * 32) + 31.99F) / 256F;
         float f4 = 0.0F;
         float f5 = 0.3F;
-        GL11.glEnable(32826 /*
-                 * GL_RESCALE_NORMAL_EXT
-                 */);
-        GL11.glTranslatef(-f4, -f5, 0.0F);
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.translate(-f4, -f5, 0.0F);
         float f6 = 1.7F;
-        GL11.glScalef(f6, f6, f6);
-        GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, 0.0F);
+        GlStateManager.scale(f6, f6, f6);
+        GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translate(-0.5F, -0.5F, 0.0F);
         popper(tessellator, f1, f2, f, f3, f2, f3);
-
-        GL11.glDisable(32826 /*
-                 * GL_RESCALE_NORMAL_EXT
-                 */);
-
-        GL11.glPopMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
     
     public void renderItem(int j) {
-    	GL11.glPushMatrix();
+    	GlStateManager.pushMatrix();
         Tessellator tessellator = Tessellator.getInstance();
         float f = ((float) ((j % 16) * 16) + 0.0F) / 256F;
         float f1 = ((float) ((j % 16) * 16) + 15.99F) / 256F;
@@ -79,16 +62,16 @@ public class TropicraftSpecialRenderHelper {
         float f3 = ((float) ((j / 16) * 16) + 15.99F) / 256F;
         float f4 = 0.0F;
         float f5 = 0.3F;
-        GL11.glEnable(32826 /* GL_RESCALE_NORMAL_EXT */);
-        GL11.glTranslatef(-f4, -f5, 0.0F);
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.translate(-f4, -f5, 0.0F);
         float f6 = .5F;
-        GL11.glScalef(f6, f6, f6);
-        GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-        GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
+        GlStateManager.scale(f6, f6, f6);
+        GlStateManager.rotate(180F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.translate(-0.9375F, -0.0625F, 0.0F);
         popper2(tessellator, f1, f2, f, f3);
-        GL11.glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-        GL11.glPopMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
     
     private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {

@@ -11,6 +11,7 @@ import net.tropicraft.core.client.entity.model.ModelMarlin;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
 import net.tropicraft.core.client.entity.render.RenderChair;
 import net.tropicraft.core.client.entity.render.RenderEIH;
+import net.tropicraft.core.client.entity.render.RenderEagleRay;
 import net.tropicraft.core.client.entity.render.RenderFailgull;
 import net.tropicraft.core.client.entity.render.RenderIguana;
 import net.tropicraft.core.client.entity.render.RenderLavaBall;
@@ -34,6 +35,7 @@ import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
+import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
@@ -59,6 +61,7 @@ public class EntityRenderRegistry {
 																			Minecraft.getMinecraft().getRenderItem()));
 		registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish(new ModelFish(), 0.25F));
 		registerEntityRender(EntityManOWar.class, new RenderManOWar(new ModelManOWar(32, 20, true), 0.35F));
+		registerEntityRender(EntityEagleRay.class, new RenderEagleRay());
 	}
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
