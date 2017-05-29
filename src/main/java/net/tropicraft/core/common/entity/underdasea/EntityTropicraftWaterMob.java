@@ -201,11 +201,12 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
          * Updates the task
          */
         public void updateTask() {
-            int i = this.waterMob.getAge();
-
-            if (i > 100) {
-                this.waterMob.setMovementVector(0.0F, 0.0F, 0.0F);
-            } else if (this.waterMob.getRNG().nextInt(200) == 0 || !this.waterMob.inWater || !this.waterMob.hasMovementVector()) {
+//            int i = this.waterMob.getAge();
+//
+//            if (i > 100) {
+//                this.waterMob.setMovementVector(0.0F, 0.0F, 0.0F);
+//            } else
+            if (this.waterMob.getRNG().nextInt(200) == 0 || !this.waterMob.inWater || !this.waterMob.hasMovementVector()) {
                 float f = this.waterMob.getRNG().nextFloat() * ((float)Math.PI * 2F);
                 float f1 = MathHelper.cos(f) * 0.2F;
                 float f2 = -0.1F + this.waterMob.getRNG().nextFloat() * 0.2F;
