@@ -247,6 +247,12 @@ public class CraftingRegistry {
 		createRecipe(true, new ItemStack(ItemRegistry.flowerPot), new Object[] {
 			"# #", " # ", '#', ItemRegistry.bambooShoot
 		});
+		
+		// Bamboo Door
+		createRecipe(true, new ItemStack(ItemRegistry.bambooDoor), new Object[]{
+			"XX", "YY", "XX", 'X', new ItemStack(BlockRegistry.bundles, 1, 1),
+			'Y', new ItemStack(BlockRegistry.bundles, 1, 0)
+		});
 
 		// planks -> logs
 		int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");
@@ -314,7 +320,7 @@ ashenmask.desc  = These masks are the source of an Ashen's identity. Without a m
 		Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(ItemRegistry.bambooMug));
 		Tropicraft.encyclopedia.includeItem("bambooblock", new ItemStack(BlockRegistry.bundles, 1, 1));
 		Tropicraft.encyclopedia.includeItem("bamboochest", new ItemStack(BlockRegistry.bambooChest));
-		//TODO Tropicraft.encyclopedia.includeItem("bamboodoor", new ItemStack(ItemRegistry.bambooDoor));
+		Tropicraft.encyclopedia.includeItem("bamboodoor", new ItemStack(ItemRegistry.bambooDoor));
 		//TODO Tropicraft.encyclopedia.includeItem("bamboospear", new ItemStack(ItemRegistry.bambooSpear));
 		Tropicraft.encyclopedia.includeItem("bamboostick", new ItemStack(ItemRegistry.bambooStick));
 
