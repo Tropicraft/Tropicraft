@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_top",
+    "textures": {
+        "bottom": "tropicraft:blocks/bamboo_door_bottom",
+        "top": "tropicraft:blocks/bamboo_door_top"
+    }
+}

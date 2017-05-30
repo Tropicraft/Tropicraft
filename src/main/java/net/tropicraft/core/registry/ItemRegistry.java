@@ -8,6 +8,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemBucket;
+import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
@@ -125,6 +126,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	
 	// Decorations
 	public static Item flowerPot;
+	public static Item bambooDoor;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -203,6 +205,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
 		
 		flowerPot = registerItem(new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
+		bambooDoor = registerItem(new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
 	}
 
 	public static void init() {

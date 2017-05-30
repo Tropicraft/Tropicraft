@@ -32,6 +32,7 @@ public final class Names {
 	public static final String DRINK_MIXER = "drink_mixer";
 	public static final String SIFTER = "sifter";
 	public static final String FLOWER_POT = "flower_pot";
+	public static final String BAMBOO_DOOR = "bamboo_door";
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"solo", "frox", "pab", "rube", "starfish", "turtle"};

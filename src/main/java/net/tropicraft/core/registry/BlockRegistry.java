@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -21,6 +24,7 @@ import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.BlockBambooChest;
+import net.tropicraft.core.common.block.BlockBambooDoor;
 import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
@@ -49,9 +53,6 @@ import net.tropicraft.core.common.block.BlockVolcano;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
 
 public class BlockRegistry extends TropicraftRegistry {
 
@@ -106,6 +107,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block drinkMixer;
 	public static Block sifter;
 	public static Block flowerPot;
+	public static Block bambooDoor;
 
 	/**
 	 * Register blocks in preInit
@@ -155,6 +157,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
 		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
+		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR, false);
 	}
 
 	public static void init() {
