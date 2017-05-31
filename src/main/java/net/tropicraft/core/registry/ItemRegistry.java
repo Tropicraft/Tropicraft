@@ -19,6 +19,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.item.ItemBambooItemFrame;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemCoconutBomb;
@@ -127,6 +129,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	// Decorations
 	public static Item flowerPot;
 	public static Item bambooDoor;
+	public static Item bambooItemFrame;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -206,6 +209,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		
 		flowerPot = registerItem(new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
 		bambooDoor = registerItem(new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
+		bambooItemFrame = registerItem(new ItemBambooItemFrame(EntityBambooItemFrame.class), "bamboo_item_frame");
 	}
 
 	public static void init() {

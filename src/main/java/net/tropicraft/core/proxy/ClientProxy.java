@@ -41,11 +41,11 @@ public class ClientProxy extends CommonProxy {
 	public void init() {
 		super.init();
 
-		EntityRenderRegistry.init();
-		TileEntityRenderRegistry.init();
-
 		ItemRegistry.clientProxyInit();
 		BlockRegistry.clientProxyInit();
+		
+		EntityRenderRegistry.init();
+		TileEntityRenderRegistry.init();
 
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 

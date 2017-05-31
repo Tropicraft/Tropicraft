@@ -154,6 +154,7 @@ item.tropicraft:leaf_ball.name=Leaf Ball
 item.tropicraft:coconut_bomb.name=Coconut Bomb
 item.tropicraft:flower_pot.name=Flower Pot
 item.tropicraft:bamboo_door.name=Bamboo Door
+item.tropicraft:bamboo_item_frame.name=Bamboo Item Frame
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade
