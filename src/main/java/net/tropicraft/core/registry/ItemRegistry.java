@@ -33,6 +33,7 @@ import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
 import net.tropicraft.core.common.item.ItemUmbrella;
+import net.tropicraft.core.common.item.ItemWaterWand;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
 
 public class ItemRegistry extends TropicraftRegistry {
@@ -121,6 +122,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item fertilizer;
 	
 	public static Item encyclopedia;
+	public static Item waterWand;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -197,6 +199,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		dagger = registerItem(new ItemDagger(materialZirconTools), "dagger");
 		bambooSpear = registerItem(new ItemSword(materialBambooTools), "bamboo_spear");
 		coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
+		waterWand = registerItem(new ItemWaterWand(), "water_wand");
 	}
 
 	public static void init() {

@@ -151,6 +151,7 @@ item.tropicraft:bamboo_spear.name=Bamboo Spear
 item.tropicraft:dagger.name=Dagger
 item.tropicraft:leaf_ball.name=Leaf Ball
 item.tropicraft:coconut_bomb.name=Coconut Bomb
+item.tropicraft:water_wand.name=Water Wand
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade
