@@ -31,6 +31,10 @@ public final class Names {
 	public static final String TIKI_TORCH = "tiki_torch";
 	public static final String DRINK_MIXER = "drink_mixer";
 	public static final String SIFTER = "sifter";
+	public static final String FLOWER_POT = "flower_pot";
+	public static final String BAMBOO_DOOR = "bamboo_door";
+	public static final String BLOCK_PALM_STAIRS = "palm_stairs";
+	public static final String[] SLAB_NAMES = new String[]{"bamboo", "thatch", "chunk", "palm"};
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"solo", "frox", "pab", "rube", "starfish", "turtle"};
@@ -40,4 +44,5 @@ public final class Names {
 	public static final String TE_VOLCANO = "te_volcano";
 	public static final String TE_DRINK_MIXER = "te_drink_mixer";
 	public static final String TE_SIFTER = "te_sifter";
+	public static final String TE_FLOWER_POT = "te_flower_pot";
 }

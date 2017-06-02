@@ -1,0 +1,6 @@
+{
+    "parent": "tropicraft:block/flower_pot_cross",
+    "textures": {
+        "plant": "tropicraft:blocks/sapling_lemon"
+    }
+}

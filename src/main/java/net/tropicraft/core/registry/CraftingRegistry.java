@@ -242,6 +242,17 @@ public class CraftingRegistry {
 			new ItemStack(BlockRegistry.pineapple),
 			ItemRegistry.bambooMug
 		});
+		
+		// Flower Pot
+		createRecipe(true, new ItemStack(ItemRegistry.flowerPot), new Object[] {
+			"# #", " # ", '#', ItemRegistry.bambooShoot
+		});
+		
+		// Bamboo Door
+		createRecipe(true, new ItemStack(ItemRegistry.bambooDoor), new Object[]{
+			"XX", "YY", "XX", 'X', new ItemStack(BlockRegistry.bundles, 1, 1),
+			'Y', new ItemStack(BlockRegistry.bundles, 1, 0)
+		});
 
 		// planks -> logs
 		int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");
@@ -309,7 +320,7 @@ ashenmask.desc  = These masks are the source of an Ashen's identity. Without a m
 		Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(ItemRegistry.bambooMug));
 		Tropicraft.encyclopedia.includeItem("bambooblock", new ItemStack(BlockRegistry.bundles, 1, 1));
 		Tropicraft.encyclopedia.includeItem("bamboochest", new ItemStack(BlockRegistry.bambooChest));
-		//TODO Tropicraft.encyclopedia.includeItem("bamboodoor", new ItemStack(ItemRegistry.bambooDoor));
+		Tropicraft.encyclopedia.includeItem("bamboodoor", new ItemStack(ItemRegistry.bambooDoor));
 		//TODO Tropicraft.encyclopedia.includeItem("bamboospear", new ItemStack(ItemRegistry.bambooSpear));
 		Tropicraft.encyclopedia.includeItem("bamboostick", new ItemStack(ItemRegistry.bambooStick));
 
@@ -371,7 +382,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 		//TODO Tropicraft.encyclopedia.includeItem("fishingnet", new ItemStack(ItemRegistry.fishingNet));
 		//TODO Tropicraft.encyclopedia.includeItem("flippers", new ItemStack(ItemRegistry.flippers));
 		//TODO Tropicraft.encyclopedia.includeItem("flippers", new ItemStack(Items.LEATHER));
-		//TODO Tropicraft.encyclopedia.includeItem("flowerpot", new ItemStack(ItemRegistry.flowerPot));
+		Tropicraft.encyclopedia.includeItem("flowerpot", new ItemStack(ItemRegistry.flowerPot));
 		Tropicraft.encyclopedia.includeItem("froglegs", new ItemStack(ItemRegistry.frogLeg));
 		Tropicraft.encyclopedia.includeItem("froglegscooked", new ItemStack(ItemRegistry.cookedFrogLeg));
 		Tropicraft.encyclopedia.includeItem("frogskin", new ItemStack(ItemRegistry.poisonFrogSkin));

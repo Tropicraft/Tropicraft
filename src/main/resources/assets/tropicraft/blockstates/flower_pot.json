@@ -1,0 +1,29 @@
+{
+    "variants": {
+        "contents=empty": { "model": "tropicraft:flower_pot" },
+		"contents=commelina_diffusa": { "model": "tropicraft:flower_pot_commelina_diffusa" },
+		"contents=crocosmia": { "model": "tropicraft:flower_pot_crocosmia" },
+		"contents=orchid": { "model": "tropicraft:flower_pot_orchid" },
+		"contents=canna": { "model": "tropicraft:flower_pot_canna" },
+		"contents=anemone": { "model": "tropicraft:flower_pot_anemone" },
+		"contents=orange_anthurium": { "model": "tropicraft:flower_pot_orange_anthurium" },
+		"contents=red_anthurium": { "model": "tropicraft:flower_pot_red_anthurium" },
+		"contents=magic_mushroom": { "model": "tropicraft:flower_pot_magic_mushroom" },
+		"contents=pathos": { "model": "tropicraft:flower_pot_pathos" },
+		"contents=acai_vine": { "model": "tropicraft:flower_pot_acai_vine" },
+		"contents=croton": { "model": "tropicraft:flower_pot_croton" },
+		"contents=dracaena": { "model": "tropicraft:flower_pot_dracaena" },
+		"contents=fern": { "model": "tropicraft:flower_pot_fern" },
+		"contents=foilage": { "model": "tropicraft:flower_pot_foilage" },
+		"contents=bromeliad": { "model": "tropicraft:flower_pot_bromeliad" },
+		"contents=fern": { "model": "tropicraft:flower_pot_fern" },
+		"contents=iris": { "model": "tropicraft:flower_pot_iris" },
+		"contents=pineapple": { "model": "tropicraft:flower_pot_pineapple" },
+		"contents=lemon_sapling": { "model": "tropicraft:flower_pot_lemon_sapling" },
+		"contents=lime_sapling": { "model": "tropicraft:flower_pot_lime_sapling" },
+		"contents=grapefruit_sapling": { "model": "tropicraft:flower_pot_grapefruit_sapling" },
+		"contents=orange_sapling": { "model": "tropicraft:flower_pot_orange_sapling" },
+		"contents=palm_sapling": { "model": "tropicraft:flower_pot_palm_sapling" },
+		"contents=mahogany_sapling": { "model": "tropicraft:flower_pot_mahogany_sapling" }
+    }
+}
