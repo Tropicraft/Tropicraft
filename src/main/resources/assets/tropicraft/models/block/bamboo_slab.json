@@ -1,0 +1,8 @@
+{
+    "parent": "block/half_slab",
+    "textures": {
+        "bottom": "tropicraft:blocks/bamboo_End",
+        "top": "tropicraft:blocks/bamboo_End",
+        "side": "tropicraft:blocks/bamboo_Side"
+    }
+}

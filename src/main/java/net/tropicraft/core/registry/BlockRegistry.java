@@ -6,9 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -44,6 +41,7 @@ import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
 import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
+import net.tropicraft.core.common.block.BlockTropicraftSlab;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
@@ -52,7 +50,11 @@ import net.tropicraft.core.common.block.BlockTropicsWater;
 import net.tropicraft.core.common.block.BlockVolcano;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
+import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 
 public class BlockRegistry extends TropicraftRegistry {
 
@@ -81,6 +83,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block chunkStairs;
 	public static Block thatchStairs;
 	public static Block bambooStairs;
+	public static Block palmStairs;
 
 	/** Fluids */
 	public static BlockTropicsWater tropicsWater;
@@ -108,13 +111,14 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block sifter;
 	public static Block flowerPot;
 	public static Block bambooDoor;
+	public static Block slabs;
+	public static Block doubleSlabs;
 
 	/**
 	 * Register blocks in preInit
 	 */
 	public static void preInit() {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		chunkStairs = registerBlock(new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS);
 		oreAzurite = registerBlock(new BlockTropicraftOre(), Names.BLOCK_AZURITE_ORE);
 		oreEudialyte = registerBlock(new BlockTropicraftOre(), Names.BLOCK_EUDIALYTE_ORE);
 		oreZircon = registerBlock(new BlockTropicraftOre(), Names.BLOCK_ZIRCON_ORE);
@@ -125,11 +129,15 @@ public class BlockRegistry extends TropicraftRegistry {
 		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
 
 		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD, Names.LOG_NAMES), ItemBlockTropicraft.class, "plank", asList(Names.LOG_NAMES));
+		slabs = registerMultiBlock(new BlockTropicraftSlab(Material.WOOD, false), ItemBlockTropicraft.class, "slab", asList(Names.SLAB_NAMES));
+		doubleSlabs = registerMultiBlock(new BlockTropicraftSlab(Material.WOOD, true), ItemBlockTropicraft.class, "double_slab", asList(Names.SLAB_NAMES));
 		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT, null);
 
 		thatchStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS);
 		bambooStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS);
-
+		palmStairs = registerBlock(new BlockTropicraftStairs(planks.getDefaultState().withProperty(BlockTropicraftPlank.VARIANT, TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS);
+		chunkStairs = registerBlock(new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS);
+		
 		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER, false);
 		tropicsPortal = registerBlockNoItem(new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER), Names.TROPICS_PORTAL, false);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);

@@ -69,6 +69,7 @@ tile.tropicraft:tiki_torch_upper.name=Tiki Torch Torch
 tile.tropicraft:drink_mixer.name=Drink Mixer
 tile.tropicraft:sifter.name=Sifter
 tile.tropicraft:flower_pot.name=Flower Pot
+tile.tropicraft:palm_stairs.name=Palm Stairs
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
