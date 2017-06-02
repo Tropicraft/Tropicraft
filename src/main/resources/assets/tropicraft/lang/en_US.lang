@@ -70,6 +70,10 @@ tile.tropicraft:drink_mixer.name=Drink Mixer
 tile.tropicraft:sifter.name=Sifter
 tile.tropicraft:flower_pot.name=Flower Pot
 tile.tropicraft:palm_stairs.name=Palm Stairs
+tile.tropicraft:slab.bamboo_slab.name=Bamboo Slab
+tile.tropicraft:slab.chunk_slab.name=Chunk Slab
+tile.tropicraft:slab.palm_slab.name=Palm Slab
+tile.tropicraft:slab.thatch_slab.name=Thatch Slab
 
 # Item localizations
 item.tropicraft:eudialyte.name=Eudialyte Shard
