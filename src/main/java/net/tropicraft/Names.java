@@ -34,6 +34,9 @@ public final class Names {
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"solo", "frox", "pab", "rube", "starfish", "turtle"};
+	public static final String[] EGG_NAMES = {"iguana", "starfish", "greenfrog", "redfrog", "yellowfrog", "bluefrog",
+		"eih", "marlin", "fish", "ashen", "turtle", "mow", "monkey", "koa", "tropicreeper",
+		"tropiskelly", "eagleray", "failgull", "seaurchin"};
 
 	// Tile Entity Names
 	public static final String TE_BAMBOO_CHEST = "te_bamboo_chest";

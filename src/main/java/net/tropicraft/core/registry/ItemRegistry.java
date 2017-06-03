@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
+import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.item.ItemChair;
@@ -24,6 +25,7 @@ import net.tropicraft.core.common.item.ItemCoconutBomb;
 import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
+import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
 import net.tropicraft.core.common.item.ItemShell;
@@ -120,9 +122,12 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item blackPearl;
 
 	public static Item fertilizer;
-	
+
 	public static Item encyclopedia;
 	public static Item waterWand;
+
+	public static Item seaUrchinRoe;
+	public static Item mobEgg;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -193,13 +198,16 @@ public class ItemRegistry extends TropicraftRegistry {
 		blackPearl = registerItem(new ItemTropicraft().setMaxStackSize(64), "black_pearl");
 
 		fertilizer = registerItem(new ItemFertilizer(), "fertilizer");
-		
+
 		encyclopedia = registerItem(new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
-		
+
 		dagger = registerItem(new ItemDagger(materialZirconTools), "dagger");
 		bambooSpear = registerItem(new ItemSword(materialBambooTools), "bamboo_spear");
 		coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
+
+		seaUrchinRoe = registerItem(new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
+		mobEgg = registerMultiItemTextured(new ItemMobEgg(), "egg", Names.EGG_NAMES);
 	}
 
 	public static void init() {
@@ -210,6 +218,20 @@ public class ItemRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerColoredItem(chair);
 		Tropicraft.proxy.registerColoredItem(umbrella);
 		Tropicraft.proxy.registerColoredItem(cocktail);
+	}
+
+	private static Item registerMultiItemTextured(Item item, String name, String[] names) {
+		item.setUnlocalizedName(getNamePrefixed(name));
+		item.setRegistryName(new ResourceLocation(Info.MODID, name));
+
+		GameRegistry.register(item);
+		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
+
+		for (int metadata = 0; metadata < names.length; metadata++) {
+			Tropicraft.proxy.registerItemVariantModel(item, name + "_" + names[metadata], metadata);
+		}
+
+		return item;
 	}
 
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {

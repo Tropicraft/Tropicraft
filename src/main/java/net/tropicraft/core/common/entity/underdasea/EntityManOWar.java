@@ -85,10 +85,8 @@ public class EntityManOWar extends EntityWaterMob {
 				List<Entity> list = worldObj.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(2D, 8D, 2D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
 				for (int i = 0; i < list.size(); i++) {
 					Entity ent = list.get(i);
-					System.out.println(ent);
 					if (!(ent instanceof EntityLivingBase) || !(ent instanceof EntityManOWar)){
 						if (((EntityLivingBase)ent).isInWater()) {
-							System.out.println("ent found" + ent);
 							byte byte0 = getAttackStrength();
 							((EntityLivingBase)ent).attackEntityFrom(DamageSource.drown, byte0);
 							this.setAttackTarget(((EntityLivingBase)ent));

@@ -3,18 +3,21 @@ package net.tropicraft.core.client.entity.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.underdasea.EntityEchinodermEgg;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 public class RenderEchinodermEgg extends Render<EntityEchinodermEgg> {
-	
-	protected RenderEchinodermEgg() {
+
+	public RenderEchinodermEgg() {
 		super(Minecraft.getMinecraft().getRenderManager());
+	}
+
+	private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {
+		buffer.pos(x, y, z).tex(tex1, tex2).endVertex();
 	}
 
 	@Override
@@ -25,9 +28,9 @@ public class RenderEchinodermEgg extends Render<EntityEchinodermEgg> {
 		this.bindEntityTexture(entity);
 		Tessellator tessellator = Tessellator.getInstance();
 
-		GL11.glRotatef(180f - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(180f - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 
-		GL11.glScalef(0.25f, 0.25f, 0.25f);
+		GlStateManager.scale(0.25f, 0.25f, 0.25f);
 
 		float f = 0;
 		float f1 = 1;
@@ -37,16 +40,17 @@ public class RenderEchinodermEgg extends Render<EntityEchinodermEgg> {
 		float f5 = 0.5F;
 		float f6 = 0.25F;
 
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		tessellator.addVertexWithUV((double)(0.0F - f5), (double)(0.0F - f6), 0.0D, (double)f, (double)f3);
-		tessellator.addVertexWithUV((double)(f4 - f5), (double)(0.0F - f6), 0.0D, (double)f1, (double)f3);
-		tessellator.addVertexWithUV((double)(f4 - f5), (double)(f4 - f6), 0.0D, (double)f1, (double)f2);
-		tessellator.addVertexWithUV((double)(0.0F - f5), (double)(f4 - f6), 0.0D, (double)f, (double)f2);
+		VertexBuffer buffer = tessellator.getBuffer();
+		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+		buf(buffer, (double)(0.0F - f5), (double)(0.0F - f6), 0.0D, (double)f, (double)f3);
+		buf(buffer, (double)(f4 - f5), (double)(0.0F - f6), 0.0D, (double)f1, (double)f3);
+		buf(buffer, (double)(f4 - f5), (double)(f4 - f6), 0.0D, (double)f1, (double)f2);
+		buf(buffer, (double)(0.0F - f5), (double)(f4 - f6), 0.0D, (double)f, (double)f2);
 		tessellator.draw();
 
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
 	}
 
 	/**
