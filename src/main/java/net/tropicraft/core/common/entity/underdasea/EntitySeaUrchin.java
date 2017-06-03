@@ -6,7 +6,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -47,10 +46,10 @@ public class EntitySeaUrchin extends EntityEchinoderm {
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
 	}
 
-//	@Override
-//	protected void updateWanderPath() {
-//		// sea urchins don't wander
-//	}
+	//	@Override
+	//	protected void updateWanderPath() {
+	//		// sea urchins don't wander
+	//	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amt) {

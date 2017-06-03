@@ -26,7 +26,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
-import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 
 public class ItemMobEgg extends ItemTropicraft {
 
@@ -167,7 +166,6 @@ public class ItemMobEgg extends ItemTropicraft {
 				entity = EntityList.createEntityByIDFromName(entityID, worldIn);
 
 				if (entity instanceof EntityLivingBase) {
-					System.out.println("hi");
 					EntityLiving entityliving = (EntityLiving)entity;
 					entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
 					entityliving.rotationYawHead = entityliving.rotationYaw;

@@ -15,6 +15,7 @@ import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
+import net.tropicraft.core.common.entity.placeable.EntityWallStarfish;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
@@ -23,6 +24,8 @@ import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
+import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 
 public class EntityRegistry {
@@ -52,13 +55,13 @@ public class EntityRegistry {
 		registerEntity(EntityEagleRay.class, "EagleRay", 80, 1, true);
 		registerEntity(EntitySeaUrchin.class, "SeaUrchin", 64, 3, true);
 		registerEntity(EntitySeaUrchinEgg.class, "SeaUrchinEgg", 64, 3, false);
+		registerEntity(EntityStarfish.class, "Starfish", 64, 3, false);
+		registerEntity(EntityStarfishEgg.class, "StarfishEgg", 64, 3, false);
+		//registerEntity(EntityWallStarfish.class, "WallStarfish", 160, Integer.MAX_VALUE, false);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
 		net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(entityClass, entityName, entityID++, Tropicraft.instance, trackingRange, updateFrequency, sendsVelocityUpdates);
-		
-		//egg for testing
-		net.minecraftforge.fml.common.registry.EntityRegistry.registerEgg(entityClass, 0xFFFFFF, 0x000000);
 	}
 	
 }

@@ -32,4 +32,5 @@ public class CommonProxy {
 	public void registerColoredBlock(Block block) {}
 	public void registerColoredItem(Item item) {}
 	public void registerBooks() {}
+	public void preInit() {}
 }

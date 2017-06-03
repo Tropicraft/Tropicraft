@@ -20,12 +20,14 @@ import net.tropicraft.core.client.entity.render.RenderManOWar;
 import net.tropicraft.core.client.entity.render.RenderMarlin;
 import net.tropicraft.core.client.entity.render.RenderSeaUrchin;
 import net.tropicraft.core.client.entity.render.RenderSeahorse;
+import net.tropicraft.core.client.entity.render.RenderStarfish;
 import net.tropicraft.core.client.entity.render.RenderTreeFrog;
 import net.tropicraft.core.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.core.client.entity.render.RenderTropicalFish;
 import net.tropicraft.core.client.entity.render.RenderUmbrella;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
+import net.tropicraft.core.client.entity.render.RenderWallStarfish;
 import net.tropicraft.core.common.entity.EntityLavaBall;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
@@ -36,6 +38,7 @@ import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
+import net.tropicraft.core.common.entity.placeable.EntityWallStarfish;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
@@ -43,6 +46,8 @@ import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
+import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 
 public class EntityRenderRegistry {
@@ -61,17 +66,20 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityChair.class, new RenderChair());
 		registerEntityRender(EntityUmbrella.class, new RenderUmbrella());
 		registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
-																			ItemRegistry.coconutBomb,
-																			Minecraft.getMinecraft().getRenderItem()));
+				ItemRegistry.coconutBomb,
+				Minecraft.getMinecraft().getRenderItem()));
 		registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish(new ModelFish(), 0.25F));
 		registerEntityRender(EntityManOWar.class, new RenderManOWar(new ModelManOWar(32, 20, true), 0.35F));
 		registerEntityRender(EntityEagleRay.class, new RenderEagleRay());
-        registerEntityRender(EntitySeaUrchin.class, new RenderSeaUrchin());
-        registerEntityRender(EntitySeaUrchinEgg.class, new RenderEchinodermEgg());
+		registerEntityRender(EntitySeaUrchin.class, new RenderSeaUrchin());
+		registerEntityRender(EntitySeaUrchinEgg.class, new RenderEchinodermEgg());
+		registerEntityRender(EntityStarfish.class, new RenderStarfish());
+		registerEntityRender(EntityStarfishEgg.class, new RenderEchinodermEgg());
+		//registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
 	}
 
-    private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
-        RenderingRegistry.registerEntityRenderingHandler(entityClass, render);
-    }
-	
+	private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
+		RenderingRegistry.registerEntityRenderingHandler(entityClass, render);
+	}
+
 }

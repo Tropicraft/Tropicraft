@@ -16,18 +16,18 @@ public class ModelEagleRay extends ModelBase {
 	 */
 	private float[] interpolatedWingAmplitudes = new float[EntityEagleRay.WING_JOINTS];
 
-    private ModelRenderer body;
-    
-    public ModelEagleRay() {
-    	textureWidth = 128;
-    	textureHeight = 64;
+	private ModelRenderer body;
 
-        body = new ModelRenderer(this, 32, 0);
-        body.addBox(-2F, 0F, 0F, 5, 3, 32);
-        body.setRotationPoint(0F, 0F, -8F);
-        body.setTextureSize(128, 64);
-        body.mirror = true;
-    }
+	public ModelEagleRay() {
+		textureWidth = 128;
+		textureHeight = 64;
+
+		body = new ModelRenderer(this, 32, 0);
+		body.addBox(-2F, 0F, 0F, 5, 3, 32);
+		body.setRotationPoint(0F, 0F, -8F);
+		body.setTextureSize(128, 64);
+		body.mirror = true;
+	}
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -36,7 +36,7 @@ public class ModelEagleRay extends ModelBase {
 		renderWings();
 		renderTailSimple();
 	}
-	
+
 	private void renderTailSimple() {
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer buffer = tessellator.getBuffer();
@@ -45,12 +45,12 @@ public class ModelEagleRay extends ModelBase {
 		float maxU = 1.0f;
 		float minV = 0.0f;
 		float maxV = 0.5f;
-		
+
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(0.55f, 0f, 1.5f);
 		GlStateManager.rotate(-90f, 0f, 1f, 0f);
 		GlStateManager.scale(1.5f, 1f, 1f);
-		
+
 		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		buffer.pos(0, 0, 0).tex(minU, minV).endVertex();
 		buffer.pos(0, 0, 1).tex(minU, maxV).endVertex();
@@ -73,10 +73,10 @@ public class ModelEagleRay extends ModelBase {
 		GlStateManager.popMatrix();
 		GlStateManager.enableLighting();
 	}
-	
-    private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {
-    	buffer.pos(x, y, z).tex(tex1, tex2).endVertex();
-    }
+
+	private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {
+		buffer.pos(x, y, z).tex(tex1, tex2).endVertex();
+	}
 
 	private void renderWing(boolean reverse) {
 		Tessellator tessellator = Tessellator.getInstance();
@@ -86,24 +86,24 @@ public class ModelEagleRay extends ModelBase {
 		float maxUFront = 0.25f;
 		float minVFront = 0f;
 		float maxVFront = 0.5f;
-		
+
 		float minUBack = 0f;
 		float maxUBack = 0.25f;
 		float minVBack = 0.5f;
 		float maxVBack = 1f;
-		
+
 		for (int i = 1; i < EntityEagleRay.WING_JOINTS; i++) {
 			float prevAmplitude = interpolatedWingAmplitudes[i-1];
 			float amplitude = interpolatedWingAmplitudes[i];
-			
+
 			float prevX = (i-1)/(EntityEagleRay.WING_JOINTS-1f);
 			float x = i/(EntityEagleRay.WING_JOINTS-1f);
-			
+
 			float prevUFront = minUFront + (maxUFront-minUFront)*prevX;
 			float uFront = minUFront + (maxUFront-minUFront)*x;
 			float prevUBack = minUBack + (maxUBack-minUBack)*prevX;
 			float uBack = minUBack + (maxUBack-minUBack)*x;
-			
+
 			float offset = -0.001f;
 			// Bottom
 			buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -121,10 +121,6 @@ public class ModelEagleRay extends ModelBase {
 			buf(buffer, x, amplitude, 0.0D, uFront, reverse ? maxVFront : minVFront);
 			tessellator.draw();
 		}
-	}
-	
-	private float lerp(float start, float end, float partialTicks) {
-		return start + (end-start)*partialTicks;
 	}
 
 	@Override

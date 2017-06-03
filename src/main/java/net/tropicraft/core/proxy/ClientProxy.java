@@ -36,11 +36,15 @@ public class ClientProxy extends CommonProxy {
 	public ClientProxy() {
 
 	}
+	
+	@Override
+	public void preInit() {
+		super.preInit();
+	}
 
 	@Override
 	public void init() {
 		super.init();
-
 		EntityRenderRegistry.init();
 		TileEntityRenderRegistry.init();
 

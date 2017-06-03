@@ -47,6 +47,7 @@ public class Tropicraft {
 		TileEntityRegistry.init();
 		ItemRegistry.preInit();
 		MixerRecipes.addMixerRecipes();
+		proxy.preInit();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
 	}
