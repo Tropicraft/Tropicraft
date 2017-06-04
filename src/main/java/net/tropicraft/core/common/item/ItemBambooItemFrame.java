@@ -28,6 +28,7 @@ public class ItemBambooItemFrame extends ItemHangingEntity {
 
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && playerIn.canPlayerEdit(blockpos, facing, stack)) {
             EntityBambooItemFrame entityhanging = this.createEntity(worldIn, blockpos, facing);
+            entityhanging.setFacing(facing);
             
             System.out.println(entityhanging.facingDirection);
             System.out.println(entityhanging.onValidSurface());

@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "tropicraft:bamboo_item_frame" },
+        "map":    { "model": "tropicraft:bamboo_item_frame_map" }
+    }
+}

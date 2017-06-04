@@ -4,18 +4,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.SandColors;
 import net.tropicraft.Info;
-import net.tropicraft.core.common.block.ITropicraftBlock;
+import net.tropicraft.SandColors;
 
 public class TropicraftRenderUtils {
 

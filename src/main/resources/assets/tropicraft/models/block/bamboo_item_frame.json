@@ -1,7 +1,7 @@
 {
     "textures": {
-        "particle": "tropicraft:blocks/bamboo_side",
-        "wood": "tropicraft:blocks/bamboo_side",
+        "particle": "tropicraft:blocks/bamboo_Side",
+        "wood": "tropicraft:blocks/bamboo_Side",
         "back": "blocks/itemframe_background"
     },
     "elements": [
