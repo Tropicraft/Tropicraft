@@ -1,16 +1,18 @@
 package net.tropicraft.core.common.entity.placeable;
 
+import io.netty.buffer.ByteBuf;
+
 import javax.annotation.Nullable;
 
-import com.google.common.base.Predicate;
-
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockRedstoneDiode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,8 +21,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.entity.underdasea.StarfishType;
 
-public class EntityWallStarfish extends EntityHanging implements IEntityAdditionalSpawnData {
+import com.google.common.base.Predicate;
+
+public class EntityWallStarfish extends EntityHanging {
 	private StarfishType starfishType;
+	
+	private static final DataParameter<EnumFacing> FACING = EntityDataManager.<EnumFacing>createKey(EntityWallStarfish.class, DataSerializers.FACING);
+	private static final DataParameter<Byte> STARFISH_TYPE = EntityDataManager.<Byte>createKey(EntityWallStarfish.class, DataSerializers.BYTE);
 
 	public EntityWallStarfish(World par1World) {
 		super(par1World);
@@ -32,6 +39,32 @@ public class EntityWallStarfish extends EntityHanging implements IEntityAddition
 		setStarfishType(starfishType);
 		this.facingDirection = direction;
 		this.updateFacingWithBoundingBox(direction);
+	}
+	
+	@Override
+    public void notifyDataManagerChange(DataParameter<?> key) {
+        if (FACING.equals(key)) {
+            this.facingDirection = this.getFacing();
+            this.updateFacingWithBoundingBox(this.facingDirection);
+        }
+        super.notifyDataManagerChange(key);
+    }
+	
+	@Override
+	protected void entityInit() {
+		this.getDataManager().register(FACING, EnumFacing.SOUTH);
+		this.getDataManager().register(STARFISH_TYPE, Byte.valueOf((byte) 0));
+		super.entityInit();
+	}
+	
+	public void setFacing(EnumFacing facing) {
+		this.dataManager.set(FACING, facing);
+		this.facingDirection = getFacing();
+		this.updateFacingWithBoundingBox(facing);
+	}
+
+	public EnumFacing getFacing() {
+		return this.dataManager.get(FACING);
 	}
 
 	@Override
@@ -67,55 +100,15 @@ public class EntityWallStarfish extends EntityHanging implements IEntityAddition
 	public int getHeightPixels() {
 		return 9;
 	}
-	
-    private static final Predicate<Entity> IS_HANGING_ENTITY = new Predicate<Entity>()
-    {
-        public boolean apply(@Nullable Entity p_apply_1_)
-        {
-            return p_apply_1_ instanceof EntityHanging;
-        }
-    };
-	
+
     /**
      * checks to make sure painting can be placed there
      */
 	@Override
     public boolean onValidSurface()
     {
-        if (!this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty())
-        {
-        	System.out.println("uh");
-        	System.out.println(this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()));
-            return false;
-        }
-        else
-        {
-            int i = Math.max(1, this.getWidthPixels() / 16);
-            int j = Math.max(1, this.getHeightPixels() / 16);
-            BlockPos blockpos = this.hangingPosition.offset(this.facingDirection.getOpposite());
-            EnumFacing enumfacing = this.facingDirection.rotateYCCW();
-
-            for (int k = 0; k < i; ++k)
-            {
-                for (int l = 0; l < j; ++l)
-                {
-                    int i1 = i > 2 ? -1 : 0;
-                    int j1 = j > 2 ? -1 : 0;
-                    BlockPos blockpos1 = blockpos.offset(enumfacing, k + i1).up(l + j1);
-                    IBlockState iblockstate = this.worldObj.getBlockState(blockpos1);
-
-                    if (iblockstate.isSideSolid(this.worldObj, blockpos1, this.facingDirection))
-                        continue;
-
-                    if (!iblockstate.getMaterial().isSolid() && !BlockRedstoneDiode.isDiode(iblockstate))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return this.worldObj.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox(), IS_HANGING_ENTITY).isEmpty();
-        }
+		System.out.println("on");
+        return super.onValidSurface();
     }
 
 	//	@Override
@@ -126,21 +119,21 @@ public class EntityWallStarfish extends EntityHanging implements IEntityAddition
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setByte("StarfishType", (byte)getStarfishType().ordinal());
+		nbt.setByte("StarfishType", StarfishType.getMetaFromType(getStarfishType()));
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		setStarfishType(StarfishType.values()[nbt.getByte("StarfishType")]);
+		setStarfishType(StarfishType.VALUES[nbt.getByte("StarfishType")]);
 	}
 
 	public StarfishType getStarfishType() {
-		return starfishType;
+		return StarfishType.VALUES[this.getDataManager().get(STARFISH_TYPE)];
 	}
 
 	public void setStarfishType(StarfishType starfishType) {
-		this.starfishType = starfishType;
+		this.getDataManager().set(STARFISH_TYPE, StarfishType.getMetaFromType(starfishType));
 	}
 
 	/**
@@ -150,27 +143,27 @@ public class EntityWallStarfish extends EntityHanging implements IEntityAddition
 	public void onBroken(Entity entity) {
 		this.dropItemStack();
 	}
-
-	@Override
-	public void writeSpawnData(ByteBuf data) {
-		BlockPos blockpos = this.getHangingPosition();
-		data.writeInt(blockpos.getX());
-		data.writeInt(blockpos.getY());
-		data.writeInt(blockpos.getZ());
-		data.writeByte(starfishType.ordinal());
-		data.writeByte((byte)this.facingDirection.getHorizontalIndex());
-	}
-
-	@Override
-	public void readSpawnData(ByteBuf data) {
-		int x = data.readInt();
-		int y = data.readInt();
-		int z = data.readInt();
-		BlockPos pos = new BlockPos(x, y, z);
-		this.hangingPosition = pos;
-		starfishType = StarfishType.values()[data.readByte()];
-		this.facingDirection = EnumFacing.getHorizontal(data.readByte());
-	}
+//
+//	@Override
+//	public void writeSpawnData(ByteBuf data) {
+//		BlockPos blockpos = this.getHangingPosition();
+//		data.writeInt(blockpos.getX());
+//		data.writeInt(blockpos.getY());
+//		data.writeInt(blockpos.getZ());
+//		data.writeByte(starfishType.ordinal());
+//		//data.writeByte((byte)this.facingDirection.getHorizontalIndex());
+//	}
+//
+//	@Override
+//	public void readSpawnData(ByteBuf data) {
+//		int x = data.readInt();
+//		int y = data.readInt();
+//		int z = data.readInt();
+//		BlockPos pos = new BlockPos(x, y, z);
+//		this.hangingPosition = pos;
+//		starfishType = StarfishType.values()[data.readByte()];
+//		//this.facingDirection = EnumFacing.getHorizontal(data.readByte());
+//	}
 
 	@Override
 	public void playPlaceSound() {

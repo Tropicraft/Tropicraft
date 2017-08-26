@@ -190,7 +190,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		shellRube = registerItem(new ItemShell(), "shell_rube");
 		shellSolo = registerItem(new ItemShell(), "shell_solo");
 		//TODO make shellfish ItemShell(true) once we figure out how to get hangables to work
-		shellStarfish = registerItem(new ItemShell(), "shell_starfish");
+		shellStarfish = registerItem(new ItemShell(true), "shell_starfish");
 		shellTurtle = registerItem(new ItemShell(), "shell_turtle");
 
 		cocktail = registerMultiItem(new ItemCocktail(), "cocktail", Drink.drinkList.length);

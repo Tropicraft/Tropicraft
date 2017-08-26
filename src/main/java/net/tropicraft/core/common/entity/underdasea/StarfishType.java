@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.tropicraft.Info;
+import net.tropicraft.core.common.enums.TropicraftCorals;
 
 public enum StarfishType {
 	/** The red knobbed starfish. */
@@ -45,6 +46,12 @@ public enum StarfishType {
 
 	StarfishType(String unlocalizedName, String displayName, String[] textures) {
 		this(unlocalizedName, displayName, textures, null);
+	}
+	
+	public static final StarfishType VALUES[] = values();
+	
+	public static byte getMetaFromType(StarfishType type) {
+		return (byte)(type == RED ? 0 : 1);
 	}
 	
 	private String unlocalizedName;

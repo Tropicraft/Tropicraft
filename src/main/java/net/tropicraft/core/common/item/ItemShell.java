@@ -39,7 +39,8 @@ public class ItemShell extends ItemHangingEntity {
 
 	        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && player.canPlayerEdit(blockpos, facing, itemstack)) {
 	            EntityWallStarfish entityhanging = (EntityWallStarfish) this.createEntity(world, pos, facing);
-	            
+	            entityhanging.setFacing(facing);
+	            System.out.println("r");
 	            if (entityhanging != null && entityhanging.onValidSurface()) {
 	                if (!world.isRemote) {
 	                    entityhanging.playPlaceSound();
