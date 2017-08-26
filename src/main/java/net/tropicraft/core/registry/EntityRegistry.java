@@ -3,8 +3,10 @@ package net.tropicraft.core.registry;
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.EntityLavaBall;
+import net.tropicraft.core.common.entity.hostile.EntityAshenHunter;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
+import net.tropicraft.core.common.entity.hostile.EntityLostMask;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBlue;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogGreen;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogRed;
@@ -42,6 +44,8 @@ public class EntityRegistry {
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
+		registerEntity(EntityAshenHunter.class, "AshenHunter", 80, 3, true);
+		registerEntity(EntityLostMask.class, "LostMask", 64, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

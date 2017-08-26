@@ -20,8 +20,10 @@ import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.core.client.entity.render.RenderUmbrella;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
 import net.tropicraft.core.common.entity.EntityLavaBall;
+import net.tropicraft.core.common.entity.hostile.EntityAshenHunter;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
+import net.tropicraft.core.common.entity.hostile.EntityLostMask;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBase;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
@@ -51,6 +53,8 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
 																			ItemRegistry.coconutBomb,
 																			Minecraft.getMinecraft().getRenderItem()));
+		registerEntityRender(EntityLostMask.class, new RenderLostMask());
+		registerEntityRender(EntityAshenHunter.class, new RenderAshen(new ModelAshen(), 0.75F));
 	}
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
