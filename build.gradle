@@ -24,6 +24,8 @@ version = "7.0"
 group= "net.tropicraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "tropicraft"
 
+sourceCompatibility = targetCompatibility = '1.8'
+
 minecraft {
     version = "1.9.4-12.17.0.1969"
     runDir = "run"
