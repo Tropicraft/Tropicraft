@@ -13,6 +13,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.tropicraft.configuration.ConfigGenRates;
 import net.tropicraft.core.common.entity.EntityLavaBall;
 import net.tropicraft.core.common.volcano.VolcanoState;
@@ -136,11 +137,16 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 	}
 
 	public void throwLavaFromCaldera(double force) {
-		double x = worldObj.rand.nextInt(radius) - (radius / 2) + this.pos.getX();
-		double z = worldObj.rand.nextInt(radius) - (radius / 2) + this.pos.getZ(); 
-		double motX = ((worldObj.rand.nextDouble() / 2) + 0.5) * (worldObj.rand.nextBoolean() ? -1 : 1) * force;
-		double motZ = ((worldObj.rand.nextDouble() / 2) + 0.5) * (worldObj.rand.nextBoolean() ? -1 : 1) * force;
-		throwLava(x, lavaLevel + 2, z, motX, 0.86, motZ);
+		// Create vector at center facing in the +x direction
+		Vec3d pos = new Vec3d(((worldObj.rand.nextDouble() / 2) + 0.3) * radius, lavaLevel + 2, 0);
+		// Get a random angle from 0 to 2PI (radians)
+		float angle = worldObj.rand.nextFloat() * (float) Math.PI * 2;
+		// Rotate the center vector to this angle, and offset it to the volcano's position
+		pos = pos.rotateYaw(angle).add(new Vec3d(getPos()));
+		// Compute x/y components of angle
+		double motX = force * Math.cos(angle);
+		double motZ = force * Math.sin(-angle);
+		throwLava(pos.xCoord, pos.yCoord, pos.zCoord, motX, 0.86, motZ);
 	}
 
 	public void throwLava(double i, double j, double k, double xMot, double yMot, double zMot) {
