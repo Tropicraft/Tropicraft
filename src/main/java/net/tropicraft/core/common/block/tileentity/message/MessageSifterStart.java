@@ -20,7 +20,7 @@ public class MessageSifterStart extends MessageTileEntity<TileEntitySifter> {
 
 		@Override
 		public IMessage onMessage(MessageSifterStart message, MessageContext ctx) {
-			TileEntitySifter te = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			TileEntitySifter te = message.getTileEntity(Minecraft.getMinecraft().world);
 			if (te != null) {
 				te.startSifting();
 			}

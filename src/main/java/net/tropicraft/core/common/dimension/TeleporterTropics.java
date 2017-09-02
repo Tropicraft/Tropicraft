@@ -71,12 +71,12 @@ public class TeleporterTropics extends Teleporter {
 		int foundX = 0;
 		int foundY = 0;
 		int foundZ = 0;
-		int entityX = MathHelper.floor_double(entity.posX);
-		int entityZ = MathHelper.floor_double(entity.posZ);
+		int entityX = MathHelper.floor(entity.posX);
+		int entityZ = MathHelper.floor(entity.posZ);
 		BlockPos blockpos = BlockPos.ORIGIN;
 		boolean notInCache = true;
 
-		long j1 = ChunkPos.chunkXZ2Int(entityX, entityZ);
+		long j1 = ChunkPos.asLong(entityX, entityZ);
 
 		if (destinationCoordinateCache.containsKey(j1)) {
 			//	System.out.println("Setting closest portal to 0");
@@ -155,8 +155,8 @@ public class TeleporterTropics extends Teleporter {
 				newLocZ += 0.5D;
 			}
 			entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
-			int worldSpawnX = MathHelper.floor_double(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-			int worldSpawnZ = MathHelper.floor_double(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+			int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+			int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
 			int worldSpawnY = world.getHeight(new BlockPos(worldSpawnX, 0, worldSpawnZ)).getY() + 3;
 
 			entity.motionX = entity.motionY = entity.motionZ = 0.0D;
@@ -171,8 +171,8 @@ public class TeleporterTropics extends Teleporter {
 //					if (!player.inventory.hasItem(TCItemRegistry.encTropica)) {
 //						// Search for the spawn chest
 //						TileEntityBambooChest chest = null;
-//						int chestX = MathHelper.floor_double(newLocX);
-//						int chestZ = MathHelper.floor_double(newLocZ);
+//						int chestX = MathHelper.floor(newLocX);
+//						int chestZ = MathHelper.floor(newLocZ);
 //						chestSearch:
 //							for (int searchX = -3; searchX < 4; searchX++) {
 //								for (int searchZ = -3; searchZ < 4; searchZ++) {
@@ -223,9 +223,9 @@ public class TeleporterTropics extends Teleporter {
 		System.err.println("Start make portal");
 		int searchArea = 16;
 		double closestSpot = -1D;
-		int entityX = MathHelper.floor_double(entity.posX);
-		int entityY = MathHelper.floor_double(entity.posY);
-		int entityZ = MathHelper.floor_double(entity.posZ);
+		int entityX = MathHelper.floor(entity.posX);
+		int entityY = MathHelper.floor(entity.posY);
+		int entityZ = MathHelper.floor(entity.posZ);
 		int foundX = entityX;
 		int foundY = entityY;
 		int foundZ = entityZ;
@@ -282,8 +282,8 @@ public class TeleporterTropics extends Teleporter {
 				}
 		}
 
-		int worldSpawnX = MathHelper.floor_double(foundX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-		int worldSpawnZ = MathHelper.floor_double(foundZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+		int worldSpawnX = MathHelper.floor(foundX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+		int worldSpawnZ = MathHelper.floor(foundZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
 		int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
 		
 	      // If we can't find a spot (e.g. we're in the middle of the ocean),

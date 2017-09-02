@@ -54,10 +54,10 @@ public class EntityFailgull extends EntityFlying {
 	}
 
 	private void poop() {
-		if (!worldObj.isRemote && worldObj.rand.nextInt(20) == 0) {
-			EntitySnowball s = new EntitySnowball(worldObj, posX, posY, posZ);
+		if (!world.isRemote && world.rand.nextInt(20) == 0) {
+			EntitySnowball s = new EntitySnowball(world, posX, posY, posZ);
 			s.setThrowableHeading(0, 0, 0, 0, 0);
-			worldObj.spawnEntityInWorld(s);
+			world.spawnEntity(s);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class EntityFailgull extends EntityFlying {
 
 			if (this.courseChangeCooldown-- <= 0) {
 				this.courseChangeCooldown += failgull.rand.nextInt(5) + 2;
-				d3 = (double)MathHelper.sqrt_double(d3);
+				d3 = (double)MathHelper.sqrt(d3);
 
 				if (this.isNotColliding(this.waypointX, this.waypointY, this.waypointZ, d3)) {
 					failgull.motionX += d0 / d3 * 0.1D;
@@ -216,7 +216,7 @@ public class EntityFailgull extends EntityFlying {
 			}
 
 			if (!failgull.inFlock) {
-				List list = failgull.worldObj.getEntitiesWithinAABB(EntityFailgull.class, failgull.getEntityBoundingBox().expand(10D, 10D, 10D));
+				List list = failgull.world.getEntitiesWithinAABB(EntityFailgull.class, failgull.getEntityBoundingBox().expand(10D, 10D, 10D));
 
 				int lowest = failgull.getEntityId();
 				EntityFailgull f = null;
@@ -251,7 +251,7 @@ public class EntityFailgull extends EntityFlying {
 			for (int i = 1; (double)i < p_179926_7_; ++i) {
 				axisalignedbb = axisalignedbb.offset(d0, d1, d2);
 
-				if (!this.failgull.worldObj.getCollisionBoxes(this.failgull, axisalignedbb).isEmpty()) {
+				if (!this.failgull.world.getCollisionBoxes(this.failgull, axisalignedbb).isEmpty()) {
 					return false;
 				}
 			}

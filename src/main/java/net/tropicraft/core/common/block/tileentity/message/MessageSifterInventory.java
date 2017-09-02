@@ -38,7 +38,7 @@ public class MessageSifterInventory extends MessageTileEntity<TileEntitySifter> 
 
 		@Override
 		public IMessage onMessage(MessageSifterInventory message, MessageContext ctx) {
-			TileEntitySifter sifter = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			TileEntitySifter sifter = message.getTileEntity(Minecraft.getMinecraft().world);
 			if (sifter != null) {
 				sifter.siftItem = message.siftItem;
 			}
