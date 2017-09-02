@@ -210,24 +210,24 @@ public class BlockTropicraftFlowerPot extends BlockTropicraft implements ITileEn
                 if (block == BlockRegistry.saplings) {
                     switch (TropicraftSaplings.byMetadata(i))
                     {
-                        case PALM:
-                            flowerType = TropicraftFlowerType.PALM_SAPLING;
-                            break;
-                        case MAHOGANY:
-                            flowerType = TropicraftFlowerType.MAHOGANY_SAPLING;
-                            break;
-                        case GRAPEFRUIT:
-                            flowerType = TropicraftFlowerType.GRAPEFRUIT_SAPLING;
-                            break;
-                        case LEMON:
-                            flowerType = TropicraftFlowerType.LEMON_SAPLING;
-                            break;
-                        case LIME:
-                            flowerType = TropicraftFlowerType.LIME_SAPLING;
-                            break;
-                        case ORANGE:
-                            flowerType = TropicraftFlowerType.ORANGE_SAPLING;
-                            break;
+//                        case PALM:
+//                            flowerType = TropicraftFlowerType.PALM_SAPLING;
+//                            break;
+//                        case MAHOGANY:
+//                            flowerType = TropicraftFlowerType.MAHOGANY_SAPLING;
+//                            break;
+//                        case GRAPEFRUIT:
+//                            flowerType = TropicraftFlowerType.GRAPEFRUIT_SAPLING;
+//                            break;
+//                        case LEMON:
+//                            flowerType = TropicraftFlowerType.LEMON_SAPLING;
+//                            break;
+//                        case LIME:
+//                            flowerType = TropicraftFlowerType.LIME_SAPLING;
+//                            break;
+//                        case ORANGE:
+//                            flowerType = TropicraftFlowerType.ORANGE_SAPLING;
+//                            break;
                         default:
                             flowerType = TropicraftFlowerType.EMPTY;
                     }

@@ -41,7 +41,7 @@ public class BlockBundle extends BlockTropicraft implements ITropicraftBlock {
 	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
 	 * IBlockstate
 	 */
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(BUNDLE_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
 	}
 
@@ -142,7 +142,7 @@ public class BlockBundle extends BlockTropicraft implements ITropicraftBlock {
 	}
 
 	@Override
-	protected ItemStack createStackedBlock(IBlockState state) {
+	protected ItemStack getSilkTouchDrop(IBlockState state) {
 		return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftBundles)state.getValue(VARIANT)).getMetadata());
 	}
 

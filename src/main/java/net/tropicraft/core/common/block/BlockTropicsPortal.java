@@ -77,7 +77,7 @@ public class BlockTropicsPortal extends BlockFluidClassic {
 					player.timeUntilPortal = 0;
 
 					if (messageTick % 100 == 0) {
-						player.addChatMessage(new TextComponentTranslation("You should drink a pi\u00f1a colada before teleporting!"));
+						player.sendMessage(new TextComponentTranslation("You should drink a pi\u00f1a colada before teleporting!"));
 					}
 				}
 			}

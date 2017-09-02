@@ -134,7 +134,7 @@ public class BlockEvents {
 			double d2 = (double)(world.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
 			EntityItem entityitem = new EntityItem(world, (double)x + d0, (double)y + d1, (double)z + d2, stack);
 			entityitem.setPickupDelay(10);
-			world.spawnEntityInWorld(entityitem);
+			world.spawnEntity(entityitem);
 		}
 	}
 

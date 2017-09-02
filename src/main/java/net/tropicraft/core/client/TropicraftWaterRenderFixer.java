@@ -21,7 +21,7 @@ public class TropicraftWaterRenderFixer {
     @SubscribeEvent
     public void onBlockOverlay(RenderBlockOverlayEvent event) {
         if (event.getOverlayType() == OverlayType.WATER) {
-            IBlockState atPos = Minecraft.getMinecraft().theWorld.getBlockState(event.getBlockPos());
+            IBlockState atPos = Minecraft.getMinecraft().world.getBlockState(event.getBlockPos());
             if (atPos.getBlock() == BlockRegistry.tropicsWater) {
                 event.setCanceled(true);
                 Minecraft mc = Minecraft.getMinecraft();
@@ -31,7 +31,7 @@ public class TropicraftWaterRenderFixer {
                 mc.getTextureManager().bindTexture(RES_UNDERWATER_OVERLAY);
                 Tessellator tessellator = Tessellator.getInstance();
                 VertexBuffer vertexbuffer = tessellator.getBuffer();
-                float f = mc.thePlayer.getBrightness(event.getRenderPartialTicks());
+                float f = mc.player.getBrightness(event.getRenderPartialTicks());
                 GlStateManager.color(f, f, f, 0.6F);
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -42,8 +42,8 @@ public class TropicraftWaterRenderFixer {
                 float f4 = -1.0F;
                 float f5 = 1.0F;
                 float f6 = -0.5F;
-                float f7 = -mc.thePlayer.rotationYaw / 64.0F;
-                float f8 = mc.thePlayer.rotationPitch / 64.0F;
+                float f7 = -mc.player.rotationYaw / 64.0F;
+                float f8 = mc.player.rotationPitch / 64.0F;
                 vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
                 vertexbuffer.pos(-1.0D, -1.0D, -0.5D).tex((double)(4.0F + f7), (double)(4.0F + f8)).endVertex();
                 vertexbuffer.pos(1.0D, -1.0D, -0.5D).tex((double)(0.0F + f7), (double)(4.0F + f8)).endVertex();

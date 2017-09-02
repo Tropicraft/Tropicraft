@@ -24,10 +24,10 @@ public class ItemCoconutBomb extends ItemTropicraft {
 		itemstack.stackSize--;
 		world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
 		if (!world.isRemote && ConfigMisc.coconutBombWhitelistedUsers.contains(player.getGameProfile().getName())) {
-			world.spawnEntityInWorld(new EntityCoconutGrenade(world, player));
+			world.spawnEntity(new EntityCoconutGrenade(world, player));
 		} else {
 			if (!world.isRemote && !ConfigMisc.coconutBombWhitelistedUsers.contains(player.getGameProfile().getName()))
-				player.addChatMessage(new TextComponentTranslation(I18n.translateToLocal("tropicraft.coconutBombWarning")));
+				player.sendMessage(new TextComponentTranslation(I18n.translateToLocal("tropicraft.coconutBombWarning")));
 		}
 
 

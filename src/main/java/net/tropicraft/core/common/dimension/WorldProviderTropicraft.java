@@ -11,27 +11,27 @@ public class WorldProviderTropicraft extends WorldProvider {
 	public static final int INTER_HEIGHT = MAX_HEIGHT - MID_HEIGHT;
 
 	protected void registerWorldChunkManager() {
-		this.biomeProvider = new BiomeProviderTropicraft(worldObj.getWorldInfo());
+		this.biomeProvider = new BiomeProviderTropicraft(world.getWorldInfo());
 	}
 	
 	@Override
     protected void createBiomeProvider() {
-    	this.biomeProvider = new BiomeProviderTropicraft(worldObj.getWorldInfo());
+    	this.biomeProvider = new BiomeProviderTropicraft(world.getWorldInfo());
     }
 
 	@Override
 	public IChunkGenerator createChunkGenerator() {
-		return new ChunkProviderTropicraft(worldObj, worldObj.getSeed(), worldObj.getWorldInfo().isMapFeaturesEnabled());
+		return new ChunkProviderTropicraft(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
 	}
 
 	@Override
 	public String getWelcomeMessage() {
-		return "Drifting in to the Tropics of " + this.worldObj.getWorldInfo().getWorldName();
+		return "Drifting in to the Tropics of " + this.world.getWorldInfo().getWorldName();
 	}
 
 	@Override
 	public String getDepartMessage() {
-		return "Fading out of the Tropics of " + this.worldObj.getWorldInfo().getWorldName();
+		return "Fading out of the Tropics of " + this.world.getWorldInfo().getWorldName();
 	}
 
 	@Override

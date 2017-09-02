@@ -48,7 +48,7 @@ public class MessageMixerInventory extends MessageTileEntity<TileEntityDrinkMixe
 
 		@Override
 		public IMessage onMessage(MessageMixerInventory message, MessageContext ctx) {
-			TileEntityDrinkMixer mixer = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			TileEntityDrinkMixer mixer = message.getTileEntity(Minecraft.getMinecraft().world);
 			if (mixer != null) {
 				mixer.ingredients = message.inventory;
 				mixer.result = message.result;

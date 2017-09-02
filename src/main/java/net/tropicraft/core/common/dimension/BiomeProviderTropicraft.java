@@ -54,8 +54,8 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 	 * Returns the biome generator
 	 */
 	@Override
-	public Biome getBiomeGenerator(BlockPos pos) {
-		return this.getBiomeGenerator(pos, BiomeGenTropicraft.tropicsOcean);
+	public Biome getBiome(BlockPos pos) {
+		return this.getBiome(pos, BiomeGenTropicraft.tropicsOcean);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 	}
 
 	@Override
-	public Biome getBiomeGenerator(BlockPos pos, Biome biomeGenBaseIn) {
+	public Biome getBiome(BlockPos pos, Biome biomeGenBaseIn) {
 		return this.biomeCache.getBiome(pos.getX(), pos.getZ(), biomeGenBaseIn);
 	}
 
@@ -116,15 +116,15 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 	 * WorldChunkManager.
 	 */
 	@Override
-	public Biome[] loadBlockGeneratorData(@Nullable Biome[] oldBiomeList, int x, int z, int width, int depth) {
-		return this.getBiomeGenAt(oldBiomeList, x, z, width, depth, true);
+	public Biome[] getBiomes(@Nullable Biome[] oldBiomeList, int x, int z, int width, int depth) {
+		return this.getBiomes(oldBiomeList, x, z, width, depth, true);
 	}
 
 	/**
 	 * Gets a list of biomes for the specified blocks.
 	 */
 	@Override
-	public Biome[] getBiomeGenAt(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
+	public Biome[] getBiomes(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
 		IntCache.resetIntCache();
 
 		if (listToReuse == null || listToReuse.length < width * length)
