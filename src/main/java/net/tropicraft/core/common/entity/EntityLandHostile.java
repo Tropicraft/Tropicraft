@@ -53,7 +53,7 @@ public abstract class EntityLandHostile extends EntityLand {
 
 					if (this.rand.nextFloat() < f1) {
 						entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);
-						this.worldObj.setEntityState(entityplayer, (byte)30);
+						this.world.setEntityState(entityplayer, (byte)30);
 					}
 				}
 			}

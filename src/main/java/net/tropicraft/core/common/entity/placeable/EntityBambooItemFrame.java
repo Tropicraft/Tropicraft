@@ -63,7 +63,7 @@ public class EntityBambooItemFrame extends EntityItemFrame {
 
 	@Override
     public void dropItemOrSelf(@Nullable Entity entityIn, boolean shouldDropItem) {
-        if (this.worldObj.getGameRules().getBoolean("doEntityDrops")) {
+        if (this.world.getGameRules().getBoolean("doEntityDrops")) {
             ItemStack itemstack = this.getDisplayedItem();
 
             if (entityIn instanceof EntityPlayer) {
@@ -95,7 +95,7 @@ public class EntityBambooItemFrame extends EntityItemFrame {
     private void removeFrameFromMap(ItemStack stack) {
         if (stack != null) {
             if (stack.getItem() instanceof net.minecraft.item.ItemMap) {
-                MapData mapdata = ((ItemMap)stack.getItem()).getMapData(stack, this.worldObj);
+                MapData mapdata = ((ItemMap)stack.getItem()).getMapData(stack, this.world);
                 mapdata.mapDecorations.remove("frame-" + this.getEntityId());
             }
 

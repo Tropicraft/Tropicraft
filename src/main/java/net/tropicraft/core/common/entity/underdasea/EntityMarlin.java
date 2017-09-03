@@ -70,7 +70,7 @@ public class EntityMarlin extends EntityTropicraftWaterMob {
 	protected void dropFewItems(boolean flag) {
 		int i = rand.nextInt(3) + 1;
 		for (int j = 0; j < i; j++) {
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				entityDropItem(new ItemStack(ItemRegistry.freshMarlin), 0.0F);
 			}
 		}
@@ -84,7 +84,7 @@ public class EntityMarlin extends EntityTropicraftWaterMob {
 		int numDrops = 2 + this.rand.nextInt(1 + lootingModifier);
 
 		for (int i = 0; i < numDrops; i++) {
-			if (!worldObj.isRemote) {
+			if (!world.isRemote) {
 				this.dropItem(ItemRegistry.freshMarlin, 1);
 			}
 		}
@@ -117,7 +117,7 @@ public class EntityMarlin extends EntityTropicraftWaterMob {
 //	@Override
 //	protected void updateEntityActionState() {
 //		super.updateEntityActionState();
-//		if (isInWater() && worldObj.rand.nextInt(500) == 0 && !isSurfacing
+//		if (isInWater() && world.rand.nextInt(500) == 0 && !isSurfacing
 //				&& Math.floor(posY) >= 60D) {
 //			//System.out.println("Aye");
 //			isSurfacing = true;
@@ -132,7 +132,7 @@ public class EntityMarlin extends EntityTropicraftWaterMob {
 
 //	@Override
 //	protected int attackStrength() {
-//		switch (worldObj.difficultySetting) {
+//		switch (world.difficultySetting) {
 //		case EASY:
 //			return 3;
 //		case NORMAL:

@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -23,6 +25,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ChairColorHandler;
@@ -43,6 +46,11 @@ public class ClientProxy extends CommonProxy {
 
 	public ClientProxy() {
 		MinecraftForge.EVENT_BUS.register(this);
+	}
+	
+	@Override
+	public void preInit() {
+		ModelLoader.setCustomStateMapper(BlockRegistry.coral, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
 	}
 
 	@Override

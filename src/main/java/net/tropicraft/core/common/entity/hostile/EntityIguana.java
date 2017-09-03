@@ -52,7 +52,7 @@ public class EntityIguana extends EntityLandHostile implements IMob {
         int numDrops = 3 + this.rand.nextInt(1 + lootingModifier);
 
         for (int i = 0; i < numDrops; i++) {
-        	if (!worldObj.isRemote) {
+        	if (!world.isRemote) {
                 this.dropItem(ItemRegistry.scale, 1);	
         	}
         }
@@ -111,7 +111,7 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 		}
 
 		if (this.angerLevel > 0 && this.angerTargetUUID != null && this.getAITarget() == null) {
-			EntityPlayer entityplayer = this.worldObj.getPlayerEntityByUUID(this.angerTargetUUID);
+			EntityPlayer entityplayer = this.world.getPlayerEntityByUUID(this.angerTargetUUID);
 			this.setRevengeTarget(entityplayer);
 			this.attackingPlayer = entityplayer;
 			this.recentlyHit = this.getRevengeTimer();
@@ -151,7 +151,7 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 
 		if (!hurtBy.isEmpty()) {
 			this.angerTargetUUID = UUID.fromString(hurtBy);
-			EntityPlayer entityplayer = this.worldObj.getPlayerEntityByUUID(this.angerTargetUUID);
+			EntityPlayer entityplayer = this.world.getPlayerEntityByUUID(this.angerTargetUUID);
 			this.setRevengeTarget(entityplayer);
 
 			if (entityplayer != null) {

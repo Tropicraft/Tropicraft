@@ -30,7 +30,7 @@ public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer<Til
 		GlStateManager.depthMask(true);
 		int i;
 
-		if (!te.hasWorldObj()) {
+		if (!te.hasWorld()) {
 			i = 0;
 		} else {
 			Block block = te.getBlockType();

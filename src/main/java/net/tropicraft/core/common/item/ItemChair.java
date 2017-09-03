@@ -107,7 +107,7 @@ public class ItemChair extends ItemTropicraftColored {
 				{
 					if (!worldIn.isRemote)
 					{
-						worldIn.spawnEntityInWorld(chair);
+						worldIn.spawnEntity(chair);
 					}
 
 					if (!playerIn.capabilities.isCreativeMode)

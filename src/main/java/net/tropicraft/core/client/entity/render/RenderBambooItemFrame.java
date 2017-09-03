@@ -92,7 +92,7 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
         ItemStack itemstack = itemFrame.getDisplayedItem();
 
         if (itemstack != null) {
-            EntityItem entityitem = new EntityItem(itemFrame.worldObj, 0.0D, 0.0D, 0.0D, itemstack);
+            EntityItem entityitem = new EntityItem(itemFrame.world, 0.0D, 0.0D, 0.0D, itemstack);
             Item item = entityitem.getEntityItem().getItem();
             entityitem.getEntityItem().stackSize = 1;
             entityitem.hoverStart = 0.0F;
@@ -112,7 +112,7 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
                 float f = 0.0078125F;
                 GlStateManager.scale(f, f, f);
                 GlStateManager.translate(-64.0F, -64.0F, 0.0F);
-                MapData mapdata = Items.FILLED_MAP.getMapData(entityitem.getEntityItem(), itemFrame.worldObj);
+                MapData mapdata = Items.FILLED_MAP.getMapData(entityitem.getEntityItem(), itemFrame.world);
                 GlStateManager.translate(0.0F, 0.0F, -1.0F);
 
                 if (mapdata != null) {

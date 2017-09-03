@@ -103,7 +103,7 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 
 	// Called by ItemBlock before the block is placed - the placed block must always be Half.LOWER
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(HALF, PlantHalf.LOWER);
 	}
 	

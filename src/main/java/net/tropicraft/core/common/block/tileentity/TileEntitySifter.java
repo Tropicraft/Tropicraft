@@ -58,7 +58,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 		}
 
 		// Rotation animation
-		if (worldObj.isRemote) {
+		if (getWorld().isRemote) {
 			this.yaw2 = this.yaw % 360.0D;
 			this.yaw += 4.545454502105713D;
 		}
@@ -109,11 +109,11 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	 * Spawns an EntityItem with the given ItemStack at the given coordinates
 	 */
 	private void spawn(ItemStack stack, double x, double y, double z) {
-		if (worldObj.isRemote) return;
+		if (getWorld().isRemote) return;
 
-		EntityItem eitem = new EntityItem(worldObj, x, y, z, stack);
+		EntityItem eitem = new EntityItem(getWorld(), x, y, z, stack);
 		eitem.setLocationAndAngles(x, y, z, 0, 0);
-		worldObj.spawnEntityInWorld(eitem);
+		getWorld().spawnEntity(eitem);
 	}
 
 	private ItemStack getCommonItem() {
@@ -168,7 +168,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	 * @return If the block below the sifter should turn this sifter into a heated sifter
 	 */
 	public boolean isHeatedSifter() {
-		IBlockState stateBelow = worldObj.getBlockState(this.getPos().down());
+		IBlockState stateBelow = getWorld().getBlockState(this.getPos().down());
 
 		return stateBelow.getMaterial() == Material.FIRE || stateBelow.getMaterial() == Material.LAVA;
 	}
@@ -188,9 +188,9 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	}
 	
 	private void stopSifting() {
-		double x = this.pos.getX() + worldObj.rand.nextDouble() * 1.4;
-		double y = this.pos.getY() + worldObj.rand.nextDouble() * 1.4;
-		double z = this.pos.getZ() + worldObj.rand.nextDouble() * 1.4;
+		double x = this.pos.getX() + getWorld().rand.nextDouble() * 1.4;
+		double y = this.pos.getY() + getWorld().rand.nextDouble() * 1.4;
+		double z = this.pos.getZ() + getWorld().rand.nextDouble() * 1.4;
 
 		if (!this.getWorld().isRemote) {
 			dumpResults(x, y, z, isHeatedSifter() ? SiftType.HEATED : SiftType.REGULAR);	

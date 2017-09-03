@@ -3,14 +3,20 @@ package net.tropicraft.core.common.enums;
 import net.minecraft.util.IStringSerializable;
 
 public enum TropicraftLeaves implements IStringSerializable {
-    MAHOGANY(0), PALM(1), KAPOK(2), FRUIT(3);
+    MAHOGANY(false, 0), PALM(true, 1), KAPOK(true, 2), FRUIT(false, 3);
     
     private static final TropicraftLeaves[] META_LOOKUP = new TropicraftLeaves[values().length];
+    private final boolean solid;
     private final int meta;
     public static final TropicraftLeaves[] VALUES = values();
     
-    private TropicraftLeaves(int meta) {
+    private TropicraftLeaves(boolean solid, int meta) {
+    	this.solid = solid;
     	this.meta = meta;
+    }
+    
+    public boolean isSolid() {
+    	return solid;
     }
     
 	public int getMetadata() {

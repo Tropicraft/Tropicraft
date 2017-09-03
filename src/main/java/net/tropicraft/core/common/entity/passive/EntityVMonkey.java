@@ -107,7 +107,7 @@ public class EntityVMonkey extends EntityLandTameable implements IMob {
     {
         if (this.isTamed())
         {
-        	if (this.isOwner(player) && !this.worldObj.isRemote && !this.isBreedingItem(stack))
+        	if (this.isOwner(player) && !this.world.isRemote && !this.isBreedingItem(stack))
             {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
@@ -123,7 +123,7 @@ public class EntityVMonkey extends EntityLandTameable implements IMob {
                 --stack.stackSize;
             }
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 if (this.rand.nextInt(3) == 0)
                 {
@@ -134,12 +134,12 @@ public class EntityVMonkey extends EntityLandTameable implements IMob {
                     this.setHealth(20.0F);
                     this.setOwnerId(player.getUniqueID());
                     this.playTameEffect(true);
-                    this.worldObj.setEntityState(this, (byte)7);
+                    this.world.setEntityState(this, (byte)7);
                 }
                 else
                 {
                     this.playTameEffect(false);
-                    this.worldObj.setEntityState(this, (byte)6);
+                    this.world.setEntityState(this, (byte)6);
                 }
             }
 

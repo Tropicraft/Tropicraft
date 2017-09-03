@@ -37,6 +37,7 @@ import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
 import net.tropicraft.core.common.item.ItemUmbrella;
+import net.tropicraft.core.common.item.ItemWaterWand;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
 
 public class ItemRegistry extends TropicraftRegistry {
@@ -131,6 +132,8 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item bambooDoor;
 	public static Item bambooItemFrame;
 
+	public static Item waterWand;
+
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
 		recordEasternIsles = registerItem(new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");
@@ -211,6 +214,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		bambooDoor = registerItem(new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
 		bambooItemFrame = registerItem(new ItemBambooItemFrame(EntityBambooItemFrame.class), "bamboo_item_frame");
 		Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
+
+		waterWand = registerItem(new ItemWaterWand(), "water_wand");
 	}
 
 	public static void init() {

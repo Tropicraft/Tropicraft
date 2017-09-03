@@ -37,7 +37,7 @@ public class ItemBambooItemFrame extends ItemHangingEntity {
                 if (!worldIn.isRemote) {
                 	System.out.println("placing");
                     entityhanging.playPlaceSound();
-                    worldIn.spawnEntityInWorld(entityhanging);
+                    worldIn.spawnEntity(entityhanging);
                 }
 
                 --stack.stackSize;

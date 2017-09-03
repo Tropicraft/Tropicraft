@@ -70,7 +70,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 	 */
 	@Override
 	public boolean getCanSpawnHere() {
-		return this.posY > 45.0D && this.posY < (double)this.worldObj.getSeaLevel() && super.getCanSpawnHere();
+		return this.posY > 45.0D && this.posY < (double)this.world.getSeaLevel() && super.getCanSpawnHere();
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 		this.rotation += this.rotationVelocity;
 
 		if ((double)this.rotation > (Math.PI * 2D)) {
-			if (this.worldObj.isRemote) {
+			if (this.world.isRemote) {
 				this.rotation = ((float)Math.PI * 2F);
 			} else {
 				this.rotation = (float)((double)this.rotation - (Math.PI * 2D));
@@ -104,7 +104,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 					this.rotationVelocity = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
 				}
 
-				this.worldObj.setEntityState(this, (byte)19);
+				this.world.setEntityState(this, (byte)19);
 			}
 		}
 
@@ -123,19 +123,19 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 				this.rotateSpeed *= 0.99F;
 			}
 
-			if (!this.worldObj.isRemote) {
+			if (!this.world.isRemote) {
 				this.motionX = (double)(this.randomMotionVecX * this.randomMotionSpeed);
 				this.motionY = (double)(this.randomMotionVecY * this.randomMotionSpeed);
 				this.motionZ = (double)(this.randomMotionVecZ * this.randomMotionSpeed);
 			}
 
-			float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.renderYawOffset += (-((float)MathHelper.atan2(this.motionX, this.motionZ)) * (180F / (float)Math.PI) - this.renderYawOffset) * 0.1F;
 			this.rotationYaw = this.renderYawOffset;
 			this.yaw = (float)((double)this.yaw + Math.PI * (double)this.rotateSpeed * 1.5D);
 			this.pitch += (-((float)MathHelper.atan2((double)f1, this.motionY)) * (180F / (float)Math.PI) - this.pitch) * 0.1F;
 		} else {
-			if (!this.worldObj.isRemote) {
+			if (!this.world.isRemote) {
 				this.motionX = 0.0D;
 				this.motionZ = 0.0D;
 
@@ -167,7 +167,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 	 */
 	@Override
 	public void moveEntityWithHeading(float strafe, float forward) {
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		this.move(this.motionX, this.motionY, this.motionZ);
 	}
 
 	public void setMovementVector(float randomMotionVecXIn, float randomMotionVecYIn, float randomMotionVecZIn) {

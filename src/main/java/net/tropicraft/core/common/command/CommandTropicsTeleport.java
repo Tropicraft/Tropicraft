@@ -10,12 +10,12 @@ import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 public class CommandTropicsTeleport extends CommandBase {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "tropics";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender sender) {
+	public String getUsage(ICommandSender sender) {
 		return "";
 	}
 
