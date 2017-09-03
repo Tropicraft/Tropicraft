@@ -49,6 +49,8 @@ public class Tropicraft {
 		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
+		
+		proxy.preInit();
 	}
 
 	@EventHandler

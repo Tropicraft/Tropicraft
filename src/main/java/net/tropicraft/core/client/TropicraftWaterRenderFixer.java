@@ -22,7 +22,7 @@ public class TropicraftWaterRenderFixer {
     public void onBlockOverlay(RenderBlockOverlayEvent event) {
         if (event.getOverlayType() == OverlayType.WATER) {
             IBlockState atPos = Minecraft.getMinecraft().world.getBlockState(event.getBlockPos());
-            if (atPos.getBlock() == BlockRegistry.tropicsWater) {
+            if (atPos.getBlock() == BlockRegistry.tropicsWater || atPos.getBlock() == BlockRegistry.coral) {
                 event.setCanceled(true);
                 Minecraft mc = Minecraft.getMinecraft();
                 

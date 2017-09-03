@@ -13,9 +13,8 @@ public class CommonProxy {
 
 	}
 
-	public void init() {
-		
-	}
+	public void preInit() {}
+	public void init() {}
 
 	public static ResourceLocation getResource(String name) {
 		return new ResourceLocation(Info.MODID, name);
@@ -32,4 +31,5 @@ public class CommonProxy {
 	public void registerColoredBlock(Block block) {}
 	public void registerColoredItem(Item item) {}
 	public void registerBooks() {}
+
 }

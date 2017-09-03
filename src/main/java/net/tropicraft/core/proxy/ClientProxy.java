@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ChairColorHandler;
@@ -35,6 +38,11 @@ public class ClientProxy extends CommonProxy {
 
 	public ClientProxy() {
 
+	}
+	
+	@Override
+	public void preInit() {
+		ModelLoader.setCustomStateMapper(BlockRegistry.coral, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
 	}
 
 	@Override
