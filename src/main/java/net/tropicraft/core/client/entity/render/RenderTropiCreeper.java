@@ -31,7 +31,7 @@ public class RenderTropiCreeper extends RenderLiving<EntityTropiCreeper>
     {
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
         float f1 = 1.0F + MathHelper.sin(f * 100.0F) * f * 0.01F;
-        f = MathHelper.clamp_float(f, 0.0F, 1.0F);
+        f = MathHelper.clamp(f, 0.0F, 1.0F);
         f = f * f;
         f = f * f;
         float f2 = (1.0F + f * 0.4F) * f1;
@@ -54,7 +54,7 @@ public class RenderTropiCreeper extends RenderLiving<EntityTropiCreeper>
         else
         {
             int i = (int)(f * 0.2F * 255.0F);
-            i = MathHelper.clamp_int(i, 0, 255);
+            i = MathHelper.clamp(i, 0, 255);
             return i << 24 | 822083583;
         }
     }

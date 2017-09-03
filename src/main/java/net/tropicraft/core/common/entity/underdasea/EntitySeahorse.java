@@ -25,7 +25,7 @@ public class EntitySeahorse extends EntityTropicraftWaterMob {
 	@Override
 	public void entityInit() {
 		super.entityInit();
-		byte color = (byte)this.worldObj.rand.nextInt(6);
+		byte color = (byte)this.world.rand.nextInt(6);
 		this.getDataManager().register(TEXTURE_COLOR, Byte.valueOf(color));
 	}
 	

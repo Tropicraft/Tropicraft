@@ -68,8 +68,8 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
      * Creates an explosion as determined by this creeper's power and explosion radius.
      */
     private void explode() {
-        if (!this.worldObj.isRemote) {
-            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D, new int[0]);
+        if (!this.world.isRemote) {
+            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D, new int[0]);
         }
     }
 	
@@ -199,18 +199,18 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
 		} else {
 				//TODO: readd coconut bomb drop for creeper
 				//this.dropItem(TCItemRegistry.coconutBomb.itemID, rand.nextInt(3) + 1);
-				int y = worldObj.getHeight(new BlockPos((int)posX, (int)posY, (int)posZ)).getY();
+				int y = world.getHeight(new BlockPos((int)posX, (int)posY, (int)posZ)).getY();
 				int xo = rand.nextInt(3) + 4;
 				int zo = xo + rand.nextInt(3) - (new Random()).nextInt(3);
 				for (int x = (int)posX - xo; x < (int)posX + xo; x++) {
 					for (int z = (int)posZ - zo; z < (int)posZ + zo; z++) {
-						y = worldObj.getHeight(new BlockPos((int)x, (int)y, (int)z)).getY();
-						Block block = worldObj.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
+						y = world.getHeight(new BlockPos((int)x, (int)y, (int)z)).getY();
+						Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
 						BlockPos pos = new BlockPos(x, y, z);
 						
-						if (block.getMaterial(block.getDefaultState()) != Material.WATER && worldObj.isAirBlock(pos)
-								&& worldObj.getBlockState(pos.down()).getMaterial() == Material.GRASS ||
-								worldObj.getBlockState(pos.down()).getMaterial() == Material.GROUND) {
+						if (block.getMaterial(block.getDefaultState()) != Material.WATER && world.isAirBlock(pos)
+								&& world.getBlockState(pos.down()).getMaterial() == Material.GRASS ||
+								world.getBlockState(pos.down()).getMaterial() == Material.GROUND) {
 							int meta = rand.nextInt(TropicraftFlowers.VALUES.length);
 							TropicraftFlowers flowerEnum = TropicraftFlowers.VALUES[meta];
 							setBlockState(x, y, z, BlockRegistry.flowers.getDefaultState().withProperty(BlockTropicsFlowers.VARIANT, flowerEnum), 3);
@@ -223,7 +223,7 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
 	}
 
 	protected boolean setBlockState(int x, int y, int z, IBlockState state, int flags) {
-		return worldObj.setBlockState(new BlockPos(x, y, z), state, flags);
+		return world.setBlockState(new BlockPos(x, y, z), state, flags);
 	}
 
 	public void onDeathBySelf() {

@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Optional;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -10,6 +11,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -65,6 +67,15 @@ public class BlockTropicsWater extends BlockFluidClassic {
 
 		// Need to do this for the water to flow !!
 		super.updateTick(world, pos, state, rand);
+	}
+	
+	@Override
+	public int getQuantaValue(IBlockAccess world, BlockPos pos) {
+		int ret = super.getQuantaValue(world, pos);
+		IBlockState state = world.getBlockState(pos);
+		return Optional.ofNullable((Integer) state.getProperties().get(BlockFluidBase.LEVEL))
+				.map(i -> quantaPerBlock - i)
+				.orElse(ret);
 	}
 
 	private boolean isNeighbourSource(World world, IBlockState state, BlockPos pos) {

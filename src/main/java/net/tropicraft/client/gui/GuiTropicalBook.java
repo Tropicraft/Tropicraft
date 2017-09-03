@@ -224,7 +224,7 @@ public class GuiTropicalBook extends GuiScreen {
 		super.handleKeyboardInput();
 		if (Keyboard.getEventKeyState()) {
 			if (Keyboard.getEventKey() == mc.gameSettings.keyBindInventory.getKeyCode()) {
-				mc.displayGuiScreen(new GuiInventory(mc.thePlayer));
+				mc.displayGuiScreen(new GuiInventory(mc.player));
 				return;
 			}
 			keyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());

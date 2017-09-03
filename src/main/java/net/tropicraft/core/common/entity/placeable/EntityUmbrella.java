@@ -83,7 +83,7 @@ public class EntityUmbrella extends Entity {
 		for (int x = i - 3; x <= i + 2; x++) {
 			for (int z = k - 3; z <= k + 2; z++) {
 				BlockPos pos = new BlockPos(i, y, k);
-				worldObj.setBlockToAir(pos);
+				world.setBlockToAir(pos);
 				pos = null;
 			}
 		}
@@ -138,12 +138,12 @@ public class EntityUmbrella extends Entity {
 			double d5 = (umbrellaBB.minY + ((umbrellaBB.maxY - umbrellaBB.minY) * (double)(j + 0)) / (double)i) - 0.125D;
 			double d9 = (umbrellaBB.minY + ((umbrellaBB.maxY - umbrellaBB.minY) * (double)(j + 1)) / (double)i) - 0.125D;
 			AxisAlignedBB axisalignedbb = new AxisAlignedBB(umbrellaBB.minX, d5, umbrellaBB.minZ, umbrellaBB.maxX, d9, umbrellaBB.maxZ);
-			if(worldObj.isAABBInMaterial(axisalignedbb, Material.WATER)) {
+			if(world.isAABBInMaterial(axisalignedbb, Material.WATER)) {
 				d += 1.0D / (double)i;
 			}
 		}
 
-		if(worldObj.isRemote) {
+		if(world.isRemote) {
 			if(idk > 0) {
 				double d1 = posX + (umbrellaX - posX) / (double)idk;
 				double d6 = posY + (umbrellaY - posY) / (double)idk;
@@ -180,7 +180,7 @@ public class EntityUmbrella extends Entity {
 			this.motionZ = 0;
 		}
 
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		this.move(this.motionX, this.motionY, this.motionZ);
 
 		rotationPitch = 0.0F;
 		double d13 = rotationYaw;
@@ -203,7 +203,7 @@ public class EntityUmbrella extends Entity {
 		}
 		rotationYaw += d19;
 		setRotation(rotationYaw, rotationPitch);
-		List<?> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.2D, 0.20000000298023224D));
+		List<?> list = world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.2D, 0.20000000298023224D));
 		if(list != null && list.size() > 0)
 		{
 			for(int j1 = 0; j1 < list.size(); j1++)
@@ -224,7 +224,7 @@ public class EntityUmbrella extends Entity {
 		if (this.isEntityInvulnerable(damagesource)) {
 			return false;
 		}
-		else if (!this.worldObj.isRemote && !this.isDead) {
+		else if (!this.world.isRemote && !this.isDead) {
 			this.setForwardDirection(-this.getForwardDirection());
 			this.setTimeSinceHit(10);
 			this.setDamage(this.getDamage() + i * 10.0F);

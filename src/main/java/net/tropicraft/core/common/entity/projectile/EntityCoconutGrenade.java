@@ -18,8 +18,8 @@ public class EntityCoconutGrenade extends EntityThrowable implements IProjectile
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-        if (!this.worldObj.isRemote) {
-            worldObj.createExplosion(this, posX, posY, posZ, 2.4F, true);
+        if (!this.world.isRemote) {
+            world.createExplosion(this, posX, posY, posZ, 2.4F, true);
         }
 	}
 }

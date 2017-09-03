@@ -91,7 +91,7 @@ public class ItemUmbrella extends ItemTropicraftColored {
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				} else {
 					if (!worldIn.isRemote) {
-						worldIn.spawnEntityInWorld(umbrella);
+						worldIn.spawnEntity(umbrella);
 					}
 
 					if (!playerIn.capabilities.isCreativeMode) {

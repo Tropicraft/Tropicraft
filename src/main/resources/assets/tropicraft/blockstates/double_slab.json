@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "half=bottom,variant=bamboo_slab": { "model": "tropicraft:bamboo_bundle" },
+        "half=top,variant=bamboo_slab": { "model": "tropicraft:bamboo_bundle" },
+        "half=bottom,variant=thatch_slab": { "model": "tropicraft:thatch_bundle" },
+        "half=top,variant=thatch_slab": { "model": "tropicraft:thatch_bundle" },
+        "half=bottom,variant=chunk_slab": { "model": "tropicraft:chunk" },
+        "half=top,variant=chunk_slab": { "model": "tropicraft:chunk" },
+        "half=bottom,variant=palm_slab": { "model": "tropicraft:palm_plank" },
+        "half=top,variant=palm_slab": { "model": "tropicraft:palm_plank" }
+    }
+}

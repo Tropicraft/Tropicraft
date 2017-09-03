@@ -20,7 +20,7 @@ public class MessageMixerStart extends MessageTileEntity<TileEntityDrinkMixer> {
 
 		@Override
 		public IMessage onMessage(MessageMixerStart message, MessageContext ctx) {
-			TileEntityDrinkMixer te = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			TileEntityDrinkMixer te = message.getTileEntity(Minecraft.getMinecraft().world);
 			if (te != null) {
 				te.startMixing();
 			}
