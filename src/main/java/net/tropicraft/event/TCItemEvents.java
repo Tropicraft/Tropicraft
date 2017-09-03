@@ -3,15 +3,19 @@ package net.tropicraft.event;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.tropicraft.item.ItemTropicsWaterBucket;
 import net.tropicraft.item.tool.IUnderwaterTool;
 import net.tropicraft.item.tool.ItemUnderwaterShovel;
 import net.tropicraft.registry.TCBlockRegistry;
@@ -26,6 +30,7 @@ public class TCItemEvents {
 
     @SubscribeEvent
     public void handleBucketFillEvent(FillBucketEvent event) {
+    	ItemTropicsWaterBucket bucket = (ItemTropicsWaterBucket)TCItemRegistry.bucketTropicsWater;
         ItemStack iHazBucket = new ItemStack(TCItemRegistry.bucketTropicsWater);
 
         World world = event.world;
@@ -37,6 +42,30 @@ public class TCItemEvents {
 
         Fluid fluid = FluidRegistry.lookupFluidForBlock(world.getBlock(x, y, z));
 
+		if (fluid == null) {
+        	TileEntity tile = event.world.getTileEntity(x, y, z);
+        	if(tile != null && tile instanceof IFluidHandler) {
+        		IFluidHandler tank = (IFluidHandler)tile;
+        		FluidStack fluidStack = tank.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME, false);
+        		if(fluidStack == null) {
+        			return;
+        		}
+        		
+        		if(fluidStack.amount < FluidContainerRegistry.BUCKET_VOLUME) {
+        			return;
+        		}
+        		
+        		if(fluidStack.getFluid() == TCFluidRegistry.tropicsWater) {
+    				tank.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME , true);
+        			ItemStack filled = new ItemStack(TCItemRegistry.bucketTropicsWater);
+        			bucket.fill(filled, fluidStack, true);
+        			event.result = filled;
+    				event.setResult(Result.ALLOW);
+    				return;
+        		}
+        	}
+		}
+        
         if (fluid != null) {
             if (fluid == TCFluidRegistry.tropicsWater && meta == 0) {
                 TCItemRegistry.bucketTropicsWater.fill(iHazBucket, new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), true);

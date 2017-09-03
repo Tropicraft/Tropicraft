@@ -9,12 +9,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.ItemFluidContainer;
 import net.tropicraft.info.TCInfo;
 import net.tropicraft.info.TCNames;
@@ -45,9 +48,22 @@ public class ItemTropicsWaterBucket extends ItemFluidContainer {
 		MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, false);
 
 		if (movingobjectposition != null) {
+			ForgeDirection direction = ForgeDirection.getOrientation(movingobjectposition.sideHit);
             int i = movingobjectposition.blockX;
             int j = movingobjectposition.blockY;
             int k = movingobjectposition.blockZ;
+            
+        	TileEntity tile = world.getTileEntity(i, j, k);
+        	
+        	if(tile != null && tile instanceof IFluidHandler) {
+        		IFluidHandler tank = (IFluidHandler)tile;
+        		if(tank.fill(direction,this.getFluid(itemStack), false) == this.getCapacity(itemStack)) {
+        			tank.fill(direction,this.getFluid(itemStack), true);
+        			if(!player.capabilities.isCreativeMode)
+        				return new ItemStack(Items.bucket);
+        		}
+        		return itemStack;
+        	}
 
             if (movingobjectposition.sideHit == 0) {
                 --j;
