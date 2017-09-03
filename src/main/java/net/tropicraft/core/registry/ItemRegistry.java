@@ -213,6 +213,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		flowerPot = registerItem(new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
 		bambooDoor = registerItem(new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
 		bambooItemFrame = registerItem(new ItemBambooItemFrame(EntityBambooItemFrame.class), "bamboo_item_frame");
+		Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
 
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
 	}

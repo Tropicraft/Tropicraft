@@ -1,4 +1,3 @@
-
 // For those who want the bleeding edge
 buildscript {
     repositories {
@@ -17,6 +16,8 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 version = "${mod_version}"
 group= "net.tropicraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "tropicraft"
+
+sourceCompatibility = targetCompatibility = '1.8'
 
 minecraft {
     version = "${minecraft_version}-${forge_version}"
