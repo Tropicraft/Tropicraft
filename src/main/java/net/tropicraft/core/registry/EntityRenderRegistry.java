@@ -20,6 +20,7 @@ import net.tropicraft.core.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.core.client.entity.render.RenderUmbrella;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
+import net.tropicraft.core.client.entity.render.RenderWallItem;
 import net.tropicraft.core.common.entity.EntityLavaBall;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
@@ -31,6 +32,7 @@ import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
+import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
@@ -54,6 +56,7 @@ public class EntityRenderRegistry {
 																			ItemRegistry.coconutBomb,
 																			Minecraft.getMinecraft().getRenderItem()));
 		registerEntityRender(EntityBambooItemFrame.class, new RenderBambooItemFrame());
+		registerEntityRender(EntityWallItem.class, new RenderWallItem());
 	}
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {

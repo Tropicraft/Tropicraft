@@ -2,8 +2,14 @@ package net.tropicraft.core.client;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
 import net.tropicraft.SandColors;
+import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 
 public class TropicraftRenderUtils {
 
@@ -76,7 +83,32 @@ public class TropicraftRenderUtils {
     public static final IItemColor BLOCK_ITEM_COLORING = new IItemColor() {
         @Override
         public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-            return SandColors.getColor(tintIndex - 1);
-        }
-    };
+			return SandColors.getColor(tintIndex - 1);
+		}
+	};
+
+	public static void renderItem(ItemStack stack, float scale) {
+		if (stack != null) {
+
+			GlStateManager.pushMatrix();
+			{
+				GlStateManager.disableLighting();
+
+				GlStateManager.scale(scale, scale, scale);
+
+				if (!Minecraft.getMinecraft().getRenderItem().shouldRenderItemIn3D(stack) || stack.getItem() instanceof ItemSkull) {
+					GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+				}
+
+				GlStateManager.pushAttrib();
+				RenderHelper.enableStandardItemLighting();
+				Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+				RenderHelper.disableStandardItemLighting();
+				GlStateManager.popAttrib();
+
+				GlStateManager.enableLighting();
+			}
+			GlStateManager.popMatrix();
+		}
+	}
 }
