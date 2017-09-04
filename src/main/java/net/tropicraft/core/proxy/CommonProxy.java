@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.tropicraft.Info;
 
 public class CommonProxy {
@@ -31,5 +32,9 @@ public class CommonProxy {
 	public void registerColoredBlock(Block block) {}
 	public void registerColoredItem(Item item) {}
 	public void registerBooks() {}
+	
+	public World getClientWorld() {
+		return null;
+	}
 
 }

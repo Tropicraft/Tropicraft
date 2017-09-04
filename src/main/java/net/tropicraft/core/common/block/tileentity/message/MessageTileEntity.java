@@ -8,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.tropicraft.Tropicraft;
 
 /**
  * Taken from <a href="https://github.com/SleepyTrousers/EnderCore">EnderCore</a>, with permission.
@@ -46,6 +47,10 @@ public abstract class MessageTileEntity<T extends TileEntity> implements IMessag
 
 	public BlockPos getPos() {
 		return BlockPos.fromLong(pos);
+	}
+	
+	protected T getClientTileEntity() {
+		return getTileEntity(Tropicraft.proxy.getClientWorld());
 	}
 
 	@SuppressWarnings("unchecked")

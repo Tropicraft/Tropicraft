@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -155,5 +156,10 @@ public class ClientProxy extends CommonProxy {
 				"encyclopediaTropica", 
 				"encyclopediaTropicaInside");
 		CraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
+	}
+	
+	@Override
+	public World getClientWorld() {
+		return Minecraft.getMinecraft().world;
 	}
 }
