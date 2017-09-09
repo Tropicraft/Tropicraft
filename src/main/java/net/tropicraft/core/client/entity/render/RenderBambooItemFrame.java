@@ -44,8 +44,8 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
      */
 	@Override
     public void doRender(EntityBambooItemFrame entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		System.out.println(itemFrameModel);
-        GlStateManager.pushMatrix();
+
+		GlStateManager.pushMatrix();
         BlockPos blockpos = entity.getHangingPosition();
         double d0 = (double)blockpos.getX() - entity.posX + x;
         double d1 = (double)blockpos.getY() - entity.posY + y;
@@ -61,7 +61,6 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
             ibakedmodel = modelmanager.getModel(this.mapModel);
         } else {
             ibakedmodel = modelmanager.getModel(this.itemFrameModel);
-            //System.out.println(ibakedmodel.);
         }
 
         GlStateManager.pushMatrix();
@@ -83,8 +82,7 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
         GlStateManager.translate(0.0F, 0.0F, 0.4375F);
         this.renderItem(entity);
         GlStateManager.popMatrix();
-        //System.out.println(entity);
-       // System.out.println(entity.facingDirection);
+
         this.renderName(entity, x + (double)((float)entity.facingDirection.getFrontOffsetX() * 0.3F), y - 0.25D, z + (double)((float)entity.facingDirection.getFrontOffsetZ() * 0.3F));
     }
 	

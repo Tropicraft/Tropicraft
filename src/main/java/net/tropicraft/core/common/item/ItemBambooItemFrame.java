@@ -30,12 +30,8 @@ public class ItemBambooItemFrame extends ItemHangingEntity {
             EntityBambooItemFrame entityhanging = this.createEntity(worldIn, blockpos, facing);
             entityhanging.setFacing(facing);
             
-            System.out.println(entityhanging.facingDirection);
-            System.out.println(entityhanging.onValidSurface());
-            
             if (entityhanging != null && entityhanging.onValidSurface()) {
                 if (!worldIn.isRemote) {
-                	System.out.println("placing");
                     entityhanging.playPlaceSound();
                     worldIn.spawnEntity(entityhanging);
                 }

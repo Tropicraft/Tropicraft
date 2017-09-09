@@ -76,12 +76,10 @@ public class EntityBambooItemFrame extends EntityItemFrame {
             }
 
             if (shouldDropItem) {
-            	System.out.println("dropping");
                 this.entityDropItem(new ItemStack(ItemRegistry.bambooItemFrame), 0.0F);
             }
 
             if (itemstack != null && this.rand.nextFloat() < this.itemDropChance) {
-            	System.out.println("bye");
                 itemstack = itemstack.copy();
                 this.removeFrameFromMap(itemstack);
                 this.entityDropItem(itemstack, 0.0F);
