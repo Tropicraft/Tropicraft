@@ -13,7 +13,10 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "${mod_version}"
+ext.buildnumber = 0
+project.buildnumber = System.getenv('BUILD_NUMBER') ?: 'custom'
+
+version = "${mod_version}.${buildnumber}"
 group= "net.tropicraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "tropicraft"
 
