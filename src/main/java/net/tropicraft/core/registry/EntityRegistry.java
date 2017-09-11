@@ -13,8 +13,10 @@ import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
+import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
+import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
@@ -42,6 +44,8 @@ public class EntityRegistry {
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
+		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
+		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

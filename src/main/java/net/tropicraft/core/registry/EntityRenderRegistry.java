@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
+import net.tropicraft.core.client.entity.render.RenderBambooItemFrame;
 import net.tropicraft.core.client.entity.render.RenderChair;
 import net.tropicraft.core.client.entity.render.RenderEIH;
 import net.tropicraft.core.client.entity.render.RenderFailgull;
@@ -19,6 +20,7 @@ import net.tropicraft.core.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.core.client.entity.render.RenderUmbrella;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
+import net.tropicraft.core.client.entity.render.RenderWallItem;
 import net.tropicraft.core.common.entity.EntityLavaBall;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
@@ -27,8 +29,10 @@ import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
+import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
+import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
@@ -51,6 +55,8 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
 																			ItemRegistry.coconutBomb,
 																			Minecraft.getMinecraft().getRenderItem()));
+		registerEntityRender(EntityBambooItemFrame.class, new RenderBambooItemFrame());
+		registerEntityRender(EntityWallItem.class, new RenderWallItem());
 	}
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {

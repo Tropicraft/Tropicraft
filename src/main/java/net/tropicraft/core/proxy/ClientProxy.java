@@ -1,7 +1,10 @@
 package net.tropicraft.core.proxy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -11,13 +14,18 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
@@ -38,7 +46,7 @@ import net.tropicraft.core.registry.TileEntityRenderRegistry;
 public class ClientProxy extends CommonProxy {
 
 	public ClientProxy() {
-
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	@Override
@@ -50,11 +58,11 @@ public class ClientProxy extends CommonProxy {
 	public void init() {
 		super.init();
 
-		EntityRenderRegistry.init();
-		TileEntityRenderRegistry.init();
-
 		ItemRegistry.clientProxyInit();
 		BlockRegistry.clientProxyInit();
+		
+		EntityRenderRegistry.init();
+		TileEntityRenderRegistry.init();
 
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 
@@ -102,6 +110,24 @@ public class ClientProxy extends CommonProxy {
 		if (item != null) { 
 			//     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
 			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, "inventory"));
+		}
+	}
+	
+	private final Map<String, String[]> blockVariants = new HashMap<>();
+	
+	@Override
+	public void registerArbitraryBlockVariants(String name, String... variants) {
+		blockVariants.put(name, variants);
+	}
+	
+	@SubscribeEvent
+	public void onModelBake(ModelBakeEvent event) {
+		for (Entry<String, String[]> e : blockVariants.entrySet()) {
+			for (String variant : e.getValue()) {
+				ModelResourceLocation loc = new ModelResourceLocation(Info.MODID + ":" + e.getKey(), variant);
+				IModel model = ModelLoaderRegistry.getModelOrLogError(loc, "Could not load arbitrary block variant " + variant + " for block " + e.getKey());
+				event.getModelRegistry().putObject(loc, model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter()));
+			}
 		}
 	}
 
