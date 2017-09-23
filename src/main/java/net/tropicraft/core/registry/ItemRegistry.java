@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
+import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
@@ -27,6 +28,7 @@ import net.tropicraft.core.common.item.ItemCoconutBomb;
 import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
+import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
 import net.tropicraft.core.common.item.ItemShell;
@@ -133,6 +135,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item bambooItemFrame;
 
 	public static Item waterWand;
+	public static Item mobEgg;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -216,6 +219,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
 
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
+		mobEgg = registerMultiItemTextured(new ItemMobEgg(), "egg", Names.EGG_NAMES);
 	}
 
 	public static void init() {
