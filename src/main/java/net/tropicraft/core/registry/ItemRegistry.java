@@ -126,9 +126,9 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item blackPearl;
 
 	public static Item fertilizer;
-	
+
 	public static Item encyclopedia;
-	
+
 	// Decorations
 	public static Item flowerPot;
 	public static Item bambooDoor;
@@ -206,13 +206,13 @@ public class ItemRegistry extends TropicraftRegistry {
 		blackPearl = registerItem(new ItemTropicraft().setMaxStackSize(64), "black_pearl");
 
 		fertilizer = registerItem(new ItemFertilizer(), "fertilizer");
-		
+
 		encyclopedia = registerItem(new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
-		
+
 		dagger = registerItem(new ItemDagger(materialZirconTools), "dagger");
 		bambooSpear = registerItem(new ItemSword(materialBambooTools), "bamboo_spear");
 		coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
-		
+
 		flowerPot = registerItem(new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
 		bambooDoor = registerItem(new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
 		bambooItemFrame = registerItem(new ItemBambooItemFrame(EntityBambooItemFrame.class), "bamboo_item_frame");
@@ -230,6 +230,20 @@ public class ItemRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerColoredItem(chair);
 		Tropicraft.proxy.registerColoredItem(umbrella);
 		Tropicraft.proxy.registerColoredItem(cocktail);
+	}
+
+	private static Item registerMultiItemTextured(Item item, String name, String[] names) {
+		item.setUnlocalizedName(getNamePrefixed(name));
+		item.setRegistryName(new ResourceLocation(Info.MODID, name));
+
+		GameRegistry.register(item);
+		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
+
+		for (int metadata = 0; metadata < names.length; metadata++) {
+			Tropicraft.proxy.registerItemVariantModel(item, name + "_" + names[metadata], metadata);
+		}
+
+		return item;
 	}
 
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {
