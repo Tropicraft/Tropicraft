@@ -29,10 +29,6 @@ import net.tropicraft.Names;
 
 public class ItemMobEgg extends ItemTropicraft {
 
-	public static String[] names = {"Iguana Egg", "Starfish Egg", "Green Frog Spawn", "Red Frog Spawn", "Yellow Frog Spawn",
-		"Blue Frog Spawn", "Eye of Head", "Marlin Spawn", "Tropical Fish Spawn", "Ashen Ash", "Turtle Egg", "Man o' War", "Monkey's Paw",
-		"Koa Headband", "TropiCreeper Egg", "TropiSkelly Skirt", "Spotted Eagle Ray", "Failgull", "Sea Urchin"};
-
 	public ItemMobEgg() {
 		super();
 		setMaxStackSize(64);
@@ -45,7 +41,7 @@ public class ItemMobEgg extends ItemTropicraft {
 	 */
 	@Override
 	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, names.length - 1);
+		int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, Names.EGG_NAMES.length - 1);
 		return super.getUnlocalizedName() + "_" + Names.EGG_NAMES[i];
 	}
 
@@ -55,7 +51,7 @@ public class ItemMobEgg extends ItemTropicraft {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
-		for (int var4 = 0; var4 < names.length; ++var4) {
+		for (int var4 = 0; var4 < Names.EGG_NAMES.length; ++var4) {
 			list.add(new ItemStack(item, 1, var4));
 		}
 	}
