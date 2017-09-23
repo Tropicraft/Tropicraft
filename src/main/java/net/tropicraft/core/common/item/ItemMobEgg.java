@@ -60,65 +60,10 @@ public class ItemMobEgg extends ItemTropicraft {
 	public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			String s = "";
-			switch (itemstack.getItemDamage()) {
-			case 0:
-				s = "Iguana";
-				break;
-			case 1:
-				s = "Starfish";
-				break;
-			case 2:
-				s = "TreeFrogGreen";
-				break;
-			case 3:
-				s = "TreeFrogRed";
-				break;
-			case 4:
-				s = "TreeFrogYellow";
-				break;
-			case 5:
-				s = "TreeFrogBlue";
-				break;
-			case 6:
-				s = "EasterIslandHead";
-				break;
-			case 7:
-				s = "Marlin";
-				break;
-			case 8:
-				s = "TropicalFish";
-				break;
-			case 9:
-				s = "AshenHunter";
-				break;
-			case 10:
-				s = "SeaTurtleEgg";
-				break;
-			case 11:
-				s = "MOW";
-				break;
-			case 12:
-				s = "VMonkey";
-				break;
-			case 13:
-				s = "Koa Man";
-				break;
-			case 14:
-				s = "TropiCreeper";
-				break;
-			case 15:
-				s = "TropiSkeleton";
-				break;
-			case 16:
-				s = "EagleRay";
-				break;
-			case 17:
-				s = "Failgull";
-				break;
-			case 18:
-				s = "SeaUrchin";
-				break;
-			default:
+			int damage = itemstack.getItemDamage();
+			if (itemstack.getItemDamage() < 19) {
+				s = Names.EGG_NAMES[damage];
+			} else {
 				return EnumActionResult.PASS;
 			}
 
