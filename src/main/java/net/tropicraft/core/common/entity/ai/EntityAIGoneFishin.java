@@ -90,7 +90,11 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             if (!entity.isInWater()) {
                 if (walkingTimeout <= 0 || entity.getNavigator().noPath()) {
-                    maintainPathToBlock(posLastWaterFound);
+                    debug("reset task from water pathing taking too long");
+                    //cases where theyre trying to get to water underground, reset task instead
+                    //maintainPathToBlock(posLastWaterFound);
+                    resetTask();
+                    return;
                 }
             } else {
                 //we fell in water accidentally, get to shore
@@ -201,7 +205,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     private void setState(FISHING_STATE state) {
-        debug("setting state from " + this.state + " to " + state);
+        debug("setting state from " + this.state + " to " + state + " - " + this.entity.getPosition());
         this.state = state;
         if (this.state == FISHING_STATE.FISHING) {
             fishingTimeout = fishingTimeoutMax;
@@ -215,6 +219,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     @Override
     public void resetTask() {
         super.resetTask();
+        debug("reset task");
         fishCaught = 0;
         posLastLandFound = null;
         posLastWaterFound = null;
@@ -226,7 +231,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             walkingTimeout = walkingTimeoutMax;
             boolean success = Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
             if (!success) {
-                debug("repathing failed - " + this.entity.getEntityId() + " - " + this.state);
+                debug("repathing failed - " + this.entity.getEntityId() + " - " + this.state + " - " + pos);
                 repathPenalty = repathPenaltyMax;
             }
         }

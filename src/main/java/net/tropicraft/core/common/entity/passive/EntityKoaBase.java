@@ -12,8 +12,10 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -63,6 +65,8 @@ public class EntityKoaBase extends EntityVillager {
 
         //temp until we use AT
         Util.removeTask(this, EntityAIHarvestFarmland.class);
+
+        //this.setDead();
     }
 
     @Override
@@ -156,5 +160,21 @@ public class EntityKoaBase extends EntityVillager {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
         this.setHomePosAndDistance(this.getPosition(), -1);
         return super.onInitialSpawn(difficulty, livingdata);
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("home_X", getHomePosition().getX());
+        compound.setInteger("home_Y", getHomePosition().getY());
+        compound.setInteger("home_Z", getHomePosition().getZ());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        if (compound.hasKey("home_X")) {
+            this.setHomePosAndDistance(new BlockPos(compound.getInteger("home_X"), compound.getInteger("home_Y"), compound.getInteger("home_Z")), -1);
+        }
     }
 }
