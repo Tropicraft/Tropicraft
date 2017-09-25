@@ -2,6 +2,7 @@ package net.tropicraft.core.registry;
 
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.EntityLavaBall;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
@@ -12,6 +13,7 @@ import net.tropicraft.core.common.entity.hostile.EntityTreeFrogYellow;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
+import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
@@ -46,6 +48,7 @@ public class EntityRegistry {
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
 		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
+		registerEntity(EntityKoaHunter.class, "KoaHunter", 64, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
