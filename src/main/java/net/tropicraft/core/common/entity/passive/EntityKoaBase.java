@@ -1,10 +1,7 @@
 package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -12,17 +9,24 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
+import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
+import net.tropicraft.core.registry.ItemRegistry;
 
 import javax.annotation.Nullable;
 
 public class EntityKoaBase extends EntityVillager {
+
+    //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
 
     public EntityKoaBase(World worldIn) {
         super(worldIn);
@@ -32,19 +36,20 @@ public class EntityKoaBase extends EntityVillager {
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityZombie.class, 8.0F, 0.6D, 0.6D, 15F));
+        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityZombie.class, 8.0F, 1D, 1D, 15F));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true));
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6D));
+        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1D));
         this.tasks.addTask(6, new EntityAIVillagerMate(this));
+        this.tasks.addTask(7, new EntityAIGoneFishin(this));
         //this.tasks.addTask(7, new EntityAIFollowGolem(this));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
         //this.tasks.addTask(9, new EntityAIVillagerInteract(this));
-        this.tasks.addTask(9, new EntityAIWander(this, 0.6D));
+        this.tasks.addTask(9, new EntityAIWander(this, 1D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
@@ -52,11 +57,20 @@ public class EntityKoaBase extends EntityVillager {
     }
 
     @Override
+    protected void updateAITasks() {
+        //cancel villager AI that overrides our home position
+        //super.updateAITasks();
+
+        //temp until we use AT
+        Util.removeTask(this, EntityAIHarvestFarmland.class);
+    }
+
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
@@ -134,5 +148,13 @@ public class EntityKoaBase extends EntityVillager {
     @Override
     protected SoundEvent getHurtSound() {
         return null;
+    }
+
+    @Nullable
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
+        this.setHomePosAndDistance(this.getPosition(), -1);
+        return super.onInitialSpawn(difficulty, livingdata);
     }
 }
