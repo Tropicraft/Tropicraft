@@ -86,7 +86,7 @@ public class Util {
     }
 
     public static boolean tryMoveToEntityLivingLongDist(EntityLiving entSource, Entity entityTo, double moveSpeedAmp) {
-        return tryMoveToXYZLongDist(entSource, MathHelper.floor(entityTo.posX), MathHelper.floor(entityTo.getEntityBoundingBox().minY), MathHelper.floor(entityTo.posZ), moveSpeedAmp);
+        return tryMoveToXYZLongDist(entSource, entityTo.getPosition(), moveSpeedAmp);
     }
 
     public static boolean tryMoveToXYZLongDist(EntityLiving ent, BlockPos pos, double moveSpeedAmp) {

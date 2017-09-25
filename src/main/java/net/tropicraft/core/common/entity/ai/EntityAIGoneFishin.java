@@ -41,6 +41,9 @@ public class EntityAIGoneFishin extends EntityAIBase {
     //inventory placeholder
     private int fishCaught = 0;
 
+    private int repathPenalty = 0;
+    private int repathPenaltyMax = 60;
+
     public EntityAIGoneFishin(EntityCreature entity) {
         this.entity = entity;
         setMutexBits(3);
@@ -60,6 +63,10 @@ public class EntityAIGoneFishin extends EntityAIBase {
     @Override
     public void updateTask() {
         super.updateTask();
+
+        if (repathPenalty > 0) {
+            repathPenalty--;
+        }
 
         if (state == FISHING_STATE.IDLE) {
             BlockPos posWater = findWater();
@@ -138,7 +145,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             if (ifCaughtFish()) {
                 fishCaught++;
-                System.out.println("caught a fish");
+                debug("caught a fish");
 
                 if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
                     Util.tryMoveToXYZLongDist(entity, entity.getHomePosition(), moveSpeedAmp);
@@ -158,9 +165,9 @@ public class EntityAIGoneFishin extends EntityAIBase {
         } else if (state == FISHING_STATE.RETURN_TO_BASE) {
             //entity.getHomePosition()
 
-            //System.out.println(entity.getHomePosition());
+            //debug(entity.getHomePosition());
             if (entity.getDistance(entity.getHomePosition().getX(), entity.getHomePosition().getY(), entity.getHomePosition().getZ()) < 3D) {
-                System.out.println("dropping off fish");
+                debug("dropping off fish");
                 fishCaught = 0;
                 setState(FISHING_STATE.IDLE);
             }
@@ -215,9 +222,14 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     private void maintainPathToBlock(BlockPos pos) {
-        System.out.println("repathing");
-        walkingTimeout = walkingTimeoutMax;
-        Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
+        if (repathPenalty <= 0) {
+            walkingTimeout = walkingTimeoutMax;
+            boolean success = Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
+            if (!success) {
+                debug("repathing failed - " + this.entity.getEntityId() + " - " + this.state);
+                repathPenalty = repathPenaltyMax;
+            }
+        }
     }
 
     private void debug(String str) {
