@@ -52,12 +52,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        return true;
-    }
-
-    @Override
-    public boolean continueExecuting() {
-        return super.continueExecuting();
+        return state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
     }
 
     @Override
