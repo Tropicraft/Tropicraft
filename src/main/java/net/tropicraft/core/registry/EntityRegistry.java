@@ -27,20 +27,20 @@ public class EntityRegistry {
 	private static int entityID = 0;
 
 	public static void init() {
-		registerEntity(EntityEIH.class, "EasterIslandHead", 80, 3, true);
-		registerEntity(EntityTropiCreeper.class, "TropiCreeper", 80, 3, true);
-		registerEntity(EntityIguana.class, "Iguana", 80, 3, true);
-		registerEntity(EntityTreeFrogGreen.class, "TreeFrogGreen", 80, 3, true);
-		registerEntity(EntityTreeFrogRed.class, "TreeFrogRed", 80, 3, true);
-		registerEntity(EntityTreeFrogBlue.class, "TreeFrogBlue", 80, 3, true);
-		registerEntity(EntityTreeFrogYellow.class, "TreeFrogYellow", 80, 3, true);
-		registerEntity(EntityTropiSkeleton.class, "TropiSkeleton", 80, 3, true);
-		registerEntity(EntityVMonkey.class, "VMonkey", 80, 3, true);
+		registerEntity(EntityEIH.class, "eih", 80, 3, true);
+		registerEntity(EntityTropiCreeper.class, "tropicreeper", 80, 3, true);
+		registerEntity(EntityIguana.class, "iguana", 80, 3, true);
+		registerEntity(EntityTreeFrogGreen.class, "greenfrog", 80, 3, true);
+		registerEntity(EntityTreeFrogRed.class, "redfrog", 80, 3, true);
+		registerEntity(EntityTreeFrogBlue.class, "bluefrog", 80, 3, true);
+		registerEntity(EntityTreeFrogYellow.class, "yellowfrog", 80, 3, true);
+		registerEntity(EntityTropiSkeleton.class, "tropiskelly", 80, 3, true);
+		registerEntity(EntityVMonkey.class, "monkey", 80, 3, true);
 		registerEntity(EntityPoisonBlot.class, "PoisonBlot", 32, 1, true);
-		registerEntity(EntityMarlin.class, "Marlin", 80, 3, true);
+		registerEntity(EntityMarlin.class, "marlin", 80, 3, true);
 		registerEntity(EntityLavaBall.class, "Lava Ball", 120, 4, true);
-		registerEntity(EntitySeahorse.class, "Seahorse", 80, 3, true);
-		registerEntity(EntityFailgull.class, "Failgull", 80, 3, true);
+		registerEntity(EntitySeahorse.class, "seahorse", 80, 3, true);
+		registerEntity(EntityFailgull.class, "failgull", 80, 3, true);
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
