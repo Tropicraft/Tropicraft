@@ -1,11 +1,26 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 
 public class ModelKoaMan extends ModelBiped {
+	
+	private static class ModelRendererCull extends ModelRenderer {
+		
+		public ModelRendererCull(ModelBase model, int texOffX, int texOffY) {
+			super(model, texOffX, texOffY);
+		}
+
+		@Override
+		public void render(float scale) {
+			GlStateManager.enableCull();
+			super.render(scale);
+			GlStateManager.disableCull();
+		}
+	}
 
     /*public ModelRenderer bipedHead;
     public ModelRenderer bipedBody;
@@ -88,65 +103,75 @@ public class ModelKoaMan extends ModelBiped {
         armbandL.mirror = true;
         bipedLeftArm.addChild(armbandL);
         setRotation(armbandL, 0F, 0F, 0F);
-        leaf = new ModelRenderer(this, 0, 0);
-        leaf.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf = new ModelRendererCull(this, 0, 0);
+        leaf.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf.setRotationPoint(2F, -6F, -6F);
         leaf.setTextureSize(64, 32);
         leaf.mirror = true;
+        headband.addChild(leaf);
         setRotation(leaf, 0F, 0F, 0F);
-        leaf3 = new ModelRenderer(this, 0, 0);
-        leaf3.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf3 = new ModelRendererCull(this, 0, 0);
+        leaf3.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf3.setRotationPoint(-1F, -6F, -6F);
         leaf3.setTextureSize(64, 32);
         leaf3.mirror = true;
+        headband.addChild(leaf3);
         setRotation(leaf3, 0F, 0F, 0F);
-        leaf2 = new ModelRenderer(this, 0, 0);
-        leaf2.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf2 = new ModelRendererCull(this, 0, 0);
+        leaf2.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf2.setRotationPoint(-4F, -6F, -6F);
         leaf2.setTextureSize(64, 32);
         leaf2.mirror = true;
+        headband.addChild(leaf2);
         setRotation(leaf2, 0F, 0F, 0F);
-        leaf4 = new ModelRenderer(this, 0, 0);
-        leaf4.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf4 = new ModelRendererCull(this, 0, 0);
+        leaf4.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf4.setRotationPoint(0F, -7F, -6F);
         leaf4.setTextureSize(64, 32);
         leaf4.mirror = true;
+        headband.addChild(leaf4);
         setRotation(leaf4, 0F, 0F, 0F);
-        leaf5 = new ModelRenderer(this, 0, 0);
-        leaf5.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf5 = new ModelRendererCull(this, 0, 0);
+        leaf5.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf5.setRotationPoint(5F, -6F, -1F);
         leaf5.setTextureSize(64, 32);
         leaf5.mirror = true;
+        headband.addChild(leaf5);
         setRotation(leaf5, 0F, 0F, 0F);
-        leaf6 = new ModelRenderer(this, 0, 0);
-        leaf6.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf6 = new ModelRendererCull(this, 0, 0);
+        leaf6.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf6.setRotationPoint(5F, -6F, 3F);
         leaf6.setTextureSize(64, 32);
         leaf6.mirror = true;
+        headband.addChild(leaf6);
         setRotation(leaf6, 0F, 0F, 0F);
-        leaf7 = new ModelRenderer(this, 0, 0);
-        leaf7.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf7 = new ModelRendererCull(this, 0, 0);
+        leaf7.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf7.setRotationPoint(-6F, -6F, 0F);
         leaf7.setTextureSize(64, 32);
         leaf7.mirror = true;
+        headband.addChild(leaf7);
         setRotation(leaf7, 0F, 0F, 0F);
-        leaf8 = new ModelRenderer(this, 0, 0);
-        leaf8.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf8 = new ModelRendererCull(this, 0, 0);
+        leaf8.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf8.setRotationPoint(-6F, -6F, -4F);
         leaf8.setTextureSize(64, 32);
         leaf8.mirror = true;
+        headband.addChild(leaf8);
         setRotation(leaf8, 0F, 0F, 0F);
-        leaf9 = new ModelRenderer(this, 0, 0);
-        leaf9.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf9 = new ModelRendererCull(this, 0, 0);
+        leaf9.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf9.setRotationPoint(-2F, -6F, 5F);
         leaf9.setTextureSize(64, 32);
         leaf9.mirror = true;
+        headband.addChild(leaf9);
         setRotation(leaf9, 0F, 0F, 0F);
-        leaf10 = new ModelRenderer(this, 0, 0);
-        leaf10.addBox(0F, 0F, 0F, 1, 0, 1);
+        leaf10 = new ModelRendererCull(this, 0, 0);
+        leaf10.addBox(0F, 7F, 0F, 1, 0, 1);
         leaf10.setRotationPoint(2F, -6F, 5F);
         leaf10.setTextureSize(64, 32);
         leaf10.mirror = true;
+        headband.addChild(leaf10);
         setRotation(leaf10, 0F, 0F, 0F);
     }
 
@@ -160,19 +185,6 @@ public class ModelKoaMan extends ModelBiped {
         bipedLeftArm.render(f5);
         bipedRightLeg.render(f5);
         bipedLeftLeg.render(f5);
-
-        GlStateManager.enableCull();
-        leaf.render(f5);
-        leaf3.render(f5);
-        leaf2.render(f5);
-        leaf4.render(f5);
-        leaf5.render(f5);
-        leaf6.render(f5);
-        leaf7.render(f5);
-        leaf8.render(f5);
-        leaf9.render(f5);
-        leaf10.render(f5);
-        GlStateManager.disableCull();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
