@@ -42,7 +42,7 @@ public class ItemMobEgg extends ItemTropicraft {
 	@Override
 	public String getUnlocalizedName(ItemStack par1ItemStack) {
 		int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, Names.EGG_NAMES.length - 1);
-		return super.getUnlocalizedName() + "_" + Names.EGG_NAMES[i];
+		return super.getUnlocalizedName() + "." + Names.EGG_NAMES[i];
 	}
 
 	/**
