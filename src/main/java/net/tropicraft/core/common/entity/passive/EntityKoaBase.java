@@ -14,15 +14,19 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
 import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
 import net.tropicraft.core.registry.ItemRegistry;
+
+import java.lang.reflect.Field;
 
 import javax.annotation.Nullable;
 
@@ -137,6 +141,22 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         return flag;
+    }
+    
+    private static final Field _buyingPlayer = ReflectionHelper.findField(EntityVillager.class, "field_70962_h", "buyingPlayer");
+    
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+    	boolean ret = false;
+    	try {
+        	// Make the super method think this villager is already trading, to block the GUI from opening
+	    	_buyingPlayer.set(this, player);
+	    	ret = super.processInteract(player, hand, stack);
+	    	_buyingPlayer.set(this, null);
+    	} catch (IllegalAccessException e) {
+    		throw new RuntimeException(e);
+    	}
+    	return ret;
     }
 
     @Override
