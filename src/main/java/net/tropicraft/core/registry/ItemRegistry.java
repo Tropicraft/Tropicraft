@@ -219,7 +219,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
 
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
-		mobEgg = registerMultiItemTextured(new ItemMobEgg(), "egg", Names.EGG_NAMES);
+		mobEgg = registerMultiItemTextured(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
 	}
 
 	public static void init() {

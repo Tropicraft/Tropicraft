@@ -35,7 +35,7 @@ public class EntityRegistry {
 		registerEntity(EntityTreeFrogBlue.class, "bluefrog", 80, 3, true);
 		registerEntity(EntityTreeFrogYellow.class, "yellowfrog", 80, 3, true);
 		registerEntity(EntityTropiSkeleton.class, "tropiskelly", 80, 3, true);
-		registerEntity(EntityVMonkey.class, "mmonkey", 80, 3, true);
+		registerEntity(EntityVMonkey.class, "monkey", 80, 3, true);
 		registerEntity(EntityPoisonBlot.class, "PoisonBlot", 32, 1, true);
 		registerEntity(EntityMarlin.class, "marlin", 80, 3, true);
 		registerEntity(EntityLavaBall.class, "Lava Ball", 120, 4, true);
