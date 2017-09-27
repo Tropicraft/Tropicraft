@@ -161,29 +161,6 @@ item.tropicraft:flower_pot.name=Flower Pot
 item.tropicraft:bamboo_door.name=Bamboo Door
 item.tropicraft:bamboo_item_frame.name=Bamboo Item Frame
 item.tropicraft:water_wand.name=Water Wand
-<<<<<<< HEAD
-item.tropicraft:sea_urchin_roe.name=Sea Urchin Roe
-item.tropicraft:egg_iguana.name=Iguana Egg
-item.tropicraft:egg_starfish.name=Starfish Egg
-item.tropicraft:egg_greenfrog.name=Green Frog
-item.tropicraft:egg_redfrog.name=Poisonous Red Frog
-item.tropicraft:egg_bluefrog.name=Poisonous Blue Frog
-item.tropicraft:egg_yellowfrog.name=Poisonous Yellow Frog
-item.tropicraft:egg_eih.name=Eye of Head
-item.tropicraft:egg_marlin.name=Marlin Egg
-item.tropicraft:egg_fish.name=Tropical Fish Eggs
-item.tropicraft:egg_ashen.name=Ashen Ash
-item.tropicraft:egg_turtle.name=Sea Turtle Egg
-item.tropicraft:egg_mow.name=Man O' War
-item.tropicraft:egg_monkey.name=Monkey Paw
-item.tropicraft:egg_koa.name=Koa Headband
-item.tropicraft:egg_tropicreeper.name=TropiCreeper Hat
-item.tropicraft:egg_tropiskelly.name=TropiSkelly Skirt
-item.tropicraft:egg_eagleray.name=Spotted Eagle Ray
-item.tropicraft:egg_failgull.name=Failgull
-item.tropicraft:egg_seaurchin.name=Sea Urchin
-item.tropicraft:egg.name=Tropics Mob Spawner Egg
-=======
 item.tropicraft:spawn_egg.iguana.name=Spawn Iguana
 item.tropicraft:spawn_egg.starfish.name=Spawn Starfish
 item.tropicraft:spawn_egg.greenfrog.name=Spawn Green Frog
@@ -204,7 +181,6 @@ item.tropicraft:spawn_egg.eagleray.name=Spawn Spotted Eagle Ray
 item.tropicraft:spawn_egg.failgull.name=Spawn Failgull
 item.tropicraft:spawn_egg.seaurchin.name=Spawn Sea Urchin
 item.tropicraft:spawn_egg.name=Tropics Mob Spawner Egg
->>>>>>> 1.10.2
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade

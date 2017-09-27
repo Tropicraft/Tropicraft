@@ -59,7 +59,6 @@ public class EntityRegistry {
 		registerEntity(EntitySeaUrchinEgg.class, "SeaUrchinEgg", 64, 3, false);
 		registerEntity(EntityStarfish.class, "starfish", 64, 3, false);
 		registerEntity(EntityStarfishEgg.class, "StarfishEgg", 64, 3, false);
-		//registerEntity(EntityWallStarfish.class, "WallStarfish", 160, Integer.MAX_VALUE, false);
 		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 	}
