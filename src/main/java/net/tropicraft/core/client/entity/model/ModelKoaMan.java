@@ -2,6 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 
 public class ModelKoaMan extends ModelBiped {
@@ -13,7 +14,7 @@ public class ModelKoaMan extends ModelBiped {
     public ModelRenderer bipedRightLeg;
     public ModelRenderer bipedLeftLeg;*/
     public ModelRenderer headband;
-    public ModelRenderer armband1;
+    public ModelRenderer armbandR;
     public ModelRenderer leaf;
     public ModelRenderer leaf3;
     public ModelRenderer leaf2;
@@ -24,7 +25,7 @@ public class ModelKoaMan extends ModelBiped {
     public ModelRenderer leaf8;
     public ModelRenderer leaf9;
     public ModelRenderer leaf10;
-    public ModelRenderer armband11;
+    public ModelRenderer armbandL;
 
     public ModelKoaMan() {
         
@@ -72,13 +73,21 @@ public class ModelKoaMan extends ModelBiped {
         headband.setRotationPoint(0F, -7F, 0F);		//0,-7,0 before
         headband.setTextureSize(64, 32);
         headband.mirror = true;
+        bipedHead.addChild(headband);
         setRotation(headband, 0F, 0F, 0F);
-        armband1 = new ModelRenderer(this, 35, 5);
-        armband1.addBox(-2F, 0F, -3F, 4, 1, 6);	//offset, dimensions
-        armband1.setRotationPoint(-6F, 3F, 0F);	//position
-        armband1.setTextureSize(64, 32);
-        armband1.mirror = true;
-        setRotation(armband1, 0F, 0F, 0F);
+        armbandR = new ModelRenderer(this, 35, 5);
+        armbandR.addBox(2.5F, -2F, -2.5F, 5, 1, 5);	//offset, dimensions
+        armbandR.setRotationPoint(-6F, 3F, 0F);	//position
+        armbandR.setTextureSize(64, 32);
+        bipedRightArm.addChild(armbandR);
+        setRotation(armbandR, 0F, 0F, 0F);
+        armbandL = new ModelRenderer(this, 34, 0);
+        armbandL.addBox(-7.5F, -2F, -2.5F, 5, 1, 5);		//offset, dimensions
+        armbandL.setRotationPoint(6F, 3F, 0F);		//position
+        armbandL.setTextureSize(64, 32);
+        armbandL.mirror = true;
+        bipedLeftArm.addChild(armbandL);
+        setRotation(armbandL, 0F, 0F, 0F);
         leaf = new ModelRenderer(this, 0, 0);
         leaf.addBox(0F, 0F, 0F, 1, 0, 1);
         leaf.setRotationPoint(2F, -6F, -6F);
@@ -139,12 +148,6 @@ public class ModelKoaMan extends ModelBiped {
         leaf10.setTextureSize(64, 32);
         leaf10.mirror = true;
         setRotation(leaf10, 0F, 0F, 0F);
-        armband11 = new ModelRenderer(this, 35, -1);
-        armband11.addBox(-2F, 0F, -3F, 4, 1, 6);		//offset, dimensions
-        armband11.setRotationPoint(6F, 3F, 0F);		//position
-        armband11.setTextureSize(64, 32);
-        armband11.mirror = true;
-        setRotation(armband11, 0F, 0F, 0F);
     }
 
     @Override
@@ -157,8 +160,8 @@ public class ModelKoaMan extends ModelBiped {
         bipedLeftArm.render(f5);
         bipedRightLeg.render(f5);
         bipedLeftLeg.render(f5);
-        headband.render(f5);
-        armband1.render(f5);		//right arm :)
+
+        GlStateManager.enableCull();
         leaf.render(f5);
         leaf3.render(f5);
         leaf2.render(f5);
@@ -169,7 +172,7 @@ public class ModelKoaMan extends ModelBiped {
         leaf8.render(f5);
         leaf9.render(f5);
         leaf10.render(f5);
-        armband11.render(f5);
+        GlStateManager.disableCull();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
