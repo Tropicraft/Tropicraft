@@ -29,10 +29,6 @@ import net.tropicraft.Names;
 
 public class ItemMobEgg extends ItemTropicraft {
 
-	public static String[] names = {"Iguana Egg", "Starfish Egg", "Green Frog Spawn", "Red Frog Spawn", "Yellow Frog Spawn",
-		"Blue Frog Spawn", "Eye of Head", "Marlin Spawn", "Tropical Fish Spawn", "Ashen Ash", "Turtle Egg", "Man o' War", "Monkey's Paw",
-		"Koa Headband", "TropiCreeper Egg", "TropiSkelly Skirt", "Spotted Eagle Ray", "Failgull", "Sea Urchin"};
-
 	public ItemMobEgg() {
 		super();
 		setMaxStackSize(64);
@@ -45,8 +41,8 @@ public class ItemMobEgg extends ItemTropicraft {
 	 */
 	@Override
 	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, names.length - 1);
-		return super.getUnlocalizedName() + "_" + Names.EGG_NAMES[i];
+		int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, Names.EGG_NAMES.length - 1);
+		return super.getUnlocalizedName() + "." + Names.EGG_NAMES[i];
 	}
 
 	/**
@@ -55,7 +51,7 @@ public class ItemMobEgg extends ItemTropicraft {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
-		for (int var4 = 0; var4 < names.length; ++var4) {
+		for (int var4 = 0; var4 < Names.EGG_NAMES.length; ++var4) {
 			list.add(new ItemStack(item, 1, var4));
 		}
 	}
@@ -64,65 +60,10 @@ public class ItemMobEgg extends ItemTropicraft {
 	public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			String s = "";
-			switch (itemstack.getItemDamage()) {
-			case 0:
-				s = "Iguana";
-				break;
-			case 1:
-				s = "Starfish";
-				break;
-			case 2:
-				s = "TreeFrogGreen";
-				break;
-			case 3:
-				s = "TreeFrogRed";
-				break;
-			case 4:
-				s = "TreeFrogYellow";
-				break;
-			case 5:
-				s = "TreeFrogBlue";
-				break;
-			case 6:
-				s = "EasterIslandHead";
-				break;
-			case 7:
-				s = "Marlin";
-				break;
-			case 8:
-				s = "TropicalFish";
-				break;
-			case 9:
-				s = "AshenHunter";
-				break;
-			case 10:
-				s = "SeaTurtleEgg";
-				break;
-			case 11:
-				s = "MOW";
-				break;
-			case 12:
-				s = "VMonkey";
-				break;
-			case 13:
-				s = "Koa Man";
-				break;
-			case 14:
-				s = "TropiCreeper";
-				break;
-			case 15:
-				s = "TropiSkeleton";
-				break;
-			case 16:
-				s = "EagleRay";
-				break;
-			case 17:
-				s = "Failgull";
-				break;
-			case 18:
-				s = "SeaUrchin";
-				break;
-			default:
+			int damage = itemstack.getItemDamage();
+			if (itemstack.getItemDamage() < 19) {
+				s = Names.EGG_NAMES[damage];
+			} else {
 				return EnumActionResult.PASS;
 			}
 
@@ -171,7 +112,7 @@ public class ItemMobEgg extends ItemTropicraft {
 					entityliving.rotationYawHead = entityliving.rotationYaw;
 					entityliving.renderYawOffset = entityliving.rotationYaw;
 					entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
-					worldIn.spawnEntityInWorld(entity);
+					worldIn.spawnEntity(entity);
 					entityliving.playLivingSound();
 				}
 			}

@@ -56,7 +56,7 @@ public class EntityEagleRay extends EntityTropicraftWaterMob {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (animationTicks < WING_CYCLE_TICKS) {
                 animationTicks++;
             } else {

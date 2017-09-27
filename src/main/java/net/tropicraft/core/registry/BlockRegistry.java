@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Stack;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -21,6 +22,7 @@ import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.BlockBambooChest;
+import net.tropicraft.core.common.block.BlockBambooDoor;
 import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
@@ -33,12 +35,14 @@ import net.tropicraft.core.common.block.BlockPineapple;
 import net.tropicraft.core.common.block.BlockPortalWall;
 import net.tropicraft.core.common.block.BlockSifter;
 import net.tropicraft.core.common.block.BlockTikiTorch;
+import net.tropicraft.core.common.block.BlockTropicraftFlowerPot;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
 import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
+import net.tropicraft.core.common.block.BlockTropicraftSlab;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
@@ -47,7 +51,9 @@ import net.tropicraft.core.common.block.BlockTropicsWater;
 import net.tropicraft.core.common.block.BlockVolcano;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
+import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
+import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ObjectArrays;
@@ -79,6 +85,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block chunkStairs;
 	public static Block thatchStairs;
 	public static Block bambooStairs;
+	public static Block palmStairs;
 
 	/** Fluids */
 	public static BlockTropicsWater tropicsWater;
@@ -104,13 +111,16 @@ public class BlockRegistry extends TropicraftRegistry {
 	
 	public static Block drinkMixer;
 	public static Block sifter;
+	public static Block flowerPot;
+	public static Block bambooDoor;
+	public static BlockSlab slabs;
+	public static BlockSlab doubleSlabs;
 
 	/**
 	 * Register blocks in preInit
 	 */
 	public static void preInit() {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		chunkStairs = registerBlock(new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS);
 		oreAzurite = registerBlock(new BlockTropicraftOre(), Names.BLOCK_AZURITE_ORE);
 		oreEudialyte = registerBlock(new BlockTropicraftOre(), Names.BLOCK_EUDIALYTE_ORE);
 		oreZircon = registerBlock(new BlockTropicraftOre(), Names.BLOCK_ZIRCON_ORE);
@@ -120,12 +130,20 @@ public class BlockRegistry extends TropicraftRegistry {
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
 		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
 
+		slabs = new BlockTropicraftSlab(Material.WOOD, false);
+		doubleSlabs = new BlockTropicraftSlab(Material.WOOD, true);
+		
+		slabs = registerSlab(slabs, slabs, doubleSlabs, "slab");
+		doubleSlabs = registerSlab(doubleSlabs, slabs, doubleSlabs, "double_slab");
+		
 		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD, Names.LOG_NAMES), ItemBlockTropicraft.class, "plank", asList(Names.LOG_NAMES));
 		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT, null);
 
 		thatchStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS);
 		bambooStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS);
-
+		palmStairs = registerBlock(new BlockTropicraftStairs(planks.getDefaultState().withProperty(BlockTropicraftPlank.VARIANT, TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS);
+		chunkStairs = registerBlock(new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS);
+		
 		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER, false);
 		tropicsPortal = registerBlockNoItem(new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER), Names.TROPICS_PORTAL, false);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);
@@ -152,6 +170,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
+		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
+		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR, false);
 	}
 
 	public static void init() {
@@ -188,6 +208,39 @@ public class BlockRegistry extends TropicraftRegistry {
 			registerBlockVariant(block, name, 0);
 		}
 
+		return block;
+	}
+	
+	/**
+	 * Helper method for registering slabs, since they're pretty funky
+	 * @param block
+	 * @param singleSlab
+	 * @param doubleSlab
+	 * @param name
+	 * @return
+	 */
+	private static BlockSlab registerSlab(BlockSlab block, BlockSlab singleSlab, BlockSlab doubleSlab, String name) {
+		block = registerBlock(block, new ItemTropicraftSlab(block, singleSlab, doubleSlab), name, false, CreativeTabRegistry.tropicraftTab);
+		
+		// get the preset blocks variants
+		ImmutableSet<IBlockState> presets = getBlockPresets(block);
+		ITropicraftBlock tcBlock = (ITropicraftBlock)block;
+
+		if (presets.isEmpty()) {
+			// block has no sub-blocks to register
+			registerBlockVariant(block, name, 0);
+		} else {
+			// register all the sub-blocks
+			for (IBlockState state : presets) {
+				String stateName = tcBlock.getStateName(state);
+				int stateMeta = block.getMetaFromState(state);
+				// System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
+				registerBlockVariant(block, name, stateMeta, stateName);
+			}
+		}
+
+		block.setCreativeTab(CreativeTabRegistry.tropicraftTab);
+		
 		return block;
 	}
 

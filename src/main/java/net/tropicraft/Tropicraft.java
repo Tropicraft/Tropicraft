@@ -50,6 +50,8 @@ public class Tropicraft {
 		proxy.preInit();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
+		
+		proxy.preInit();
 	}
 
 	@EventHandler

@@ -42,7 +42,7 @@ public class ItemBlockTropicraft extends ItemBlock {
 		if (this.names == null) {
 			return super.getUnlocalizedName(itemstack);
 		}
-        int i = MathHelper.clamp_int(itemstack.getItemDamage(), 0, names.length - 1);
+        int i = MathHelper.clamp(itemstack.getItemDamage(), 0, names.length - 1);
         return super.getUnlocalizedName() + "_" + names[i];
     }
 }

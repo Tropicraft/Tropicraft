@@ -38,7 +38,7 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 		inSchool = false;
 		leader = null;      
 		setSize(.3F, .4F);
-		setColor(worldObj.rand.nextInt(names.length));
+		setColor(world.rand.nextInt(names.length));
 		setShouldSpawnSchool(true);
 		setIsLeader(true);
 		isCatchable = true;
@@ -68,7 +68,7 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 	 * Will spawn a new fish of the same type that follows the original fish
 	 */
 	public EntityTropicalFish(EntityTropicalFish original) {
-		this(original.worldObj);
+		this(original.world);
 		setShouldSpawnSchool(false);
 		targetHook = false;
 		inSchool = true;
@@ -98,7 +98,7 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 	public void entityInit() {
 		super.entityInit();
 
-		int color = this.worldObj.rand.nextInt(names.length);
+		int color = this.world.rand.nextInt(names.length);
 		this.getDataManager().register(TEXTURE_COLOR, Integer.valueOf(color));
 		this.getDataManager().register(SHOULD_SPAWN_SCHOOL, Boolean.valueOf(false));
 		this.getDataManager().register(IS_LEADER, Boolean.valueOf(false));
@@ -181,7 +181,7 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 	}
 
 	public void checkForHook(){
-		List<EntityFishHook> list = worldObj.getEntitiesWithinAABB(EntityFishHook.class, this.getEntityBoundingBox().expand(10, 10, 10));
+		List<EntityFishHook> list = world.getEntitiesWithinAABB(EntityFishHook.class, this.getEntityBoundingBox().expand(10, 10, 10));
 		if (list.isEmpty()){
 			targetHook = false;
 			hook = null;

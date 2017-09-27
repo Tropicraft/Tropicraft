@@ -72,7 +72,7 @@ public class EntitySeaUrchin extends EntityEchinoderm {
 	public void applyEntityCollision(Entity ent) {
 		super.applyEntityCollision(ent);
 
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			if (ent instanceof EntityLiving && !(ent instanceof EntitySeaUrchin) && !(ent instanceof EntitySeaUrchinEgg)) {
 				ent.attackEntityFrom(DamageSource.causeMobDamage(this), 2);
 			}
@@ -86,7 +86,7 @@ public class EntitySeaUrchin extends EntityEchinoderm {
 
 	@Override
 	public EntityEchinodermEgg createEgg() {
-		return new EntitySeaUrchinEgg(worldObj);
+		return new EntitySeaUrchinEgg(world);
 	}
 
 	@Override

@@ -85,17 +85,17 @@ public class EntityTreeFrogBase extends EntityLand implements IMob, IRangedAttac
 	public void attackEntityWithRangedAttack(EntityLivingBase entity,
 			float f) {
 		
-		if(f < 4F && !worldObj.isRemote && attackTime == 0 && worldObj.getDifficulty() != EnumDifficulty.PEACEFUL)
+		if(f < 4F && !world.isRemote && attackTime == 0 && world.getDifficulty() != EnumDifficulty.PEACEFUL)
         {
             double d = entity.posX - posX;
             double d1 = entity.posZ - posZ;
 
-            EntityPoisonBlot entitypoisonblot = new EntityPoisonBlot(worldObj, this);
+            EntityPoisonBlot entitypoisonblot = new EntityPoisonBlot(world, this);
             entitypoisonblot.posY += 1.3999999761581421D;
             double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entitypoisonblot.posY;
-            float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-            //worldObj.playSoundAtEntity(this, "frogspit", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-            worldObj.spawnEntityInWorld(entitypoisonblot);
+            float f1 = MathHelper.sqrt(d * d + d1 * d1) * 0.2F;
+            //world.playSoundAtEntity(this, "frogspit", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
+            world.spawnEntity(entitypoisonblot);
             entitypoisonblot.setThrowableHeading(d, d2 + (double)f1, d1, 0.6F, 12F);
             attackTime = 50;
 

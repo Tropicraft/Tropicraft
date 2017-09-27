@@ -12,6 +12,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
@@ -97,13 +98,17 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
-		return Blocks.LEAVES.isOpaqueCube(state);
+		return state.getValue(VARIANT).isSolid();
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
+	@Deprecated
 	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return Blocks.LEAVES.shouldSideBeRendered(state, world, pos, side);
+		return state.getValue(VARIANT).isSolid() ? 
+				// bit of a hack, break out of encapsulation, assumes stone hasn't been messed with by mods
+				Blocks.STONE.shouldSideBeRendered(state, world, pos, side) : 
+				Blocks.LEAVES.shouldSideBeRendered(state, world, pos, side);
 	}
 
 	/**

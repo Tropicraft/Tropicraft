@@ -9,6 +9,6 @@ public class EntitySeaUrchinEgg extends EntityEchinodermEgg {
 
 	@Override
 	public EntityEchinoderm createBaby() {
-		return new EntitySeaUrchin(worldObj, true);
+		return new EntitySeaUrchin(world, true);
 	}
 }

@@ -9,6 +9,7 @@ import net.tropicraft.core.client.entity.model.ModelFish;
 import net.tropicraft.core.client.entity.model.ModelManOWar;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
+import net.tropicraft.core.client.entity.render.RenderBambooItemFrame;
 import net.tropicraft.core.client.entity.render.RenderChair;
 import net.tropicraft.core.client.entity.render.RenderEIH;
 import net.tropicraft.core.client.entity.render.RenderEagleRay;
@@ -27,7 +28,7 @@ import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.core.client.entity.render.RenderTropicalFish;
 import net.tropicraft.core.client.entity.render.RenderUmbrella;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
-import net.tropicraft.core.client.entity.render.RenderWallStarfish;
+import net.tropicraft.core.client.entity.render.RenderWallItem;
 import net.tropicraft.core.common.entity.EntityLavaBall;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
@@ -36,9 +37,10 @@ import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
+import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
-import net.tropicraft.core.common.entity.placeable.EntityWallStarfish;
+import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
@@ -75,6 +77,8 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntitySeaUrchinEgg.class, new RenderEchinodermEgg());
 		registerEntityRender(EntityStarfish.class, new RenderStarfish());
 		registerEntityRender(EntityStarfishEgg.class, new RenderEchinodermEgg());
+		registerEntityRender(EntityBambooItemFrame.class, new RenderBambooItemFrame());
+		registerEntityRender(EntityWallItem.class, new RenderWallItem());
 		//registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
 	}
 

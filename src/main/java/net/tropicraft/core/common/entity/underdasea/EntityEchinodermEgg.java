@@ -78,7 +78,7 @@ public abstract class EntityEchinodermEgg extends EntityLiving {
 	public void onUpdate() {
 		super.onUpdate();
 
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			motionY = 0;
 			return;
 		}
@@ -94,7 +94,7 @@ public abstract class EntityEchinodermEgg extends EntityLiving {
 			double newY = posY;
 			double newZ = posZ;
 			baby.setLocationAndAngles(newX, newY, newZ, 0f, 0f);
-			worldObj.spawnEntityInWorld(baby);
+			world.spawnEntity(baby);
 		}
 	}
 

@@ -8,6 +8,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemBucket;
+import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
@@ -19,6 +20,8 @@ import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.item.ItemBambooItemFrame;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemCoconutBomb;
@@ -31,6 +34,7 @@ import net.tropicraft.core.common.item.ItemPortalEnchanter;
 import net.tropicraft.core.common.item.ItemShell;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
+import net.tropicraft.core.common.item.ItemTropicraftBlockSpecial;
 import net.tropicraft.core.common.item.ItemTropicraftFood;
 import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
@@ -124,6 +128,12 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item fertilizer;
 
 	public static Item encyclopedia;
+
+	// Decorations
+	public static Item flowerPot;
+	public static Item bambooDoor;
+	public static Item bambooItemFrame;
+
 	public static Item waterWand;
 
 	public static Item seaUrchinRoe;
@@ -190,7 +200,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		shellRube = registerItem(new ItemShell(), "shell_rube");
 		shellSolo = registerItem(new ItemShell(), "shell_solo");
 		//TODO make shellfish ItemShell(true) once we figure out how to get hangables to work
-		shellStarfish = registerItem(new ItemShell(true), "shell_starfish");
+		shellStarfish = registerItem(new ItemShell(), "shell_starfish");
 		shellTurtle = registerItem(new ItemShell(), "shell_turtle");
 
 		cocktail = registerMultiItem(new ItemCocktail(), "cocktail", Drink.drinkList.length);
@@ -205,10 +215,16 @@ public class ItemRegistry extends TropicraftRegistry {
 		dagger = registerItem(new ItemDagger(materialZirconTools), "dagger");
 		bambooSpear = registerItem(new ItemSword(materialBambooTools), "bamboo_spear");
 		coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
+
+		flowerPot = registerItem(new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
+		bambooDoor = registerItem(new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
+		bambooItemFrame = registerItem(new ItemBambooItemFrame(EntityBambooItemFrame.class), "bamboo_item_frame");
+		Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
+
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
 
 		seaUrchinRoe = registerItem(new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
-		mobEgg = registerMultiItemTextured(new ItemMobEgg(), "egg", Names.EGG_NAMES);
+		mobEgg = registerMultiItemTextured(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
 	}
 
 	public static void init() {

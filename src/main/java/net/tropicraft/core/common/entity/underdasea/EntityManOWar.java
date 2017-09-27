@@ -56,7 +56,7 @@ public class EntityManOWar extends EntityWaterMob {
 	}
 
 	public byte getAttackStrength() {
-		switch (worldObj.getDifficulty()) {
+		switch (world.getDifficulty()) {
 		case EASY: return 1;
 		case NORMAL: return 2;
 		case HARD: return 3;
@@ -78,11 +78,11 @@ public class EntityManOWar extends EntityWaterMob {
 			this.setAttackTarget(null);
 		}
 
-		if (worldObj.isRemote) return;
+		if (world.isRemote) return;
 		
 		if (inWater) {
 			if (this.getAttackTarget() == null) {
-				List<Entity> list = worldObj.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(2D, 8D, 2D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
+				List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(2D, 8D, 2D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
 				for (int i = 0; i < list.size(); i++) {
 					Entity ent = list.get(i);
 					if (!(ent instanceof EntityLivingBase) || !(ent instanceof EntityManOWar)){
@@ -111,7 +111,7 @@ public class EntityManOWar extends EntityWaterMob {
 				randomMotionSpeed = randomMotionSpeed * 0.95F;
 			}
 
-			if(!worldObj.isRemote) {
+			if(!world.isRemote) {
 				motionX = randomMotionVecX * randomMotionSpeed;
 				motionY = randomMotionVecY * randomMotionSpeed;
 				motionZ = randomMotionVecZ * randomMotionSpeed;
@@ -120,7 +120,7 @@ public class EntityManOWar extends EntityWaterMob {
 			renderYawOffset += ((-(float)Math.atan2(motionX, motionZ) * 180F) / 3.141593F - renderYawOffset) * 0.1F;
 			rotationYaw = renderYawOffset;            
 		} else {
-			if(!worldObj.isRemote) {
+			if(!world.isRemote) {
 				motionX = 0.0D;               
 				motionY *= 0.98000001907348633D;
 				motionZ = 0.0D;
@@ -158,7 +158,7 @@ public class EntityManOWar extends EntityWaterMob {
 	@Override
 	public void onDeath(DamageSource d) {
 		super.onDeath(d);
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			int numDrops = 3 + this.rand.nextInt(1);
 
 			for (int i = 0; i < numDrops; i++)
@@ -168,7 +168,7 @@ public class EntityManOWar extends EntityWaterMob {
 
 	@Override
 	public boolean getCanSpawnHere() {
-		return !worldObj.checkBlockCollision(this.getCollisionBoundingBox());
+		return !world.checkBlockCollision(this.getCollisionBoundingBox());
 	}
 
 	@Override
@@ -198,7 +198,7 @@ public class EntityManOWar extends EntityWaterMob {
 
 	@Override
 	protected int getExperiencePoints(EntityPlayer entityplayer) {
-		return 3 + worldObj.rand.nextInt(3);
+		return 3 + world.rand.nextInt(3);
 	}
 
 	static class EntityMOWMoveTask extends EntityAIBase {
@@ -228,10 +228,10 @@ public class EntityManOWar extends EntityWaterMob {
 
 			if(this.mow.inWater){
 
-				if(this.mow.posY < this.mow.worldObj.getActualHeight() - 0.5){
+				if(this.mow.posY < this.mow.world.getActualHeight() - 0.5){
 					this.mow.randomMotionVecY = .05F;
 				}
-				if(this.mow.posY >= this.mow.worldObj.getActualHeight() + 0.5){
+				if(this.mow.posY >= this.mow.world.getActualHeight() + 0.5){
 					this.mow.randomMotionVecY = 0F;
 				}
 			}

@@ -124,7 +124,7 @@ public class EntityChair extends Entity {
 				double d3 = this.getEntityBoundingBox().minY + (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * (double)(i + 1) / (double)b0 - 0.125D;
 				AxisAlignedBB axisalignedbb = new AxisAlignedBB(this.getEntityBoundingBox().minX, d1, this.getEntityBoundingBox().minZ, this.getEntityBoundingBox().maxX, d3, this.getEntityBoundingBox().maxZ);
 
-				if (this.worldObj.isAABBInMaterial(axisalignedbb, Material.WATER)) {
+				if (this.world.isAABBInMaterial(axisalignedbb, Material.WATER)) {
 					d0 += 1.0D / (double)b0;
 				}
 			}
@@ -148,11 +148,11 @@ public class EntityChair extends Entity {
 					if (this.rand.nextBoolean()) {
 						d8 = this.posX - d2 * d5 * 0.8D + d4 * d6;
 						d9 = this.posZ - d4 * d5 * 0.8D - d2 * d6;
-						this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
+						this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
 					} else {
 						d8 = this.posX + d2 + d4 * d5 * 0.7D;
 						d9 = this.posZ + d4 - d2 * d5 * 0.7D;
-						this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
+						this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, d8, this.posY - 0.125D, d9, this.motionX, this.motionY, this.motionZ);
 					}
 				}
 		}
@@ -160,7 +160,7 @@ public class EntityChair extends Entity {
 		double d11;
 		double d12;
 
-		if (this.worldObj.isRemote && this.isChairEmpty) {
+		if (this.world.isRemote && this.isChairEmpty) {
 			if (this.chairPosRotationIncrements > 0) {
 				d2 = this.posX + (this.chairX - this.posX) / (double)this.chairPosRotationIncrements;
 				d4 = this.posY + (this.chairY - this.posY) / (double)this.chairPosRotationIncrements;
@@ -233,20 +233,20 @@ public class EntityChair extends Entity {
 
 			if (this.getComeSailAway())
 				for (l = 0; l < 4; ++l) {
-					int i1 = MathHelper.floor_double(this.posX + ((double)(l % 2) - 0.5D) * 0.8D);
-					j = MathHelper.floor_double(this.posZ + ((double)(l / 2) - 0.5D) * 0.8D);
+					int i1 = MathHelper.floor(this.posX + ((double)(l % 2) - 0.5D) * 0.8D);
+					j = MathHelper.floor(this.posZ + ((double)(l / 2) - 0.5D) * 0.8D);
 
 					for (int j1 = 0; j1 < 2; ++j1) {
-						int k = MathHelper.floor_double(this.posY) + j1;
-						Block block = this.worldObj.getBlockState(new BlockPos(i1, k, j)).getBlock();
+						int k = MathHelper.floor(this.posY) + j1;
+						Block block = this.world.getBlockState(new BlockPos(i1, k, j)).getBlock();
 						BlockPos pos = new BlockPos(i1, k, j);
 						
 						if (block == Blocks.SNOW_LAYER) {
-							this.worldObj.setBlockToAir(pos);
+							this.world.setBlockToAir(pos);
 							this.isCollidedHorizontally = false;
 						} else 
 							if (block == Blocks.WATERLILY) {
-								this.worldObj.setBlockToAir(pos);
+								this.world.setBlockToAir(pos);
 								this.isCollidedHorizontally = false;
 							}
 					}
@@ -263,7 +263,7 @@ public class EntityChair extends Entity {
 					this.motionZ = 0;
 				}
 
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			this.move(this.motionX, this.motionY, this.motionZ);
 
 			// This will never trigger since d10 will only ever get up to 0.45 >:D *evil laugh*
 			// In other words, when come sail away, there is no stopping this sucker
@@ -295,8 +295,8 @@ public class EntityChair extends Entity {
 			this.rotationYaw = (float)((double)this.rotationYaw + d7);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 
-			if (!this.worldObj.isRemote) {
-				List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+			if (!this.world.isRemote) {
+				List<?> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 				if (list != null && !list.isEmpty()) {
 					for (int k1 = 0; k1 < list.size(); ++k1) {
@@ -344,7 +344,7 @@ public class EntityChair extends Entity {
 		if (this.isEntityInvulnerable(damageSource)) {
 			return false;
 		}
-		else if (!this.worldObj.isRemote && !this.isDead) {
+		else if (!this.world.isRemote && !this.isDead) {
 			this.setForwardDirection(-this.getForwardDirection());
 			this.setTimeSinceHit(10);
 			this.setDamage(this.getDamage() + par2 * 10.0F);
@@ -385,7 +385,7 @@ public class EntityChair extends Entity {
 	
 	@Override
     public boolean processInitialInteract(EntityPlayer player, @Nullable ItemStack stack, EnumHand hand) {
-        if (!this.worldObj.isRemote && !player.isSneaking()) {
+        if (!this.world.isRemote && !player.isSneaking()) {
             player.startRiding(this);
         }
 
@@ -516,15 +516,15 @@ public class EntityChair extends Entity {
 	 */
 //	@Override
 //	protected void updateFallState(double distanceFallenThisTick, boolean onGround) {
-//		int i = MathHelper.floor_double(this.posX);
-//		int j = MathHelper.floor_double(this.posY);
-//		int k = MathHelper.floor_double(this.posZ);
+//		int i = MathHelper.floor(this.posX);
+//		int j = MathHelper.floor(this.posY);
+//		int k = MathHelper.floor(this.posZ);
 //
 //		if (onGround) {
 //			if (this.fallDistance > 3.0F) {
 //				this.fall(this.fallDistance);
 //
-//				if (!this.worldObj.isRemote && !this.isDead) {
+//				if (!this.world.isRemote && !this.isDead) {
 //					this.setDead();
 //					int l;
 //
@@ -540,7 +540,7 @@ public class EntityChair extends Entity {
 //				this.fallDistance = 0.0F;
 //			}
 //		}
-//		else if (this.worldObj.getBlock(i, j - 1, k).getMaterial() != Material.water && distanceFallenThisTick < 0.0D)
+//		else if (this.world.getBlock(i, j - 1, k).getMaterial() != Material.water && distanceFallenThisTick < 0.0D)
 //		{
 //			this.fallDistance = (float)((double)this.fallDistance - distanceFallenThisTick);
 //		}

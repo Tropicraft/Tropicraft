@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.block.tileentity.message;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -48,7 +47,7 @@ public class MessageMixerInventory extends MessageTileEntity<TileEntityDrinkMixe
 
 		@Override
 		public IMessage onMessage(MessageMixerInventory message, MessageContext ctx) {
-			TileEntityDrinkMixer mixer = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			TileEntityDrinkMixer mixer = message.getClientTileEntity();
 			if (mixer != null) {
 				mixer.ingredients = message.inventory;
 				mixer.result = message.result;

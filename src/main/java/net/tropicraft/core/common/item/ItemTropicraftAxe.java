@@ -8,7 +8,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
+import net.tropicraft.core.common.entity.EntityLavaBall;
+import net.tropicraft.core.common.entity.placeable.EntityChair;
 
 /**
  * This class literally only exists because ItemAxe's constructor is protected. Go figure!
@@ -29,16 +30,19 @@ public class ItemTropicraftAxe extends ItemAxe {
 		super(material, damage, speed);
 	}
 	
-	@Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
     	
-    	if (!worldIn.isRemote) {
-        	Entity ball = new EntityStarfish(worldIn);
-        	ball.setLocationAndAngles(playerIn.posX, playerIn.posY, playerIn.posZ, playerIn.cameraYaw, playerIn.cameraPitch);
-        	worldIn.spawnEntityInWorld(ball);	
-    	}
+//    	if (!worldIn.isRemote) {
+//        	Entity ball = new EntityLavaBall(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, 0.5, 0, 0.5);
+//        	worldIn.spawnEntity(ball);	
+//    	}
     	
     	System.out.println("hello hello hello");
+    	
+    	if (!worldIn.isRemote) {
+        	Entity ball = new EntityChair(worldIn, playerIn.posX, playerIn.posY + 1.01, playerIn.posZ, 0, playerIn);
+        	worldIn.spawnEntity(ball);	
+    	}
     	
         return new ActionResult(EnumActionResult.PASS, itemStackIn);
     }

@@ -61,7 +61,7 @@ public class EntityAIFindLeader extends EntityAIBase {
 	}
 
 	public void checkForLeader(){
-		List<EntityTropicalFish> list = fish.worldObj.getEntitiesWithinAABB(EntityTropicalFish.class, fish.getEntityBoundingBox().expand(10D, 10D, 10D));
+		List<EntityTropicalFish> list = fish.world.getEntitiesWithinAABB(EntityTropicalFish.class, fish.getEntityBoundingBox().expand(10D, 10D, 10D));
 		for (EntityTropicalFish ent : list){
 			System.out.println("Checking for leader");
 			if (ent.getColor() == fish.getColor()) {

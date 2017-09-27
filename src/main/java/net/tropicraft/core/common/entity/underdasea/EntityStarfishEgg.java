@@ -17,7 +17,7 @@ public class EntityStarfishEgg extends EntityEchinodermEgg {
 
 	@Override
 	public EntityEchinoderm createBaby() {
-		EntityStarfish baby = new EntityStarfish(worldObj, true);
+		EntityStarfish baby = new EntityStarfish(world, true);
 		baby.setStarfishType(starfishType);
 		return baby;
 	}

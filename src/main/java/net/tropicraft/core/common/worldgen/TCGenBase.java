@@ -167,9 +167,9 @@ public abstract class TCGenBase extends WorldGenerator {
         };
         int k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3) {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
 			if(!allowedBlockList.contains(worldObj.getBlockState(pos).getBlock())) {
 				return false;
@@ -224,9 +224,9 @@ public abstract class TCGenBase extends WorldGenerator {
         int k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
             worldObj.setBlockState(pos, state, blockGenNotifyFlag);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
@@ -280,9 +280,9 @@ public abstract class TCGenBase extends WorldGenerator {
         int k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
             if(!checkCircle(pos, outerRadius, innerRadius, allowedBlockList))
            	{
@@ -342,9 +342,9 @@ public abstract class TCGenBase extends WorldGenerator {
         int k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
             if(!checkCircle(pos, outerRadius, innerRadius, allowedBlockList))
             {
@@ -354,9 +354,9 @@ public abstract class TCGenBase extends WorldGenerator {
         k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
             genCircle(pos, outerRadius, innerRadius, state, true);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
@@ -412,9 +412,9 @@ public abstract class TCGenBase extends WorldGenerator {
         int k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = getBlockPos(ai3);
 			if(!allowedBlockList.contains(worldObj.getBlockState(pos)))
 			{
@@ -423,9 +423,9 @@ public abstract class TCGenBase extends WorldGenerator {
         }
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = getBlockPos(ai3);
             worldObj.setBlockState(pos, state, blockGenNotifyFlag);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
@@ -483,9 +483,9 @@ public abstract class TCGenBase extends WorldGenerator {
         int k = 0;
         for(int l = ai2[j] + byte3; k != l; k += byte3)
         {
-            ai3[j] = MathHelper.floor_double((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             genCircle(getBlockPos(ai3), distance, distance2, state, true);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
         }

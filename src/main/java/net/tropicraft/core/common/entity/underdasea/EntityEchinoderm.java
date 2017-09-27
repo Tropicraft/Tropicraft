@@ -113,7 +113,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 
 		int growingAge = getGrowingAge();
 
-		if (worldObj.isRemote) {
+		if (world.isRemote) {
 			motionY = 0D;
 
 			if (growingAge != prevGrowingAge) {
@@ -147,7 +147,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 						double newY = posY+1;
 						double newZ = posZ+0.5*(mate.posZ-posZ);
 						egg.setLocationAndAngles(newX, newY, newZ, 0f, 0f);
-						worldObj.spawnEntityInWorld(egg);
+						world.spawnEntity(egg);
 					}
 				}
 			}
@@ -170,7 +170,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 		double closestSqDist = -1f;
 
 		AxisAlignedBB aabb = this.getEntityBoundingBox().expand(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
-		for (Object obj : worldObj.getEntitiesWithinAABB(getClass(), aabb)) {
+		for (Object obj : world.getEntitiesWithinAABB(getClass(), aabb)) {
 			// don't masturbate
 			if (obj == this) {
 				continue;

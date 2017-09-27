@@ -70,7 +70,7 @@ public class EntityStarfish extends EntityEchinoderm implements IEntityAdditiona
 
 	@Override
 	public EntityEchinodermEgg createEgg() {
-		return new EntityStarfishEgg(worldObj, this.starfishType);
+		return new EntityStarfishEgg(world, this.starfishType);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class EntityStarfish extends EntityEchinoderm implements IEntityAdditiona
 	@Override
 	public void onDeath(DamageSource d) {
 		super.onDeath(d);
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			this.entityDropItem(new ItemStack(ItemRegistry.shellStarfish), 0);
 		}
 	}

@@ -59,6 +59,6 @@ public class BlockTropicraftOre extends BlockTropicraft {
     @Override
     public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
         Random rand = world instanceof World ? ((World)world).rand : new Random();
-        return MathHelper.getRandomIntegerInRange(rand, 2, 7);
+        return MathHelper.getInt(rand, 2, 7);
     }
 }

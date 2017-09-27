@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.block.tileentity.message;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -38,7 +37,7 @@ public class MessageSifterInventory extends MessageTileEntity<TileEntitySifter> 
 
 		@Override
 		public IMessage onMessage(MessageSifterInventory message, MessageContext ctx) {
-			TileEntitySifter sifter = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			TileEntitySifter sifter = message.getClientTileEntity();
 			if (sifter != null) {
 				sifter.siftItem = message.siftItem;
 			}
