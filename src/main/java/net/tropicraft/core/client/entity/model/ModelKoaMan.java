@@ -83,20 +83,20 @@ public class ModelKoaMan extends ModelBiped {
         bipedLeftLeg.setTextureSize(64, 32);
         bipedLeftLeg.mirror = true;
         setRotation(bipedLeftLeg, 0F, 0F, 0F);*/
-        headband = new ModelRenderer(this, 24, 0);
+        headband = new ModelRenderer(this, 24, 1);
         headband.addBox(-5F, 0F, -5F, 10, 2, 10);
         headband.setRotationPoint(0F, -7F, 0F);		//0,-7,0 before
         headband.setTextureSize(64, 32);
         headband.mirror = true;
         bipedHead.addChild(headband);
         setRotation(headband, 0F, 0F, 0F);
-        armbandR = new ModelRenderer(this, 35, 5);
+        armbandR = new ModelRenderer(this, 35, 6);
         armbandR.addBox(2.5F, -2F, -2.5F, 5, 1, 5);	//offset, dimensions
         armbandR.setRotationPoint(-6F, 3F, 0F);	//position
         armbandR.setTextureSize(64, 32);
         bipedRightArm.addChild(armbandR);
         setRotation(armbandR, 0F, 0F, 0F);
-        armbandL = new ModelRenderer(this, 34, 0);
+        armbandL = new ModelRenderer(this, 34, 1);
         armbandL.addBox(-7.5F, -2F, -2.5F, 5, 1, 5);		//offset, dimensions
         armbandL.setRotationPoint(6F, 3F, 0F);		//position
         armbandL.setTextureSize(64, 32);
