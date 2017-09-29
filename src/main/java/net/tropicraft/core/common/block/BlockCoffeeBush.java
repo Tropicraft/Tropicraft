@@ -89,7 +89,7 @@ public class BlockCoffeeBush extends BlockCrops implements ITropicraftBlock {
             BlockPos ground = pos;
             for (height = 1; worldIn.getBlockState(ground = ground.down()).getBlock() == this; ++height);
 
-            if (height < MAX_HEIGHT) {// && worldIn.rand.nextInt(worldIn.getBlockState(ground).getBlock().isFertile(worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
+            if (height < MAX_HEIGHT && worldIn.rand.nextInt(worldIn.getBlockState(ground).getBlock().isFertile(worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
                 worldIn.setBlockState(pos.up(), getDefaultState());
             }
         }
