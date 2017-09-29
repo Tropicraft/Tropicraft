@@ -24,6 +24,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
 import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
+import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.lang.reflect.Field;
@@ -34,7 +35,6 @@ public class EntityKoaBase extends EntityVillager {
 
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
     public long lastTimeFished = 0;
-    public long timeBetweenFishing = 20*60*2;
 
     public EntityKoaBase(World worldIn) {
         super(worldIn);
@@ -58,7 +58,7 @@ public class EntityKoaBase extends EntityVillager {
         //this.tasks.addTask(7, new EntityAIFollowGolem(this));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
         //this.tasks.addTask(9, new EntityAIVillagerInteract(this));
-        this.tasks.addTask(9, new EntityAIWander(this, 1D));
+        this.tasks.addTask(9, new EntityAIWanderNotLazy(this, 1D, 40));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));

@@ -31,8 +31,8 @@ public class EntityAIGoneFishin extends EntityAIBase {
     private BlockPos posLastWaterFound;
     private BlockPos posLastLandFound;
 
-    private int walkingTimeoutMax = 200;
-    private int fishingTimeoutMax = 200;
+    private int walkingTimeoutMax = 20*30;
+    private int fishingTimeoutMax = 20*30;
 
     private int walkingTimeout;
     private int fishingTimeout;
@@ -46,6 +46,8 @@ public class EntityAIGoneFishin extends EntityAIBase {
     private int repathPenaltyMax = 60;
 
     private int repathAttempts = 0;
+    public long timeBetweenFishing = 20*60*1;
+    public long timeBetweenFishingRandom = 30;
 
     public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;
@@ -64,20 +66,20 @@ public class EntityAIGoneFishin extends EntityAIBase {
         //entity.lastTimeFished = 0;
 
         boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
-        if (entity.lastTimeFished + entity.timeBetweenFishing < entity.world.getTotalWorldTime() && entity.world.rand.nextInt(2) == 0) {
+        if (entity.lastTimeFished < entity.world.getTotalWorldTime() && entity.world.rand.nextInt(3) == 0) {
             BlockPos posWater = findWater();
             if (posWater != null) {
                 if (Util.tryMoveToXYZLongDist(entity, posWater, moveSpeedAmp)) {
                     posLastWaterFound = posWater;
                     result = true;
-                    entity.lastTimeFished = entity.world.getTotalWorldTime();
+                    entity.lastTimeFished = entity.world.getTotalWorldTime() + timeBetweenFishing + timeBetweenFishingRandom;
                     setState(FISHING_STATE.WALKING_TO_WATER);
                     debug("found water, start executing");
                 } else {
                     debug("failed the path, skip executing");
                 }
             } else {
-                debug("couldnt find water, skip executing");
+                //debug("couldnt find water, skip executing");
             }
         } else {
             //debug("waiting on timeout to fish");
