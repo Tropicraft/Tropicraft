@@ -181,6 +181,9 @@ item.tropicraft:spawn_egg.eagleray.name=Spawn Spotted Eagle Ray
 item.tropicraft:spawn_egg.failgull.name=Spawn Failgull
 item.tropicraft:spawn_egg.seaurchin.name=Spawn Sea Urchin
 item.tropicraft:spawn_egg.name=Tropics Mob Spawner Egg
+item.tropicraft.coffee.bean.raw.name=Coffee Beans
+item.tropicraft.coffee.bean.roasted.name=Roasted Coffee Beans
+item.tropicraft.coffee.berry.name=Coffee Berry
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade

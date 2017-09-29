@@ -25,6 +25,7 @@ import net.tropicraft.core.common.item.ItemBambooItemFrame;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemCoconutBomb;
+import net.tropicraft.core.common.item.ItemCoffeeBean;
 import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
@@ -55,6 +56,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item searedMarlin;
 	public static Item coconutChunk;
 	public static Item pineappleCubes;
+	public static Item coffeeBeans;
 
 	// Tool materials
 	public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 1, 200, 4.5F, 1.0F, 14);
@@ -176,6 +178,8 @@ public class ItemRegistry extends TropicraftRegistry {
 
 		coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
 		pineappleCubes = registerItem(new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
+		
+		coffeeBeans = registerMultiItem(new ItemCoffeeBean(Names.COFFEE_NAMES, BlockRegistry.coffeePlant), "coffee_beans", Names.COFFEE_NAMES);
 
 		frogLeg = registerItem(new ItemTropicraft().setMaxStackSize(64), "frog_leg");
 		cookedFrogLeg = registerItem(new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
@@ -219,7 +223,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
 
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
-		mobEgg = registerMultiItemTextured(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
+		mobEgg = registerMultiItem(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
 	}
 
 	public static void init() {
@@ -232,41 +236,33 @@ public class ItemRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerColoredItem(cocktail);
 	}
 
-	private static Item registerMultiItemTextured(Item item, String name, String[] names) {
-		item.setUnlocalizedName(getNamePrefixed(name));
-		item.setRegistryName(new ResourceLocation(Info.MODID, name));
-
-		GameRegistry.register(item);
-		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
-
-		for (int metadata = 0; metadata < names.length; metadata++) {
-			Tropicraft.proxy.registerItemVariantModel(item, name + "_" + names[metadata], metadata);
+	private static Item registerMultiItem(Item item, String regName, String[] variantNames) {
+		Item ret = registerItem(item, regName, variantNames[0]);
+		for (int i = 1; i < variantNames.length; i++) {
+			Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
 		}
-
-		return item;
+		return ret;
 	}
 
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {
-		item.setUnlocalizedName(getNamePrefixed(name));
-		item.setRegistryName(new ResourceLocation(Info.MODID, name));
-
-		GameRegistry.register(item);
-		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
-
-		for (int metadata = 0; metadata < numPlaces; metadata++) {
-			Tropicraft.proxy.registerItemVariantModel(item, name, metadata);
+		Item ret = registerItem(item, name);
+		for (int i = 1; i < numPlaces; i++) {
+			Tropicraft.proxy.registerItemVariantModel(item, name, i);
 		}
-
-		return item;
+		return ret;
 	}
 
 	private static Item registerItem(Item item, String name) {
+		return registerItem(item, name, name);
+	}
+
+	private static Item registerItem(Item item, String name, String variantName) {
 		item.setUnlocalizedName(getNamePrefixed(name));
 		item.setRegistryName(new ResourceLocation(Info.MODID, name));
 
 		GameRegistry.register(item);
 		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
-		Tropicraft.proxy.registerItemVariantModel(item, name, 0);
+		Tropicraft.proxy.registerItemVariantModel(item, variantName, 0);
 
 		return item;
 	}

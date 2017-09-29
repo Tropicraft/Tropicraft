@@ -27,6 +27,7 @@ import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoconut;
+import net.tropicraft.core.common.block.BlockCoffeeBush;
 import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.block.BlockFruitLeaves;
@@ -104,6 +105,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	
 	public static Block pineapple;
 	public static Block iris;
+	public static BlockCoffeeBush coffeePlant;
 	
 	public static Block volcano;
 	
@@ -161,6 +163,7 @@ public class BlockRegistry extends TropicraftRegistry {
 
 		pineapple = registerMultiBlock(new BlockPineapple(Names.TALL_PLANT_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.TALL_PLANT_NAMES));
 		iris = registerMultiBlock(new BlockIris(Names.TALL_PLANT_NAMES), ItemBlockTropicraft.class, "iris", asList(Names.TALL_PLANT_NAMES));
+		coffeePlant = registerMultiBlock(new BlockCoffeeBush(), null, "coffee_bush");
 		
 		sands = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
 		
@@ -182,7 +185,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerColoredBlock(sands);
 	}
 	
-	private static Block registerMultiColoredBlock(Block block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
+	private static <T extends Block & ITropicraftBlock> T registerMultiColoredBlock(T block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
 		return registerMultiBlock(block, clazz, name, itemCtorArgs);
 	}
 
@@ -250,7 +253,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	 * @param name Name of the image prefix
 	 * @param names Names of the images
 	 */
-	private static Block registerMultiBlock(Block block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
+	private static <T extends Block & ITropicraftBlock> T registerMultiBlock(T block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
 		try {
 			// Some nice code borrowed from old FML and repurposed
 			Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
@@ -259,14 +262,19 @@ public class BlockRegistry extends TropicraftRegistry {
 			{
 				ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
 			}
-			Constructor<? extends ItemBlock> itemConstructor = clazz.getConstructor(ctorArgClasses);
-			ItemBlock itemBlockInstance = itemConstructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
+			
+			ItemBlock itemBlockInstance;
+			if (clazz != null) {
+				Constructor<? extends ItemBlock> itemConstructor = clazz.getConstructor(ctorArgClasses);
+				itemBlockInstance = itemConstructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
+			} else {
+				itemBlockInstance = null;
+			}
 
 			block = registerBlock(block, itemBlockInstance, name, false, CreativeTabRegistry.tropicraftTab);
 
 			// get the preset blocks variants
 			ImmutableSet<IBlockState> presets = getBlockPresets(block);
-			ITropicraftBlock tcBlock = (ITropicraftBlock)block;
 
 			if (presets.isEmpty()) {
 				// block has no sub-blocks to register
@@ -274,7 +282,7 @@ public class BlockRegistry extends TropicraftRegistry {
 			} else {
 				// register all the sub-blocks
 				for (IBlockState state : presets) {
-					String stateName = tcBlock.getStateName(state);
+					String stateName = block.getStateName(state);
 					int stateMeta = block.getMetaFromState(state);
 					// System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
 					registerBlockVariant(block, name, stateMeta, stateName);

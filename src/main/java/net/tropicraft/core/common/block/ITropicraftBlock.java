@@ -20,8 +20,12 @@ public interface ITropicraftBlock {
 	public IProperty[] getProperties();
 	
 	@SideOnly(Side.CLIENT)
-	public IBlockColor getBlockColor();
+	default IBlockColor getBlockColor() {
+		return null;
+	}
 	
 	@SideOnly(Side.CLIENT)
-	public IItemColor getItemColor();
+	default IItemColor getItemColor() {
+		return null;
+	}
 }

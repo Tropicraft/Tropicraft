@@ -1,0 +1,20 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "stem": "tropicraft:blocks/coffee_bush_stem"
+        },
+        "model": "tropicraft:coffee_bush"
+    },
+    "variants": {
+        "age": {
+            "0": { "textures": { "bush": "tropicraft:blocks/coffee_bush_stage0" }},
+            "1": { "textures": { "bush": "tropicraft:blocks/coffee_bush_stage1" }},
+            "2": { "textures": { "bush": "tropicraft:blocks/coffee_bush_stage2" }},
+            "3": { "textures": { "bush": "tropicraft:blocks/coffee_bush_stage3" }},
+            "4": { "textures": { "bush": "tropicraft:blocks/coffee_bush_stage4" }},
+            "5": { "textures": { "bush": "tropicraft:blocks/coffee_bush_stage5" }},
+            "6": { "textures": { "bush": "tropicraft:blocks/coffee_bush_stage6" }}
+        }
+    }
+}

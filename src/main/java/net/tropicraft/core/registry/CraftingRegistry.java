@@ -253,6 +253,11 @@ public class CraftingRegistry {
 			"XX", "YY", "XX", 'X', new ItemStack(BlockRegistry.bundles, 1, 1),
 			'Y', new ItemStack(BlockRegistry.bundles, 1, 0)
 		});
+		
+		// Coffee bean -> berry
+		createShapelessRecipe(true, new ItemStack(ItemRegistry.coffeeBeans), new Object[]{
+			new ItemStack(ItemRegistry.coffeeBeans, 1, 2)
+		});
 
 		// planks -> logs
 		int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");
@@ -274,7 +279,8 @@ public class CraftingRegistry {
 		createOreRecipe(ItemRegistry.eudialyte, 1);
 		createOreRecipe(ItemRegistry.zircon, 2);
 
-		GameRegistry.addSmelting(ItemRegistry.frogLeg, new ItemStack(ItemRegistry.cookedFrogLeg), 3);
+		GameRegistry.addSmelting(ItemRegistry.frogLeg, new ItemStack(ItemRegistry.cookedFrogLeg), 0.35F);
+		GameRegistry.addSmelting(new ItemStack(ItemRegistry.coffeeBeans, 1, 0), new ItemStack(ItemRegistry.coffeeBeans, 1, 1), 0.35F);
 	}
 
 	private static void createFullSingleBlockRecipe(Block out, Item ingredient, int blockDmg) {
