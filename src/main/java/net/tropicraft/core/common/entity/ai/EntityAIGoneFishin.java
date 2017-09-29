@@ -7,6 +7,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.Random;
 
@@ -24,17 +25,17 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
     private boolean debugTask = true;
 
-    private EntityCreature entity;
+    private EntityKoaBase entity;
     private Random rand;
 
     private BlockPos posLastWaterFound;
     private BlockPos posLastLandFound;
 
-    private int walkingTimeout;
-    private int fishingTimeout;
-
     private int walkingTimeoutMax = 200;
     private int fishingTimeoutMax = 200;
+
+    private int walkingTimeout;
+    private int fishingTimeout;
 
     private float moveSpeedAmp = 1F;
 
@@ -44,15 +45,49 @@ public class EntityAIGoneFishin extends EntityAIBase {
     private int repathPenalty = 0;
     private int repathPenaltyMax = 60;
 
-    public EntityAIGoneFishin(EntityCreature entity) {
+    private int repathAttempts = 0;
+
+    public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;
         setMutexBits(3);
         rand = new Random();
+
+        walkingTimeout = walkingTimeoutMax;
+        fishingTimeout = fishingTimeoutMax;
     }
 
     @Override
     public boolean shouldExecute() {
-        return state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
+
+        //temp
+        //entity.timeBetweenFishing = 20*60*2;
+        //entity.lastTimeFished = 0;
+
+        boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
+        if (entity.lastTimeFished + entity.timeBetweenFishing < entity.world.getTotalWorldTime() && entity.world.rand.nextInt(2) == 0) {
+            BlockPos posWater = findWater();
+            if (posWater != null) {
+                if (Util.tryMoveToXYZLongDist(entity, posWater, moveSpeedAmp)) {
+                    posLastWaterFound = posWater;
+                    result = true;
+                    entity.lastTimeFished = entity.world.getTotalWorldTime();
+                    setState(FISHING_STATE.WALKING_TO_WATER);
+                    debug("found water, start executing");
+                } else {
+                    debug("failed the path, skip executing");
+                }
+            } else {
+                debug("couldnt find water, skip executing");
+            }
+        } else {
+            //debug("waiting on timeout to fish");
+        }
+        return result;
+    }
+
+    @Override
+    public boolean continueExecuting() {
+        return posLastWaterFound != null;
     }
 
     @Override
@@ -63,12 +98,23 @@ public class EntityAIGoneFishin extends EntityAIBase {
             repathPenalty--;
         }
 
+        //runs on reset or after shouldExecute returns true
+        //this mode may have been deprecated
         if (state == FISHING_STATE.IDLE) {
-            BlockPos posWater = findWater();
-            if (posWater != null) {
-                posLastWaterFound = posWater;
-                Util.tryMoveToXYZLongDist(entity, posWater, moveSpeedAmp);
-                setState(FISHING_STATE.WALKING_TO_WATER);
+            //debug("idle state used");
+            if (posLastWaterFound == null) {
+                posLastWaterFound = findWater();
+            }
+            if (posLastWaterFound != null) {
+                if (Util.tryMoveToXYZLongDist(entity, posLastWaterFound, moveSpeedAmp)) {
+                    setState(FISHING_STATE.WALKING_TO_WATER);
+                } else {
+                    debug("found water but pathing failed, abort");
+                    //assume bad water spot
+                    //but even bad water spots far away will get a successfull partial path
+                    //hmmmm
+                    resetTask();
+                }
             } else {
                 if (rand.nextInt(150) == 0 && entity.getNavigator().noPath()) {
                     //long distance wandering?
@@ -85,19 +131,32 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             if (!entity.isInWater()) {
                 if (walkingTimeout <= 0 || entity.getNavigator().noPath()) {
-                    debug("reset task from water pathing taking too long");
+                    if (walkingTimeout <= 0) {
+                        debug("water pathing taking too long");
+                    } else if (entity.getNavigator().noPath()) {
+                        debug("water pathing having no path, pf find failed?");
+                    }
+                    if (Util.tryMoveToXYZLongDist(entity, posLastWaterFound, moveSpeedAmp)) {
+                        debug("found new path to try");
+                    } else {
+                        resetTask();
+                        return;
+                    }
                     //cases where theyre trying to get to water underground, reset task instead
                     //maintainPathToBlock(posLastWaterFound);
-                    resetTask();
-                    return;
+
                 }
             } else {
                 //we fell in water accidentally, get to shore
                 BlockPos posLand = findLand();
                 if (posLand != null) {
                     posLastLandFound = posLand;
-                    Util.tryMoveToXYZLongDist(entity, posLand, moveSpeedAmp);
-                    setState(FISHING_STATE.WALKING_TO_LAND);
+                    if (Util.tryMoveToXYZLongDist(entity, posLand, moveSpeedAmp)) {
+                        setState(FISHING_STATE.WALKING_TO_LAND);
+                    } else {
+                        resetTask();
+                        return;
+                    }
                 }
             }
 
@@ -111,7 +170,10 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             //if within 8 blocks of target
             //- cast line
-            walkingTimeout--;
+            if (walkingTimeout > 0) {
+                walkingTimeout--;
+                //debug("walkingTimeout: " + walkingTimeout--);
+            }
         } else if (state == FISHING_STATE.FISHING) {
             //temp visual to replace casting line
             entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1));
@@ -123,8 +185,12 @@ public class EntityAIGoneFishin extends EntityAIBase {
                 BlockPos posLand = findLand();
                 if (posLand != null) {
                     posLastLandFound = posLand;
-                    Util.tryMoveToXYZLongDist(entity, posLand, moveSpeedAmp);
-                    setState(FISHING_STATE.WALKING_TO_LAND);
+                    if (Util.tryMoveToXYZLongDist(entity, posLand, moveSpeedAmp)) {
+                        setState(FISHING_STATE.WALKING_TO_LAND);
+                    } else {
+                        resetTask();
+                        return;
+                    }
                 }
             }
 
@@ -147,8 +213,12 @@ public class EntityAIGoneFishin extends EntityAIBase {
                 debug("caught a fish");
 
                 if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
-                    Util.tryMoveToXYZLongDist(entity, entity.getHomePosition(), moveSpeedAmp);
-                    setState(FISHING_STATE.RETURN_TO_BASE);
+                    if (Util.tryMoveToXYZLongDist(entity, entity.getHomePosition(), moveSpeedAmp)) {
+                        setState(FISHING_STATE.RETURN_TO_BASE);
+                    } else {
+                        resetTask();
+                        return;
+                    }
                 } else {
                     if (rand.nextInt(2) == 0) {
                         setState(FISHING_STATE.IDLE);
@@ -166,16 +236,20 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             //debug(entity.getHomePosition());
             if (entity.getDistance(entity.getHomePosition().getX(), entity.getHomePosition().getY(), entity.getHomePosition().getZ()) < 3D) {
-                debug("dropping off fish");
+                debug("dropping off fish, reset");
                 fishCaught = 0;
-                setState(FISHING_STATE.IDLE);
+                //setState(FISHING_STATE.IDLE);
+                resetTask();
             }
 
             if (walkingTimeout <= 0 || (entity.getNavigator().noPath() && entity.world.getTotalWorldTime() % 20 == 0)) {
-                maintainPathToBlock(entity.getHomePosition());
+                if (!retryPathOrAbort(entity.getHomePosition())) return;
             }
 
-            walkingTimeout--;
+            if (walkingTimeout > 0) {
+                walkingTimeout--;
+                //debug("walkingTimeout: " + walkingTimeout--);
+            }
         } else if (state == FISHING_STATE.WALKING_TO_LAND) {
 
             if (entity.getDistance(posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround) {
@@ -187,15 +261,23 @@ public class EntityAIGoneFishin extends EntityAIBase {
                 return;
             }
 
-            if (walkingTimeout <= 0 || (entity.getNavigator().noPath() && entity.world.getTotalWorldTime() % 20 == 0)) {
+            if (walkingTimeout <= 0 || entity.getNavigator().noPath()) {
+                if (walkingTimeout <= 0) {
+                    debug("pathing taking too long");
+                } else if (entity.getNavigator().noPath()) {
+                    debug("pathing having no path, pf find failed?");
+                }
                 if (entity.getDistance(posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 64D) {
-                    maintainPathToBlock(posLastLandFound);
+                    if (!retryPathOrAbort(posLastLandFound)) return;
                 } else {
-                    maintainPathToBlock(posLastWaterFound);
+                    if (!retryPathOrAbort(posLastWaterFound)) return;
                 }
             }
 
-            walkingTimeout--;
+            if (walkingTimeout > 0) {
+                walkingTimeout--;
+                //debug("walkingTimeout: " + walkingTimeout--);
+            }
         }
     }
 
@@ -218,6 +300,8 @@ public class EntityAIGoneFishin extends EntityAIBase {
         fishCaught = 0;
         posLastLandFound = null;
         posLastWaterFound = null;
+        repathAttempts = 0;
+
         this.state = FISHING_STATE.IDLE;
     }
 
@@ -232,6 +316,18 @@ public class EntityAIGoneFishin extends EntityAIBase {
         }
     }
 
+    private boolean retryPathOrAbort(BlockPos pos) {
+        boolean success = Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
+        if (!success) {
+            debug("repathing failed, resetting - " + this.entity.getEntityId() + " - " + this.state + " - " + pos);
+            resetTask();
+        } else {
+            debug("repathing success - " + this.entity.getEntityId() + " - " + this.state + " - " + pos);
+            walkingTimeout = walkingTimeoutMax;
+        }
+        return success;
+    }
+
     private void debug(String str) {
         if (debugTask) {
             System.out.println(str);
@@ -239,7 +335,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     private BlockPos findWater() {
-        return Util.findBlock(entity, 60, Util::isWater);
+        return Util.findBlock(entity, 60, Util::isDeepWater);
     }
 
     private BlockPos findLand() {

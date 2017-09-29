@@ -33,9 +33,12 @@ import javax.annotation.Nullable;
 public class EntityKoaBase extends EntityVillager {
 
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
+    public long lastTimeFished = 0;
+    public long timeBetweenFishing = 20*60*2;
 
     public EntityKoaBase(World worldIn) {
         super(worldIn);
+        this.enablePersistence();
     }
 
     @Override
@@ -188,6 +191,8 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("home_X", getHomePosition().getX());
         compound.setInteger("home_Y", getHomePosition().getY());
         compound.setInteger("home_Z", getHomePosition().getZ());
+
+        compound.setLong("lastTimeFished", lastTimeFished);
     }
 
     @Override
@@ -196,5 +201,6 @@ public class EntityKoaBase extends EntityVillager {
         if (compound.hasKey("home_X")) {
             this.setHomePosAndDistance(new BlockPos(compound.getInteger("home_X"), compound.getInteger("home_Y"), compound.getInteger("home_Z")), -1);
         }
+        lastTimeFished = compound.getLong("lastTimeFished");
     }
 }

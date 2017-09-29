@@ -19,17 +19,53 @@ import java.util.function.Predicate;
 
 public class Util {
 
+    /*public class PartialPathfindTracker {
+
+        public EntityCreature entity;
+        public BlockPos posEndPoint;
+        public int pathfindAttempts;
+        public double moveSpeedAmp;
+
+        public PartialPathfindTracker(EntityCreature entity) {
+            this.entity = entity;
+        }
+
+        public void pathNew(BlockPos pos) {
+            this.posEndPoint = pos;
+            boolean result = Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
+        }
+
+        public boolean pathNext(BlockPos pos) {
+            boolean result = Util.tryMoveToXYZLongDist(entity, pos, moveSpeedAmp);
+            pathfindAttempts++;
+            return result;
+        }
+
+        public void reset() {
+            pathfindAttempts = 0;
+            posEndPoint = null;
+        }
+    }*/
+
     public static BlockPos findBlock(EntityLiving entity, int scanRange, BiPredicate<World, BlockPos> predicate) {
 
         int scanSize = scanRange;
-        int scanSizeY = 60;
+        int scanSizeY = scanRange / 2;
         int adjustRangeY = 10;
 
         int tryX;
         int tryY = MathHelper.floor(entity.posY) - 1;
         int tryZ;
 
-        for (int ii = 0; ii <= 5; ii++) {
+        for (int ii = 0; ii <= 10; ii++) {
+            //try close to entity first few times
+            if (ii <= 3) {
+                scanSize = 20;
+                scanSizeY = 10 / 2;
+            } else {
+                scanSize = scanRange;
+                scanSizeY = scanRange / 2;
+            }
             tryX = MathHelper.floor(entity.posX) + (entity.world.rand.nextInt(scanSize)-scanSize/2);
             int i = tryY + entity.world.rand.nextInt(scanSizeY)-(scanSizeY/2);
             tryZ = MathHelper.floor(entity.posZ) + entity.world.rand.nextInt(scanSize)-scanSize/2;
@@ -79,6 +115,10 @@ public class Util {
 
     public static boolean isWater(World world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial().isLiquid();
+    }
+
+    public static boolean isDeepWater(World world, BlockPos pos) {
+        return world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
     }
 
     public static boolean isLand(World world, BlockPos pos) {
