@@ -7,15 +7,24 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.ai.EntityAIFindLeader;
 import net.tropicraft.core.common.entity.ai.EntityAIFollowLeader;
+import net.tropicraft.core.common.item.ItemFishBucket;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityTropicalFish extends EntityTropicraftWaterMob {
 
@@ -108,6 +117,45 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
+	}
+	
+	@Override
+	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+
+		if (stack != null && stack.getItem() == ItemRegistry.fishingNet) {
+
+			final int firstHotbarSlot = 0;
+			int bucketSlot = -1;
+			for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
+				ItemStack s = player.inventory.getStackInSlot(firstHotbarSlot + i);
+				if (isFishHolder(s)) {
+					bucketSlot = firstHotbarSlot + i;
+					break;
+				}
+			}
+
+			if (bucketSlot == -1 && isFishHolder(player.getHeldItemOffhand())) {
+				bucketSlot = 36;
+			}
+
+			if (bucketSlot >= 0) {
+				ItemStack fishHolder = player.inventory.getStackInSlot(bucketSlot);
+				if (fishHolder.getItem() == ItemRegistry.tropicsWaterBucket) {
+					player.inventory.setInventorySlotContents(bucketSlot, fishHolder = new ItemStack(ItemRegistry.fishBucket));
+					player.inventoryContainer.detectAndSendChanges();
+				}
+				if (ItemFishBucket.addFish(fishHolder, this)) {
+					getEntityWorld().removeEntity(this);
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	
+	private boolean isFishHolder(ItemStack stack) {
+		return stack != null && (stack.getItem() == ItemRegistry.tropicsWaterBucket || stack.getItem() == ItemRegistry.fishBucket);
 	}
 	
 	public boolean getIsLeader() {

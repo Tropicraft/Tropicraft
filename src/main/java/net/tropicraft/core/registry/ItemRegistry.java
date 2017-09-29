@@ -28,6 +28,7 @@ import net.tropicraft.core.common.item.ItemCoconutBomb;
 import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
+import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
@@ -77,6 +78,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item dagger;
 	//TODO public static Item leafBall;
 	public static Item coconutBomb;
+	public static Item fishingNet;
 
 	// Bamboo n stuff
 	public static Item bambooShoot;
@@ -85,6 +87,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
 	// Buckets
 	public static Item tropicsWaterBucket;
+	public static Item fishBucket;
 
 	// Music
 	public static Item recordBuriedTreasure;
@@ -166,6 +169,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		axeZircon = registerItem(new ItemTropicraftAxe(materialZirconTools, 6.0F, -3.2F), "axe_zircon");
 		swordEudialyte = registerItem(new ItemSword(materialEudialyteTools), "sword_eudialyte");
 		swordZircon = registerItem(new ItemSword(materialZirconTools), "sword_zircon");
+		
+		fishingNet = registerItem(new ItemTropicraft(), "fishing_net");
 
 		bambooShoot = registerItem(new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
 		bambooStick = registerItem(new ItemTropicraft(), "bamboo_stick");
@@ -175,7 +180,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		searedMarlin = registerItem(new ItemTropicraftFood(8, 0.65F), "seared_marlin");
 
 		tropicsWaterBucket = registerItem((new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
-
+		fishBucket = registerItem(new ItemFishBucket(), "fish_bucket");
+		
 		coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
 		pineappleCubes = registerItem(new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
 
