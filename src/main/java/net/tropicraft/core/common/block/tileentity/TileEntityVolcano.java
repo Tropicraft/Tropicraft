@@ -72,12 +72,12 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 			if (!getWorld().isRemote) {
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
 				if (getWorld().rand.nextInt(15) == 0)
-					throwLavaFromCaldera((getWorld().rand.nextDouble() * 0.5) + (lavaLevel > 90 ? 1 : 0.75));
+					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > 90 ? 1 : 0.75));
 				//	}
 
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
 				if (getWorld().rand.nextInt(15) == 0)
-					throwLavaFromCaldera((getWorld().rand.nextDouble() * 0.5) + (lavaLevel > 90 ? 1 : 0.75));
+					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > 90 ? 1 : 0.75));
 				//	}
 			}
 			break;

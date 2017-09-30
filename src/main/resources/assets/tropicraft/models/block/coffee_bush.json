@@ -1,0 +1,37 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "#bush"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 16, 16 ],
+            "faces": {
+                "down":  { "texture": "#bush", "cullface": "down" },
+                "up":    { "texture": "#bush", "cullface": "up" },
+                "north": { "texture": "#bush", "cullface": "north" },
+                "south": { "texture": "#bush", "cullface": "south" },
+                "west":  { "texture": "#bush", "cullface": "west" },
+                "east":  { "texture": "#bush", "cullface": "east" }
+            }
+        },
+        {   "from": [ 0.8, 0, 8 ],
+            "to": [ 15.2, 16, 8 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 16, 0, 0, 16 ], "texture": "#stem" },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#stem" }
+            }
+        },
+        {   "from": [ 8, 0, 0.8 ],
+            "to": [ 8, 16, 15.2 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#stem" },
+                "east": { "uv": [ 16, 0, 0, 16 ], "texture": "#stem" }
+            }
+        }
+    ]
+}

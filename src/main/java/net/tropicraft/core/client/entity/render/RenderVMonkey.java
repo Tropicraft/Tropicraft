@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Info;
-import net.tropicraft.core.client.entity.model.ModelTropiSkeleton;
 import net.tropicraft.core.client.entity.model.ModelVMonkey;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 
