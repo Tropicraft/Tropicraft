@@ -19,8 +19,15 @@ import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
 import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
+import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
+import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
 import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
+import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
+import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 
 public class EntityRegistry {
 
@@ -44,15 +51,19 @@ public class EntityRegistry {
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
+		registerEntity(EntityTropicalFish.class, "fish", 80, 3, true);
+		registerEntity(EntityManOWar.class, "mow", 64, 3, true);
+		registerEntity(EntityEagleRay.class, "eagleray", 80, 1, true);
+		registerEntity(EntitySeaUrchin.class, "seaurchin", 64, 3, true);
+		registerEntity(EntitySeaUrchinEgg.class, "SeaUrchinEgg", 64, 3, false);
+		registerEntity(EntityStarfish.class, "starfish", 64, 3, false);
+		registerEntity(EntityStarfishEgg.class, "StarfishEgg", 64, 3, false);
 		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
 		net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(entityClass, entityName, entityID++, Tropicraft.instance, trackingRange, updateFrequency, sendsVelocityUpdates);
-		
-		//egg for testing
-		net.minecraftforge.fml.common.registry.EntityRegistry.registerEgg(entityClass, 0xFFFFFF, 0x000000);
 	}
 	
 }

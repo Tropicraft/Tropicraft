@@ -1,5 +1,7 @@
 package net.tropicraft.core.registry;
 
+import java.util.Arrays;
+
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -29,6 +31,7 @@ import net.tropicraft.core.common.item.ItemCoffeeBean;
 import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
+import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
@@ -79,6 +82,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item dagger;
 	//TODO public static Item leafBall;
 	public static Item coconutBomb;
+	public static Item fishingNet;
 
 	// Bamboo n stuff
 	public static Item bambooShoot;
@@ -87,6 +91,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
 	// Buckets
 	public static Item tropicsWaterBucket;
+	public static Item fishBucket;
 
 	// Music
 	public static Item recordBuriedTreasure;
@@ -137,6 +142,8 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item bambooItemFrame;
 
 	public static Item waterWand;
+
+	public static Item seaUrchinRoe;
 	public static Item mobEgg;
 
 	public static void preInit() {
@@ -166,6 +173,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		axeZircon = registerItem(new ItemTropicraftAxe(materialZirconTools, 6.0F, -3.2F), "axe_zircon");
 		swordEudialyte = registerItem(new ItemSword(materialEudialyteTools), "sword_eudialyte");
 		swordZircon = registerItem(new ItemSword(materialZirconTools), "sword_zircon");
+		
+		fishingNet = registerItem(new ItemTropicraft(), "fishing_net");
 
 		bambooShoot = registerItem(new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
 		bambooStick = registerItem(new ItemTropicraft(), "bamboo_stick");
@@ -175,7 +184,8 @@ public class ItemRegistry extends TropicraftRegistry {
 		searedMarlin = registerItem(new ItemTropicraftFood(8, 0.65F), "seared_marlin");
 
 		tropicsWaterBucket = registerItem((new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
-
+		fishBucket = registerItem(new ItemFishBucket(), "fish_bucket");
+		
 		coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
 		pineappleCubes = registerItem(new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
 		
@@ -201,6 +211,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		shellPab = registerItem(new ItemShell(), "shell_pab");
 		shellRube = registerItem(new ItemShell(), "shell_rube");
 		shellSolo = registerItem(new ItemShell(), "shell_solo");
+		//TODO make shellfish ItemShell(true) once we figure out how to get hangables to work
 		shellStarfish = registerItem(new ItemShell(), "shell_starfish");
 		shellTurtle = registerItem(new ItemShell(), "shell_turtle");
 
@@ -223,7 +234,9 @@ public class ItemRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
 
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
-		mobEgg = registerMultiItem(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
+
+		seaUrchinRoe = registerItem(new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
+		mobEgg = registerMultiItemPrefixed(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
 	}
 
 	public static void init() {
@@ -242,6 +255,10 @@ public class ItemRegistry extends TropicraftRegistry {
 			Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
 		}
 		return ret;
+	}
+	
+	private static Item registerMultiItemPrefixed(Item item, String name, String[] names) {
+		return registerMultiItem(item, name, Arrays.stream(names).map(s -> name + "_" + s).toArray(String[]::new));
 	}
 
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {
