@@ -63,8 +63,8 @@ public class EntityLavaBall extends Entity {
 		float y = (float)this.posY;
 		float z = (float)this.posZ;
 
-		if (worldObj.isRemote) {
-			worldObj.spawnParticle(EnumParticleTypes.LAVA, x, y, z, motionX, -1.5F, motionZ, 0);
+		if (world.isRemote) {
+			world.spawnParticle(EnumParticleTypes.LAVA, x, y, z, motionX, -1.5F, motionZ, 0);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class EntityLavaBall extends Entity {
 
 		if (!onGround) {
 			motionY -=.05F;
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				for (int i = 0; i < 5 + rand.nextInt(3); i++){
 					supahDrip();
 				}
@@ -109,37 +109,37 @@ public class EntityLavaBall extends Entity {
 
 		BlockPos posCurrent = new BlockPos(thisX, thisY, thisZ);
 		BlockPos posBelow = posCurrent.down();
-		IBlockState stateBelow = worldObj.getBlockState(posBelow);
+		IBlockState stateBelow = world.getBlockState(posBelow);
 
-		if (!worldObj.isAirBlock(posBelow) && stateBelow.getMaterial() != Material.LAVA && !held) {
+		if (!world.isAirBlock(posBelow) && stateBelow.getMaterial() != Material.LAVA && !held) {
 			if (setFire) {
-				worldObj.setBlockState(posCurrent, Blocks.LAVA.getDefaultState(), 3);
+				world.setBlockState(posCurrent, Blocks.LAVA.getDefaultState(), 3);
 				isDead = true;
 			}
 
 			if (!setFire) {
-				if (worldObj.isAirBlock(posCurrent.west())) {
-					worldObj.setBlockState(posCurrent.west(), Blocks.LAVA.getDefaultState(), 2);
+				if (world.isAirBlock(posCurrent.west())) {
+					world.setBlockState(posCurrent.west(), Blocks.LAVA.getDefaultState(), 2);
 				}
 
-				if (worldObj.isAirBlock(posCurrent.east())) {
-					worldObj.setBlockState(posCurrent.east(), Blocks.LAVA.getDefaultState(), 2);
+				if (world.isAirBlock(posCurrent.east())) {
+					world.setBlockState(posCurrent.east(), Blocks.LAVA.getDefaultState(), 2);
 				}
 
-				if (worldObj.isAirBlock(posCurrent.south())) {
-					worldObj.setBlockState(posCurrent.south(), Blocks.LAVA.getDefaultState(), 2);
+				if (world.isAirBlock(posCurrent.south())) {
+					world.setBlockState(posCurrent.south(), Blocks.LAVA.getDefaultState(), 2);
 				}
 
-				if (worldObj.isAirBlock(posCurrent.north())) {
-					worldObj.setBlockState(posCurrent.north(), Blocks.LAVA.getDefaultState(), 2);
+				if (world.isAirBlock(posCurrent.north())) {
+					world.setBlockState(posCurrent.north(), Blocks.LAVA.getDefaultState(), 2);
 				}
 
-				worldObj.setBlockState(posCurrent, Blocks.LAVA.getDefaultState(), 3);
+				world.setBlockState(posCurrent, Blocks.LAVA.getDefaultState(), 3);
 				setFire = true;
 			}
 		}
 
-		this.moveEntity(motionX, motionY, motionZ);
+		this.move(motionX, motionY, motionZ);
 	}
 
 	@Override

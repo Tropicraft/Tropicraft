@@ -124,7 +124,7 @@ public class EntityDart extends Entity implements IProjectile {
 	 @Override
 	 public void setThrowableHeading(double x, double y, double z, float rotation1, float rotation2) {
 		 // Vector normalization
-		 float f2 = MathHelper.sqrt_double(x * x + y * y + z * z);
+		 float f2 = MathHelper.sqrt(x * x + y * y + z * z);
 		 x /= (double)f2;
 		 y /= (double)f2;
 		 z /= (double)f2;
@@ -138,7 +138,7 @@ public class EntityDart extends Entity implements IProjectile {
 		 this.motionX = x;
 		 this.motionY = y;
 		 this.motionZ = z;
-		 float f3 = MathHelper.sqrt_double(x * x + z * z);
+		 float f3 = MathHelper.sqrt(x * x + z * z);
 		 this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(x, z) * 180.0D / Math.PI);
 		 this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(y, (double)f3) * 180.0D / Math.PI);
 		 this.ticksInGround = 0;
@@ -153,18 +153,18 @@ public class EntityDart extends Entity implements IProjectile {
 
 		 if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
 		 {
-			 float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			 float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			 this.prevRotationYaw = this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 			 this.prevRotationPitch = this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f) * (180D / Math.PI));
 		 }
 
 		 BlockPos blockpos = new BlockPos(this.xTile, this.yTile, this.zTile);
-		 IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
+		 IBlockState iblockstate = this.world.getBlockState(blockpos);
 		 Block block = iblockstate.getBlock();
 
 		 if (iblockstate.getMaterial() != Material.AIR)
 		 {
-			 AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.worldObj, blockpos);
+			 AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, blockpos);
 
 			 if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(blockpos).isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
 			 {
@@ -202,7 +202,7 @@ public class EntityDart extends Entity implements IProjectile {
 			 ++this.ticksInAir;
 			 Vec3d vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
 			 Vec3d vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			 RayTraceResult raytraceresult = this.worldObj.rayTraceBlocks(vec3d1, vec3d, false, true, false);
+			 RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
 			 vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
 			 vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -231,7 +231,7 @@ public class EntityDart extends Entity implements IProjectile {
 			 this.posX += this.motionX;
 			 this.posY += this.motionY;
 			 this.posZ += this.motionZ;
-			 float f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			 float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			 this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 			 for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)f2) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
@@ -264,7 +264,7 @@ public class EntityDart extends Entity implements IProjectile {
 				 for (int l = 0; l < 4; ++l)
 				 {
 					 float f4 = 0.25F;
-					 this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double)f4, this.posY - this.motionY * (double)f4, this.posZ - this.motionZ * (double)f4, this.motionX, this.motionY, this.motionZ, new int[0]);
+					 this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double)f4, this.posY - this.motionY * (double)f4, this.posZ - this.motionZ * (double)f4, this.motionX, this.motionY, this.motionZ, new int[0]);
 				 }
 
 				 f3 = 0.8F;
@@ -290,7 +290,7 @@ public class EntityDart extends Entity implements IProjectile {
 		 BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos1 = BlockPos.PooledMutableBlockPos.retain(axisalignedbb.maxX - 0.001D, axisalignedbb.maxY - 0.001D, axisalignedbb.maxZ - 0.001D);
 		 BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos2 = BlockPos.PooledMutableBlockPos.retain();
 
-		 if (this.worldObj.isAreaLoaded(blockpos$pooledmutableblockpos, blockpos$pooledmutableblockpos1))
+		 if (this.world.isAreaLoaded(blockpos$pooledmutableblockpos, blockpos$pooledmutableblockpos1))
 		 {
 			 for (int i = blockpos$pooledmutableblockpos.getX(); i <= blockpos$pooledmutableblockpos1.getX(); ++i)
 			 {
@@ -298,12 +298,12 @@ public class EntityDart extends Entity implements IProjectile {
 				 {
 					 for (int k = blockpos$pooledmutableblockpos.getZ(); k <= blockpos$pooledmutableblockpos1.getZ(); ++k)
 					 {
-						 blockpos$pooledmutableblockpos2.set(i, j, k);
-						 IBlockState iblockstate = this.worldObj.getBlockState(blockpos$pooledmutableblockpos2);
+						 blockpos$pooledmutableblockpos2.setPos(i, j, k);
+						 IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos2);
 
 						 try
 						 {
-							 iblockstate.getBlock().onEntityCollidedWithBlock(this.worldObj, blockpos$pooledmutableblockpos2, iblockstate, this);
+							 iblockstate.getBlock().onEntityCollidedWithBlock(this.world, blockpos$pooledmutableblockpos2, iblockstate, this);
 						 }
 						 catch (Throwable throwable)
 						 {
@@ -339,7 +339,7 @@ public class EntityDart extends Entity implements IProjectile {
 
 		 if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
 		 {
-			 float f = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+			 float f = MathHelper.sqrt(par1 * par1 + par5 * par5);
 			 this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
 			 this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)f) * 180.0D / Math.PI);
 			 this.prevRotationPitch = this.rotationPitch;
@@ -409,7 +409,7 @@ public class EntityDart extends Entity implements IProjectile {
 	 @Nullable
 	 protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
 		 Entity entity = null;
-		 List<Entity> list = this.worldObj.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expandXyz(1.0D), DART_TARGETS);
+		 List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expandXyz(1.0D), DART_TARGETS);
 		 double d0 = 0.0D;
 
 		 for (int i = 0; i < list.size(); ++i)
@@ -444,8 +444,8 @@ public class EntityDart extends Entity implements IProjectile {
 		 Entity entity = raytraceResultIn.entityHit;
 
 		 if (entity != null) {
-			 float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-			 int i = MathHelper.ceiling_double_int((double)f * this.damage);
+			 float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+			 int i = MathHelper.ceil((double)f * this.damage);
 
 			 DamageSource damagesource;
 
@@ -463,7 +463,7 @@ public class EntityDart extends Entity implements IProjectile {
 				 if (entity instanceof EntityLivingBase) {
 					 EntityLivingBase entitylivingbase = (EntityLivingBase)entity;
 
-					 if (!this.worldObj.isRemote) {
+					 if (!this.world.isRemote) {
 						 entitylivingbase.setArrowCountInEntity(entitylivingbase.getArrowCountInEntity() + 1);
 
 						 // TODO: Re-implement if we somehow add paralysis darts back in
@@ -505,7 +505,7 @@ public class EntityDart extends Entity implements IProjectile {
 				 this.prevRotationYaw += 180.0F;
 				 this.ticksInAir = 0;
 
-				 if (!this.worldObj.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D) {
+				 if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D) {
 					 this.setDead();
 				 }
 			 }
@@ -514,13 +514,13 @@ public class EntityDart extends Entity implements IProjectile {
 			 this.xTile = blockpos.getX();
 			 this.yTile = blockpos.getY();
 			 this.zTile = blockpos.getZ();
-			 IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
+			 IBlockState iblockstate = this.world.getBlockState(blockpos);
 			 this.inTile = iblockstate.getBlock();
 			 this.inData = this.inTile.getMetaFromState(iblockstate);
 			 this.motionX = (double)((float)(raytraceResultIn.hitVec.xCoord - this.posX));
 			 this.motionY = (double)((float)(raytraceResultIn.hitVec.yCoord - this.posY));
 			 this.motionZ = (double)((float)(raytraceResultIn.hitVec.zCoord - this.posZ));
-			 float f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+			 float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 			 this.posX -= this.motionX / (double)f2 * 0.05000000074505806D;
 			 this.posY -= this.motionY / (double)f2 * 0.05000000074505806D;
 			 this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806D;
@@ -529,7 +529,7 @@ public class EntityDart extends Entity implements IProjectile {
 			 this.arrowShake = 7;
 
 			 if (iblockstate.getMaterial() != Material.AIR) {
-				 this.inTile.onEntityCollidedWithBlock(this.worldObj, blockpos, iblockstate, this);
+				 this.inTile.onEntityCollidedWithBlock(this.world, blockpos, iblockstate, this);
 			 }
 		 }
 	 }

@@ -31,7 +31,7 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
 		if (panicTime > 0) {
 			panicTime--;
 
-			if (this.ashen.worldObj.getTotalWorldTime() % 10 == 0) {
+			if (this.ashen.world.getTotalWorldTime() % 10 == 0) {
 				Vec3d vec3 = RandomPositionGenerator.findRandomTarget(this.ashen, 10, 7);
 
 				if (vec3 == null)
@@ -50,7 +50,7 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
 			if (ashen.getDistanceSqToEntity(ashen.maskToTrack) <= maskGrabDistance) {
 				ashen.pickupMask(ashen.maskToTrack);
 			} else {
-				if (this.ashen.worldObj.getTotalWorldTime() % 40 == 0) {
+				if (this.ashen.world.getTotalWorldTime() % 40 == 0) {
 					this.ashen.getNavigator().tryMoveToXYZ(ashen.maskToTrack.posX, ashen.maskToTrack.posY, ashen.maskToTrack.posZ, this.speed);
 				}
 			}

@@ -75,9 +75,9 @@ public class EntityLostMask extends Entity {
 		}
 
 		else{
-			int xMod = worldObj.rand.nextInt(10);
-			int yMod = worldObj.rand.nextInt(30);
-			int zMod = worldObj.rand.nextInt(10);
+			int xMod = world.rand.nextInt(10);
+			int yMod = world.rand.nextInt(30);
+			int zMod = world.rand.nextInt(10);
 			int[] a = this.getRotator();
 			a[0] += xMod;
 			a[1] += yMod;
@@ -85,7 +85,7 @@ public class EntityLostMask extends Entity {
 			this.setRotator(a);
 			motionY -= .05f;
 		}
-		this.moveEntity(motionX, motionY, motionZ);		
+		this.move(motionX, motionY, motionZ);		
 	}
 	@Override
 	protected void entityInit() {
@@ -111,7 +111,7 @@ public class EntityLostMask extends Entity {
 		if (this.isEntityInvulnerable(par1DamageSource)) {
 			return false;
 		} else {
-			if (!this.isDead && !this.worldObj.isRemote) {
+			if (!this.isDead && !this.world.isRemote) {
 				this.setDead();
 				this.setBeenAttacked();
 				EntityPlayer entityplayer = null;
@@ -152,7 +152,7 @@ public class EntityLostMask extends Entity {
 
 	public boolean checkForWater(int offset) {
 		BlockPos pos = new BlockPos(posX, posY + offset, posZ);
-		IBlockState state = worldObj.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 		return state.getMaterial() == Material.WATER;
 	}
 

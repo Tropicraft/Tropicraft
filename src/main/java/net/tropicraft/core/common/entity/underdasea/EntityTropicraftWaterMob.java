@@ -70,7 +70,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 	 */
 	@Override
 	public boolean getCanSpawnHere() {
-		return this.posY > 45.0D && this.posY < (double)this.worldObj.getSeaLevel() && super.getCanSpawnHere();
+		return this.posY > 45.0D && this.posY < (double)this.world.getSeaLevel() && super.getCanSpawnHere();
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 		this.rotation += this.rotationVelocity;
 
 		if ((double)this.rotation > (Math.PI * 2D)) {
-			if (this.worldObj.isRemote) {
+			if (this.world.isRemote) {
 				this.rotation = ((float)Math.PI * 2F);
 			} else {
 				this.rotation = (float)((double)this.rotation - (Math.PI * 2D));
@@ -104,7 +104,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 					this.rotationVelocity = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
 				}
 
-				this.worldObj.setEntityState(this, (byte)19);
+				this.world.setEntityState(this, (byte)19);
 			}
 		}
 
@@ -123,19 +123,19 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 				this.rotateSpeed *= 0.99F;
 			}
 
-			if (!this.worldObj.isRemote) {
+			if (!this.world.isRemote) {
 				this.motionX = (double)(this.randomMotionVecX * this.randomMotionSpeed);
 				this.motionY = (double)(this.randomMotionVecY * this.randomMotionSpeed);
 				this.motionZ = (double)(this.randomMotionVecZ * this.randomMotionSpeed);
 			}
 
-			float f1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.renderYawOffset += (-((float)MathHelper.atan2(this.motionX, this.motionZ)) * (180F / (float)Math.PI) - this.renderYawOffset) * 0.1F;
 			this.rotationYaw = this.renderYawOffset;
 			this.yaw = (float)((double)this.yaw + Math.PI * (double)this.rotateSpeed * 1.5D);
 			this.pitch += (-((float)MathHelper.atan2((double)f1, this.motionY)) * (180F / (float)Math.PI) - this.pitch) * 0.1F;
 		} else {
-			if (!this.worldObj.isRemote) {
+			if (!this.world.isRemote) {
 				this.motionX = 0.0D;
 				this.motionZ = 0.0D;
 
@@ -167,7 +167,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 	 */
 	@Override
 	public void moveEntityWithHeading(float strafe, float forward) {
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		this.move(this.motionX, this.motionY, this.motionZ);
 	}
 
 	public void setMovementVector(float randomMotionVecXIn, float randomMotionVecYIn, float randomMotionVecZIn) {
@@ -179,6 +179,32 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 	public boolean hasMovementVector() {
 		return this.randomMotionVecX != 0.0F || this.randomMotionVecY != 0.0F || this.randomMotionVecZ != 0.0F;
 	}
+	
+    public static enum WaterMobType {
+        //TODO CHANGE THIS TO BE THE WATER HEIGHT LEVEL IN THE TROPICS!
+        SURFACE_TROPICS(90, 88),
+        SURFACE_OVERWORLD(63, 62),
+        OCEAN_DWELLER(62, 32);
+
+        /** The highest this water mob can go in the water (eg, the highest y-value) */
+        final int shallowDepth;
+
+        /** The deepest this water mob can go in the water (eg, the smallest y-value) */
+        final int deepDepth;
+
+        private WaterMobType(int shallowDepth, int deepDepth) {
+            this.shallowDepth = shallowDepth;
+            this.deepDepth = deepDepth;
+        }
+
+        public int getShallowDepth() {
+            return this.shallowDepth;
+        }
+
+        public int getDeepDepth() {
+            return this.deepDepth;
+        }
+    }
 
 	static class AIMoveRandom extends EntityAIBase {
 		private EntityTropicraftWaterMob waterMob;
@@ -201,11 +227,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
          * Updates the task
          */
         public void updateTask() {
-            int i = this.waterMob.getAge();
-
-            if (i > 100) {
-                this.waterMob.setMovementVector(0.0F, 0.0F, 0.0F);
-            } else if (this.waterMob.getRNG().nextInt(200) == 0 || !this.waterMob.inWater || !this.waterMob.hasMovementVector()) {
+            if (this.waterMob.getRNG().nextInt(200) == 0 || !this.waterMob.inWater || !this.waterMob.hasMovementVector()) {
                 float f = this.waterMob.getRNG().nextFloat() * ((float)Math.PI * 2F);
                 float f1 = MathHelper.cos(f) * 0.2F;
                 float f2 = -0.1F + this.waterMob.getRNG().nextFloat() * 0.2F;

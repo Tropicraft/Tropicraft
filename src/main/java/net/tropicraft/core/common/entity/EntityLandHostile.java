@@ -18,6 +18,12 @@ public abstract class EntityLandHostile extends EntityLand {
 		super(world);
 		setSize(.7F, 1.95F);
 	}
+	
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+	}
 
 	public boolean attackEntityAsMob(Entity entityIn) {
 		float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
@@ -53,7 +59,7 @@ public abstract class EntityLandHostile extends EntityLand {
 
 					if (this.rand.nextFloat() < f1) {
 						entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);
-						this.worldObj.setEntityState(entityplayer, (byte)30);
+						this.world.setEntityState(entityplayer, (byte)30);
 					}
 				}
 			}

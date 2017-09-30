@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block.tileentity.message;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -20,7 +19,7 @@ public class MessageSifterStart extends MessageTileEntity<TileEntitySifter> {
 
 		@Override
 		public IMessage onMessage(MessageSifterStart message, MessageContext ctx) {
-			TileEntitySifter te = message.getTileEntity(Minecraft.getMinecraft().theWorld);
+			TileEntitySifter te = message.getClientTileEntity();
 			if (te != null) {
 				te.startSifting();
 			}

@@ -70,7 +70,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		int i = x * 16;
 		int j = z * 16;
 		BlockPos blockpos = new BlockPos(i, 0, j);
-		BiomeGenTropicraft biome = (BiomeGenTropicraft) this.worldObj.getBiomeGenForCoords(blockpos.add(16, 0, 16));
+		BiomeGenTropicraft biome = (BiomeGenTropicraft) this.worldObj.getBiome(blockpos.add(16, 0, 16));
 		this.rand.setSeed(this.worldObj.getSeed());
 		long k = this.rand.nextLong() / 2L * 2L + 1L;
 		long l = this.rand.nextLong() / 2L * 2L + 1L;
@@ -125,7 +125,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 		this.rand.setSeed((long)x * 341873128712L + (long)z * 132897987541L);
 		ChunkPrimer chunkprimer = new ChunkPrimer();
 		this.setBlocksInChunk(x, z, chunkprimer);
-		this.biomesForGeneration = this.worldObj.getBiomeProvider().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16);
+		this.biomesForGeneration = this.worldObj.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16, 16);
 		this.replaceBiomeBlocks(x, z, chunkprimer, this.biomesForGeneration);
 
 		this.volcanoGen.generate(x, z, chunkprimer);
@@ -316,7 +316,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 			{
 				for (int l1 = -2; l1 <= 2; ++l1)
 				{
-					float f = 10.0F / MathHelper.sqrt_float((float)(k1 * k1 + l1 * l1) + 0.2F);
+					float f = 10.0F / MathHelper.sqrt((float)(k1 * k1 + l1 * l1) + 0.2F);
 					this.parabolicField[k1 + 2 + (l1 + 2) * 5] = f;
 				}
 			}

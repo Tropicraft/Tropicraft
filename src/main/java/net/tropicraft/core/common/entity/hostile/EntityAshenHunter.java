@@ -25,7 +25,7 @@ public class EntityAshenHunter extends EntityAshen {
     public void onLivingUpdate() { 
         super.onLivingUpdate();
 
-        if ((worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) && getActionState() != 1) {
+        if ((world.getDifficulty() == EnumDifficulty.PEACEFUL) && getActionState() != 1) {
             setActionState(0);
         } else if (getActionState() != 1) {
             setActionState(actionPicker);
@@ -40,8 +40,8 @@ public class EntityAshenHunter extends EntityAshen {
     public void attackEntityWithRangedAttack(EntityLivingBase entity, float range) {
     	if (this.getAttackTarget() != null) {
     		this.faceEntity(getAttackTarget(), 180, 180);
-    		EntityDart entitydart = new EntityDart(worldObj, this, 3.0F, (short)(0));
-        	worldObj.spawnEntityInWorld(entitydart);
+    		EntityDart entitydart = new EntityDart(world, this, 3.0F, (short)(0));
+        	world.spawnEntity(entitydart);
         	//System.out.println("shoot!");
     	}
     }
@@ -54,8 +54,8 @@ public class EntityAshenHunter extends EntityAshen {
 
     @Override
     protected double getAttackStrength() {
-    	if (worldObj == null) return 0;
-        switch (worldObj.getDifficulty()) {
+    	if (world == null) return 0;
+        switch (world.getDifficulty()) {
         case EASY:
             return 1;
         case NORMAL:

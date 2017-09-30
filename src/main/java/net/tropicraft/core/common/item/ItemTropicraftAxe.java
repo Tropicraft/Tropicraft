@@ -34,14 +34,14 @@ public class ItemTropicraftAxe extends ItemAxe {
     	
 //    	if (!worldIn.isRemote) {
 //        	Entity ball = new EntityLavaBall(worldIn, playerIn.posX, playerIn.posY, playerIn.posZ, 0.5, 0, 0.5);
-//        	worldIn.spawnEntityInWorld(ball);	
+//        	worldIn.spawnEntity(ball);	
 //    	}
     	
     	System.out.println("hello hello hello");
     	
     	if (!worldIn.isRemote) {
         	Entity ball = new EntityChair(worldIn, playerIn.posX, playerIn.posY + 1.01, playerIn.posZ, 0, playerIn);
-        	worldIn.spawnEntityInWorld(ball);	
+        	worldIn.spawnEntity(ball);	
     	}
     	
         return new ActionResult(EnumActionResult.PASS, itemStackIn);

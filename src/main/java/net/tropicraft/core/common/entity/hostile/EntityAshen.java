@@ -108,8 +108,8 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 	public void dropMask() {
 		//System.out.println("drop");
 		setActionState(1);
-		maskToTrack = new EntityLostMask(worldObj, getMaskType(), posX, posY, posZ, rotationYaw);
-		worldObj.spawnEntityInWorld(maskToTrack);
+		maskToTrack = new EntityLostMask(world, getMaskType(), posX, posY, posZ, rotationYaw);
+		world.spawnEntity(maskToTrack);
 	}
 
 	public void pickupMask(EntityLostMask mask) {
@@ -124,7 +124,7 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
 		boolean wasHit = super.attackEntityFrom(p_70097_1_, p_70097_2_);
 
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			if (hasMask() && wasHit) {
 				dropMask();
 			}

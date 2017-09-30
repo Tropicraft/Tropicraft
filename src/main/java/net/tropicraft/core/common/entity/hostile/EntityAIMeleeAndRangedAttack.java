@@ -133,7 +133,7 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
                 return;
             }*/
 
-            f = MathHelper.sqrt_double(d0) / this.shootCutoffRange;
+            f = MathHelper.sqrt(d0) / this.shootCutoffRange;
             float f1 = f;
 
             if (f < 0.1F)
@@ -150,7 +150,7 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
             
             if (d0 >= (double)this.shootCutoffRange) {
 	            this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, f1);
-	            this.rangedAttackTime = MathHelper.floor_float(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
+	            this.rangedAttackTime = MathHelper.floor(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
             } else {
             	if (d0 <= meleeHitRange) {
 	            	this.entityHost.attackEntityAsMob(attackTarget);
@@ -160,8 +160,8 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
         }
         else if (this.rangedAttackTime < 0)
         {
-            f = MathHelper.sqrt_double(d0) / this.shootCutoffRange;
-            this.rangedAttackTime = MathHelper.floor_float(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
+            f = MathHelper.sqrt(d0) / this.shootCutoffRange;
+            this.rangedAttackTime = MathHelper.floor(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
         }
     }
 }
