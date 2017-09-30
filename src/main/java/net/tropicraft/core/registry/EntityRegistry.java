@@ -55,7 +55,7 @@ public class EntityRegistry {
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
-		registerEntity(EntityAshenHunter.class, "AshenHunter", 80, 3, true);
+		registerEntity(EntityAshenHunter.class, "ashen", 80, 3, true);
 		registerEntity(EntityLostMask.class, "LostMask", 64, 3, true);
 		registerEntity(EntityTropicalFish.class, "fish", 80, 3, true);
 		registerEntity(EntityManOWar.class, "mow", 64, 3, true);
@@ -66,7 +66,7 @@ public class EntityRegistry {
 		registerEntity(EntityStarfishEgg.class, "StarfishEgg", 64, 3, false);
 		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
-		registerEntity(EntityKoaHunter.class, "KoaHunter", 64, 3, true);
+		registerEntity(EntityKoaHunter.class, "koa", 64, 3, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

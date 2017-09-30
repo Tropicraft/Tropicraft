@@ -24,7 +24,7 @@ public class RenderAshen extends RenderLiving<EntityAshen> {
         super(Minecraft.getMinecraft().getRenderManager(), modelbase, f);
         modelAshen = (ModelAshen) modelbase;
         this.addLayer(new LayerMaskAshen(modelAshen));
-        this.addLayer(new LayerHeldItem(this));
+        this.addLayer(new LayerHeldItemAshen(this, modelAshen));
     }
 
     public void renderAshen(EntityAshen entityAshen, double d, double d1, double d2,

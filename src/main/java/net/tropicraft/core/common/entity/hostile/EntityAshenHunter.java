@@ -3,10 +3,13 @@ package net.tropicraft.core.common.entity.hostile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.projectile.EntityDart;
+import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
 public class EntityAshenHunter extends EntityAshen {
@@ -18,6 +21,7 @@ public class EntityAshenHunter extends EntityAshen {
         setActionState(2);
         actionPicker = 2;
         hasGTFO = false;
+        this.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(ItemRegistry.dagger));
        // lostSight = 0;
     }
     
