@@ -234,7 +234,7 @@ public class ItemRegistry extends TropicraftRegistry {
 		waterWand = registerItem(new ItemWaterWand(), "water_wand");
 
 		seaUrchinRoe = registerItem(new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
-		mobEgg = registerMultiItem(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
+		mobEgg = registerMultiItemPrefixed(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
 	}
 
 	public static void init() {
@@ -253,6 +253,20 @@ public class ItemRegistry extends TropicraftRegistry {
 			Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
 		}
 		return ret;
+	}
+	
+	private static Item registerMultiItemPrefixed(Item item, String name, String[] names) {
+		item.setUnlocalizedName(getNamePrefixed(name));
+		item.setRegistryName(new ResourceLocation(Info.MODID, name));
+		
+		GameRegistry.register(item);
+		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
+		
+		for (int metadata = 0; metadata < names.length; metadata++) {
+			Tropicraft.proxy.registerItemVariantModel(item, name + "_" + names[metadata], metadata);
+		}
+		
+		return item;
 	}
 
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {
