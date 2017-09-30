@@ -1,5 +1,7 @@
 package net.tropicraft.core.registry;
 
+import java.util.Arrays;
+
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -256,17 +258,7 @@ public class ItemRegistry extends TropicraftRegistry {
 	}
 	
 	private static Item registerMultiItemPrefixed(Item item, String name, String[] names) {
-		item.setUnlocalizedName(getNamePrefixed(name));
-		item.setRegistryName(new ResourceLocation(Info.MODID, name));
-		
-		GameRegistry.register(item);
-		item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
-		
-		for (int metadata = 0; metadata < names.length; metadata++) {
-			Tropicraft.proxy.registerItemVariantModel(item, name + "_" + names[metadata], metadata);
-		}
-		
-		return item;
+		return registerMultiItem(item, name, Arrays.stream(names).map(s -> name + "_" + s).toArray(String[]::new));
 	}
 
 	private static Item registerMultiItem(Item item, String name, int numPlaces) {
