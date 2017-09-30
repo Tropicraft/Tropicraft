@@ -5,6 +5,10 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.tropicraft.core.client.entity.model.ModelKoaMan;
+import net.tropicraft.core.client.entity.model.ModelMarlin;
+import net.tropicraft.core.client.entity.model.ModelSeahorse;
+import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.entity.model.ModelFish;
 import net.tropicraft.core.client.entity.model.ModelManOWar;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
@@ -36,6 +40,7 @@ import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBase;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
+import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
@@ -79,6 +84,7 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityStarfishEgg.class, new RenderEchinodermEgg());
 		registerEntityRender(EntityBambooItemFrame.class, new RenderBambooItemFrame());
 		registerEntityRender(EntityWallItem.class, new RenderWallItem());
+		registerEntityRender(EntityKoaHunter.class, new RenderKoaMan(Minecraft.getMinecraft().getRenderManager(), new ModelKoaMan(), 0.5F));
 		//registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
 	}
 
