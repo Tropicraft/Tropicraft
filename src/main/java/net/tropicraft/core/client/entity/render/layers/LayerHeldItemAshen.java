@@ -1,4 +1,4 @@
-package net.tropicraft.core.client.entity.render;
+package net.tropicraft.core.client.entity.render.layers;
 
 import org.lwjgl.opengl.GL11;
 
