@@ -14,7 +14,7 @@ public class BiomeGenTropicraft extends Biome {
 
 	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 
-	public static Biome tropicsOcean = new BiomeGenTropicraft((new Biome.BiomeProperties("TROPICS_OCEAN")).setBaseHeight(-1.0F).setHeightVariation(0.4F).setTemperature(1.5F).setRainfall(1.25F)).setRegistryName("tc_tropics_ocean");
+	public static Biome tropicsOcean = new BiomeGenTropicsOcean((new Biome.BiomeProperties("TROPICS_OCEAN")).setBaseHeight(-1.0F).setHeightVariation(0.4F).setTemperature(1.5F).setRainfall(1.25F)).setRegistryName("tc_tropics_ocean");
 	public static Biome tropics = new BiomeGenTropics((new Biome.BiomeProperties("TROPICS")).setBaseHeight(0.15F).setHeightVariation(0.15F).setTemperature(2.0F).setRainfall(1.5F)).setRegistryName("tc_tropics");
 	public static Biome rainforestPlains = new BiomeGenRainforest((new Biome.BiomeProperties("TROPICS_RAINFOREST_PLAINS")).setBaseHeight(0.25F).setHeightVariation(0.1F).setTemperature(1.5F).setRainfall(2.0F)).setRegistryName("tc_tropics_rainforest_plains");
 	public static Biome rainforestHills = new BiomeGenRainforest((new Biome.BiomeProperties("TROPICS_RAINFOREST_HILLS")).setBaseHeight(0.45F).setHeightVariation(0.425F).setTemperature(1.5F).setRainfall(2.0F)).setRegistryName("tc_tropics_rainforest_hills");
