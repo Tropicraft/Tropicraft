@@ -40,6 +40,7 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
      * @param _default Original armor model. Will have attributes set.
      * @return  A ModelBiped to render instead of the default
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemstack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
         if (itemstack == null) {
@@ -50,13 +51,13 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
         ModelBiped armorModel = EntityRenderRegistry.scubaGearModel;
 
         if (armorModel != null){
-            armorModel.bipedHead.showModel = armorSlot == EntityEquipmentSlot.HEAD;
-            armorModel.bipedHeadwear.showModel = armorSlot == EntityEquipmentSlot.HEAD;
-            armorModel.bipedBody.showModel = armorSlot == EntityEquipmentSlot.CHEST || armorSlot == EntityEquipmentSlot.LEGS;
-            armorModel.bipedRightArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
-            armorModel.bipedLeftArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
-            armorModel.bipedRightLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
-            armorModel.bipedLeftLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
+//            armorModel.bipedHead.showModel = armorSlot == EntityEquipmentSlot.HEAD;
+//            armorModel.bipedHeadwear.showModel = armorSlot == EntityEquipmentSlot.HEAD;
+//            armorModel.bipedBody.showModel = armorSlot == EntityEquipmentSlot.CHEST || armorSlot == EntityEquipmentSlot.LEGS;
+//            armorModel.bipedRightArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
+//            armorModel.bipedLeftArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
+//            armorModel.bipedRightLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
+//            armorModel.bipedLeftLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
 
             armorModel.isSneak = entityLiving.isSneaking();
             armorModel.isRiding = entityLiving.isRiding();

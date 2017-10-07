@@ -4,6 +4,8 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 
 public class ModelScubaGear extends ModelBiped {
     //   ModelRenderer bipedHead;
@@ -76,10 +78,6 @@ public class ModelScubaGear extends ModelBiped {
     public ModelScubaGear( float par1 ) {
         this.leftArmPose = ModelBiped.ArmPose.EMPTY;
         this.rightArmPose = ModelBiped.ArmPose.EMPTY;
-        bipedHead = new ModelRenderer( this, 0, 0 );
-        bipedHead.setTextureSize( 128, 64 );
-        bipedHead.addBox( -4F, -4F, -4F, 8, 8, 8);
-        bipedHead.setRotationPoint( 0F, -4F, 0F );
         bipedBody = new ModelRenderer( this, 32, 16 );
         bipedBody.setTextureSize( 128, 64 );
         bipedBody.addBox( -4F, -6F, -2F, 8, 12, 4);
@@ -98,10 +96,9 @@ public class ModelScubaGear extends ModelBiped {
         bipedRightLeg.setRotationPoint( -2F, 18F, 0F );
         Fin1 = new ModelRenderer( this, 10, 38 );
         Fin1.setTextureSize( 128, 64 );
-        Fin1.addBox( -2.5F, -2F, -2.5F, 5, 2, 5);
-        Fin1.setRotationPoint( -2F, 24F, 0F );
+        Fin1.addBox( -5F, 22F, -2.5F, 5, 2, 5);
+        Fin1.setRotationPoint( 2.5F, -12F, 0F );
         Fin1.mirror = true;
-        // TODO: rotation point
         Fin1m1 = new ModelRenderer( this, 13, 47 );
         Fin1m1.setTextureSize( 128, 64 );
         Fin1m1.addBox( -2.5F, -1.5F, -1F, 5, 1, 2);
@@ -126,46 +123,46 @@ public class ModelScubaGear extends ModelBiped {
         Fin1m4.setRotationPoint( -3.710101F, 24.5F, -4.698463F );
         setRotation(Fin1m4, 0F, 0F, 0F);
         Fin1m4.mirror = true;
-//        Fin1.addChild(Fin1m1);
-//        Fin1.addChild(Fin1m2);
-//        Fin1.addChild(Fin1m3);
-//        Fin1.addChild(Fin1m4);
+        Fin1.addChild(Fin1m1);
+        Fin1.addChild(Fin1m2);
+        Fin1.addChild(Fin1m3);
+        Fin1.addChild(Fin1m4);
         setRotation(Fin1, 0F, 0F, 0F);
-       // bipedRightLeg.addChild(Fin1);
+        bipedRightLeg.addChild(Fin1);
         bipedLeftLeg = new ModelRenderer( this, 16, 16 );
         bipedLeftLeg.setTextureSize( 128, 64 );
         bipedLeftLeg.addBox( -2F, -6F, -2F, 4, 12, 4);
         bipedLeftLeg.setRotationPoint( 2F, 18F, 0F );
         Fin2 = new ModelRenderer( this, 10, 38 );
         Fin2.setTextureSize( 128, 64 );
-        Fin2.addBox( -2.5F, 0F, -2.5F, 5, 2, 5);
-        Fin2.setRotationPoint( 2F, 24F, 0F );
+        Fin2.addBox( 0F, 22F, -2.5F, 5, 2, 5);
+        Fin2.setRotationPoint( -2F, -12F, 0F );
         Fin2m1 = new ModelRenderer( this, 13, 47 );
         Fin2m1.setTextureSize( 128, 64 );
-        Fin2m1.addBox( -2.5F, 0.5F, -1F, 5, 1, 2);
+        Fin2m1.addBox( -2.5F, -1.5F, -1F, 5, 1, 2);
         Fin2m1.setRotationPoint( 3.19707F, 24.5F, -3.288924F );
         setRotation(Fin2m1, 0F, 0F, 0F);
         Fin2m2 = new ModelRenderer( this, 15, 45 );
         Fin2m2.setTextureSize( 128, 64 );
-        Fin2m2.addBox( -2F, 0.5F, -0.5F, 4, 1, 1);
+        Fin2m2.addBox( -2F, -1.5F, -0.5F, 4, 1, 1);
         Fin2m2.setRotationPoint( 3.02606F, 23.5F, -2.819078F );
         setRotation(Fin2m2, 0F, 0F, 0F);
         Fin2m3 = new ModelRenderer( this, 1, 52 );
         Fin2m3.setTextureSize( 128, 64 );
-        Fin2m3.addBox( -5F, 1.0F, -6F, 10, 0, 12);
+        Fin2m3.addBox( -5F, -1.0F, -6F, 10, 0, 12);
         Fin2m3.setRotationPoint( 5.420201F, 24.5F, -9.396926F );
         setRotation(Fin2m3, 0F, 0F, 0F);
         Fin2m4 = new ModelRenderer( this, 15, 50 );
         Fin2m4.setTextureSize( 128, 64 );
-        Fin2m4.addBox( -2F, 0.5F, -0.5F, 4, 1, 1);
+        Fin2m4.addBox( -2F, -1.5F, -0.5F, 4, 1, 1);
         Fin2m4.setRotationPoint( 3.710101F, 24.5F, -4.698463F );
         setRotation(Fin2m4, 0F, 0F, 0F);
-//        Fin2.addChild(Fin2m1);
-//        Fin2.addChild(Fin2m2);
-//        Fin2.addChild(Fin2m3);
-//        Fin2.addChild(Fin2m4);
+        Fin2.addChild(Fin2m1);
+        Fin2.addChild(Fin2m2);
+        Fin2.addChild(Fin2m3);
+        Fin2.addChild(Fin2m4);
         setRotation(Fin2, 0F, 0F, 0F);
-        //bipedLeftLeg.addChild(Fin2);
+        bipedLeftLeg.addChild(Fin2);
         BCD = new ModelRenderer( this, 65, 50 );
         BCD.setTextureSize( 128, 64 );
         BCD.addBox( -4F, -6F, -1F, 8, 12, 2);
@@ -314,14 +311,6 @@ public class ModelScubaGear extends ModelBiped {
         Mask9.setTextureSize( 128, 64 );
         Mask9.addBox( -4F, -1F, -0.5F, 8, 2, 1);
         Mask9.setRotationPoint( 0F, -4.5F, 4F );
-//        bipedHead.addChild(Mask);
-//        bipedHead.addChild(Mask2);
-//        bipedHead.addChild(Mask3);
-//        bipedHead.addChild(Mask4);
-//        bipedHead.addChild(Mask5);
-//        bipedHead.addChild(Mask6);
-//        bipedHead.addChild(Mask7);
-//        bipedHead.addChild(Mask8);
         mouthpiece = new ModelRenderer( this, 115, 28 );
         mouthpiece.setTextureSize( 128, 64 );
         mouthpiece.addBox( -1.5F, -1.5F, -0.5F, 3, 3, 1);
@@ -334,9 +323,12 @@ public class ModelScubaGear extends ModelBiped {
         mouthpiece3.setTextureSize( 128, 64 );
         mouthpiece3.addBox( -1F, -0.5F, -0.5F, 2, 1, 1);
         mouthpiece3.setRotationPoint( 0F, -0.6000004F, -4F );
-//        bipedHead.addChild(mouthpiece);
-//        bipedHead.addChild(mouthpiece2);
-//        bipedHead.addChild(mouthpiece3);
+        bipedHead = new ModelRenderer( this, 0, 0 );
+        bipedHead.setTextureSize( 128, 64 );
+        bipedHead.addBox( -4F, -4F, -4F, 8, 8, 8);
+        bipedHead.setRotationPoint( 0F, -4F, 0F );
+        bipedHead.mirror = true;
+        setRotation(bipedHead, 0F, 0F, 0F);
         hose1 = new ModelRenderer( this, 117, 16 );
         hose1.setTextureSize( 128, 64 );
         hose1.addBox( -0.5F, -0.5F, -0.5F, 1, 1, 1);
@@ -361,12 +353,22 @@ public class ModelScubaGear extends ModelBiped {
         hose6.setTextureSize( 128, 64 );
         hose6.addBox( -1.5F, -0.5F, -0.5F, 3, 1, 1);
         hose6.setRotationPoint( 0F, -0.5F, 6.5F );
-//        bipedBody.addChild(hose1);
-//        bipedBody.addChild(hose2);
-//        bipedBody.addChild(hose3);
-//        bipedBody.addChild(hose4);
-//        bipedBody.addChild(hose5);
-//        bipedBody.addChild(hose6);
+        bipedHead.addChild(Mask);
+        bipedHead.addChild(Mask2);
+        bipedHead.addChild(Mask3);
+        bipedHead.addChild(Mask4);
+        bipedHead.addChild(Mask5);
+        bipedHead.addChild(Mask6);
+        bipedHead.addChild(Mask7);
+        bipedHead.addChild(Mask8);
+        bipedHead.addChild(mouthpiece);
+        bipedHead.addChild(mouthpiece2);
+        bipedHead.addChild(mouthpiece3);
+        bipedHead.addChild(hose1);
+        bipedHead.addChild(hose2);
+        bipedHead.addChild(hose3);
+        bipedHead.addChild(hose4);
+        bipedHead.addChild(hose5);
     }
 
     @Override
@@ -400,118 +402,48 @@ public class ModelScubaGear extends ModelBiped {
     }
 
     public void renderScubaGear(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, boolean renderHead) {
-        if (renderHead) {
-//            bipedHead.rotateAngleX = 0F;
-//            bipedHead.rotateAngleY = 0F;
-//            bipedHead.rotateAngleZ = 0F;
-            bipedHead.render(scale);   
+        hose4.rotateAngleX = 0.3075211F;
+
+        // Don't render if not player
+        if (!(entityIn instanceof EntityPlayer)) return;
+
+        EntityPlayer player = (EntityPlayer)entityIn;
+
+        boolean showHead = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null;
+        bipedHead.showModel = showHead;
+
+        if (showHead) {
+            hose6.rotateAngleX = 0F;
+            hose6.rotateAngleY = 0F;
+            hose6.rotateAngleZ = 0F;
+            hose6.renderWithRotation(scale);
         }
 
-//        bipedBody.rotateAngleX = 0F;
-//        bipedBody.rotateAngleY = 0F;
-//        bipedBody.rotateAngleZ = 0F;
+        boolean showChest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null;
+        bipedBody.showModel = showChest;
+
+        if (showChest) {
+            renderTank(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            renderBCD(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        }
+        
+        boolean showLegs = player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null;
+        
+        bipedRightLeg.showModel = showLegs;
+        bipedLeftLeg.showModel = showLegs;
+
+        if (renderHead) {
+            bipedHead.render(scale);
+        }
+
         bipedBody.render(scale);
-
-//        bipedRightArm.rotateAngleX = -0.9092643F;
-//        bipedRightArm.rotateAngleY = 0F;
-//        bipedRightArm.rotateAngleZ = 0F;
         bipedRightArm.render(scale);
-
-//        bipedLeftArm.rotateAngleX = 0.298086F;
-//        bipedLeftArm.rotateAngleY = 0F;
-//        bipedLeftArm.rotateAngleZ = 0F;
         bipedLeftArm.render(scale);
-
-//        bipedRightLeg.rotateAngleX = 0F;
-//        bipedRightLeg.rotateAngleY = 0.3490658F;
-//        bipedRightLeg.rotateAngleZ = 0F;
         bipedRightLeg.render(scale);
-
-//        Fin1.rotateAngleX = 0F;
-//        Fin1.rotateAngleY = 0.3490658F;
-//        Fin1.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedRightLeg, this.Fin1);
-        Fin1.render(scale);
-//
-//        Fin1m1.rotateAngleX = 0F;
-//        Fin1m1.rotateAngleY = 0.3490658F;
-//        Fin1m1.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedRightLeg, this.Fin1m1);
-       Fin1m1.render(scale);
-////
-//        Fin1m2.rotateAngleX = 0F;
-//        Fin1m2.rotateAngleY = 0.3490658F;
-//        Fin1m2.rotateAngleZ = 0F;
-       copyModelRotations(this.bipedRightLeg, this.Fin1m2);
-        Fin1m2.render(scale);
-////
-//        Fin1m3.rotateAngleX = 0F;
-//        Fin1m3.rotateAngleY = 0.3490658F;
-//        Fin1m3.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedRightLeg, this.Fin1m3);
-        Fin1m3.render(scale);
-////
-//        Fin1m4.rotateAngleX = 0F;
-//        Fin1m4.rotateAngleY = 0.3490658F;
-//        Fin1m4.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedRightLeg, this.Fin1m4);
-        Fin1m4.render(scale);
-
-//        bipedLeftLeg.rotateAngleX = 0F;
-//        bipedLeftLeg.rotateAngleY = -0.3490658F;
-//        bipedLeftLeg.rotateAngleZ = 0F;
         bipedLeftLeg.render(scale);
+    }
 
-//        Fin2.rotateAngleX = 0F;
-//        Fin2.rotateAngleY = -0.3490658F;
-//        Fin2.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedLeftLeg, this.Fin2);
-        Fin2.render(scale);
-//
-//        Fin2m1.rotateAngleX = 0F;
-//        Fin2m1.rotateAngleY = -0.3490658F;
-//        Fin2m1.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedLeftLeg, this.Fin2m1);
-        Fin2m1.render(scale);
-//
-//        Fin2m2.rotateAngleX = 0F;
-//        Fin2m2.rotateAngleY = -0.3490658F;
-//        Fin2m2.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedLeftLeg, this.Fin2m2);
-        Fin2m2.render(scale);
-//
-//        Fin2m3.rotateAngleX = 0F;
-//        Fin2m3.rotateAngleY = -0.3490658F;
-//        Fin2m3.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedLeftLeg, this.Fin2m3);
-        Fin2m3.render(scale);
-//
-//        Fin2m4.rotateAngleX = 0F;
-//        Fin2m4.rotateAngleY = -0.3490658F;
-//        Fin2m4.rotateAngleZ = 0F;
-        copyModelRotations(this.bipedLeftLeg, this.Fin2m4);
-        Fin2m4.render(scale);
-
-        BCD.rotateAngleX = 0F;
-        BCD.rotateAngleY = 0F;
-        BCD.rotateAngleZ = 0F;
-        BCD.renderWithRotation(scale);
-
-        BCD12.rotateAngleX = 0F;
-        BCD12.rotateAngleY = 0F;
-        BCD12.rotateAngleZ = 0F;
-        BCD12.renderWithRotation(scale);
-
-        BCD11.rotateAngleX = 0F;
-        BCD11.rotateAngleY = 0F;
-        BCD11.rotateAngleZ = 0F;
-        BCD11.renderWithRotation(scale);
-
-        BCD4.rotateAngleX = 0F;
-        BCD4.rotateAngleY = 0F;
-        BCD4.rotateAngleZ = 0F;
-        BCD4.renderWithRotation(scale);
-
+    private void renderTank(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         Tank2.rotateAngleX = 0F;
         Tank2.rotateAngleY = 0F;
         Tank2.rotateAngleZ = 0F;
@@ -552,11 +484,6 @@ public class ModelScubaGear extends ModelBiped {
         Tank2m7.rotateAngleZ = 0F;
         Tank2m7.renderWithRotation(scale);
 
-        BCD2.rotateAngleX = 0F;
-        BCD2.rotateAngleY = 0F;
-        BCD2.rotateAngleZ = 0F;
-        BCD2.renderWithRotation(scale);
-
         Tank1.rotateAngleX = 0F;
         Tank1.rotateAngleY = 0F;
         Tank1.rotateAngleZ = 0F;
@@ -596,6 +523,33 @@ public class ModelScubaGear extends ModelBiped {
         Tank1m7.rotateAngleY = 0F;
         Tank1m7.rotateAngleZ = 0F;
         Tank1m7.renderWithRotation(scale);
+    }
+
+    private void renderBCD(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        BCD.rotateAngleX = 0F;
+        BCD.rotateAngleY = 0F;
+        BCD.rotateAngleZ = 0F;
+        BCD.renderWithRotation(scale);
+
+        BCD12.rotateAngleX = 0F;
+        BCD12.rotateAngleY = 0F;
+        BCD12.rotateAngleZ = 0F;
+        BCD12.renderWithRotation(scale);
+
+        BCD11.rotateAngleX = 0F;
+        BCD11.rotateAngleY = 0F;
+        BCD11.rotateAngleZ = 0F;
+        BCD11.renderWithRotation(scale);
+
+        BCD4.rotateAngleX = 0F;
+        BCD4.rotateAngleY = 0F;
+        BCD4.rotateAngleZ = 0F;
+        BCD4.renderWithRotation(scale);
+
+        BCD2.rotateAngleX = 0F;
+        BCD2.rotateAngleY = 0F;
+        BCD2.rotateAngleZ = 0F;
+        BCD2.renderWithRotation(scale);
 
         BCD6.rotateAngleX = 0F;
         BCD6.rotateAngleY = 0F;
@@ -631,100 +585,8 @@ public class ModelScubaGear extends ModelBiped {
         BCD13.rotateAngleY = 0F;
         BCD13.rotateAngleZ = 0F;
         BCD13.renderWithRotation(scale);
-
-//        Mask.rotateAngleX = 0F;
-//        Mask.rotateAngleY = 0F;
-//        Mask.rotateAngleZ = 0F;
-//        Mask.renderWithRotation(scale);
-//
-//        Mask2.rotateAngleX = 0F;
-//        Mask2.rotateAngleY = 0F;
-//        Mask2.rotateAngleZ = 0F;
-//        Mask2.renderWithRotation(scale);
-//
-//        Mask3.rotateAngleX = 0F;
-//        Mask3.rotateAngleY = 0F;
-//        Mask3.rotateAngleZ = 0F;
-//        Mask3.renderWithRotation(scale);
-//
-//        Mask4.rotateAngleX = 0F;
-//        Mask4.rotateAngleY = 0F;
-//        Mask4.rotateAngleZ = 0F;
-//        Mask4.renderWithRotation(scale);
-//
-//        Mask5.rotateAngleX = 0F;
-//        Mask5.rotateAngleY = 0F;
-//        Mask5.rotateAngleZ = 0F;
-//        Mask5.renderWithRotation(scale);
-//
-//        Mask6.rotateAngleX = 0F;
-//        Mask6.rotateAngleY = 0F;
-//        Mask6.rotateAngleZ = 0F;
-//        Mask6.renderWithRotation(scale);
-//
-//        Mask7.rotateAngleX = 0F;
-//        Mask7.rotateAngleY = 0F;
-//        Mask7.rotateAngleZ = 0F;
-//        Mask7.renderWithRotation(scale);
-//
-//        Mask8.rotateAngleX = 0F;
-//        Mask8.rotateAngleY = 0F;
-//        Mask8.rotateAngleZ = 0F;
-//        Mask8.renderWithRotation(scale);
-//
-//        Mask9.rotateAngleX = 0F;
-//        Mask9.rotateAngleY = 0F;
-//        Mask9.rotateAngleZ = 0F;
-//        Mask9.renderWithRotation(scale);
-//
-//        mouthpiece.rotateAngleX = 0F;
-//        mouthpiece.rotateAngleY = 0F;
-//        mouthpiece.rotateAngleZ = 0F;
-//        mouthpiece.renderWithRotation(scale);
-//
-//        mouthpiece2.rotateAngleX = 0F;
-//        mouthpiece2.rotateAngleY = 0F;
-//        mouthpiece2.rotateAngleZ = 0F;
-//        mouthpiece2.renderWithRotation(scale);
-//
-//        mouthpiece3.rotateAngleX = 0F;
-//        mouthpiece3.rotateAngleY = 0F;
-//        mouthpiece3.rotateAngleZ = 0F;
-//        mouthpiece3.renderWithRotation(scale);
-
-//        hose1.rotateAngleX = 0F;
-//        hose1.rotateAngleY = 0F;
-//        hose1.rotateAngleZ = 0F;
-//        hose1.renderWithRotation(scale);
-//
-//        hose2.rotateAngleX = 0F;
-//        hose2.rotateAngleY = 0F;
-//        hose2.rotateAngleZ = 0F;
-//        hose2.renderWithRotation(scale);
-//
-//        hose3.rotateAngleX = 0F;
-//        hose3.rotateAngleY = 0F;
-//        hose3.rotateAngleZ = 0F;
-//        hose3.renderWithRotation(scale);
-//
-//        hose4.rotateAngleX = 0.3075211F;
-//        hose4.rotateAngleY = 0F;
-//        hose4.rotateAngleZ = 0F;
-//        hose4.renderWithRotation(scale);
-//
-//        hose5.rotateAngleX = 0F;
-//        hose5.rotateAngleY = 0F;
-//        hose5.rotateAngleZ = 0F;
-//        hose5.renderWithRotation(scale);
-//
-//        hose6.rotateAngleX = 0F;
-//        hose6.rotateAngleY = 0F;
-//        hose6.rotateAngleZ = 0F;
-//        hose6.renderWithRotation(scale);
-
-        //     super.render(par1Entity, par2, par3, par4, par5, par6, par7);
     }
-    
+
     /**
      * Copies the angles from one object to another. This is used when objects should stay aligned with each other, like
      * the hair over a players head.
@@ -735,7 +597,7 @@ public class ModelScubaGear extends ModelBiped {
         dest.rotateAngleY = source.rotateAngleY;
         dest.rotateAngleZ = source.rotateAngleZ;
     }
-    
+
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
