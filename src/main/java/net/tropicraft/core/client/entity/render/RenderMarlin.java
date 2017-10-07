@@ -33,6 +33,7 @@ public class RenderMarlin extends RenderTropicraftWaterMob {
 	@Override
 	public void doRender(EntityTropicraftWaterBase entityliving, double d, double d1, double d2, float f, float f1) {
 		marlin.inWater = entityliving.isInWater();
+	//	System.out.println(entityliving.hurtTime);
 		this.renderWaterMob((EntityTropicraftWaterBase) entityliving, d, d1, d2, f1);
 	}
 

@@ -47,12 +47,12 @@ public class EntityRegistry {
 		registerEntity(EntityPoisonBlot.class, "PoisonBlot", 32, 1, true);
 		registerEntity(EntityMarlin.class, "marlin", 80, 1, true);
 		registerEntity(EntityLavaBall.class, "Lava Ball", 120, 4, true);
-		registerEntity(EntitySeahorse.class, "seahorse", 80, 3, true);
+		registerEntity(EntitySeahorse.class, "seahorse", 80, 1, true);
 		registerEntity(EntityFailgull.class, "failgull", 80, 3, true);
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
-		registerEntity(EntityTropicalFish.class, "fish", 80, 3, true);
+		registerEntity(EntityTropicalFish.class, "fish", 80, 1, true);
 		registerEntity(EntityManOWar.class, "mow", 64, 3, true);
 		registerEntity(EntityEagleRay.class, "eagleray", 80, 1, true);
 		registerEntity(EntitySeaUrchin.class, "seaurchin", 64, 3, true);

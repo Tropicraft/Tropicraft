@@ -53,6 +53,16 @@ public class EntityTropicalFish extends EntityTropicraftWaterBase {
 		setIsLeader(true);
 		isCatchable = true;
 		this.experienceValue = 3;
+        this.setSwimSpeeds(1f, 0.2f, 4f);
+
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		if(this.leader != null) {
+			this.setTargetHeading(this.leader.posX, this.leader.posY, this.leader.posZ, true);
+		}
+		super.onLivingUpdate();
 	}
 
 	public EntityTropicalFish(World world, EntityLiving entityliving, int i) {

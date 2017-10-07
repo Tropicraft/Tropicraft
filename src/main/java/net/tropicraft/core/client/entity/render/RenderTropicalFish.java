@@ -39,14 +39,15 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
         this.mainModel.isRiding = shouldSit;
         this.mainModel.isChild = entity.isChild();
 
+        float offset = 0f;
         try
         {
             float f = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-            float f1 = this.interpolateRotation(entity.prevSwimYaw, entity.swimYaw, partialTicks);
+            float f1 = this.interpolateRotation(entity.prevSwimYaw+offset, entity.swimYaw+offset, partialTicks);
             float f2 = f1 - f;
             
-         //   f = 0f;
-
+            f1 = -f1;
+            f = f1;
 
             float f7 = entity.prevSwimPitch + (entity.swimPitch - entity.prevSwimPitch) * partialTicks;
             this.renderLivingAt(entity, x, y, z);
@@ -68,12 +69,15 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
                     f5 = 1.0F;
                 }
             }
+        
 
             this.renderFishy(entity);
             
             GlStateManager.enableAlpha();
             this.mainModel.setLivingAnimations(entity, f6, f5, partialTicks);
             this.mainModel.setRotationAngles(f6, f5, f8, f2, f7, f4, entity);
+            
+       
 
             if (this.renderOutlines) {
                 boolean flag1 = this.setScoreTeamColor(entity);

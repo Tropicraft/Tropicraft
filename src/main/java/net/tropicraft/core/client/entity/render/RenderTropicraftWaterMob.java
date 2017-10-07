@@ -1,8 +1,13 @@
 package net.tropicraft.core.client.entity.render;
 
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
@@ -36,14 +41,28 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 			float f5 = handleRotationFloat(entityliving, f1);
 
 
+			if(entityliving.hurtTime > 0){
+
+				GL11.glColor4f(2f, 0f, 0f, 1f);
+			}
 			//if (entityliving.isInWater() || entityliving.surfaceTick != 0) 
 			{
-				applyRotations(entityliving, f5, f2, f1);
+				
+				if(entityliving.deathTime > 0) {
+		            GlStateManager.rotate(f1 * this.getDeathMaxRotation(entityliving), 0.0F, 0.0F, 1.0F);
+				}else {
+					GlStateManager.translate(0f, -0.1f, 0f);
+
+		        //   GlStateManager.rotate(entityliving.ticksExisted, 0.0F, 0.0F, 1.0F);
+
+				}
+				//applyRotations(entityliving, f5, f2, f1);
 //				rotateCorpse(entityliving, f5, f2, f1);
 				
-				GL11.glRotatef(entityliving.swimYaw+yawOffset, 0F, 1.0F, 0.0F);
 
-				GL11.glRotatef(entityliving.swimPitch+pitchOffset, 1.0F, 0.0F, 0.0F);
+	            GlStateManager.rotate(entityliving.swimYaw+yawOffset+180, 0F, 1.0F, 0.0F);
+
+	            GlStateManager.rotate(entityliving.swimPitch+pitchOffset, 1.0F, 0.0F, 0.0F);
 
 
 			}
@@ -74,6 +93,8 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 			mainModel.setLivingAnimations(entityliving, f8, f7, f1);
 			renderModel(entityliving, f8, f7, f5, f3 - f2, f4, 0.0625f);
+			GL11.glColor4f(1f, 1f, 1f, 1f);
+
 		GL11.glPopMatrix();
 	}
 
