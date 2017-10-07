@@ -20,6 +20,8 @@ public class EntityMarlin extends EntityTropicraftWaterBase {
 			if(rand.nextInt(70) == 0)
 			texture = ModInfo.TEXTURE_ENTITY_LOC + "marlin2.png";
 		}*/
+		
+		setSwimSpeeds(0.8f, 3f, 2f, 2f, 5f);
 		setSize(1.4f, 0.95f);
 		
 		this.canAggress = true;
