@@ -180,31 +180,7 @@ public class EntityTropicraftWaterMob extends EntityWaterMob {
 		return this.randomMotionVecX != 0.0F || this.randomMotionVecY != 0.0F || this.randomMotionVecZ != 0.0F;
 	}
 	
-    public static enum WaterMobType {
-        //TODO CHANGE THIS TO BE THE WATER HEIGHT LEVEL IN THE TROPICS!
-        SURFACE_TROPICS(90, 88),
-        SURFACE_OVERWORLD(63, 62),
-        OCEAN_DWELLER(62, 32);
-
-        /** The highest this water mob can go in the water (eg, the highest y-value) */
-        final int shallowDepth;
-
-        /** The deepest this water mob can go in the water (eg, the smallest y-value) */
-        final int deepDepth;
-
-        private WaterMobType(int shallowDepth, int deepDepth) {
-            this.shallowDepth = shallowDepth;
-            this.deepDepth = deepDepth;
-        }
-
-        public int getShallowDepth() {
-            return this.shallowDepth;
-        }
-
-        public int getDeepDepth() {
-            return this.deepDepth;
-        }
-    }
+  
 
 	static class AIMoveRandom extends EntityAIBase {
 		private EntityTropicraftWaterMob waterMob;

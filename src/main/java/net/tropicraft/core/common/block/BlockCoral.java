@@ -28,6 +28,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 
 public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net.minecraftforge.common.IPlantable {
@@ -167,6 +168,21 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		checkFlowerChange(world, pos, state);
+		//System.out.println("Block update");
+		if(!world.isRemote && world.getLoadedEntityList().size() < 200) {
+			if(rand.nextInt(12) == 0) {
+				EntityTropicalFish fish = new EntityTropicalFish(world);
+				fish.setPosition(pos.getX(), pos.getY(), pos.getZ());
+				world.spawnEntity(fish);
+				fish.setIsLeader(true);
+				int amt = rand.nextInt(12);
+				for(int i =0 ; i < amt; i++) {
+					EntityTropicalFish fishe = new EntityTropicalFish(fish);
+					fishe.setPosition(pos.getX(), pos.getY(), pos.getZ());
+					world.spawnEntity(fishe);
+				}
+			}
+		}
 	}
 
 	protected void checkFlowerChange(World world, BlockPos pos, IBlockState state) {
