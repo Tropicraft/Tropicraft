@@ -146,6 +146,7 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 				}
 				if (ItemFishBucket.addFish(fishHolder, this)) {
 					getEntityWorld().removeEntity(this);
+					player.swingArm(hand);
 					return true;
 				}
 			}
