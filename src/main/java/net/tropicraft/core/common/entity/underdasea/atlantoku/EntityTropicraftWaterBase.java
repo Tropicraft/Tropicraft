@@ -96,8 +96,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			return;
 		}
 
-		boolean jumping = false;
-
+		// Server
+		
 		if (this.isInWater()) {
 			this.outOfWaterTime = 0;
 			BlockPos bp = new BlockPos((int)posX, (int)posY-1, (int)posZ);
@@ -135,100 +135,86 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			
 				
-		if(rand.nextInt(80) == 0) 
-			{
-				int dist = 15;
-				Vector3f randBlock = new Vector3f((float)(posX + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))), 
-						(float)(posY + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))), 
-						(float)(posZ + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))));
-				bp = new BlockPos((int)randBlock.x, (int)randBlock.y, (int)randBlock.z);
-
-				if(this.world.getBlockState(bp).getMaterial().isLiquid()) 
-				{
-					//if(!world.getBlock((int)randBlock.x, (int)randBlock.y, (int)randBlock.z).getMaterial().isSolid())
-					this.setTargetHeading(randBlock.x, randBlock.y, randBlock.z);
-				//	System.out.println("SET IT");
-				}
-				
-				
-				EntityPlayer closest = world.getClosestPlayerToEntity(this, 100f);
-				if(closest != null && rand.nextInt(5) == 0) {
-					if(closest.isInWater())
-					this.setTargetHeading(closest.posX, closest.posY, closest.posZ);
+			if(rand.nextInt(80) == 0) {
+					int dist = 15;
+					Vector3f randBlock = new Vector3f((float)(posX + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))), 
+							(float)(posY + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))), 
+							(float)(posZ + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))));
+					bp = new BlockPos((int)randBlock.x, (int)randBlock.y, (int)randBlock.z);
 	
-				}
-				
-			}
+					if(this.world.getBlockState(bp).getMaterial().isLiquid()) 
+					{
+						//if(!world.getBlock((int)randBlock.x, (int)randBlock.y, (int)randBlock.z).getMaterial().isSolid())
+						this.setTargetHeading(randBlock.x, randBlock.y, randBlock.z);
+					//	System.out.println("SET IT");
+					}
+					
+					
+					EntityPlayer closest = world.getClosestPlayerToEntity(this, 100f);
+					if(closest != null && rand.nextInt(5) == 0) {
+						if(closest.isInWater())
+						this.setTargetHeading(closest.posX, closest.posY, closest.posZ);
 		
-		if(rand.nextInt(20) == 0) {
-			//this.aggressTarget = null;
-			if (this.canAggress && (aggressTarget == null || !world.getLoadedEntityList().contains(aggressTarget))) {
-				List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
-				for (int i = 0; i < list.size(); i++) {
-					Entity ent = list.get(i);
-					if(ent.equals(this)) continue;
-					if(ent.getClass().getName().equals(this.getClass().getName())) continue;
-					//if(ent instanceof Ac) continue;
-
-					if(!this.canEntityBeSeen(ent)) continue;
-					if (ent instanceof EntityLivingBase){
-						if (((EntityLivingBase)ent).isInWater()) {
-							this.aggressTarget = ent;
+					}
+					
+				}
+			
+			if(rand.nextInt(20) == 0) {
+				//this.aggressTarget = null;
+				if (this.canAggress && (aggressTarget == null || !world.getLoadedEntityList().contains(aggressTarget))) {
+					List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
+					for (int i = 0; i < list.size(); i++) {
+						Entity ent = list.get(i);
+						if(ent.equals(this)) continue;
+						if(ent.getClass().getName().equals(this.getClass().getName())) continue;
+						//if(ent instanceof Ac) continue;
+	
+						if(!this.canEntityBeSeen(ent)) continue;
+						if (ent instanceof EntityLivingBase){
+							if (((EntityLivingBase)ent).isInWater()) {
+								this.aggressTarget = ent;
+							}
 						}
 					}
 				}
 			}
-		}
+			
+			if(rand.nextInt(200) == 0) {
+				this.aggressTarget = null;
+			}
 		
-		if(rand.nextInt(200) == 0) {
-			this.aggressTarget = null;
-		}
-	
-		
-		
-		if(this.fleeFromPlayers) {
-			EntityPlayer closest = world.getClosestPlayerToEntity(this, 2f);
-			if(closest != null) {
-				if(closest.isInWater()) 
-					this.fleeEntity(closest);
-					this.isPanicking = true;
+			
+			
+			if(this.fleeFromPlayers) {
+				EntityPlayer closest = world.getClosestPlayerToEntity(this, 2f);
+				if(closest != null) {
+					if(closest.isInWater()) 
+						this.fleeEntity(closest);
+						this.isPanicking = true;
+				}else {
+					this.isPanicking = false;
+				}
 			}else {
 				this.isPanicking = false;
 			}
-		}else {
-			this.isPanicking = false;
-		}
+				
 			
+			float swimSpeedTurn = this.swimSpeedTurn;
 			
-
-		/*	if (this.world.isAirBlock((int) posX, (int) posY + 1, (int) posZ)) {
-				if (this.swimPitch > 15f) {
-					if (this.rand.nextInt(150) == 0) {
-						this.swimPitch = 45f;
-						this.swimSpeed = 15f;
-						this.motionY = 15f;
-					//	this.fallVelocity = -20f;
-						jumping = true;
+			if(this.aggressTarget != null) {
+				if(this.getDistanceSqToEntity(this.aggressTarget) < 2f) {
+					if(this.aggressTarget instanceof EntityLivingBase)
+					((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.cactus, 1);
+					this.aggressTarget = null;
+				}else {
+					if(this.canEntityBeSeen(this.aggressTarget) && this.ticksExisted % 5 == 0) {
+						this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY, this.aggressTarget.posZ);
+						swimSpeedTurn = this.swimSpeedTurn*1.5f;
 					}
 				}
-			}*/
-		
-		float swimSpeedTurn = this.swimSpeedTurn;
-		
-		if(this.aggressTarget != null) {
-			if(this.getDistanceSqToEntity(this.aggressTarget) < 2f) {
-				if(this.aggressTarget instanceof EntityLivingBase)
-				((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.cactus, 1);
-				this.aggressTarget = null;
-			}else {
-				if(this.canEntityBeSeen(this.aggressTarget) && this.ticksExisted % 5 == 0) {
-					this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY, this.aggressTarget.posZ);
-					swimSpeedTurn = this.swimSpeedTurn*1.5f;
-				}
+	
 			}
-
-		}
-
+	
 			if (this.targetVectorHeading != null) {
 				if (this.swimYaw < -this.targetVectorHeading.x) {
 					this.swimYaw += swimSpeedTurn;
@@ -241,7 +227,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						this.swimYaw = -this.targetVectorHeading.x;
 					}
 				}
-
+	
 				if (this.swimPitch < -this.targetVectorHeading.y) {
 					this.swimPitch += swimSpeedTurn;
 					if(this.swimPitch > -this.targetVectorHeading.y) {
@@ -253,7 +239,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						this.swimPitch = -this.targetVectorHeading.y;
 					}
 				}
-
+	
 				// this.swimYaw = -(float)Math.cos(theta);
 				// this.swimPitch = -(float)Math.sin(theta);
 			//	this.swimYaw = -this.targetVectorHeading.x;
