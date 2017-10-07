@@ -43,7 +43,7 @@ public class TileEntitySeaweedRenderer extends TileEntitySpecialRenderer<TileSea
 
 			buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-			Vec3d bot = new Vec3d(0.5, 1, 0.5);
+			Vec3d bot = new Vec3d(0.5, 1, 0.5).add(te.getOffset());
 			Vec3d prevSway = new Vec3d(0, 1, 0);
 
 			for (int i = 0; i < te.getHeight(); i++) {

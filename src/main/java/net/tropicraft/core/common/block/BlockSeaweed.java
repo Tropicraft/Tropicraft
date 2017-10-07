@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import scala.util.Random;
 
@@ -17,6 +18,7 @@ public class BlockSeaweed extends BlockTropicraft {
 
 		private int height = -1;
 		private AxisAlignedBB cachedBB;
+		private Vec3d offset;
 
 		@Override
 		public AxisAlignedBB getRenderBoundingBox() {
@@ -27,12 +29,17 @@ public class BlockSeaweed extends BlockTropicraft {
 					height--;
 				}
 				cachedBB = new AxisAlignedBB(getPos()).expand(0, height, 0);
+				offset = new Vec3d((rand.nextFloat() - 0.5f) * 0.75f, 0, (rand.nextFloat() - 0.5f) * 0.75f);
 			}
 			return cachedBB;
 		}
 		
 		public int getHeight() {
 			return height;
+		}
+		
+		public Vec3d getOffset() {
+			return offset;
 		}
 	}
 
