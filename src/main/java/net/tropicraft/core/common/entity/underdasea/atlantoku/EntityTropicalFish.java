@@ -28,7 +28,7 @@ import net.tropicraft.core.common.entity.ai.EntityAIFollowLeader;
 import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityTropicalFish extends EntityTropicraftWaterBase {
+public class EntityTropicalFish extends EntityTropicraftWaterBase implements IAtlasFish{
 
 	public boolean inSchool;
 	public EntityTropicalFish leader; 
@@ -344,5 +344,10 @@ public class EntityTropicalFish extends EntityTropicraftWaterBase {
 
 	public void disableDespawning() {
 		hasBeenPlaced = true;
+	}
+
+	@Override
+	public int getAtlasSlot() {
+		return this.getDataManager().get(TEXTURE_COLOR);
 	}
 }
