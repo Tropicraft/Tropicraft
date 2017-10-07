@@ -4,29 +4,27 @@ import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import net.tropicraft.core.registry.BlockRegistry;
 
-public class WorldGenSeaweed extends WorldGenerator {
+public class WorldGenSeaweed extends TCNoiseGen {
 
-    public WorldGenSeaweed() {}
+	public WorldGenSeaweed(Random rand) {
+		super(rand, 100, 200, 0.9f);
+	}
 
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
-		for (int i1 = 0; i1 < 12; i1++) {
-			BlockPos pos2 = pos.add(random.nextInt(16), 0, random.nextInt(16));
-			pos2 = world.getTopSolidOrLiquidBlock(pos2);
-			IBlockState state = world.getBlockState(pos2);
-			if (state.getMaterial().isLiquid()) {
-				while ((state = world.getBlockState((pos2 = pos2.down()))).getMaterial().isLiquid());
-				if (state.getBlock() == Blocks.SAND) {
-					setBlockAndNotifyAdequately(world, pos2, BlockRegistry.seaweed.getDefaultState());
-				}
-			}
+	protected EnumActionResult checkPlacement(World world, BlockPos pos) {
+		if (world.getBlockState(pos).getBlock() == Blocks.SAND && world.getBlockState(pos.up()).getMaterial().isLiquid()) {
+			return EnumActionResult.SUCCESS;
 		}
+		return EnumActionResult.PASS;
+	}
 
-		return true;
+	@Override
+	protected IBlockState getStateFromNoise(double noiseVal) {
+		return BlockRegistry.seaweed.getDefaultState();
 	}
 }
