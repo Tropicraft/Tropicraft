@@ -28,6 +28,7 @@ import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityRiverSardine;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 
@@ -46,16 +47,12 @@ public class EntityRegistry {
 		registerEntity(EntityTropiSkeleton.class, "tropiskelly", 80, 3, true);
 		registerEntity(EntityVMonkey.class, "monkey", 80, 3, true);
 		registerEntity(EntityPoisonBlot.class, "PoisonBlot", 32, 1, true);
-		registerEntity(EntityMarlin.class, "marlin", 80, 1, true);
 		registerEntity(EntityLavaBall.class, "Lava Ball", 120, 4, true);
-		registerEntity(EntitySeahorse.class, "seahorse", 80, 1, true);
 		registerEntity(EntityFailgull.class, "failgull", 80, 3, true);
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
-		registerEntity(EntityTropicalFish.class, "fish", 80, 1, true);
 		registerEntity(EntityManOWar.class, "mow", 64, 3, true);
-		registerEntity(EntityEagleRay.class, "eagleray", 80, 1, true);
 		registerEntity(EntitySeaUrchin.class, "seaurchin", 64, 3, true);
 		registerEntity(EntitySeaUrchinEgg.class, "SeaUrchinEgg", 64, 3, false);
 		registerEntity(EntityStarfish.class, "starfish", 64, 3, false);
@@ -64,7 +61,13 @@ public class EntityRegistry {
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 		registerEntity(EntityKoaHunter.class, "KoaHunter", 64, 3, true);
 		
-		registerEntity(EntityPiranha.class, "Piranha", 80, 1, true);
+		registerEntity(EntityTropicalFish.class, "fish", 80, 2, true);
+		registerEntity(EntitySeahorse.class, "seahorse", 80, 2, true);
+		registerEntity(EntityEagleRay.class, "eagleray", 80, 2, true);
+		registerEntity(EntityMarlin.class, "marlin", 80, 2, true);
+		registerEntity(EntityPiranha.class, "piranha", 80, 2, true);
+		registerEntity(EntityRiverSardine.class, "sardine", 80, 2, true);
+
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

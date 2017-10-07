@@ -53,6 +53,7 @@ import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityRiverSardine;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 
@@ -74,7 +75,6 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
 				ItemRegistry.coconutBomb,
 				Minecraft.getMinecraft().getRenderItem()));
-		registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish(new ModelFish(), 0.25F));
 		registerEntityRender(EntityManOWar.class, new RenderManOWar(new ModelManOWar(32, 20, true), 0.35F));
 		registerEntityRender(EntityEagleRay.class, new RenderEagleRay());
 		registerEntityRender(EntitySeaUrchin.class, new RenderSeaUrchin());
@@ -86,7 +86,10 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityKoaHunter.class, new RenderKoaMan(Minecraft.getMinecraft().getRenderManager(), new ModelKoaMan(), 0.5F));
 		//registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
 		
-		registerEntityRender(EntityPiranha.class, new RenderTropicalFish(9));
+		registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish());
+		registerEntityRender(EntityPiranha.class, new RenderTropicalFish());
+		registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
+
 	}
 
 	private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
