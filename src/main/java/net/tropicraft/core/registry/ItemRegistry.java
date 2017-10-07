@@ -45,6 +45,9 @@ import net.tropicraft.core.common.item.ItemTropicsOre;
 import net.tropicraft.core.common.item.ItemUmbrella;
 import net.tropicraft.core.common.item.ItemWaterWand;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
+import net.tropicraft.core.common.item.scuba.ItemBCD;
+import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
+import net.tropicraft.core.common.item.scuba.ItemScubaTank;
 
 public class ItemRegistry extends TropicraftRegistry {
 
@@ -145,6 +148,24 @@ public class ItemRegistry extends TropicraftRegistry {
 
 	public static Item seaUrchinRoe;
 	public static Item mobEgg;
+//	
+//	public static final ArmorMaterial materialDrySuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
+//    public static final ItemTropicraftArmor dryFlippers = new ItemScubaFlippers(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 3);
+//    public static final ItemTropicraftArmor dryLeggings = new ItemScubaLeggings(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 2);
+//    public static final ItemTropicraftArmor dryChestplate = new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
+//    public static final ItemTropicraftArmor dryChestplateGear = new ItemScubaChestplateGear(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 1);
+//    public static final ItemTropicraftArmor dryHelmet = new ItemScubaHelmet(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, 0);
+//
+//    public static final ArmorMaterial materialWetSuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
+//    public static final ItemTropicraftArmor wetFlippers = new ItemScubaFlippers(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 3);
+//    public static final ItemTropicraftArmor wetLeggings = new ItemScubaLeggings(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 2);
+//    public static final ItemTropicraftArmor wetChestplate = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
+//    public static final ItemTropicraftArmor wetChestplateGear = new ItemScubaChestplateGear(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
+//    public static final ItemTropicraftArmor wetHelmet = new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 0);
+
+    public static Item scubaTank;
+    public static Item diveComputer;
+    public static Item bcd;
 
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
@@ -237,6 +258,10 @@ public class ItemRegistry extends TropicraftRegistry {
 
 		seaUrchinRoe = registerItem(new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
 		mobEgg = registerMultiItemPrefixed(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
+		
+		scubaTank = registerItem(new ItemScubaTank(), "scuba_tank");
+		diveComputer = registerItem(new ItemDiveComputer(), "dive_computer");
+		bcd = registerItem(new ItemBCD(), "bcd");		
 	}
 
 	public static void init() {
