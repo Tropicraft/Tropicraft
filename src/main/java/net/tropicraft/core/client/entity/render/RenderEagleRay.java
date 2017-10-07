@@ -21,23 +21,19 @@ public class RenderEagleRay extends RenderTropicraftWaterMob {
 	@Override
 	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		
-		GL11.glPushMatrix();
-		//glTranslatef(0f, 1.25f, -1f);
-	//	GlStateManager.translate(0f, -0.75f, 0f);
+		GlStateManager.pushMatrix();
 
-		GL11.glDisable(2884 /*GL_CULL_FACE*/);
-		
+		GlStateManager.disableCull();
 		
 		GlStateManager.translate(4, 0f, 4f);
 
 		this.renderWaterMob(entity, x-4, y-1, z-4, partialTicks);
 		
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-		// TODO Auto-generated method stub
 		return TropicraftRenderUtils.bindTextureEntity("ray/eagleray");
 	}
 

@@ -16,7 +16,6 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 
 	public RenderTropicraftWaterMob(RenderManager rendermanagerIn, ModelBase modelbaseIn, float shadowsizeIn) {
 		super(rendermanagerIn, modelbaseIn, shadowsizeIn);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void renderWaterMob(EntityTropicraftWaterBase entityliving, double d, double d1, double d2, float f1) {
