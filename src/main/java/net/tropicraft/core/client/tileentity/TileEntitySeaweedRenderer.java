@@ -47,7 +47,7 @@ public class TileEntitySeaweedRenderer extends TileEntitySpecialRenderer<TileSea
 			Vec3d prevSway = new Vec3d(0, 1, 0);
 
 			for (int i = 0; i < te.getHeight(); i++) {
-				Vec3d sway = computeSwayVector(SWAY_ANGLE, i, te.getWorld().getTotalWorldTime() + partialTicks);
+				Vec3d sway = computeSwayVector(te.getSwayAngle(), i, te.getWorld().getTotalWorldTime() + partialTicks + te.getSwayDelay());
 				Vec3d top = bot.add(sway);
 				
 				int texture = i == te.getHeight() - 1 ? 7 : (te.getHeight() + i) % 7;
@@ -87,7 +87,7 @@ public class TileEntitySeaweedRenderer extends TileEntitySpecialRenderer<TileSea
 		GlStateManager.popMatrix();
 	}
 
-	private Vec3d computeSwayVector(double angle, int height, float time) {
+	private Vec3d computeSwayVector(double angle, int height, double time) {
 		double sway = Math.sin((time + ((height + 1) * SWAY_LAG)) / SWAY_PERIOD) * SWAY_AMOUNT;
 		return new Vec3d(0, 1, 0).addVector(Math.sin(angle) * sway, 0, Math.cos(angle) * sway).normalize();
 	}
