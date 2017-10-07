@@ -21,7 +21,6 @@ import net.tropicraft.core.client.entity.render.RenderIguana;
 import net.tropicraft.core.client.entity.render.RenderKoaMan;
 import net.tropicraft.core.client.entity.render.RenderLavaBall;
 import net.tropicraft.core.client.entity.render.RenderManOWar;
-import net.tropicraft.core.client.entity.render.RenderMarlin;
 import net.tropicraft.core.client.entity.render.RenderSeaUrchin;
 import net.tropicraft.core.client.entity.render.RenderSeahorse;
 import net.tropicraft.core.client.entity.render.RenderStarfish;
@@ -29,6 +28,7 @@ import net.tropicraft.core.client.entity.render.RenderTreeFrog;
 import net.tropicraft.core.client.entity.render.RenderTropiCreeper;
 import net.tropicraft.core.client.entity.render.RenderTropiSkeleton;
 import net.tropicraft.core.client.entity.render.RenderTropicalFish;
+import net.tropicraft.core.client.entity.render.RenderMarlin;
 import net.tropicraft.core.client.entity.render.RenderUmbrella;
 import net.tropicraft.core.client.entity.render.RenderVMonkey;
 import net.tropicraft.core.client.entity.render.RenderWallItem;
@@ -46,15 +46,15 @@ import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
 import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
-import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
-import net.tropicraft.core.common.entity.underdasea.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
-import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
 
 public class EntityRenderRegistry {
     

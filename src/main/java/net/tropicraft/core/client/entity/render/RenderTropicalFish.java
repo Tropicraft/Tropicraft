@@ -39,38 +39,17 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
         this.mainModel.isRiding = shouldSit;
         this.mainModel.isChild = entity.isChild();
 
+        float offset = 0f;
         try
         {
             float f = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-            float f1 = this.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
+            float f1 = this.interpolateRotation(entity.prevSwimYaw+offset, entity.swimYaw+offset, partialTicks);
             float f2 = f1 - f;
+            
+            f1 = -f1;
+            f = f1;
 
-            if (shouldSit && entity.getRidingEntity() instanceof EntityLivingBase)
-            {
-                EntityLivingBase entitylivingbase = (EntityLivingBase)entity.getRidingEntity();
-                f = this.interpolateRotation(entitylivingbase.prevRenderYawOffset, entitylivingbase.renderYawOffset, partialTicks);
-                f2 = f1 - f;
-                float f3 = MathHelper.wrapDegrees(f2);
-
-                if (f3 < -85.0F)
-                {
-                    f3 = -85.0F;
-                }
-
-                if (f3 >= 85.0F)
-                {
-                    f3 = 85.0F;
-                }
-
-                f = f1 - f3;
-
-                if (f3 * f3 > 2500.0F)
-                {
-                    f += f3 * 0.2F;
-                }
-            }
-
-            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+            float f7 = entity.prevSwimPitch + (entity.swimPitch - entity.prevSwimPitch) * partialTicks;
             this.renderLivingAt(entity, x, y, z);
             float f8 = this.handleRotationFloat(entity, partialTicks);
             this.applyRotations(entity, f8, f, partialTicks);
@@ -90,12 +69,15 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
                     f5 = 1.0F;
                 }
             }
+        
 
             this.renderFishy(entity);
             
             GlStateManager.enableAlpha();
             this.mainModel.setLivingAnimations(entity, f6, f5, partialTicks);
             this.mainModel.setRotationAngles(f6, f5, f8, f2, f7, f4, entity);
+            
+       
 
             if (this.renderOutlines) {
                 boolean flag1 = this.setScoreTeamColor(entity);

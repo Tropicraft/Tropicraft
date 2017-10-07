@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.entity.underdasea;
+package net.tropicraft.core.common.entity.underdasea.atlantoku;
 
 import javax.annotation.Nullable;
 
@@ -13,13 +13,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
-public class EntitySeahorse extends EntityTropicraftWaterMob {
+public class EntitySeahorse extends EntityTropicraftWaterBase {
 
 	private static final DataParameter<Byte> TEXTURE_COLOR = EntityDataManager.<Byte>createKey(EntitySeahorse.class, DataSerializers.BYTE);
 
 	public EntitySeahorse(World world) {
 		super(world);
 		this.setSize(0.75F, 0.75F);
+		this.setSwimSpeeds(0.2f, 0.4f, 8f);
 	}
 	
 	@Override

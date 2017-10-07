@@ -33,6 +33,7 @@ public class BlockBundle extends BlockTropicraft implements ITropicraftBlock {
 		super(mat);
 		this.names = names;
 		this.setSoundType(SoundType.PLANT);
+        this.setHardness(0.2F);
 		//TODO: Figure out harvesting of bundles: this.setHarvestLevel("axe", 0);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftBundles.THATCH).withProperty(BUNDLE_AXIS, BlockLog.EnumAxis.Y));
 	}

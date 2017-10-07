@@ -10,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -18,15 +19,17 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.ai.EntityAIFindLeader;
 import net.tropicraft.core.common.entity.ai.EntityAIFollowLeader;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityTropicalFish extends EntityTropicraftWaterMob {
+public class EntityTropicalFish extends EntityTropicraftWaterBase {
 
 	public boolean inSchool;
 	public EntityTropicalFish leader; 
@@ -52,6 +55,16 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 		setIsLeader(true);
 		isCatchable = true;
 		this.experienceValue = 3;
+        this.setSwimSpeeds(1f, 0.2f, 4f);
+
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		if(this.leader != null) {
+			this.setTargetHeading(this.leader.posX, this.leader.posY, this.leader.posZ, true);
+		}
+		super.onLivingUpdate();
 	}
 
 	public EntityTropicalFish(World world, EntityLiving entityliving, int i) {
@@ -145,6 +158,8 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 					player.inventoryContainer.detectAndSendChanges();
 				}
 				if (ItemFishBucket.addFish(fishHolder, this)) {
+					player.swingArm(hand);
+					world.playSound(player, getPosition(), SoundEvents.ENTITY_GENERIC_SWIM, SoundCategory.PLAYERS, 0.25f, 1f + (rand.nextFloat() * 0.4f));
 					getEntityWorld().removeEntity(this);
 					return true;
 				}

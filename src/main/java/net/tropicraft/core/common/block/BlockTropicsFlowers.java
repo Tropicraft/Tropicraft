@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 import java.util.List;
 
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -14,6 +15,10 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
@@ -21,10 +26,7 @@ import net.tropicraft.core.common.enums.TropicraftFlowers;
 public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
 
     public static final PropertyEnum<TropicraftFlowers> VARIANT = PropertyEnum.create("variant", TropicraftFlowers.class);
-    
-    /** Flower names */
-    public String[] names;
-    
+
     @Override
     protected BlockStateContainer createBlockState() {
     	return new BlockStateContainer(this, VARIANT);
@@ -32,13 +34,13 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     
     @Override
     public String getStateName(IBlockState state) {
-        return ((TropicraftFlowers) state.getValue(VARIANT)).getName();
+        return ((TropicraftFlowers) state.getValue(VARIANT)).getName() + "_flower";
     }
 	
-	public BlockTropicsFlowers(String[] names) {
+	public BlockTropicsFlowers() {
 		super(Material.PLANTS, MapColor.GREEN);
+		setSoundType(SoundType.PLANT);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftFlowers.COMMELINA_DIFFUSA));
-		this.names = names;
 	}
 	
     /**
@@ -46,7 +48,7 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
      */
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0; i < TropicraftFlowers.VALUES.length; i++) {
         	list.add(new ItemStack(item, 1, i));
         }
     }
@@ -64,6 +66,11 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     @Override
     public int damageDropped(IBlockState state) {
         return this.getMetaFromState(state);
+    }
+    
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    	return state.getValue(VARIANT).getBounds();
     }
 
 	@Override

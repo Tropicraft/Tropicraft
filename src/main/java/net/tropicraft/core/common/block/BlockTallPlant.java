@@ -40,6 +40,8 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 			return this.getName();
 		}
 	};
+	
+	protected static final AxisAlignedBB FULL_HEIGHT_AABB = BUSH_AABB.setMaxY(1);
 
 	public static final PropertyEnum<TropicraftTallPlants> VARIANT = PropertyEnum.create("variant", TropicraftTallPlants.class);
 	public static final PropertyEnum<PlantHalf> HALF = PropertyEnum.create("half", PlantHalf.class);
@@ -112,5 +114,8 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
         return NULL_AABB;
     }
 
-
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    	return state.getValue(HALF) == PlantHalf.LOWER ? FULL_HEIGHT_AABB : BUSH_AABB;
+    }
 }
