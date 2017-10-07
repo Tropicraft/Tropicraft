@@ -25,10 +25,11 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.ai.EntityAIFindLeader;
 import net.tropicraft.core.common.entity.ai.EntityAIFollowLeader;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityTropicalFish extends EntityTropicraftWaterMob {
+public class EntityTropicalFish extends EntityTropicraftWaterBase {
 
 	public boolean inSchool;
 	public EntityTropicalFish leader; 
@@ -54,6 +55,16 @@ public class EntityTropicalFish extends EntityTropicraftWaterMob {
 		setIsLeader(true);
 		isCatchable = true;
 		this.experienceValue = 3;
+        this.setSwimSpeeds(1f, 0.2f, 4f);
+
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		if(this.leader != null) {
+			this.setTargetHeading(this.leader.posX, this.leader.posY, this.leader.posZ, true);
+		}
+		super.onLivingUpdate();
 	}
 
 	public EntityTropicalFish(World world, EntityLiving entityliving, int i) {
