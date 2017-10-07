@@ -37,6 +37,7 @@ import net.tropicraft.core.common.block.BlockFruitLeaves;
 import net.tropicraft.core.common.block.BlockIris;
 import net.tropicraft.core.common.block.BlockPineapple;
 import net.tropicraft.core.common.block.BlockPortalWall;
+import net.tropicraft.core.common.block.BlockSeaweed;
 import net.tropicraft.core.common.block.BlockSifter;
 import net.tropicraft.core.common.block.BlockTikiTorch;
 import net.tropicraft.core.common.block.BlockTropicraftFlowerPot;
@@ -73,6 +74,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block flowers;
 	public static Block logs;
 	public static Block coral;
+	public static Block seaweed;
 
 	// purified sand AND mineral sands. Oh variants, what can't you do?
 	public static Block sands;
@@ -135,6 +137,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
 		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
+		seaweed = registerBlock(new BlockSeaweed(), "seaweed");
 
 		slabs = new BlockTropicraftSlab(Material.WOOD, false);
 		doubleSlabs = new BlockTropicraftSlab(Material.WOOD, true);

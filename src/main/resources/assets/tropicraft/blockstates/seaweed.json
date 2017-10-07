@@ -1,0 +1,20 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "forge:multi-layer",
+        "custom": {
+            "base": "tropicraft:seaweed#base",
+            "Solid": "tropicraft:seaweed#base",
+            "Translucent": "tropicraft:seaweed#overlay"
+        }
+    },
+    "variants": {
+        "normal": [{}],
+        "base": [{
+            "model": "sand"
+        }],
+        "overlay": [{
+            "model": "tropicraft:cube_top_only", "textures": { "overlay": "tropicraft:blocks/seaweed_root" }
+        }]
+    }
+}
