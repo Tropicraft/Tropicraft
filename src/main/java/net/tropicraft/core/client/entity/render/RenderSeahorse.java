@@ -4,13 +4,13 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
-import net.tropicraft.core.common.entity.underdasea.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 
-public class RenderSeahorse extends RenderLiving<EntitySeahorse> {
+public class RenderSeahorse extends RenderTropicraftWaterMob {
 
 	private ModelSeahorse modelSeahorse;
 
@@ -19,21 +19,20 @@ public class RenderSeahorse extends RenderLiving<EntitySeahorse> {
 		modelSeahorse = (ModelSeahorse)model;
 	}
 	
-//	@Override
-//    public void doRender(EntitySeahorse par1EntityLiving, double x, double y, double z, float yaw, float partialTicks) {
-//        renderSeahorse((EntitySeahorse)par1EntityLiving, x, y, z, yaw, partialTicks);
-//    }
-//	
-//	private void renderSeahorse(EntitySeahorse seahorse, double x, double y, double z, float yaw, float partialTicks) {
-//		//GL11.glPushMatrix();
-//		//GL11.glTranslated(x, y - 2.2, z);
-//		//GL11.glRotatef(90F, 0, 1, 0);
-//		super.doRender(seahorse, x, y, z, yaw, partialTicks);
-//		//GL11.glPopMatrix();
-//	}
+	@Override
+    public void doRender(EntityTropicraftWaterBase par1EntityLiving, double x, double y, double z, float yaw, float partialTicks) {
+       GL11.glPushMatrix();
+      // GL11.glTranslatef(0f, -3f, 0f);
+		GL11.glTranslated(x, y-2.5f, z);
+
+		GL11.glRotatef(par1EntityLiving.swimYaw+90f, 0F, 1.0F, 0.0F);
+       super.doRender(par1EntityLiving, 0, 0, 0, par1EntityLiving.swimYaw, partialTicks);
+		GL11.glPopMatrix();
+    }
+	
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySeahorse entity) {
+	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
 		EntitySeahorse seahorse = null;
 		
 		if (entity instanceof EntitySeahorse)

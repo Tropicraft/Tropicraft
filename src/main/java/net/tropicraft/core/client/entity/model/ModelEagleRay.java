@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 
 public class ModelEagleRay extends ModelBase {
 	/**
