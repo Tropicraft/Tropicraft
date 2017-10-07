@@ -21,10 +21,12 @@ import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.entity.projectile.EntityCoconutGrenade;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
+import net.tropicraft.core.common.entity.underdasea.EntityTurtleEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
@@ -63,6 +65,8 @@ public class EntityRegistry {
 		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 		registerEntity(EntityKoaHunter.class, "KoaHunter", 64, 3, true);
+		registerEntity(EntitySeaTurtle.class, "turtle", 80, 3, true);
+		registerEntity(EntityTurtleEgg.class, "SeaTurtleEgg", 80, 5, false);
 		
 		registerEntity(EntityPiranha.class, "Piranha", 80, 1, true);
 	}
