@@ -56,7 +56,7 @@ public class EntityEagleRay extends EntityTropicraftWaterBase {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        this.setSwimSpeeds(1f, 0.2f, 4f);
+        this.setSwimSpeeds(1f, 0.2f, 0.2f);
         this.setSize(2.5f, 0.5f);
 
         if (world.isRemote) {

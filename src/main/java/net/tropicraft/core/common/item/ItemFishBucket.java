@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 

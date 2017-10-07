@@ -2,6 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,8 +26,13 @@ public class RenderManOWar extends RenderLiving<EntityManOWar> {
      */
     @Override
     public void doRender(EntityManOWar entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        GlStateManager.pushMatrix();
+     //   GlStateManager.scale(2f, 2f, 2f);
+       // GlStateManager.translate(0, -0.8f, 0f);
+        GlStateManager.disableCull();
+    		super.doRender(entity, x, y, z, entityYaw, partialTicks);
         ((ModelManOWar) mainModel).isOnGround = entity.onGround;
+        GlStateManager.popMatrix();
     }
 
 	@Override

@@ -25,10 +25,11 @@ import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
-import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 
 public class EntityRegistry {
 
@@ -62,6 +63,8 @@ public class EntityRegistry {
 		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 		registerEntity(EntityKoaHunter.class, "KoaHunter", 64, 3, true);
+		
+		registerEntity(EntityPiranha.class, "Piranha", 80, 1, true);
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
