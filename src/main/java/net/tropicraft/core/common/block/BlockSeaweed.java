@@ -6,6 +6,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -39,7 +40,7 @@ public class BlockSeaweed extends BlockTropicraft {
 				}
 				cachedBB = new AxisAlignedBB(getPos()).expand(1.1, height / 2f, 1.1).offset(0, height / 2f, 0);
 				
-				offset = new Vec3d((rand.nextFloat() - 0.5f) * 0.75f, 0, (rand.nextFloat() - 0.5f) * 0.75f);
+				offset = new Vec3d((rand.nextFloat() - 0.5f) * 0.25f, 0, (rand.nextFloat() - 0.5f) * 0.25f);
 				
 				Vec3d centerPos = new Vec3d(getPos()).addVector(0.5, 0.5, 0.5).add(offset);
 				
@@ -92,5 +93,10 @@ public class BlockSeaweed extends BlockTropicraft {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileSeaweed();
+	}
+	
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.TRANSLUCENT;
 	}
 }
