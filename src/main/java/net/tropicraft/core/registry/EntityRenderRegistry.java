@@ -5,13 +5,11 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.tropicraft.core.client.entity.model.ModelKoaMan;
-import net.tropicraft.core.client.entity.model.ModelMarlin;
-import net.tropicraft.core.client.entity.model.ModelSeahorse;
-import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.entity.model.ModelFish;
+import net.tropicraft.core.client.entity.model.ModelKoaMan;
 import net.tropicraft.core.client.entity.model.ModelManOWar;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
+import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
 import net.tropicraft.core.client.entity.render.RenderBambooItemFrame;
 import net.tropicraft.core.client.entity.render.RenderChair;
@@ -20,6 +18,7 @@ import net.tropicraft.core.client.entity.render.RenderEagleRay;
 import net.tropicraft.core.client.entity.render.RenderEchinodermEgg;
 import net.tropicraft.core.client.entity.render.RenderFailgull;
 import net.tropicraft.core.client.entity.render.RenderIguana;
+import net.tropicraft.core.client.entity.render.RenderKoaMan;
 import net.tropicraft.core.client.entity.render.RenderLavaBall;
 import net.tropicraft.core.client.entity.render.RenderManOWar;
 import net.tropicraft.core.client.entity.render.RenderMarlin;
@@ -58,6 +57,8 @@ import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
 
 public class EntityRenderRegistry {
+    
+    public static ModelScubaGear scubaGearModel;
 
 	public static void init() {
 		registerEntityRender(EntityEIH.class, new RenderEIH());
@@ -86,6 +87,8 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityWallItem.class, new RenderWallItem());
 		registerEntityRender(EntityKoaHunter.class, new RenderKoaMan(Minecraft.getMinecraft().getRenderManager(), new ModelKoaMan(), 0.5F));
 		//registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
+		
+		scubaGearModel = new ModelScubaGear(0);
 	}
 
 	private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {

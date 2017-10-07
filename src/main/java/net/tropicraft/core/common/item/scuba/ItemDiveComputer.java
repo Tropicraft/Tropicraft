@@ -27,6 +27,7 @@ public class ItemDiveComputer extends ItemMap {
      * Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
      * update it's contents.
      */
+    @Override
     public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5) {
         if (world.isRemote)
             return;

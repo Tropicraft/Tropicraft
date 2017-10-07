@@ -11,7 +11,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
+import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.common.item.armor.ItemTropicraftArmor;
+import net.tropicraft.core.registry.CreativeTabRegistry;
+import net.tropicraft.core.registry.EntityRenderRegistry;
 
 public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
@@ -20,6 +23,7 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
     public ItemScubaGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, EntityEquipmentSlot slot) {
         super(material, renderIndex, slot);
         this.scubaMaterial = scubaMaterial;
+        this.setCreativeTab(CreativeTabRegistry.tropicraftTab);
     }
 
     @Override
@@ -29,43 +33,44 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     /**
      * Override this method to have an item handle its own armor rendering.
-     * 
-     * @param  entityLiving  The entity wearing the armor 
-     * @param  itemStack  The itemStack to render the model of 
-     * @param  armorSlot  0=head, 1=torso, 2=legs, 3=feet
-     * 
+     *
+     * @param  entityLiving  The entity wearing the armor
+     * @param  itemStack  The itemStack to render the model of
+     * @param  armorSlot  The slot the armor is in
+     * @param _default Original armor model. Will have attributes set.
      * @return  A ModelBiped to render instead of the default
      */
-//    @SideOnly(Side.CLIENT)
-//    @Override
-//    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemstack, EntityEquipmentSlot slot) {
-//        if (itemstack == null)
-//            return null;
-//        //TODO this is weird <_<
-//       /* ModelBiped armorModel = Tropicraft.instance.proxy.getArmorModel(0);
-//
-//        if(armorModel != null){
-//            armorModel.bipedHead.showModel = armorSlot == 0;
-//            armorModel.bipedHeadwear.showModel = armorSlot == 0;
-//            armorModel.bipedBody.showModel = armorSlot == 1 || armorSlot == 2;
-//            armorModel.bipedRightArm.showModel = armorSlot == 1;
-//            armorModel.bipedLeftArm.showModel = armorSlot == 1;
-//            armorModel.bipedRightLeg.showModel = armorSlot == 2 || armorSlot == 3;
-//            armorModel.bipedLeftLeg.showModel = armorSlot == 2 || armorSlot == 3;
-//
-//            armorModel.isSneak = entityLiving.isSneaking();
-//            armorModel.isRiding = entityLiving.isRiding();
-//            armorModel.isChild = entityLiving.isChild();
-//            armorModel.heldItemRight = entityLiving.getEquipmentInSlot(0) != null ? 1 :0;
-//            if(entityLiving instanceof EntityPlayer){
+    @SideOnly(Side.CLIENT)
+    public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemstack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
+        if (itemstack == null) {
+            return null;
+        }
+
+        //TODO this is weird <_<
+        ModelBiped armorModel = EntityRenderRegistry.scubaGearModel;
+
+        if (armorModel != null){
+            armorModel.bipedHead.showModel = armorSlot == EntityEquipmentSlot.HEAD;
+            armorModel.bipedHeadwear.showModel = armorSlot == EntityEquipmentSlot.HEAD;
+            armorModel.bipedBody.showModel = armorSlot == EntityEquipmentSlot.CHEST || armorSlot == EntityEquipmentSlot.LEGS;
+            armorModel.bipedRightArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
+            armorModel.bipedLeftArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
+            armorModel.bipedRightLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
+            armorModel.bipedLeftLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
+
+            armorModel.isSneak = entityLiving.isSneaking();
+            armorModel.isRiding = entityLiving.isRiding();
+            armorModel.isChild = entityLiving.isChild();
+            armorModel.rightArmPose = entityLiving.getHeldItemMainhand() != null ? ModelBiped.ArmPose.BLOCK : ModelBiped.ArmPose.EMPTY;
+//            if (entityLiving instanceof EntityPlayer){
 //                armorModel.aimedBow =((EntityPlayer)entityLiving).getItemInUseDuration() > 2;
 //            }
-//
-//            return armorModel;
-//        }*/
-//
-//        return null;
-//    }
+
+            return armorModel;
+        }
+
+        return null;
+    }
 
     /**
      * Retrives an existing nbt tag compound or creates a new one if it is null

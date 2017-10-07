@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,10 +16,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
 import net.tropicraft.SandColors;
-import net.tropicraft.core.common.entity.placeable.EntityWallItem;
+import net.tropicraft.core.client.entity.model.ModelScubaGear;
 
 public class TropicraftRenderUtils {
-
+    
 	public static ResourceLocation getTexture(String path) {
 		ResourceLocation derp = new ResourceLocation(Info.MODID, path);
 		return derp;
