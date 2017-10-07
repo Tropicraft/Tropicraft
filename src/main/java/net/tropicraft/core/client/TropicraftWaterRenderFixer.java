@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
@@ -21,7 +22,9 @@ public class TropicraftWaterRenderFixer {
     @SubscribeEvent
     public void onBlockOverlay(RenderBlockOverlayEvent event) {
         if (event.getOverlayType() == OverlayType.WATER) {
-            IBlockState atPos = Minecraft.getMinecraft().world.getBlockState(event.getBlockPos());
+            double d0 = event.getPlayer().posY + event.getPlayer().getEyeHeight();
+            BlockPos blockpos = new BlockPos(event.getPlayer().posX, d0, event.getPlayer().posZ);
+            IBlockState atPos = event.getPlayer().getEntityWorld().getBlockState(blockpos);
             if (atPos.getBlock() == BlockRegistry.tropicsWater || atPos.getBlock() == BlockRegistry.coral) {
                 event.setCanceled(true);
                 Minecraft mc = Minecraft.getMinecraft();
