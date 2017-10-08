@@ -70,12 +70,16 @@ public class ModelScubaGear extends ModelBiped {
     ModelRenderer hose4;
     ModelRenderer hose5;
     ModelRenderer hose6;
+    
+    public EntityEquipmentSlot slot;
 
     public ModelScubaGear() {
-        this( 0.0f );
+        this( 0.0f, null );
     }
 
-    public ModelScubaGear( float par1 ) {
+    public ModelScubaGear( float par1, EntityEquipmentSlot slot ) {
+        //super(par1);
+        this.slot = slot;
         this.leftArmPose = ModelBiped.ArmPose.EMPTY;
         this.rightArmPose = ModelBiped.ArmPose.EMPTY;
         bipedBody = new ModelRenderer( this, 32, 16 );
@@ -409,7 +413,7 @@ public class ModelScubaGear extends ModelBiped {
 
         EntityPlayer player = (EntityPlayer)entityIn;
 
-        boolean showHead = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null;
+        boolean showHead = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null && this.slot == EntityEquipmentSlot.HEAD;
         bipedHead.showModel = showHead;
 
         if (showHead) {
@@ -419,7 +423,7 @@ public class ModelScubaGear extends ModelBiped {
             hose6.renderWithRotation(scale);
         }
 
-        boolean showChest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null;
+        boolean showChest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && this.slot == EntityEquipmentSlot.CHEST;
         bipedBody.showModel = showChest;
 
         if (showChest) {
@@ -427,7 +431,7 @@ public class ModelScubaGear extends ModelBiped {
             renderBCD(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
         
-        boolean showLegs = player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null;
+        boolean showLegs = player.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null && this.slot == EntityEquipmentSlot.FEET;
         
         bipedRightLeg.showModel = showLegs;
         bipedLeftLeg.showModel = showLegs;

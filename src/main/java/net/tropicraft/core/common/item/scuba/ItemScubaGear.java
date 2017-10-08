@@ -28,7 +28,8 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        return Info.ARMOR_LOCATION + "scubaGearPink.png";
+        String color = scubaMaterial == ScubaMaterial.DRY ? "Pink" : "Yellow";
+        return Info.ARMOR_LOCATION + "scubaGear" + color + ".png";   
     }
 
     /**
@@ -46,9 +47,11 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
         if (itemstack == null) {
             return null;
         }
+        
+        ModelBiped armorModel;
 
         //TODO this is weird <_<
-        ModelBiped armorModel = EntityRenderRegistry.scubaGearModel;
+        armorModel = EntityRenderRegistry.getScubaModel(armorSlot);
 
         if (armorModel != null){
 //            armorModel.bipedHead.showModel = armorSlot == EntityEquipmentSlot.HEAD;

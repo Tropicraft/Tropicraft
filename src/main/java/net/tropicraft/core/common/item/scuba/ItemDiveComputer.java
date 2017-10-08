@@ -29,8 +29,9 @@ public class ItemDiveComputer extends ItemMap {
      */
     @Override
     public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5) {
-        if (world.isRemote)
+        if (world.isRemote) {
             return;
+        }
 
         if (ticksUntilUpdate <= 0) {
             EntityPlayer player;
@@ -41,7 +42,7 @@ public class ItemDiveComputer extends ItemMap {
                 return;
 
             if (!isFullyUnderwater(world, player)) {
-            //    System.out.println("Not fully underwater");
+                //    System.out.println("Not fully underwater");
                 return;
             }
 
@@ -103,7 +104,7 @@ public class ItemDiveComputer extends ItemMap {
         int y = MathHelper.ceil(player.posY + player.height - 0.5F);
         int z = MathHelper.ceil(player.posZ);
 
-       // return world.getBlock(x, y, z).getMaterial().isLiquid();
+        // return world.getBlock(x, y, z).getMaterial().isLiquid();
         return player.isInsideOfMaterial(Material.WATER);
     }
 

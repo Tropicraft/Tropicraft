@@ -156,19 +156,19 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item seaUrchinRoe;
 	public static Item mobEgg;
 	
-	public static final ArmorMaterial materialDrySuit = EnumHelper.addArmorMaterial("fire", "fire", 50, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 9.0F);
+	public static final ArmorMaterial materialDrySuit = EnumHelper.addArmorMaterial("dry_suit", "dry_suit", 50, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 9.0F);
     public static Item dryFlippers;
     public static Item dryLeggings;
     public static Item dryChestplate;
     public static Item dryChestplateGear;
     public static Item dryHelmet;
-//
-//    public static final ArmorMaterial materialWetSuit = EnumHelper.addArmorMaterial("fire", 50, new int[]{2, 4, 5, 6}, 9);
-//    public static final ItemTropicraftArmor wetFlippers = new ItemScubaFlippers(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 3);
-//    public static final ItemTropicraftArmor wetLeggings = new ItemScubaLeggings(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 2);
-//    public static final ItemTropicraftArmor wetChestplate = new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
-//    public static final ItemTropicraftArmor wetChestplateGear = new ItemScubaChestplateGear(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 1);
-//    public static final ItemTropicraftArmor wetHelmet = new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, 0);
+
+    public static final ArmorMaterial materialWetSuit = EnumHelper.addArmorMaterial("wet_suit", "wet_suit", 50, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 9.0F);
+    public static Item wetFlippers;
+    public static Item wetLeggings;
+    public static Item wetChestplate;
+    public static Item wetChestplateGear;
+    public static Item wetHelmet;
 
     public static Item scubaTank;
     public static Item diveComputer;
@@ -274,6 +274,12 @@ public class ItemRegistry extends TropicraftRegistry {
 		dryChestplate = registerItem(new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.CHEST), "dry_chestplate");
 		dryChestplateGear = registerItem(new ItemScubaChestplateGear(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.CHEST), "dry_chestplate_gear");
 		dryHelmet = registerItem(new ItemScubaHelmet(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.HEAD), "dry_helmet");
+		
+		wetFlippers = registerItem(new ItemScubaFlippers(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.FEET), "wet_flippers");
+		wetLeggings = registerItem(new ItemScubaLeggings(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.LEGS), "wet_leggings");
+		wetChestplate = registerItem(new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.CHEST), "wet_chestplate");
+		wetChestplateGear = registerItem(new ItemScubaChestplateGear(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.CHEST), "wet_chestplate_gear");
+		wetHelmet = registerItem(new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.HEAD), "wet_helmet");
 	}
 
 	public static void init() {
