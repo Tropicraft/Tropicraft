@@ -1,10 +1,6 @@
 package net.tropicraft.core.common.entity.underdasea.atlantoku;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -26,6 +22,7 @@ public class EntityMarlin extends EntityTropicraftWaterBase {
 		
 		this.canAggress = true;
 		this.experienceValue = 5;
+		this.setDropStack(ItemRegistry.freshMarlin, 3);
 	}
 
 	@Override
@@ -40,53 +37,5 @@ public class EntityMarlin extends EntityTropicraftWaterBase {
 		super.readEntityFromNBT(n);
 	}
 
-
-
-	@Override
-	protected float getSoundVolume() {
-		return 0.4F;
-	}
-
-	
-	
-	protected void dropFewItems(boolean flag) {
-		int i = rand.nextInt(3) + 1;
-		for (int j = 0; j < i; j++) {
-			if(!world.isRemote)
-				entityDropItem(new ItemStack(ItemRegistry.freshMarlin), 0.0F);
-		}
-	}
-
-	@Override
-	public void onDeath(DamageSource damagesource) {
-		super.onDeath(damagesource);
-		dropFewItems(true);
-	}
-
-
-
-	@Override
-	public boolean isInWater() {
-		return super.isInWater();
-	}
-
-	@Override
-	public void applyEntityCollision(Entity entity) {
-		super.applyEntityCollision(entity);
-		
-	}
-
-	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
-	}
-
-
-
-
-	@Override
-	protected boolean canDespawn() {
-		return true;
-	}
 
 }

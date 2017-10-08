@@ -25,6 +25,8 @@ public class RenderSeaUrchin extends RenderLiving<EntitySeaUrchin> {
 
 	@Override
 	protected void preRenderCallback(EntitySeaUrchin urchin, float par2) {
+		this.shadowSize = 0.15f;
+		this.shadowOpaque = 0.5f;
 		float growthProgress = urchin.getGrowthProgress();
 		float scale = BABY_RENDER_SCALE + growthProgress*(ADULT_RENDER_SCALE-BABY_RENDER_SCALE);
 		float preScale = 0.5f;

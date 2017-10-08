@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 
 // Based on EntityAIFollowParent
 public class EntityAIFollowLeader extends EntityAIBase {
