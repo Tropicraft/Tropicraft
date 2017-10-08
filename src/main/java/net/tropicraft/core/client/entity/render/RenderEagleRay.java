@@ -27,6 +27,7 @@ public class RenderEagleRay extends RenderTropicraftWaterMob {
 		
 		GlStateManager.translate(4, 0f, 4f);
 
+		this.mainModel = new ModelEagleRay();
 		this.renderWaterMob(entity, x-4, y-1, z-4, partialTicks);
 		
 		GlStateManager.popMatrix();
