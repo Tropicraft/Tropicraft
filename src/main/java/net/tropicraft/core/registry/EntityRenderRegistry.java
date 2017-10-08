@@ -5,13 +5,14 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.tropicraft.core.client.entity.model.ModelFish;
+import net.tropicraft.core.client.entity.model.ModelDolphin;
 import net.tropicraft.core.client.entity.model.ModelKoaMan;
 import net.tropicraft.core.client.entity.model.ModelManOWar;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
 import net.tropicraft.core.client.entity.render.RenderBambooItemFrame;
 import net.tropicraft.core.client.entity.render.RenderChair;
+import net.tropicraft.core.client.entity.render.RenderDolphin;
 import net.tropicraft.core.client.entity.render.RenderEIH;
 import net.tropicraft.core.client.entity.render.RenderEagleRay;
 import net.tropicraft.core.client.entity.render.RenderEchinodermEgg;
@@ -50,6 +51,7 @@ import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
@@ -89,6 +91,9 @@ public class EntityRenderRegistry {
 		registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish());
 		registerEntityRender(EntityPiranha.class, new RenderTropicalFish());
 		registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
+		
+		registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
+
 
 	}
 

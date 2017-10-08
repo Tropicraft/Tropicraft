@@ -25,6 +25,7 @@ import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
@@ -67,6 +68,7 @@ public class EntityRegistry {
 		registerEntity(EntityMarlin.class, "marlin", 80, 2, true);
 		registerEntity(EntityPiranha.class, "piranha", 80, 2, true);
 		registerEntity(EntityRiverSardine.class, "sardine", 80, 2, true);
+		registerEntity(EntityDolphin.class, "dolphin", 80, 2, true);
 
 	}
 	
