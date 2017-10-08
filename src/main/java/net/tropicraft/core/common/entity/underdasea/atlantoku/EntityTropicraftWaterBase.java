@@ -28,6 +28,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
     private static final DataParameter<Float> SWIMYAW = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> SWIMPITCH = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> SWIMSPEEDCUR = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
 
 
 	public float swimPitch = 0f;
@@ -88,6 +89,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	public void entityInit() {
 		this.getDataManager().register(SWIMYAW, Float.valueOf(0f));
 		this.getDataManager().register(SWIMPITCH, Float.valueOf(0f));
+		this.getDataManager().register(SWIMSPEEDCUR, Float.valueOf(0f));
 		this.ticksExisted = rand.nextInt(12345);
 		super.entityInit();
 	}
@@ -139,11 +141,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			this.prevRotationYaw = this.prevSwimYaw;
 			
 			
-			this.swimYaw = this.getDataManager().get(SWIMYAW);
 			this.prevSwimYaw = this.swimYaw;
+			this.swimYaw = this.getDataManager().get(SWIMYAW);
 
-			this.swimPitch = this.getDataManager().get(SWIMPITCH);
 			this.prevSwimPitch = this.swimPitch;
+			this.swimPitch = this.getDataManager().get(SWIMPITCH);
 
 			return;
 		}
@@ -492,10 +494,15 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}
 	}
 	
+	public float getCurrentSwimSpeed() {
+		return this.getDataManager().get(SWIMSPEEDCUR);
+	}
+	
 	
 	public void syncSwimAngles() {
 		this.getDataManager().set(SWIMYAW, swimYaw);
 		this.getDataManager().set(SWIMPITCH, swimPitch);
+		this.getDataManager().set(SWIMSPEEDCUR, swimSpeedCurrent);
 	}
 	
 	public Vec3d getHeading() {

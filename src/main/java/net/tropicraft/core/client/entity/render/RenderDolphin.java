@@ -36,6 +36,13 @@ public class RenderDolphin extends RenderTropicraftWaterMob {
 	public void doRender(EntityTropicraftWaterBase entityliving, double d, double d1, double d2, float f, float f1) {
 	//	dolphin.inWater = entityliving.isInWater();
 	//	System.out.println(entityliving.hurtTime);
+		if(Boolean.TRUE && entityliving.ticksExisted % 20 == 0) 
+		{
+			this.mainModel = new ModelDolphin();
+			this.dolphin = new ModelDolphin();
+		}
+		//entityliving.swimYaw = 0f;
+	//	entityliving.swimPitch = 0f;
 		this.renderWaterMob((EntityTropicraftWaterBase) entityliving, d, d1, d2, f1);
 	}
 
