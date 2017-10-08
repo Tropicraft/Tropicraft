@@ -16,11 +16,6 @@ public class ItemScubaChestplate extends ItemScubaGear {
 	}
 
 	@Override
-	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		return super.getProperties(player, armor, source, damage, slot);
-	}
-
-	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
 		return 0;
 	}

@@ -11,12 +11,12 @@ import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
 import net.tropicraft.SandColors;
-import net.tropicraft.core.client.entity.model.ModelScubaGear;
 
 public class TropicraftRenderUtils {
     
@@ -109,4 +109,8 @@ public class TropicraftRenderUtils {
 			GlStateManager.popMatrix();
 		}
 	}
+	
+    public static String translateGUI(String word) {
+        return I18n.translateToLocal(String.format("gui.tropicraft:%s", word));
+    }
 }

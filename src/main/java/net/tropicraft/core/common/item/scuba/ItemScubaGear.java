@@ -7,11 +7,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
-import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.common.item.armor.ItemTropicraftArmor;
 import net.tropicraft.core.registry.CreativeTabRegistry;
 import net.tropicraft.core.registry.EntityRenderRegistry;
@@ -25,10 +26,15 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
         this.scubaMaterial = scubaMaterial;
         this.setCreativeTab(CreativeTabRegistry.tropicraftTab);
     }
+    
+    @Override
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+        return new ArmorProperties(10, source == DamageSource.drown ? 1.0 : 1.0, Integer.MAX_VALUE);
+    }
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        String color = scubaMaterial == ScubaMaterial.DRY ? "Pink" : "Yellow";
+        String color = scubaMaterial == ScubaMaterial.PINK ? "Pink" : "Yellow";
         return Info.ARMOR_LOCATION + "scubaGear" + color + ".png";   
     }
 
@@ -47,29 +53,14 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
         if (itemstack == null) {
             return null;
         }
-        
-        ModelBiped armorModel;
 
-        //TODO this is weird <_<
-        armorModel = EntityRenderRegistry.getScubaModel(armorSlot);
+        ModelBiped armorModel = EntityRenderRegistry.getScubaModel(armorSlot);
 
         if (armorModel != null){
-//            armorModel.bipedHead.showModel = armorSlot == EntityEquipmentSlot.HEAD;
-//            armorModel.bipedHeadwear.showModel = armorSlot == EntityEquipmentSlot.HEAD;
-//            armorModel.bipedBody.showModel = armorSlot == EntityEquipmentSlot.CHEST || armorSlot == EntityEquipmentSlot.LEGS;
-//            armorModel.bipedRightArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
-//            armorModel.bipedLeftArm.showModel = armorSlot == EntityEquipmentSlot.CHEST;
-//            armorModel.bipedRightLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
-//            armorModel.bipedLeftLeg.showModel = armorSlot == EntityEquipmentSlot.LEGS || armorSlot == EntityEquipmentSlot.FEET;
-
             armorModel.isSneak = entityLiving.isSneaking();
             armorModel.isRiding = entityLiving.isRiding();
             armorModel.isChild = entityLiving.isChild();
             armorModel.rightArmPose = entityLiving.getHeldItemMainhand() != null ? ModelBiped.ArmPose.BLOCK : ModelBiped.ArmPose.EMPTY;
-//            if (entityLiving instanceof EntityPlayer){
-//                armorModel.aimedBow =((EntityPlayer)entityLiving).getItemInUseDuration() > 2;
-//            }
-
             return armorModel;
         }
 
@@ -93,8 +84,8 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     public static enum ScubaMaterial {
 
-        DRY(0, "dry", "Dry"),
-        WET(35, "wet", "Wet");
+        PINK(35, "pink", "Pink"),
+        YELLOW(35, "yellow", "Yellow");
 
         /** The y-level that a player can safely dive to while wearing this gear material */
         private int maxDepth;

@@ -16,11 +16,6 @@ public class ItemScubaFlippers extends ItemScubaGear {
 	}
 
 	@Override
-	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		return null;
-	}
-
-	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
 		return 0;
 	}
@@ -40,6 +35,9 @@ public class ItemScubaFlippers extends ItemScubaGear {
 			player.motionZ /= 1.06999999;
 			player.moveEntityWithHeading(-1E-4F, -1E-4F);
 		} else {
+            player.motionX *= 0.6666667D;
+            //this.motionY *= 0.800000011920929D;
+            player.motionZ *= 0.6666667D;
 			player.setAIMoveSpeed((float) (player.getAIMoveSpeed() / 1.33333));
 			player.capabilities.isFlying = false;
 		}

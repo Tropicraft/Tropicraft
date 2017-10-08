@@ -269,17 +269,17 @@ public class ItemRegistry extends TropicraftRegistry {
 		scubaTank = registerItem(new ItemScubaTank(), "scuba_tank");
 		diveComputer = registerItem(new ItemDiveComputer(), "dive_computer");
 		bcd = registerItem(new ItemBCD(), "bcd");
-		dryFlippers = registerItem(new ItemScubaFlippers(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.FEET), "dry_flippers");
-		dryLeggings = registerItem(new ItemScubaLeggings(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.LEGS), "dry_leggings");
-		dryChestplate = registerItem(new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.CHEST), "dry_chestplate");
-		dryChestplateGear = registerItem(new ItemScubaChestplateGear(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.CHEST), "dry_chestplate_gear");
-		dryHelmet = registerItem(new ItemScubaHelmet(materialDrySuit, ItemScubaGear.ScubaMaterial.DRY, 0, EntityEquipmentSlot.HEAD), "dry_helmet");
+		dryFlippers = registerItem(new ItemScubaFlippers(materialDrySuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.FEET), "dry_flippers");
+		dryLeggings = registerItem(new ItemScubaLeggings(materialDrySuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.LEGS), "dry_leggings");
+		dryChestplate = registerItem(new ItemScubaChestplate(materialDrySuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "dry_chestplate");
+		dryChestplateGear = registerItem(new ItemScubaChestplateGear(materialDrySuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "dry_chestplate_gear");
+		dryHelmet = registerItem(new ItemScubaHelmet(materialDrySuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.HEAD), "dry_helmet");
 		
-		wetFlippers = registerItem(new ItemScubaFlippers(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.FEET), "wet_flippers");
-		wetLeggings = registerItem(new ItemScubaLeggings(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.LEGS), "wet_leggings");
-		wetChestplate = registerItem(new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.CHEST), "wet_chestplate");
-		wetChestplateGear = registerItem(new ItemScubaChestplateGear(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.CHEST), "wet_chestplate_gear");
-		wetHelmet = registerItem(new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.WET, 0, EntityEquipmentSlot.HEAD), "wet_helmet");
+		wetFlippers = registerItem(new ItemScubaFlippers(materialWetSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.FEET), "wet_flippers");
+		wetLeggings = registerItem(new ItemScubaLeggings(materialWetSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.LEGS), "wet_leggings");
+		wetChestplate = registerItem(new ItemScubaChestplate(materialWetSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "wet_chestplate");
+		wetChestplateGear = registerItem(new ItemScubaChestplateGear(materialWetSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "wet_chestplate_gear");
+		wetHelmet = registerItem(new ItemScubaHelmet(materialWetSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "wet_helmet");
 	}
 
 	public static void init() {
