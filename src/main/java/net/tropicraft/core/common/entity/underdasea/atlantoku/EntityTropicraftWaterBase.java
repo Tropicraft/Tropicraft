@@ -248,6 +248,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						}
 					}
 				}
+				if(this.ticksExisted > 200 && leader == null) {
+					this.markAsLeader();
+				}
 			}
 			
 			
@@ -272,6 +275,22 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 			}
 			
+			if(!this.isAggressing && this.ticksExisted % 20 == 0) {
+				List<Entity> ents = world.getLoadedEntityList();
+				for(int i =0; i < ents.size(); i++) {
+					if(ents.get(i) instanceof EntityTropicraftWaterBase) {
+						EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
+						if(this.canEntityBeSeen(f) && this.getDistanceSqToEntity(f) < 5D)
+						if(f.aggressTarget != null)
+						if(f.aggressTarget.equals(this)) {
+							this.fleeEntity(f);
+							this.isPanicking = true;
+							break;
+						}
+					}
+				}
+			}
+			
 			
 			
 
@@ -288,8 +307,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 
 			if(this.leader != null && !isLeader) {
-			//	double wave = Math.sin(ticksExisted/20) * 50;
-				this.setTargetHeading(this.leader.posX, this.leader.posY, this.leader.posZ, true);
+				double wave = Math.sin(ticksExisted/20) * 20;
+				this.setTargetHeading(this.leader.posX, this.leader.posY - 5 + rand.nextInt(10), this.leader.posZ, true);
 				if(leader.aggressTarget != null) {
 					this.aggressTarget = leader.aggressTarget;
 				}
@@ -516,7 +535,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		targetVectorHeading.y = -(pitch/2);
 
 		targetVector.x = (float) ent.posX;
-		targetVector.y = (float) ent.posY;
+		targetVector.y = (float) ent.posY - 5 + rand.nextInt(10);
 		targetVector.z = (float) ent.posZ;
 	}
 	

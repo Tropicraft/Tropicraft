@@ -12,6 +12,7 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ModelFish;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.IAtlasFish;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,6 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 	private TropicraftSpecialRenderHelper renderHelper;
 	private static final Logger LOGGER = LogManager.getLogger();
 	
-	private int fishSlot = -1;
 
 	public RenderTropicalFish(ModelBase modelbase, float f) {
 		super(Minecraft.getMinecraft().getRenderManager(), modelbase, f);
@@ -31,9 +31,8 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 		renderHelper = new TropicraftSpecialRenderHelper();
 	}
 	
-	public RenderTropicalFish(int fishSlot) {
+	public RenderTropicalFish() {
 		this(new ModelFish(), 1f);
-		this.fishSlot = fishSlot;
 	}
 	
 	/**
@@ -151,12 +150,8 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 		GL11.glTranslatef(.85F, 0.0F, 0.0F);
 		
 		int fishTex = 0;
-		if(entityliving instanceof EntityTropicalFish) {
-			fishTex = ((EntityTropicalFish) entityliving).getColor() * 2;
-		}
-		if(this.fishSlot != -1) {
-			fishTex = fishSlot;
-			fishTex *= 2;
+		if(entityliving instanceof IAtlasFish) {
+			fishTex = ((IAtlasFish)entityliving).getAtlasSlot()*2;
 		}
 	
 		renderHelper.renderFish(fishTex);
