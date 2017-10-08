@@ -58,6 +58,11 @@ public class BlockSeaweed extends BlockTropicraft {
 		public double getMaxRenderDistanceSquared() {
 			return super.getMaxRenderDistanceSquared() * 4;
 		}
+		
+		@Override
+		public boolean hasFastRenderer() {
+			return true;
+		}
 
 		public int getHeight() {
 			return height;
