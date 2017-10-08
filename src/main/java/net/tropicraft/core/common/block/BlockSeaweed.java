@@ -11,7 +11,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.NoiseGeneratorSimplex;
+import net.minecraft.world.gen.NoiseGeneratorPerlin;
 
 public class BlockSeaweed extends BlockTropicraft {
 
@@ -21,8 +21,8 @@ public class BlockSeaweed extends BlockTropicraft {
 		static {
 			rand.setSeed(439875L); // Random but constant seed
 		}
-		private static final NoiseGeneratorSimplex angleNoise = new NoiseGeneratorSimplex(rand);
-		private static final NoiseGeneratorSimplex delayNoise = new NoiseGeneratorSimplex(rand);
+		private static final NoiseGeneratorPerlin angleNoise = new NoiseGeneratorPerlin(rand, 1);
+		private static final NoiseGeneratorPerlin delayNoise = new NoiseGeneratorPerlin(rand, 3);
 
 		private int height = -1;
 		private AxisAlignedBB cachedBB;
@@ -44,11 +44,11 @@ public class BlockSeaweed extends BlockTropicraft {
 				
 				Vec3d centerPos = new Vec3d(getPos()).addVector(0.5, 0.5, 0.5).add(offset);
 				
-				swayAngle = angleNoise.getValue(centerPos.xCoord / 50, centerPos.zCoord / 50);
+				swayAngle = angleNoise.getValue(centerPos.xCoord / 200, centerPos.zCoord / 200);
 				swayAngle += 1; // convert to 0..2
 				swayAngle *= Math.PI; // convert to 0..2PI
 				
-				swayDelay = delayNoise.getValue(centerPos.xCoord / 25, centerPos.zCoord / 25);
+				swayDelay = delayNoise.getValue(centerPos.xCoord / 100, centerPos.zCoord / 100);
 				swayDelay *= 20;
 			}
 			return cachedBB;
