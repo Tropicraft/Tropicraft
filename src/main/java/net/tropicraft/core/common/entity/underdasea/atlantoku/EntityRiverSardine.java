@@ -11,6 +11,7 @@ public class EntityRiverSardine extends EntityTropicraftWaterBase implements IAt
 		this.setSize(0.3F, 0.4F);
 		this.setExpRate(5);
 		this.setDropStack(ItemRegistry.fertilizer, 3);
+		this.setSchoolable();
 	}
 	
 	public EntityRiverSardine(EntityTropicraftWaterBase l) {

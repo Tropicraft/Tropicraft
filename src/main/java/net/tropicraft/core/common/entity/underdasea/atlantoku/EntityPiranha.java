@@ -12,6 +12,7 @@ public class EntityPiranha extends EntityTropicraftWaterBase implements IAtlasFi
 		this.setHostile();
 		this.setExpRate(5);
 		this.setDropStack(ItemRegistry.blackPearl, 3);
+		this.setSchoolable();
 	}
 	
 	public EntityPiranha(EntityTropicraftWaterBase l) {

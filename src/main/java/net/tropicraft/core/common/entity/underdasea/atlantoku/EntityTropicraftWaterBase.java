@@ -65,6 +65,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	public EntityTropicraftWaterBase leader = null;
 	public Entity aggressTarget = null;
 	public boolean isLeader = false;
+	public boolean canSchool = false;
 	
 	private ItemStack dropStack = null;
 	private int dropMaxAmt = 3;
@@ -93,6 +94,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	public void markAsLeader() {
 		isLeader = true;
+	}
+	
+	public void setSchoolable() {
+		this.canSchool = true;
 	}
 	
 	public void setDropStack(Item item, int max) {
@@ -234,22 +239,29 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 				
 			
-
-			if(!isLeader && leader == null) {
-				List<Entity> ents = world.getLoadedEntityList();
-				for(int i =0; i < ents.size(); i++) {
-					if(ents.get(i) instanceof EntityTropicraftWaterBase) {
-						EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
-						
-						if(f.getClass().getName().equals(this.getClass().getName())) {
-							if(f.isLeader) {
-								this.leader = f;
+			if(this.canSchool) {
+				if(!isLeader && leader == null) {
+					List<Entity> ents = world.getLoadedEntityList();
+					for(int i =0; i < ents.size(); i++) {
+						if(ents.get(i) instanceof EntityTropicraftWaterBase) {
+							EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
+							
+							if(f.getClass().getName().equals(this.getClass().getName())) {
+								if(f instanceof IAtlasFish && this instanceof IAtlasFish) {
+									int slot = ((IAtlasFish)f).getAtlasSlot();
+									if(((IAtlasFish)this).getAtlasSlot() != slot) {
+										continue;
+									}
+								}
+								if(f.isLeader) {
+									this.leader = f;
+								}	
 							}
 						}
 					}
-				}
-				if(this.ticksExisted > 200 && leader == null) {
-					this.markAsLeader();
+					if(this.ticksExisted > 200 && leader == null) {
+						this.markAsLeader();
+					}
 				}
 			}
 			
@@ -306,14 +318,14 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 			
 
-			if(this.leader != null && !isLeader) {
-				double wave = Math.sin(ticksExisted/20) * 20;
-				this.setTargetHeading(this.leader.posX, this.leader.posY - 5 + rand.nextInt(10), this.leader.posZ, true);
-				if(leader.aggressTarget != null) {
-					this.aggressTarget = leader.aggressTarget;
+			if(this.canSchool) {
+				if(this.leader != null && !isLeader) {
+					this.setTargetHeading(this.leader.posX, this.leader.posY - 5 + rand.nextInt(10), this.leader.posZ, true);
+					if(leader.aggressTarget != null) {
+						this.aggressTarget = leader.aggressTarget;
+					}
 				}
 			}
-			
 			
 			
 			// Yaw/Pitch "interpolation" lol
