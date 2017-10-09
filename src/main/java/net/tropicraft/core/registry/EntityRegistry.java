@@ -3,8 +3,10 @@ package net.tropicraft.core.registry;
 import net.minecraft.entity.Entity;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.EntityLavaBall;
+import net.tropicraft.core.common.entity.hostile.EntityAshenHunter;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
+import net.tropicraft.core.common.entity.hostile.EntityLostMask;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBlue;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogGreen;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrogRed;
@@ -52,6 +54,8 @@ public class EntityRegistry {
 		registerEntity(EntityChair.class, "beachChair", 120, 10, true);
 		registerEntity(EntityUmbrella.class, "beachUmbrella", 120, 10, false);
 		registerEntity(EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
+		registerEntity(EntityAshenHunter.class, "ashen", 80, 3, true);
+		registerEntity(EntityLostMask.class, "LostMask", 64, 3, true);
 		registerEntity(EntityManOWar.class, "mow", 64, 3, true);
 		registerEntity(EntitySeaUrchin.class, "seaurchin", 64, 3, true);
 		registerEntity(EntitySeaUrchinEgg.class, "SeaUrchinEgg", 64, 3, false);
@@ -60,14 +64,12 @@ public class EntityRegistry {
 		registerEntity(EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 		registerEntity(EntityKoaHunter.class, "KoaHunter", 64, 3, true);
-		
 		registerEntity(EntityTropicalFish.class, "fish", 80, 2, true);
 		registerEntity(EntitySeahorse.class, "seahorse", 80, 2, true);
 		registerEntity(EntityEagleRay.class, "eagleray", 80, 2, true);
 		registerEntity(EntityMarlin.class, "marlin", 80, 2, true);
 		registerEntity(EntityPiranha.class, "piranha", 80, 2, true);
 		registerEntity(EntityRiverSardine.class, "sardine", 80, 2, true);
-
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {

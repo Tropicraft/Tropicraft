@@ -5,6 +5,10 @@
 	"headmed": { "category": "entity", "sounds": [ "tropicraft:headmed" ] }, 
 	"headpain": { "category": "entity", "sounds": [ "tropicraft:headpain" ] }, 
 	"headdeath": { "category": "entity", "sounds": [ "tropicraft:headdeath" ] },
+	"iggyattack": { "category": "entity", "sounds": [ "tropicraft:iggyattack" ] },
+	"iggydeath": { "category": "entity", "sounds": [ "tropicraft:iggydeath" ] },
+	"iggyliving": { "category": "entity", "sounds": [ "tropicraft:iggyliving" ] },
+	"ashenLaugh": { "category": "entity", "sounds": [ "tropicraft:ashenLaugh" ] },
 	"summering": { "category": "record", "sounds": [
 			{
 				"name": "tropicraft:music/summering",
