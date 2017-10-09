@@ -10,17 +10,20 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ModelFish;
-import net.tropicraft.core.common.entity.underdasea.EntityTropicalFish;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.IAtlasFish;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 
-public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
+public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> {
 
 	public ModelFish fish;
 	private TropicraftSpecialRenderHelper renderHelper;
 	private static final Logger LOGGER = LogManager.getLogger();
+	
 
 	public RenderTropicalFish(ModelBase modelbase, float f) {
 		super(Minecraft.getMinecraft().getRenderManager(), modelbase, f);
@@ -28,49 +31,34 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
 		renderHelper = new TropicraftSpecialRenderHelper();
 	}
 	
+	public RenderTropicalFish() {
+		this(new ModelFish(), 1f);
+	}
+	
 	/**
      * Renders the desired {@code T} type Entity.
      */
-    public void doRender(EntityTropicalFish entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        GlStateManager.pushMatrix();
+    public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    		this.shadowSize = 0.08f;
+		this.shadowOpaque = 0.3f;
+    		GlStateManager.pushMatrix();
         GlStateManager.disableCull();
         this.mainModel.swingProgress = this.getSwingProgress(entity, partialTicks);
         boolean shouldSit = entity.isRiding() && (entity.getRidingEntity() != null && entity.getRidingEntity().shouldRiderSit());
         this.mainModel.isRiding = shouldSit;
         this.mainModel.isChild = entity.isChild();
 
+        float offset = 0f;
         try
         {
             float f = this.interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, partialTicks);
-            float f1 = this.interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, partialTicks);
+            float f1 = this.interpolateRotation(entity.prevSwimYaw+offset, entity.swimYaw+offset, partialTicks);
             float f2 = f1 - f;
+            
+            f1 = -f1;
+            f = f1;
 
-            if (shouldSit && entity.getRidingEntity() instanceof EntityLivingBase)
-            {
-                EntityLivingBase entitylivingbase = (EntityLivingBase)entity.getRidingEntity();
-                f = this.interpolateRotation(entitylivingbase.prevRenderYawOffset, entitylivingbase.renderYawOffset, partialTicks);
-                f2 = f1 - f;
-                float f3 = MathHelper.wrapDegrees(f2);
-
-                if (f3 < -85.0F)
-                {
-                    f3 = -85.0F;
-                }
-
-                if (f3 >= 85.0F)
-                {
-                    f3 = 85.0F;
-                }
-
-                f = f1 - f3;
-
-                if (f3 * f3 > 2500.0F)
-                {
-                    f += f3 * 0.2F;
-                }
-            }
-
-            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+            float f7 = entity.prevSwimPitch + (entity.swimPitch - entity.prevSwimPitch) * partialTicks;
             this.renderLivingAt(entity, x, y, z);
             float f8 = this.handleRotationFloat(entity, partialTicks);
             this.applyRotations(entity, f8, f, partialTicks);
@@ -90,12 +78,21 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
                     f5 = 1.0F;
                 }
             }
+            
+            if(entity.hurtTime > 0){
+
+				GL11.glColor4f(2f, 0f, 0f, 1f);
+			}
+        
 
             this.renderFishy(entity);
-            
+			GL11.glColor4f(1f, 1f, 1f, 1f);
+
             GlStateManager.enableAlpha();
             this.mainModel.setLivingAnimations(entity, f6, f5, partialTicks);
             this.mainModel.setRotationAngles(f6, f5, f8, f2, f7, f4, entity);
+            
+       
 
             if (this.renderOutlines) {
                 boolean flag1 = this.setScoreTeamColor(entity);
@@ -145,33 +142,39 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicalFish> {
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
-	protected void renderFishy(EntityTropicalFish entityliving) {
+	protected void renderFishy(EntityTropicraftWaterBase entityliving) {
 		GL11.glPushMatrix();
 		fish.Body.postRender(.045F);
 		TropicraftRenderUtils.bindTextureEntity("tropicalFish");
 		GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(.85F, 0.0F, 0.0F);
-		renderHelper.renderFish(((EntityTropicalFish) entityliving).getColor() * 2);
+		
+		int fishTex = 0;
+		if(entityliving instanceof IAtlasFish) {
+			fishTex = ((IAtlasFish)entityliving).getAtlasSlot()*2;
+		}
+	
+		renderHelper.renderFish(fishTex);
 		GL11.glPopMatrix();
 		GL11.glPushMatrix();
 		fish.Tail.postRender(.045F);
 		GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(-.90F, 0.725F, 0.0F);
-		renderHelper.renderFish(((EntityTropicalFish) entityliving).getColor() * 2 + 1);
+			renderHelper.renderFish(fishTex+1);
 		GL11.glPopMatrix();
 	}
 
-	protected void preRenderScale(EntityTropicalFish entityTropicalFish, float f) {
+	protected void preRenderScale(EntityTropicraftWaterBase entityTropicalFish, float f) {
 		GL11.glScalef(.75F, .20F, .20F);
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTropicalFish entityliving, float f) {
+	protected void preRenderCallback(EntityTropicraftWaterBase entityliving, float f) {
 		preRenderScale(entityliving, f);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTropicalFish entity) {
+	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
 		return TropicraftRenderUtils.bindTextureEntity("tropicalFish");
 	}
 }

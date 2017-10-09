@@ -82,7 +82,7 @@ public class EntityManOWar extends EntityWaterMob {
 		
 		if (inWater) {
 			if (this.getAttackTarget() == null) {
-				List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(2D, 8D, 2D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
+				List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(2D, 4D, 2D).offset(0.0D, -2.0D, 0.0D), EntitySelectors.IS_ALIVE);
 				for (int i = 0; i < list.size(); i++) {
 					Entity ent = list.get(i);
 					if (ent instanceof EntityLivingBase && !(ent instanceof EntityManOWar)){
@@ -91,6 +91,7 @@ public class EntityManOWar extends EntityWaterMob {
 							((EntityLivingBase)ent).attackEntityFrom(DamageSource.drown, byte0);
 							this.setAttackTarget(((EntityLivingBase)ent));
 							attackTimer = 60;
+							continue;
 						}
 					}
 				}

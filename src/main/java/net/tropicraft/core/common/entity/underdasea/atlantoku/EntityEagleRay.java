@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.entity.underdasea;
+package net.tropicraft.core.common.entity.underdasea.atlantoku;
 
 import static java.lang.Math.PI;
 import net.minecraft.entity.EntityLivingBase;
@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityEagleRay extends EntityTropicraftWaterMob {
+public class EntityEagleRay extends EntityTropicraftWaterBase {
 
     /**
      * Number of joints the wings have. End points included.
@@ -39,6 +39,7 @@ public class EntityEagleRay extends EntityTropicraftWaterMob {
     public EntityEagleRay(World world) {
         super(world);
         this.setSize(1f, 0.25f);
+        this.setSwimSpeeds(0.1f, 0.1f, 0.1f);
     }
 
     @Override
@@ -55,7 +56,9 @@ public class EntityEagleRay extends EntityTropicraftWaterMob {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+        this.setSwimSpeeds(1f, 0.2f, 0.2f);
+        this.setSize(2.5f, 0.5f);
+
         if (world.isRemote) {
             if (animationTicks < WING_CYCLE_TICKS) {
                 animationTicks++;

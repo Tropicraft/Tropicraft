@@ -10,8 +10,6 @@ public final class Names {
 	public static final String BLOCK_ZIRCON_ORE = "oreZircon";
 	public static final String BLOCK_AZURITE_ORE = "oreAzurite";
 	public static final String[] BLOCK_ORE_NAMES = {"azurite", "eudialyte", "zircon"};
-	public static final String[] FLOWER_NAMES = {"commelina_diffusa", "crocosmia", "orchid", "canna", "anemone", "orange_anthurium", "red_anthurium", "magic_mushroom", "pathos", "acai_vine",
-		"croton", "dracaena", "fern", "foliage", "bromeliad"};
 	public static final String[] LOG_NAMES = {"mahogany", "palm"};
 	public static final String[] CORAL_NAMES = {"pink", "tealy", "brain", "fire", "green", "spiral", "hotpink"};
 	public static final String[] BUNDLE_NAMES = {"thatch", "bamboo"};
@@ -40,7 +38,7 @@ public final class Names {
 	public static final String[] SHELL_NAMES = new String[]{"solo", "frox", "pab", "rube", "starfish", "turtle"};
 	public static final String[] EGG_NAMES = {"iguana", "starfish", "greenfrog", "redfrog", "yellowfrog", "bluefrog",
 			"eih", "marlin", "fish", "ashen", "turtle", "mow", "monkey", "koa", "tropicreeper",
-			"tropiskelly", "eagleray", "failgull", "seaurchin"};
+			"tropiskelly", "eagleray", "failgull", "seaurchin", "piranha", "sardine"};
 	public static final String[] COFFEE_NAMES = { "coffee_bean_raw", "coffee_bean_roasted", "coffee_berry" };
 
 	// Tile Entity Names

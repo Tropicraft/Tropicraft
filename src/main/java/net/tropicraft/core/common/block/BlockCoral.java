@@ -6,7 +6,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -28,6 +27,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 
 public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net.minecraftforge.common.IPlantable {
@@ -167,6 +167,21 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		checkFlowerChange(world, pos, state);
+		//System.out.println("Block update");
+		/*if(!world.isRemote && world.getLoadedEntityList().size() < 200) {
+			if(rand.nextInt(12) == 0) {
+				EntityPiranha fish = new EntityPiranha(world);
+				fish.setPosition(pos.getX(), pos.getY(), pos.getZ());
+				world.spawnEntity(fish);
+				fish.markAsLeader();
+				int amt = rand.nextInt(12);
+				for(int i =0 ; i < amt; i++) {
+					EntityPiranha fishe = new EntityPiranha(fish);
+					fishe.setPosition(pos.getX(), pos.getY(), pos.getZ());
+					world.spawnEntity(fishe);
+				}
+			}
+		}*/
 	}
 
 	protected void checkFlowerChange(World world, BlockPos pos, IBlockState state) {

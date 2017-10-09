@@ -186,6 +186,9 @@ item.tropicraft:spawn_egg.name=Tropics Mob Spawner Egg
 item.tropicraft.coffee.bean.raw.name=Coffee Beans
 item.tropicraft.coffee.bean.roasted.name=Roasted Coffee Beans
 item.tropicraft.coffee.berry.name=Coffee Berry
+item.tropicraft:spawn_egg.piranha.name=Spawn Piranha
+item.tropicraft:spawn_egg.sardine.name=Spawn River Sardine
+
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade
@@ -218,6 +221,8 @@ entity.tropicraft.monkey.name=Vervet Monkey
 entity.tropicraft.PoisonBlot.name=Poisonous Blot
 entity.tropicraft.marlin.name=Marlin
 entity.tropicraft.ashen.name=Ashen
+entity.tropicraft.piranha.name=Piranha
+entity.tropicraft.sardine.name=River Sardine
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=If you like pina coladas...

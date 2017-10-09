@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.tropicraft.core.common.entity.underdasea.EntityEagleRay;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 
 public class ModelEagleRay extends ModelBase {
 	/**
@@ -31,7 +31,9 @@ public class ModelEagleRay extends ModelBase {
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+
 		body.render(f5);
 		renderWings();
 		renderTailSimple();
@@ -64,12 +66,25 @@ public class ModelEagleRay extends ModelBase {
 	private void renderWings() {
 		GlStateManager.disableLighting();
 		GlStateManager.pushMatrix();
-		GlStateManager.scale(2f, 0.5f, 2f);
-		GlStateManager.translate(0.1f, 0f, -0.25f);
-		renderWing(false);
-		GlStateManager.rotate(180f, 0f, 1f, 0f);
-		GlStateManager.translate(0.10f, 0f, -1f);
-		renderWing(true);
+		{
+			// center wings on body
+			GlStateManager.translate(0.0625f / 2, 0f, -0.5f);
+			GlStateManager.scale(2f, 0.5f, 2f);
+			GlStateManager.pushMatrix();
+			{
+				renderWing(false);
+			}
+			GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
+			{
+				// Flip wing to other side
+				GlStateManager.rotate(180f, 0f, 1f, 0f);
+				// Adjust rotated wing position
+				GlStateManager.translate(0f, 0f, -1f);
+				renderWing(true);
+			}
+			GlStateManager.popMatrix();
+		}
 		GlStateManager.popMatrix();
 		GlStateManager.enableLighting();
 	}
@@ -79,6 +94,9 @@ public class ModelEagleRay extends ModelBase {
 	}
 
 	private void renderWing(boolean reverse) {
+		// Translate 2 1/2 pixels to edge of body
+		GlStateManager.translate(0.0625f + (0.0625f / 4), 0f, 0f);
+		
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer buffer = tessellator.getBuffer();
 
