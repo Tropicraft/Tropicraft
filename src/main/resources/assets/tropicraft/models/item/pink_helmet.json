@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "tropicraft:items/dry_helmet"
+        "layer0": "tropicraft:items/pink_helmet"
     },
     "display": {
         "thirdperson": {

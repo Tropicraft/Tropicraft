@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "tropicraft:items/pink_chestplate_gear"
+        "layer0": "tropicraft:items/pink_scuba_tank"
     },
     "display": {
         "thirdperson": {

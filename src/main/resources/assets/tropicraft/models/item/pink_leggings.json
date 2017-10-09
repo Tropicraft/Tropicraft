@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "tropicraft:items/dry_leggings"
+        "layer0": "tropicraft:items/pink_leggings"
     },
     "display": {
         "thirdperson": {

@@ -43,19 +43,19 @@ public class MiscEvents {
                     }
                 }
 
-                // Armor checks to perform shutdown functions
-                PlayerDataInstance storage = player.getCapability(Tropicraft.PLAYER_DATA_INSTANCE, null);
-
-                ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-                ItemStack chestplate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-                ItemStack flippers = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-
-                if (helmet == null || helmet.getItem() == null || !(helmet.getItem() instanceof ItemScubaHelmet)) {
-                    if (storage.scubaHelmet) {
-                        // TODO clean up scuba helmet method for player
-                        storage.scubaHelmet = false;
-                    }
-                }
+//                // Armor checks to perform shutdown functions
+//                PlayerDataInstance storage = player.getCapability(Tropicraft.PLAYER_DATA_INSTANCE, null);
+//
+//                ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+//                ItemStack chestplate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+//                ItemStack flippers = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+//
+//                if (helmet == null || helmet.getItem() == null || !(helmet.getItem() instanceof ItemScubaHelmet)) {
+//                    if (storage.scubaHelmet) {
+//                        // TODO clean up scuba helmet method for player
+//                        storage.scubaHelmet = false;
+//                    }
+//                }
             }
         }
     }

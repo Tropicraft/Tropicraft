@@ -14,4 +14,16 @@ public class ScubaHelper {
         // return world.getBlock(x, y, z).getMaterial().isLiquid();
         return player.isInsideOfMaterial(Material.WATER);
     }
+    
+    public static void helmetCleanup(EntityPlayer player) {
+        
+    }
+    
+    public static void chestplateCleanup(EntityPlayer player) {
+        
+    }
+    
+    public static void flippersCleanup(EntityPlayer player) {
+        player.capabilities.isFlying = false;
+    }
 }

@@ -96,21 +96,21 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
         //            if (armorStack.isItemEqualIgnoreDurability(itemstack)) {
         //                this.outOfArmorInventory = false;
         hasCleanedUp = false;
-
-        PlayerDataInstance storage = player.getCapability(Tropicraft.PLAYER_DATA_INSTANCE, null);
-        
-        if (this instanceof ItemScubaFlippers) {
-            storage.scubaFlippers = true;
-        }
-        
-        if (this instanceof ItemScubaChestplate || this instanceof ItemScubaChestplateGear) {
-            storage.scubaChestgear = true;
-        }
-        
-        if (this instanceof ItemScubaHelmet) {
-            storage.scubaHelmet = true;
-        }
-        
+//
+//        PlayerDataInstance storage = player.getCapability(Tropicraft.PLAYER_DATA_INSTANCE, null);
+//        
+//        if (this instanceof ItemScubaFlippers) {
+//            storage.scubaFlippers = true;
+//        }
+//        
+//        if (this instanceof ItemScubaChestplate || this instanceof ItemScubaChestplateGear) {
+//            storage.scubaChestgear = true;
+//        }
+//        
+//        if (this instanceof ItemScubaHelmet) {
+//            storage.scubaHelmet = true;
+//        }
+//        
         
         this.onScubaTick(world, player, itemstack);
         //                return;
