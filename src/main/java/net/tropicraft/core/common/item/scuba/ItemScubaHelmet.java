@@ -32,7 +32,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
     }
 
     @Override
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+    public void onScubaTick(World world, EntityPlayer player, ItemStack itemStack) {
         ticksSinceBubbles--;
         //TODO client side only: <Corosus> spawn some bubbles near them once in a while to simulating using the rebreather
 
@@ -123,9 +123,11 @@ public class ItemScubaHelmet extends ItemScubaGear {
 
         //TODO make locations of text configurable
         GlStateManager.pushMatrix();
-        drawString("psi", 398, 48, 0xffffff);
-        //TODO display warning if air is running low / out
-        drawString("Air", 374, 34, 0xffffff);
+        if (isChestplateScuba) {
+            drawString("psi", 398, 48, 0xffffff);
+            //TODO display warning if air is running low / out
+            drawString("Air", 374, 34, 0xffffff);   
+        }
         GL11.glScalef(1.5F, 1.5F, 1.0F);
         if (isChestplateScuba) {
             Minecraft.getMinecraft().fontRendererObj.drawString(String.format("%.0f", airRemaining), 240, 30, 0x00ccde);   
@@ -163,6 +165,11 @@ public class ItemScubaHelmet extends ItemScubaGear {
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
+    }
+
+    @Override
+    protected void onRemovedFromArmorInventory(World world, EntityPlayer player, ItemStack itemstack) {
+        
     }
 
 }

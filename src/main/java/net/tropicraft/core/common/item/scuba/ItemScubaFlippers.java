@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item.scuba;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -26,7 +27,8 @@ public class ItemScubaFlippers extends ItemScubaGear {
 	}
 
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+	public void onScubaTick(World world, EntityPlayer player, ItemStack itemStack) {
+	    //System.out.println("flippertick");
 		if (player.isInWater() || isFullyUnderwater(world, player)) {
 			player.capabilities.isFlying = true;
 			player.setAIMoveSpeed(player.capabilities.getWalkSpeed());
@@ -41,7 +43,6 @@ public class ItemScubaFlippers extends ItemScubaGear {
 			player.setAIMoveSpeed((float) (player.getAIMoveSpeed() / 1.33333));
 			player.capabilities.isFlying = false;
 		}
-
 	}
 
 	private boolean isFullyUnderwater(World world, EntityPlayer player) {
@@ -53,5 +54,14 @@ public class ItemScubaFlippers extends ItemScubaGear {
 
 		return world.getBlockState(pos).getMaterial().isLiquid();
 	}
+
+    @Override
+    protected void onRemovedFromArmorInventory(World world, EntityPlayer player, ItemStack itemstack) {
+        player.motionX *= 0.6666667D;
+        //this.motionY *= 0.800000011920929D;
+        player.motionZ *= 0.6666667D;
+        player.setAIMoveSpeed((float) (player.getAIMoveSpeed() / 1.33333));
+        player.capabilities.isFlying = false;
+    }
 
 }

@@ -24,8 +24,14 @@ public class ItemScubaLeggings extends ItemScubaGear {
 	}
 
 	@Override
-	public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
+	public void onScubaTick(World world, EntityPlayer player, ItemStack itemStack) {
 		
 	}
+
+    @Override
+    protected void onRemovedFromArmorInventory(World world, EntityPlayer player, ItemStack itemstack) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }

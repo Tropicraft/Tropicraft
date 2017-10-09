@@ -89,7 +89,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
     }
 
     @Override
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemstack) {
+    public void onScubaTick(World world, EntityPlayer player, ItemStack itemstack) {
         ticksUntilUpdate--;
 
         if (ticksUntilUpdate <= 0) {
@@ -106,5 +106,11 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
             }
             ticksUntilUpdate = UPDATE_RATE;
         }
+    }
+
+    @Override
+    protected void onRemovedFromArmorInventory(World world, EntityPlayer player, ItemStack itemstack) {
+        // TODO Auto-generated method stub
+        
     }
 }
