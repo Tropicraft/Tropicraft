@@ -10,8 +10,6 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 public class RenderKoaMan extends RenderBiped<EntityKoaBase>
 {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(Info.MODID + ":textures/entity/koa/KoaManHunter.png");
-
 	public RenderKoaMan(RenderManager rendermanagerIn, ModelKoaMan modelbase, float f)
 	{
 		super(rendermanagerIn, modelbase, f);
@@ -25,6 +23,14 @@ public class RenderKoaMan extends RenderBiped<EntityKoaBase>
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
 	protected ResourceLocation getEntityTexture(EntityKoaBase entity) {
-		return TEXTURE;
+		String gender = "man";
+		String role = "fisher";
+		if (entity.getGender() == EntityKoaBase.Genders.FEMALE) {
+			gender = "woman";
+		}
+		if (entity.getRole() == EntityKoaBase.Roles.HUNTER) {
+			role = "hunter";
+		}
+		return new ResourceLocation(Info.MODID + ":textures/entity/koa/koa_" + gender + "_" + role + ".png");
 	}
 }

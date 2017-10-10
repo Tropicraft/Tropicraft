@@ -13,6 +13,9 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
@@ -28,6 +31,9 @@ import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.lang.reflect.Field;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -36,9 +42,45 @@ public class EntityKoaBase extends EntityVillager {
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
     public long lastTimeFished = 0;
 
+    private static final DataParameter<Integer> ROLE = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
+
+    public enum Genders {
+        MALE,
+        FEMALE;
+
+        private static final Map<Integer, Genders> lookup = new HashMap<>();
+        static { for(Genders e : EnumSet.allOf(Genders.class)) { lookup.put(e.ordinal(), e); } }
+        public static Genders get(int intValue) { return lookup.get(intValue); }
+    }
+
+    public enum Roles {
+        HUNTER,
+        FISHERMAN;
+
+        private static final Map<Integer, Roles> lookup = new HashMap<>();
+        static { for(Roles e : EnumSet.allOf(Roles.class)) { lookup.put(e.ordinal(), e); } }
+        public static Roles get(int intValue) { return lookup.get(intValue); }
+    }
+
     public EntityKoaBase(World worldIn) {
         super(worldIn);
         this.enablePersistence();
+    }
+
+    public Genders getGender() {
+        return Genders.get(this.getDataManager().get(GENDER));
+    }
+
+    public Roles getRole() {
+        return Roles.get(this.getDataManager().get(ROLE));
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.getDataManager().register(ROLE, Integer.valueOf(0));
+        this.getDataManager().register(GENDER, Integer.valueOf(0));
     }
 
     @Override
@@ -182,6 +224,25 @@ public class EntityKoaBase extends EntityVillager {
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
         this.setHomePosAndDistance(this.getPosition(), -1);
+
+        //fail?
+        int randValRole = this.world.rand.nextInt(Roles.values().length - 1);
+        this.getDataManager().set(ROLE, Integer.valueOf(randValRole));
+        int randValGender = this.world.rand.nextInt(Genders.values().length - 1);
+        this.getDataManager().set(GENDER, Integer.valueOf(randValGender));
+
+        if (this.world.rand.nextBoolean()) {
+            this.setGrowingAge(-24000);
+        }
+
+        if (this.world.rand.nextBoolean()) {
+            this.getDataManager().set(ROLE, Integer.valueOf(Roles.FISHERMAN.ordinal()));
+        }
+
+        if (this.world.rand.nextBoolean()) {
+            this.getDataManager().set(GENDER, Integer.valueOf(Genders.FEMALE.ordinal()));
+        }
+
         return super.onInitialSpawn(difficulty, livingdata);
     }
 
