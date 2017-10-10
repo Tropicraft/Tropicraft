@@ -4,8 +4,8 @@ import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerTropicraftAddSubBiomes extends GenLayerTropicraft {
 	
-	private int baseID;
-	private int[] subBiomeIDs;
+	protected final int baseID;
+	protected final int[] subBiomeIDs;
 	
 	public GenLayerTropicraftAddSubBiomes(long seed, GenLayerTropicraft parent, int baseID, int[] subBiomeIDs) {
 		super(seed);
@@ -25,7 +25,7 @@ public class GenLayerTropicraftAddSubBiomes extends GenLayerTropicraft {
 				int cur = parentMap[i + j * width];
 
 				if(cur == baseID) {
-					resultMap[i + j * width] = subBiomeIDs[this.nextInt(subBiomeIDs.length)];
+					resultMap[i + j * width] = getSubBiome(cur);
 				} else {
 					resultMap[i + j * width] = cur;
 				}
@@ -33,6 +33,10 @@ public class GenLayerTropicraftAddSubBiomes extends GenLayerTropicraft {
 		}
 
         return resultMap;
+	}
+	
+	protected int getSubBiome(int id) {
+		return subBiomeIDs[this.nextInt(subBiomeIDs.length)];
 	}
 
 	@Override
