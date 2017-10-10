@@ -11,14 +11,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -29,7 +31,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
     private static final DataParameter<Float> SWIMYAW = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> SWIMPITCH = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> SWIMSPEEDCUR = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
-
+    protected static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
 
 	public float swimPitch = 0f;
 	public float swimYaw = 0f;
@@ -87,11 +89,17 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	@Override
 	public void entityInit() {
+		super.entityInit();
+
 		this.getDataManager().register(SWIMYAW, Float.valueOf(0f));
 		this.getDataManager().register(SWIMPITCH, Float.valueOf(0f));
 		this.getDataManager().register(SWIMSPEEDCUR, Float.valueOf(0f));
+		this.getDataManager().register(TEXTURE, "");
+		
+		if(this.getTexturePool() != null) {
+			this.assignRandomTexture();
+		}
 		this.ticksExisted = rand.nextInt(12345);
-		super.entityInit();
 	}
 	
 	public void markAsLeader() {
@@ -146,7 +154,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 			this.prevSwimPitch = this.swimPitch;
 			this.swimPitch = this.getDataManager().get(SWIMPITCH);
-
 			return;
 		}
 
@@ -584,6 +591,21 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	public int getTalkInterval() {
 		return 120;
 	}
+	
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.ENTITY_SQUID_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound() {
+		return null;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return null;
+	}
 
 	@Override
 	protected boolean canDespawn() {
@@ -618,5 +640,50 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	public void setHostile() {
 		this.canAggress = true;
+	}
+	
+	
+	
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound n) {
+		n.setString("texture", this.getDataManager().get(TEXTURE));
+		n.setFloat("swimYaw", this.getDataManager().get(SWIMYAW));
+		n.setFloat("swimPitch", this.getDataManager().get(SWIMPITCH));
+		super.writeEntityToNBT(n);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound n) {
+		setTexture(n.getString("texture"));
+		this.swimYaw = n.getFloat("swimYaw");
+		this.swimPitch = n.getFloat("swimPitch");
+		this.getDataManager().set(SWIMYAW, this.swimYaw);
+		this.getDataManager().set(SWIMPITCH, n.getFloat("swimPitch"));
+		super.readEntityFromNBT(n);
+	}
+
+	
+	public void setTexture(String s) {
+		if(s.length() == 0) return;
+		if(!world.isRemote) {
+			this.getDataManager().set(TEXTURE, s);
+		}
+	}
+	
+	public void assignRandomTexture() {
+		if(!world.isRemote) {
+			if(getTexturePool().length > 0) {
+				setTexture(getTexturePool()[rand.nextInt(getTexturePool().length)]);
+			}
+		}
+	}
+	
+	public String[] getTexturePool() {
+		return null;
+	}
+	
+	public String getTexture() {
+		return this.getDataManager().get(TEXTURE);
 	}
 }

@@ -1,14 +1,11 @@
 package net.tropicraft.core.client.entity.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 
 public class RenderSeahorse extends RenderTropicraftWaterMob {
@@ -25,14 +22,9 @@ public class RenderSeahorse extends RenderTropicraftWaterMob {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y-2.5f, z);
         
-        float yawOffset = 0f;
-        float pitchOffset = 0f;
-
-        float swimYaw = (par1EntityLiving.prevSwimYaw + yawOffset)
-				+ ((par1EntityLiving.swimYaw + yawOffset) - (par1EntityLiving.prevSwimYaw + yawOffset)) * partialTicks;
-		/*float swimPitch = (par1EntityLiving.prevSwimPitch + pitchOffset)
-				+ ((par1EntityLiving.swimPitch + pitchOffset) - (par1EntityLiving.prevSwimPitch + pitchOffset)) * partialTicks;
-*/
+   
+        float swimYaw = (par1EntityLiving.prevSwimYaw)
+				+ ((par1EntityLiving.swimYaw) - (par1EntityLiving.prevSwimYaw)) * partialTicks;
         GlStateManager.rotate(-270f, 0F, 1.0F, 0.0F);
         super.doRender(par1EntityLiving, 0, 0, 0, swimYaw, partialTicks);
         GlStateManager.popMatrix();
@@ -41,14 +33,6 @@ public class RenderSeahorse extends RenderTropicraftWaterMob {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-        EntitySeahorse seahorse = null;
-
-        if (entity instanceof EntitySeahorse)
-            seahorse = (EntitySeahorse)entity;
-
-        if (seahorse == null)
-            return TropicraftRenderUtils.getTextureEntity("seahorse/razz");
-        else
-            return TropicraftRenderUtils.getTextureEntity(String.format("seahorse/%s", seahorse.getColorName()));
+            return TropicraftRenderUtils.getTextureEntity(String.format("seahorse/%s", entity.getTexture()));
     }
 }

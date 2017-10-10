@@ -25,7 +25,7 @@ public class RenderDolphin extends RenderTropicraftWaterMob {
     
     @Override
 	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-		return TropicraftRenderUtils.bindTextureEntity("dolphin");
+		return TropicraftRenderUtils.bindTextureEntity(entity.getTexture());
 	}
 
 	@Override

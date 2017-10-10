@@ -25,7 +25,7 @@ public class RenderMarlin extends RenderTropicraftWaterMob {
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
 	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-		return TropicraftRenderUtils.bindTextureEntity("marlin");
+    		return TropicraftRenderUtils.bindTextureEntity(entity.getTexture());
 	}
 
 	
@@ -33,7 +33,6 @@ public class RenderMarlin extends RenderTropicraftWaterMob {
 	@Override
 	public void doRender(EntityTropicraftWaterBase entityliving, double d, double d1, double d2, float f, float f1) {
 		marlin.inWater = entityliving.isInWater();
-	//	System.out.println(entityliving.hurtTime);
 		this.renderWaterMob((EntityTropicraftWaterBase) entityliving, d, d1, d2, f1);
 	}
 
