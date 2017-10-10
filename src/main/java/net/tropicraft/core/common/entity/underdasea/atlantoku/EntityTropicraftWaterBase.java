@@ -275,6 +275,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						this.markAsLeader();
 					}
 				}
+				if(this.ticksExisted > 200 && leader == null) {
+					this.markAsLeader();
+				}
 			}
 			
 			
@@ -328,10 +331,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				if(this.targetVector != null)
 				this.targetVector.y = (int)posY;
 			}
-			
+
 
 			if(this.canSchool) {
 				if(this.leader != null && !isLeader) {
+				    double wave = Math.sin(ticksExisted/20) * 20;
 					this.setTargetHeading(this.leader.posX, this.leader.posY - 5 + rand.nextInt(10), this.leader.posZ, true);
 					if(leader.aggressTarget != null) {
 						this.aggressTarget = leader.aggressTarget;

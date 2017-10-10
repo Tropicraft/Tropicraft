@@ -286,7 +286,7 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 	 * @return the number of lava blocks going outwards in the +x direction from this block
 	 */
 	private int findRadius() {
-		for (int x = 0; x < 30; x++) {
+		for (int x = 0; x < 20; x++) {
 			if (getWorld().getBlockState(new BlockPos(x + this.pos.getX(), 10, this.pos.getZ())).getBlock() != Blocks.LAVA) {
 				return x;
 			}

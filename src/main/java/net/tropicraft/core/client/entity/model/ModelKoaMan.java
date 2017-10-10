@@ -179,12 +179,35 @@ public class ModelKoaMan extends ModelBiped {
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         //super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        bipedHead.render(f5);
-        bipedBody.render(f5);
-        bipedRightArm.render(f5);
-        bipedLeftArm.render(f5);
-        bipedRightLeg.render(f5);
-        bipedLeftLeg.render(f5);
+
+        GlStateManager.pushMatrix();
+
+        if (this.isChild)
+        {
+            //float f = 2.0F;
+            GlStateManager.scale(0.75F, 0.75F, 0.75F);
+            GlStateManager.translate(0.0F, 16.0F * f5, 0.0F);
+            this.bipedHead.render(f5);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            GlStateManager.translate(0.0F, 24.0F * f5, 0.0F);
+            this.bipedBody.render(f5);
+            this.bipedRightArm.render(f5);
+            this.bipedLeftArm.render(f5);
+            this.bipedRightLeg.render(f5);
+            this.bipedLeftLeg.render(f5);
+        }
+        else {
+            bipedHead.render(f5);
+            bipedBody.render(f5);
+            bipedRightArm.render(f5);
+            bipedLeftArm.render(f5);
+            bipedRightLeg.render(f5);
+            bipedLeftLeg.render(f5);
+        }
+
+        GlStateManager.popMatrix();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
