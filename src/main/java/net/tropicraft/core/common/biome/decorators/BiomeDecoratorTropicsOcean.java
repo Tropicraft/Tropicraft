@@ -2,20 +2,42 @@ package net.tropicraft.core.common.biome.decorators;
 
 import java.util.Random;
 
+import net.minecraft.block.state.pattern.BlockMatcher;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.block.BlockCoral;
+import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.worldgen.TCNoiseGen;
 import net.tropicraft.core.common.worldgen.WorldGenCoral;
-import net.tropicraft.core.common.worldgen.WorldGenSeaweed;
+import net.tropicraft.core.common.worldgen.WorldGenSurfaceClump;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
 
 	private static final TCNoiseGen coralGen = new WorldGenCoral(new Random(38745L));
-	private static final WorldGenerator seaweedGen = new WorldGenSeaweed();
+	private static final WorldGenSurfaceClump coralReefGen = new WorldGenSurfaceClump(0.03f, 6, 
+			state -> state.getBlock() == Blocks.SAND, 
+			state -> true, // dummy 
+			rand -> BlockRegistry.coral.getDefaultState().withProperty(BlockCoral.VARIANT, TropicraftCorals.VALUES[rand.nextInt(TropicraftCorals.VALUES.length)]), 
+			false
+		) 
+	{
+		
+		@Override
+		protected boolean canPlaceBlock(World world, BlockPos pos) {
+			return super.canPlaceBlock(world, pos) && ((BlockCoral)BlockRegistry.coral).canBlockStay(world, pos);
+		}
+	};
+	
+	private static final WorldGenSurfaceClump seaweedGen = new WorldGenSurfaceClump(0.025f, 8, 
+			state -> state.getBlock() == Blocks.SAND, 
+			state -> state.getMaterial().isLiquid(),
+			rand -> BlockRegistry.seaweed.getDefaultState(),
+			true
+		);
 
     public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
     {
@@ -34,6 +56,7 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
     
     public void genDecorations(Biome biome, World world, Random rand) {
 		coralGen.generate(world, rand, chunkPos);
+		coralReefGen.generate(world, rand, chunkPos);
 		seaweedGen.generate(world, rand, chunkPos);
 //		if (rand.nextInt(5) == 0) {
 //			int x = randCoord(rand, chunkPos.getX(), 16) + 8;
