@@ -23,6 +23,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
@@ -83,6 +84,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		super(world);
 		this.experienceValue = 5;
 		this.setSwimSpeeds(1f, 2f, 5f);
+		if(this instanceof IPredatorDiet) {
+			this.setHostile();
+		}
 	}
 
 	@Override
@@ -99,6 +103,20 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
+		//setDead();
+		if(this instanceof IPredatorDiet && world.getDifficulty().equals(EnumDifficulty.PEACEFUL)) {
+			boolean hasPlayer = false;
+			Class[] prey = ((IPredatorDiet)this).getPreyClasses();
+			for(Class c : prey) {
+				if(c.getName().equals(EntityPlayer.class.getName())) {
+					hasPlayer = true;
+					break;
+				}
+			}
+			if(hasPlayer) {
+				this.setDead();
+			}
+		}
 		
 		// Client Side
 		if (world.isRemote) {
@@ -151,9 +169,20 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						Entity ent = list.get(rand.nextInt(list.size()));
 						boolean skip = false;
 						if(ent.equals(this)) skip = true;	
-						if(ent.getClass().getName().equals(this.getClass().getName())) skip = true;			
+						if(ent.getClass().getName().equals(this.getClass().getName())) skip = true;	
+						if(this instanceof IPredatorDiet) {
+							Class[] prey = ((IPredatorDiet)this).getPreyClasses();
+							boolean contains = false;
+							for(int i =0; i < prey.length; i++) {
+								if(prey[i].getName().equals(ent.getClass().getName())) {
+									contains = true;
+								}
+							}
+							if(!contains) {
+								skip = true;
+							}
+						}
 						if(!ent.isInWater()) skip = true;				
-						if(ent instanceof EntityPlayer) skip = true;			
 						if(!this.canEntityBeSeen(ent)) skip = true;
 						
 						if(!skip) {
@@ -189,7 +218,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 				
 			// Move away from players
-			if(this.fleeFromPlayers) {
+			if(this.fleeFromPlayers && ticksExisted % 80 == 0) {
 				EntityPlayer closest = world.getClosestPlayerToEntity(this, this.fleeDistance);
 				if(closest != null) {
 					if(closest.isInWater()) {
@@ -235,7 +264,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			// Hunt Target and/or Do damage
 			if(this.aggressTarget != null) {
-				if(this.getDistanceSqToEntity(this.aggressTarget) < 2f) {
+				if(this.getDistanceSqToEntity(this.aggressTarget) < 1.2f) {
 					if(this.aggressTarget instanceof EntityLivingBase)
 					((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.cactus, 1);
 					this.setRandomTargetHeading();
@@ -253,12 +282,12 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 			}
 			
-			if(!this.isAggressing && this.ticksExisted % 20 == 0) {
+			if(!this.isAggressing && this.ticksExisted % 80 == 0) {
 				List<Entity> ents = world.getLoadedEntityList();
 				for(int i =0; i < ents.size(); i++) {
 					if(ents.get(i) instanceof EntityTropicraftWaterBase) {
 						EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
-						if(this.canEntityBeSeen(f) && this.getDistanceSqToEntity(f) < 5D)
+						if(this.canEntityBeSeen(f) && this.getDistanceSqToEntity(f) < 2D)
 						if(f.aggressTarget != null)
 						if(f.aggressTarget.equals(this)) {
 							this.fleeEntity(f);
@@ -287,15 +316,18 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				}
 			}	
 			
+			
 			// Yaw/Pitch lerp
 			float swimSpeedTurn = this.swimSpeedTurn;
 			
 			if (this.targetVectorHeading != null) {
-				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn * 0.01f);
-				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn * 0.01f);
+				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn * 2f);
+				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn * 2f);
 			}
-
 		}
+		
+		
+
 
 
 		// Out of water
@@ -463,11 +495,23 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 	
 	public int randFlip(int i) {
-		return rand.nextBoolean() ? rand.nextInt(i) : -rand.nextInt(i);
+		return rand.nextBoolean() ? rand.nextInt(i) : -(rand.nextInt(i));
 	}
 	
 	public float lerp(float x1, float x2, float t) {
-		return x1 + (x2 - x1) * t;
+		 float f = MathHelper.wrapDegrees(x2 - x1);
+
+	        if (f > t)
+	        {
+	            f = t;
+	        }
+
+	        if (f < -t)
+	        {
+	            f = -t;
+	        }
+
+	        return x1 + f;
 	}
 	
 	public float getCurrentSwimSpeed() {
@@ -493,16 +537,16 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}
 
 
-		double x = posX - this.posX;
-		double y = posY - this.posY;
-		double z = posZ - this.posZ;
-		float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90F;
+		double x = (int)(posX - this.posX);
+		double y = (int)(posY - this.posY);
+		double z = (int)(posZ - this.posZ);
+		float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
 		float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 
 		if (this.targetVectorHeading == null) {
 			this.targetVectorHeading = new Vector2f();
 		}
-		this.targetVector = new Vec3d(posX, posY, posZ);
+		this.targetVector = new Vec3d((int)posX, (int)posY, (int)posZ);
 		targetVectorHeading.x = yaw;
 		targetVectorHeading.y = pitch;
 	}
@@ -551,7 +595,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		return this.getDataManager().get(TEXTURE);
 	}
 	
-	/* */
+	public void setExpRate(int i) {
+		this.experienceValue = i;
+	}
 	
 	@Override
 	public boolean isPushedByWater() {
@@ -575,7 +621,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	@Override
 	protected float getSoundVolume() {
-		return 0.4F;
+		return 0.3F;
 	}
 	
 	@Override
@@ -591,12 +637,16 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	@Override
 	public int getTalkInterval() {
-		return 120;
+		return this.isInWater() ? 120 : 240;
 	}
 	
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_SQUID_AMBIENT;
+		if(this.isInWater()) {
+			return SoundEvents.ENTITY_SQUID_AMBIENT;
+		}else {
+			return SoundEvents.BLOCK_GRAVEL_STEP;
+		}
 	}
 
 	@Override
@@ -633,10 +683,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			if(!world.isRemote)
 				entityDropItem(this.dropStack, 0.0F);
 		}
-	}
-	
-	public void setExpRate(int i) {
-		this.experienceValue = i;
 	}
 	
 	@Override
