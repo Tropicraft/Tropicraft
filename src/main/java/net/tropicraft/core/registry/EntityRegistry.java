@@ -68,7 +68,7 @@ public class EntityRegistry {
 		registerEntity(EntityMarlin.class, "marlin", 80, 2, true);
 		registerEntity(EntityPiranha.class, "piranha", 80, 2, true);
 		registerEntity(EntityRiverSardine.class, "sardine", 80, 2, true);
-		registerEntity(EntityDolphin.class, "dolphin", 80, 2, true);
+		registerEntity(EntityDolphin.class, "dolphin", 80, 1, true);
 
 	}
 	

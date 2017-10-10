@@ -15,6 +15,8 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWa
 public class RenderDolphin extends RenderTropicraftWaterMob {
 
 	private ModelDolphin dolphin;
+	
+	private boolean refreshModel = false;
 
 	public RenderDolphin(ModelBase modelbase, float f) {
 		super(Minecraft.getMinecraft().getRenderManager(), modelbase, f);
@@ -22,27 +24,21 @@ public class RenderDolphin extends RenderTropicraftWaterMob {
 	}
     
     @Override
-
-	/**
-	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-	 */
 	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
 		return TropicraftRenderUtils.bindTextureEntity("dolphin");
 	}
 
-	
-
 	@Override
 	public void doRender(EntityTropicraftWaterBase entityliving, double d, double d1, double d2, float f, float f1) {
-	//	dolphin.inWater = entityliving.isInWater();
-	//	System.out.println(entityliving.hurtTime);
-		if(Boolean.TRUE && entityliving.ticksExisted % 20 == 0) 
-		{
+		if(refreshModel && entityliving.ticksExisted % 20 == 0) {
 			this.mainModel = new ModelDolphin();
 			this.dolphin = new ModelDolphin();
+			refreshModel = false;
 		}
-		//entityliving.swimYaw = 0f;
-	//	entityliving.swimPitch = 0f;
+		
+		//refreshModel = true;
+		
+		
 		this.renderWaterMob((EntityTropicraftWaterBase) entityliving, d, d1, d2, f1);
 	}
 

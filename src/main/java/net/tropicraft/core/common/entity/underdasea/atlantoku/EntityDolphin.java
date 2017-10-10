@@ -8,7 +8,7 @@ public class EntityDolphin extends EntityTropicraftWaterBase{
 	public EntityDolphin(World world) {
 		super(world);
 		this.setSwimSpeeds(2f, 2f, 1.5f, 3f, 5f);
-		this.setSize(0.3F, 0.4F);
+		this.setSize(1.4F, 0.5F);
 		this.setExpRate(5);
 		this.setDropStack(ItemRegistry.fertilizer, 3);
 	}

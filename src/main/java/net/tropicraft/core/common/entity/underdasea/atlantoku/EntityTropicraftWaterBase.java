@@ -131,14 +131,14 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		if (world.isRemote) {
 			
 
-			this.rotationPitch = this.swimPitch;
-			this.rotationYaw = this.swimYaw;
+			this.rotationPitch = -this.swimPitch;
+			this.rotationYaw = -this.swimYaw;
 			this.rotationYawHead = -this.swimYaw;
 			this.prevRotationYawHead = -this.prevSwimYaw;
-			this.renderYawOffset = this.swimYaw;
-			this.cameraPitch = this.swimPitch;
-			this.prevRotationPitch = this.prevSwimPitch;
-			this.prevRotationYaw = this.prevSwimYaw;
+			this.renderYawOffset = 0;
+			this.cameraPitch = -this.swimPitch;
+			this.prevRotationPitch = -this.prevSwimPitch;
+			this.prevRotationYaw = -this.prevSwimYaw;
 			
 			
 			this.prevSwimYaw = this.swimYaw;
@@ -162,12 +162,14 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			// Near surface check
 			bp = new BlockPos((int)posX, (int)posY+1, (int)posZ);
-			if(this.world.getBlockState(bp).getBlock().equals(Blocks.AIR) || this.world.getBlockState(bp).getMaterial().isSolid()) {
+			if(!this.world.getBlockState(bp).getMaterial().isLiquid()) {
 				if(this.swimPitch > 0f) {
 					Vec3d angle = this.getHeading();
 					double frontDist = 5f;
 					Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));	
+					this.isPanicking = false;
 					this.setTargetHeading(diff.xCoord, posY - 2, diff.zCoord, true);
+					//this.swimPitch -= 15f;
 				}
 				
 			}
@@ -208,16 +210,16 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 				
 			// Wall correction
-			if(this.ticksExisted % 40 == 0) {
+			if(this.ticksExisted % 80 == 0) {
 				Vec3d angle = this.getHeading();
-				double frontDist = 1f;
+				double frontDist = 2f;
 				double behindDist = 8f;
 				
 				Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));
 
 				bp = new BlockPos((int)diff.xCoord, (int)posY, (int)diff.zCoord);
 		
-				if(this.world.getBlockState(bp).getMaterial().isSolid()) {
+				if(!this.world.getBlockState(bp).getMaterial().isLiquid()) {
 					Vec3d behind = new Vec3d(posX - (angle.xCoord*behindDist), posY + angle.yCoord, posZ - (angle.zCoord*behindDist));
 					this.setTargetHeading(behind.xCoord, posY+5, behind.zCoord, true);
 				}
@@ -229,9 +231,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			if(this.fleeFromPlayers) {
 				EntityPlayer closest = world.getClosestPlayerToEntity(this, this.fleeDistance);
 				if(closest != null) {
-					if(closest.isInWater()) 
-						this.fleeEntity(closest);
-						this.isPanicking = true;
+					if(closest.isInWater()) {
+					//	this.fleeEntity(closest);
+					//	this.isPanicking = true;
+					}
 				}else {
 					this.isPanicking = false;
 				}
@@ -308,7 +311,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			
 
-			bp = new BlockPos((int)posX, (int)posY-1, (int)posZ);
+			bp = new BlockPos((int)posX, (int)posY-2, (int)posZ);
 
 			// Hitting bottom check
 			if(!this.world.getBlockState(bp).getMaterial().isLiquid()) {
@@ -330,34 +333,12 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 			
 			
-			// Yaw/Pitch "interpolation" lol
+			// Yaw/Pitch lerp
 			float swimSpeedTurn = this.swimSpeedTurn;
 			
 			if (this.targetVectorHeading != null) {
-			//	System.out.println(-this.targetVectorHeading.x+" "+this.swimYaw);
-				if (this.swimYaw < -this.targetVectorHeading.x) {
-					this.swimYaw += swimSpeedTurn*2;
-					if(this.swimYaw > -this.targetVectorHeading.x) {
-						this.swimYaw = -this.targetVectorHeading.x;
-					}
-				} else {
-					this.swimYaw -= swimSpeedTurn*2;
-					if(this.swimYaw < -this.targetVectorHeading.x) {
-						this.swimYaw = -this.targetVectorHeading.x;
-					}
-				}
-	
-				if (this.swimPitch < -this.targetVectorHeading.y) {
-					this.swimPitch += swimSpeedTurn*2;
-					if(this.swimPitch > -this.targetVectorHeading.y) {
-						this.swimPitch = -this.targetVectorHeading.y;
-					}
-				} else {
-					this.swimPitch -= swimSpeedTurn*2;
-					if(this.swimPitch < -this.targetVectorHeading.y) {
-						this.swimPitch = -this.targetVectorHeading.y;
-					}
-				}
+				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn * 0.01f);
+				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn * 0.01f);
 			}
 
 		}
@@ -474,7 +455,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 	
 	public void setRandomTargetHeading() {
-		int dist = 32;
+		int dist = 16;
 		Vector3f randBlock = new Vector3f((float)(posX + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))), 
 				(float)(posY + (rand.nextBoolean() ? rand.nextInt(dist*2) : -rand.nextInt(dist*2))), 
 				(float)(posZ + (rand.nextBoolean() ? rand.nextInt(dist) : -rand.nextInt(dist))));
@@ -492,6 +473,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 
 		}
+	}
+	
+	public float lerp(float x1, float x2, float t) {
+
+		return x1 + (x2 - x1) * t;
 	}
 	
 	public float getCurrentSwimSpeed() {

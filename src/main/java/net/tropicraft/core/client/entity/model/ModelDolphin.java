@@ -47,6 +47,9 @@ public class ModelDolphin extends ModelBase {
 	ModelRenderer DorsalFin3;
 	ModelRenderer DorsalFin4;
 	ModelRenderer DorsalFin5;
+	
+	public float tailVertSpeed = 1f;
+	public float tailHorzSpeed = 1f;
 
 	public ModelDolphin() {
 		this(0.0f);
@@ -227,22 +230,27 @@ public class ModelDolphin extends ModelBase {
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 
 		
-		float tailVertSpeed = 0.5f/2;
-		float tailHorzSpeed = 0.25f/2;
 		
 		if(par1Entity instanceof EntityDolphin) {
-			if(((EntityDolphin)par1Entity).getCurrentSwimSpeed() == 0) {
-				tailVertSpeed = 0.125f/2;
-				tailHorzSpeed = 0.125f/4;
+			EntityDolphin dolphin = (EntityDolphin)par1Entity;
+			if(dolphin.isInWater()) {
+				if(dolphin.getCurrentSwimSpeed() == 0) {
+					tailVertSpeed = 0.125f/2;
+					tailHorzSpeed = 0.125f/4;
+				}else {
+					tailVertSpeed = 0.5f/2;
+					tailHorzSpeed = 0.25f/2;
+				}
+				if(dolphin.getAir() <= 0) {
+					tailVertSpeed = 0.5f;
+					tailHorzSpeed = 0.25f;
+				}
 			}else {
-				tailVertSpeed = 0.5f/2;
-				tailHorzSpeed = 0.25f/2;
-			}
-			if(((EntityDolphin)par1Entity).getAir() <= 0) {
-				tailVertSpeed = 0.5f;
-				tailHorzSpeed = 0.25f;
+				tailVertSpeed = 1f;
+				tailHorzSpeed = 0.5f;
 			}
 		}
+		
 		
 		Body1.rotateAngleX = 0F;
 		Body1.rotateAngleY = 0F;
@@ -351,18 +359,18 @@ public class ModelDolphin extends ModelBase {
 
 		LeftPectoralFin1.rotateAngleX = 0.1612329F;
 		LeftPectoralFin1.rotateAngleY = -0.2214468F;
-		LeftPectoralFin1.rotateAngleZ = 0.6194302F + (float) (Math.sin(par4 * .025F)) * .3f;
+		LeftPectoralFin1.rotateAngleZ = 0.6194302F;// + (float) (Math.sin(par4 * .025F)) * .3f;
 		LeftPectoralFin1.renderWithRotation(par7);
 
 		LeftPectoralFin2.rotateAngleX = 0.2393862F;
 		LeftPectoralFin2.rotateAngleY = -0.3358756F;
 
-		LeftPectoralFin2.rotateAngleZ = 0.5966207F + (float) (Math.sin(par4 * .025F)) * .35f;
+		LeftPectoralFin2.rotateAngleZ = 0.5966207F;// + (float) (Math.sin(par4 * .025F)) * .35f;
 		LeftPectoralFin2.renderWithRotation(par7);
 
 		LeftPectoralFin3.rotateAngleX = 0.3620028F;
 		LeftPectoralFin3.rotateAngleY = -0.5368112F;
-		LeftPectoralFin3.rotateAngleZ = 0.5368112F + (float) (Math.sin(par4 * .025F)) * .4f;
+		LeftPectoralFin3.rotateAngleZ = 0.5368112F;// + (float) (Math.sin(par4 * .025F)) * .4f;
 		LeftPectoralFin3.renderWithRotation(par7);
 
 		Tail1.rotateAngleX = -0.04555309F + (float) (Math.sin(par4 * tailVertSpeed)) * .1f;
@@ -427,7 +435,7 @@ public class ModelDolphin extends ModelBase {
 		Fluke4.rotationPointX = (float) (Math.sin(par4 * tailHorzSpeed)) * 2.8f;
 
 		Fluke4.rotateAngleX = -0.08892051F + (float) (Math.sin(par4 * tailVertSpeed)) * .8f;
-		;
+		
 		Fluke4.rotateAngleY = -0.2285096F + (float) (Math.sin(par4 * tailHorzSpeed)) * .35F;
 		Fluke4.rotateAngleZ = 0.02065023F;
 		Fluke4.renderWithRotation(par7);
@@ -460,7 +468,7 @@ public class ModelDolphin extends ModelBase {
 		Fluke8.rotationPointY = 22f - (float) (Math.sin(par4 * tailVertSpeed)) * 4F;
 
 		Fluke8.rotateAngleX = -0.09042732F + (float) (Math.sin(par4 * tailVertSpeed)) * .8f;
-		;
+		
 		Fluke8.rotateAngleY = 0.1372235F + (float) (Math.sin(par4 * tailHorzSpeed)) * .35F;
 		Fluke8.rotateAngleZ = -0.01246957F;
 		Fluke8.renderWithRotation(par7);
