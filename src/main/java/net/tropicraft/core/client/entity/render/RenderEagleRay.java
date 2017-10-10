@@ -15,17 +15,11 @@ public class RenderEagleRay extends RenderTropicraftWaterMob {
 
 
 	@Override
-	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		
+	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw, float partialTicks) {	
 		GlStateManager.pushMatrix();
-
-		GlStateManager.disableCull();
-		
+		GlStateManager.disableCull();	
 		GlStateManager.translate(4, 0f, 4f);
-
-	//	this.mainModel = new ModelEagleRay();
-		this.renderWaterMob(entity, x-4, y-1, z-4, partialTicks);
-		
+		this.renderWaterMob(entity, x-4, y-1, z-4, partialTicks);	
 		GlStateManager.popMatrix();
 	}
 

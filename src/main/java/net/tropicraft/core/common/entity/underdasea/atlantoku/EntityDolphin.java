@@ -11,16 +11,12 @@ public class EntityDolphin extends EntityTropicraftWaterBase{
 		this.setSize(1.4F, 0.5F);
 		this.setExpRate(5);
 		this.setTexture("dolphin");
-		
+		this.setApproachesPlayers(true);
 		if(!world.isRemote) {
 			if(rand.nextInt(50) == 0) {
 				this.setTexture("dolphin2");
 			}
 		}
 		this.setDropStack(ItemRegistry.fertilizer, 3);
-	}
-	
-	public EntityDolphin(EntityTropicraftWaterBase l) {
-		this(l.world);
 	}
 }
