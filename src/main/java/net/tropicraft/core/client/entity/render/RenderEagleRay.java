@@ -1,9 +1,5 @@
 package net.tropicraft.core.client.entity.render;
 
-import static org.lwjgl.opengl.GL11.glTranslatef;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +23,7 @@ public class RenderEagleRay extends RenderTropicraftWaterMob {
 		
 		GlStateManager.translate(4, 0f, 4f);
 
-		this.mainModel = new ModelEagleRay();
+	//	this.mainModel = new ModelEagleRay();
 		this.renderWaterMob(entity, x-4, y-1, z-4, partialTicks);
 		
 		GlStateManager.popMatrix();
