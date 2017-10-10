@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.worldgen.genlayer;
 
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
@@ -18,6 +19,15 @@ public abstract class GenLayerTropicraft extends GenLayer {
 		getID(BiomeGenTropicraft.rainforestPlains),
 		getID(BiomeGenTropicraft.rainforestHills),
 		getID(BiomeGenTropicraft.rainforestMountains)
+	};
+
+	private static int[] oceanBiomeIDs = new int[] {
+		getID(BiomeGenTropicraft.tropicsOcean),
+//		getID(BiomeGenTropicraft.kelpForest)
+	};
+	private static WeightedRandom.Item[] oceanBiomeWeights = {
+		new WeightedRandom.Item(20),
+//		new WeightedRandom.Item(1)
 	};
 
 	public GenLayerTropicraft(long par1) {
@@ -43,7 +53,8 @@ public abstract class GenLayerTropicraft extends GenLayer {
 		layerAddIsland = new GenLayerTropicraftAddIsland(8L, layerExpand, 9, landID);
 		layerExpand = new GenLayerTropicraftExpandIsland(10L, layerAddIsland);
 		GenLayerTropicraft genLayerBiomes = new GenLayerTropicraftBiomes(15L, layerExpand, landBiomeIDs);
-		GenLayerTropicraft genLayerHills = new GenLayerTropicraftAddSubBiomes(16L, genLayerBiomes, getID(BiomeGenTropicraft.rainforestHills), rainforestBiomeIDs);
+		GenLayerTropicraft genLayerOceans = new GenLayerTropicraftAddWeightedSubBiomes(16L, genLayerBiomes, oceanID, oceanBiomeIDs, oceanBiomeWeights);
+		GenLayerTropicraft genLayerHills = new GenLayerTropicraftAddSubBiomes(16L, genLayerOceans, getID(BiomeGenTropicraft.rainforestHills), rainforestBiomeIDs);
 		layerZoom = new GenLayerTropicraftZoom(2002L, genLayerHills);
 		layerExpand = new GenLayerTropicraftExpandIsland(10L, layerZoom);
 

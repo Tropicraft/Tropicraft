@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -17,10 +18,8 @@ public class BlockSeaweed extends BlockTropicraft {
 
 	public static class TileSeaweed extends TileEntity {
 
-		private static final Random rand = new Random();
-		static {
-			rand.setSeed(439875L); // Random but constant seed
-		}
+		private static final Random rand = new Random(439875L);
+
 		private static final NoiseGeneratorPerlin angleNoise = new NoiseGeneratorPerlin(rand, 1);
 		private static final NoiseGeneratorPerlin delayNoise = new NoiseGeneratorPerlin(rand, 3);
 
@@ -35,7 +34,7 @@ public class BlockSeaweed extends BlockTropicraft {
 			if (height < 0) {
 				rand.setSeed(MathHelper.getPositionRandom(getPos()));
 				height = rand.nextInt(10) + 5;
-				while (height > 0 && !getWorld().getBlockState(getPos().up(height)).getMaterial().isLiquid()) {
+				while (height > 0 && (/*(getPos().up(height).getY() > 50 || rand.nextBoolean()) || */!getWorld().getBlockState(getPos().up(height)).getMaterial().isLiquid())) {
 					height--;
 				}
 				cachedBB = new AxisAlignedBB(getPos()).expand(1.1, height / 2f, 1.1).offset(0, height / 2f, 0);
@@ -56,7 +55,9 @@ public class BlockSeaweed extends BlockTropicraft {
 		
 		@Override
 		public double getMaxRenderDistanceSquared() {
-			return super.getMaxRenderDistanceSquared() * 4;
+			// Show more seaweed when the player is higher up
+//			return MathHelper.clamp(((Minecraft.getMinecraft().getRenderViewEntity().posY - 40) / 12), 0.2, 4) * super.getMaxRenderDistanceSquared();
+			return super.getMaxRenderDistanceSquared() * 2;
 		}
 		
 		@Override

@@ -6,8 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 
 public abstract class TCNoiseGen extends WorldGenerator {
 
@@ -27,15 +29,18 @@ public abstract class TCNoiseGen extends WorldGenerator {
 		boolean ret = false;
 		int toGenerate = rand.nextInt(max - min + 1) + min;
 		for (int i = 0; i < toGenerate; i++) {
-			int x = rand.nextInt(16);
-			int z = rand.nextInt(16);
+			int x = rand.nextInt(16) + 8;
+			int z = rand.nextInt(16) + 8;
 			BlockPos toPlace = worldIn.getTopSolidOrLiquidBlock(position.add(x, 0, z)).up(2);
 			EnumActionResult res = EnumActionResult.PASS;
+//	    	if (sampleBiome == BiomeGenTropicraft.kelpForest) {
+//	    		res = EnumActionResult.FAIL;
+//	    	}
 			while (res == EnumActionResult.PASS) {
 				if (toPlace.getY() <= 0) {
 					res = EnumActionResult.FAIL;
 				} else {
-					res = checkPlacement(worldIn, toPlace = toPlace.down());
+					res = checkPlacement(worldIn, toPlace = toPlace.down(), rand);
 				}
 			}
 			if (res == EnumActionResult.SUCCESS) {
@@ -58,7 +63,7 @@ public abstract class TCNoiseGen extends WorldGenerator {
 	 *            The highest solid/liquid block in this column
 	 * @return The position to generate a block.
 	 */
-	protected abstract EnumActionResult checkPlacement(World world, BlockPos pos);
+	protected abstract EnumActionResult checkPlacement(World world, BlockPos pos, Random rand);
 
 	/**
 	 * Computes the blockstate to place from a noise value.

@@ -62,7 +62,7 @@ public class TileEntitySeaweedRenderer extends FastTESR<TileSeaweed> {
 
 	private void renderCorner(VertexBuffer buf, Vec3d center, Vec3d sway, Vec3d angle) {
 		Vec3d pos = computeCorner(center, sway, angle);
-		buf.pos(pos.xCoord, pos.yCoord, pos.zCoord).color(0.8f, 0.8f, 0.8f, 1);
+		buf.pos(pos.xCoord, pos.yCoord, pos.zCoord).color(204, 204, 204, 255);
 	}
 	
 	private void finishVert(VertexBuffer buf, float u, float v) {

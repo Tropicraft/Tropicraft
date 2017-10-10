@@ -6,6 +6,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
+import net.minecraft.world.gen.feature.WorldGenerator;
+import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.TCNoiseGen;
 import net.tropicraft.core.common.worldgen.WorldGenCoral;
 import net.tropicraft.core.common.worldgen.WorldGenSeaweed;
@@ -13,7 +15,7 @@ import net.tropicraft.core.common.worldgen.WorldGenSeaweed;
 public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
 
 	private static final TCNoiseGen coralGen = new WorldGenCoral(new Random(38745L));
-	private static final TCNoiseGen seaweedGen = new WorldGenSeaweed(new Random(10834L));
+	private static final WorldGenerator seaweedGen = new WorldGenSeaweed();
 
     public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
     {
@@ -31,9 +33,8 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
     }
     
     public void genDecorations(Biome biome, World world, Random rand) {
-    	BlockPos root = chunkPos.add(8, 0, 8);
-    	coralGen.generate(world, rand, root);
-    	seaweedGen.generate(world, rand, root);
+		coralGen.generate(world, rand, chunkPos);
+		seaweedGen.generate(world, rand, chunkPos);
 //		if (rand.nextInt(5) == 0) {
 //			int x = randCoord(rand, chunkPos.getX(), 16) + 8;
 //			int z = randCoord(rand, chunkPos.getZ(), 16) + 8;
