@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.core.common.block.BlockPineapple;
@@ -17,6 +18,13 @@ import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockEvents {
+    
+    @SubscribeEvent
+    public void Table_Additives(LootTableLoadEvent event){
+        String name = event.getName().toString();
+
+        System.err.println("LOADING LOOT:" + name);
+    }
 
 	@SubscribeEvent
 	public void handlePineappleBreakEvent(HarvestDropsEvent event) {

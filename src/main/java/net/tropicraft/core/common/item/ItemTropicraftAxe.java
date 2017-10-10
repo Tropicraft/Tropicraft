@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -8,8 +7,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.entity.EntityLavaBall;
-import net.tropicraft.core.common.entity.placeable.EntityChair;
+import net.tropicraft.core.common.worldgen.WorldGenTropicsTreasure;
 
 /**
  * This class literally only exists because ItemAxe's constructor is protected. Go figure!
@@ -39,10 +37,13 @@ public class ItemTropicraftAxe extends ItemAxe {
     	
     	System.out.println("hello hello hello");
     	
-    	if (!worldIn.isRemote) {
-        	Entity ball = new EntityChair(worldIn, playerIn.posX, playerIn.posY + 1.01, playerIn.posZ, 0, playerIn);
-        	worldIn.spawnEntity(ball);	
-    	}
+//    	if (!worldIn.isRemote) {
+//        	Entity ball = new EntityChair(worldIn, playerIn.posX, playerIn.posY + 1.01, playerIn.posZ, 0, playerIn);
+//        	worldIn.spawnEntity(ball);	
+//    	}
+    	
+    	WorldGenTropicsTreasure t = new WorldGenTropicsTreasure(worldIn, worldIn.rand);
+    	t.generate(playerIn.getPosition());
     	
         return new ActionResult(EnumActionResult.PASS, itemStackIn);
     }

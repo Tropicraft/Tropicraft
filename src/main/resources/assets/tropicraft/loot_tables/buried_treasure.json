@@ -1,0 +1,33 @@
+{
+    "pools": [
+        {
+            "name": "buriedtreasure",
+            "rolls": {
+                "min": 6,
+                "max": 15
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_ingot",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_nugget",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:gold_ingot",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:azurite",
+                    "weight": 6 
+                }
+            ]
+        }
+    ]
+}

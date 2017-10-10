@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -24,6 +26,7 @@ import net.tropicraft.core.registry.CraftingRegistry;
 import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
+import net.tropicraft.core.registry.LootRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
@@ -37,6 +40,8 @@ public class Tropicraft {
 	public static Tropicraft instance;
 	
 	public static Encyclopedia encyclopedia;
+	
+	public static final ResourceLocation buriedTreasure = LootTableList.register(new ResourceLocation(Info.MODID, "buried_treasure"));
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -52,6 +57,7 @@ public class Tropicraft {
 		CraftingRegistry.preInit();
 		
 		proxy.preInit();
+	    LootRegistry.init();
 	}
 
 	@EventHandler
