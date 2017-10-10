@@ -40,8 +40,6 @@ public class Tropicraft {
 	public static Tropicraft instance;
 	
 	public static Encyclopedia encyclopedia;
-	
-	public static final ResourceLocation buriedTreasure = LootTableList.register(new ResourceLocation(Info.MODID, "buried_treasure"));
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -57,7 +55,6 @@ public class Tropicraft {
 		CraftingRegistry.preInit();
 		
 		proxy.preInit();
-	    LootRegistry.init();
 	}
 
 	@EventHandler
@@ -76,6 +73,7 @@ public class Tropicraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		FluidRegistry.postInit();
+		LootRegistry.postInit();
 	}
 
 	/**

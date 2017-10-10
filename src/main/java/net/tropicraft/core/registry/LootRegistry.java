@@ -6,9 +6,9 @@ import net.tropicraft.Info;
 
 public class LootRegistry extends TropicraftRegistry {
 
+    public static ResourceLocation buriedTreasure;
     
-    
-    public static void init() {
-        // hello world
+    public static void postInit() {
+        buriedTreasure = LootTableList.register(new ResourceLocation(Info.MODID, "buried_treasure"));
     }
 }

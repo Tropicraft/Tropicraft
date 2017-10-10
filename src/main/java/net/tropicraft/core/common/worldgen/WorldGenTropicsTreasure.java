@@ -10,8 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.core.registry.BlockRegistry;
+import net.tropicraft.core.registry.LootRegistry;
 
 public class WorldGenTropicsTreasure extends TCGenBase {
 
@@ -73,7 +73,7 @@ public class WorldGenTropicsTreasure extends TCGenBase {
                         return false;
                     }
 
-                    tileentitychest.setLootTable(Tropicraft.buriedTreasure, rand.nextLong());
+                    tileentitychest.setLootTable(LootRegistry.buriedTreasure, rand.nextLong());
                 }
 
 

@@ -14,7 +14,7 @@
                 },
                 {
                     "type": "item",
-                    "name": "minecraft:iron_nugget",
+                    "name": "minecraft:gold_nugget",
                     "weight": 8
                 },
                 {
@@ -25,7 +25,22 @@
                 {
                     "type": "item",
                     "name": "tropicraft:azurite",
-                    "weight": 6 
+                    "weight": 3 
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft.eudialyte",
+                    "weight": 8 
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft.zircon",
+                    "weight": 11
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:diamond",
+                    "weight": 2
                 }
             ]
         }
