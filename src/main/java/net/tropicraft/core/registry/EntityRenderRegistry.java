@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.tropicraft.core.client.entity.model.ModelAshen;
-import net.tropicraft.core.client.entity.model.ModelFish;
+import net.tropicraft.core.client.entity.model.ModelDolphin;
 import net.tropicraft.core.client.entity.model.ModelKoaMan;
 import net.tropicraft.core.client.entity.model.ModelManOWar;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
@@ -14,6 +14,7 @@ import net.tropicraft.core.client.entity.model.ModelSeahorse;
 import net.tropicraft.core.client.entity.render.RenderAshen;
 import net.tropicraft.core.client.entity.render.RenderBambooItemFrame;
 import net.tropicraft.core.client.entity.render.RenderChair;
+import net.tropicraft.core.client.entity.render.RenderDolphin;
 import net.tropicraft.core.client.entity.render.RenderEIH;
 import net.tropicraft.core.client.entity.render.RenderEagleRay;
 import net.tropicraft.core.client.entity.render.RenderEchinodermEgg;
@@ -55,6 +56,7 @@ import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
@@ -80,9 +82,6 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
                 ItemRegistry.coconutBomb,
                 Minecraft.getMinecraft().getRenderItem()));
-        registerEntityRender(EntityLostMask.class, new RenderLostMask());
-        registerEntityRender(EntityAshenHunter.class, new RenderAshen(new ModelAshen(), 0.75F));
-
         registerEntityRender(EntityManOWar.class, new RenderManOWar(new ModelManOWar(32, 20, true), 0.35F));
         registerEntityRender(EntityEagleRay.class, new RenderEagleRay());
         registerEntityRender(EntitySeaUrchin.class, new RenderSeaUrchin());
@@ -92,12 +91,15 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityBambooItemFrame.class, new RenderBambooItemFrame());
         registerEntityRender(EntityWallItem.class, new RenderWallItem());
         registerEntityRender(EntityKoaHunter.class, new RenderKoaMan(Minecraft.getMinecraft().getRenderManager(), new ModelKoaMan(), 0.5F));
-
         //registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
+        registerEntityRender(EntityLostMask.class, new RenderLostMask());
+        registerEntityRender(EntityAshenHunter.class, new RenderAshen(new ModelAshen(), 0.75F));
 
         registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish());
         registerEntityRender(EntityPiranha.class, new RenderTropicalFish());
         registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
+
+        registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
     }
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
