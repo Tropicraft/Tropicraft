@@ -28,6 +28,7 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 
 	public BlockTropicraftSands() {
 		super(Material.SAND);
+		this.setHardness(0.5f);
 		this.setSoundType(SoundType.SAND);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSands.PURIFIED));
 	}
