@@ -1,7 +1,6 @@
 package build.playerdata;
 
 import build.BuildMod;
-import build.playerdata.objects.Clipboard;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -27,7 +26,7 @@ public class PlayerData {
 	}
 	
 	public static void initObjects(PlayerDataObject pdo) {
-		pdo.playerData.put("clipboard", new Clipboard());
+		//pdo.playerData.put("clipboard", new Clipboard());
 		
 		pdo.nbtLoad();
 	}

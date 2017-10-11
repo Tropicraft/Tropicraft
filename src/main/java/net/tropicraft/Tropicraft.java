@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.tropicraft.core.common.BuildEvents;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.drinks.MixerRecipes;
@@ -63,6 +64,7 @@ public class Tropicraft {
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
 		MinecraftForge.EVENT_BUS.register(new BlockEvents());
 		MinecraftForge.EVENT_BUS.register(new AchievementEvents());
+		MinecraftForge.EVENT_BUS.register(new BuildEvents());
 		BiomeGenTropicraft.registerBiomes();
 		TropicraftWorldUtils.initializeDimension();
 	}
