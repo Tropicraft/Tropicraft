@@ -8,8 +8,8 @@ import net.minecraft.util.IStringSerializable;
 public enum TropicraftSands implements IStringSerializable {
     PURIFIED(0, MapColor.SAND),
     CORAL(1, MapColor.PINK),
-    GREEN(2, MapColor.GREEN),
-    BLACK(3, MapColor.BLACK),
+    FOAMY(2, MapColor.GREEN),
+    VOLCANIC(3, MapColor.BLACK),
     MINERAL(4, MapColor.SAND);
 
     private final int meta;
@@ -42,7 +42,7 @@ public enum TropicraftSands implements IStringSerializable {
 
     @Override
     public String getName() {
-        return this.name().toLowerCase() + "_sand";
+        return this.name().toLowerCase();
     }
 
     @Override

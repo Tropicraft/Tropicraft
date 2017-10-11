@@ -164,7 +164,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 				Block top = biome.topBlock.getBlock();
 				Block filler = biome.fillerBlock.getBlock();
 
-				Block btop = Blocks.SAND.getDefaultState().getBlock();
+				Block btop = BlockRegistry.sands.getDefaultState().getBlock();
 				Block bfiller = btop;
 
 				// for colored sand

@@ -38,6 +38,7 @@ public class WorldGenSurfaceClump extends WorldGenerator {
 		boolean ret = false;
 		if (rand.nextFloat() < chance) {
 			BlockPos center = position.add(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8);
+			int range = rand.nextInt(this.range + 1);
 			for (BlockPos pos : BlockPos.getAllInBoxMutable(center.add(-range, 0, -range), center.add(range, 0, range))) {
 				double chance = Math.pow(MathHelper.clamp((maxDistanceSq - pos.distanceSq(center)) / maxDistanceSq, 0, 1), 2);
 				if (rand.nextDouble() < chance) {

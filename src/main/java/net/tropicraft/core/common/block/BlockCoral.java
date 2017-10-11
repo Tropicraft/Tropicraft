@@ -152,8 +152,8 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 				world.getBlockState(pos.up()).getMaterial() == Material.WATER;
 	}
 
-	protected boolean canThisPlantGrowOnThisBlock(Block b) {
-		return b == Blocks.GRASS || b == Blocks.DIRT || b == Blocks.SAND || b == BlockRegistry.seaweed; /* TODO: || b == TCBlockRegistry.purifiedSand || b == TCBlockRegistry.mineralSands;*/
+	public boolean canThisPlantGrowOnThisBlock(Block b) {
+		return b == Blocks.GRASS || b == Blocks.DIRT || b == Blocks.SAND || b == BlockRegistry.seaweed || b == BlockRegistry.sands; /* TODO: || b == TCBlockRegistry.purifiedSand || b == TCBlockRegistry.mineralSands;*/
 	}
 
 	@Override
