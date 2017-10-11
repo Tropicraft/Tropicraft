@@ -18,13 +18,6 @@ import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockEvents {
-    
-    @SubscribeEvent
-    public void Table_Additives(LootTableLoadEvent event){
-        String name = event.getName().toString();
-
-        System.err.println("LOADING LOOT:" + name);
-    }
 
 	@SubscribeEvent
 	public void handlePineappleBreakEvent(HarvestDropsEvent event) {
