@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -19,13 +20,13 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class ItemFireArmor extends ItemTropicraftArmor {
 
-	public ItemFireArmor(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
-		super(material, renderIndex, slot);
-		
-		this.setMaxDamage(300);
-	}
-	
-	/**
+    public ItemFireArmor(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+        super(material, renderIndex, slot);
+
+        this.setMaxDamage(300);
+    }
+
+    /**
      * Called to tick armor in the armor slot. Override to do something
      *
      * @param world
@@ -78,7 +79,7 @@ public class ItemFireArmor extends ItemTropicraftArmor {
         if(source == DamageSource.inFire || source == DamageSource.lava) {
             //cheap way to slow the damage
             //if (player.worldObj.getWorldTime() % 2 == 0) {
-                stack.damageItem(damage, player);
+            stack.damageItem(damage, player);
         } else {
 
         }
@@ -95,10 +96,10 @@ public class ItemFireArmor extends ItemTropicraftArmor {
 
     @SideOnly(Side.CLIENT)
     public void clientTick(EntityPlayer player) {
-        
+
         // Don't show fire particles underwater
         if (player.isInWater()) return;        
-        
+
         float range = 0.2F;
         float speed = 0.08F;
 
@@ -113,25 +114,30 @@ public class ItemFireArmor extends ItemTropicraftArmor {
             extraRand = 7;
         }
 
+        /** 0 for all, 1 for minimal, 2 for off */
+        int particleSetting = Minecraft.getMinecraft().gameSettings.particleSetting;
+
+        if (particleSetting == 2) return;
+
         if (this == ItemRegistry.fireBoots) {
 
             boolean onLava = false;
             boolean inLava = false;
             //for (int x = -1; x < 2; x++) {
-                //for (int z = -1; z < 2; z++) {
-                    int x = 0;
-                    int z = 0;
-                    if (player.motionY < 0) {
-                        IBlockState state = player.world.getBlockState(new BlockPos(MathHelper.floor(player.posX + x), MathHelper.floor(player.posY-2), MathHelper.floor(player.posZ + z)));
-                        if (state != null && state.getMaterial() == Material.LAVA) {
-                            onLava = true;
-                            //break;
-                        }
-                    }
-                    IBlockState block2 = player.world.getBlockState(new BlockPos(MathHelper.floor(player.posX + x), MathHelper.floor(player.posY-1), MathHelper.floor(player.posZ + z)));
-                    if (block2 != null && block2.getMaterial() == Material.LAVA) {
-                        inLava = true;
-                    }
+            //for (int z = -1; z < 2; z++) {
+            int x = 0;
+            int z = 0;
+            if (player.motionY < 0) {
+                IBlockState state = player.world.getBlockState(new BlockPos(MathHelper.floor(player.posX + x), MathHelper.floor(player.posY-2), MathHelper.floor(player.posZ + z)));
+                if (state != null && state.getMaterial() == Material.LAVA) {
+                    onLava = true;
+                    //break;
+                }
+            }
+            IBlockState block2 = player.world.getBlockState(new BlockPos(MathHelper.floor(player.posX + x), MathHelper.floor(player.posY-1), MathHelper.floor(player.posZ + z)));
+            if (block2 != null && block2.getMaterial() == Material.LAVA) {
+                inLava = true;
+            }
             if (onLava && !inLava) {
                 player.motionY = 0F;
                 player.onGround = true;
@@ -155,7 +161,9 @@ public class ItemFireArmor extends ItemTropicraftArmor {
             double motionX = ((rand.nextFloat() * speed) - (speed/2));
             double motionZ = ((rand.nextFloat() * speed) - (speed/2));
 
-            for (int i = 0; i < 11 + (onLava ? 5 : 0); i++) {
+            int numFeetParticles = particleSetting == 1 ? 2 : 11;
+
+            for (int i = 0; i < numFeetParticles + (onLava ? 5 : 0); i++) {
                 motionX = ((double)(-Math.sin((look) / 180.0F * 3.1415927F) * Math.cos(0 / 180.0F * 3.1415927F)) * (speed + (0.1 * rand.nextDouble())));
                 motionZ = ((double)(Math.cos((look) / 180.0F * 3.1415927F) * Math.cos(0 / 180.0F * 3.1415927F)) * (speed + (0.1 * rand.nextDouble())));
 
