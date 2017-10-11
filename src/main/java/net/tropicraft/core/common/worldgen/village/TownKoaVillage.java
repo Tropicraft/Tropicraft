@@ -7,6 +7,8 @@ import build.world.BuildJob;
 import build.world.BuildManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
@@ -29,7 +31,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 	//1: trader
 	//2-11: fishers
 	//12-21: hunters
-	//public List<ChunkCoordinates> listCoordsSpawn = new ArrayList<ChunkCoordinates>();
+	//public List<BlockPos> listCoordsSpawn = new ArrayList<BlockPos>();
 	
 	public TownKoaVillage() {
 		super();
@@ -40,7 +42,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		super.tickUpdate();
 		
 		if (getWorld().getTotalWorldTime() % 20 == 0) {
-			//System.out.println("koa village tick - " + spawn.posX + ", " + spawn.posZ + " - E/PE: " + listLoadedEntities.size() + "/" + listPersistantEntities.size());
+			//System.out.println("koa village tick - " + spawn.getX() + ", " + spawn.getZ() + " - E/PE: " + listLoadedEntities.size() + "/" + listPersistantEntities.size());
 		}
 	}
 	
@@ -61,19 +63,19 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		
 		int yOffset = 0;//-1;
 		
-		Build mainStructureData = new Build(spawn.posX, spawn.posY + yOffset, spawn.posZ, CoroUtilFile.getSaveFolderPath() + "TCSchematics" + File.separator + "koavillage");
-		/*ChunkCoordinates coords = getBuildingCornerCoord();
-		mainStructureData.map_coord_minX = coords.posX;
-		mainStructureData.map_coord_minY = coords.posY;
-		mainStructureData.map_coord_minZ = coords.posZ;*/
+		Build mainStructureData = new Build(spawn.getX(), spawn.getY() + yOffset, spawn.getZ(), CoroUtilFile.getSaveFolderPath() + "TCSchematics" + File.separator + "koavillage");
+		/*BlockPos coords = getBuildingCornerCoord();
+		mainStructureData.map_coord_minX = coords.getX();
+		mainStructureData.map_coord_minY = coords.getY();
+		mainStructureData.map_coord_minZ = coords.getZ();*/
 		
 		
-    	BuildJob bj = new BuildJob(-99, spawn.posX, spawn.posY + yOffset, spawn.posZ, mainStructureData);
+    	BuildJob bj = new BuildJob(-99, spawn.getX(), spawn.getY() + yOffset, spawn.getZ(), mainStructureData);
     	/*coords = getBuildingCornerCoord();
-		bj.build_startX = coords.posX;
-		bj.build_startY = coords.posY;
-		bj.build_startZ = coords.posZ;*/
-		bj.build.dim = getWorld().provider.dimensionId;
+		bj.build_startX = coords.getX();
+		bj.build_startY = coords.getY();
+		bj.build_startZ = coords.getZ();*/
+		bj.build.dim = getWorld().provider.getDimension();
 		bj.useFirstPass = false; //skip air setting pass
 		bj.useRotationBuild = true;
 		bj.build_rate = 100;
@@ -173,23 +175,23 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		//listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(0, 2, 0));
 	}
 	
-	public ChunkCoordinates getRotatedCoordsWithRelFromCorner(int x, int y, int z) {
+	public BlockPos getRotatedCoordsWithRelFromCorner(int x, int y, int z) {
 		
 		//interesting bug, rotation 0 returns relative coords, rotation 1 returns absolute coords
 		
-		ChunkCoordinates coords = new ChunkCoordinates(/*areaWidth/2 + */x, y, /*areaLength/2 + */z);
+		BlockPos coords = new BlockPos(/*areaWidth/2 + */x, y, /*areaLength/2 + */z);
 		return BuildManager.rotateNew(coords, direction,
-				Vec3.createVectorHelper(0, 0, 0),/*Vec3.createVectorHelper(spawn.posX, spawn.posY, spawn.posZ),*/ 
-				Vec3.createVectorHelper(areaWidth, areaHeight, areaLength));
+				new Vec3d(0, 0, 0),/*Vec3d.createVectorHelper(spawn.getX(), spawn.getY(), spawn.getZ()),*/
+				new Vec3d(areaWidth, areaHeight, areaLength));
 	}
 	
 	/*public void spawnEntityRel(String parType, int memberID) {
 		
-		ChunkCoordinates coords = listCoordsSpawn.get(memberID);
+		BlockPos coords = listCoordsSpawn.get(memberID);
 		
-		ChunkCoordinates coords = BuildManager.rotateNew(new ChunkCoordinates(MathHelper.floor_double(parCoords.xCoord), MathHelper.floor_double(parCoords.yCoord), MathHelper.floor_double(parCoords.zCoord)), direction, 
-				Vec3.createVectorHelper(spawn.posX, spawn.posY, spawn.posZ), 
-				Vec3.createVectorHelper(areaWidth, areaHeight, areaLength));
+		BlockPos coords = BuildManager.rotateNew(new BlockPos(MathHelper.floor_double(parCoords.xCoord), MathHelper.floor_double(parCoords.yCoord), MathHelper.floor_double(parCoords.zCoord)), direction, 
+				Vec3d.createVectorHelper(spawn.getX(), spawn.getY(), spawn.getZ()), 
+				Vec3d.createVectorHelper(areaWidth, areaHeight, areaLength));
 		
 		EntityKoaBase ent = null;
 		
@@ -205,7 +207,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		
 		if (ent != null) {
 			ent.getAIAgent().setManagedLocation(this);
-			ent.setPosition(spawn.posX + coords.posX + 0.5F, spawn.posY + coords.posY, spawn.posZ + coords.posZ + 0.5F);
+			ent.setPosition(spawn.getX() + coords.getX() + 0.5F, spawn.getY() + coords.getY(), spawn.getZ() + coords.getZ() + 0.5F);
 			//ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
 			getWorld().spawnEntityInWorld(ent);
 			addEntity(parType, ent);
@@ -237,7 +239,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		
 		if (ent != null) {
 			ent.getAIAgent().setManagedLocation(this);
-			ent.setPosition(spawn.posX + parData.coords.posX + 0.5F, spawn.posY + parData.coords.posY, spawn.posZ + parData.coords.posZ + 0.5F);
+			ent.setPosition(spawn.getX() + parData.coords.getX() + 0.5F, spawn.getY() + parData.coords.getY(), spawn.getZ() + parData.coords.getZ() + 0.5F);
 			//ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
 			getWorld().spawnEntityInWorld(ent);
 			addEntity(parData.type, ent);

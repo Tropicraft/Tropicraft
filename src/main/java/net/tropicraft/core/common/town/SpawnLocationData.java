@@ -1,16 +1,17 @@
 package net.tropicraft.core.common.town;
 
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.UUID;
 
 public class SpawnLocationData {
 
-	public ChunkCoordinates coords;
+	public BlockPos coords;
 	public String type;
 	public UUID entityUUID;
 	
-	public SpawnLocationData(ChunkCoordinates parCoords, String parType) {
+	public SpawnLocationData(BlockPos parCoords, String parType) {
 		coords = parCoords;
 		type = parType;
 	}

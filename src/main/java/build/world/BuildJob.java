@@ -134,15 +134,15 @@ public class BuildJob {
 		//int z = (int)mc.thePlayer.posZ+5;
 		
 		blockIDsSkipFirstPass = new LinkedList();
-		blockIDsSkipFirstPass.add(Blocks.tnt);
-		blockIDsSkipFirstPass.add(Blocks.unpowered_repeater);
-		blockIDsSkipFirstPass.add(Blocks.powered_repeater);
-		blockIDsSkipFirstPass.add(Blocks.unpowered_comparator);
-		blockIDsSkipFirstPass.add(Blocks.powered_comparator);
-		blockIDsSkipFirstPass.add(Blocks.redstone_wire);
-		blockIDsSkipFirstPass.add(Blocks.redstone_torch);
-		blockIDsSkipFirstPass.add(Blocks.unlit_redstone_torch);
-		blockIDsSkipFirstPass.add(Blocks.torch);
+		blockIDsSkipFirstPass.add(Blocks.TNT);
+		blockIDsSkipFirstPass.add(Blocks.UNPOWERED_REPEATER);
+		blockIDsSkipFirstPass.add(Blocks.POWERED_REPEATER);
+		blockIDsSkipFirstPass.add(Blocks.UNPOWERED_COMPARATOR);
+		blockIDsSkipFirstPass.add(Blocks.POWERED_COMPARATOR);
+		blockIDsSkipFirstPass.add(Blocks.REDSTONE_WIRE);
+		blockIDsSkipFirstPass.add(Blocks.REDSTONE_TORCH);
+		blockIDsSkipFirstPass.add(Blocks.UNLIT_REDSTONE_TORCH);
+		blockIDsSkipFirstPass.add(Blocks.TORCH);
 		
 		int offset = 0;
 		

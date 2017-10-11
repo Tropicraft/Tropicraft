@@ -4,6 +4,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface ITileEntityCustomGenData {
 
-	public void initWithNBT(NBTTagCompound data);
+	void initWithNBT(NBTTagCompound data);
 	
 }

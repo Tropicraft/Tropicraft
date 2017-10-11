@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -259,7 +260,7 @@ public class Build {
 								
 							} else {
 								System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
-								block = Blocks.air;
+								block = Blocks.AIR;
 							}
 							
 							build_blockIDArr[xx][yy][zz] = block;
@@ -291,7 +292,7 @@ public class Build {
 								
 							} else {
 								System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
-								block = Blocks.air;
+								block = Blocks.AIR;
 							}
 							
 							build_blockIDArr[xx][yy][zz] = block;
@@ -362,7 +363,7 @@ public class Build {
 	}
 	
 	public void scanLevelToData() {
-		scanLevelToData(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim));
+		scanLevelToData(DimensionManager.getWorld(dim));
 	}
 	
 	public void scanLevelToData(World worldObj) {
@@ -435,7 +436,7 @@ public class Build {
 							//metadataByte[index] = (byte)build_blockMetaArr[xx][yy][zz];
 						}
 						
-						World worldRef = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim);
+						World worldRef = DimensionManager.getWorld(dim);
 						
 						TileEntity tEnt = worldRef.getTileEntity(map_coord_minX+xx,map_coord_minY+yy,map_coord_minZ+zz);
 						if (tEnt != null) {
@@ -614,7 +615,7 @@ public class Build {
 			Iterator it = playerDataCl.iterator();
 			
 			while (it.hasNext()) {*/
-			it = parMappingNBT.func_150296_c().iterator();
+			it = parMappingNBT.getKeySet().iterator();
 			while (it.hasNext()) {
 				String tagName = (String) it.next();
 				int tag = parMappingNBT.getInteger(tagName);//(NBTTagInt)it.next();
@@ -664,7 +665,7 @@ public class Build {
 	        	}
 			}
 			
-	        it = parMappingNBT.func_150296_c().iterator();
+	        it = parMappingNBT.getKeySet().iterator();
 			while (it.hasNext()) {
 				String tagName = (String) it.next();
 				int tag = parMappingNBT.getInteger(tagName);//(NBTTagInt)it.next();
