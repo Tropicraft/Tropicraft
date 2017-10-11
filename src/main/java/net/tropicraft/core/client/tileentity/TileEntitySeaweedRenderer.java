@@ -9,6 +9,7 @@ import net.minecraftforge.client.model.animation.FastTESR;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.Info;
+import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.block.BlockSeaweed.TileSeaweed;
 
 @EventBusSubscriber
@@ -36,7 +37,7 @@ public class TileEntitySeaweedRenderer extends FastTESR<TileSeaweed> {
 		Vec3d prevSway = new Vec3d(0, 1, 0);
 
 		for (int i = 0; i < te.getHeight(); i++) {
-			Vec3d sway = computeSwayVector(te.getSwayAngle(), i, te.getWorld().getTotalWorldTime() + partialTicks + te.getSwayDelay());
+			Vec3d sway = computeSwayVector(te.getSwayAngle(), i, TropicraftRenderUtils.getElapsedTicks() + partialTicks + te.getSwayDelay());
 			Vec3d top = bot.add(sway);
 
 			int texture = i == te.getHeight() - 1 ? SPRITES.length - 1: (te.getHeight() + i) % (SPRITES.length - 1);

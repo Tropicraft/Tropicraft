@@ -7,8 +7,13 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.tropicraft.Info;
 
+@EventBusSubscriber
 public class TropicraftRenderUtils {
 
 	public static ResourceLocation getTexture(String path) {
@@ -84,5 +89,16 @@ public class TropicraftRenderUtils {
 			}
 			GlStateManager.popMatrix();
 		}
+	}
+	
+	private static long elapsedTicks;
+	
+	@SubscribeEvent
+	public static void onClientTick(ClientTickEvent event) {
+	    if (event.phase == Phase.END) elapsedTicks++;
+	}
+	
+	public static long getElapsedTicks() {
+	    return elapsedTicks;
 	}
 }
