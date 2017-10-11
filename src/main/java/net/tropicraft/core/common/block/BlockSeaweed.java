@@ -6,6 +6,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -13,6 +14,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.tropicraft.core.common.enums.TropicraftSands;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockSeaweed extends BlockTropicraft {
 
@@ -99,6 +102,16 @@ public class BlockSeaweed extends BlockTropicraft {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileSeaweed();
+	}
+	
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	    return Item.getItemFromBlock(BlockRegistry.sands);
+	}
+	
+	@Override
+	public int damageDropped(IBlockState state) {
+	    return TropicraftSands.FOAMY.getMetadata();
 	}
 	
 	@Override

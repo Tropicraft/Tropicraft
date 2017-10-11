@@ -142,7 +142,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
 		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
-		seaweed = registerBlock(new BlockSeaweed(), "seaweed");
+		seaweed = registerBlock(new BlockSeaweed(), null, "seaweed", false, CreativeTabRegistry.tropicraftTab);
 
 		slabs = new BlockTropicraftSlab(Material.WOOD, false);
 		doubleSlabs = new BlockTropicraftSlab(Material.WOOD, true);
