@@ -10,10 +10,11 @@ import net.tropicraft.configuration.ConfigGenRates;
 import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
 import net.tropicraft.core.common.worldgen.WorldGenLargePalmTrees;
 import net.tropicraft.core.common.worldgen.WorldGenNormalPalms;
+import net.tropicraft.core.common.worldgen.WorldGenTropicsTreasure;
 
 public class BiomeDecoratorTropicsBeach extends BiomeDecoratorTropicraft {
 
-	private static final int TREASURE_CHANCE = 25;
+	public static final int TREASURE_CHANCE = 3;
 	private static final int VILLAGE_CHANCE = 10;
 
 	public BiomeDecoratorTropicsBeach() {
@@ -53,11 +54,11 @@ public class BiomeDecoratorTropicsBeach extends BiomeDecoratorTropicraft {
 			new WorldGenLargePalmTrees(world, rand).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
 		}
 
-		//		if(rand.nextInt(TREASURE_CHANCE) == 0) {
-		//			int i = randCoord(rand, x, 16);
-		//			int k = randCoord(rand, z, 16);
-		//			new WorldGenTropicsTreasure(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
-		//		}
+		if(rand.nextInt(TREASURE_CHANCE) == 0) {
+            i = randCoord(rand, chunkPos.getX(), 16);
+            k = randCoord(rand, chunkPos.getZ(), 16);
+			new WorldGenTropicsTreasure(world, rand).generate(world, rand, new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
 		//		
 		//		if(rand.nextInt(VILLAGE_CHANCE) == 0) {
 		//			boolean success = false;

@@ -5,11 +5,17 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.MapData;
+import net.tropicraft.core.common.block.BlockTropicraftSands;
+import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.LootRegistry;
 
@@ -28,95 +34,69 @@ public class WorldGenTropicsTreasure extends TCGenBase {
 
     @Override
     public boolean generate(BlockPos pos) {
-//        int i = pos.getX(), j = pos.getY(), k = pos.getZ();
-//        int depth = rand.nextInt(2) + 2;
-//
-//        tryagain:
-//            for (int tries = 0; tries < 10; tries++) {
-//
-//                int x = (i + rand.nextInt(8)) - rand.nextInt(8);
-//                int z = (k + rand.nextInt(8)) - rand.nextInt(8);
-//                j = getTerrainHeightAt(x, z) - 1;
-//                int y = j;
-//
-//                for (; y > j - depth; y--) {
-//                    BlockPos pos2 = new BlockPos(x, y, z);
-//                    if (!sandBlocks.contains(worldObj.getBlockState(pos2).getBlock())) {
-//                        continue tryagain;
-//                    }
-//                }
-//
-//                int sandArea = 3;
-//                for (int surroundZ = z - sandArea; surroundZ <= z + sandArea; surroundZ++) {
-//                    for (int surroundX = x - sandArea; surroundX <= x + sandArea; surroundX++) {
-//                        BlockPos pos3 = new BlockPos(surroundX, j, surroundZ);
-//                        if (!sandBlocks.contains(worldObj.getBlock(surroundX, j, surroundZ))) {
-//                            continue tryagain;
-//                        }
-//                    }
-//                }
-//
-//                //System.err.println("Generating Treasure chest at: " + i + " " + y + " " + k);
-//
-//                for (int surroundZ = z - sandArea; surroundZ <= z + sandArea; surroundZ++) {
-//                    for (int surroundX = x - sandArea; surroundX <= x + sandArea; surroundX++) {
-//                        if (rand.nextFloat() < 0.2f) {
-//                            worldObj.setBlock(surroundX, j, surroundZ, TCBlockRegistry.purifiedSand);
-//                        }
-//                    }
-//                }
-                if (!worldObj.isRemote) {
-                    worldObj.setBlockState(pos, BlockRegistry.bambooChest.getDefaultState(), 2);
+        int i = pos.getX(), j = pos.getY(), k = pos.getZ();
+        int depth = rand.nextInt(1) + 2;
 
-                    TileEntityChest tileentitychest = (TileEntityChest) worldObj.getTileEntity(pos);
-                    if (tileentitychest == null) {
+        IBlockState coloredSand = BlockRegistry.sands.getBlockState().getBaseState().withProperty(BlockTropicraftSands.VARIANT, TropicraftSands.getRandomSand(worldObj.rand));
+
+        tryagain:
+            for (int tries = 0; tries < 10; tries++) {
+                int x = (i + rand.nextInt(8)) - rand.nextInt(8);
+                int z = (k + rand.nextInt(8)) - rand.nextInt(8);
+                j = getTerrainHeightAt(x, z) - 1;
+                int y = j;
+                int sandArea = 2;
+
+                // Check the surface level to make sure there's a 5x5 sand area to gen on
+                for (int surroundZ = z - sandArea; surroundZ <= z + sandArea; surroundZ++) {
+                    for (int surroundX = x - sandArea; surroundX <= x + sandArea; surroundX++) {
+                        BlockPos pos3 = new BlockPos(surroundX, j, surroundZ);
+                        if (!sandBlocks.contains(worldObj.getBlockState(pos3).getBlock())) {
+                            continue tryagain;
+                        }
+                    }
+                }
+
+                // Check the chest pos, make sure it's sand
+                BlockPos chestPos = new BlockPos(x, y - depth, z);
+                if (!sandBlocks.contains(worldObj.getBlockState(chestPos).getBlock())) {
+                    continue tryagain;
+                }
+
+                // Draw the X that marks the spot
+                int count = 0;
+                BlockPos xPos = new BlockPos(x - sandArea, j, z - sandArea);
+                worldObj.setBlockState(xPos, coloredSand);
+                while (count <= sandArea) {
+                    worldObj.setBlockState(xPos.add(-count, 0, -count), coloredSand);
+                    worldObj.setBlockState(xPos.add(count, 0, count), coloredSand);
+                    worldObj.setBlockState(xPos.add(count, 0, -count), coloredSand);
+                    worldObj.setBlockState(xPos.add(-count, 0, count), coloredSand);
+                    count++;
+                }
+
+                // Place a chest under the X somewhere, fill it
+                if (!worldObj.isRemote) {
+                    chestPos = new BlockPos(x - sandArea, y - depth, z - sandArea);
+                    worldObj.setBlockState(chestPos, BlockRegistry.bambooChest.getDefaultState(), 2);
+
+                    TileEntityChest chest = (TileEntityChest) worldObj.getTileEntity(chestPos);
+                    if (chest == null) {
                         return false;
                     }
 
-                    tileentitychest.setLootTable(LootRegistry.buriedTreasure, rand.nextLong());
+                    chest.setLootTable(LootRegistry.buriedTreasure, rand.nextLong());
+
+                    // Add filled map to chest
+                    ItemStack map = new ItemStack(Items.FILLED_MAP);
+                    initializeMap(worldObj, map, chestPos);
+                    chest.setInventorySlotContents(rand.nextInt(chest.getSizeInventory()), map);
                 }
 
-
-                //            boolean hasAddedMap = false;
-                //            for (int e = 0; e < 8; e++) {
-                //                ItemStack itemstack = /*e == 0 ? new ItemStack(TCItemRegistry.recordBuriedTreasure) : TODO: Add records*/pickCheckLootItem(worldObj, rand, x, y, z);
-                //                if (itemstack != null && (itemstack.getItem() != Items.map || !hasAddedMap)) {
-                //                    if (itemstack.getItem() == Items.map) {
-                //                        hasAddedMap = true;
-                //                        initializeMap(worldObj, itemstack, x, y, z);
-                //                    }
-                //                    tileentitychest.setInventorySlotContents(rand.nextInt(tileentitychest.getSizeInventory()), itemstack);
-                //                }
-                //            }
-
-          //      return true;
-           // }
+                return true;
+            }
         return true;
     }
-    //
-    //    private ItemStack pickCheckLootItem(World worldObj, Random rand, int x, int y, int z) {
-    //
-    //        Item loot = treasureList.get(rand.nextInt(treasureList.size()));
-    //        
-    //        if (loot == Items.IRON_INGOT) {
-    //            return new ItemStack(loot, rand.nextInt(36) + 1);
-    //        } else if (loot == Items.gold_ingot) {
-    //            return new ItemStack(loot, rand.nextInt(46) + 1);
-    //        } else if (loot == Items.diamond) {
-    //            return new ItemStack(loot, rand.nextInt(24) + 6);
-    //        } else if (loot == Items.arrow) {
-    //            return new ItemStack(loot, rand.nextInt(45) + 1);
-    //        } else if (loot == Items.gold_nugget) {
-    //            return new ItemStack(loot, rand.nextInt(40) + 1);
-    //        } else if (loot == TCItemRegistry.ore) {
-    //        	return new ItemStack(loot, rand.nextInt(10) + 5, rand.nextInt(5));
-    //        }  else if (loot == TCItemRegistry.shells) {
-    //        	return new ItemStack(loot, rand.nextInt(4) + 2, rand.nextInt(6));
-    //        }
-    //        
-    //        return new ItemStack(loot);
-    //        
-    //    }
 
     /**
      * Initialize the map for the realm
@@ -126,57 +106,16 @@ public class WorldGenTropicsTreasure extends TCGenBase {
      * @param y y coordinate
      * @param z z coordinate
      */
-    //    private void initializeMap(World worldObj, ItemStack mapItem, int x, int y, int z) {
-    //        mapItem.setItemDamage(worldObj.getUniqueDataId("map"));
-    //        String mapName = "map_" + mapItem.getItemDamage();
-    //        MapData data = new MapData(mapName);
-    //        worldObj.setItemData(mapName, data);
-    //        data.xCenter = x;
-    //        data.zCenter = z;
-    //        data.scale = 3;
-    //    //    data.dimension = (byte)worldObj.worldProvider.worldType;
-    //        data.markDirty();
-    //    }
+    private void initializeMap(World worldObj, ItemStack mapItem, BlockPos pos) {
+        mapItem.setItemDamage(worldObj.getUniqueDataId("map"));
+        String mapName = "map_" + mapItem.getItemDamage();
+        MapData data = new MapData(mapName);
+        worldObj.setData(mapName, data);
+        data.xCenter = pos.getX();
+        data.zCenter = pos.getZ();
+        data.scale = 3;
+        data.dimension = (byte)worldObj.provider.getDimension();
+        data.markDirty();
+    }
 
-    //    static {
-    //        // TODO
-    //    	//treasureList.add(TropicraftMod.tropicsPortalEnchanter);
-    //    	//treasureList.add(mod_tropicraft.PageOfJournal);
-    //    	
-    //        treasureList.add(Items.IRON_INGOT);
-    //        treasureList.add(Items.GOLD_INGOT);
-    //        treasureList.add(Items.GOLD_NUGGET);
-    //        treasureList.add(Items.DIAMOND);
-    //        treasureList.add(ItemRegistry.azurite);
-    //        treasureList.add(ItemRegistry.zircon);
-    //        treasureList.add(ItemRegistry.eudialyte);
-    //        
-    //        treasureList.add(TCItemRegistry.shells);
-    //        
-    //        treasureList.add(TCItemRegistry.scaleHelmet);
-    //        treasureList.add(TCItemRegistry.scaleBoots);
-    //        treasureList.add(TCItemRegistry.scaleChestplate);
-    //        treasureList.add(TCItemRegistry.scaleLeggings);
-    //        
-    //        treasureList.add(Items.golden_apple);
-    //        treasureList.add(Items.arrow);
-    //        
-    //        treasureList.add(TCItemRegistry.swordEudialyte);
-    //        treasureList.add(TCItemRegistry.swordZircon);
-    //        
-    //        treasureList.add(Items.gold_nugget);
-    //        treasureList.add(Items.map);
-    //        treasureList.add(Items.spider_eye);
-    //        
-    //        treasureList.add(TCItemRegistry.recordTradeWinds);
-    //        treasureList.add(TCItemRegistry.recordEasternIsles);
-    //        treasureList.add(TCItemRegistry.recordBuriedTreasure);
-    //        treasureList.add(TCItemRegistry.recordLowTide);
-    //        treasureList.add(TCItemRegistry.recordSummering);
-    //        treasureList.add(TCItemRegistry.recordTheTribe);
-    //        
-    //        sandBlocks.add(Blocks.sand);
-    //        sandBlocks.add(Blocks.sandstone);
-    //        sandBlocks.add(TCBlockRegistry.purifiedSand);        
-    //    }
 }
