@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -24,6 +26,7 @@ import net.tropicraft.core.registry.CraftingRegistry;
 import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
+import net.tropicraft.core.registry.LootRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
@@ -70,6 +73,7 @@ public class Tropicraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		FluidRegistry.postInit();
+		LootRegistry.postInit();
 	}
 
 	/**

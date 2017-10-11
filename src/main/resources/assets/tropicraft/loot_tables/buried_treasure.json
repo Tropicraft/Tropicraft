@@ -1,0 +1,238 @@
+{
+    "pools": [
+        {
+            "name": "buriedtreasure",
+            "rolls": {
+                "min": 6,
+                "max": 15
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_ingot",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:gold_nugget",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:gold_ingot",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:azurite",
+                    "weight": 3 
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:eudialyte",
+                    "weight": 8 
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:zircon",
+                    "weight": 11
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:diamond",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:shell_frox",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:shell_pab",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:shell_rube",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:shell_solo",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:shell_starfish",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:shell_turtle",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:white_pearl",
+                    "weight": 5
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:black_pearl",
+                    "weight": 5
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:scale_boots",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:scale_leggings",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:scale_chestplate",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:scale_helmet",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:sword_eudialyte",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:sword_zircon",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:buried_treasure",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ],
+                    "weight": 9
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:trade_winds",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ],
+                    "weight": 9
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:eastern_isles",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ],
+                    "weight": 9
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:low_tide",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ],
+                    "weight": 9
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:summering",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ],
+                    "weight": 9
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:the_tribe",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ],
+                    "weight": 9
+                }
+            ]
+        }
+    ]
+}
