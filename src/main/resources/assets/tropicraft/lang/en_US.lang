@@ -184,6 +184,10 @@ item.tropicraft:spawn_egg.failgull.name=Spawn Failgull
 item.tropicraft:spawn_egg.seaurchin.name=Spawn Sea Urchin
 item.tropicraft:spawn_egg.dolphin.name=Spawn Dolphin
 item.tropicraft:spawn_egg.seahorse.name=Spawn Seahorse
+item.tropicraft:fire_boots.name=Fire Boots
+item.tropicraft:fire_chestplate.name=Fire Chestplate
+item.tropicraft:fire_helmet.name=Fire Helmet
+item.tropicraft:fire_leggings.name=Fire Leggings
 
 item.tropicraft:spawn_egg.name=Tropics Mob Spawner Egg
 item.tropicraft.coffee.bean.raw.name=Coffee Beans

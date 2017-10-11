@@ -44,6 +44,7 @@ import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
 import net.tropicraft.core.common.item.ItemUmbrella;
 import net.tropicraft.core.common.item.ItemWaterWand;
+import net.tropicraft.core.common.item.armor.ItemFireArmor;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
 
 public class ItemRegistry extends TropicraftRegistry {
@@ -114,6 +115,12 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item scaleLeggings;
 	public static Item scaleChestplate;
 	public static Item scaleHelmet;
+	
+    public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", "fire", 12, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+    public static Item fireBoots;// = new ItemFireArmor(materialFireArmor, 0, 3);
+    public static Item fireLeggings;// = new ItemFireArmor(materialFireArmor, 0, 2);
+    public static Item fireChestplate;// = new ItemFireArmor(materialFireArmor, 0, 1);
+    public static Item fireHelmet;// = new ItemFireArmor(materialFireArmor, 0, 0);
 
 	public static Item chair;
 	public static Item umbrella;
@@ -201,6 +208,11 @@ public class ItemRegistry extends TropicraftRegistry {
 		scaleLeggings = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.LEGS), "scale_leggings");
 		scaleChestplate = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.CHEST), "scale_chestplate");
 		scaleHelmet = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.HEAD), "scale_helmet");
+		
+		fireBoots = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.FEET), "fire_boots");
+		fireLeggings = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.LEGS), "fire_leggings");
+		fireBoots = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.CHEST), "fire_chestplate");
+		fireBoots = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.HEAD), "fire_helmet");
 
 		chair = registerMultiItem(new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
 		umbrella = registerMultiItem(new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);
