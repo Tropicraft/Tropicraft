@@ -1,5 +1,5 @@
 # gradle stuff
-build/
+/build/
 .gradle
 
 #forge stuff
