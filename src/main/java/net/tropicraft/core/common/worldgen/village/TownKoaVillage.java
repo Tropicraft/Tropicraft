@@ -1,8 +1,5 @@
 package net.tropicraft.core.common.worldgen.village;
 
-import CoroUtil.util.CoroUtilFile;
-import CoroUtil.world.location.SpawnLocationData;
-import CoroUtil.world.location.town.TownObject;
 import build.BuildServerTicks;
 import build.ICustomGen;
 import build.world.Build;
@@ -10,10 +7,11 @@ import build.world.BuildJob;
 import build.world.BuildManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.tropicraft.entity.koa.*;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
+import net.tropicraft.core.common.town.SpawnLocationData;
+import net.tropicraft.core.common.town.TownObject;
 
 import java.io.File;
 
