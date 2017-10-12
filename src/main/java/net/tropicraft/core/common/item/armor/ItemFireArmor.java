@@ -41,7 +41,7 @@ public class ItemFireArmor extends ItemTropicraftArmor {
         } else {
             if (player.isBurning()) player.extinguish();
 
-            int factor = (int)(40D / (0.001D+this.getSunBrightness(world, 1F)));
+            int factor = (int)(40D / (0.001D + world.getSunBrightnessFactor(1.0F)));
             if (world.getWorldTime() % (factor) == 0 && world.canBlockSeeSky(new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY+1), MathHelper.floor(player.posZ)))) {
 
                 //repair!
@@ -50,27 +50,6 @@ public class ItemFireArmor extends ItemTropicraftArmor {
             }
         }
 
-    }
-
-    private float getSunBrightness(World world, float par1)
-    {
-        float f1 = world.getCelestialAngle(par1);
-        float f2 = 1.0F - (MathHelper.cos(f1 * (float)Math.PI * 2.0F) * 2.0F + 0.2F);
-
-        if (f2 < 0.0F)
-        {
-            f2 = 0.0F;
-        }
-
-        if (f2 > 1.0F)
-        {
-            f2 = 1.0F;
-        }
-
-        f2 = 1.0F - f2;
-        f2 = (float)((double)f2 * (1.0D - (double)(world.getRainStrength(par1) * 5.0F) / 16.0D));
-        f2 = (float)((double)f2 * (1.0D - (double)(world.getThunderStrength(par1) * 5.0F) / 16.0D));
-        return f2 * 0.8F + 0.2F;
     }
 
     @Override
