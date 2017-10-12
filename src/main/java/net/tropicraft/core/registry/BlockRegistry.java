@@ -178,11 +178,11 @@ public class BlockRegistry extends TropicraftRegistry {
 		coffeePlant = registerMultiBlock(new BlockCoffeeBush(), null, "coffee_bush");
 		
 		// TODO refactor this whole class so things like this are possible, because wtf
-		sands = new BlockTropicraftSands().setRegistryName("sand").setUnlocalizedName(Info.MODID + ".sand");
+		sands = new BlockTropicraftSands().setRegistryName("sand").setUnlocalizedName(Info.MODID + ".sand").setCreativeTab(CreativeTabRegistry.tropicraftTab);
 		GameRegistry.register(sands);
 		GameRegistry.register(new ItemBlockTropicraft(sands, Lists.newArrayList(Arrays.stream(TropicraftSands.values()).map(IStringSerializable::getName).toArray(String[]::new))).setRegistryName(sands.getRegistryName()));
 		for (TropicraftSands sand : TropicraftSands.values()) {
-		    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(sands), sand.ordinal(), new ModelResourceLocation(Info.MODID + ":sand", "variant=" + sand.getName()));
+		    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(sands), sand.ordinal(), new ModelResourceLocation(Info.MODID + ":sand", "underwater=false,variant=" + sand.getName()));
 		}
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
