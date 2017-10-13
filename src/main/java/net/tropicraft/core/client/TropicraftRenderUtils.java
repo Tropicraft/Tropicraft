@@ -1,26 +1,18 @@
 package net.tropicraft.core.client;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.tropicraft.Info;
-import net.tropicraft.SandColors;
 
 
 @EventBusSubscriber
@@ -75,21 +67,6 @@ public class TropicraftRenderUtils {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
 		return resource;
 	}
-
-    public static final IBlockColor SAND_COLORING = new IBlockColor() {
-        @Override
-    	@SideOnly(Side.CLIENT)
-        public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex) {
-            return SandColors.getColor(state.getBlock().getMetaFromState(state));
-        }
-    };
-
-    public static final IItemColor BLOCK_ITEM_COLORING = new IItemColor() {
-        @Override
-        public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-			return SandColors.getColor(tintIndex - 1);
-		}
-	};
 
 	public static void renderItem(ItemStack stack, float scale) {
 		if (stack != null) {
