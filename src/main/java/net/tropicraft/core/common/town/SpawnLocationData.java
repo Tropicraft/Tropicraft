@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.town;
 
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.UUID;

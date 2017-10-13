@@ -4,6 +4,8 @@ import build.ITileEntityCustomGenData;
 import build.SchematicData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
@@ -166,7 +168,7 @@ public class BuildManager {
 	    		if (worldRef.rand.nextInt(build_rand) != 0) return;
 	    		boolean first = true;
 	    		int tryCount = 0;
-	    		while ((first || CoroUtilBlock.isAir(id)) && tryCount < 300) {
+	    		while ((first || isAir(id)) && tryCount < 300) {
 	    			tryCount++;
 	    			first = false;
 	    			buildJob.build_loopTickX = worldRef.rand.nextInt(build.map_sizeX);
@@ -199,8 +201,10 @@ public class BuildManager {
 				    			//worldRef.setBlockAndMetadata(xx, yy, zz, 0, 0);
 				    			//worldRef.removeBlockTileEntity(xx, yy, zz);
 				    			//worldRef.setBlockAndMetadata(build_startX+build_loopTickX, build_startY+build_loopTickY, build_startZ+build_loopTickZ, 0, 0);
-				    			
-				    			worldRef.setBlock(xx, yy, zz, id, build.build_blockMetaArr[buildJob.build_loopTickX][buildJob.build_loopTickY][buildJob.build_loopTickZ], buildJob.notifyFlag);
+
+								int meta = build.build_blockMetaArr[buildJob.build_loopTickX][buildJob.build_loopTickY][buildJob.build_loopTickZ];
+								IBlockState state = id.getStateFromMeta(meta);
+				    			worldRef.setBlockState(new BlockPos(xx, yy, zz), state, buildJob.notifyFlag);
 				    			//worldRef.markBlockNeedsUpdate(xx, yy, zz);
 				    			buildJob.build_blockPlaced[buildJob.build_loopTickX][buildJob.build_loopTickY][buildJob.build_loopTickZ] = true;
 				    			buildJob.curLayerCount++;
@@ -308,13 +312,13 @@ public class BuildManager {
 		    				}
 		    			}
 		    			if (buildJob.blockIDsNoBuildOver.size() > 0) {
-		    				Block checkCoord = worldRef.getBlock(coords.getX(), coords.getY(), coords.getZ());
+		    				Block checkCoord = worldRef.getBlockState(coords).getBlock();
 			    			if (buildJob.blockIDsNoBuildOver.contains(checkCoord)) {
 			    				skipGen = true;
 				    		}
 		    			}
 		    			if (!skipGen) {
-		    				worldRef.setBlock(coords.getX(), coords.getY(), coords.getZ(), Blocks.AIR, 0, buildJob.notifyFlag);
+		    				worldRef.setBlockState(coords, Blocks.AIR.getDefaultState(), buildJob.notifyFlag);
 		    			}
 			    		//}
 			    		
@@ -349,7 +353,7 @@ public class BuildManager {
 					    			skip = true;
 					    		}
 					    		//System.out.println(buildJob.build_loopTickX + ", " + buildJob.build_loopTickY + ", " + buildJob.build_loopTickZ + " - " + id);
-					    		if (!skip && ((replaceAir || !CoroUtilBlock.isAir(id))/* && (id != worldRef.getBlockId(xx, yy, zz) || meta != worldRef.getBlockMetadata(xx, yy, zz))*/) ) {
+					    		if (!skip && ((replaceAir || !isAir(id))/* && (id != worldRef.getBlockId(xx, yy, zz) || meta != worldRef.getBlockMetadata(xx, yy, zz))*/) ) {
 					    			//if (worldRef.getBlockTileEntity(xx, yy, zz) != null/* || (id != 0 && Block.blocksList[id].blockID == Block.chest.blockID)*/) {
 					    				//worldRef.removeBlockTileEntity(xx, yy, zz);		
 					    				//worldRef.setBlockAndMetadata(xx, yy, zz, 0, 0);
@@ -388,16 +392,18 @@ public class BuildManager {
 					    			//if (id == 98) id = 4;
 					    			
 					    			//new protection against schematics printing missing ids that will eventually crash the game
-					    			if (id != null || CoroUtilBlock.isAir(id)) {
+					    			if (id != null || isAir(id)) {
 					    				boolean skipGen = false;
 					    				if (buildJob.blockIDsNoBuildOver.size() > 0) {
-						    				Block checkCoord = worldRef.getBlock(coords.getX(), coords.getY(), coords.getZ());
+						    				Block checkCoord = worldRef.getBlockState(coords).getBlock();
 							    			if (buildJob.blockIDsNoBuildOver.contains(checkCoord)) {
 							    				skipGen = true;
 								    		}
 						    			}
 					    				if (!skipGen) {
-					    					worldRef.setBlock(coords.getX(), coords.getY(), coords.getZ(), id, meta, 2);
+											IBlockState state = id.getStateFromMeta(meta);
+											worldRef.setBlockState(coords, state, 2);
+					    					//worldRef.setBlock(coords.getX(), coords.getY(), coords.getZ(), id, meta, 2);
 					    				}
 					    				//System.out.println("post print - " + coords.getX() + " - " + coords.getZ());
 					    				/*if (buildJob.customGenCallback != null) {
@@ -413,13 +419,13 @@ public class BuildManager {
 					    				System.out.println("BUILDMOD SEVERE: schematic contains non existant blockID: " + id + ", replacing with blockID: " + placeholderID);
 					    				boolean skipGen = false;
 					    				if (buildJob.blockIDsNoBuildOver.size() > 0) {
-						    				Block checkCoord = worldRef.getBlock(coords.getX(), coords.getY(), coords.getZ());
+						    				Block checkCoord = worldRef.getBlockState(coords).getBlock();
 							    			if (buildJob.blockIDsNoBuildOver.contains(checkCoord)) {
 							    				skipGen = true;
 								    		}
 						    			}
 					    				if (!skipGen) {
-					    					worldRef.setBlock(coords.getX(), coords.getY(), coords.getZ(), placeholderID, 0, buildJob.notifyFlag);
+					    					worldRef.setBlockState(coords, placeholderID.getDefaultState(), buildJob.notifyFlag);
 					    				}
 					    			}
 					    			/*if (id != 0) {
@@ -462,7 +468,7 @@ public class BuildManager {
 				new Vec3d(parBuildJob.build.map_sizeX, parBuildJob.build.map_sizeY, parBuildJob.build.map_sizeZ));
 		World world = DimensionManager.getWorld(parBuildJob.build.dim);
 		if (world != null) {
-			world.setBlock(coords.getX(), coords.getY(), coords.getZ(), id, meta, 2);
+			world.setBlockState(coords, id.getDefaultState(), 2);
 		}
 	}
 	
@@ -632,7 +638,7 @@ public class BuildManager {
             	//verified that this loads ZC tile nbt ok
                 NBTTagCompound var20 = (NBTTagCompound)build.tileEntities.getCompoundTagAt(var21);
                 //TileEntity var13 = TileEntity.createAndLoadEntity(var20);
-                TileEntity var13 = worldRef.getTileEntity(build.map_coord_minX+var20.getInteger("x"), buildJob.build_startY+var20.getInteger("y"), build.map_coord_minZ+var20.getInteger("z"));
+                TileEntity var13 = worldRef.getTileEntity(new BlockPos(build.map_coord_minX+var20.getInteger("x"), buildJob.build_startY+var20.getInteger("y"), build.map_coord_minZ+var20.getInteger("z")));
                 
                 if (var13 instanceof SchematicData) {
                 	((SchematicData)var13).readFromNBT(var20, build);
@@ -655,15 +661,18 @@ public class BuildManager {
                 	//once stuff using new marking is rescanned/saved, uncomment this if statement
                 	//is there actually any harm in always setting this though?
                 	//if (!build.newFormat || (var20.hasKey("coordsSetRelative"))) {
-		                var13.xCoord = build.map_coord_minX+var13.xCoord;
+		                var13.setPos(new BlockPos(build.map_coord_minX+var13.getPos().getX(),
+								buildJob.build_startY+var13.getPos().getY(),
+								build.map_coord_minZ+var13.getPos().getZ()));
+						/*var13.xCoord = build.map_coord_minX+var13.xCoord;
 		                var13.yCoord = buildJob.build_startY+var13.yCoord;
-		                var13.zCoord = build.map_coord_minZ+var13.zCoord;
+		                var13.zCoord = build.map_coord_minZ+var13.zCoord;*/
                 	//}
 	
 	                try {
-	                	Packet packet = var13.getDescriptionPacket();
+	                	Packet packet = var13.getUpdatePacket();
 	                	if (packet != null) {
-	                		MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(packet);
+	                		FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(packet);
 	                	}
 	                } catch (Exception ex) {
 	                	ex.printStackTrace();
@@ -683,6 +692,16 @@ public class BuildManager {
             }
         }
 	}
-	
+
+	public static boolean isAir(Block parBlock) {
+		//cant get meta/state without small redesign atm
+		return parBlock == Blocks.AIR;
+		/*Material mat = parBlock.getMaterial();
+		if (mat == Material.AIR) {
+			return true;
+		} else {
+			return false;
+		}*/
+	}
 	
 }

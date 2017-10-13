@@ -1,15 +1,15 @@
 package build.world;
 
-import CoroUtil.util.CoroUtilBlock;
-import CoroUtil.util.CoroUtilFile;
 import build.SchematicData;
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -30,7 +30,7 @@ public class Build {
 	
 	//for writing: we just use new 1.1 system
 	
-	public static int blockIDHighestVanilla = 158; //figure out an elegant non loop crazy way to determine this automatically
+	public static int blockIDHighestVanilla = 255; //figure out an elegant non loop crazy way to determine this automatically
 	
 	//public int id = 0;
 	public String file = "";
@@ -337,7 +337,7 @@ public class Build {
 				build_blockIDArr[xx][yy][zz] = b;
 			}*/
 		} else {
-			block = (Block) Block.blockRegistry.getObjectById(internalID);
+			block = Block.REGISTRY.getObjectById(internalID);
 			if (block == null) {
 				System.out.println("CRITICAL! BuildMod: null block when using Block.blockRegistry.getObjectById(int) for ID " + internalID);
 			}
@@ -378,9 +378,10 @@ public class Build {
 					int index = yy * map_sizeX * map_sizeZ + zz * map_sizeX + xx;
 					
 					World worldRef = worldObj;
-					
-					build_blockIDArr[xx][yy][zz] = worldRef.getBlock(map_coord_minX+xx, map_coord_minY+yy, map_coord_minZ+zz);
-					build_blockMetaArr[xx][yy][zz] = worldRef.getBlockMetadata(map_coord_minX+xx, map_coord_minY+yy, map_coord_minZ+zz);
+
+					IBlockState state = worldRef.getBlockState(new BlockPos(map_coord_minX+xx, map_coord_minY+yy, map_coord_minZ+zz));
+					build_blockIDArr[xx][yy][zz] = state.getBlock();
+					build_blockMetaArr[xx][yy][zz] = state.getBlock().getMetaFromState(state);
 					//build_blockPlaced[xx][yy][zz] = false;
 					
 					//System.out.println("build_blockIDArr[xx][yy][zz]: " + build_blockIDArr[xx][yy][zz]);
@@ -438,7 +439,7 @@ public class Build {
 						
 						World worldRef = DimensionManager.getWorld(dim);
 						
-						TileEntity tEnt = worldRef.getTileEntity(map_coord_minX+xx,map_coord_minY+yy,map_coord_minZ+zz);
+						TileEntity tEnt = worldRef.getTileEntity(new BlockPos(map_coord_minX+xx,map_coord_minY+yy,map_coord_minZ+zz));
 						if (tEnt != null) {
 							NBTTagCompound var10 = new NBTTagCompound();
 							
@@ -493,13 +494,14 @@ public class Build {
 	//used for helping write out runtime blocks to internalID, this method must match genBlockIDToNameMap() logic
 	public HashMap<Block, Integer> getBlockToInternalIDMap() {
 		HashMap<Block, Integer> map = new HashMap<Block, Integer>();
-		Set set = Block.blockRegistry.getKeys();
+
+		Set set = Block.REGISTRY.getKeys();
         Iterator it = set.iterator();
         
         int i = 0;
         while (it.hasNext()) {
-        	String tagName = (String) it.next();
-        	Block block = (Block) Block.blockRegistry.getObject(tagName);
+			ResourceLocation tagName = (ResourceLocation) it.next();
+        	Block block = Block.REGISTRY.getObject(tagName);
         	
         	if (block != null)
             {
@@ -528,14 +530,14 @@ public class Build {
 		NBTTagCompound nbt = new NBTTagCompound();
 		
 		//if (getVersion().equals("1.0")) {
-			
-			Set set = Block.blockRegistry.getKeys();
+
+			Set set = Block.REGISTRY.getKeys();
 	        Iterator it = set.iterator();
 	        
 	        int i = 0;
 	        while (it.hasNext()) {
-	        	String tagName = (String) it.next();
-	        	Block block = (Block) Block.blockRegistry.getObject(tagName);
+				ResourceLocation tagName = (ResourceLocation) it.next();
+				Block block = Block.REGISTRY.getObject(tagName);
 	        	
 	        	if (block != null)
 	            {
@@ -547,7 +549,7 @@ public class Build {
 	        			//new way
 	        			//note, for loop index worked as actual block id previously because it stored ID at the right index
 	        			//hopefully, storing our own index for this will work ok, each schematic has its own translation map so in theory it should work...
-	        			nbt.setInteger(CoroUtilBlock.getNameByBlock(block), i);
+	        			nbt.setInteger(tagName.toString(), i);
 	        			i++;
 	        		}
 	            }
@@ -588,12 +590,12 @@ public class Build {
 		try {
 			
 			//first, generate the swapMap for the running mc block name -> id
-			Set set = Block.blockRegistry.getKeys();
-	        Iterator it = set.iterator();
+			Set set = Block.REGISTRY.getKeys();
+			Iterator it = set.iterator();
 			//int i = 0;
 	        while (it.hasNext()) {
-	        	String tagName = (String) it.next();
-	        	Block block = (Block) Block.blockRegistry.getObject(tagName);
+				ResourceLocation tagName = (ResourceLocation) it.next();
+				Block block = Block.REGISTRY.getObject(tagName);
 	        	
 	        	if (block != null)
 	            {
@@ -650,16 +652,16 @@ public class Build {
 			
 			//first, generate the swapMap for the running mc block name -> id
 			//for 1.1 i dont think we can blindly just read in like this, the runtime id listing could be different? or is it..... uhhh
-			Set set = Block.blockRegistry.getKeys();
-	        Iterator it = set.iterator();
+			Set set = Block.REGISTRY.getKeys();
+			Iterator it = set.iterator();
 			//int i = 0;
 	        while (it.hasNext()) {
-	        	String tagName = (String) it.next();
-	        	Block block = (Block) Block.blockRegistry.getObject(tagName);
+				ResourceLocation tagName = (ResourceLocation) it.next();
+				Block block = Block.REGISTRY.getObject(tagName);
 	        	if (block != null)
 	            {
 	        		if (/*i > blockIDHighestVanilla && */!block.getUnlocalizedName().equals("tile.ForgeFiller")) {
-	        			swapMap.put(CoroUtilBlock.getNameByBlock(block), block);
+	        			swapMap.put(tagName.toString(), block);
 	        			//i++;
 	        		}
 	        	}

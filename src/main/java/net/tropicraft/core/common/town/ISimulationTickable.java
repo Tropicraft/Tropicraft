@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.town;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.math.BlockPos;
 
 public interface ISimulationTickable {

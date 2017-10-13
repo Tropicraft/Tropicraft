@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.town;
 
-import CoroUtil.forge.CoroAI;
-import CoroUtil.util.CoroUtilFile;
+import build.UtilBuild;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -93,13 +92,13 @@ public class ManagedLocation implements ISimulationTickable {
 	public void addEntity(String unitType, EntityLivingBase ent) {
 		if (listLoadedEntities.contains(ent)) {
 			//this might have false positives, like when an entity is unloaded from chunk while game is running... unless somewhere else trims those types out
-			CoroAI.dbg("WARNING: adding already existing entity to ManagedLocation");
+			UtilBuild.dbg("WARNING: adding already existing entity to ManagedLocation");
 		} else {
 			listLoadedEntities.add(ent);
 		}
 		if (listPersistantEntities.contains(ent.getPersistentID())) {
 			//again maybe false positives
-			CoroAI.dbg("WARNING: adding already existing entitys _persistant ID_ to ManagedLocation");
+			UtilBuild.dbg("WARNING: adding already existing entitys _persistant ID_ to ManagedLocation");
 		} else {
 			listPersistantEntities.add(ent.getPersistentID());
 		}
@@ -164,7 +163,7 @@ public class ManagedLocation implements ISimulationTickable {
 		
 		var1.setInteger("locationID", locationID);
 		var1.setInteger("dimID", dimID);
-		CoroUtilFile.writeCoords("spawn", spawn, var1);
+		UtilBuild.writeCoords("spawn", spawn, var1);
 		
 		NBTTagCompound nbtListPersistantEntities = new NBTTagCompound();
     	int count = 0;
@@ -184,10 +183,10 @@ public class ManagedLocation implements ISimulationTickable {
 		hasInit = true;
     	locationID = var1.getInteger("locationID");
     	dimID = var1.getInteger("dimID");
-    	spawn = CoroUtilFile.readCoords("spawn", var1);
+    	spawn = UtilBuild.readCoords("spawn", var1);
     	
     	NBTTagCompound nbtPersistantEntities = var1.getCompoundTag("listPersistantEntities");
-    	Iterator it = nbtPersistantEntities.func_150296_c().iterator();
+    	Iterator it = nbtPersistantEntities.getKeySet().iterator();
     	while (it.hasNext()) {
     		String entryName = (String) it.next();
     		NBTTagCompound entry = nbtPersistantEntities.getCompoundTag(entryName);
