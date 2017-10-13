@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -32,6 +33,7 @@ import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.ScubaHandler;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
+import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
@@ -48,7 +50,7 @@ public class ClientProxy extends CommonProxy {
 	public ClientProxy() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
-	
+
 	@Override
 	public void preInit() {
 		super.preInit();
@@ -61,7 +63,7 @@ public class ClientProxy extends CommonProxy {
 
 		ItemRegistry.clientProxyInit();
 		BlockRegistry.clientProxyInit();
-		
+
 		EntityRenderRegistry.init();
 		TileEntityRenderRegistry.init();
 
@@ -110,19 +112,19 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerItemVariantModel(Item item, String name, int metadata) {
-		if (item != null) { 
+		if (item != null) {
 			//     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
 			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, "inventory"));
 		}
 	}
-	
+
 	private final Map<String, String[]> blockVariants = new HashMap<>();
-	
+
 	@Override
 	public void registerArbitraryBlockVariants(String name, String... variants) {
 		blockVariants.put(name, variants);
 	}
-	
+
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		for (Entry<String, String[]> e : blockVariants.entrySet()) {
@@ -181,12 +183,12 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerBooks() {
 		Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat",
-				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt", 
-				"encyclopediaTropica", 
+				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt",
+				"encyclopediaTropica",
 				"encyclopediaTropicaInside");
 		CraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
 	}
-	
+
 	@Override
 	public World getClientWorld() {
 		return Minecraft.getMinecraft().world;

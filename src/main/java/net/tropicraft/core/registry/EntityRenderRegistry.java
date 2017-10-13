@@ -4,12 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.tropicraft.core.client.entity.model.ModelAshen;
 import net.tropicraft.core.client.entity.model.ModelDolphin;
 import net.tropicraft.core.client.entity.model.ModelKoaMan;
 import net.tropicraft.core.client.entity.model.ModelManOWar;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
+import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
 import net.tropicraft.core.client.entity.render.RenderAshen;
 import net.tropicraft.core.client.entity.render.RenderBambooItemFrame;
@@ -66,6 +68,26 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish
 
 public class EntityRenderRegistry {
 
+    public static ModelScubaGear chestModel;
+    public static ModelScubaGear legsModel;
+    public static ModelScubaGear feetModel;
+    public static ModelScubaGear headModel;
+
+    public static ModelScubaGear getScubaModel(EntityEquipmentSlot slot) {
+        switch (slot) {
+        case CHEST:
+            return chestModel;
+        case LEGS:
+            return legsModel;
+        case FEET:
+            return feetModel;
+        case HEAD:
+            return headModel;
+        default:
+            return null;
+        }
+    }
+
     public static void init() {
         registerEntityRender(EntityEIH.class, new RenderEIH());
         registerEntityRender(EntityTropiCreeper.class, new RenderTropiCreeper());
@@ -92,14 +114,17 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityWallItem.class, new RenderWallItem());
         registerEntityRender(EntityKoaHunter.class, new RenderKoaMan(Minecraft.getMinecraft().getRenderManager(), new ModelKoaMan(), 0.5F));
         //registerEntityRender(EntityWallStarfish.class, new RenderWallStarfish());
-        registerEntityRender(EntityLostMask.class, new RenderLostMask());
-        registerEntityRender(EntityAshenHunter.class, new RenderAshen(new ModelAshen(), 0.75F));
+
+        chestModel = new ModelScubaGear(0, EntityEquipmentSlot.CHEST);
+        feetModel = new ModelScubaGear(0, EntityEquipmentSlot.FEET);
+        legsModel = new ModelScubaGear(0, EntityEquipmentSlot.LEGS);
+        headModel = new ModelScubaGear(0, EntityEquipmentSlot.HEAD);
 
         registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish());
         registerEntityRender(EntityPiranha.class, new RenderTropicalFish());
         registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
-
         registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
+
     }
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
