@@ -23,7 +23,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class ScubaHandler {
 	
-	public HashMap<UUID, PlayerSwimData> rotationMap = new HashMap<UUID, PlayerSwimData>();
+	private static HashMap<UUID, PlayerSwimData> rotationMap = new HashMap<UUID, PlayerSwimData>();
 	public HashMap<Item, Float> flipperSpeedMap = new HashMap<Item, Float>();
 
 
@@ -37,7 +37,7 @@ public class ScubaHandler {
 	}
 
 
-	public PlayerSwimData getData(EntityPlayer p) {
+	public static PlayerSwimData getData(EntityPlayer p) {
 		if (!rotationMap.containsKey(p.getUniqueID())) {
 			rotationMap.put(p.getUniqueID(), new PlayerSwimData());
 		}
@@ -81,15 +81,18 @@ public class ScubaHandler {
 			d.swimSpeedAccel = 0.003f;
 			if(GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindForward)) {
 				if(d.currentSwimSpeed < 0) {
-					d.currentSwimSpeed = 0.2f;
+				//	d.currentSwimSpeed = 0.2f;
 				}
 				d.targetSwimSpeed = flipperSpeedMap.get(bootSlot.getItem());
 			}
 			if(GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindBack)) {
 				if(d.currentSwimSpeed > 0) {
-					d.currentSwimSpeed = -0.2f;
+				//	d.currentSwimSpeed = -0.2f;
 				}
 				d.targetSwimSpeed = -flipperSpeedMap.get(bootSlot.getItem());
+			}
+			if(p.moveStrafing!= 0) {
+				d.targetSwimSpeed = flipperSpeedMap.get(bootSlot.getItem());
 			}
 			if(d.currentSwimSpeed < d.targetSwimSpeed) {
 				d.currentSwimSpeed+= d.swimSpeedAccel;
@@ -108,9 +111,13 @@ public class ScubaHandler {
 
 			float currentSpeed = d.currentSwimSpeed * 0.1f;
 			
+			float offset = 0;
+			
+			offset = -(p.moveStrafing * 45f);
+			
 
-			p.motionX = currentSpeed * Math.sin(-p.rotationYawHead * (Math.PI / 180.0));
-			p.motionZ = currentSpeed * Math.cos(-p.rotationYawHead * (Math.PI / 180.0));
+			p.motionX = currentSpeed * Math.sin(-(p.rotationYawHead+offset) * (Math.PI / 180.0));
+			p.motionZ = currentSpeed * Math.cos(-(p.rotationYawHead+offset) * (Math.PI / 180.0));
 			p.motionY = (currentSpeed) * Math.sin((-p.rotationPitch) * (Math.PI / 180.0));
 
 			if (p.isSneaking()) {
@@ -139,20 +146,25 @@ public class ScubaHandler {
 		EntityPlayer p = event.getEntityPlayer();
 		PlayerSwimData d = this.getData(p);
 
-       EntityRenderRegistry.feetModel = new ModelScubaGear(0, EntityEquipmentSlot.FEET);
+    //   EntityRenderRegistry.feetModel = new ModelScubaGear(0, EntityEquipmentSlot.FEET);
 
 		if (p.isInWater()) {
 			d.targetRotationPitch = 0;
 			d.targetRotationYaw = p.rotationYaw;
 			d.targetHeadPitchOffset = 45f;
-			d.targetRotationRoll = (float) p.moveStrafing * 45;
+			d.targetRotationRoll = (float) p.moveStrafing * 90;
 
-			d.targetRotationYaw -= d.targetRotationRoll;
+			//d.targetRotationYaw -= d.targetRotationRoll;
 			if (p.moveForward == 0f) {
 				d.targetRotationPitch = 0f;
+				d.targetHeadPitchOffset = 0f;
 			}
 			
-			d.targetRotationRoll += d.targetRotationPitch;
+			if(d.targetRotationRoll < 0) {
+				d.targetRotationPitch -= 180f;
+			}
+			d.targetRotationPitch += d.targetRotationRoll;
+		//	d.targetRotationRoll += d.targetRotationPitch;
 			
 
 			if (p.moveForward < 0f) {
@@ -170,17 +182,23 @@ public class ScubaHandler {
 				}
 			}
 			
+			if(p.moveStrafing != 0) {
+				d.targetHeadPitchOffset = p.rotationPitch + 50f;
+			}
+			
 			BlockPos bp2 = new BlockPos((int) p.posX, (int) p.posY - 1, (int) p.posZ);
 
 
-			if(!event.getEntityPlayer().world.getBlockState(bp2).getMaterial().isLiquid()) {
+			if(!event.getEntityPlayer().world.getBlockState(bp2).getMaterial().isLiquid()) 
+			{
 				d.targetRotationPitch = 0f;
 				d.targetHeadPitchOffset = 0f;
+			//	d.targetRotationYaw -= -d.targetRotationRoll;
 				d.targetRotationRoll = 0f;
 			}
 			
 			d.currentRotationPitch = lerp(d.currentRotationPitch, d.targetRotationPitch, d.pitchSpeed);
-			d.currentHeadPitchOffset = lerp(d.currentHeadPitchOffset, d.targetHeadPitchOffset, d.pitchSpeed);
+			d.currentHeadPitchOffset = lerp(d.currentHeadPitchOffset, d.targetHeadPitchOffset, d.pitchSpeed*2);
 
 			d.currentRotationYaw = lerp(d.currentRotationYaw, d.targetRotationYaw, d.yawSpeed);
 			d.currentRotationRoll = lerp(d.currentRotationRoll, d.targetRotationRoll, d.rollSpeed);

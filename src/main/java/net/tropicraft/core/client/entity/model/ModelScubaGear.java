@@ -443,8 +443,65 @@ public class ModelScubaGear extends ModelBiped {
         bipedBody.render(scale);
         bipedRightArm.render(scale);
         bipedLeftArm.render(scale);
+       
+        
+        GlStateManager.enableCull();
+        bipedRightLeg.mirror = true;
+        
+        bipedLeftLeg.rotationPointY = 0;
+        bipedLeftLeg.offsetY = 0.763f;
+        
+     //   bipedRightLeg.rotationPointY = -1f;
+      //  bipedRightLeg.offsetY = 1;
+        
+      //  bipedLeftLeg.offsetZ += 0.2f;
+     //   bipedRightLeg.offsetZ += 0.2f;
+       
+        
+      //  bipedLeftLeg.rotateAngleY = -0.15f;
+     //   bipedLeftLeg.offsetX -= 0.2f;
+      //  bipedRightLeg.offsetX += 0.2f;
+      //  bipedRightLeg.rotateAngleY = 0.15f;
+        
+        if(entityIn.isInWater()) {
+	        this.Fin2m3.offsetX = -0.2f;
+	
+	        this.Fin1m3.offsetX = 0.2f;
+	
+	     //   this.Fin2m3.offsetZ = 0.2f;
+	
+	       // this.Fin1m3.offsetZ = 0.2f;
+	
+	        this.Fin2m3.offsetY = 0.1f;
+	
+	        this.Fin1m3.offsetY = 0.1f;
+	        
+	        this.Fin2m3.rotateAngleX = .2f;
+	
+	        this.Fin1m3.rotateAngleX = .2f;
+        }else {
+        		this.Fin2m3.offsetX = 0f;
+        		
+ 	        this.Fin1m3.offsetX = 0f;
+ 	
+ 	        //this.Fin2m3.offsetZ = 0f;
+ 	
+ 	    //    this.Fin1m3.offsetZ = 0f;
+ 	
+ 	        this.Fin2m3.offsetY = 0f;
+ 	
+ 	        this.Fin1m3.offsetY = 0f;
+ 	        
+ 	        this.Fin2m3.rotateAngleX = 0f;
+ 	
+ 	        this.Fin1m3.rotateAngleX = 0f;
+        }
+
+     bipedLeftLeg.render(scale);
+
         bipedRightLeg.render(scale);
-        bipedLeftLeg.render(scale);
+        
+         
     }
 
     private void renderTank(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
