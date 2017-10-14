@@ -104,10 +104,9 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 	}
 
 	@Override
-	public List<SpawnListEntry> getPossibleCreatures(
-			EnumCreatureType creatureType, BlockPos pos) {
-		return null;
-	}
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+        return this.worldObj.getBiome(pos).getSpawnableList(creatureType);
+    }
 
 	@Override
 	public BlockPos getStrongholdGen(World worldIn, String structureName,
