@@ -76,7 +76,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block oreAzurite, oreEudialyte, oreZircon;
 	public static Block oreBlock;
 
-	public static Block flowers;
+	public static BlockTropicsFlowers flowers;
 	public static Block logs;
 	public static Block coral;
 	public static Block seaweed;
