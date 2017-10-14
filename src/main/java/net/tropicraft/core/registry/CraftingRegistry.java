@@ -296,6 +296,27 @@ public class CraftingRegistry {
             'X', new ItemStack(BlockRegistry.planks, 1, 0)
         });
 
+        // Small bongo
+        createRecipe(true, new ItemStack(BlockRegistry.bongoSmall), new Object[] {
+            "Y", "X", "X",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0),
+            'Y', new ItemStack(ItemRegistry.iguanaLeather)
+        });
+
+        // Medium bongo
+        createRecipe(true, new ItemStack(BlockRegistry.bongoSmall), new Object[] {
+            "YY", " XX", " XX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0),
+            'Y', new ItemStack(ItemRegistry.iguanaLeather)
+        });
+
+        // Large bongo
+        createRecipe(true, new ItemStack(BlockRegistry.bongoSmall), new Object[] {
+            "YYY", "XXX", "XXX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0),
+            'Y', new ItemStack(ItemRegistry.iguanaLeather)
+        });
+
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.zircon, 2);
