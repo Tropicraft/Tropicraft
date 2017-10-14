@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSand;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -160,17 +161,11 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 				//				Biome biome = biomesIn[j + i * 16];
 				//				biome.genTerrainBlocks(this.worldObj, this.rand, primer, x * 16 + i, z * 16 + j, this.depthBuffer[j + i * 16]);
 
-				BiomeGenTropicraft biome = (BiomeGenTropicraft)biomesIn[zValue + xValue * 16];
-				Block top = biome.topBlock.getBlock();
-				Block filler = biome.fillerBlock.getBlock();
-
-				Block btop = BlockRegistry.sands.getDefaultState().getBlock();
-				Block bfiller = btop;
-
-				// for colored sand
-				if (biome == BiomeGenTropicraft.tropicsOcean) {
-					btop = biome.sandBlock;
-				}
+			    // FIXME this lookup is inverted from vanilla, which uses z + x*16
+			    // Somehow this fixes the "random" patches of sand in worldgen: https://i.imgur.com/fWtjlyA.png
+				BiomeGenTropicraft biome = (BiomeGenTropicraft)biomesIn[xValue + zValue * 16];
+				
+				int yStart = -1;
 
 				for(int yValue = 128 - 1; yValue >= 0; yValue--) {
 					int xx = xValue;
@@ -186,47 +181,21 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 					{
 						a = 0;
 						continue;
-					}
+                    }
 
-					if(a >= 0 && a < 5)
-					{
-						Block blockUsed = Blocks.STONE;
-						if(a == 0 && yValue < 63 + 3)
-						{
-							flag = true;
-						}
+                    if (a >= 0 && a < 5) {
+                        if (yStart == -1) {
+                            yStart = yValue;
+                        }
 
-						if(flag)
-						{
-							if(a < 5) {
-								blockUsed = btop;
-							}
-						}
-						else
-						{
-							if(top != Blocks.SAND)
-							{
-								if(a == 0)
-								{
-									blockUsed = top;
-								}
-								else if(a < 5)
-								{
-									blockUsed = filler;
-								}
-							}
-						}
-						primer.setBlockState(xx, yValue, zz, blockUsed.getDefaultState());
-						a++;
-						continue;
-					}
-
-					flag = false;
-					a = -1;
-
-				}
-
-				a = -1;
+                        IBlockState blockUsed = biome.getStateForLayer(yStart, a);
+                        primer.setBlockState(xx, yValue, zz, blockUsed);
+                        a++;
+                    } else {
+                        a = -1;
+                    }
+                }
+                a = -1;
 
 			}
 		}

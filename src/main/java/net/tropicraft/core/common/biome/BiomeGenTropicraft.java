@@ -3,19 +3,34 @@ package net.tropicraft.core.common.biome;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.tropicraft.core.common.biome.decorators.BiomeDecoratorTropicraft;
+import net.tropicraft.core.common.block.BlockTropicraftSands;
+import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class BiomeGenTropicraft extends Biome {
 
 	public static final int[] DEFAULT_FLOWER_META = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 
-	public static BiomeGenTropicraft tropicsOcean = (BiomeGenTropicraft) new BiomeGenTropicsOcean((new Biome.BiomeProperties("TROPICS_OCEAN")).setBaseHeight(-1.0F).setHeightVariation(0.4F).setTemperature(1.5F).setRainfall(1.25F)).setRegistryName("tc_tropics_ocean");
+	public static BiomeGenTropicraft tropicsOcean = (BiomeGenTropicraft) new BiomeGenTropicsOcean((new Biome.BiomeProperties("TROPICS_OCEAN")).setBaseHeight(-1.0F).setHeightVariation(0.4F).setTemperature(1.5F).setRainfall(1.25F)) {
+	    
+	    private IBlockState mineralSand = BlockRegistry.sands.getDefaultState().withProperty(BlockTropicraftSands.VARIANT, TropicraftSands.MINERAL);
+
+	    @Override
+	    public IBlockState getStateForLayer(int yStart, int layer) {
+	        IBlockState ret = super.getStateForLayer(yStart, layer);
+	        if (ret == sandBlock && layer == 4) {
+	            ret = mineralSand;
+	        }
+	        return ret;
+	    }
+	}.setRegistryName("tc_tropics_ocean");
 	public static Biome kelpForest = new BiomeGenKelpForest((new Biome.BiomeProperties("KELP_FOREST")).setBaseHeight(-1.5F).setHeightVariation(0.3F).setTemperature(2.0F).setRainfall(1.25F)).setRegistryName("tc_tropics_kelp_forest");
 	public static Biome tropics = new BiomeGenTropics((new Biome.BiomeProperties("TROPICS")).setBaseHeight(0.15F).setHeightVariation(0.15F).setTemperature(2.0F).setRainfall(1.5F)).setRegistryName("tc_tropics");
 	public static Biome rainforestPlains = new BiomeGenRainforest((new Biome.BiomeProperties("TROPICS_RAINFOREST_PLAINS")).setBaseHeight(0.25F).setHeightVariation(0.1F).setTemperature(1.5F).setRainfall(2.0F)).setRegistryName("tc_tropics_rainforest_plains");
@@ -25,13 +40,6 @@ public class BiomeGenTropicraft extends Biome {
 	public static Biome tropicsRiver = new BiomeGenTropicsRiver((new Biome.BiomeProperties("TROPICS_RIVER")).setBaseHeight(-0.7F).setHeightVariation(0.05F).setTemperature(1.5F).setRainfall(1.25F)).setRegistryName("tc_tropics_river");
 	public static Biome tropicsBeach = new BiomeGenTropicsBeach((new Biome.BiomeProperties("TROPICS_BEACH")).setBaseHeight(-0.1F).setHeightVariation(0.1F).setTemperature(1.5F).setRainfall(1.25F)).setRegistryName("tc_tropics_beach");
 	public static Biome tropicsLake = new BiomeGenTropicsOcean((new Biome.BiomeProperties("TROPICS_LAKE")).setBaseHeight(-0.6F).setHeightVariation(0.1F).setTemperature(1.5F).setRainfall(1.5F)).setRegistryName("tc_tropics_lake");
-	
-	static {
-	    tropicsOcean.sandBlock = BlockRegistry.sands;
-	}
-
-	public Block sandBlock;
-	public short sandMetadata;
 
 	public static boolean DISABLEDECORATION = false;
 
@@ -47,12 +55,11 @@ public class BiomeGenTropicraft extends Biome {
 		ForgeRegistries.BIOMES.register(tropicsBeach);
 		ForgeRegistries.BIOMES.register(tropicsLake);
 	}
+	
+	protected IBlockState sandBlock = BlockRegistry.sands.getDefaultState();
 
 	public BiomeGenTropicraft(BiomeProperties bgprop) {
 		super(bgprop);
-
-		this.sandBlock = Blocks.SAND;
-		this.sandMetadata = 0;
 
 		this.spawnableCreatureList.clear();
 		this.spawnableMonsterList.clear();
@@ -180,5 +187,15 @@ public class BiomeGenTropicraft extends Biome {
 	//	}
 
 
+	public IBlockState getStateForLayer(int yStart, int layer) {
+	    if (yStart < 63 + 3) {
+	        return sandBlock;
+	    }
+	    if (layer == 0) {
+	        return topBlock;
+	    } else {
+	        return fillerBlock;
+	    }
+	}
 
 }
