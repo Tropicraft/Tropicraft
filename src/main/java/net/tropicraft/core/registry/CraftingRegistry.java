@@ -1,6 +1,7 @@
 package net.tropicraft.core.registry;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,8 +22,8 @@ public class CraftingRegistry {
 	}
 
 	private static void addRecipes() {
-		// Thatch bundle
-		createRecipe(true, new ItemStack(BlockRegistry.bundles, 1, 0), new Object[] {
+		// Thatch bundle (4 shoots make 2 bundles)
+		createRecipe(true, new ItemStack(BlockRegistry.bundles, 2, 0), new Object[] {
 			"XX", "XX",
 			'X', Items.REEDS
 		});
@@ -33,8 +34,8 @@ public class CraftingRegistry {
 			'X', new ItemStack(BlockRegistry.bundles, 1, 1)
 		});
 
-		// Bamboo bundle
-		createRecipe(true, new ItemStack(BlockRegistry.bundles, 1, 1), new Object[] {
+		// Bamboo bundle (4 shoots make 2 bundles)
+		createRecipe(true, new ItemStack(BlockRegistry.bundles, 2, 1), new Object[] {
 			"XX", "XX",
 			'X', ItemRegistry.bambooShoot
 		});
@@ -45,27 +46,15 @@ public class CraftingRegistry {
 			'X', new ItemStack(BlockRegistry.bundles, 1, 0)
 		});
 
-		// Thatch stairs - reeds
-		createRecipe(true, new ItemStack(BlockRegistry.thatchStairs, 1), new Object[] {
-			"X ", "XX",
-			'X', Items.REEDS
-		});
-
 		// Thatch stairs - thatch bundles
 		createRecipe(true, new ItemStack(BlockRegistry.thatchStairs, 4), new Object[] {
-			"X ", "XX",
+			"X  ", "XX ", "XXX",
 			'X', new ItemStack(BlockRegistry.bundles, 1, 0)
-		});
-
-		// Bamboo stairs - bamboo shoots
-		createRecipe(true, new ItemStack(BlockRegistry.bambooStairs, 1), new Object[] {
-			"X ", "XX",
-			'X', ItemRegistry.bambooShoot
 		});
 
 		// Bamboo stairs - bamboo bundles
 		createRecipe(true, new ItemStack(BlockRegistry.bambooStairs, 4), new Object[] {
-			"X ", "XX",
+			"X  ", "XX ", "XXX",
 			'X', new ItemStack(BlockRegistry.bundles, 1, 1)
 		});
 
@@ -270,6 +259,42 @@ public class CraftingRegistry {
 		createShapelessRecipe(true, new ItemStack(BlockRegistry.planks, 4, mahogany_meta), new Object[] {
 			new ItemStack(BlockRegistry.logs, 1, mahogany_meta)
 		});
+
+	    // Bamboo slabs
+        createRecipe(true, new ItemStack(BlockRegistry.slabs, 6, 0), new Object[] {
+            "XXX",
+            'X', new ItemStack(BlockRegistry.bundles, 1, 1)
+        });
+
+        // Thatch slabs
+        createRecipe(true, new ItemStack(BlockRegistry.slabs, 6, 1), new Object[] {
+            "XXX",
+            'X', new ItemStack(BlockRegistry.bundles, 1, 0)
+        });
+
+        // Chunk slabs
+        createRecipe(true, new ItemStack(BlockRegistry.slabs, 6, 2), new Object[] {
+            "XXX",
+            'X', BlockRegistry.chunk
+        });
+
+        // Palm slabs
+        createRecipe(true, new ItemStack(BlockRegistry.slabs, 6, 3), new Object[] {
+            "XXX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 1)
+        });
+
+        // Palm planks -> crafting table
+        createRecipe(true, new ItemStack(Blocks.CRAFTING_TABLE), new Object[] {
+            "XX", "XX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 1)
+        });
+
+        // Mahogany planks -> crafting table
+        createRecipe(true, new ItemStack(Blocks.CRAFTING_TABLE), new Object[] {
+            "XX", "XX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0)
+        });
 
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
 		createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
