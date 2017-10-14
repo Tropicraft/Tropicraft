@@ -33,6 +33,9 @@ public final class Names {
 	public static final String BAMBOO_DOOR = "bamboo_door";
 	public static final String BLOCK_PALM_STAIRS = "palm_stairs";
 	public static final String[] SLAB_NAMES = new String[]{"bamboo", "thatch", "chunk", "palm"};
+	public static final String BONGO_SMALL = "bongo_small";
+	public static final String BONGO_MEDIUM = "bongo_medium";
+	public static final String BONGO_LARGE = "bongo_large";
 
 	// Item names
 	public static final String[] SHELL_NAMES = new String[]{"solo", "frox", "pab", "rube", "starfish", "turtle"};
