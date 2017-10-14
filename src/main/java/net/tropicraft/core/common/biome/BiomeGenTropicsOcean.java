@@ -12,14 +12,13 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BiomeGenTropicsOcean extends BiomeGenTropicraft {
 
 	public BiomeGenTropicsOcean(BiomeProperties bgprop) {
 		super(bgprop);
 		this.theBiomeDecorator = new BiomeDecoratorTropicsOcean();
-        this.topBlock = Blocks.SAND.getDefaultState();
-        this.fillerBlock = Blocks.SAND.getDefaultState();
 
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeahorse.class, 6, 6, 12));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityMarlin.class, 10, 1, 4));
@@ -31,6 +30,8 @@ public class BiomeGenTropicsOcean extends BiomeGenTropicraft {
         this.spawnableCreatureList.add(new SpawnListEntry(EntityFailgull.class, 30, 5, 15));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTropicalFish.class, 20, 20, 40));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 2, 4));
+
+        this.topBlock = this.fillerBlock = BlockRegistry.sands.getDefaultState();
 	}
 
 }
