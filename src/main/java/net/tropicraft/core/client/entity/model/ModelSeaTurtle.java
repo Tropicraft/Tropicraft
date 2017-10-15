@@ -80,8 +80,20 @@ public class ModelSeaTurtle extends ModelBase {
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    	
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+
+        float swimSpeed = 0.05f;
+        float swimDist = 0.5f;
+        
+        if(entity.isInWater()) {
+	        FLFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
+	        FRFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
+	        RLFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
+	        RRFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
+        }
+
         Body.render(f5);
     }
 
@@ -92,43 +104,9 @@ public class ModelSeaTurtle extends ModelBase {
     }
 
     @Override
-    public void setLivingAnimations(EntityLivingBase entityliving, float f, float f1, float f2) {
-        float defFront = 0.3927F;
-        float defFront2 = 0.3F;
-        float defRear = .5F;
-        if (!entityliving.isInWater()) {
-            Body.rotateAngleX = -Math.abs(MathHelper.sin(f * 0.25F) * 1.25F * f1) - .10F;
-            FRFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 + defFront;
-            FRFlipper.rotateAngleX = -defFront2;
-            FRFlipper.rotateAngleZ = MathHelper.cos(f * 0.50F) * 1.25F * f1 - defFront2;
-            FLFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 - defFront;
-            FLFlipper.rotateAngleZ = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defFront2;
-            FRFlipper.rotateAngleX = defFront2;
-            RRFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 - defRear;
-            RLFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defRear;
-            RRFlipper.rotateAngleZ = 0F;
-            RLFlipper.rotateAngleZ = 0F;
-
-        } else if (entityliving.isInWater()) {
-            Body.rotateAngleX = -0.35F; //Y foward backward
-            FRFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 + defFront;
-            FRFlipper.rotateAngleX = -defFront2;
-            FRFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.75F * f1 - defFront2;
-            FLFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 - defFront;
-            FLFlipper.rotateAngleZ = MathHelper.cos(f * 1.25F) * 1.75F * f1 + defFront2;
-            FRFlipper.rotateAngleX = defFront2;
-            RRFlipper.rotateAngleY = -MathHelper.cos(f * 0.25F) * .25F * f1 - defRear;
-            RLFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * .25F * f1 + defRear;
-            RRFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
-            RLFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
-        }
-    }
-
-    @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity ent) {
         super.setRotationAngles(f, f1, f2, f3, f4, f5, ent);
         Head.rotateAngleX = f4 / 125F;
         Head.rotateAngleY = f3 / 125F;
-
     }
 }
