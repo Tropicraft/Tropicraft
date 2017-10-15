@@ -88,22 +88,23 @@ public class TropicraftRenderUtils {
 
 				GlStateManager.enableLighting();
 			}
-			GlStateManager.popMatrix();
-		}
-	}
-	
-	private static long elapsedTicks;
-	
-	@SubscribeEvent
-	public static void onClientTick(ClientTickEvent event) {
-	    if (event.phase == Phase.END) elapsedTicks++;
-	}
-	
-	public static long getElapsedTicks() {
-	    return elapsedTicks;
-	}
-	
+            GlStateManager.popMatrix();
+        }
+    }
+
     public static String translateGUI(String word) {
         return I18n.translateToLocal(String.format("gui.tropicraft:%s", word));
+    }
+
+    private static long elapsedTicks;
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent event) {
+        if (event.phase == Phase.END)
+            elapsedTicks++;
+    }
+
+    public static long getElapsedTicks() {
+        return elapsedTicks;
     }
 }

@@ -123,7 +123,6 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityTropicalFish.class, new RenderTropicalFish());
         registerEntityRender(EntityPiranha.class, new RenderTropicalFish());
         registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
-
         registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
     }
 

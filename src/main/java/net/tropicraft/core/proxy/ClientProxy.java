@@ -31,6 +31,7 @@ import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
+import net.tropicraft.core.client.ScubaHandler;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.common.block.ITropicraftBlock;
@@ -46,148 +47,150 @@ import net.tropicraft.core.registry.TileEntityRenderRegistry;
 
 public class ClientProxy extends CommonProxy {
 
-    public ClientProxy() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	public ClientProxy() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
-    @Override
-    public void preInit() {
-        super.preInit();
-        ModelLoader.setCustomStateMapper(BlockRegistry.coral, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
-    }
+	@Override
+	public void preInit() {
+		super.preInit();
+		ModelLoader.setCustomStateMapper(BlockRegistry.coral, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
+	}
 
-    @Override
-    public void init() {
-        super.init();
+	@Override
+	public void init() {
+		super.init();
 
-        ItemRegistry.clientProxyInit();
-        BlockRegistry.clientProxyInit();
+		ItemRegistry.clientProxyInit();
+		BlockRegistry.clientProxyInit();
 
-        EntityRenderRegistry.init();
-        TileEntityRenderRegistry.init();
+		EntityRenderRegistry.init();
+		TileEntityRenderRegistry.init();
 
-        MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
+		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
+		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
 
-        // For rendering drink mixer in inventory
-        ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
-    }
 
-    public void registerColoredBlock(Block block) {
-        ITropicraftBlock tcBlock = (ITropicraftBlock)block;
-        if (tcBlock.getBlockColor() != null) {
-            Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(tcBlock.getBlockColor(), block);
-        }
+		// For rendering drink mixer in inventory
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
+	}
 
-        if (tcBlock.getItemColor() != null) {
-            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(tcBlock.getItemColor(), block);
-        }
-    }
+	public void registerColoredBlock(Block block) {
+		ITropicraftBlock tcBlock = (ITropicraftBlock)block;
+		if (tcBlock.getBlockColor() != null) {
+			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(tcBlock.getBlockColor(), block);
+		}
 
-    public void registerColoredItem(Item item) {
-        IItemColor itemColor = null;
-        if (item instanceof ItemTropicraftColored) {
-            itemColor = new ChairColorHandler();
-        } else if (item instanceof ItemCocktail) {
-            itemColor = new CocktailColorHandler();
-        }
-        if (itemColor != null) {
-            Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ChairColorHandler(), item);
-        } else {
-            System.err.println("!!! FAILED TO REGISTER COLOR HANDLER FOR ITEM " + item.getUnlocalizedName() + " !!!");
-        }
-    }
+		if (tcBlock.getItemColor() != null) {
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(tcBlock.getItemColor(), block);
+		}
+	}
 
-    public void registerItemRender(Item item, int meta, String unlocalizedName) {
-        //ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Tropicraft.modID + ":" + unlocalizedName, "inventory"));
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(Info.MODID + ":" + unlocalizedName, "inventory"));
-    }
+	public void registerColoredItem(Item item) {
+		IItemColor itemColor = null;
+		if (item instanceof ItemTropicraftColored) {
+			itemColor = new ChairColorHandler();
+		} else if (item instanceof ItemCocktail) {
+			itemColor = new CocktailColorHandler();
+		}
+		if (itemColor != null) {
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ChairColorHandler(), item);
+		} else {
+			System.err.println("!!! FAILED TO REGISTER COLOR HANDLER FOR ITEM " + item.getUnlocalizedName() + " !!!");
+		}
+	}
 
-    public void registerItemRender(Item item, int meta, String unlocalizedName, String location) {
-        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), "variant=" + unlocalizedName));
-        //Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(Tropicraft.modID + ":" + unlocalizedName, location));
-    }
+	public void registerItemRender(Item item, int meta, String unlocalizedName) {
+		//ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Tropicraft.modID + ":" + unlocalizedName, "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(Info.MODID + ":" + unlocalizedName, "inventory"));
+	}
 
-    @Override
-    public void registerItemVariantModel(Item item, String name, int metadata) {
-        if (item != null) { 
-            //     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
-            ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, "inventory"));
-        }
-    }
+	public void registerItemRender(Item item, int meta, String unlocalizedName, String location) {
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), "variant=" + unlocalizedName));
+		//Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(Tropicraft.modID + ":" + unlocalizedName, location));
+	}
 
-    private final Map<String, String[]> blockVariants = new HashMap<>();
+	@Override
+	public void registerItemVariantModel(Item item, String name, int metadata) {
+		if (item != null) {
+			//     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
+			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, "inventory"));
+		}
+	}
 
-    @Override
-    public void registerArbitraryBlockVariants(String name, String... variants) {
-        blockVariants.put(name, variants);
-    }
+	private final Map<String, String[]> blockVariants = new HashMap<>();
 
-    @SubscribeEvent
-    public void onModelBake(ModelBakeEvent event) {
-        for (Entry<String, String[]> e : blockVariants.entrySet()) {
-            for (String variant : e.getValue()) {
-                ModelResourceLocation loc = new ModelResourceLocation(Info.MODID + ":" + e.getKey(), variant);
-                IModel model = ModelLoaderRegistry.getModelOrLogError(loc, "Could not load arbitrary block variant " + variant + " for block " + e.getKey());
-                event.getModelRegistry().putObject(loc, model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter()));
-            }
-        }
-    }
+	@Override
+	public void registerArbitraryBlockVariants(String name, String... variants) {
+		blockVariants.put(name, variants);
+	}
 
-    @Override
-    public void registerItemVariantModel(Item item, String registryName, int metadata, String variantName) {
-        if (item != null) {
-            // ModelResourceLocation mrl = new ModelResourceLocation(Info.MODID + ":" + registryName, variantName);
-            // ModelLoader.setCustomModelResourceLocation(item, metadata, mrl);
-            ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + variantName, null));
-        }
-    }
+	@SubscribeEvent
+	public void onModelBake(ModelBakeEvent event) {
+		for (Entry<String, String[]> e : blockVariants.entrySet()) {
+			for (String variant : e.getValue()) {
+				ModelResourceLocation loc = new ModelResourceLocation(Info.MODID + ":" + e.getKey(), variant);
+				IModel model = ModelLoaderRegistry.getModelOrLogError(loc, "Could not load arbitrary block variant " + variant + " for block " + e.getKey());
+				event.getModelRegistry().putObject(loc, model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter()));
+			}
+		}
+	}
 
-    // Another nice method based on code from BoP. Those guys rock :D
-    /**
-     * Registers an item (in ItemRegistry) that has damage values
-     */
-    @Override
-    public void registerItemWithSubtypes(Item item, CreativeTabs tab) {
-        if (item.getHasSubtypes()) {
-            List<ItemStack> subItems = new ArrayList<ItemStack>();
-            item.getSubItems(item, tab, subItems);
-            for (ItemStack subItem : subItems) {
-                String subItemName = item.getUnlocalizedName(subItem);
-                subItemName =  subItemName.substring(subItemName.indexOf(".") + 1); // remove 'item.' from the front
+	@Override
+	public void registerItemVariantModel(Item item, String registryName, int metadata, String variantName) {
+		if (item != null) {
+			// ModelResourceLocation mrl = new ModelResourceLocation(Info.MODID + ":" + registryName, variantName);
+			// ModelLoader.setCustomModelResourceLocation(item, metadata, mrl);
+			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + variantName, null));
+		}
+	}
 
-                registerItemVariantModel(item, subItemName, subItem.getMetadata());
-            }
-        }
-        else {
-            registerItemVariantModel(item, item.delegate.name().getResourcePath(), 0);
-        }
-    }
+	// Another nice method based on code from BoP. Those guys rock :D
+	/**
+	 * Registers an item (in ItemRegistry) that has damage values
+	 */
+	@Override
+	public void registerItemWithSubtypes(Item item, CreativeTabs tab) {
+		if (item.getHasSubtypes()) {
+			List<ItemStack> subItems = new ArrayList<ItemStack>();
+			item.getSubItems(item, tab, subItems);
+			for (ItemStack subItem : subItems) {
+				String subItemName = item.getUnlocalizedName(subItem);
+				subItemName =  subItemName.substring(subItemName.indexOf(".") + 1); // remove 'item.' from the front
 
-    // Yet another method inspired by BoP :)
-    @Override
-    public void registerFluidBlockRendering(Block block, String name) {
-        final ModelResourceLocation fluidLocation = new ModelResourceLocation(Info.MODID + ":" + name, name);
+				registerItemVariantModel(item, subItemName, subItem.getMetadata());
+			}
+		}
+		else {
+			registerItemVariantModel(item, item.delegate.name().getResourcePath(), 0);
+		}
+	}
 
-        // use a custom state mapper which will ignore the LEVEL property
-        ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
-            @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return fluidLocation;
-            }
-        });
-    }
+	// Yet another method inspired by BoP :)
+	@Override
+	public void registerFluidBlockRendering(Block block, String name) {
+		final ModelResourceLocation fluidLocation = new ModelResourceLocation(Info.MODID + ":" + name, name);
 
-    @Override
-    public void registerBooks() {
-        Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat",
-                Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt", 
-                "encyclopediaTropica", 
-                "encyclopediaTropicaInside");
-        CraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
-    }
+		// use a custom state mapper which will ignore the LEVEL property
+		ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return fluidLocation;
+			}
+		});
+	}
 
-    @Override
-    public World getClientWorld() {
-        return Minecraft.getMinecraft().world;
-    }
+	@Override
+	public void registerBooks() {
+		Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat",
+				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt",
+				"encyclopediaTropica",
+				"encyclopediaTropicaInside");
+		CraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
+	}
+
+	@Override
+	public World getClientWorld() {
+		return Minecraft.getMinecraft().world;
+	}
 }
