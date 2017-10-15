@@ -112,9 +112,6 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
         if (!this.isDouble()) {
             iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
         }
-        
-        System.out.println(iblockstate);
-        System.out.println(meta);
 
         return iblockstate;
     }
@@ -171,20 +168,15 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 	@Override
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        System.out.println("placed" + meta);
 		IBlockState iblockstate = super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);
         //IBlockState ret = this.isDouble() ? iblockstate : (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double)hitY <= 0.5D) ? iblockstate : iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.TOP));
         
         if (isDouble()) {
-        	System.out.println("is dubl");
         	return iblockstate;
         } else {
         	if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double)hitY <= 0.5D)) {
-        		System.out.println(facing);
-        		System.out.println("facing" + hitY);
         		return iblockstate;
         	} else {
-        		System.out.println("top half");
         		return iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.TOP);
         	}
         }

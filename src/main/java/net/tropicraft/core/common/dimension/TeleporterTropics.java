@@ -9,284 +9,298 @@ import java.util.Random;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStairs;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
+import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockTikiTorch;
+import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
+import net.tropicraft.core.common.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.core.common.enums.TropicraftBundles;
+import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.registry.BlockRegistry;
-//import net.tropicraft.block.tileentity.TileEntityBambooChest; TODO
-//import net.tropicraft.item.TropicraftItems; TODO
+import net.tropicraft.core.registry.ItemRegistry;
+
 
 public class TeleporterTropics extends Teleporter {
 
-	private static Block PORTAL_WALL_BLOCK;
-	private static Block PORTAL_BLOCK;
-	
-	private final WorldServer world;
-	private final Random random;
+    private static Block PORTAL_WALL_BLOCK;
+    private static Block PORTAL_BLOCK;
+    private IBlockState thatchBlock = BlockRegistry.bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH);
 
-	/** Stores successful portal placement locations for rapid lookup. */
-	private final Long2ObjectMap<Teleporter.PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap(4096);
+    private final WorldServer world;
+    private final Random random;
 
-	/**
-	 * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
-	 * location.
-	 */
-	private final List destinationCoordinateKeys = new ArrayList();
+    /** Stores successful portal placement locations for rapid lookup. */
+    private final Long2ObjectMap<Teleporter.PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap(4096);
 
-	public TeleporterTropics(WorldServer world) {
-		super(world);
-		PORTAL_BLOCK = BlockRegistry.tropicsPortal;
-		PORTAL_WALL_BLOCK = BlockRegistry.portalWall;
-		this.world = world;
-		this.random = new Random(world.getSeed());
-	}
+    /**
+     * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
+     * location.
+     */
+    private final List destinationCoordinateKeys = new ArrayList();
 
-	@Override
-	public void placeInPortal(Entity entity, float yaw) {
-		long startTime = System.currentTimeMillis();
-		if (!placeInExistingPortal(entity, yaw)) {
-			makePortal(entity);
-			placeInExistingPortal(entity, yaw);
-		}
+    public TeleporterTropics(WorldServer world) {
+        super(world);
+        PORTAL_BLOCK = BlockRegistry.tropicsPortal;
+        PORTAL_WALL_BLOCK = BlockRegistry.portalWall;
+        this.world = world;
+        this.random = new Random(world.getSeed());
+    }
 
-		long finishTime = System.currentTimeMillis();
+    @Override
+    public void placeInPortal(Entity entity, float yaw) {
+        long startTime = System.currentTimeMillis();
+        if (!placeInExistingPortal(entity, yaw)) {
+            makePortal(entity);
+            placeInExistingPortal(entity, yaw);
+        }
 
-		System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0F);
-	}
+        long finishTime = System.currentTimeMillis();
 
-	@Override
-	public boolean placeInExistingPortal(Entity entity, float f)
-	{
-		int searchArea = 148;
-		double closestPortal = -1D;
-		int foundX = 0;
-		int foundY = 0;
-		int foundZ = 0;
-		int entityX = MathHelper.floor(entity.posX);
-		int entityZ = MathHelper.floor(entity.posZ);
-		BlockPos blockpos = BlockPos.ORIGIN;
-		boolean notInCache = true;
+        System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0F);
+    }
 
-		long j1 = ChunkPos.asLong(entityX, entityZ);
+    @Override
+    public boolean placeInExistingPortal(Entity entity, float f)
+    {
+        int searchArea = 148;
+        double closestPortal = -1D;
+        int foundX = 0;
+        int foundY = 0;
+        int foundZ = 0;
+        int entityX = MathHelper.floor(entity.posX);
+        int entityZ = MathHelper.floor(entity.posZ);
+        BlockPos blockpos = BlockPos.ORIGIN;
+        boolean notInCache = true;
 
-		if (destinationCoordinateCache.containsKey(j1)) {
-			//	System.out.println("Setting closest portal to 0");
-			PortalPosition portalposition = (PortalPosition)destinationCoordinateCache.get(j1);
-			closestPortal = 0.0D;
-			blockpos = portalposition;
-			portalposition.lastUpdateTime = world.getTotalWorldTime();
-			notInCache = false;
-		} else {
-			for (int x = entityX - searchArea; x <= entityX + searchArea; x ++)
-			{
-				double distX = x + 0.5D - entity.posX;
+        long j1 = ChunkPos.asLong(entityX, entityZ);
 
-				for (int z = entityZ - searchArea; z <= entityZ + searchArea; z ++)
-				{
-					double distZ = z + 0.5D - entity.posZ;
+        if (destinationCoordinateCache.containsKey(j1)) {
+            //	System.out.println("Setting closest portal to 0");
+            PortalPosition portalposition = (PortalPosition)destinationCoordinateCache.get(j1);
+            closestPortal = 0.0D;
+            blockpos = portalposition;
+            portalposition.lastUpdateTime = world.getTotalWorldTime();
+            notInCache = false;
+        } else {
+            for (int x = entityX - searchArea; x <= entityX + searchArea; x ++)
+            {
+                double distX = x + 0.5D - entity.posX;
 
-					for (int y = world.getActualHeight() - 1; y >= 0; y--)
-					{
-						BlockPos pos = new BlockPos(x, y, z);
-						if (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
-						{
-							pos = pos.down();
-							while (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
-							{
-								--y;
-								pos = pos.down();
-							}
+                for (int z = entityZ - searchArea; z <= entityZ + searchArea; z ++)
+                {
+                    double distZ = z + 0.5D - entity.posZ;
 
-							double distY = y + 0.5D - entity.posY;
-							double distance = distX * distX + distY * distY + distZ * distZ;
-							if (closestPortal < 0.0D || distance < closestPortal)
-							{
-								closestPortal = distance;
-								foundX = x;
-								foundY = y;
-								foundZ = z;
-							}
-						}
-					}
-				}
-			}
-		}
+                    for (int y = world.getActualHeight() - 1; y >= 0; y--)
+                    {
+                        BlockPos pos = new BlockPos(x, y, z);
+                        if (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
+                        {
+                            pos = pos.down();
+                            while (world.getBlockState(pos).getBlock() == PORTAL_BLOCK)
+                            {
+                                --y;
+                                pos = pos.down();
+                            }
 
-		//	System.out.println("Setting closest portal to " + closestPortal);
+                            double distY = y + 0.5D - entity.posY;
+                            double distance = distX * distX + distY * distY + distZ * distZ;
+                            if (closestPortal < 0.0D || distance < closestPortal)
+                            {
+                                closestPortal = distance;
+                                foundX = x;
+                                foundY = y;
+                                foundZ = z;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		if (closestPortal >= 0.0D)
-		{
-			if (notInCache) {
-				this.destinationCoordinateCache.put(j1, new Teleporter.PortalPosition(blockpos, this.world.getTotalWorldTime()));
-			}
+        //	System.out.println("Setting closest portal to " + closestPortal);
 
-			int x = foundX;
-			int y = foundY;
-			int z = foundZ;
-			double newLocX = x + 0.5D;
-			double newLocY = y + 0.5D;
-			double newLocZ = z + 0.5D;
-			
-			BlockPos pos = new BlockPos(x, y, z);
+        if (closestPortal >= 0.0D)
+        {
+            if (notInCache) {
+                this.destinationCoordinateCache.put(j1, new Teleporter.PortalPosition(blockpos, this.world.getTotalWorldTime()));
+            }
 
-			if (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == PORTAL_BLOCK)
-			{
-				newLocX -= 0.5D;
-			}
-			if (world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == PORTAL_BLOCK)
-			{
-				newLocX += 0.5D;
-			}
-			if (world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == PORTAL_BLOCK)
-			{
-				newLocZ -= 0.5D;
-			}
-			if (world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == PORTAL_BLOCK)
-			{
-				newLocZ += 0.5D;
-			}
-			entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
-			int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-			int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-			int worldSpawnY = world.getHeight(new BlockPos(worldSpawnX, 0, worldSpawnZ)).getY() + 3;
+            int x = foundX;
+            int y = foundY;
+            int z = foundZ;
+            double newLocX = x + 0.5D;
+            double newLocY = y + 0.5D;
+            double newLocZ = z + 0.5D;
 
-			entity.motionX = entity.motionY = entity.motionZ = 0.0D;
+            BlockPos pos = new BlockPos(x, y, z);
 
-			// If the player is entering the tropics, spawn an Encyclopedia Tropica
-			// in the spawn portal chest (if they don't already have one AND one isn't
-			// already in the chest)
-			if (entity instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) entity;
-				if (world.provider instanceof WorldProviderTropicraft) {
-					//TODO improve this logical check to an NBT tag or something?
-//					if (!player.inventory.hasItem(TCItemRegistry.encTropica)) {
-//						// Search for the spawn chest
-//						TileEntityBambooChest chest = null;
-//						int chestX = MathHelper.floor(newLocX);
-//						int chestZ = MathHelper.floor(newLocZ);
-//						chestSearch:
-//							for (int searchX = -3; searchX < 4; searchX++) {
-//								for (int searchZ = -3; searchZ < 4; searchZ++) {
-//									for (int searchY = -4; searchY < 5; searchY++) {
-//										if (world.getBlock(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ) == TCBlockRegistry.bambooChest) {
-//											chest = (TileEntityBambooChest)world.getTileEntity(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
-//											if (chest != null && chest.isUnbreakable()) {
-//												break chestSearch;
-//											}
-//										}
-//									}
-//								}
-//							}
-//
-//						// Make sure chest doesn't have the encyclopedia
-//						if (chest!= null && chest.isUnbreakable()) {
-//							boolean hasEncyclopedia = false;
-//							for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-//								ItemStack stack = chest.getStackInSlot(inv);
-//								if (stack != null && stack.getItem() == TCItemRegistry.encTropica) {
-//									hasEncyclopedia = true;
-//								}
-//							}
-//
-//							// Give out a new encyclopedia
-//							if (!hasEncyclopedia) {
-//								for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
-//									ItemStack stack = chest.getStackInSlot(inv);
-//									if (stack == null) {
-//										chest.setInventorySlotContents(inv, new ItemStack(TCItemRegistry.encTropica, 1));
-//										break;
-//									}
-//								}
-//							}
-//						}
-//					}
-				}
-			}
+            if (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == PORTAL_BLOCK)
+            {
+                newLocX -= 0.5D;
+            }
+            if (world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == PORTAL_BLOCK)
+            {
+                newLocX += 0.5D;
+            }
+            if (world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == PORTAL_BLOCK)
+            {
+                newLocZ -= 0.5D;
+            }
+            if (world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == PORTAL_BLOCK)
+            {
+                newLocZ += 0.5D;
+            }
+            entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
+            int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+            int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+            int worldSpawnY = world.getHeight(new BlockPos(worldSpawnX, 0, worldSpawnZ)).getY() + 3;
 
-			return true;
-		} else {
-			return false;
-		}
-	}
+            entity.motionX = entity.motionY = entity.motionZ = 0.0D;
 
-	@Override
-	public boolean makePortal(Entity entity) {
-		System.err.println("Start make portal");
-		int searchArea = 16;
-		double closestSpot = -1D;
-		int entityX = MathHelper.floor(entity.posX);
-		int entityY = MathHelper.floor(entity.posY);
-		int entityZ = MathHelper.floor(entity.posZ);
-		int foundX = entityX;
-		int foundY = entityY;
-		int foundZ = entityZ;
+            // If the player is entering the tropics, spawn an Encyclopedia Tropica
+            // in the spawn portal chest (if they don't already have one AND one isn't
+            // already in the chest)
+            if (entity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entity;
+                if (world.provider instanceof WorldProviderTropicraft) {
+                    //TODO improve this logical check to an NBT tag or something?
+                    if (!player.inventory.hasItemStack(new ItemStack(ItemRegistry.encyclopedia))) {
+                        // Search for the spawn chest
+                        TileEntityBambooChest chest = null;
+                        int chestX = MathHelper.floor(newLocX);
+                        int chestZ = MathHelper.floor(newLocZ);
+                        chestSearch:
+                            for (int searchX = -3; searchX < 4; searchX++) {
+                                for (int searchZ = -3; searchZ < 4; searchZ++) {
+                                    for (int searchY = -4; searchY < 5; searchY++) {
+                                        BlockPos chestPos = new BlockPos(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
+                                        if (world.getBlockState(chestPos).getBlock() == BlockRegistry.bambooChest) {
+                                            chest = (TileEntityBambooChest)world.getTileEntity(chestPos);
+                                            if (chest != null && chest.isUnbreakable()) {
+                                                break chestSearch;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
-		for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
-			double distX = (x + 0.5D) - entity.posX;
-			nextCoords:
-				for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
-					double distZ = (z + 0.5D) - entity.posZ;
+                        // Make sure chest doesn't have the encyclopedia
+                        if (chest!= null && chest.isUnbreakable()) {
+                            boolean hasEncyclopedia = false;
+                            for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
+                                ItemStack stack = chest.getStackInSlot(inv);
+                                if (stack != null && stack.getItem() == ItemRegistry.encyclopedia) {
+                                    hasEncyclopedia = true;
+                                }
+                            }
 
-					// Find topmost solid block at this x,z location
-					int y = world.getHeight() - 1;
-					BlockPos pos = new BlockPos(x, y, z);
-					for (; y >= 63 - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
-							!world.getBlockState(pos).isOpaqueCube()); pos = pos.down()) {
-						;
-					}
-					// Only generate portal between sea level and sea level + 20
-					if (y > 63 + 20 || y < 63) {
-						continue;
-					}
+                            // Give out a new encyclopedia
+                            if (!hasEncyclopedia) {
+                                for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
+                                    ItemStack stack = chest.getStackInSlot(inv);
+                                    if (stack == null) {
+                                        chest.setInventorySlotContents(inv, new ItemStack(ItemRegistry.encyclopedia, 1));
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-					if (getValidBuildBlocks().contains(world.getBlockState(new BlockPos(x, y, z)))) {
-						for (int xOffset = -2; xOffset <= 2; xOffset++) {
-							for (int zOffset = -2; zOffset <= 2; zOffset++) {
-								int otherY = world.getHeight() - 1;
-								BlockPos pos1 = new BlockPos(x + xOffset, otherY, z + zOffset);
-								BlockPos pos2 = new BlockPos(x, y, z); 
-								for (; otherY >= 63 && (world.getBlockState(pos1).getBlock() == Blocks.AIR ||
-										!world.getBlockState(pos2).isOpaqueCube()); pos1 = pos1.down()) {
-									;
-								}
-								if (Math.abs(y - otherY) >= 3) {
-									continue nextCoords;
-								}
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-//								if (!getValidBuildBlocks().contains(world.getBlock(x + xOffset, otherY, z + zOffset))) {
-//									continue nextCoords;
-//								}
-							}
-						}
+    @Override
+    public boolean makePortal(Entity entity) {
+        System.out.println("Start make portal");
+        int searchArea = 16;
+        double closestSpot = -1D;
+        int entityX = MathHelper.floor(entity.posX);
+        int entityY = MathHelper.floor(entity.posY);
+        int entityZ = MathHelper.floor(entity.posZ);
+        int foundX = entityX;
+        int foundY = entityY;
+        int foundZ = entityZ;
 
-						double distY = (y + 0.5D) - entity.posY;
-						double distance = distX * distX + distY * distY + distZ * distZ;
-						if (closestSpot < 0.0D || distance < closestSpot)
-						{
-							closestSpot = distance;
-							foundX = x;
-							foundY = y;
-							foundZ = z;
+        for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
+            double distX = (x + 0.5D) - entity.posX;
+            nextCoords:
+                for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
+                    double distZ = (z + 0.5D) - entity.posZ;
 
-						}
-					}
-				}
-		}
+                    // Find topmost solid block at this x,z location
+                    int y = world.getHeight() - 1;
+                    BlockPos pos = new BlockPos(x, y, z);
+                    for (; y >= 63 - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
+                            !world.getBlockState(pos).isOpaqueCube()); pos = pos.down()) {
+                        ;
+                    }
+                    // Only generate portal between sea level and sea level + 20
+                    if (y > 63 + 20 || y < 63) {
+                        continue;
+                    }
 
-		int worldSpawnX = MathHelper.floor(foundX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-		int worldSpawnZ = MathHelper.floor(foundZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-		int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
-		
-	      // If we can't find a spot (e.g. we're in the middle of the ocean),
+                    BlockPos tryPos = new BlockPos(x, y, z);
+                    if (getValidBuildBlocks().contains(world.getBlockState(tryPos))) {
+                        for (int xOffset = -2; xOffset <= 2; xOffset++) {
+                            for (int zOffset = -2; zOffset <= 2; zOffset++) {
+                                int otherY = world.getHeight() - 1;
+                                BlockPos pos1 = new BlockPos(x + xOffset, otherY, z + zOffset);
+                                BlockPos pos2 = tryPos.toImmutable(); 
+                                for (; otherY >= 63 && (world.getBlockState(pos1).getBlock() == Blocks.AIR ||
+                                        !world.getBlockState(pos2).isOpaqueCube()); pos1 = pos1.down()) {
+                                    ;
+                                }
+                                if (Math.abs(y - otherY) >= 3) {
+                                    continue nextCoords;
+                                }
+
+                                //if (!getValidBuildBlocks().contains(world.getBlock(x + xOffset, otherY, z + zOffset))) {
+                                //	continue nextCoords;
+                                //}
+                            }
+                        }
+
+                        double distY = (y + 0.5D) - entity.posY;
+                        double distance = distX * distX + distY * distY + distZ * distZ;
+                        if (closestSpot < 0.0D || distance < closestSpot)
+                        {
+                            closestSpot = distance;
+                            foundX = x;
+                            foundY = y;
+                            foundZ = z;
+
+                        }
+                    }
+                }
+        }
+
+        int worldSpawnX = MathHelper.floor(foundX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+        int worldSpawnZ = MathHelper.floor(foundZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+        int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
+
+        // Max distance to search in every direction for the nearest landmass to build a bridge to
+        int SEARCH_FOR_LAND_DISTANCE_MAX = 100;
+
+        // If we can't find a spot (e.g. we're in the middle of the ocean),
         // just put the portal at sea level
         if(closestSpot < 0.0D) {
             // Perhaps this was the culprit
@@ -294,19 +308,121 @@ public class TeleporterTropics extends Teleporter {
             foundX += r.nextInt(16) - 8;
             foundZ += r.nextInt(16) - 8;*/
             foundY = worldSpawnY - 2;
+
+            for (int dist = 1; dist < SEARCH_FOR_LAND_DISTANCE_MAX; dist++) {
+                BlockPos posX = new BlockPos(worldSpawnX + 3 + dist, worldSpawnY, worldSpawnZ);
+                BlockPos negX = new BlockPos(worldSpawnX - 3 - dist, worldSpawnY, worldSpawnZ);
+                BlockPos posZ = new BlockPos(worldSpawnX, worldSpawnY, worldSpawnZ + 3 + dist);
+                BlockPos negZ = new BlockPos(worldSpawnX, worldSpawnY, worldSpawnZ - 3 - dist);
+
+                IBlockState statePosX = world.getBlockState(posX);
+                IBlockState stateNegX = world.getBlockState(negX);
+                IBlockState statePosZ = world.getBlockState(posZ);
+                IBlockState stateNegZ = world.getBlockState(negZ);
+                
+                int y = worldSpawnY + 1;
+
+                if (getValidBuildBlocks().contains(statePosX)) {
+                    for (int x = worldSpawnX + 3, z = worldSpawnZ; x < posX.getX(); x++) {
+                        BlockPos thatchPosMid = new BlockPos(x, y, z);
+                        world.setBlockState(thatchPosMid.north(), thatchBlock);
+                        world.setBlockState(thatchPosMid, thatchBlock);
+                        world.setBlockState(thatchPosMid.south(), thatchBlock);
+                    }
+
+                    BlockPos stairPosMid = new BlockPos(posX.getX(), y, worldSpawnZ);
+                    placeStairs(stairPosMid, EnumFacing.WEST);
+                    generateThatchBorder(worldSpawnX, worldSpawnY + 1, worldSpawnZ);
+                    break;
+                } else if (getValidBuildBlocks().contains(stateNegX)) {
+                    for (int x = worldSpawnX - 3, z = worldSpawnZ; x > negX.getX(); x--) {
+                        BlockPos thatchPosMid = new BlockPos(x, y, z);
+                        world.setBlockState(thatchPosMid.north(), thatchBlock);
+                        world.setBlockState(thatchPosMid, thatchBlock);
+                        world.setBlockState(thatchPosMid.south(), thatchBlock);
+                    }
+
+                    BlockPos stairPosMid = new BlockPos(negX.getX(), y, worldSpawnZ);
+                    placeStairs(stairPosMid, EnumFacing.EAST);
+                    generateThatchBorder(worldSpawnX, worldSpawnY + 1, worldSpawnZ);
+                    break;
+                } else if (getValidBuildBlocks().contains(statePosZ)) {
+                    for (int x = worldSpawnX, z = worldSpawnZ + 3; z < posZ.getZ(); z++) {
+                        BlockPos thatchPosMid = new BlockPos(x, y, z);
+                        world.setBlockState(thatchPosMid.east(), thatchBlock);
+                        world.setBlockState(thatchPosMid, thatchBlock);
+                        world.setBlockState(thatchPosMid.west(), thatchBlock);
+                    }
+
+                    BlockPos stairPosMid = new BlockPos(worldSpawnX, y, posZ.getZ());                    
+                    placeStairs(stairPosMid, EnumFacing.NORTH);
+                    generateThatchBorder(worldSpawnX, worldSpawnY + 1, worldSpawnZ);
+                    break;
+                } else if (getValidBuildBlocks().contains(stateNegZ)) {
+                    for (int x = worldSpawnX, z = worldSpawnZ - 3; z > negZ.getZ(); z--) {
+                        BlockPos thatchPosMid = new BlockPos(x, y, z);
+                        world.setBlockState(thatchPosMid.east(), thatchBlock);
+                        world.setBlockState(thatchPosMid, thatchBlock);
+                        world.setBlockState(thatchPosMid.west(), thatchBlock);
+                    }
+
+                    BlockPos stairPosMid = new BlockPos(worldSpawnX, y, negZ.getZ());
+                    placeStairs(stairPosMid, EnumFacing.SOUTH);
+                    generateThatchBorder(worldSpawnX, y, worldSpawnZ);
+
+                    break;
+                }
+            }
         }
 
-        //      System.out.printf("Buliding teleporter at x:<%d>, y:<%d>, z:<%d>\n", foundX, foundY, foundZ);
+        //      System.out.printf("Building teleporter at x:<%d>, y:<%d>, z:<%d>\n", foundX, foundY, foundZ);
 
         entity.setLocationAndAngles(foundX, foundY + 2, foundZ, entity.rotationYaw, 0.0F);
-		buildTeleporterAt(worldSpawnX, worldSpawnY + 1, worldSpawnZ, entity);
+        buildTeleporterAt(worldSpawnX, worldSpawnY + 1, worldSpawnZ, entity);
 
-		System.err.println("End makePortal");
-		
-		return true;
-	}
-	
-	/**
+        System.out.println("End makePortal");
+
+        return true;
+    }
+
+    private void placeStairs(BlockPos pos, EnumFacing dir) {
+        if (dir == EnumFacing.EAST || dir == EnumFacing.WEST) {
+            BlockPos stairPosLeft = pos.add(0, 0, -1);
+            BlockPos stairPosMid = pos;
+            BlockPos stairPosRight = pos.add(0, 0, 1);
+
+            IBlockState thatchStairState = BlockRegistry.thatchStairs.getDefaultState().withProperty(BlockStairs.FACING, dir);
+
+            world.setBlockState(stairPosLeft, thatchStairState);
+            world.setBlockState(stairPosMid, thatchStairState);
+            world.setBlockState(stairPosRight, thatchStairState);
+        } else if (dir == EnumFacing.NORTH || dir == EnumFacing.SOUTH) {
+            BlockPos stairPosLeft = pos.add(-1, 0, 0);
+            BlockPos stairPosMid = pos;
+            BlockPos stairPosRight = pos.add(1, 0, 0);
+
+            IBlockState thatchStairState = BlockRegistry.thatchStairs.getDefaultState().withProperty(BlockStairs.FACING, dir);
+
+            world.setBlockState(stairPosLeft, thatchStairState);
+            world.setBlockState(stairPosMid, thatchStairState);
+            world.setBlockState(stairPosRight, thatchStairState);
+        }
+    }
+
+    private void generateThatchBorder(int x, int y, int z) {
+        for (int zOffset = -4; zOffset <= 4; zOffset++) {
+            for (int xOffset = -4; xOffset <= 4; xOffset++) {
+                boolean isWall = xOffset < -2 || xOffset > 2 || zOffset < -2 || zOffset > 2;
+                if (isWall) {
+                    BlockPos thatchPos = new BlockPos(x + xOffset, y, z + zOffset);
+                    IBlockState thatchState = BlockRegistry.bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH);
+                    world.setBlockState(thatchPos, thatchState);
+                }
+            }
+        }
+    }
+
+    /**
      * Gets the terrain height at the specified coordinates
      * @param x The x coordinate
      * @param z The z coordinate
@@ -315,9 +431,11 @@ public class TeleporterTropics extends Teleporter {
     public int getTerrainHeightAt(int x, int z) {
         for(int y = 100; y > 0; y--)
         {
-            Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-            if(block == Blocks.DIRT || block == Blocks.GRASS || block == Blocks.SAND || block == Blocks.STONE ||
-                    block == BlockRegistry.tropicsWater /*|| block == TCBlockRegistry.purifiedSand*/)
+            IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+            Block block = state.getBlock();
+            if(block == Blocks.DIRT || state.getMaterial() == Material.ROCK ||
+                    state.getMaterial() == Material.WATER || state.getMaterial() == Material.GRASS ||
+                    state.getMaterial() == Material.SAND)
             {
                 return y;
             }
@@ -325,109 +443,102 @@ public class TeleporterTropics extends Teleporter {
         return 0;
     }
 
-	public void buildTeleporterAt(int x, int y, int z, Entity entity) {
-		System.err.println("start buildTeleporterAt");
-		y = y < 9 ? 9 : y;
+    public void buildTeleporterAt(int x, int y, int z, Entity entity) {
+        System.out.println("start buildTeleporterAt");
+        y = y < 9 ? 9 : y;
 
-		for (int yOffset = 4; yOffset >= -7; yOffset--) {
-			for (int zOffset = -2; zOffset <= 2; zOffset++) {
-				for (int xOffset = -2; xOffset <= 2; xOffset++) {
-					int blockX = x + xOffset;
-					int blockY = y + yOffset;
-					int blockZ = z + zOffset;
-					BlockPos pos = new BlockPos(blockX, blockY, blockZ);
+        for (int yOffset = 4; yOffset >= -7; yOffset--) {
+            for (int zOffset = -2; zOffset <= 2; zOffset++) {
+                for (int xOffset = -2; xOffset <= 2; xOffset++) {
+                    int blockX = x + xOffset;
+                    int blockY = y + yOffset;
+                    int blockZ = z + zOffset;
+                    BlockPos pos = new BlockPos(blockX, blockY, blockZ);
 
-					if (yOffset == -7) {
-						// Set bottom of portal to be solid
-						world.setBlockState(pos, PORTAL_WALL_BLOCK.getDefaultState());
-					} else if (yOffset > 0) {
-						// Set 4 blocks above portal to air
-						world.setBlockToAir(pos);
-					} else {
-						boolean isWall = xOffset == -2 || xOffset == 2 || zOffset == -2 || zOffset == 2;
-						if (isWall) {
-							// Set walls around portal
-							world.setBlockState(pos, PORTAL_WALL_BLOCK.getDefaultState());
-						} else {
-							// Set inside of portal
-							boolean isTeleportBlock = yOffset <= -5;
-							if (isTeleportBlock) {
-								IBlockState state = PORTAL_BLOCK.getDefaultState().withProperty(BlockTropicsPortal.TELEPORTABLE, Integer.valueOf(1));
-								world.setBlockState(pos, state);								
-							} else {
-								world.setBlockState(pos, PORTAL_BLOCK.getDefaultState());
-							}
+                    if (yOffset == -7) {
+                        // Set bottom of portal to be solid
+                        world.setBlockState(pos, PORTAL_WALL_BLOCK.getDefaultState());
+                    } else if (yOffset > 0) {
+                        // Set 4 blocks above portal to air
+                        world.setBlockToAir(pos);
+                    } else {
+                        boolean isWall = xOffset == -2 || xOffset == 2 || zOffset == -2 || zOffset == 2;
+                        if (isWall) {
+                            // Set walls around portal
+                            world.setBlockState(pos, PORTAL_WALL_BLOCK.getDefaultState());
+                        } else {
+                            // Set inside of portal
+                            boolean isTeleportBlock = yOffset <= -5;
+                            if (isTeleportBlock) {
+                                IBlockState state = PORTAL_BLOCK.getDefaultState().withProperty(BlockTropicsPortal.TELEPORTABLE, Integer.valueOf(1));
+                                world.setBlockState(pos, state);								
+                            } else {
+                                world.setBlockState(pos, PORTAL_BLOCK.getDefaultState());
+                            }
 
-						}
-					}
+                        }
+                    }
 
-					boolean isCorner = (xOffset == -2 || xOffset == 2) && (zOffset == -2 || zOffset == 2);
-					if (yOffset == 0 && isCorner) {
-						world.setBlockState(pos.up(), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.LOWER), 3);
-						world.setBlockState(pos.up(2), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.MIDDLE), 3);
-						world.setBlockState(pos.up(3), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.UPPER), 3);
-					}
+                    boolean isCorner = (xOffset == -2 || xOffset == 2) && (zOffset == -2 || zOffset == 2);
+                    if (yOffset == 0 && isCorner) {
+                        world.setBlockState(pos.up(), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.LOWER), 3);
+                        world.setBlockState(pos.up(2), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.MIDDLE), 3);
+                        world.setBlockState(pos.up(3), BlockRegistry.tikiTorch.getDefaultState().withProperty(BlockTikiTorch.SECTION, BlockTikiTorch.TorchSection.UPPER), 3);
+                    }
 
-				}
-			}
-		}
+                }
+            }
+        }
 
-		// Add chest
-		// Add an unbreakable chest to place encyclopedia in
-		// NOTE: using instanceof instead of world.getWorldInfo().getDimension()
-		// because getWorldInfo() may not be set/correct yet
-//		if (world.provider instanceof WorldProviderTropicraft) {
-//			world.setBlock(x + 2, y + 1, z, TCBlockRegistry.bambooChest, 1, 3);
-//			TileEntityBambooChest tile = (TileEntityBambooChest)world.getTileEntity(x + 2, y + 1, z);
-//			if (tile != null) {
-//				tile.setIsUnbreakable(true);
-//			}
-//		}
-//
-//		for (int yOffset = 5; yOffset >= -7; yOffset--) {
-//			for (int zOffset = -2; zOffset <= 2; zOffset++) {
-//				for (int xOffset = -2; xOffset <= 2; xOffset++) {
-//					int blockX = x + xOffset;
-//					int blockY = y + yOffset;
-//					int blockZ = z + zOffset;
-//					world.notifyBlocksOfNeighborChange(blockX, blockY, blockZ, world.getBlock(blockX, blockY, blockZ));
-//				}
-//			}
-//		}
+        // Add an unbreakable chest to place encyclopedia in
+        // NOTE: using instanceof instead of world.getWorldInfo().getDimension()
+        // because getWorldInfo() may not be set/correct yet
+        if (world.provider instanceof WorldProviderTropicraft) {
+            BlockPos chestPos = new BlockPos(x + 2, y + 1, z);
+            world.setBlockState(chestPos, BlockRegistry.bambooChest.getDefaultState(), 3);
+            TileEntityBambooChest tile = (TileEntityBambooChest)world.getTileEntity(chestPos);
+            if (tile != null) {
+                tile.setIsUnbreakable(true);
+            }
+        }
 
-		System.err.println("end buildTeleporterAt");
-	}
+        System.out.println("end buildTeleporterAt");
+    }
 
-	/**
-	 * called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
-	 * WorldServer.getTotalWorldTime() value.
-	 */
-	@Override
-	public void removeStalePortalLocations(long par1)
-	{
-		if (par1 % 100L == 0L)
-		{
-			Iterator iterator = destinationCoordinateKeys.iterator();
-			long j = par1 - 600L;
+    /**
+     * called periodically to remove out-of-date portal locations from the cache list. Argument par1 is a
+     * WorldServer.getTotalWorldTime() value.
+     */
+    @Override
+    public void removeStalePortalLocations(long par1)
+    {
+        if (par1 % 100L == 0L)
+        {
+            Iterator iterator = destinationCoordinateKeys.iterator();
+            long j = par1 - 600L;
 
-			while (iterator.hasNext())
-			{
-				Long olong = (Long)iterator.next();
-				PortalPosition portalposition = (PortalPosition)destinationCoordinateCache.get(olong.longValue());
+            while (iterator.hasNext())
+            {
+                Long olong = (Long)iterator.next();
+                PortalPosition portalposition = (PortalPosition)destinationCoordinateCache.get(olong.longValue());
 
-				if (portalposition == null || portalposition.lastUpdateTime < j)
-				{
-					iterator.remove();
-					destinationCoordinateCache.remove(olong.longValue());
-				}
-			}
-		}
-	}
+                if (portalposition == null || portalposition.lastUpdateTime < j)
+                {
+                    iterator.remove();
+                    destinationCoordinateCache.remove(olong.longValue());
+                }
+            }
+        }
+    }
 
-	/**
-	 * @return List of valid block ids to build portal on
-	 */
-	private List<Block> getValidBuildBlocks() {
-		return Arrays.asList(Blocks.SAND, Blocks.GRASS, Blocks.DIRT/*, TCBlockRegistry.purifiedSand*/);
-	}
+    /**
+     * @return List of valid block states to build portal on
+     */
+    private List<IBlockState> getValidBuildBlocks() {
+        return Arrays.asList(
+                Blocks.SAND.getDefaultState(),
+                Blocks.GRASS.getDefaultState(),
+                Blocks.DIRT.getDefaultState(),
+                BlockRegistry.sands.getDefaultState().withProperty(BlockTropicraftSands.VARIANT, TropicraftSands.PURIFIED));
+    }
 }
