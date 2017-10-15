@@ -71,36 +71,36 @@ import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
 
 public class BlockRegistry extends TropicraftRegistry {
 
-	public static Block chunk;
+    public static Block chunk;
 
-	public static Block oreAzurite, oreEudialyte, oreZircon;
-	public static Block oreBlock;
+    public static Block oreAzurite, oreEudialyte, oreZircon;
+    public static Block oreBlock;
 
 	public static BlockTropicsFlowers flowers;
 	public static Block logs;
 	public static Block coral;
 	public static Block seaweed;
 
-	// purified sand AND mineral sands. Oh variants, what can't you do?
-	public static Block sands;
+    // purified sand AND mineral sands. Oh variants, what can't you do?
+    public static Block sands;
 
-	/** Thatch and bamboo bundles */
-	public static Block bundles;
+    /** Thatch and bamboo bundles */
+    public static Block bundles;
 
-	/** Log planks */
-	public static Block planks;
+    /** Log planks */
+    public static Block planks;
 
-	/** Bamboo chute (plant) */
-	public static BlockBambooShoot bambooShoot;
+    /** Bamboo chute (plant) */
+    public static BlockBambooShoot bambooShoot;
 
-	/** Stairs */
-	public static Block chunkStairs;
-	public static Block thatchStairs;
-	public static Block bambooStairs;
-	public static Block palmStairs;
+    /** Stairs */
+    public static Block chunkStairs;
+    public static Block thatchStairs;
+    public static Block bambooStairs;
+    public static Block palmStairs;
 
-	/** Fluids */
-	public static BlockTropicsWater tropicsWater;
+    /** Fluids */
+    public static BlockTropicsWater tropicsWater;
     public static BlockTropicsPortal tropicsPortal;
     public static BlockPortalWall portalWall;
 

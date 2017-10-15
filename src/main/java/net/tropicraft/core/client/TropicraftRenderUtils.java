@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -101,4 +102,8 @@ public class TropicraftRenderUtils {
 	public static long getElapsedTicks() {
 	    return elapsedTicks;
 	}
+	
+    public static String translateGUI(String word) {
+        return I18n.translateToLocal(String.format("gui.tropicraft:%s", word));
+    }
 }
