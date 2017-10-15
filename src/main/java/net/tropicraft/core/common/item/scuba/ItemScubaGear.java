@@ -191,25 +191,33 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     public static enum AirType {
 
-        REGULAR(3200, 0.005F, "Regular"),
-        TRIMIX(3200, 1.185F, "Trimix");
+        REGULAR(3200, 1.005F, "Regular", 0),
+        TRIMIX(3200, 1.185F, "Trimix", 1);
 
         /** The max amount of psi one tank of this air type can hold */
-        private int maxCapacity;
+        private float maxCapacity;
 
         /** The average amount of air that escapes one tank of this air per second */
         private float usageRate;
 
         /** The name that shows up in the GUI when this air type is used */
         private String displayName;
+        
+        /** NBT value associated with this air type */
+        private byte nbtValue;
 
-        private AirType(int maxCapacity, float usageRate, String displayName) {
+        private AirType(float maxCapacity, float usageRate, String displayName, int nbtValue) {
             this.maxCapacity = maxCapacity;
             this.usageRate = usageRate;
             this.displayName = displayName;
+            this.nbtValue = (byte)nbtValue;
+        }
+        
+        public byte getNbtValue() {
+            return this.nbtValue;
         }
 
-        public int getMaxCapacity() {
+        public float getMaxCapacity() {
             return this.maxCapacity;
         }
 

@@ -10,8 +10,10 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -46,8 +48,12 @@ public class ItemScubaHelmet extends ItemScubaGear {
                             0.5D, 0.5D, 0.5D, new int[0]);
                 }
                 ticksSinceBubbles = TICKS_TO_BUBBLE;
-            }   
+            }
         }
+        
+//        if (!player.isPotionActive(MobEffects.NIGHT_VISION)) {
+//            player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 200));
+//        }
     }
 
     /**
@@ -90,7 +96,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
         int width = resolution.getScaledWidth();
         int height = resolution.getScaledHeight();
         GlStateManager.enableDepth();
-        GL11.glDepthMask(false);
+        GlStateManager.depthMask(false);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableAlpha();
@@ -128,7 +134,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
             //TODO display warning if air is running low / out
             drawString("Air", 374, 34, 0xffffff);   
         }
-        GL11.glScalef(1.5F, 1.5F, 1.0F);
+        GlStateManager.scale(1.5F, 1.5F, 1.0F);
         if (isChestplateScuba) {
             Minecraft.getMinecraft().fontRendererObj.drawString(String.format("%.0f", airRemaining), 240, 30, 0x00ccde);   
         }
@@ -147,7 +153,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
             drawString(String.format("%.0f %s", timeRemaining, timeUnits), 33, 45, 0xF6EB12);   
         }
 
-        GL11.glDepthMask(true);
+        GlStateManager.depthMask(true);
         GlStateManager.disableDepth();
         GlStateManager.enableAlpha();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

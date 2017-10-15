@@ -1,7 +1,5 @@
 package net.tropicraft;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -13,6 +11,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.tropicraft.client.gui.TropicraftGuiHandler;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
@@ -62,6 +62,7 @@ public class Tropicraft {
 		CraftingRegistry.preInit();
 		proxy.preInit();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new TropicraftGuiHandler());
 	}
 
 	@EventHandler

@@ -35,7 +35,7 @@ public class ScubaHandler {
 	@SubscribeEvent
 	public void onRenderTick(RenderWorldLastEvent event) {
 		if(Minecraft.getMinecraft().player != null && !Minecraft.getMinecraft().player.isDead) {
-			if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+			if (Minecraft.getMinecraft().currentScreen == null && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 				EntityPlayer p = Minecraft.getMinecraft().player;
 				updateSwimDataAngles(p);
 			}

@@ -52,15 +52,15 @@ public class ItemScubaTank extends ItemTropicraft {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		ItemStack singleTankRegular = new ItemStack(item, 1, 0);
-		getTagCompound(singleTankRegular).setInteger("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
+		getTagCompound(singleTankRegular).setFloat("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
 		list.add(singleTankRegular);
 
-		ItemStack singleTankTrimix = new ItemStack(item, 1, 1);
-		getTagCompound(singleTankTrimix).setInteger("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
+		ItemStack singleTankTrimix = new ItemStack(item, 1, 0);
+		getTagCompound(singleTankTrimix).setFloat("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
 		list.add(singleTankTrimix);
 
-		ItemStack singleTankTrimix2 = new ItemStack(item, 1, 2);
-		getTagCompound(singleTankTrimix2).setInteger("AirContained", 0);
+		ItemStack singleTankTrimix2 = new ItemStack(item, 1, 0);
+		getTagCompound(singleTankTrimix2).setFloat("AirContained", 0);
 		list.add(singleTankTrimix2);
 	}
 
