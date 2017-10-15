@@ -25,3 +25,4 @@ out
 *.iml
 
 *Thumbs.db
+*.DS_STORE

@@ -1,0 +1,20 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+*.java text
+*.json text
+*.lang text
+*.mcmeta text
+*.txt text
+*.gradle text
+*.properties text
+*.info text
+*.md text
+*.properties text
+
+*.png binary
+*.ogg binary
+*.wav binary
+*.jar binary
+gradlew binary
+graldew.bat binary
