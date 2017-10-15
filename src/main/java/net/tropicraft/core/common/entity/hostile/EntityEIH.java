@@ -20,11 +20,6 @@ import net.tropicraft.core.common.entity.EntityLandHostile;
 import net.tropicraft.core.registry.SoundRegistry;
 
 public class EntityEIH extends EntityLandHostile implements IMob {
-
-	/**
-	 * TODO: mob needs spider like leap attack AI task
-	 */
-
 	//0 = sleep, 1 = aware, 2 = angry
 	private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityEIH.class, DataSerializers.VARINT);
 	public int STATE_SLEEP = 0;
@@ -87,7 +82,6 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-
 		this.getDataManager().set(STATE, STATE_ANGRY);
 
 		if (source.getSourceOfDamage() instanceof EntityPlayer) {
@@ -97,10 +91,9 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 				return super.attackEntityFrom(source, amount);
 			} else {
 				this.playSound(SoundRegistry.get("headlaughing"), this.getSoundVolume(), this.getSoundPitch());
+				this.setRevengeTarget(player);
 			}
 		}
-
-
 
 		return true;
 	}
