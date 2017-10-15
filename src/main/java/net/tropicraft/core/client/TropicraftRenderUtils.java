@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -87,18 +88,23 @@ public class TropicraftRenderUtils {
 
 				GlStateManager.enableLighting();
 			}
-			GlStateManager.popMatrix();
-		}
-	}
-	
-	private static long elapsedTicks;
-	
-	@SubscribeEvent
-	public static void onClientTick(ClientTickEvent event) {
-	    if (event.phase == Phase.END) elapsedTicks++;
-	}
-	
-	public static long getElapsedTicks() {
-	    return elapsedTicks;
-	}
+            GlStateManager.popMatrix();
+        }
+    }
+
+    public static String translateGUI(String word) {
+        return I18n.translateToLocal(String.format("gui.tropicraft:%s", word));
+    }
+
+    private static long elapsedTicks;
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent event) {
+        if (event.phase == Phase.END)
+            elapsedTicks++;
+    }
+
+    public static long getElapsedTicks() {
+        return elapsedTicks;
+    }
 }

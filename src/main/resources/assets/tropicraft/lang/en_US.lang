@@ -241,5 +241,18 @@ achievement.tc_craft_pina_colada.desc=(Who doesn't?)
 achievement.tc_drink_pina_colada=Caught in the rain
 achievement.tc_drink_pina_colada.desc=(Did you forget your umbrella?)
 
+#Gui localizations
+gui.tropicraft:airType=Air Type
+gui.tropicraft:maxAirCapacity=Max Air Capacity
+gui.tropicraft:airRemaining=Air Remaining
+gui.tropicraft:useEfficiency=Use Efficiency
+gui.tropicraft:numTanks=# Tanks
+gui.tropicraft:suitType=Suit Type
+gui.tropicraft:temperature=Temp
+gui.tropicraft:currentDepth=Depth
+gui.tropicraft:maxDepth=Max
+gui.tropicraft:timeRemaining=Gas Time
+gui.tropicraft:amtRefined=Percentage Refined
+
 # Misc localizations
 tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!
