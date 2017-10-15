@@ -18,15 +18,25 @@ public class SoundRegistry {
 		register("headmed");
 		register("headpain");
 		register("headdeath");
-
+		// records
 		register("buried_treasure");
 		register("eastern_isles");
 		register("low_tide");
 		register("summering");
 		register("the_tribe");
 		register("trade_winds");
-
+		
 		register("pageFlip");
+
+		register("iggyattack");
+		register("iggydeath");
+		register("iggyliving");
+		
+		register("ashenLaugh");
+		// bongos
+		register("bongolow");
+		register("bongomedium");
+		register("bongohigh");
 	}
 
 	public static void register(String soundPath) {

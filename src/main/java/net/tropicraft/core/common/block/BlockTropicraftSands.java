@@ -6,11 +6,10 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,32 +18,32 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.SandColors;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.enums.TropicraftSands;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftSands> VARIANT = PropertyEnum.create("variant", TropicraftSands.class);
-	public String[] names;
+	
+	public static final PropertyBool UNDERWATER = PropertyBool.create("underwater");
 
-	public BlockTropicraftSands(String[] names) {
+	public BlockTropicraftSands() {
 		super(Material.SAND);
-		this.names = names;
+		this.setHardness(0.5f);
 		this.setSoundType(SoundType.SAND);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSands.PURIFIED));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSands.PURIFIED).withProperty(UNDERWATER, false));
 	}
 
 	@Override
 	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
 		IBlockState state = world.getBlockState(pos);
-		int metadata = this.getMetaFromState(state);
 
 		// If not black sands
-		if (metadata != SandColors.BLACK.metadata) {
+		if (state.getValue(VARIANT) != TropicraftSands.VOLCANIC) {
 			return;
 		}
 
@@ -67,14 +66,14 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 	 */
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-		for (int i = 0; i < names.length; i++) {
+		for (int i = 0; i < TropicraftSands.VALUES.length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { VARIANT });
+		return new BlockStateContainer(this, getProperties());
 	}
 
 	@Override
@@ -91,6 +90,15 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 	public int getMetaFromState(IBlockState state) {
 		return ((TropicraftSands) state.getValue(VARIANT)).ordinal();
 	}
+	
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+	    IBlockState ret = super.getActualState(state, worldIn, pos);
+	    if (pos.getY() < 64 && worldIn.getBlockState(pos.up()).getBlock() == BlockRegistry.tropicsWater) {
+	        ret = ret.withProperty(UNDERWATER, true);
+	    }
+	    return ret;
+	}
 
 	@Override
 	public int damageDropped(IBlockState state) {
@@ -99,16 +107,6 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 
 	@Override
 	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT};
-	}
-
-	@Override
-	public IBlockColor getBlockColor() {
-		return TropicraftRenderUtils.SAND_COLORING;
-	}
-
-	@Override
-	public IItemColor getItemColor() {
-		return TropicraftRenderUtils.BLOCK_ITEM_COLORING;
+		return new IProperty[] {VARIANT, UNDERWATER};
 	}
 }

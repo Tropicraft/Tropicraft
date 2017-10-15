@@ -59,13 +59,13 @@ public class ItemMobEgg extends ItemTropicraft {
 	@Override
 	public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
+
 			String s = "";
 			int damage = itemstack.getItemDamage();
-			if (itemstack.getItemDamage() < 19) {
-				s = Names.EGG_NAMES[damage];
-			} else {
-				return EnumActionResult.PASS;
-			}
+
+			s = Names.EGG_NAMES[damage];
+
+
 
 			if (s.equals("Koa Man")) {
 				Random rand = new Random();

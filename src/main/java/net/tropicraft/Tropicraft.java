@@ -1,6 +1,11 @@
 package net.tropicraft;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -9,6 +14,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
+import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
@@ -24,6 +31,7 @@ import net.tropicraft.core.registry.CraftingRegistry;
 import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
+import net.tropicraft.core.registry.LootRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
@@ -37,6 +45,9 @@ public class Tropicraft {
 	public static Tropicraft instance;
 	
 	public static Encyclopedia encyclopedia;
+	
+    @CapabilityInject(PlayerDataInstance.class)
+    public static final Capability<PlayerDataInstance> PLAYER_DATA_INSTANCE = null;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -47,11 +58,10 @@ public class Tropicraft {
 		TileEntityRegistry.init();
 		ItemRegistry.preInit();
 		MixerRecipes.addMixerRecipes();
-		proxy.preInit();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
-		
 		proxy.preInit();
+		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
 	}
 
 	@EventHandler
@@ -70,6 +80,7 @@ public class Tropicraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		FluidRegistry.postInit();
+		LootRegistry.postInit();
 	}
 
 	/**

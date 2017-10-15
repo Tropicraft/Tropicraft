@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRedFlower;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.enums.TropicraftCorals;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net.minecraftforge.common.IPlantable {
 
@@ -150,8 +152,8 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 				world.getBlockState(pos.up()).getMaterial() == Material.WATER;
 	}
 
-	protected boolean canThisPlantGrowOnThisBlock(Block b) {
-		return b == Blocks.GRASS || b == Blocks.DIRT || b == Blocks.SAND; /* TODO: || b == TCBlockRegistry.purifiedSand || b == TCBlockRegistry.mineralSands;*/
+	public boolean canThisPlantGrowOnThisBlock(Block b) {
+		return b == Blocks.GRASS || b == Blocks.DIRT || b == Blocks.SAND || b == BlockRegistry.seaweed || b == BlockRegistry.sands; /* TODO: || b == TCBlockRegistry.purifiedSand || b == TCBlockRegistry.mineralSands;*/
 	}
 
 	@Override

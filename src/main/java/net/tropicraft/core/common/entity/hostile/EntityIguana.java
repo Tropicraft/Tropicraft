@@ -56,6 +56,7 @@ public class EntityIguana extends EntityLandHostile implements IMob {
                 this.dropItem(ItemRegistry.scale, 1);	
         	}
         }
+        this.dropItem(ItemRegistry.iguanaLeather, 1);
     }
 
 	@Override

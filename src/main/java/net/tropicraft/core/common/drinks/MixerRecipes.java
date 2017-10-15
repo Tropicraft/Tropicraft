@@ -21,7 +21,7 @@ public final class MixerRecipes {
 		registerMixerRecipe(Drink.caipirinha, Ingredient.lime, Ingredient.sugarcane, Ingredient.waterBucket);
 		registerMixerRecipe(Drink.orangeade, Ingredient.orange, Ingredient.sugar, Ingredient.waterBucket);
 		registerMixerRecipe(Drink.lemonade, Ingredient.lemon, Ingredient.sugar, Ingredient.waterBucket);
-		//registerMixerRecipe(Drink.blackCoffee, Ingredient.roastedCoffeeBean, Ingredient.waterBucket);
+		registerMixerRecipe(Drink.blackCoffee, Ingredient.roastedCoffeeBean, Ingredient.waterBucket);
 		//registerMixerRecipe(Drink.pinaColada, Ingredient.pineapple, Ingredient.coconutChunk);
 		// !!!NOTE !!! Make sure pina colada remains the #4 recipe mkay - messes up achievements otherwise
 		registerMixerRecipe(Drink.pinaColada, Ingredient.pineappleCubes, Ingredient.coconutChunk);
