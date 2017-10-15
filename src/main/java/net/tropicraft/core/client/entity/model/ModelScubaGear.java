@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.math.MathHelper;
+import net.tropicraft.core.client.ScubaHandler;
 
 public class ModelScubaGear extends ModelBiped {
     //   ModelRenderer bipedHead;
@@ -443,8 +445,144 @@ public class ModelScubaGear extends ModelBiped {
         bipedBody.render(scale);
         bipedRightArm.render(scale);
         bipedLeftArm.render(scale);
-        bipedRightLeg.render(scale);
-        bipedLeftLeg.render(scale);
+       
+        
+        GlStateManager.enableCull();
+        bipedRightLeg.mirror = true;
+        
+        bipedLeftLeg.rotationPointY = 0;
+        bipedLeftLeg.offsetY = 0.763f;
+
+        
+        if(entityIn.isInWater()) {
+	        this.Fin2m3.offsetX = -0.2f;
+	        this.Fin1m3.offsetX = 0.2f;
+	
+	
+	        this.Fin2m3.offsetZ = 0.1f;
+	
+	        this.Fin1m3.offsetY = 0.1f;
+	        
+	
+	        this.Fin1m3.rotateAngleX = .2f;
+	        
+	        this.Fin2m3.isHidden = true;
+	        this.Fin2m1.isHidden = true;
+	        this.Fin2m2.isHidden = true;
+	        this.Fin2m4.isHidden = true;
+
+	        
+	        this.Fin1m3.isHidden = true;
+	        this.Fin1m1.isHidden = true;
+	        this.Fin1m2.isHidden = true;
+	        this.Fin1m4.isHidden = true;
+
+	        
+	        Fin1m3.isHidden = true;
+	        
+	        
+	        bipedLeftLeg.render(scale);
+
+
+	        bipedRightLeg.render(scale);
+	        
+	       
+
+	        this.Fin2m3.isHidden = false;
+	        this.Fin1m3.isHidden = false;
+	     
+	        
+	        float paddleSpeed = 2f;
+	        float paddleAmount = 15f;
+	        
+	        float paddleAngle = -5f;
+	        float offsetY = 1.45f;
+
+	        paddleSpeed = 0.05f;
+	        
+	        if(entityIn instanceof EntityPlayer) {
+	        		ScubaHandler.PlayerSwimData pd = ScubaHandler.getData((EntityPlayer)entityIn);
+	        		if(pd.targetSwimSpeed != 0f) {
+	        			paddleAngle = -30f;
+	        			//offsetY = 1.5f;
+	        			paddleAmount = 0.1f;
+	        		}
+	        }
+	        
+	        
+	        GlStateManager.pushMatrix();
+		     
+		        
+
+		        GlStateManager.translate(0f, 0f, 0.22f+((-MathHelper.cos(limbSwing * 0.6662F))/(1.7f*Math.PI)));
+		        GlStateManager.translate(0f, -0.05f+(float)(-MathHelper.cos(limbSwing)/64), 0f);
+
+		        
+		        GlStateManager.translate(0f, offsetY, -0.4f);
+		        
+		        GlStateManager.rotate(-paddleAngle+((float)Math.sin(ageInTicks*paddleSpeed)*paddleAmount), 1f, 0f, 0f);
+		   
+		        GlStateManager.translate(0f, -offsetY, 0.2f);
+		        
+
+
+		        this.Fin2m3.render(scale);
+		        
+		        GlStateManager.popMatrix();
+
+	        
+	        
+	        
+		        offsetY = 1.2f;
+	        
+		        
+		     
+	        
+	        
+	        GlStateManager.pushMatrix();
+	     
+	        GlStateManager.translate(0, 0, 0.1f);
+
+	        GlStateManager.translate(0f, 0f, 0.23f+((MathHelper.cos(limbSwing * 0.6662f))/(1.7f*Math.PI)));
+	        GlStateManager.translate(0f, -0.05f+(float)(MathHelper.cos(limbSwing)/64), 0f);
+
+	        
+	        GlStateManager.translate(0f, offsetY, -0.4f);
+	        
+	        GlStateManager.rotate(-paddleAngle-((float)Math.sin(ageInTicks*paddleSpeed)*paddleAmount), 1f, 0f, 0f);
+	   
+	        GlStateManager.translate(0f, -offsetY, 0.2f);
+
+
+	        this.Fin1m3.render(scale);
+	        
+	        GlStateManager.popMatrix();
+
+	   
+		
+	        
+        }else {
+        		this.Fin2m3.offsetX = 0f;
+        		
+ 	        this.Fin1m3.offsetX = 0f;
+ 	
+ 	        this.Fin2m3.offsetY = 0f;
+ 	
+ 	        this.Fin1m3.offsetY = 0f;
+ 	        
+ 	        this.Fin2m3.rotateAngleX = 0f;
+ 	
+ 	        this.Fin1m3.rotateAngleX = 0f;
+ 	        
+ 	       bipedLeftLeg.render(scale);
+
+ 	        bipedRightLeg.render(scale);
+ 	    
+        }
+
+
+        
+         
     }
 
     private void renderTank(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {

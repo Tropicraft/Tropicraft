@@ -27,6 +27,12 @@ public class SoundRegistry {
 		register("trade_winds");
 
 		register("pageFlip");
+		
+		register("iggyattack");
+		register("iggydeath");
+		register("iggyliving");
+		
+		register("ashenLaugh");
 	}
 
 	public static void register(String soundPath) {

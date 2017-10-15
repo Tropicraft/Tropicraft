@@ -29,7 +29,7 @@ public class ItemScubaFlippers extends ItemScubaGear {
 	@Override
 	public void onScubaTick(World world, EntityPlayer player, ItemStack itemStack) {
 	    //System.out.println("flippertick");
-		if (player.isInWater() || isFullyUnderwater(world, player)) {
+		/*if (player.isInWater() || isFullyUnderwater(world, player)) {
 			player.capabilities.isFlying = true;
 			player.setAIMoveSpeed(player.capabilities.getWalkSpeed());
 			player.moveRelative(1E-4F, 1E-4F, 0.00000000001f);
@@ -42,7 +42,7 @@ public class ItemScubaFlippers extends ItemScubaGear {
             player.motionZ *= 0.6666667D;
 			player.setAIMoveSpeed((float) (player.getAIMoveSpeed() / 1.33333));
 			player.capabilities.isFlying = false;
-		}
+		}*/
 	}
 
 	private boolean isFullyUnderwater(World world, EntityPlayer player) {
