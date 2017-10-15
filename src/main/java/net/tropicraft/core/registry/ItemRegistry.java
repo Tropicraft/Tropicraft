@@ -18,6 +18,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
@@ -153,6 +154,8 @@ public class ItemRegistry extends TropicraftRegistry {
 	public static Item seaUrchinRoe;
 	public static Item mobEgg;
 
+	public static Item iguanaLeather;
+	
 	public static void preInit() {
 		recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
 		recordEasternIsles = registerItem(new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");
@@ -249,6 +252,9 @@ public class ItemRegistry extends TropicraftRegistry {
 
 		seaUrchinRoe = registerItem(new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
 		mobEgg = registerMultiItemPrefixed(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
+		
+		iguanaLeather = registerItem(new ItemTropicraft().setMaxStackSize(64), "iguana_leather");
+		OreDictionary.registerOre("leather", iguanaLeather);
 	}
 
 	public static void init() {
