@@ -37,8 +37,8 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityRiverSardine;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityShark;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
-import scala.reflect.internal.Trees.This;
 
 public class EntityRegistry {
 
@@ -79,6 +79,8 @@ public class EntityRegistry {
 		registerEntity(EntityPiranha.class, "piranha", 80, 2, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityRiverSardine.class, "sardine", 80, 2, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityDolphin.class, "dolphin", 80, 1, true, SpawnPlacementType.IN_WATER);
+		registerEntity(EntityShark.class, "hammerhead", 80, 1, true, SpawnPlacementType.IN_WATER);
+
 	}
 	
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
