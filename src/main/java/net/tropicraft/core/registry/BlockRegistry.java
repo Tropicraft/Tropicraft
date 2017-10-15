@@ -34,7 +34,6 @@ import net.tropicraft.core.common.block.BlockBambooChest;
 import net.tropicraft.core.common.block.BlockBambooDoor;
 import net.tropicraft.core.common.block.BlockBambooShoot;
 import net.tropicraft.core.common.block.BlockBongoDrum;
-import net.tropicraft.core.common.block.BlockBongoDrum.BongoSize;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoconut;
@@ -129,10 +128,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block bambooDoor;
 	public static BlockSlab slabs;
 	public static BlockSlab doubleSlabs;
-	
-	public static Block bongoSmall;
-	public static Block bongoMedium;
-	public static Block bongoLarge;
+
+	public static Block bongo;
 
 	/**
 	 * Register blocks in preInit
@@ -199,9 +196,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
 		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR, false);
 
-		bongoSmall = registerBlock(new BlockBongoDrum(BongoSize.SMALL), Names.BONGO_SMALL);
-		bongoMedium = registerBlock(new BlockBongoDrum(BongoSize.MEDIUM), Names.BONGO_MEDIUM);
-		bongoLarge = registerBlock(new BlockBongoDrum(BongoSize.LARGE), Names.BONGO_LARGE);
+		bongo = registerMultiBlock(new BlockBongoDrum(), ItemBlockTropicraft.class, Names.BONGO, asList(Names.BONGO_NAMES));
 	}
 
 	public static void init() {

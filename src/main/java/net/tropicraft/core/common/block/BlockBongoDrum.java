@@ -1,10 +1,17 @@
 package net.tropicraft.core.common.block;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -13,9 +20,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.enums.TropicraftBongos;
 import net.tropicraft.core.registry.SoundRegistry;
 
-public class BlockBongoDrum extends BlockTropicraft {
+public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock {
 
     public static final float SMALL_DRUM_SIZE = 0.5f;
     public static final float MEDIUM_DRUM_SIZE = 0.6f;
@@ -30,18 +40,29 @@ public class BlockBongoDrum extends BlockTropicraft {
     protected final AxisAlignedBB BONGO_MEDIUM_AABB = new AxisAlignedBB(MEDIUM_DRUM_OFFSET, 0.0f, MEDIUM_DRUM_OFFSET, 1 - MEDIUM_DRUM_OFFSET, DRUM_HEIGHT, 1 - MEDIUM_DRUM_OFFSET);
     protected final AxisAlignedBB BONGO_LARGE_AABB = new AxisAlignedBB(BIG_DRUM_OFFSET, 0.0f, BIG_DRUM_OFFSET, 1-BIG_DRUM_OFFSET, DRUM_HEIGHT, 1-BIG_DRUM_OFFSET);
 
-    private BongoSize size;
+    public static final PropertyEnum<TropicraftBongos> VARIANT = PropertyEnum.create("variant", TropicraftBongos.class);
 
-    public BlockBongoDrum(BongoSize size) {
+    public BlockBongoDrum() {
         super(Material.CIRCUITS);
         this.setHardness(1.0F);
-        this.size = size;
         this.setLightOpacity(255);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftBongos.SMALL));
+    }
+
+    /**
+     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+     */
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
+        for (int i = 0; i < TropicraftBongos.VALUES.length; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch (size) {
+        TropicraftBongos bongo = ((TropicraftBongos) state.getValue(VARIANT));
+        switch (bongo) {
         case LARGE:
             return BONGO_LARGE_AABB;
         case MEDIUM:
@@ -60,7 +81,7 @@ public class BlockBongoDrum extends BlockTropicraft {
         }
 
         int x = pos.getX(), y = pos.getY(), z = pos.getZ();
-        playBongoSound(world, x,y, z);
+        playBongoSound(world, x, y, z, state);
 
         return true;
     }
@@ -68,8 +89,9 @@ public class BlockBongoDrum extends BlockTropicraft {
     /**
      * Play the bongo sound in game. Sound played determined by the {@link #size} attribute
      */
-    private void playBongoSound(World world, int x, int y, int z) {
-        world.playSound((EntityPlayer)null, x, y + 0.5D, z, SoundRegistry.get(size.getSoundRegistryName()), SoundCategory.BLOCKS, 1.0F, 1.0F);
+    private void playBongoSound(World world, int x, int y, int z, IBlockState state) {
+        TropicraftBongos bongo = ((TropicraftBongos) state.getValue(VARIANT));
+        world.playSound((EntityPlayer)null, x, y + 0.5D, z, SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     @Override
@@ -113,17 +135,33 @@ public class BlockBongoDrum extends BlockTropicraft {
         return 255;
     }
 
-    public static enum BongoSize {
-        SMALL("bongohigh"), MEDIUM("bongomedium"), LARGE("bongolow");
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, getProperties());
+    }
 
-        private String soundRegistryName;
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(VARIANT, TropicraftBongos.VALUES[meta]);
+    }
 
-        BongoSize(String soundRegistryName) {
-            this.soundRegistryName = soundRegistryName;
-        }
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return ((TropicraftBongos) state.getValue(VARIANT)).ordinal();
+    }
 
-        public String getSoundRegistryName() {
-            return this.soundRegistryName;
-        }
+    @Override
+    public String getStateName(IBlockState state) {
+        return ((TropicraftBongos) state.getValue(VARIANT)).getName();
+    }
+
+    @Override
+    public IProperty[] getProperties() {
+        return new IProperty[] { VARIANT };
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return this.getMetaFromState(state);
     }
 }
