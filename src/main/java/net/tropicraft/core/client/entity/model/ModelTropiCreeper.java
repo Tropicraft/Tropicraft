@@ -62,26 +62,29 @@ public class ModelTropiCreeper extends ModelBase {
         leg2.rotateAngleZ = 0F;
         leg2.mirror = false;
         hat1 = new ModelRenderer(this, 24, 0);
-        hat1.addBox(-5F, 0F, -5F, 12, 1, 6);
+        hat1.addBox(-5F, -6F, -5F, 12, 1, 6);
         hat1.setRotationPoint(-1F, -3F, -1F);
         hat1.rotateAngleX = 0F;
         hat1.rotateAngleY = 0F;
         hat1.rotateAngleZ = 0F;
         hat1.mirror = true;
+        head.addChild(hat1);
         hat2 = new ModelRenderer(this, 40, 24);
-        hat2.addBox(0F, 0F, 0F, 6, 2, 6);
+        hat2.addBox(0F, -6F, 0F, 6, 2, 6);
         hat2.setRotationPoint(-3F, -5F, -3F);
         hat2.rotateAngleX = 0F;
         hat2.rotateAngleY = 0F;
         hat2.rotateAngleZ = 0F;
         hat2.mirror = false;
+        head.addChild(hat2);
         hat3 = new ModelRenderer(this, 24, 0);
-        hat3.addBox(-5F, 0F, 0F, 12, 1, 6);
+        hat3.addBox(-5F, -6F, 0F, 12, 1, 6);
         hat3.setRotationPoint(-1F, -3F, 0F);
         hat3.rotateAngleX = 0F;
         hat3.rotateAngleY = 0F;
         hat3.rotateAngleZ = 0F;
         hat3.mirror = false;
+        head.addChild(hat3);
     }
 
     @Override
@@ -94,9 +97,6 @@ public class ModelTropiCreeper extends ModelBase {
         leg4.render(f5);
         leg1.render(f5);
         leg2.render(f5);
-        hat1.render(f5);
-        hat2.render(f5);
-        hat3.render(f5);
     }
 
     @Override
@@ -108,7 +108,5 @@ public class ModelTropiCreeper extends ModelBase {
         leg2.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
         leg3.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.4F * f1;
         leg4.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
-        hat1.rotateAngleX = hat2.rotateAngleX = hat3.rotateAngleX = head.rotateAngleX / 6.234234234234F;
-        hat1.rotateAngleY = hat2.rotateAngleY = hat3.rotateAngleY = head.rotateAngleY / 6.2342342344F;
     }
 }

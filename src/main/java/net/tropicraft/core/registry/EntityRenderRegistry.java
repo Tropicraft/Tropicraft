@@ -124,7 +124,6 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityPiranha.class, new RenderTropicalFish());
         registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
         registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
-
     }
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {

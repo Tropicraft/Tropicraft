@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.tropicraft.Info;
 
-
 @EventBusSubscriber
 public class TropicraftRenderUtils {
 
@@ -89,22 +88,23 @@ public class TropicraftRenderUtils {
 
 				GlStateManager.enableLighting();
 			}
-			GlStateManager.popMatrix();
-		}
-	}
+            GlStateManager.popMatrix();
+        }
+    }
 
     public static String translateGUI(String word) {
         return I18n.translateToLocal(String.format("gui.tropicraft:%s", word));
     }
 
-		private static long elapsedTicks;
+    private static long elapsedTicks;
 
-		@SubscribeEvent
-		public static void onClientTick(ClientTickEvent event) {
-				if (event.phase == Phase.END) elapsedTicks++;
-		}
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent event) {
+        if (event.phase == Phase.END)
+            elapsedTicks++;
+    }
 
-		public static long getElapsedTicks() {
-				return elapsedTicks;
-		}
+    public static long getElapsedTicks() {
+        return elapsedTicks;
+    }
 }

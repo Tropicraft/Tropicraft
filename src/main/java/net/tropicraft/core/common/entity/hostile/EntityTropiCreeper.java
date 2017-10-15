@@ -69,7 +69,27 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
      */
     private void explode() {
         if (!this.world.isRemote) {
-            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D, new int[0]);
+            //TODO: readd coconut bomb drop for creeper
+            // this.dropItem(TCItemRegistry.coconutBomb.itemID, rand.nextInt(3) + 1);
+            int radius = 5;
+            int radiusSq = radius * radius;
+            BlockPos center = getPosition();
+            for (int i = 0; i < 3 * radiusSq; i++) {
+                BlockPos attempt = center.add(rand.nextInt((radius * 2) + 1) - radius, 0, rand.nextInt((radius * 2) + 1) - radius);
+                if (attempt.distanceSq(center) < radiusSq) {
+                    attempt = attempt.up(radius);
+                    while (world.getBlockState(attempt).getBlock().isReplaceable(world, attempt) && attempt.getY() > center.getY() - radius) {
+                        attempt = attempt.down();
+                    }
+                    attempt = attempt.up();
+                    IBlockState state = BlockRegistry.flowers.getDefaultState().withProperty(BlockTropicsFlowers.VARIANT, TropicraftFlowers.VALUES[rand.nextInt(TropicraftFlowers.VALUES.length)]);
+                    if (BlockRegistry.flowers.canBlockStay(world, attempt, state)) {
+                        world.setBlockState(attempt, state);
+                    }
+                }
+            }
+        } else {
+            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX, this.posY, this.posZ, 1.0D, 0.0D, 0.0D);
         }
     }
 	
@@ -196,29 +216,7 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
 	public void onDeath(DamageSource par1DamageSource) {
 		if (par1DamageSource.getEntity() instanceof EntitySkeleton) {
 			this.dropItem(ItemRegistry.recordEasternIsles, 1);
-		} else {
-				//TODO: readd coconut bomb drop for creeper
-				//this.dropItem(TCItemRegistry.coconutBomb.itemID, rand.nextInt(3) + 1);
-				int y = world.getHeight(new BlockPos((int)posX, (int)posY, (int)posZ)).getY();
-				int xo = rand.nextInt(3) + 4;
-				int zo = xo + rand.nextInt(3) - (new Random()).nextInt(3);
-				for (int x = (int)posX - xo; x < (int)posX + xo; x++) {
-					for (int z = (int)posZ - zo; z < (int)posZ + zo; z++) {
-						y = world.getHeight(new BlockPos((int)x, (int)y, (int)z)).getY();
-						Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
-						BlockPos pos = new BlockPos(x, y, z);
-						
-						if (block.getMaterial(block.getDefaultState()) != Material.WATER && world.isAirBlock(pos)
-								&& world.getBlockState(pos.down()).getMaterial() == Material.GRASS ||
-								world.getBlockState(pos.down()).getMaterial() == Material.GROUND) {
-							int meta = rand.nextInt(TropicraftFlowers.VALUES.length);
-							TropicraftFlowers flowerEnum = TropicraftFlowers.VALUES[meta];
-							setBlockState(x, y, z, BlockRegistry.flowers.getDefaultState().withProperty(BlockTropicsFlowers.VARIANT, flowerEnum), 3);
-						}
-					}
-				}
-			}
-		
+		}
 		super.onDeath(par1DamageSource);
 	}
 
