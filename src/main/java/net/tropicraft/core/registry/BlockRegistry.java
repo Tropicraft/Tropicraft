@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.ObjectArrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
@@ -21,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Info;
@@ -30,6 +33,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.BlockBambooChest;
 import net.tropicraft.core.common.block.BlockBambooDoor;
 import net.tropicraft.core.common.block.BlockBambooShoot;
+import net.tropicraft.core.common.block.BlockBongoDrum;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoconut;
@@ -64,10 +68,6 @@ import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.ObjectArrays;
 
 public class BlockRegistry extends TropicraftRegistry {
 
@@ -128,6 +128,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block bambooDoor;
 	public static BlockSlab slabs;
 	public static BlockSlab doubleSlabs;
+
+	public static Block bongo;
 
 	/**
 	 * Register blocks in preInit
@@ -193,6 +195,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
 		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
 		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR, false);
+
+		bongo = registerMultiBlock(new BlockBongoDrum(), ItemBlockTropicraft.class, Names.BONGO, asList(Names.BONGO_NAMES));
 	}
 
 	public static void init() {

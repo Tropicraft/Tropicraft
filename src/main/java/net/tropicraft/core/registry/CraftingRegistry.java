@@ -296,6 +296,27 @@ public class CraftingRegistry {
                 'X', new ItemStack(BlockRegistry.planks, 1, 0)
         });
 
+        // Small bongo
+        createRecipe(true, new ItemStack(BlockRegistry.bongo, 1, 0), new Object[] {
+            "Y", "X", "X",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0),
+            'Y', new ItemStack(ItemRegistry.iguanaLeather)
+        });
+
+        // Medium bongo
+        createRecipe(true, new ItemStack(BlockRegistry.bongo, 1, 1), new Object[] {
+            "YY", "XX", "XX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0),
+            'Y', new ItemStack(ItemRegistry.iguanaLeather)
+        });
+
+        // Large bongo
+        createRecipe(true, new ItemStack(BlockRegistry.bongo, 1, 2), new Object[] {
+            "YYY", "XXX", "XXX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0),
+            'Y', new ItemStack(ItemRegistry.iguanaLeather)
+        });
+
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.zircon, 2);
@@ -321,22 +342,23 @@ public class CraftingRegistry {
         });
     }
 
-    /**
-     * Items that should be recognized by the encyclopedia are added here.
-     * The names given MUST match the page names in the encyclopedia text file,
-     * and duplicates here are ok - multiple items can be associated with 1 page.
-     * Ordering doesn't matter, as the page order is determined by the text file
-     * 
-     * Note: Items with metadata values must be added individually (use a loop
-     * if possible)
-     */
-    public static void addItemsToEncyclopedia() {
-        Tropicraft.encyclopedia.includeItem("acaivine", new ItemStack(BlockRegistry.flowers, 1, 9));
-        Tropicraft.encyclopedia.includeItem("anemone", new ItemStack(BlockRegistry.flowers, 1, 4));
-        Tropicraft.encyclopedia.includeItem("anthuriumo", new ItemStack(BlockRegistry.flowers, 1, 5));
-        Tropicraft.encyclopedia.includeItem("anthuriumr", new ItemStack(BlockRegistry.flowers, 1, 6));
+	/**
+	 * Items that should be recognized by the encyclopedia are added here.
+	 * The names given MUST match the page names in the encyclopedia text file,
+	 * and duplicates here are ok - multiple items can be associated with 1 page.
+	 * Ordering doesn't matter, as the page order is determined by the text file
+	 * 
+	 * Note: Items with metadata values must be added individually (use a loop
+	 * if possible)
+	 */
+	public static void addItemsToEncyclopedia() {
+		Tropicraft.encyclopedia.includeItem("acaivine", new ItemStack(BlockRegistry.flowers, 1, 9));
+		Tropicraft.encyclopedia.includeItem("anemone", new ItemStack(BlockRegistry.flowers, 1, 4));
+		Tropicraft.encyclopedia.includeItem("anthuriumo", new ItemStack(BlockRegistry.flowers, 1, 5));
+		Tropicraft.encyclopedia.includeItem("anthuriumr", new ItemStack(BlockRegistry.flowers, 1, 6));
 
-        /*TODO  for (int i = 0; i < ItemAshenMask.maskTypeNames.length; i++) {
+		/*TODO  for (int i = 0; i < ItemAshenMask.maskTypeNames.length; i++) {
+>>>>>>> 1.10.2
             Tropicraft.encyclopedia.includeItem("ashenmask", new ItemStack(TCItemRegistry.ashenMask, 1, i));
         }*/
 
