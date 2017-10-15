@@ -55,6 +55,7 @@ public class EntityTropicalFish extends EntityTropicraftWaterBase implements IAt
 		isCatchable = true;
 		this.experienceValue = 3;
         this.setSwimSpeeds(1f, 0.2f, 4f);
+        this.setSchoolable(true);
 
 	}
 

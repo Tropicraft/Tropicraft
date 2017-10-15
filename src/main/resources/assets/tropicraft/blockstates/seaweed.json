@@ -11,7 +11,7 @@
     "variants": {
         "normal": [{}],
         "base": [{
-            "model": "sand"
+            "model": "tropicraft:sands_base", "textures": { "overlay": "tropicraft:blocks/sand_foamy" }
         }],
         "overlay": [{
             "model": "tropicraft:cube_top_only", "textures": { "overlay": "tropicraft:blocks/seaweed_root" }

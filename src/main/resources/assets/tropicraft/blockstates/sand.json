@@ -1,9 +1,110 @@
 {
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_top",
+        "textures": { 
+            "side": "tropicraft:blocks/sand_purified"
+        }
+    },
     "variants": {
-        "variant=purified_sand": { "model": "tropicraft:purified_sand" },
-        "variant=coral_sand": { "model": "tropicraft:coral_sand" },
-        "variant=green_sand": { "model": "tropicraft:green_sand" },
-        "variant=black_sand": { "model": "tropicraft:black_sand" },
-        "variant=mineral_sand": { "model": "tropicraft:mineral_sand" }
+        "variant": {
+            "coral": {
+                "model": "tropicraft:sands_base",
+                "textures": { "overlay": "tropicraft:blocks/sand_coral" }
+            },
+            "foamy": {
+                "model": "tropicraft:sands_base",
+                "textures": { "overlay": "tropicraft:blocks/sand_foamy" }
+            },
+            "volcanic": {
+                "model": "tropicraft:sands_base",
+                "textures": { "overlay": "tropicraft:blocks/sand_volcanic" }
+            },
+            "mineral": {
+                "model": "tropicraft:sands_base",
+                "textures": { "overlay": "tropicraft:blocks/sand_mineral" }
+            }
+        },
+        "underwater": {
+            "true": {},
+            "false": {}
+        },
+        "underwater=false,variant=purified" : [
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified" },
+                "weight": 200
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified" },
+                "weight": 200,
+                "y": 90
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified" },
+                "weight": 200,
+                "y": 180
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified" },
+                "weight": 200,
+                "y": 270
+            },
+            { 
+                "textures": { "top": "tropicraft:blocks/sand_purified_calcified" },
+                "weight": 5
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified_calcified" },
+                "weight": 5,
+                "y": 90
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified_calcified" },
+                "weight": 5,
+                "y": 180
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified_calcified" },
+                "weight": 5,
+                "y": 270
+            }
+        ],
+        "underwater=true,variant=purified": [
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified" },
+                "weight": 200
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified" },
+                "weight": 200,
+                "y": 90
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified" },
+                "weight": 200,
+                "y": 180
+            },
+            { 
+                "textures": { "top": "tropicraft:blocks/sand_purified_dune1" },
+                "weight": 20
+            },
+            { 
+                "textures": { "top": "tropicraft:blocks/sand_purified_dune2" },
+                "weight": 20
+            },
+            { "textures": { "top": "tropicraft:blocks/sand_purified_starfish" } },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified_starfish" },
+                "y": 90
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified_starfish" },
+                "y": 180
+            },
+            {
+                "textures": { "top": "tropicraft:blocks/sand_purified_starfish" },
+                "y": 270
+            }
+        ]
     }
 }

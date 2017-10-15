@@ -169,7 +169,7 @@ public class EntityManOWar extends EntityWaterMob {
 
 	@Override
 	public boolean getCanSpawnHere() {
-		return !world.checkBlockCollision(this.getCollisionBoundingBox());
+	    return super.getCanSpawnHere();
 	}
 
 	@Override

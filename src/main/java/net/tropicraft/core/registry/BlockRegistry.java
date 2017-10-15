@@ -8,17 +8,23 @@ import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.ObjectArrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Info;
@@ -27,6 +33,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.block.BlockBambooChest;
 import net.tropicraft.core.common.block.BlockBambooDoor;
 import net.tropicraft.core.common.block.BlockBambooShoot;
+import net.tropicraft.core.common.block.BlockBongoDrum;
 import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockChunkOHead;
 import net.tropicraft.core.common.block.BlockCoconut;
@@ -58,11 +65,9 @@ import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.common.enums.TropicraftPlanks;
+import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
 
 public class BlockRegistry extends TropicraftRegistry {
 
@@ -71,7 +76,7 @@ public class BlockRegistry extends TropicraftRegistry {
     public static Block oreAzurite, oreEudialyte, oreZircon;
     public static Block oreBlock;
 
-	public static Block flowers;
+	public static BlockTropicsFlowers flowers;
 	public static Block logs;
 	public static Block coral;
 	public static Block seaweed;
@@ -124,6 +129,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static BlockSlab slabs;
 	public static BlockSlab doubleSlabs;
 
+	public static Block bongo;
+
 	/**
 	 * Register blocks in preInit
 	 */
@@ -137,7 +144,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
 		bundles = registerMultiBlock(new BlockBundle(Material.PLANTS, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
-		seaweed = registerBlock(new BlockSeaweed(), "seaweed");
+		seaweed = registerBlock(new BlockSeaweed(), null, "seaweed", false, CreativeTabRegistry.tropicraftTab);
 
 		slabs = new BlockTropicraftSlab(Material.WOOD, false);
 		doubleSlabs = new BlockTropicraftSlab(Material.WOOD, true);
@@ -172,7 +179,13 @@ public class BlockRegistry extends TropicraftRegistry {
 		iris = registerMultiBlock(new BlockIris(Names.TALL_PLANT_NAMES), ItemBlockTropicraft.class, "iris", asList(Names.TALL_PLANT_NAMES));
 		coffeePlant = registerMultiBlock(new BlockCoffeeBush(), null, "coffee_bush");
 		
-		sands = registerMultiColoredBlock(new BlockTropicraftSands(Names.SAND_NAMES), ItemBlockTropicraft.class, "sand", asList(Names.SAND_NAMES));
+		// TODO refactor this whole class so things like this are possible, because wtf
+		sands = new BlockTropicraftSands().setRegistryName("sand").setUnlocalizedName(Info.MODID + ".sand").setCreativeTab(CreativeTabRegistry.tropicraftTab);
+		GameRegistry.register(sands);
+		GameRegistry.register(new ItemBlockTropicraft(sands, Lists.newArrayList(Arrays.stream(TropicraftSands.values()).map(IStringSerializable::getName).toArray(String[]::new))).setRegistryName(sands.getRegistryName()));
+		for (TropicraftSands sand : TropicraftSands.values()) {
+		    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(sands), sand.ordinal(), new ModelResourceLocation(Info.MODID + ":sand", "underwater=false,variant=" + sand.getName()));
+		}
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
 		
@@ -182,6 +195,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
 		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
 		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR, false);
+
+		bongo = registerMultiBlock(new BlockBongoDrum(), ItemBlockTropicraft.class, Names.BONGO, asList(Names.BONGO_NAMES));
 	}
 
 	public static void init() {
@@ -196,8 +211,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		return registerMultiBlock(block, clazz, name, itemCtorArgs);
 	}
 
-	private static <T> List<T> asList(T[] objects) {
-		List<T> objList = new ArrayList<T>();
+	private static <T> ArrayList<T> asList(T[] objects) {
+		ArrayList<T> objList = new ArrayList<T>();
 		Collections.addAll(objList, objects);
 
 		return objList;
