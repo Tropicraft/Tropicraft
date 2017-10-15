@@ -454,6 +454,7 @@ public class ModelScubaGear extends ModelBiped {
         bipedLeftLeg.offsetY = 0.763f;
 
         
+        if(showLegs) {
         if(entityIn.isInWater()) {
 	        this.Fin2m3.offsetX = -0.2f;
 	        this.Fin1m3.offsetX = 0.2f;
@@ -580,7 +581,7 @@ public class ModelScubaGear extends ModelBiped {
  	    
         }
 
-
+        }
         
          
     }
