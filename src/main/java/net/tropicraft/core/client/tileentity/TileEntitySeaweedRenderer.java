@@ -8,11 +8,12 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.animation.FastTESR;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.tropicraft.Info;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.block.BlockSeaweed.TileSeaweed;
 
-@EventBusSubscriber
+@EventBusSubscriber(Side.CLIENT)
 public class TileEntitySeaweedRenderer extends FastTESR<TileSeaweed> {
 
 	private static final TextureAtlasSprite[] SPRITES = new TextureAtlasSprite[8];

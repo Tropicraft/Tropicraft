@@ -184,7 +184,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		GameRegistry.register(sands);
 		GameRegistry.register(new ItemBlockTropicraft(sands, Lists.newArrayList(Arrays.stream(TropicraftSands.values()).map(IStringSerializable::getName).toArray(String[]::new))).setRegistryName(sands.getRegistryName()));
 		for (TropicraftSands sand : TropicraftSands.values()) {
-		    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(sands), sand.ordinal(), new ModelResourceLocation(Info.MODID + ":sand", "underwater=false,variant=" + sand.getName()));
+		    Tropicraft.proxy.registerItemVariantModel(Item.getItemFromBlock(sands), "sand", sand.ordinal(), "underwater=false,variant=" + sand.getName());
 		}
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
@@ -260,7 +260,7 @@ public class BlockRegistry extends TropicraftRegistry {
 				String stateName = tcBlock.getStateName(state);
 				int stateMeta = block.getMetaFromState(state);
 				// System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
-				registerBlockVariant(block, name, stateMeta, stateName);
+				registerBlockVariant(block, stateName, stateMeta, null);
 			}
 		}
 
@@ -307,7 +307,7 @@ public class BlockRegistry extends TropicraftRegistry {
 					String stateName = block.getStateName(state);
 					int stateMeta = block.getMetaFromState(state);
 					// System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
-					registerBlockVariant(block, name, stateMeta, stateName);
+					registerBlockVariant(block, stateName, stateMeta, null);
 				}
 			}
 
