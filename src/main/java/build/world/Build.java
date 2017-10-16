@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Build {
 
@@ -31,7 +33,7 @@ public class Build {
 
     //for writing: we just use new 1.1 system
 
-    public static int blockIDHighestVanilla = 255; //figure out an elegant non loop crazy way to determine this automatically
+    public static int blockIDHighestVanilla = 158; //figure out an elegant non loop crazy way to determine this automatically
 
     //public int id = 0;
     public String file = "";
@@ -257,7 +259,7 @@ public class Build {
                             if (block != null) {
 
                             } else {
-                                System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
+                                //System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
                                 block = Blocks.AIR;
                             }
 
@@ -324,7 +326,7 @@ public class Build {
                     System.out.println("CRITICAL! BuildMod: null block when using blockMappingInternalIDToBlock.get(int) for ID " + internalID);
                 }
             } else {
-                System.out.println("CRITICAL! BuildMod: error finding block internalID to real block for ID " + internalID);
+                //System.out.println("CRITICAL! BuildMod: error finding block internalID to real block for ID " + internalID);
             }
             //protect against javas autocasting primitves, incase of missing entry
 			/*if (this.blockMappingInternalIDToRuntimeID.containsKey(a)) {
@@ -663,6 +665,37 @@ public class Build {
             it = parMappingNBT.getKeySet().iterator();
             while (it.hasNext()) {
                 String tagName = (String) it.next();
+
+                /**
+                 * replace capital letter after "tropicraft.tile" with _ and its lowercase to try to auto convert
+                 *
+                 * old names used:
+                 * tile.tropicraft:thatch.name=Thatch Bundle
+                 * tile.tropicraft:bambooBundle.name=Bamboo Bundle
+                 * tile.tropicraft:log_Palm.name=Palm Log
+                 */
+
+                if (tagName.contains("tropicraft:tile.")) {
+                    String orig = tagName;
+                    String domain = tagName.replace("tropicraft:tile.", "tropicraft:");
+                    String substr = tagName.replace("tropicraft:tile.", "");
+
+                    String wat = substr.replaceAll("(.*)([A-Z])(.*)", "$1" + "_" + "$2" + "$3").toLowerCase();
+
+                    /*Pattern pattern = Pattern.compile(".*([A-Z]).*");
+                    Matcher match = pattern.matcher(substr);
+                    String replacement = "";
+                    if (match.find()) {
+                        String matchFound = match.group(1);
+                        System.out.println(matchFound);
+                        replacement = match.replaceFirst("_" + matchFound.toLowerCase());
+                    }*/
+
+                    tagName = "tropicraft:" + wat;
+
+                    System.out.println("replacing " + orig + " with " + tagName);
+                }
+
                 int tag = parMappingNBT.getInteger(tagName);//(NBTTagInt)it.next();
                 if (swapMap.get(tagName) != null) {
                     finalMap.put(tag, swapMap.get(tagName));

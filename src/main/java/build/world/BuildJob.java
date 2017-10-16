@@ -182,7 +182,7 @@ public class BuildJob {
         //mod_ZombieCraft.worldRef.editingBlocks = false;
         //spawnLevelEntities();
 
-        //System.out.println("Level build complete");
+        System.out.println("Level build complete");
     }
 
 
