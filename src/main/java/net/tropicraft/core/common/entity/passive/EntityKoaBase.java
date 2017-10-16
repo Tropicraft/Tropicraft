@@ -1,5 +1,9 @@
 package net.tropicraft.core.common.entity.passive;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -10,14 +14,20 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -32,22 +42,32 @@ import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
 import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
+import net.tropicraft.core.common.entity.hostile.EntityAshen;
+import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.lang.reflect.Field;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Nullable;
 
 public class EntityKoaBase extends EntityVillager {
 
+    //TODO: task to eat food from inventory or from home chest to sustain hunger, also make it heal
+
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
     public long lastTimeFished = 0;
 
+    /*public List<ItemStack> listItemStacks = new ArrayList<>();
+    public int inventorySizeMax = 9;*/
+
+    public InventoryBasic inventory;
+
     private static final DataParameter<Integer> ROLE = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> ORIENTATION = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
+
+    private EntityAIBase taskFishing = new EntityAIGoneFishin(this);
 
     public enum Genders {
         MALE,
@@ -67,9 +87,20 @@ public class EntityKoaBase extends EntityVillager {
         public static Roles get(int intValue) { return lookup.get(intValue); }
     }
 
+    public enum Orientations {
+        STRAIT,
+        GAY;
+
+        private static final Map<Integer, Orientations> lookup = new HashMap<>();
+        static { for(Orientations e : EnumSet.allOf(Orientations.class)) { lookup.put(e.ordinal(), e); } }
+        public static Orientations get(int intValue) { return lookup.get(intValue); }
+    }
+
     public EntityKoaBase(World worldIn) {
         super(worldIn);
         this.enablePersistence();
+
+        inventory = new InventoryBasic("koa.inventory", false, 9);
     }
 
     public Genders getGender() {
@@ -80,19 +111,37 @@ public class EntityKoaBase extends EntityVillager {
         return Roles.get(this.getDataManager().get(ROLE));
     }
 
+    public Orientations getOrientation() {
+        return Orientations.get(this.getDataManager().get(ORIENTATION));
+    }
+
     @Override
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(ROLE, Integer.valueOf(0));
         this.getDataManager().register(GENDER, Integer.valueOf(0));
+        this.getDataManager().register(ORIENTATION, Integer.valueOf(0));
     }
 
     @Override
     protected void initEntityAI()
     {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityZombie.class, 8.0F, 1D, 1D, 15F));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true));
+
+        //TODO: merge into more customizable class?
+        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityMob.class, 8.0F, 1D, 1D, 15F));
+        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityAshen.class, 8.0F, 1D, 1D, 15F));
+        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityIguana.class, 8.0F, 1D, 1D, 15F));
+
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true) {
+            @Override
+            public void startExecuting() {
+                super.startExecuting();
+                if (this.attacker instanceof EntityKoaBase) {
+                    ((EntityKoaBase) this.attacker).setFightingItem();
+                }
+            }
+        });
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
@@ -100,7 +149,6 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1D));
         this.tasks.addTask(6, new EntityAIVillagerMate(this));
-        this.tasks.addTask(7, new EntityAIGoneFishin(this));
         //this.tasks.addTask(7, new EntityAIFollowGolem(this));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(9, new EntityAIVillagerInteract(this));
@@ -109,6 +157,24 @@ public class EntityKoaBase extends EntityVillager {
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityAshen.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIguana.class, true));
+    }
+
+    //use if post spawn dynamic AI changing needed
+    public void initUniqueEntityAI() {
+
+    }
+
+    public void setHunter() {
+        this.getDataManager().set(ROLE, Integer.valueOf(Roles.HUNTER.ordinal()));
+        this.setFightingItem();
+    }
+
+    public void setFisher() {
+        this.getDataManager().set(ROLE, Integer.valueOf(Roles.FISHERMAN.ordinal()));
+        this.tasks.addTask(7, taskFishing);
+        this.setFishingItem();
     }
 
     @Override
@@ -254,22 +320,21 @@ public class EntityKoaBase extends EntityVillager {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
         this.setHomePosAndDistance(this.getPosition(), -1);
 
-        //fail?
-        int randValRole = this.world.rand.nextInt(Roles.values().length - 1);
-        this.getDataManager().set(ROLE, Integer.valueOf(randValRole));
-        int randValGender = this.world.rand.nextInt(Genders.values().length - 1);
+        //adjust home position to chest right nearby for easy item spawning
+        findAndSetHomeToCloseChest();
+
+        int randValRole = this.world.rand.nextInt(Roles.values().length);
+        if (randValRole == Roles.FISHERMAN.ordinal()) {
+            this.setFisher();
+        } else if (randValRole == Roles.HUNTER.ordinal()) {
+            this.setHunter();
+        }
+        int randValGender = this.world.rand.nextInt(Genders.values().length);
         this.getDataManager().set(GENDER, Integer.valueOf(randValGender));
 
-        if (this.world.rand.nextBoolean()) {
+        int childChance = 20;
+        if (this.world.rand.nextInt(100) < childChance) {
             this.setGrowingAge(-24000);
-        }
-
-        if (this.world.rand.nextBoolean()) {
-            this.getDataManager().set(ROLE, Integer.valueOf(Roles.FISHERMAN.ordinal()));
-        }
-
-        if (this.world.rand.nextBoolean()) {
-            this.getDataManager().set(GENDER, Integer.valueOf(Genders.FEMALE.ordinal()));
         }
 
         IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
@@ -288,6 +353,23 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("home_Z", getHomePosition().getZ());
 
         compound.setLong("lastTimeFished", lastTimeFished);
+
+        NBTTagList nbttaglist = new NBTTagList();
+
+        for (int i = 0; i < this.inventory.getSizeInventory(); ++i)
+        {
+            ItemStack itemstack = this.inventory.getStackInSlot(i);
+
+            if (itemstack != null)
+            {
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setByte("Slot", (byte)i);
+                itemstack.writeToNBT(nbttagcompound);
+                nbttaglist.appendTag(nbttagcompound);
+            }
+        }
+
+        compound.setTag("koa_inventory", nbttaglist);
     }
 
     @Override
@@ -297,5 +379,102 @@ public class EntityKoaBase extends EntityVillager {
             this.setHomePosAndDistance(new BlockPos(compound.getInteger("home_X"), compound.getInteger("home_Y"), compound.getInteger("home_Z")), -1);
         }
         lastTimeFished = compound.getLong("lastTimeFished");
+
+        if (compound.hasKey("koa_inventory", 9)) {
+            NBTTagList nbttaglist = compound.getTagList("koa_inventory", 10);
+            //this.initHorseChest();
+
+            for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+                NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
+                int j = nbttagcompound.getByte("Slot") & 255;
+
+                this.inventory.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound));
+            }
+        }
+    }
+
+    public void setFishingItem() {
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.FISHING_ROD));
+    }
+
+    public void setFightingItem() {
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
+    }
+
+    public void findAndSetHomeToCloseChest() {
+        int range = 3;
+        for (int x = -range; x <= range; x++) {
+            for (int y = -range; y <= range; y++) {
+                for (int z = -range; z <= range; z++) {
+                    BlockPos pos = this.getPosition().add(x, y, z);
+                    TileEntity tile = world.getTileEntity(pos);
+                    if (tile instanceof TileEntityChest) {
+                        System.out.println("found chest, updating home position to " + pos);
+                        setHomePosAndDistance(pos, -1);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean tryDumpIventoryIntoHomeChest() {
+        TileEntity tile = world.getTileEntity(this.getHomePosition());
+        if (tile instanceof TileEntityChest) {
+            TileEntityChest chest = (TileEntityChest)tile;
+
+            for (int i = 0; i < this.inventory.getSizeInventory(); ++i) {
+                ItemStack itemstack = this.inventory.getStackInSlot(i);
+
+                if (itemstack != null) {
+                    this.inventory.setInventorySlotContents(i, this.addItem(chest, itemstack));
+                }
+            }
+        }
+        //maybe return false if inventory not emptied entirely
+        return true;
+    }
+
+    @Nullable
+    public ItemStack addItem(TileEntityChest chest, ItemStack stack)
+    {
+        ItemStack itemstack = stack.copy();
+
+        for (int i = 0; i < chest.getSizeInventory(); ++i)
+        {
+            ItemStack itemstack1 = chest.getStackInSlot(i);
+
+            if (itemstack1 == null)
+            {
+                chest.setInventorySlotContents(i, itemstack);
+                chest.markDirty();
+                return null;
+            }
+
+            if (ItemStack.areItemsEqual(itemstack1, itemstack))
+            {
+                int j = Math.min(chest.getInventoryStackLimit(), itemstack1.getMaxStackSize());
+                int k = Math.min(itemstack.stackSize, j - itemstack1.stackSize);
+
+                if (k > 0)
+                {
+                    itemstack1.stackSize += k;
+                    itemstack.stackSize -= k;
+
+                    if (itemstack.stackSize <= 0)
+                    {
+                        chest.markDirty();
+                        return null;
+                    }
+                }
+            }
+        }
+
+        if (itemstack.stackSize != stack.stackSize)
+        {
+            chest.markDirty();
+        }
+
+        return itemstack;
     }
 }

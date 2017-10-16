@@ -3,11 +3,14 @@ package net.tropicraft.core.common.entity.ai;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.registry.ItemRegistry;
 
 import java.util.Random;
 
@@ -56,6 +59,11 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
         walkingTimeout = walkingTimeoutMax;
         fishingTimeout = fishingTimeoutMax;
+    }
+
+    @Override
+    public void startExecuting() {
+        entity.setFishingItem();
     }
 
     @Override
@@ -178,7 +186,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             }
         } else if (state == FISHING_STATE.FISHING) {
             //temp visual to replace casting line
-            entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1));
+            entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 40));
             if (!entity.isInWater()) {
                 //force null path so they stay still
                 //aim at fishing coord and wait
@@ -212,6 +220,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             if (ifCaughtFish()) {
                 fishCaught++;
+                entity.inventory.addItem(new ItemStack(Items.FISH));
                 debug("caught a fish");
 
                 if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
@@ -240,6 +249,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             if (entity.getDistance(entity.getHomePosition().getX(), entity.getHomePosition().getY(), entity.getHomePosition().getZ()) < 3D) {
                 debug("dropping off fish, reset");
                 fishCaught = 0;
+                entity.tryDumpIventoryIntoHomeChest();
                 //setState(FISHING_STATE.IDLE);
                 resetTask();
             }
