@@ -46,6 +46,7 @@ import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
+import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.lang.reflect.Field;
@@ -146,7 +147,7 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityMob.class, 8.0F, 1D, 1D, 15F));
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityAshen.class, 8.0F, 1D, 1D, 15F));
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityIguana.class, 8.0F, 1D, 1D, 15F));
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntitySkeleton.class, 8.0F, 1D, 1D, 15F));
+        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityTropiSkeleton.class, 8.0F, 1D, 1D, 15F));
 
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true) {
             @Override
@@ -177,7 +178,7 @@ public class EntityKoaBase extends EntityVillager {
 
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityAshen.class, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIguana.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityTropiSkeleton.class, true));
     }
 
     //use if post spawn dynamic AI changing needed

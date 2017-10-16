@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -50,7 +52,9 @@ public class EntityAIChillAtFire extends EntityAIBase
                 BlockPos pos = Util.findBlock(entityObj, 20, Util::isFire);
 
                 if (pos != null) {
+                    pos = pos.add(0, -1, 0);
                     entityObj.setFirelacePos(pos);
+                    IBlockState state = entityObj.world.getBlockState(pos);
                     System.out.println("found fire place spot to chill");
                     return true;
                 } else {
@@ -74,6 +78,13 @@ public class EntityAIChillAtFire extends EntityAIBase
         //return !this.entityObj.getNavigator().noPath();
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky())
         {
+            if (entityObj.posLastFireplaceFound != null) {
+                IBlockState state = entityObj.world.getBlockState(entityObj.posLastFireplaceFound);
+                if (state.getMaterial() != Material.FIRE) {
+                    entityObj.posLastFireplaceFound = null;
+                    return false;
+                }
+            }
             return true;
             /*if (entityObj.posLastFireplaceFound != null && this.entityObj.getDistanceSq(entityObj.posLastFireplaceFound.getX(), entityObj.posLastFireplaceFound.getY(), entityObj.posLastFireplaceFound.getZ()) < 4.0D) {
                 return true;
