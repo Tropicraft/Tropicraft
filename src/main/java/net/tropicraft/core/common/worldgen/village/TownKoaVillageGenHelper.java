@@ -45,7 +45,7 @@ public class TownKoaVillageGenHelper {
 			
 			TownKoaVillage village = new TownKoaVillage();
 			
-			WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(parWorld);
+			/*WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(parWorld);
 			
 			int minDistBetweenVillages = 128;
 			
@@ -62,7 +62,7 @@ public class TownKoaVillageGenHelper {
 			village.initData(newID, parWorld.provider.dimensionId, centerCoords);
 			village.direction = directionTry;
 			village.initFirstTime();
-			wd.addTickingLocation(village);
+			wd.addTickingLocation(village);*/
 			
 			return true;
 		} else {

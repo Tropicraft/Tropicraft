@@ -1,6 +1,7 @@
 package build.world;
 
 import build.SchematicData;
+import build.UtilBuild;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -206,7 +207,7 @@ public class Build {
 		    	}
 	    	} else {
 	    		System.out.println("TODO: a fallback lookup table for old block IDs to unlocalized names");
-	    		NBTTagCompound nbtFallbackLookup = CompressedStreamTools.readCompressed(new FileInputStream(CoroUtilFile.getSaveFolderPath() + "BlockTranslationMapFallback.schematic"));
+	    		NBTTagCompound nbtFallbackLookup = CompressedStreamTools.readCompressed(new FileInputStream(UtilBuild.getSaveFolderPath() + "BlockTranslationMapFallback.schematic"));
 	    		this.blockMappingInternalIDToBlock = genBlockIDSchemToBlockWithUnlocalizedName(nbtFallbackLookup.getCompoundTag("blockTranslationMap"));
 	    	}
 	    	

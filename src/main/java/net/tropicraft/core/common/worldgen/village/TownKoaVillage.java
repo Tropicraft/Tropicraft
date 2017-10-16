@@ -2,6 +2,7 @@ package net.tropicraft.core.common.worldgen.village;
 
 import build.BuildServerTicks;
 import build.ICustomGen;
+import build.UtilBuild;
 import build.world.Build;
 import build.world.BuildJob;
 import build.world.BuildManager;
@@ -63,7 +64,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		
 		int yOffset = 0;//-1;
 		
-		Build mainStructureData = new Build(spawn.getX(), spawn.getY() + yOffset, spawn.getZ(), CoroUtilFile.getSaveFolderPath() + "TCSchematics" + File.separator + "koavillage");
+		Build mainStructureData = new Build(spawn.getX(), spawn.getY() + yOffset, spawn.getZ(), UtilBuild.getSaveFolderPath() + "schematics" + File.separator + "koavillage");
 		/*BlockPos coords = getBuildingCornerCoord();
 		mainStructureData.map_coord_minX = coords.getX();
 		mainStructureData.map_coord_minY = coords.getY();
@@ -227,7 +228,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		
 		EntityKoaBase ent = null;
 		
-		if (parData.type.equals("fisher")) {
+		/*if (parData.type.equals("fisher")) {
 			ent = new EntityKoaFisher(getWorld());
 		} else if (parData.type.equals("hunter")) {
 			ent = new EntityKoaHunter(getWorld());
@@ -235,16 +236,18 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 			ent = new EntityKoaTrader(getWorld());
 		} else if (parData.type.equals("shaman")) {
 			ent = new EntityKoaShaman(getWorld());
-		}
+		}*/
+
+		ent = new EntityKoaHunter(getWorld());
 		
 		if (ent != null) {
-			ent.getAIAgent().setManagedLocation(this);
+			//ent.getAIAgent().setManagedLocation(this);
 			ent.setPosition(spawn.getX() + parData.coords.getX() + 0.5F, spawn.getY() + parData.coords.getY(), spawn.getZ() + parData.coords.getZ() + 0.5F);
 			//ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
-			getWorld().spawnEntityInWorld(ent);
+			getWorld().spawnEntity(ent);
 			addEntity(parData.type, ent);
 			parData.entityUUID = ent.getPersistentID();
-			ent.onSpawnWithEgg(null);
+			ent.onInitialSpawn(getWorld().getDifficultyForLocation(ent.getPosition()), null);
 		}
 	}
 
