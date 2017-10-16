@@ -195,6 +195,9 @@ public class EntityKoaBase extends EntityVillager {
     
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+
+        if (hand != EnumHand.MAIN_HAND) return false;
+
     	boolean ret = false;
     	try {
         	// Make the super method think this villager is already trading, to block the GUI from opening
