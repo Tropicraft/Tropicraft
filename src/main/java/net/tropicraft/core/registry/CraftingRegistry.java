@@ -358,7 +358,6 @@ public class CraftingRegistry {
 		Tropicraft.encyclopedia.includeItem("anthuriumr", new ItemStack(BlockRegistry.flowers, 1, 6));
 
 		/*TODO  for (int i = 0; i < ItemAshenMask.maskTypeNames.length; i++) {
->>>>>>> 1.10.2
             Tropicraft.encyclopedia.includeItem("ashenmask", new ItemStack(TCItemRegistry.ashenMask, 1, i));
         }*/
 
