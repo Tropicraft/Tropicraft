@@ -74,9 +74,10 @@ public class EntityAIChillAtFire extends EntityAIBase
         //return !this.entityObj.getNavigator().noPath();
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky())
         {
-            if (entityObj.posLastFireplaceFound != null && this.entityObj.getDistanceSq(entityObj.posLastFireplaceFound.getX(), entityObj.posLastFireplaceFound.getY(), entityObj.posLastFireplaceFound.getZ()) < 4.0D) {
+            return true;
+            /*if (entityObj.posLastFireplaceFound != null && this.entityObj.getDistanceSq(entityObj.posLastFireplaceFound.getX(), entityObj.posLastFireplaceFound.getY(), entityObj.posLastFireplaceFound.getZ()) < 4.0D) {
                 return true;
-            }
+            }*/
         } else {
 
         }
@@ -93,6 +94,7 @@ public class EntityAIChillAtFire extends EntityAIBase
             PathPoint pp = this.entityObj.getNavigator().getPath().getFinalPathPoint();
             double dist = entityObj.getPositionVector().distanceTo(new Vec3d(pp.xCoord, pp.yCoord, pp.zCoord));
             if (dist < 3D) {
+                entityObj.setSitting(true);
                 entityObj.getNavigator().clearPathEntity();
             }
         } else {
@@ -131,6 +133,7 @@ public class EntityAIChillAtFire extends EntityAIBase
      */
     public void resetTask()
     {
+        entityObj.setSitting(false);
         /*this.insidePosX = this.doorInfo.getInsideBlockPos().getX();
         this.insidePosZ = this.doorInfo.getInsideBlockPos().getZ();
         this.doorInfo = null;*/

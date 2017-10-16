@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class ModelKoaMan extends ModelBiped {
 	
@@ -208,6 +209,25 @@ public class ModelKoaMan extends ModelBiped {
         }
 
         GlStateManager.popMatrix();
+    }
+
+    @Override
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+
+        if (entityIn instanceof EntityKoaBase) {
+            this.isRiding = ((EntityKoaBase) entityIn).isSitting();
+        }
+
+        if (this.isRiding)
+        {
+            if (this.isChild) {
+                GlStateManager.translate(0, 0.1, 0);
+            } else {
+                GlStateManager.translate(0, 0.3, 0);
+            }
+        }
+
+        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {

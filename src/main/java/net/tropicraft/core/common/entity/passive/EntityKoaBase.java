@@ -9,6 +9,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,6 +70,7 @@ public class EntityKoaBase extends EntityVillager {
     private static final DataParameter<Integer> ROLE = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> ORIENTATION = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
 
     private EntityAIBase taskFishing = new EntityAIGoneFishin(this);
 
@@ -114,6 +116,14 @@ public class EntityKoaBase extends EntityVillager {
         return Roles.get(this.getDataManager().get(ROLE));
     }
 
+    public boolean isSitting() {
+        return this.getDataManager().get(SITTING);
+    }
+
+    public void setSitting(boolean sitting) {
+        this.getDataManager().set(SITTING, Boolean.valueOf(sitting));
+    }
+
     public Orientations getOrientation() {
         return Orientations.get(this.getDataManager().get(ORIENTATION));
     }
@@ -124,6 +134,7 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().register(ROLE, Integer.valueOf(0));
         this.getDataManager().register(GENDER, Integer.valueOf(0));
         this.getDataManager().register(ORIENTATION, Integer.valueOf(0));
+        this.getDataManager().register(SITTING, Boolean.valueOf(false));
     }
 
     @Override
@@ -135,6 +146,7 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityMob.class, 8.0F, 1D, 1D, 15F));
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityAshen.class, 8.0F, 1D, 1D, 15F));
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityIguana.class, 8.0F, 1D, 1D, 15F));
+        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntitySkeleton.class, 8.0F, 1D, 1D, 15F));
 
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true) {
             @Override
@@ -147,8 +159,8 @@ public class EntityKoaBase extends EntityVillager {
         });
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
-        this.tasks.addTask(2, new EntityAIChillAtFire(this));
-        this.tasks.addTask(2, new EntityAIMoveIndoors(this));
+        this.tasks.addTask(3, new EntityAIChillAtFire(this));
+        this.tasks.addTask(3, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1D));
@@ -160,9 +172,12 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+        //i dont think this one works, change to predicate
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, true));
+
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityAshen.class, true));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIguana.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, true));
     }
 
     //use if post spawn dynamic AI changing needed
@@ -199,7 +214,8 @@ public class EntityKoaBase extends EntityVillager {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 
     @Override
