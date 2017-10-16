@@ -21,10 +21,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
 import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
@@ -89,8 +92,8 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityZombie.class, 8.0F, 1D, 1D, 15F));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true));
-        //this.tasks.addTask(1, new EntityAITradePlayer(this));
-        //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
+        this.tasks.addTask(1, new EntityAITradePlayer(this));
+        this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
@@ -99,7 +102,7 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(7, new EntityAIGoneFishin(this));
         //this.tasks.addTask(7, new EntityAIFollowGolem(this));
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        //this.tasks.addTask(9, new EntityAIVillagerInteract(this));
+        this.tasks.addTask(9, new EntityAIVillagerInteract(this));
         this.tasks.addTask(9, new EntityAIWanderNotLazy(this, 1D, 40));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
@@ -188,17 +191,39 @@ public class EntityKoaBase extends EntityVillager {
         return flag;
     }
     
-    private static final Field _buyingPlayer = ReflectionHelper.findField(EntityVillager.class, "field_70962_h", "buyingPlayer");
+    //private static final Field _buyingPlayer = ReflectionHelper.findField(EntityVillager.class, "field_70962_h", "buyingPlayer");
     
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
     	boolean ret = false;
     	try {
         	// Make the super method think this villager is already trading, to block the GUI from opening
-	    	_buyingPlayer.set(this, player);
-	    	ret = super.processInteract(player, hand, stack);
-	    	_buyingPlayer.set(this, null);
-    	} catch (IllegalAccessException e) {
+	    	//_buyingPlayer.set(this, player);
+            boolean doTrade = true;
+            if (!this.world.isRemote) {
+                int swimTimeNeeded = 20 * 30;
+                PlayerDataInstance storage = player.getCapability(Tropicraft.PLAYER_DATA_INSTANCE, null);
+                if (storage != null) {
+                    if (!storage.receivedQuestReward) {
+
+                        //temp
+                        storage.swimTimeCur = swimTimeNeeded + 1;
+
+                        if (storage.swimTimeCur >= swimTimeNeeded) {
+                            doTrade = false;
+                            storage.receivedQuestReward = true;
+                            player.sendMessage(new TextComponentString("you good swim, have thing, it good"));
+                            player.inventory.addItemStackToInventory(new ItemStack(Items.POTATO));
+                        }
+
+                    }
+                }
+                if (doTrade) {
+                    ret = super.processInteract(player, hand, stack);
+                }
+                //_buyingPlayer.set(this, null);
+            }
+    	} catch (Exception e) {
     		throw new RuntimeException(e);
     	}
     	return ret;
