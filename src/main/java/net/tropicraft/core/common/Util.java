@@ -125,6 +125,10 @@ public class Util {
         return world.getBlockState(pos).isSideSolid(world, pos, EnumFacing.UP);
     }
 
+    public static boolean isFire(World world, BlockPos pos) {
+        return world.getBlockState(pos).getMaterial() == Material.FIRE;
+    }
+
     public static boolean tryMoveToEntityLivingLongDist(EntityLiving entSource, Entity entityTo, double moveSpeedAmp) {
         return tryMoveToXYZLongDist(entSource, entityTo.getPosition(), moveSpeedAmp);
     }

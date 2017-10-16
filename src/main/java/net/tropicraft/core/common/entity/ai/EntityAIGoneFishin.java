@@ -73,6 +73,12 @@ public class EntityAIGoneFishin extends EntityAIBase {
         //entity.timeBetweenFishing = 20*60*2;
         //entity.lastTimeFished = 0;
 
+        BlockPos blockpos = new BlockPos(this.entity);
+
+        if ((!this.entity.world.isDaytime() || this.entity.world.isRaining() && this.entity.world.getBiome(blockpos).canRain())) {
+            return false;
+        }
+
         boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
         if (entity.lastTimeFished < entity.world.getTotalWorldTime() && entity.world.rand.nextInt(3) == 0) {
             BlockPos posWater = findWater();

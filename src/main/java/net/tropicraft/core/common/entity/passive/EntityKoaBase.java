@@ -40,6 +40,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
+import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
 import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
@@ -57,6 +58,8 @@ public class EntityKoaBase extends EntityVillager {
 
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
     public long lastTimeFished = 0;
+
+    public BlockPos posLastFireplaceFound = null;
 
     /*public List<ItemStack> listItemStacks = new ArrayList<>();
     public int inventorySizeMax = 9;*/
@@ -144,6 +147,7 @@ public class EntityKoaBase extends EntityVillager {
         });
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
+        this.tasks.addTask(2, new EntityAIChillAtFire(this));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
@@ -352,6 +356,12 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("home_Y", getHomePosition().getY());
         compound.setInteger("home_Z", getHomePosition().getZ());
 
+        if (posLastFireplaceFound != null) {
+            compound.setInteger("fireplace_X", posLastFireplaceFound.getX());
+            compound.setInteger("fireplace_Y", posLastFireplaceFound.getY());
+            compound.setInteger("fireplace_Z", posLastFireplaceFound.getZ());
+        }
+
         compound.setLong("lastTimeFished", lastTimeFished);
 
         NBTTagList nbttaglist = new NBTTagList();
@@ -378,6 +388,11 @@ public class EntityKoaBase extends EntityVillager {
         if (compound.hasKey("home_X")) {
             this.setHomePosAndDistance(new BlockPos(compound.getInteger("home_X"), compound.getInteger("home_Y"), compound.getInteger("home_Z")), -1);
         }
+
+        if (compound.hasKey("fireplace_X")) {
+            this.setFirelacePos(new BlockPos(compound.getInteger("fireplace_X"), compound.getInteger("fireplace_Y"), compound.getInteger("fireplace_Z")));
+        }
+
         lastTimeFished = compound.getLong("lastTimeFished");
 
         if (compound.hasKey("koa_inventory", 9)) {
@@ -476,5 +491,9 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         return itemstack;
+    }
+
+    public void setFirelacePos(BlockPos pos) {
+        this.posLastFireplaceFound = pos;
     }
 }
