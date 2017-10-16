@@ -24,6 +24,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
@@ -92,8 +93,8 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityZombie.class, 8.0F, 1D, 1D, 15F));
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true));
-        this.tasks.addTask(1, new EntityAITradePlayer(this));
-        this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
+        //this.tasks.addTask(1, new EntityAITradePlayer(this));
+        //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
@@ -191,7 +192,7 @@ public class EntityKoaBase extends EntityVillager {
         return flag;
     }
     
-    //private static final Field _buyingPlayer = ReflectionHelper.findField(EntityVillager.class, "field_70962_h", "buyingPlayer");
+    private static final Field _buyingPlayer = ReflectionHelper.findField(EntityVillager.class, "field_70962_h", "buyingPlayer");
     
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
@@ -200,8 +201,6 @@ public class EntityKoaBase extends EntityVillager {
 
     	boolean ret = false;
     	try {
-        	// Make the super method think this villager is already trading, to block the GUI from opening
-	    	//_buyingPlayer.set(this, player);
             boolean doTrade = true;
             if (!this.world.isRemote) {
                 int swimTimeNeeded = 20 * 30;
@@ -222,9 +221,11 @@ public class EntityKoaBase extends EntityVillager {
                     }
                 }
                 if (doTrade) {
+                    // Make the super method think this villager is already trading, to block the GUI from opening
+                    _buyingPlayer.set(this, player);
                     ret = super.processInteract(player, hand, stack);
+                    _buyingPlayer.set(this, null);
                 }
-                //_buyingPlayer.set(this, null);
             }
     	} catch (Exception e) {
     		throw new RuntimeException(e);
@@ -271,7 +272,12 @@ public class EntityKoaBase extends EntityVillager {
             this.getDataManager().set(GENDER, Integer.valueOf(Genders.FEMALE.ordinal()));
         }
 
-        return super.onInitialSpawn(difficulty, livingdata);
+        IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+
+        /*VillagerRegistry.VillagerProfession koaProfession = new VillagerRegistry.VillagerProfession("koa_profession", "");
+        this.setProfession(koaProfession);*/
+
+        return data;
     }
 
     @Override
