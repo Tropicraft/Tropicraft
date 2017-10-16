@@ -212,7 +212,7 @@ public class EntityKoaBase extends EntityVillager {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
@@ -512,5 +512,17 @@ public class EntityKoaBase extends EntityVillager {
 
     public void setFirelacePos(BlockPos pos) {
         this.posLastFireplaceFound = pos;
+    }
+
+    @Override
+    public void onLivingUpdate() {
+        super.onLivingUpdate();
+
+        //TODO: replace with heal via hunger/food consumption
+        if (!world.isRemote) {
+            if (world.getTotalWorldTime() % (20*5) == 0) {
+                this.heal(1);
+            }
+        }
     }
 }
