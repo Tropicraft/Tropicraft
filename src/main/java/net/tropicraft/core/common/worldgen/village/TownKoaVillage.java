@@ -238,7 +238,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 
         ent = new EntityKoaHunter(getWorld());
 
-        if (false && ent != null) {
+        if (ent != null) {
             //ent.getAIAgent().setManagedLocation(this);
             ent.setPosition(spawn.getX() + parData.coords.getX() + 0.5F, spawn.getY() + parData.coords.getY(), spawn.getZ() + parData.coords.getZ() + 0.5F);
             //ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
