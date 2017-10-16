@@ -249,7 +249,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             if (entity.getDistance(entity.getHomePosition().getX(), entity.getHomePosition().getY(), entity.getHomePosition().getZ()) < 3D) {
                 debug("dropping off fish, reset");
                 fishCaught = 0;
-                entity.tryDumpIventoryIntoHomeChest();
+                entity.tryDumpInventoryIntoHomeChest();
                 //setState(FISHING_STATE.IDLE);
                 resetTask();
             }

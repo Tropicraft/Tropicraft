@@ -418,7 +418,7 @@ public class EntityKoaBase extends EntityVillager {
         }
     }
 
-    public boolean tryDumpIventoryIntoHomeChest() {
+    public boolean tryDumpInventoryIntoHomeChest() {
         TileEntity tile = world.getTileEntity(this.getHomePosition());
         if (tile instanceof TileEntityChest) {
             TileEntityChest chest = (TileEntityChest)tile;
