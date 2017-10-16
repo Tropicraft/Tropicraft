@@ -529,7 +529,7 @@ public class BuildManager {
 
             int rotateMeta = meta & 4;
 
-            System.out.println("rotation: " + rotation + ", dir: " + dir + ", meta: " + meta + ", rotateMeta: " + rotateMeta);
+            //System.out.println("rotation: " + rotation + ", dir: " + dir + ", meta: " + meta + ", rotateMeta: " + rotateMeta);
 
             int fMeta = -1;
 

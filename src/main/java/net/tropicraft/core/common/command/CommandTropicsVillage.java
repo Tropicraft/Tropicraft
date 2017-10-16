@@ -8,7 +8,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
+import net.tropicraft.core.common.town.ISimulationTickable;
+import net.tropicraft.core.common.town.ManagedLocation;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
+import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
 
 public class CommandTropicsVillage extends CommandBase {
 
@@ -45,13 +48,16 @@ public class CommandTropicsVillage extends CommandBase {
                 village.initData(newID, player.world.provider.getDimension(), new BlockPos(x, y, z));
                 village.initFirstTime();
                 //wd.addTickingLocation(village);
-            }/* else if (args[0].equals("village_try")) {
+            } else if (args[0].equals("village_try")) {
                 int x = MathHelper.floor(player.posX);
 				int z = MathHelper.floor(player.posZ);
 				int y = player.world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();
 				if (y < WorldProviderTropicraft.MID_HEIGHT) y = WorldProviderTropicraft.MID_HEIGHT+1;
-				TownKoaVillageGenHelper.hookTryGenVillage(new BlockPos(x, y, z), player.world);
-			} else if (args[0].equals("village_clear")) {
+				boolean result = TownKoaVillageGenHelper.hookTryGenVillage(new BlockPos(x, y, z), player.world);
+                if (!result) {
+                    System.out.println("failed to gen village");
+                }
+            }/* else if (args[0].equals("village_clear")) {
 				WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.world);
 				
 				for (Entry<Integer, ISimulationTickable> entry : wd.lookupTickingManagedLocations.entrySet()) {

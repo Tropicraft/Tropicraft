@@ -113,8 +113,8 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
             iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
         }
         
-        System.out.println(iblockstate);
-        System.out.println(meta);
+        /*System.out.println(iblockstate);
+        System.out.println(meta);*/
 
         return iblockstate;
     }

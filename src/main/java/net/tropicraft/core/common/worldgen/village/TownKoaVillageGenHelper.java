@@ -57,11 +57,13 @@ public class TownKoaVillageGenHelper {
 				}
 			}
 			//questionable ID setting
-			int newID = wd.lookupTickingManagedLocations.size();
-			village.initData(newID, parWorld.provider.dimensionId, centerCoords);
+			int newID = wd.lookupTickingManagedLocations.size();*/
+            //TODO: temp until world cap added
+            int newID = parWorld.rand.nextInt(9999);
+			village.initData(newID, parWorld.provider.getDimension(), centerCoords);
 			village.direction = directionTry;
 			village.initFirstTime();
-			wd.addTickingLocation(village);*/
+			//wd.addTickingLocation(village);
 
             return true;
         } else {
@@ -127,9 +129,10 @@ public class TownKoaVillageGenHelper {
 
                 if (blockScanEnd.getMaterial(state3) == Material.WATER) {
                     //purposely inverting scanX and scanZ here to make it check the perpendicular
-                    for (int i = 1; i <= 4; i++) {
+                    int steps = 8;
+                    for (int i = 1; i <= steps; i++) {
 
-                        int sizeStep = sizeHorizMax / 4 * i;
+                        int sizeStep = sizeHorizMax / steps * i;
 
                         IBlockState state4 = parWorld.getBlockState(new BlockPos(parCoords.getX() + (sizeStep * scanZ), topYMiddle, parCoords.getZ() + (sizeStep * scanX)));
                         IBlockState state5 = parWorld.getBlockState(new BlockPos(parCoords.getX() + (sizeStep * scanZ * -1), topYMiddle, parCoords.getZ() + (sizeStep * scanX * -1)));
