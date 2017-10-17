@@ -27,10 +27,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
@@ -72,6 +69,8 @@ public class EntityKoaBase extends EntityVillager {
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
 
     private EntityAIBase taskFishing = new EntityAIGoneFishin(this);
+
+    private float clientHealthLastTracked = 0;
 
     public enum Genders {
         MALE,
@@ -663,8 +662,22 @@ public class EntityKoaBase extends EntityVillager {
         //TODO: replace with heal via hunger/food consumption
         if (!world.isRemote) {
             //if (world.getTotalWorldTime() % (20*5) == 0) {
-                this.heal(5);
+                //this.heal(5);
             //}
         }
+
+        if (world.isRemote) {
+            if (clientHealthLastTracked != this.getHealth()) {
+                if (this.getHealth() > clientHealthLastTracked) {
+                    world.spawnParticle(EnumParticleTypes.HEART, false, this.posX, this.posY + 2.2, this.posZ, 0, 0, 0);
+                }
+                clientHealthLastTracked = this.getHealth();
+            }
+        }
+    }
+
+    @Override
+    public void heal(float healAmount) {
+        super.heal(healAmount);
     }
 }

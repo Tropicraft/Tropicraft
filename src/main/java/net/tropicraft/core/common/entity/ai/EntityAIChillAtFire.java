@@ -5,6 +5,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -12,6 +14,7 @@ import net.minecraft.village.Village;
 import net.minecraft.village.VillageDoorInfo;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAIChillAtFire extends EntityAIBase
 {
@@ -22,10 +25,15 @@ public class EntityAIChillAtFire extends EntityAIBase
     private int walkingTimeout;
     private int repathPentalty = 0;
 
+    private int lookUpdateTimer = 0;
+    private int randXPos = 0;
+    private int randYPos = 0;
+    private int randZPos = 0;
+
     public EntityAIChillAtFire(EntityKoaBase entityObjIn)
     {
         this.entityObj = entityObjIn;
-        this.setMutexBits(1);
+        this.setMutexBits(3);
     }
 
     /**
@@ -36,7 +44,11 @@ public class EntityAIChillAtFire extends EntityAIBase
         BlockPos blockpos = new BlockPos(this.entityObj);
 
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky()) {
-            return true;
+            if (!isTooClose()) {
+                return true;
+            } else {
+                return false;
+            }
         }
         else
         {
@@ -53,7 +65,12 @@ public class EntityAIChillAtFire extends EntityAIBase
         //return !this.entityObj.getNavigator().noPath();
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky())
         {
-            return true;
+            if (!isTooClose()) {
+                return true;
+            } else {
+                return false;
+            }
+
         } else {
             return false;
         }
@@ -80,10 +97,35 @@ public class EntityAIChillAtFire extends EntityAIBase
 
         //prevent walking into the fire
         double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        if (dist < 3D) {
+        if (dist < 5D) {
             entityObj.setSitting(true);
             entityObj.getNavigator().clearPathEntity();
             isClose = true;
+            if (lookUpdateTimer <= 0) {
+                lookUpdateTimer = 200 + entityObj.world.rand.nextInt(100);
+                int range = 2;
+                randXPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
+                //stargaze
+                if (entityObj.world.rand.nextInt(3) == 0) {
+                    randYPos = 5+entityObj.world.rand.nextInt(5);
+                } else {
+                    randYPos = 0;
+                }
+                randZPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
+
+                if (entityObj.getEntityId() % 3 == 0) {
+                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.bambooMug));
+                } else if (entityObj.getEntityId() % 5 == 0) {
+                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.cookedFrogLeg));
+                } else {
+                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.orange));
+                }
+
+                entityObj.heal(1);
+
+            }
+            this.entityObj.getLookHelper().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+                    8F, 8F);
         } else {
             entityObj.setSitting(false);
         }
@@ -124,6 +166,10 @@ public class EntityAIChillAtFire extends EntityAIBase
         if (repathPentalty > 0) {
             repathPentalty--;
         }
+
+        if (lookUpdateTimer > 0) {
+            lookUpdateTimer--;
+        }
     }
 
     /**
@@ -148,5 +194,26 @@ public class EntityAIChillAtFire extends EntityAIBase
         /*this.insidePosX = this.doorInfo.getInsideBlockPos().getX();
         this.insidePosZ = this.doorInfo.getInsideBlockPos().getZ();
         this.doorInfo = null;*/
+    }
+
+    public boolean isTooClose() {
+        BlockPos blockposGoal = null;
+        if (this.entityObj.posLastFireplaceFound != null) {
+            //path to base of fire
+            blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
+        } else {
+            blockposGoal = this.entityObj.getHomePosition();
+        }
+
+        if (blockposGoal == null) {
+            return false;
+        }
+
+        //prevent walking into the fire
+        double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        if (dist <= 3D) {
+            return true;
+        }
+        return false;
     }
 }
