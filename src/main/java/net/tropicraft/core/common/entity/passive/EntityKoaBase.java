@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.passive;
 
+import com.google.common.base.Predicate;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReport;
@@ -71,6 +72,11 @@ public class EntityKoaBase extends EntityVillager {
     private EntityAIBase taskFishing = new EntityAIGoneFishin(this);
 
     private float clientHealthLastTracked = 0;
+
+    public static int MAX_HOME_DISTANCE = 64;
+
+    public static Predicate<Entity> ENEMY_PREDICATE =
+            input -> input instanceof EntityMob || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
 
     public enum Genders {
         MALE,
@@ -144,9 +150,7 @@ public class EntityKoaBase extends EntityVillager {
 
     }
 
-    //use if post spawn dynamic AI changing needed
     public void updateUniqueEntityAI() {
-        //TODO: verify this is cleanest way to reset all AI
         Set<EntityAITasks.EntityAITaskEntry> executingTaskEntries = ReflectionHelper.getPrivateValue(EntityAITasks.class, this.tasks, "field_75780_b", "executingTaskEntries");
         if (executingTaskEntries != null) {
             for (EntityAITasks.EntityAITaskEntry entry : this.tasks.taskEntries) {
@@ -168,11 +172,8 @@ public class EntityKoaBase extends EntityVillager {
 
         this.tasks.addTask(0, new EntityAISwimming(this));
 
-        //TODO: merge into more customizable class?
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityMob.class, 8.0F, 1D, 1D, 15F));
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityAshen.class, 8.0F, 1D, 1D, 15F));
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityIguana.class, 8.0F, 1D, 1D, 15F));
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityTropiSkeleton.class, 8.0F, 1D, 1D, 15F));
+        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityLivingBase.class, ENEMY_PREDICATE,
+                12.0F, 1.4D, 1.4D, 15F));
 
         this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true) {
             @Override
@@ -210,10 +211,7 @@ public class EntityKoaBase extends EntityVillager {
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         //i dont think this one works, change to predicate
         if (canHunt()) {
-            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, true));
-            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityAshen.class, true));
-            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIguana.class, true));
-            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityTropiSkeleton.class, true));
+            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 10, true, false, ENEMY_PREDICATE));
         }
 
 
@@ -407,7 +405,7 @@ public class EntityKoaBase extends EntityVillager {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        this.setHomePosAndDistance(this.getPosition(), -1);
+        this.setHomePosAndDistance(this.getPosition(), MAX_HOME_DISTANCE);
 
         rollDiceChild();
 
@@ -483,7 +481,7 @@ public class EntityKoaBase extends EntityVillager {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         if (compound.hasKey("home_X")) {
-            this.setHomePosAndDistance(new BlockPos(compound.getInteger("home_X"), compound.getInteger("home_Y"), compound.getInteger("home_Z")), -1);
+            this.setHomePosAndDistance(new BlockPos(compound.getInteger("home_X"), compound.getInteger("home_Y"), compound.getInteger("home_Z")), MAX_HOME_DISTANCE);
         }
 
         if (compound.hasKey("fireplace_X")) {
@@ -544,7 +542,7 @@ public class EntityKoaBase extends EntityVillager {
                         TileEntity tile = world.getTileEntity(pos);
                         if (tile instanceof TileEntityChest) {
                             System.out.println("found chest, updating home position to " + pos);
-                            setHomePosAndDistance(pos, -1);
+                            setHomePosAndDistance(pos, MAX_HOME_DISTANCE);
                             return;
                         }
                     }
