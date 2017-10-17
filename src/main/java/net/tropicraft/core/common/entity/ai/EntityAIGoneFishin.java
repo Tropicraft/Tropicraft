@@ -72,6 +72,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
         //temp
         //entity.timeBetweenFishing = 20*60*2;
         //entity.lastTimeFished = 0;
+        debugTask = false;
 
         BlockPos blockpos = new BlockPos(this.entity);
 
@@ -93,7 +94,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
                     debug("failed the path, skip executing");
                 }
             } else {
-                //debug("couldnt find water, skip executing");
+                debug("couldnt find water, skip executing");
             }
         } else {
             //debug("waiting on timeout to fish");

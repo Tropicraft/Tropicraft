@@ -17,6 +17,11 @@ public class EntityAIChillAtFire extends EntityAIBase
 {
     private final EntityKoaBase entityObj;
 
+    private int walkingTimeoutMax = 20*10;
+
+    private int walkingTimeout;
+    private int repathPentalty = 0;
+
     public EntityAIChillAtFire(EntityKoaBase entityObjIn)
     {
         this.entityObj = entityObjIn;
@@ -30,43 +35,13 @@ public class EntityAIChillAtFire extends EntityAIBase
     {
         BlockPos blockpos = new BlockPos(this.entityObj);
 
-        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky())
-        {
-            /*if (this.entityObj.getRNG().nextInt(50) != 0)
-            {
-                return false;
-            }
-            else */if (entityObj.posLastFireplaceFound != null && this.entityObj.getDistanceSq(entityObj.posLastFireplaceFound.getX(), entityObj.posLastFireplaceFound.getY(), entityObj.posLastFireplaceFound.getZ()) < 4.0D)
-            {
-                //return true and lock koa from moving in update?
-                return true;
-            }
-            else if (entityObj.posLastFireplaceFound != null && this.entityObj.getDistanceSq(entityObj.posLastFireplaceFound.getX(), entityObj.posLastFireplaceFound.getY(), entityObj.posLastFireplaceFound.getZ()) >= 4.0D)
-            {
-                return true;
-            }
-            else if (entityObj.posLastFireplaceFound == null)
-            {
-
-                //TODO: line of sight check
-                BlockPos pos = Util.findBlock(entityObj, 20, Util::isFire);
-
-                if (pos != null) {
-                    pos = pos.add(0, -1, 0);
-                    entityObj.setFirelacePos(pos);
-                    IBlockState state = entityObj.world.getBlockState(pos);
-                    System.out.println("found fire place spot to chill");
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky()) {
+            return true;
         }
         else
         {
             return false;
         }
-        return false;
     }
 
     /**
@@ -78,38 +53,76 @@ public class EntityAIChillAtFire extends EntityAIBase
         //return !this.entityObj.getNavigator().noPath();
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky())
         {
-            if (entityObj.posLastFireplaceFound != null) {
-                IBlockState state = entityObj.world.getBlockState(entityObj.posLastFireplaceFound);
-                if (state.getMaterial() != Material.FIRE) {
-                    entityObj.posLastFireplaceFound = null;
-                    return false;
-                }
-            }
             return true;
-            /*if (entityObj.posLastFireplaceFound != null && this.entityObj.getDistanceSq(entityObj.posLastFireplaceFound.getX(), entityObj.posLastFireplaceFound.getY(), entityObj.posLastFireplaceFound.getZ()) < 4.0D) {
-                return true;
-            }*/
         } else {
-
+            return false;
         }
-
-        return false;
     }
 
     @Override
     public void updateTask() {
         super.updateTask();
 
-        //prevent walking into the fire
-        if (!this.entityObj.getNavigator().noPath()) {
-            PathPoint pp = this.entityObj.getNavigator().getPath().getFinalPathPoint();
-            double dist = entityObj.getPositionVector().distanceTo(new Vec3d(pp.xCoord, pp.yCoord, pp.zCoord));
-            if (dist < 3D) {
-                entityObj.setSitting(true);
-                entityObj.getNavigator().clearPathEntity();
-            }
-        } else {
+        boolean isClose = false;
 
+        BlockPos blockposGoal = null;
+        if (this.entityObj.posLastFireplaceFound != null) {
+            //path to base of fire
+            blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
+        } else {
+            blockposGoal = this.entityObj.getHomePosition();
+        }
+
+        if (blockposGoal == null) {
+            resetTask();
+            return;
+        }
+
+        //prevent walking into the fire
+        double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        if (dist < 3D) {
+            entityObj.setSitting(true);
+            entityObj.getNavigator().clearPathEntity();
+            isClose = true;
+        } else {
+            entityObj.setSitting(false);
+        }
+
+        if (!isClose) {
+            if ((this.entityObj.getNavigator().noPath() || walkingTimeout <= 0) && repathPentalty <= 0) {
+
+                int i = blockposGoal.getX();
+                int j = blockposGoal.getY();
+                int k = blockposGoal.getZ();
+
+                boolean success = false;
+
+                if (this.entityObj.getDistanceSq(blockposGoal) > 256.0D) {
+                    Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
+
+                    if (vec3d != null) {
+                        success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.0D);
+                    }
+                } else {
+                    success = this.entityObj.getNavigator().tryMoveToXYZ((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                }
+
+                if (!success) {
+                    repathPentalty = 40;
+                } else {
+                    walkingTimeout = walkingTimeoutMax;
+                }
+            } else {
+                if (walkingTimeout > 0) {
+                    walkingTimeout--;
+                } else {
+
+                }
+            }
+        }
+
+        if (repathPentalty > 0) {
+            repathPentalty--;
         }
     }
 
@@ -118,25 +131,10 @@ public class EntityAIChillAtFire extends EntityAIBase
      */
     public void startExecuting()
     {
+        super.startExecuting();
         //this.insidePosX = -1;
-        BlockPos blockpos = this.entityObj.posLastFireplaceFound;
-        int i = blockpos.getX();
-        int j = blockpos.getY();
-        int k = blockpos.getZ();
-
-        if (this.entityObj.getDistanceSq(blockpos) > 256.0D)
-        {
-            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double)i + 0.5D, (double)j, (double)k + 0.5D));
-
-            if (vec3d != null)
-            {
-                this.entityObj.getNavigator().tryMoveToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.0D);
-            }
-        }
-        else
-        {
-            this.entityObj.getNavigator().tryMoveToXYZ((double)i + 0.5D, (double)j, (double)k + 0.5D, 1.0D);
-        }
+        //reset any previous path so updateTask can start with a fresh path
+        this.entityObj.getNavigator().clearPathEntity();
     }
 
     /**
@@ -144,7 +142,9 @@ public class EntityAIChillAtFire extends EntityAIBase
      */
     public void resetTask()
     {
+        super.resetTask();
         entityObj.setSitting(false);
+        walkingTimeout = 0;
         /*this.insidePosX = this.doorInfo.getInsideBlockPos().getX();
         this.insidePosZ = this.doorInfo.getInsideBlockPos().getZ();
         this.doorInfo = null;*/

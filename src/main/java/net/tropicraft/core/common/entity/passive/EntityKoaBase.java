@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.passive;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
@@ -40,10 +41,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
-import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
-import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
-import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
-import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
+import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
@@ -106,6 +104,9 @@ public class EntityKoaBase extends EntityVillager {
         super(worldIn);
         this.enablePersistence();
 
+        this.isImmuneToFire = true;
+
+
         inventory = new InventoryBasic("koa.inventory", false, 9);
     }
 
@@ -141,6 +142,15 @@ public class EntityKoaBase extends EntityVillager {
     @Override
     protected void initEntityAI()
     {
+
+    }
+
+    //use if post spawn dynamic AI changing needed
+    public void updateUniqueEntityAI() {
+        //TODO: verify this is cleanest way to reset all AI
+        this.tasks.taskEntries.clear();
+        this.targetTasks.taskEntries.clear();
+
         this.tasks.addTask(0, new EntityAISwimming(this));
 
         //TODO: merge into more customizable class?
@@ -165,25 +175,59 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1D));
+        //TODO: make koa version that isnt dependant on villageObj
         this.tasks.addTask(6, new EntityAIVillagerMate(this));
         //this.tasks.addTask(7, new EntityAIFollowGolem(this));
+
+        if (canFish()) {
+            this.tasks.addTask(7, taskFishing);
+        }
+
+        if (isChild()) {
+            this.tasks.addTask(8, new EntityAIPlayKoa(this, 1.2D));
+        }
+
         this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(9, new EntityAIVillagerInteract(this));
+        //this.tasks.addTask(9, new EntityAIVillagerInteract(this));
         this.tasks.addTask(9, new EntityAIWanderNotLazy(this, 1D, 40));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         //i dont think this one works, change to predicate
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, true));
+        if (canHunt()) {
+            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, true));
+            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityAshen.class, true));
+            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIguana.class, true));
+            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityTropiSkeleton.class, true));
+        }
 
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityAshen.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIguana.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityTropiSkeleton.class, true));
+
     }
 
-    //use if post spawn dynamic AI changing needed
-    public void initUniqueEntityAI() {
+    @Override
+    public EntityVillager createChild(EntityAgeable ageable) {
+        //EntityVillager ent = super.createChild(ageable);
+        EntityKoaHunter entityvillager = new EntityKoaHunter(this.world);
+        entityvillager.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData)null);
 
+        //TODO: default code that uses this sets child state after this so AI will be wrong, fix when making my own EntityAIVillagerMate
+
+        return entityvillager;
+    }
+
+    @Override
+    protected void onGrowingAdult() {
+        super.onGrowingAdult();
+
+
+    }
+
+    public boolean canFish() {
+        return this.getDataManager().get(ROLE) == Roles.FISHERMAN.ordinal();
+    }
+
+    public boolean canHunt() {
+        return this.getDataManager().get(ROLE) == Roles.HUNTER.ordinal() && !isChild();
     }
 
     public void setHunter() {
@@ -193,7 +237,6 @@ public class EntityKoaBase extends EntityVillager {
 
     public void setFisher() {
         this.getDataManager().set(ROLE, Integer.valueOf(Roles.FISHERMAN.ordinal()));
-        this.tasks.addTask(7, taskFishing);
         this.setFishingItem();
     }
 
@@ -204,8 +247,16 @@ public class EntityKoaBase extends EntityVillager {
 
         //temp until we use AT
         Util.removeTask(this, EntityAIHarvestFarmland.class);
+        Util.removeTask(this, EntityAIPlay.class);
 
         //this.setDead();
+
+
+
+        //adjust home position to chest right nearby for easy item spawning
+        findAndSetHomeToCloseChest();
+        findAndSetFireSource();
+
     }
 
     @Override
@@ -338,12 +389,31 @@ public class EntityKoaBase extends EntityVillager {
     @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
         this.setHomePosAndDistance(this.getPosition(), -1);
 
-        //adjust home position to chest right nearby for easy item spawning
-        findAndSetHomeToCloseChest();
+        rollDiceChild();
 
+        rollDiceRoleAndGender();
+
+        updateUniqueEntityAI();
+
+        IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+
+        /*VillagerRegistry.VillagerProfession koaProfession = new VillagerRegistry.VillagerProfession("koa_profession", "");
+        this.setProfession(koaProfession);*/
+
+        return data;
+    }
+
+    public void rollDiceChild() {
+        int childChance = 20;
+        if (childChance >= this.world.rand.nextInt(100)) {
+            this.setGrowingAge(-24000);
+        }
+    }
+
+    //TODO: track male/female count per village and modify chance to keep it equal and sustainable for future generations
+    public void rollDiceRoleAndGender() {
         int randValRole = this.world.rand.nextInt(Roles.values().length);
         if (randValRole == Roles.FISHERMAN.ordinal()) {
             this.setFisher();
@@ -352,18 +422,6 @@ public class EntityKoaBase extends EntityVillager {
         }
         int randValGender = this.world.rand.nextInt(Genders.values().length);
         this.getDataManager().set(GENDER, Integer.valueOf(randValGender));
-
-        int childChance = 20;
-        if (this.world.rand.nextInt(100) < childChance) {
-            this.setGrowingAge(-24000);
-        }
-
-        IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
-
-        /*VillagerRegistry.VillagerProfession koaProfession = new VillagerRegistry.VillagerProfession("koa_profession", "");
-        this.setProfession(koaProfession);*/
-
-        return data;
     }
 
     @Override
@@ -397,6 +455,10 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         compound.setTag("koa_inventory", nbttaglist);
+
+        compound.setInteger("role_id", this.getDataManager().get(ROLE));
+        compound.setInteger("gender_id", this.getDataManager().get(GENDER));
+        compound.setInteger("orientation_id", this.getDataManager().get(ORIENTATION));
     }
 
     @Override
@@ -423,6 +485,12 @@ public class EntityKoaBase extends EntityVillager {
                 this.inventory.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound));
             }
         }
+
+        this.getDataManager().set(ROLE, compound.getInteger("role_id"));
+        this.getDataManager().set(GENDER, compound.getInteger("gender_id"));
+        this.getDataManager().set(ORIENTATION, compound.getInteger("orientation_id"));
+
+        updateUniqueEntityAI();
     }
 
     public void setFishingItem() {
@@ -434,20 +502,75 @@ public class EntityKoaBase extends EntityVillager {
     }
 
     public void findAndSetHomeToCloseChest() {
-        int range = 3;
-        for (int x = -range; x <= range; x++) {
-            for (int y = -range; y <= range; y++) {
-                for (int z = -range; z <= range; z++) {
-                    BlockPos pos = this.getPosition().add(x, y, z);
-                    TileEntity tile = world.getTileEntity(pos);
-                    if (tile instanceof TileEntityChest) {
-                        System.out.println("found chest, updating home position to " + pos);
-                        setHomePosAndDistance(pos, -1);
-                        return;
+
+        if (world.getTotalWorldTime() % (20*30) != 0) return;
+
+        //validate home position
+        boolean tryFind = false;
+        if (getHomePosition() == null) {
+            tryFind = true;
+        } else {
+            TileEntity tile = world.getTileEntity(getHomePosition());
+            if (!(tile instanceof TileEntityChest)) {
+                //home position isnt a chest, keep current position but find better one
+                tryFind = true;
+            }
+        }
+
+        if (tryFind) {
+            int range = 10;
+            for (int x = -range; x <= range; x++) {
+                for (int y = -range / 2; y <= range / 2; y++) {
+                    for (int z = -range; z <= range; z++) {
+                        BlockPos pos = this.getPosition().add(x, y, z);
+                        TileEntity tile = world.getTileEntity(pos);
+                        if (tile instanceof TileEntityChest) {
+                            System.out.println("found chest, updating home position to " + pos);
+                            setHomePosAndDistance(pos, -1);
+                            return;
+                        }
                     }
                 }
             }
         }
+    }
+
+    public void findAndSetFireSource() {
+
+        if (world.getTotalWorldTime() % (20*30) != 0) return;
+
+        //validate fire source
+        boolean tryFind = false;
+        if (posLastFireplaceFound == null) {
+            tryFind = true;
+        } else if (posLastFireplaceFound != null) {
+            IBlockState state = world.getBlockState(posLastFireplaceFound);
+            if (state.getMaterial() != Material.FIRE) {
+                posLastFireplaceFound = null;
+                tryFind = true;
+            }
+        }
+
+        if (tryFind) {
+            //TODO: line of sight check
+
+            int range = 10;
+            for (int x = -range; x <= range; x++) {
+                for (int y = -range/2; y <= range/2; y++) {
+                    for (int z = -range; z <= range; z++) {
+                        BlockPos pos = this.getPosition().add(x, y, z);
+                        IBlockState state = world.getBlockState(pos);
+                        if (state.getMaterial() == Material.FIRE) {
+                            System.out.println("found fire place spot to chill");
+                            setFirelacePos(pos);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     public boolean tryDumpInventoryIntoHomeChest() {
@@ -520,9 +643,9 @@ public class EntityKoaBase extends EntityVillager {
 
         //TODO: replace with heal via hunger/food consumption
         if (!world.isRemote) {
-            if (world.getTotalWorldTime() % (20*5) == 0) {
-                this.heal(1);
-            }
+            //if (world.getTotalWorldTime() % (20*5) == 0) {
+                this.heal(5);
+            //}
         }
     }
 }

@@ -118,7 +118,14 @@ public class Util {
     }
 
     public static boolean isDeepWater(World world, BlockPos pos) {
-        return world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
+        boolean deep = world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
+        boolean notUnderground = false;
+        if (deep) {
+            int height = world.getPrecipitationHeight(pos).getY() - 1;
+            notUnderground = height == pos.getY();
+        }
+
+        return deep && notUnderground;
     }
 
     public static boolean isLand(World world, BlockPos pos) {
