@@ -175,7 +175,9 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityLivingBase.class, ENEMY_PREDICATE,
                 12.0F, 1.4D, 1.4D, 15F));
 
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1F, true) {
+        this.tasks.addTask(2, new EntityAIEatToHeal(this));
+
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1F, true) {
             @Override
             public void startExecuting() {
                 super.startExecuting();
@@ -186,7 +188,7 @@ public class EntityKoaBase extends EntityVillager {
         });
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
-        this.tasks.addTask(3, new EntityAIChillAtFire(this));
+        this.tasks.addTask(4, new EntityAIChillAtFire(this));
         //this.tasks.addTask(3, new EntityAIMoveIndoors(this));
         //this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         //this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
@@ -270,8 +272,8 @@ public class EntityKoaBase extends EntityVillager {
 
 
         //adjust home position to chest right nearby for easy item spawning
-        findAndSetHomeToCloseChest();
-        findAndSetFireSource();
+        findAndSetHomeToCloseChest(false);
+        findAndSetFireSource(false);
 
     }
 
@@ -413,6 +415,9 @@ public class EntityKoaBase extends EntityVillager {
 
         updateUniqueEntityAI();
 
+        findAndSetHomeToCloseChest(true);
+        findAndSetFireSource(true);
+
         IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
 
         /*VillagerRegistry.VillagerProfession koaProfession = new VillagerRegistry.VillagerProfession("koa_profession", "");
@@ -517,9 +522,9 @@ public class EntityKoaBase extends EntityVillager {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
     }
 
-    public void findAndSetHomeToCloseChest() {
+    public void findAndSetHomeToCloseChest(boolean force) {
 
-        if (world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
+        if (!force && world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
 
         //validate home position
         boolean tryFind = false;
@@ -551,9 +556,9 @@ public class EntityKoaBase extends EntityVillager {
         }
     }
 
-    public void findAndSetFireSource() {
+    public void findAndSetFireSource(boolean force) {
 
-        if (world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
+        if (!force && world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
 
         //validate fire source
         boolean tryFind = false;

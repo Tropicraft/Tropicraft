@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -249,6 +250,16 @@ public class Util {
 
         return false;
 
+    }
+
+    /**
+     * Future proofing for 1.12
+     *
+     * @param stack
+     * @return
+     */
+    public static boolean isEmpty(ItemStack stack) {
+        return stack == null;
     }
 
 }
