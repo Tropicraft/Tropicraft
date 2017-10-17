@@ -148,6 +148,22 @@ public class EntityKoaBase extends EntityVillager {
     //use if post spawn dynamic AI changing needed
     public void updateUniqueEntityAI() {
         //TODO: verify this is cleanest way to reset all AI
+        Set<EntityAITasks.EntityAITaskEntry> executingTaskEntries = ReflectionHelper.getPrivateValue(EntityAITasks.class, this.tasks, "field_75780_b", "executingTaskEntries");
+        if (executingTaskEntries != null) {
+            for (EntityAITasks.EntityAITaskEntry entry : this.tasks.taskEntries) {
+                entry.action.resetTask();
+            }
+            executingTaskEntries.clear();
+        }
+
+        Set<EntityAITasks.EntityAITaskEntry> executingTaskEntries2 = ReflectionHelper.getPrivateValue(EntityAITasks.class, this.targetTasks, "field_75780_b", "executingTaskEntries");
+        if (executingTaskEntries2 != null) {
+            for (EntityAITasks.EntityAITaskEntry entry : this.targetTasks.taskEntries) {
+                entry.action.resetTask();
+            }
+            executingTaskEntries2.clear();
+        }
+
         this.tasks.taskEntries.clear();
         this.targetTasks.taskEntries.clear();
 
@@ -171,9 +187,9 @@ public class EntityKoaBase extends EntityVillager {
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(3, new EntityAIChillAtFire(this));
-        this.tasks.addTask(3, new EntityAIMoveIndoors(this));
-        this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
+        //this.tasks.addTask(3, new EntityAIMoveIndoors(this));
+        //this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
+        //this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1D));
         //TODO: make koa version that isnt dependant on villageObj
         this.tasks.addTask(6, new EntityAIVillagerMate(this));
@@ -219,7 +235,7 @@ public class EntityKoaBase extends EntityVillager {
     protected void onGrowingAdult() {
         super.onGrowingAdult();
 
-
+        updateUniqueEntityAI();
     }
 
     public boolean canFish() {
@@ -250,7 +266,10 @@ public class EntityKoaBase extends EntityVillager {
         Util.removeTask(this, EntityAIPlay.class);
 
         //this.setDead();
-
+        /*if (isChild()) {
+            setGrowingAge(0);
+            onGrowingAdult();
+        }*/
 
 
         //adjust home position to chest right nearby for easy item spawning
