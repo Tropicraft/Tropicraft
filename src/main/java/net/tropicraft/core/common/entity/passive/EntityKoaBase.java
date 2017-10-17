@@ -503,7 +503,7 @@ public class EntityKoaBase extends EntityVillager {
 
     public void findAndSetHomeToCloseChest() {
 
-        if (world.getTotalWorldTime() % (20*30) != 0) return;
+        if (world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
 
         //validate home position
         boolean tryFind = false;
@@ -537,7 +537,7 @@ public class EntityKoaBase extends EntityVillager {
 
     public void findAndSetFireSource() {
 
-        if (world.getTotalWorldTime() % (20*30) != 0) return;
+        if (world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
 
         //validate fire source
         boolean tryFind = false;
