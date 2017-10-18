@@ -30,9 +30,11 @@ public class RenderSeahorse extends RenderTropicraftWaterMob {
 		super.doRender(par1EntityLiving, 0, 0, 0, swimYaw - 270, partialTicks);
 		GlStateManager.popMatrix();
 		par1EntityLiving.setCustomNameTag(n);
-		if (Minecraft.getMinecraft().pointedEntity != null && par1EntityLiving.getCustomNameTag().length() > 0)
-			if (Minecraft.getMinecraft().pointedEntity.equals(par1EntityLiving))
+		if (Minecraft.getMinecraft().pointedEntity != null && par1EntityLiving.getCustomNameTag().length() > 0) {
+			if (Minecraft.getMinecraft().pointedEntity.equals(par1EntityLiving)) {
 				this.renderEntityName(par1EntityLiving, x, y, z, par1EntityLiving.getCustomNameTag(), 7d);
+			}
+		}
 
 	}
 

@@ -76,10 +76,13 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 		GlStateManager.color(1f, 1f, 1f, 1f);
 
 		GlStateManager.popMatrix();
-		if (Minecraft.getMinecraft().pointedEntity != null)
-			if (Minecraft.getMinecraft().pointedEntity.equals(entityliving))
-				if (entityliving.getCustomNameTag().length() > 0)
+		if (Minecraft.getMinecraft().pointedEntity != null) {
+			if (Minecraft.getMinecraft().pointedEntity.equals(entityliving)) {
+				if (entityliving.getCustomNameTag().length() > 0) {
 					renderEntityName(entityliving, posX, posY, posZ, entityliving.getCustomNameTag(), 32D);
+				}
+			}
+		}
 	}
 
 	protected void renderLeash(EntityTropicraftWaterBase entityLivingIn, Entity leashedTo, double x, double y, double z,

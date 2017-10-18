@@ -24,9 +24,11 @@ public class RenderEagleRay extends RenderTropicraftWaterMob {
 		this.renderWaterMob(entity, x - 4, y - 1, z - 4, partialTicks);
 		GlStateManager.popMatrix();
 		entity.setCustomNameTag(n);
-		if (Minecraft.getMinecraft().pointedEntity != null && entity.getCustomNameTag().length() > 0)
-			if (Minecraft.getMinecraft().pointedEntity.equals(entity))
+		if (Minecraft.getMinecraft().pointedEntity != null && entity.getCustomNameTag().length() > 0) {
+			if (Minecraft.getMinecraft().pointedEntity.equals(entity)) {
 				this.renderEntityName(entity, x, y, z, entity.getCustomNameTag(), 7d);
+			}
+		}
 
 	}
 
