@@ -460,58 +460,17 @@ public class ModelScubaGear extends ModelBiped {
 	        this.Fin1m3.offsetX = 0.2f;
 	
 	
-	        this.Fin2m3.offsetZ = 0.1f;
-	
-	        this.Fin1m3.offsetY = 0.1f;
+	       this.Fin1m3.offsetZ = 0.1f;
+	       this.Fin2m3.offsetZ = 0.1f;
 	        
-	
-	        this.Fin1m3.rotateAngleX = .2f;
-	        
-	        this.Fin2m3.isHidden = true;
-	        this.Fin2m1.isHidden = true;
-	        this.Fin2m2.isHidden = true;
-	        this.Fin2m4.isHidden = true;
-
-	        
-	        this.Fin1m3.isHidden = true;
-	        this.Fin1m1.isHidden = true;
-	        this.Fin1m2.isHidden = true;
-	        this.Fin1m4.isHidden = true;
-
-	        
-	        Fin1m3.isHidden = true;
 	        
 	        
 	        bipedLeftLeg.render(scale);
-
-
 	        bipedRightLeg.render(scale);
 	        
-	       
-
-	        this.Fin2m3.isHidden = false;
-	        this.Fin1m3.isHidden = false;
 	     
 	        
-	        float paddleSpeed = 2f;
-	        float paddleAmount = 15f;
-	        
-	        float paddleAngle = -5f;
-	        float offsetY = 1.45f;
-
-	        paddleSpeed = 0.05f;
-	        
-	        if(entityIn instanceof EntityPlayer) {
-	        		ScubaHandler.PlayerSwimData pd = ScubaHandler.getData((EntityPlayer)entityIn);
-	        		if(pd.targetSwimSpeed != 0f) {
-	        			paddleAngle = -30f;
-	        			//offsetY = 1.5f;
-	        			paddleAmount = 0.1f;
-	        		}
-	        }
-	        
-	        
-	        GlStateManager.pushMatrix();
+	      /*  GlStateManager.pushMatrix();
 		     
 		        
 
@@ -529,18 +488,14 @@ public class ModelScubaGear extends ModelBiped {
 
 		        this.Fin2m3.render(scale);
 		        
-		        GlStateManager.popMatrix();
+		        GlStateManager.popMatrix();*/
 
-	        
-	        
-	        
-		        offsetY = 1.2f;
-	        
+	       	        
 		        
 		     
 	        
 	        
-	        GlStateManager.pushMatrix();
+	      /*  GlStateManager.pushMatrix();
 	     
 	        GlStateManager.translate(0, 0, 0.1f);
 
@@ -557,7 +512,7 @@ public class ModelScubaGear extends ModelBiped {
 
 	        this.Fin1m3.render(scale);
 	        
-	        GlStateManager.popMatrix();
+	        GlStateManager.popMatrix();*/
 
 	   
 		
