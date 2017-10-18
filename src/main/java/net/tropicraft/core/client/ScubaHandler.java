@@ -82,7 +82,8 @@ public class ScubaHandler {
 		boolean liquidAbove = event.player.world.getBlockState(bp).getMaterial().isLiquid();
 
 		//System.out.println(d.currentRotationPitch);
-		if(p.isInWater() && !liquidAbove && d.currentRotationPitch < 45f && d.currentRotationPitch > -15f && (p.posY - (int)p.posY < 0.5f)) {
+		if(p.isInWater() && !liquidAbove && d.currentRotationPitch < 45f && d.currentRotationPitch > -15f && 
+				(p.posY - (int)p.posY < 0.5f) && this.isPlayerWearingFlippers(p)) {
 			p.motionY += 0.02f;
 			d.targetRotationPitch = 0f;
 			//p.setNoGravity(true);
@@ -160,10 +161,15 @@ public class ScubaHandler {
 
 		if (p.isInWater()) 
 		{	
-			p.limbSwingAmount = 0.2f+(d.currentSwimSpeed/20);		
+			if(p.limbSwingAmount <= 0) {
+				//p.limbSwingAmount = -p.limbSwingAmount;
+			}
 			
 			if(p.onGround && !this.isPlayerWearingFlippers(p)) {
-				p.limbSwingAmount = p.moveForward*0.3f;
+				//p.limbSwingAmount = p.moveForward*0.3f;
+
+			}else {
+				p.limbSwingAmount = 0.2f+(d.currentSwimSpeed/20);		
 
 			}
 		}else {
