@@ -3,6 +3,8 @@ package net.tropicraft.core.common.worldgen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -61,11 +63,11 @@ public class WorldGenNormalPalms extends TCGenBase {
 			return false;
 		}
 
-		Block i1 = getBlock(i, j - 1, k);
-		if (i1 != Blocks.SAND || j >= 128 - height - 1) {
+		IBlockState i1 = getBlockState(i, j - 1, k);
+		if (i1.getMaterial() != Material.SAND || j >= 128 - height - 1) {
 			int ground = worldObj.getHeight(new BlockPos(i, 0, k)).getY();
-			i1 = getBlock(i, ground - 1, k);
-			if (i1 != Blocks.SAND || j >= 128 - height - 1) {
+			i1 = getBlockState(i, ground - 1, k);
+			if (i1.getMaterial() != Material.SAND || j >= 128 - height - 1) {
 				return false;
 			}
 			j = ground;

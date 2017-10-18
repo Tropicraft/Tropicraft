@@ -28,6 +28,11 @@ public class MiscEvents {
 
     @SubscribeEvent
     public void tickServer(ServerTickEvent event) {
+
+        boolean perform = false;
+
+        if (!perform) return;
+
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
 
         if (world != null && world instanceof WorldServer) {
@@ -61,7 +66,7 @@ public class MiscEvents {
     }
 
     @SubscribeEvent
-    public void onAttackCapabilities(AttachCapabilitiesEvent<Entity> event) {
+    public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof EntityPlayer) {
             event.addCapability(new ResourceLocation(Info.MODID, "PlayerDataInstance"), new ICapabilitySerializable<NBTTagCompound>() {
 

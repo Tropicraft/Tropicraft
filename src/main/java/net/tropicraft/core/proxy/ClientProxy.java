@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -112,11 +113,16 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerItemVariantModel(Item item, String name, int metadata) {
-		if (item != null) {
-			//     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
-			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, "inventory"));
-		}
-	}
+	    registerItemVariantModel(item, name, metadata, "inventory");
+    }
+
+    @Override
+    public void registerItemVariantModel(Item item, String name, int metadata, String variant) {
+        if (item != null) {
+            //     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
+            ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, variant));
+        }
+    }
 
 	private final Map<String, String[]> blockVariants = new HashMap<>();
 
@@ -133,15 +139,6 @@ public class ClientProxy extends CommonProxy {
 				IModel model = ModelLoaderRegistry.getModelOrLogError(loc, "Could not load arbitrary block variant " + variant + " for block " + e.getKey());
 				event.getModelRegistry().putObject(loc, model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter()));
 			}
-		}
-	}
-
-	@Override
-	public void registerItemVariantModel(Item item, String registryName, int metadata, String variantName) {
-		if (item != null) {
-			// ModelResourceLocation mrl = new ModelResourceLocation(Info.MODID + ":" + registryName, variantName);
-			// ModelLoader.setCustomModelResourceLocation(item, metadata, mrl);
-			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + variantName, null));
 		}
 	}
 

@@ -278,8 +278,8 @@ public class ItemRegistry extends TropicraftRegistry {
 
         fireBoots = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.FEET), "fire_boots");
         fireLeggings = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.LEGS), "fire_leggings");
-        fireBoots = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.CHEST), "fire_chestplate");
-        fireBoots = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.HEAD), "fire_helmet");
+        fireChestplate = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.CHEST), "fire_chestplate");
+        fireHelmet = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.HEAD), "fire_helmet");
         
         chair = registerMultiItem(new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
         umbrella = registerMultiItem(new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);

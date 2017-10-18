@@ -308,69 +308,27 @@ public class TeleporterTropics extends Teleporter {
             foundX += r.nextInt(16) - 8;
             foundZ += r.nextInt(16) - 8;*/
             foundY = worldSpawnY - 2;
+            boolean foundLand = false;
 
-            for (int dist = 1; dist < SEARCH_FOR_LAND_DISTANCE_MAX; dist++) {
-                BlockPos posX = new BlockPos(worldSpawnX + 3 + dist, worldSpawnY, worldSpawnZ);
-                BlockPos negX = new BlockPos(worldSpawnX - 3 - dist, worldSpawnY, worldSpawnZ);
-                BlockPos posZ = new BlockPos(worldSpawnX, worldSpawnY, worldSpawnZ + 3 + dist);
-                BlockPos negZ = new BlockPos(worldSpawnX, worldSpawnY, worldSpawnZ - 3 - dist);
+            for (int dist = 1; !foundLand && dist < SEARCH_FOR_LAND_DISTANCE_MAX; dist++) {
+                for (EnumFacing dir : EnumFacing.HORIZONTALS) {
+                    BlockPos pos = new BlockPos(worldSpawnX, worldSpawnY, worldSpawnZ).offset(dir, 3 + dist);
+                    IBlockState state = world.getBlockState(pos);
+                    if (getValidBuildBlocks().contains(state)) {
+                        foundLand = true;
+                        BlockPos buildpos = new BlockPos(worldSpawnX, worldSpawnY + 1, worldSpawnZ).offset(dir, 3);
+                        while (!buildpos.equals(pos.up())) {
+                            world.setBlockState(buildpos, thatchBlock);
+                            world.setBlockState(buildpos.offset(dir.rotateY()), thatchBlock);
+                            world.setBlockState(buildpos.offset(dir.rotateYCCW()), thatchBlock);
+                            buildpos = buildpos.offset(dir);
+                        }
 
-                IBlockState statePosX = world.getBlockState(posX);
-                IBlockState stateNegX = world.getBlockState(negX);
-                IBlockState statePosZ = world.getBlockState(posZ);
-                IBlockState stateNegZ = world.getBlockState(negZ);
-                
-                int y = worldSpawnY + 1;
-
-                if (getValidBuildBlocks().contains(statePosX)) {
-                    for (int x = worldSpawnX + 3, z = worldSpawnZ; x < posX.getX(); x++) {
-                        BlockPos thatchPosMid = new BlockPos(x, y, z);
-                        world.setBlockState(thatchPosMid.north(), thatchBlock);
-                        world.setBlockState(thatchPosMid, thatchBlock);
-                        world.setBlockState(thatchPosMid.south(), thatchBlock);
+                        BlockPos stairPosMid = new BlockPos(pos.getX(), worldSpawnY + 1, worldSpawnZ);
+                        placeStairs(stairPosMid, dir.getOpposite());
+                        generateThatchBorder(worldSpawnX, worldSpawnY + 1, worldSpawnZ);
+                        break;
                     }
-
-                    BlockPos stairPosMid = new BlockPos(posX.getX(), y, worldSpawnZ);
-                    placeStairs(stairPosMid, EnumFacing.WEST);
-                    generateThatchBorder(worldSpawnX, worldSpawnY + 1, worldSpawnZ);
-                    break;
-                } else if (getValidBuildBlocks().contains(stateNegX)) {
-                    for (int x = worldSpawnX - 3, z = worldSpawnZ; x > negX.getX(); x--) {
-                        BlockPos thatchPosMid = new BlockPos(x, y, z);
-                        world.setBlockState(thatchPosMid.north(), thatchBlock);
-                        world.setBlockState(thatchPosMid, thatchBlock);
-                        world.setBlockState(thatchPosMid.south(), thatchBlock);
-                    }
-
-                    BlockPos stairPosMid = new BlockPos(negX.getX(), y, worldSpawnZ);
-                    placeStairs(stairPosMid, EnumFacing.EAST);
-                    generateThatchBorder(worldSpawnX, worldSpawnY + 1, worldSpawnZ);
-                    break;
-                } else if (getValidBuildBlocks().contains(statePosZ)) {
-                    for (int x = worldSpawnX, z = worldSpawnZ + 3; z < posZ.getZ(); z++) {
-                        BlockPos thatchPosMid = new BlockPos(x, y, z);
-                        world.setBlockState(thatchPosMid.east(), thatchBlock);
-                        world.setBlockState(thatchPosMid, thatchBlock);
-                        world.setBlockState(thatchPosMid.west(), thatchBlock);
-                    }
-
-                    BlockPos stairPosMid = new BlockPos(worldSpawnX, y, posZ.getZ());                    
-                    placeStairs(stairPosMid, EnumFacing.NORTH);
-                    generateThatchBorder(worldSpawnX, worldSpawnY + 1, worldSpawnZ);
-                    break;
-                } else if (getValidBuildBlocks().contains(stateNegZ)) {
-                    for (int x = worldSpawnX, z = worldSpawnZ - 3; z > negZ.getZ(); z--) {
-                        BlockPos thatchPosMid = new BlockPos(x, y, z);
-                        world.setBlockState(thatchPosMid.east(), thatchBlock);
-                        world.setBlockState(thatchPosMid, thatchBlock);
-                        world.setBlockState(thatchPosMid.west(), thatchBlock);
-                    }
-
-                    BlockPos stairPosMid = new BlockPos(worldSpawnX, y, negZ.getZ());
-                    placeStairs(stairPosMid, EnumFacing.SOUTH);
-                    generateThatchBorder(worldSpawnX, y, worldSpawnZ);
-
-                    break;
                 }
             }
         }

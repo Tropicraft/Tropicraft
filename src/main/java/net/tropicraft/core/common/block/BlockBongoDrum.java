@@ -10,6 +10,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,11 +21,16 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftBongos;
+import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
+@EventBusSubscriber
 public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock {
 
     public static final float SMALL_DRUM_SIZE = 0.5f;
@@ -45,7 +51,6 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
     public BlockBongoDrum() {
         super(Material.CIRCUITS);
         this.setHardness(1.0F);
-        this.setLightOpacity(255);
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftBongos.SMALL));
     }
 
@@ -80,18 +85,25 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
             return false;
         }
 
-        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
-        playBongoSound(world, x, y, z, state);
-
+        playBongoSound(world, playerIn, pos, state);
         return true;
+    }
+    
+    @SubscribeEvent
+    public static void onBlockLeftClick(LeftClickBlock event) {
+        World world = event.getWorld();
+        IBlockState state = world.getBlockState(event.getPos());
+        if (state.getBlock() == BlockRegistry.bongo && event.getFace() == EnumFacing.UP) {
+            ((BlockBongoDrum)BlockRegistry.bongo).playBongoSound(world, event.getEntityPlayer(), event.getPos(), state);
+        }
     }
 
     /**
      * Play the bongo sound in game. Sound played determined by the {@link #size} attribute
      */
-    private void playBongoSound(World world, int x, int y, int z, IBlockState state) {
+    private void playBongoSound(World world, EntityPlayer entity, BlockPos pos, IBlockState state) {
         TropicraftBongos bongo = ((TropicraftBongos) state.getValue(VARIANT));
-        world.playSound((EntityPlayer)null, x, y + 0.5D, z, SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     @Override
@@ -114,25 +126,6 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
         }
 
         return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
-
-    /**
-     * Location aware and overrideable version of the lightOpacity array,
-     * return the number to subtract from the light value when it passes through this block.
-     *
-     * This is not guaranteed to have the tile entity in place before this is called, so it is
-     * Recommended that you have your tile entity call relight after being placed if you
-     * rely on it for light info.
-     *
-     * @param world The current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z position
-     * @return The amount of light to block, 0 for air, 255 for fully opaque.
-     */
-    @Override
-    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return 255;
     }
 
     @Override

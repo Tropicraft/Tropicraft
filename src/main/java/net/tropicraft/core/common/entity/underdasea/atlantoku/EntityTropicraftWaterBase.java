@@ -163,7 +163,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			// Target selection
 			if(canAggress) {
-				if(this.ticksExisted % 200 == 0 && this.aggressTarget == null|| !world.getLoadedEntityList().contains(aggressTarget)) {
+				if(this.ticksExisted % 200 == 0 && this.aggressTarget == null|| !world.loadedEntityList.contains(aggressTarget)) {
 					List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
 					if(list.size() > 0) {
 						Entity ent = list.get(rand.nextInt(list.size()));
@@ -234,7 +234,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			if(this.canSchool) {
 				if(!isLeader && leader == null) {
-					List<Entity> ents = world.getLoadedEntityList();
+					List<Entity> ents = world.loadedEntityList;
 					for(int i =0; i < ents.size(); i++) {
 						if(ents.get(i) instanceof EntityTropicraftWaterBase) {
 							EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
@@ -283,7 +283,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 			
 			if(!this.isAggressing && this.ticksExisted % 80 == 0) {
-				List<Entity> ents = world.getLoadedEntityList();
+				List<Entity> ents = world.loadedEntityList;
 				for(int i =0; i < ents.size(); i++) {
 					if(ents.get(i) instanceof EntityTropicraftWaterBase) {
 						EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
@@ -349,7 +349,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}else {
 				desiredSpeed = this.swimSpeedChasing;
 			}
-			if(!world.getLoadedEntityList().contains(this.aggressTarget) || this.aggressTarget.isDead) {
+			if(!world.loadedEntityList.contains(this.aggressTarget) || this.aggressTarget.isDead) {
 				this.aggressTarget = null;
 				this.setRandomTargetHeading();
 			}

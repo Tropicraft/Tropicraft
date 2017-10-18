@@ -10,29 +10,36 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWa
 
 public class RenderSeahorse extends RenderTropicraftWaterMob {
 
-    private ModelSeahorse modelSeahorse;
+	private ModelSeahorse modelSeahorse;
 
-    public RenderSeahorse(ModelBase model, float shadowSize) {
-        super(Minecraft.getMinecraft().getRenderManager(), model, shadowSize);
-        modelSeahorse = (ModelSeahorse)model;
-    }
+	public RenderSeahorse(ModelBase model, float shadowSize) {
+		super(Minecraft.getMinecraft().getRenderManager(), model, shadowSize);
+		modelSeahorse = (ModelSeahorse) model;
+	}
 
-    @Override
-    public void doRender(EntityTropicraftWaterBase par1EntityLiving, double x, double y, double z, float yaw, float partialTicks) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y-2.5f, z);
-        
-   
-        float swimYaw = (par1EntityLiving.prevSwimYaw)
+	@Override
+	public void doRender(EntityTropicraftWaterBase par1EntityLiving, double x, double y, double z, float yaw,
+			float partialTicks) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y - 2.5f, z);
+
+		float swimYaw = (par1EntityLiving.prevSwimYaw)
 				+ ((par1EntityLiving.swimYaw) - (par1EntityLiving.prevSwimYaw)) * partialTicks;
-        GlStateManager.rotate(-270f, 0F, 1.0F, 0.0F);
-        super.doRender(par1EntityLiving, 0, 0, 0, swimYaw, partialTicks);
-        GlStateManager.popMatrix();
-    }
+		String n = par1EntityLiving.getCustomNameTag();
+		par1EntityLiving.setCustomNameTag("");
+		super.doRender(par1EntityLiving, 0, 0, 0, swimYaw - 270, partialTicks);
+		GlStateManager.popMatrix();
+		par1EntityLiving.setCustomNameTag(n);
+		if (Minecraft.getMinecraft().pointedEntity != null && par1EntityLiving.getCustomNameTag().length() > 0) {
+			if (Minecraft.getMinecraft().pointedEntity.equals(par1EntityLiving)) {
+				this.renderEntityName(par1EntityLiving, x, y, z, par1EntityLiving.getCustomNameTag(), 7d);
+			}
+		}
 
+	}
 
-    @Override
-    protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-            return TropicraftRenderUtils.getTextureEntity(String.format("seahorse/%s", entity.getTexture()));
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
+		return TropicraftRenderUtils.getTextureEntity(String.format("seahorse/%s", entity.getTexture()));
+	}
 }
