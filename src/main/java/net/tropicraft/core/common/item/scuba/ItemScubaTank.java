@@ -14,6 +14,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.item.ItemTropicraft;
+import net.tropicraft.core.common.item.scuba.api.AirTypeRegistry;
 import net.tropicraft.core.common.item.scuba.api.IAirType;
 import net.tropicraft.core.common.item.scuba.api.IAirType.AirType;
 import net.tropicraft.core.common.item.scuba.api.IScubaTank;
@@ -78,18 +79,17 @@ public class ItemScubaTank extends ItemTropicraft {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-	    list.add(new ItemStack(item));
-//		ItemStack singleTankRegular = new ItemStack(item, 1, 0);
-//		getTagCompound(singleTankRegular).setFloat("AirContained", AirType.REGULAR.getMaxCapacity());
-//		list.add(singleTankRegular);
-//
-//		ItemStack singleTankTrimix = new ItemStack(item, 1, 0);
-//		getTagCompound(singleTankTrimix).setFloat("AirContained", AirType.TRIMIX.getMaxCapacity());
-//		list.add(singleTankTrimix);
-//
-//		ItemStack singleTankTrimix2 = new ItemStack(item, 1, 0);
-//		getTagCompound(singleTankTrimix2).setFloat("AirContained", 0);
-//		list.add(singleTankTrimix2);
+	    ItemStack stack = new ItemStack(item);
+	    IScubaTank tank = stack.getCapability(ScubaCapabilities.getTankCapability(), null);
+	    
+	    for (IAirType airType : AirTypeRegistry.INSTANCE.getTypes()) {
+	        tank.setPressure(0);
+	        tank.setAirType(airType);
+	        list.add(stack.copy());
+	        
+	        tank.setPressure(airType.getMaxCapacity());
+	        list.add(stack.copy());
+	    }
 	}
 
 	/**

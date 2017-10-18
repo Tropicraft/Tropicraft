@@ -73,7 +73,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 //            IScubaTank tank = rightTank.getCapability(ScubaCapabilities.getTankCapability(), null);
 //            IAirType airType = tank.getAirType();
 //            String airRemaining = tank.getPressure() + " psi";
-            leftTank.getItem().addInformation(rightTank, player, list, par4);
+            rightTank.getItem().addInformation(rightTank, player, list, par4);
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airType", TextFormatting.GRAY + airType.getDisplayName()));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:maxAirCapacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity() + " psi"));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
@@ -165,7 +165,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
         if (player.capabilities.isCreativeMode)
             return;
 
-        if (world.getTotalWorldTime() % UPDATE_RATE == 0) {
+        if (!world.isRemote && world.getTotalWorldTime() % UPDATE_RATE == 0) {
             ItemStack helmetStack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             // Ensure the player doesn't drown if they have the proper tanks / air in tanks
             if (itemstack != null && helmetStack != null && helmetStack.getItem() instanceof ItemScubaHelmet) {
@@ -176,6 +176,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
                     float air = tankToEmpty.getPressure();
                     IAirType airType = tankToEmpty.getAirType();
                     tankToEmpty.setPressure(Math.max(0, air - airType.getUsageRate()));
+                    gear.markDirty();
                     player.setAir(300);
                 }
             }
