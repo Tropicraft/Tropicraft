@@ -1,5 +1,7 @@
 package net.tropicraft.core.registry;
 
+import java.util.ArrayList;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -76,21 +78,8 @@ public class EntityRenderRegistry {
     public static ModelScubaGear legsModel;
     public static ModelScubaGear feetModel;
     public static ModelScubaGear headModel;
-
-    public static ModelScubaGear getScubaModel(EntityEquipmentSlot slot) {
-        switch (slot) {
-        case CHEST:
-            return chestModel;
-        case LEGS:
-            return legsModel;
-        case FEET:
-            return feetModel;
-        case HEAD:
-            return headModel;
-        default:
-            return null;
-        }
-    }
+    
+    private static ArrayList<Class<? extends Entity>> entityRenderClasses = new ArrayList<Class<? extends Entity>>();
 
     public static void init() {
         registerEntityRender(EntityEIH.class, new RenderEIH());
@@ -131,11 +120,29 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
         registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
         registerEntityRender(EntityShark.class, new RenderShark(new ModelHammerheadShark(), 0.25F));
-
+    }
+    
+    public static ModelScubaGear getScubaModel(EntityEquipmentSlot slot) {
+        switch (slot) {
+        case CHEST:
+            return chestModel;
+        case LEGS:
+            return legsModel;
+        case FEET:
+            return feetModel;
+        case HEAD:
+            return headModel;
+        default:
+            return null;
+        }
     }
 
     private static void registerEntityRender(Class<? extends Entity> entityClass, Render render) {
+    		if(entityRenderClasses.contains(entityClass)) {
+    			System.err.println("Attempted to register an entity renderer twice for entity class '"+entityClass.getSimpleName()+"'");
+    			return;
+    		}
+    		entityRenderClasses.add(entityClass);
         RenderingRegistry.registerEntityRenderingHandler(entityClass, render);
     }
-
 }

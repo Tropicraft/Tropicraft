@@ -1,6 +1,7 @@
 {
     "parent": "tropicraft:block/cube_all_overlay_all",
     "textures": {
-        "base": "tropicraft:blocks/sand_purified"
+        "base": "tropicraft:blocks/sand_purified",
+        "particle": "#base"
     }
 }

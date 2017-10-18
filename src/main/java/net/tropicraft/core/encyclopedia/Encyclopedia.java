@@ -42,6 +42,9 @@ public class Encyclopedia extends TropicalBook {
      * Note: the item name should match the page name given in the text file
      */
     public void includeItem(String itemname, ItemStack item) {
+        if (item.getItem() == null) {
+            throw new IllegalArgumentException("Cannot include a null item! Group: " + itemname);
+        }
         if (!itemEntries.containsKey(itemname)) {
             itemEntries.put(itemname, new ArrayList<ItemStack>());
         }
