@@ -52,15 +52,10 @@ import javax.annotation.Nullable;
 
 public class EntityKoaBase extends EntityVillager {
 
-    //TODO: task to eat food from inventory or from home chest to sustain hunger, also make it heal
-
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
     public long lastTimeFished = 0;
 
     public BlockPos posLastFireplaceFound = null;
-
-    /*public List<ItemStack> listItemStacks = new ArrayList<>();
-    public int inventorySizeMax = 9;*/
 
     public InventoryBasic inventory;
 
@@ -682,5 +677,11 @@ public class EntityKoaBase extends EntityVillager {
     @Override
     public void heal(float healAmount) {
         super.heal(healAmount);
+    }
+
+    @Override
+    public boolean getIsWillingToMate(boolean updateFirst) {
+        //TODO: use our own rules
+        return super.getIsWillingToMate(updateFirst);
     }
 }
