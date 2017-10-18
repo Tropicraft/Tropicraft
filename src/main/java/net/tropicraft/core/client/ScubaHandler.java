@@ -42,9 +42,9 @@ public class ScubaHandler {
 			if(Minecraft.getMinecraft().player != null && !Minecraft.getMinecraft().player.isDead) {
 					EntityPlayer p = Minecraft.getMinecraft().player;
 					PlayerSwimData d = getData(p);
-					if(p.isInWater())
+					//if(p.isInWater())
 					event.setRoll(-d.currentRotationRoll*0.25f);
-					event.setPitch(event.getPitch()+(d.currentHeadPitchOffset*0.25f));
+					//event.setPitch(event.getPitch()+(d.currentHeadPitchOffset*0.25f));
 				if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 				//	updateSwimDataAngles(p);
 				}
@@ -78,9 +78,19 @@ public class ScubaHandler {
 		EntityPlayer p = event.player;
 		PlayerSwimData d = getData(p);
 
-		BlockPos bp = new BlockPos((int) p.posX, (int) p.posY + 1, (int) p.posZ);
+		BlockPos bp = new BlockPos((int) p.posX, (int) p.posY + 2, (int) p.posZ);
 		boolean liquidAbove = event.player.world.getBlockState(bp).getMaterial().isLiquid();
 
+		//System.out.println(d.currentRotationPitch);
+		if(p.isInWater() && !liquidAbove && d.currentRotationPitch < 45f && d.currentRotationPitch > -15f && (p.posY - (int)p.posY < 0.5f)) {
+			p.motionY += 0.02f;
+			d.targetRotationPitch = 0f;
+			//p.setNoGravity(true);
+		//	p.velocityChanged = true;
+			if(!p.isInWater()) {
+				p.motionY -= 4f;
+			}
+		}
 		if (p.isInWater() && liquidAbove && isPlayerWearingFlippers(p)) {
 			p.setNoGravity(true);
 			d.targetSwimSpeed = 0f;
@@ -142,6 +152,11 @@ public class ScubaHandler {
 		//
 		
 		updateSwimRenderAngles(p);
+		
+		BlockPos bp = new BlockPos((int) p.posX, (int) p.posY + 2, (int) p.posZ);
+		boolean liquidAbove = p.world.getBlockState(bp).getMaterial().isLiquid();
+
+
 
 		if (p.isInWater()) 
 		{	
@@ -215,14 +230,25 @@ public class ScubaHandler {
 		float ys = d.yawSpeed;
 		float rs = d.rollSpeed;
 		
+		BlockPos bp = new BlockPos((int) p.posX, (int) p.posY + 2, (int) p.posZ);
+		boolean liquidAbove = p.world.getBlockState(bp).getMaterial().isLiquid();
+
+
+		
 		if(p.isInWater()) {
 			d.targetRotationYaw = p.rotationYaw;
 			d.targetHeadPitchOffset = 45f;
-			d.targetRotationRoll = (float) p.moveStrafing * 90;
+			float t = (float) p.moveStrafing * 90;
 	
+			if(p.moveStrafing != 0)
+			d.targetRotationYaw -= t;
 			// Not moving, level out
-			if (p.moveForward == 0f) {
-				d.targetRotationPitch = p.rotationPitch + 90f;
+			if (p.moveForward == 0f && d.targetSwimSpeed == 0f) {
+			//	d.targetRotationPitch = p.rotationPitch + 90f;
+				//d.targetHeadPitchOffset = d.targetRotationPitch;
+				if(d.targetHeadPitchOffset > 55) {
+					//d.targetHeadPitchOffset = 55f;
+				}
 			}
 			
 			if(d.targetRotationRoll != 0) {
@@ -271,7 +297,7 @@ public class ScubaHandler {
 			BlockPos bp2 = new BlockPos((int) p.posX, (int) p.posY - 1, (int) p.posZ);
 	
 			// Above a floor and not attempting to move
-			if(!p.world.getBlockState(bp2).getMaterial().isLiquid() && d.targetSwimSpeed == 0f && !this.isPlayerWearingFlippers(p)) {
+			if((!p.world.getBlockState(bp2).getMaterial().isLiquid() && d.targetSwimSpeed == 0f && !this.isPlayerWearingFlippers(p))) {
 				d.targetRotationPitch = 0f;
 				d.targetHeadPitchOffset = 0f;
 				d.targetRotationRoll = 0f;
