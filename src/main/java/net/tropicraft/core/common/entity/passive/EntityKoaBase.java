@@ -524,7 +524,7 @@ public class EntityKoaBase extends EntityVillager {
 
     public void findAndSetHomeToCloseChest(boolean force) {
 
-        if (!force && world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
+        if (!force && (world.getTotalWorldTime()+this.getEntityId()) % (20*30) != 0) return;
 
         //validate home position
         boolean tryFind = false;
@@ -539,7 +539,7 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         if (tryFind) {
-            int range = 10;
+            int range = 20;
             for (int x = -range; x <= range; x++) {
                 for (int y = -range / 2; y <= range / 2; y++) {
                     for (int z = -range; z <= range; z++) {
@@ -558,7 +558,7 @@ public class EntityKoaBase extends EntityVillager {
 
     public void findAndSetFireSource(boolean force) {
 
-        if (!force && world.getTotalWorldTime()+this.getEntityId() % (20*30) != 0) return;
+        if (!force && (world.getTotalWorldTime()+this.getEntityId()) % (20*30) != 0) return;
 
         //validate fire source
         boolean tryFind = false;
@@ -575,7 +575,7 @@ public class EntityKoaBase extends EntityVillager {
         if (tryFind) {
             //TODO: line of sight check
 
-            int range = 10;
+            int range = 20;
             for (int x = -range; x <= range; x++) {
                 for (int y = -range/2; y <= range/2; y++) {
                     for (int z = -range; z <= range; z++) {
