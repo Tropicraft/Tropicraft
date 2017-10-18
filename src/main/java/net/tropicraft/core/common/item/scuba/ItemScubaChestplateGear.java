@@ -2,6 +2,7 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.List;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,18 +13,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.tropicraft.ColorHelper;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.item.scuba.api.IAirType.AirType;
+import net.tropicraft.core.common.item.scuba.api.IScubaGear;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaChestplateGear extends ItemScubaGear {
 
@@ -35,6 +34,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 
     public ItemScubaChestplateGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, EntityEquipmentSlot slot) {
         super(material, scubaMaterial, renderIndex, slot);
+        this.setHasSubtypes(true);
     }
 
     /**
@@ -42,19 +42,45 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean par4) {
-        AirType airType = itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
-        String airRemaining = getTagCompound(itemstack).getFloat("AirContained") + " psi";
-        String numTanks = String.valueOf(itemstack.getItemDamage() % 2 != 0 ? 2 : 1);
-        String suitType = this.scubaMaterial.getDisplayName();
+    public void addInformation(ItemStack itemstack, EntityPlayer player, List<String> list, boolean par4) {
+        IScubaGear cap = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
+        ItemStack leftTank = cap.getStackInSlot(0);
+        ItemStack rightTank = cap.getStackInSlot(1);
+        
+        String suitType = scubaMaterial.getDisplayName();
 
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:suitType") + ": " + ColorHelper.color(7) + suitType);
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:airType") + ": " + ColorHelper.color(7) + airType.getDisplayName());
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:numTanks") + ": " + ColorHelper.color(7) + numTanks);
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:maxAirCapacity") + ": " + ColorHelper.color(7) + airType.getMaxCapacity() + " psi");
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:airRemaining") + ": " + ColorHelper.color(7) + airRemaining);
-        list.add(ColorHelper.color(9) + String.format("%s: %s%.3f psi/sec", I18n.translateToLocal("gui.tropicraft:useEfficiency"),  ColorHelper.color(7), (airType.getUsageRate() * 20)));
-    }
+        list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.suit.type", TextFormatting.GRAY + suitType));
+        list.add("");
+        
+        if (leftTank == null) {
+            list.add(I18n.format("tropicraft.gui.gear.tank.left.none"));
+        } else {
+            list.add(I18n.format("tropicraft.gui.gear.tank.left.info"));
+//            IScubaTank tank = leftTank.getCapability(ScubaCapabilities.getTankCapability(), null);
+//            IAirType airType = tank.getAirType();
+//            String airRemaining = tank.getPressure() + " psi";
+            leftTank.getItem().addInformation(leftTank, player, list, par4);
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airType", TextFormatting.GRAY + airType.getDisplayName()));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:maxAirCapacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity() + " psi"));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:useEfficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
+            list.add("");
+        }
+        if (rightTank == null) {
+            list.add(I18n.format("tropicraft.gui.gear.tank.right.none"));
+        } else {
+            list.add(I18n.format("tropicraft.gui.gear.tank.right.info"));
+//            IScubaTank tank = rightTank.getCapability(ScubaCapabilities.getTankCapability(), null);
+//            IAirType airType = tank.getAirType();
+//            String airRemaining = tank.getPressure() + " psi";
+            leftTank.getItem().addInformation(rightTank, player, list, par4);
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airType", TextFormatting.GRAY + airType.getDisplayName()));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:maxAirCapacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity() + " psi"));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:useEfficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
+        }
+//        list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:numTanks", TextFormatting.GRAY + numTanks));
+}
 
     /**
      * Gets the type of air this gear uses
@@ -79,20 +105,19 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      * @return A holder instance associated with this ItemStack where you can hold capabilities for the life of this item.
      */
     @Override
-    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        return new ICapabilityProvider() {
-            
-            @Override
-            public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-                return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return ScubaCapabilities.getProvider(ScubaCapabilities.getGearCapability(), () -> {
+            IScubaGear ret = new IScubaGear.ScubaGear() {
+                @Override
+                public void markDirty() {
+                    stack.setTagCompound(serializeNBT());
+                }
+            };
+            if (stack.hasTagCompound()) {
+                ret.deserializeNBT(stack.getTagCompound());
             }
-            
-            @Override
-            public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-                return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? 
-                        CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new ItemStackHandler(2)): null;
-            }
-        };
+            return ret;
+        });
     }
 
     /**
@@ -100,28 +125,29 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         ItemStack noTank = new ItemStack(item, 1, 0);
+        list.add(noTank);
         
-        ItemStack singleTankRegular = new ItemStack(item, 1, 1);
-        getTagCompound(singleTankRegular).setFloat("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
-        getTagCompound(singleTankRegular).setByte("AirType", ItemScubaGear.AirType.REGULAR.getNbtValue());
-        list.add(singleTankRegular);
-
-        ItemStack doubleTankRegular = new ItemStack(item, 1, 2);
-        getTagCompound(doubleTankRegular).setFloat("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity() * 2);
-        getTagCompound(doubleTankRegular).setByte("AirType", ItemScubaGear.AirType.REGULAR.getNbtValue());
-        list.add(doubleTankRegular);
-
-        ItemStack singleTankTrimix = new ItemStack(item, 1, 1);
-        getTagCompound(singleTankTrimix).setFloat("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
-        getTagCompound(singleTankTrimix).setByte("AirType", ItemScubaGear.AirType.TRIMIX.getNbtValue());
-        list.add(singleTankTrimix);
-
-        ItemStack doubleTankTrimix = new ItemStack(item, 1, 2);
-        getTagCompound(doubleTankTrimix).setFloat("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity() * 2);
-        getTagCompound(doubleTankTrimix).setByte("AirType", ItemScubaGear.AirType.TRIMIX.getNbtValue());
-        list.add(doubleTankTrimix);
+//        ItemStack singleTankRegular = new ItemStack(item, 1, 1);
+//        getTagCompound(singleTankRegular).setFloat("AirContained", AirType.REGULAR.getMaxCapacity());
+//        getTagCompound(singleTankRegular).setByte("AirType", AirType.REGULAR.getNbtValue());
+//        list.add(singleTankRegular);
+//
+//        ItemStack doubleTankRegular = new ItemStack(item, 1, 2);
+//        getTagCompound(doubleTankRegular).setFloat("AirContained", AirType.REGULAR.getMaxCapacity() * 2);
+//        getTagCompound(doubleTankRegular).setByte("AirType", AirType.REGULAR.getNbtValue());
+//        list.add(doubleTankRegular);
+//
+//        ItemStack singleTankTrimix = new ItemStack(item, 1, 1);
+//        getTagCompound(singleTankTrimix).setFloat("AirContained", AirType.TRIMIX.getMaxCapacity());
+//        getTagCompound(singleTankTrimix).setByte("AirType", AirType.TRIMIX.getNbtValue());
+//        list.add(singleTankTrimix);
+//
+//        ItemStack doubleTankTrimix = new ItemStack(item, 1, 2);
+//        getTagCompound(doubleTankTrimix).setFloat("AirContained", AirType.TRIMIX.getMaxCapacity() * 2);
+//        getTagCompound(doubleTankTrimix).setByte("AirType", AirType.TRIMIX.getNbtValue());
+//        list.add(doubleTankTrimix);
     }
 
     @Override
@@ -136,12 +162,11 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
     
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer, EnumHand hand) {
-        if (world.isRemote) {
-            System.err.println("Gui");
+        if (entityplayer.isSneaking()) {
             entityplayer.openGui(Tropicraft.instance, 0, world, hand.ordinal(), 0, 0);
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
         }
-
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return super.onItemRightClick(itemstack, world, entityplayer, hand);
     }
 
     @Override

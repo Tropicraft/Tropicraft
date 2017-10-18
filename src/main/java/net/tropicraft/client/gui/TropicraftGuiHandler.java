@@ -5,8 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.tropicraft.core.common.item.scuba.ItemScubaChestplateGear;
+import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 
 public class TropicraftGuiHandler implements IGuiHandler {
 
@@ -21,7 +21,7 @@ public class TropicraftGuiHandler implements IGuiHandler {
             ItemStack held = player.getHeldItem(hand);
             
             if (held != null && held.getItem() instanceof ItemScubaChestplateGear) {
-                return new ContainerScubaHarness(player.inventory, held.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), hand);
+                return new ContainerScubaHarness(player.inventory, held.getCapability(ScubaCapabilities.getGearCapability(), null), hand);
             }
         }
         
@@ -35,7 +35,7 @@ public class TropicraftGuiHandler implements IGuiHandler {
             ItemStack held = player.getHeldItem(hand);
             
             if (held != null && held.getItem() instanceof ItemScubaChestplateGear) {
-                return new GuiScubaHarness(new ContainerScubaHarness(player.inventory, held.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), hand));
+                return new GuiScubaHarness(new ContainerScubaHarness(player.inventory, held.getCapability(ScubaCapabilities.getGearCapability(), null), hand));
             }
         }
         

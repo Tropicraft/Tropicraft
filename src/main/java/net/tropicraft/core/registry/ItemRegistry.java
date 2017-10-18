@@ -52,9 +52,9 @@ import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
 import net.tropicraft.core.common.item.scuba.ItemPonyBottle;
 import net.tropicraft.core.common.item.scuba.ItemScubaChestplateGear;
 import net.tropicraft.core.common.item.scuba.ItemScubaFlippers;
-import net.tropicraft.core.common.item.scuba.ItemScubaGear;
 import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemRegistry extends TropicraftRegistry {
 
@@ -203,11 +203,11 @@ public class ItemRegistry extends TropicraftRegistry {
         //pinkScubaGoggles = registerItem(new ItemTropicraft(), "pink_scuba_goggles");
         pinkRegulator = registerItem(new ItemTropicraft(), "pink_regulator");
         pinkScubaTank = registerItem(new ItemScubaTank(), "pink_scuba_tank");
-        pinkFlippers = registerItem(new ItemScubaFlippers(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.FEET), "pink_flippers");
+        pinkFlippers = registerItem(new ItemScubaFlippers(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.FEET), "pink_flippers");
         //pinkLeggings = registerItem(new ItemScubaLeggings(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.LEGS), "pink_leggings");
         //pinkChestplate = registerItem(new ItemScubaChestplate(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate");
-        pinkChestplateGear = registerItem(new ItemScubaChestplateGear(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate_gear");
-        pinkScubaGoggles = registerItem(new ItemScubaHelmet(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.HEAD), "pink_scuba_goggles");
+        pinkChestplateGear = registerItem(new ItemScubaChestplateGear(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate_gear");
+        pinkScubaGoggles = registerItem(new ItemScubaHelmet(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.HEAD), "pink_scuba_goggles");
 
         yellowWeightBelt = registerItem(new ItemTropicraft(), "yellow_weight_belt");
         yellowPonyBottle = registerItem(new ItemPonyBottle(), "yellow_pony_bottle");
@@ -215,11 +215,11 @@ public class ItemRegistry extends TropicraftRegistry {
         //yellowScubaGoggles = registerItem(new ItemTropicraft(), "yellow_scuba_goggles");
         yellowRegulator = registerItem(new ItemTropicraft(), "yellow_regulator");
         yellowScubaTank = registerItem(new ItemScubaTank(), "yellow_scuba_tank");
-        yellowFlippers = registerItem(new ItemScubaFlippers(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.FEET), "yellow_flippers");
+        yellowFlippers = registerItem(new ItemScubaFlippers(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.FEET), "yellow_flippers");
         //yellowLeggings = registerItem(new ItemScubaLeggings(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.LEGS), "yellow_leggings");
         //yellowChestplate = registerItem(new ItemScubaChestplate(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate");
-        yellowChestplateGear = registerItem(new ItemScubaChestplateGear(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate_gear");
-        yellowScubaGoggles = registerItem(new ItemScubaHelmet(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "yellow_scuba_goggles");
+        yellowChestplateGear = registerItem(new ItemScubaChestplateGear(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate_gear");
+        yellowScubaGoggles = registerItem(new ItemScubaHelmet(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "yellow_scuba_goggles");
         
         recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
         recordEasternIsles = registerItem(new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");

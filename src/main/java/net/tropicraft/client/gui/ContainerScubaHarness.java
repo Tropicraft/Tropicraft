@@ -63,7 +63,7 @@ public class ContainerScubaHarness extends Container {
      */
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return true;//this.playerInventory.isUsableByPlayer(playerIn);
+        return this.playerInventory.isUsableByPlayer(playerIn);
     }
 
     /**

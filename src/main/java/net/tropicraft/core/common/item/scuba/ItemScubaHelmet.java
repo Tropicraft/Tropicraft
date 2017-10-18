@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaHelmet extends ItemScubaGear {
 
