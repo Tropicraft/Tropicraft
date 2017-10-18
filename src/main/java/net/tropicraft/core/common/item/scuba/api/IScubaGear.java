@@ -17,6 +17,26 @@ public interface IScubaGear extends IItemHandler, INBTSerializable<NBTTagCompoun
 
     Pair<IScubaTank, IScubaTank> getTanks();
     
+    default float getTotalPressure() {
+        Pair<IScubaTank, IScubaTank> tanks = getTanks();
+        float pressure = 0;
+        if (tanks.getLeft() != null) {
+            pressure += tanks.getLeft().getPressure();
+        }
+        if (tanks.getRight() != null) {
+            pressure += tanks.getRight().getPressure();
+        }
+        return pressure;
+    }
+
+    /**
+     * @return The left tank, if it is present and has air, or the right tank, if it is present.
+     */
+    default @Nullable IScubaTank getFirstNonEmptyTank() {
+        Pair<IScubaTank, IScubaTank> tanks = getTanks();
+        return tanks.getLeft() == null || tanks.getLeft().getPressure() == 0 ? tanks.getRight() : tanks.getLeft();
+    }
+    
     default void markDirty() {}
     
     // These are not necessary yet, current impl just uses ItemStackHandler's serialization

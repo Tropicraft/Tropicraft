@@ -2,6 +2,8 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,17 +22,15 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.item.scuba.api.IAirType.AirType;
+import net.tropicraft.core.common.item.scuba.api.IAirType;
 import net.tropicraft.core.common.item.scuba.api.IScubaGear;
+import net.tropicraft.core.common.item.scuba.api.IScubaTank;
 import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaChestplateGear extends ItemScubaGear {
 
     /** Number of ticks between updates - every 0.5 seconds ideally */
     public static final int UPDATE_RATE = 10;
-
-    /** Number of ticks until the next update */
-    public int ticksUntilUpdate = UPDATE_RATE;
 
     public ItemScubaChestplateGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, EntityEquipmentSlot slot) {
         super(material, scubaMaterial, renderIndex, slot);
@@ -81,15 +81,6 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
         }
 //        list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:numTanks", TextFormatting.GRAY + numTanks));
 }
-
-    /**
-     * Gets the type of air this gear uses
-     * @param itemstack An ItemStack containing this item
-     * @return
-     */
-    public AirType getAirType(ItemStack itemstack) {
-        return itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
-    }
     
     /**
      * Called from ItemStack.setItem, will hold extra data for the life of this ItemStack.
@@ -173,22 +164,21 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
     public void onScubaTick(World world, EntityPlayer player, ItemStack itemstack) {        
         if (player.capabilities.isCreativeMode)
             return;
-        
-        ticksUntilUpdate--;
 
-        if (ticksUntilUpdate <= 0) {
+        if (world.getTotalWorldTime() % UPDATE_RATE == 0) {
             ItemStack helmetStack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             // Ensure the player doesn't drown if they have the proper tanks / air in tanks
             if (itemstack != null && helmetStack != null && helmetStack.getItem() instanceof ItemScubaHelmet) {
-                float air = getTagCompound(itemstack).getInteger("AirContained");
+                IScubaGear gear = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
+                IScubaTank tankToEmpty = gear.getFirstNonEmptyTank();
 
-                if (air > 0) {
-                    AirType airType = itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
-                    getTagCompound(itemstack).setFloat("AirContained", air - airType.getUsageRate());
-                    player.setAir(300);   
+                if (tankToEmpty != null) {
+                    float air = tankToEmpty.getPressure();
+                    IAirType airType = tankToEmpty.getAirType();
+                    tankToEmpty.setPressure(Math.max(0, air - airType.getUsageRate()));
+                    player.setAir(300);
                 }
             }
-            ticksUntilUpdate = UPDATE_RATE;
         }
     }
 
