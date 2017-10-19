@@ -3,6 +3,8 @@ package net.tropicraft.core.common.entity.underdasea.atlantoku;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -189,22 +191,6 @@ public class EntityTropicalFish extends EntityTropicraftWaterBase implements IAt
 		return this.dataManager.get(SHOULD_SPAWN_SCHOOL);
 	}
 
-//	public void checkForLeader(){
-//		List<EntityTropicalFish> list = worldObj.getEntitiesWithinAABB(EntityTropicalFish.class, this.getEntityBoundingBox().expand(10D, 10D, 10D));
-//		for (Object ent : list){
-//			//System.out.println("Checking for leader");
-//			if (((EntityTropicalFish)ent).getColor() == this.getColor()) {
-//				if (getEntityId() > ((Entity)ent).getEntityId()) {
-//					leader = (EntityTropicalFish)ent;
-//					setIsLeader(false);
-//				} else {
-//					setIsLeader(true);
-//
-//				}
-//			}
-//		}
-//	}
-
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
 		nbttagcompound.setBoolean("Placed", hasBeenPlaced);
@@ -247,100 +233,31 @@ public class EntityTropicalFish extends EntityTropicraftWaterBase implements IAt
 	}
 
 	@Override
-	public void applyEntityCollision(Entity entity) {        
-		super.applyEntityCollision(entity);
-		//		if (targetEntity != null && entity instanceof EntityTropicalFish) {
-		//			targetEntity = null;
-		//			inSchool = true;
-		//		}       
-	}
-
-	@Override
 	public double getYOffset() {
 		return 0.0D;
 	}
-	//
-	//	@Override
-	//	public boolean interact(EntityPlayer entityplayer) {
-	//		if (entityplayer.getCurrentEquippedItem() == null || entityplayer.getCurrentEquippedItem().getItem() != ItemRegistry.fishingNet) {
-	//			return false;
-	//		}
-	//
-	//		if (!entityplayer.inventory.hasItem(ItemRegistry.bucketTropicsWater)) {
-	//			return false;
-	//		} else {
-	//			for (int i = 0 ; i < entityplayer.inventory.mainInventory.length; i ++ ) {
-	//				if (entityplayer.inventory.getStackInSlot(i) != null) {
-	//					if (entityplayer.inventory.getStackInSlot(i).getItem() == TCItemRegistry.bucketTropicsWater) {
-	//						entityplayer.inventory.mainInventory[i] = new ItemStack(TCItemRegistry.fishBucket, 1, getColor());
-	//						this.setDead();
-	//						entityplayer.swingItem();
-	//						return true;                        
-	//					}
-	//				}
-	//			}
-	//		}
-	//
-	//		return false;
-	//	}
+	
 
-	//	@Override
-	//	protected void updateEntityActionState()
-	//	{
-	//		if (getShouldSpawnSchool()) {
-	//			// Note: min/max values include this fish
-	//			int maxInSchool = 7;
-	//			int minInSchool = 4;
-	//			int numToSpawn = (new Random()).nextInt(1 + maxInSchool - minInSchool) + minInSchool - 1;
-	//			for (int i = 0; i < numToSpawn; i++) {
-	//				if (!worldObj.isRemote) {
-	//					continue;
-	//					//EntityTropicalFish fish = new EntityTropicalFish(this);
-	//					//worldObj.spawnEntityInWorld(fish);
-	//				}
-	//			}
-	//			setShouldSpawnSchool(false);
-	//		}
-	//
-	//
-	//		if (leader != null){         
-	//			if(getDistanceToEntity(leader) < 1.5F){
-	//				inSchool = true;                
-	//			}           
-	//		}
-	//		if (leader != null && leader.isDead){
-	//			leader = null;
-	//		}
-	//		if (leader == null || isLeader){
-	//			checkForLeader();
-	//		}
-	//
-	//
-	//		if (!inSchool || isLeader){
-	//			super.updateEntityActionState();
-	//		} else if(inSchool && leader != null){
-	//
-	//			if (getDistanceToEntity(leader)>= 2.25F && ticksExisted % 40 == 0){
-	//				inSchool = false;
-	//			}
-	//
-	//			if (!leader.isLeader && leader.leader != null){
-	//				leader = leader.leader;
-	//			}
-	//			randomMotionVecX = leader.randomMotionVecX;         
-	//			randomMotionVecY = leader.randomMotionVecY;         
-	//			randomMotionVecZ = leader.randomMotionVecZ;
-	//		}
-	//	}
-
-	//	@Override
-	//	protected int attackStrength() {
-	//		return 0;
-	//	}
+		@Override
+		public void onLivingUpdate(){
+			if (getShouldSpawnSchool() && !world.isRemote) {
+				// Note: min/max values include this fish
+				int maxInSchool = 20;
+				int minInSchool = 5;
+				int numToSpawn = (new Random()).nextInt(1 + maxInSchool - minInSchool) + minInSchool - 1;
+				for (int i = 0; i < numToSpawn; i++) {
+					
+					EntityTropicalFish fish = new EntityTropicalFish(this);
+					world.spawnEntity(fish);
+				}
+				setShouldSpawnSchool(false);
+			}
+			super.onLivingUpdate();
+		}
 
 	@Override
 	public boolean canDespawn() {
-		return true;
+		return hasBeenPlaced;
 	}
 
 	public void disableDespawning() {
