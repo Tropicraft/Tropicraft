@@ -188,7 +188,9 @@ public class ScubaHandler {
 	public float getFlipperSpeed(EntityPlayer p) {
 		ItemStack bootSlot = p.inventory.armorItemInSlot(0);
 		if (bootSlot != null) {
-			return flipperSpeedMap.get(bootSlot.getItem());
+			if(flipperSpeedMap.containsKey(bootSlot.getItem())) {
+				return flipperSpeedMap.get(bootSlot.getItem());
+			}
 		}
 		return 0f;
 	}
