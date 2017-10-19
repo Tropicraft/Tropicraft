@@ -174,10 +174,12 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 
                 if (tankToEmpty != null) {
                     float air = tankToEmpty.getPressure();
-                    IAirType airType = tankToEmpty.getAirType();
-                    tankToEmpty.setPressure(Math.max(0, air - airType.getUsageRate()));
-                    gear.markDirty();
-                    player.setAir(300);
+                    if (air > 0) {
+                        IAirType airType = tankToEmpty.getAirType();
+                        tankToEmpty.setPressure(Math.max(0, air - airType.getUsageRate()));
+                        gear.markDirty();
+                        player.setAir(300);
+                    }
                 }
             }
         }
