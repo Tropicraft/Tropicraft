@@ -2,17 +2,26 @@ package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+
+import java.util.List;
 
 public class EntityAIKoaMate extends EntityAIBase
 {
-    private final EntityVillager villagerObj;
-    private EntityVillager mate;
+
+    /**
+     * TODO: potential problems from vanilla one
+     * - mate isnt set isMating
+     * - does not check if already mating
+     */
+
+    private final EntityKoaBase villagerObj;
+    private EntityKoaBase mate;
     private final World world;
     private int matingTimeout;
 
-    public EntityAIKoaMate(EntityVillager villagerIn)
+    public EntityAIKoaMate(EntityKoaBase villagerIn)
     {
         this.villagerObj = villagerIn;
         this.world = villagerIn.world;
@@ -34,14 +43,24 @@ public class EntityAIKoaMate extends EntityAIBase
         }
         else
         {
-            if (this.checkSufficientDoorsPresentForNewVillager() && this.villagerObj.getIsWillingToMate(true)) {
-                Entity entity = this.world.findNearestEntityWithinAABB(EntityVillager.class, this.villagerObj.getEntityBoundingBox().expand(8.0D, 3.0D, 8.0D), this.villagerObj);
-
-                if (entity == null) {
-                    return false;
-                } else {
-                    this.mate = (EntityVillager) entity;
-                    return this.mate.getGrowingAge() == 0 && this.mate.getIsWillingToMate(true);
+            if (this.canTownHandleMoreVillagers() && this.villagerObj.getIsWillingToMate(true)) {
+                List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getEntityBoundingBox().expand(8.0D, 3.0D, 8.0D));
+                EntityKoaBase clEnt = null;
+                double clDist = 9999;
+                for (EntityKoaBase ent : listEntities) {
+                    if (ent != villagerObj) {
+                        if (villagerObj.willBone(ent)) {
+                            if (villagerObj.getDistanceToEntity(ent) < clDist) {
+                                clEnt = ent;
+                                clDist = villagerObj.getDistanceToEntity(ent);
+                            }
+                        }
+                    }
+                }
+                if (clEnt != null) {
+                    this.mate = clEnt;
+                    System.out.println("start mate");
+                    return true;
                 }
             }
         }
@@ -71,7 +90,7 @@ public class EntityAIKoaMate extends EntityAIBase
      */
     public boolean continueExecuting()
     {
-        return this.matingTimeout >= 0 && this.checkSufficientDoorsPresentForNewVillager() && this.villagerObj.getGrowingAge() == 0 && this.villagerObj.getIsWillingToMate(false);
+        return this.matingTimeout >= 0 && this.canTownHandleMoreVillagers() && this.villagerObj.getGrowingAge() == 0 && this.villagerObj.getIsWillingToMate(false);
     }
 
     /**
@@ -88,7 +107,10 @@ public class EntityAIKoaMate extends EntityAIBase
         }
         else if (this.matingTimeout == 0 && this.mate.isMating())
         {
-            this.giveBirth();
+            System.out.println("mate complete");
+            if (villagerObj.getOrientation() == EntityKoaBase.Orientations.STRAIT) {
+                this.giveBirth();
+            }
         }
 
         if (this.villagerObj.getRNG().nextInt(35) == 0)
@@ -97,7 +119,7 @@ public class EntityAIKoaMate extends EntityAIBase
         }
     }
 
-    private boolean checkSufficientDoorsPresentForNewVillager()
+    private boolean canTownHandleMoreVillagers()
     {
         return true;
     }

@@ -3,22 +3,15 @@ package net.tropicraft.core.common.entity.passive;
 import com.google.common.base.Predicate;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,7 +27,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
@@ -118,16 +110,16 @@ public class EntityKoaBase extends EntityVillager {
         return Roles.get(this.getDataManager().get(ROLE));
     }
 
+    public Orientations getOrientation() {
+        return Orientations.get(this.getDataManager().get(ORIENTATION));
+    }
+
     public boolean isSitting() {
         return this.getDataManager().get(SITTING);
     }
 
     public void setSitting(boolean sitting) {
         this.getDataManager().set(SITTING, Boolean.valueOf(sitting));
-    }
-
-    public Orientations getOrientation() {
-        return Orientations.get(this.getDataManager().get(ORIENTATION));
     }
 
     @Override
@@ -188,8 +180,7 @@ public class EntityKoaBase extends EntityVillager {
         //this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         //this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
         this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1D));
-        //TODO: make koa version that isnt dependant on villageObj
-        this.tasks.addTask(6, new EntityAIVillagerMate(this));
+        this.tasks.addTask(6, new EntityAIKoaMate(this));
         //this.tasks.addTask(7, new EntityAIFollowGolem(this));
 
         if (canFish()) {
@@ -408,6 +399,8 @@ public class EntityKoaBase extends EntityVillager {
 
         rollDiceRoleAndGender();
 
+        rollDiceOrientation();
+
         updateUniqueEntityAI();
 
         findAndSetHomeToCloseChest(true);
@@ -438,6 +431,14 @@ public class EntityKoaBase extends EntityVillager {
         }
         int randValGender = this.world.rand.nextInt(Genders.values().length);
         this.getDataManager().set(GENDER, Integer.valueOf(randValGender));
+    }
+
+    public void rollDiceOrientation() {
+        this.getDataManager().set(ORIENTATION, Integer.valueOf(Orientations.STRAIT.ordinal()));
+        int chance = 5;
+        if (chance >= this.world.rand.nextInt(100)) {
+            this.getDataManager().set(ORIENTATION, Orientations.GAY.ordinal());
+        }
     }
 
     @Override
@@ -682,6 +683,20 @@ public class EntityKoaBase extends EntityVillager {
     @Override
     public boolean getIsWillingToMate(boolean updateFirst) {
         //TODO: use our own rules
-        return super.getIsWillingToMate(updateFirst);
+        //return super.getIsWillingToMate(updateFirst);
+        this.setIsWillingToMate(true);
+        return true;
+    }
+
+    public boolean willBone(EntityKoaBase bonie) {
+        EntityKoaBase boner = this;
+        if (!bonie.getIsWillingToMate(true)) return false;
+        if (boner.isChild() || bonie.isChild()) return false;
+        if (boner.getOrientation() == Orientations.STRAIT) {
+            if (boner.getGender() == bonie.getGender()) return false;
+        } else if (boner.getOrientation() == Orientations.GAY) {
+            if (boner.getGender() != bonie.getGender()) return false;
+        }
+        return true;
     }
 }
