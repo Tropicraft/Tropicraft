@@ -7,11 +7,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class TropicraftWaterRenderFixer {
@@ -106,7 +109,17 @@ public class TropicraftWaterRenderFixer {
     public void onFogDensity(FogDensity event) {
         if (event.getState().getBlock() == BlockRegistry.tropicsWater) {
             event.setCanceled(true);
-            
+
+            Entity ent = event.getEntity();
+            if (ent instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer)ent;
+
+                ItemStack goggles = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+                if (goggles != null && goggles.getItem() != null && goggles.getItem() instanceof ItemScubaHelmet) {
+                    fogDensity = 0.009F;
+                }
+            }
+
             GlStateManager.setFog(GlStateManager.FogMode.EXP);
             double partialDelta = FOG_DELTA * event.getRenderPartialTicks();
             event.setDensity((float) (lastTickFogDensity > fogDensity ? lastTickFogDensity - partialDelta : lastTickFogDensity < fogDensity ? lastTickFogDensity + partialDelta : fogDensity));

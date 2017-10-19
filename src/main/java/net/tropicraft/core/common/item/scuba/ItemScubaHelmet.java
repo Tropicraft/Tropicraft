@@ -10,8 +10,10 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.common.item.scuba.api.IScubaGear;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaHelmet extends ItemScubaGear {
 
@@ -46,8 +50,12 @@ public class ItemScubaHelmet extends ItemScubaGear {
                             0.5D, 0.5D, 0.5D, new int[0]);
                 }
                 ticksSinceBubbles = TICKS_TO_BUBBLE;
-            }   
+            }
         }
+        
+//        if (!player.isPotionActive(MobEffects.NIGHT_VISION)) {
+//            player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 200));
+//        }
     }
 
     /**
@@ -65,22 +73,16 @@ public class ItemScubaHelmet extends ItemScubaGear {
         // Check to see if player inventory contains dive computer
         float airRemaining = -1, airTemp, timeRemaining = -1, yaw;
         int blocksAbove, blocksBelow, currentDepth, maxDepth, heading;
-        ItemScubaChestplateGear gear = null;
 
         ItemStack chestplate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        boolean isChestplateScuba = chestplate != null && chestplate.getItem() instanceof ItemScubaChestplateGear;
-        if (isChestplateScuba) {
-            gear = (ItemScubaChestplateGear)chestplate.getItem();
-        } else {
-            //return;
-        }
+        IScubaGear gear = chestplate != null ? chestplate.getCapability(ScubaCapabilities.getGearCapability(), null) : null;
 
         maxDepth = getTagCompound(stack).getInteger("MaxDepth");
         blocksAbove = getTagCompound(stack).getInteger("WaterBlocksAbove");
         blocksBelow = getTagCompound(stack).getInteger("WaterBlocksBelow");
-        if (isChestplateScuba) {
-            airRemaining = getTagCompound(chestplate).getFloat("AirContained");
-            timeRemaining = (airRemaining / (gear.getAirType(chestplate).getUsageRate()));   
+        if (gear != null) {
+            airRemaining = gear.getTotalPressure();
+            timeRemaining = (airRemaining / (gear.getFirstNonEmptyTank().getAirType().getUsageRate()));   
         }
         airTemp = player.world.getBiomeForCoordsBody(new BlockPos(MathHelper.floor(player.posX), 0, MathHelper.floor(player.posZ))).getTemperature();
 
@@ -90,7 +92,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
         int width = resolution.getScaledWidth();
         int height = resolution.getScaledHeight();
         GlStateManager.enableDepth();
-        GL11.glDepthMask(false);
+        GlStateManager.depthMask(false);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableAlpha();
@@ -123,13 +125,13 @@ public class ItemScubaHelmet extends ItemScubaGear {
 
         //TODO make locations of text configurable
         GlStateManager.pushMatrix();
-        if (isChestplateScuba) {
+        if (gear != null) {
             drawString("psi", 398, 48, 0xffffff);
             //TODO display warning if air is running low / out
             drawString("Air", 374, 34, 0xffffff);   
         }
-        GL11.glScalef(1.5F, 1.5F, 1.0F);
-        if (isChestplateScuba) {
+        GlStateManager.scale(1.5F, 1.5F, 1.0F);
+        if (gear != null) {
             Minecraft.getMinecraft().fontRendererObj.drawString(String.format("%.0f", airRemaining), 240, 30, 0x00ccde);   
         }
         drawString(TropicraftRenderUtils.translateGUI("currentDepth") + ": " + blocksAbove, 4, 70, 0xbbbbff);  // Current depth
@@ -138,7 +140,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
         drawString(TropicraftRenderUtils.translateGUI("maxDepth") + ": " + maxDepth, 6, 130, 0xffffffff);
         drawString(airTemp + " F", 6, 150, 0xffffffff);
 
-        if (isChestplateScuba) {
+        if (gear != null) {
             // TODO localize
             String timeUnits = timeRemaining <= 60 ? "secs" : "mins";
             timeRemaining = timeRemaining <= 60 ? timeRemaining : timeRemaining / 60;
@@ -147,7 +149,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
             drawString(String.format("%.0f %s", timeRemaining, timeUnits), 33, 45, 0xF6EB12);   
         }
 
-        GL11.glDepthMask(true);
+        GlStateManager.depthMask(true);
         GlStateManager.disableDepth();
         GlStateManager.enableAlpha();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

@@ -10,8 +10,9 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.tropicraft.core.common.block.tileentity.message.MessageAirCompressorInventory;
-import net.tropicraft.core.common.item.scuba.ItemScubaGear.AirType;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
+import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
+import net.tropicraft.core.common.item.scuba.api.IScubaTank;
 import net.tropicraft.core.common.network.TCPacketHandler;
 
 public class TileEntityAirCompressor extends TileEntity implements ITickable  {
@@ -25,11 +26,10 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	/** Amount of PSI to fill per tick */
 	private static final float fillRate = 0.10F;
 
-	/** The tank that is currently being filled */
-	public ItemStack tank;
-
-	/** Max air capacity of the tank */
-	private float maxCapacity;
+	/** The stack that is currently being filled */
+	public ItemStack stack;
+	
+	private IScubaTank tank;
 
 	public TileEntityAirCompressor() {
 
@@ -42,8 +42,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 		this.ticks = nbt.getInteger("Ticks");
 
 		if (nbt.hasKey("Tank")) {
-			this.tank = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Tank"));
-			maxCapacity = this.tank.getItemDamage() == 1 ? AirType.TRIMIX.getMaxCapacity() : AirType.REGULAR.getMaxCapacity();
+			setTank(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Tank")));
 		} else {
 			this.tank = null;
 		}
@@ -55,16 +54,17 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 		nbt.setBoolean("Compressing", compressing);
 		nbt.setInteger("Ticks", ticks);
 
-		if (this.tank != null) {
+		if (this.stack != null) {
 			NBTTagCompound var4 = new NBTTagCompound();
-			this.tank.writeToNBT(var4);
+			this.stack.writeToNBT(var4);
 			nbt.setTag("Tank", var4);
 		}
 		return nbt;
 	}
 	
 	public void setTank(ItemStack tankItemStack) {
-	    this.tank = tankItemStack;
+	    this.stack = tankItemStack;
+        this.tank = stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	}
 
 	@Override
@@ -72,15 +72,15 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 		if (tank == null)
 			return;
 
-		float airContained = getTagCompound(tank).getFloat("AirContained");
+		float airContained = tank.getPressure();
 
-		if (compressing && airContained < AirType.REGULAR.getMaxCapacity()) {
-			if (airContained + fillRate >= AirType.REGULAR.getMaxCapacity()) {
-				tank.getTagCompound().setFloat("AirContained", AirType.REGULAR.getMaxCapacity());
+		if (compressing && airContained < tank.getAirType().getMaxCapacity()) {
+			if (airContained + fillRate >= tank.getAirType().getMaxCapacity()) {
+				tank.setPressure(tank.getAirType().getMaxCapacity());
 				ticks++;
 				finishCompressing();                    
 			} else {
-				tank.getTagCompound().setFloat("AirContained", airContained + fillRate);
+				tank.setPressure(airContained + fillRate);
 				ticks++;
 			}
 		}
@@ -99,7 +99,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 
 	public boolean addTank(ItemStack stack) {
 		if (tank == null && stack.getItem() != null && stack.getItem() instanceof ItemScubaTank) {
-			this.tank = stack;
+			this.stack = stack;
 			this.compressing = true;
 			syncInventory();
 			return true;
@@ -110,7 +110,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 
 	public void ejectTank() {
 		if (tank != null) {
-			EntityItem tankItem = new EntityItem(world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), tank);
+			EntityItem tankItem = new EntityItem(world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
 			world.spawnEntity(tankItem);
 			tank = null;
 		}
@@ -125,7 +125,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	}
 
 	public float getTickRatio() {
-		return this.ticks / (AirType.REGULAR.getMaxCapacity() * fillRate);
+		return this.ticks / (tank.getAirType().getMaxCapacity() * fillRate);
 	}
 
 	public boolean isCompressing() {

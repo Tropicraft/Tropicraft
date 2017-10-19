@@ -202,6 +202,23 @@ item.tropicraft.coffee.berry.name=Coffee Berry
 item.tropicraft:spawn_egg.piranha.name=Spawn Piranha
 item.tropicraft:spawn_egg.sardine.name=Spawn River Sardine
 
+item.tropicraft:pink_weight_belt.name=Pink Weight Belt
+item.tropicraft:yellow_weight_belt.name=Yellow Weight Belt
+item.tropicraft:pink_pony_bottle.name=Pink Pony Bottle
+item.tropicraft:yellow_pony_bottle.name=Yellow Pony Bottle
+item.tropicraft:pink_flippers.name=Pink Flippers
+item.tropicraft:yellow_flippers.name=Yellow Flippers
+item.tropicraft:pink_bcd.name=Pink BCD
+item.tropicraft:yellow_bcd.name=Yellow BCD
+item.tropicraft:pink_regulator.name=Pink Regulator
+item.tropicraft:yellow_regulator.name=Yellow Regulator
+item.tropicraft:yellow_scuba_tank.name=Yellow Scuba Tank
+item.tropicraft:pink_scuba_tank.name=Pink Scuba Tank
+item.tropicraft:pink_scuba_goggles.name=Pink Scuba Goggles
+item.tropicraft:yellow_scuba_goggles.name=Yellow Scuba Goggles
+item.tropicraft:dive_computer.name=Dive Computer
+item.tropicraft:yellow_chestplate_gear.name=Yellow Scuba Harness
+item.tropicraft:pink_chestplate_gear.name=Pink Scuba Harness
 
 # Cocktail localizations
 item.tropicraft:cocktail_Lemonade.name=Lemonade
@@ -244,12 +261,19 @@ achievement.tc_drink_pina_colada=Caught in the rain
 achievement.tc_drink_pina_colada.desc=(Did you forget your umbrella?)
 
 #Gui localizations
-gui.tropicraft:airType=Air Type
-gui.tropicraft:maxAirCapacity=Max Air Capacity
-gui.tropicraft:airRemaining=Air Remaining
-gui.tropicraft:useEfficiency=Use Efficiency
-gui.tropicraft:numTanks=# Tanks
-gui.tropicraft:suitType=Suit Type
+tropicraft.gui.air.type=Air Type: %s
+tropicraft.gui.air.regular=Regular
+tropicraft.gui.air.trimix=Trimix
+tropicraft.gui.air.capacity=Max Air Capacity: %s psi
+tropicraft.gui.air.remaining=Air Remaining: %s psi
+tropicraft.gui.air.efficiency=Use Efficiency: %s%.3f psi/sec
+tropicraft.gui.suit.type=Suit Type: %s
+tropicraft.gui.suit.yellow=Yellow
+tropicraft.gui.suit.pink=Pink
+tropicraft.gui.gear.tank.left.none=No left tank
+tropicraft.gui.gear.tank.left.info=Left tank:
+tropicraft.gui.gear.tank.right.none=No right tank
+tropicraft.gui.gear.tank.right.info=Right tank:
 gui.tropicraft:temperature=Temp
 gui.tropicraft:currentDepth=Depth
 gui.tropicraft:maxDepth=Max
