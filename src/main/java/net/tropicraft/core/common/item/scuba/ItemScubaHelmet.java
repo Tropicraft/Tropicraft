@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.item.scuba.api.IScubaGear;
+import net.tropicraft.core.common.item.scuba.api.IScubaTank;
 import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaHelmet extends ItemScubaGear {
@@ -71,7 +72,7 @@ public class ItemScubaHelmet extends ItemScubaGear {
     @SideOnly(Side.CLIENT)
     public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, net.minecraft.client.gui.ScaledResolution resolution, float partialTicks) {
         // Check to see if player inventory contains dive computer
-        float airRemaining = -1, airTemp, timeRemaining = -1, yaw;
+        float airRemaining = -1, airTemp, timeRemaining = 0, yaw;
         int blocksAbove, blocksBelow, currentDepth, maxDepth, heading;
 
         ItemStack chestplate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
@@ -82,7 +83,8 @@ public class ItemScubaHelmet extends ItemScubaGear {
         blocksBelow = getTagCompound(stack).getInteger("WaterBlocksBelow");
         if (gear != null) {
             airRemaining = gear.getTotalPressure();
-            timeRemaining = (airRemaining / (gear.getFirstNonEmptyTank().getAirType().getUsageRate()));   
+            timeRemaining += getTimeRemaining(gear.getTanks().getLeft());
+            timeRemaining += getTimeRemaining(gear.getTanks().getRight());
         }
         airTemp = player.world.getBiomeForCoordsBody(new BlockPos(MathHelper.floor(player.posX), 0, MathHelper.floor(player.posZ))).getTemperature();
 
@@ -153,6 +155,13 @@ public class ItemScubaHelmet extends ItemScubaGear {
         GlStateManager.disableDepth();
         GlStateManager.enableAlpha();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+    
+    private float getTimeRemaining(IScubaTank tank) {
+        if (tank != null) {
+            return (tank.getPressure() / tank.getAirType().getUsageRate());
+        }
+        return 0;
     }
 
     private void drawString(Object text, int x, int y, int color) {
