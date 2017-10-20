@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -127,9 +128,25 @@ public class ScubaHandler {
 			p.setNoGravity(false);
 		}
 	}
+	
+	private boolean inGUI = false;
+	
+	@SubscribeEvent
+    public void onDrawScreenPre(DrawScreenEvent.Pre event) {
+        inGUI = true;
+    }
+
+    @SubscribeEvent
+    public void onDrawScreenPos(DrawScreenEvent.Post event) {
+        inGUI = false;
+    }
 
 	@SubscribeEvent
 	public void onRenderPlayer(RenderPlayerEvent.Pre event) {
+	    if (inGUI) {
+	        return;
+	    }
+	    
 		EntityPlayer p = event.getEntityPlayer();
 		PlayerSwimData d = getData(p);
 
@@ -160,11 +177,15 @@ public class ScubaHandler {
 
 		updateSwimDataAngles(p);
 		clearPlayerRenderAngles(p);
-	}
+    }
 
-	@SubscribeEvent
-	public void onRenderPlayer(RenderPlayerEvent.Post event) {
-		EntityPlayer p = event.getEntityPlayer();
+    @SubscribeEvent
+    public void onRenderPlayer(RenderPlayerEvent.Post event) {
+        if (inGUI) {
+            return;
+        }
+
+        EntityPlayer p = event.getEntityPlayer();
 
 		if (!p.isInWater()) {
 			if (getData(p).currentRotationPitch == 0f && getData(p).currentRotationRoll == 0f) {
