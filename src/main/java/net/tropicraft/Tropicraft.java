@@ -16,7 +16,9 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.tropicraft.core.common.BuildEvents;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
+import net.tropicraft.core.common.capability.ExtendedWorldStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
+import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
@@ -51,6 +53,9 @@ public class Tropicraft {
     @CapabilityInject(PlayerDataInstance.class)
     public static final Capability<PlayerDataInstance> PLAYER_DATA_INSTANCE = null;
 
+	@CapabilityInject(WorldDataInstance.class)
+	public static final Capability<WorldDataInstance> WORLD_DATA_INSTANCE = null;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ColorHelper.init();
@@ -64,6 +69,7 @@ public class Tropicraft {
 		CraftingRegistry.preInit();
 		proxy.preInit();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
+		CapabilityManager.INSTANCE.register(WorldDataInstance.class, new ExtendedWorldStorage(), WorldDataInstance.class);
 	}
 
 	@EventHandler

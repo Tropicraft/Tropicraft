@@ -7,6 +7,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.capability.PlayerDataInstance;
+import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.town.ManagedLocation;
@@ -49,6 +52,14 @@ public class CommandTropicsVillage extends CommandBase {
                 village.initFirstTime();
                 //wd.addTickingLocation(village);
             } else if (args[0].equals("village_try")) {
+
+                WorldDataInstance storage = player.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+                if (storage != null) {
+                    storage.test++;
+                    System.out.println(storage.test);
+                    //return;
+                }
+
                 int x = MathHelper.floor(player.posX);
 				int z = MathHelper.floor(player.posZ);
 				int y = player.world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).getY();

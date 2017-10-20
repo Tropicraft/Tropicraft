@@ -20,7 +20,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
+import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
+import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 
@@ -93,6 +95,40 @@ public class MiscEvents {
                 }
 
             });
+        }
+    }
+
+    @SubscribeEvent
+    public void onAttachCapabilitiesWorld(AttachCapabilitiesEvent<World> event) {
+        if (event.getObject() instanceof World) {
+            //World world = event.getObject();
+            //if (true || !world.isRemote && world.provider instanceof WorldProviderTropicraft) {
+                event.addCapability(new ResourceLocation(Info.MODID, "WorldDataInstance"), new ICapabilitySerializable<NBTTagCompound>() {
+
+                    WorldDataInstance instance = Tropicraft.WORLD_DATA_INSTANCE.getDefaultInstance().setWorld((World) event.getObject());
+
+                    @Override
+                    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+                        return capability == Tropicraft.WORLD_DATA_INSTANCE;
+                    }
+
+                    @Override
+                    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+                        return capability == Tropicraft.WORLD_DATA_INSTANCE ? Tropicraft.WORLD_DATA_INSTANCE.<T>cast(this.instance) : null;
+                    }
+
+                    @Override
+                    public NBTTagCompound serializeNBT() {
+                        return (NBTTagCompound) Tropicraft.WORLD_DATA_INSTANCE.getStorage().writeNBT(Tropicraft.WORLD_DATA_INSTANCE, this.instance, null);
+                    }
+
+                    @Override
+                    public void deserializeNBT(NBTTagCompound nbt) {
+                        Tropicraft.WORLD_DATA_INSTANCE.getStorage().readNBT(Tropicraft.WORLD_DATA_INSTANCE, this.instance, null, nbt);
+                    }
+
+                });
+            //}
         }
     }
 
