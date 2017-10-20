@@ -1,7 +1,5 @@
 package net.tropicraft;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -13,6 +11,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.tropicraft.client.gui.TropicraftGuiHandler;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
@@ -21,6 +21,7 @@ import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
+import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.event.MiscEvents;
 import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
@@ -61,8 +62,10 @@ public class Tropicraft {
 		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
+		ScubaCapabilities.register();
 		proxy.preInit();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new TropicraftGuiHandler());
 	}
 
 	@EventHandler

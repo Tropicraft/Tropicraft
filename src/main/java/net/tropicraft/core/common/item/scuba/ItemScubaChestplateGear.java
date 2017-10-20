@@ -2,29 +2,39 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.ColorHelper;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.item.scuba.api.IAirType;
+import net.tropicraft.core.common.item.scuba.api.IScubaGear;
+import net.tropicraft.core.common.item.scuba.api.IScubaTank;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaChestplateGear extends ItemScubaGear {
 
     /** Number of ticks between updates - every 0.5 seconds ideally */
     public static final int UPDATE_RATE = 10;
 
-    /** Number of ticks until the next update */
-    public int ticksUntilUpdate = UPDATE_RATE;
-
     public ItemScubaChestplateGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, EntityEquipmentSlot slot) {
         super(material, scubaMaterial, renderIndex, slot);
+        this.setHasSubtypes(true);
     }
 
     /**
@@ -32,27 +42,73 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, EntityPlayer player, List list, boolean par4) {
-        AirType airType = itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
-        String airRemaining = getTagCompound(itemstack).getFloat("AirContained") + " psi";
-        String numTanks = String.valueOf(itemstack.getItemDamage() % 2 != 0 ? 2 : 1);
-        String suitType = this.scubaMaterial.getDisplayName();
+    public void addInformation(ItemStack itemstack, EntityPlayer player, List<String> list, boolean par4) {
+        IScubaGear cap = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
+        ItemStack leftTank = cap.getStackInSlot(0);
+        ItemStack rightTank = cap.getStackInSlot(1);
+        
+        String suitType = scubaMaterial.getDisplayName();
 
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:suitType") + ": " + ColorHelper.color(7) + suitType);
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:airType") + ": " + ColorHelper.color(7) + airType.getDisplayName());
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:numTanks") + ": " + ColorHelper.color(7) + numTanks);
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:maxAirCapacity") + ": " + ColorHelper.color(7) + airType.getMaxCapacity() + " psi");
-        list.add(ColorHelper.color(9) + I18n.translateToLocal("gui.tropicraft:airRemaining") + ": " + ColorHelper.color(7) + airRemaining);
-        list.add(ColorHelper.color(9) + String.format("%s: %s%.3f psi/sec", I18n.translateToLocal("gui.tropicraft:useEfficiency"),  ColorHelper.color(7), (airType.getUsageRate() * 20)));
-    }
-
+        list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.suit.type", TextFormatting.GRAY + suitType));
+        list.add("");
+        
+        if (leftTank == null) {
+            list.add(I18n.format("tropicraft.gui.gear.tank.left.none"));
+        } else {
+            list.add(I18n.format("tropicraft.gui.gear.tank.left.info"));
+//            IScubaTank tank = leftTank.getCapability(ScubaCapabilities.getTankCapability(), null);
+//            IAirType airType = tank.getAirType();
+//            String airRemaining = tank.getPressure() + " psi";
+            leftTank.getItem().addInformation(leftTank, player, list, par4);
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airType", TextFormatting.GRAY + airType.getDisplayName()));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:maxAirCapacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity() + " psi"));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:useEfficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
+            list.add("");
+        }
+        if (rightTank == null) {
+            list.add(I18n.format("tropicraft.gui.gear.tank.right.none"));
+        } else {
+            list.add(I18n.format("tropicraft.gui.gear.tank.right.info"));
+//            IScubaTank tank = rightTank.getCapability(ScubaCapabilities.getTankCapability(), null);
+//            IAirType airType = tank.getAirType();
+//            String airRemaining = tank.getPressure() + " psi";
+            rightTank.getItem().addInformation(rightTank, player, list, par4);
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airType", TextFormatting.GRAY + airType.getDisplayName()));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:maxAirCapacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity() + " psi"));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
+//            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:useEfficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
+        }
+//        list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:numTanks", TextFormatting.GRAY + numTanks));
+}
+    
     /**
-     * Gets the type of air this gear uses
-     * @param itemstack An ItemStack containing this item
-     * @return
+     * Called from ItemStack.setItem, will hold extra data for the life of this ItemStack.
+     * Can be retrieved from stack.getCapabilities()
+     * The NBT can be null if this is not called from readNBT or if the item the stack is
+     * changing FROM is different then this item, or the previous item had no capabilities.
+     *
+     * This is called BEFORE the stacks item is set so you can use stack.getItem() to see the OLD item.
+     * Remember that getItem CAN return null.
+     *
+     * @param stack The ItemStack
+     * @param nbt NBT of this item serialized, or null.
+     * @return A holder instance associated with this ItemStack where you can hold capabilities for the life of this item.
      */
-    public AirType getAirType(ItemStack itemstack) {
-        return itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return ScubaCapabilities.getProvider(ScubaCapabilities.getGearCapability(), () -> {
+            IScubaGear ret = new IScubaGear.ScubaGear() {
+                @Override
+                public void markDirty() {
+                    stack.setTagCompound(serializeNBT());
+                }
+            };
+            if (stack.hasTagCompound()) {
+                ret.deserializeNBT(stack.getTagCompound());
+            }
+            return ret;
+        });
     }
 
     /**
@@ -60,22 +116,29 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        ItemStack singleTankRegular = new ItemStack(item, 1, 0);
-        getTagCompound(singleTankRegular).setFloat("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity());
-        list.add(singleTankRegular);
-
-        ItemStack doubleTankRegular = new ItemStack(item, 1, 1);
-        getTagCompound(doubleTankRegular).setFloat("AirContained", ItemScubaGear.AirType.REGULAR.getMaxCapacity() * 2);
-        list.add(doubleTankRegular);
-
-        ItemStack singleTankTrimix = new ItemStack(item, 1, 2);
-        getTagCompound(singleTankTrimix).setFloat("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity());
-        list.add(singleTankTrimix);
-
-        ItemStack doubleTankTrimix = new ItemStack(item, 1, 3);
-        getTagCompound(doubleTankTrimix).setFloat("AirContained", ItemScubaGear.AirType.TRIMIX.getMaxCapacity() * 2);
-        list.add(doubleTankTrimix);
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+        ItemStack noTank = new ItemStack(item, 1, 0);
+        list.add(noTank);
+        
+//        ItemStack singleTankRegular = new ItemStack(item, 1, 1);
+//        getTagCompound(singleTankRegular).setFloat("AirContained", AirType.REGULAR.getMaxCapacity());
+//        getTagCompound(singleTankRegular).setByte("AirType", AirType.REGULAR.getNbtValue());
+//        list.add(singleTankRegular);
+//
+//        ItemStack doubleTankRegular = new ItemStack(item, 1, 2);
+//        getTagCompound(doubleTankRegular).setFloat("AirContained", AirType.REGULAR.getMaxCapacity() * 2);
+//        getTagCompound(doubleTankRegular).setByte("AirType", AirType.REGULAR.getNbtValue());
+//        list.add(doubleTankRegular);
+//
+//        ItemStack singleTankTrimix = new ItemStack(item, 1, 1);
+//        getTagCompound(singleTankTrimix).setFloat("AirContained", AirType.TRIMIX.getMaxCapacity());
+//        getTagCompound(singleTankTrimix).setByte("AirType", AirType.TRIMIX.getNbtValue());
+//        list.add(singleTankTrimix);
+//
+//        ItemStack doubleTankTrimix = new ItemStack(item, 1, 2);
+//        getTagCompound(doubleTankTrimix).setFloat("AirContained", AirType.TRIMIX.getMaxCapacity() * 2);
+//        getTagCompound(doubleTankTrimix).setByte("AirType", AirType.TRIMIX.getNbtValue());
+//        list.add(doubleTankTrimix);
     }
 
     @Override
@@ -87,30 +150,43 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
     }
+    
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer, EnumHand hand) {
+        if (entityplayer.isSneaking()) {
+            entityplayer.openGui(Tropicraft.instance, 0, world, hand.ordinal(), 0, 0);
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        }
+        return super.onItemRightClick(itemstack, world, entityplayer, hand);
+    }
 
     @Override
-    public void onScubaTick(World world, EntityPlayer player, ItemStack itemstack) {
-        ticksUntilUpdate--;
+    public void onScubaTick(World world, EntityPlayer player, ItemStack itemstack) {        
+        if (player.capabilities.isCreativeMode)
+            return;
 
-        if (ticksUntilUpdate <= 0) {
+        if (!world.isRemote && world.getTotalWorldTime() % UPDATE_RATE == 0) {
             ItemStack helmetStack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             // Ensure the player doesn't drown if they have the proper tanks / air in tanks
             if (itemstack != null && helmetStack != null && helmetStack.getItem() instanceof ItemScubaHelmet) {
-                float air = getTagCompound(itemstack).getFloat("AirContained");
+                IScubaGear gear = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
+                IScubaTank tankToEmpty = gear.getFirstNonEmptyTank();
 
-                if (air > 0) {
-                    AirType airType = itemstack.getItemDamage() >= 2 ? AirType.TRIMIX : AirType.REGULAR;
-                    getTagCompound(itemstack).setFloat("AirContained", air - airType.getUsageRate());
-                    player.setAir(300);   
+                if (tankToEmpty != null) {
+                    float air = tankToEmpty.getPressure();
+                    if (air > 0) {
+                        IAirType airType = tankToEmpty.getAirType();
+                        tankToEmpty.setPressure(Math.max(0, air - airType.getUsageRate()));
+                        gear.markDirty();
+                        player.setAir(300);
+                    }
                 }
             }
-            ticksUntilUpdate = UPDATE_RATE;
         }
     }
 
     @Override
     protected void onRemovedFromArmorInventory(World world, EntityPlayer player, ItemStack itemstack) {
-        // TODO Auto-generated method stub
         
     }
 }

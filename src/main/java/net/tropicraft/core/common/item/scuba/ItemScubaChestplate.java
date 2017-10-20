@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaChestplate extends ItemScubaGear {
 
