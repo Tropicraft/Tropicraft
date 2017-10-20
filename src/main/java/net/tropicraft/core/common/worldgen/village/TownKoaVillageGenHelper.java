@@ -6,6 +6,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.town.ManagedLocation;
 
@@ -25,6 +27,7 @@ public class TownKoaVillageGenHelper {
     public static int areaWidth = 86; //X for rot 0
     public static int areaHeight = 16;
 
+    public static boolean debugVillageGen = true;
 
     /* Takes coords that are assumed to be a beach, scans to find the ocean side and checks if theres enough ocean space to gen */
     public static boolean hookTryGenVillage(BlockPos parCoords, World parWorld) {
@@ -36,34 +39,40 @@ public class TownKoaVillageGenHelper {
 
         if (directionTry != -1) {
 
-            System.out.println("test success! dir: " + directionTry);
+            dbg("test success! dir: " + directionTry);
 
             BlockPos centerCoords = getCoordsFromAdjustedDirection(parCoords, directionTry);
 
-            System.out.println("centerCoords: " + centerCoords);
+            dbg("centerCoords: " + centerCoords);
 
             TownKoaVillage village = new TownKoaVillage();
+
+            WorldDataInstance storage = parWorld.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+            if (storage != null) {
+
+            } else {
+                dbg("ERROR: cant get world capability???");
+            }
 			
-			/*WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(parWorld);
+			//WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(parWorld);
 			
 			int minDistBetweenVillages = 128;
 			
-			Iterator it = wd.lookupTickingManagedLocations.values().iterator();
+			Iterator it = storage.lookupTickingManagedLocations.values().iterator();
 			while (it.hasNext()) {
 				ManagedLocation town = (ManagedLocation) it.next();
 				
-				if (Math.sqrt(town.spawn.getDistanceSquaredToBlockPos(parCoords)) < minDistBetweenVillages) {
+				if (Math.sqrt(town.spawn.distanceSq(parCoords)) < minDistBetweenVillages) {
 					return false;
 				}
 			}
 			//questionable ID setting
-			int newID = wd.lookupTickingManagedLocations.size();*/
-            //TODO: temp until world cap added
-            int newID = parWorld.rand.nextInt(9999);
+			int newID = storage.lookupTickingManagedLocations.size();
+            //int newID = parWorld.rand.nextInt(9999);
 			village.initData(newID, parWorld.provider.getDimension(), centerCoords);
 			village.direction = directionTry;
 			village.initFirstTime();
-			//wd.addTickingLocation(village);
+			storage.addTickingLocation(village);
 
             return true;
         } else {
@@ -164,4 +173,9 @@ public class TownKoaVillageGenHelper {
         return new BlockPos(parCoords.getX() + (areaWidth / 2 * BuildDirectionHelper.getDirectionToCoords(parDirection).getX()), parCoords.getY(), parCoords.getZ() + (areaWidth / 2 * BuildDirectionHelper.getDirectionToCoords(parDirection).getZ()));
     }
 
+    public static void dbg(String str) {
+        if (debugVillageGen) {
+            System.out.println(str);
+        }
+    }
 }

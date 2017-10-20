@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.event;
 
+import build.BuildServerTicks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,6 +17,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
@@ -63,6 +65,16 @@ public class MiscEvents {
 //                        storage.scubaHelmet = false;
 //                    }
 //                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void tickServer(TickEvent.WorldTickEvent event) {
+        if (event.world.provider instanceof WorldProviderTropicraft) {
+            WorldDataInstance storage = event.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+            if (storage != null) {
+                storage.tick();
             }
         }
     }
