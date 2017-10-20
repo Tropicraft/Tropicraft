@@ -1,0 +1,19 @@
+{
+    "parent": "block/cube_top",
+    "textures": {
+        "top": "tropicraft:blocks/bongo_top",
+        "side": "tropicraft:blocks/bongo_side"
+    },
+    "elements": [
+        {   "from": [ 3.2, 0, 3.2 ],
+            "to": [ 12.8, 16, 12.8 ],
+            "faces": {
+                "up":  { "texture": "#top"},
+                "north":  { "texture": "#side" },
+                "east":  { "texture": "#side" },
+                "south":  { "texture": "#side" },
+                "west":  { "texture": "#side" }
+            }
+        }
+    ]
+}

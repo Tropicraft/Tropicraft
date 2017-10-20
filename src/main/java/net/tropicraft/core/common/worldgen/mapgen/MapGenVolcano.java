@@ -13,6 +13,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.block.BlockTropicraftSands;
+import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.worldgen.perlin.NoiseModule;
 import net.tropicraft.core.common.worldgen.perlin.generator.Billowed;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -47,6 +49,7 @@ public class MapGenVolcano {
 
 	private final static IBlockState VOLCANO_BLOCK = BlockRegistry.chunk.getDefaultState();
 	private final static IBlockState LAVA_BLOCK = Blocks.LAVA.getDefaultState();
+	private final static IBlockState SAND_BLOCK = BlockRegistry.sands.getDefaultState().withProperty(BlockTropicraftSands.VARIANT, TropicraftSands.VOLCANIC);
 
 	public MapGenVolcano(World worldObj, boolean useArrays) {
 		this.worldObj = worldObj;
@@ -113,8 +116,15 @@ public class MapGenVolcano {
 					for (int y = CHUNK_SIZE_Y; y > 0; y--) {
 						if (volcanoHeight + groundHeight < CALDERA_CUTOFF) {
 							if (volcanoHeight + groundHeight <= VOLCANO_TOP) {
-								if (y <= volcanoHeight + groundHeight && y >= groundHeight) {
-									placeBlock(x, y, z, VOLCANO_BLOCK, primer);
+								if (y <= volcanoHeight + groundHeight) {
+								    if (y >= groundHeight) {
+                                        placeBlock(x, y, z, VOLCANO_BLOCK, primer);
+                                    } else if (primer.getBlockState(x, y, z).getBlock() == BlockRegistry.sands) {
+                                        placeBlock(x, y, z, SAND_BLOCK, primer);
+                                        if (primer.getBlockState(x, y + 1, z).getBlock() == BlockRegistry.sands) {
+                                            placeBlock(x, y + 1, z, SAND_BLOCK, primer);
+                                        }
+								    }
 								}
 							} else if (y == VOLCANO_CRUST - 1) {
 								if (worldObj.rand.nextInt(3) != 0) {

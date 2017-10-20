@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension;
 
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -43,5 +44,4 @@ public class WorldProviderTropicraft extends WorldProvider {
 	public DimensionType getDimensionType() {
 		return TropicraftWorldUtils.tropicsDimension;
 	}
-
 }

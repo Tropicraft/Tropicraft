@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -25,13 +26,15 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
+import net.tropicraft.core.client.ScubaHandler;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
+import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
@@ -48,7 +51,7 @@ public class ClientProxy extends CommonProxy {
 	public ClientProxy() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
-	
+
 	@Override
 	public void preInit() {
 		super.preInit();
@@ -61,11 +64,13 @@ public class ClientProxy extends CommonProxy {
 
 		ItemRegistry.clientProxyInit();
 		BlockRegistry.clientProxyInit();
-		
+
 		EntityRenderRegistry.init();
 		TileEntityRenderRegistry.init();
 
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
+		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
+
 
 		// For rendering drink mixer in inventory
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
@@ -108,19 +113,24 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerItemVariantModel(Item item, String name, int metadata) {
-		if (item != null) { 
-			//     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
-			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, "inventory"));
-		}
-	}
-	
+	    registerItemVariantModel(item, name, metadata, "inventory");
+    }
+
+    @Override
+    public void registerItemVariantModel(Item item, String name, int metadata, String variant) {
+        if (item != null) {
+            //     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
+            ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, variant));
+        }
+    }
+
 	private final Map<String, String[]> blockVariants = new HashMap<>();
-	
+
 	@Override
 	public void registerArbitraryBlockVariants(String name, String... variants) {
 		blockVariants.put(name, variants);
 	}
-	
+
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		for (Entry<String, String[]> e : blockVariants.entrySet()) {
@@ -129,15 +139,6 @@ public class ClientProxy extends CommonProxy {
 				IModel model = ModelLoaderRegistry.getModelOrLogError(loc, "Could not load arbitrary block variant " + variant + " for block " + e.getKey());
 				event.getModelRegistry().putObject(loc, model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter()));
 			}
-		}
-	}
-
-	@Override
-	public void registerItemVariantModel(Item item, String registryName, int metadata, String variantName) {
-		if (item != null) {
-			// ModelResourceLocation mrl = new ModelResourceLocation(Info.MODID + ":" + registryName, variantName);
-			// ModelLoader.setCustomModelResourceLocation(item, metadata, mrl);
-			ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + variantName, null));
 		}
 	}
 
@@ -179,12 +180,12 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerBooks() {
 		Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat",
-				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt", 
-				"encyclopediaTropica", 
+				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt",
+				"encyclopediaTropica",
 				"encyclopediaTropicaInside");
 		CraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
 	}
-	
+
 	@Override
 	public World getClientWorld() {
 		return Minecraft.getMinecraft().world;

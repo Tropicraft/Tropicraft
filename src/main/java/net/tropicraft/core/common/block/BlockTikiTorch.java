@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -84,7 +85,6 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	public Item getItem(World world, int x, int y, int z) {
 		return Item.getItemFromBlock(BlockRegistry.tikiTorch);
 	}
-
 
 	@Override
 	public boolean isFullyOpaque(IBlockState state) {
@@ -169,7 +169,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 			return true;
 		}
 
-		if (!world.isRemote && !canPlaceTikiTorchOn(world, pos.down())) {
+		if (!world.isRemote && state.getValue(SECTION) == TorchSection.LOWER && !canPlaceTikiTorchOn(world, pos.down())) {
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
 		}
@@ -178,7 +178,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 
 	// Taken from BlockTorch
 	protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
-		if (state.getBlock() == this && this.canPlaceAt(worldIn, pos)) {
+		if (state.getValue(SECTION) != TorchSection.LOWER || (state.getBlock() == this && this.canPlaceAt(worldIn, pos))) {
 			return true;
 		} else {
 			if (worldIn.getBlockState(pos).getBlock() == this) {
@@ -214,41 +214,56 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	private boolean canPlaceAt(World worldIn, BlockPos pos) {
 		return this.canPlaceTikiTorchOn(worldIn, pos.down());
 	}
+	
+	@Override
+    public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+        super.onBlockHarvested(world, pos, state, player);
+        if (!world.isRemote) {
+            switch (state.getValue(SECTION)) {
+            case MIDDLE:
+                dropBlockAsItem(world, pos.down(), world.getBlockState(pos.down()), 0);
+                break;
+            case UPPER:
+                dropBlockAsItem(world, pos.down(2), world.getBlockState(pos.down(2)), 0);
+                break;
+            default:
+                break;
+            }
+        }
+	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
-		if (!world.isRemote) {
-			TorchSection section = state.getValue(SECTION);
-			if (section == TorchSection.LOWER) {
-				dropBlockAsItem(world, pos, state, 0);
-				if (world.getBlockState(pos.up()).getBlock() == this) {
-					world.setBlockToAir(pos.up());
-				}
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	    super.breakBlock(world, pos, state);
+        if (!world.isRemote) {
+            TorchSection section = state.getValue(SECTION);
+            if (section == TorchSection.LOWER) {
+                if (world.getBlockState(pos.up()).getBlock() == this) {
+                    world.setBlockToAir(pos.up());
+                }
 
-				if (world.getBlockState(pos.up(2)).getBlock() == this) {
-					world.setBlockToAir(pos.up(2));
-				}
-			} else if (section == TorchSection.MIDDLE){
-				dropBlockAsItem(world, pos.down(), world.getBlockState(pos.down()), 0);
-				if (world.getBlockState(pos.down()).getBlock() == this) {
-					world.setBlockToAir(pos.down());
-				}
+                if (world.getBlockState(pos.up(2)).getBlock() == this) {
+                    world.setBlockToAir(pos.up(2));
+                }
+            } else if (section == TorchSection.MIDDLE){
+                if (world.getBlockState(pos.down()).getBlock() == this) {
+                    world.setBlockToAir(pos.down());
+                }
 
-				if (world.getBlockState(pos.up()).getBlock() == this) {
-					world.setBlockToAir(pos.up());
-				}
-			} else {
-				dropBlockAsItem(world, pos.down(2), world.getBlockState(pos.down(2)), 0);
+                if (world.getBlockState(pos.up()).getBlock() == this) {
+                    world.setBlockToAir(pos.up());
+                }
+            } else {
 
-				if (world.getBlockState(pos.down()).getBlock() == this) {
-					world.setBlockToAir(pos.down());
-				}
+                if (world.getBlockState(pos.down()).getBlock() == this) {
+                    world.setBlockToAir(pos.down());
+                }
 
-				if (world.getBlockState(pos.down(2)).getBlock() == this) {
-					world.setBlockToAir(pos.down(2));
-				}
-			}
-		}
+                if (world.getBlockState(pos.down(2)).getBlock() == this) {
+                    world.setBlockToAir(pos.down(2));
+                }
+            }
+        }
 	}
 
 	/**

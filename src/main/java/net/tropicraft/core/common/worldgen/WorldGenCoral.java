@@ -13,11 +13,11 @@ import net.tropicraft.core.registry.BlockRegistry;
 public class WorldGenCoral extends TCNoiseGen {
 
 	public WorldGenCoral(Random rand) {
-		super(rand, 0, 20, 0.5f);
+		super(rand, 0, 8, 0);
 	}
 
 	@Override
-	protected EnumActionResult checkPlacement(World world, BlockPos pos) {
+	protected EnumActionResult checkPlacement(World world, BlockPos pos, Random rand) {
 		if (((BlockCoral) BlockRegistry.coral).canBlockStay(world, pos)) {
 			return EnumActionResult.SUCCESS;
 		}

@@ -1,5 +1,5 @@
 # gradle stuff
-/build/
+build/
 .gradle
 
 #forge stuff
@@ -25,3 +25,4 @@ out
 *.iml
 
 *Thumbs.db
+*.DS_STORE

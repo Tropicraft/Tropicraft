@@ -5,6 +5,8 @@ import java.util.Random;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -12,15 +14,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.tropicraft.core.common.enums.TropicraftSands;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockSeaweed extends BlockTropicraft {
 
 	public static class TileSeaweed extends TileEntity {
 
-		private static final Random rand = new Random();
-		static {
-			rand.setSeed(439875L); // Random but constant seed
-		}
+		private static final Random rand = new Random(439875L);
+
 		private static final NoiseGeneratorPerlin angleNoise = new NoiseGeneratorPerlin(rand, 1);
 		private static final NoiseGeneratorPerlin delayNoise = new NoiseGeneratorPerlin(rand, 3);
 
@@ -35,7 +37,7 @@ public class BlockSeaweed extends BlockTropicraft {
 			if (height < 0) {
 				rand.setSeed(MathHelper.getPositionRandom(getPos()));
 				height = rand.nextInt(10) + 5;
-				while (height > 0 && !getWorld().getBlockState(getPos().up(height)).getMaterial().isLiquid()) {
+				while (height > 0 && (/*(getPos().up(height).getY() > 50 || rand.nextBoolean()) || */!getWorld().getBlockState(getPos().up(height)).getMaterial().isLiquid())) {
 					height--;
 				}
 				cachedBB = new AxisAlignedBB(getPos()).expand(1.1, height / 2f, 1.1).offset(0, height / 2f, 0);
@@ -56,7 +58,9 @@ public class BlockSeaweed extends BlockTropicraft {
 		
 		@Override
 		public double getMaxRenderDistanceSquared() {
-			return super.getMaxRenderDistanceSquared() * 4;
+			// Show more seaweed when the player is higher up
+//			return MathHelper.clamp(((Minecraft.getMinecraft().getRenderViewEntity().posY - 40) / 12), 0.2, 4) * super.getMaxRenderDistanceSquared();
+			return super.getMaxRenderDistanceSquared() * 2;
 		}
 		
 		@Override
@@ -98,6 +102,16 @@ public class BlockSeaweed extends BlockTropicraft {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileSeaweed();
+	}
+	
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	    return Item.getItemFromBlock(BlockRegistry.sands);
+	}
+	
+	@Override
+	public int damageDropped(IBlockState state) {
+	    return TropicraftSands.FOAMY.getMetadata();
 	}
 	
 	@Override

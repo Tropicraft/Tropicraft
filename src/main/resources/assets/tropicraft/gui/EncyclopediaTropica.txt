@@ -43,7 +43,7 @@ beachumbrella.desc  = A beach getaway is not complete until there is an umbrella
 blackcoffee.title = Black Coffee
 blackcoffee.desc = Who doesn't like coffee? Brew yourself a nice cup o' joe and watch the sunrise from your bungalow.
 
-blacksand.title = Tar Sands
+blacksand.title = Volcanic Sands
 blacksand.dec = Tread lightly on this sand...or don't at all. If you aren't wearing any scale or fire armor, you better be ready to run reaaaaaaaaally fast.
 
 blowgun.title = Blow Gun
@@ -161,10 +161,13 @@ grapefruitsapling.title = Grapefruit Sapling
 grapefruitsapling.desc  = Grows into a grapefruit tree, where you can get yummy grapefruits from!
 
 greensand.title = Green Sands
-greensand.desc = These rare beaches are rumored to have formed long ago when the Tropics were first emerging from the depths of the ocean.
+greensand.desc = This rare sand is rumored to have formed long ago when the Tropics were first emerging from the depths of the ocean and is most commonly found below patches of seaweed.
 
 iggyscale.title = Iguana Scale
-iggyscale.desc  = The adorable iguanas that inhabit the tropics drop scales. What is unique about these scales is that they are fire retardant. Wearing armor made of scales will allow you venture into some pretty hot places.
+iggyscale.desc = The adorable iguanas that inhabit the tropics drop scales. What is unique about these scales is that they are fire retardant. Wearing armor made of scales will allow you venture into some pretty hot places.
+
+iguana_leather.title = Iguana Leather
+iguana_leather.desc = The adorable iguanas that inhabit the tropics also drop a green leather. This leather functions just like regular leather and can be used interchangeably. You can also make bongo drums with iguana leather!
 
 iris.title = Iris
 iris.desc  = These tall purple flowers are quite a sight. They can easily be replanted. 

@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -45,6 +46,7 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
 
 	public BlockTropicsSapling(String[] names) {
 		super(Material.PLANTS);
+		this.setSoundType(SoundType.PLANT);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSaplings.PALM).withProperty(STAGE, Integer.valueOf(0)));
 		this.names = names;
 	}
@@ -140,32 +142,35 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
 	public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
 		// Change flag (and back) to make it show up when generated
 		TCGenBase.blockGenNotifyFlag = 3;
-		int type = this.getMetaFromState(state);
 
-		WorldGenerator gen = null;
+		WorldGenerator gen;		
+		TropicraftSaplings variant;
 
-		if (type == 0) {
-			int b = rand.nextInt(3);
-			if (b == 0) {
-				gen = new WorldGenLargePalmTrees(worldIn, rand);
-			} else if (b == 1) {
-				gen = new WorldGenCurvedPalms(worldIn, rand);
-			} else if (b == 2) {
-				gen = new WorldGenNormalPalms(worldIn, rand);
-			}
-		} else if (type == 1) {
-			gen = randomRainforestTreeGen(worldIn);
-		} else {
-			// Fruit types are meta 0-3 and fruit saplings are meta 2-5.
-			// So we subtract to since they match up at that point.
-			int fruitType = type - 2;
-			gen = new WorldGenFruitTrees(worldIn, rand, fruitType);
+		switch (variant = state.getValue(VARIANT)) {
+		case PALM: 
+		    int b = rand.nextInt(3);
+            if (b == 0) {
+                gen = new WorldGenLargePalmTrees(worldIn, rand);
+            } else if (b == 1) {
+                gen = new WorldGenCurvedPalms(worldIn, rand);
+            } else if (b == 2) {
+                gen = new WorldGenNormalPalms(worldIn, rand);
+            } else {
+                gen = null;
+            }
+            break;
+        case MAHOGANY:
+            gen = randomRainforestTreeGen(worldIn);
+            break;
+        default:
+            gen = new WorldGenFruitTrees(worldIn, rand, variant.ordinal() - 2);
+            break;
 		}
 
 		if (gen != null) {
 			worldIn.setBlockToAir(pos);
 			if (!gen.generate(worldIn, rand, pos)) {
-				worldIn.setBlockState(pos, state.withProperty(BlockTropicsSapling.VARIANT, TropicraftSaplings.VALUES[type]), 3);
+				worldIn.setBlockState(pos, state.withProperty(BlockTropicsSapling.VARIANT, variant), 3);
 			}
 		}
 
