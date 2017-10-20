@@ -152,7 +152,6 @@ public class ItemScubaHelmet extends ItemScubaGear {
         }
 
         GlStateManager.depthMask(true);
-        GlStateManager.disableDepth();
         GlStateManager.enableAlpha();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
