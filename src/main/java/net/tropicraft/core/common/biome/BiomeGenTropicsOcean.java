@@ -26,12 +26,11 @@ public class BiomeGenTropicsOcean extends BiomeGenTropicraft {
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityStarfish.class, 4, 1, 4));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaUrchin.class, 4, 1, 4));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityDolphin.class, 3, 4, 7));
-        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityShark.class, 1, 1, 3));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaTurtle.class, 6, 3, 8));
         this.spawnableCreatureList.add(new SpawnListEntry(EntityFailgull.class, 30, 5, 15));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTropicalFish.class, 20, 20, 40));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 2, 4));
-        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityShark.class, 3, 1, 2));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityShark.class, 3, 1, 3));
 
         this.topBlock = this.fillerBlock = BlockRegistry.sands.getDefaultState();
 	}
