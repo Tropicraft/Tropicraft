@@ -38,8 +38,8 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 		return 0;
 	}
 
-
 	public final int randDecorationCoord(Random rand, int base, int variance) {
+		// Offset by 8 to ensure coordinate is in center of chunks for decoration so that CCG is avoided
 		return base + rand.nextInt(variance) + 8;
 	}
 }
