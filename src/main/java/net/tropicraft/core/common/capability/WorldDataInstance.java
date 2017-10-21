@@ -13,7 +13,7 @@ public class WorldDataInstance {
 
     public int test = 0;
 
-    public ConcurrentHashMap<Integer, ISimulationTickable> lookupTickingManagedLocations;
+    public ConcurrentHashMap<Integer, ISimulationTickable> lookupTickingManagedLocations = new ConcurrentHashMap<>();
 
     public WorldDataInstance() {
 
