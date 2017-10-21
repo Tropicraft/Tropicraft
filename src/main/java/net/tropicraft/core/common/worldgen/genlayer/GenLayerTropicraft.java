@@ -8,6 +8,8 @@ import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 
 public abstract class GenLayerTropicraft extends GenLayer {
 
+    //zoom - takes the output from the parent layer and grows it, with some scaling algorithm
+    // fuzzy zoom - The fuzzy zoom randomly samples from 4 pixels to decide which biome should be in the scaled map
 	protected int zoom;
 	protected GenLayerTropicraft parent;
 
@@ -42,20 +44,21 @@ public abstract class GenLayerTropicraft extends GenLayer {
 		GenLayerTropicraft layerIsland = new GenLayerTropicraftIsland(1L, /*10*/3);
 		GenLayerTropicraft layerFuzzyZoom = new GenLayerTropicraftFuzzyZoom(2000L, layerIsland);
 		GenLayerTropicraft layerExpand = new GenLayerTropicraftExpandIsland(2L, layerFuzzyZoom);
-		layerExpand = new GenLayerTropicraftExpandIsland(1L, layerFuzzyZoom); // new
+		//layerExpand = new GenLayerTropicraftExpandIsland(1L, layerFuzzyZoom); // new
 		GenLayerTropicraft layerAddIsland = new GenLayerTropicraftAddIsland(3L, layerExpand, /*10*/3, landID);
 		GenLayerTropicraft layerZoom = new GenLayerTropicraftZoom(2000L, layerAddIsland);
-		layerExpand = new GenLayerTropicraftExpandIsland(6L, layerZoom);
+		layerExpand = new GenLayerTropicraftExpandIsland(55L/*6*/, layerZoom);
 		GenLayerTropicraft layerLake = new GenLayerTropicraftAddInland(9L, layerExpand, 20, landID);
 		layerAddIsland = new GenLayerTropicraftAddIsland(5L, layerLake, 8, landID);
 		layerAddIsland = new GenLayerTropicraftAddIsland(6L, layerLake, 13, getID(BiomeGenTropicraft.islandMountains));
 		layerZoom = new GenLayerTropicraftZoom(2001L, layerAddIsland);
+		layerZoom = new GenLayerTropicraftZoom(2004L, layerZoom);
 		layerExpand = new GenLayerTropicraftExpandIsland(7L, layerZoom);
 		layerAddIsland = new GenLayerTropicraftAddIsland(8L, layerExpand, 2/*9*/, landID);
 		layerExpand = new GenLayerTropicraftExpandIsland(10L, layerAddIsland);
 		GenLayerTropicraft genLayerBiomes = new GenLayerTropicraftBiomes(15L, layerExpand, landBiomeIDs);
 		GenLayerTropicraft genLayerOceans = new GenLayerTropicraftAddWeightedSubBiomes(16L, genLayerBiomes, oceanID, oceanBiomeIDs, oceanBiomeWeights);
-		GenLayerTropicraft genLayerHills = new GenLayerTropicraftAddSubBiomes(16L, genLayerOceans, getID(BiomeGenTropicraft.rainforestPlains), rainforestBiomeIDs);
+		GenLayerTropicraft genLayerHills = new GenLayerTropicraftAddSubBiomes(17L/*16*/, genLayerOceans, getID(BiomeGenTropicraft.rainforestPlains), rainforestBiomeIDs);
 		layerZoom = new GenLayerTropicraftZoom(2002L, genLayerHills);
 		layerExpand = new GenLayerTropicraftExpandIsland(10L, layerZoom);
 

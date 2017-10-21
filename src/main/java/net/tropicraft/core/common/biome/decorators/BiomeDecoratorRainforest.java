@@ -23,7 +23,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
     private static final int UNDERGROWTH_AMOUNT = 15;
     private static final int SMALL_TUALANG_AMOUNT = 4;
     private static final int LARGE_TUALANG_AMOUNT = 2;
-    private static final int HOME_TREE_RARITY = 120;
+    private static final int HOME_TREE_RARITY = 240;
 
     public BiomeDecoratorRainforest() {
 

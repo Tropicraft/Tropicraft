@@ -24,9 +24,10 @@ public class GenLayerTropicraftIsland extends GenLayerTropicraft {
 			}
 		}
 
-		if(x > -width && x <= 0 && y > -length && y <= 0) {
-			resultMap[-x + -y * width] = landID;
-		}
+		// We think this contributed to generating islands far out instead of other land
+//		if(x > -width && x <= 0 && y > -length && y <= 0) {
+//			resultMap[-x + -y * width] = landID;
+//		}
 
 		return resultMap;
 	}
