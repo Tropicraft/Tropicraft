@@ -19,7 +19,7 @@ public class ConfigGenRates implements IConfigCategory {
 	public static boolean genPalmsInOverworld = true;
 	public static boolean genOverworldPalmsInBeachOnly = false;
 	public static int palmChanceOfGenInOverworld = -1;
-	public static int palmPopulationFactorInOverworld = 3;
+	public static int palmPopulationFactorInOverworld = 4;
 	public static boolean genTropicraftEIHInOverworld = true;
 	public static boolean genTropicraftFlowersInOverworld = true;
 	public static boolean genTropicraftInOverworld = true;

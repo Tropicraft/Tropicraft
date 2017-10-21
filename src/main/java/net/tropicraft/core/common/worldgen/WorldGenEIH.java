@@ -3,6 +3,7 @@ package net.tropicraft.core.common.worldgen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -34,8 +35,10 @@ public class WorldGenEIH extends TCGenBase {
         if (j < 1 || j + height + 1 > CHUNK_SIZE_Y) {
             return false;
         }
+
+        Material matDown = worldObj.getBlockState(pos.down()).getMaterial();
     	
-        if (isAirBlock(i, j, k)) {
+        if (matDown == Material.GROUND && isAirBlock(i, j, k)) {
             j++;
             setBlock(i + 0, j + 0, k + 2, EIH_BLOCK);
             setBlock(i + 0, j + 0, k + 3, EIH_BLOCK);

@@ -165,8 +165,8 @@ public class MapGenVolcano {
 	 * mean more spawning)
 	 */
 	protected int canGenVolcanoAtCoords(World worldObj, int i, int j) {
-		byte numChunks = 32;
-		byte offsetChunks = 8;
+		byte numChunks = 64; // was 32
+		byte offsetChunks = 16; // was 8
 		int oldi = i;
 		int oldj = j;
 

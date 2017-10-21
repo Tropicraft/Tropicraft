@@ -15,6 +15,7 @@ import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -79,8 +80,6 @@ public class BiomeGenTropicraft extends Biome {
         this.spawnableCreatureList.add(new SpawnListEntry(EntityEIH.class, 10, 1, 1));
         this.spawnableCreatureList.add(new SpawnListEntry(EntityTropiSkeleton.class, 4, 1, 8));
         this.spawnableCreatureList.add(new SpawnListEntry(EntityAshenHunter.class, 4, 3, 12));
-
-        //this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTurtle.class, 6, 1 ,3));
 
         //this.spawnableMonsterList.add(new SpawnListEntry(SpiderAdult.class, 50, 1, 3));
 	}

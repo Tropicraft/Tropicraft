@@ -3,6 +3,7 @@ package net.tropicraft.core.common.biome;
 import net.tropicraft.core.common.biome.decorators.BiomeDecoratorTropicsOcean;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
@@ -30,6 +31,7 @@ public class BiomeGenTropicsOcean extends BiomeGenTropicraft {
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTropicalFish.class, 20, 20, 40));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 2, 4));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityShark.class, 3, 1, 2));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaTurtle.class,6, 1, 3));
 
         this.topBlock = this.fillerBlock = BlockRegistry.sands.getDefaultState();
 	}

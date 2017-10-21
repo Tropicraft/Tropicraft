@@ -29,7 +29,7 @@ public class WorldGenCurvedPalms extends TCDirectionalGen {
 	public boolean generate(BlockPos pos) {
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 
-		if (getBlockState(pos.down()).getMaterial() == Material.SAND) {
+		if (getBlockState(pos.down()).getMaterial() != Material.SAND) {
 			return false;
 		}
 		

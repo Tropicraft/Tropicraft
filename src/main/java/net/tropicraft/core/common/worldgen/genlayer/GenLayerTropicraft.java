@@ -16,7 +16,7 @@ public abstract class GenLayerTropicraft extends GenLayer {
 
 	private static int[] landBiomeIDs = new int[] { landID, getID(BiomeGenTropicraft.rainforestPlains) };
 	private static int[] rainforestBiomeIDs = new int[] {
-		getID(BiomeGenTropicraft.rainforestPlains),
+//		getID(BiomeGenTropicraft.rainforestPlains),
 		getID(BiomeGenTropicraft.rainforestHills),
 		getID(BiomeGenTropicraft.rainforestMountains)
 	};
@@ -39,10 +39,11 @@ public abstract class GenLayerTropicraft extends GenLayer {
 	}
 
 	public static GenLayer[] initializeAllBiomeGenerators(long par0, WorldType par2WorldType) {
-		GenLayerTropicraft layerIsland = new GenLayerTropicraftIsland(1L);
+		GenLayerTropicraft layerIsland = new GenLayerTropicraftIsland(1L, /*10*/3);
 		GenLayerTropicraft layerFuzzyZoom = new GenLayerTropicraftFuzzyZoom(2000L, layerIsland);
 		GenLayerTropicraft layerExpand = new GenLayerTropicraftExpandIsland(2L, layerFuzzyZoom);
-		GenLayerTropicraft layerAddIsland = new GenLayerTropicraftAddIsland(3L, layerExpand, 10, landID);
+		layerExpand = new GenLayerTropicraftExpandIsland(1L, layerFuzzyZoom); // new
+		GenLayerTropicraft layerAddIsland = new GenLayerTropicraftAddIsland(3L, layerExpand, /*10*/3, landID);
 		GenLayerTropicraft layerZoom = new GenLayerTropicraftZoom(2000L, layerAddIsland);
 		layerExpand = new GenLayerTropicraftExpandIsland(6L, layerZoom);
 		GenLayerTropicraft layerLake = new GenLayerTropicraftAddInland(9L, layerExpand, 20, landID);
@@ -50,11 +51,11 @@ public abstract class GenLayerTropicraft extends GenLayer {
 		layerAddIsland = new GenLayerTropicraftAddIsland(6L, layerLake, 13, getID(BiomeGenTropicraft.islandMountains));
 		layerZoom = new GenLayerTropicraftZoom(2001L, layerAddIsland);
 		layerExpand = new GenLayerTropicraftExpandIsland(7L, layerZoom);
-		layerAddIsland = new GenLayerTropicraftAddIsland(8L, layerExpand, 9, landID);
+		layerAddIsland = new GenLayerTropicraftAddIsland(8L, layerExpand, 2/*9*/, landID);
 		layerExpand = new GenLayerTropicraftExpandIsland(10L, layerAddIsland);
 		GenLayerTropicraft genLayerBiomes = new GenLayerTropicraftBiomes(15L, layerExpand, landBiomeIDs);
 		GenLayerTropicraft genLayerOceans = new GenLayerTropicraftAddWeightedSubBiomes(16L, genLayerBiomes, oceanID, oceanBiomeIDs, oceanBiomeWeights);
-		GenLayerTropicraft genLayerHills = new GenLayerTropicraftAddSubBiomes(16L, genLayerOceans, getID(BiomeGenTropicraft.rainforestHills), rainforestBiomeIDs);
+		GenLayerTropicraft genLayerHills = new GenLayerTropicraftAddSubBiomes(16L, genLayerOceans, getID(BiomeGenTropicraft.rainforestPlains), rainforestBiomeIDs);
 		layerZoom = new GenLayerTropicraftZoom(2002L, genLayerHills);
 		layerExpand = new GenLayerTropicraftExpandIsland(10L, layerZoom);
 
