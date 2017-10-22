@@ -33,7 +33,7 @@ public class WorldGenUndergrowth extends TCGenBase {
         	return false;
         }
         
-        setBlockState(pos, WOOD_BLOCK, blockGenNotifyFlag);
+        TCGenUtils.setBlockState(worldObj, pos, WOOD_BLOCK, blockGenNotifyFlag);
 
         int size = 2;
         if (rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
@@ -46,8 +46,8 @@ public class WorldGenUndergrowth extends TCGenBase {
                 int xVariance = x - i;
                 for (int z = k - bushWidth; z < k + bushWidth; z++) {
                     int zVariance = z - k;
-                    if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && !getBlockState(x, y, z).isOpaqueCube()) {
-                        setBlockState(x, y, z, LEAF_BLOCK, blockGenNotifyFlag);
+                    if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && !TCGenUtils.getBlockState(worldObj, x, y, z).isOpaqueCube()) {
+                        TCGenUtils.setBlockState(worldObj, x, y, z, LEAF_BLOCK, blockGenNotifyFlag);
                     }
                 }
             }

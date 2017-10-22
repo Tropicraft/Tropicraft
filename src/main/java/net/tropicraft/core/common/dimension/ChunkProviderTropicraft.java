@@ -163,7 +163,11 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
                 // FIXME this lookup is inverted from vanilla, which uses z + x*16
                 // Somehow this fixes the "random" patches of sand in worldgen: https://i.imgur.com/fWtjlyA.png
-                BiomeGenTropicraft biome = (BiomeGenTropicraft)biomesIn[xValue + zValue * 16];
+                // Added cast because BiomePlains ended up in here. We should look into why eventually.
+                Biome biomePreCast = biomesIn[xValue + zValue * 16];
+                if (!(biomePreCast instanceof BiomeGenTropicraft))
+                    continue;
+                BiomeGenTropicraft biome = (BiomeGenTropicraft)biomePreCast;
                 
                 int yStart = -1;
 

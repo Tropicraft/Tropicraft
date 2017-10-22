@@ -29,11 +29,11 @@ public class WorldGenTropicalFlowers extends TCGenBase {
 			int y = (j + rand.nextInt(4)) - rand.nextInt(4);
 			int z = (k + rand.nextInt(8)) - rand.nextInt(8);
 			BlockPos pos2 = new BlockPos(x, y, z);
-			if(isAirBlock(x, y, z) && ((BlockBush) BlockRegistry.flowers).canBlockStay(this.worldObj, pos2, BlockRegistry.flowers.getDefaultState())) {
+			if(TCGenUtils.isAirBlock(worldObj, x, y, z) && ((BlockBush) BlockRegistry.flowers).canBlockStay(this.worldObj, pos2, BlockRegistry.flowers.getDefaultState())) {
 				if (rand.nextInt(3) == 0) {
 					int meta = rand.nextInt(TropicraftFlowers.VALUES.length);
 					TropicraftFlowers flowerEnum = TropicraftFlowers.VALUES[meta];
-					setBlockState(x, y, z, plantBlock.getDefaultState().withProperty(BlockTropicsFlowers.VARIANT, flowerEnum), blockGenNotifyFlag);
+					TCGenUtils.setBlockState(worldObj, x, y, z, plantBlock.getDefaultState().withProperty(BlockTropicsFlowers.VARIANT, flowerEnum), blockGenNotifyFlag);
 				}
 			}
 		}

@@ -70,4 +70,19 @@ public class TCGenUtils {
     public static Material getMaterial(World world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial();
     }
+    
+    /**
+     * Returns whether the given block is the same as any of the other blocks.
+     * @param block1 Provided block
+     * @param blocks Array of other blocks
+     * @return
+     */
+    public static boolean isBlockInList(Block block1, Block...blocks) {
+        for (Block b : blocks) {
+            if (block1 == b) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

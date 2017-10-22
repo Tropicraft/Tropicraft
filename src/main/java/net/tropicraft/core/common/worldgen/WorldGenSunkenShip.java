@@ -26,7 +26,7 @@ public class WorldGenSunkenShip extends TCDirectionalGen {
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 		this.setOrigin(i, k);
 
-		if (getBlock(i, j + 4, k) != BlockRegistry.tropicsWater) { // Must be water 4 blocks above the sea floor
+		if (TCGenUtils.getBlock(worldObj, i, j + 4, k) != BlockRegistry.tropicsWater) { // Must be water 4 blocks above the sea floor
 			return false;
 		}
 

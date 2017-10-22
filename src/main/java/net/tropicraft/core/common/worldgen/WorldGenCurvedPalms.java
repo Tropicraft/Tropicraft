@@ -27,7 +27,7 @@ public class WorldGenCurvedPalms extends TCDirectionalGen {
 
 	@Override
 	public boolean generate(BlockPos pos) {
-		if (getBlockState(pos.down()).getMaterial() != Material.SAND) {
+		if (TCGenUtils.getBlockState(worldObj, pos.down()).getMaterial() != Material.SAND) {
 			return false;
 		}
 
@@ -99,26 +99,25 @@ public class WorldGenCurvedPalms extends TCDirectionalGen {
 		return true;
 	}
 	
-	public int findWater(int i, int j, int k){
-
+	public int findWater(int i, int j, int k) {
 		int iPos = 0;
 		int iNeg = 0;
 		int kPos = 0;
 		int kNeg = 0;
 
-		while(iPos < 10 &&  (getMaterial(i + iPos, 62, k) != Material.WATER)) {
+		while(iPos < 10 &&  (TCGenUtils.getMaterial(worldObj, i + iPos, 62, k) != Material.WATER)) {
 			iPos++;
 		}
 
-		while(iNeg > -10 && (getMaterial(i + iNeg, 62, k) != Material.WATER)) {
+		while(iNeg > -10 && (TCGenUtils.getMaterial(worldObj, i + iNeg, 62, k) != Material.WATER)) {
 			iNeg--;
 		}
 		
-		while(kPos < 10 &&  (getMaterial(i, 62, k + kPos) != Material.WATER)) {
+		while(kPos < 10 &&  (TCGenUtils.getMaterial(worldObj, i, 62, k + kPos) != Material.WATER)) {
 			kPos++;
 		}
 
-		while(kNeg > -10 &&  (getMaterial(i, 62, k + kNeg) != Material.WATER)) {
+		while(kNeg > -10 &&  (TCGenUtils.getMaterial(worldObj, i, 62, k + kNeg) != Material.WATER)) {
 			kNeg--;
 		}
 

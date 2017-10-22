@@ -26,7 +26,7 @@ public class WorldGenUpTree extends TCGenBase {
 	@Override
 	public boolean generate(BlockPos pos) {
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
-		Block blockUnder = getBlock(pos.down());
+		Block blockUnder = TCGenUtils.getBlock(worldObj, pos.down());
 		if (blockUnder != Blocks.GRASS && blockUnder != Blocks.DIRT) {
 			return false;
 		}
@@ -34,28 +34,28 @@ public class WorldGenUpTree extends TCGenBase {
 		int height = rand.nextInt(4) + 6;
 		
 		for (int y = j; y < j + height; y++) {
-			IBlockState state = getBlockState(i, y, k);
+			IBlockState state = TCGenUtils.getBlockState(worldObj, i, y, k);
 			if (state.getMaterial() == Material.LEAVES && !state.isOpaqueCube()) {
 				return false;
 			}
 		}
 		
 		for (int y = j; y < j + height; y++) {
-			setBlockState(i, y, k, WOOD_STATE, blockGenNotifyFlag);
+			TCGenUtils.setBlockState(worldObj, i, y, k, WOOD_STATE, blockGenNotifyFlag);
 			if (rand.nextInt(5) == 0) {
 				int x = rand.nextInt(3) - 1 + i;
 				int z = k;
 				if (x - i == 0) {
 					z += rand.nextBoolean() ? 1 : -1;
 				}
-				setBlockState(x, y, z, LEAF_STATE, blockGenNotifyFlag);
+				TCGenUtils.setBlockState(worldObj, x, y, z, LEAF_STATE, blockGenNotifyFlag);
 			}
 			
 			if (y == j + height - 1) {
-				setBlockState(i + 1, y, k, WOOD_STATE, blockGenNotifyFlag);
-				setBlockState(i - 1, y, k, WOOD_STATE, blockGenNotifyFlag);
-				setBlockState(i, y, k + 1, WOOD_STATE, blockGenNotifyFlag);
-				setBlockState(i, y, k - 1, WOOD_STATE, blockGenNotifyFlag);
+				TCGenUtils.setBlockState(worldObj, i + 1, y, k, WOOD_STATE, blockGenNotifyFlag);
+				TCGenUtils.setBlockState(worldObj, i - 1, y, k, WOOD_STATE, blockGenNotifyFlag);
+				TCGenUtils.setBlockState(worldObj, i, y, k + 1, WOOD_STATE, blockGenNotifyFlag);
+				TCGenUtils.setBlockState(worldObj, i, y, k - 1, WOOD_STATE, blockGenNotifyFlag);
 			}
 		}
 		
