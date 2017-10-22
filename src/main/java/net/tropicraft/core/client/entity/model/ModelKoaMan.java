@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.Vec3d;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class ModelKoaMan extends ModelBiped {
@@ -214,6 +215,8 @@ public class ModelKoaMan extends ModelBiped {
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
 
+        boolean isDancing = true;
+
         if (entityIn instanceof EntityKoaBase) {
             this.isRiding = ((EntityKoaBase) entityIn).isSitting();
         }
@@ -227,7 +230,30 @@ public class ModelKoaMan extends ModelBiped {
             }
         }
 
+        if (isDancing) {
+            this.bipedHead.offsetY = 0.01F + (float)Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.02F;
+            this.bipedHead.offsetX = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.02F;
+            this.bipedHead.offsetZ = 0;
+            this.bipedHead.rotateAngleZ = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.05F;
+        }
+
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+
+        this.bipedHead.rotateAngleX += (float)Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.05F;
+
+        float amp = 0.5F;
+
+        double x = Math.PI + Math.PI / 4 + (float)Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
+        double y = Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
+        double z = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
+
+        this.bipedRightArm.rotateAngleX += x;
+        this.bipedRightArm.rotateAngleY += y;
+        this.bipedRightArm.rotateAngleZ += z;
+
+        this.bipedLeftArm.rotateAngleX += x;
+        this.bipedLeftArm.rotateAngleY += y;
+        this.bipedLeftArm.rotateAngleZ += z;
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
