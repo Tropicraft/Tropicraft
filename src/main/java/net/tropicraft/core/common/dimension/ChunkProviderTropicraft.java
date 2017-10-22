@@ -22,6 +22,7 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenVolcano;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -163,22 +164,27 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
                 // FIXME this lookup is inverted from vanilla, which uses z + x*16
                 // Somehow this fixes the "random" patches of sand in worldgen: https://i.imgur.com/fWtjlyA.png
-                BiomeGenTropicraft biome = (BiomeGenTropicraft)biomesIn[xValue + zValue * 16];
+                // Added cast because BiomePlains ended up in here. We should look into why eventually.
+                Biome biomePreCast = biomesIn[xValue + zValue * 16];
+                if (!(biomePreCast instanceof BiomeGenTropicraft)) {
+                    System.err.println("!!! Weird, ChunkProviderTropicraft encountered a non Tropicraft biome: " + biomePreCast.getBiomeName());
+                    continue;
+                }
+                BiomeGenTropicraft biome = (BiomeGenTropicraft)biomePreCast;
                 
                 int yStart = -1;
 
-                for(int yValue = 128 - 1; yValue >= 0; yValue--) {
+                for (int yValue = 128 - 1; yValue >= 0; yValue--) {
                     int xx = xValue;
                     int zz = zValue;
                     Block block = primer.getBlockState(xx, yValue, zz).getBlock();
 
-                    if(yValue <= 0) {
+                    if (yValue <= 0) {
                         primer.setBlockState(xx, yValue, zz, Blocks.BEDROCK.getDefaultState());
                         continue;
                     }
 
-                    if(block == Blocks.AIR || block == BlockRegistry.tropicsWater)
-                    {
+                    if (TCGenUtils.isBlockInList(block, Blocks.AIR, BlockRegistry.tropicsWater)) {
                         a = 0;
                         continue;
                     }

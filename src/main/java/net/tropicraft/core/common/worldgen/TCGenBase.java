@@ -415,7 +415,7 @@ public abstract class TCGenBase extends WorldGenerator {
             ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
             ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
             ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
-            BlockPos pos = getBlockPos(ai3);
+            BlockPos pos = TCGenUtils.getBlockPos(ai3);
 			if(!allowedBlockList.contains(worldObj.getBlockState(pos)))
 			{
 				return null;
@@ -426,7 +426,7 @@ public abstract class TCGenBase extends WorldGenerator {
             ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
             ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
             ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
-            BlockPos pos = getBlockPos(ai3);
+            BlockPos pos = TCGenUtils.getBlockPos(ai3);
             worldObj.setBlockState(pos, state, blockGenNotifyFlag);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
         }
@@ -486,7 +486,7 @@ public abstract class TCGenBase extends WorldGenerator {
             ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
             ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
             ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
-            genCircle(getBlockPos(ai3), distance, distance2, state, true);
+            genCircle(TCGenUtils.getBlockPos(ai3), distance, distance2, state, true);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
         }
         return places;
@@ -513,13 +513,13 @@ public abstract class TCGenBase extends WorldGenerator {
 	         {
 	            for(int k = z - outerRadius; k < z + outerRadius; k++)
 	            {
-	            	if(worldObj.isAirBlock(getBlockPos(i, j, k)))
+	            	if(worldObj.isAirBlock(TCGenUtils.getBlockPos(i, j, k)))
                	 	{
 		                 int distance1 = (i - x) * (i - x) + (j - y) * (j - y) + (k - z) * (k - z);
 	
 		                 if(distance1 <= outerRadius)
 		                 {
-		                	 BlockPos pos2 = getBlockPos(i, j, k);
+		                	 BlockPos pos2 = TCGenUtils.getBlockPos(i, j, k);
 		                	 worldObj.setBlockState(pos2, state, blockGenNotifyFlag);
 		                 }
                	 	}
@@ -536,10 +536,10 @@ public abstract class TCGenBase extends WorldGenerator {
 	 */
 	public int getTerrainHeightAt(int x, int z)
 	{
-		int height = worldObj.getHeight(getBlockPos(x, 0, z)).getY() + 1;
+		int height = worldObj.getHeight(TCGenUtils.getBlockPos(x, 0, z)).getY() + 1;
 		for(int y = height; y > 0; y--)
 		{
-			Block block = worldObj.getBlockState(getBlockPos(x, y, z)).getBlock();
+			Block block = worldObj.getBlockState(TCGenUtils.getBlockPos(x, y, z)).getBlock();
 			if(block == Blocks.DIRT || block == Blocks.GRASS || block == Blocks.SAND || block == Blocks.STONE)
 			{
 				return y + 1;
@@ -554,70 +554,6 @@ public abstract class TCGenBase extends WorldGenerator {
 	 */
 	public double randAngle() {
 		return rand.nextDouble() * 3.1415926535897931D * 2D;
-	}
-	
-	protected BlockPos getBlockPos(int x, int y, int z) {
-		return new BlockPos(x, y, z);
-	}
-	
-	protected BlockPos getBlockPos(int[] xyz) {
-		return new BlockPos(xyz[0], xyz[1], xyz[2]);
-	}
-	
-	protected Block getBlock(int x, int y, int z) {
-		return getBlock(new BlockPos(x, y, z));
-	}
-	
-	protected Block getBlock(BlockPos pos) {
-		return worldObj.getBlockState(pos).getBlock();
-	}
-	
-	protected IBlockState getBlockState(BlockPos pos) {
-		return worldObj.getBlockState(pos);
-	}
-	
-	protected IBlockState getBlockState(int x, int y, int z) {
-		return getBlockState(new BlockPos(x, y, z));
-	}
-	
-	protected boolean isAirBlock(int x, int y, int z) {
-		return isAirBlock(new BlockPos(x, y, z));
-	}
-	
-	protected boolean isAirBlock(BlockPos pos) {
-		return worldObj.isAirBlock(pos);
-	}
-	
-	protected boolean setBlock(BlockPos pos, Block block) {
-		return worldObj.setBlockState(pos, block.getDefaultState());
-	}
-	
-	protected boolean setBlock(int x, int y, int z, Block block) {
-		return setBlock(new BlockPos(x, y, z), block);
-	}
-	
-	protected boolean setBlockState(BlockPos pos, IBlockState state, int flags) {
-		return worldObj.setBlockState(pos, state, flags);
-	}
-	
-	protected boolean setBlockState(BlockPos pos, IBlockState state) {
-		return worldObj.setBlockState(pos, state);
-	}
-	
-	protected boolean setBlockState(int x, int y, int z, IBlockState state) {
-		return setBlockState(new BlockPos(x, y, z), state);
-	}
-	
-	protected boolean setBlockState(int x, int y, int z, IBlockState state, int flags) {
-		return worldObj.setBlockState(new BlockPos(x, y, z), state, flags);
-	}
-	
-	protected Material getMaterial(int x, int y, int z) {
-		return worldObj.getBlockState(new BlockPos(x, y, z)).getMaterial();
-	}
-	
-	protected Material getMaterial(BlockPos pos) {
-		return worldObj.getBlockState(pos).getMaterial();
 	}
 	
 	protected int getHeight(int x, int z) {

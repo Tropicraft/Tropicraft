@@ -1,29 +1,30 @@
 package net.tropicraft.core.common.biome.decorators;
 
+import java.util.Random;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
 import net.tropicraft.configuration.ConfigGenRates;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.worldgen.WorldGenCoffeePlant;
 import net.tropicraft.core.common.worldgen.WorldGenHomeTree;
 import net.tropicraft.core.common.worldgen.WorldGenTallTree;
 import net.tropicraft.core.common.worldgen.WorldGenTualang;
 import net.tropicraft.core.common.worldgen.WorldGenUndergrowth;
 import net.tropicraft.core.common.worldgen.WorldGenUpTree;
 
-import java.util.Random;
-
 public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
-	private static final int COFFEE_PLANT_AMOUNT = 2;
-	private static final int ALTAR_CHANCE = 70;
-	private static final int TALL_TREE_CHANCE = 2;
-	private static final int UP_TREE_CHANCE = 2;
-	private static final int UNDERGROWTH_AMOUNT = 15;
-	private static final int SMALL_TUALANG_AMOUNT = 4;
-	private static final int LARGE_TUALANG_AMOUNT = 2;
-	private static final int HOME_TREE_RARITY = 80;
+    private static final int COFFEE_PLANT_AMOUNT = 2;
+    private static final int ALTAR_CHANCE = 70;
+    private static final int TALL_TREE_CHANCE = 2;
+    private static final int UP_TREE_CHANCE = 2;
+    private static final int UNDERGROWTH_AMOUNT = 15;
+    private static final int SMALL_TUALANG_AMOUNT = 4;
+    private static final int LARGE_TUALANG_AMOUNT = 2;
+    private static final int HOME_TREE_RARITY = 240;
 
 	public BiomeDecoratorRainforest() {
 
@@ -106,14 +107,14 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 				if (yRand > 0) {
 					int rando = rand.nextInt(yRand);
 					biome.getRandomWorldGenForGrass(rand).generate(world, rand, this.chunkPos.add(xRand, rando, zRand));
-				}	
+				}
 			}
 		}
-		//
-		//		for(int a = 0; a < COFFEE_PLANT_AMOUNT; a++) {
-		//			int i = randDecorationCoord(rand, x, 16);
-		//			int k = randDecorationCoord(rand, z, 16);
-		//			new WorldGenCoffeePlant(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
-		//		}
+
+		for(int a = 0; a < COFFEE_PLANT_AMOUNT; a++) {
+            i = randDecorationCoord(rand, x, 16);
+            k = randDecorationCoord(rand, z, 16);
+			new WorldGenCoffeePlant(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		}
 	}
 }
