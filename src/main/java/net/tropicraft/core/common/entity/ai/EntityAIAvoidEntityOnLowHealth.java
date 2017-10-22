@@ -65,7 +65,9 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
 
         if (this.theEntity.getHealth() > healthToAvoid) return false;
 
-        List<T> list = this.theEntity.world.<T>getEntitiesWithinAABB(this.classToAvoid, this.theEntity.getEntityBoundingBox().expand((double)this.avoidDistance, 3.0D, (double)this.avoidDistance), Predicates.and(new Predicate[] {EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector}));
+        List<T> list = this.theEntity.world.<T>getEntitiesWithinAABB(this.classToAvoid,
+                this.theEntity.getEntityBoundingBox().expand((double)this.avoidDistance, 3.0D, (double)this.avoidDistance),
+                Predicates.and(new Predicate[] {EntitySelectors.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector}));
 
         if (list.isEmpty())
         {

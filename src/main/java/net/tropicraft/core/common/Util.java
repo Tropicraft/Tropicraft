@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -118,11 +119,22 @@ public class Util {
     }
 
     public static boolean isDeepWater(World world, BlockPos pos) {
-        return world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
+        boolean deep = world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
+        boolean notUnderground = false;
+        if (deep) {
+            int height = world.getPrecipitationHeight(pos).getY() - 1;
+            notUnderground = height == pos.getY();
+        }
+
+        return deep && notUnderground;
     }
 
     public static boolean isLand(World world, BlockPos pos) {
         return world.getBlockState(pos).isSideSolid(world, pos, EnumFacing.UP);
+    }
+
+    public static boolean isFire(World world, BlockPos pos) {
+        return world.getBlockState(pos).getMaterial() == Material.FIRE;
     }
 
     public static boolean tryMoveToEntityLivingLongDist(EntityLiving entSource, Entity entityTo, double moveSpeedAmp) {
@@ -238,6 +250,16 @@ public class Util {
 
         return false;
 
+    }
+
+    /**
+     * Future proofing for 1.12
+     *
+     * @param stack
+     * @return
+     */
+    public static boolean isEmpty(ItemStack stack) {
+        return stack == null;
     }
 
 }
