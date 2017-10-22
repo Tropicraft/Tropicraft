@@ -298,7 +298,7 @@ public class TeleporterTropics extends Teleporter {
         int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
 
         // Max distance to search in every direction for the nearest landmass to build a bridge to
-        int SEARCH_FOR_LAND_DISTANCE_MAX = 100;
+        int SEARCH_FOR_LAND_DISTANCE_MAX = 200;
 
         // If we can't find a spot (e.g. we're in the middle of the ocean),
         // just put the portal at sea level

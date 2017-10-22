@@ -1,5 +1,8 @@
 package net.tropicraft.core.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -16,10 +19,16 @@ import net.tropicraft.Info;
 
 @EventBusSubscriber
 public class TropicraftRenderUtils {
+    
+    /** Cache of ResourceLocations for texture binding */
+    private static Map<String, ResourceLocation> resLocMap = new HashMap<>();
 
 	public static ResourceLocation getTexture(String path) {
-		ResourceLocation derp = new ResourceLocation(Info.MODID, path);
-		return derp;
+	    return resLocMap.computeIfAbsent(path, k -> getResLoc(path));
+	}
+	
+	private static ResourceLocation getResLoc(String path) {
+	    return new ResourceLocation(Info.MODID, path);
 	}
 
 	public static ResourceLocation getTextureArmor(String path) {

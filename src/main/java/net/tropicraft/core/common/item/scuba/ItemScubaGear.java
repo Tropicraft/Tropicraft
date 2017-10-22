@@ -15,12 +15,13 @@ import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.item.armor.ItemTropicraftArmor;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 import net.tropicraft.core.registry.CreativeTabRegistry;
 import net.tropicraft.core.registry.EntityRenderRegistry;
 
 public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
-    protected ScubaMaterial scubaMaterial;
+    protected final ScubaMaterial scubaMaterial;
 
     /**
      * When true, {@link #onRemovedFromArmorInventory(World, EntityPlayer, ItemStack)} should get called
@@ -155,71 +156,5 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
      * @param itemstack
      */
     protected abstract void onRemovedFromArmorInventory(World world, EntityPlayer player, ItemStack itemstack);
-
-    public static enum ScubaMaterial {
-
-        PINK(35, "pink", "Pink"),
-        YELLOW(35, "yellow", "Yellow");
-
-        /** The y-level that a player can safely dive to while wearing this gear material */
-        private int maxDepth;
-
-        /** The image prefix of this material type */
-        private String imagePrefix;
-
-        /** The name to be displayed when figuring out what type of gear this is */
-        private String displayName;
-
-        private ScubaMaterial(int maxDepth, String imagePrefix, String displayName) {
-            this.maxDepth = maxDepth;
-            this.imagePrefix = imagePrefix;
-            this.displayName = displayName;
-        }
-
-        public int getMaxDepth() {
-            return this.maxDepth;
-        }
-
-        public String getImagePrefix() {
-            return this.imagePrefix;
-        }
-
-        public String getDisplayName() {
-            return this.displayName;
-        }
-    }
-
-    public static enum AirType {
-
-        REGULAR(3200, 0.005F, "Regular"),
-        TRIMIX(3200, 1.185F, "Trimix");
-
-        /** The max amount of psi one tank of this air type can hold */
-        private int maxCapacity;
-
-        /** The average amount of air that escapes one tank of this air per second */
-        private float usageRate;
-
-        /** The name that shows up in the GUI when this air type is used */
-        private String displayName;
-
-        private AirType(int maxCapacity, float usageRate, String displayName) {
-            this.maxCapacity = maxCapacity;
-            this.usageRate = usageRate;
-            this.displayName = displayName;
-        }
-
-        public int getMaxCapacity() {
-            return this.maxCapacity;
-        }
-
-        public float getUsageRate() {
-            return this.usageRate;
-        }
-
-        public String getDisplayName() {
-            return this.displayName;
-        }
-    }
 
 }

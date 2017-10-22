@@ -2,7 +2,7 @@ package net.tropicraft.core.common.entity.underdasea.atlantoku;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
+import javax.vecmath.Vector2f;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

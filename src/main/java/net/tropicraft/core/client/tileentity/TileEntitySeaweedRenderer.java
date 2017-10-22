@@ -28,6 +28,9 @@ public class TileEntitySeaweedRenderer extends FastTESR<TileSeaweed> {
 
 	@Override
 	public void renderTileEntityFast(TileSeaweed te, double x, double y, double z, float partialTicks, int destroyStage, VertexBuffer buf) {
+	    if (te == null) {
+	        return;
+	    }
 
 		buf.setTranslation(x, y, z);
 

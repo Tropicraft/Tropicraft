@@ -13,14 +13,23 @@ public class RenderEagleRay extends RenderTropicraftWaterMob {
 		super(Minecraft.getMinecraft().getRenderManager(), new ModelEagleRay(), 1f);
 	}
 
-
 	@Override
-	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw, float partialTicks) {	
+	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw,
+			float partialTicks) {
 		GlStateManager.pushMatrix();
-		GlStateManager.disableCull();	
+		GlStateManager.disableCull();
 		GlStateManager.translate(4, 0f, 4f);
-		this.renderWaterMob(entity, x-4, y-1, z-4, partialTicks);	
+		String n = entity.getCustomNameTag();
+		entity.setCustomNameTag("");
+		this.renderWaterMob(entity, x - 4, y - 1, z - 4, partialTicks);
 		GlStateManager.popMatrix();
+		entity.setCustomNameTag(n);
+		if (Minecraft.getMinecraft().pointedEntity != null && entity.getCustomNameTag().length() > 0) {
+			if (Minecraft.getMinecraft().pointedEntity.equals(entity)) {
+				this.renderEntityName(entity, x, y, z, entity.getCustomNameTag(), 7d);
+			}
+		}
+
 	}
 
 	@Override

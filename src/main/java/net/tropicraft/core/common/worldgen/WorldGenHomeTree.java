@@ -115,7 +115,7 @@ public class WorldGenHomeTree extends TCGenBase {
 					int spawnerZ = trunkZ - 4 + rand.nextInt(9);
 					setBlock(spawnerX, y + 1, spawnerZ, Blocks.MOB_SPAWNER);
 					StringBuilder sb = new StringBuilder(String.format("%s.", Info.MODID));
-					sb.append(rand.nextBoolean() ? "AshenHunter" : "Iguana");
+					sb.append(rand.nextBoolean() ? "ashen" : "iguana");
 					BlockPos spawnerPos = new BlockPos(spawnerX, y + 1, spawnerZ);
 					TileEntityMobSpawner spawner = ((TileEntityMobSpawner)worldObj.getTileEntity(spawnerPos));
 					if (spawner != null) {

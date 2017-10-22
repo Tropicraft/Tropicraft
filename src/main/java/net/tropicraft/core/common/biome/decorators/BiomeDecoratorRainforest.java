@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.biome.decorators;
 
-import java.util.Random;
-
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -13,6 +11,8 @@ import net.tropicraft.core.common.worldgen.WorldGenTallTree;
 import net.tropicraft.core.common.worldgen.WorldGenTualang;
 import net.tropicraft.core.common.worldgen.WorldGenUndergrowth;
 import net.tropicraft.core.common.worldgen.WorldGenUpTree;
+
+import java.util.Random;
 
 public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
@@ -64,36 +64,36 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 		}
 		//
 		//		if(rand.nextInt(ALTAR_CHANCE) == 0) {
-		//			new WorldGenForestAltarRuin(world, rand).generate(randCoord(rand, x, 16), 0, randCoord(rand, x, 16));
+		//			new WorldGenForestAltarRuin(world, rand).generate(randDecorationCoord(rand, x, 16), 0, randDecorationCoord(rand, x, 16));
 		//		}
 		//
 		if (rand.nextInt(TALL_TREE_CHANCE) == 0) {
-			i = randCoord(rand, x, 16);
-			k = randCoord(rand, z, 16);
+			i = randDecorationCoord(rand, x, 16);
+			k = randDecorationCoord(rand, z, 16);
 			new WorldGenTallTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
 		if (rand.nextInt(UP_TREE_CHANCE) == 0) {
-			i = randCoord(rand, x, 16);
-			k = randCoord(rand, z, 16);
+			i = randDecorationCoord(rand, x, 16);
+			k = randDecorationCoord(rand, z, 16);
 			new WorldGenUpTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));			
 		}
 
 		for (int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
-			i = randCoord(rand, x, 16);
-			k = randCoord(rand, z, 16);
+			i = randDecorationCoord(rand, x, 16);
+			k = randDecorationCoord(rand, z, 16);
 			new WorldGenTualang(world, rand, 16, 9).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
 		for (int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
-			i = randCoord(rand, x, 16);
-			k = randCoord(rand, z, 16);
+			i = randDecorationCoord(rand, x, 16);
+			k = randDecorationCoord(rand, z, 16);
 			new WorldGenTualang(world, rand, 25, 11).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
 		for (int a = 0; a < UNDERGROWTH_AMOUNT; a++) {
-			i = randCoord(rand, x, 16);
-			k = randCoord(rand, z, 16);
+			i = randDecorationCoord(rand, x, 16);
+			k = randDecorationCoord(rand, z, 16);
 			new WorldGenUndergrowth(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
@@ -111,8 +111,8 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 		}
 		//
 		//		for(int a = 0; a < COFFEE_PLANT_AMOUNT; a++) {
-		//			int i = randCoord(rand, x, 16);
-		//			int k = randCoord(rand, z, 16);
+		//			int i = randDecorationCoord(rand, x, 16);
+		//			int k = randDecorationCoord(rand, z, 16);
 		//			new WorldGenCoffeePlant(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
 		//		}
 	}

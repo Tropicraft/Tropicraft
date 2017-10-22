@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.biome.decorators;
 
-import java.util.Random;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +14,8 @@ import net.tropicraft.core.common.worldgen.WorldGenCoral;
 import net.tropicraft.core.common.worldgen.WorldGenSurfaceClump;
 import net.tropicraft.core.common.worldgen.WorldGenTropicsTreasure;
 import net.tropicraft.core.registry.BlockRegistry;
+
+import java.util.Random;
 
 public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
 
@@ -88,28 +88,28 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
         coralReefGen.generate(world, rand, chunkPos);
         seaweedGen.generate(world, rand, chunkPos);
         //        if (rand.nextInt(5) == 0) {
-        //            int x = randCoord(rand, chunkPos.getX(), 16) + 8;
-        //            int z = randCoord(rand, chunkPos.getZ(), 16) + 8;
+        //            int x = randDecorationCoord(rand, chunkPos.getX(), 16) + 8;
+        //            int z = randDecorationCoord(rand, chunkPos.getZ(), 16) + 8;
         //            BlockPos pos = new BlockPos(x, 0, z);
         //            new WorldGenCoral().generate(world, rand, pos);
         //        }
         //        
         //        if (rand.nextInt(8) == 0) {
-        //            int x = randCoord(rand, chunkPos.getX(), 16) + 8;
-        //            int z = randCoord(rand, chunkPos.getZ(), 16) + 8;
+        //            int x = randDecorationCoord(rand, chunkPos.getX(), 16) + 8;
+        //            int z = randDecorationCoord(rand, chunkPos.getZ(), 16) + 8;
         //            BlockPos pos = new BlockPos(x, 0, z);
         //            new WorldGenSeaweed().generate(world, rand, pos);
         //        }
 
         //        if (ConfigGenRates.SHIPWRECK_CHANCE != 0 /*&& rand.nextInt(ConfigGenRates.SHIPWRECK_CHANCE) == 0*/) {
-        //            int i = randCoord(rand, chunkPos.getX(), 16);
-        //            int k = randCoord(rand, chunkPos.getZ(), 16);
+        //            int i = randDecorationCoord(rand, chunkPos.getX(), 16);
+        //            int k = randDecorationCoord(rand, chunkPos.getZ(), 16);
         //            new WorldGenSunkenShip(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
         //        }
 
         if(rand.nextInt(TREASURE_CHANCE) == 0) {
-            int i = randCoord(rand, chunkPos.getX(), 16);
-            int k = randCoord(rand, chunkPos.getZ(), 16);
+            int i = randDecorationCoord(rand, chunkPos.getX(), 16);
+            int k = randDecorationCoord(rand, chunkPos.getZ(), 16);
             new WorldGenTropicsTreasure(world, rand).generate(world, rand, new BlockPos(i, getTerrainHeightAt(world, i, k), k));
         }
     }
