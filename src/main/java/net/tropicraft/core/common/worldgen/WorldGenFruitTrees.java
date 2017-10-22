@@ -52,7 +52,7 @@ public class WorldGenFruitTrees extends TCGenBase {
 				for (int z = k - size; z <= k + size && canGenerate; z++) {
 					if (y >= 0 && y < worldObj.getHeight()) {
 						Block block = TCGenUtils.getBlock(worldObj, x, y, z);
-						if (TCGenUtils.isBlockInList(block, Blocks.AIR, FRUIT_LEAF_BLOCK.getBlock())) {
+						if (!TCGenUtils.isBlockInList(block, Blocks.AIR, FRUIT_LEAF_BLOCK.getBlock())) {
 							canGenerate = false;
 						}
 					} else {

@@ -80,9 +80,9 @@ public class TCGenUtils {
     public static boolean isBlockInList(Block block1, Block...blocks) {
         for (Block b : blocks) {
             if (block1 == b) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }
