@@ -34,12 +34,12 @@ public class ItemFishBucket extends ItemBucket {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer playerIn, EnumHand hand) {
 		ActionResult<ItemStack> ret = super.onItemRightClick(stack, world, playerIn, hand);
 		if (ret.getType() == EnumActionResult.SUCCESS && !world.isRemote) {
-			RayTraceResult raytraceresult = this.rayTrace(world, playerIn, true);
+			RayTraceResult raytraceresult = this.rayTrace(world, playerIn, false);
 
 			if (raytraceresult != null && raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
 				BlockPos pos = raytraceresult.getBlockPos();
 				for (EntityTropicalFish fish : loadEntiesFromNBT(stack, world)) {
-					fish.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, world.rand.nextFloat() * 360.0F, 0);
+					fish.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, world.rand.nextFloat() * 360.0F, 0);
 					world.spawnEntity(fish);
 					fish.playLivingSound();
 				}

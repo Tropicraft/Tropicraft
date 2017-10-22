@@ -9,7 +9,7 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 
 	public EntityShark(World world) {
 		super(world);
-		this.setSwimSpeeds(1.3f, 2f, 0.2f, 3f, 5f);
+		this.setSwimSpeeds(1.3f, 2f, 0.6f, 3f, 5f);
 		this.setSize(1.4F, 0.5F);
 		this.setExpRate(5);
 		this.setApproachesPlayers(true);
