@@ -239,21 +239,23 @@ public class ModelKoaMan extends ModelBiped {
 
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
 
-        this.bipedHead.rotateAngleX += (float)Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.05F;
+        if (isDancing) {
+            this.bipedHead.rotateAngleX += (float) Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.05F;
 
-        float amp = 0.5F;
+            float amp = 0.5F;
 
-        double x = Math.PI + Math.PI / 4 + (float)Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
-        double y = Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
-        double z = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
+            double x = Math.PI + Math.PI / 4 + (float) Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
+            double y = Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
+            double z = (float) Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
 
-        this.bipedRightArm.rotateAngleX += x;
-        this.bipedRightArm.rotateAngleY += y;
-        this.bipedRightArm.rotateAngleZ += z;
+            this.bipedRightArm.rotateAngleX += x;
+            this.bipedRightArm.rotateAngleY += y;
+            this.bipedRightArm.rotateAngleZ += z;
 
-        this.bipedLeftArm.rotateAngleX += x;
-        this.bipedLeftArm.rotateAngleY += y;
-        this.bipedLeftArm.rotateAngleZ += z;
+            this.bipedLeftArm.rotateAngleX += x;
+            this.bipedLeftArm.rotateAngleY += y;
+            this.bipedLeftArm.rotateAngleZ += z;
+        }
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
