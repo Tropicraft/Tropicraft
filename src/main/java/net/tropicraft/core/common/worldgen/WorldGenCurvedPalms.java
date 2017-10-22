@@ -27,12 +27,11 @@ public class WorldGenCurvedPalms extends TCDirectionalGen {
 
 	@Override
 	public boolean generate(BlockPos pos) {
-		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
-
 		if (getBlockState(pos.down()).getMaterial() != Material.SAND) {
 			return false;
 		}
-		
+
+	    int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 		int height = 9 + rand.nextInt(3);
 		int dir = this.pickDirection(i, j, k);
 		this.setDir(dir);

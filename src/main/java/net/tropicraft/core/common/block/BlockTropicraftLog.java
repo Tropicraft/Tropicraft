@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -14,12 +15,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftLogs;
+import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
@@ -42,41 +45,43 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	 * @param target The full target the player is looking at
 	 * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
 	 */
+	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
 		return new ItemStack(state.getBlock(), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
 	}
 
-	public static void spawnCoconuts(World world, BlockPos pos, Random random, int chance) {
-		if (world.getBlockState(pos.up()).getBlock() == BlockRegistry.leaves ||
-				world.getBlockState(pos.up(2)).getBlock() == BlockRegistry.leaves) {
-			// TODO		if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
-			//				world.setBlock(i + 1, j, k, BlockRegistry.coconut);
-			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-			//
-			//			}
-			//			if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
-			//				world.setBlock(i - 1, j, k, BlockRegistry.coconut);
-			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-			//
-			//
-			//			}
-			//			if (world.isAirBlock(i, j, k - 1) && random.nextInt(chance) == 0) {
-			//				world.setBlock(i, j, k - 1, BlockRegistry.coconut);
-			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-			//
-			//
-			//			}
-			//			if (world.isAirBlock(i, j, k + 1) && random.nextInt(chance) == 0) {
-			//				world.setBlock(i, j, k + 1, BlockRegistry.coconut);
-			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-			//			}
-			//
-			//			if (world.isAirBlock(i, j - 1, k) && random.nextInt(chance) == 0) {
-			//				world.setBlock(i, j - 1, k, BlockRegistry.coconut);
-			//				world.setBlockMetadataWithNotify(i, j, k, 0, 3);
-			//			}
-		} 
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+       if (((TropicraftLogs)state.getValue(VARIANT)) == TropicraftLogs.PALM) {
+           spawnCoconuts(world, pos, random, 20);
+       }
+    }
 
+	public static void spawnCoconuts(World world, BlockPos pos, Random random, int chance) {
+	    if (world.getBlockState(pos.up()).getBlock() == BlockRegistry.leaves ||
+	            world.getBlockState(pos.up(2)).getBlock() == BlockRegistry.leaves) {
+	        Block coconut = BlockRegistry.coconut;
+
+	        if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
+	            TCGenUtils.setBlock(world, pos.east(), coconut);
+	        }
+
+	        if (world.isAirBlock(pos.offset(EnumFacing.WEST)) && random.nextInt(chance) == 0) {
+	            TCGenUtils.setBlock(world, pos.west(), coconut);
+	        }
+
+	        if (world.isAirBlock(pos.offset(EnumFacing.NORTH)) && random.nextInt(chance) == 0) {
+	            TCGenUtils.setBlock(world, pos.north(), coconut);
+	        }
+
+	        if (world.isAirBlock(pos.offset(EnumFacing.SOUTH)) && random.nextInt(chance) == 0) {
+	            TCGenUtils.setBlock(world, pos.south(), coconut);
+	        }
+
+	        if (world.isAirBlock(pos.offset(EnumFacing.DOWN)) && random.nextInt(chance) == 0) {
+	            TCGenUtils.setBlock(world, pos.down(), coconut);
+	        }
+	    }
 	}
 
 	@Override

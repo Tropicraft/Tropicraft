@@ -105,7 +105,7 @@ public class WorldGenNormalPalms extends TCGenBase {
 		
 		for (int j1 = 0; j1 < height + 4; j1++) {
 			Block l1 = getBlock(i, j + j1, k);
-			if (!isAirBlock(i, j + j1, k) && l1 != palmLeaves) {
+			if (!isAirBlock(i, j + j1, k) && l1 != palmLeaves.getBlock()) {
 				continue;
 			}
 			setBlockState(i, (j + j1) - 2, k, palmWood);

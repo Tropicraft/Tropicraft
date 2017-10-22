@@ -3,6 +3,8 @@ package net.tropicraft.core.common.biome.decorators;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -30,8 +32,10 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 
 	public int getTerrainHeightAt(World world, int x, int z) {
 		for(int y = world.getHeight(new BlockPos(x, 0, z)).getY() + 1; y > 0; y--) {
-			Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-			if(block == Blocks.GRASS || block == Blocks.DIRT || block == Blocks.SAND) {
+			IBlockState blockstate = world.getBlockState(new BlockPos(x, y, z));
+			if(blockstate.getMaterial() == Material.GRASS ||
+			   blockstate.getMaterial() == Material.GROUND ||
+			   blockstate.getMaterial() == Material.SAND) {
 				return y + 1;
 			}
 		}
