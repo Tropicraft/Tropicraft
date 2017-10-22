@@ -31,8 +31,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
     private static final DataParameter<Float> SWIMYAW = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> SWIMPITCH = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> SWIMSPEEDCUR = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
-    protected static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
+    private static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
+	private static final DataParameter<Boolean> IS_LEADER = EntityDataManager.<Boolean>createKey(EntityTropicraftWaterBase.class, DataSerializers.BOOLEAN);
 
+	
 	public float swimPitch = 0f;
 	public float swimYaw = 0f;
 	public Vector2f targetVectorHeading;
@@ -63,23 +65,20 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	public boolean isAggressing = false;
 	public boolean canAggress = false;
+	
+	public int eatenFishAmount = 0;
+	public int maximumEatAmount = 5;
 	private float swimSpeedChasing = 2f;
 	private float swimSpeedCharging = 2.5f;
 	
-	public EntityTropicraftWaterBase leader = null;
 	public Entity aggressTarget = null;
-	public boolean isLeader = false;
-	public boolean canSchool = false;
 	
 	private ItemStack dropStack = null;
 	private int dropMaxAmt = 3;
-	private double maxHealth = 5D;
+	private float maxHealth = 10f;
 	
-	public EntityTropicraftWaterBase(EntityTropicraftWaterBase leader) {
-		this(leader.world);
-		this.leader = leader;
-	}
-
+	private boolean isMovingAwayFromWall = false;
+	
 	public EntityTropicraftWaterBase(World world) {
 		super(world);
 		this.experienceValue = 5;
@@ -87,6 +86,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		if(this instanceof IPredatorDiet) {
 			this.setHostile();
 		}
+		this.setHealth(maxHealth);		
 	}
 
 	@Override
@@ -96,13 +96,18 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.getDataManager().register(SWIMPITCH, Float.valueOf(0f));
 		this.getDataManager().register(SWIMSPEEDCUR, Float.valueOf(0f));
 		this.getDataManager().register(TEXTURE, "");
+		this.getDataManager().register(IS_LEADER, false);
 		this.assignRandomTexture();
-		this.ticksExisted = rand.nextInt(12345);
 	}
 
 	@Override
 	public void onLivingUpdate() {
+		if(this.ticksExisted == 0) {
+			this.applyEntityAttributes();
+			this.setHealth(maxHealth);
+		}
 		super.onLivingUpdate();
+		
 		//setDead();
 		if(this instanceof IPredatorDiet && world.getDifficulty().equals(EnumDifficulty.PEACEFUL)) {
 			boolean hasPlayer = false;
@@ -132,6 +137,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			this.swimYaw = this.getDataManager().get(SWIMYAW);
 			this.prevSwimPitch = this.swimPitch;
 			this.swimPitch = this.getDataManager().get(SWIMPITCH);
+			
+			this.motionX *= 0.98f;
+			this.motionY *= 0.98f;
+			this.motionZ *= 0.98f;
 			return;
 		}	
 		
@@ -150,19 +159,24 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 					double frontDist = 5f;
 					Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));	
 					this.isPanicking = false;
-					this.setTargetHeading(diff.xCoord, posY - 2, diff.zCoord, true);
+					this.setRandomTargetHeadingForce(32);
+				//	this.setTargetHeading(diff.xCoord, posY - 2, diff.zCoord, true);
 					//this.swimPitch -= 15f;
 				}
 				
 			}
 			
 			// Random movements
-			if(rand.nextInt(20) == 0) {
+			if(ticksExisted % 10+rand.nextInt(20) == 0) {
 				this.setRandomTargetHeading();
+				
+				if(this.eatenFishAmount > 0 && rand.nextInt(10) == 0) {
+					this.eatenFishAmount--;
+				}
 			}	
 			
 			// Target selection
-			if(canAggress) {
+			if(canAggress && this.eatenFishAmount < this.maximumEatAmount) {
 				if(this.ticksExisted % 200 == 0 && this.aggressTarget == null|| !world.loadedEntityList.contains(aggressTarget)) {
 					List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
 					if(list.size() > 0) {
@@ -201,22 +215,35 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 				
 			// Wall correction
-			if(this.ticksExisted % 80 == 0) {
 				Vec3d angle = this.getHeading();
-				double frontDist = 2f;
-				double behindDist = 8f;
+				double frontDist = 1f;
+				double behindDist = 4f;
 				
 				Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));
 
 				bp = new BlockPos((int)diff.xCoord, (int)posY, (int)diff.zCoord);
 		
-				if(!this.world.getBlockState(bp).getMaterial().isLiquid()) {
+				if(!this.world.getBlockState(bp).getMaterial().isLiquid() && !isMovingAwayFromWall) 
+				{
 					Vec3d behind = new Vec3d(posX - (angle.xCoord*behindDist), posY + angle.yCoord, posZ - (angle.zCoord*behindDist));
-					this.setTargetHeading(behind.xCoord, posY+5, behind.zCoord, true);
+					this.setRandomTargetHeadingForce(32);
+					//this.setTargetHeading(behind.xCoord, posY, behind.zCoord, true);
+					isMovingAwayFromWall = true;
+				}
+				
+				if(ticksExisted % 20 == 0 && isMovingAwayFromWall)
+				isMovingAwayFromWall = false;
+				
+				
+				if(this.targetVector != null && isMovingAwayFromWall) {
+					bp = new BlockPos((int)this.targetVector.xCoord, (int)this.targetVector.yCoord, (int)this.targetVector.zCoord);
+	
+					if(this.getPosition().equals(bp) && ticksExisted % 80 == 0) {
+						isMovingAwayFromWall = false;
+					}
 				}
 		
-			}
-				
+			
 			// Move away from players
 			if(this.fleeFromPlayers && ticksExisted % 80 == 0) {
 				EntityPlayer closest = world.getClosestPlayerToEntity(this, this.fleeDistance);
@@ -232,49 +259,33 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				this.isPanicking = false;
 			}				
 			
-			if(this.canSchool) {
-				if(!isLeader && leader == null) {
-					List<Entity> ents = world.loadedEntityList;
-					for(int i =0; i < ents.size(); i++) {
-						if(ents.get(i) instanceof EntityTropicraftWaterBase) {
-							EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
-							
-							if(f.getClass().getName().equals(this.getClass().getName())) {
-								if(f instanceof IAtlasFish && this instanceof IAtlasFish) {
-									int slot = ((IAtlasFish)f).getAtlasSlot();
-									if(((IAtlasFish)this).getAtlasSlot() != slot) {
-										continue;
-									}
-								}
-								if(f.isLeader) {
-									this.leader = f;
-								}	
-							}
-						}
-					}
-					if(this.ticksExisted > 200 && leader == null) {
-						this.markAsLeader();
-					}
-				}
-				if(this.ticksExisted > 200 && leader == null) {
-					this.markAsLeader();
-				}
-			}
-			
-			
 			// Hunt Target and/or Do damage
 			if(this.aggressTarget != null) {
-				if(this.getDistanceSqToEntity(this.aggressTarget) < 1.2f) {
-					if(this.aggressTarget instanceof EntityLivingBase)
-					((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.cactus, 1);
+				if(this.getDistanceSqToEntity(this.aggressTarget) < 0.8f) {
+					if(this.aggressTarget instanceof EntityLivingBase) {
+						((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.cactus, 1);
+					}
+					if(this.aggressTarget instanceof EntityTropicraftWaterBase) {
+						// Was eaten, cancel smoke
+						
+						if(this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY > this.aggressTarget.getEntityBoundingBox().maxY - this.aggressTarget.getEntityBoundingBox().minY)
+						{
+							((EntityTropicraftWaterBase) this.aggressTarget).setExpRate(0);
+							this.aggressTarget.setDropItemsWhenDead(false);
+							
+							this.aggressTarget.setDead();
+							this.heal(1);
+							this.eatenFishAmount++;
+						}
+					}
 					this.setRandomTargetHeading();
 				}else {
-					if(this.canEntityBeSeen(this.aggressTarget) && this.ticksExisted % 5 == 0) {
+					if(this.canEntityBeSeen(this.aggressTarget) && this.ticksExisted % 20 == 0) {
 						this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY, this.aggressTarget.posZ, true);
 					}
 				}
 				if(this.aggressTarget != null) {
-					if(!this.aggressTarget.isInWater()) {
+					if(!this.canEntityBeSeen(aggressTarget) || !this.aggressTarget.isInWater()) {
 						this.aggressTarget = null;
 						this.setRandomTargetHeading();
 					}
@@ -282,7 +293,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 			}
 			
-			if(!this.isAggressing && this.ticksExisted % 80 == 0) {
+			if(!this.isAggressing && this.ticksExisted % 120 == 0) {
 				List<Entity> ents = world.loadedEntityList;
 				for(int i =0; i < ents.size(); i++) {
 					if(ents.get(i) instanceof EntityTropicraftWaterBase) {
@@ -298,7 +309,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				}
 			}	
 
-			bp = new BlockPos((int)posX, (int)posY-2, (int)posZ);
+			bp = new BlockPos(this.getPosition().down(2));
 
 			// Hitting bottom check
 			if(!this.world.getBlockState(bp).getMaterial().isLiquid()) {
@@ -306,20 +317,13 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 					this.swimPitch+= 2f;
 				}
 			}
-
-			if(this.canSchool) {
-				if(this.leader != null && !isLeader) {
-					this.setTargetHeading(this.leader.posX, this.leader.posY - 5 + rand.nextInt(10), this.leader.posZ, true);
-					if(leader.aggressTarget != null) {
-						this.aggressTarget = leader.aggressTarget;
-					}
-				}
-			}	
-			
 			
 			// Yaw/Pitch lerp
-			float swimSpeedTurn = this.swimSpeedTurn;
+			float swimSpeedTurn = this.swimSpeedTurn;//*(1 + (swimSpeedCurrent/5));
 			
+			if(this.isMovingAwayFromWall) {
+				swimSpeedTurn *= 1.8f;
+			}
 			if (this.targetVectorHeading != null) {
 				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn * 2f);
 				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn * 2f);
@@ -342,6 +346,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		float currentSpeed = this.swimSpeedCurrent;
 		float desiredSpeed = this.swimSpeedDefault;
 		
+	
+		
 		
 		if(this.aggressTarget != null) {
 			if(this.getDistanceSqToEntity(this.aggressTarget) < 10f) {
@@ -355,8 +361,21 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			}
 		}
 		
+		
 		if(this.isPanicking) {
 			desiredSpeed = this.swimSpeedPanic;
+		}
+		
+		if(this.ticksExisted % 50  < 30) {
+			desiredSpeed *= 0.8f;
+		}
+		if(this.getIsLeader()) {
+			desiredSpeed *= 0.95f;
+		}
+		
+		if(this.isMovingAwayFromWall) {
+			desiredSpeed *= 0.6f;
+			currentSpeed *= 0.8f;
 		}
 		
 		if(this.swimSpeedCurrent < desiredSpeed) {
@@ -374,9 +393,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		
 		// In water motion
 		if(this.isInWater()) {
+			
 			motionX = currentSpeed * Math.sin(this.swimYaw * (Math.PI / 180.0));
 			motionZ = currentSpeed * Math.cos(this.swimYaw * (Math.PI / 180.0));
-			motionY = (currentSpeed) * Math.sin((this.swimPitch) * (Math.PI / 180.0));
+			motionY = currentSpeed * Math.sin(this.swimPitch * (Math.PI / 180.0));
 			fallVelocity = 0f;
 		}
 
@@ -435,7 +455,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 	
 	public void markAsLeader() {
-		isLeader = true;
+		setIsLeader(true);
 	}
 	
 	public void setFleesPlayers(boolean b) {
@@ -451,9 +471,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.approachPlayers = b;
 	}
 	
-	public void setSchoolable(boolean b) {
-		this.canSchool = b;
-	}
 	
 	public void setDropStack(Item item, int max) {
 		this.dropStack = new ItemStack(item);
@@ -475,21 +492,32 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		swimSpeedCharging = charging;
 	}
 	
-	public void setRandomTargetHeading() {
+	public boolean setRandomTargetHeading() {
+		boolean result = false;
 		int dist = 16;
-		Vec3d randBlock = new Vec3d(posX + randFlip(dist), posY + randFlip(dist), posZ + randFlip(dist));
+		Vec3d randBlock = new Vec3d(posX + randFlip(dist), posY + randFlip(dist/2), posZ + randFlip(dist));
 
-		this.setTargetHeading(randBlock.xCoord, randBlock.yCoord, randBlock.zCoord, true);
+		result = this.setTargetHeading(randBlock.xCoord, randBlock.yCoord, randBlock.zCoord, true);
 		
 		// Try to move towards a player
 		if(this.approachPlayers) {
 			if(rand.nextInt(15) == 0) {
-				EntityPlayer closest = world.getClosestPlayerToEntity(this, 100f);
+				EntityPlayer closest = world.getClosestPlayerToEntity(this, 32D);
 				if(closest != null) {
 				if(closest.isInWater())
-					this.setTargetHeading(closest.posX, closest.posY, closest.posZ, true);
+					result = this.setTargetHeading(closest.posX, closest.posY, closest.posZ, true);
 				}
 	
+			}
+		}
+		
+		return result;
+	}
+	
+	public void setRandomTargetHeadingForce(int maxTimes) {
+		for(int i =0; i < maxTimes; i++) {
+			if(setRandomTargetHeading()) {
+				break;
 			}
 		}
 	}
@@ -529,11 +557,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		return new Vec3d(Math.sin(this.swimYaw * (Math.PI / 180.0)), Math.sin(this.swimPitch * (Math.PI / 180.0)), Math.cos(this.swimYaw * (Math.PI / 180.0))).normalize();
 	}
 
-	public void setTargetHeading(double posX, double posY, double posZ, boolean waterChecks) {
+	public boolean setTargetHeading(double posX, double posY, double posZ, boolean waterChecks) {
 		if(waterChecks) {
 			BlockPos bp = new BlockPos((int)posX, (int)posY, (int)posZ);
-			if(!world.getBlockState(bp).getMaterial().isLiquid()) return;
-			if(world.getBlockState(bp).getMaterial().isSolid()) return;
+			if(!world.getBlockState(bp).getMaterial().isLiquid()) return false;
+			if(world.getBlockState(bp).getMaterial().isSolid()) return false;
 		}
 
 
@@ -549,6 +577,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.targetVector = new Vec3d((int)posX, (int)posY, (int)posZ);
 		targetVectorHeading.x = yaw;
 		targetVectorHeading.y = pitch;
+		return true;
 	}
 	
 	public void fleeEntity(Entity ent) {
@@ -570,6 +599,14 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	public void setHostile() {
 		this.canAggress = true;
+	}
+	
+	public boolean getIsLeader() {
+		return this.dataManager.get(IS_LEADER);
+	}
+	
+	public void setIsLeader(boolean flag) {
+		this.dataManager.set(IS_LEADER, Boolean.valueOf(flag));
 	}
 	
 	public void setTexture(String s) {
@@ -631,6 +668,21 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 	
 	@Override
+	public boolean isNotColliding() {
+		return true;
+	}
+
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
+	@Override
+	public boolean canBePushed() {
+		return false;
+	}
+
+	@Override
 	protected void resetHeight() {
 		
 	}
@@ -645,7 +697,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		if(this.isInWater()) {
 			return SoundEvents.ENTITY_SQUID_AMBIENT;
 		}else {
-			return SoundEvents.BLOCK_GRAVEL_STEP;
+			return null;
 		}
 	}
 
@@ -690,6 +742,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		n.setString("texture", this.getDataManager().get(TEXTURE));
 		n.setFloat("swimYaw", this.getDataManager().get(SWIMYAW));
 		n.setFloat("swimPitch", this.getDataManager().get(SWIMPITCH));
+		n.setBoolean("isLeader", getIsLeader());
 		super.writeEntityToNBT(n);
 	}
 
@@ -700,6 +753,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.swimPitch = n.getFloat("swimPitch");
 		this.getDataManager().set(SWIMYAW, this.swimYaw);
 		this.getDataManager().set(SWIMPITCH, n.getFloat("swimPitch"));
+		this.setIsLeader(n.getBoolean("isLeader"));
 		super.readEntityFromNBT(n);
 	}
 }

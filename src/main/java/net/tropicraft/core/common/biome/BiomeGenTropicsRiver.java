@@ -12,8 +12,8 @@ public class BiomeGenTropicsRiver extends BiomeGenTropicraft {
 
 	public BiomeGenTropicsRiver(BiomeProperties props) {
 		super(props);
-        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityPiranha.class, 1, 3, 12));
-        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityRiverSardine.class, 10, 10, 15));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityPiranha.class, 20, 1, 12));
+        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityRiverSardine.class, 20, 1, 15));
         this.topBlock = this.fillerBlock = BlockRegistry.sands.getDefaultState();
 	}
 

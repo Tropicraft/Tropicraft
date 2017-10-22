@@ -18,7 +18,7 @@ public class RenderSeaTurtle extends RenderTropicraftWaterMob {
 
 	@Override
 	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw,	float partialTicks) {
-		this.renderWaterMob(entity, x, y, z, partialTicks, 0f, -25f);
+		this.renderWaterMob(entity, x, y, z, partialTicks, 0f, 0f);
 	}
 
 	@Override
