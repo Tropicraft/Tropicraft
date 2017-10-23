@@ -3,6 +3,8 @@ package net.tropicraft.core.common.entity.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.world.World;
+import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.List;
@@ -121,6 +123,12 @@ public class EntityAIKoaMate extends EntityAIBase
 
     private boolean canTownHandleMoreVillagers()
     {
+        WorldDataInstance data = villagerObj.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+        if (data != null) {
+
+        } else {
+            return false;
+        }
         return true;
     }
 

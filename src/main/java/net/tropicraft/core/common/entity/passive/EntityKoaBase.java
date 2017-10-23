@@ -31,10 +31,13 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
+import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.core.common.town.ISimulationTickable;
+import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.lang.reflect.Field;
@@ -61,6 +64,8 @@ public class EntityKoaBase extends EntityVillager {
     private float clientHealthLastTracked = 0;
 
     public static int MAX_HOME_DISTANCE = 64;
+
+    public int villageID = -1;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> input instanceof EntityMob || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -698,5 +703,16 @@ public class EntityKoaBase extends EntityVillager {
             if (boner.getGender() != bonie.getGender()) return false;
         }
         return true;
+    }
+
+    public TownKoaVillage getVillage() {
+        WorldDataInstance data = this.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+        if (data != null) {
+            ISimulationTickable sim = data.getLocationByID(villageID);
+            if (sim instanceof TownKoaVillage) {
+                return (TownKoaVillage) sim;
+            }
+        }
+        return null;
     }
 }
