@@ -68,6 +68,10 @@ public class ScubaHandler {
 		if (!event.type.equals(TickEvent.Type.PLAYER))
 			return;
 		EntityPlayer p = event.player;
+		
+		if(p != Minecraft.getMinecraft().player) {
+			return;
+		}
 		PlayerSwimData d = getData(p);
 
 		BlockPos bp = p.getPosition().up(2);
