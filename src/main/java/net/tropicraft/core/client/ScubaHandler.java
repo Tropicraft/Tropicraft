@@ -18,6 +18,9 @@ import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.tropicraft.core.common.network.MessagePlayerSwimData;
+import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
+import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class ScubaHandler {
@@ -27,7 +30,7 @@ public class ScubaHandler {
 	public static final float SWIM_SPEED_ROTATE_PITCH = 1f;
 	public static final float SWIM_SPEED_ROTATE_ROLL = 0.5f;
 	
-	private static HashMap<UUID, PlayerSwimData> rotationMap = new HashMap<UUID, PlayerSwimData>();
+	public static HashMap<UUID, PlayerSwimData> rotationMap = new HashMap<UUID, PlayerSwimData>();
 	private HashMap<Item, Float> flipperSpeedMap = new HashMap<Item, Float>();
 
 	public ScubaHandler() {
@@ -127,6 +130,7 @@ public class ScubaHandler {
 			d.targetSwimSpeed = 0f;
 			p.setNoGravity(false);
 		}
+		TCPacketHandler.sendToServer(new MessagePlayerSwimData(getData(p)));
 	}
 	
 	private boolean inGUI = false;
@@ -369,31 +373,8 @@ public class ScubaHandler {
 	
 	public static PlayerSwimData getData(EntityPlayer p) {
 		if (!rotationMap.containsKey(p.getUniqueID())) {
-			rotationMap.put(p.getUniqueID(), new PlayerSwimData());
+			rotationMap.put(p.getUniqueID(), new PlayerSwimData(p.getUniqueID()));
 		}
 		return rotationMap.get(p.getUniqueID());
-	}
-
-	public static class PlayerSwimData {
-		public float rotationYawHead = 0f;
-		public float prevRotationYawHead = 0f;
-		public float rotationYaw = 0f;
-		public float prevRotationYaw = 0f;
-		public float renderYawOffset = 0f;
-		public float prevRenderYawOffset = 0f;
-		public float rotationPitch = 0f;
-		public float prevRotationPitch = 0f;
-
-		public float targetRotationPitch = 0f;
-		public float targetRotationYaw = 0f;
-		public float targetRotationRoll = 0f;
-		public float currentRotationPitch = 0f;
-		public float currentRotationYaw = 0f;
-		public float currentRotationRoll = 0f;
-		public float targetHeadPitchOffset = 0f;
-		public float currentHeadPitchOffset = 0f;
-
-		public float currentSwimSpeed = 1f;
-		public float targetSwimSpeed = 0f;
 	}
 }
