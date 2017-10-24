@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.town.ISimulationTickable;
+import net.tropicraft.core.common.town.ManagedLocation;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -72,5 +73,9 @@ public class WorldDataInstance {
         for (ISimulationTickable entry : lookupTickingManagedLocations.values()) {
             entry.tickUpdate();
         }
+    }
+
+    public ISimulationTickable getLocationByID(int id) {
+        return lookupTickingManagedLocations.get(id);
     }
 }

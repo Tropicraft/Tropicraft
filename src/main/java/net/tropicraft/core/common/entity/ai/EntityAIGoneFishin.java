@@ -3,11 +3,14 @@ package net.tropicraft.core.common.entity.ai;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.registry.ItemRegistry;
 
 import java.util.Random;
 
@@ -23,7 +26,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
     private FISHING_STATE state = FISHING_STATE.IDLE;
 
-    private boolean debugTask = true;
+    private boolean debugTask = false;
 
     private EntityKoaBase entity;
     private Random rand;
@@ -59,11 +62,23 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     @Override
+    public void startExecuting() {
+        entity.setFishingItem();
+    }
+
+    @Override
     public boolean shouldExecute() {
 
         //temp
         //entity.timeBetweenFishing = 20*60*2;
         //entity.lastTimeFished = 0;
+        debugTask = false;
+
+        BlockPos blockpos = new BlockPos(this.entity);
+
+        if ((!this.entity.world.isDaytime() || this.entity.world.isRaining() && this.entity.world.getBiome(blockpos).canRain())) {
+            return false;
+        }
 
         boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
         if (entity.lastTimeFished < entity.world.getTotalWorldTime() && entity.world.rand.nextInt(3) == 0) {
@@ -79,7 +94,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
                     debug("failed the path, skip executing");
                 }
             } else {
-                //debug("couldnt find water, skip executing");
+                debug("couldnt find water, skip executing");
             }
         } else {
             //debug("waiting on timeout to fish");
@@ -178,7 +193,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             }
         } else if (state == FISHING_STATE.FISHING) {
             //temp visual to replace casting line
-            entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 1));
+            entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 40));
             if (!entity.isInWater()) {
                 //force null path so they stay still
                 //aim at fishing coord and wait
@@ -212,6 +227,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             if (ifCaughtFish()) {
                 fishCaught++;
+                entity.inventory.addItem(new ItemStack(Items.FISH));
                 debug("caught a fish");
 
                 if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
@@ -240,6 +256,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             if (entity.getDistance(entity.getHomePosition().getX(), entity.getHomePosition().getY(), entity.getHomePosition().getZ()) < 3D) {
                 debug("dropping off fish, reset");
                 fishCaught = 0;
+                entity.tryDumpInventoryIntoHomeChest();
                 //setState(FISHING_STATE.IDLE);
                 resetTask();
             }
