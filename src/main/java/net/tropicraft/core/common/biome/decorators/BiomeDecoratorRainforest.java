@@ -30,21 +30,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
 	}
 
-	public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
-	{
-		if (this.decorating)
-		{
-			throw new RuntimeException("Already decorating");
-		}
-		else
-		{
-			this.chunkProviderSettings = ChunkProviderSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
-			this.chunkPos = pos;
-			this.genDecorations(biome, worldIn, random);
-			this.decorating = false;
-		}
-	}
-
+	@Override
 	public void genDecorations(Biome biome, World world, Random rand) {
 		int x = chunkPos.getX();
 		int z = chunkPos.getZ();

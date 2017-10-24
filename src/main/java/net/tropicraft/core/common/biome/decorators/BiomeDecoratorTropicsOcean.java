@@ -68,21 +68,6 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
         }
     };
 
-    public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
-    {
-        if (this.decorating)
-        {
-            throw new RuntimeException("Already decorating");
-        }
-        else
-        {
-            this.chunkProviderSettings = ChunkProviderSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
-            this.chunkPos = pos;
-            this.genDecorations(biome, worldIn, random);
-            this.decorating = false;
-        }
-    }
-
     public void genDecorations(Biome biome, World world, Random rand) {
         coralGen.generate(world, rand, chunkPos);
         coralReefGen.generate(world, rand, chunkPos);

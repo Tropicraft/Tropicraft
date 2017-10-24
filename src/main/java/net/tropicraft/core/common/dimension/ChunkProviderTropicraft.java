@@ -23,6 +23,8 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
+import net.tropicraft.core.common.worldgen.mapgen.MapGenTropicsCaves;
+import net.tropicraft.core.common.worldgen.mapgen.MapGenUndergroundGrove;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenVolcano;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -48,6 +50,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
     private NoiseGeneratorOctaves noiseGen4;
     private NoiseGeneratorOctaves noiseGen5;
 
+    private MapGenUndergroundGrove groveGen;
+    private MapGenTropicsCaves caveGenerator;
     private MapGenVolcano volcanoGen;
 
     public ChunkProviderTropicraft(World world, long seed, boolean mapFeaturesEnabled) {
@@ -63,6 +67,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
         this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 16);
 
         volcanoGen = new MapGenVolcano(worldObj, true);
+        groveGen = new MapGenUndergroundGrove(worldObj);
+        caveGenerator = new MapGenTropicsCaves();
     }
     
     private boolean hasSpawned = false;
@@ -131,6 +137,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
         this.replaceBiomeBlocks(x, z, chunkprimer, this.biomesForGeneration);
 
         this.volcanoGen.generate(x, z, chunkprimer);
+        this.groveGen.generate(x, z, chunkprimer);
+        this.caveGenerator.generate(this.worldObj, x, z, chunkprimer);
 
         Chunk chunk = new Chunk(this.worldObj, chunkprimer, x, z);
         byte[] abyte = chunk.getBiomeArray();
