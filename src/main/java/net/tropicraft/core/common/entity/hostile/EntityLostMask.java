@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -12,6 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityLostMask extends Entity {
 
@@ -132,8 +134,7 @@ public class EntityLostMask extends Entity {
 	}
 
 	public void dropItemStack() {
-		//TODO: Ashen masks
-		//this.entityDropItem(new ItemStack(TCItemRegistry.ashenMasks, 1, getColor()), 0.0F);
+		this.entityDropItem(new ItemStack(ItemRegistry.ashenMask, 1, getColor()), 0.0F);
 	}
 
 	private void setRotator(int[] a) {

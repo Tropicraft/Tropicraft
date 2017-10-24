@@ -54,11 +54,11 @@ public class ItemPortalEnchanter extends ItemTropicraft {
             BlockPos blockpos = raytraceresult.getBlockPos();
 
             if (!world.isBlockModifiable(entityplayer, blockpos)) {
-                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
             }
             
             if (!entityplayer.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack)) {
-                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
             }
             
             int x = blockpos.getX(), y = blockpos.getY(), z = blockpos.getZ();
@@ -78,7 +78,7 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 			}
         }
 		
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
 	}
 
 	public boolean canGen(World world, BlockPos pos) {

@@ -45,6 +45,7 @@ import net.tropicraft.core.common.item.ItemTropicraftPickaxe;
 import net.tropicraft.core.common.item.ItemTropicsOre;
 import net.tropicraft.core.common.item.ItemUmbrella;
 import net.tropicraft.core.common.item.ItemWaterWand;
+import net.tropicraft.core.common.item.armor.ItemAshenMask;
 import net.tropicraft.core.common.item.armor.ItemFireArmor;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
 import net.tropicraft.core.common.item.scuba.ItemBCD;
@@ -194,6 +195,9 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowBCD;
     public static Item yellowWeightBelt;
 
+    public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", "mask", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+    public static Item ashenMask;
+
     public static void preInit() {        
         diveComputer = registerItem(new ItemDiveComputer(), "dive_computer");
         
@@ -319,6 +323,8 @@ public class ItemRegistry extends TropicraftRegistry {
         
         iguanaLeather = registerItem(new ItemTropicraft().setMaxStackSize(64), "iguana_leather");
         OreDictionary.registerOre("leather", iguanaLeather);
+
+        ashenMask = registerMultiItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD), "ashen_mask", Names.MASK_NAMES.length);
     }
 
     public static void init() {
