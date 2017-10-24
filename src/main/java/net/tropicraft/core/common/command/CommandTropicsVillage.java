@@ -49,6 +49,10 @@ public class CommandTropicsVillage extends CommandBase {
                 //TODO: temp until world cap added
                 int newID = player.world.rand.nextInt(9999);
                 village.initData(newID, player.world.provider.getDimension(), new BlockPos(x, y, z));
+
+                //TEMP!?
+                village.direction = 0;
+
                 village.initFirstTime();
                 //wd.addTickingLocation(village);
             } else if (args[0].equals("village_try")) {

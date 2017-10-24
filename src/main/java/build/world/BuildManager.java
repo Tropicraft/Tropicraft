@@ -20,6 +20,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.tropicraft.core.common.block.BlockTropicraftLog;
+import net.tropicraft.core.common.enums.TropicraftLogs;
+import net.tropicraft.core.registry.BlockRegistry;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -373,8 +376,21 @@ public class BuildManager {
                                                 new Vec3d(build.map_sizeX, build.map_sizeY, build.map_sizeZ));
                                     }
 
-                                    int tryMeta = rotateMeta(worldRef, coords, buildJob.rotation, id, meta);
-                                    if (tryMeta != -1) meta = tryMeta;
+
+                                    boolean tropiFixTemp = true;
+
+                                    if (tropiFixTemp) {
+                                        if (id == BlockRegistry.bundles) {
+                                            meta = 0;
+                                        } else if (id == BlockRegistry.logs) {
+                                            IBlockState state = id.getDefaultState().withProperty(BlockTropicraftLog.VARIANT, TropicraftLogs.PALM);
+                                            meta = id.getMetaFromState(state);
+                                        }
+
+                                    } else {
+                                        int tryMeta = rotateMeta(worldRef, coords, buildJob.rotation, id, meta);
+                                        if (tryMeta != -1) meta = tryMeta;
+                                    }
                                 } else {
                                     //still center around coord if not rotated
                                     //boolean centerBuild = true;
