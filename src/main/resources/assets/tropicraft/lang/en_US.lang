@@ -238,6 +238,11 @@ item.tropicraft:trade_winds.name=Trade Winds
 # Menu localizations
 itemGroup.tropicraft=Tropicraft
 
+# Config localizations
+tropicraft.config.title=Tropicraft Configuration
+tropicraft.config.generation.title=Worldgen Settings
+tropicraft.config.misc.title=Misc Settings
+
 # Entity localizations
 entity.tropicraft.iguana.name=Iguana
 entity.tropicraft.tropiskelly.name=TropiSkelly

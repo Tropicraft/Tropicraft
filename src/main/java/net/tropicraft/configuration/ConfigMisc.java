@@ -7,6 +7,7 @@ import java.util.List;
 import configuration.ConfigComment;
 import configuration.IConfigCategory;
 
+@Deprecated
 public class ConfigMisc implements IConfigCategory {
 
 	/** List of users who can use coconut bombs. Empty by default */
