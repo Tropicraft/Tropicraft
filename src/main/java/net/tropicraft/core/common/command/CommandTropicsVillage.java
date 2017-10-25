@@ -41,28 +41,22 @@ public class CommandTropicsVillage extends CommandBase {
 
                 if (y < WorldProviderTropicraft.MID_HEIGHT) y = WorldProviderTropicraft.MID_HEIGHT + 1;
 
-                TownKoaVillage village = new TownKoaVillage();
-
-                //WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.world);
-                //questionable ID setting
-                //int newID = wd.lookupTickingManagedLocations.size();
-                //TODO: temp until world cap added
-                int newID = player.world.rand.nextInt(9999);
-                village.initData(newID, player.world.provider.getDimension(), new BlockPos(x, y, z));
-
-                //TEMP!?
-                village.direction = 0;
-
-                village.initFirstTime();
-                //wd.addTickingLocation(village);
-            } else if (args[0].equals("village_try")) {
-
                 WorldDataInstance storage = player.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
                 if (storage != null) {
-                    storage.test++;
-                    System.out.println(storage.test);
-                    //return;
+                    TownKoaVillage village = new TownKoaVillage();
+
+                    int newID = storage.getAndIncrementKoaIDVillage();
+                    village.initData(newID, player.world.provider.getDimension(), new BlockPos(x, y, z));
+
+                    //TEMP!?
+                    village.direction = 0;
+
+                    village.initFirstTime();
+                    //wd.addTickingLocation(village);
+
+                    storage.addTickingLocation(village);
                 }
+            } else if (args[0].equals("village_try")) {
 
                 int x = MathHelper.floor(player.posX);
 				int z = MathHelper.floor(player.posZ);

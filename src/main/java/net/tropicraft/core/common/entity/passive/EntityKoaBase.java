@@ -65,7 +65,7 @@ public class EntityKoaBase extends EntityVillager {
 
     public static int MAX_HOME_DISTANCE = 64;
 
-    public int villageID = -1;
+    private int villageID = -1;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> input instanceof EntityMob || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -260,7 +260,6 @@ public class EntityKoaBase extends EntityVillager {
             setGrowingAge(0);
             onGrowingAdult();
         }*/
-
 
         //adjust home position to chest right nearby for easy item spawning
         findAndSetHomeToCloseChest(false);
@@ -481,6 +480,8 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("role_id", this.getDataManager().get(ROLE));
         compound.setInteger("gender_id", this.getDataManager().get(GENDER));
         compound.setInteger("orientation_id", this.getDataManager().get(ORIENTATION));
+
+        compound.setInteger("village_id", villageID);
     }
 
     @Override
@@ -507,6 +508,8 @@ public class EntityKoaBase extends EntityVillager {
                 this.inventory.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound));
             }
         }
+
+        this.villageID = compound.getInteger("village_id");
 
         this.getDataManager().set(ROLE, compound.getInteger("role_id"));
         this.getDataManager().set(GENDER, compound.getInteger("gender_id"));
@@ -705,6 +708,14 @@ public class EntityKoaBase extends EntityVillager {
         return true;
     }
 
+    public int getVillageID() {
+        return villageID;
+    }
+
+    public void setVillageID(int villageID) {
+        this.villageID = villageID;
+    }
+
     public TownKoaVillage getVillage() {
         WorldDataInstance data = this.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
         if (data != null) {
@@ -714,5 +725,27 @@ public class EntityKoaBase extends EntityVillager {
             }
         }
         return null;
+    }
+
+    @Override
+    public void setDead() {
+        super.setDead();
+        if (!world.isRemote) {
+            System.out.println("hook dead " + this);
+            TownKoaVillage village = getVillage();
+            if (village != null) {
+                village.hookEntityDied(this);
+            }
+        }
+    }
+
+    public void hookUnloaded() {
+        if (!world.isRemote) {
+            System.out.println("hook unloaded " + this);
+            TownKoaVillage village = getVillage();
+            if (village != null) {
+                village.hookEntityDestroyed(this);
+            }
+        }
     }
 }

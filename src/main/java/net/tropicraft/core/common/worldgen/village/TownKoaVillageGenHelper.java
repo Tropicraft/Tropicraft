@@ -49,32 +49,29 @@ public class TownKoaVillageGenHelper {
 
             WorldDataInstance storage = parWorld.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
             if (storage != null) {
+                int minDistBetweenVillages = 128;
 
+                Iterator it = storage.lookupTickingManagedLocations.values().iterator();
+                while (it.hasNext()) {
+                    ManagedLocation town = (ManagedLocation) it.next();
+
+                    if (Math.sqrt(town.spawn.distanceSq(parCoords)) < minDistBetweenVillages) {
+                        return false;
+                    }
+                }
+                int newID = storage.getAndIncrementKoaIDVillage();
+                //int newID = parWorld.rand.nextInt(9999);
+                village.initData(newID, parWorld.provider.getDimension(), centerCoords);
+                village.direction = directionTry;
+                village.initFirstTime();
+                storage.addTickingLocation(village);
+
+                return true;
             } else {
                 dbg("ERROR: cant get world capability???");
             }
 			
-			//WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(parWorld);
-			
-			int minDistBetweenVillages = 128;
-			
-			Iterator it = storage.lookupTickingManagedLocations.values().iterator();
-			while (it.hasNext()) {
-				ManagedLocation town = (ManagedLocation) it.next();
-				
-				if (Math.sqrt(town.spawn.distanceSq(parCoords)) < minDistBetweenVillages) {
-					return false;
-				}
-			}
-			//questionable ID setting
-			int newID = storage.lookupTickingManagedLocations.size();
-            //int newID = parWorld.rand.nextInt(9999);
-			village.initData(newID, parWorld.provider.getDimension(), centerCoords);
-			village.direction = directionTry;
-			village.initFirstTime();
-			storage.addTickingLocation(village);
 
-            return true;
         } else {
             //System.out.println("test fail!");
         }

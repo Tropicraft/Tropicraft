@@ -12,7 +12,8 @@ public class WorldDataInstance {
 
     private World world;
 
-    public int test = 0;
+    //switching to random UUID generator is probably the best practice, int ids forever increasing for now!
+    private int lastIDUsedForKoaVillage = 0;
 
     public ConcurrentHashMap<Integer, ISimulationTickable> lookupTickingManagedLocations = new ConcurrentHashMap<>();
 
@@ -30,11 +31,11 @@ public class WorldDataInstance {
     }
 
     public void readNBT(NBTTagCompound nbt) {
-        test = nbt.getInteger("test");
+        lastIDUsedForKoaVillage = nbt.getInteger("lastIDUsedForKoaVillage");
     }
     
     public void writeNBT(NBTTagCompound nbt) {
-        nbt.setInteger("test", test);
+        nbt.setInteger("lastIDUsedForKoaVillage", lastIDUsedForKoaVillage);
     }
 
     public void addTickingLocation(ISimulationTickable location) {
@@ -77,5 +78,9 @@ public class WorldDataInstance {
 
     public ISimulationTickable getLocationByID(int id) {
         return lookupTickingManagedLocations.get(id);
+    }
+
+    public int getAndIncrementKoaIDVillage() {
+        return lastIDUsedForKoaVillage++;
     }
 }

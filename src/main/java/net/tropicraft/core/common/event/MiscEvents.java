@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -27,11 +28,27 @@ import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
+import net.tropicraft.core.common.worldgen.village.WorldEventListener;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class MiscEvents {
 
+    //make resetting in singleplayer instance changes easier
+    public World lastWorldTracked = null;
+
+    //public HashMap<Integer, Boolean> lookupDimIDToRegisteredListener = new HashMap<>();
+    public HashSet<Integer> lookupDimIDToRegisteredListener = new HashSet<>();
+
     @SubscribeEvent
     public void tickServer(ServerTickEvent event) {
+
+        World overworld = DimensionManager.getWorld(0);
+        if (lastWorldTracked != overworld) {
+            reset();
+            lastWorldTracked = overworld;
+        }
 
         boolean perform = false;
 
@@ -76,6 +93,12 @@ public class MiscEvents {
             if (storage != null) {
                 storage.tick();
             }
+        }
+
+        if (!lookupDimIDToRegisteredListener.contains(event.world.provider.getDimension())) {
+            System.out.println("adding world listener for dim " + event.world.provider.getDimension());
+            event.world.addEventListener(new WorldEventListener());
+            lookupDimIDToRegisteredListener.add(event.world.provider.getDimension());
         }
     }
 
@@ -152,5 +175,9 @@ public class MiscEvents {
     private boolean isSunset(World world) {
         long timeDay = world.getWorldTime() % 24000;
         return timeDay > 12200 && timeDay < 14000;
+    }
+
+    private void reset() {
+        lookupDimIDToRegisteredListener.clear();
     }
 }
