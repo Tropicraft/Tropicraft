@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.enums.BlockHardnessValues;
 import net.tropicraft.core.common.enums.TropicraftSlabs;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -43,7 +44,28 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 
 		this.setDefaultState(iblockstate.withProperty(VARIANT, TropicraftSlabs.BAMBOO));
 	}
-	
+
+	@Override
+	@Deprecated
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+	    TropicraftSlabs slabType = blockState.getValue(VARIANT);
+
+	    if (slabType == null) return this.blockHardness;
+
+	    switch (slabType) {
+	    case BAMBOO:
+	        return BlockHardnessValues.BAMBOO.hardness;
+	    case THATCH:
+	        return BlockHardnessValues.THATCH.hardness;
+	    case CHUNK:
+	        return BlockHardnessValues.CHUNK.hardness;
+	    case PALM:
+	        return BlockHardnessValues.PALM.hardness;
+	    default:
+	        return this.blockHardness;
+	    }
+	}
+
     /**
      * Get the MapColor for this Block and the given BlockState
      */

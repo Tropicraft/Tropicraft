@@ -21,7 +21,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.enums.BlockHardnessValues;
 import net.tropicraft.core.common.enums.TropicraftBundles;
+import net.tropicraft.core.common.enums.TropicraftSlabs;
 
 public class BlockBundle extends BlockTropicraft implements ITropicraftBlock {
 
@@ -33,9 +35,26 @@ public class BlockBundle extends BlockTropicraft implements ITropicraftBlock {
 		super(mat);
 		this.names = names;
 		this.setSoundType(SoundType.PLANT);
-        this.setHardness(0.2F);
 		//TODO: Figure out harvesting of bundles: this.setHarvestLevel("axe", 0);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftBundles.THATCH).withProperty(BUNDLE_AXIS, BlockLog.EnumAxis.Y));
+	}
+
+	@Override
+	@Deprecated
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+	    TropicraftBundles slabType = blockState.getValue(VARIANT);
+
+	    if (slabType == null)
+	        return this.blockHardness;
+
+	    switch (slabType) {
+	    case BAMBOO:
+	        return BlockHardnessValues.BAMBOO.hardness;
+	    case THATCH:
+	        return BlockHardnessValues.THATCH.hardness;
+	    default:
+	        return this.blockHardness;
+	    }
 	}
 
 	/**
