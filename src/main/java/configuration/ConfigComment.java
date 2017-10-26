@@ -20,6 +20,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Deprecated
 public @interface ConfigComment {
     /**
      * The comment/description associated with the variable it is annotating

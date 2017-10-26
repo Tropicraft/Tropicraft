@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
-import net.tropicraft.configuration.ConfigGenRates;
+import net.tropicraft.configuration.GenRates;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenCoffeePlant;
 import net.tropicraft.core.common.worldgen.WorldGenHomeTree;
@@ -98,7 +98,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 			new WorldGenUndergrowth(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
-		if (ConfigGenRates.TALL_GRASS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_GRASS_CHANCE) == 0) {
+		if (GenRates.TALL_GRASS_CHANCE != 0 && rand.nextInt(GenRates.TALL_GRASS_CHANCE) == 0) {
 			for (int a = 0; a < 10; a++) {
 				int xRand = rand.nextInt(16) + 8;
 				int zRand = rand.nextInt(16) + 8;
