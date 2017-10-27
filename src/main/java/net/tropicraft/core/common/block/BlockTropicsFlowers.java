@@ -6,7 +6,6 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -22,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 
+//TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
 
     public static final PropertyEnum<TropicraftFlowers> VARIANT = PropertyEnum.create("variant", TropicraftFlowers.class);

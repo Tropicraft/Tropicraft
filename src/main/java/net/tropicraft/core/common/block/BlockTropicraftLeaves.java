@@ -27,14 +27,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftLeaves;
 import net.tropicraft.core.registry.BlockRegistry;
 
+//TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftLeaves> VARIANT = PropertyEnum.create("variant", TropicraftLeaves.class);
 
-	public String[] names;
-
-	public BlockTropicraftLeaves(String[] names) {
-		this.names = names;
+	public BlockTropicraftLeaves() {
 		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, true).withProperty(VARIANT, TropicraftLeaves.MAHOGANY));
 	}
 
@@ -152,15 +150,4 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 	public EnumType getWoodType(int meta) {
 		return null;
 	}
-
-	@Override
-	public IBlockColor getBlockColor() {
-		return null;
-	}
-
-	@Override
-	public IItemColor getItemColor() {
-		return null;
-	}
-
 }

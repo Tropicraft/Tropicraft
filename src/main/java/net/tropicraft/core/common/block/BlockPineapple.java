@@ -25,8 +25,8 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 1, TOTAL_GROW_TICKS);
 
-	public BlockPineapple(String[] names) {
-		super(names);
+	public BlockPineapple() {
+		super();
 		this.setSoundType(SoundType.PLANT);
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().

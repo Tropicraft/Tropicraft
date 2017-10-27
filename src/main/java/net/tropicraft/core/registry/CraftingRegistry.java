@@ -13,6 +13,7 @@ import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.enums.TropicraftLogs;
 
 public class CraftingRegistry {
@@ -399,7 +400,7 @@ beachfloat.desc  = These uncontrollable floats allow the gentle currents of the 
         Tropicraft.encyclopedia.includeItem("coffeebean", new ItemStack(ItemRegistry.coffeeBeans, 1, 0));
         Tropicraft.encyclopedia.includeItem("commelina", new ItemStack(BlockRegistry.flowers, 1, 0));
 
-        for (int i = 0; i < Names.CORAL_NAMES.length; i++) {
+        for (int i = 0; i < TropicraftCorals.VALUES.length; i++) {
             Tropicraft.encyclopedia.includeItem("coral", new ItemStack(BlockRegistry.coral, 1, i));
         }
 

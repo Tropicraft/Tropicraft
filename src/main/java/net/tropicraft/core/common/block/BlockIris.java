@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -38,7 +37,7 @@ public class BlockIris extends BlockBush implements ITropicraftBlock {
 
 	public static final PropertyEnum<PlantHalf> HALF = PropertyEnum.create("half", PlantHalf.class);
 
-	public BlockIris(String[] names) {
+	public BlockIris() {
 		super();
 		this.setSoundType(SoundType.PLANT);
 		this.setDefaultState(this.blockState.getBaseState().

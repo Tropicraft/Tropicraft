@@ -39,7 +39,7 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 	public static final PropertyEnum<TropicraftTallPlants> VARIANT = PropertyEnum.create("variant", TropicraftTallPlants.class);
 	public static final PropertyEnum<PlantHalf> HALF = PropertyEnum.create("half", PlantHalf.class);
 
-	public BlockTallPlant(String[] names) {
+	public BlockTallPlant() {
 		super(Material.PLANTS);
 		this.setHardness(0.0F);
 		this.setSoundType(SoundType.GROUND);
@@ -54,16 +54,6 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftTallPlants) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	public IBlockColor getBlockColor() {
-		return null;
-	}
-
-	@Override
-	public IItemColor getItemColor() {
-		return null;
 	}
 
 	@Override

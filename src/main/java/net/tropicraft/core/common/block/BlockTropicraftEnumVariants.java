@@ -16,7 +16,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockTropicraftEnumVariants<T extends Enum<T> & IStringSerializable> extends BlockTropicraft implements ITropicraftBlock {
+public class BlockTropicraftEnumVariants<T extends Enum<T> & IStringSerializable> extends BlockTropicraft implements ITropicraftBlock {
     
     private final IProperty<T> property;
     private final BlockStateContainer blockState;

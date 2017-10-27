@@ -34,20 +34,18 @@ import net.tropicraft.core.common.worldgen.WorldGenNormalPalms;
 import net.tropicraft.core.common.worldgen.WorldGenTallTree;
 import net.tropicraft.core.common.worldgen.WorldGenTualang;
 
+//TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, IGrowable {
-
-	public String[] names;
 
 	public static final PropertyEnum<TropicraftSaplings> VARIANT = PropertyEnum.create("variant", TropicraftSaplings.class);
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
 
 	public static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
-	public BlockTropicsSapling(String[] names) {
+	public BlockTropicsSapling() {
 		super(Material.PLANTS);
 		this.setSoundType(SoundType.PLANT);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSaplings.PALM).withProperty(STAGE, Integer.valueOf(0)));
-		this.names = names;
 	}
 
 	@Override

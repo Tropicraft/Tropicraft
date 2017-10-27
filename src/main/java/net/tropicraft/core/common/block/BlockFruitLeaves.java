@@ -8,12 +8,9 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -29,15 +26,14 @@ import net.tropicraft.core.common.enums.TropicraftFruitLeaves;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
+//TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftFruitLeaves> VARIANT = PropertyEnum.create("variant", TropicraftFruitLeaves.class);
-	public String[] names;
 
-	public BlockFruitLeaves(String[] names) {
+	public BlockFruitLeaves() {
 		super();
 		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, true).withProperty(VARIANT, TropicraftFruitLeaves.GRAPEFRUIT));
-		this.names = names;
 	}
 
 	/**
@@ -175,16 +171,6 @@ public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	@Override
 	public EnumType getWoodType(int meta) {
-		return null;
-	}
-
-	@Override
-	public IBlockColor getBlockColor() {
-		return null;
-	}
-
-	@Override
-	public IItemColor getItemColor() {
 		return null;
 	}
 }

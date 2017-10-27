@@ -27,6 +27,6 @@ public class WorldGenCoral extends TCNoiseGen {
 	@Override
 	protected IBlockState getStateFromNoise(double noiseVal) {
 		int variant = (int) ((noiseVal * TropicraftCorals.VALUES.length) + 1);
-		return BlockRegistry.coral.getDefaultState().withProperty(BlockCoral.VARIANT, TropicraftCorals.byMetadata(variant));
+		return BlockRegistry.coral.defaultForVariant(TropicraftCorals.byMetadata(variant));
 	}
 }

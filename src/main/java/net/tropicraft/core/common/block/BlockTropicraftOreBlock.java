@@ -4,6 +4,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.tropicraft.core.common.enums.TropicraftOreBlocks;
 
+// TODO pointless class
 public class BlockTropicraftOreBlock extends BlockTropicraftEnumVariants<TropicraftOreBlocks> {
 
 	public BlockTropicraftOreBlock() {

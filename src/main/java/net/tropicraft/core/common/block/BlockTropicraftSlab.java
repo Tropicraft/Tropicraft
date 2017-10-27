@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftSlabs;
 import net.tropicraft.core.registry.BlockRegistry;
 
+// TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftSlabs> VARIANT = PropertyEnum.<TropicraftSlabs>create("variant", TropicraftSlabs.class);

@@ -24,14 +24,13 @@ import net.tropicraft.core.common.enums.TropicraftLogs;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.registry.BlockRegistry;
 
+// TODO this could be unified with BlockBundle easily
 public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftLogs> VARIANT = PropertyEnum.create("variant", TropicraftLogs.class);
-	public String[] names;
 
-	public BlockTropicraftLog(String[] logNames) {
+	public BlockTropicraftLog() {
 		super();
-		this.names = logNames;
 		this.disableStats();
 		this.setHardness(2.0F);
 		this.setTickRandomly(true);
@@ -93,7 +92,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-		for (int i = 0; i < names.length; i++) {
+		for (int i = 0; i < TropicraftLogs.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}

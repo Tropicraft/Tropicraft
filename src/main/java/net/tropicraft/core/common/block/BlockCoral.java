@@ -1,24 +1,15 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedFlower;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -28,11 +19,10 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.registry.BlockRegistry;
 
-public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net.minecraftforge.common.IPlantable {
+public class BlockCoral extends BlockTropicraftEnumVariants<TropicraftCorals> implements ITropicraftBlock, net.minecraftforge.common.IPlantable {
 
 	/** Brightness value of coral blocks during the day */
 	private static final float BRIGHTNESS_DAY = 0.3F;
@@ -40,52 +30,17 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 	/** Brightness value of coral blocks during the night */
 	private static final float BRIGHTNESS_NIGHT = 0.6F;
 
-	public static final PropertyEnum<TropicraftCorals> VARIANT = PropertyEnum.create("variant", TropicraftCorals.class);
-	public String[] names;
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, VARIANT, BlockFluidBase.LEVEL);
-	}
-
-	@Override
-	public String getStateName(IBlockState state) {
-		return ((TropicraftCorals) state.getValue(VARIANT)).getName();
-	}
-
-	public BlockCoral(String[] names) {
-		super(Material.WATER);
-		this.names = names;
+	public BlockCoral() {
+		super(Material.WATER, TropicraftCorals.class);
 		setLightLevel(0.3F);
 		setHardness(0.0F);
 		setTickRandomly(true);
 		this.setSoundType(SoundType.SAND);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftCorals.PINK));
 	}
-
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 */
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-		for (int i = 0; i < names.length; i++) {
-			list.add(new ItemStack(item, 1, i));
-		}
-	}
-
+	
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, TropicraftCorals.values()[meta]);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return ((TropicraftCorals) state.getValue(VARIANT)).ordinal();
-	}
-
-	@Override
-	public int damageDropped(IBlockState state) {
-		return this.getMetaFromState(state);
+	protected IProperty<?>[] getAdditionalProperties() {
+	    return new IProperty[] { BlockFluidBase.LEVEL };
 	}
 
 	/**
@@ -186,15 +141,5 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
 		}
-	}
-
-	@Override
-	public IBlockColor getBlockColor() {
-		return null;
-	}
-
-	@Override
-	public IItemColor getItemColor() {
-		return null;
 	}
 }
