@@ -65,7 +65,7 @@ public class ItemRegistry extends TropicraftRegistry {
         
         Item getItem(Block block);
         
-        void postRegister(Item item);
+        void postRegister(Block block, Item item);
     }
 
     // Ore gems
@@ -204,12 +204,12 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowBCD;
     public static Item yellowWeightBelt;
     
-    private static final Map<Block, IBlockItemRegistrar> blockItems = new HashMap<>();
+    private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new HashMap<>();
 
     public static void preInit() {
-        blockItems.entrySet().forEach(e -> {
+        blockItemRegistry.entrySet().forEach(e -> {
                 Item item = GameRegistry.register(e.getValue().getItem(e.getKey()).setRegistryName(e.getKey().getRegistryName()));
-                e.getValue().postRegister(item);
+                e.getValue().postRegister(e.getKey(), item);
         });
         
         diveComputer = registerItem(new ItemDiveComputer(), "dive_computer");
@@ -349,7 +349,7 @@ public class ItemRegistry extends TropicraftRegistry {
     }
     
     public static void addBlockItem(Block block, IBlockItemRegistrar item) {
-        blockItems.put(block, item);
+        blockItemRegistry.put(block, item);
     }
 
     private static Item registerMultiItem(Item item, String regName, String[] variantNames) {

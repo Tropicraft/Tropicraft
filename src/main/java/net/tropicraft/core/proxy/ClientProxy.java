@@ -11,6 +11,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
+import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -121,6 +123,15 @@ public class ClientProxy extends CommonProxy {
         if (item != null) {
             //     ModelBakery.registerItemVariants(item, new ResourceLocation(Info.MODID + ":" + name));
             ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Info.MODID + ":" + name, variant));
+        }
+    }
+    
+    @Override
+    public void registerBlockVariantModels(Block block, Item item) {
+        // TODO this won't work for blocks that have custom statemappers, find a way to let them provide a mapper?
+        Map<IBlockState, ModelResourceLocation> variants = new DefaultStateMapper().putStateModelLocations(block);
+        for (Entry<IBlockState, ModelResourceLocation> e : variants.entrySet()) {
+            ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(e.getKey()), e.getValue());
         }
     }
 

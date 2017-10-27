@@ -76,6 +76,7 @@ public class Tropicraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		TCPacketHandler.init();
+		ItemRegistry.init();
 		AchievementRegistry.init();
 		EntityRegistry.init();
 		proxy.init();

@@ -27,6 +27,7 @@ public class CommonProxy {
 
 	public void registerItemVariantModel(Item item, String name, int metadata) {}
 	public void registerItemVariantModel(Item item, String name, int metadata, String variant) {}
+	public void registerBlockVariantModels(Block block, Item item) {}
 	public void registerArbitraryBlockVariants(String name, String... variants) {}
 	public void registerItemWithSubtypes(Item item, CreativeTabs tabs) {}
 	public void registerFluidBlockRendering(Block block, String name) {}

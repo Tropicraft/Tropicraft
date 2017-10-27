@@ -8,6 +8,8 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +37,7 @@ import net.tropicraft.core.common.block.BlockPortalWall;
 import net.tropicraft.core.common.block.BlockSeaweed;
 import net.tropicraft.core.common.block.BlockSifter;
 import net.tropicraft.core.common.block.BlockTikiTorch;
+import net.tropicraft.core.common.block.BlockTropicraftEnumVariants;
 import net.tropicraft.core.common.block.BlockTropicraftFlowerPot;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
@@ -52,6 +55,7 @@ import net.tropicraft.core.common.block.BlockVolcano;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
+import net.tropicraft.core.common.enums.TropicraftOreBlocks;
 import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftSlabs;
@@ -79,8 +83,8 @@ public class BlockRegistry extends TropicraftRegistry {
         public StandardItemCreator withPrefix(String prefix) {
             return new StandardItemCreator(names) {
                 @Override
-                protected void registerVariant(Item item, String name, int meta) {
-                    super.registerVariant(item, prefix + "_" + name, meta);
+                protected void registerVariant(Block block, Item item, String name, int meta) {
+                    super.registerVariant(block, item, prefix + "_" + name, meta);
                 }
             };
         }
@@ -90,22 +94,22 @@ public class BlockRegistry extends TropicraftRegistry {
             return new ItemBlockTropicraft(block, names);
         }
         
-        protected void registerVariant(Item item, String name, int meta) {
-            Tropicraft.proxy.registerItemVariantModel(item, name, meta);
+        protected void registerVariant(Block block, Item item, String name, int meta) {
+            Tropicraft.proxy.registerBlockVariantModels(block, item);
         }
         
         @Override
-        public void postRegister(Item item) {
+        public void postRegister(Block block, Item item) {
             for (int i = 0; i < names.size(); i++) {
-                registerVariant(item, names.get(i), i);
+                registerVariant(block, item, names.get(i), i);
             }
         }
     }
 
     public static Block chunk;
 
-    public static Block ore;
-    public static Block oreBlock;
+    public static BlockTropicraftEnumVariants<TropicraftOreBlocks> ore;
+    public static BlockTropicraftEnumVariants<TropicraftOreBlocks> oreBlock;
 
 	public static BlockTropicsFlowers flowers;
 	public static Block logs;
@@ -167,8 +171,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	 */
 	public static void preInit() {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		ore = registerMultiBlock(new BlockTropicraftOre(), "ore", new StandardItemCreator(Names.BLOCK_ORE_NAMES));
-		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(Names.BLOCK_ORE_NAMES), "oreblock", new StandardItemCreator(Names.BLOCK_ORE_NAMES));
+		ore = registerMultiBlock(new BlockTropicraftOre(), "ore", new StandardItemCreator(TropicraftOreBlocks.VALUES));
+		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(), "oreblock", new StandardItemCreator(TropicraftOreBlocks.VALUES));
 		flowers = registerMultiBlock(new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), "log", new StandardItemCreator(Names.LOG_NAMES));
 		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), "coral", new StandardItemCreator(Names.CORAL_NAMES));

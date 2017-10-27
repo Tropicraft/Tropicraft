@@ -62,9 +62,9 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 	    this.lapisGen = new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(), this.chunkProviderSettings.lapisSize);
 
 	    // Tropics ore gen
-	    this.eudialyteGen = new WorldGenMinable(BlockRegistry.ore.getDefaultState().withProperty(BlockTropicraftOre.VARIANT, TropicraftOreBlocks.EUDIALYTE), this.eudialyteSize);
-	    this.zirconGen = new WorldGenMinable(BlockRegistry.ore.getDefaultState().withProperty(BlockTropicraftOre.VARIANT, TropicraftOreBlocks.ZIRCON), this.zirconSize);
-	    this.azuriteGen = new WorldGenMinable(BlockRegistry.ore.getDefaultState().withProperty(BlockTropicraftOre.VARIANT, TropicraftOreBlocks.AZURITE), this.azuriteSize);
+	    this.eudialyteGen = new WorldGenMinable(BlockRegistry.ore.defaultForVariant(TropicraftOreBlocks.EUDIALYTE), this.eudialyteSize);
+	    this.zirconGen = new WorldGenMinable(BlockRegistry.ore.defaultForVariant(TropicraftOreBlocks.ZIRCON), this.zirconSize);
+	    this.azuriteGen = new WorldGenMinable(BlockRegistry.ore.defaultForVariant(TropicraftOreBlocks.AZURITE), this.azuriteSize);
 	}
 
 	/**
