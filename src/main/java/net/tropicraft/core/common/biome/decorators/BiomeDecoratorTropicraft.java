@@ -13,6 +13,8 @@ import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.tropicraft.core.common.block.BlockTropicraftOre;
+import net.tropicraft.core.common.enums.TropicraftOreBlocks;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class BiomeDecoratorTropicraft extends BiomeDecorator {
@@ -60,9 +62,9 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 	    this.lapisGen = new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(), this.chunkProviderSettings.lapisSize);
 
 	    // Tropics ore gen
-	    this.eudialyteGen = new WorldGenMinable(BlockRegistry.oreEudialyte.getDefaultState(), this.eudialyteSize);
-	    this.zirconGen = new WorldGenMinable(BlockRegistry.oreZircon.getDefaultState(), this.zirconSize);
-	    this.azuriteGen = new WorldGenMinable(BlockRegistry.oreAzurite.getDefaultState(), this.azuriteSize);
+	    this.eudialyteGen = new WorldGenMinable(BlockRegistry.ore.getDefaultState().withProperty(BlockTropicraftOre.VARIANT, TropicraftOreBlocks.EUDIALYTE), this.eudialyteSize);
+	    this.zirconGen = new WorldGenMinable(BlockRegistry.ore.getDefaultState().withProperty(BlockTropicraftOre.VARIANT, TropicraftOreBlocks.ZIRCON), this.zirconSize);
+	    this.azuriteGen = new WorldGenMinable(BlockRegistry.ore.getDefaultState().withProperty(BlockTropicraftOre.VARIANT, TropicraftOreBlocks.AZURITE), this.azuriteSize);
 	}
 
 	/**

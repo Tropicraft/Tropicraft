@@ -104,7 +104,7 @@ public class BlockRegistry extends TropicraftRegistry {
 
     public static Block chunk;
 
-    public static Block oreAzurite, oreEudialyte, oreZircon;
+    public static Block ore;
     public static Block oreBlock;
 
 	public static BlockTropicsFlowers flowers;
@@ -167,9 +167,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	 */
 	public static void preInit() {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		oreAzurite = registerBlock(new BlockTropicraftOre(), Names.BLOCK_AZURITE_ORE);
-		oreEudialyte = registerBlock(new BlockTropicraftOre(), Names.BLOCK_EUDIALYTE_ORE);
-		oreZircon = registerBlock(new BlockTropicraftOre(), Names.BLOCK_ZIRCON_ORE);
+		ore = registerMultiBlock(new BlockTropicraftOre(), "ore", new StandardItemCreator(Names.BLOCK_ORE_NAMES));
 		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(Names.BLOCK_ORE_NAMES), "oreblock", new StandardItemCreator(Names.BLOCK_ORE_NAMES));
 		flowers = registerMultiBlock(new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
 		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), "log", new StandardItemCreator(Names.LOG_NAMES));

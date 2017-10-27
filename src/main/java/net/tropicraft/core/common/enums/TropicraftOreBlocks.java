@@ -9,11 +9,11 @@ public enum TropicraftOreBlocks implements IStringSerializable {
 
     @Override
     public String getName() {
-    	return this.name().toLowerCase() + "_oreblock";
+    	return this.name().toLowerCase();
     }
     
     @Override
     public String toString() {
-        return this.getName();
+        return this.getName() + "_oreblock";
     }
 };
