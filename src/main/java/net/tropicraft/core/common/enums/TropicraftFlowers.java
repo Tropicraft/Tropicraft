@@ -43,9 +43,13 @@ public enum TropicraftFlowers implements IStringSerializable {
 	public AxisAlignedBB getBounds() {
 		return bounds;
 	}
+	
+	public String toString() {
+	    return getName() + "_flower";
+	}
 
 	@Override
 	public String getName() {
-		return this.name().toLowerCase(Locale.ROOT);
+	    return this.name().toLowerCase(Locale.ROOT);
 	}
 }

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.itemblock;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -11,17 +12,17 @@ import net.tropicraft.core.registry.CreativeTabRegistry;
 public class ItemBlockTropicraft extends ItemBlock {
 
 	/** Names to associate with this ItemBlock */
-	protected String[] names;
+	protected List<String> names;
 	
 	/** Block this ItemBlock represents */
 	protected Block block;
 	
-	public ItemBlockTropicraft(Block block, ArrayList<String> names) {
+	public ItemBlockTropicraft(Block block, List<String> names) {
 		super(block);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		this.block = block;
-		this.names = names.toArray(new String[names.size()]);
+		this.names = names;
 		this.setCreativeTab(CreativeTabRegistry.tropicraftTab);
 	}
 
@@ -39,10 +40,10 @@ public class ItemBlockTropicraft extends ItemBlock {
      */
 	@Override
     public String getUnlocalizedName(ItemStack itemstack) {		
-		if (this.names == null) {
+		if (this.names == null || this.names.size() <= 1) {
 			return super.getUnlocalizedName(itemstack);
 		}
-        int i = MathHelper.clamp(itemstack.getItemDamage(), 0, names.length - 1);
-        return super.getUnlocalizedName() + "_" + names[i];
+        int i = MathHelper.clamp(itemstack.getItemDamage(), 0, names.size() - 1);
+        return super.getUnlocalizedName() + "_" + names.get(i);
     }
 }

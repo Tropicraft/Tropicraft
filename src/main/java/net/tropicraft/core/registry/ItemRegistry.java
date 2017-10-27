@@ -1,7 +1,12 @@
 package net.tropicraft.core.registry;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -15,11 +20,9 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
@@ -57,6 +60,13 @@ import net.tropicraft.core.common.item.scuba.ItemScubaTank;
 import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemRegistry extends TropicraftRegistry {
+    
+    public interface IBlockItemRegistrar {
+        
+        Item getItem(Block block);
+        
+        void postRegister(Item item);
+    }
 
     // Ore gems
     public static Item azurite, eudialyte, zircon;
@@ -193,8 +203,15 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowRegulator;
     public static Item yellowBCD;
     public static Item yellowWeightBelt;
+    
+    private static final Map<Block, IBlockItemRegistrar> blockItems = new HashMap<>();
 
-    public static void preInit() {        
+    public static void preInit() {
+        blockItems.entrySet().forEach(e -> {
+                Item item = GameRegistry.register(e.getValue().getItem(e.getKey()).setRegistryName(e.getKey().getRegistryName()));
+                e.getValue().postRegister(item);
+        });
+        
         diveComputer = registerItem(new ItemDiveComputer(), "dive_computer");
         
         pinkWeightBelt = registerItem(new ItemTropicraft(), "pink_weight_belt");
@@ -330,6 +347,10 @@ public class ItemRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerColoredItem(umbrella);
         Tropicraft.proxy.registerColoredItem(cocktail);
     }
+    
+    public static void addBlockItem(Block block, IBlockItemRegistrar item) {
+        blockItems.put(block, item);
+    }
 
     private static Item registerMultiItem(Item item, String regName, String[] variantNames) {
         Item ret = registerItem(item, regName, variantNames[0]);
@@ -357,7 +378,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
     private static Item registerItem(Item item, String name, String variantName) {
         item.setUnlocalizedName(getNamePrefixed(name));
-        item.setRegistryName(new ResourceLocation(Info.MODID, name));
+        item.setRegistryName(name);
 
         GameRegistry.register(item);
         item.setCreativeTab(CreativeTabRegistry.tropicraftTab);

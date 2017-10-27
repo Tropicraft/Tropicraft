@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
@@ -34,7 +33,7 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     
     @Override
     public String getStateName(IBlockState state) {
-        return ((TropicraftFlowers) state.getValue(VARIANT)).getName() + "_flower";
+        return ((TropicraftFlowers) state.getValue(VARIANT)).toString();
     }
 	
 	public BlockTropicsFlowers() {

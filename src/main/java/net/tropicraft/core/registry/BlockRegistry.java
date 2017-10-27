@@ -1,30 +1,18 @@
 package net.tropicraft.core.registry;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.google.common.collect.ObjectArrays;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Info;
@@ -66,10 +54,53 @@ import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.enums.TropicraftSands;
+import net.tropicraft.core.common.enums.TropicraftSlabs;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
+import net.tropicraft.core.registry.ItemRegistry.IBlockItemRegistrar;
 
 public class BlockRegistry extends TropicraftRegistry {
+    
+    private static class StandardItemCreator implements IBlockItemRegistrar {
+        private final List<String> names;
+        
+        public StandardItemCreator(String... names) {
+            this(Lists.newArrayList(names));
+        }
+        
+        public StandardItemCreator(IStringSerializable... names) {
+            this(Arrays.stream(names).map(IStringSerializable::toString).collect(Collectors.toList()));
+        }
+        
+        public StandardItemCreator(List<String> names) {
+            this.names = names;
+        }
+        
+        public StandardItemCreator withPrefix(String prefix) {
+            return new StandardItemCreator(names) {
+                @Override
+                protected void registerVariant(Item item, String name, int meta) {
+                    super.registerVariant(item, prefix + "_" + name, meta);
+                }
+            };
+        }
+
+        @Override
+        public Item getItem(Block block) {
+            return new ItemBlockTropicraft(block, names);
+        }
+        
+        protected void registerVariant(Item item, String name, int meta) {
+            Tropicraft.proxy.registerItemVariantModel(item, name, meta);
+        }
+        
+        @Override
+        public void postRegister(Item item) {
+            for (int i = 0; i < names.size(); i++) {
+                registerVariant(item, names.get(i), i);
+            }
+        }
+    }
 
     public static Block chunk;
 
@@ -126,8 +157,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static Block sifter;
 	public static Block flowerPot;
 	public static Block bambooDoor;
-	public static BlockSlab slabs;
-	public static BlockSlab doubleSlabs;
+	public static BlockTropicraftSlab slabs;
+	public static BlockTropicraftSlab doubleSlabs;
 
 	public static Block bongo;
 
@@ -139,20 +170,28 @@ public class BlockRegistry extends TropicraftRegistry {
 		oreAzurite = registerBlock(new BlockTropicraftOre(), Names.BLOCK_AZURITE_ORE);
 		oreEudialyte = registerBlock(new BlockTropicraftOre(), Names.BLOCK_EUDIALYTE_ORE);
 		oreZircon = registerBlock(new BlockTropicraftOre(), Names.BLOCK_ZIRCON_ORE);
-		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(Names.BLOCK_ORE_NAMES), ItemBlockTropicraft.class, "oreblock", asList(Names.BLOCK_ORE_NAMES));
-		flowers = registerMultiBlock(new BlockTropicsFlowers(), ItemBlockTropicraft.class, "flower", Arrays.stream(TropicraftFlowers.VALUES).map(IStringSerializable::getName).collect(Collectors.toList()));
-		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), ItemBlockTropicraft.class, "log", asList(Names.LOG_NAMES));
-		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), ItemBlockTropicraft.class, "coral", asList(Names.CORAL_NAMES));
-		bundles = registerMultiBlock(new BlockBundle(Material.WOOD, Names.BUNDLE_NAMES), ItemBlockTropicraft.class, "bundle", asList(Names.BUNDLE_NAMES));
-		seaweed = registerBlock(new BlockSeaweed(), null, "seaweed", false, CreativeTabRegistry.tropicraftTab);
+		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(Names.BLOCK_ORE_NAMES), "oreblock", new StandardItemCreator(Names.BLOCK_ORE_NAMES));
+		flowers = registerMultiBlock(new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
+		logs = registerMultiBlock(new BlockTropicraftLog(Names.LOG_NAMES), "log", new StandardItemCreator(Names.LOG_NAMES));
+		coral = registerMultiBlock(new BlockCoral(Names.CORAL_NAMES), "coral", new StandardItemCreator(Names.CORAL_NAMES));
+		bundles = registerMultiBlock(new BlockBundle(Material.WOOD, Names.BUNDLE_NAMES), "bundle", new StandardItemCreator(Names.BUNDLE_NAMES));
+		seaweed = registerBlockNoItem(new BlockSeaweed(), "seaweed", false);
 
 		slabs = new BlockTropicraftSlab(Material.WOOD, false);
 		doubleSlabs = new BlockTropicraftSlab(Material.WOOD, true);
 		
-		slabs = registerSlab(slabs, slabs, doubleSlabs, "slab");
-		doubleSlabs = registerSlab(doubleSlabs, slabs, doubleSlabs, "double_slab");
+		IBlockItemRegistrar slabRegistrar = new StandardItemCreator(TropicraftSlabs.VALUES) {
+		    
+		    @Override
+		    public ItemTropicraftSlab getItem(Block block) {
+		        return new ItemTropicraftSlab(block, slabs, doubleSlabs);
+		    }
+		};
 		
-		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD, Names.LOG_NAMES), ItemBlockTropicraft.class, "plank", asList(Names.LOG_NAMES));
+		slabs = registerMultiBlock(slabs, "slab", slabRegistrar);
+		doubleSlabs = registerMultiBlock(doubleSlabs, "double_slab", slabRegistrar);
+		
+		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD, Names.LOG_NAMES), "plank", new StandardItemCreator(Names.LOG_NAMES));
 		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT, null);
 
 		thatchStairs = registerBlock(new BlockTropicraftStairs(bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS);
@@ -166,18 +205,18 @@ public class BlockRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortal, Names.TROPICS_PORTAL);
 		portalWall = registerBlock(new BlockPortalWall(), Names.PORTAL_WALL);
 
-		leaves = registerMultiBlock(new BlockTropicraftLeaves(Names.LEAF_NAMES), ItemBlockTropicraft.class, "leaves", asList(Names.LEAF_NAMES));
-		fruitLeaves = registerMultiBlock(new BlockFruitLeaves(Names.FRUIT_LEAF_NAMES), ItemBlockTropicraft.class, "leaves_fruit", asList(Names.FRUIT_LEAF_NAMES));
+		leaves = registerMultiBlock(new BlockTropicraftLeaves(Names.LEAF_NAMES), "leaves", new StandardItemCreator(Names.LEAF_NAMES));
+		fruitLeaves = registerMultiBlock(new BlockFruitLeaves(Names.FRUIT_LEAF_NAMES), "leaves_fruit", new StandardItemCreator(Names.FRUIT_LEAF_NAMES));
 
 		bambooChest = registerBlock(new BlockBambooChest(), Names.BAMBOO_CHEST);
 		
-		saplings = registerMultiBlock(new BlockTropicsSapling(Names.SAPLING_NAMES), ItemBlockTropicraft.class, "sapling", asList(Names.SAPLING_NAMES));
+		saplings = registerMultiBlock(new BlockTropicsSapling(Names.SAPLING_NAMES), "sapling", new StandardItemCreator(Names.SAPLING_NAMES).withPrefix("sapling"));
 		
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
 
-		pineapple = registerMultiBlock(new BlockPineapple(Names.TALL_PLANT_NAMES), ItemBlockTropicraft.class, "pineapple", asList(Names.TALL_PLANT_NAMES));
-		iris = registerMultiBlock(new BlockIris(Names.TALL_PLANT_NAMES), ItemBlockTropicraft.class, "iris", asList(Names.TALL_PLANT_NAMES));
-		coffeePlant = registerMultiBlock(new BlockCoffeeBush(), null, "coffee_bush");
+		pineapple = registerMultiBlock(new BlockPineapple(Names.TALL_PLANT_NAMES), "pineapple", new StandardItemCreator(Names.TALL_PLANT_NAMES));
+		iris = registerMultiBlock(new BlockIris(Names.TALL_PLANT_NAMES), "iris", new StandardItemCreator(Names.TALL_PLANT_NAMES));
+		coffeePlant = registerMultiBlock(new BlockCoffeeBush(), "coffee_bush");
 		
 		// TODO refactor this whole class so things like this are possible, because wtf
 		sands = new BlockTropicraftSands().setRegistryName("sand").setUnlocalizedName(Info.MODID + ".sand").setCreativeTab(CreativeTabRegistry.tropicraftTab);
@@ -189,14 +228,14 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
 		
-		tikiTorch = registerMultiBlock(new BlockTikiTorch(), ItemBlockTropicraft.class, "tiki_torch", asList(new String[]{"upper", "middle", "lower"}));
+		tikiTorch = registerMultiBlock(new BlockTikiTorch(), "tiki_torch", new StandardItemCreator("upper", "middle", "lower"));
 		
 		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
 		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
 		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR, false);
 
-		bongo = registerMultiBlock(new BlockBongoDrum(), ItemBlockTropicraft.class, Names.BONGO, asList(Names.BONGO_NAMES));
+		bongo = registerMultiBlock(new BlockBongoDrum(), Names.BONGO, new StandardItemCreator(Names.BONGO_NAMES).withPrefix(Names.BONGO));
 	}
 
 	public static void init() {
@@ -206,27 +245,15 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static void clientProxyInit() {
 		Tropicraft.proxy.registerColoredBlock(sands);
 	}
-	
-	private static <T extends Block & ITropicraftBlock> T registerMultiColoredBlock(T block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
-		return registerMultiBlock(block, clazz, name, itemCtorArgs);
-	}
 
-	private static <T> ArrayList<T> asList(T[] objects) {
-		ArrayList<T> objList = new ArrayList<T>();
-		Collections.addAll(objList, objects);
-
-		return objList;
-	}
-
-	public static <T extends Block> T registerBlock(T block, ItemBlock itemBlock, String name, boolean registerDefaultVariant, CreativeTabs tab) {
+	public static <T extends Block> T registerBlock(T block, String name, IBlockItemRegistrar item, boolean registerDefaultVariant, CreativeTabs tab) {
 		block.setUnlocalizedName(getNamePrefixed(name));
 		block.setRegistryName(new ResourceLocation(Info.MODID, name));
 		GameRegistry.register(block);
 		block.setCreativeTab(tab);
 
-		if (itemBlock != null) {
-			itemBlock.setRegistryName(new ResourceLocation(Info.MODID, name));
-			GameRegistry.register(itemBlock);
+		if (item != null) {
+		    ItemRegistry.addBlockItem(block, item);
 		}
 
 		if (registerDefaultVariant) {
@@ -236,37 +263,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		return block;
 	}
 	
-	/**
-	 * Helper method for registering slabs, since they're pretty funky
-	 * @param block
-	 * @param singleSlab
-	 * @param doubleSlab
-	 * @param name
-	 * @return
-	 */
-	private static BlockSlab registerSlab(BlockSlab block, BlockSlab singleSlab, BlockSlab doubleSlab, String name) {
-		block = registerBlock(block, new ItemTropicraftSlab(block, singleSlab, doubleSlab), name, false, CreativeTabRegistry.tropicraftTab);
-		
-		// get the preset blocks variants
-		ImmutableSet<IBlockState> presets = getBlockPresets(block);
-		ITropicraftBlock tcBlock = (ITropicraftBlock)block;
-
-		if (presets.isEmpty()) {
-			// block has no sub-blocks to register
-			registerBlockVariant(block, name, 0);
-		} else {
-			// register all the sub-blocks
-			for (IBlockState state : presets) {
-				String stateName = tcBlock.getStateName(state);
-				int stateMeta = block.getMetaFromState(state);
-				// System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
-				registerBlockVariant(block, stateName, stateMeta, null);
-			}
-		}
-
-		block.setCreativeTab(CreativeTabRegistry.tropicraftTab);
-		
-		return block;
+	private static <T extends Block & ITropicraftBlock> T registerMultiBlock(T block, String name) {
+	    return registerMultiBlock(block, name, null);
 	}
 
 	/**
@@ -275,52 +273,30 @@ public class BlockRegistry extends TropicraftRegistry {
 	 * @param name Name of the image prefix
 	 * @param names Names of the images
 	 */
-	private static <T extends Block & ITropicraftBlock> T registerMultiBlock(T block, Class<? extends ItemBlock> clazz, String name, Object... itemCtorArgs) {
-		try {
-			// Some nice code borrowed from old FML and repurposed
-			Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
-			ctorArgClasses[0] = Block.class;
-			for (int idx = 1; idx < ctorArgClasses.length; idx++)
-			{
-				ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
-			}
-			
-			ItemBlock itemBlockInstance;
-			if (clazz != null) {
-				Constructor<? extends ItemBlock> itemConstructor = clazz.getConstructor(ctorArgClasses);
-				itemBlockInstance = itemConstructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
-			} else {
-				itemBlockInstance = null;
-			}
-
-			block = registerBlock(block, itemBlockInstance, name, false, CreativeTabRegistry.tropicraftTab);
-
-			// get the preset blocks variants
-			ImmutableSet<IBlockState> presets = getBlockPresets(block);
-
-			if (presets.isEmpty()) {
-				// block has no sub-blocks to register
-				registerBlockVariant(block, name, 0);
-			} else {
-				// register all the sub-blocks
-				for (IBlockState state : presets) {
-					String stateName = block.getStateName(state);
-					int stateMeta = block.getMetaFromState(state);
-					// System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
-					registerBlockVariant(block, stateName, stateMeta, null);
-				}
-			}
-
-			block.setCreativeTab(CreativeTabRegistry.tropicraftTab);
-
-			return block;
-		} catch (Exception e) {
-			System.err.println("Tropicraft failed trying to register multi block: " + name);
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	private static <T extends Block & ITropicraftBlock> T registerMultiBlock(T block, String name, IBlockItemRegistrar item) {
+	    return registerBlock(block, name, item, false, CreativeTabRegistry.tropicraftTab);
+//
+//        block = registerBlock(block, name, item, false, CreativeTabRegistry.tropicraftTab);
+//
+//        // get the preset blocks variants
+//        ImmutableList<IBlockState> presets = block.getBlockState().getValidStates();
+//
+//        if (presets.isEmpty()) {
+//            // block has no sub-blocks to register
+//        } else {
+//            // register all the sub-blocks
+//            for (IBlockState state : presets) {
+//                String stateName = block.getStateName(state);
+//                int stateMeta = block.getMetaFromState(state);
+//                // System.out.println("Registering " + name + " with stateName " + stateName + " and meta " + stateMeta);
+////                registerBlockVariant(block, stateName, stateMeta, null);
+//            }
+//        }
+//
+//        block.setCreativeTab(CreativeTabRegistry.tropicraftTab);
+//
+//        return block;
+    }
 
 	public static void registerBlockVariant(Block block, String stateName, int stateMeta) {
 		Item item = Item.getItemFromBlock(block);
@@ -340,66 +316,22 @@ public class BlockRegistry extends TropicraftRegistry {
 	}
 
 	public static <T extends Block> T registerBlock(T block, String name) {
-		return registerBlock(block, new ItemBlock(block), name, true, CreativeTabRegistry.tropicraftTab);
+		return registerBlock(block, name, new StandardItemCreator(name), true, CreativeTabRegistry.tropicraftTab);
 	}
 
 	public static <T extends Block> T registerBlock(T block, String name, boolean registerDefaultVariant) {
-		return registerBlock(block, new ItemBlock(block), name, registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
+		return registerBlock(block, name, new StandardItemCreator(name), registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
 	}
 
 	public static <T extends Block> T registerBlockNoItem(T block, String name, boolean registerDefaultVariant) {
-		return registerBlock(block, null, name, registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
+		return registerBlock(block, name, null, registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
 	}
 
 	public static <T extends Block> T registerBlock(T block, String name, CreativeTabs tab) {
-		return registerBlock(block, new ItemBlock(block), name, true, tab);
+		return registerBlock(block, name, new StandardItemCreator(name), true, tab);
 	}
 
 	public static void registerOreDictWildcard(String oreDictName, Block block) {
 		OreDictionary.registerOre(oreDictName, new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE));
-	}
-
-	// return all of the different 'preset' variants of a block
-	// works by looping through all the different values of the properties specified in block.getProperties()
-	// only works on blocks supporting ITropicraft - returns an empty set for vanilla blocks
-	// Thanks to our friends at BoP for this awesome code
-	public static ImmutableSet<IBlockState> getBlockPresets(Block block) {
-		if (!(block instanceof ITropicraftBlock)) {return ImmutableSet.<IBlockState>of();}
-		IBlockState defaultState = block.getDefaultState();
-		if (defaultState == null) {defaultState = block.getBlockState().getBaseState();}
-		return getStatesSet(defaultState, ((ITropicraftBlock)block).getProperties());        
-	}    
-
-	// returns a set of states, one for every possible combination of values from the provided properties
-	public static ImmutableSet<IBlockState> getStatesSet(IBlockState baseState, IProperty... properties)
-	{        
-		Stack<IProperty> propStack = new Stack<IProperty>();
-		List<IBlockState> states = new ArrayList<IBlockState>();
-		for (IProperty prop : properties) {propStack.push(prop);}
-		if (!propStack.isEmpty())
-		{
-			addStatesToList(baseState, states, propStack);
-		}
-		ImmutableSet<IBlockState> ret = ImmutableSet.copyOf(states);
-		return ret;
-	}
-
-	// recursively add state values to a list
-	private static void addStatesToList(IBlockState state, List<IBlockState> list, Stack<IProperty> stack)
-	{    
-		if (stack.empty())
-		{
-			list.add(state);
-			return;
-		}
-		else
-		{
-			IProperty prop = stack.pop();        
-			for (Object value : prop.getAllowedValues())
-			{
-				addStatesToList(state.withProperty(prop, (Comparable)value), list, stack);
-			}
-			stack.push(prop);
-		}
 	}
 }
