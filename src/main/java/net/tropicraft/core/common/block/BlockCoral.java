@@ -45,7 +45,7 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { VARIANT, BlockFluidBase.LEVEL });
+		return new BlockStateContainer(this, VARIANT, BlockFluidBase.LEVEL);
 	}
 
 	@Override
@@ -86,11 +86,6 @@ public class BlockCoral extends BlockTropicraft implements ITropicraftBlock, net
 	@Override
 	public int damageDropped(IBlockState state) {
 		return this.getMetaFromState(state);
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT};
 	}
 
 	/**

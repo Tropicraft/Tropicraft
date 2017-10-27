@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -314,18 +313,12 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, getProperties());
+		return new BlockStateContainer(this, SECTION);
 	}
 
 	@Override
 	public String getStateName(IBlockState state) {
 		return "tiki_torch_" + ((TorchSection) state.getValue(SECTION)).getName();
-	}
-
-	@Override
-	@SuppressWarnings("rawtypes")
-	public IProperty[] getProperties() {
-		return new IProperty[]{SECTION};
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -73,7 +72,7 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, getProperties());
+		return new BlockStateContainer(this, VARIANT, UNDERWATER);
 	}
 
 	@Override
@@ -103,10 +102,5 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 	@Override
 	public int damageDropped(IBlockState state) {
 		return this.getMetaFromState(state);
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT, UNDERWATER};
 	}
 }

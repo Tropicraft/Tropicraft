@@ -73,11 +73,6 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     }
 
 	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT};
-	}
-
-	@Override
 	public IBlockColor getBlockColor() {
 		return null;
 	}

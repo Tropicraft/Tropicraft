@@ -71,7 +71,7 @@ public class BlockBundle extends BlockTropicraft implements ITropicraftBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { BUNDLE_AXIS, VARIANT });
+		return new BlockStateContainer(this, BUNDLE_AXIS, VARIANT);
 	}
 
 	@Override
@@ -145,11 +145,6 @@ public class BlockBundle extends BlockTropicraft implements ITropicraftBlock {
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
 		return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftBundles)state.getValue(VARIANT)).getMetadata());
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT, BUNDLE_AXIS};
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -86,7 +85,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { LOG_AXIS, VARIANT });
+		return new BlockStateContainer(this, LOG_AXIS, VARIANT);
 	}
 
 	/**
@@ -162,11 +161,6 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftLogs) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT, LOG_AXIS};
 	}
 
 	@Override

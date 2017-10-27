@@ -46,11 +46,6 @@ public class BlockIris extends BlockBush implements ITropicraftBlock {
 				);
 	}
 
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {HALF};
-	}
-
 	// Called by ItemBlock after the (lower) block has been placed
 	// Use it to add the top half of the block
 	@Override
@@ -60,7 +55,7 @@ public class BlockIris extends BlockBush implements ITropicraftBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, getProperties());
+		return new BlockStateContainer(this, HALF);
 	}
 
 	@Override

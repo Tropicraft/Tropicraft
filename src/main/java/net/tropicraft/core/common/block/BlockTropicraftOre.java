@@ -43,12 +43,7 @@ public class BlockTropicraftOre extends BlockTropicraft implements ITropicraftBl
     public String getStateName(IBlockState state) {
         return ((TropicraftOreBlocks) state.getValue(VARIANT)).getName();
     }
-    
-    @Override
-    public IProperty<?>[] getProperties() {
-        return new IProperty[]{ VARIANT };
-    }
-    
+
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, TropicraftOreBlocks.VALUES[meta]);

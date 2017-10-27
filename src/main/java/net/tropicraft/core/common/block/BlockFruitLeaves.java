@@ -151,7 +151,7 @@ public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { CHECK_DECAY, DECAYABLE, VARIANT });
+		return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE, VARIANT);
 	}
 
 	@Override
@@ -176,11 +176,6 @@ public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 	@Override
 	public EnumType getWoodType(int meta) {
 		return null;
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {CHECK_DECAY, DECAYABLE, VARIANT};
 	}
 
 	@Override

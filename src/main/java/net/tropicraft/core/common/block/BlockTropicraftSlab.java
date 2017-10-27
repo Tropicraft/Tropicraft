@@ -133,7 +133,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 	
 	@Override
     protected BlockStateContainer createBlockState() {
-        return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {VARIANT}): new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT): new BlockStateContainer(this, HALF, VARIANT);
     }
 	
     /**
@@ -148,11 +148,6 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftSlabs) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return this.isDouble() ? new IProperty[] {VARIANT}: new IProperty[] {HALF, VARIANT};
 	}
 
 	@Override

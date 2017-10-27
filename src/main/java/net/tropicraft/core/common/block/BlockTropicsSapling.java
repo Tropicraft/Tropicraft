@@ -8,7 +8,6 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -87,7 +86,7 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] {STAGE, VARIANT});
+		return new BlockStateContainer(this, STAGE, VARIANT);
 	}
 
 	/**
@@ -117,12 +116,6 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftSaplings) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	@SuppressWarnings("rawtypes")
-	public IProperty[] getProperties() {
-		return new IProperty[] {STAGE, VARIANT};
 	}
 
 	/**

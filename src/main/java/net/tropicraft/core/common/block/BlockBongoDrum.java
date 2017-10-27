@@ -130,7 +130,7 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, getProperties());
+        return new BlockStateContainer(this, VARIANT);
     }
 
     @Override
@@ -146,11 +146,6 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
     @Override
     public String getStateName(IBlockState state) {
         return ((TropicraftBongos) state.getValue(VARIANT)).getName();
-    }
-
-    @Override
-    public IProperty[] getProperties() {
-        return new IProperty[] { VARIANT };
     }
 
     @Override

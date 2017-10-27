@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -66,11 +65,6 @@ public class BlockTropicraftOreBlock extends BlockTropicraft implements ITropicr
     public int damageDropped(IBlockState state) {
         return this.getMetaFromState(state);
     }
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT};
-	}
 
 	@Override
 	public IBlockColor getBlockColor() {
