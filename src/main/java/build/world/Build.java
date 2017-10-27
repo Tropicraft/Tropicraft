@@ -259,8 +259,10 @@ public class Build {
                             if (block != null) {
 
                             } else {
-                                //System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
-                                block = Blocks.AIR;
+                                System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
+                                //block = Blocks.AIR;
+                                //block = Blocks.DIRT;
+                                block = Blocks.DIAMOND_BLOCK;
                             }
 
                             build_blockIDArr[xx][yy][zz] = block;
@@ -666,6 +668,11 @@ public class Build {
             while (it.hasNext()) {
                 String tagName = (String) it.next();
 
+                //keep old tag to int code same
+                int tag = parMappingNBT.getInteger(tagName);//(NBTTagInt)it.next();
+
+                //now change tagName to what exists in mc now
+
                 /**
                  * replace capital letter after "tropicraft.tile" with _ and its lowercase to try to auto convert
                  *
@@ -674,6 +681,11 @@ public class Build {
                  * tile.tropicraft:bambooBundle.name=Bamboo Bundle
                  * tile.tropicraft:log_Palm.name=Palm Log
                  */
+
+                //manual fixes i cant do in nbt since multiple old entries become the same name now and nbt wont allow duplicates
+                if (tagName.equals("tropicraft:tile.bambooBundle")) {
+                    tagName = "tropicraft:bundle";
+                }
 
                 if (tagName.contains("tropicraft:tile.")) {
                     String orig = tagName;
@@ -696,7 +708,9 @@ public class Build {
                     System.out.println("replacing " + orig + " with " + tagName);
                 }
 
-                int tag = parMappingNBT.getInteger(tagName);//(NBTTagInt)it.next();
+                //TEMP
+                //tagName = "tropicraft:bundle";
+
                 if (swapMap.get(tagName) != null) {
                     finalMap.put(tag, swapMap.get(tagName));
                 } else {

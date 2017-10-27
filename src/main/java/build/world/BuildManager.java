@@ -326,7 +326,9 @@ public class BuildManager {
                     } else {
 
                         //TEEEEEMMMMMPPPPPPPP
-                        //build_rate = 1;
+                        build_rate = 100000;
+
+                        boolean tropiFixTemp = true;
 
                         if (!buildJob.build_blockPlaced[buildJob.build_loopTickX][buildJob.build_loopTickY][buildJob.build_loopTickZ]) {
 
@@ -376,9 +378,6 @@ public class BuildManager {
                                                 new Vec3d(build.map_sizeX, build.map_sizeY, build.map_sizeZ));
                                     }
 
-
-                                    boolean tropiFixTemp = true;
-
                                     if (tropiFixTemp) {
                                         if (id == BlockRegistry.bundles) {
                                             meta = 0;
@@ -414,8 +413,17 @@ public class BuildManager {
                                         }
                                     }
                                     if (!skipGen) {
-                                        IBlockState state = id.getStateFromMeta(meta);
-                                        worldRef.setBlockState(coords, state, 2);
+                                        if (false && tropiFixTemp) {
+                                            /*IBlockState state = id.getStateFromMeta(meta);
+                                            worldRef.setBlockState(coords, state, 2);*/
+                                            if (!isAir(id)) {
+                                                IBlockState state = id.getStateFromMeta(meta);
+                                                worldRef.setBlockState(coords, placeholderID.getDefaultState(), 2);
+                                            }
+                                        } else {
+                                            IBlockState state = id.getStateFromMeta(meta);
+                                            worldRef.setBlockState(coords, state, 2);
+                                        }
                                         //worldRef.setBlock(coords.getX(), coords.getY(), coords.getZ(), id, meta, 2);
                                     }
                                     //System.out.println("post print - " + coords.getX() + " - " + coords.getZ());
