@@ -166,7 +166,7 @@ public class ClientProxy extends CommonProxy {
 	// Yet another method inspired by BoP :)
 	@Override
 	public void registerFluidBlockRendering(Block block, String name) {
-		final ModelResourceLocation fluidLocation = new ModelResourceLocation(Info.MODID + ":" + name, name);
+		final ModelResourceLocation fluidLocation = new ModelResourceLocation(Info.MODID + ":" + name, "normal");
 
 		// use a custom state mapper which will ignore the LEVEL property
 		ModelLoader.setCustomStateMapper(block, new StateMapperBase() {

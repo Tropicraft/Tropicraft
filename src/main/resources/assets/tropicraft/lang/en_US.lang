@@ -285,5 +285,9 @@ gui.tropicraft.maxDepth=Max
 gui.tropicraft.timeRemaining=Gas Time
 gui.tropicraft.amtRefined=Percentage Refined
 
+# Fluid localizations
+fluid.tropicraft.water=Tropics Water
+fluid.tropicraft.portal=Tropics Portal
+
 # Misc localizations
 tropicraft.coconutBombWarning=You do not have permission to use coconut bombs .) Check the coconut bomb whitelist in the Tropicraft config file!

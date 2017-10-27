@@ -1,10 +1,10 @@
 {
 	"forge_marker": 1,
     "variants": {
-    	"tropics_water": {
+    	"normal": {
     		"model": "forge:fluid",
     		"custom": {
-    			"fluid": "tropics_water"
+    			"fluid": "tropicraft.water"
     		}
     	}
     }

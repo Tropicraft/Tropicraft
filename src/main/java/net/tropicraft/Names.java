@@ -3,19 +3,19 @@ package net.tropicraft;
 public final class Names {
 	// Block names
 	public static final String BLOCK_CHUNK_O_HEAD = "chunk";
-	public static final String BLOCK_CHUNK_O_HEAD_STAIRS = "chunkStairs";
-	public static final String BLOCK_THATCH_STAIRS = "thatchStairs";
-	public static final String BLOCK_BAMBOO_STAIRS = "bambooStairs";
-	public static final String BLOCK_EUDIALYTE_ORE = "oreEudialyte";
-	public static final String BLOCK_ZIRCON_ORE = "oreZircon";
-	public static final String BLOCK_AZURITE_ORE = "oreAzurite";
+	public static final String BLOCK_CHUNK_O_HEAD_STAIRS = "chunk_stairs";
+	public static final String BLOCK_THATCH_STAIRS = "thatch_stairs";
+	public static final String BLOCK_BAMBOO_STAIRS = "bamboo_stairs";
+	public static final String BLOCK_EUDIALYTE_ORE = "ore_eudialyte";
+	public static final String BLOCK_ZIRCON_ORE = "ore_zircon";
+	public static final String BLOCK_AZURITE_ORE = "ore_azurite";
 	public static final String[] BLOCK_ORE_NAMES = {"azurite", "eudialyte", "zircon"};
 	public static final String[] LOG_NAMES = {"mahogany", "palm"};
 	public static final String[] CORAL_NAMES = {"pink", "tealy", "brain", "fire", "green", "spiral", "hotpink"};
 	public static final String[] BUNDLE_NAMES = {"thatch", "bamboo"};
 	public static final String BAMBOO_SHOOT = "bamboo_shoot";
-	public static final String TROPICS_WATER = "tropics_water";
-	public static final String TROPICS_PORTAL = "tropics_portal";
+	public static final String TROPICS_WATER = "water";
+	public static final String TROPICS_PORTAL = "portal";
 	public static final String[] LEAF_NAMES = {"mahogany", "palm", "kapok", "fruit"};
 	public static final String BAMBOO_CHEST = "bamboo_chest";
 	public static final String[] FRUIT_LEAF_NAMES = {"grapefruit", "lemon", "lime", "orange"};
@@ -47,9 +47,9 @@ public final class Names {
 	public static final String[] COFFEE_NAMES = { "coffee_bean_raw", "coffee_bean_roasted", "coffee_berry" };
 
 	// Tile Entity Names
-	public static final String TE_BAMBOO_CHEST = "te_bamboo_chest";
-	public static final String TE_VOLCANO = "te_volcano";
-	public static final String TE_DRINK_MIXER = "te_drink_mixer";
-	public static final String TE_SIFTER = "te_sifter";
-	public static final String TE_FLOWER_POT = "te_flower_pot";
+	public static final String TE_BAMBOO_CHEST = "bamboo_chest";
+	public static final String TE_VOLCANO = "volcano";
+	public static final String TE_DRINK_MIXER = "drink_mixer";
+	public static final String TE_SIFTER = "sifter";
+	public static final String TE_FLOWER_POT = "flower_pot";
 }
