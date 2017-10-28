@@ -90,7 +90,7 @@ public class WorldGenCoffeePlant extends TCGenBase {
 		
 		for (int i = 0; i < 3; ++i) {
 			if (TCGenUtils.isAirBlock(worldObj, nx, ny + i, nz)) {
-				TCGenUtils.setBlockState(worldObj, nx, ny + i, nz, BlockRegistry.coffeePlant.getDefaultState().withProperty(BlockCoffeeBush.AGE, Integer.valueOf(0)), blockGenNotifyFlag);
+				TCGenUtils.setBlockState(worldObj, nx, ny + i, nz, BlockRegistry.coffeePlant.getDefaultState().withProperty(BlockCoffeeBush.AGE, Integer.valueOf(6)), blockGenNotifyFlag);
 			} else {
 				break;
 			}
