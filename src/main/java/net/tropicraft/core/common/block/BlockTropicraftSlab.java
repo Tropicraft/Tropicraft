@@ -46,26 +46,11 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 		this.setDefaultState(iblockstate.withProperty(VARIANT, TropicraftSlabs.BAMBOO));
 	}
 
-	@Override
-	@Deprecated
-	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-	    TropicraftSlabs slabType = blockState.getValue(VARIANT);
-
-	    if (slabType == null) return this.blockHardness;
-
-	    switch (slabType) {
-	    case BAMBOO:
-	        return BlockHardnessValues.BAMBOO.hardness;
-	    case THATCH:
-	        return BlockHardnessValues.THATCH.hardness;
-	    case CHUNK:
-	        return BlockHardnessValues.CHUNK.hardness;
-	    case PALM:
-	        return BlockHardnessValues.PALM.hardness;
-	    default:
-	        return this.blockHardness;
-	    }
-	}
+    @Override
+    @Deprecated
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return blockState.getValue(this.getVariantProperty()).getHardness();
+    }
 
     /**
      * Get the MapColor for this Block and the given BlockState
@@ -103,7 +88,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     }
 
 	@Override
-	public IProperty<?> getVariantProperty() {
+	public IProperty<TropicraftSlabs> getVariantProperty() {
 		return VARIANT;
 	}
 

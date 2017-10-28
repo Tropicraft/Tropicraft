@@ -2,13 +2,26 @@ package net.tropicraft.core.common.enums;
 
 public enum TropicraftBundles implements ITropicraftVariant {
 	
-	THATCH(0), BAMBOO(1);
+	THATCH(0, BlockHardnessValues.THATCH.hardness, BlockHardnessValues.THATCH.resistance),
+	BAMBOO(1, BlockHardnessValues.BAMBOO.hardness, BlockHardnessValues.BAMBOO.resistance);
 
+    private final float resistance;
+    private final float hardness;
 	private final int meta;
 	private static final TropicraftBundles[] META_LOOKUP = new TropicraftBundles[values().length];
 	
-	private TropicraftBundles(int meta) {
+	private TropicraftBundles(int meta, float hardness, float resistance) {
 		this.meta = meta;
+		this.hardness = hardness;
+		this.resistance = resistance;
+	}
+
+	public float getHardness() {
+	    return this.hardness;
+	}
+
+	public float getResistance() {
+	    return this.resistance;
 	}
 
 	@Override
@@ -23,7 +36,7 @@ public enum TropicraftBundles implements ITropicraftVariant {
 
 		return META_LOOKUP[meta];
 	}
-    
+
     @Override
     public String getTypeName() {
         return "bundle";

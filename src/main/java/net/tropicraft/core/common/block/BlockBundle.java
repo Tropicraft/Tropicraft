@@ -33,19 +33,7 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	@Override
 	@Deprecated
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-	    TropicraftBundles slabType = blockState.getValue(this.getProperty());
-
-	    if (slabType == null)
-	        return this.blockHardness;
-
-	    switch (slabType) {
-	    case BAMBOO:
-	        return BlockHardnessValues.BAMBOO.hardness;
-	    case THATCH:
-	        return BlockHardnessValues.THATCH.hardness;
-	    default:
-	        return this.blockHardness;
-	    }
+	    return blockState.getValue(this.getProperty()).getHardness();
 	}
 
 	/**

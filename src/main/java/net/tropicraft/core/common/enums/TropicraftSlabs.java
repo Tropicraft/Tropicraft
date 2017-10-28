@@ -3,18 +3,33 @@ package net.tropicraft.core.common.enums;
 import net.minecraft.block.material.MapColor;
 
 public enum TropicraftSlabs implements ITropicraftVariant {
-	BAMBOO(0, MapColor.GREEN), THATCH(1, MapColor.YELLOW), CHUNK(2, MapColor.BLACK), PALM(3, MapColor.BROWN);
+	BAMBOO(0, MapColor.GREEN, BlockHardnessValues.BAMBOO.hardness, BlockHardnessValues.BAMBOO.resistance),
+	THATCH(1, MapColor.YELLOW, BlockHardnessValues.THATCH.hardness, BlockHardnessValues.THATCH.resistance),
+	CHUNK(2, MapColor.BLACK, BlockHardnessValues.CHUNK.hardness, BlockHardnessValues.CHUNK.resistance),
+	PALM(3, MapColor.BROWN, BlockHardnessValues.PALM.hardness, BlockHardnessValues.PALM.resistance);
 
+    private final float hardness;
+    private final float resistance;
 	private final int meta;
 	private final MapColor mapColor;
 	private static final TropicraftSlabs[] META_LOOKUP = new TropicraftSlabs[values().length];
 	public static final TropicraftSlabs VALUES[] = values();
 
-	private TropicraftSlabs(int meta, MapColor mapColor) {
+	private TropicraftSlabs(int meta, MapColor mapColor, float hardness, float resistance) {
 		this.meta = meta;
 		this.mapColor = mapColor;
+		this.hardness = hardness;
+		this.resistance = resistance;
 	}
-	
+
+	public float getHardness() {
+	    return this.hardness;
+	}
+
+	public float getResistance() {
+	    return this.getResistance();
+	}
+
 	public MapColor getMapColor() {
 		return this.mapColor;
 	}
