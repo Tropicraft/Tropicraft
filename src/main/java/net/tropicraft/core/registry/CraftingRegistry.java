@@ -15,6 +15,7 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.enums.TropicraftLogs;
+import net.tropicraft.core.common.enums.TropicraftShells;
 
 public class CraftingRegistry {
 
@@ -439,7 +440,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("froglegs", new ItemStack(ItemRegistry.frogLeg));
         Tropicraft.encyclopedia.includeItem("froglegscooked", new ItemStack(ItemRegistry.cookedFrogLeg));
         Tropicraft.encyclopedia.includeItem("frogskin", new ItemStack(ItemRegistry.poisonFrogSkin));
-        Tropicraft.encyclopedia.includeItem("froxconch", new ItemStack(ItemRegistry.shellFrox));
+        Tropicraft.encyclopedia.includeItem("froxconch", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.FROX.getMeta()));
         Tropicraft.encyclopedia.includeItem("grapefruit", new ItemStack(ItemRegistry.grapefruit));
         Tropicraft.encyclopedia.includeItem("grapefruitsapling", new ItemStack(BlockRegistry.saplings, 1, 1));
         Tropicraft.encyclopedia.includeItem("greensand", new ItemStack(BlockRegistry.sands, 1, 2));
@@ -469,7 +470,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("orangeade", MixerRecipes.getItemStack(Drink.orangeade));
         Tropicraft.encyclopedia.includeItem("orangesapling", new ItemStack(BlockRegistry.saplings, 1, 3));
         Tropicraft.encyclopedia.includeItem("orchid", new ItemStack(BlockRegistry.flowers, 1, 2));
-        Tropicraft.encyclopedia.includeItem("pabshell", new ItemStack(ItemRegistry.shellPab));
+        Tropicraft.encyclopedia.includeItem("pabshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.PAB.getMeta()));
         Tropicraft.encyclopedia.includeItem("palmplanks", new ItemStack(BlockRegistry.planks, 1, 0)); //0 is palm, 1 is mahogany
         Tropicraft.encyclopedia.includeItem("palmwood", new ItemStack(BlockRegistry.logs, 1, 0));
         Tropicraft.encyclopedia.includeItem("palmsapling", new ItemStack(BlockRegistry.saplings, 1, 0));
@@ -482,7 +483,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("portalstarter",  new ItemStack(ItemRegistry.portalEnchanter));
         Tropicraft.encyclopedia.includeItem("purifiedsand", new ItemStack(BlockRegistry.sands, 0, 0));
         Tropicraft.encyclopedia.includeItem("reeds", new ItemStack(Items.REEDS));
-        Tropicraft.encyclopedia.includeItem("rubenautilus", new ItemStack(ItemRegistry.shellRube));
+        Tropicraft.encyclopedia.includeItem("rubenautilus", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.RUBE.getMeta()));
         Tropicraft.encyclopedia.includeItem("scaleboots", new ItemStack(ItemRegistry.scaleBoots));
         Tropicraft.encyclopedia.includeItem("scalechestplate", new ItemStack(ItemRegistry.scaleChestplate));
         Tropicraft.encyclopedia.includeItem("scalehelm", new ItemStack(ItemRegistry.scaleHelmet));
@@ -492,15 +493,15 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         //TODO Tropicraft.encyclopedia.includeItem("smeltedzircon", new ItemStack(ItemRegistry.ore, 1, 4));
         //TODO Tropicraft.encyclopedia.includeItem("snaretrap", new ItemStack(ItemRegistry.snareTrap));
         //TODO Tropicraft.encyclopedia.includeItem("snorkel", new ItemStack(ItemRegistry.snorkel));
-        Tropicraft.encyclopedia.includeItem("solonoxshell", new ItemStack(ItemRegistry.shellSolo));
-        Tropicraft.encyclopedia.includeItem("starfishshell", new ItemStack(ItemRegistry.shellStarfish));
+        Tropicraft.encyclopedia.includeItem("solonoxshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.SOLO.getMeta()));
+        Tropicraft.encyclopedia.includeItem("starfishshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.STARFISH.getMeta()));
         Tropicraft.encyclopedia.includeItem("summering", new ItemStack(ItemRegistry.recordSummering));
         Tropicraft.encyclopedia.includeItem("tikitorch", new ItemStack(BlockRegistry.tikiTorch));
         Tropicraft.encyclopedia.includeItem("thatchblock", new ItemStack(BlockRegistry.bundles, 1, 0));
         Tropicraft.encyclopedia.includeItem("thetribe", new ItemStack(ItemRegistry.recordTheTribe));
         Tropicraft.encyclopedia.includeItem("tradewinds", new ItemStack(ItemRegistry.recordTradeWinds));
         Tropicraft.encyclopedia.includeItem("tropiframe", new ItemStack(ItemRegistry.bambooItemFrame));
-        Tropicraft.encyclopedia.includeItem("turtleshell", new ItemStack(ItemRegistry.shellTurtle));
+        Tropicraft.encyclopedia.includeItem("turtleshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.TURTLE.getMeta()));
         //TODO Tropicraft.encyclopedia.includeItem("waterwand", new ItemStack(ItemRegistry.waterWand));
         Tropicraft.encyclopedia.includeItem("zircon", new ItemStack(ItemRegistry.zircon));
         //Tropicraft.encyclopedia.includeItem("zirconium", new ItemStack(TCItemRegistry.ore, 1, 3));

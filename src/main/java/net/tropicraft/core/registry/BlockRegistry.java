@@ -60,7 +60,6 @@ import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftSaplings;
 import net.tropicraft.core.common.enums.TropicraftSlabs;
-import net.tropicraft.core.common.enums.TropicraftTallPlants;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
 import net.tropicraft.core.registry.ItemRegistry.IBlockItemRegistrar;

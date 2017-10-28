@@ -28,6 +28,8 @@ import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.enums.ITropicraftVariant;
+import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.common.item.ItemBambooItemFrame;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
@@ -147,13 +149,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
     public static Item portalEnchanter;
 
-    public static Item shellFrox;
-    public static Item shellPab;
-    public static Item shellRube;
-    public static Item shellSolo;
-    public static Item shellStarfish;
-    public static Item shellTurtle;
-
+    public static Item shell;
     public static Item cocktail;
 
     public static Item whitePearl;
@@ -305,13 +301,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
         portalEnchanter = registerItem(new ItemPortalEnchanter(), "portal_enchanter");
 
-        shellFrox = registerItem(new ItemShell(), "shell_frox");
-        shellPab = registerItem(new ItemShell(), "shell_pab");
-        shellRube = registerItem(new ItemShell(), "shell_rube");
-        shellSolo = registerItem(new ItemShell(), "shell_solo");
-        //TODO make shellfish ItemShell(true) once we figure out how to get hangables to work
-        shellStarfish = registerItem(new ItemShell(), "shell_starfish");
-        shellTurtle = registerItem(new ItemShell(), "shell_turtle");
+        shell = registerMultiItem(new ItemShell(), "shell", TropicraftShells.values());
 
         cocktail = registerMultiItem(new ItemCocktail(), "cocktail", Drink.drinkList.length);
 
@@ -353,8 +343,12 @@ public class ItemRegistry extends TropicraftRegistry {
     public static void addBlockItem(Block block, IBlockItemRegistrar item) {
         blockItemRegistry.put(block, item);
     }
+    
+    private static Item registerMultiItem(Item item, String regName, ITropicraftVariant... variants) {
+        return registerMultiItemPrefixed(item, regName, Arrays.stream(variants).map(ITropicraftVariant::getSimpleName).toArray(String[]::new));
+    }
 
-    private static Item registerMultiItem(Item item, String regName, String[] variantNames) {
+    private static Item registerMultiItem(Item item, String regName, String... variantNames) {
         Item ret = registerItem(item, regName, variantNames[0]);
         for (int i = 1; i < variantNames.length; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
