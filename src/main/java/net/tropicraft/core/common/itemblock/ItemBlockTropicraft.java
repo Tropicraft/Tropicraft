@@ -43,6 +43,6 @@ public class ItemBlockTropicraft extends ItemBlock {
 		if (this.variants == null || this.variants.length == 0) {
 			return super.getUnlocalizedName(itemstack);
 		}
-		return "item." + variants[itemstack.getMetadata() % variants.length].getUnlocName();
+		return "tile." + variants[itemstack.getMetadata() % variants.length].getUnlocName();
     }
 }
