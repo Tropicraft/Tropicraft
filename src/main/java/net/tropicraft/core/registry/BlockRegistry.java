@@ -248,8 +248,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
 
-		pineapple = registerBlock(new BlockPineapple(), "pineapple", new MultiBlockItemCreator(TropicraftTallPlants.values()));
-		iris = registerBlock(new BlockIris(), "iris", new MultiBlockItemCreator(TropicraftTallPlants.values()));
+		pineapple = registerBlock(new BlockPineapple(), "pineapple");
+		iris = registerBlock(new BlockIris(), "iris");
 		coffeePlant = registerBlock(new BlockCoffeeBush(), "coffee_bush", (IBlockItemRegistrar) null);
 		
 		sands = registerBlock(new BlockTropicraftSands(), "sand", new MultiBlockItemCreator(TropicraftSands.VALUES));
