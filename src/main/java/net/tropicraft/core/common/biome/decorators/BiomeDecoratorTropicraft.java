@@ -13,7 +13,6 @@ import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -23,12 +22,11 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
     private WorldGenerator zirconGen;
     private WorldGenerator azuriteGen;
 
-    protected int zirconSize, eudialyteSize, azuriteSize;
+    protected int zirconSize, eudialyteSize;
 
 	public BiomeDecoratorTropicraft() {
 	    this.zirconSize = 10;
 	    this.eudialyteSize = 8;
-	    this.azuriteSize = 2;
 	}
 
 	/**
@@ -43,7 +41,7 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 			this.chunkPos = pos;
 			this.decorating = false;
 			this.initOreGen(biome, worldIn, random);
-			this.generateOres(worldIn, random);
+			this.generateOres(worldIn, random, pos);
             this.genDecorations(biome, worldIn, random);
 		}
 	}
@@ -64,14 +62,13 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 	    // Tropics ore gen
 	    this.eudialyteGen = new WorldGenMinable(BlockRegistry.ore.defaultForVariant(TropicraftOres.EUDIALYTE), this.eudialyteSize);
 	    this.zirconGen = new WorldGenMinable(BlockRegistry.ore.defaultForVariant(TropicraftOres.ZIRCON), this.zirconSize);
-	    this.azuriteGen = new WorldGenMinable(BlockRegistry.ore.defaultForVariant(TropicraftOres.AZURITE), this.azuriteSize);
+	    this.azuriteGen = new AzuriteGenerator();
 	}
 
 	/**
 	 * Generates ores in the current chunk
 	 */
-	@Override
-	protected void generateOres(World worldIn, Random random) {
+	protected void generateOres(World worldIn, Random random, BlockPos pos) {
 	    net.minecraftforge.common.MinecraftForge.ORE_GEN_BUS.post(new net.minecraftforge.event.terraingen.OreGenEvent.Pre(worldIn, random, chunkPos));
 	    // Vanilla ores
 	    if (net.minecraftforge.event.terraingen.TerrainGen.generateOre(worldIn, random, dirtGen, chunkPos, net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.DIRT))
@@ -97,7 +94,7 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 	    // Tropics ores
 	    this.genStandardOre1(worldIn, random, this.zirconSize, this.zirconGen, 5, 95);
 	    this.genStandardOre1(worldIn, random, this.eudialyteSize, this.eudialyteGen, 5, 55);
-	    this.genStandardOre1(worldIn, random, this.azuriteSize, this.azuriteGen, 5, 25);
+        azuriteGen.generate(worldIn, random, pos);
 
 	    net.minecraftforge.common.MinecraftForge.ORE_GEN_BUS.post(new net.minecraftforge.event.terraingen.OreGenEvent.Post(worldIn, random, chunkPos));
 	}
@@ -118,4 +115,24 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 		// Offset by 8 to ensure coordinate is in center of chunks for decoration so that CCG is avoided
 		return base + rand.nextInt(variance) + 8;
 	}
+
+    private static class AzuriteGenerator extends WorldGenerator
+    {
+        @Override
+        public boolean generate(World worldIn, Random rand, BlockPos pos)
+        {
+            int count = 3 + rand.nextInt(3);
+            for (int i = 0; i < count; i++)
+            {
+                BlockPos blockpos = pos.add(rand.nextInt(16), rand.nextInt(28) + 4, rand.nextInt(16));
+
+                net.minecraft.block.state.IBlockState state = worldIn.getBlockState(blockpos);
+                if (state.getBlock().isReplaceableOreGen(state, worldIn, blockpos, net.minecraft.block.state.pattern.BlockMatcher.forBlock(Blocks.STONE)))
+                {
+                    worldIn.setBlockState(blockpos, BlockRegistry.ore.defaultForVariant(TropicraftOres.AZURITE), 2);
+                }
+            }
+            return true;
+        }
+    }
 }
