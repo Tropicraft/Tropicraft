@@ -137,7 +137,6 @@ public class ClientProxy extends CommonProxy {
     
     @Override
     public void registerBlockVariantModels(Block block, Item item) {
-        // TODO this won't work for blocks that have custom statemappers, find a way to let them provide a mapper?
         Map<IBlockState, ModelResourceLocation> variants = stateMappers.getOrDefault(block, new DefaultStateMapper()).putStateModelLocations(block);
         for (Entry<IBlockState, ModelResourceLocation> e : variants.entrySet()) {
             ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(e.getKey()), e.getValue());
