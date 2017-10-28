@@ -135,12 +135,20 @@ public class ClientProxy extends CommonProxy {
         }
     }
     
+    private Map<IBlockState, ModelResourceLocation> getStates(Block block) {
+        return stateMappers.getOrDefault(block, new DefaultStateMapper()).putStateModelLocations(block);
+    }
+    
     @Override
     public void registerBlockVariantModels(Block block, Item item) {
-        Map<IBlockState, ModelResourceLocation> variants = stateMappers.getOrDefault(block, new DefaultStateMapper()).putStateModelLocations(block);
-        for (Entry<IBlockState, ModelResourceLocation> e : variants.entrySet()) {
+        for (Entry<IBlockState, ModelResourceLocation> e : getStates(block).entrySet()) {
             ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(e.getKey()), e.getValue());
         }
+    }
+    
+    @Override
+    public void registerBlockVariantModel(IBlockState state, Item item, int meta) {
+        ModelLoader.setCustomModelResourceLocation(item, meta, getStates(state.getBlock()).get(state));
     }
 
 	private final Map<String, String[]> blockVariants = new HashMap<>();
