@@ -114,7 +114,7 @@ public class CommandTropicsVillage extends CommandBase {
                     bj.build.dim = player.world.provider.getDimension();
                     bj.useFirstPass = false; //skip air setting pass
                     bj.useRotationBuild = true;
-                    bj.build_rate = 100;
+                    bj.build_rate = 10000;
                     bj.notifyFlag = 2;
                     bj.setDirection(direction);
                     //bj.customGenCallback = this;

@@ -626,7 +626,7 @@ public class BuildManager {
 
         World worldRef = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(build.dim);
 
-        List ents = worldRef.loadedEntityList;
+        /*List ents = worldRef.loadedEntityList;
 
         for (int i = 0; i < ents.size(); i++) {
             Entity ent = (Entity) ents.get(i);
@@ -635,7 +635,7 @@ public class BuildManager {
             if (ent instanceof EntityItem) {
                 ent.setDead();
             }
-        }
+        }*/
 
         if (build.entities != null) {
             for (int var17 = 0; var17 < build.entities.tagCount(); ++var17) {

@@ -307,7 +307,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						}
 					}
 				}
-			}	
+			}
 
 			bp = new BlockPos(this.getPosition().down(2));
 
