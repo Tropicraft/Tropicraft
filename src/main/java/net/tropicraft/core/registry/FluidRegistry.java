@@ -3,14 +3,15 @@ package net.tropicraft.core.registry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.core.common.fluid.FluidTropicsPortal;
 import net.tropicraft.core.common.fluid.FluidTropicsWater;
 
 public class FluidRegistry {
 
-	public static final Fluid tropicsWater = new FluidTropicsWater(Names.TROPICS_WATER);
-	public static final Fluid tropicsPortal = new FluidTropicsPortal(Names.TROPICS_PORTAL);
+	public static final Fluid tropicsWater = new FluidTropicsWater(TropicraftRegistry.getNamePrefixed(Names.TROPICS_WATER));
+	public static final Fluid tropicsPortal = new FluidTropicsPortal(TropicraftRegistry.getNamePrefixed(Names.TROPICS_PORTAL));
 
 	public static void preInit() {
 		registerFluid(tropicsWater);

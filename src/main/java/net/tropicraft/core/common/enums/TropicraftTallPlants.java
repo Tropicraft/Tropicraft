@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
-
-public enum TropicraftTallPlants implements IStringSerializable {
+public enum TropicraftTallPlants implements ITropicraftVariant {
 
 	PINEAPPLE(0);
 
@@ -13,7 +11,8 @@ public enum TropicraftTallPlants implements IStringSerializable {
 		this.meta = meta;
 	}
 
-	public int getMetadata() {
+	@Override
+	public int getMeta() {
 		return this.meta;
 	}
 
@@ -26,19 +25,14 @@ public enum TropicraftTallPlants implements IStringSerializable {
 	}
 
 	@Override
-	public String getName() {
-		return this.name().toLowerCase();
-	}
-
-	@Override
-	public String toString() {
-		return this.getName();
+	public String getTypeName() {
+	    return "tall_plant";
 	}
 
 	// Set META_LOOKUP table
 	static {
 		for (TropicraftTallPlants plant : values()) {
-			META_LOOKUP[plant.getMetadata()] = plant;
+			META_LOOKUP[plant.getMeta()] = plant;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
     "variants": {
-        "variant=mahogany_plank": { "model": "tropicraft:mahogany_plank" },
-        "variant=palm_plank": { "model": "tropicraft:palm_plank" }
+        "variant=mahogany": { "model": "tropicraft:mahogany_plank" },
+        "variant=palm": { "model": "tropicraft:palm_plank" }
     }
 }

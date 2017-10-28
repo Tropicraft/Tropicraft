@@ -116,7 +116,7 @@ public abstract class TCGenBase extends WorldGenerator {
 				double d = (i - x) * (i - x) + (k - z) * (k - z);
 				if(d <= outerRadius * outerRadius && d >= innerRadius * innerRadius) {
 					BlockPos pos2 = new BlockPos(x, j, z);
-					if(!allowedBlockList.contains(worldObj.getBlockState(pos2))) {
+					if(!allowedBlockList.contains(worldObj.getBlockState(pos2).getBlock())) {
 						return false;
 					}
 				}

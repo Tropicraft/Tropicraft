@@ -67,7 +67,7 @@ public class BlockCoffeeBush extends BlockCrops implements ITropicraftBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { AGE });
+		return new BlockStateContainer(this, AGE);
 	}
 	
 	@Override
@@ -124,10 +124,5 @@ public class BlockCoffeeBush extends BlockCrops implements ITropicraftBlock {
 	@Override
 	public String getStateName(IBlockState state) {
 		return state.getValue(AGE).toString();
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] { AGE };
 	}
 }

@@ -8,7 +8,6 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -35,20 +34,18 @@ import net.tropicraft.core.common.worldgen.WorldGenNormalPalms;
 import net.tropicraft.core.common.worldgen.WorldGenTallTree;
 import net.tropicraft.core.common.worldgen.WorldGenTualang;
 
+//TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, IGrowable {
-
-	public String[] names;
 
 	public static final PropertyEnum<TropicraftSaplings> VARIANT = PropertyEnum.create("variant", TropicraftSaplings.class);
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 0, 1);
 
 	public static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
-	public BlockTropicsSapling(String[] names) {
+	public BlockTropicsSapling() {
 		super(Material.PLANTS);
 		this.setSoundType(SoundType.PLANT);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftSaplings.PALM).withProperty(STAGE, Integer.valueOf(0)));
-		this.names = names;
 	}
 
 	@Override
@@ -87,7 +84,7 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] {STAGE, VARIANT});
+		return new BlockStateContainer(this, STAGE, VARIANT);
 	}
 
 	/**
@@ -117,12 +114,6 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftSaplings) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	@SuppressWarnings("rawtypes")
-	public IProperty[] getProperties() {
-		return new IProperty[] {STAGE, VARIANT};
 	}
 
 	/**
@@ -163,7 +154,7 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
             gen = randomRainforestTreeGen(worldIn);
             break;
         default:
-            gen = new WorldGenFruitTrees(worldIn, rand, variant.ordinal() - 2);
+            gen = new WorldGenFruitTrees(worldIn, rand, variant.getMeta() - 2);
             break;
 		}
 

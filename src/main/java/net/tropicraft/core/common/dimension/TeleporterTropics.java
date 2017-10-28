@@ -22,7 +22,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
-import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockTikiTorch;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
@@ -37,7 +36,7 @@ public class TeleporterTropics extends Teleporter {
 
     private static Block PORTAL_WALL_BLOCK;
     private static Block PORTAL_BLOCK;
-    private IBlockState thatchBlock = BlockRegistry.bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH);
+    private IBlockState thatchBlock = BlockRegistry.bundles.defaultForVariant(TropicraftBundles.THATCH);
 
     private final WorldServer world;
     private final Random random;
@@ -373,7 +372,7 @@ public class TeleporterTropics extends Teleporter {
                 boolean isWall = xOffset < -2 || xOffset > 2 || zOffset < -2 || zOffset > 2;
                 if (isWall) {
                     BlockPos thatchPos = new BlockPos(x + xOffset, y, z + zOffset);
-                    IBlockState thatchState = BlockRegistry.bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH);
+                    IBlockState thatchState = BlockRegistry.bundles.defaultForVariant(TropicraftBundles.THATCH);
                     world.setBlockState(thatchPos, thatchState);
                 }
             }

@@ -2,6 +2,7 @@ package configuration;
 
 //TODO: 1.9 temporary class placement, relocate to CoroUtil and make requirement for tropicraft, or go API route for configmod
 
+@Deprecated
 public interface IConfigCategory {
 
 	public String getConfigFileName();

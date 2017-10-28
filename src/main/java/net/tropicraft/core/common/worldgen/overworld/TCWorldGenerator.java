@@ -10,7 +10,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.tropicraft.configuration.ConfigGenRates;
+import net.tropicraft.configuration.GenRates;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.worldgen.WorldGenBamboo;
 import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
 import net.tropicraft.core.common.worldgen.WorldGenEIH;
@@ -44,7 +45,7 @@ public class TCWorldGenerator implements IWorldGenerator {
         int cx = chunkX;
         int cz = chunkZ;
 
-        if (ConfigGenRates.genTropicraftInOverworld) {
+        if (TropicsConfigs.genOverworld) {
             // Convert to block coords rather than chunk coords
             chunkX *= 16;
             chunkZ *= 16;
@@ -54,7 +55,7 @@ public class TCWorldGenerator implements IWorldGenerator {
                 int l = random.nextInt(62) + 64;
                 int i1 = chunkZ + random.nextInt(16) + 8;
 
-                if (ConfigGenRates.genTropicraftFlowersInOverworld) {
+                if (TropicsConfigs.genOverworldFlowers) {
                     for (int j3 = 0; j3 < 10; j3++) {
                         l = random.nextInt(62) + 64;
                         BlockPos flowerPos = new BlockPos(k, l, i1);
@@ -62,7 +63,7 @@ public class TCWorldGenerator implements IWorldGenerator {
                     }	
                 }
 
-                if (ConfigGenRates.genTropicraftEIHInOverworld && random.nextInt(ConfigGenRates.EIH_CHANCE) == 0) {
+                if (TropicsConfigs.genOverworldEIH && random.nextInt(GenRates.EIH_CHANCE) == 0) {
                     l = random.nextInt(62) + 64;
                     BlockPos eihPos = new BlockPos(k, l, i1);
                     (new WorldGenEIH(world, random)).generate(world, random, eihPos);
@@ -70,13 +71,13 @@ public class TCWorldGenerator implements IWorldGenerator {
 
                 //*********** HERE TO BOTTOM ARE THINGS NECESSARY TO GET TO THE TROPICS ***********//
 
-                if (ConfigGenRates.genPalmsInOverworld && random.nextInt(10) == 0) {
+                if (TropicsConfigs.genOverworldPalms && random.nextInt(10) == 0) {
                     BlockPos posChunk = new BlockPos(cx, 0, cz);
                     Biome biome = world.getBiomeProvider().getBiome(posChunk);			
 
-                    if ((ConfigGenRates.genOverworldPalmsInBeachOnly && biome == Biomes.BEACH) || !ConfigGenRates.genOverworldPalmsInBeachOnly)
-                        if (ConfigGenRates.palmChanceOfGenInOverworld < 0 || random.nextFloat() < (float)(ConfigGenRates.palmChanceOfGenInOverworld / 100F)) {
-                            for (int j3 = 0; j3 < ConfigGenRates.palmPopulationFactorInOverworld; j3++) {
+                    if ((TropicsConfigs.genOverworldPalmsBeachOnly && biome == Biomes.BEACH) || !TropicsConfigs.genOverworldPalmsBeachOnly)
+                        if (TropicsConfigs.chancePalmOverworld < 0 || random.nextFloat() < (float)(TropicsConfigs.chancePalmOverworld / 100F)) {
+                            for (int j3 = 0; j3 < TropicsConfigs.factorPalmOverworld; j3++) {
                                 l = random.nextInt(62) + 64;
 
                                 BlockPos pos = new BlockPos(k, l, i1);
@@ -92,14 +93,14 @@ public class TCWorldGenerator implements IWorldGenerator {
                 }
 
                 // Pineapples
-                if (ConfigGenRates.genPineapplesInOverworld && random.nextInt(ConfigGenRates.TALL_FLOWERS_CHANCE) == 0) {
+                if (TropicsConfigs.genOverworldPineapples && random.nextInt(GenRates.TALL_FLOWERS_CHANCE) == 0) {
                     l = random.nextInt(62) + 64;
                     BlockPos pineapplePos = new BlockPos(k, l, i1);
                     (new WorldGenTallFlower(world, random, BlockRegistry.pineapple.getDefaultState())).generate(pineapplePos);
                 }
 
                 // Bamboo
-                if (ConfigGenRates.genBambooInOverworld && random.nextInt(ConfigGenRates.BAMBOO_CHANCE) == 0) {
+                if (TropicsConfigs.genOverworldBamboo && random.nextInt(GenRates.BAMBOO_CHANCE) == 0) {
                     l = random.nextInt(62) + 64;
                     BlockPos bambooPos = new BlockPos(k, l, i1);
                     (new WorldGenBamboo(world, random)).generate(world, random, bambooPos);
