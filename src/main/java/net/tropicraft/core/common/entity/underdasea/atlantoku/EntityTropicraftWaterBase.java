@@ -294,7 +294,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 			}
 
-			if(!this.isAggressing && this.getAge() % 120 == 0) {
+			if(!this.isAggressing && (this.ticksExisted+this.getEntityId()) % 120 == 0) {
 				List<EntityTropicraftWaterBase> ents = world.getEntitiesWithinAABB(EntityTropicraftWaterBase.class, new AxisAlignedBB(this.getPosition()).expand(4, 4, 4));
 				for(int i =0; i < ents.size(); i++) {
 					EntityTropicraftWaterBase f = ents.get(i);
