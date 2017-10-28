@@ -2,6 +2,7 @@ package net.tropicraft.core.registry;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -204,7 +205,8 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowBCD;
     public static Item yellowWeightBelt;
     
-    private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new HashMap<>();
+    // Linked as to maintain the same order as the block registry
+    private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new LinkedHashMap<>();
 
     public static void preInit() {
         blockItemRegistry.entrySet().forEach(e -> {
