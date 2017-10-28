@@ -37,6 +37,12 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftLogs.MAHOGANY).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
 	}
 
+    @Override
+    @Deprecated
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return blockState.getValue(VARIANT).getHardness();
+    }
+
 	/**
 	 * Called when a user uses the creative pick block button on this block
 	 *

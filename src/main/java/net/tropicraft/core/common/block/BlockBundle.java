@@ -13,7 +13,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.enums.BlockHardnessValues;
 import net.tropicraft.core.common.enums.TropicraftBundles;
+import net.tropicraft.core.common.enums.TropicraftSlabs;
 
 public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> {
 
@@ -22,9 +26,14 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	public BlockBundle(Material mat) {
 		super(mat, TropicraftBundles.class);
 		this.setSoundType(SoundType.PLANT);
-        this.setHardness(0.2F);
 		//TODO: Figure out harvesting of bundles: this.setHarvestLevel("axe", 0);
 		this.setDefaultState(this.getDefaultState().withProperty(BUNDLE_AXIS, BlockLog.EnumAxis.Y));
+	}
+
+	@Override
+	@Deprecated
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+	    return this.getVariant(blockState).getHardness();
 	}
 
 	/**
