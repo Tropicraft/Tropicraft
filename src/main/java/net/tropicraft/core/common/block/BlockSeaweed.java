@@ -5,7 +5,6 @@ import java.util.Random;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -28,7 +27,9 @@ public class BlockSeaweed extends BlockTropicraft {
 
 		private int height = -1;
 		private AxisAlignedBB cachedBB;
-		private Vec3d offset;
+	    // Optifine can somehow cause TESR to be called before getRenderBoundingBox,
+        // so this needs to be nonnull otherwise there is a potential NPE
+		private Vec3d offset = Vec3d.ZERO;
 		private double swayAngle;
 		private double swayDelay;
 
@@ -111,7 +112,7 @@ public class BlockSeaweed extends BlockTropicraft {
 	
 	@Override
 	public int damageDropped(IBlockState state) {
-	    return TropicraftSands.FOAMY.getMetadata();
+	    return TropicraftSands.FOAMY.getMeta();
 	}
 	
 	@Override

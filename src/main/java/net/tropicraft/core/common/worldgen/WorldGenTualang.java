@@ -36,7 +36,7 @@ public class WorldGenTualang extends TCGenBase {
 			return false;
 		}
 		
-		Block blockUnder = getBlock(i, j - 1, k);
+		Block blockUnder = TCGenUtils.getBlock(worldObj, i, j - 1, k);
 		if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
 			return false;
 		}
@@ -45,7 +45,7 @@ public class WorldGenTualang extends TCGenBase {
 		for (int x = i - 1; x <= i + 1; x++) {
 			for (int z = k - 1; z <= k + 1; z++) {
 				for (int y = j; y < j + height; y++) {
-					Block block = getBlock(x, y, z);
+					Block block = TCGenUtils.getBlock(worldObj, x, y, z);
 					if (block.getDefaultState().isOpaqueCube()) {
 						return false;
 					}
@@ -57,7 +57,7 @@ public class WorldGenTualang extends TCGenBase {
 		for(int x = i - 9; x >= i + 9; x++) {
 			for(int z = k - 9; z >= k + 9; z++) {
 				for(int y = height; y < height + 6; y++) {
-					Block block = getBlock(x, y, z);
+					Block block = TCGenUtils.getBlock(worldObj, x, y, z);
 					if (block.getDefaultState().isOpaqueCube()) {
 						return false;
 					}
@@ -65,18 +65,18 @@ public class WorldGenTualang extends TCGenBase {
 			}
 		}
 
-		setBlockState(i, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i - 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i + 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i, j, k - 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i, j, k + 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		TCGenUtils.setBlockState(worldObj, i, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		TCGenUtils.setBlockState(worldObj, i - 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		TCGenUtils.setBlockState(worldObj, i + 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		TCGenUtils.setBlockState(worldObj, i, j, k - 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		TCGenUtils.setBlockState(worldObj, i, j, k + 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
 		
 		for(int y = j; y < height; y++) {
-			setBlockState(i, y, k, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i - 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i + 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i, y, k - 1, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i, y, k + 1, WOOD_BLOCK, blockGenNotifyFlag);
+		    TCGenUtils.setBlockState(worldObj, i, y, k, WOOD_BLOCK, blockGenNotifyFlag);
+		    TCGenUtils.setBlockState(worldObj, i - 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
+		    TCGenUtils.setBlockState(worldObj, i + 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
+		    TCGenUtils.setBlockState(worldObj, i, y, k - 1, WOOD_BLOCK, blockGenNotifyFlag);
+		    TCGenUtils.setBlockState(worldObj, i, y, k + 1, WOOD_BLOCK, blockGenNotifyFlag);
 		}
 		
 		for(int x = 0; x < branches; x++) {

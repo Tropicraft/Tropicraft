@@ -1,7 +1,5 @@
 package net.tropicraft;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -14,18 +12,24 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.tropicraft.core.common.BuildEvents;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.tropicraft.client.gui.TropicraftGuiHandler;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
 import net.tropicraft.core.common.capability.ExtendedWorldStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
 import net.tropicraft.core.common.event.MiscEvents;
+import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.network.TCPacketHandler;
+import net.tropicraft.core.common.worldgen.overworld.TCWorldGenerator;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.registry.AchievementRegistry;
@@ -39,7 +43,7 @@ import net.tropicraft.core.registry.LootRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
-@Mod(modid = Info.MODID, version = Info.VERSION)
+@Mod(modid = Info.MODID, version = Info.VERSION, guiFactory = Info.GUI_FACTORY)
 public class Tropicraft {
 
 	@SidedProxy(clientSide = Info.CLIENT_PROXY, serverSide = Info.SERVER_PROXY)
@@ -58,23 +62,28 @@ public class Tropicraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+	    TropicsConfigs.init(event.getSuggestedConfigurationFile());
+
 		ColorHelper.init();
 		SoundRegistry.init();
 		FluidRegistry.preInit();
 		BlockRegistry.preInit();
+	    proxy.preInit();
 		TileEntityRegistry.init();
 		ItemRegistry.preInit();
 		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
-		proxy.preInit();
+		ScubaCapabilities.register();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
 		CapabilityManager.INSTANCE.register(WorldDataInstance.class, new ExtendedWorldStorage(), WorldDataInstance.class);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new TropicraftGuiHandler());
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		TCPacketHandler.init();
+		ItemRegistry.init();
 		AchievementRegistry.init();
 		EntityRegistry.init();
 		proxy.init();
@@ -84,6 +93,7 @@ public class Tropicraft {
 		MinecraftForge.EVENT_BUS.register(new BuildEvents());
 		MinecraftForge.EVENT_BUS.register(new MiscEvents());
 		BiomeGenTropicraft.registerBiomes();
+		GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
 		TropicraftWorldUtils.initializeDimension();
 	}
 

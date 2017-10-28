@@ -3,7 +3,7 @@ package net.tropicraft.core.common.entity.underdasea.atlantoku;
 import net.minecraft.world.World;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityRiverSardine extends EntityTropicraftWaterBase implements IAtlasFish{
+public class EntityRiverSardine extends EntitySchoolableFish implements IAtlasFish{
 
 	public EntityRiverSardine(World world) {
 		super(world);
@@ -11,8 +11,8 @@ public class EntityRiverSardine extends EntityTropicraftWaterBase implements IAt
 		this.setSize(0.3F, 0.4F);
 		this.setExpRate(5);
 		this.setDropStack(ItemRegistry.fertilizer, 3);
-		this.setSchoolable(true);
 		this.setFleesPlayers(true, 5D);
+		this.setSchoolSizeRange(1, 20);
 	}
 
 	@Override

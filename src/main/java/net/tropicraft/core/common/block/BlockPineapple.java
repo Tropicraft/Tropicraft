@@ -5,8 +5,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.tropicraft.core.common.enums.TropicraftTallPlants;
-import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlantable {
 
@@ -26,8 +25,8 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 
 	public static final PropertyInteger STAGE = PropertyInteger.create("stage", 1, TOTAL_GROW_TICKS);
 
-	public BlockPineapple(String[] names) {
-		super(names);
+	public BlockPineapple() {
+		super();
 		this.setSoundType(SoundType.PLANT);
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().
@@ -36,12 +35,12 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 				withProperty(STAGE, Integer.valueOf(1))
 				);
 	}
+	  
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, VARIANT, HALF, STAGE);
+    }
 
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT, HALF, STAGE};
-	}
-	
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return FULL_HEIGHT_AABB;

@@ -1,7 +1,13 @@
 package net.tropicraft.core.registry;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -15,15 +21,15 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.enums.ITropicraftVariant;
+import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.common.item.ItemBambooItemFrame;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
@@ -49,15 +55,21 @@ import net.tropicraft.core.common.item.armor.ItemFireArmor;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
 import net.tropicraft.core.common.item.scuba.ItemBCD;
 import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
-import net.tropicraft.core.common.item.scuba.ItemScubaChestplate;
+import net.tropicraft.core.common.item.scuba.ItemPonyBottle;
 import net.tropicraft.core.common.item.scuba.ItemScubaChestplateGear;
 import net.tropicraft.core.common.item.scuba.ItemScubaFlippers;
-import net.tropicraft.core.common.item.scuba.ItemScubaGear;
 import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
-import net.tropicraft.core.common.item.scuba.ItemScubaLeggings;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemRegistry extends TropicraftRegistry {
+    
+    public interface IBlockItemRegistrar {
+        
+        Item getItem(Block block);
+        
+        void postRegister(Block block, Item item);
+    }
 
     // Ore gems
     public static Item azurite, eudialyte, zircon;
@@ -137,13 +149,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
     public static Item portalEnchanter;
 
-    public static Item shellFrox;
-    public static Item shellPab;
-    public static Item shellRube;
-    public static Item shellSolo;
-    public static Item shellStarfish;
-    public static Item shellTurtle;
-
+    public static Item shell;
     public static Item cocktail;
 
     public static Item whitePearl;
@@ -194,33 +200,41 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowRegulator;
     public static Item yellowBCD;
     public static Item yellowWeightBelt;
+    
+    // Linked as to maintain the same order as the block registry
+    private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new LinkedHashMap<>();
 
-    public static void preInit() {        
+    public static void preInit() {
+        blockItemRegistry.entrySet().forEach(e -> {
+                Item item = GameRegistry.register(e.getValue().getItem(e.getKey()).setRegistryName(e.getKey().getRegistryName()));
+                e.getValue().postRegister(e.getKey(), item);
+        });
+        
         diveComputer = registerItem(new ItemDiveComputer(), "dive_computer");
         
         pinkWeightBelt = registerItem(new ItemTropicraft(), "pink_weight_belt");
-        pinkPonyBottle = registerItem(new ItemTropicraft(), "pink_pony_bottle");
+        pinkPonyBottle = registerItem(new ItemPonyBottle(), "pink_pony_bottle");
         pinkBCD = registerItem(new ItemBCD(), "pink_bcd");
-        pinkScubaGoggles = registerItem(new ItemTropicraft(), "pink_scuba_goggles");
+        //pinkScubaGoggles = registerItem(new ItemTropicraft(), "pink_scuba_goggles");
         pinkRegulator = registerItem(new ItemTropicraft(), "pink_regulator");
         pinkScubaTank = registerItem(new ItemScubaTank(), "pink_scuba_tank");
-        pinkFlippers = registerItem(new ItemScubaFlippers(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.FEET), "pink_flippers");
+        pinkFlippers = registerItem(new ItemScubaFlippers(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.FEET), "pink_flippers");
         //pinkLeggings = registerItem(new ItemScubaLeggings(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.LEGS), "pink_leggings");
-        pinkChestplate = registerItem(new ItemScubaChestplate(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate");
-        pinkChestplateGear = registerItem(new ItemScubaChestplateGear(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate_gear");
-        pinkHelmet = registerItem(new ItemScubaHelmet(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.HEAD), "pink_helmet");
+        //pinkChestplate = registerItem(new ItemScubaChestplate(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate");
+        pinkChestplateGear = registerItem(new ItemScubaChestplateGear(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate_gear");
+        pinkScubaGoggles = registerItem(new ItemScubaHelmet(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.HEAD), "pink_scuba_goggles");
 
         yellowWeightBelt = registerItem(new ItemTropicraft(), "yellow_weight_belt");
-        yellowPonyBottle = registerItem(new ItemTropicraft(), "yellow_pony_bottle");
+        yellowPonyBottle = registerItem(new ItemPonyBottle(), "yellow_pony_bottle");
         yellowBCD = registerItem(new ItemBCD(), "yellow_bcd");
-        yellowScubaGoggles = registerItem(new ItemTropicraft(), "yellow_scuba_goggles");
+        //yellowScubaGoggles = registerItem(new ItemTropicraft(), "yellow_scuba_goggles");
         yellowRegulator = registerItem(new ItemTropicraft(), "yellow_regulator");
         yellowScubaTank = registerItem(new ItemScubaTank(), "yellow_scuba_tank");
-        yellowFlippers = registerItem(new ItemScubaFlippers(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.FEET), "yellow_flippers");
+        yellowFlippers = registerItem(new ItemScubaFlippers(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.FEET), "yellow_flippers");
         //yellowLeggings = registerItem(new ItemScubaLeggings(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.LEGS), "yellow_leggings");
-        yellowChestplate = registerItem(new ItemScubaChestplate(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate");
-        yellowChestplateGear = registerItem(new ItemScubaChestplateGear(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate_gear");
-        yellowHelmet = registerItem(new ItemScubaHelmet(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "yellow_helmet");
+        //yellowChestplate = registerItem(new ItemScubaChestplate(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate");
+        yellowChestplateGear = registerItem(new ItemScubaChestplateGear(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate_gear");
+        yellowScubaGoggles = registerItem(new ItemScubaHelmet(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "yellow_scuba_goggles");
         
         recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
         recordEasternIsles = registerItem(new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");
@@ -287,13 +301,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
         portalEnchanter = registerItem(new ItemPortalEnchanter(), "portal_enchanter");
 
-        shellFrox = registerItem(new ItemShell(), "shell_frox");
-        shellPab = registerItem(new ItemShell(), "shell_pab");
-        shellRube = registerItem(new ItemShell(), "shell_rube");
-        shellSolo = registerItem(new ItemShell(), "shell_solo");
-        //TODO make shellfish ItemShell(true) once we figure out how to get hangables to work
-        shellStarfish = registerItem(new ItemShell(), "shell_starfish");
-        shellTurtle = registerItem(new ItemShell(), "shell_turtle");
+        shell = registerMultiItem(new ItemShell(), "shell", TropicraftShells.values());
 
         cocktail = registerMultiItem(new ItemCocktail(), "cocktail", Drink.drinkList.length);
 
@@ -331,8 +339,16 @@ public class ItemRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerColoredItem(umbrella);
         Tropicraft.proxy.registerColoredItem(cocktail);
     }
+    
+    public static void addBlockItem(Block block, IBlockItemRegistrar item) {
+        blockItemRegistry.put(block, item);
+    }
+    
+    private static Item registerMultiItem(Item item, String regName, ITropicraftVariant... variants) {
+        return registerMultiItemPrefixed(item, regName, Arrays.stream(variants).map(ITropicraftVariant::getSimpleName).toArray(String[]::new));
+    }
 
-    private static Item registerMultiItem(Item item, String regName, String[] variantNames) {
+    private static Item registerMultiItem(Item item, String regName, String... variantNames) {
         Item ret = registerItem(item, regName, variantNames[0]);
         for (int i = 1; i < variantNames.length; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
@@ -358,7 +374,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
     private static Item registerItem(Item item, String name, String variantName) {
         item.setUnlocalizedName(getNamePrefixed(name));
-        item.setRegistryName(new ResourceLocation(Info.MODID, name));
+        item.setRegistryName(name);
 
         GameRegistry.register(item);
         item.setCreativeTab(CreativeTabRegistry.tropicraftTab);

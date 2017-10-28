@@ -23,9 +23,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.enums.BlockHardnessValues;
 import net.tropicraft.core.common.enums.TropicraftSlabs;
 import net.tropicraft.core.registry.BlockRegistry;
 
+// TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftSlabs> VARIANT = PropertyEnum.<TropicraftSlabs>create("variant", TropicraftSlabs.class);
@@ -43,7 +45,13 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 
 		this.setDefaultState(iblockstate.withProperty(VARIANT, TropicraftSlabs.BAMBOO));
 	}
-	
+
+    @Override
+    @Deprecated
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return blockState.getValue(this.getVariantProperty()).getHardness();
+    }
+
     /**
      * Get the MapColor for this Block and the given BlockState
      */
@@ -63,7 +71,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(BlockRegistry.slabs, 1, ((TropicraftSlabs)state.getValue(VARIANT)).getMetadata());
+        return new ItemStack(BlockRegistry.slabs, 1, ((TropicraftSlabs)state.getValue(VARIANT)).getMeta());
     }
 
 	@Override
@@ -80,7 +88,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     }
 
 	@Override
-	public IProperty<?> getVariantProperty() {
+	public IProperty<TropicraftSlabs> getVariantProperty() {
 		return VARIANT;
 	}
 
@@ -97,7 +105,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         if (itemIn != Item.getItemFromBlock(BlockRegistry.doubleSlabs)) {
             for (TropicraftSlabs slab : TropicraftSlabs.VALUES) {
-                list.add(new ItemStack(itemIn, 1, slab.getMetadata()));
+                list.add(new ItemStack(itemIn, 1, slab.getMeta()));
             }
         }
     }
@@ -122,7 +130,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 	@Override
     public int getMetaFromState(IBlockState state) {
         int i = 0;
-        i = i | ((TropicraftSlabs)state.getValue(VARIANT)).getMetadata();
+        i = i | ((TropicraftSlabs)state.getValue(VARIANT)).getMeta();
 
         if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) {
             i |= 8;
@@ -133,7 +141,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 	
 	@Override
     protected BlockStateContainer createBlockState() {
-        return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {VARIANT}): new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT): new BlockStateContainer(this, HALF, VARIANT);
     }
 	
     /**
@@ -142,17 +150,12 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
      */
 	@Override
     public int damageDropped(IBlockState state) {
-        return ((TropicraftSlabs)state.getValue(VARIANT)).getMetadata();
+        return ((TropicraftSlabs)state.getValue(VARIANT)).getMeta();
     }
 
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftSlabs) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return this.isDouble() ? new IProperty[] {VARIANT}: new IProperty[] {HALF, VARIANT};
 	}
 
 	@Override

@@ -113,9 +113,9 @@ public class WorldGenHomeTree extends TCGenBase {
 					double length = rand.nextDouble() * trunkRadius - 4;
 					int spawnerX = trunkX - 4 + rand.nextInt(9);
 					int spawnerZ = trunkZ - 4 + rand.nextInt(9);
-					setBlock(spawnerX, y + 1, spawnerZ, Blocks.MOB_SPAWNER);
+					TCGenUtils.setBlock(worldObj, spawnerX, y + 1, spawnerZ, Blocks.MOB_SPAWNER);
 					StringBuilder sb = new StringBuilder(String.format("%s.", Info.MODID));
-					sb.append(rand.nextBoolean() ? "AshenHunter" : "Iguana");
+					sb.append(rand.nextBoolean() ? "ashen" : "iguana");
 					BlockPos spawnerPos = new BlockPos(spawnerX, y + 1, spawnerZ);
 					TileEntityMobSpawner spawner = ((TileEntityMobSpawner)worldObj.getTileEntity(spawnerPos));
 					if (spawner != null) {
@@ -163,7 +163,7 @@ public class WorldGenHomeTree extends TCGenBase {
 			}
 			placeBlock(trunkX, y, trunkZ, BlockRegistry.logs.getDefaultState(), false);
 		}
-		setBlock(trunkX - 1, height + j, trunkZ - 1, BlockRegistry.bambooChest);
+		TCGenUtils.setBlock(worldObj, trunkX - 1, height + j, trunkZ - 1, BlockRegistry.bambooChest);
 		BlockPos trunkPos = new BlockPos(trunkX - 1, height + j, trunkZ - 1);
 		TileEntityChest chest = (TileEntityChest)worldObj.getTileEntity(trunkPos);
 		if (chest != null) {
@@ -253,7 +253,7 @@ public class WorldGenHomeTree extends TCGenBase {
 			for (int k = -outerRadius + z; k < outerRadius + z; k++) {
 				double d = (x - i) * (x - i) + (z - k) * (z - k);
 				if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
-					if (isAirBlock(i, y, k) || getBlock(i, y, k) == state.getBlock()) {
+					if (TCGenUtils.isAirBlock(worldObj, i, y, k) || TCGenUtils.getBlock(worldObj, i, y, k) == state.getBlock()) {
 						placeBlock(i, y, k, state, false);
 					}
 
@@ -275,7 +275,7 @@ public class WorldGenHomeTree extends TCGenBase {
 		if (dir == 3) direction = BlockVine.WEST;
 
 		for (int y = j; y > j - length; y--) {
-			if (isAirBlock(i, y, k)) {
+			if (TCGenUtils.isAirBlock(worldObj, i, y, k)) {
 				placeBlock(i, y, k, Blocks.VINE.getDefaultState().withProperty(direction, Boolean.valueOf(true)), false);
 			}
 			else break;
@@ -283,10 +283,10 @@ public class WorldGenHomeTree extends TCGenBase {
 	}
 
 	public boolean placeBlock(int i, int j, int k, IBlockState state, boolean force) {
-		Block bID = getBlock(i, j, k);
+		Block bID = TCGenUtils.getBlock(worldObj, i, j, k);
 		if(force || bID == Blocks.WATER || bID == Blocks.FLOWING_WATER || bID == BlockRegistry.tropicsWater 
 				|| bID == Blocks.AIR) {
-			return setBlockState(i, j, k, state, 0);
+			return TCGenUtils.setBlockState(worldObj, i, j, k, state, 0);
 		}
 		return false;
 	}
@@ -300,7 +300,7 @@ public class WorldGenHomeTree extends TCGenBase {
 			for (int z = (int)-outerRadius + k; z < (int)outerRadius + k; z++) {
 				double d = (x - i) * (x - i) + (z - k) * (z - k);
 				if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
-					Block bID = getBlock(x, j, z);
+					Block bID = TCGenUtils.getBlock(worldObj, x, j, z);
 					if ((bID == Blocks.AIR || bID == Blocks.WATER || bID == Blocks.FLOWING_WATER) 
 							|| bID == BlockRegistry.tropicsWater 
 							|| /*bID == TCBlockRegistry.tropicsWaterFlowing ||*/ solid)
@@ -403,7 +403,7 @@ public class WorldGenHomeTree extends TCGenBase {
 			ai3[j] = MathHelper.floor(ai[j] + k + 0.5D);
 			ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
 			ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
-			Block bId = getBlock(ai3[0], ai3[1], ai3[2]);
+			Block bId = TCGenUtils.getBlock(worldObj, ai3[0], ai3[1], ai3[2]);
 			if (!a.contains(bId)) {
 				return null;
 			}

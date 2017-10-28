@@ -13,6 +13,7 @@ import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.enums.TropicraftLeaves;
 import net.tropicraft.core.common.enums.TropicraftLogs;
 import net.tropicraft.core.registry.BlockRegistry;
+import static net.tropicraft.core.common.worldgen.TCGenUtils.setBlockState;
 
 public class WorldGenTallTree extends TCGenBase {
 
@@ -30,23 +31,23 @@ public class WorldGenTallTree extends TCGenBase {
 	@Override
 	public boolean generate(BlockPos pos) {	
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
-		Block blockUnder = getBlock(i, j - 1, k);
+		Block blockUnder = TCGenUtils.getBlock(worldObj, i, j - 1, k);
 		if(blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
 			return false;
 		}
-		blockUnder = getBlock(i + 1, j - 1, k);
+		blockUnder = TCGenUtils.getBlock(worldObj, i + 1, j - 1, k);
 		if(blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
 			return false;
 		}
-		blockUnder = getBlock(i - 1, j - 1, k);
+		blockUnder = TCGenUtils.getBlock(worldObj, i - 1, j - 1, k);
 		if(blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
 			return false;
 		}
-		blockUnder = getBlock(i, j - 1, k + 1);
+		blockUnder = TCGenUtils.getBlock(worldObj, i, j - 1, k + 1);
 		if(blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
 			return false;
 		}
-		blockUnder = getBlock(i, j - 1, k - 1);
+		blockUnder = TCGenUtils.getBlock(worldObj, i, j - 1, k - 1);
 		if(blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS) {
 			return false;
 		}
@@ -59,7 +60,7 @@ public class WorldGenTallTree extends TCGenBase {
 			{
 				for(int z = k - 1; z <= k + 1; z++)
 				{
-					Block block = getBlock(x, y, z);
+					Block block = TCGenUtils.getBlock(worldObj, x, y, z);
 					if(block != Blocks.AIR && block != Blocks.TALLGRASS && block != LEAF_BLOCK) {
 						return false;
 					}
@@ -67,18 +68,18 @@ public class WorldGenTallTree extends TCGenBase {
 			}
 		}
 
-		setBlockState(i, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i - 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i + 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i, j, k - 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
-		setBlockState(i, j, k + 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		setBlockState(worldObj, i, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		setBlockState(worldObj, i - 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		setBlockState(worldObj, i + 1, j, k, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		setBlockState(worldObj, i, j, k - 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
+		setBlockState(worldObj, i, j, k + 1, Blocks.DIRT.getDefaultState(), blockGenNotifyFlag);
 
 		for(int y = j; y < j + height; y++) {
-			setBlockState(i, y, k, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i - 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i + 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i, y, k - 1, WOOD_BLOCK, blockGenNotifyFlag);
-			setBlockState(i, y, k + 1, WOOD_BLOCK, blockGenNotifyFlag);
+			setBlockState(worldObj, i, y, k, WOOD_BLOCK, blockGenNotifyFlag);
+			setBlockState(worldObj, i - 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
+			setBlockState(worldObj, i + 1, y, k, WOOD_BLOCK, blockGenNotifyFlag);
+			setBlockState(worldObj, i, y, k - 1, WOOD_BLOCK, blockGenNotifyFlag);
+			setBlockState(worldObj, i, y, k + 1, WOOD_BLOCK, blockGenNotifyFlag);
 			if(y - j > height / 2 && rand.nextInt(SMALL_LEAF_CHANCE) == 0) {
 				int nx = rand.nextInt(3) - 1 + i;
 				int nz = rand.nextInt(3) - 1 + k;
@@ -145,8 +146,8 @@ public class WorldGenTallTree extends TCGenBase {
 				return false;
 			}
 
-			if (Blocks.VINE.canPlaceBlockOnSide(worldObj, new BlockPos(i, j, k), EnumFacing.getHorizontal(m)) && getBlock(i, j, k) == Blocks.AIR) {
-				setBlockState(i, j, k, Blocks.VINE.getDefaultState(), blockGenNotifyFlag);
+			if (Blocks.VINE.canPlaceBlockOnSide(worldObj, new BlockPos(i, j, k), EnumFacing.getHorizontal(m)) && TCGenUtils.getBlock(worldObj, i, j, k) == Blocks.AIR) {
+			    TCGenUtils.setBlockState(worldObj, i, j, k, Blocks.VINE.getDefaultState(), blockGenNotifyFlag);
 				break;
 			}
 
@@ -157,8 +158,8 @@ public class WorldGenTallTree extends TCGenBase {
 		int length = rand.nextInt(4) + 4;
 
 		for(int y = j - 1; y > j - length; y--) {
-			if(getBlock(i, y, k) == Blocks.AIR) {
-				setBlockState(i, y, k, Blocks.VINE.getDefaultState(), blockGenNotifyFlag);        	
+			if(TCGenUtils.getBlock(worldObj, i, y, k) == Blocks.AIR) {
+			    TCGenUtils.setBlockState(worldObj, i, y, k, Blocks.VINE.getDefaultState(), blockGenNotifyFlag);        	
 			} else {
 				return true;
 			}

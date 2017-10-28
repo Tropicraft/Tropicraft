@@ -17,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.tropicraft.core.common.block.tileentity.message.MessageSifterInventory;
 import net.tropicraft.core.common.block.tileentity.message.MessageSifterStart;
+import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
@@ -117,25 +118,12 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	}
 
 	private ItemStack getCommonItem() {
-		// Damage of shell
-		int dmg = rand.nextInt(7);
-
-		switch (dmg) {
-		case 0:
-			return new ItemStack(ItemRegistry.shellFrox);
-		case 1:
-			return new ItemStack(ItemRegistry.shellPab);
-		case 2:
-			return new ItemStack(ItemRegistry.shellRube);
-		case 3:
-			return new ItemStack(ItemRegistry.shellSolo);
-		case 4:
-			return new ItemStack(ItemRegistry.shellStarfish);
-		case 5:
-			return new ItemStack(ItemRegistry.shellTurtle);
-		default:
-			return getRareItem();
+		// Random from -1 to size-1
+		int dmg = rand.nextInt(TropicraftShells.values().length + 1) - 1;
+		if (dmg < 0) {
+		    return getRareItem();
 		}
+		return new ItemStack(ItemRegistry.shell, 1, dmg);
 	}
 
 	private ItemStack getRareItem() {
@@ -143,7 +131,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 
 		switch (dmg) {
 		case 0:
-			return new ItemStack(ItemRegistry.shellRube); //rube nautilus
+			return new ItemStack(ItemRegistry.shell, 1, TropicraftShells.RUBE.getMeta()); //rube nautilus
 		case 1:
 			return new ItemStack(Items.GOLD_NUGGET, 1);
 		case 2:
@@ -159,7 +147,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 		case 7:
 			return new ItemStack(Items.STONE_SHOVEL, 1);
 		default:
-			return new ItemStack(ItemRegistry.shellRube); //rube nautilus
+			return new ItemStack(ItemRegistry.shell, 1, TropicraftShells.RUBE.getMeta()); //rube nautilus
 		}
 	}
 

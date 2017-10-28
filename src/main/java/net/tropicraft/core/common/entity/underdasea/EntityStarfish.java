@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityStarfish extends EntityEchinoderm implements IEntityAdditionalSpawnData {
@@ -112,7 +113,7 @@ public class EntityStarfish extends EntityEchinoderm implements IEntityAdditiona
 	public void onDeath(DamageSource d) {
 		super.onDeath(d);
 		if (!this.world.isRemote) {
-			this.entityDropItem(new ItemStack(ItemRegistry.shellStarfish), 0);
+			this.entityDropItem(new ItemStack(ItemRegistry.shell, 1, TropicraftShells.STARFISH.getMeta()), 0);
 		}
 	}
 }

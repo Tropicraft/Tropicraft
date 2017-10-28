@@ -1,9 +1,15 @@
 package net.tropicraft.core.client.entity.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityHanging;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 
 public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropicraftWaterBase> {
@@ -23,7 +29,12 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 		float swimPitch = (entityliving.prevSwimPitch + pitchOffset)
 				+ ((entityliving.swimPitch + pitchOffset) - (entityliving.prevSwimPitch + pitchOffset)) * delta;
 
+		if (swimPitch <= -45) {
+			swimPitch = -45;
+		}
+
 		GlStateManager.pushMatrix();
+
 		GlStateManager.disableCull();
 
 		GlStateManager.translate(posX, posY, posZ);
@@ -65,6 +76,12 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 		GlStateManager.color(1f, 1f, 1f, 1f);
 
 		GlStateManager.popMatrix();
+		if (Minecraft.getMinecraft().pointedEntity != null) {
+			if (Minecraft.getMinecraft().pointedEntity.equals(entityliving)) {
+				if (entityliving.getCustomNameTag().length() > 0) {
+					renderEntityName(entityliving, posX, posY, posZ, entityliving.getCustomNameTag(), 32D);
+				}
+			}
+		}
 	}
-
 }

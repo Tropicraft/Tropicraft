@@ -93,7 +93,7 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 		{
 			for (int i = 0; i < width * height; ++i)
 			{
-				biomes[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
+				biomes[i] = Biome.getBiome(aint[i], BiomeGenTropicraft.tropicsOcean);
 			}
 
 			return biomes;
@@ -144,7 +144,7 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 
 			for (int i = 0; i < width * length; ++i)
 			{
-				listToReuse[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
+				listToReuse[i] = Biome.getBiome(aint[i], BiomeGenTropicraft.tropicsOcean);
 			}
 
 			return listToReuse;

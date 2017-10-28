@@ -7,7 +7,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
-import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 
 public class MessageAirCompressorInventory extends MessageTileEntity<TileEntityAirCompressor> {
 
@@ -19,7 +18,7 @@ public class MessageAirCompressorInventory extends MessageTileEntity<TileEntityA
 
     public MessageAirCompressorInventory(TileEntityAirCompressor airCompressor) {
         super(airCompressor);
-        this.tank = airCompressor.tank;
+        this.tank = airCompressor.stack;
     }
 
     @Override
@@ -40,7 +39,7 @@ public class MessageAirCompressorInventory extends MessageTileEntity<TileEntityA
         public IMessage onMessage(MessageAirCompressorInventory message, MessageContext ctx) {
             TileEntityAirCompressor compressor = message.getClientTileEntity();
             if (compressor != null) {
-                compressor.tank = message.tank;
+                compressor.setTank(message.tank);
             }
             return null;
         }

@@ -22,7 +22,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldServer;
-import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockTikiTorch;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
@@ -37,7 +36,7 @@ public class TeleporterTropics extends Teleporter {
 
     private static Block PORTAL_WALL_BLOCK;
     private static Block PORTAL_BLOCK;
-    private IBlockState thatchBlock = BlockRegistry.bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH);
+    private IBlockState thatchBlock = BlockRegistry.bundles.defaultForVariant(TropicraftBundles.THATCH);
 
     private final WorldServer world;
     private final Random random;
@@ -251,7 +250,7 @@ public class TeleporterTropics extends Teleporter {
                     BlockPos pos = new BlockPos(x, y, z);
                     for (; y >= 63 - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
                             !world.getBlockState(pos).isOpaqueCube()); pos = pos.down()) {
-                        ;
+                        y = pos.getY();
                     }
                     // Only generate portal between sea level and sea level + 20
                     if (y > 63 + 20 || y < 63) {
@@ -267,7 +266,7 @@ public class TeleporterTropics extends Teleporter {
                                 BlockPos pos2 = tryPos.toImmutable(); 
                                 for (; otherY >= 63 && (world.getBlockState(pos1).getBlock() == Blocks.AIR ||
                                         !world.getBlockState(pos2).isOpaqueCube()); pos1 = pos1.down()) {
-                                    ;
+                                    otherY = pos1.getY();
                                 }
                                 if (Math.abs(y - otherY) >= 3) {
                                     continue nextCoords;
@@ -298,7 +297,7 @@ public class TeleporterTropics extends Teleporter {
         int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
 
         // Max distance to search in every direction for the nearest landmass to build a bridge to
-        int SEARCH_FOR_LAND_DISTANCE_MAX = 100;
+        int SEARCH_FOR_LAND_DISTANCE_MAX = 200;
 
         // If we can't find a spot (e.g. we're in the middle of the ocean),
         // just put the portal at sea level
@@ -373,7 +372,7 @@ public class TeleporterTropics extends Teleporter {
                 boolean isWall = xOffset < -2 || xOffset > 2 || zOffset < -2 || zOffset > 2;
                 if (isWall) {
                     BlockPos thatchPos = new BlockPos(x + xOffset, y, z + zOffset);
-                    IBlockState thatchState = BlockRegistry.bundles.getDefaultState().withProperty(BlockBundle.VARIANT, TropicraftBundles.THATCH);
+                    IBlockState thatchState = BlockRegistry.bundles.defaultForVariant(TropicraftBundles.THATCH);
                     world.setBlockState(thatchPos, thatchState);
                 }
             }

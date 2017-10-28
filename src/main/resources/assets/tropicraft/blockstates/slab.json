@@ -1,12 +1,12 @@
 {
     "variants": {
-        "half=top,variant=bamboo_slab": { "model": "tropicraft:bamboo_upper_slab" },
-        "half=bottom,variant=bamboo_slab": { "model": "tropicraft:bamboo_slab" },
-        "half=top,variant=thatch_slab": { "model": "tropicraft:thatch_upper_slab" },
-        "half=bottom,variant=thatch_slab": { "model": "tropicraft:thatch_slab" },
-        "half=top,variant=chunk_slab": { "model": "tropicraft:chunk_upper_slab" },
-        "half=bottom,variant=chunk_slab": { "model": "tropicraft:chunk_slab" },
-        "half=top,variant=palm_slab": { "model": "tropicraft:palm_upper_slab" },
-        "half=bottom,variant=palm_slab": { "model": "tropicraft:palm_slab" }
+        "half=top,variant=bamboo": { "model": "tropicraft:bamboo_upper_slab" },
+        "half=bottom,variant=bamboo": { "model": "tropicraft:bamboo_slab" },
+        "half=top,variant=thatch": { "model": "tropicraft:thatch_upper_slab" },
+        "half=bottom,variant=thatch": { "model": "tropicraft:thatch_slab" },
+        "half=top,variant=chunk": { "model": "tropicraft:chunk_upper_slab" },
+        "half=bottom,variant=chunk": { "model": "tropicraft:chunk_slab" },
+        "half=top,variant=palm": { "model": "tropicraft:palm_upper_slab" },
+        "half=bottom,variant=palm": { "model": "tropicraft:palm_slab" }
     }
 }
