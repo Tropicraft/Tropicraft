@@ -21,6 +21,6 @@ public class BlockTropicraftPlank extends BlockTropicraftEnumVariants<Tropicraft
 	@Override
 	@Deprecated
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-	    return blockState.getValue(this.getProperty()).getHardness();
+	    return this.getVariant(blockState).getHardness();
 	}
 }
