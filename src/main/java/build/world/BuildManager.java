@@ -3,6 +3,7 @@ package build.world;
 import build.ITileEntityCustomGenData;
 import build.SchematicData;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.tropicraft.core.common.block.BlockBundle;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.enums.TropicraftLogs;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -326,9 +328,9 @@ public class BuildManager {
                     } else {
 
                         //TEEEEEMMMMMPPPPPPPP
-                        build_rate = 100000;
+                        //build_rate = 100000;
 
-                        boolean tropiFixTemp = true;
+                        boolean tropiFixTemp = false;
 
                         if (!buildJob.build_blockPlaced[buildJob.build_loopTickX][buildJob.build_loopTickY][buildJob.build_loopTickZ]) {
 
@@ -380,7 +382,9 @@ public class BuildManager {
 
                                     if (tropiFixTemp) {
                                         if (id == BlockRegistry.bundles) {
-                                            meta = 0;
+                                            //meta = 0;
+                                            IBlockState state = id.getDefaultState().withProperty(BlockBundle.BUNDLE_AXIS, BlockLog.EnumAxis.Y);
+                                            meta = id.getMetaFromState(state);
                                         } else if (id == BlockRegistry.logs) {
                                             IBlockState state = id.getDefaultState().withProperty(BlockTropicraftLog.VARIANT, TropicraftLogs.PALM);
                                             meta = id.getMetaFromState(state);

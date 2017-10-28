@@ -194,6 +194,11 @@ public class EntityFishHook extends Entity
     {
         super.onUpdate();
 
+        if (this.angler == null) {
+            setDead();
+            return;
+        }
+
         if (this.world.isRemote)
         {
             int i = ((Integer)this.getDataManager().get(DATA_HOOKED_ENTITY)).intValue();
