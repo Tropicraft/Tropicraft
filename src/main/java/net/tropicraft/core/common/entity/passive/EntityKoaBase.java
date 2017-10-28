@@ -58,6 +58,7 @@ public class EntityKoaBase extends EntityVillager {
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> ORIENTATION = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> LURE_ID = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
 
     private EntityAIBase taskFishing = new EntityAIGoneFishin(this);
 
@@ -66,6 +67,8 @@ public class EntityKoaBase extends EntityVillager {
     public static int MAX_HOME_DISTANCE = 64;
 
     private int villageID = -1;
+
+    private EntityFishHook lure;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> input instanceof EntityMob || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -134,6 +137,26 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().register(GENDER, Integer.valueOf(0));
         this.getDataManager().register(ORIENTATION, Integer.valueOf(0));
         this.getDataManager().register(SITTING, Boolean.valueOf(false));
+        this.getDataManager().register(LURE_ID, Integer.valueOf(-1));
+    }
+
+    @Override
+    public void notifyDataManagerChange(DataParameter<?> key) {
+        super.notifyDataManagerChange(key);
+
+        if (key == LURE_ID) {
+            int id = this.getDataManager().get(LURE_ID);
+            if (id != -1) {
+                Entity ent = world.getEntityByID(id);
+                if (ent instanceof EntityFishHook) {
+                    System.out.println("set client lure");
+                    setLure((EntityFishHook) ent);
+                    ((EntityFishHook) ent).angler = this;
+                }
+            } else {
+                setLure(null);
+            }
+        }
     }
 
     @Override
@@ -745,6 +768,21 @@ public class EntityKoaBase extends EntityVillager {
             TownKoaVillage village = getVillage();
             if (village != null) {
                 village.hookEntityDestroyed(this);
+            }
+        }
+    }
+
+    public EntityFishHook getLure() {
+        return lure;
+    }
+
+    public void setLure(EntityFishHook lure) {
+        this.lure = lure;
+        if (!this.world.isRemote) {
+            if (lure != null) {
+                this.getDataManager().set(LURE_ID, this.lure.getEntityId());
+            } else {
+                this.getDataManager().set(LURE_ID, -1);
             }
         }
     }

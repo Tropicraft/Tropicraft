@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -71,7 +72,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
         //temp
         //entity.timeBetweenFishing = 20*60*2;
-        //entity.lastTimeFished = 0;
+        entity.lastTimeFished = 0;
         debugTask = false;
 
         BlockPos blockpos = new BlockPos(this.entity);
@@ -371,5 +372,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
     private void castLine() {
         fishingTimeout = fishingTimeoutMax;
+        EntityFishHook lure = new EntityFishHook(entity.world, entity);
+        entity.world.spawnEntity(lure);
     }
 }
