@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -36,7 +35,6 @@ import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.ScubaHandler;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
-import net.tropicraft.core.client.entity.model.ModelScubaGear;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
@@ -49,6 +47,8 @@ import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.TileEntityRenderRegistry;
 
 public class ClientProxy extends CommonProxy {
+    
+    private final Map<Block, IStateMapper> stateMappers = new HashMap<>();
 
 	public ClientProxy() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -57,7 +57,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit() {
 		super.preInit();
-		ModelLoader.setCustomStateMapper(BlockRegistry.coral, new StateMap.Builder().ignore(BlockFluidBase.LEVEL).build());
+		ignoreProperties(BlockRegistry.coral, BlockFluidBase.LEVEL);
 	}
 
 	@Override
@@ -76,6 +76,15 @@ public class ClientProxy extends CommonProxy {
 
 		// For rendering drink mixer in inventory
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
+	}
+	
+	private void ignoreProperties(Block block, IProperty<?>... props) {
+	    setStateMapper(block, new StateMap.Builder().ignore(props).build());
+	}
+	
+	private void setStateMapper(Block block, IStateMapper mapper) {
+	    this.stateMappers.put(block, mapper);
+	    ModelLoader.setCustomStateMapper(block, mapper);
 	}
 
 	public void registerColoredBlock(Block block) {
@@ -129,7 +138,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerBlockVariantModels(Block block, Item item) {
         // TODO this won't work for blocks that have custom statemappers, find a way to let them provide a mapper?
-        Map<IBlockState, ModelResourceLocation> variants = new DefaultStateMapper().putStateModelLocations(block);
+        Map<IBlockState, ModelResourceLocation> variants = stateMappers.getOrDefault(block, new DefaultStateMapper()).putStateModelLocations(block);
         for (Entry<IBlockState, ModelResourceLocation> e : variants.entrySet()) {
             ModelLoader.setCustomModelResourceLocation(item, block.getMetaFromState(e.getKey()), e.getValue());
         }

@@ -85,23 +85,14 @@ public class BlockRegistry extends TropicraftRegistry {
         public StandardItemCreator(List<String> names) {
             this.names = names;
         }
-        
-        public StandardItemCreator withPrefix(String prefix) {
-            return new StandardItemCreator(names) {
-                @Override
-                protected void registerVariant(Block block, Item item, String name, int meta) {
-                    super.registerVariant(block, item, prefix + "_" + name, meta);
-                }
-            };
-        }
 
         @Override
         public Item getItem(Block block) {
             return new ItemBlockTropicraft(block, names);
         }
-        
-        protected void registerVariant(Block block, Item item, String name, int meta) {
-            Tropicraft.proxy.registerBlockVariantModels(block, item);
+
+        private void registerVariant(Block block, Item item, String name, int meta) {
+            Tropicraft.proxy.registerItemVariantModel(item, name, meta, "inventory");
         }
         
         @Override
@@ -109,6 +100,22 @@ public class BlockRegistry extends TropicraftRegistry {
             for (int i = 0; i < names.size(); i++) {
                 registerVariant(block, item, names.get(i), i);
             }
+        }
+    }
+    
+    private static class MultiBlockItemCreator extends StandardItemCreator {
+        
+        public MultiBlockItemCreator(IStringSerializable... names) {
+            super(names);
+        }
+        
+        public MultiBlockItemCreator(String... names) {
+            super(names);
+        }
+
+        @Override
+        public void postRegister(Block block, Item item) {
+            Tropicraft.proxy.registerBlockVariantModels(block, item);
         }
     }
 
@@ -177,18 +184,18 @@ public class BlockRegistry extends TropicraftRegistry {
 	 */
 	public static void preInit() {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		ore = registerMultiBlock(new BlockTropicraftOre(), "ore", new StandardItemCreator(TropicraftOreBlocks.VALUES));
-		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(), "oreblock", new StandardItemCreator(TropicraftOreBlocks.VALUES));
-		flowers = registerMultiBlock(new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
-		logs = registerMultiBlock(new BlockTropicraftLog(), "log", new StandardItemCreator(TropicraftLogs.values()));
-		coral = registerMultiBlock(new BlockCoral(), "coral", new StandardItemCreator(TropicraftCorals.VALUES));
+		ore = registerMultiBlock(new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOreBlocks.VALUES));
+		oreBlock = registerMultiBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOreBlocks.VALUES));
+		flowers = registerMultiBlock(new BlockTropicsFlowers(), "flower", new MultiBlockItemCreator(TropicraftFlowers.VALUES));
+		logs = registerMultiBlock(new BlockTropicraftLog(), "log", new MultiBlockItemCreator(TropicraftLogs.values()));
+		coral = registerMultiBlock(new BlockCoral(), "coral", new MultiBlockItemCreator(TropicraftCorals.VALUES));
 		bundles = registerMultiBlock(new BlockBundle(Material.WOOD), "bundle", new StandardItemCreator(TropicraftBundles.values()));
 		seaweed = registerBlockNoItem(new BlockSeaweed(), "seaweed", false);
 
 		slabs = new BlockTropicraftSlab(Material.WOOD, false);
 		doubleSlabs = new BlockTropicraftSlab(Material.WOOD, true);
 		
-		IBlockItemRegistrar slabRegistrar = new StandardItemCreator(TropicraftSlabs.VALUES) {
+		IBlockItemRegistrar slabRegistrar = new MultiBlockItemCreator(TropicraftSlabs.VALUES) {
 		    
 		    @Override
 		    public ItemTropicraftSlab getItem(Block block) {
@@ -199,7 +206,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		slabs = registerMultiBlock(slabs, "slab", slabRegistrar);
 		doubleSlabs = registerMultiBlock(doubleSlabs, "double_slab", slabRegistrar);
 		
-		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD), "plank", new StandardItemCreator(TropicraftPlanks.VALUES));
+		planks = registerMultiBlock(new BlockTropicraftPlank(Material.WOOD), "plank", new MultiBlockItemCreator(TropicraftPlanks.VALUES));
 		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT, null);
 
 		thatchStairs = registerBlock(new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS);
@@ -213,17 +220,17 @@ public class BlockRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortal, Names.TROPICS_PORTAL);
 		portalWall = registerBlock(new BlockPortalWall(), Names.PORTAL_WALL);
 
-		leaves = registerMultiBlock(new BlockTropicraftLeaves(), "leaves", new StandardItemCreator(TropicraftLeaves.VALUES));
-		fruitLeaves = registerMultiBlock(new BlockFruitLeaves(), "leaves_fruit", new StandardItemCreator(TropicraftFruitLeaves.VALUES));
+		leaves = registerMultiBlock(new BlockTropicraftLeaves(), "leaves", new MultiBlockItemCreator(TropicraftLeaves.VALUES));
+		fruitLeaves = registerMultiBlock(new BlockFruitLeaves(), "leaves_fruit", new MultiBlockItemCreator(TropicraftFruitLeaves.VALUES));
 
 		bambooChest = registerBlock(new BlockBambooChest(), Names.BAMBOO_CHEST);
 		
-		saplings = registerMultiBlock(new BlockTropicsSapling(), "sapling", new StandardItemCreator(TropicraftSaplings.VALUES).withPrefix("sapling"));
+		saplings = registerMultiBlock(new BlockTropicsSapling(), "sapling", new MultiBlockItemCreator(TropicraftSaplings.VALUES));
 		
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
 
-		pineapple = registerMultiBlock(new BlockPineapple(), "pineapple", new StandardItemCreator(Names.TALL_PLANT_NAMES));
-		iris = registerMultiBlock(new BlockIris(), "iris", new StandardItemCreator(Names.TALL_PLANT_NAMES));
+		pineapple = registerMultiBlock(new BlockPineapple(), "pineapple", new MultiBlockItemCreator(Names.TALL_PLANT_NAMES));
+		iris = registerMultiBlock(new BlockIris(), "iris", new MultiBlockItemCreator(Names.TALL_PLANT_NAMES));
 		coffeePlant = registerMultiBlock(new BlockCoffeeBush(), "coffee_bush");
 		
 		// TODO refactor this whole class so things like this are possible, because wtf
@@ -236,14 +243,14 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
 		
-		tikiTorch = registerMultiBlock(new BlockTikiTorch(), "tiki_torch", new StandardItemCreator("upper", "middle", "lower"));
+		tikiTorch = registerMultiBlock(new BlockTikiTorch(), "tiki_torch", new MultiBlockItemCreator("upper", "middle", "lower"));
 		
 		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
 		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT, false);
 		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR, false);
 
-		bongo = registerMultiBlock(new BlockBongoDrum(), Names.BONGO, new StandardItemCreator(TropicraftBongos.VALUES).withPrefix(Names.BONGO));
+		bongo = registerMultiBlock(new BlockBongoDrum(), Names.BONGO, new MultiBlockItemCreator(TropicraftBongos.VALUES));
 	}
 
 	public static void init() {
