@@ -10,13 +10,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.enums.TropicraftOreBlocks;
+import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOreBlocks> {
+public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOres> {
 
 	public BlockTropicraftOre() {
-		super(Material.ROCK, TropicraftOreBlocks.class);
+		super(Material.ROCK, TropicraftOres.class);
 		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setSoundType(SoundType.STONE);
@@ -39,7 +39,7 @@ public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOr
 	// TODO this is a lazy impl
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random) {
-        if (getVariant(state) == TropicraftOreBlocks.EUDIALYTE) {
+        if (getVariant(state) == TropicraftOres.EUDIALYTE) {
             return 1 + random.nextInt(4 + fortune);
         } else {
             return 1 + random.nextInt(1 + fortune);

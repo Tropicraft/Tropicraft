@@ -55,7 +55,7 @@ import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.common.enums.TropicraftFruitLeaves;
 import net.tropicraft.core.common.enums.TropicraftLeaves;
 import net.tropicraft.core.common.enums.TropicraftLogs;
-import net.tropicraft.core.common.enums.TropicraftOreBlocks;
+import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftSaplings;
@@ -92,7 +92,7 @@ public class BlockRegistry extends TropicraftRegistry {
     }
     
     private static class StandardItemCreator implements IBlockItemRegistrar {
-        private final List<ITropicraftVariant> variants;
+        protected final List<ITropicraftVariant> variants;
         
         public StandardItemCreator(ITropicraftVariant... variants) {
             this.variants = Lists.newArrayList(variants);
@@ -129,8 +129,8 @@ public class BlockRegistry extends TropicraftRegistry {
 
     public static Block chunk;
 
-    public static BlockTropicraftEnumVariants<TropicraftOreBlocks> ore;
-    public static BlockTropicraftEnumVariants<TropicraftOreBlocks> oreBlock;
+    public static BlockTropicraftEnumVariants<TropicraftOres> ore;
+    public static BlockTropicraftEnumVariants<TropicraftOres> oreBlock;
 
 	public static BlockTropicsFlowers flowers;
 	public static Block logs;
@@ -192,8 +192,19 @@ public class BlockRegistry extends TropicraftRegistry {
 	 */
 	public static void preInit() {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		ore = registerBlock(new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOreBlocks.VALUES));
-		oreBlock = registerBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOreBlocks.VALUES));
+		ore = registerBlock(new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES));
+		// FIXME ew
+		oreBlock = registerBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.VALUES) {
+		    @Override
+		    public Item getItem(Block block) {
+	            return new ItemBlockTropicraft(block, variants.toArray(new ITropicraftVariant[variants.size()])) {
+		            @Override
+		            public String getUnlocalizedName(ItemStack itemstack) {
+		                return super.getUnlocalizedName(itemstack).replaceAll(TropicraftOres.AZURITE.getTypeName(), "oreblock");
+		            }
+		        };
+		    }
+		});
 		flowers = registerBlock(new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
 		logs = registerBlock(new BlockTropicraftLog(), "log", new MultiBlockItemCreator(TropicraftLogs.values()));
 		coral = registerBlock(new BlockCoral(), "coral", new StandardItemCreator(TropicraftCorals.VALUES));
