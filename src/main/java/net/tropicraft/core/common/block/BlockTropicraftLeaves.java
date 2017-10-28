@@ -8,11 +8,9 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks.EnumType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,14 +27,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftLeaves;
 import net.tropicraft.core.registry.BlockRegistry;
 
+//TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftLeaves> VARIANT = PropertyEnum.create("variant", TropicraftLeaves.class);
 
-	public String[] names;
-
-	public BlockTropicraftLeaves(String[] names) {
-		this.names = names;
+	public BlockTropicraftLeaves() {
 		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, true).withProperty(VARIANT, TropicraftLeaves.MAHOGANY));
 	}
 
@@ -78,7 +74,7 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int i = ((TropicraftLeaves)state.getValue(VARIANT)).ordinal();
+		int i = ((TropicraftLeaves)state.getValue(VARIANT)).getMeta();
 		if (!state.getValue(DECAYABLE)) {
 			i |= 4;
 		}
@@ -118,13 +114,13 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {	
 		for (TropicraftLeaves leaf : TropicraftLeaves.VALUES) {
-			list.add(new ItemStack(item, 1, leaf.getMetadata()));
+			list.add(new ItemStack(item, 1, leaf.getMeta()));
 		}
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { CHECK_DECAY, DECAYABLE, VARIANT });
+		return new BlockStateContainer(this, CHECK_DECAY, DECAYABLE, VARIANT);
 	}
 
 	@Override
@@ -154,20 +150,4 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 	public EnumType getWoodType(int meta) {
 		return null;
 	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {CHECK_DECAY, DECAYABLE, VARIANT};
-	}
-
-	@Override
-	public IBlockColor getBlockColor() {
-		return null;
-	}
-
-	@Override
-	public IItemColor getItemColor() {
-		return null;
-	}
-
 }

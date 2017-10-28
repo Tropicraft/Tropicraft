@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -9,18 +8,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -142,6 +140,11 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		} else {
 			return Item.getItemFromBlock(this);
 		}
+	}
+	
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+	    return this.getDefaultState().withProperty(SECTION, TorchSection.LOWER);
 	}
 
 	/**
@@ -302,30 +305,14 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		return BlockRenderLayer.CUTOUT;
 	}
 
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		list.add(new ItemStack(item, 1, 2));
-	}
-
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, getProperties());
+		return new BlockStateContainer(this, SECTION);
 	}
 
 	@Override
 	public String getStateName(IBlockState state) {
 		return "tiki_torch_" + ((TorchSection) state.getValue(SECTION)).getName();
-	}
-
-	@Override
-	@SuppressWarnings("rawtypes")
-	public IProperty[] getProperties() {
-		return new IProperty[]{SECTION};
 	}
 
 	@Override

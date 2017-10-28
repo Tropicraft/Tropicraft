@@ -1,10 +1,10 @@
 {
 	"forge_marker": 1,
     "variants": {
-    	"tropics_portal": {
+    	"normal": {
     		"model": "forge:fluid",
     		"custom": {
-    			"fluid": "tropics_portal"
+    			"fluid": "tropicraft.portal"
     		}
     	}
     }

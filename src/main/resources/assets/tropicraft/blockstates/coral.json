@@ -1,11 +1,11 @@
 {
     "variants": {
-        "variant=pink_coral": { "model": "tropicraft:pink_coral" },
-        "variant=tealy_coral": { "model": "tropicraft:tealy_coral" },
-        "variant=brain_coral": { "model": "tropicraft:brain_coral" },
-        "variant=fire_coral": { "model": "tropicraft:fire_coral" },
-        "variant=green_coral": { "model": "tropicraft:green_coral" },
-        "variant=spiral_coral": { "model": "tropicraft:spiral_coral" },
-        "variant=hotpink_coral": { "model": "tropicraft:hotpink_coral" }
+        "variant=pink": { "model": "tropicraft:pink_coral" },
+        "variant=tealy": { "model": "tropicraft:tealy_coral" },
+        "variant=brain": { "model": "tropicraft:brain_coral" },
+        "variant=fire": { "model": "tropicraft:fire_coral" },
+        "variant=green": { "model": "tropicraft:green_coral" },
+        "variant=spiral": { "model": "tropicraft:spiral_coral" },
+        "variant=hotpink": { "model": "tropicraft:hotpink_coral" }
     }
 }

@@ -1,0 +1,20 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all",
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "variant": {
+      "azurite": {
+        "textures": { "all": "tropicraft:blocks/oreAzurite" }
+      },
+      "eudialyte": {
+        "textures": { "all": "tropicraft:blocks/oreEudialyte" }
+      },
+      "zircon": {
+         "textures": { "all": "tropicraft:blocks/oreZircon" }
+      }
+    }
+  }
+}

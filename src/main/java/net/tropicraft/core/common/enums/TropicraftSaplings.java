@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
-
-public enum TropicraftSaplings implements IStringSerializable {
+public enum TropicraftSaplings implements ITropicraftVariant {
 
 	PALM(0), MAHOGANY(1), GRAPEFRUIT(2), LEMON(3), LIME(4), ORANGE(5);
 	
@@ -25,16 +23,11 @@ public enum TropicraftSaplings implements IStringSerializable {
 
 		return META_LOOKUP[meta];
 	}
-	
-    @Override
-    public String getName() {
-    	return this.name().toLowerCase() + "_sapling";
-    }
-    
-    @Override
-    public String toString() {
-        return this.getName();
-    }
+
+	@Override
+	public String getTypeName() {
+	    return "sapling";
+	}
     
 	// Set META_LOOKUP table
 	static {

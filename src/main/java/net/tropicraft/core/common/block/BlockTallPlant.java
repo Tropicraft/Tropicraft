@@ -1,29 +1,22 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
 import net.tropicraft.core.common.enums.TropicraftTallPlants;
 
 public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlock {
@@ -46,7 +39,7 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 	public static final PropertyEnum<TropicraftTallPlants> VARIANT = PropertyEnum.create("variant", TropicraftTallPlants.class);
 	public static final PropertyEnum<PlantHalf> HALF = PropertyEnum.create("half", PlantHalf.class);
 
-	public BlockTallPlant(String[] names) {
+	public BlockTallPlant() {
 		super(Material.PLANTS);
 		this.setHardness(0.0F);
 		this.setSoundType(SoundType.GROUND);
@@ -55,22 +48,12 @@ public abstract class BlockTallPlant extends BlockBush implements ITropicraftBlo
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, getProperties());
+		return new BlockStateContainer(this, VARIANT, HALF);
 	}
 
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftTallPlants) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	public IBlockColor getBlockColor() {
-		return null;
-	}
-
-	@Override
-	public IItemColor getItemColor() {
-		return null;
 	}
 
 	@Override

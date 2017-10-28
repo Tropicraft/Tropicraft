@@ -10,6 +10,6 @@ public abstract class TropicraftRegistry {
 	}
 	
 	public static String getNamePrefixed(String name) {
-		return Info.MODID + ":" + name;
+		return Info.MODID + "." + name;
 	}
 }

@@ -1,20 +1,20 @@
 {
     "variants": {
-		"check_decay=true,decayable=true,variant=grapefruit_fruitleaves": { "model": "tropicraft:grapefruit_leaves" },
-		"check_decay=true,decayable=false,variant=grapefruit_fruitleaves": { "model": "tropicraft:grapefruit_leaves" },
-		"check_decay=false,decayable=true,variant=grapefruit_fruitleaves": { "model": "tropicraft:grapefruit_leaves" },
-		"check_decay=false,decayable=false,variant=grapefruit_fruitleaves": { "model": "tropicraft:grapefruit_leaves" },
-		"check_decay=true,decayable=true,variant=lemon_fruitleaves": { "model": "tropicraft:lemon_leaves" },
-		"check_decay=true,decayable=false,variant=lemon_fruitleaves": { "model": "tropicraft:lemon_leaves" },
-		"check_decay=false,decayable=true,variant=lemon_fruitleaves": { "model": "tropicraft:lemon_leaves" },
-		"check_decay=false,decayable=false,variant=lemon_fruitleaves": { "model": "tropicraft:lemon_leaves" },
-		"check_decay=true,decayable=true,variant=lime_fruitleaves": { "model": "tropicraft:lime_leaves" },
-		"check_decay=true,decayable=false,variant=lime_fruitleaves": { "model": "tropicraft:lime_leaves" },
-		"check_decay=false,decayable=true,variant=lime_fruitleaves": { "model": "tropicraft:lime_leaves" },
-		"check_decay=false,decayable=false,variant=lime_fruitleaves": { "model": "tropicraft:lime_leaves" },
-		"check_decay=true,decayable=true,variant=orange_fruitleaves": { "model": "tropicraft:orange_leaves" },
-		"check_decay=true,decayable=false,variant=orange_fruitleaves": { "model": "tropicraft:orange_leaves" },
-		"check_decay=false,decayable=true,variant=orange_fruitleaves": { "model": "tropicraft:orange_leaves" },
-		"check_decay=false,decayable=false,variant=orange_fruitleaves": { "model": "tropicraft:orange_leaves" }
+		"check_decay=true,decayable=true,variant=grapefruit": { "model": "tropicraft:grapefruit_leaves" },
+		"check_decay=true,decayable=false,variant=grapefruit": { "model": "tropicraft:grapefruit_leaves" },
+		"check_decay=false,decayable=true,variant=grapefruit": { "model": "tropicraft:grapefruit_leaves" },
+		"check_decay=false,decayable=false,variant=grapefruit": { "model": "tropicraft:grapefruit_leaves" },
+		"check_decay=true,decayable=true,variant=lemon": { "model": "tropicraft:lemon_leaves" },
+		"check_decay=true,decayable=false,variant=lemon": { "model": "tropicraft:lemon_leaves" },
+		"check_decay=false,decayable=true,variant=lemon": { "model": "tropicraft:lemon_leaves" },
+		"check_decay=false,decayable=false,variant=lemon": { "model": "tropicraft:lemon_leaves" },
+		"check_decay=true,decayable=true,variant=lime": { "model": "tropicraft:lime_leaves" },
+		"check_decay=true,decayable=false,variant=lime": { "model": "tropicraft:lime_leaves" },
+		"check_decay=false,decayable=true,variant=lime": { "model": "tropicraft:lime_leaves" },
+		"check_decay=false,decayable=false,variant=lime": { "model": "tropicraft:lime_leaves" },
+		"check_decay=true,decayable=true,variant=orange": { "model": "tropicraft:orange_leaves" },
+		"check_decay=true,decayable=false,variant=orange": { "model": "tropicraft:orange_leaves" },
+		"check_decay=false,decayable=true,variant=orange": { "model": "tropicraft:orange_leaves" },
+		"check_decay=false,decayable=false,variant=orange": { "model": "tropicraft:orange_leaves" }
     }
 }

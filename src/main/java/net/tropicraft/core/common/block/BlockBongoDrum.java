@@ -1,18 +1,10 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,14 +16,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftBongos;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
 @EventBusSubscriber
-public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock {
+public class BlockBongoDrum extends BlockTropicraftEnumVariants<TropicraftBongos> {
 
     public static final float SMALL_DRUM_SIZE = 0.5f;
     public static final float MEDIUM_DRUM_SIZE = 0.6f;
@@ -46,28 +36,14 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
     protected final AxisAlignedBB BONGO_MEDIUM_AABB = new AxisAlignedBB(MEDIUM_DRUM_OFFSET, 0.0f, MEDIUM_DRUM_OFFSET, 1 - MEDIUM_DRUM_OFFSET, DRUM_HEIGHT, 1 - MEDIUM_DRUM_OFFSET);
     protected final AxisAlignedBB BONGO_LARGE_AABB = new AxisAlignedBB(BIG_DRUM_OFFSET, 0.0f, BIG_DRUM_OFFSET, 1-BIG_DRUM_OFFSET, DRUM_HEIGHT, 1-BIG_DRUM_OFFSET);
 
-    public static final PropertyEnum<TropicraftBongos> VARIANT = PropertyEnum.create("variant", TropicraftBongos.class);
-
     public BlockBongoDrum() {
-        super(Material.CIRCUITS);
+        super(Material.CIRCUITS, TropicraftBongos.class);
         this.setHardness(1.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftBongos.SMALL));
-    }
-
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-        for (int i = 0; i < TropicraftBongos.VALUES.length; i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        TropicraftBongos bongo = ((TropicraftBongos) state.getValue(VARIANT));
-        switch (bongo) {
+        switch (getVariant(state)) {
         case LARGE:
             return BONGO_LARGE_AABB;
         case MEDIUM:
@@ -102,7 +78,7 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
      * Play the bongo sound in game. Sound played determined by the {@link #size} attribute
      */
     private void playBongoSound(World world, EntityPlayer entity, BlockPos pos, IBlockState state) {
-        TropicraftBongos bongo = ((TropicraftBongos) state.getValue(VARIANT));
+        TropicraftBongos bongo = getVariant(state);
         world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
@@ -126,35 +102,5 @@ public class BlockBongoDrum extends BlockTropicraft implements ITropicraftBlock 
         }
 
         return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, getProperties());
-    }
-
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(VARIANT, TropicraftBongos.VALUES[meta]);
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return ((TropicraftBongos) state.getValue(VARIANT)).ordinal();
-    }
-
-    @Override
-    public String getStateName(IBlockState state) {
-        return ((TropicraftBongos) state.getValue(VARIANT)).getName();
-    }
-
-    @Override
-    public IProperty[] getProperties() {
-        return new IProperty[] { VARIANT };
-    }
-
-    @Override
-    public int damageDropped(IBlockState state) {
-        return this.getMetaFromState(state);
     }
 }

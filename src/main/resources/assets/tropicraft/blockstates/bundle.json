@@ -1,12 +1,12 @@
 {
     "variants": {
-        "axis=y,variant=thatch_bundle": { "model": "tropicraft:thatch_bundle" },
-        "axis=z,variant=thatch_bundle": { "model": "tropicraft:thatch_bundle_side" },
-        "axis=x,variant=thatch_bundle": { "model": "tropicraft:thatch_bundle_side", "y": 90 },
-        "axis=none,variant=thatch_bundle": { "model": "tropicraft:thatch_bundle_base" },
-        "axis=y,variant=bamboo_bundle": { "model": "tropicraft:bamboo_bundle" },
-        "axis=z,variant=bamboo_bundle": { "model": "tropicraft:bamboo_bundle_side" },
-        "axis=x,variant=bamboo_bundle": { "model": "tropicraft:bamboo_bundle_side", "y": 90 },
-        "axis=none,variant=bamboo_bundle": { "model": "tropicraft:bamboo_bundle_base" }
+        "axis=y,variant=thatch": { "model": "tropicraft:thatch_bundle" },
+        "axis=z,variant=thatch": { "model": "tropicraft:thatch_bundle_side" },
+        "axis=x,variant=thatch": { "model": "tropicraft:thatch_bundle_side", "y": 90 },
+        "axis=none,variant=thatch": { "model": "tropicraft:thatch_bundle_base" },
+        "axis=y,variant=bamboo": { "model": "tropicraft:bamboo_bundle" },
+        "axis=z,variant=bamboo": { "model": "tropicraft:bamboo_bundle_side" },
+        "axis=x,variant=bamboo": { "model": "tropicraft:bamboo_bundle_side", "y": 90 },
+        "axis=none,variant=bamboo": { "model": "tropicraft:bamboo_bundle_base" }
     }
 }
