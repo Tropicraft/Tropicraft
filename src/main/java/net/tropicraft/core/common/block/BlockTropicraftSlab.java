@@ -64,7 +64,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(BlockRegistry.slabs, 1, ((TropicraftSlabs)state.getValue(VARIANT)).getMetadata());
+        return new ItemStack(BlockRegistry.slabs, 1, ((TropicraftSlabs)state.getValue(VARIANT)).getMeta());
     }
 
 	@Override
@@ -98,7 +98,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         if (itemIn != Item.getItemFromBlock(BlockRegistry.doubleSlabs)) {
             for (TropicraftSlabs slab : TropicraftSlabs.VALUES) {
-                list.add(new ItemStack(itemIn, 1, slab.getMetadata()));
+                list.add(new ItemStack(itemIn, 1, slab.getMeta()));
             }
         }
     }
@@ -123,7 +123,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 	@Override
     public int getMetaFromState(IBlockState state) {
         int i = 0;
-        i = i | ((TropicraftSlabs)state.getValue(VARIANT)).getMetadata();
+        i = i | ((TropicraftSlabs)state.getValue(VARIANT)).getMeta();
 
         if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) {
             i |= 8;
@@ -143,7 +143,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
      */
 	@Override
     public int damageDropped(IBlockState state) {
-        return ((TropicraftSlabs)state.getValue(VARIANT)).getMetadata();
+        return ((TropicraftSlabs)state.getValue(VARIANT)).getMeta();
     }
 
 	@Override

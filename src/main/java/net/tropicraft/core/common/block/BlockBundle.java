@@ -82,6 +82,6 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(this), 1, getVariant(state).getMetadata());
+		return new ItemStack(Item.getItemFromBlock(this), 1, getVariant(state).getMeta());
 	}
 }

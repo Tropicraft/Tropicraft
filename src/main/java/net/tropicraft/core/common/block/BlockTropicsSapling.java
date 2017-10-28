@@ -154,7 +154,7 @@ public class BlockTropicsSapling extends BlockBush implements ITropicraftBlock, 
             gen = randomRainforestTreeGen(worldIn);
             break;
         default:
-            gen = new WorldGenFruitTrees(worldIn, rand, variant.ordinal() - 2);
+            gen = new WorldGenFruitTrees(worldIn, rand, variant.getMeta() - 2);
             break;
 		}
 

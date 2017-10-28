@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -14,7 +13,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -299,16 +297,6 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-	/**
-	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		list.add(new ItemStack(item, 1, 2));
 	}
 
 	@Override

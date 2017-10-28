@@ -45,7 +45,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	 */
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(state.getBlock(), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
+		return new ItemStack(state.getBlock(), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMeta());
 	}
 
     @Override
@@ -128,7 +128,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = 0;
-		i = i | ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
+		i = i | ((TropicraftLogs)state.getValue(VARIANT)).getMeta();
 
 		switch ((BlockLog.EnumAxis)state.getValue(LOG_AXIS)) {
 		case X:
@@ -148,12 +148,12 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 
 	@Override
 	public int damageDropped(IBlockState state) {
-		return ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
+		return ((TropicraftLogs)state.getValue(VARIANT)).getMeta();
 	}
 
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
+		return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMeta());
 	}
 
 	// ITropicraftBlock methods

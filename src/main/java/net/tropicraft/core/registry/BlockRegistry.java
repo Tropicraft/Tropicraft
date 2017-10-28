@@ -1,19 +1,14 @@
 package net.tropicraft.core.registry;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -53,6 +48,7 @@ import net.tropicraft.core.common.block.BlockTropicsSapling;
 import net.tropicraft.core.common.block.BlockTropicsWater;
 import net.tropicraft.core.common.block.BlockVolcano;
 import net.tropicraft.core.common.block.ITropicraftBlock;
+import net.tropicraft.core.common.enums.ITropicraftVariant;
 import net.tropicraft.core.common.enums.TropicraftBongos;
 import net.tropicraft.core.common.enums.TropicraftBundles;
 import net.tropicraft.core.common.enums.TropicraftCorals;
@@ -65,30 +61,41 @@ import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftSaplings;
 import net.tropicraft.core.common.enums.TropicraftSlabs;
+import net.tropicraft.core.common.enums.TropicraftTallPlants;
 import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
 import net.tropicraft.core.registry.ItemRegistry.IBlockItemRegistrar;
 
 public class BlockRegistry extends TropicraftRegistry {
     
+    private static class SimpleItemCreator implements IBlockItemRegistrar {
+        private final String name;
+        
+        public SimpleItemCreator(String name) {
+            this.name = name;
+        }
+        
+        @Override
+        public Item getItem(Block block) {
+            return new ItemBlockTropicraft(block);
+        }
+        
+        @Override
+        public void postRegister(Block block, Item item) {
+            Tropicraft.proxy.registerItemVariantModel(item, name, 0, "inventory");            
+        }
+    }
+    
     private static class StandardItemCreator implements IBlockItemRegistrar {
-        private final List<String> names;
+        private final List<ITropicraftVariant> variants;
         
-        public StandardItemCreator(String... names) {
-            this(Lists.newArrayList(names));
-        }
-        
-        public StandardItemCreator(IStringSerializable... names) {
-            this(Arrays.stream(names).map(IStringSerializable::toString).collect(Collectors.toList()));
-        }
-        
-        public StandardItemCreator(List<String> names) {
-            this.names = names;
+        public StandardItemCreator(ITropicraftVariant... variants) {
+            this.variants = Lists.newArrayList(variants);
         }
 
         @Override
         public Item getItem(Block block) {
-            return new ItemBlockTropicraft(block, names);
+            return new ItemBlockTropicraft(block, variants.toArray(new ITropicraftVariant[variants.size()]));
         }
 
         private void registerVariant(Block block, Item item, String name, int meta) {
@@ -97,19 +104,15 @@ public class BlockRegistry extends TropicraftRegistry {
         
         @Override
         public void postRegister(Block block, Item item) {
-            for (int i = 0; i < names.size(); i++) {
-                registerVariant(block, item, names.get(i), i);
+            for (int i = 0; i < variants.size(); i++) {
+                registerVariant(block, item, variants.get(i).getSimpleName() + "_" + variants.get(i).getTypeName(), i);
             }
         }
     }
     
     private static class MultiBlockItemCreator extends StandardItemCreator {
         
-        public MultiBlockItemCreator(IStringSerializable... names) {
-            super(names);
-        }
-        
-        public MultiBlockItemCreator(String... names) {
+        public MultiBlockItemCreator(ITropicraftVariant... names) {
             super(names);
         }
 
@@ -229,21 +232,16 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
 
-		pineapple = registerMultiBlock(new BlockPineapple(), "pineapple", new MultiBlockItemCreator(Names.TALL_PLANT_NAMES));
-		iris = registerMultiBlock(new BlockIris(), "iris", new MultiBlockItemCreator(Names.TALL_PLANT_NAMES));
+		pineapple = registerMultiBlock(new BlockPineapple(), "pineapple", new MultiBlockItemCreator(TropicraftTallPlants.values()));
+		iris = registerMultiBlock(new BlockIris(), "iris", new MultiBlockItemCreator(TropicraftTallPlants.values()));
 		coffeePlant = registerMultiBlock(new BlockCoffeeBush(), "coffee_bush");
 		
 		// TODO refactor this whole class so things like this are possible, because wtf
-		sands = new BlockTropicraftSands().setRegistryName("sand").setUnlocalizedName(Info.MODID + ".sand").setCreativeTab(CreativeTabRegistry.tropicraftTab);
-		GameRegistry.register(sands);
-		GameRegistry.register(new ItemBlockTropicraft(sands, Lists.newArrayList(Arrays.stream(TropicraftSands.values()).map(IStringSerializable::getName).toArray(String[]::new))).setRegistryName(sands.getRegistryName()));
-		for (TropicraftSands sand : TropicraftSands.values()) {
-		    Tropicraft.proxy.registerItemVariantModel(Item.getItemFromBlock(sands), "sand", sand.ordinal(), "underwater=false,variant=" + sand.getName());
-		}
+		sands = registerMultiBlock(new BlockTropicraftSands(), "sand", new MultiBlockItemCreator(TropicraftSands.VALUES));
 		
 		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO);
 		
-		tikiTorch = registerMultiBlock(new BlockTikiTorch(), "tiki_torch", new MultiBlockItemCreator("upper", "middle", "lower"));
+		tikiTorch = registerBlock(new BlockTikiTorch(), "tiki_torch");
 		
 		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
@@ -331,11 +329,11 @@ public class BlockRegistry extends TropicraftRegistry {
 	}
 
 	public static <T extends Block> T registerBlock(T block, String name) {
-		return registerBlock(block, name, new StandardItemCreator(name), true, CreativeTabRegistry.tropicraftTab);
+		return registerBlock(block, name, new SimpleItemCreator(name), true, CreativeTabRegistry.tropicraftTab);
 	}
 
 	public static <T extends Block> T registerBlock(T block, String name, boolean registerDefaultVariant) {
-		return registerBlock(block, name, new StandardItemCreator(name), registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
+		return registerBlock(block, name, new SimpleItemCreator(name), registerDefaultVariant, CreativeTabRegistry.tropicraftTab);
 	}
 
 	public static <T extends Block> T registerBlockNoItem(T block, String name, boolean registerDefaultVariant) {
@@ -343,7 +341,7 @@ public class BlockRegistry extends TropicraftRegistry {
 	}
 
 	public static <T extends Block> T registerBlock(T block, String name, CreativeTabs tab) {
-		return registerBlock(block, name, new StandardItemCreator(name), true, tab);
+		return registerBlock(block, name, new SimpleItemCreator(name), true, tab);
 	}
 
 	public static void registerOreDictWildcard(String oreDictName, Block block) {

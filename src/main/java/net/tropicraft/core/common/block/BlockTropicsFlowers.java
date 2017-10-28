@@ -59,7 +59,7 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((TropicraftFlowers) state.getValue(VARIANT)).ordinal();
+        return ((TropicraftFlowers) state.getValue(VARIANT)).getMeta();
     }
     
     @Override

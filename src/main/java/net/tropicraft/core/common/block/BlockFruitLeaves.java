@@ -43,7 +43,7 @@ public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {	
 		for (TropicraftFruitLeaves leaf : TropicraftFruitLeaves.VALUES) {
-			list.add(new ItemStack(item, 1, leaf.getMetadata()));
+			list.add(new ItemStack(item, 1, leaf.getMeta()));
 		}
 	}
 
@@ -63,7 +63,7 @@ public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		int i = ((TropicraftFruitLeaves)state.getValue(VARIANT)).ordinal();
+		int i = state.getValue(VARIANT).getMeta();
 		if (!state.getValue(DECAYABLE)) {
 			i |= 4;
 		}

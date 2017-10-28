@@ -1,19 +1,12 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
-
-public enum TropicraftOreBlocks implements IStringSerializable {
+public enum TropicraftOreBlocks implements ITropicraftVariant {
     AZURITE, EUDIALYTE, ZIRCON;
     
     public static final TropicraftOreBlocks VALUES[] = values();
 
     @Override
-    public String getName() {
-    	return this.name().toLowerCase();
-    }
-    
-    @Override
-    public String toString() {
-        return this.getName() + "_oreblock";
+    public String getTypeName() {
+        return "oreblock";
     }
 };

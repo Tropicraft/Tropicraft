@@ -15,8 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.enums.ITropicraftVariant;
 
-public class BlockTropicraftEnumVariants<T extends Enum<T> & IStringSerializable> extends BlockTropicraft implements ITropicraftBlock {
+public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant> extends BlockTropicraft implements ITropicraftBlock {
     
     private final IProperty<T> property;
     private final BlockStateContainer blockState;
@@ -63,7 +64,7 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & IStringSerializable
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return getVariant(state).ordinal();
+        return getVariant(state).getMeta();
     }
 
     @Override

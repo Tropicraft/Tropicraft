@@ -1,11 +1,8 @@
 package net.tropicraft.core.common.enums;
 
-import java.util.Locale;
-
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public enum TropicraftFlowers implements IStringSerializable {
+public enum TropicraftFlowers implements ITropicraftVariant {
 
 	COMMELINA_DIFFUSA,
 	CROCOSMIA,
@@ -44,12 +41,8 @@ public enum TropicraftFlowers implements IStringSerializable {
 		return bounds;
 	}
 	
-	public String toString() {
-	    return getName() + "_flower";
-	}
-
 	@Override
-	public String getName() {
-	    return this.name().toLowerCase(Locale.ROOT);
+	public String getTypeName() {
+	    return "flower";
 	}
 }

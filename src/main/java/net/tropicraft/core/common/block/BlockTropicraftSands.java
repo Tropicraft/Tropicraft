@@ -88,7 +88,7 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return ((TropicraftSands) state.getValue(VARIANT)).ordinal();
+		return ((TropicraftSands) state.getValue(VARIANT)).getMeta();
 	}
 	
 	@Override

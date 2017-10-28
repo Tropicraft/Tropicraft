@@ -3,9 +3,8 @@ package net.tropicraft.core.common.enums;
 import java.util.Random;
 
 import net.minecraft.block.material.MapColor;
-import net.minecraft.util.IStringSerializable;
 
-public enum TropicraftSands implements IStringSerializable {
+public enum TropicraftSands implements ITropicraftVariant {
     PURIFIED(0, MapColor.SAND),
     CORAL(1, MapColor.PINK),
     FOAMY(2, MapColor.GREEN),
@@ -22,8 +21,13 @@ public enum TropicraftSands implements IStringSerializable {
         this.color = color;
     }
 
-    public int getMetadata() {
+    @Override
+    public int getMeta() {
         return this.meta;
+    }
+    
+    public MapColor getColor() {
+        return color;
     }
 
     public static TropicraftSands getRandomSand(Random rand) {
@@ -41,19 +45,14 @@ public enum TropicraftSands implements IStringSerializable {
     }
 
     @Override
-    public String getName() {
-        return this.name().toLowerCase();
-    }
-
-    @Override
-    public String toString() {
-        return this.getName();
+    public String getTypeName() {
+        return "sand";
     }
 
     // Set META_LOOKUP table
     static {
         for (TropicraftSands sand : VALUES) {
-            META_LOOKUP[sand.getMetadata()] = sand;
+            META_LOOKUP[sand.getMeta()] = sand;
         }
     }
 }
