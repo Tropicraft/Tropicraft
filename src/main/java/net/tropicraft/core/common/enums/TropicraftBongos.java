@@ -1,28 +1,21 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
+public enum TropicraftBongos implements ITropicraftVariant {
+    SMALL("high"), MEDIUM("medium"), LARGE("low");
 
-public enum TropicraftBongos  implements IStringSerializable {
-    SMALL("bongohigh"), MEDIUM("bongomedium"), LARGE("bongolow");
-
-    private String soundRegistryName;
+    private final String sound;
     public static final TropicraftBongos VALUES[] = values();
 
-    TropicraftBongos(String soundRegistryName) {
-        this.soundRegistryName = soundRegistryName;
+    TropicraftBongos(String sound) {
+        this.sound = sound;
     }
 
     public String getSoundRegistryName() {
-        return this.soundRegistryName;
+        return getTypeName() + "." + sound;
     }
-
+    
     @Override
-    public String toString() {
-        return this.getName();
-    }
-
-    @Override
-    public String getName() {
-        return "bongo_" + this.name().toLowerCase();
+    public String getTypeName() {
+        return "bongo";
     }
 }

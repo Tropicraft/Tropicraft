@@ -112,7 +112,7 @@ public class BlockSeaweed extends BlockTropicraft {
 	
 	@Override
 	public int damageDropped(IBlockState state) {
-	    return TropicraftSands.FOAMY.getMetadata();
+	    return TropicraftSands.FOAMY.getMeta();
 	}
 	
 	@Override

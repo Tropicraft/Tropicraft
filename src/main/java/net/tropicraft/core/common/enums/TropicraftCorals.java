@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
-
-public enum TropicraftCorals implements IStringSerializable {
+public enum TropicraftCorals implements ITropicraftVariant {
 
 	PINK(0), TEALY(1), BRAIN(2), FIRE(3), GREEN(4), SPIRAL(5), HOTPINK(6);
 	
@@ -14,7 +12,8 @@ public enum TropicraftCorals implements IStringSerializable {
 		this.meta = meta;
 	}
 	
-	public int getMetadata() {
+	@Override
+	public int getMeta() {
 		return this.meta;
 	}
 
@@ -26,20 +25,15 @@ public enum TropicraftCorals implements IStringSerializable {
 		return META_LOOKUP[meta];
 	}
 	
-    @Override
-    public String getName() {
-    	return this.name().toLowerCase() + "_coral";
-    }
-    
-    @Override
-    public String toString() {
-        return this.getName();
-    }
+	@Override
+	public String getTypeName() {
+	    return "coral";
+	}
     
 	// Set META_LOOKUP table
 	static {
 		for (TropicraftCorals coral : VALUES) {
-			META_LOOKUP[coral.getMetadata()] = coral;
+			META_LOOKUP[coral.getMeta()] = coral;
 		}
 	}
 }

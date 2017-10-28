@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
-
-public enum TropicraftBundles implements IStringSerializable {
+public enum TropicraftBundles implements ITropicraftVariant {
 	
 	THATCH(0), BAMBOO(1);
 
@@ -13,7 +11,8 @@ public enum TropicraftBundles implements IStringSerializable {
 		this.meta = meta;
 	}
 
-	public int getMetadata() {
+	@Override
+	public int getMeta() {
 		return this.meta;
 	}
 
@@ -24,21 +23,16 @@ public enum TropicraftBundles implements IStringSerializable {
 
 		return META_LOOKUP[meta];
 	}
-
-	@Override
-	public String getName() {
-		return this.name().toLowerCase() + "_bundle";
-	}
-
-	@Override
-	public String toString() {
-		return this.getName();
-	}
+    
+    @Override
+    public String getTypeName() {
+        return "bundle";
+    }
 
 	// Set META_LOOKUP table
 	static {
 		for (TropicraftBundles bundle : values()) {
-			META_LOOKUP[bundle.getMetadata()] = bundle;
+			META_LOOKUP[bundle.getMeta()] = bundle;
 		}
 	}
 }

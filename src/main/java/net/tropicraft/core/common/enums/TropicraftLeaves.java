@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
-
-public enum TropicraftLeaves implements IStringSerializable {
+public enum TropicraftLeaves implements ITropicraftVariant {
     MAHOGANY(false, 0), PALM(true, 1), KAPOK(true, 2), FRUIT(false, 3);
     
     private static final TropicraftLeaves[] META_LOOKUP = new TropicraftLeaves[values().length];
@@ -19,7 +17,8 @@ public enum TropicraftLeaves implements IStringSerializable {
     	return solid;
     }
     
-	public int getMetadata() {
+    @Override
+	public int getMeta() {
 		return this.meta;
 	}
 	
@@ -31,20 +30,15 @@ public enum TropicraftLeaves implements IStringSerializable {
 		return META_LOOKUP[meta];
 	}
 
-    @Override
-    public String getName() {
-    	return this.name().toLowerCase() + "_leaves";
-    }
-    
-    @Override
-    public String toString() {
-        return this.getName();
-    }
+	@Override
+	public String getTypeName() {
+	    return "leaves";
+	}
     
 	// Set META_LOOKUP table
 	static {
 		for (TropicraftLeaves leaf : values()) {
-			META_LOOKUP[leaf.getMetadata()] = leaf;
+			META_LOOKUP[leaf.getMeta()] = leaf;
 		}
 	}
 };

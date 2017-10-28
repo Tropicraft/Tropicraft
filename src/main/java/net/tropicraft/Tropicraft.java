@@ -62,13 +62,13 @@ public class Tropicraft {
 		SoundRegistry.init();
 		FluidRegistry.preInit();
 		BlockRegistry.preInit();
+	    proxy.preInit();
 		TileEntityRegistry.init();
 		ItemRegistry.preInit();
 		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
 		ScubaCapabilities.register();
-		proxy.preInit();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new TropicraftGuiHandler());
 	}
@@ -76,6 +76,7 @@ public class Tropicraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		TCPacketHandler.init();
+		ItemRegistry.init();
 		AchievementRegistry.init();
 		EntityRegistry.init();
 		proxy.init();

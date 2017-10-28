@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
-
-public enum TropicraftFlowerType implements IStringSerializable {
+public enum TropicraftFlowerType implements ITropicraftVariant {
 	EMPTY("empty"),
     COMMELINA_DIFFUSA("commelina_diffusa"),
     CROCOSMIA("crocosmia"),
@@ -36,11 +34,18 @@ public enum TropicraftFlowerType implements IStringSerializable {
         this.name = name;
     }
 
-    public String toString() {
-        return this.name;
+    @Override
+    public String getUnlocName() {
+        return getSimpleName();
     }
-
-    public String getName() {
-        return this.name;
+    
+    @Override
+    public String getTypeName() {
+        return "null";
+    }
+    
+    @Override
+    public String getSimpleName() {
+        return name;
     }
 }
