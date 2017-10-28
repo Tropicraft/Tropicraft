@@ -34,6 +34,11 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(BUNDLE_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
 	}
+	
+	@Override
+	public int damageDropped(IBlockState state) {
+	    return getVariant(state).getMeta();
+	}
 
 	/**
 	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
@@ -82,6 +87,6 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(this), 1, getVariant(state).getMeta());
+		return new ItemStack(Item.getItemFromBlock(this), 1, damageDropped(state));
 	}
 }
