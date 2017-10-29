@@ -3,6 +3,7 @@ package build.world;
 import build.ITileEntityCustomGenData;
 import build.SchematicData;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -551,6 +553,8 @@ public class BuildManager {
 
         dir = (((int) rotation) / 90) & 3;
 
+        if (dir == 0) return meta;
+
         Block block = id;//Block.blocksList[id];
 
         if (block instanceof BlockStairs) {
@@ -603,6 +607,16 @@ public class BuildManager {
             //System.out.println("fMeta: " + fMeta);
 
             return fMeta | rotateMeta;
+        } else if (block instanceof BlockLadder) {
+            IBlockState state = block.getStateFromMeta(meta);
+            EnumFacing facing = state.getValue(BlockLadder.FACING);
+            for (int i = 0; i < dir; i++) {
+                facing = facing.rotateYCCW();
+            }
+            state = state.withProperty(BlockLadder.FACING, facing);
+            meta = block.getMetaFromState(state);
+            return meta;
+            //EnumFacing facing = state.getProperties().get(BlockLadder.FACING);
         }
 
         //failed
