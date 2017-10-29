@@ -9,9 +9,9 @@
 	"iggydeath": { "category": "entity", "sounds": [ "tropicraft:iggydeath" ] },
 	"iggyliving": { "category": "entity", "sounds": [ "tropicraft:iggyliving" ] },
 	"ashenLaugh": { "category": "entity", "sounds": [ "tropicraft:ashenLaugh" ] },
-	"bongolow": { "category": "block", "sounds": [ "tropicraft:bongolow" ] },
-	"bongomedium": { "category": "block", "sounds": [ "tropicraft:bongomedium" ] },
-	"bongohigh": { "category": "block", "sounds": [ "tropicraft:bongohigh" ] },
+	"bongo.low": { "category": "block", "sounds": [ "tropicraft:bongolow" ] },
+	"bongo.medium": { "category": "block", "sounds": [ "tropicraft:bongomedium" ] },
+	"bongo.high": { "category": "block", "sounds": [ "tropicraft:bongohigh" ] },
 	"summering": { "category": "record", "sounds": [
 			{
 				"name": "tropicraft:music/summering",
