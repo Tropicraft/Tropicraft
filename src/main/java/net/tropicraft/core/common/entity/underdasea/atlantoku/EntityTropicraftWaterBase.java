@@ -20,6 +20,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -292,22 +293,20 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				}
 	
 			}
-			
-			if(!this.isAggressing && this.ticksExisted % 120 == 0) {
-				List<Entity> ents = world.loadedEntityList;
+
+			if(!this.isAggressing && (this.ticksExisted+this.getEntityId()) % 120 == 0) {
+				List<EntityTropicraftWaterBase> ents = world.getEntitiesWithinAABB(EntityTropicraftWaterBase.class, new AxisAlignedBB(this.getPosition()).expand(4, 4, 4));
 				for(int i =0; i < ents.size(); i++) {
-					if(ents.get(i) instanceof EntityTropicraftWaterBase) {
-						EntityTropicraftWaterBase f = ((EntityTropicraftWaterBase)ents.get(i));
-						if(this.canEntityBeSeen(f) && this.getDistanceSqToEntity(f) < 2D)
+					EntityTropicraftWaterBase f = ents.get(i);
+					if(this.getDistanceSqToEntity(f) < 2D && this.canEntityBeSeen(f))
 						if(f.aggressTarget != null)
-						if(f.aggressTarget.equals(this)) {
-							this.fleeEntity(f);
-							this.isPanicking = true;
-							break;
-						}
-					}
+							if(f.aggressTarget.equals(this)) {
+								this.fleeEntity(f);
+								this.isPanicking = true;
+								break;
+							}
 				}
-			}	
+			}
 
 			bp = new BlockPos(this.getPosition().down(2));
 
