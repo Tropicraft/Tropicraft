@@ -16,9 +16,6 @@ import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicraftFence extends BlockFence {
-
-	/** Class that this fence can connect to */
-	private BlockFenceGate fenceGate;
 	
 	public BlockTropicraftFence(BlockFenceGate fenceGate, Material material, MapColor mapColor) {
 		super(material, mapColor);
