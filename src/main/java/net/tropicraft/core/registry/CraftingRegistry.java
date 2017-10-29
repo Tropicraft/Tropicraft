@@ -319,6 +319,71 @@ public class CraftingRegistry {
             'Y', new ItemStack(ItemRegistry.iguanaLeather)
         });
 
+        // Bamboo Fence
+        createRecipe(true, new ItemStack(BlockRegistry.bambooFence, 2), new Object[]{
+            "XXX", "XXX",
+            'X', ItemRegistry.bambooStick
+        });
+
+        // Bamboo Fence Gate
+        createRecipe(true, new ItemStack(BlockRegistry.bambooFenceGate, 1), new Object[]{
+            "XIX", "XIX",
+            'X', ItemRegistry.bambooStick,
+            'I', new ItemStack(BlockRegistry.bundles, 1, 1)
+        });
+
+        // Thatch Fence
+        createRecipe(true, new ItemStack(BlockRegistry.thatchFence, 2), new Object[]{
+            "XXX", "XXX",
+            'X', new ItemStack(BlockRegistry.bundles, 1, 0)
+        });
+
+        // Thatch Fence Gate
+        createRecipe(true, new ItemStack(BlockRegistry.thatchFenceGate, 1), new Object[]{
+            "XIX", "XIX",
+            'X', ItemRegistry.bambooStick,
+            'I', new ItemStack(BlockRegistry.bundles, 1, 0)
+        });
+
+        // Chunk Fence
+        createRecipe(true, new ItemStack(BlockRegistry.chunkFence, 2), new Object[]{
+            "XXX", "XXX",
+            'X', BlockRegistry.chunk
+        });
+
+        // Chunk Fence Gate
+        createRecipe(true, new ItemStack(BlockRegistry.chunkFenceGate, 1), new Object[]{
+            "XIX", "XIX",
+            'X', ItemRegistry.bambooStick,
+            'I', BlockRegistry.chunk
+        });
+
+        // Palm Fence
+        createRecipe(true, new ItemStack(BlockRegistry.palmFence, 2), new Object[]{
+            "XXX", "XXX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 1)
+        });
+
+        // Palm Fence Gate
+        createRecipe(true, new ItemStack(BlockRegistry.palmFenceGate, 1), new Object[]{
+            "XIX", "XIX",
+            'X', Items.STICK,
+            'I', new ItemStack(BlockRegistry.planks, 1, 1)
+        });
+
+        // Mahogany Fence
+        createRecipe(true, new ItemStack(BlockRegistry.mahoganyFence, 2), new Object[]{
+            "XXX", "XXX",
+            'X', new ItemStack(BlockRegistry.planks, 1, 0)
+        });
+
+        // Mahogany Fence Gate
+        createRecipe(true, new ItemStack(BlockRegistry.mahoganyFenceGate, 1), new Object[]{
+            "XIX", "XIX",
+            'X', Items.STICK,
+            'I', new ItemStack(BlockRegistry.planks, 1, 0)
+        });
+
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.zircon, 2);
