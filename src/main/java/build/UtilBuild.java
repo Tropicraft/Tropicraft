@@ -7,11 +7,9 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.IOUtils;
 
-import java.io.FileInputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class UtilBuild {
@@ -55,12 +53,11 @@ public class UtilBuild {
         return "";
     }
 
+
     public static NBTTagCompound getNBTFromResourceLocation(ResourceLocation resourceLocation) {
         try {
-            IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
-            IResource iresource = resourceManager.getResource(resourceLocation);
-            //String contents = IOUtils.toString(iresource.getInputStream(), StandardCharsets.UTF_8);
-            NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(iresource.getInputStream());
+            URL url = UtilBuild.class.getResource("/assets/" + resourceLocation.getResourceDomain() + "/" + resourceLocation.getResourcePath());
+            NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(url.openStream());
             return nbttagcompound;
         } catch (Exception ex) {
             ex.printStackTrace();
