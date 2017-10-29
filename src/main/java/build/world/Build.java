@@ -82,6 +82,17 @@ public class Build {
 
     public boolean backwardsCompatibleOldRotate = false;
 
+    public Build(int x, int y, int z, String parFile, ResourceLocation loc) {
+        //id = parID;
+        file = parFile;
+
+        map_coord_minX = x;
+        map_coord_minY = y;
+        map_coord_minZ = z;
+
+        readNBTFromResourceLocation(file, loc);
+    }
+
     public Build(int x, int y, int z, String parFile, boolean noLoad) {
         //id = parID;
         file = parFile;
@@ -90,7 +101,11 @@ public class Build {
         map_coord_minY = y;
         map_coord_minZ = z;
 
-        if (!noLoad) readNBT(file);
+        if (!noLoad) readNBTFromFile(file);
+    }
+
+    public Build(int x, int y, int z, String parFile) {
+        this(x, y, z, parFile, false);
     }
 
     public String getVersion() {
@@ -100,10 +115,6 @@ public class Build {
     //latest version to write file as
     public String getSaveVersion() {
         return "1.1";
-    }
-
-    public Build(int x, int y, int z, String parFile) {
-        this(x, y, z, parFile, false);
     }
 
     public void load() {
@@ -172,145 +183,149 @@ public class Build {
 
     }
 
-    public void readNBT(String level) {
-
-
-        levelData = null;
-
+    public void readNBTFromResourceLocation(String level, ResourceLocation loc) {
         try {
+            readNBT(level, UtilBuild.getNBTFromResourceLocation(loc));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-            NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(new FileInputStream(level + ".schematic"));
+    public void readNBTFromFile(String level) {
+        try {
+            readNBT(level, CompressedStreamTools.readCompressed(new FileInputStream(level + ".schematic")));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void readNBT(String levelName, NBTTagCompound nbttagcompound) {
 
 
-            levelData = nbttagcompound;
+        levelData = nbttagcompound;
 
-            //only override newFormat if schematic actually tells it to, this also assumes the outside setting is right context...
-            //actually lets let it set it to false for missing value, so we can safely assume newFormat all the time unless the key is missing
-            //if (nbttagcompound.hasKey("newFormat")) {
-            newFormat = nbttagcompound.getBoolean("newFormat");
-            //}
+        //only override newFormat if schematic actually tells it to, this also assumes the outside setting is right context...
+        //actually lets let it set it to false for missing value, so we can safely assume newFormat all the time unless the key is missing
+        //if (nbttagcompound.hasKey("newFormat")) {
+        newFormat = nbttagcompound.getBoolean("newFormat");
+        //}
 
-            if (nbttagcompound.hasKey("version")) {
-                version = nbttagcompound.getString("version");
+        if (nbttagcompound.hasKey("version")) {
+            version = nbttagcompound.getString("version");
+        } else {
+            //already defaulted to 1.0
+        }
+
+        if (newFormat) {
+            NBTTagCompound nbtMapping = nbttagcompound.getCompoundTag("blockTranslationMap");
+            if (getVersion().equals("1.0")) {
+                this.blockMappingInternalIDToBlock = genBlockIDSchemToBlockWithUnlocalizedName(nbtMapping);
+            } else if (getVersion().equals("1.1")) {
+                this.blockMappingInternalIDToBlock = genBlockIDSchemToBlockWithRegistry(nbtMapping);
             } else {
-                //already defaulted to 1.0
+                System.out.println("CRITICAL! BuildMod does not support version: " + getVersion());
             }
+        } else {
+            //System.out.println("TODO: a fallback lookup table for old block IDs to unlocalized names");
+            //NBTTagCompound nbtFallbackLookup = CompressedStreamTools.readCompressed(new FileInputStream(UtilBuild.getSaveFolderPath() + "BlockTranslationMapFallback.schematic"));
+            //this.blockMappingInternalIDToBlock = genBlockIDSchemToBlockWithUnlocalizedName(nbtFallbackLookup.getCompoundTag("blockTranslationMap"));
+        }
 
-            if (newFormat) {
-                NBTTagCompound nbtMapping = nbttagcompound.getCompoundTag("blockTranslationMap");
-                if (getVersion().equals("1.0")) {
-                    this.blockMappingInternalIDToBlock = genBlockIDSchemToBlockWithUnlocalizedName(nbtMapping);
-                } else if (getVersion().equals("1.1")) {
-                    this.blockMappingInternalIDToBlock = genBlockIDSchemToBlockWithRegistry(nbtMapping);
-                } else {
-                    System.out.println("CRITICAL! BuildMod does not support version: " + getVersion());
-                }
-            } else {
-                System.out.println("TODO: a fallback lookup table for old block IDs to unlocalized names");
-                NBTTagCompound nbtFallbackLookup = CompressedStreamTools.readCompressed(new FileInputStream(UtilBuild.getSaveFolderPath() + "BlockTranslationMapFallback.schematic"));
-                this.blockMappingInternalIDToBlock = genBlockIDSchemToBlockWithUnlocalizedName(nbtFallbackLookup.getCompoundTag("blockTranslationMap"));
-            }
-
-            //System.out.println("TODO for BuildMod: verify 9 is accurate type to use, NBTBase defines type 9 as NBTTagList");
-            tileEntities = nbttagcompound.getTagList("TileEntities", 10);
-            entities = nbttagcompound.getTagList("Entities", 10);
+        //System.out.println("TODO for BuildMod: verify 9 is accurate type to use, NBTBase defines type 9 as NBTTagList");
+        tileEntities = nbttagcompound.getTagList("TileEntities", 10);
+        entities = nbttagcompound.getTagList("Entities", 10);
 
 
-            int sizeX = map_sizeX = nbttagcompound.getShort("Width");
-            int sizeZ = map_sizeZ = nbttagcompound.getShort("Length");
-            int sizeY = map_sizeY = nbttagcompound.getShort("Height");
+        int sizeX = map_sizeX = nbttagcompound.getShort("Width");
+        int sizeZ = map_sizeZ = nbttagcompound.getShort("Length");
+        int sizeY = map_sizeY = nbttagcompound.getShort("Height");
 
-            map_surfaceOffset = nbttagcompound.getShort("surfaceOffset");
+        map_surfaceOffset = nbttagcompound.getShort("surfaceOffset");
 
-            int bPosX = 0;
-            int bPosY = 0;
-            int bPosZ = 0;
+        int bPosX = 0;
+        int bPosY = 0;
+        int bPosZ = 0;
 
-            build_blockIDArr = new Block
-                    [sizeX]
-                    [sizeY]
-                    [sizeZ];
+        build_blockIDArr = new Block
+                [sizeX]
+                [sizeY]
+                [sizeZ];
 
-            build_blockMetaArr = new int
-                    [sizeX]
-                    [sizeY]
-                    [sizeZ];
-			
+        build_blockMetaArr = new int
+                [sizeX]
+                [sizeY]
+                [sizeZ];
+
 			/*build_blockPlaced = new boolean
             [sizeX]
             [sizeY]
             [sizeZ];*/
 
-            if (newFormat) {
-                int metadata[] = nbttagcompound.getIntArray("Data");
-                int blockids[] = nbttagcompound.getIntArray("Blocks");
+        if (newFormat) {
+            int metadata[] = nbttagcompound.getIntArray("Data");
+            int blockids[] = nbttagcompound.getIntArray("Blocks");
 
-                for (int xx = 0; xx < sizeX; xx++) {
-                    for (int yy = 0; yy < sizeY; yy++) {
-                        for (int zz = 0; zz < sizeZ; zz++) {
-                            int index = yy * sizeX * sizeZ + zz * sizeX + xx;
-                            //build_blockIDArr[xx][yy][zz] = blockids[index];
-                            build_blockMetaArr[xx][yy][zz] = metadata[index];
-                            //build_blockPlaced[xx][yy][zz] = false;
+            for (int xx = 0; xx < sizeX; xx++) {
+                for (int yy = 0; yy < sizeY; yy++) {
+                    for (int zz = 0; zz < sizeZ; zz++) {
+                        int index = yy * sizeX * sizeZ + zz * sizeX + xx;
+                        //build_blockIDArr[xx][yy][zz] = blockids[index];
+                        build_blockMetaArr[xx][yy][zz] = metadata[index];
+                        //build_blockPlaced[xx][yy][zz] = false;
 
-                            int internalID = blockids[index];
-                            Block block = getConvertInternalIDToBlock(internalID);
+                        int internalID = blockids[index];
+                        Block block = getConvertInternalIDToBlock(internalID);
 
-                            if (block != null) {
+                        if (block != null) {
 
-                            } else {
-                                System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
-                                //block = Blocks.AIR;
-                                //block = Blocks.DIRT;
-                                block = Blocks.DIAMOND_BLOCK;
-                            }
-
-                            build_blockIDArr[xx][yy][zz] = block;
-
+                        } else {
+                            System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
+                            //block = Blocks.AIR;
+                            //block = Blocks.DIRT;
+                            block = Blocks.DIAMOND_BLOCK;
                         }
-                    }
-                }
-            } else {
-                System.out.println("Notice: BuildMod detected really old schematic version, noted incase of future import errors");
-                byte metadata[] = nbttagcompound.getByteArray("Data");
-                byte blockids[] = nbttagcompound.getByteArray("Blocks");
 
-                for (int xx = 0; xx < sizeX; xx++) {
-                    for (int yy = 0; yy < sizeY; yy++) {
-                        for (int zz = 0; zz < sizeZ; zz++) {
-                            int index = yy * sizeX * sizeZ + zz * sizeX + xx;
-                            //build_blockIDArr[xx][yy][zz] = blockids[index];
-                            build_blockMetaArr[xx][yy][zz] = metadata[index];
-                            //build_blockPlaced[xx][yy][zz] = false;
+                        build_blockIDArr[xx][yy][zz] = block;
 
-                            int internalID = blockids[index];
-                            //fixing old bug using bytes for blockIDs greater than 256
-                            if (internalID < 0) {
-                                internalID += 256;
-                            }
-                            Block block = getConvertInternalIDToBlock(internalID);
-
-                            if (block != null) {
-
-                            } else {
-                                System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
-                                block = Blocks.AIR;
-                            }
-
-                            build_blockIDArr[xx][yy][zz] = block;
-                        }
                     }
                 }
             }
+        } else {
+            System.out.println("Notice: BuildMod detected really old schematic version, noted incase of future import errors");
+            byte metadata[] = nbttagcompound.getByteArray("Data");
+            byte blockids[] = nbttagcompound.getByteArray("Blocks");
 
+            for (int xx = 0; xx < sizeX; xx++) {
+                for (int yy = 0; yy < sizeY; yy++) {
+                    for (int zz = 0; zz < sizeZ; zz++) {
+                        int index = yy * sizeX * sizeZ + zz * sizeX + xx;
+                        //build_blockIDArr[xx][yy][zz] = blockids[index];
+                        build_blockMetaArr[xx][yy][zz] = metadata[index];
+                        //build_blockPlaced[xx][yy][zz] = false;
 
-            file = level;
-            //ZCGame.instance.mapMan.curLevel = level;
+                        int internalID = blockids[index];
+                        //fixing old bug using bytes for blockIDs greater than 256
+                        if (internalID < 0) {
+                            internalID += 256;
+                        }
+                        Block block = getConvertInternalIDToBlock(internalID);
 
-        } catch (Exception ex) {
-            //notification off until generic build copy paste interface is supported for server
-            ex.printStackTrace();
+                        if (block != null) {
+
+                        } else {
+                            System.out.println("CRITICAL! BuildMod: null block when converting a version " + getVersion() + " schematic to block instance, this should be a bug, contact Corosus");
+                            block = Blocks.AIR;
+                        }
+
+                        build_blockIDArr[xx][yy][zz] = block;
+                    }
+                }
+            }
         }
+
+
+        file = levelName;
+        //ZCGame.instance.mapMan.curLevel = level;
 
     }
 

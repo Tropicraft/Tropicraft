@@ -8,9 +8,12 @@ import build.world.BuildJob;
 import build.world.BuildManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.tropicraft.Info;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.town.SpawnLocationData;
@@ -67,7 +70,9 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 
         int yOffset = 0;//-1;
 
-        Build mainStructureData = new Build(spawn.getX(), spawn.getY() + yOffset, spawn.getZ(), UtilBuild.getSaveFolderPath() + "schematics" + File.separator + "koavillage");
+        //Build mainStructureData = new Build(spawn.getX(), spawn.getY() + yOffset, spawn.getZ(), UtilBuild.getSaveFolderPath() + "schematics" + File.separator + "koavillage");
+        Build mainStructureData = new Build(spawn.getX(), spawn.getY() + yOffset, spawn.getZ(),
+                "koavillage", new ResourceLocation(Info.MODID, "schematics/koavillage.schematic"));
         /*BlockPos coords = getBuildingCornerCoord();
 		mainStructureData.map_coord_minX = coords.getX();
 		mainStructureData.map_coord_minY = coords.getY();
