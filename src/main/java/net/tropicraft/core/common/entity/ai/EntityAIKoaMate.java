@@ -9,6 +9,8 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class EntityAIKoaMate extends EntityAIBase
 {
@@ -36,6 +38,7 @@ public class EntityAIKoaMate extends EntityAIBase
      */
     public boolean shouldExecute()
     {
+        //adult cooldown
         if (this.villagerObj.getGrowingAge() != 0)
         {
             return false;
@@ -77,6 +80,9 @@ public class EntityAIKoaMate extends EntityAIBase
     {
         this.matingTimeout = 300;
         this.villagerObj.setMating(true);
+        if (this.mate != null) {
+            this.mate.setMating(true);
+        }
     }
 
     /**
@@ -93,7 +99,11 @@ public class EntityAIKoaMate extends EntityAIBase
      */
     public boolean continueExecuting()
     {
-        return this.matingTimeout >= 0 && this.canTownHandleMoreVillagers() && this.villagerObj.getGrowingAge() == 0 && this.villagerObj.getIsWillingToMate(false);
+        boolean result = this.matingTimeout >= 0 && this.canTownHandleMoreVillagers() && this.villagerObj.getGrowingAge() == 0 && this.villagerObj.getIsWillingToMate(false);
+        if (!result) {
+            System.out.println("mating reset");
+        }
+        return result;
     }
 
     /**
@@ -106,10 +116,11 @@ public class EntityAIKoaMate extends EntityAIBase
 
         if (this.villagerObj.getDistanceSqToEntity(this.mate) > 2.25D)
         {
-            this.villagerObj.getNavigator().tryMoveToEntityLiving(this.mate, 0.25D);
+            this.villagerObj.getNavigator().tryMoveToEntityLiving(this.mate, 0.75D);
         }
         else if (this.matingTimeout == 0 && this.mate.isMating())
         {
+            this.mate.setMating(false);
             System.out.println("mate complete");
             if (villagerObj.getOrientation() == EntityKoaBase.Orientations.STRAIT) {
                 this.giveBirth();
@@ -127,7 +138,7 @@ public class EntityAIKoaMate extends EntityAIBase
         TownKoaVillage village = villagerObj.getVillage();
         if (village != null) {
             if (village.getPopulationSize() < 20) {
-                System.out.println("population size: " + village.getPopulationSize());
+                //System.out.println("population size: " + village.getPopulationSize());
                 return true;
             } else {
                 return false;
@@ -152,9 +163,9 @@ public class EntityAIKoaMate extends EntityAIBase
         this.mate.setIsWillingToMate(false);
         this.villagerObj.setIsWillingToMate(false);
 
-        final net.minecraftforge.event.entity.living.BabyEntitySpawnEvent event = new net.minecraftforge.event.entity.living.BabyEntitySpawnEvent(villagerObj, mate, entityvillager);
-        if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event) || event.getChild() == null) { return; }
-        entityvillager = event.getChild();
+        //final net.minecraftforge.event.entity.living.BabyEntitySpawnEvent event = new net.minecraftforge.event.entity.living.BabyEntitySpawnEvent(villagerObj, mate, entityvillager);
+        //if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event) || event.getChild() == null) { return; }
+        //entityvillager = event.getChild();
         entityvillager.setGrowingAge(-24000);
         entityvillager.setLocationAndAngles(this.villagerObj.posX, this.villagerObj.posY, this.villagerObj.posZ, 0.0F, 0.0F);
         if (entityvillager instanceof EntityKoaBase) {
@@ -162,9 +173,16 @@ public class EntityAIKoaMate extends EntityAIBase
             entityvillager.setHomePosAndDistance(villagerObj.getHomePosition(), EntityKoaBase.MAX_HOME_DISTANCE);
             TownKoaVillage village = villagerObj.getVillage();
             if (village != null) {
+                ((EntityKoaBase) entityvillager).postSpawnGenderFix();
+
                 village.addEntity(entityvillager);
             }
+
+            ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
         }
+
+
+
         this.world.spawnEntity(entityvillager);
         this.world.setEntityState(entityvillager, (byte)12);
     }

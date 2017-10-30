@@ -21,7 +21,9 @@ import net.tropicraft.core.common.town.TownObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class TownKoaVillage extends TownObject implements ICustomGen {
@@ -42,6 +44,9 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 
     public TownKoaVillage() {
         super();
+
+        //they are static, and we didnt serialize them so just readd each time instanced
+        generateSpawnCoords();
     }
 
     @Override
@@ -56,8 +61,6 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
     @Override
     public void initFirstTime() {
         super.initFirstTime();
-
-        generateSpawnCoords();
 
         genStructure();
     }
@@ -225,7 +228,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 	}*/
 
     @Override
-    public void spawnMemberAtSpawnLocation(SpawnLocationData parData) {
+    public EntityLivingBase spawnMemberAtSpawnLocation(SpawnLocationData parData) {
         super.spawnMemberAtSpawnLocation(parData);
 
         EntityKoaBase ent = null;
@@ -248,10 +251,15 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
             ent.setPosition(spawn.getX() + parData.coords.getX() + 0.5F, spawn.getY() + parData.coords.getY(), spawn.getZ() + parData.coords.getZ() + 0.5F);
             //ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
             getWorld().spawnEntity(ent);
-            addEntity(ent);
             parData.entityUUID = ent.getPersistentID();
             ent.onInitialSpawn(getWorld().getDifficultyForLocation(ent.getPosition()), null);
+
+            ent.postSpawnGenderFix();
+
+            addEntity(ent);
         }
+
+        return ent;
     }
 
     @Override
@@ -272,13 +280,63 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
         super.readFromNBT(var1);
         direction = var1.getInteger("direction");
 
+        NBTTagCompound nbtPersistantEntities = var1.getCompoundTag("lookupGenders");
+        Iterator it = nbtPersistantEntities.getKeySet().iterator();
+        while (it.hasNext()) {
+            String entryName = (String) it.next();
+            NBTTagCompound entry = nbtPersistantEntities.getCompoundTag(entryName);
+            UUID uuid = UUID.fromString(entry.getString("UUID"));
+            int gender = entry.getInteger("gender");
+            lookupEntityToGender.put(uuid, gender);
+        }
+
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound var1) {
         super.writeToNBT(var1);
         var1.setInteger("direction", direction);
+
+        NBTTagCompound nbtListPersistantEntities = new NBTTagCompound();
+        int count = 0;
+        for (Map.Entry<UUID, Integer> entry : lookupEntityToGender.entrySet()) {
+            NBTTagCompound nbtEntry = new NBTTagCompound();
+            nbtEntry.setString("UUID", entry.getKey().toString());
+            nbtEntry.setInteger("gender", entry.getValue());
+            nbtListPersistantEntities.setTag("entry_" + count++, nbtEntry);
+        }
+        var1.setTag("lookupGenders", nbtListPersistantEntities);
+
         return var1;
     }
 
+    @Override
+    public void addEntity(EntityLivingBase ent) {
+        super.addEntity(ent);
+
+        if (ent instanceof EntityKoaBase) {
+            EntityKoaBase koa = (EntityKoaBase) ent;
+
+            if (lookupEntityToGender.containsKey(ent.getPersistentID())) {
+                //again maybe false positives
+                UtilBuild.dbg("WARNING: adding already existing entitys _persistant ID_ to lookupEntityToGender");
+            } else {
+                lookupEntityToGender.put(ent.getPersistentID(), koa.getGender().ordinal());
+            }
+        }
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+
+        lookupEntityToGender.clear();
+    }
+
+    @Override
+    public void hookEntityDied(EntityLivingBase ent) {
+        super.hookEntityDied(ent);
+
+        lookupEntityToGender.remove(ent.getPersistentID());
+    }
 }

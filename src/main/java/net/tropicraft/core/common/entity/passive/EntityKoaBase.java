@@ -117,6 +117,10 @@ public class EntityKoaBase extends EntityVillager {
         return Genders.get(this.getDataManager().get(GENDER));
     }
 
+    public void setGender(Genders gender) {
+        this.getDataManager().set(GENDER, gender.ordinal());
+    }
+
     public Roles getRole() {
         return Roles.get(this.getDataManager().get(ROLE));
     }
@@ -205,12 +209,12 @@ public class EntityKoaBase extends EntityVillager {
         });
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
-        this.tasks.addTask(4, new EntityAIChillAtFire(this));
+        this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1D));
+        this.tasks.addTask(5, new EntityAIKoaMate(this));
+        this.tasks.addTask(6, new EntityAIChillAtFire(this));
         //this.tasks.addTask(3, new EntityAIMoveIndoors(this));
         //this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         //this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1D));
-        this.tasks.addTask(6, new EntityAIKoaMate(this));
         //this.tasks.addTask(7, new EntityAIFollowGolem(this));
 
         if (canFish()) {
@@ -240,8 +244,6 @@ public class EntityKoaBase extends EntityVillager {
         //EntityVillager ent = super.createChild(ageable);
         EntityKoaHunter entityvillager = new EntityKoaHunter(this.world);
         entityvillager.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData)null);
-
-        //TODO: default code that uses this sets child state after this so AI will be wrong, fix when making my own EntityAIVillagerMate
 
         return entityvillager;
     }
@@ -450,7 +452,6 @@ public class EntityKoaBase extends EntityVillager {
         }
     }
 
-    //TODO: track male/female count per village and modify chance to keep it equal and sustainable for future generations
     public void rollDiceRoleAndGender() {
         int randValRole = this.world.rand.nextInt(Roles.values().length);
         if (randValRole == Roles.FISHERMAN.ordinal()) {
@@ -812,7 +813,7 @@ public class EntityKoaBase extends EntityVillager {
     public void setDead() {
         super.setDead();
         if (!world.isRemote) {
-            System.out.println("hook dead " + this);
+            //System.out.println("hook dead " + this);
             TownKoaVillage village = getVillage();
             if (village != null) {
                 village.hookEntityDied(this);
@@ -822,7 +823,7 @@ public class EntityKoaBase extends EntityVillager {
 
     public void hookUnloaded() {
         if (!world.isRemote) {
-            System.out.println("hook unloaded " + this);
+            //System.out.println("hook unloaded " + this);
             TownKoaVillage village = getVillage();
             if (village != null) {
                 village.hookEntityDestroyed(this);
@@ -856,5 +857,31 @@ public class EntityKoaBase extends EntityVillager {
             }
         }
         return result;
+    }
+
+    public void postSpawnGenderFix() {
+        TownKoaVillage village = getVillage();
+        if (village != null) {
+            //gender balencing, not factoring in orientation
+            int maleCount = 0;
+            int femaleCount = 0;
+            for (int ordinal : village.lookupEntityToGender.values()) {
+                if (EntityKoaBase.Genders.MALE.ordinal() == ordinal) {
+                    maleCount++;
+                } else if (EntityKoaBase.Genders.FEMALE.ordinal() == ordinal) {
+                    femaleCount++;
+                }
+            }
+
+            if (maleCount < femaleCount) {
+                System.out.println("force set to male");
+                setGender(EntityKoaBase.Genders.MALE);
+            } else {
+                System.out.println("force set to female");
+                setGender(EntityKoaBase.Genders.FEMALE);
+            }
+
+            System.out.println("population size: " + village.getPopulationSize() + ", males: " + maleCount + ", females: " + femaleCount);
+        }
     }
 }

@@ -22,12 +22,14 @@ public class ManagedLocation implements ISimulationTickable {
 	//for managing entities that get loaded and unloaded, dont forget that AI/BT Agent entities will attempt to (re)register themselves on reload/spawn if they have a managed location set to them
 	//its expected that those in this list are still alive
 	public List<UUID> listPersistantEntities = new ArrayList<>();
+	public HashMap<UUID, Integer> lookupEntityToGender = new HashMap<>();
 	public HashMap<Long, Object> lookupIDToTownObject = new HashMap<>(); //includes both StructureObjects and ResourceNodes
 	public int lastTownObjectIDSet = 1; //command building uses 0, cant increment it from its init
 	
 	public List<SpawnLocationData> listSpawnLocations = new ArrayList<>();
 
-	boolean respawnDeadEntities = false;
+	public boolean respawnDeadEntities = false;
+	public int minEntitiesToKeepAlive = 5;
 	
 	public ManagedLocation() {
 		
@@ -65,7 +67,7 @@ public class ManagedLocation implements ISimulationTickable {
 	}*/
 	
 	public void removeObject(Object obj) {
-		System.out.println("removing object: " + obj);
+		//System.out.println("removing object: " + obj);
 		if (obj instanceof EntityLivingBase) {
 			listLoadedEntities.remove(obj);
 		}
@@ -77,7 +79,7 @@ public class ManagedLocation implements ISimulationTickable {
 	
 	/* For proper death hooks */
 	public void hookEntityDied(EntityLivingBase ent) {
-		System.out.println("hook entity died: " + ent);
+		//System.out.println("hook entity died: " + ent);
 		removeObject(ent);
 		listPersistantEntities.remove(ent.getPersistentID());
 		
@@ -86,7 +88,7 @@ public class ManagedLocation implements ISimulationTickable {
 	
 	/* For unloading of an entity from chunks unloading */
 	public void hookEntityDestroyed(EntityLivingBase ent) {
-		System.out.println("hook entity obj destroyed: " + ent);
+		//System.out.println("hook entity obj destroyed: " + ent);
 		removeObject(ent);
 	}
 	
@@ -104,8 +106,6 @@ public class ManagedLocation implements ISimulationTickable {
 		} else {
 			listPersistantEntities.add(ent.getPersistentID());
 		}
-		
-		
 	}
 	
 	public void registerSpawnLocation(SpawnLocationData parData) {
@@ -121,7 +121,9 @@ public class ManagedLocation implements ISimulationTickable {
 	
 	public void tickMonitorPersistantMembers(boolean initialSpawn) {
 
-		if (respawnDeadEntities || initialSpawn) {
+		if (respawnDeadEntities || initialSpawn ||
+				(minEntitiesToKeepAlive > 0 && listPersistantEntities.size() < minEntitiesToKeepAlive &&
+						listSpawnLocations.size() >= minEntitiesToKeepAlive)) {
 			//check occasionally
 			//iterate spawn locations
 			//check if UUID null
@@ -138,9 +140,17 @@ public class ManagedLocation implements ISimulationTickable {
 				if (data.entityUUID == null) {
 					System.out.println("detected missing entity, attempting to respawn a " + data.type + " at coords: " + data.coords);
 					//TODO: for new village, i want koa mating to repopulate the numbers, not magic extra spawning
-					spawnMemberAtSpawnLocation(data);
+					EntityLivingBase ent = spawnMemberAtSpawnLocation(data);
 					if (data.entityUUID == null) {
 						System.out.println("spawned location failed to spawn a new entity, perhaps spawnMemberAtSpawnLocation() method not overridden properly?");
+					} else {
+						System.out.println("respawned, population size: " + getPopulationSize());
+					}
+				}
+
+				if (!respawnDeadEntities && !initialSpawn) {
+					if (listPersistantEntities.size() >= minEntitiesToKeepAlive) {
+						break;
 					}
 				}
 			}
@@ -149,8 +159,8 @@ public class ManagedLocation implements ISimulationTickable {
 	}
 	
 	/* Meant to be overridden to handle mod specific entities */
-	public void spawnMemberAtSpawnLocation(SpawnLocationData parData) {
-		
+	public EntityLivingBase spawnMemberAtSpawnLocation(SpawnLocationData parData) {
+		return null;
 	}
 	
 	public void cleanup() {

@@ -72,8 +72,8 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
         //temp
         //entity.timeBetweenFishing = 20*60*2;
-        entity.lastTimeFished = 0;
-        debugTask = false;
+        //entity.lastTimeFished = 0;
+        //debugTask = false;
 
         BlockPos blockpos = new BlockPos(this.entity);
 
@@ -371,7 +371,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     private boolean ifCaughtFish() {
-        return fishingTimeout <= fishingTimeoutMax-40;
+        return fishingTimeout <= 40;
     }
 
     private void castLine() {
