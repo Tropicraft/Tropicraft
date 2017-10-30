@@ -5,6 +5,9 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -33,6 +36,7 @@ import net.tropicraft.core.common.block.BlockSeaweed;
 import net.tropicraft.core.common.block.BlockSifter;
 import net.tropicraft.core.common.block.BlockTikiTorch;
 import net.tropicraft.core.common.block.BlockTropicraftEnumVariants;
+import net.tropicraft.core.common.block.BlockTropicraftFence;
 import net.tropicraft.core.common.block.BlockTropicraftFlowerPot;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
@@ -186,6 +190,18 @@ public class BlockRegistry extends TropicraftRegistry {
 
 	public static Block bongo;
 
+	public static Block bambooFence;
+	public static Block thatchFence;
+	public static Block chunkFence;
+	public static Block palmFence;
+	public static Block mahoganyFence;
+
+	public static BlockFenceGate bambooFenceGate;
+	public static BlockFenceGate thatchFenceGate;
+	public static BlockFenceGate chunkFenceGate;
+	public static BlockFenceGate palmFenceGate;
+	public static BlockFenceGate mahoganyFenceGate;
+
 	/**
 	 * Register blocks in preInit
 	 */
@@ -263,6 +279,18 @@ public class BlockRegistry extends TropicraftRegistry {
 		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR);
 
 		bongo = registerBlock(new BlockBongoDrum(), Names.BONGO, new MultiBlockItemCreator(TropicraftBongos.VALUES));
+
+		bambooFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.BIRCH), "bamboo_fence_gate");
+		thatchFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.BIRCH), "thatch_fence_gate");
+		chunkFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.DARK_OAK), "chunk_fence_gate");
+		palmFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.SPRUCE), "palm_fence_gate");
+		mahoganyFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.OAK), "mahogany_fence_gate");
+
+		bambooFence = registerBlock(new BlockTropicraftFence(bambooFenceGate, Material.PLANTS, MapColor.SAND), "bamboo_fence");
+		thatchFence = registerBlock(new BlockTropicraftFence(thatchFenceGate, Material.PLANTS, MapColor.SAND), "thatch_fence");
+		chunkFence = registerBlock(new BlockTropicraftFence(chunkFenceGate, Material.PLANTS, MapColor.SAND), "chunk_fence");
+		palmFence = registerBlock(new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence");
+		mahoganyFence = registerBlock(new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence");
 	}
 
 	public static void init() {

@@ -28,6 +28,12 @@ bamboochest.desc  = A chest made out of bamboo! It will complete your tropical-t
 bamboodoor.title = Bamboo Door
 bamboodoor.desc  = This bamboo and thatch door is perfect for separating you from the wilderness. Be careful though, this door isn't very strong.
 
+bamboofence.title = Bamboo Fence
+bamboofence.desc  = This bamboo fence is great at keeping the bad things out. Careful though, this fence isn't very strong.
+
+bamboofencegate.title = Bamboo Fence Gate
+bamboofencegate.desc  = This bamboo fence gate works fantastic with fences of all types. Like other bamboo blocks, it isn't very strong.
+
 bamboospear.title = Bamboo Spear
 bamboospear.desc  = This sharpened stick is extremely powerful when first crafted. Be warned though, the spear looses its sharpness quickly.
 
@@ -60,6 +66,12 @@ canna.desc  = This yellow-orange flower blends in well in the tropical realm, co
 
 chunkohead.title = Chunk O' Head
 chunkohead.desc = The Easter Island Heads that can occasionally be seen are made up of this rock. It is a holy stone to those who built the Heads, and taking it is considered sacrilege. 
+
+chunkfence.title = Chunk O' Head Fence
+chunkfence.desc  = The Easter Island Heads that can occasionally be seen are made up of this rock. Surround your base with a lovely fence version of the block.
+
+chunkfencegate.title = Chunk O' Head Fence Gate
+chunkfencegate.desc  = The Easter Island Heads that can occasionally be seen are made up of this rock. This fence gate works wonderfully with all fence types.
 
 coconut.title = Coconut
 coconut.desc  = Coconuts grow on the palm trees of the Tropics. By hitting them with a sword you can get coconut chunks which make a great snack. Their hard shell fragments easily, making them great for explosives.
@@ -209,7 +221,13 @@ magicmushroom.title = Magic Mushroom
 magicmushroom.desc  = Found only in the rainforest, these mushrooms are mysterious, need to explore more.
 
 mahogany.title = Mahogany Logs
-mahogany.desc  = This beautifully colored wood comprises all tropicraft rainforest trees and make for a beautiful addition to any tropical paradise.
+mahogany.desc  = This beautifully colored wood comprises all Tropicraft rainforest trees and make for a beautiful addition to any tropical paradise.
+
+mahoganyfence.title = Mahogany Fence
+mahoganyfence.desc  = This beautifully colored wood comprises all Tropicraft rainforest trees and make for a beautiful addition to any tropical paradise.
+
+mahoganyfencegate.title = Mahogany Fence Gate
+mahoganyfencegate.desc  = This beautifully colored wood comprises all Tropicraft rainforest trees and make for a beautiful addition to any tropical paradise.
 
 marlinmeat.title = Fresh Marlin
 marlinmeat.desc  = Flesh of the elusive marlin. Cook this to get Seared Marlin.
@@ -246,6 +264,12 @@ palmwood.desc  = Palm trees are made of a surprisingly sturdy wood. It can also 
 
 palmsapling.title = Palm Saplings
 palmsapling.desc  = These shoots can only grow on sand. Like other trees, they grow best in wide open areas and benefit from the use of bone meal.
+
+palmfence.title = Palm Fence
+palmfence.desc  = Palm trees are made of a surprisingly sturdy wood. Its beautiful planks can create fences.
+
+palmfencegate.title = Palm Fence Gate
+palmfencegate.desc  = Palm trees are made of a surprisingly sturdy wood. Its beautiful planks can create fence gates.
 
 pathos.title = Pathos
 pathos.desc  = Pathos, in greek, means 'an appeal to emotions'. This plant can only be found in rainforests.
@@ -318,6 +342,12 @@ tikitorch.desc  = These tall torches are great for lighting up beaches.
 
 thatchblock.title = Thatch Blocks
 thatchblock.desc  = As easy to craft as it is to break, the thatch block provides another sustainable building material to Tropics. It can be crafted into stairs and slabs.
+
+thatchfence.title = Thatch Fence
+thatchfence.desc  = As easy to craft as it is to break, the thatch block provides another sustainable building material to Tropics.
+
+thatchfencegate.title = Thatch Fence Gate
+thatchfencegate.desc  = As easy to craft as it is to break, the thatch block provides another sustainable building material to Tropics.
 
 thetribe.title = The Tribe
 thetribe.desc = Upbeat tropical vibes brought to you by Emile van Krieken. Listen to this song while venturing through a Koa Village and you may find yourself a favorite among the villagers.

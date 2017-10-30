@@ -1,0 +1,6 @@
+{
+    "parent": "block/fence_inventory",
+    "textures": {
+        "texture": "tropicraft:blocks/plank_Palm"
+    }
+}
