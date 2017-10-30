@@ -22,6 +22,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
@@ -64,11 +65,13 @@ public class EntityKoaBase extends EntityVillager {
 
     private float clientHealthLastTracked = 0;
 
-    public static int MAX_HOME_DISTANCE = 64;
+    public static int MAX_HOME_DISTANCE = 128;
 
     private int villageID = -1;
 
     private EntityFishHook lure;
+
+    private boolean wasInWater = false;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> input instanceof EntityMob || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -149,7 +152,6 @@ public class EntityKoaBase extends EntityVillager {
             if (id != -1) {
                 Entity ent = world.getEntityByID(id);
                 if (ent instanceof EntityFishHook) {
-                    System.out.println("set client lure");
                     setLure((EntityFishHook) ent);
                     ((EntityFishHook) ent).angler = this;
                 }
@@ -585,6 +587,8 @@ public class EntityKoaBase extends EntityVillager {
 
     public void findAndSetFireSource(boolean force) {
 
+        //this.setHomePosAndDistance(this.getHomePosition(), 128);
+
         if (!force && (world.getTotalWorldTime()+this.getEntityId()) % (20*30) != 0) return;
 
         //validate fire source
@@ -594,6 +598,7 @@ public class EntityKoaBase extends EntityVillager {
         } else if (posLastFireplaceFound != null) {
             IBlockState state = world.getBlockState(posLastFireplaceFound);
             if (state.getMaterial() != Material.FIRE) {
+                System.out.println("removing invalid fire spot");
                 posLastFireplaceFound = null;
                 tryFind = true;
             }
@@ -616,7 +621,22 @@ public class EntityKoaBase extends EntityVillager {
                     }
                 }
             }
+
+            List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(20, 20, 20));
+            Collections.shuffle(listEnts);
+            for (EntityKoaBase ent : listEnts) {
+                if (ent.posLastFireplaceFound != null) {
+                    IBlockState state = world.getBlockState(ent.posLastFireplaceFound);
+                    if (state.getMaterial() == Material.FIRE) {
+                        posLastFireplaceFound = new BlockPos(ent.posLastFireplaceFound);
+                        System.out.println("found fire place spot to chill from entity");
+                        return;
+                    }
+                }
+            }
         }
+
+
 
 
     }
@@ -686,10 +706,32 @@ public class EntityKoaBase extends EntityVillager {
     }
 
     @Override
+    public int getAir() {
+        return super.getAir();
+    }
+
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
-        //TODO: replace with heal via hunger/food consumption
+        if (wasInWater) {
+            if (!isInWater()) {
+                if (isCollidedHorizontally) {
+                    this.motionY += 0.4F;
+                }
+            }
+        }
+
+        if (isInWater()) {
+            if (this.motionY < -0.2F) {
+                this.motionY += 0.15F;
+            } else {
+                //this.motionY += 0.02F;
+            }
+        }
+
+        wasInWater = isInWater();
+
         if (!world.isRemote) {
             //if (world.getTotalWorldTime() % (20*5) == 0) {
                 //this.heal(5);

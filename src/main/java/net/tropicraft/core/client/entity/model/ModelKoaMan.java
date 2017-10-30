@@ -215,7 +215,7 @@ public class ModelKoaMan extends ModelBiped {
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
 
-        boolean isDancing = true;
+        boolean isDancing = false;
 
         if (entityIn instanceof EntityKoaBase) {
             this.isRiding = ((EntityKoaBase) entityIn).isSitting();

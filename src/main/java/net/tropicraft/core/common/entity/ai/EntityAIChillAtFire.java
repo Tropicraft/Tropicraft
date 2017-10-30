@@ -97,7 +97,7 @@ public class EntityAIChillAtFire extends EntityAIBase
 
         //prevent walking into the fire
         double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        if (dist < 5D) {
+        if (dist < 4D && entityObj.onGround) {
             entityObj.setSitting(true);
             entityObj.getNavigator().clearPathEntity();
             isClose = true;
@@ -144,6 +144,9 @@ public class EntityAIChillAtFire extends EntityAIBase
 
                     if (vec3d != null) {
                         success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.0D);
+                    } else {
+                        success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
+                        //System.out.println("success? " + success);
                     }
                 } else {
                     success = this.entityObj.getNavigator().tryMoveToXYZ((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
