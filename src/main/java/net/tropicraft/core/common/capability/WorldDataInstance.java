@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.town.ManagedLocation;
 
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WorldDataInstance {
@@ -32,10 +33,61 @@ public class WorldDataInstance {
 
     public void readNBT(NBTTagCompound nbt) {
         lastIDUsedForKoaVillage = nbt.getInteger("lastIDUsedForKoaVillage");
+
+        NBTTagCompound tickingLocations = nbt.getCompoundTag("tickingLocations");
+
+        Iterator it = tickingLocations.getKeySet().iterator();
+
+        while (it.hasNext()) {
+            String keyName = (String)it.next();
+            NBTTagCompound nbt2 = tickingLocations.getCompoundTag(keyName);
+
+            String classname = nbt2.getString("classname");
+
+            ClassLoader classLoader = WorldDataInstance.class.getClassLoader();
+
+            Class aClass = null;
+
+            try {
+                aClass = classLoader.loadClass(classname);
+                //System.out.println("aClass.getName() = " + aClass.getName());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            ISimulationTickable locationObj = null;
+            if (aClass != null) {
+                try {
+                    locationObj = (ISimulationTickable)aClass.getConstructor(new Class[] {}).newInstance();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (locationObj != null) {
+                locationObj.init();
+                locationObj.readFromNBT(nbt2);
+                locationObj.initPost();
+                addTickingLocation(locationObj);
+
+                //System.out.println("reading in ticking location: " + nbt.toString() + " - " + entrance.getOrigin().posX + " - " + entrance.spawn.posZ);
+            }
+        }
     }
     
     public void writeNBT(NBTTagCompound nbt) {
         nbt.setInteger("lastIDUsedForKoaVillage", lastIDUsedForKoaVillage);
+
+        NBTTagCompound nbtSet = new NBTTagCompound();
+
+        int index = 0;
+        for (ISimulationTickable entry : lookupTickingManagedLocations.values()) {
+            NBTTagCompound nbt2 = new NBTTagCompound();
+            entry.writeToNBT(nbt2);
+            nbtSet.setTag("" + index++, nbt2);
+        }
+        nbt.setTag("tickingLocations", nbtSet);
+
+        nbt.setString("classname", this.getClass().getCanonicalName());
     }
 
     public void addTickingLocation(ISimulationTickable location) {
@@ -45,7 +97,13 @@ public class WorldDataInstance {
     public void addTickingLocation(ISimulationTickable location, boolean init) {
         //if (lookupDungeonEntrances == null) lookupDungeonEntrances = new HashMap<Integer, DungeonEntrance>();
         if (location.getOrigin() != null) {
-            Integer hash = location.getOrigin().hashCode();
+            //Integer hash = location.getOrigin().hashCode();
+            int hash = 0;
+            if (location instanceof ManagedLocation) {
+                hash = ((ManagedLocation) location).locationID;
+            } else {
+                hash = location.getOrigin().hashCode();
+            }
             if (!lookupTickingManagedLocations.containsKey(hash)) {
                 lookupTickingManagedLocations.put(hash, location);
                 //relocated to a ticking first time init so it can be after readnbt

@@ -16,11 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.entity.passive.EntityFishHook;
 
 @SideOnly(Side.CLIENT)
-public class RenderFish extends Render<EntityFishHook>
+public class RenderFishingLure extends Render<EntityFishHook>
 {
     private static final ResourceLocation FISH_PARTICLES = new ResourceLocation("textures/particle/particles.png");
 
-    public RenderFish(RenderManager renderManagerIn)
+    public RenderFishingLure(RenderManager renderManagerIn)
     {
         super(renderManagerIn);
     }

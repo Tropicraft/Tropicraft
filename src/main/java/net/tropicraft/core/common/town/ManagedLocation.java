@@ -17,15 +17,17 @@ public class ManagedLocation implements ISimulationTickable {
 	public boolean hasInit = false;
 
 	//for active entities in the world, should not contain unloaded entities, as they become invalid
-	public List<EntityLivingBase> listLoadedEntities = new ArrayList<EntityLivingBase>();
+	public List<EntityLivingBase> listLoadedEntities = new ArrayList<>();
 	
 	//for managing entities that get loaded and unloaded, dont forget that AI/BT Agent entities will attempt to (re)register themselves on reload/spawn if they have a managed location set to them
 	//its expected that those in this list are still alive
-	public List<UUID> listPersistantEntities = new ArrayList<UUID>();
-	public HashMap<Long, Object> lookupIDToTownObject = new HashMap<Long, Object>(); //includes both StructureObjects and ResourceNodes
+	public List<UUID> listPersistantEntities = new ArrayList<>();
+	public HashMap<Long, Object> lookupIDToTownObject = new HashMap<>(); //includes both StructureObjects and ResourceNodes
 	public int lastTownObjectIDSet = 1; //command building uses 0, cant increment it from its init
 	
-	public List<SpawnLocationData> listSpawnLocations = new ArrayList<SpawnLocationData>();
+	public List<SpawnLocationData> listSpawnLocations = new ArrayList<>();
+
+	boolean respawnDeadEntities = false;
 	
 	public ManagedLocation() {
 		
@@ -50,7 +52,7 @@ public class ManagedLocation implements ISimulationTickable {
 	public void tickUpdate() {
 		//listPersistantEntities.clear();
 		if (getWorld().getTotalWorldTime() % 100 == 0) {
-			tickMonitorPersistantMembers();
+			tickMonitorPersistantMembers(false);
 		}
 	}
 	
@@ -89,7 +91,7 @@ public class ManagedLocation implements ISimulationTickable {
 	}
 	
 	//unitType is unused
-	public void addEntity(String unitType, EntityLivingBase ent) {
+	public void addEntity(EntityLivingBase ent) {
 		if (listLoadedEntities.contains(ent)) {
 			//this might have false positives, like when an entity is unloaded from chunk while game is running... unless somewhere else trims those types out
 			UtilBuild.dbg("WARNING: adding already existing entity to ManagedLocation");
@@ -117,26 +119,29 @@ public class ManagedLocation implements ISimulationTickable {
 		}
 	}
 	
-	public void tickMonitorPersistantMembers() {
-		//check occasionally
-		//iterate spawn locations
-		//check if UUID null
-		//spawn
-		
-		for (int i = 0; i < listSpawnLocations.size(); i++) {
-			SpawnLocationData data = listSpawnLocations.get(i);
-			
-			//update data if entity died
-			if (data.entityUUID != null && !listPersistantEntities.contains(data.entityUUID)) {
-				data.entityUUID = null;
-			}
-			
-			if (data.entityUUID == null) {
-				System.out.println("detected missing entity, attempting to respawn a " + data.type + " at coords: " + data.coords);
-				//TODO: for new village, i want koa mating to repopulate the numbers, not magic extra spawning
-				spawnMemberAtSpawnLocation(data);
+	public void tickMonitorPersistantMembers(boolean initialSpawn) {
+
+		if (respawnDeadEntities || initialSpawn) {
+			//check occasionally
+			//iterate spawn locations
+			//check if UUID null
+			//spawn
+
+			for (int i = 0; i < listSpawnLocations.size(); i++) {
+				SpawnLocationData data = listSpawnLocations.get(i);
+
+				//update data if entity died
+				if (data.entityUUID != null && !listPersistantEntities.contains(data.entityUUID)) {
+					data.entityUUID = null;
+				}
+
 				if (data.entityUUID == null) {
-					System.out.println("spawned location failed to spawn a new entity, perhaps spawnMemberAtSpawnLocation() method not overridden properly?");
+					System.out.println("detected missing entity, attempting to respawn a " + data.type + " at coords: " + data.coords);
+					//TODO: for new village, i want koa mating to repopulate the numbers, not magic extra spawning
+					spawnMemberAtSpawnLocation(data);
+					if (data.entityUUID == null) {
+						System.out.println("spawned location failed to spawn a new entity, perhaps spawnMemberAtSpawnLocation() method not overridden properly?");
+					}
 				}
 			}
 		}
@@ -220,5 +225,9 @@ public class ManagedLocation implements ISimulationTickable {
 	public void initPost() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getPopulationSize() {
+		return listPersistantEntities.size();
 	}
 }

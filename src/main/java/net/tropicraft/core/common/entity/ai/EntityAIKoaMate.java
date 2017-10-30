@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 
 import java.util.List;
 
@@ -123,13 +124,24 @@ public class EntityAIKoaMate extends EntityAIBase
 
     private boolean canTownHandleMoreVillagers()
     {
-        WorldDataInstance data = villagerObj.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
-        if (data != null) {
-
+        TownKoaVillage village = villagerObj.getVillage();
+        if (village != null) {
+            if (village.getPopulationSize() < 20) {
+                System.out.println("population size: " + village.getPopulationSize());
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            boolean success = villagerObj.tryGetVillage();
+            if (!success) {
+                System.out.println("no village found");
+                return false;
+            } else {
+                System.out.println("fixed village");
+            }
         }
-        return true;
+        return false;
     }
 
     private void giveBirth()
@@ -148,6 +160,10 @@ public class EntityAIKoaMate extends EntityAIBase
         if (entityvillager instanceof EntityKoaBase) {
             ((EntityKoaBase) entityvillager).setVillageID(villagerObj.getVillageID());
             entityvillager.setHomePosAndDistance(villagerObj.getHomePosition(), EntityKoaBase.MAX_HOME_DISTANCE);
+            TownKoaVillage village = villagerObj.getVillage();
+            if (village != null) {
+                village.addEntity(entityvillager);
+            }
         }
         this.world.spawnEntity(entityvillager);
         this.world.setEntityState(entityvillager, (byte)12);

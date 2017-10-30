@@ -641,6 +641,18 @@ public class EntityKoaBase extends EntityVillager {
 
     }
 
+    public boolean tryGetVillage() {
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(20, 20, 20));
+        Collections.shuffle(listEnts);
+        for (EntityKoaBase ent : listEnts) {
+            if (ent.villageID != -1) {
+                villageID = ent.villageID;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean tryDumpInventoryIntoHomeChest() {
         TileEntity tile = world.getTileEntity(this.getHomePosition());
         if (tile instanceof TileEntityChest) {
@@ -787,7 +799,11 @@ public class EntityKoaBase extends EntityVillager {
             ISimulationTickable sim = data.getLocationByID(villageID);
             if (sim instanceof TownKoaVillage) {
                 return (TownKoaVillage) sim;
+            } else {
+                System.out.println("critical: couldnt find village by ID");
             }
+        } else {
+            System.out.println("critical: no world cap");
         }
         return null;
     }
@@ -827,5 +843,18 @@ public class EntityKoaBase extends EntityVillager {
                 this.getDataManager().set(LURE_ID, -1);
             }
         }
+    }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        boolean result = super.attackEntityFrom(source, amount);
+        if (this.getHealth() <= 0) {
+            if (source.getEntity() instanceof EntityLivingBase) {
+                System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation() + " - " + source.getDeathMessage((EntityLivingBase)source.getEntity()));
+            } else {
+                System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation());
+            }
+        }
+        return result;
     }
 }

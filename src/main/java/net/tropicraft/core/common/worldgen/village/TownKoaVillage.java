@@ -102,7 +102,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
     public void spawnEntitiesForce() {
 
         System.out.println("Spawning koa village population for village: " + spawn);
-        tickMonitorPersistantMembers();
+        tickMonitorPersistantMembers(true);
 		
 		
 		
@@ -224,10 +224,6 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 		//TODO: register entities with managedlocation, how are ids managed?
 	}*/
 
-    public void addEntity(String unitType, EntityLivingBase ent, int parMemberID) {
-        super.addEntity(unitType, ent);
-    }
-
     @Override
     public void spawnMemberAtSpawnLocation(SpawnLocationData parData) {
         super.spawnMemberAtSpawnLocation(parData);
@@ -252,7 +248,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
             ent.setPosition(spawn.getX() + parData.coords.getX() + 0.5F, spawn.getY() + parData.coords.getY(), spawn.getZ() + parData.coords.getZ() + 0.5F);
             //ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
             getWorld().spawnEntity(ent);
-            addEntity(parData.type, ent);
+            addEntity(ent);
             parData.entityUUID = ent.getPersistentID();
             ent.onInitialSpawn(getWorld().getDifficultyForLocation(ent.getPosition()), null);
         }

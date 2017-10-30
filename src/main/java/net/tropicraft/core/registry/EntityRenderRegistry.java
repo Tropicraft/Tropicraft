@@ -26,7 +26,7 @@ import net.tropicraft.core.client.entity.render.RenderEIH;
 import net.tropicraft.core.client.entity.render.RenderEagleRay;
 import net.tropicraft.core.client.entity.render.RenderEchinodermEgg;
 import net.tropicraft.core.client.entity.render.RenderFailgull;
-import net.tropicraft.core.client.entity.render.RenderFish;
+import net.tropicraft.core.client.entity.render.RenderFishingLure;
 import net.tropicraft.core.client.entity.render.RenderIguana;
 import net.tropicraft.core.client.entity.render.RenderKoaMan;
 import net.tropicraft.core.client.entity.render.RenderLavaBall;
@@ -130,7 +130,7 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityRiverSardine.class, new RenderTropicalFish());
         registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
         registerEntityRender(EntityShark.class, new RenderShark(new ModelHammerheadShark(), 0.25F));
-        registerEntityRender(EntityFishHook.class, new RenderFish(Minecraft.getMinecraft().getRenderManager()));
+        registerEntityRender(EntityFishHook.class, new RenderFishingLure(Minecraft.getMinecraft().getRenderManager()));
     }
     
     public static ModelScubaGear getScubaModel(EntityEquipmentSlot slot) {
