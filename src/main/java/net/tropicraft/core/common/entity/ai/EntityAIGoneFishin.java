@@ -182,7 +182,6 @@ public class EntityAIGoneFishin extends EntityAIBase {
             if (entity.getDistance(posLastWaterFound.getX(), posLastWaterFound.getY(), posLastWaterFound.getZ()) < 8D || entity.isInWater()) {
                 entity.getNavigator().clearPathEntity();
                 setState(FISHING_STATE.FISHING);
-                //TODO: cast line
                 castLine();
             }
 
@@ -227,7 +226,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             //- fishingTimeout--
 
             if (ifCaughtFish()) {
-                if (entity.getLure() != null) entity.getLure().setDead();
+                retractLine();
                 fishCaught++;
                 entity.inventory.addItem(new ItemStack(Items.FISH));
                 debug("caught a fish");
@@ -304,6 +303,9 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
     private void setState(FISHING_STATE state) {
         debug("setting state from " + this.state + " to " + state + " - " + this.entity.getPosition());
+        if (state != FISHING_STATE.FISHING) {
+            retractLine();
+        }
         this.state = state;
         if (this.state == FISHING_STATE.FISHING) {
             fishingTimeout = fishingTimeoutMax;
@@ -322,7 +324,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
         posLastLandFound = null;
         posLastWaterFound = null;
         repathAttempts = 0;
-        if (entity.getLure() != null) entity.getLure().setDead();
+        retractLine();
 
         this.state = FISHING_STATE.IDLE;
     }
@@ -374,8 +376,12 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
     private void castLine() {
         fishingTimeout = fishingTimeoutMax;
-        if (entity.getLure() != null) entity.getLure().setDead();
+        retractLine();
         EntityFishHook lure = new EntityFishHook(entity.world, entity);
         entity.world.spawnEntity(lure);
+    }
+
+    private void retractLine() {
+        if (entity.getLure() != null) entity.getLure().setDead();
     }
 }
