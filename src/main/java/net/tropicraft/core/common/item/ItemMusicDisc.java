@@ -42,7 +42,7 @@ public class ItemMusicDisc extends ItemRecord {
     @Override
     @SideOnly(Side.CLIENT)
     public String getRecordNameLocal() {
-        return String.format("%s - %s", artistName, I18n.translateToLocal("item.tropicraft:" + songName + ".name"));
+        return String.format("%s - %s", artistName, I18n.translateToLocal("item.tropicraft." + songName + ".name"));
     }
 	
     /**
