@@ -45,7 +45,11 @@ public class EntityAIChillAtFire extends EntityAIBase
 
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky()) {
             if (!isTooClose()) {
-                return true;
+                if (entityObj.world.rand.nextInt(20) == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -72,7 +76,11 @@ public class EntityAIChillAtFire extends EntityAIBase
             }
 
         } else {
-            return false;
+            if (entityObj.world.rand.nextInt(60) == 0) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 

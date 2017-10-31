@@ -45,17 +45,21 @@ public class TownKoaVillageGenHelper {
 
             dbg("centerCoords: " + centerCoords);
 
+            //make sure its at exact height
+            centerCoords = new BlockPos(centerCoords.getX(), WorldProviderTropicraft.MID_HEIGHT+1, centerCoords.getZ());
+
             TownKoaVillage village = new TownKoaVillage();
 
             WorldDataInstance storage = parWorld.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
             if (storage != null) {
-                int minDistBetweenVillages = 128;
+                int minDistBetweenVillages = 256;
 
                 Iterator it = storage.lookupTickingManagedLocations.values().iterator();
                 while (it.hasNext()) {
                     ManagedLocation town = (ManagedLocation) it.next();
 
                     if (Math.sqrt(town.spawn.distanceSq(parCoords)) < minDistBetweenVillages) {
+                        System.out.println("village to close to another, aborting");
                         return false;
                     }
                 }
@@ -111,7 +115,7 @@ public class TownKoaVillageGenHelper {
         int sizeHorizMax = areaWidth;
         int sizeMiddle = areaWidth / 2;
 
-        int topYBeach = WorldProviderTropicraft.MID_HEIGHT - 1;//parWorld.getHeightValue(parCoords.getX(), parCoords.getZ()) - 1;
+        int topYBeach = WorldProviderTropicraft.MID_HEIGHT/* - 1*/;//parWorld.getHeightValue(parCoords.getX(), parCoords.getZ()) - 1;
 
         //if (topYBeach < WorldProviderTropicraft.MID_HEIGHT) return false;//topYBeach = WorldProviderTropicraft.MID_HEIGHT+1;
 
@@ -119,24 +123,63 @@ public class TownKoaVillageGenHelper {
         Block blockScanBeach = state.getBlock();
 
 
-        if (blockScanBeach.getMaterial(state) == Material.SAND) {
+        if (state.getMaterial() == Material.SAND) {
             //tropiwater isnt counted in getHeightValue apparently so lets hardcode the observed water height val
-            int topYMiddle = WorldProviderTropicraft.MID_HEIGHT - 1;//parWorld.getHeightValue(parCoords.getX() + (sizeMiddle * scanX), parCoords.getZ() + (sizeMiddle * scanZ)) - 1;
+            int topYMiddle = WorldProviderTropicraft.MID_HEIGHT/* - 1*/;//parWorld.getHeightValue(parCoords.getX() + (sizeMiddle * scanX), parCoords.getZ() + (sizeMiddle * scanZ)) - 1;
             IBlockState state2 = parWorld.getBlockState(new BlockPos(parCoords.getX() + (sizeMiddle * scanX), topYMiddle, parCoords.getZ() + (sizeMiddle * scanZ)));
             Block blockScanMiddle = state2.getBlock();
 
-            System.out.println("testing scanX: " + scanX + " scanZ: " + scanZ);
+            //System.out.println("testing scanX: " + scanX + " scanZ: " + scanZ);
 
             //if middle of area is water, lets us also know we have our water level to check against for other areas
-            if (blockScanMiddle.getMaterial(state2) == Material.WATER) {
+            if (state2.getMaterial() == Material.WATER) {
                 IBlockState state3 = parWorld.getBlockState(new BlockPos(parCoords.getX() + (sizeHorizMax * scanX), topYMiddle, parCoords.getZ() + (sizeHorizMax * scanZ)));
                 Block blockScanEnd = state3.getBlock();
-                System.out.println("testing blockScanEnd x: " + (parCoords.getX() + (sizeHorizMax * scanX)) + " z: " + (parCoords.getZ() + (sizeHorizMax * scanZ)));
+                //System.out.println("testing blockScanEnd x: " + (parCoords.getX() + (sizeHorizMax * scanX)) + " z: " + (parCoords.getZ() + (sizeHorizMax * scanZ)));
 
-                if (blockScanEnd.getMaterial(state3) == Material.WATER) {
+                if (state3.getMaterial() == Material.WATER) {
                     //purposely inverting scanX and scanZ here to make it check the perpendicular
-                    int steps = 8;
-                    for (int i = 1; i <= steps; i++) {
+                    int steps = 16;
+
+                    //scan all area exact outer 10 blocks, then set buildjob to not replace air
+                    //areaWidth is out villages length, because reasons
+
+                    for (int out = 10; out <= areaWidth - 10; out++) {
+                        for (int side = 10; side <= (areaLength/2) - 10; side++) {
+
+                            int outStep = out;//sizeHorizMax / steps * out;
+                            //since our base coord is in the middle for side scans, scan out only half dist and invert for other direction
+                            int sideStep = side;//sizeMiddle / steps/2 * side;
+
+                            int x = (outStep * scanX) + (sideStep * scanZ);
+                            int z = (outStep * scanZ) + (sideStep * scanX);
+                            int x2 = (outStep * scanX) + (sideStep * scanZ * -1);
+                            int z2 = (outStep * scanZ) + (sideStep * scanX * -1);
+
+                            IBlockState stateCheckOutLeft = parWorld.getBlockState(new BlockPos(parCoords.getX() + x
+                                    , topYMiddle,
+                                    parCoords.getZ() + z));
+
+                            IBlockState stateCheckOutRight = parWorld.getBlockState(new BlockPos(parCoords.getX() + x2
+                                    , topYMiddle,
+                                    parCoords.getZ() + z2));
+
+                            if (stateCheckOutLeft.getMaterial() != Material.WATER || stateCheckOutRight.getMaterial() != Material.WATER)
+                                return false;
+
+                            /*IBlockState state4 = parWorld.getBlockState(new BlockPos(parCoords.getX() + (sizeStep * scanZ), topYMiddle, parCoords.getZ() + (sizeStep * scanX)));
+                            IBlockState state5 = parWorld.getBlockState(new BlockPos(parCoords.getX() + (sizeStep * scanZ * -1), topYMiddle, parCoords.getZ() + (sizeStep * scanX * -1)));
+                            Block blockScanFrontLeft = state4.getBlock();
+                            Block blockScanFrontRight = state5.getBlock();*/
+
+                            //System.out.println("testing blockScanFrontLeft x: " + (parCoords.getX() + (sizeStep * scanZ)) + " z: " + (parCoords.getZ() + (sizeStep * scanX)));
+                            //System.out.println("testing blockScanFrontRight x: " + (parCoords.getX() + (sizeStep * scanZ * -1)) + " z: " + (parCoords.getZ() + (sizeStep * scanX * -1)));
+
+                            /*if (blockScanFrontLeft.getMaterial(state4) != Material.WATER || blockScanFrontRight.getMaterial(state5) != Material.WATER)
+                                return false;*/
+                        }
+                    }
+                    /*for (int i = 1; i <= steps; i++) {
 
                         int sizeStep = sizeHorizMax / steps * i;
 
@@ -145,12 +188,12 @@ public class TownKoaVillageGenHelper {
                         Block blockScanFrontLeft = state4.getBlock();
                         Block blockScanFrontRight = state5.getBlock();
 
-                        System.out.println("testing blockScanFrontLeft x: " + (parCoords.getX() + (sizeStep * scanZ)) + " z: " + (parCoords.getZ() + (sizeStep * scanX)));
-                        System.out.println("testing blockScanFrontRight x: " + (parCoords.getX() + (sizeStep * scanZ * -1)) + " z: " + (parCoords.getZ() + (sizeStep * scanX * -1)));
+                        //System.out.println("testing blockScanFrontLeft x: " + (parCoords.getX() + (sizeStep * scanZ)) + " z: " + (parCoords.getZ() + (sizeStep * scanX)));
+                        //System.out.println("testing blockScanFrontRight x: " + (parCoords.getX() + (sizeStep * scanZ * -1)) + " z: " + (parCoords.getZ() + (sizeStep * scanX * -1)));
 
                         if (blockScanFrontLeft.getMaterial(state4) != Material.WATER || blockScanFrontRight.getMaterial(state5) != Material.WATER)
                             return false;
-                    }
+                    }*/
 
                     return true;
                 }
