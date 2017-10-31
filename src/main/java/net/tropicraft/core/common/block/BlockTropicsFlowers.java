@@ -6,7 +6,6 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,11 +17,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 
+//TODO unify under BlockTropicraftEnumVariants somehow
 public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
 
     public static final PropertyEnum<TropicraftFlowers> VARIANT = PropertyEnum.create("variant", TropicraftFlowers.class);
@@ -34,7 +33,7 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     
     @Override
     public String getStateName(IBlockState state) {
-        return ((TropicraftFlowers) state.getValue(VARIANT)).getName() + "_flower";
+        return ((TropicraftFlowers) state.getValue(VARIANT)).toString();
     }
 	
 	public BlockTropicsFlowers() {
@@ -60,7 +59,7 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((TropicraftFlowers) state.getValue(VARIANT)).ordinal();
+        return ((TropicraftFlowers) state.getValue(VARIANT)).getMeta();
     }
     
     @Override
@@ -72,11 +71,6 @@ public class BlockTropicsFlowers extends BlockBush implements ITropicraftBlock {
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
     	return state.getValue(VARIANT).getBounds();
     }
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT};
-	}
 
 	@Override
 	public IBlockColor getBlockColor() {

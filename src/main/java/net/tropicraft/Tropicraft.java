@@ -17,6 +17,7 @@ import net.tropicraft.client.gui.TropicraftGuiHandler;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
@@ -39,7 +40,7 @@ import net.tropicraft.core.registry.LootRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
-@Mod(modid = Info.MODID, version = Info.VERSION)
+@Mod(modid = Info.MODID, version = Info.VERSION, guiFactory = Info.GUI_FACTORY)
 public class Tropicraft {
 
 	@SidedProxy(clientSide = Info.CLIENT_PROXY, serverSide = Info.SERVER_PROXY)
@@ -55,17 +56,19 @@ public class Tropicraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+	    TropicsConfigs.init(event.getSuggestedConfigurationFile());
+
 		ColorHelper.init();
 		SoundRegistry.init();
 		FluidRegistry.preInit();
 		BlockRegistry.preInit();
+	    proxy.preInit();
 		TileEntityRegistry.init();
 		ItemRegistry.preInit();
 		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
 		CraftingRegistry.preInit();
 		ScubaCapabilities.register();
-		proxy.preInit();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new TropicraftGuiHandler());
 	}
@@ -73,6 +76,7 @@ public class Tropicraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		TCPacketHandler.init();
+		ItemRegistry.init();
 		AchievementRegistry.init();
 		EntityRegistry.init();
 		proxy.init();

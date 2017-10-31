@@ -2,7 +2,7 @@ package net.tropicraft.core.common.item;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,13 +13,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.tropicraft.core.common.block.BlockIris;
 import net.tropicraft.core.common.block.BlockPineapple;
 import net.tropicraft.core.common.block.BlockTallPlant;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
-import net.tropicraft.core.common.block.BlockTropicsSapling;
+import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.registry.BlockRegistry;
+import scala.collection.mutable.Stack;
 
 public class ItemFertilizer extends ItemTropicraft {
 
@@ -31,92 +33,85 @@ public class ItemFertilizer extends ItemTropicraft {
 	/**
 	 * Called when a Block is right-clicked with this Item
 	 */
-	@Override
-	public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		IBlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
-		if (block == BlockRegistry.saplings) {
-			if (!world.isRemote) {
-				((BlockTropicsSapling) BlockRegistry.saplings).grow(world, world.rand, pos, state);
-				itemstack.stackSize--;
-			}
-			return EnumActionResult.SUCCESS;
-		}
+    @Override
+    public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        IBlockState iblockstate = world.getBlockState(pos);
 
-		boolean decrementStack = false;
+        if (iblockstate.getBlock() == Blocks.GRASS && world.provider.getDimensionType() == TropicraftWorldUtils.tropicsDimension) {
+            if (!world.isRemote) {
 
-		if (block instanceof IGrowable) {
-			IGrowable igrowable = (IGrowable)block;
-			if (igrowable.canGrow(world, pos, state, world.isRemote)) {
-				if (!world.isRemote) {
-					if (igrowable.canUseBonemeal(world, world.rand, pos, state)) {
-						decrementStack = true;
-						igrowable.grow(world, world.rand, pos, state);
-					}
-				}
-			}
-		}
+                // Taken from BlockGrass and reworked to spawn tropics flowers
+                BlockPos blockpos = pos.up();
 
-		if (block == Blocks.GRASS) {
-			if (!world.isRemote) {
-				decrementStack = true;
-				label0:
-					for (int j1 = 0; j1 < 128; j1++) {
-						int k1 = pos.getX();
-						int l1 = pos.getY() + 1;
-						int i2 = pos.getZ();
-						for (int j2 = 0; j2 < j1 / 16; j2++) {
-							k1 += itemRand.nextInt(3) - 1;
-							l1 += ((itemRand.nextInt(3) - 1) * itemRand.nextInt(3)) / 2;
-							i2 += itemRand.nextInt(3) - 1;
-							BlockPos pos2 = new BlockPos(k1, l1, i2);
-							if (world.getBlockState(pos2.down()).getBlock() != Blocks.GRASS || world.isBlockNormalCube(pos2, true)) {
-								continue label0;
-							}
-						}
-						BlockPos pos2 = new BlockPos(k1, l1, i2);
-						if (!world.isAirBlock(pos2)) {
-							continue;
-						}
+                for (int i = 0; i < 128; ++i) {
+                    BlockPos blockpos1 = blockpos;
+                    int j = 0;
 
-						if (itemRand.nextInt(7) == 0) {
-							world.setBlockState(pos2, getRandomTropicraftFlowerBlockState(itemRand), 3);
-							continue;
-						}
+                    while (true) {
+                        if (j >= i / 16) {
+                            if (world.isAirBlock(blockpos1)) {
+                                if (itemRand.nextInt(8) == 0) {
+                                    if (itemRand.nextBoolean()) { // pineapple
+                                        IBlockState pineappleBase = BlockRegistry.pineapple.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.LOWER)
+                                                .withProperty(BlockPineapple.STAGE, BlockPineapple.TOTAL_GROW_TICKS);
+                                        IBlockState pineappleTop = BlockRegistry.pineapple.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.UPPER);
+                                        world.setBlockState(blockpos1, pineappleBase, 3);
+                                        world.setBlockState(blockpos1.up(), pineappleTop, 3);
+                                        continue;
+                                    } else { // iris
+                                        IBlockState irisBase = BlockRegistry.iris.getDefaultState().withProperty(BlockIris.HALF, BlockIris.PlantHalf.LOWER);
+                                        IBlockState irisTop = BlockRegistry.iris.getDefaultState().withProperty(BlockIris.HALF, BlockIris.PlantHalf.UPPER);
+                                        world.setBlockState(blockpos1, irisBase, 3);
+                                        world.setBlockState(blockpos1.up(), irisTop, 3);
+                                        continue;
+                                    }
+                                } else {
+                                    IBlockState flowerstate = getRandomTropicraftFlowerBlockState(itemRand);
+                                    if (BlockRegistry.flowers.canBlockStay(world, blockpos1, flowerstate)) {
+                                        world.setBlockState(blockpos1, flowerstate, 3);
+                                    }
+                                }
+                            }
+                            break;
+                        }
 
-						if (itemRand.nextInt(9) == 0) {
-							world.setBlockState(pos2, getRandomTropicraftFlowerBlockState(itemRand), 3);
-							continue;
-						}
+                        blockpos1 = blockpos1.add(itemRand.nextInt(3) - 1, (itemRand.nextInt(3) - 1) * itemRand.nextInt(3) / 2, itemRand.nextInt(3) - 1);
 
-						if (itemRand.nextInt(9) == 0) {    //pineapple
-							IBlockState pineappleBase = BlockRegistry.pineapple.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.LOWER)
-									.withProperty(BlockPineapple.STAGE, BlockPineapple.TOTAL_GROW_TICKS);
-							IBlockState pineappleTop = BlockRegistry.pineapple.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.UPPER);
-							world.setBlockState(pos2, pineappleBase, 3);
-							world.setBlockState(pos2.up(), pineappleTop, 3);
-							continue;
-						} else if (itemRand.nextInt(8) == 0) {        //iris
-							IBlockState irisBase = BlockRegistry.iris.getDefaultState().withProperty(BlockIris.HALF, BlockIris.PlantHalf.LOWER);
-							IBlockState irisTop = BlockRegistry.iris.getDefaultState().withProperty(BlockIris.HALF, BlockIris.PlantHalf.UPPER);
-							world.setBlockState(pos2, irisBase, 3);
-							world.setBlockState(pos2.up(), irisTop, 3);
-							continue;
-						}
-					}
-			}
+                        if (world.getBlockState(blockpos1.down()).getBlock() != Blocks.GRASS || world.getBlockState(blockpos1).isNormalCube()) {
+                            break;
+                        }
 
-			if (decrementStack)
-				itemstack.stackSize--;
+                        ++j;
+                    }
+                }
+                itemstack.stackSize--;
+            }
+            return EnumActionResult.SUCCESS;
+        }
 
-			return EnumActionResult.SUCCESS;
-		}
+        int hook = ForgeEventFactory.onApplyBonemeal(player, world, pos, iblockstate, itemstack);
+        if (hook != 0)
+            return hook > 0 ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
 
-		if (decrementStack)
-			itemstack.stackSize--;
+        if (iblockstate.getBlock() instanceof IGrowable) {
+            IGrowable igrowable = (IGrowable) iblockstate.getBlock();
 
-		return EnumActionResult.FAIL;
-	}
+            if (igrowable.canGrow(world, pos, iblockstate, world.isRemote)) {
+                if (!world.isRemote) {
+                    if (igrowable.canUseBonemeal(world, world.rand, pos, iblockstate)) {
+                        igrowable.grow(world, world.rand, pos, iblockstate);
+                    }
+
+                    --itemstack.stackSize;
+                    world.playEvent(2005, pos, 0);
+                }
+
+                return EnumActionResult.SUCCESS;
+            }
+        }
+
+        return EnumActionResult.FAIL;
+    }
 
 	private IBlockState getRandomTropicraftFlowerBlockState(Random rand) {
 		int meta = itemRand.nextInt(TropicraftFlowers.VALUES.length);

@@ -6,12 +6,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.ColorHelper;
-import net.tropicraft.Info;
 import net.tropicraft.core.registry.CreativeTabRegistry;
+import net.tropicraft.core.registry.TropicraftRegistry;
 
 /**
  * Class for items such as chairs, umbrellas, and beach floats to implement to handle
@@ -61,12 +60,8 @@ public abstract class ItemTropicraftColored extends ItemTropicraft {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
-		String name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-				+ ":" + this.itemName + "_" +  EnumDyeColor.byDyeDamage(itemstack.getItemDamage()).getUnlocalizedName() + ".name")).trim();
-
-		return name;
+	    return "item." + TropicraftRegistry.getNamePrefixed(this.itemName) + "." + EnumDyeColor.byDyeDamage(itemstack.getItemDamage()).getUnlocalizedName() + ".name"; 
 	}
 }

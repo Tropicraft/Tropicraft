@@ -5,7 +5,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,19 +24,24 @@ import net.tropicraft.core.common.enums.TropicraftLogs;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.registry.BlockRegistry;
 
+// TODO this could be unified with BlockBundle easily
 public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 
 	public static final PropertyEnum<TropicraftLogs> VARIANT = PropertyEnum.create("variant", TropicraftLogs.class);
-	public String[] names;
 
-	public BlockTropicraftLog(String[] logNames) {
+	public BlockTropicraftLog() {
 		super();
-		this.names = logNames;
 		this.disableStats();
 		this.setHardness(2.0F);
 		this.setTickRandomly(true);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, TropicraftLogs.MAHOGANY).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
 	}
+
+    @Override
+    @Deprecated
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return blockState.getValue(VARIANT).getHardness();
+    }
 
 	/**
 	 * Called when a user uses the creative pick block button on this block
@@ -47,7 +51,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	 */
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return new ItemStack(state.getBlock(), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
+		return new ItemStack(state.getBlock(), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMeta());
 	}
 
     @Override
@@ -86,7 +90,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { LOG_AXIS, VARIANT });
+		return new BlockStateContainer(this, LOG_AXIS, VARIANT);
 	}
 
 	/**
@@ -94,7 +98,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
-		for (int i = 0; i < names.length; i++) {
+		for (int i = 0; i < TropicraftLogs.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -130,7 +134,7 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = 0;
-		i = i | ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
+		i = i | ((TropicraftLogs)state.getValue(VARIANT)).getMeta();
 
 		switch ((BlockLog.EnumAxis)state.getValue(LOG_AXIS)) {
 		case X:
@@ -150,23 +154,18 @@ public class BlockTropicraftLog extends BlockLog implements ITropicraftBlock {
 
 	@Override
 	public int damageDropped(IBlockState state) {
-		return ((TropicraftLogs)state.getValue(VARIANT)).getMetadata();
+		return ((TropicraftLogs)state.getValue(VARIANT)).getMeta();
 	}
 
 	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMetadata());
+		return new ItemStack(Item.getItemFromBlock(this), 1, ((TropicraftLogs)state.getValue(VARIANT)).getMeta());
 	}
 
 	// ITropicraftBlock methods
 	@Override
 	public String getStateName(IBlockState state) {
 		return ((TropicraftLogs) state.getValue(VARIANT)).getName();
-	}
-
-	@Override
-	public IProperty[] getProperties() {
-		return new IProperty[] {VARIANT, LOG_AXIS};
 	}
 
 	@Override

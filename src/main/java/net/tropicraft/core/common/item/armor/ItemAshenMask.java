@@ -58,7 +58,7 @@ public class ItemAshenMask extends ItemTropicraftArmor {
 
     @Override
     public void damageArmor(EntityLivingBase player, ItemStack stack, DamageSource source, int damage, int slot) {
-        
+        super.damageArmor(player, stack, source, damage, slot);
     }
 
 }

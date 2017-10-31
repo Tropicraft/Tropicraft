@@ -23,7 +23,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
     private FISHING_STATE state = FISHING_STATE.IDLE;
 
-    private boolean debugTask = true;
+    private boolean debugTask = false;
 
     private EntityKoaBase entity;
     private Random rand;

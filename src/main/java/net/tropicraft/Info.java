@@ -30,4 +30,6 @@ public class Info {
 	
 	/** Common proxy location */
 	public static final String SERVER_PROXY = "net.tropicraft.core.proxy.ServerProxy";
+	
+	public static final String GUI_FACTORY = "net.tropicraft.client.gui.TropicraftGuiFactory";
 }

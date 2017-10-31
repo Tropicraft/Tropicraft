@@ -7,7 +7,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.core.common.enums.TropicraftPlanks;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -15,7 +14,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class WorldGenSunkenShip extends TCDirectionalGen {
 
-	private static final IBlockState PLANK_STATE = BlockRegistry.planks.getDefaultState().withProperty(BlockTropicraftPlank.VARIANT, TropicraftPlanks.MAHOGANY);
+	private static final IBlockState PLANK_STATE = BlockRegistry.planks.defaultForVariant(TropicraftPlanks.MAHOGANY);
 
 	public WorldGenSunkenShip(World world, Random random) {
 		super(world, random, random.nextInt(4));

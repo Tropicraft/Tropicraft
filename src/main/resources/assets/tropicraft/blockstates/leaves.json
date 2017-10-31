@@ -1,20 +1,20 @@
 {
     "variants": {
-		"check_decay=true,decayable=true,variant=mahogany_leaves": { "model": "tropicraft:mahogany_leaves" },
-		"check_decay=true,decayable=false,variant=mahogany_leaves": { "model": "tropicraft:mahogany_leaves" },
-		"check_decay=false,decayable=true,variant=mahogany_leaves": { "model": "tropicraft:mahogany_leaves" },
-		"check_decay=false,decayable=false,variant=mahogany_leaves": { "model": "tropicraft:mahogany_leaves" },
-		"check_decay=true,decayable=true,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
-		"check_decay=true,decayable=false,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
-		"check_decay=false,decayable=true,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
-		"check_decay=false,decayable=false,variant=palm_leaves": { "model": "tropicraft:palm_leaves" },
-		"check_decay=true,decayable=true,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" },
-		"check_decay=true,decayable=false,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" },
-		"check_decay=false,decayable=true,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" },
-		"check_decay=false,decayable=false,variant=kapok_leaves": { "model": "tropicraft:kapok_leaves" },
-		"check_decay=true,decayable=true,variant=fruit_leaves": { "model": "tropicraft:fruit_leaves" },
-		"check_decay=true,decayable=false,variant=fruit_leaves": { "model": "tropicraft:fruit_leaves" },
-		"check_decay=false,decayable=true,variant=fruit_leaves": { "model": "tropicraft:fruit_leaves" },
-		"check_decay=false,decayable=false,variant=fruit_leaves": { "model": "tropicraft:fruit_leaves" }
+		"check_decay=true,decayable=true,variant=mahogany": { "model": "tropicraft:mahogany_leaves" },
+		"check_decay=true,decayable=false,variant=mahogany": { "model": "tropicraft:mahogany_leaves" },
+		"check_decay=false,decayable=true,variant=mahogany": { "model": "tropicraft:mahogany_leaves" },
+		"check_decay=false,decayable=false,variant=mahogany": { "model": "tropicraft:mahogany_leaves" },
+		"check_decay=true,decayable=true,variant=palm": { "model": "tropicraft:palm_leaves" },
+		"check_decay=true,decayable=false,variant=palm": { "model": "tropicraft:palm_leaves" },
+		"check_decay=false,decayable=true,variant=palm": { "model": "tropicraft:palm_leaves" },
+		"check_decay=false,decayable=false,variant=palm": { "model": "tropicraft:palm_leaves" },
+		"check_decay=true,decayable=true,variant=kapok": { "model": "tropicraft:kapok_leaves" },
+		"check_decay=true,decayable=false,variant=kapok": { "model": "tropicraft:kapok_leaves" },
+		"check_decay=false,decayable=true,variant=kapok": { "model": "tropicraft:kapok_leaves" },
+		"check_decay=false,decayable=false,variant=kapok": { "model": "tropicraft:kapok_leaves" },
+		"check_decay=true,decayable=true,variant=fruit": { "model": "tropicraft:fruit_leaves" },
+		"check_decay=true,decayable=false,variant=fruit": { "model": "tropicraft:fruit_leaves" },
+		"check_decay=false,decayable=true,variant=fruit": { "model": "tropicraft:fruit_leaves" },
+		"check_decay=false,decayable=false,variant=fruit": { "model": "tropicraft:fruit_leaves" }
     }
 }

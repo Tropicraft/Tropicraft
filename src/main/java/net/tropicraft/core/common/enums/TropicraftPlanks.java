@@ -1,19 +1,28 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.util.IStringSerializable;
+public enum TropicraftPlanks implements ITropicraftVariant {
+    MAHOGANY(BlockHardnessValues.MAHOGANY.hardness, BlockHardnessValues.MAHOGANY.resistance),
+    PALM(BlockHardnessValues.PALM.hardness, BlockHardnessValues.PALM.resistance);
 
-public enum TropicraftPlanks implements IStringSerializable {
-    MAHOGANY, PALM;
-    
+    private final float hardness;
+    private final float resistance;
     public static final TropicraftPlanks VALUES[] = values();
 
-    @Override
-    public String getName() {
-    	return this.name().toLowerCase() + "_plank";
+    TropicraftPlanks(float hardness, float resistance) {
+        this.hardness = hardness;
+        this.resistance = resistance;
     }
-    
+
+    public float getHardness() {
+        return this.hardness;
+    }
+
+    public float getResistance() {
+        return this.resistance;
+    }
+
     @Override
-    public String toString() {
-        return this.getName();
+    public String getTypeName() {
+        return "plank";
     }
 };

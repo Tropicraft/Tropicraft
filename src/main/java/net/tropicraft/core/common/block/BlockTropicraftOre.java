@@ -10,13 +10,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.tropicraft.core.registry.BlockRegistry;
+import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class BlockTropicraftOre extends BlockTropicraft {
+public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOres> {
 
 	public BlockTropicraftOre() {
-		super(Material.ROCK);
+		super(Material.ROCK, TropicraftOres.class);
 		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setSoundType(SoundType.STONE);
@@ -25,36 +25,26 @@ public class BlockTropicraftOre extends BlockTropicraft {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		if (this == BlockRegistry.oreAzurite) {
-			return ItemRegistry.azurite;
-		} else
-			if (this == BlockRegistry.oreEudialyte) {
-				return ItemRegistry.eudialyte;
-			} else {
-				return ItemRegistry.zircon;
-			}
-	}
-	
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    public int quantityDropped(Random random) {
-    	if (this == BlockRegistry.oreEudialyte) {
-    		return 1 + random.nextInt(4);
-    	} else {
-    		return 1 + random.nextInt(1);
-    	}
+        switch (getVariant(state)) {
+        case AZURITE:
+            return ItemRegistry.azurite;
+        case EUDIALYTE:
+            return ItemRegistry.eudialyte;
+        case ZIRCON:
+            return ItemRegistry.zircon;
+        }
+        return null;
     }
-	
-	@Override
-    public int quantityDroppedWithBonus(int fortune, Random random) {
-        return Math.max(0, random.nextInt(fortune + 2) - 1) + 1;
+
+	// TODO this is a lazy impl
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random) {
+        if (getVariant(state) == TropicraftOres.EUDIALYTE) {
+            return 1 + random.nextInt(4 + fortune);
+        } else {
+            return 1 + random.nextInt(1 + fortune);
+        }
     }
-	
-	@Override
-	public int damageDropped(IBlockState state) {
-		return 0;
-	}
 	
     @Override
     public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {

@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
-import net.tropicraft.configuration.ConfigGenRates;
+import net.tropicraft.configuration.GenRates;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenCoffeePlant;
 import net.tropicraft.core.common.worldgen.WorldGenHomeTree;
@@ -30,21 +30,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
 	}
 
-	public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
-	{
-		if (this.decorating)
-		{
-			throw new RuntimeException("Already decorating");
-		}
-		else
-		{
-			this.chunkProviderSettings = ChunkProviderSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
-			this.chunkPos = pos;
-			this.genDecorations(biome, worldIn, random);
-			this.decorating = false;
-		}
-	}
-
+	@Override
 	public void genDecorations(Biome biome, World world, Random rand) {
 		int x = chunkPos.getX();
 		int z = chunkPos.getZ();
@@ -98,7 +84,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 			new WorldGenUndergrowth(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
-		if (ConfigGenRates.TALL_GRASS_CHANCE != 0 && rand.nextInt(ConfigGenRates.TALL_GRASS_CHANCE) == 0) {
+		if (GenRates.TALL_GRASS_CHANCE != 0 && rand.nextInt(GenRates.TALL_GRASS_CHANCE) == 0) {
 			for (int a = 0; a < 10; a++) {
 				int xRand = rand.nextInt(16) + 8;
 				int zRand = rand.nextInt(16) + 8;

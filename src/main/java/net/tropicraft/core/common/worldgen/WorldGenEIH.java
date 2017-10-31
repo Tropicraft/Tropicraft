@@ -9,7 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
-import net.tropicraft.core.common.enums.TropicraftOreBlocks;
+import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.registry.BlockRegistry;
 import static net.tropicraft.core.common.worldgen.TCGenUtils.setBlock;
 
@@ -254,7 +254,7 @@ public class WorldGenEIH extends TCGenBase {
 	    		blockstate = Blocks.GOLD_BLOCK.getDefaultState();
 	    		break;
 	    	case 6:
-	    		blockstate = BlockRegistry.oreBlock.getDefaultState().withProperty(BlockTropicraftOreBlock.VARIANT, TropicraftOreBlocks.VALUES[tropiBlockMeta]);
+	    		blockstate = BlockRegistry.oreBlock.defaultForVariant(TropicraftOres.VALUES[tropiBlockMeta]);
 	    		break;
 	    	default:	// Should never get called, if so, redstone in tropics :o
 	    		blockstate = Blocks.REDSTONE_BLOCK.getDefaultState();
