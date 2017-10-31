@@ -159,7 +159,7 @@ public class BuildManager {
         Block id = null;
         //worldRef.editingBlocks = true;
         buildJob.curLayerCountMax = build.map_sizeX * build.map_sizeZ;
-        //System.out.println("rand?: " + doRandomBuild + " net.tropicraft.core.common.build layer " + curLayerCount + " / " + curLayerCountMax + " | " + ((float)curLayerCount / (float)curLayerCountMax));
+        //System.out.println("rand?: " + doRandomBuild + " build layer " + curLayerCount + " / " + curLayerCountMax + " | " + ((float)curLayerCount / (float)curLayerCountMax));
 
         buildJob.doRandomBuild = false;
         //build_rate = 50;
@@ -259,7 +259,7 @@ public class BuildManager {
                                 buildJob.customGenCallback.genPassPre(worldRef, buildJob, buildJob.pass);
 
                             if (buildJob.pass == 1) {
-                                //System.out.println("Map size: " + net.tropicraft.core.common.build.map_sizeX + " - " + net.tropicraft.core.common.build.map_sizeY + " - " + net.tropicraft.core.common.build.map_sizeZ);
+                                //System.out.println("Map size: " + build.map_sizeX + " - " + build.map_sizeY + " - " + build.map_sizeZ);
                                 //System.out.println("Starting Build Pass, sys time: " + System.currentTimeMillis());
                             }
                         }
@@ -271,7 +271,7 @@ public class BuildManager {
 			    	
 			    	/*try {
 				    	float percent = ((float)buildJob.curTick + 1) / ((float)buildJob.maxTicks) * 100F;
-						System.out.println(buildJob.id + " - net.tropicraft.core.common.build percent: " + percent + " " + buildJob.curTick + " / " + buildJob.maxTicks + " net.tropicraft.core.common.build ref: " + net.tropicraft.core.common.build);
+						System.out.println(buildJob.id + " - build percent: " + percent + " " + buildJob.curTick + " / " + buildJob.maxTicks + " build ref: " + build);
 			    	} catch (Exception ex) {
 			    		
 			    	}*/
@@ -307,8 +307,8 @@ public class BuildManager {
                             if (buildJob.centerBuildIfNoRotate) {
                                 //this was determined to work for odd sized schematics on X and Z
                                 coords.add(-MathHelper.floor(build.map_sizeX / 2D), 0, -MathHelper.floor(build.map_sizeZ / 2D));
-		    					/*coords.getX() -= MathHelper.floor(net.tropicraft.core.common.build.map_sizeX/2D);
-		    					coords.getZ() -= MathHelper.floor(net.tropicraft.core.common.build.map_sizeZ/2D);*/
+		    					/*coords.getX() -= MathHelper.floor(build.map_sizeX/2D);
+		    					coords.getZ() -= MathHelper.floor(build.map_sizeZ/2D);*/
                                 //coords.getZ() += 1; //solve innacuracy for just Z
                             }
                         }
@@ -339,7 +339,7 @@ public class BuildManager {
                             //damn you mcedit ... ?
                             //if (id < 0) id += 4096;
                             //done elsewhere now
-					    		/*if (!net.tropicraft.core.common.build.newFormat) {
+					    		/*if (!build.newFormat) {
 					    			if (id < 0) id += 256;
 					    		} else {
 					    			if (id < 0) id += 4096;
@@ -364,7 +364,7 @@ public class BuildManager {
                                 //}
                                 //}
                                 //worldRef.setBlockAndMetadata(build_startX+build_loopTickX, build_startY+build_loopTickY, build_startZ+build_loopTickZ, 0, 0);
-                                //System.out.println("newFormat: " + net.tropicraft.core.common.build.newFormat);
+                                //System.out.println("newFormat: " + build.newFormat);
                                 BlockPos coords = new BlockPos(xx, yy, zz);
                                 //System.out.println("printing: " + id + ", preMeta: " + meta);
                                 if (buildJob.useRotationBuild/* && buildJob.direction != 0*/) {
@@ -692,13 +692,13 @@ public class BuildManager {
                     //warning, some tile entities might not have written out with relative coords properly, implement something to tell what tile entities have had relative coords set on them
                     //once stuff using new marking is rescanned/saved, uncomment this if statement
                     //is there actually any harm in always setting this though?
-                    //if (!net.tropicraft.core.common.build.newFormat || (var20.hasKey("coordsSetRelative"))) {
+                    //if (!build.newFormat || (var20.hasKey("coordsSetRelative"))) {
                     var13.setPos(new BlockPos(build.map_coord_minX + var13.getPos().getX(),
                             buildJob.build_startY + var13.getPos().getY(),
                             build.map_coord_minZ + var13.getPos().getZ()));
-						/*var13.xCoord = net.tropicraft.core.common.build.map_coord_minX+var13.xCoord;
+						/*var13.xCoord = build.map_coord_minX+var13.xCoord;
 		                var13.yCoord = buildJob.build_startY+var13.yCoord;
-		                var13.zCoord = net.tropicraft.core.common.build.map_coord_minZ+var13.zCoord;*/
+		                var13.zCoord = build.map_coord_minZ+var13.zCoord;*/
                     //}
 
                     try {

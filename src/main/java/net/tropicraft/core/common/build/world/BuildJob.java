@@ -157,9 +157,9 @@ public class BuildJob {
         build_loopTickZ = 0;
         pass = 0;
 
-        build_startX = x;// - (net.tropicraft.core.common.build.map_sizeX / 2);
+        build_startX = x;// - (build.map_sizeX / 2);
         build_startY = y;
-        build_startZ = z;// - (net.tropicraft.core.common.build.map_sizeZ / 2);
+        build_startZ = z;// - (build.map_sizeZ / 2);
     }
 
     public void buildStart() {
@@ -167,12 +167,12 @@ public class BuildJob {
         newBuild(build_startX, build_startY, build_startZ);
         pass = useFirstPass ? 0 : 1;
         if (customGenCallback != null) customGenCallback.genPassPre(DimensionManager.getWorld(build.dim), this, pass);
-        //build_startX = this.net.tropicraft.core.common.build.map_coord_minX;
-        //build_startY = this.net.tropicraft.core.common.build.map_coord_minY;
-        //build_startZ = this.net.tropicraft.core.common.build.map_coord_minZ;
+        //build_startX = this.build.map_coord_minX;
+        //build_startY = this.build.map_coord_minY;
+        //build_startZ = this.build.map_coord_minZ;
 
         //shouldEntitiesReset = true;
-        //System.out.println("Level net.tropicraft.core.common.build starting");
+        //System.out.println("Level build starting");
     }
 
     public void buildComplete() {
@@ -182,7 +182,7 @@ public class BuildJob {
         //mod_ZombieCraft.worldRef.editingBlocks = false;
         //spawnLevelEntities();
 
-        //System.out.println("Level net.tropicraft.core.common.build complete");
+        //System.out.println("Level build complete");
     }
 
 
@@ -203,6 +203,6 @@ public class BuildJob {
         }
 
         curTick = 0;
-        maxTicks = build.map_sizeX * build.map_sizeY * build.map_sizeZ * 3; //3 net.tropicraft.core.common.build passes
+        maxTicks = build.map_sizeX * build.map_sizeY * build.map_sizeZ * 3; //3 build passes
     }
 }
