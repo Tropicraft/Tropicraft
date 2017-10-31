@@ -324,7 +324,7 @@ public class ItemRegistry extends TropicraftRegistry {
         iguanaLeather = registerItem(new ItemTropicraft().setMaxStackSize(64), "iguana_leather");
         OreDictionary.registerOre("leather", iguanaLeather);
 
-        ashenMask = registerMultiItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD), "ashen_mask", Names.MASK_NAMES.length);
+        ashenMask = registerMultiItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD), "ashen_mask", Names.MASK_NAMES);
     }
 
     public static void init() {

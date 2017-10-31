@@ -235,6 +235,17 @@ item.tropicraft:summering.name=Summering
 item.tropicraft:the_tribe.name=The Tribe
 item.tropicraft:trade_winds.name=Trade Winds
 
+# Mask localizations
+item.tropicraft:ashen_mask.mask_square_zord.name=Square Zord
+item.tropicraft:ashen_mask.mask_horn_monkey.name=Horn Monkey
+item.tropicraft:ashen_mask.mask_oblongatron.name=Oblongatron
+item.tropicraft:ashen_mask.mask_headinator.name=Headinator
+item.tropicraft:ashen_mask.mask_square_horn.name=Square Horn
+item.tropicraft:ashen_mask.mask_screw_attack.name=Screw Attack
+item.tropicraft:ashen_mask.mask_the_brain.name=The Brain
+item.tropicraft:ashen_mask.mask_bat_boy.name=Bat Boy
+item.tropicraft:ashen_mask.mask_ashen_mask.name=Ashen Mask
+
 # Menu localizations
 itemGroup.tropicraft=Tropicraft
 
@@ -253,6 +264,7 @@ entity.tropicraft.marlin.name=Marlin
 entity.tropicraft.ashen.name=Ashen
 entity.tropicraft.piranha.name=Piranha
 entity.tropicraft.sardine.name=River Sardine
+entity.tropicraft.koa.name=Koa
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=If you like pina coladas...
