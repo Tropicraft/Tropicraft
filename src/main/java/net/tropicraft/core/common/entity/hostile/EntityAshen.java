@@ -50,6 +50,7 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 		setSize(0.5F, 1.3F);      
 		setMaskType(new Random().nextInt(7));
 		actionPicker = 0;
+		this.enablePersistence();
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getAttackStrength());
 	}
 

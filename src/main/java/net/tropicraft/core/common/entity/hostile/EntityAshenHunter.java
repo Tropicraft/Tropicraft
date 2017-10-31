@@ -50,7 +50,7 @@ public class EntityAshenHunter extends EntityAshen {
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new AIAshenChaseAndPickupLostMask(this, 1.0D));
 		this.tasks.addTask(3, aiArrowAttack);
-		this.tasks.addTask(4, new EntityAIMeleeAndRangedAttack(this, 1.0D, 60, 5F));
+		this.tasks.addTask(4, new EntityAIMeleeAndRangedAttack(this, 1.0D, 20*2, 20*10, 5F));
 		this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
