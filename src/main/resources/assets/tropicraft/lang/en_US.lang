@@ -244,7 +244,11 @@ item.tropicraft:ashen_mask.mask_square_horn.name=Square Horn
 item.tropicraft:ashen_mask.mask_screw_attack.name=Screw Attack
 item.tropicraft:ashen_mask.mask_the_brain.name=The Brain
 item.tropicraft:ashen_mask.mask_bat_boy.name=Bat Boy
-item.tropicraft:ashen_mask.mask_ashen_mask.name=Ashen Mask
+item.tropicraft:ashen_mask.mask_ashen_mask1.name=Ashen Mask
+item.tropicraft:ashen_mask.mask_ashen_mask2.name=Ashen Mask
+item.tropicraft:ashen_mask.mask_ashen_mask3.name=Ashen Mask
+item.tropicraft:ashen_mask.mask_ashen_mask4.name=Ashen Mask
+item.tropicraft:ashen_mask.mask_ashen_mask5.name=Ashen Mask
 
 # Menu localizations
 itemGroup.tropicraft=Tropicraft

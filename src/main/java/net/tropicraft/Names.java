@@ -46,7 +46,7 @@ public final class Names {
 			"tropiskelly", "eagleray", "failgull", "seaurchin", "piranha", "sardine", "dolphin", "seahorse", "hammerhead"};
 	public static final String[] COFFEE_NAMES = { "coffee_bean_raw", "coffee_bean_roasted", "coffee_berry" };
 	public static final String[] MASK_NAMES = {"mask_square_zord", "mask_horn_monkey", "mask_oblongatron", "mask_headinator", "mask_square_horn",
-	        "mask_screw_attack", "mask_the_brain", "mask_bat_boy", "mask_ashen_mask", "mask_ashen_mask", "mask_ashen_mask", "mask_ashen_mask", "mask_ashen_mask"};
+	        "mask_screw_attack", "mask_the_brain", "mask_bat_boy", "mask_ashen_mask1", "mask_ashen_mask2", "mask_ashen_mask3", "mask_ashen_mask4", "mask_ashen_mask5"};
 
 	// Tile Entity Names
 	public static final String TE_BAMBOO_CHEST = "te_bamboo_chest";
