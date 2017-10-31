@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.command;
 
-import build.BuildServerTicks;
-import build.world.Build;
-import build.world.BuildJob;
+import net.tropicraft.core.common.build.BuildServerTicks;
+import net.tropicraft.core.common.build.world.Build;
+import net.tropicraft.core.common.build.world.BuildJob;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -12,13 +12,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
-import net.tropicraft.core.common.town.ISimulationTickable;
-import net.tropicraft.core.common.town.ManagedLocation;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
 

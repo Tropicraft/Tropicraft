@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.worldgen.village;
 
-import build.world.BuildDirectionHelper;
+import net.tropicraft.core.common.build.world.BuildDirectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

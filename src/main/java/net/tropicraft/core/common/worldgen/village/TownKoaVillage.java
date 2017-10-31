@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.worldgen.village;
 
-import build.BuildServerTicks;
-import build.ICustomGen;
-import build.UtilBuild;
-import build.world.Build;
-import build.world.BuildJob;
-import build.world.BuildManager;
+import net.tropicraft.core.common.build.BuildServerTicks;
+import net.tropicraft.core.common.build.ICustomGen;
+import net.tropicraft.core.common.build.UtilBuild;
+import net.tropicraft.core.common.build.world.Build;
+import net.tropicraft.core.common.build.world.BuildJob;
+import net.tropicraft.core.common.build.world.BuildManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -13,16 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.tropicraft.Info;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.town.SpawnLocationData;
 import net.tropicraft.core.common.town.TownObject;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 

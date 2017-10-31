@@ -1,12 +1,9 @@
 package net.tropicraft.core.common.event;
 
-import build.BuildServerTicks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -27,10 +24,8 @@ import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
-import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.common.worldgen.village.WorldEventListener;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class MiscEvents {

@@ -296,7 +296,7 @@ public class TeleporterTropics extends Teleporter {
         int worldSpawnZ = MathHelper.floor(foundZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
         int worldSpawnY = getTerrainHeightAt(worldSpawnX, worldSpawnZ);//world.getHeightValue(worldSpawnX, worldSpawnZ) - 2;
 
-        // Max distance to search in every direction for the nearest landmass to build a bridge to
+        // Max distance to search in every direction for the nearest landmass to net.tropicraft.core.common.build a bridge to
         int SEARCH_FOR_LAND_DISTANCE_MAX = 200;
 
         // If we can't find a spot (e.g. we're in the middle of the ocean),
@@ -489,7 +489,7 @@ public class TeleporterTropics extends Teleporter {
     }
 
     /**
-     * @return List of valid block states to build portal on
+     * @return List of valid block states to net.tropicraft.core.common.build portal on
      */
     private List<IBlockState> getValidBuildBlocks() {
         return Arrays.asList(

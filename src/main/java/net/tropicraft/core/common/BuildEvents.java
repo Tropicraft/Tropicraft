@@ -1,6 +1,6 @@
 package net.tropicraft.core.common;
 
-import build.BuildServerTicks;
+import net.tropicraft.core.common.build.BuildServerTicks;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 

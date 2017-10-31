@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.town;
 
-import build.UtilBuild;
+import net.tropicraft.core.common.build.UtilBuild;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
