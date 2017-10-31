@@ -101,7 +101,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 
     public void spawnEntitiesForce() {
 
-        System.out.println("Spawning koa village population for village: " + spawn);
+        //System.out.println("Spawning koa village population for village: " + spawn);
         tickMonitorPersistantMembers(true);
 		
 		

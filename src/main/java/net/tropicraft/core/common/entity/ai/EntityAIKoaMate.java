@@ -65,7 +65,7 @@ public class EntityAIKoaMate extends EntityAIBase
                 }
                 if (clEnt != null) {
                     this.mate = clEnt;
-                    System.out.println("start mate");
+                    //System.out.println("start mate");
                     return true;
                 }
             }
@@ -101,7 +101,7 @@ public class EntityAIKoaMate extends EntityAIBase
     {
         boolean result = this.matingTimeout >= 0 && this.canTownHandleMoreVillagers() && this.villagerObj.getGrowingAge() == 0 && this.villagerObj.getIsWillingToMate(false);
         if (!result) {
-            System.out.println("mating reset");
+            //System.out.println("mating reset");
         }
         return result;
     }
@@ -121,7 +121,7 @@ public class EntityAIKoaMate extends EntityAIBase
         else if (this.matingTimeout == 0 && this.mate.isMating())
         {
             this.mate.setMating(false);
-            System.out.println("mate complete");
+            //System.out.println("mate complete");
             if (villagerObj.getOrientation() == EntityKoaBase.Orientations.STRAIT) {
                 this.giveBirth();
             }
@@ -146,10 +146,10 @@ public class EntityAIKoaMate extends EntityAIBase
         } else {
             boolean success = villagerObj.tryGetVillage();
             if (!success) {
-                System.out.println("no village found");
+                //System.out.println("no village found");
                 return false;
             } else {
-                System.out.println("fixed village");
+                //System.out.println("fixed village");
             }
         }
         return false;

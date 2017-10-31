@@ -206,6 +206,11 @@ public class EntityKoaBase extends EntityVillager {
                     ((EntityKoaBase) this.attacker).setFightingItem();
                 }
             }
+
+            @Override
+            protected double getAttackReachSqr(EntityLivingBase attackTarget) {
+                return (double)(this.attacker.width * 2.5F * this.attacker.width * 2.5F + attackTarget.width);
+            }
         });
         //this.tasks.addTask(1, new EntityAITradePlayer(this));
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
@@ -576,7 +581,7 @@ public class EntityKoaBase extends EntityVillager {
                         BlockPos pos = this.getPosition().add(x, y, z);
                         TileEntity tile = world.getTileEntity(pos);
                         if (tile instanceof TileEntityChest) {
-                            System.out.println("found chest, updating home position to " + pos);
+                            //System.out.println("found chest, updating home position to " + pos);
                             setHomePosAndDistance(pos, MAX_HOME_DISTANCE);
                             return;
                         }
@@ -599,7 +604,7 @@ public class EntityKoaBase extends EntityVillager {
         } else if (posLastFireplaceFound != null) {
             IBlockState state = world.getBlockState(posLastFireplaceFound);
             if (state.getMaterial() != Material.FIRE) {
-                System.out.println("removing invalid fire spot");
+                //System.out.println("removing invalid fire spot");
                 posLastFireplaceFound = null;
                 tryFind = true;
             }
@@ -615,7 +620,7 @@ public class EntityKoaBase extends EntityVillager {
                         BlockPos pos = this.getPosition().add(x, y, z);
                         IBlockState state = world.getBlockState(pos);
                         if (state.getMaterial() == Material.FIRE) {
-                            System.out.println("found fire place spot to chill");
+                            //System.out.println("found fire place spot to chill");
                             setFirelacePos(pos);
                             return;
                         }
@@ -630,7 +635,7 @@ public class EntityKoaBase extends EntityVillager {
                     IBlockState state = world.getBlockState(ent.posLastFireplaceFound);
                     if (state.getMaterial() == Material.FIRE) {
                         posLastFireplaceFound = new BlockPos(ent.posLastFireplaceFound);
-                        System.out.println("found fire place spot to chill from entity");
+                        //System.out.println("found fire place spot to chill from entity");
                         return;
                     }
                 }
@@ -801,10 +806,10 @@ public class EntityKoaBase extends EntityVillager {
             if (sim instanceof TownKoaVillage) {
                 return (TownKoaVillage) sim;
             } else {
-                System.out.println("critical: couldnt find village by ID");
+                //System.out.println("critical: couldnt find village by ID");
             }
         } else {
-            System.out.println("critical: no world cap");
+            //System.out.println("critical: no world cap");
         }
         return null;
     }
@@ -851,9 +856,9 @@ public class EntityKoaBase extends EntityVillager {
         boolean result = super.attackEntityFrom(source, amount);
         if (this.getHealth() <= 0) {
             if (source.getEntity() instanceof EntityLivingBase) {
-                System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation() + " - " + source.getDeathMessage((EntityLivingBase)source.getEntity()));
+                //System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation() + " - " + source.getDeathMessage((EntityLivingBase)source.getEntity()));
             } else {
-                System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation());
+                //System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation());
             }
         }
         return result;
@@ -874,14 +879,14 @@ public class EntityKoaBase extends EntityVillager {
             }
 
             if (maleCount < femaleCount) {
-                System.out.println("force set to male");
+                //System.out.println("force set to male");
                 setGender(EntityKoaBase.Genders.MALE);
             } else {
-                System.out.println("force set to female");
+                //System.out.println("force set to female");
                 setGender(EntityKoaBase.Genders.FEMALE);
             }
 
-            System.out.println("population size: " + village.getPopulationSize() + ", males: " + maleCount + ", females: " + femaleCount);
+            //System.out.println("population size: " + village.getPopulationSize() + ", males: " + maleCount + ", females: " + femaleCount);
         }
     }
 }

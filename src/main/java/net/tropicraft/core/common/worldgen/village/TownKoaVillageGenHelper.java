@@ -27,7 +27,7 @@ public class TownKoaVillageGenHelper {
     public static int areaWidth = 86; //X for rot 0
     public static int areaHeight = 16;
 
-    public static boolean debugVillageGen = true;
+    public static boolean debugVillageGen = false;
 
     /* Takes coords that are assumed to be a beach, scans to find the ocean side and checks if theres enough ocean space to gen */
     public static boolean hookTryGenVillage(BlockPos parCoords, World parWorld) {
@@ -59,7 +59,7 @@ public class TownKoaVillageGenHelper {
                     ManagedLocation town = (ManagedLocation) it.next();
 
                     if (Math.sqrt(town.spawn.distanceSq(parCoords)) < minDistBetweenVillages) {
-                        System.out.println("village to close to another, aborting");
+                        //System.out.println("village to close to another, aborting");
                         return false;
                     }
                 }
@@ -72,7 +72,7 @@ public class TownKoaVillageGenHelper {
 
                 return true;
             } else {
-                dbg("ERROR: cant get world capability???");
+                //dbg("ERROR: cant get world capability???");
             }
 			
 

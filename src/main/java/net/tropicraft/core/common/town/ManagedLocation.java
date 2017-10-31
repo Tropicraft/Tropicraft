@@ -138,13 +138,13 @@ public class ManagedLocation implements ISimulationTickable {
 				}
 
 				if (data.entityUUID == null) {
-					System.out.println("detected missing entity, attempting to respawn a " + data.type + " at coords: " + data.coords);
+					//System.out.println("detected missing entity, attempting to respawn a " + data.type + " at coords: " + data.coords);
 					//TODO: for new village, i want koa mating to repopulate the numbers, not magic extra spawning
 					EntityLivingBase ent = spawnMemberAtSpawnLocation(data);
 					if (data.entityUUID == null) {
-						System.out.println("spawned location failed to spawn a new entity, perhaps spawnMemberAtSpawnLocation() method not overridden properly?");
+						//System.out.println("spawned location failed to spawn a new entity, perhaps spawnMemberAtSpawnLocation() method not overridden properly?");
 					} else {
-						System.out.println("respawned, population size: " + getPopulationSize());
+						//System.out.println("respawned, population size: " + getPopulationSize());
 					}
 				}
 
