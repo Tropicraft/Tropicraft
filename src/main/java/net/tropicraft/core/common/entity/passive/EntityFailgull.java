@@ -34,6 +34,7 @@ public class EntityFailgull extends EntityFlying {
 		setSize(0.4F, 0.6F);
 		this.experienceValue = 1;
 		this.moveHelper = new EntityFailgull.FailgullMoveHelper(this);
+		this.enablePersistence();
 	}
 
 	@Override

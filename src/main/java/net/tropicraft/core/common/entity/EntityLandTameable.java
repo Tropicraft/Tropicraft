@@ -11,6 +11,7 @@ public abstract class EntityLandTameable extends EntityTameable {
     public EntityLandTameable(World world) {
         super(world);
         setSize(.7F, 1.95F);
+        this.enablePersistence();
     }
     
     @Override

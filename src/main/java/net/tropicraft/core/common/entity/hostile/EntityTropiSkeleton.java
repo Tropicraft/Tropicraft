@@ -63,21 +63,26 @@ public class EntityTropiSkeleton extends EntityLandHostile implements IMob {
      * Checks to make sure the light is not too bright where the mob is spawning
      */
     protected boolean isValidLightLevel() {
-        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-
-        if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
-            return false;
+        boolean dayTimeSpawning = true;
+        if (dayTimeSpawning) {
+            return true;
         } else {
-            int i = this.world.getLightFromNeighbors(blockpos);
+            BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-            if (this.world.isThundering()) {
-                int j = this.world.getSkylightSubtracted();
-                this.world.setSkylightSubtracted(10);
-                i = this.world.getLightFromNeighbors(blockpos);
-                this.world.setSkylightSubtracted(j);
+            if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+                return false;
+            } else {
+                int i = this.world.getLightFromNeighbors(blockpos);
+
+                if (this.world.isThundering()) {
+                    int j = this.world.getSkylightSubtracted();
+                    this.world.setSkylightSubtracted(10);
+                    i = this.world.getLightFromNeighbors(blockpos);
+                    this.world.setSkylightSubtracted(j);
+                }
+
+                return i <= this.rand.nextInt(8);
             }
-
-            return i <= this.rand.nextInt(8);
         }
     }
 

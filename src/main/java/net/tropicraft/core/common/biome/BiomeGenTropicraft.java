@@ -77,8 +77,8 @@ public class BiomeGenTropicraft extends Biome {
 
         this.spawnableCreatureList.add(new SpawnListEntry(EntityTropiCreeper.class, 4, 1, 2));
         this.spawnableCreatureList.add(new SpawnListEntry(EntityEIH.class, 10, 1, 1));
-        this.spawnableCreatureList.add(new SpawnListEntry(EntityTropiSkeleton.class, 4, 1, 8));
-        this.spawnableCreatureList.add(new SpawnListEntry(EntityAshenHunter.class, 4, 3, 12));
+        this.spawnableCreatureList.add(new SpawnListEntry(EntityTropiSkeleton.class, 6, 2, 8));
+        this.spawnableCreatureList.add(new SpawnListEntry(EntityAshenHunter.class, 4, 3, 10));
 
         //this.spawnableMonsterList.add(new SpawnListEntry(SpiderAdult.class, 50, 1, 3));
 	}
@@ -99,5 +99,9 @@ public class BiomeGenTropicraft extends Biome {
 	    }
 	}
 
+	@Override
+	public float getSpawningChance() {
+		return 0.2F;
+	}
 }
 
