@@ -55,97 +55,10 @@
                         },
                         {
                             "function": "set_damage",
-                            "count": 0
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
+                            "damage": {
+                                "min": 0,
+                                "max": 5
                             }
-                        },
-                        {
-                            "function": "set_damage",
-                            "count": 1
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        },
-                        {
-                            "function": "set_damage",
-                            "count": 2
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        },
-                        {
-                            "function": "set_damage",
-                            "count": 3
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        },
-                        {
-                            "function": "set_damage",
-                            "count": 4
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        },
-                        {
-                            "function": "set_damage",
-                            "count": 5
                         }
                     ],
                     "weight": 10

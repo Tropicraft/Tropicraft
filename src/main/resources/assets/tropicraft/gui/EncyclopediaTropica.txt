@@ -355,6 +355,9 @@ thetribe.desc = Upbeat tropical vibes brought to you by Emile van Krieken. Liste
 tradewinds.title = Tradewinds
 tradewinds.desc  = A chillout song produced by Frox. At 136 bpm, Trade winds is sure to help you relax during your tropical vacation.
 
+trimix.title = Trimix Gas Mixture
+trimix.desc  = A breathing gas consisting of oxygen, helium, and nitrogen. Trimix can be placed in an air compressor to fill a tank with trimix-infused air, allowing the player to stay underwater for much longer!
+
 tropiframe.title = Tropicraft Item Frame
 tropiframe.desc = This item frame functions the same way as a vanilla item frame but has a bamboo border
 

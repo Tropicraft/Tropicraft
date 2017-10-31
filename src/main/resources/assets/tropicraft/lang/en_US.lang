@@ -226,6 +226,7 @@ item.tropicraft.yellow_scuba_goggles.name=Yellow Scuba Goggles
 item.tropicraft.dive_computer.name=Dive Computer
 item.tropicraft.yellow_chestplate_gear.name=Yellow Scuba Harness
 item.tropicraft.pink_chestplate_gear.name=Pink Scuba Harness
+item.tropicraft.trimix.name=Trimix Gas Mixture
 
 # Cocktail localizations
 item.tropicraft.cocktail_Lemonade.name=Lemonade

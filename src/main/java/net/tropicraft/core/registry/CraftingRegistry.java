@@ -575,6 +575,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("thatchfencegate", new ItemStack(BlockRegistry.thatchFenceGate));
         Tropicraft.encyclopedia.includeItem("thetribe", new ItemStack(ItemRegistry.recordTheTribe));
         Tropicraft.encyclopedia.includeItem("tradewinds", new ItemStack(ItemRegistry.recordTradeWinds));
+        Tropicraft.encyclopedia.includeItem("trimix", new ItemStack(ItemRegistry.trimix));
         Tropicraft.encyclopedia.includeItem("tropiframe", new ItemStack(ItemRegistry.bambooItemFrame));
         Tropicraft.encyclopedia.includeItem("turtleshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.TURTLE.getMeta()));
         //TODO Tropicraft.encyclopedia.includeItem("waterwand", new ItemStack(ItemRegistry.waterWand));
