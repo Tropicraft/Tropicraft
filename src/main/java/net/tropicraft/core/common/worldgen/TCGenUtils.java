@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class TCGenUtils {
@@ -15,27 +16,27 @@ public class TCGenUtils {
         return new BlockPos(xyz[0], xyz[1], xyz[2]);
     }
     
-    public static Block getBlock(World world, int x, int y, int z) {
+    public static Block getBlock(IBlockAccess world, int x, int y, int z) {
         return getBlock(world, getBlockPos(x, y, z));
     }
     
-    public static Block getBlock(World world, BlockPos pos) {
+    public static Block getBlock(IBlockAccess world, BlockPos pos) {
         return world.getBlockState(pos).getBlock();
     }
     
-    public static IBlockState getBlockState(World world, BlockPos pos) {
+    public static IBlockState getBlockState(IBlockAccess world, BlockPos pos) {
         return world.getBlockState(pos);
     }
     
-    public static IBlockState getBlockState(World world, int x, int y, int z) {
+    public static IBlockState getBlockState(IBlockAccess world, int x, int y, int z) {
         return getBlockState(world, getBlockPos(x, y, z));
     }
     
-    public static boolean isAirBlock(World world, int x, int y, int z) {
+    public static boolean isAirBlock(IBlockAccess world, int x, int y, int z) {
         return isAirBlock(world, getBlockPos(x, y, z));
     }
     
-    public static boolean isAirBlock(World world, BlockPos pos) {
+    public static boolean isAirBlock(IBlockAccess world, BlockPos pos) {
         return world.isAirBlock(pos);
     }
     
@@ -63,11 +64,11 @@ public class TCGenUtils {
         return world.setBlockState(new BlockPos(x, y, z), state, flags);
     }
     
-    public static Material getMaterial(World world, int x, int y, int z) {
+    public static Material getMaterial(IBlockAccess world, int x, int y, int z) {
         return world.getBlockState(new BlockPos(x, y, z)).getMaterial();
     }
     
-    public static Material getMaterial(World world, BlockPos pos) {
+    public static Material getMaterial(IBlockAccess world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial();
     }
     

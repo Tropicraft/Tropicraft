@@ -73,6 +73,16 @@ tile.tropicraft.slab.thatch.name=Thatch Slab
 tile.tropicraft.bongo.small.name=Small Bongo Drum
 tile.tropicraft.bongo.medium.name=Medium Bongo Drum
 tile.tropicraft.bongo.large.name=Large Bongo Drum
+tile.tropicraft.bamboo_fence.name=Bamboo Fence
+tile.tropicraft.bamboo_fence_gate.name=Bamboo Fence Gate
+tile.tropicraft.chunk_fence.name=Chunk Fence
+tile.tropicraft.chunk_fence_gate.name=Chunk Fence Gate
+tile.tropicraft.mahogany_fence.name=Mahogany Fence
+tile.tropicraft.mahogany_fence_gate.name=Mahogany Fence Gate
+tile.tropicraft.palm_fence.name=Palm Fence
+tile.tropicraft.palm_fence_gate.name=Palm Fence Gate
+tile.tropicraft.thatch_fence.name=Thatch Fence
+tile.tropicraft.thatch_fence_gate.name=Thatch Fence Gate
 
 # Item localizations
 item.tropicraft.eudialyte.name=Eudialyte Shard
@@ -216,6 +226,7 @@ item.tropicraft.yellow_scuba_goggles.name=Yellow Scuba Goggles
 item.tropicraft.dive_computer.name=Dive Computer
 item.tropicraft.yellow_chestplate_gear.name=Yellow Scuba Harness
 item.tropicraft.pink_chestplate_gear.name=Pink Scuba Harness
+item.tropicraft.trimix.name=Trimix Gas Mixture
 
 # Cocktail localizations
 item.tropicraft.cocktail_Lemonade.name=Lemonade
