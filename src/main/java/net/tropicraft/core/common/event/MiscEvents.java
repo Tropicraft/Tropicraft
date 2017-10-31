@@ -29,10 +29,6 @@ public class MiscEvents {
     @SubscribeEvent
     public void tickServer(ServerTickEvent event) {
 
-        boolean perform = false;
-
-        if (!perform) return;
-
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
 
         if (world != null && world instanceof WorldServer) {
