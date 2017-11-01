@@ -39,6 +39,7 @@ import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
+import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.lang.reflect.Field;
@@ -52,6 +53,8 @@ public class EntityKoaBase extends EntityVillager {
     public long lastTimeFished = 0;
 
     public BlockPos posLastFireplaceFound = null;
+    public List<BlockPos> listPosDrums = new ArrayList<>();
+    public static int MAX_DRUMS = 12;
 
     public InventoryBasic inventory;
 
@@ -59,6 +62,7 @@ public class EntityKoaBase extends EntityVillager {
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> ORIENTATION = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> LURE_ID = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
 
     private EntityAIBase taskFishing = new EntityAIGoneFishin(this);
@@ -137,6 +141,14 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().set(SITTING, Boolean.valueOf(sitting));
     }
 
+    public boolean isDancing() {
+        return this.getDataManager().get(DANCING);
+    }
+
+    public void setDancing(boolean val) {
+        this.getDataManager().set(DANCING, Boolean.valueOf(val));
+    }
+
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -144,6 +156,7 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().register(GENDER, Integer.valueOf(0));
         this.getDataManager().register(ORIENTATION, Integer.valueOf(0));
         this.getDataManager().register(SITTING, Boolean.valueOf(false));
+        this.getDataManager().register(DANCING, Boolean.valueOf(false));
         this.getDataManager().register(LURE_ID, Integer.valueOf(-1));
     }
 
@@ -216,7 +229,9 @@ public class EntityKoaBase extends EntityVillager {
         //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1D));
         this.tasks.addTask(5, new EntityAIKoaMate(this));
-        this.tasks.addTask(6, new EntityAIChillAtFire(this));
+        //this.tasks.addTask(6, new EntityAIChillAtFire(this));
+        this.tasks.addTask(6, new EntityAIPartyTime(this));
+
         //this.tasks.addTask(3, new EntityAIMoveIndoors(this));
         //this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         //this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
@@ -296,6 +311,7 @@ public class EntityKoaBase extends EntityVillager {
         //adjust home position to chest right nearby for easy item spawning
         findAndSetHomeToCloseChest(false);
         findAndSetFireSource(false);
+        findAndSetDrums(false);
 
     }
 
@@ -441,6 +457,7 @@ public class EntityKoaBase extends EntityVillager {
 
         findAndSetHomeToCloseChest(true);
         findAndSetFireSource(true);
+        findAndSetDrums(true);
 
         IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
 
@@ -611,8 +628,6 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         if (tryFind) {
-            //TODO: line of sight check
-
             int range = 20;
             for (int x = -range; x <= range; x++) {
                 for (int y = -range/2; y <= range/2; y++) {
@@ -641,10 +656,94 @@ public class EntityKoaBase extends EntityVillager {
                 }
             }
         }
+    }
 
+    public void findAndSetDrums(boolean force) {
 
+        //this.setHomePosAndDistance(this.getHomePosition(), 128);
 
+        if (!force && (world.getTotalWorldTime()+this.getEntityId()) % (20*30) != 0) return;
 
+        Iterator<BlockPos> it = listPosDrums.iterator();
+        while (it.hasNext()) {
+            BlockPos pos = it.next();
+            IBlockState state = world.getBlockState(pos);
+            if (state.getBlock() != BlockRegistry.bongo) {
+                it.remove();
+            }
+        }
+
+        if (listPosDrums.size() >= MAX_DRUMS) {
+            return;
+        }
+
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(20, 20, 20));
+        Collections.shuffle(listEnts);
+        for (EntityKoaBase ent : listEnts) {
+            if (listPosDrums.size() >= MAX_DRUMS) {
+                return;
+            }
+            Iterator<BlockPos> it2 = ent.listPosDrums.iterator();
+            while (it2.hasNext()) {
+                BlockPos pos = it2.next();
+                //IBlockState state = world.getBlockState(pos);
+
+                boolean match = false;
+
+                Iterator<BlockPos> it3 = listPosDrums.iterator();
+                while (it3.hasNext()) {
+                    BlockPos pos2 = it3.next();
+                    //IBlockState state2 = world.getBlockState(pos2);
+                    if (pos.equals(pos2)) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (!match) {
+                    System.out.println("drum pos ent: " + pos);
+                    listPosDrums.add(pos);
+                }
+
+                if (listPosDrums.size() >= MAX_DRUMS) {
+                    return;
+                }
+            }
+        }
+
+        int range = 20;
+        for (int x = -range; x <= range; x++) {
+            for (int y = -range/2; y <= range/2; y++) {
+                for (int z = -range; z <= range; z++) {
+                    BlockPos pos = this.getPosition().add(x, y, z);
+                    IBlockState state = world.getBlockState(pos);
+                    if (state.getBlock() == BlockRegistry.bongo) {
+
+                        boolean match = false;
+
+                        Iterator<BlockPos> it3 = listPosDrums.iterator();
+                        while (it3.hasNext()) {
+                            BlockPos pos2 = it3.next();
+                            //IBlockState state2 = world.getBlockState(pos2);
+                            if (pos.equals(pos2)) {
+                                match = true;
+                                break;
+                            }
+                        }
+
+                        if (!match) {
+                            System.out.println("drum pos: " + pos);
+                            listPosDrums.add(pos);
+                        }
+
+                        if (listPosDrums.size() >= MAX_DRUMS) {
+                            return;
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     public boolean tryGetVillage() {
