@@ -14,12 +14,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Names;
+import net.tropicraft.core.common.enums.AshenMasks;
 
 
 public class ItemAshenMask extends ItemTropicraftArmor {
 
     public ItemAshenMask(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
         super(material, renderIndex, slot);
+        setHasSubtypes(true);
+        this.maxStackSize = 64;
     }
 
     /**
@@ -39,9 +42,9 @@ public class ItemAshenMask extends ItemTropicraftArmor {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item id, CreativeTabs creativeTabs, List list) {
-        for (int meta = 0; meta < Names.MASK_NAMES.length; meta++) {
-            list.add(new ItemStack(id, 1, meta));
+    public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
+        for (AshenMasks type : AshenMasks.VALUES) {
+            list.add(new ItemStack(item, 1, type.getMeta()));
         }
     }
 

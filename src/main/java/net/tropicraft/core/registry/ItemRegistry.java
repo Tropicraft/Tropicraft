@@ -25,6 +25,7 @@ import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.common.enums.ITropicraftVariant;
 import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.common.item.ItemBambooItemFrame;
@@ -334,7 +335,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
         trimix = registerItem(new ItemTropicraft().setMaxStackSize(1), "trimix");
         
-        ashenMask = registerMultiItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD), "ashen_mask", Names.MASK_NAMES);
+        ashenMask = registerMultiItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD), "mask", AshenMasks.VALUES);
     }
 
     public static void init() {
