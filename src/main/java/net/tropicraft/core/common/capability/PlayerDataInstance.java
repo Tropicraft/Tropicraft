@@ -10,6 +10,9 @@ public class PlayerDataInstance {
     public boolean scubaFlippers;
     public boolean scubaChestgear;
     public boolean scubaHelmet;
+
+    public int swimTimeCur = 0;
+    public boolean receivedQuestReward = false;
     
     public PlayerDataInstance() {
 
@@ -28,11 +31,15 @@ public class PlayerDataInstance {
         scubaFlippers = nbt.getBoolean("tcscubaFlippers");
         scubaChestgear = nbt.getBoolean("tcscubaChestgear");
         scubaHelmet = nbt.getBoolean("tcscubaHelmet");
+        receivedQuestReward = nbt.getBoolean("receivedQuestReward");
+        swimTimeCur = nbt.getInteger("swimTimeCur");
     }
     
     public void writeNBT(NBTTagCompound nbt) {
         nbt.setBoolean("tcscubaFlippers", scubaFlippers);
         nbt.setBoolean("tcscubaChestgear", scubaChestgear);
         nbt.setBoolean("tcscubaHelmet", scubaHelmet);
+        nbt.setBoolean("receivedQuestReward", receivedQuestReward);
+        nbt.setInteger("swimTimeCur", swimTimeCur);
     }
 }

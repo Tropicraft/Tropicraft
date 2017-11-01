@@ -11,12 +11,15 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.tropicraft.core.common.BuildEvents;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.client.gui.TropicraftGuiHandler;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
+import net.tropicraft.core.common.capability.ExtendedWorldStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
+import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.drinks.MixerRecipes;
@@ -54,6 +57,9 @@ public class Tropicraft {
     @CapabilityInject(PlayerDataInstance.class)
     public static final Capability<PlayerDataInstance> PLAYER_DATA_INSTANCE = null;
 
+	@CapabilityInject(WorldDataInstance.class)
+	public static final Capability<WorldDataInstance> WORLD_DATA_INSTANCE = null;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 	    TropicsConfigs.init(event.getSuggestedConfigurationFile());
@@ -70,6 +76,7 @@ public class Tropicraft {
 		CraftingRegistry.preInit();
 		ScubaCapabilities.register();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
+		CapabilityManager.INSTANCE.register(WorldDataInstance.class, new ExtendedWorldStorage(), WorldDataInstance.class);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new TropicraftGuiHandler());
 	}
 
@@ -83,6 +90,7 @@ public class Tropicraft {
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
 		MinecraftForge.EVENT_BUS.register(new BlockEvents());
 		MinecraftForge.EVENT_BUS.register(new AchievementEvents());
+		MinecraftForge.EVENT_BUS.register(new BuildEvents());
 		MinecraftForge.EVENT_BUS.register(new MiscEvents());
 		BiomeGenTropicraft.registerBiomes();
 		GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
