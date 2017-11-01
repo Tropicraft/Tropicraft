@@ -11,7 +11,9 @@ public class PlayerDataInstance {
     public boolean scubaChestgear;
     public boolean scubaHelmet;
 
+    @Deprecated
     public int swimTimeCur = 0;
+    @Deprecated
     public boolean receivedQuestReward = false;
     
     public PlayerDataInstance() {
