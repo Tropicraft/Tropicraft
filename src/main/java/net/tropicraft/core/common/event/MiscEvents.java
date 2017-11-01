@@ -45,10 +45,6 @@ public class MiscEvents {
             lastWorldTracked = overworld;
         }
 
-        boolean perform = false;
-
-        if (!perform) return;
-
         World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
 
         if (world != null && world instanceof WorldServer) {
