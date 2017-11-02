@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -127,5 +128,17 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 		}
 
 		return wasHit;
+	}
+
+	/**
+	 * This is required if spawning an IMob based entity in the creature list that is also marked persistant
+	 *
+	 * @param type
+	 * @param forSpawnCount
+	 * @return
+	 */
+	@Override
+	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
+		return type == EnumCreatureType.CREATURE;
 	}
 }
