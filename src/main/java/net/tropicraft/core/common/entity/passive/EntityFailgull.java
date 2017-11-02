@@ -259,4 +259,9 @@ public class EntityFailgull extends EntityFlying {
 			return true;
 		}
 	}
+
+	@Override
+	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
+		return type == EnumCreatureType.MONSTER;
+	}
 }
