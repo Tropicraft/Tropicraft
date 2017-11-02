@@ -1,20 +1,14 @@
 package net.tropicraft.core.client;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent;
@@ -22,9 +16,8 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.tropicraft.core.common.event.ScubaHandlerCommon;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
 import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
 import net.tropicraft.core.common.network.TCPacketHandler;
@@ -42,20 +35,6 @@ public class ScubaHandler {
 	public ScubaHandler() {
 		flipperSpeedMap.put(ItemRegistry.pinkFlippers, 1.5f);
 		flipperSpeedMap.put(ItemRegistry.yellowFlippers, 1.5f);
-	}
-	
-	public void setPlayerSize(EntityPlayer p, float x, float y) {
-		/*try {
-			MethodHandle m = MethodHandles.lookup().unreflect(ReflectionHelper.findMethod(Entity.class, p, new String[] {"func_70105_a", "setSize"}, float.class, float.class));
-			m.invoke(p, x, y);
-		}catch(Throwable t) {
-			t.printStackTrace();
-		}*/
-		//AxisAlignedBB axisalignedbb = p.getEntityBoundingBox();
-		//p.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + (double)x, axisalignedbb.minY +(double)y, axisalignedbb.minZ + (double)x));
-		//p.posY -= 1f;
-        //    p.height = 1f;
-     //   System.out.println(p.getEyeHeight());
 	}
 
 	@SubscribeEvent
@@ -75,12 +54,10 @@ public class ScubaHandler {
 		if (p != null && !p.isDead) {
 			if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0
 					|| Minecraft.getMinecraft().currentScreen != null) {
-				if (!p.isInWater()) {
-					
+				if (!ScubaHandlerCommon.isInWater(p)) {	
 					updateSwimDataAngles(p);
 				}
-				updateSwimRenderAngles(p);
-				
+				updateSwimRenderAngles(p);		
 			}
 		}
 	}
@@ -89,30 +66,32 @@ public class ScubaHandler {
 	public void onTickPlayer(PlayerTickEvent event) {
 		if (!event.type.equals(TickEvent.Type.PLAYER))
 			return;
-		EntityPlayer p = event.player;
-		
-		if(p != Minecraft.getMinecraft().player) {
+		if(event.player != Minecraft.getMinecraft().player) {
 			return;
 		}
 		
-		PlayerSwimData d = getData(p);
+		EntityPlayer p = event.player;
 		
-		if(event.phase.equals(Phase.END)) {
-			setPlayerSize(p, 0.6f, 0.6f);
+		PlayerSwimData d = getData(p);
+
+		double above = 1.5D;
+		if(d.currentRotationPitch != 0) {
+			above = 2D;
 		}
+		boolean liquidAbove = ScubaHandlerCommon.isInWater(p, 0, above, 0);
+		boolean inLiquid = ScubaHandlerCommon.isInWater(p) && ScubaHandlerCommon.isInWater(p, 0, -0.5D, 0);
 
-		BlockPos bp = p.getPosition().up(2);
-		boolean liquidAbove = event.player.world.getBlockState(bp).getMaterial().isLiquid();
 
-		if (p.isInWater() && !liquidAbove && d.currentRotationPitch < 45f && d.currentRotationPitch > -15f
-				&& (p.posY - (int) p.posY < 0.5f) && this.isPlayerWearingFlippers(p)) {
-			p.motionY += 0.02f;
+		if (inLiquid && !liquidAbove && d.currentRotationPitch < 45f && d.currentRotationPitch > -15f
+				&& (p.posY - (int) p.posY < 0.5f) && isPlayerWearingFlippers(p)) {
+			//p.motionY += 0.02f;
+			
 			d.targetRotationPitch = 0f;
-			if (!p.isInWater()) {
+			if (!inLiquid) {
 				p.motionY -= 4f;
 			}
 		}
-		if (p.isInWater() && liquidAbove && isPlayerWearingFlippers(p)) {
+		if (inLiquid && liquidAbove && isPlayerWearingFlippers(p)) {
 			
 			p.setNoGravity(true);
 			d.targetSwimSpeed = 0f;
@@ -157,6 +136,7 @@ public class ScubaHandler {
 					p.motionY = -0.2f;
 				}
 			}
+			
 
 		} else {
 			d.targetSwimSpeed = 0f;
@@ -192,17 +172,13 @@ public class ScubaHandler {
 		}
 	    
 		updateSwimRenderAngles(p);
-
 		
+		boolean inLiquid = ScubaHandlerCommon.isInWater(p) && ScubaHandlerCommon.isInWater(p, 0, 0.4D, 0);
+
 	
-		if (p.isInWater()) {
-			
-			if (p.onGround && !this.isPlayerWearingFlippers(p)) {
-				// p.limbSwingAmount = p.moveForward*0.3f;
-
-			} else {
+		if (inLiquid) {
+			if (!p.onGround && isPlayerWearingFlippers(p)) {
 				p.limbSwingAmount = 0.2f + (d.currentSwimSpeed / 20);
-
 			}
 		} else {
 			if (d.currentRotationPitch == 0f && d.currentRotationRoll == 0f) {
@@ -237,16 +213,15 @@ public class ScubaHandler {
         if (inGUI) {
             return;
         }
-        
-        
+        if(event.getEntityPlayer().isElytraFlying()) {
+			return;
+		}    
 
         EntityPlayer p = event.getEntityPlayer();
+    	
+		boolean inLiquid = ScubaHandlerCommon.isInWater(p) && ScubaHandlerCommon.isInWater(p, 0, 0.4D, 0);
 
-    	if(p.isElytraFlying()) {
-			return;
-		}
-	    
-		if (!p.isInWater()) {
+		if (!inLiquid) {
 			if (getData(p).currentRotationPitch == 0f && getData(p).currentRotationRoll == 0f) {
 				return;
 			}
@@ -281,13 +256,13 @@ public class ScubaHandler {
 		float ys = SWIM_SPEED_ROTATE_YAW;
 		float rs = SWIM_SPEED_ROTATE_ROLL;
 
+		boolean liquidAbove = ScubaHandlerCommon.isInWater(p, 0, 1.4D, 0);
+		boolean inLiquid = ScubaHandlerCommon.isInWater(p);
 
-		BlockPos bp = p.getPosition().up(1);
-		boolean liquidAbove = p.world.getBlockState(bp).getMaterial().isLiquid();
-
-		if (p.isInWater() && liquidAbove) {
+		if (inLiquid && liquidAbove) {
 			d.targetRotationYaw = p.rotationYaw;
 			d.targetHeadPitchOffset = 45f;
+		
 			float t = (float) p.moveStrafing * 90;
 
 			if (p.moveStrafing != 0) {
@@ -297,7 +272,7 @@ public class ScubaHandler {
 				d.targetRotationYaw -= t;
 			}
 			// Not moving, level out
-			if(!this.isPlayerWearingFlippers(p)) {
+			if(!isPlayerWearingFlippers(p)) {
 				if (p.moveForward == 0f && d.targetSwimSpeed == 0f) {
 					 d.targetRotationPitch = p.rotationPitch + 90f;
 					 d.targetHeadPitchOffset = d.targetRotationPitch;
@@ -353,11 +328,9 @@ public class ScubaHandler {
 				}
 			}
 
-			BlockPos bp2 = p.getPosition().down(1);
 
 			// Above a floor and not attempting to move
-			if ((!p.world.getBlockState(bp2).getMaterial().isLiquid() && d.targetSwimSpeed == 0f
-					&& !this.isPlayerWearingFlippers(p))) {
+			if ((!ScubaHandlerCommon.isInWater(p, 0, -1.8D, 0) && d.targetSwimSpeed == 0f && !isPlayerWearingFlippers(p))) {
 				d.targetRotationPitch = 0f;
 				d.targetHeadPitchOffset = 0f;
 				d.targetRotationRoll = 0f;
@@ -365,9 +338,7 @@ public class ScubaHandler {
 				rs = rs * 4;
 				ys = ys * 4;
 			}
-
 		} else {
-
 			d.targetRotationPitch = 0f;
 			d.targetRotationRoll = 0f;
 			d.targetHeadPitchOffset = d.targetHeadPitchOffset * 0.8f;
@@ -377,13 +348,13 @@ public class ScubaHandler {
 			ys = ys * 4;
 		}
 
-		d.currentRotationPitch = lerp(MathHelper.wrapDegrees(d.currentRotationPitch),
+		d.currentRotationPitch = ScubaHandlerCommon.lerp(MathHelper.wrapDegrees(d.currentRotationPitch),
 				MathHelper.wrapDegrees(d.targetRotationPitch), ps);
-		d.currentHeadPitchOffset = lerp(MathHelper.wrapDegrees(d.currentHeadPitchOffset),
+		d.currentHeadPitchOffset = ScubaHandlerCommon.lerp(MathHelper.wrapDegrees(d.currentHeadPitchOffset),
 				MathHelper.wrapDegrees(d.targetHeadPitchOffset), ps);
 
-		d.currentRotationYaw = lerp(d.currentRotationYaw, d.targetRotationYaw, ys);
-		d.currentRotationRoll = lerp(d.currentRotationRoll, d.targetRotationRoll, rs);
+		d.currentRotationYaw = ScubaHandlerCommon.lerp(d.currentRotationYaw, d.targetRotationYaw, ys);
+		d.currentRotationRoll = ScubaHandlerCommon.lerp(d.currentRotationRoll, d.targetRotationRoll, rs);
 
 	}
 
@@ -427,17 +398,6 @@ public class ScubaHandler {
 		p.rotationPitch = d.rotationPitch;
 		p.prevRotationPitch = d.prevRotationPitch;
 	}
-
-	public float lerp(float x1, float x2, float t) {
-		float f = MathHelper.wrapDegrees(x2 - x1);
-		if (f > t)
-			f = t;
-		if (f < -t)
-			f = -t;
-		return x1 + f;
-	}
-
-	
 	
 	
 	public static PlayerSwimData getData(EntityPlayer p) {
