@@ -23,6 +23,8 @@ public class RenderTurtleEgg extends RenderLiving<EntityTurtleEgg> {
 
     public void renderTurtleEgg(EntityTurtleEgg entityTurtleEgg, double d, double d1, double d2,
             float f, float f1) {
+    		this.shadowOpaque = 0.5f;
+    		this.shadowSize = 0.3f;
         super.doRender(entityTurtleEgg, d, d1, d2, f, f1);
     }
 

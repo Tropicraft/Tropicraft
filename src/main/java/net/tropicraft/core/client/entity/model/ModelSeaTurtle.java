@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
 
 public class ModelSeaTurtle extends ModelBase {
 
@@ -96,6 +97,19 @@ public class ModelSeaTurtle extends ModelBase {
 	           Head.rotateAngleX = 0;
 	           Head.rotateAngleY = 0;
 	        
+        }else {
+        		if(entity instanceof EntitySeaTurtle) {
+        			EntitySeaTurtle trtl = (EntitySeaTurtle) entity;
+        				
+        				swimSpeed = 0.1f;
+        		}
+        		FLFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
+ 	        FRFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
+ 	        RLFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
+ 	        RRFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
+ 	                
+ 	           Head.rotateAngleX = 0;
+ 	           Head.rotateAngleY = 0;
         }
 
         Body.render(f5);
@@ -112,5 +126,6 @@ public class ModelSeaTurtle extends ModelBase {
         super.setRotationAngles(f, f1, f2, f3, f4, f5, ent);
      //   Head.rotateAngleX = f4 / 125F;
   //      Head.rotateAngleY = f3 / 125F;
+        
     }
 }
