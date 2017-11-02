@@ -372,3 +372,6 @@ zircon.desc  = This mystical red crystal can be mined from Zircon ores, which ar
 
 zirconium.title = Zirconium
 zirconium.desc = This rare crystal, when combined with azurite, is rumored to unlock ancient powers. It also can be crafted to make tools of mystical strength!
+
+fishingrod.title = Bamboo Fishing Rod
+fishingrod.desc = A must have tool for any budding fisherman, this rod has a light weight feel and an ergonomic design that makes fishing for supper a breeze!

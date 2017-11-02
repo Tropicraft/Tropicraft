@@ -13,7 +13,7 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 		this.setSize(1.4F, 0.5F);
 		this.setExpRate(5);
 		this.setApproachesPlayers(true);
-
+		this.setFishable(true);
 		this.setDropStack(ItemRegistry.fertilizer, 3);
 	}
 	

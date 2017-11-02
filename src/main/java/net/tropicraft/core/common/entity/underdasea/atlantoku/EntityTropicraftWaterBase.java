@@ -34,6 +34,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
     private static final DataParameter<Float> SWIMSPEEDCUR = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
     private static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
 	private static final DataParameter<Boolean> IS_LEADER = EntityDataManager.<Boolean>createKey(EntityTropicraftWaterBase.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> HOOK_ID = EntityDataManager.<Integer>createKey(EntityTropicraftWaterBase.class, DataSerializers.VARINT);
 
 	
 	public float swimPitch = 0f;
@@ -73,6 +74,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	private float swimSpeedCharging = 2.5f;
 	
 	public Entity aggressTarget = null;
+	public EntityHook hookTarget = null;
+	
+	private boolean fishable = false;
+	
 	
 	private ItemStack dropStack = null;
 	private int dropMaxAmt = 3;
@@ -98,6 +103,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.getDataManager().register(SWIMSPEEDCUR, Float.valueOf(0f));
 		this.getDataManager().register(TEXTURE, "");
 		this.getDataManager().register(IS_LEADER, false);
+		this.getDataManager().register(HOOK_ID, Integer.valueOf(0));
 		this.assignRandomTexture();
 	}
 
@@ -146,6 +152,13 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}	
 		
 		// Server Side
+		
+		if(this.getHook() != null) {
+			if(this.getHook().isDead || !world.loadedEntityList.contains(this.getHook())) {
+				this.setHook(null);
+			}
+		}
+		
 		if (this.isInWater()) {
 			
 			this.outOfWaterTime = 0;
@@ -209,7 +222,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						}
 					}
 				}
-				if(rand.nextInt(200) == 0) {
+				if(rand.nextInt(200) == 0) {					
 					this.aggressTarget = null;
 					this.setRandomTargetHeading();
 				}
@@ -228,7 +241,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				{
 					Vec3d behind = new Vec3d(posX - (angle.xCoord*behindDist), posY + angle.yCoord, posZ - (angle.zCoord*behindDist));
 					this.setRandomTargetHeadingForce(32);
-					//this.setTargetHeading(behind.xCoord, posY, behind.zCoord, true);
 					isMovingAwayFromWall = true;
 				}
 				
@@ -281,7 +293,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 					}
 					this.setRandomTargetHeading();
 				}else {
-					if(this.canEntityBeSeen(this.aggressTarget) && this.ticksExisted % 20 == 0) {
+					if(this.canEntityBeSeen(this.aggressTarget) && this.ticksExisted % 20 == 0) {	
 						this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY, this.aggressTarget.posZ, true);
 					}
 				}
@@ -323,6 +335,60 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			if(this.isMovingAwayFromWall) {
 				swimSpeedTurn *= 1.8f;
 			}
+			
+			if(this.isFishable() && (this.ticksExisted+this.getEntityId()) % 80 == 0 && rand.nextInt(35) == 0) {
+				List<EntityHook> ents = world.getEntitiesWithinAABB(EntityHook.class, new AxisAlignedBB(this.getPosition()).expand(16, 8, 16));
+				for(int i =0; i < ents.size(); i++) {
+					EntityHook h = ents.get(i);
+					if(this.canEntityBeSeen(h)) {
+						if(h.getHooked() == null && h.isInWater()) {
+							this.hookTarget = h;
+						}
+					}
+				}
+			}
+			
+			if(this.hookTarget != null) {
+				if(this.hookTarget.isDead || !world.loadedEntityList.contains(this.hookTarget) || this.hookTarget.getHooked() != null) {
+					this.hookTarget = null;
+					this.setRandomTargetHeadingForce(10);
+				}else {
+					if(this.ticksExisted % 20 == 0) {
+						this.setTargetHeading(hookTarget.posX, hookTarget.posY, hookTarget.posZ, false);
+					}
+					if(this.getDistanceSqToEntity(this.hookTarget) < 2D) {
+						if(this.hookTarget.getHooked() == null) {
+							this.hookTarget.setHooked(this);
+							this.hookTarget = null;
+						}
+					}
+				}
+			}
+			
+			if(getHook() != null) {
+				//swimSpeedTurn *= 2f;
+				EntityHook hook = (EntityHook)getHook();
+				if(hook.getHooked() != null) {
+					
+					if(!hook.getHooked().equals(this)) {
+						this.setHook(null);
+					}else {
+						EntityPlayer angler = hook.getAngler();
+						if(angler != null) {
+							if(this.getDistanceToEntity(angler) > 2D) {
+								this.setTargetHeading(angler.posX, angler.posY, angler.posZ, false);
+							}else {
+								hook.bringInHookedEntity();
+								return;
+							}
+						}else {
+							hook.setHooked(null);
+							this.aggressTarget = null;
+							this.setRandomTargetHeadingForce(5);
+						}
+					}
+				}
+			}
 			if (this.targetVectorHeading != null) {
 				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn * 2f);
 				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn * 2f);
@@ -338,6 +404,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			this.outOfWaterTime++;
 			this.setTargetHeading(posX, posY-1, posZ, false);
 		}
+		
+		
 
 
 		
@@ -358,6 +426,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				this.aggressTarget = null;
 				this.setRandomTargetHeading();
 			}
+		}
+		
+		if(this.hookTarget != null) {
+			desiredSpeed = this.swimSpeedChasing;
 		}
 		
 		
@@ -387,8 +459,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		// speed scaled down 1/10th
 		currentSpeed *= 0.1f;
 		
-		
-		
+
 		
 		// In water motion
 		if(this.isInWater()) {
@@ -552,6 +623,13 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.getDataManager().set(SWIMSPEEDCUR, swimSpeedCurrent);
 	}
 	
+	public boolean isFishable() {
+		return this.fishable;
+	}
+	public void setFishable(boolean b) {
+		this.fishable = b;
+	}
+	
 	public Vec3d getHeading() {
 		return new Vec3d(Math.sin(this.swimYaw * (Math.PI / 180.0)), Math.sin(this.swimPitch * (Math.PI / 180.0)), Math.cos(this.swimYaw * (Math.PI / 180.0))).normalize();
 	}
@@ -606,6 +684,22 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	public void setIsLeader(boolean flag) {
 		this.dataManager.set(IS_LEADER, Boolean.valueOf(flag));
+	}
+	
+	public void setHook(EntityHook ent) {
+		if(ent == null) {
+			this.getDataManager().set(HOOK_ID, 0);
+			return;
+		}
+		this.getDataManager().set(HOOK_ID, ent.getEntityId());
+	}
+	
+	public EntityHook getHook() {
+		return (EntityHook) world.getEntityByID(this.getDataManager().get(HOOK_ID));
+	}
+	
+	public boolean isHooked() {
+		return getHook() != null;
 	}
 	
 	public void setTexture(String s) {

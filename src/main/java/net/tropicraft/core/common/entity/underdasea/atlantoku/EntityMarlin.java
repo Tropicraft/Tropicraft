@@ -10,6 +10,7 @@ public class EntityMarlin extends EntityTropicraftWaterBase implements IPredator
 		this.setSize(1.4f, 0.95f);	
 		this.setSwimSpeeds(0.8f, 3f, 2f, 2f, 5f);
 		this.setExpRate(5);
+		this.setFishable(true);
 		this.setDropStack(ItemRegistry.freshMarlin, 3);
 		this.setTexture("marlin");
 		if(!world.isRemote) {

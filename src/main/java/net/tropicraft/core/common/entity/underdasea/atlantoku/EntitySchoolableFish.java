@@ -23,12 +23,15 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 		super(world);
 		this.setShouldSpawnSchool(true);
 		this.setIsLeader(true);
+		this.setFishable(false);
 	}
 
 	public EntitySchoolableFish setSchoolLeader(EntityTropicraftWaterBase leader) {
 		this.leader = leader;
 		this.setShouldSpawnSchool(false);
 		this.setIsLeader(false);
+		this.setFishable(true);
+
 		do {
 			double offsetX = (new Random()).nextDouble() * 3 - 1.5D;
 			double offsetY = (new Random()).nextDouble() * 1 + 1.0D;
@@ -102,9 +105,10 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 					this.setRandomTargetHeading();
 					return;
 				}
-				if(this.canEntityBeSeen(leader))
+				if(this.canEntityBeSeen(leader)  && this.hookTarget == null) {
 				this.setTargetHeading(this.leader.posX, this.leader.posY - 5 + rand.nextInt(10), this.leader.posZ,
 						true);
+				}
 				if (leader.aggressTarget != null) {
 					this.aggressTarget = leader.aggressTarget;
 				}
