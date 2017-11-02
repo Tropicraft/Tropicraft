@@ -236,6 +236,11 @@ public class ModelKoaMan extends ModelBiped {
             this.bipedHead.offsetX = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.02F;
             this.bipedHead.offsetZ = 0;
             this.bipedHead.rotateAngleZ = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.05F;
+        } else {
+            this.bipedHead.offsetY = 0;
+            this.bipedHead.offsetX = 0;
+            this.bipedHead.offsetZ = 0;
+            this.bipedHead.rotateAngleZ = 0;
         }
 
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);

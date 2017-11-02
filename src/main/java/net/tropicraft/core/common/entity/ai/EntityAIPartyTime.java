@@ -17,6 +17,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EntityAIPartyTime extends EntityAIBase
@@ -100,11 +101,11 @@ public class EntityAIPartyTime extends EntityAIBase
             blockposGoal = entityObj.listPosDrums.get(assignedDrumIndex);
         }
 
-        /*if (entityObj.world.getTotalWorldTime() % 80 == 0){
+        if (entityObj.world.getTotalWorldTime() % 200 == 0){
             if (this.entityObj.listPosDrums.size() > 0) {
-                assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size()-1);
+                assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
             }
-        }*/
+        }
 
         if (blockposGoal == null) {
             resetTask();
@@ -113,9 +114,9 @@ public class EntityAIPartyTime extends EntityAIBase
 
         //prevent walking onto source
         double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        if (dist < 2D && entityObj.onGround) {
+        if (dist < 3D && entityObj.onGround) {
             //entityObj.setSitting(true);
-            entityObj.setDancing(true);
+            entityObj.setDancing(false);
             entityObj.getNavigator().clearPathEntity();
             isClose = true;
             if (true || lookUpdateTimer <= 0) {
@@ -138,53 +139,166 @@ public class EntityAIPartyTime extends EntityAIBase
                 int amp = 1;//entityObj.world.rand.nextInt(10) + 1;
                 int rate = 4+(entityObj.getEntityId() % 7);
 
+                int index1 = 0;
+
+                HashMap<Integer, List<Integer>> lookupStateToSequence = new HashMap<>();
+
                 List<Integer> listDelays = new ArrayList<>();
+                /*listDelays.add(12);
                 listDelays.add(6);
+                listDelays.add(6);
+                listDelays.add(12);
+                listDelays.add(6);
+                listDelays.add(3);
+                listDelays.add(3);
+                listDelays.add(6);*/
+
+                listDelays.add(9);
+                listDelays.add(3);
                 listDelays.add(3);
                 listDelays.add(3);
                 listDelays.add(6);
 
-                /*listDelays.clear();
+                lookupStateToSequence.put(index1++, listDelays);
+                lookupStateToSequence.put(index1++, listDelays);
+                lookupStateToSequence.put(index1++, listDelays);
 
-                listDelays.add(6);
+                listDelays = new ArrayList<>();
+                listDelays.add(9);
                 listDelays.add(3);
                 listDelays.add(3);
-                listDelays.add(6);
                 listDelays.add(3);
                 listDelays.add(3);
-                listDelays.add(6);
                 listDelays.add(3);
                 listDelays.add(3);
-                listDelays.add(6);
                 listDelays.add(3);
                 listDelays.add(3);
-                listDelays.add(40);*/
+                listDelays.add(3);
+                listDelays.add(3);
+                listDelays.add(3);
+                listDelays.add(3);
+                listDelays.add(12);
+
+                lookupStateToSequence.put(index1++, listDelays);
+
+                listDelays = new ArrayList<>();
+                listDelays.add(1);
+                listDelays.add(1);
+                listDelays.add(12);
+                listDelays.add(1);
+                listDelays.add(1);
+                listDelays.add(12);
+                listDelays.add(1);
+                listDelays.add(1);
+                listDelays.add(12);
+                listDelays.add(1);
+                listDelays.add(1);
+                listDelays.add(12);
+
+                //lookupStateToSequence.put(index1++, listDelays);
+
+                if (false) {
+
+                    //listDelays.clear();
+
+                    listDelays = new ArrayList<>();
+                    listDelays.add(4);
+                    listDelays.add(4);
+                    listDelays.add(4);
+                    listDelays.add(4);
+
+                    /*listDelays.add(6);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(6);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(6);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(6);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(40);*/
+
+                    lookupStateToSequence.put(index1++, listDelays);
+
+                    listDelays = new ArrayList<>();
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(6);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(6);
+
+                    lookupStateToSequence.put(index1++, listDelays);
+
+                    listDelays = new ArrayList<>();
+                    listDelays.add(1);
+                    listDelays.add(3);
+                    listDelays.add(1);
+                    listDelays.add(3);
+                    listDelays.add(1);
+                    listDelays.add(3);
+
+                    lookupStateToSequence.put(index1++, listDelays);
+
+                    listDelays = new ArrayList<>();
+                    listDelays.add(2);
+                    listDelays.add(2);
+                    listDelays.add(2);
+                    listDelays.add(2);
+
+                    //lookupStateToSequence.put(2, listDelays);
+                }
 
                 amp = 1;
                 rate = 20;
 
-                if (entityObj.hitIndex >= listDelays.size()) {
-                    entityObj.hitIndex = 0;
+                if (entityObj.hitIndex2 >= lookupStateToSequence.get(entityObj.hitIndex).size()) {
+                    entityObj.hitIndex2 = 0;
+                    entityObj.hitIndex++;
                 }
 
-                rate = listDelays.get(entityObj.hitIndex);
+                if (entityObj.hitIndex >= lookupStateToSequence.size()) {
+                    entityObj.hitIndex = 0;
+                    //entityObj.hitIndex++;
+                }
 
-                boolean hit = entityObj.world.getTotalWorldTime() % (amp * rate) == 0;
+                rate = lookupStateToSequence.get(entityObj.hitIndex).get(entityObj.hitIndex2);
 
+                if (entityObj.hitDelay > 0) {
+                    entityObj.hitDelay--;
+                }
 
+                boolean perEntDelay = false;
+
+                boolean hit = false;
+                if (perEntDelay) {
+                    if (entityObj.hitDelay <= 0) {
+                        entityObj.hitDelay = (amp * rate);
+                        hit = true;
+                    }
+                } else {
+                    hit = entityObj.world.getTotalWorldTime() % (amp * rate) == 0;
+                }
                 //System.out.println(entityObj.world.getTotalWorldTime());
 
                 if (hit) {
-                    entityObj.hitIndex++;
+                    //System.out.println("stage: " + entityObj.hitIndex + " - " + entityObj.hitIndex2);
+                    entityObj.hitIndex2++;
                     IBlockState state = entityObj.world.getBlockState(blockposGoal);
                     if (state.getBlock() instanceof BlockBongoDrum) {
                         //((BlockBongoDrum) state.getBlock()).playBongoSound(entityObj.world, null, blockposGoal, state);
                         TropicraftBongos bongo = ((BlockBongoDrum) state.getBlock()).getVariant(state);
                         float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
-                        entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(), SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 8.0F, pitch);
+                        entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
+                                SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 6.0F, pitch);
                         entityObj.swingArm(EnumHand.MAIN_HAND);
                     }
                 }
+
+                entityObj.syncBPM();
 
             }
             this.entityObj.getLookHelper().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
@@ -194,6 +308,7 @@ public class EntityAIPartyTime extends EntityAIBase
         }
 
         if (!isClose) {
+            entityObj.setDancing(true);
             if ((this.entityObj.getNavigator().noPath() || walkingTimeout <= 0) && repathPentalty <= 0) {
 
                 int i = blockposGoal.getX();
@@ -248,7 +363,7 @@ public class EntityAIPartyTime extends EntityAIBase
         //reset any previous path so updateTask can start with a fresh path
         this.entityObj.getNavigator().clearPathEntity();
         if (this.entityObj.listPosDrums.size() > 0) {
-            assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size()-1);
+            assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
         }
         System.out.println("start party mode");
     }

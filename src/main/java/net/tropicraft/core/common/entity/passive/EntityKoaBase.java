@@ -80,6 +80,9 @@ public class EntityKoaBase extends EntityVillager {
     private boolean wasInWater = false;
 
     public int hitIndex = 0;
+    public int hitIndex2 = 0;
+    public int hitIndex3 = 0;
+    public int hitDelay = 0;
     private long lastTradeTime = 0;
     private static int TRADE_COOLDOWN = 24000*3;
     private static int DIVE_TIME_NEEDED = 60*60;
@@ -327,7 +330,6 @@ public class EntityKoaBase extends EntityVillager {
         findAndSetHomeToCloseChest(false);
         findAndSetFireSource(false);
         findAndSetDrums(false);
-        syncBPM();
 
     }
 
@@ -564,6 +566,12 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("village_id", villageID);
 
         compound.setLong("lastTradeTime", lastTradeTime);
+
+        for (int i = 0; i < listPosDrums.size(); i++) {
+            compound.setInteger("drum_" + i + "_X", listPosDrums.get(i).getX());
+            compound.setInteger("drum_" + i + "_Y", listPosDrums.get(i).getY());
+            compound.setInteger("drum_" + i + "_Z", listPosDrums.get(i).getZ());
+        }
     }
 
     @Override
@@ -598,6 +606,14 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().set(ORIENTATION, compound.getInteger("orientation_id"));
 
         this.lastTradeTime = compound.getLong("lastTradeTime");
+
+        for (int i = 0; i < MAX_DRUMS; i++) {
+            if (compound.hasKey("drum_" + i + "_X")) {
+                this.listPosDrums.add(new BlockPos(compound.getInteger("drum_" + i + "_X"),
+                        compound.getInteger("drum_" + i + "_Y"),
+                        compound.getInteger("drum_" + i + "_Z")));
+            }
+        }
 
         updateUniqueEntityAI();
     }
@@ -698,10 +714,13 @@ public class EntityKoaBase extends EntityVillager {
         if ((world.getTotalWorldTime()+this.getEntityId()) % (20) != 0) return;
 
         List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(10, 5, 10));
-        Collections.shuffle(listEnts);
+        //Collections.shuffle(listEnts);
         for (EntityKoaBase ent : listEnts) {
-            if (hitIndex != ent.hitIndex) {
+            if (hitDelay != ent.hitDelay) {
+                hitDelay = ent.hitDelay;
                 hitIndex = ent.hitIndex;
+                hitIndex2 = ent.hitIndex2;
+                hitIndex3 = ent.hitIndex3;
                 return;
             }
         }
