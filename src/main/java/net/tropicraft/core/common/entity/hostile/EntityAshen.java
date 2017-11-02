@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -50,7 +51,6 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 		setSize(0.5F, 1.3F);      
 		setMaskType(new Random().nextInt(7));
 		actionPicker = 0;
-		this.enablePersistence();
 	}
 
 	@Override

@@ -33,12 +33,18 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 	public static final PropertyEnum<TropicraftLeaves> VARIANT = PropertyEnum.create("variant", TropicraftLeaves.class);
 
 	public BlockTropicraftLeaves() {
-		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, true).withProperty(VARIANT, TropicraftLeaves.MAHOGANY));
+		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, false).withProperty(VARIANT, TropicraftLeaves.MAHOGANY));
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	    // ignore decay
 	}
 
 	/**
 	 * Get the Item that this Block should drop when harvested.
 	 */
+	@Override
 	@Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(BlockRegistry.saplings);
@@ -69,20 +75,12 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, TropicraftLeaves.byMetadata(meta)).withProperty(DECAYABLE, (meta & 4) == 0).withProperty(CHECK_DECAY, (meta & 8) > 0);
+		return this.getDefaultState().withProperty(VARIANT, TropicraftLeaves.byMetadata(meta));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = ((TropicraftLeaves)state.getValue(VARIANT)).getMeta();
-		if (!state.getValue(DECAYABLE)) {
-			i |= 4;
-		}
-
-		if (state.getValue(CHECK_DECAY)) {
-			i |= 8;
-		}
-
 		return i;
 	}
 

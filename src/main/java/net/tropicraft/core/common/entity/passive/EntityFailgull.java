@@ -5,10 +5,10 @@ import java.util.Random;
 
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,7 +34,6 @@ public class EntityFailgull extends EntityFlying {
 		setSize(0.4F, 0.6F);
 		this.experienceValue = 1;
 		this.moveHelper = new EntityFailgull.FailgullMoveHelper(this);
-		this.enablePersistence();
 	}
 
 	@Override

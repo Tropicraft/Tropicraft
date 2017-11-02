@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
 import net.tropicraft.Info;
@@ -10,7 +12,6 @@ public abstract class EntityLand extends EntityCreature {
     public EntityLand(World world) {
         super(world);
         setSize(.7F, 1.95F);
-        this.enablePersistence();
     }
     
     /**

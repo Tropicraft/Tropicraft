@@ -26,6 +26,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -37,6 +38,7 @@ import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
 import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -78,6 +80,9 @@ public class EntityKoaBase extends EntityVillager {
     private boolean wasInWater = false;
 
     public int hitIndex = 0;
+    private long lastTradeTime = 0;
+    private static int TRADE_COOLDOWN = 24000*3;
+    private static int DIVE_TIME_NEEDED = 60*60;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> input instanceof EntityMob || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -117,6 +122,14 @@ public class EntityKoaBase extends EntityVillager {
 
 
         inventory = new InventoryBasic("koa.inventory", false, 9);
+    }
+
+    public long getLastTradeTime() {
+        return lastTradeTime;
+    }
+
+    public void setLastTradeTime(long lastTradeTime) {
+        this.lastTradeTime = lastTradeTime;
     }
 
     public Genders getGender() {
@@ -398,24 +411,40 @@ public class EntityKoaBase extends EntityVillager {
 
     	boolean ret = false;
     	try {
-            boolean doTrade = true;
+            boolean doTrade = false;
             if (!this.world.isRemote) {
-                int swimTimeNeeded = 20 * 30;
-                PlayerDataInstance storage = player.getCapability(Tropicraft.PLAYER_DATA_INSTANCE, null);
-                if (storage != null) {
-                    if (!storage.receivedQuestReward) {
 
-                        //temp
-                        storage.swimTimeCur = swimTimeNeeded + 1;
+                long diveTime = 0;
 
-                        if (storage.swimTimeCur >= swimTimeNeeded) {
-                            doTrade = false;
-                            storage.receivedQuestReward = true;
-                            player.sendMessage(new TextComponentString("you good swim, have thing, it good"));
-                            player.inventory.addItemStackToInventory(new ItemStack(Items.POTATO));
+                //scan hotbar
+                for (int i = 0; i < 9; i++) {
+                    ItemStack stackScan = player.inventory.getStackInSlot(i);
+                    if (!Util.isEmpty(stackScan) && stackScan.getItem() == ItemRegistry.diveComputer) {
+
+                        //for testing
+                        //((ItemDiveComputer)stackScan.getItem()).setDiveTime(stackScan, 60 * 59);
+
+                        diveTime = ((ItemDiveComputer)stackScan.getItem()).getDiveTime(stackScan);
+                        break;
+                    }
+                }
+
+                if (diveTime >= DIVE_TIME_NEEDED) {
+                    if (world.getTotalWorldTime() > lastTradeTime + TRADE_COOLDOWN) {
+                        if (player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.trimix, 1))) {
+                            player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.give"));
+                            lastTradeTime = world.getTotalWorldTime();
+                        } else {
+                            player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.space"));
                         }
 
+                    } else {
+                        player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.cooldown"));
                     }
+                } else {
+                    int timeLeft = (int) (DIVE_TIME_NEEDED - diveTime) / 60;
+                    if (timeLeft == 0) timeLeft = 1;
+                    player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.not_enough_time", timeLeft));
                 }
                 if (doTrade) {
                     // Make the super method think this villager is already trading, to block the GUI from opening
@@ -533,6 +562,8 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("orientation_id", this.getDataManager().get(ORIENTATION));
 
         compound.setInteger("village_id", villageID);
+
+        compound.setLong("lastTradeTime", lastTradeTime);
     }
 
     @Override
@@ -565,6 +596,8 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().set(ROLE, compound.getInteger("role_id"));
         this.getDataManager().set(GENDER, compound.getInteger("gender_id"));
         this.getDataManager().set(ORIENTATION, compound.getInteger("orientation_id"));
+
+        this.lastTradeTime = compound.getLong("lastTradeTime");
 
         updateUniqueEntityAI();
     }

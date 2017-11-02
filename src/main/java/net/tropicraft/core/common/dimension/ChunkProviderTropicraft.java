@@ -22,6 +22,7 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.spawning.TropiWorldEntitySpawner;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenTropicsCaves;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenUndergroundGrove;
@@ -102,7 +103,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
         // generateOres(x,z);
 
-        WorldEntitySpawner.performWorldGenSpawning(worldObj, biome, i + 8, j + 8, 16, 16, rand);
+        TropiWorldEntitySpawner.performWorldGenSpawning(worldObj, biome, i + 8, j + 8, 16, 16, rand);
 
         BlockSand.fallInstantly = false;
     }
