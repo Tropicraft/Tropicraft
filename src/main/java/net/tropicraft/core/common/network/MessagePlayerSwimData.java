@@ -6,6 +6,7 @@ import java.util.UUID;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -38,9 +39,9 @@ public class MessagePlayerSwimData implements IMessage{
 		data.rotationPitch = buf.readFloat();
 		data.prevRotationPitch = buf.readFloat();
 
-		data.targetRotationPitch = buf.readFloat();
-		data.targetRotationYaw = buf.readFloat();
-		data.targetRotationRoll = buf.readFloat();
+		data.targetRotationPitch = MathHelper.wrapDegrees(buf.readFloat());
+		data.targetRotationYaw = MathHelper.wrapDegrees(buf.readFloat());
+		data.targetRotationRoll = MathHelper.wrapDegrees(buf.readFloat());
 		
 		data.currentRotationPitch = buf.readFloat();
 		data.currentRotationYaw = buf.readFloat();
@@ -51,6 +52,9 @@ public class MessagePlayerSwimData implements IMessage{
 
 		data.currentSwimSpeed = buf.readFloat();
 		data.targetSwimSpeed = buf.readFloat();
+		
+		data.currentHeight = buf.readFloat();
+		data.targetHeight = buf.readFloat();
 	}
 
 	@Override
@@ -81,6 +85,8 @@ public class MessagePlayerSwimData implements IMessage{
 		buf.writeFloat(data.currentSwimSpeed);
 		buf.writeFloat(data.targetSwimSpeed);
 
+		buf.writeFloat(data.currentHeight);
+		buf.writeFloat(data.targetHeight);
 
 	}
 
@@ -113,6 +119,9 @@ public class MessagePlayerSwimData implements IMessage{
 
 		public float currentSwimSpeed = 0f;
 		public float targetSwimSpeed = 0f;
+		
+		public float currentHeight = 1.8f;
+		public float targetHeight = 1.8f;
 	}
 	
 	

@@ -11,10 +11,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.tropicraft.core.common.BuildEvents;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.client.gui.TropicraftGuiHandler;
+import net.tropicraft.core.common.BuildEvents;
+import net.tropicraft.core.common.ScubaHandlerCommon;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
 import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
 import net.tropicraft.core.common.capability.ExtendedWorldStorage;
@@ -92,6 +93,8 @@ public class Tropicraft {
 		MinecraftForge.EVENT_BUS.register(new AchievementEvents());
 		MinecraftForge.EVENT_BUS.register(new BuildEvents());
 		MinecraftForge.EVENT_BUS.register(new MiscEvents());
+		MinecraftForge.EVENT_BUS.register(new ScubaHandlerCommon());
+
 		BiomeGenTropicraft.registerBiomes();
 		GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
 		TropicraftWorldUtils.initializeDimension();
