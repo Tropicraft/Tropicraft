@@ -51,7 +51,6 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 		setSize(0.5F, 1.3F);      
 		setMaskType(new Random().nextInt(7));
 		actionPicker = 0;
-		this.enablePersistence();
 	}
 
 	@Override
@@ -128,17 +127,5 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 		}
 
 		return wasHit;
-	}
-
-	/**
-	 * This is required if spawning an IMob based entity in the creature list that is also marked persistant
-	 *
-	 * @param type
-	 * @param forSpawnCount
-	 * @return
-	 */
-	@Override
-	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
-		return type == EnumCreatureType.CREATURE;
 	}
 }

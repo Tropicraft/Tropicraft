@@ -34,7 +34,6 @@ public class EntityFailgull extends EntityFlying {
 		setSize(0.4F, 0.6F);
 		this.experienceValue = 1;
 		this.moveHelper = new EntityFailgull.FailgullMoveHelper(this);
-		this.enablePersistence();
 	}
 
 	@Override
@@ -259,17 +258,5 @@ public class EntityFailgull extends EntityFlying {
 
 			return true;
 		}
-	}
-
-	/**
-	 * This is required if spawning an IMob based entity in the creature list that is also marked persistant
-	 *
-	 * @param type
-	 * @param forSpawnCount
-	 * @return
-	 */
-	@Override
-	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {
-		return type == EnumCreatureType.CREATURE;
 	}
 }
