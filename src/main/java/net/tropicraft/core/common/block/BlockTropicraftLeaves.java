@@ -75,20 +75,12 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, TropicraftLeaves.byMetadata(meta)).withProperty(DECAYABLE, (meta & 4) == 0).withProperty(CHECK_DECAY, (meta & 8) > 0);
+		return this.getDefaultState().withProperty(VARIANT, TropicraftLeaves.byMetadata(meta));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = ((TropicraftLeaves)state.getValue(VARIANT)).getMeta();
-		if (!state.getValue(DECAYABLE)) {
-			i |= 4;
-		}
-
-		if (state.getValue(CHECK_DECAY)) {
-			i |= 8;
-		}
-
 		return i;
 	}
 
