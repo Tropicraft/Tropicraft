@@ -27,6 +27,7 @@ import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
 import net.tropicraft.core.common.event.MiscEvents;
+import net.tropicraft.core.common.event.SpawnEvents;
 import net.tropicraft.core.common.event.ScubaHandlerCommon;
 import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.network.TCPacketHandler;
@@ -93,8 +94,8 @@ public class Tropicraft {
 		MinecraftForge.EVENT_BUS.register(new AchievementEvents());
 		MinecraftForge.EVENT_BUS.register(new BuildEvents());
 		MinecraftForge.EVENT_BUS.register(new MiscEvents());
+		MinecraftForge.EVENT_BUS.register(new SpawnEvents());
 		MinecraftForge.EVENT_BUS.register(new ScubaHandlerCommon());
-
 		BiomeGenTropicraft.registerBiomes();
 		GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
 		TropicraftWorldUtils.initializeDimension();

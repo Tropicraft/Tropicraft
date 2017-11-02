@@ -18,10 +18,10 @@ public class BiomeGenRainforest extends BiomeGenTropicraft {
 		super(props);
 		this.theBiomeDecorator = new BiomeDecoratorRainforest();
 
-        this.spawnableCreatureList.add(new SpawnListEntry(EntityTreeFrogBlue.class, 25, 1, 2));
-        this.spawnableCreatureList.add(new SpawnListEntry(EntityTreeFrogGreen.class, 25, 1, 2));
-        this.spawnableCreatureList.add(new SpawnListEntry(EntityTreeFrogRed.class, 25, 1, 2));
-        this.spawnableCreatureList.add(new SpawnListEntry(EntityTreeFrogYellow.class, 25, 1, 2));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogBlue.class, 25, 1, 2));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogGreen.class, 25, 1, 2));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogRed.class, 25, 1, 2));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogYellow.class, 25, 1, 2));
 	}
 	
 	@Override

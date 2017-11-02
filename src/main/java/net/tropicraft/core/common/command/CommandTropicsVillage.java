@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.command;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.world.Build;
 import net.tropicraft.core.common.build.world.BuildJob;
@@ -17,6 +19,9 @@ import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandTropicsVillage extends CommandBase {
 
@@ -124,6 +129,30 @@ public class CommandTropicsVillage extends CommandBase {
                     commandSender.sendMessage(new TextComponentString("command usage: tc_village schematic_print <filename> <start coords>"));
                     commandSender.sendMessage(new TextComponentString("eg: tc_village schematic_print myfile 5 5 5"));
                 }
+            } else if (args[0].equals("entities")) {
+                HashMap<Class, Integer> lookupCounts = new HashMap<>();
+
+                for (Entity ent : player.world.loadedEntityList) {
+                    if (ent instanceof EntityLivingBase) {
+                        int count = 0;
+                        if (lookupCounts.containsKey(ent.getClass())) {
+                            count = lookupCounts.get(ent.getClass());
+                        }
+                        lookupCounts.put(ent.getClass(), count + 1);
+                    }
+                }
+
+                player.sendMessage(new TextComponentString("Entity counts: "));
+
+                int count = 0;
+
+                for (Map.Entry<Class, Integer> entry : lookupCounts.entrySet()) {
+                    String name = entry.getKey().getSimpleName();
+                    player.sendMessage(new TextComponentString(name + ": " + entry.getValue()));
+                    count += entry.getValue();
+                }
+
+                player.sendMessage(new TextComponentString("total: " + count));
             }
 
                 /* else if (args[0].equals("village_clear")) {
