@@ -77,6 +77,8 @@ public class EntityKoaBase extends EntityVillager {
 
     private boolean wasInWater = false;
 
+    public int hitIndex = 0;
+
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> input instanceof EntityMob || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
 
@@ -312,6 +314,7 @@ public class EntityKoaBase extends EntityVillager {
         findAndSetHomeToCloseChest(false);
         findAndSetFireSource(false);
         findAndSetDrums(false);
+        syncBPM();
 
     }
 
@@ -658,6 +661,19 @@ public class EntityKoaBase extends EntityVillager {
         }
     }
 
+    public void syncBPM() {
+        if ((world.getTotalWorldTime()+this.getEntityId()) % (20) != 0) return;
+
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(10, 5, 10));
+        Collections.shuffle(listEnts);
+        for (EntityKoaBase ent : listEnts) {
+            if (hitIndex != ent.hitIndex) {
+                hitIndex = ent.hitIndex;
+                return;
+            }
+        }
+    }
+
     public void findAndSetDrums(boolean force) {
 
         //this.setHomePosAndDistance(this.getHomePosition(), 128);
@@ -829,6 +845,7 @@ public class EntityKoaBase extends EntityVillager {
 
     @Override
     public void onLivingUpdate() {
+        this.updateArmSwingProgress();
         super.onLivingUpdate();
 
         if (wasInWater) {
