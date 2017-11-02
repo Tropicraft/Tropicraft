@@ -177,10 +177,19 @@ public class ScubaHandler {
 
 		GlStateManager.pushMatrix();
 
+		boolean isSelf = d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID());
 		GlStateManager.translate(0, 1.5f, 0f);
-		GlStateManager.rotate(d.currentRotationYaw, 0f, -1f, 0f);
-		GlStateManager.rotate(d.currentRotationPitch, 1f, 0f, 0f);
-		GlStateManager.rotate(d.currentRotationRoll, 0f, 0f, -1f);
+		if (isSelf) {
+			GlStateManager.rotate(d.currentRotationYaw, 0f, -1f, 0f);
+			GlStateManager.rotate(d.currentRotationPitch, 1f, 0f, 0f);
+			GlStateManager.rotate(d.currentRotationRoll, 0f, 0f, -1f);
+		} else {
+			GlStateManager.translate(event.getX(), event.getY(), event.getZ());
+			GlStateManager.rotate(d.currentRotationYaw, 0f, -1f, 0f);
+			GlStateManager.rotate(d.currentRotationPitch, 1f, 0f, 0f);
+			GlStateManager.rotate(d.currentRotationRoll, 0f, 0f, -1f);
+			GlStateManager.translate(-event.getX(), -event.getY(), -event.getZ());
+		}
 		GlStateManager.translate(0, -1.5f, 0f);
 
 		updateSwimDataAngles(p);

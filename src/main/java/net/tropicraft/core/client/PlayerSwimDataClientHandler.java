@@ -17,6 +17,10 @@ public class PlayerSwimDataClientHandler implements IMessageHandler<MessagePlaye
 		// We received this on the client, update other player position info
 		if(ctx.side.equals(Side.CLIENT)) {
 			PlayerSwimData d = message.data;
+
+			if (!ScubaHandler.rotationMap.containsKey(d.playerUUID)) {
+				ScubaHandler.rotationMap.put(d.playerUUID, new PlayerSwimData(d.playerUUID));
+			}
 			PlayerSwimData localData = ScubaHandler.rotationMap.get(d.playerUUID);
 			
 			if(d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID())) {

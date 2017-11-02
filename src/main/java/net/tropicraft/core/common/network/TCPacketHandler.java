@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.tropicraft.Info;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.PlayerSwimDataClientHandler;
 import net.tropicraft.core.common.block.tileentity.message.MessageMixerInventory;
 import net.tropicraft.core.common.block.tileentity.message.MessageMixerStart;
@@ -29,7 +30,7 @@ public class TCPacketHandler {
 		INSTANCE.registerMessage(MessageSifterStart.Handler.class, MessageSifterStart.class, 3, Side.CLIENT);
 		
 		// Scuba client listener
-		INSTANCE.registerMessage(PlayerSwimDataClientHandler.class, MessagePlayerSwimData.class, 4, Side.CLIENT);
+		Tropicraft.proxy.registerClientPacketScuba();
 		
 		// Scuba server listener
 		INSTANCE.registerMessage(MessagePlayerSwimData.Handler.class, MessagePlayerSwimData.class, 5, Side.SERVER);
