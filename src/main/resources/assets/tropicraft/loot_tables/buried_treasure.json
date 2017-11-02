@@ -44,7 +44,7 @@
                 },
                 {
                     "type": "item",
-                    "name": "tropicraft:shell_frox",
+                    "name": "tropicraft:shell",
                     "functions": [
                         {
                             "function": "set_count",
@@ -52,75 +52,12 @@
                                 "min": 1,
                                 "max": 2
                             }
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell_pab",
-                    "functions": [
+                        },
                         {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell_rube",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell_solo",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell_starfish",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ],
-                    "weight": 10
-                },
-                {
-                    "type": "item",
-                    "name": "tropicraft:shell_turtle",
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0,
+                                "max": 5
                             }
                         }
                     ],

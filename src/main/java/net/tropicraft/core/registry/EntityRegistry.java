@@ -18,6 +18,7 @@ import net.tropicraft.core.common.entity.hostile.EntityTreeFrogYellow;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
+import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
@@ -84,6 +85,7 @@ public class EntityRegistry {
 		registerEntity(EntityRiverSardine.class, "sardine", 80, 2, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityDolphin.class, "dolphin", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityShark.class, "hammerhead", 80, 1, true, SpawnPlacementType.IN_WATER);
+		registerEntity(EntityFishHook.class, "tropifishhook", 80, 1, true);
 	}
 
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,

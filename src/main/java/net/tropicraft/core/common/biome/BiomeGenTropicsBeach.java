@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.biome;
 
-import net.minecraft.init.Blocks;
 import net.tropicraft.core.common.biome.decorators.BiomeDecoratorTropicsBeach;
 import net.tropicraft.core.registry.BlockRegistry;
 

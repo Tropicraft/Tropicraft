@@ -10,6 +10,7 @@ public abstract class EntityLand extends EntityCreature {
     public EntityLand(World world) {
         super(world);
         setSize(.7F, 1.95F);
+        this.enablePersistence();
     }
     
     /**

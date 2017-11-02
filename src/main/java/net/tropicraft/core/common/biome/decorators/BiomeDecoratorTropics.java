@@ -7,7 +7,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkProviderSettings;
 import net.tropicraft.configuration.GenRates;
+import net.tropicraft.core.common.biome.BiomeGenKelpForest;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeGenTropicsBeach;
 import net.tropicraft.core.common.worldgen.WorldGenBamboo;
 import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
 import net.tropicraft.core.common.worldgen.WorldGenEIH;
@@ -104,6 +106,8 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 			BlockPos pos = new BlockPos(i, y, k);
 			(new WorldGenTallFlower(world, rand, BlockRegistry.iris.getDefaultState())).generate(pos);
 		}
+
+		BiomeDecoratorTropicsBeach.decorateForVillage(world, rand, chunkPos);
 
 		//		if(rand.nextInt(TREASURE_CHANCE) == 0) {
 		//			int i = randDecorationCoord(rand, x, 16);

@@ -18,6 +18,8 @@ public class ItemDiveComputer extends ItemMap {
     /** Number of ticks until the next update */
     public int ticksUntilUpdate = UPDATE_RATE;
 
+    private static String tagDiveTime = "DiveTime";
+
     public ItemDiveComputer() {
     }
 
@@ -53,6 +55,8 @@ public class ItemDiveComputer extends ItemMap {
             //                return;
 
             int currentDepth = MathHelper.floor(player.posY);
+
+            addDiveTime(itemstack, 1);
 
             if (helmetStack != null) {
                 if (currentDepth < getTagCompound(helmetStack).getInteger("MaxDepth") || getTagCompound(helmetStack).getInteger("MaxDepth") == 0) {
@@ -94,6 +98,20 @@ public class ItemDiveComputer extends ItemMap {
             stack.setTagCompound(new NBTTagCompound());
 
         return stack.getTagCompound();
+    }
+
+    public long getDiveTime(ItemStack stack) {
+        return getTagCompound(stack).getLong(tagDiveTime);
+    }
+
+    public void setDiveTime(ItemStack stack, long val) {
+        NBTTagCompound nbt = getTagCompound(stack);
+        nbt.setLong(tagDiveTime, val);
+    }
+
+    public void addDiveTime(ItemStack stack, long val) {
+        NBTTagCompound nbt = getTagCompound(stack);
+        nbt.setLong(tagDiveTime, nbt.getLong(tagDiveTime) + val);
     }
 
     /**

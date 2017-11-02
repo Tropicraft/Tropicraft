@@ -21,10 +21,18 @@ public final class Names {
 	public static final String FLOWER_POT = "flower_pot";
 	public static final String BAMBOO_DOOR = "bamboo_door";
 	public static final String BLOCK_PALM_STAIRS = "palm_stairs";
-	
 	public static final String BONGO = "bongo";
-	
     public static final String AIR_COMPRESSOR = "air_compressor";
+    public static final String BAMBOO_FENCE = "bamboo_fence";
+    public static final String BAMBOO_FENCE_GATE = "bamboo_fence_gate";
+    public static final String THATCH_FENCE = "thatch_fence";
+    public static final String THATCH_FENCE_GATE = "thatch_fence_gate";
+    public static final String CHUNK_FENCE = "chunk_fence";
+    public static final String CHUNK_FENCE_GATE = "chunk_fence_gate";
+    public static final String PALM_FENCE = "palm_fence";
+    public static final String PALM_FENCE_GATE = "palm_fence_gate";
+    public static final String MAHOGANY_FENCE = "mahogany_fence";
+    public static final String MAHOGANY_FENCE_GATE = "mahogany_fence_gate";
 
 	// Item names
 	public static final String[] EGG_NAMES = {"iguana", "starfish", "greenfrog", "redfrog", "yellowfrog", "bluefrog",

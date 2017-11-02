@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -118,11 +119,22 @@ public class Util {
     }
 
     public static boolean isDeepWater(World world, BlockPos pos) {
-        return world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
+        boolean deep = world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
+        boolean notUnderground = false;
+        if (deep) {
+            int height = world.getPrecipitationHeight(pos).getY() - 1;
+            notUnderground = height == pos.getY();
+        }
+
+        return deep && notUnderground;
     }
 
     public static boolean isLand(World world, BlockPos pos) {
         return world.getBlockState(pos).isSideSolid(world, pos, EnumFacing.UP);
+    }
+
+    public static boolean isFire(World world, BlockPos pos) {
+        return world.getBlockState(pos).getMaterial() == Material.FIRE;
     }
 
     public static boolean tryMoveToEntityLivingLongDist(EntityLiving entSource, Entity entityTo, double moveSpeedAmp) {
@@ -194,13 +206,13 @@ public class Util {
                 Block block = world.getBlockState(pos).getBlock();
                 int tries = 0;
                 if (!world.isAirBlock(pos)) {
-                    int offset = -5;
+                    //int offset = -5;
 
                     while (tries < 30) {
-                        if (world.isAirBlock(pos) || !block.isSideSolid(block.getDefaultState(), world, new BlockPos(gatherX, gatherY, gatherZ), EnumFacing.UP)) {
+                        if (world.isAirBlock(pos) && world.isAirBlock(pos.up())/* || !block.isSideSolid(block.getDefaultState(), world, new BlockPos(gatherX, gatherY, gatherZ), EnumFacing.UP)*/) {
                             break;
                         }
-                        gatherY += offset++;
+                        gatherY += 1;//offset++;
                         pos = new BlockPos(gatherX, gatherY, gatherZ);
                         block = world.getBlockState(pos).getBlock();
                         tries++;
@@ -208,7 +220,7 @@ public class Util {
                 } else {
                     //int offset = 0;
                     while (tries < 30) {
-                        if (!world.isAirBlock(pos) && block.isSideSolid(block.getDefaultState(), world, new BlockPos(gatherX, gatherY, gatherZ), EnumFacing.UP)) {
+                        if (!world.isAirBlock(pos) && (block.isSideSolid(block.getDefaultState(), world, new BlockPos(gatherX, gatherY, gatherZ), EnumFacing.UP) || world.getBlockState(pos).getMaterial() == Material.WATER)) {
                             break;
                         }
                         gatherY -= 1;//offset++;
@@ -219,6 +231,9 @@ public class Util {
                 }
 
                 if (tries < 30) {
+                    /*if (world.getBlockState(pos).getMaterial() == Material.WATER) {
+                        gatherY--;
+                    }*/
                     success = ent.getNavigator().tryMoveToXYZ(gatherX, gatherY, gatherZ, moveSpeedAmp);
                     //System.out.println("pp success? " + success + "- move to player: " + ent + " -> " + player);
                 }
@@ -238,6 +253,16 @@ public class Util {
 
         return false;
 
+    }
+
+    /**
+     * Future proofing for 1.12
+     *
+     * @param stack
+     * @return
+     */
+    public static boolean isEmpty(ItemStack stack) {
+        return stack == null;
     }
 
 }

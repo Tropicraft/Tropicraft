@@ -200,7 +200,9 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowRegulator;
     public static Item yellowBCD;
     public static Item yellowWeightBelt;
-    
+
+    public static Item trimix;
+
     // Linked as to maintain the same order as the block registry
     private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new LinkedHashMap<>();
 
@@ -328,6 +330,8 @@ public class ItemRegistry extends TropicraftRegistry {
         
         iguanaLeather = registerItem(new ItemTropicraft().setMaxStackSize(64), "iguana_leather");
         OreDictionary.registerOre("leather", iguanaLeather);
+
+        trimix = registerItem(new ItemTropicraft().setMaxStackSize(1), "trimix");
     }
 
     public static void init() {

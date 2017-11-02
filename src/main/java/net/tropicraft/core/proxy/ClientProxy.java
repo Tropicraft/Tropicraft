@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -62,6 +63,11 @@ public class ClientProxy extends CommonProxy {
 	public void preInit() {
 		super.preInit();
 		ignoreProperties(BlockRegistry.coral, BlockFluidBase.LEVEL);
+		ignoreProperties(BlockRegistry.bambooFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.chunkFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.mahoganyFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.palmFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.thatchFenceGate, BlockFenceGate.POWERED);
 	}
 
 	@Override
