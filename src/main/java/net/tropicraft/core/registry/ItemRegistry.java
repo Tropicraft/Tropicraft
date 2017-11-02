@@ -39,6 +39,7 @@ import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
 import net.tropicraft.core.common.item.ItemFishBucket;
+import net.tropicraft.core.common.item.ItemFishingRod;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
@@ -202,6 +203,8 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowWeightBelt;
 
     public static Item trimix;
+    
+    public static Item fishingRod;
 
     // Linked as to maintain the same order as the block registry
     private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new LinkedHashMap<>();
@@ -332,6 +335,8 @@ public class ItemRegistry extends TropicraftRegistry {
         OreDictionary.registerOre("leather", iguanaLeather);
 
         trimix = registerItem(new ItemTropicraft().setMaxStackSize(1), "trimix");
+        
+        fishingRod = registerItem(new ItemFishingRod(), "fishing_rod");
     }
 
     public static void init() {

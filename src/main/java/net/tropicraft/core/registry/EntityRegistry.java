@@ -36,6 +36,7 @@ import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityTurtleEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityHook;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityRiverSardine;
@@ -86,6 +87,8 @@ public class EntityRegistry {
 		registerEntity(EntityDolphin.class, "dolphin", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityShark.class, "hammerhead", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityFishHook.class, "tropifishhook", 80, 1, true);
+		registerEntity(EntityHook.class, "tropihook", 80, 1, true);
+
 	}
 
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,

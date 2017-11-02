@@ -31,6 +31,7 @@ import net.tropicraft.core.client.entity.render.RenderIguana;
 import net.tropicraft.core.client.entity.render.RenderKoaMan;
 import net.tropicraft.core.client.entity.render.RenderLavaBall;
 import net.tropicraft.core.client.entity.render.RenderLostMask;
+import net.tropicraft.core.client.entity.render.RenderLure;
 import net.tropicraft.core.client.entity.render.RenderManOWar;
 import net.tropicraft.core.client.entity.render.RenderMarlin;
 import net.tropicraft.core.client.entity.render.RenderSeaTurtle;
@@ -72,6 +73,7 @@ import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityTurtleEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityHook;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityRiverSardine;
@@ -131,6 +133,8 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityDolphin.class, new RenderDolphin(new ModelDolphin(), 0.25F));
         registerEntityRender(EntityShark.class, new RenderShark(new ModelHammerheadShark(), 0.25F));
         registerEntityRender(EntityFishHook.class, new RenderFishingLure(Minecraft.getMinecraft().getRenderManager()));
+        registerEntityRender(EntityHook.class, new RenderLure(Minecraft.getMinecraft().getRenderManager()));
+
     }
     
     public static ModelScubaGear getScubaModel(EntityEquipmentSlot slot) {
