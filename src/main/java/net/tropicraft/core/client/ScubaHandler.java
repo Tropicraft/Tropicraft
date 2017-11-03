@@ -1,7 +1,6 @@
 package net.tropicraft.core.client;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,7 +28,6 @@ public class ScubaHandler {
 	public static final float SWIM_SPEED_ROTATE_YAW = 2f;
 	public static final float SWIM_SPEED_ROTATE_PITCH = 1f;
 	public static final float SWIM_SPEED_ROTATE_ROLL = 0.5f;
-	public static HashMap<UUID, PlayerSwimData> rotationMap = new HashMap<UUID, PlayerSwimData>();
 	private HashMap<Item, Float> flipperSpeedMap = new HashMap<Item, Float>();
 	
 	public ScubaHandler() {
@@ -42,7 +40,7 @@ public class ScubaHandler {
 		if (event.getEntity().equals(Minecraft.getMinecraft().player)) {
 			if (Minecraft.getMinecraft().player != null && !Minecraft.getMinecraft().player.isDead) {
 				EntityPlayer p = Minecraft.getMinecraft().player;
-				PlayerSwimData d = getData(p);
+				PlayerSwimData d = ScubaHandlerCommon.getData(p);
 				event.setRoll(-d.currentRotationRoll * 0.25f);
 			}
 		}
@@ -72,7 +70,7 @@ public class ScubaHandler {
 		
 		EntityPlayer p = event.player;
 		
-		PlayerSwimData d = getData(p);
+		PlayerSwimData d = ScubaHandlerCommon.getData(p);
 
 		double above = 1.5D;
 		if(d.currentRotationPitch != 0) {
@@ -142,7 +140,7 @@ public class ScubaHandler {
 			d.targetSwimSpeed = 0f;
 			p.setNoGravity(false);
 		}
-		TCPacketHandler.sendToServer(new MessagePlayerSwimData(getData(p)));
+		TCPacketHandler.sendToServer(new MessagePlayerSwimData(ScubaHandlerCommon.getData(p)));
 	}
 	
 	private boolean inGUI = false;
@@ -165,7 +163,7 @@ public class ScubaHandler {
 	    
 	
 		EntityPlayer p = event.getEntityPlayer();
-		PlayerSwimData d = getData(p);
+		PlayerSwimData d = ScubaHandlerCommon.getData(p);
 
 		if(p.isElytraFlying()) {
 			return;
@@ -222,7 +220,7 @@ public class ScubaHandler {
 		boolean inLiquid = ScubaHandlerCommon.isInWater(p) && ScubaHandlerCommon.isInWater(p, 0, 0.4D, 0);
 
 		if (!inLiquid) {
-			if (getData(p).currentRotationPitch == 0f && getData(p).currentRotationRoll == 0f) {
+			if (ScubaHandlerCommon.getData(p).currentRotationPitch == 0f && ScubaHandlerCommon.getData(p).currentRotationRoll == 0f) {
 				return;
 			}
 		}
@@ -251,7 +249,7 @@ public class ScubaHandler {
 	}
 
 	public void updateSwimRenderAngles(EntityPlayer p) {
-		PlayerSwimData d = getData(p);
+		PlayerSwimData d = ScubaHandlerCommon.getData(p);
 		float ps = SWIM_SPEED_ROTATE_PITCH;
 		float ys = SWIM_SPEED_ROTATE_YAW;
 		float rs = SWIM_SPEED_ROTATE_ROLL;
@@ -359,7 +357,7 @@ public class ScubaHandler {
 	}
 
 	public void updateSwimDataAngles(EntityPlayer p) {
-		PlayerSwimData d = getData(p);
+		PlayerSwimData d = ScubaHandlerCommon.getData(p);
 
 		d.rotationYawHead = p.rotationYawHead;
 		d.prevRotationYawHead = p.prevRotationYawHead;
@@ -373,7 +371,7 @@ public class ScubaHandler {
 	}
 
 	public void clearPlayerRenderAngles(EntityPlayer p) {
-		PlayerSwimData d = getData(p);
+		PlayerSwimData d = ScubaHandlerCommon.getData(p);
 
 		p.rotationYawHead = 0f;
 		p.prevRotationYawHead = 0f;
@@ -386,7 +384,7 @@ public class ScubaHandler {
 	}
 
 	public void restorePlayerRenderAngles(EntityPlayer p) {
-		PlayerSwimData d = getData(p);
+		PlayerSwimData d = ScubaHandlerCommon.getData(p);
 
 		p.rotationYawHead = d.rotationYawHead;
 		p.prevRotationYawHead = d.prevRotationYawHead;
@@ -397,13 +395,5 @@ public class ScubaHandler {
 		p.prevRenderYawOffset = d.prevRenderYawOffset;
 		p.rotationPitch = d.rotationPitch;
 		p.prevRotationPitch = d.prevRotationPitch;
-	}
-	
-	
-	public static PlayerSwimData getData(EntityPlayer p) {
-		if (!rotationMap.containsKey(p.getUniqueID())) {
-			rotationMap.put(p.getUniqueID(), new PlayerSwimData(p.getUniqueID()));
-		}
-		return rotationMap.get(p.getUniqueID());
 	}
 }
