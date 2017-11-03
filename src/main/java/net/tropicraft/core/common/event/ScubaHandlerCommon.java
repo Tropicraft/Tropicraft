@@ -1,5 +1,8 @@
 package net.tropicraft.core.common.event;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
@@ -15,6 +18,8 @@ import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
 
 public class ScubaHandlerCommon {
 	
+	public static HashMap<UUID, PlayerSwimData> rotationMap = new HashMap<UUID, PlayerSwimData>();
+
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event) {
 		if(event.getEntity() instanceof EntityPlayer) {
@@ -31,7 +36,7 @@ public class ScubaHandlerCommon {
 			return;
 		EntityPlayer p = event.player;
 		
-		PlayerSwimData d = ScubaHandler.getData(p);
+		PlayerSwimData d = getData(p);
 		
 		boolean inLiquid = isInWater(p);
 
@@ -132,5 +137,13 @@ public class ScubaHandlerCommon {
 	
 	public static boolean isInWater(EntityPlayer p) {
 		return isInWater(p, 0, 0, 0);
+	}
+	
+	
+	public static PlayerSwimData getData(EntityPlayer p) {
+		if (!rotationMap.containsKey(p.getUniqueID())) {
+			rotationMap.put(p.getUniqueID(), new PlayerSwimData(p.getUniqueID()));
+		}
+		return rotationMap.get(p.getUniqueID());
 	}
 }
