@@ -55,7 +55,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	private float swimDecelRate = 0.02f;
 	
 	private float swimSpeedDefault = 1f;
-	private float swimSpeedCurrent = 0f;
+	protected float swimSpeedCurrent = 0f;
 	private float swimSpeedPanic = 2f;
 	
 	private float swimSpeedTurn = 5f;

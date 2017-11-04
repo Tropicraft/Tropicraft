@@ -54,9 +54,12 @@ public class ModelTurtleEgg extends ModelBase {
         hatching = ((EntityTurtleEgg) entityliving).hatchingTime;
         randRotator = ((EntityTurtleEgg) entityliving).rotationRand;
         if (hatching > 0) {
-            Piece1.rotateAngleY = (float) (Math.sin(hatching / 5D))*f;
-            Piece1.rotateAngleX = (float) ((Math.sin(randRotator)))*f;
-            Piece1.rotateAngleZ = (float) ((Math.sin(randRotator * .2)))*f;
+            Piece1.rotateAngleY = 0F;
+
+            Piece1.rotateAngleY = (float) (Math.sin(hatching*.4))*.2f;
+            Piece1.rotateAngleX = (float) ((Math.sin(randRotator*2)))*.2f;
+            Piece1.rotateAngleZ = (float) ((Math.cos(randRotator * 2)))*.2f;
+          //  Piece1.rotateAngleZ = 0;
 
         } else {
             hatching = 0;

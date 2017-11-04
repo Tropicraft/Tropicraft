@@ -5,25 +5,33 @@ import java.util.ArrayList;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.IAmphibian;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphibian {
+
+	private static final long EGG_SITE_WAIT_TIME = 500L;
+	private static final long EGG_INTERVAL_MINIMUM = 200L;
+	private static final int NEST_SITE_SEARCH_ODDS = 1000;
+	private static final int MAX_BLOCK_SCAN_RADIUS = 64;
+
+	private static final DataParameter<Boolean> IS_MATURE = EntityDataManager.<Boolean>createKey(EntitySeaTurtle.class,
+			DataSerializers.BOOLEAN);
+
 
 	public boolean isSeekingLand = false;
 	public BlockPos currentNestSite = null;
@@ -31,6 +39,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	public boolean isLandPathing = false;
 	public boolean isSeekingWater = false;
 	public long timeSinceLastEgg = 0L;
+	public long eggSiteCooldown = EGG_SITE_WAIT_TIME;
 	public PathNavigateGround png;
 
 	public EntitySeaTurtle(World par1World) {
@@ -39,194 +48,194 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		this.setSwimSpeeds(1f, 1f, 1f);
 		this.setApproachesPlayers(true);
 		png = new PathNavigateGround(this, par1World);
+		this.stepHeight = 1f;
 	}
 
+	/** Constructor for baby */
 	public EntitySeaTurtle(World world, int age) {
-		super(world);
-		setSize(0.3f, 0.3f);
-		png = new PathNavigateGround(this, world);
+		this(world);
+		setSize(0.1f, 0.1f);
 	}
 
 	@Override
-	public boolean isNotColliding() {
-		return true;
-	}
+	public void entityInit() {
+		super.entityInit();
 
-	@Nullable
-	public AxisAlignedBB getCollisionBox(Entity entityIn) {
-		if (entityIn instanceof EntityPlayer) {
-	//		entityIn.setPositionAndRotation(posX, posY+0.3f, posZ, rotationYaw, rotationPitch);
-			entityIn.move(this.motionX, this.motionY, this.motionZ);
-		}
-		return this.getEntityBoundingBox();
-	}
-
-	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox() {
-		return this.getEntityBoundingBox();
-	}
-
-	@Override
-	public void applyEntityCollision(Entity entityIn) {
-		//System.out.println(entityIn);
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return true;
-	}
-
-	@Override
-	public boolean canBePushed() {
-		return false;
-	}
-
-	@Override
-	public double getMountedYOffset() {
-		return (double) height * 0.75D - 1F + 0.7F;
+		this.getDataManager().register(IS_MATURE, false);
+		this.assignRandomTexture();
 	}
 
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		this.stepHeight = 1f;
-		this.onGroundSpeedFactor = 10f;
-		if (world.isRemote) {
-			// super.onLivingUpdate();
-
+		this.setAir(30);
+		if (this.getNavigator() == null) {
 			return;
 		}
-		timeSinceLastEgg++;
 
-		if (this.timeSinceLastEgg > 2000L && !isSeekingLand) {
-			this.isSeekingLand = true;
-			System.out.println("Now looking for some land");
+		float renderSize = 0.3f + (((float) ticksExisted / 2000));
+		if (renderSize > 1f)
+			renderSize = 1f;
+		if (this.ticksExisted % 40 == 1) {
+			setSize(renderSize, renderSize * 0.5f);
 		}
+
+		if (this.isMature()) {
+			renderSize = 1f;
+		}
+
+		if (world.isRemote) {
+			return;
+		}
+
+		if (renderSize >= 1f) {
+			setMature();
+			timeSinceLastEgg++;
+		}
+
+		if (this.timeSinceLastEgg > EGG_INTERVAL_MINIMUM && !isSeekingLand
+				&& rand.nextInt(NEST_SITE_SEARCH_ODDS) == 0 && world.getWorldTime() > 13000L && world.getWorldTime() < 23000L) {
+			this.isSeekingLand = true;
+			log("Seeking Land");
+		}
+
 		if (this.onGround && !this.isInWater() && !this.isLandPathing) {
 			this.isLandPathing = true;
 			this.isSeekingWater = true;
 		}
-		this.setAir(30);
 
-		if (this.isSeekingWater) {
-			if (this.targetWaterSite == null) {
-				this.targetWaterSite = this.scanForWater();
-				System.out.println("Looking for water!");
-			} else {
-				// this.setTargetHeading(this.targetWaterSite.getX(),
-				// this.targetWaterSite.getY()+5, this.targetWaterSite.getZ(), false);
-				// if(this.getNavigator() != null)
-				// System.out.println("Moving to water!");
-				this.isLandPathing = true;
-				this.setNoAI(false);
-				this.setPathPriority(PathNodeType.WATER, 1f);
-				this.getMoveHelper().setMoveTo(this.targetWaterSite.getX(), this.targetWaterSite.getY(),
-						this.targetWaterSite.getZ(), 0.1f);
-				this.moveEntityWithHeading(1f, -1f);
-				this.getMoveHelper().onUpdateMoveHelper();
-				this.setMoveForward(.2f);
-				// this.rotationYawHead = this.rotationYaw;
-				// this.getMoveHelper().strafe(0.2f, 0f);
-				if (this.isInWater()) {
-					// this.isLandPathing = false;
-					// this.isSeekingWater = false;
-				}
-			}
-		}
 		if (this.isSeekingLand) {
 			if (this.currentNestSite == null) {
-				if (rand.nextInt(200) == 0) {
+				if (rand.nextInt(NEST_SITE_SEARCH_ODDS) == 0) {
 					this.currentNestSite = this.scanSuitableNests();
+
+					if (this.currentNestSite != null) {
+						log("Found suitable nest site.");
+					} else {
+						this.setRandomTargetHeading();
+					}
 				}
 			} else {
 				if (this.isInWater()) {
 					this.setNoGravity(true);
 					this.setNoAI(true);
 					this.isLandPathing = false;
-					// System.out.println("Suitable nest located! "+this.moveForward);
 					this.setTargetHeading(this.currentNestSite.getX(), this.currentNestSite.getY() + 13,
 							this.currentNestSite.getZ(), false);
 					BlockPos above = this.getPosition().up(1);
 					Vec3d angle = this.getHeading();
-					double frontDist = 0.5f;
+					double frontDist = 1.2f;
 
-					Vec3d diff = new Vec3d(posX + (angle.xCoord * frontDist), posY + angle.yCoord,
-							posZ + (angle.zCoord * frontDist));
+					Vec3d diff = new Vec3d(posX + (angle.xCoord * frontDist), posY, posZ + (angle.zCoord * frontDist));
 
-					BlockPos ahead = new BlockPos((int) diff.xCoord, (int) posY-1, (int) diff.zCoord);
+					BlockPos ahead = new BlockPos((int) diff.xCoord, (int) posY - 1, (int) diff.zCoord);
 
 					if (!world.getBlockState(above).getMaterial().isLiquid()
 							&& world.getBlockState(ahead).getMaterial().isSolid()) {
-						if(!this.isInWater()) {
-						// this.motionY -= 0.1f;
-						}else {
-							//this.jump();
-							//this.motionY += 1f;
-						}
-						
-						//this.move(0, 1, 0);
-						//this.setPosition(posX, posY+1, posZ);
-					//	 this.getMoveHelper().strafe(1f, 0f);
-					//	 this.getMoveHelper().onUpdateMoveHelper();
-						//System.out.println("oy");
-						//this.jumpHelper.doJump();
-						// this.setMoveForward(-1f);
+					//	this.swimPitch = 15f;
+						this.motionY += 0.2f;
+						this.swimSpeedCurrent = 2f;
+						log("Climbing up");
 					}
 				} else {
 					this.isLandPathing = true;
-
 					this.setNoGravity(false);
 					this.setNoAI(false);
+					if (this.getDistanceSq(this.currentNestSite.up(1)) > 3D) {
+						if (this.ticksExisted % 10 == 0) {
+							log("Trying to path to nest site");
+							Util.tryMoveToXYZLongDist(this, this.currentNestSite.getX(),
+									this.currentNestSite.getY(), this.currentNestSite.getZ(), 0.2f);
+							if (this.getNavigator().noPath()) {
+								log("Gave up, was "+this.getDistanceSq(this.currentNestSite)+" away");
+								this.currentNestSite = null;
+								this.isSeekingWater = true;
+								this.isLandPathing = true;
+								this.timeSinceLastEgg = 0L;
+								this.isSeekingLand = false;
+								this.eggSiteCooldown = EGG_SITE_WAIT_TIME;
 
-					if (this.getNavigator().noPath()) {
-						// this.motionX = 0f;
-						// this.motionZ = 0f;
-					}
+							}
+						}
 
-					// this.moveForward = 0.5f;
-					// this.setAIMoveSpeed(1f);
-					// this.onGround = true;
-					// System.out.println("Pathing?");
-					if (this.getDistanceSq(this.currentNestSite) > 1.2D) {
-						// this.setTargetHeading(this.currentNestSite.getX(),
-						// this.currentNestSite.getY(), this.currentNestSite.getZ(), false);
-
-						this.getMoveHelper().setMoveTo(this.currentNestSite.getX(), this.currentNestSite.getY(),
-								this.currentNestSite.getZ(), 0.1f);
-						/*
-						 * if(this.timeSinceLastEgg > 10000D) {
-						 * System.out.println("Missed chance to egg");
-						 * this.getNavigator().clearPathEntity(); this.currentNestSite = null;
-						 * this.isSeekingWater = true; this.isLandPathing = true; this.timeSinceLastEgg
-						 * = 0L; this.isSeekingLand = false;
-						 * 
-						 * super.onLivingUpdate(); return; }
-						 */
-					//	motionX = 0.1f * Math.sin(this.rotationYaw * (Math.PI / 180.0));
-					//	motionZ = 0.1f * Math.cos(this.rotationYaw * (Math.PI / 180.0));
-					
-						this.getMoveHelper().onUpdateMoveHelper();
-						// this.getNavigator().tryMoveToXYZ(this.currentNestSite.getX(),
-						// this.currentNestSite.getY(), this.currentNestSite.getZ(), 1f);
 					} else {
-						this.getNavigator().clearPathEntity();
-						EntityTurtleEgg egg = new EntityTurtleEgg(this.world);
-						egg.setPosition(this.currentNestSite.getX() + 0.5f, this.currentNestSite.getY() + 1,
-								this.currentNestSite.getZ() + 0.5f);
-						world.spawnEntity(egg);
-						this.motionX = 0;
-						this.motionZ = 0;
-						this.currentNestSite = null;
-						this.isSeekingWater = true;
-						this.isLandPathing = true;
-						this.timeSinceLastEgg = 0L;
-						this.isSeekingLand = false;
+						// this.getNavigator().clearPathEntity();
+						if (this.eggSiteCooldown == EGG_SITE_WAIT_TIME)
+							log("Close enough to nest, waiting " + EGG_SITE_WAIT_TIME + " ticks to lay egg");
+
+						this.eggSiteCooldown--;
+
+						if (this.eggSiteCooldown <= 0) {
+							log("egg laid!");
+
+							EntityTurtleEgg egg = new EntityTurtleEgg(this.world);
+							egg.setPosition(this.currentNestSite.getX() + 0.5f, this.currentNestSite.getY() + 1,
+									this.currentNestSite.getZ() + 0.5f);
+							world.spawnEntity(egg);
+							this.motionX = 0;
+							this.motionZ = 0;
+							this.currentNestSite = null;
+							this.isSeekingWater = true;
+							this.isLandPathing = true;
+							this.timeSinceLastEgg = 0L;
+							this.isSeekingLand = false;
+							this.eggSiteCooldown = EGG_SITE_WAIT_TIME;
+						}
 
 					}
 
 				}
+
+				if (this.currentNestSite == null) {
+					this.setRandomTargetHeadingForce(30);
+				}
 			}
 		}
+
+		if (this.isSeekingWater) {
+			if (this.targetWaterSite == null) {
+				if (this.ticksExisted % 20 == 0) {
+					this.targetWaterSite = this.scanForWater();
+					log("Seeking water!");
+					if (this.targetWaterSite == null) {
+						log("No luck finding water :(");
+					}
+				}
+
+			} else {
+				this.isLandPathing = true;
+				this.setNoAI(false);
+
+				if (this.ticksExisted % 20 == 0) {
+					this.setPathPriority(PathNodeType.WATER, 10f);
+					this.setPathPriority(PathNodeType.BLOCKED, -1f);
+					this.setPathPriority(PathNodeType.WALKABLE, 10f);
+
+					log("Moving to water!");
+					Util.tryMoveToXYZLongDist(this, targetWaterSite, 0.2f);
+
+					if (this.getNavigator().noPath() || rand.nextInt(60) == 0) {
+						this.targetWaterSite = this.scanForWater();
+
+					}
+				}
+				if (this.isInWater()) {
+					this.setRandomTargetHeadingForce(10);
+					this.swimYaw = -this.getRotationYawHead();
+					this.swimPitch = -15f;
+					this.isLandPathing = false;
+					this.isSeekingWater = false;
+				}
+			}
+		}
+
+		this.getNavigator().updatePath();
+		this.getNavigator().onUpdateNavigation();
+		if (!this.isInWater()) {
+			this.swimYaw = this.rotationYaw;
+			this.prevSwimYaw = this.prevRotationYaw;
+		}
+		this.syncSwimAngles();
 
 	}
 
@@ -237,7 +246,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	public BlockPos scanSuitableNests() {
 		ArrayList<BlockPos> potentials = new ArrayList<BlockPos>();
-		int scanSize = 16;
+		int scanSize = MAX_BLOCK_SCAN_RADIUS;
 		for (int x = 0; x < scanSize; x++) {
 			for (int y = 0; y < scanSize; y++) {
 
@@ -257,14 +266,17 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 			}
 		}
 		if (potentials.size() > 0) {
+			log("Completed a scan for blocks with results");
 			return potentials.get(rand.nextInt(potentials.size()));
 		}
+		log("Completed a scan for blocks without results");
+
 		return null;
 	}
 
 	public BlockPos scanForWater() {
 		ArrayList<BlockPos> potentials = new ArrayList<BlockPos>();
-		int scanSize = 16;
+		int scanSize = MAX_BLOCK_SCAN_RADIUS;
 		for (int x = 0; x < scanSize; x++) {
 			for (int y = 0; y < scanSize; y++) {
 				for (int z = 0; z < scanSize; z++) {
@@ -283,8 +295,24 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 			}
 		}
 		if (potentials.size() > 0) {
+			log("Completed a scan for waterblocks with results");
+
+			double closest = -1;
+			BlockPos closestBlock = null;
+			for (BlockPos b : potentials) {
+				if (this.getDistanceSq(b) < closest || closest == -1) {
+					if (rand.nextInt(5) == 0) {
+						closestBlock = b;
+					}
+				}
+			}
+			if (closestBlock != null) {
+				return closestBlock;
+			}
 			return potentials.get(rand.nextInt(potentials.size()));
 		}
+		log("Completed a scan for waterblocks without results");
+
 		return null;
 	}
 
@@ -302,6 +330,66 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		return super.setTargetHeading(posX, posY, posZ, waterChecks);
 	}
 
+	public boolean isMature() {
+		return this.getDataManager().get(IS_MATURE);
+	}
+
+	public void setMature() {
+		if (!isMature()) {
+			this.getDataManager().set(IS_MATURE, true);
+		}
+	}
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound n) {
+		n.setBoolean("isMature", isMature());
+		super.writeEntityToNBT(n);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound n) {
+		if (n.getBoolean("isMature")) {
+			setMature();
+		}
+		super.readEntityFromNBT(n);
+	}
+
+	@Override
+	public boolean isNotColliding() {
+		return true;
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBox(Entity entityIn) {
+
+		return this.getEntityBoundingBox();
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox() {
+		return null;
+	}
+
+	@Override
+	public void applyEntityCollision(Entity entityIn) {
+		// log(entityIn);
+	}
+
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
+	@Override
+	public boolean canBePushed() {
+		return false;
+	}
+
+	@Override
+	public double getMountedYOffset() {
+		return (double) height * 0.75D - 1F + 0.7F;
+	}
+
 	@Override
 	public boolean isOnLadder() {
 		return this.isSeekingLand && this.isInWater();
@@ -309,7 +397,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	@Override
 	public boolean isAIDisabled() {
-		return this.isLandPathing;
+		return !this.isLandPathing;
 	}
 
 	@Override
@@ -318,6 +406,10 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 			return png;
 		}
 		return super.getNavigator();
+	}
+
+	private void log(String s) {
+		 System.out.println(s);
 	}
 
 }

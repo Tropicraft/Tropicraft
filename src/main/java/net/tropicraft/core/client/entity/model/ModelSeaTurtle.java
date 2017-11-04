@@ -3,9 +3,7 @@ package net.tropicraft.core.client.entity.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
-import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
 
 public class ModelSeaTurtle extends ModelBase {
 
@@ -84,32 +82,39 @@ public class ModelSeaTurtle extends ModelBase {
     	
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-
-        float swimSpeed = 0.05f;
-        float swimDist = 0.5f;
         
-        if(entity.isInWater()) {
-	        FLFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
-	        FRFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
-	        RLFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
-	        RRFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
-	        
-	           Head.rotateAngleX = 0;
-	           Head.rotateAngleY = 0;
-	        
-        }else {
-        		if(entity instanceof EntitySeaTurtle) {
-        			EntitySeaTurtle trtl = (EntitySeaTurtle) entity;
-        				
-        				swimSpeed = 0.1f;
-        		}
-        		FLFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
- 	        FRFlipper.rotateAngleY = (float)Math.cos(f2*swimSpeed)*swimDist;
- 	        RLFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
- 	        RRFlipper.rotateAngleY = (float)-Math.cos(f2*swimSpeed)*swimDist;
- 	                
- 	           Head.rotateAngleX = 0;
- 	           Head.rotateAngleY = 0;
+        float defFront = 0.3927F;
+        float defFront2 = 0.3F;
+        float defRear = .5F;
+        f1 *=2f;
+        f *= 1.5f;
+        if (!entity.isInWater()) {
+            Body.rotateAngleX = -Math.abs(MathHelper.sin(f * 0.25F) * 1.25F * f1) - .10F;
+         //   Body.rotateAngleX = 0;
+
+            FRFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 + defFront;
+            FRFlipper.rotateAngleX = -defFront2;
+            FRFlipper.rotateAngleZ = MathHelper.cos(f * 0.50F) * 1.25F * f1 - defFront2;
+            FLFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 - defFront;
+            FLFlipper.rotateAngleZ = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defFront2;
+            FRFlipper.rotateAngleX = defFront2;
+            RRFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 - defRear;
+            RLFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defRear;
+            RRFlipper.rotateAngleZ = 0F;
+            RLFlipper.rotateAngleZ = 0F;
+        
+        } else if (entity.isInWater()) {
+            Body.rotateAngleX = 0F; //Y foward backward
+            FRFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 + defFront;
+            FRFlipper.rotateAngleX = -defFront2;
+            FRFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.75F * f1 - defFront2;
+            FLFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 - defFront;
+            FLFlipper.rotateAngleZ = MathHelper.cos(f * 1.25F) * 1.75F * f1 + defFront2;
+            FRFlipper.rotateAngleX = defFront2;
+            RRFlipper.rotateAngleY = -MathHelper.cos(f * 0.25F) * .25F * f1 - defRear;
+            RLFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * .25F * f1 + defRear;
+            RRFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
+            RLFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
         }
 
         Body.render(f5);
