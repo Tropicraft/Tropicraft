@@ -117,11 +117,11 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
-		boolean wasHit = super.attackEntityFrom(p_70097_1_, p_70097_2_);
+	public boolean attackEntityFrom(DamageSource source, float amt) {
+		boolean wasHit = super.attackEntityFrom(source, amt);
 
 		if (!world.isRemote) {
-			if (hasMask() && wasHit) {
+			if (hasMask() && wasHit && !source.equals(DamageSource.outOfWorld)) {
 				dropMask();
 			}
 		}

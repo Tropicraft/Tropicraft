@@ -13,6 +13,7 @@ public class RenderIguana extends RenderLiving<EntityIguana> {
 
     public RenderIguana() {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelIguana(), 0.5F);
+        this.shadowOpaque = 0.5f;
     }
 
 	@Override
