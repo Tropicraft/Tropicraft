@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+import net.tropicraft.core.common.event.ScubaHandlerCommon;
 
 public class MessagePlayerSwimData implements IMessage{
 	
@@ -130,7 +131,36 @@ public class MessagePlayerSwimData implements IMessage{
 		public IMessage onMessage(MessagePlayerSwimData message, MessageContext ctx) {
 			// We received this on the server, send to all other players
 			if(ctx.side.equals(Side.SERVER)) {
+			
 				EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+				if (!ScubaHandlerCommon.rotationMap.containsKey(player.getUniqueID())) {
+					ScubaHandlerCommon.rotationMap.put(player.getUniqueID(), message.data);
+				}else {
+					
+					// Update out server-side instance
+					PlayerSwimData localData = ScubaHandlerCommon.rotationMap.get(player.getUniqueID());
+					PlayerSwimData d = message.data;
+					
+					localData.rotationYawHead = d.rotationYawHead;
+					localData.prevRotationYawHead = d.prevRotationYawHead;
+					localData.rotationYaw = d.rotationYaw;
+					localData.prevRotationYaw = d.prevRotationYaw;
+					localData.renderYawOffset = d.renderYawOffset;
+					localData.prevRenderYawOffset = d.prevRenderYawOffset;
+					localData.rotationPitch = d.rotationPitch;
+					localData.prevRotationPitch = d.prevRotationPitch;
+
+					localData.targetRotationPitch = d.targetRotationPitch;
+					localData.targetRotationYaw = d.targetRotationYaw;
+					localData.targetRotationRoll = d.targetRotationRoll;
+					
+					localData.currentRotationPitch = d.currentRotationPitch;
+					localData.currentRotationYaw = d.currentRotationYaw;
+					localData.currentRotationRoll = d.currentRotationRoll;
+					
+					localData.targetHeadPitchOffset = d.targetHeadPitchOffset;
+					localData.currentHeadPitchOffset = d.currentHeadPitchOffset;
+				}
 				BlockPos p = player.getPosition();
 				TCPacketHandler.INSTANCE.sendToAllAround(message, new TargetPoint(player.world.provider.getDimension(), p.getX(), p.getY(), p.getZ(), 32D));
 			}

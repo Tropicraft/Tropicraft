@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.event.ScubaHandlerCommon;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
 import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
 
@@ -19,17 +18,16 @@ public class PlayerSwimDataClientHandler implements IMessageHandler<MessagePlaye
 		if(ctx.side.equals(Side.CLIENT)) {
 			PlayerSwimData d = message.data;
 
-			if (!ScubaHandlerCommon.rotationMap.containsKey(d.playerUUID)) {
-				ScubaHandlerCommon.rotationMap.put(d.playerUUID, new PlayerSwimData(d.playerUUID));
+			if (!ScubaHandler.rotationMap.containsKey(d.playerUUID)) {
+				ScubaHandler.rotationMap.put(d.playerUUID, new PlayerSwimData(d.playerUUID));
 			}
-			PlayerSwimData localData = ScubaHandlerCommon.rotationMap.get(d.playerUUID);
+			PlayerSwimData localData = ScubaHandler.rotationMap.get(d.playerUUID);
 			
 			if(d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID())) {
 				// We don't want to imprint our own movements from the server onto ourselves
 				return null;
 			}
 			
-			// TODO: Some kinda lerping maybe	
 			localData.rotationYawHead = d.rotationYawHead;
 			localData.prevRotationYawHead = d.prevRotationYawHead;
 			localData.rotationYaw = d.rotationYaw;
