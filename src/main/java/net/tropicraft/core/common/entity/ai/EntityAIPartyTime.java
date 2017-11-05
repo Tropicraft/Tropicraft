@@ -47,6 +47,11 @@ public class EntityAIPartyTime extends EntityAIBase
      */
     public boolean shouldExecute()
     {
+
+        if (!entityObj.getWantsToParty()) {
+            return false;
+        }
+
         BlockPos blockpos = new BlockPos(this.entityObj);
 
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky()) {

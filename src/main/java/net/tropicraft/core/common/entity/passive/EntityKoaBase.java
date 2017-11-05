@@ -78,6 +78,8 @@ public class EntityKoaBase extends EntityVillager {
     private EntityFishHook lure;
 
     private boolean wasInWater = false;
+    private boolean wasNightLastTick = false;
+    private boolean wantsToParty = false;
 
     public int hitIndex = 0;
     public int hitIndex2 = 0;
@@ -243,30 +245,22 @@ public class EntityKoaBase extends EntityVillager {
                 return (double)(this.attacker.width * 2.5F * this.attacker.width * 2.5F + attackTarget.width);
             }
         });
-        //this.tasks.addTask(1, new EntityAITradePlayer(this));
-        //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1D));
         this.tasks.addTask(5, new EntityAIKoaMate(this));
-        //this.tasks.addTask(6, new EntityAIChillAtFire(this));
-        this.tasks.addTask(6, new EntityAIPartyTime(this));
-
-        //this.tasks.addTask(3, new EntityAIMoveIndoors(this));
-        //this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-        //this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        //this.tasks.addTask(7, new EntityAIFollowGolem(this));
+        this.tasks.addTask(6, new EntityAIChillAtFire(this));
+        this.tasks.addTask(7, new EntityAIPartyTime(this));
 
         if (canFish()) {
-            this.tasks.addTask(7, taskFishing);
+            this.tasks.addTask(8, taskFishing);
         }
 
         if (isChild()) {
-            this.tasks.addTask(8, new EntityAIPlayKoa(this, 1.2D));
+            this.tasks.addTask(9, new EntityAIPlayKoa(this, 1.2D));
         }
 
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        //this.tasks.addTask(9, new EntityAIVillagerInteract(this));
-        this.tasks.addTask(9, new EntityAIWanderNotLazy(this, 1D, 40));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.tasks.addTask(10, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(10, new EntityAIWanderNotLazy(this, 1D, 40));
+        this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         //i dont think this one works, change to predicate
@@ -918,6 +912,15 @@ public class EntityKoaBase extends EntityVillager {
 
         wasInWater = isInWater();
 
+        if (!wasNightLastTick) {
+            if (!this.world.isDaytime()) {
+                //roll dice once
+                rollDiceParty();
+            }
+        }
+
+        wasNightLastTick = !this.world.isDaytime();
+
         if (!world.isRemote) {
             //if (world.getTotalWorldTime() % (20*5) == 0) {
                 //this.heal(5);
@@ -925,6 +928,7 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         if (world.isRemote) {
+            //heal indicator, has a bug that spawns a heart on reload into world but not a big deal
             if (clientHealthLastTracked != this.getHealth()) {
                 if (this.getHealth() > clientHealthLastTracked) {
                     world.spawnParticle(EnumParticleTypes.HEART, false, this.posX, this.posY + 2.2, this.posZ, 0, 0, 0);
@@ -941,8 +945,8 @@ public class EntityKoaBase extends EntityVillager {
 
     @Override
     public boolean getIsWillingToMate(boolean updateFirst) {
-        //TODO: use our own rules
-        //return super.getIsWillingToMate(updateFirst);
+        //vanilla did food check here but hunters dont have any
+        //our population limits work well enough to leave this to always true
         this.setIsWillingToMate(true);
         return true;
     }
@@ -1056,5 +1060,34 @@ public class EntityKoaBase extends EntityVillager {
 
             //System.out.println("population size: " + village.getPopulationSize() + ", males: " + maleCount + ", females: " + femaleCount);
         }
+    }
+
+    //do not constantly use throughout night, as the night doesnt happen all on the same day
+    //use asap and store value
+    public boolean isPartyNight() {
+        long time = world.getWorldTime();
+        long day = time / 24000;
+        //party every 3rd night
+        System.out.println(time + " - " + day + " - " + (day % 3 == 0));
+        return day % 3 == 0;
+    }
+
+    public void rollDiceParty() {
+
+        if (isPartyNight()) {
+            int chance = 50;
+            if (chance >= this.world.rand.nextInt(100)) {
+                wantsToParty = true;
+                System.out.println("roll dice party: " + wantsToParty);
+                return;
+            }
+        }
+        wantsToParty = false;
+
+        System.out.println("roll dice party: " + wantsToParty);
+    }
+
+    public boolean getWantsToParty() {
+        return wantsToParty;
     }
 }
