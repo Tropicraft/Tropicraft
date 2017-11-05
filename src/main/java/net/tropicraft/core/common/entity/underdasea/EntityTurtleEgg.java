@@ -2,12 +2,14 @@ package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityTurtleEgg extends EntityLiving {
 
     public int hatchingTime;
     public double rotationRand;
+    public BlockPos parentWaterLoc = null;
     
     public EntityTurtleEgg(World par1World) {
         super(par1World);
@@ -44,6 +46,10 @@ public class EntityTurtleEgg extends EntityLiving {
                     babyturtle.setLocationAndAngles(d3, d4, d5, 0.0F, 0.0F);
                     world.spawnEntity(babyturtle);
                 		this.spawnExplosionParticle();
+                		if(this.parentWaterLoc != null) {
+                			babyturtle.log("received parent's water entry point, ms saved \\o/");
+                		}
+                		babyturtle.targetWaterSite = this.parentWaterLoc;
                 		babyturtle.isSeekingWater = true;
                 		babyturtle.isLandPathing = true;
                     this.setDead();
