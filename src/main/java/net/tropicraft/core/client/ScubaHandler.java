@@ -385,11 +385,11 @@ public class ScubaHandler {
 			p.rotationYawHead = fish.rotationYawHead;
 			p.prevRotationYawHead = fish.prevRotationYawHead;
 		}else {
-		p.rotationYawHead = 0f;
-		p.prevRotationYawHead = 0f;
-		
-		p.rotationYaw = 0f;
-		p.prevRotationYaw = 0f;
+			p.rotationYawHead = 0f;
+			p.prevRotationYawHead = 0f;
+			
+			p.rotationYaw = 0f;
+			p.prevRotationYaw = 0f;
 		}
 		p.renderYawOffset = 0f;
 		p.prevRenderYawOffset = 0f;

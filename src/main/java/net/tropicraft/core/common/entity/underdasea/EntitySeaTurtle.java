@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.underdasea;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
+import javax.vecmath.Vector2f;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -82,7 +83,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		super.onLivingUpdate();
 		this.setAir(30);
 		if (!this.isInWater() && this.isBeingRidden()) {
-			this.dismountRidingEntity();
+			this.removePassengers();
 		}
 		if (this.getNavigator() == null) {
 			return;
@@ -119,18 +120,23 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		if (this.onGround && !this.isInWater() && !this.isLandPathing) {
 			this.isLandPathing = true;
 			this.isSeekingWater = true;
+		//	this.getMoveHelper().strafe(1f, 0f);
 		}
 
 		if (!world.containsAnyLiquid(this.getEntityBoundingBox()) && !this.isLandPathing && !this.onGround) {
-			this.motionY = -.2f;
-			this.swimPitch = -25f;
-			motionX = 0.1f * Math.sin(this.rotationYaw * (Math.PI / 180.0));
-			motionZ = 0.1f * Math.cos(this.rotationYaw * (Math.PI / 180.0));
-			this.swimSpeedCurrent = 1f;
+			if(!this.isBeingRidden()) {
+				this.motionY = -.2f;
+				this.swimPitch = -25f;
+				motionX = 0.1f * Math.sin(this.rotationYaw * (Math.PI / 180.0));
+				motionZ = 0.1f * Math.cos(this.rotationYaw * (Math.PI / 180.0));
+				this.swimSpeedCurrent = 1f;
+				this.setNoGravity(false);
+
+			}
 			// this.rotationYaw+=15;
-			this.swimYaw = -this.rotationYaw;
-			this.setNoGravity(false);
+		//	this.swimYaw = -this.rotationYaw+180;
 			// this.isSeekingWater = true;
+			//System.out.println("uhh");
 		}
 
 		if (!world.containsAnyLiquid(this.getEntityBoundingBox()) && this.isLandPathing && !this.onGround
@@ -300,7 +306,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	@Override
 	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
 		if (hand.equals(EnumHand.MAIN_HAND)) {
-			if (this.canFitPassenger(player) && this.isMature()) {
+			if (this.canFitPassenger(player) && this.isMature() && this.isInWater()) {
 				// vvvv maybe, undecided on that vvvv
 				// if(this.getDistanceSqToEntity(player) < 4D &&
 				// this.getEntityBoundingBox().maxY < player.getEntityBoundingBox().minY)
@@ -314,12 +320,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	@SideOnly(Side.CLIENT)
 	public void applyOrientationToEntity(Entity entityToUpdate) {
-		if (this.swimPitch > 15f) {
-			this.swimPitch = 15f;
-		}
-		if (this.swimPitch < -15f) {
-			this.swimPitch = -15f;
-		}
+	
 	}
 
 	@Override
@@ -526,6 +527,44 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 					.rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
 			passenger.setPosition(this.posX + vec3d.xCoord, this.posY + (double) f1, this.posZ + vec3d.zCoord);
 
+			if(passenger instanceof EntityPlayer) {
+				EntityPlayer p = (EntityPlayer)passenger;
+				if(this.isInWater()) {
+					if(p.moveForward > 0f) {
+						this.swimPitch = this.lerp(swimPitch, -(passenger.rotationPitch*0.5f), 6f);
+						this.swimYaw = this.lerp(swimYaw, -passenger.rotationYaw, 6f);
+						this.targetVector = null;
+						this.targetVectorHeading = null;
+						this.swimSpeedCurrent += 0.05f;
+						if(this.swimSpeedCurrent > 6f) {
+							this.swimSpeedCurrent = 6f;
+						}
+					}
+					if(p.moveForward < 0f) {
+						this.swimSpeedCurrent *= 0.89f;
+						if(this.swimSpeedCurrent < 0.1f) {
+							this.swimSpeedCurrent = 0.1f;
+						}
+					}
+					if(p.moveForward == 0f) {
+						if(this.swimSpeedCurrent > 1f) {
+							this.swimSpeedCurrent *= 0.94f;
+							if(this.swimSpeedCurrent <= 1f) {
+								this.swimSpeedCurrent = 1f;
+							}
+						}
+						if(this.swimSpeedCurrent < 1f) {
+							this.swimSpeedCurrent *= 1.06f;
+							if(this.swimSpeedCurrent >= 1f) {
+								this.swimSpeedCurrent = 1f;
+							}
+						}
+						//this.swimSpeedCurrent = 1f;
+					}
+				//	this.swimYaw = -passenger.rotationYaw;
+				}
+				//p.rotationYaw = this.rotationYaw;
+			}
 			if (passenger instanceof EntityAnimal && this.getPassengers().size() > 1) {
 				int j = passenger.getEntityId() % 2 == 0 ? 90 : 270;
 				passenger.setRenderYawOffset(((EntityAnimal) passenger).renderYawOffset + (float) j);
