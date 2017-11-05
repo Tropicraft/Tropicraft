@@ -65,6 +65,11 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		this.getDataManager().register(IS_MATURE, false);
 		this.assignRandomTexture();
 	}
+	
+	@Override
+	public String[] getTexturePool() {
+		return new String[]{"seaTurtle", "sea_turtle2", "sea_turtle3", "sea_turtle4", "sea_turtle5", "sea_turtle6"};
+	}
 
 	@Override
 	public void onLivingUpdate() {
@@ -184,6 +189,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 							egg.setPosition(this.currentNestSite.getX() + 0.5f, this.currentNestSite.getY() + 1,
 									this.currentNestSite.getZ() + 0.5f);
 							lastEgg = egg;
+							egg.parentTexRef = this.getTexture();
 							world.spawnEntity(egg);
 							this.motionX = 0;
 							this.motionZ = 0;
@@ -434,7 +440,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	}
 
 	public void log(String s) {
-		// System.out.println(s);
+		 System.out.println(s);
 	}
 
 }

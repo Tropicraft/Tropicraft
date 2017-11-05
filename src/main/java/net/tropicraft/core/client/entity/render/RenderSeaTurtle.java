@@ -58,7 +58,7 @@ public class RenderSeaTurtle extends RenderTropicraftWaterMob {
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-		return TropicraftRenderUtils.bindTextureEntity("turtle/seaTurtle");
+		return TropicraftRenderUtils.getTextureEntity(String.format("turtle/%s", entity.getTexture()));
 	}
 
 }

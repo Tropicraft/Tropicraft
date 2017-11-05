@@ -10,6 +10,7 @@ public class EntityTurtleEgg extends EntityLiving {
     public int hatchingTime;
     public double rotationRand;
     public BlockPos parentWaterLoc = null;
+    public String parentTexRef = null;
     
     public EntityTurtleEgg(World par1World) {
         super(par1World);
@@ -50,6 +51,10 @@ public class EntityTurtleEgg extends EntityLiving {
                 			babyturtle.log("received parent's water entry point, ms saved \\o/");
                 		}
                 		babyturtle.targetWaterSite = this.parentWaterLoc;
+                		
+                		if(this.parentTexRef != null) {
+                			babyturtle.setTexture(this.parentTexRef);
+                		}
                 		babyturtle.isSeekingWater = true;
                 		babyturtle.isLandPathing = true;
                     this.setDead();
