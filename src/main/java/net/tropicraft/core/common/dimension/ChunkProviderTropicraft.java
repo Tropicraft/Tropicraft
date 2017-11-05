@@ -1,7 +1,9 @@
 package net.tropicraft.core.common.dimension;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -13,7 +15,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
@@ -55,6 +56,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
     private MapGenTropicsCaves caveGenerator;
     private MapGenVolcano volcanoGen;
 
+    private final Set<BlockPos> volcanoCache = new HashSet<BlockPos>();
+
     public ChunkProviderTropicraft(World world, long seed, boolean mapFeaturesEnabled) {
         this.worldObj = world;
         this.rand = new Random(seed);
@@ -71,8 +74,6 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
         groveGen = new MapGenUndergroundGrove(worldObj);
         caveGenerator = new MapGenTropicsCaves();
     }
-    
-    private boolean hasSpawned = false;
 
     @Override
     public void populate(int x, int z) {
@@ -90,18 +91,14 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
         biome.decorate(worldObj, rand, blockpos);
 
-        if (!hasSpawned) {
-            BlockPos volcanoCoords = volcanoGen.getVolcanoNear(worldObj, x, z);
-            if (volcanoCoords != null) {
-                BlockPos posVolcanoTE = new BlockPos(volcanoCoords.getX(), 1, volcanoCoords.getZ());
-                if (worldObj.getBlockState(posVolcanoTE).getBlock() != BlockRegistry.volcano) {
-                    worldObj.setBlockState(posVolcanoTE, BlockRegistry.volcano.getDefaultState());
-                    hasSpawned = true;
-                }
+        BlockPos volcanoCoords = volcanoGen.getVolcanoNear(worldObj, x, z);
+        if (volcanoCoords != null && !volcanoCache.contains(volcanoCoords)) {
+            BlockPos posVolcanoTE = new BlockPos(volcanoCoords.getX(), 1, volcanoCoords.getZ());
+            if (worldObj.getBlockState(posVolcanoTE).getBlock() != BlockRegistry.volcano) {
+                worldObj.setBlockState(posVolcanoTE, BlockRegistry.volcano.getDefaultState());
+                volcanoCache.add(volcanoCoords);
             }
         }
-
-        // generateOres(x,z);
 
         TropiWorldEntitySpawner.performWorldGenSpawning(worldObj, biome, i + 8, j + 8, 16, 16, rand);
 
