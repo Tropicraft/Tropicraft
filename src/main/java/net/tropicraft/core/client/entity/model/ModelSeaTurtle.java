@@ -89,9 +89,7 @@ public class ModelSeaTurtle extends ModelBase {
         f1 *=2f;
         f *= 1.5f;
         if (!entity.isInWater()) {
-            Body.rotateAngleX = -Math.abs(MathHelper.sin(f * 0.25F) * 1.25F * f1) - .10F;
-         //   Body.rotateAngleX = 0;
-
+        		Body.rotateAngleX = -Math.abs(MathHelper.sin(f * 0.25F) * 1.25F * f1) - .10F;
             FRFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 + defFront;
             FRFlipper.rotateAngleX = -defFront2;
             FRFlipper.rotateAngleZ = MathHelper.cos(f * 0.50F) * 1.25F * f1 - defFront2;
@@ -103,7 +101,7 @@ public class ModelSeaTurtle extends ModelBase {
             RRFlipper.rotateAngleZ = 0F;
             RLFlipper.rotateAngleZ = 0F;
         
-        } else if (entity.isInWater()) {
+        } else {
             Body.rotateAngleX = 0F; //Y foward backward
             FRFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 + defFront;
             FRFlipper.rotateAngleX = -defFront2;

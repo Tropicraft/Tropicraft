@@ -18,6 +18,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
 import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
 import net.tropicraft.core.common.network.TCPacketHandler;
@@ -187,11 +188,17 @@ public class ScubaHandler {
 
 		boolean isSelf = d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID());
 		GlStateManager.translate(0, 1.5f, 0f);
+		if(p.isRiding() && p.getRidingEntity() instanceof EntityTropicraftWaterBase) {
+			d.currentRotationYaw = 0f;
+			d.currentRotationRoll = 0f;
+			d.currentHeadPitchOffset = 0f;
+			d.currentRotationPitch = 0f;
+			d.rotationYawHead = 90f;
+		}
 		if (isSelf) {
 			GlStateManager.rotate(d.currentRotationYaw, 0f, -1f, 0f);
 			GlStateManager.rotate(d.currentRotationPitch, 1f, 0f, 0f);
 			GlStateManager.rotate(d.currentRotationRoll, 0f, 0f, -1f);
-
 		} else {
 			GlStateManager.translate(event.getX(), event.getY(), event.getZ());
 			GlStateManager.rotate(d.currentRotationYaw, 0f, -1f, 0f);
@@ -353,7 +360,6 @@ public class ScubaHandler {
 
 		d.currentRotationYaw = lerp(d.currentRotationYaw, d.targetRotationYaw, ys);
 		d.currentRotationRoll = lerp(d.currentRotationRoll, d.targetRotationRoll, rs);
-
 	}
 
 	public void updateSwimDataAngles(EntityPlayer p) {
@@ -368,15 +374,23 @@ public class ScubaHandler {
 		d.prevRenderYawOffset = p.prevRenderYawOffset;
 		d.rotationPitch = p.rotationPitch;
 		d.prevRotationPitch = p.prevRotationPitch;
+		
 	}
 
 	public void clearPlayerRenderAngles(EntityPlayer p) {
 		PlayerSwimData d = getData(p);
 
+		if(p.isRiding() && p.getRidingEntity() instanceof EntityTropicraftWaterBase) {
+			EntityTropicraftWaterBase fish = (EntityTropicraftWaterBase)p.getRidingEntity();
+			p.rotationYawHead = fish.rotationYawHead;
+			p.prevRotationYawHead = fish.prevRotationYawHead;
+		}else {
 		p.rotationYawHead = 0f;
 		p.prevRotationYawHead = 0f;
+		
 		p.rotationYaw = 0f;
 		p.prevRotationYaw = 0f;
+		}
 		p.renderYawOffset = 0f;
 		p.prevRenderYawOffset = 0f;
 		p.rotationPitch = -MathHelper.wrapDegrees(d.currentHeadPitchOffset);

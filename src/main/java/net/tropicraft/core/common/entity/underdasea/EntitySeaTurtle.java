@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -13,10 +15,13 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.IAmphibian;
@@ -50,6 +55,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		this.setApproachesPlayers(true);
 		png = new PathNavigateGround(this, par1World);
 		this.stepHeight = 1f;
+		this.setMaxHealth(3);
 	}
 
 	/** Constructor for baby */
@@ -75,6 +81,9 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		this.setAir(30);
+		if(!this.isInWater() && this.isBeingRidden()) {
+			this.dismountRidingEntity();
+		}
 		if (this.getNavigator() == null) {
 			return;
 		}
@@ -82,12 +91,14 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		float renderSize = 0.3f + (((float) ticksExisted / 2000));
 		if (renderSize > 1f)
 			renderSize = 1f;
-		if (this.ticksExisted % 40 == 1) {
+		if (this.ticksExisted % 40 == 1 && !this.isMature()) {
 			setSize(renderSize, renderSize * 0.5f);
 		}
 
 		if (this.isMature()) {
 			renderSize = 1f;
+			if(this.ticksExisted == 1)
+			setSize(0.9f, 0.4f);
 		}
 
 		if (world.isRemote) {
@@ -108,6 +119,24 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		if (this.onGround && !this.isInWater() && !this.isLandPathing) {
 			this.isLandPathing = true;
 			this.isSeekingWater = true;
+		}
+		
+		if(!world.containsAnyLiquid(this.getEntityBoundingBox()) && !this.isLandPathing && !this.onGround) {
+			this.motionY = -.2f;
+			this.swimPitch = -25f;
+			motionX = 0.1f * Math.sin(this.rotationYaw * (Math.PI / 180.0));
+			motionZ = 0.1f * Math.cos(this.rotationYaw * (Math.PI / 180.0));
+			this.swimSpeedCurrent = 1f;
+			//this.rotationYaw+=15;
+			this.swimYaw = -this.rotationYaw;
+			this.setNoGravity(false);
+			//this.isSeekingWater = true;
+		}
+		
+		if(!world.containsAnyLiquid(this.getEntityBoundingBox()) && this.isLandPathing && !this.onGround && this.currentNestSite == null) {
+			this.isSeekingWater = true;
+			this.isSeekingLand = false;
+			this.setNoGravity(false);
 		}
 
 		if (this.isSeekingLand) {
@@ -144,7 +173,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 						this.motionY += 0.2f;
 						this.swimSpeedCurrent = 2f;
 						log("Climbing up");
-						if(this.posY == this.prevPosY) {
+						if(this.posY <= this.prevPosY) {
 							log("Gave up, got stuck, was "+this.getDistanceSq(this.currentNestSite)+" away");
 							this.currentNestSite = null;
 							this.isSeekingWater = true;
@@ -229,7 +258,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 				this.isLandPathing = true;
 				this.setNoAI(false);
 
-				if (this.ticksExisted % 20 == 0) {
+				if (this.ticksExisted % 40 == 0) {
 					this.setPathPriority(PathNodeType.WATER, 10f);
 					this.setPathPriority(PathNodeType.BLOCKED, -1f);
 					this.setPathPriority(PathNodeType.WALKABLE, 10f);
@@ -237,8 +266,8 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 					log("Moving to water!");
 					Util.tryMoveToXYZLongDist(this, targetWaterSite, 0.2f);
 
-					if (this.getNavigator().noPath() || rand.nextInt(60) == 0) {
-						this.targetWaterSite = this.scanForWater();
+					if (this.isInWater()) {
+						//this.targetWaterSite = this.scanForWater();
 
 					}
 				}
@@ -260,7 +289,38 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		}
 		this.syncSwimAngles();
 
+		
 	}
+	
+	@Override
+	public boolean shouldDismountInWater(Entity ent) {
+		return false;
+	}
+
+	@Override
+	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+		if(hand.equals(EnumHand.MAIN_HAND)) {
+			if(this.canFitPassenger(player) && this.isMature()) {
+				// vvvv maybe, undecided on that vvvv
+				// if(this.getDistanceSqToEntity(player) < 4D && this.getEntityBoundingBox().maxY < player.getEntityBoundingBox().minY) 
+				{
+					player.startRiding(this);
+				}
+			}
+		}
+		return super.processInteract(player, hand, stack);
+	}
+	
+    @SideOnly(Side.CLIENT)
+    public void applyOrientationToEntity(Entity entityToUpdate)
+    {
+    		if(this.swimPitch > 15f) {
+    			this.swimPitch = 15f;
+    		}
+    		if(this.swimPitch < -15f) {
+    			this.swimPitch = -15f;
+    		}
+    }
 
 	@Override
 	public void moveEntityWithHeading(float forward, float strafe) {
@@ -356,7 +416,6 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		if (this.currentNestSite != null) {
 			return super.setTargetHeading(this.currentNestSite.getX(), this.currentNestSite.getY() + 1,
 					this.currentNestSite.getZ(), false);
-
 		}
 		return super.setTargetHeading(posX, posY, posZ, waterChecks);
 	}
@@ -368,6 +427,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	public void setMature() {
 		if (!isMature()) {
 			this.getDataManager().set(IS_MATURE, true);
+			setSize(0.9f, 0.4f);
 		}
 	}
 
@@ -392,7 +452,6 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	@Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
-
 		return this.getEntityBoundingBox();
 	}
 
@@ -403,7 +462,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	@Override
 	public void applyEntityCollision(Entity entityIn) {
-		// log(entityIn);
+
 	}
 
 	@Override
@@ -418,7 +477,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	@Override
 	public double getMountedYOffset() {
-		return (double) height * 0.75D - 1F + 0.7F;
+		return (double) height * 0.75D - 1F + 0.8F;
 	}
 
 	@Override
@@ -440,7 +499,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	}
 
 	public void log(String s) {
-		 System.out.println(s);
+		// System.out.println(s);
 	}
 
 }

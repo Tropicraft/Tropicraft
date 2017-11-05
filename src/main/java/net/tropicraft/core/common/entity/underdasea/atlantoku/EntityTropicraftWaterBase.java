@@ -160,6 +160,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				}else {
 					this.prevSwimYaw = -this.prevRotationYaw;
 					this.swimYaw = -this.rotationYaw;
+					this.rotationYawHead = this.rotationYaw;
 				
 				}
 				this.cameraPitch = -this.swimPitch;
@@ -257,7 +258,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				
 			// Wall correction
 				Vec3d angle = this.getHeading();
-				double frontDist = 1f;
+				double frontDist = 1f+rand.nextInt(4);
 				double behindDist = 4f;
 				
 				Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));
