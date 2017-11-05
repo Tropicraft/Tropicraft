@@ -257,7 +257,7 @@ public class EntityAIPartyTime extends EntityAIBase
                     //lookupStateToSequence.put(2, listDelays);
                 }
 
-                amp = 1;
+                amp = 2;
                 rate = 20;
 
                 if (entityObj.hitIndex2 >= lookupStateToSequence.get(entityObj.hitIndex).size()) {

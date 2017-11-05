@@ -763,7 +763,7 @@ public class EntityKoaBase extends EntityVillager {
                 }
 
                 if (!match) {
-                    System.out.println("drum pos ent: " + pos);
+                    //System.out.println("drum pos ent: " + pos);
                     listPosDrums.add(pos);
                 }
 
@@ -794,7 +794,7 @@ public class EntityKoaBase extends EntityVillager {
                         }
 
                         if (!match) {
-                            System.out.println("drum pos: " + pos);
+                            //System.out.println("drum pos: " + pos);
                             listPosDrums.add(pos);
                         }
 
@@ -908,6 +908,9 @@ public class EntityKoaBase extends EntityVillager {
             } else {
                 //this.motionY += 0.02F;
             }
+            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
+        } else {
+            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         }
 
         wasInWater = isInWater();
@@ -1068,7 +1071,7 @@ public class EntityKoaBase extends EntityVillager {
         long time = world.getWorldTime();
         long day = time / 24000;
         //party every 3rd night
-        System.out.println(time + " - " + day + " - " + (day % 3 == 0));
+        //System.out.println(time + " - " + day + " - " + (day % 3 == 0));
         return day % 3 == 0;
     }
 
@@ -1078,13 +1081,13 @@ public class EntityKoaBase extends EntityVillager {
             int chance = 50;
             if (chance >= this.world.rand.nextInt(100)) {
                 wantsToParty = true;
-                System.out.println("roll dice party: " + wantsToParty);
+                //System.out.println("roll dice party: " + wantsToParty);
                 return;
             }
         }
         wantsToParty = false;
 
-        System.out.println("roll dice party: " + wantsToParty);
+        //System.out.println("roll dice party: " + wantsToParty);
     }
 
     public boolean getWantsToParty() {
