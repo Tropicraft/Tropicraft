@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity;
 
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityTameable;
@@ -11,7 +12,6 @@ public abstract class EntityLandTameable extends EntityTameable {
     public EntityLandTameable(World world) {
         super(world);
         setSize(.7F, 1.95F);
-        this.enablePersistence();
     }
     
     @Override

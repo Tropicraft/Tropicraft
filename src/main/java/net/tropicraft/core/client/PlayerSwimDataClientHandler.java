@@ -28,8 +28,6 @@ public class PlayerSwimDataClientHandler implements IMessageHandler<MessagePlaye
 				return null;
 			}
 			
-			// TODO: Some kinda lerping maybe
-			
 			localData.rotationYawHead = d.rotationYawHead;
 			localData.prevRotationYawHead = d.prevRotationYawHead;
 			localData.rotationYaw = d.rotationYaw;

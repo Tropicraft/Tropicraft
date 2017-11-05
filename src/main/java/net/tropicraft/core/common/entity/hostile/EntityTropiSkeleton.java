@@ -63,7 +63,7 @@ public class EntityTropiSkeleton extends EntityLandHostile implements IMob {
      * Checks to make sure the light is not too bright where the mob is spawning
      */
     protected boolean isValidLightLevel() {
-        boolean dayTimeSpawning = true;
+        boolean dayTimeSpawning = false;
         if (dayTimeSpawning) {
             return true;
         } else {
