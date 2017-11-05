@@ -13,6 +13,8 @@ public class RenderVMonkey extends RenderLiving<EntityVMonkey> {
 	
     public RenderVMonkey() {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelVMonkey(), 0.5F);
+        this.shadowSize = 0.3f;
+        this.shadowOpaque = 0.5f;
     }
 
 	/**

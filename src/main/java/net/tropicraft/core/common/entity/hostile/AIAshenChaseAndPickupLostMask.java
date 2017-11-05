@@ -48,7 +48,12 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
 
 		} else {
 			if (ashen.getDistanceSqToEntity(ashen.maskToTrack) <= maskGrabDistance) {
-				ashen.pickupMask(ashen.maskToTrack);
+				if(!ashen.maskToTrack.isDead && ashen.world.loadedEntityList.contains(ashen.maskToTrack)) {
+					ashen.pickupMask(ashen.maskToTrack);
+				}else {
+					ashen.maskToTrack = null;
+					return false;
+				}
 			} else {
 				if (this.ashen.world.getTotalWorldTime() % 40 == 0) {
 					this.ashen.getNavigator().tryMoveToXYZ(ashen.maskToTrack.posX, ashen.maskToTrack.posY, ashen.maskToTrack.posZ, this.speed);
