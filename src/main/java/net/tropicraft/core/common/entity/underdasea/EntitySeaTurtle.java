@@ -409,7 +409,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	}
 
 	private void log(String s) {
-		 System.out.println(s);
+		// System.out.println(s);
 	}
 
 }
