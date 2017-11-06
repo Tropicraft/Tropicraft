@@ -16,8 +16,8 @@ public class RenderShark extends RenderTropicraftWaterMob {
     
     @Override
 	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-		return TropicraftRenderUtils.bindTextureEntity(entity.getTexture());
-	}
+    		return TropicraftRenderUtils.getTextureEntity(String.format("shark/%s", entity.getTexture()));
+    	}
 
 	@Override
 	public void doRender(EntityTropicraftWaterBase entityliving, double d, double d1, double d2, float f, float f1) {
@@ -28,7 +28,7 @@ public class RenderShark extends RenderTropicraftWaterMob {
 		entityliving.setCustomNameTag("");
 		this.renderWaterMob((EntityTropicraftWaterBase) entityliving, d, d1, d2, f1);
 		GlStateManager.translate(0, 1.3D, 0);
-		entityliving.setCustomNameTag("");
+		entityliving.setCustomNameTag(t);
 
 	}
 

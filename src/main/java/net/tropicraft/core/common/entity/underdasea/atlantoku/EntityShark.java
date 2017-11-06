@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.underdasea.atlantoku;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,13 +17,11 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityShark extends EntityTropicraftWaterBase implements IPredatorDiet {
 
-	private static final DataParameter<Boolean> IS_BOSS = EntityDataManager.<Boolean>createKey(EntityShark.class,
-			DataSerializers.BOOLEAN);
-	private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(this.getDisplayName(),
+	private static final DataParameter<Boolean> IS_BOSS = EntityDataManager.<Boolean>createKey(EntityShark.class, DataSerializers.BOOLEAN);
+	
+	private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(this.getDisplayName(), 
 			BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS));
-
 	private ArrayList<EntityPlayerMP> bossTargets = new ArrayList<EntityPlayerMP>();
-
 	private boolean hasSetBoss = false;
 
 	public EntityShark(World world) {
@@ -54,17 +51,22 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 			if (!hasSetBoss) {
 				this.setBossTraits();
 			}
-			this.setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
-
+			
+			
 			if (!world.isRemote) {
+				// Heal if no target
 				if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 80 == 0 && this.aggressTarget == null) {
 					this.heal(1f);
 					this.spawnExplosionParticle();
 				}
+				
+				// Search for suitable target
 				EntityPlayer nearest = world.getClosestPlayerToEntity(this, 64D);
 				if (nearest != null) {
 					if (this.canEntityBeSeen(nearest) && nearest.isInWater() && !nearest.isCreative() && !nearest.isDead) {
 						this.aggressTarget = nearest;
+						
+						// Show health bar to target player
 						if (nearest instanceof EntityPlayerMP) {
 							if (!this.bossInfo.getPlayers().contains(nearest)) {
 								this.bossTargets.add((EntityPlayerMP) nearest);
@@ -77,7 +79,8 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 				} else {
 					clearBossTargets();
 				}
-				this.bossInfo.setName(new TextComponentString("Cove Hammerhead"));
+				
+				// Update health bar
 				this.bossInfo.setPercent(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
 			}
 		}
@@ -98,9 +101,16 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 		this.setAttackDamage(8f);
 		this.setDropStack(ItemRegistry.yellowFlippers, 1);
 		this.setCustomNameTag("Elder Hammerhead");
+		this.setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
 		this.setMaxHealth(10);
-		this.setHealth(10);
-		this.hasSetBoss = true;
+		this.setFishable(false);
+		this.setExpRate(10);
+		this.setHealth(10);	
+		this.setTexture("hammerhead4");
+		if(!world.isRemote) {
+			this.bossInfo.setName(new TextComponentString("Elder Hammerhead"));
+		}
+		this.hasSetBoss = true;	
 	}
 
 	public EntityShark setBoss() {
