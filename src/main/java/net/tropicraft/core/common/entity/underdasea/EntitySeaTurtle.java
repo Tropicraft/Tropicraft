@@ -112,7 +112,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		}
 
 		if (this.timeSinceLastEgg > EGG_INTERVAL_MINIMUM && !isSeekingLand && rand.nextInt(NEST_SITE_SEARCH_ODDS) == 0
-				&& world.getWorldTime() > 13000L && world.getWorldTime() < 23000L) {
+				&& this.getTimeOfDay() > 13000L && this.getTimeOfDay() < 23000L) {
 			this.isSeekingLand = true;
 			log("Seeking Land");
 		}
@@ -571,6 +571,10 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 				passenger.setRotationYawHead(passenger.getRotationYawHead() + (float) j);
 			}
 		}
+	}
+	
+	public long getTimeOfDay() {
+		return world.getWorldTime() % 24000;
 	}
 
 	public void log(String s) {
