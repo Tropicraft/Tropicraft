@@ -32,6 +32,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
@@ -62,9 +63,9 @@ public class TropicraftLoadingListener {
 			ta.remove(name);
 		}
 		String firstEnt = ta.get(rand.nextInt(ta.size()));
-		Entity ent1 = EntityList.createEntityByName("tropicraft."+firstEnt, mc.world);
+		Entity ent1 = EntityList.createEntityByName(Info.MODID+"."+firstEnt, mc.world);
 		ta.remove(firstEnt);
-		Entity ent2 = EntityList.createEntityByName("tropicraft."+ta.get(rand.nextInt(ta.size())), mc.world);
+		Entity ent2 = EntityList.createEntityByName(Info.MODID+"."+ta.get(rand.nextInt(ta.size())), mc.world);
 		
 		// make sure these entities have a random texture assigned
 		if(ent1 instanceof EntityTropicraftWaterBase)
@@ -83,9 +84,6 @@ public class TropicraftLoadingListener {
 		int count = 0;
 		String key = "tropicraft.loading."+cat+".1";
 		while(!(I18n.translateToLocal(key)).equals(key)) {
-			if(I18n.translateToLocal(key).equals(key)){
-				break;
-			}
 			key = "tropicraft.loading."+cat+"."+count++;
 		}
 		
