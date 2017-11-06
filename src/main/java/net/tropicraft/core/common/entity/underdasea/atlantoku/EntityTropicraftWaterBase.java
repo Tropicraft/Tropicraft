@@ -82,6 +82,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	private ItemStack dropStack = null;
 	private int dropMaxAmt = 3;
 	private float maxHealth = 10f;
+	private float attackDamage = 1f;
 	
 	private boolean isMovingAwayFromWall = false;
 	
@@ -274,9 +275,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			// Hunt Target and/or Do damage
 			if(this.aggressTarget != null) {
-				if(this.getDistanceSqToEntity(this.aggressTarget) < 0.8f) {
+				if(this.getDistanceSqToEntity(this.aggressTarget) <= this.width) {
 					if(this.aggressTarget instanceof EntityLivingBase) {
-						((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.cactus, 1);
+						((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.causeMobDamage(this), this.attackDamage);
 					}
 					if(this.aggressTarget instanceof EntityTropicraftWaterBase) {
 						// Was eaten, cancel smoke
@@ -522,6 +523,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	public void setMaxHealth(int h) {
 		this.maxHealth = h;
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.maxHealth);
 	}
 	
 	public void markAsLeader() {
@@ -623,6 +625,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.getDataManager().set(SWIMSPEEDCUR, swimSpeedCurrent);
 	}
 	
+	public void setAttackDamage(float f) {
+		this.attackDamage = f;
+	}
+	
 	public boolean isFishable() {
 		return this.fishable;
 	}
@@ -715,6 +721,16 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				setTexture(getTexturePool()[rand.nextInt(getTexturePool().length)]);
 			}
 		}
+	}
+	
+	public float rangeMap(float input, float inpMin, float inpMax, float outMin, float outMax) {
+
+	    if (Math.abs(inpMax - inpMin) < 1e-12) {
+	        return 0;
+	    }
+ 
+	    double ratio = (outMax - outMin) / (inpMax - inpMin);
+	    return (float)(ratio * (input - inpMin) + outMin);
 	}
 	
 	public String[] getTexturePool() {
@@ -823,10 +839,14 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	public void onDeath(DamageSource damagesource) {
 		super.onDeath(damagesource);
 		if(this.dropStack == null) return;
-		int i = rand.nextInt(this.dropMaxAmt) + 1;
-		for (int j = 0; j < i; j++) {
-			if(!world.isRemote)
-				entityDropItem(this.dropStack, 0.0F);
+		if(damagesource.getEntity() instanceof EntityPlayer) {
+			if(!world.isRemote) {
+				int i = rand.nextInt(this.dropMaxAmt) + 1;
+				this.dropStack.stackSize = 1;
+				for (int j = 0; j < i; j++) {
+						entityDropItem(this.dropStack, 0.0F);
+				}
+			}
 		}
 	}
 	
