@@ -21,8 +21,7 @@ public class TropicraftLoadingListener {
 		if(evt.getGui() instanceof GuiDownloadTerrain) {
 			if(FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient) {
 				if(mc.player != null && mc.player.dimension == TropicraftWorldUtils.TROPICS_DIMENSION_ID) {
-					evt.setCanceled(true);
-					mc.displayGuiScreen(new GuiTropicsLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler()));
+					evt.setGui(new GuiTropicsLoading((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler()));
 				}
 			}
 		}
