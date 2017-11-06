@@ -54,18 +54,14 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 			
 			
 			if (!world.isRemote) {
-				// Heal if no target
-				if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 80 == 0 && this.aggressTarget == null) {
-					this.heal(1f);
-					this.spawnExplosionParticle();
-				}
+				
 				
 				// Search for suitable target
 				EntityPlayer nearest = world.getClosestPlayerToEntity(this, 64D);
 				if (nearest != null) {
 					if (this.canEntityBeSeen(nearest) && nearest.isInWater() && !nearest.isCreative() && !nearest.isDead) {
 						this.aggressTarget = nearest;
-						
+						this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY+1, this.aggressTarget.posZ, true);
 						// Show health bar to target player
 						if (nearest instanceof EntityPlayerMP) {
 							if (!this.bossInfo.getPlayers().contains(nearest)) {
@@ -80,6 +76,11 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 					clearBossTargets();
 				}
 				
+				// Heal if no target
+				if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 80 == 0 && this.aggressTarget == null) {
+					this.heal(1f);
+					this.spawnExplosionParticle();
+				}
 				// Update health bar
 				this.bossInfo.setPercent(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
 			}

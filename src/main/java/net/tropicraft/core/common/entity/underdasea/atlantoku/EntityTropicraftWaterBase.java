@@ -192,7 +192,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			
 			// Target selection
 			if(canAggress && this.eatenFishAmount < this.maximumEatAmount) {
-				if(this.ticksExisted % 200 == 0 && this.aggressTarget == null|| !world.loadedEntityList.contains(aggressTarget)) {
+				if(this.ticksExisted % 80 == 0 && this.aggressTarget == null|| !world.loadedEntityList.contains(aggressTarget)) {
 					List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
 					if(list.size() > 0) {
 						Entity ent = list.get(rand.nextInt(list.size()));
@@ -850,6 +850,17 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}
 	}
 	
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if(source.getEntity() instanceof EntityPlayer) {
+			if(this.canAggress) {
+				this.aggressTarget = source.getEntity();
+				this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY+1, this.aggressTarget.posZ, false);
+			}
+		}
+		return super.attackEntityFrom(source, amount);
+	}
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound n) {
 		n.setString("texture", this.getDataManager().get(TEXTURE));
