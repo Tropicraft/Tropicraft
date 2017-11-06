@@ -255,7 +255,10 @@ public class GuiTropicsLoading extends GuiScreen {
 		VertexBuffer vertexbuffer = tessellator.getBuffer();
 		TropicraftRenderUtils.bindTextureGui(screenBackground);
 		GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
-		float f = 128.0F;
+		float f = 32F;
+		if(screenBackground.equals("loading_bg1")) {
+			f = 128f;
+		}
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 
 		vertexbuffer.pos(0, height, 0).tex(0, height / f).color(0.5f, 0.5f, 0.5f, 1f).endVertex();
