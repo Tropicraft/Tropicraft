@@ -704,6 +704,7 @@ public class EntityKoaBase extends EntityVillager {
         }
     }
 
+    //for other system not used
     public void syncBPM() {
         if ((world.getTotalWorldTime()+this.getEntityId()) % (20) != 0) return;
 
@@ -1078,7 +1079,7 @@ public class EntityKoaBase extends EntityVillager {
     public void rollDiceParty() {
 
         if (isPartyNight()) {
-            int chance = 50;
+            int chance = 90;
             if (chance >= this.world.rand.nextInt(100)) {
                 wantsToParty = true;
                 //System.out.println("roll dice party: " + wantsToParty);

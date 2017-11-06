@@ -35,6 +35,8 @@ public class EntityAIPartyTime extends EntityAIBase
     private int randZPos = 0;
 
     private int assignedDrumIndex = 0;
+    private boolean wasClose = false;
+    private boolean bangDrum = false;
 
     public EntityAIPartyTime(EntityKoaBase entityObjIn)
     {
@@ -110,6 +112,9 @@ public class EntityAIPartyTime extends EntityAIBase
             if (this.entityObj.listPosDrums.size() > 0) {
                 assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
             }
+            //if (wasClose) {
+                bangDrum = entityObj.world.rand.nextBoolean();
+            //}
         }
 
         if (blockposGoal == null) {
@@ -119,196 +124,229 @@ public class EntityAIPartyTime extends EntityAIBase
 
         //prevent walking onto source
         double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        if (dist < 8D) {
+            wasClose = true;
+        }
         if (dist < 3D && entityObj.onGround) {
-            //entityObj.setSitting(true);
-            entityObj.setDancing(false);
-            entityObj.getNavigator().clearPathEntity();
             isClose = true;
-            if (true || lookUpdateTimer <= 0) {
-                /*lookUpdateTimer = 5;// + entityObj.world.rand.nextInt(100);
-                int range = 2;
-                randXPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
-                //stargaze
-                if (entityObj.world.rand.nextInt(3) == 0) {
-                    randYPos = 5+entityObj.world.rand.nextInt(5);
-                } else {
-                    randYPos = 0;
-                }
-                randZPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
-
-                entityObj.heal(1);*/
-
-                entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
-
-                //keep for testing, was neat sounding
-                int amp = 1;//entityObj.world.rand.nextInt(10) + 1;
-                int rate = 4+(entityObj.getEntityId() % 7);
-
-                int index1 = 0;
-
-                HashMap<Integer, List<Integer>> lookupStateToSequence = new HashMap<>();
-
-                List<Integer> listDelays = new ArrayList<>();
-                /*listDelays.add(12);
-                listDelays.add(6);
-                listDelays.add(6);
-                listDelays.add(12);
-                listDelays.add(6);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(6);*/
-
-                listDelays.add(9);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(6);
-
-                lookupStateToSequence.put(index1++, listDelays);
-                lookupStateToSequence.put(index1++, listDelays);
-                lookupStateToSequence.put(index1++, listDelays);
-
-                listDelays = new ArrayList<>();
-                listDelays.add(9);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(3);
-                listDelays.add(12);
-
-                lookupStateToSequence.put(index1++, listDelays);
-
-                listDelays = new ArrayList<>();
-                listDelays.add(1);
-                listDelays.add(1);
-                listDelays.add(12);
-                listDelays.add(1);
-                listDelays.add(1);
-                listDelays.add(12);
-                listDelays.add(1);
-                listDelays.add(1);
-                listDelays.add(12);
-                listDelays.add(1);
-                listDelays.add(1);
-                listDelays.add(12);
-
-                //lookupStateToSequence.put(index1++, listDelays);
-
-                if (false) {
-
-                    //listDelays.clear();
-
-                    listDelays = new ArrayList<>();
-                    listDelays.add(4);
-                    listDelays.add(4);
-                    listDelays.add(4);
-                    listDelays.add(4);
-
-                    /*listDelays.add(6);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(6);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(6);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(6);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(40);*/
-
-                    lookupStateToSequence.put(index1++, listDelays);
-
-                    listDelays = new ArrayList<>();
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(6);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(6);
-
-                    lookupStateToSequence.put(index1++, listDelays);
-
-                    listDelays = new ArrayList<>();
-                    listDelays.add(1);
-                    listDelays.add(3);
-                    listDelays.add(1);
-                    listDelays.add(3);
-                    listDelays.add(1);
-                    listDelays.add(3);
-
-                    lookupStateToSequence.put(index1++, listDelays);
-
-                    listDelays = new ArrayList<>();
-                    listDelays.add(2);
-                    listDelays.add(2);
-                    listDelays.add(2);
-                    listDelays.add(2);
-
-                    //lookupStateToSequence.put(2, listDelays);
-                }
-
-                amp = 2;
-                rate = 20;
-
-                if (entityObj.hitIndex2 >= lookupStateToSequence.get(entityObj.hitIndex).size()) {
-                    entityObj.hitIndex2 = 0;
-                    entityObj.hitIndex++;
-                }
-
-                if (entityObj.hitIndex >= lookupStateToSequence.size()) {
-                    entityObj.hitIndex = 0;
-                    //entityObj.hitIndex++;
-                }
-
-                rate = lookupStateToSequence.get(entityObj.hitIndex).get(entityObj.hitIndex2);
-
-                if (entityObj.hitDelay > 0) {
-                    entityObj.hitDelay--;
-                }
-
-                boolean perEntDelay = false;
-
-                boolean hit = false;
-                if (perEntDelay) {
-                    if (entityObj.hitDelay <= 0) {
-                        entityObj.hitDelay = (amp * rate);
-                        hit = true;
+            entityObj.getNavigator().clearPathEntity();
+            if (!bangDrum) {
+                //entityObj.setSitting(true);
+                entityObj.setDancing(true);
+                this.entityObj.getJumpHelper().setJumping();
+                this.entityObj.rotationYaw = entityObj.world.rand.nextInt(360);
+            } else {
+                entityObj.setDancing(false);
+                if (true || lookUpdateTimer <= 0) {
+                    /*lookUpdateTimer = 5;// + entityObj.world.rand.nextInt(100);
+                    int range = 2;
+                    randXPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
+                    //stargaze
+                    if (entityObj.world.rand.nextInt(3) == 0) {
+                        randYPos = 5+entityObj.world.rand.nextInt(5);
+                    } else {
+                        randYPos = 0;
                     }
-                } else {
-                    hit = entityObj.world.getTotalWorldTime() % (amp * rate) == 0;
-                }
-                //System.out.println(entityObj.world.getTotalWorldTime());
+                    randZPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
 
-                if (hit) {
-                    //System.out.println("stage: " + entityObj.hitIndex + " - " + entityObj.hitIndex2);
-                    entityObj.hitIndex2++;
-                    IBlockState state = entityObj.world.getBlockState(blockposGoal);
-                    if (state.getBlock() instanceof BlockBongoDrum) {
-                        //((BlockBongoDrum) state.getBlock()).playBongoSound(entityObj.world, null, blockposGoal, state);
-                        TropicraftBongos bongo = ((BlockBongoDrum) state.getBlock()).getVariant(state);
-                        float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
-                        entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
-                                SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 6.0F, pitch);
-                        entityObj.swingArm(EnumHand.MAIN_HAND);
+                    entityObj.heal(1);*/
+
+                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
+
+                    //keep for testing, was neat sounding
+                    int amp = 1;//entityObj.world.rand.nextInt(10) + 1;
+                    int rate = 4 + (entityObj.getEntityId() % 7);
+
+                    int index1 = 0;
+
+                    HashMap<Integer, List<Integer>> lookupStateToSequence = new HashMap<>();
+
+                    List<Integer> listDelays = new ArrayList<>();
+                    /*listDelays.add(12);
+                    listDelays.add(6);
+                    listDelays.add(6);
+                    listDelays.add(12);
+                    listDelays.add(6);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(6);*/
+
+                    listDelays.add(9);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(6);
+
+                    lookupStateToSequence.put(index1++, listDelays);
+                    lookupStateToSequence.put(index1++, listDelays);
+                    lookupStateToSequence.put(index1++, listDelays);
+
+                    listDelays = new ArrayList<>();
+                    listDelays.add(9);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(3);
+                    listDelays.add(12);
+
+                    lookupStateToSequence.put(index1++, listDelays);
+
+                    listDelays = new ArrayList<>();
+                    listDelays.add(1);
+                    listDelays.add(1);
+                    listDelays.add(12);
+                    listDelays.add(1);
+                    listDelays.add(1);
+                    listDelays.add(12);
+                    listDelays.add(1);
+                    listDelays.add(1);
+                    listDelays.add(12);
+                    listDelays.add(1);
+                    listDelays.add(1);
+                    listDelays.add(12);
+
+                    //lookupStateToSequence.put(index1++, listDelays);
+
+                    if (false) {
+
+                        //listDelays.clear();
+
+                        listDelays = new ArrayList<>();
+                        listDelays.add(4);
+                        listDelays.add(4);
+                        listDelays.add(4);
+                        listDelays.add(4);
+
+                        /*listDelays.add(6);
+                        listDelays.add(3);
+                        listDelays.add(3);
+                        listDelays.add(6);
+                        listDelays.add(3);
+                        listDelays.add(3);
+                        listDelays.add(6);
+                        listDelays.add(3);
+                        listDelays.add(3);
+                        listDelays.add(6);
+                        listDelays.add(3);
+                        listDelays.add(3);
+                        listDelays.add(40);*/
+
+                        lookupStateToSequence.put(index1++, listDelays);
+
+                        listDelays = new ArrayList<>();
+                        listDelays.add(3);
+                        listDelays.add(3);
+                        listDelays.add(6);
+                        listDelays.add(3);
+                        listDelays.add(3);
+                        listDelays.add(6);
+
+                        lookupStateToSequence.put(index1++, listDelays);
+
+                        listDelays = new ArrayList<>();
+                        listDelays.add(1);
+                        listDelays.add(3);
+                        listDelays.add(1);
+                        listDelays.add(3);
+                        listDelays.add(1);
+                        listDelays.add(3);
+
+                        lookupStateToSequence.put(index1++, listDelays);
+
+                        listDelays = new ArrayList<>();
+                        listDelays.add(2);
+                        listDelays.add(2);
+                        listDelays.add(2);
+                        listDelays.add(2);
+
+                        //lookupStateToSequence.put(2, listDelays);
                     }
+
+                    int nightStart = 12500;
+                    int nightEnd = 23500;
+                    int phases = 4;
+                    int phaseSplit = (nightEnd - nightStart) / phases;
+
+                    int timeOfDay = (int)(entityObj.world.getWorldTime() % 24000);
+                    int nightTime = (timeOfDay - nightStart);
+                    //12500
+                    //23500
+                    //11000 of range
+
+                    amp = 2;
+                    rate = 20;
+
+                    if (nightTime > phaseSplit * 3) {
+                        amp = 1;
+                    } else if (nightTime > phaseSplit * 2) {
+                        amp = 2;
+                    } else if (nightTime > phaseSplit * 1) {
+                        amp = 3;
+                    } else {
+                        amp = 4;
+                    }
+
+                    if (entityObj.hitIndex2 >= lookupStateToSequence.get(entityObj.hitIndex).size()) {
+                        entityObj.hitIndex2 = 0;
+                        entityObj.hitIndex++;
+                    }
+
+                    if (entityObj.hitIndex >= lookupStateToSequence.size()) {
+                        entityObj.hitIndex = 0;
+                        //entityObj.hitIndex++;
+                    }
+
+                    rate = lookupStateToSequence.get(entityObj.hitIndex).get(entityObj.hitIndex2);
+
+                    if (entityObj.hitDelay > 0) {
+                        entityObj.hitDelay--;
+                    }
+
+                    boolean perEntDelay = false;
+
+                    boolean hit = false;
+                    if (perEntDelay) {
+                        if (entityObj.hitDelay <= 0) {
+                            entityObj.hitDelay = (amp * rate);
+                            hit = true;
+                        }
+                    } else {
+                        hit = entityObj.world.getTotalWorldTime() % (amp * rate) == 0;
+                    }
+                    //System.out.println(entityObj.world.getTotalWorldTime());
+
+                    if (hit) {
+                        //System.out.println("stage: " + entityObj.hitIndex + " - " + entityObj.hitIndex2);
+                        entityObj.hitIndex2++;
+                        IBlockState state = entityObj.world.getBlockState(blockposGoal);
+                        if (state.getBlock() instanceof BlockBongoDrum) {
+                            //((BlockBongoDrum) state.getBlock()).playBongoSound(entityObj.world, null, blockposGoal, state);
+                            TropicraftBongos bongo = ((BlockBongoDrum) state.getBlock()).getVariant(state);
+                            float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
+                            entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
+                                    SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 6.0F, pitch);
+                            entityObj.swingArm(EnumHand.MAIN_HAND);
+                        }
+                    }
+
+                    entityObj.syncBPM();
+
                 }
 
-                entityObj.syncBPM();
-
+                this.entityObj.getLookHelper().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+                        8F, 8F);
             }
-            this.entityObj.getLookHelper().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
-                    8F, 8F);
+
         } else {
+            wasClose = false;
             entityObj.setSitting(false);
         }
 
@@ -382,6 +420,7 @@ public class EntityAIPartyTime extends EntityAIBase
         entityObj.setSitting(false);
         walkingTimeout = 0;
         entityObj.setDancing(false);
+        System.out.println("reset party mode");
         /*this.insidePosX = this.doorInfo.getInsideBlockPos().getX();
         this.insidePosZ = this.doorInfo.getInsideBlockPos().getZ();
         this.doorInfo = null;*/
