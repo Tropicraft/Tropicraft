@@ -138,18 +138,6 @@ public class EntityAIPartyTime extends EntityAIBase
             } else {
                 entityObj.setDancing(false);
                 if (true || lookUpdateTimer <= 0) {
-                    /*lookUpdateTimer = 5;// + entityObj.world.rand.nextInt(100);
-                    int range = 2;
-                    randXPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
-                    //stargaze
-                    if (entityObj.world.rand.nextInt(3) == 0) {
-                        randYPos = 5+entityObj.world.rand.nextInt(5);
-                    } else {
-                        randYPos = 0;
-                    }
-                    randZPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
-
-                    entityObj.heal(1);*/
 
                     entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
 
@@ -162,14 +150,6 @@ public class EntityAIPartyTime extends EntityAIBase
                     HashMap<Integer, List<Integer>> lookupStateToSequence = new HashMap<>();
 
                     List<Integer> listDelays = new ArrayList<>();
-                    /*listDelays.add(12);
-                    listDelays.add(6);
-                    listDelays.add(6);
-                    listDelays.add(12);
-                    listDelays.add(6);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(6);*/
 
                     listDelays.add(9);
                     listDelays.add(3);
@@ -212,63 +192,6 @@ public class EntityAIPartyTime extends EntityAIBase
                     listDelays.add(1);
                     listDelays.add(1);
                     listDelays.add(12);
-
-                    //lookupStateToSequence.put(index1++, listDelays);
-
-                    if (false) {
-
-                        //listDelays.clear();
-
-                        listDelays = new ArrayList<>();
-                        listDelays.add(4);
-                        listDelays.add(4);
-                        listDelays.add(4);
-                        listDelays.add(4);
-
-                        /*listDelays.add(6);
-                        listDelays.add(3);
-                        listDelays.add(3);
-                        listDelays.add(6);
-                        listDelays.add(3);
-                        listDelays.add(3);
-                        listDelays.add(6);
-                        listDelays.add(3);
-                        listDelays.add(3);
-                        listDelays.add(6);
-                        listDelays.add(3);
-                        listDelays.add(3);
-                        listDelays.add(40);*/
-
-                        lookupStateToSequence.put(index1++, listDelays);
-
-                        listDelays = new ArrayList<>();
-                        listDelays.add(3);
-                        listDelays.add(3);
-                        listDelays.add(6);
-                        listDelays.add(3);
-                        listDelays.add(3);
-                        listDelays.add(6);
-
-                        lookupStateToSequence.put(index1++, listDelays);
-
-                        listDelays = new ArrayList<>();
-                        listDelays.add(1);
-                        listDelays.add(3);
-                        listDelays.add(1);
-                        listDelays.add(3);
-                        listDelays.add(1);
-                        listDelays.add(3);
-
-                        lookupStateToSequence.put(index1++, listDelays);
-
-                        listDelays = new ArrayList<>();
-                        listDelays.add(2);
-                        listDelays.add(2);
-                        listDelays.add(2);
-                        listDelays.add(2);
-
-                        //lookupStateToSequence.put(2, listDelays);
-                    }
 
                     int nightStart = 12500;
                     int nightEnd = 23500;
@@ -277,12 +200,6 @@ public class EntityAIPartyTime extends EntityAIBase
 
                     int timeOfDay = (int)(entityObj.world.getWorldTime() % 24000);
                     int nightTime = (timeOfDay - nightStart);
-                    //12500
-                    //23500
-                    //11000 of range
-
-                    amp = 2;
-                    rate = 20;
 
                     if (nightTime > phaseSplit * 3) {
                         amp = 1;
@@ -301,7 +218,6 @@ public class EntityAIPartyTime extends EntityAIBase
 
                     if (entityObj.hitIndex >= lookupStateToSequence.size()) {
                         entityObj.hitIndex = 0;
-                        //entityObj.hitIndex++;
                     }
 
                     rate = lookupStateToSequence.get(entityObj.hitIndex).get(entityObj.hitIndex2);
@@ -408,7 +324,7 @@ public class EntityAIPartyTime extends EntityAIBase
         if (this.entityObj.listPosDrums.size() > 0) {
             assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
         }
-        System.out.println("start party mode");
+        //System.out.println("start party mode");
     }
 
     /**
@@ -420,7 +336,7 @@ public class EntityAIPartyTime extends EntityAIBase
         entityObj.setSitting(false);
         walkingTimeout = 0;
         entityObj.setDancing(false);
-        System.out.println("reset party mode");
+        //System.out.println("reset party mode");
         /*this.insidePosX = this.doorInfo.getInsideBlockPos().getX();
         this.insidePosZ = this.doorInfo.getInsideBlockPos().getZ();
         this.doorInfo = null;*/
