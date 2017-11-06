@@ -574,7 +574,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	}
 	
 	public long getTimeOfDay() {
-		return world.getWorldTime() % 24000;
+		return world.getTotalWorldTime() % 24000;
 	}
 
 	public void log(String s) {
