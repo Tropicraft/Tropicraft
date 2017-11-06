@@ -94,7 +94,7 @@ public class GuiTropicsLoading extends GuiScreen {
 
 		screenEntities = Pair.of(ent1, ent2);
 
-		screenItems = Triple.of(stack(ItemRegistry.lemon), stack(BlockRegistry.pineapple), stack(ItemRegistry.orange));
+		screenItems = Triple.of(new ItemStack(ItemRegistry.lemon), new ItemStack(BlockRegistry.pineapple), new ItemStack(ItemRegistry.orange));
 
 		// Pick random subtitle
 		String cat = CATEGORIES[rand.nextInt(CATEGORIES.length)];
@@ -266,14 +266,6 @@ public class GuiTropicsLoading extends GuiScreen {
 		vertexbuffer.pos(width, 0, 0).tex(width / f, 0).color(0.5f, 0.5f, 0.5f, 1f).endVertex();
 		vertexbuffer.pos(0, 0, 0).tex(0, 0).color(0.5f, 0.5f, 0.5f, 1f).endVertex();
 		tessellator.draw();
-	}
-
-	public ItemStack stack(Item i) {
-		return new ItemStack(i);
-	}
-
-	public ItemStack stack(Block i) {
-		return new ItemStack(i);
 	}
 
 }
