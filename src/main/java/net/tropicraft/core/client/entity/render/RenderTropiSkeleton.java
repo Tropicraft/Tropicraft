@@ -21,6 +21,7 @@ public class RenderTropiSkeleton extends RenderBiped<EntityTropiSkeleton> {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelTropiSkeleton(), 0.5F);
         this.layerRenderers.clear();
         this.addLayer(new LayerHeldItemTropiSkelly(this));
+        this.shadowOpaque = 0.5f;
     }
 
     @Override

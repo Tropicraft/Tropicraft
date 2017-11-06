@@ -82,6 +82,9 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if(source.equals(DamageSource.outOfWorld)) {
+			return super.attackEntityFrom(source, amount);
+		}
 		this.getDataManager().set(STATE, STATE_ANGRY);
 
 		if (source.getSourceOfDamage() instanceof EntityPlayer) {

@@ -21,6 +21,7 @@ public class RenderTropiCreeper extends RenderLiving<EntityTropiCreeper>
     {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelTropiCreeper(), 0.5F);
         //this.addLayer(new LayerCreeperCharge(this));
+        this.shadowOpaque = 0.5f;
     }
 
     /**
