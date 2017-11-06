@@ -306,3 +306,18 @@ entity.tropicraft.koa.trade.give=Have some trimix gas!
 entity.tropicraft.koa.trade.not_enough_time=You still need %s more minutes of dive time! No trimix gas for you!
 entity.tropicraft.koa.trade.cooldown=Someone already got trimix gas from me recently
 entity.tropicraft.koa.trade.space=Your inventory is full!
+
+# Loading Screen
+tropicraft.loading.title=Drifting into the Tropics...
+
+tropicraft.loading.knowledge.pre=Did you know?
+tropicraft.loading.knowledge.1=%s The Tropics are home to Koa Tribes
+tropicraft.loading.knowledge.2=%s Turtles can lay eggs on beaches at night
+tropicraft.loading.knowledge.3=%s Shells can be found by sifting sand
+
+tropicraft.loading.hint.pre=Tip:
+tropicraft.loading.hint.1=%s Mature Turtles can be ridden in the water
+tropicraft.loading.hint.2=%s Iguanas hold a grudge, so try to avoid punching them
+
+tropicraft.loading.misc.1=Don't forget to hold your breath!
+tropicraft.loading.misc.2=Prepare to make a splash

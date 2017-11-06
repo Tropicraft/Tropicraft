@@ -37,6 +37,7 @@ import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.PlayerSwimDataClientHandler;
 import net.tropicraft.core.client.ScubaHandler;
+import net.tropicraft.core.client.TropicraftLoadingListener;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
@@ -82,6 +83,7 @@ public class ClientProxy extends CommonProxy {
 
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
+		MinecraftForge.EVENT_BUS.register(new TropicraftLoadingListener());
 
 
 		// For rendering drink mixer in inventory
