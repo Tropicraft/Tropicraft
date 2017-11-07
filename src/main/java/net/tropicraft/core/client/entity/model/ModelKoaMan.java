@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -231,11 +232,13 @@ public class ModelKoaMan extends ModelBiped {
             }
         }
 
+        float ticks = (entityIn.ticksExisted + Minecraft.getMinecraft().getRenderPartialTicks()) % 360;
+
         if (isDancing) {
-            this.bipedHead.offsetY = 0.01F + (float)Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.02F;
-            this.bipedHead.offsetX = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.02F;
+            this.bipedHead.offsetY = 0.01F + (float)Math.sin(Math.toRadians(ticks * 35F)) * 0.02F;
+            this.bipedHead.offsetX = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.02F;
             this.bipedHead.offsetZ = 0;
-            this.bipedHead.rotateAngleZ = (float)Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * 0.05F;
+            this.bipedHead.rotateAngleZ = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.05F;
         } else {
             this.bipedHead.offsetY = 0;
             this.bipedHead.offsetX = 0;
@@ -250,9 +253,9 @@ public class ModelKoaMan extends ModelBiped {
 
             float amp = 0.5F;
 
-            double x = Math.PI + Math.PI / 4 + (float) Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
-            double y = Math.sin(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
-            double z = (float) Math.cos(Math.toRadians((entityIn.world.getTotalWorldTime() % 360) * 35F)) * amp;
+            double x = Math.PI + Math.PI / 4 + (float) Math.sin(Math.toRadians(ticks * 35F)) * amp;
+            double y = Math.sin(Math.toRadians(ticks * 35F)) * amp;
+            double z = (float) Math.cos(Math.toRadians(ticks * 35F)) * amp;
 
             this.bipedRightArm.rotateAngleX += x;
             this.bipedRightArm.rotateAngleY += y;
