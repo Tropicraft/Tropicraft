@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -149,49 +150,13 @@ public class EntityAIPartyTime extends EntityAIBase
 
                     HashMap<Integer, List<Integer>> lookupStateToSequence = new HashMap<>();
 
-                    List<Integer> listDelays = new ArrayList<>();
-
-                    listDelays.add(9);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(6);
+                    List<Integer> listDelays = Lists.newArrayList(9, 3, 3, 3, 6);
 
                     lookupStateToSequence.put(index1++, listDelays);
                     lookupStateToSequence.put(index1++, listDelays);
                     lookupStateToSequence.put(index1++, listDelays);
 
-                    listDelays = new ArrayList<>();
-                    listDelays.add(9);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(3);
-                    listDelays.add(12);
-
-                    lookupStateToSequence.put(index1++, listDelays);
-
-                    listDelays = new ArrayList<>();
-                    listDelays.add(1);
-                    listDelays.add(1);
-                    listDelays.add(12);
-                    listDelays.add(1);
-                    listDelays.add(1);
-                    listDelays.add(12);
-                    listDelays.add(1);
-                    listDelays.add(1);
-                    listDelays.add(12);
-                    listDelays.add(1);
-                    listDelays.add(1);
-                    listDelays.add(12);
+                    lookupStateToSequence.put(index1++, Lists.newArrayList(9, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 12));
 
                     int nightStart = 12500;
                     int nightEnd = 23500;
