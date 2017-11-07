@@ -744,13 +744,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	public void setTexture(String s) {
 		if(s.length() == 0) return;
-		if(!world.isRemote) {
-			this.getDataManager().set(TEXTURE, s);
-		}
+		this.getDataManager().set(TEXTURE, s);
 	}
 	
 	public void assignRandomTexture() {
-		if(!world.isRemote && getTexturePool() != null) {
+		if(getTexturePool() != null) {
 			if(getTexturePool().length > 0) {
 				setTexture(getTexturePool()[rand.nextInt(getTexturePool().length)]);
 			}
