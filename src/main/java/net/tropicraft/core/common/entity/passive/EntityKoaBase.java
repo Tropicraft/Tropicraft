@@ -81,6 +81,8 @@ public class EntityKoaBase extends EntityVillager {
     private boolean wasNightLastTick = false;
     private boolean wantsToParty = false;
 
+    public boolean jumpingOutOfWater = false;
+
     public int hitIndex = 0;
     public int hitIndex2 = 0;
     public int hitIndex3 = 0;
@@ -899,7 +901,19 @@ public class EntityKoaBase extends EntityVillager {
             if (!isInWater()) {
                 if (isCollidedHorizontally) {
                     this.motionY += 0.4F;
+                    jumpingOutOfWater = true;
                 }
+            }
+        }
+
+        /**
+         * hacky fix for koa spinning in spot when leaping out of water,
+         * real issue is that their path node is still under the dock when theyre ontop of dock
+         */
+        if (jumpingOutOfWater) {
+            if (onGround) {
+                jumpingOutOfWater = false;
+                this.getNavigator().clearPathEntity();
             }
         }
 
