@@ -308,7 +308,8 @@ entity.tropicraft.koa.trade.cooldown=Someone already got trimix gas from me rece
 entity.tropicraft.koa.trade.space=Your inventory is full!
 
 # Loading Screen
-tropicraft.loading.title=Drifting into the Tropics...
+tropicraft.loading.title.greeting=Drifting into the Tropics...
+tropicraft.loading.title.farewell=Wish you were here...
 
 tropicraft.loading.knowledge.pre=Did you know?
 tropicraft.loading.knowledge.1=%s The Tropics are home to Koa Tribes

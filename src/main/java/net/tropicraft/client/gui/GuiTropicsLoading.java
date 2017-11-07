@@ -8,7 +8,6 @@ import java.util.Random;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -19,12 +18,15 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.GlStateManager.CullFace;
+import net.minecraft.client.renderer.GlStateManager.DestFactor;
+import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.shader.ShaderLoader.ShaderType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketKeepAlive;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -55,9 +57,14 @@ public class GuiTropicsLoading extends GuiScreen {
 	private String screenTitle = "";
 	private String screenBackground = BACKGROUNDS[0];
 	private boolean screenReassign = false;
+	private boolean isLeaving = false;
 
 	public GuiTropicsLoading(NetHandlerPlayClient netHandler) {
 		this.connection = netHandler;
+	}
+	
+	public void setLeaving(boolean b) {
+		isLeaving = b;
 	}
 
 	@Override
@@ -145,11 +152,11 @@ public class GuiTropicsLoading extends GuiScreen {
 
 		drawBackground(sr.getScaledWidth(), sr.getScaledHeight());
 		if (screenEntities != null) {
+			//TODO: Cast some kind of entity shadows
 			drawScreenEntity(screenEntities.getLeft(), sr.getScaledWidth() / 2 - 120,
 					(sr.getScaledHeight() / 2) + 60, 50, -90 + (int) (this.lastWorldUpdateTick * 2), 20);
 			drawScreenEntity(screenEntities.getRight(), sr.getScaledWidth() / 2 + 120,
 					(sr.getScaledHeight() / 2) + 60, 50, 90 - (int) (this.lastWorldUpdateTick * 2), 20);
-
 			drawScreenItemStack(screenItems.getLeft(), (sr.getScaledWidth() / 2) - 8 - 24,
 					(sr.getScaledHeight() / 2) + 8, 1.5f);
 			drawScreenItemStack(screenItems.getMiddle(), (sr.getScaledWidth() / 2) - 12,
@@ -157,7 +164,7 @@ public class GuiTropicsLoading extends GuiScreen {
 			drawScreenItemStack(screenItems.getRight(), (sr.getScaledWidth() / 2) - 8 + 16,
 					(sr.getScaledHeight() / 2) + 8, 1.5f);
 		}
-		String msg = net.minecraft.util.text.translation.I18n.translateToLocal("tropicraft.loading.title");
+		String msg = net.minecraft.util.text.translation.I18n.translateToLocal("tropicraft.loading.title."+(this.isLeaving ? "greeting" : "farewell"));
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((sr.getScaledWidth()) / 2 - (f.getStringWidth(msg) / 2),
 				(sr.getScaledHeight() / 4) - 30, 0);
@@ -197,7 +204,7 @@ public class GuiTropicsLoading extends GuiScreen {
 	private void drawScreenEntity(Entity ent, float x, float y, float scale, float yaw, float pitch) {
 		GlStateManager.enableColorMaterial();
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x, y, 50.0F);
+		GlStateManager.translate(x, y, 500.0F);
 		GlStateManager.scale(-scale, scale, scale);
 		GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
 		float f, f1, f2, f3, f4;
@@ -222,6 +229,7 @@ public class GuiTropicsLoading extends GuiScreen {
 
 		}
 		GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
+	//	RenderHelper.enableGUIStandardItemLighting();
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(-((float) Math.atan((double) (pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
