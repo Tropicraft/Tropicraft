@@ -52,7 +52,7 @@ public class TownKoaVillageGenHelper {
 
             WorldDataInstance storage = parWorld.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
             if (storage != null) {
-                int minDistBetweenVillages = 256;
+                int minDistBetweenVillages = 512;
 
                 Iterator it = storage.lookupTickingManagedLocations.values().iterator();
                 while (it.hasNext()) {
