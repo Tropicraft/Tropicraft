@@ -25,6 +25,9 @@ public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineT
 
 	@Override
     public void renderTileEntityAt(T te, double x, double y, double z, float partialTicks, int destroyStage) {
+	    if (te == null) {
+	        return;
+	    }
         GlStateManager.pushMatrix();
 		GlStateManager.translate((float)x+0.5f,(float)y+1.5f,(float)z+0.5f);
 		GlStateManager.rotate(180f, 1f, 0f, 1f);
@@ -41,7 +44,7 @@ public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineT
 			GlStateManager.rotate(angle, 0f, 1f, 0f);
 		}
 
-		TropicraftRenderUtils.bindTextureTE(model.getTexture());
+		TropicraftRenderUtils.bindTextureTE(model.getTexture(te.isActive()));
 		model.renderAsBlock();
 		
 		if (te != null) {

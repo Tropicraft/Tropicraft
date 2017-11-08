@@ -156,7 +156,7 @@ public class ModelDrinkMixer extends ModelBlock
     }
     
     @Override
-    public String getTexture() {
+    public String getTexture(boolean active) {
         return "drink_mixer";
     }
 

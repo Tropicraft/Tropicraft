@@ -156,8 +156,8 @@ public class ModelAirCompressor extends ModelBlock
     }
     
     @Override
-    public String getTexture() {
-        return "air_compressor";
+    public String getTexture(boolean active) {
+        return active ? "air_compressor_blow" : "air_compressor";
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

@@ -6,5 +6,5 @@ public abstract class ModelBlock extends ModelBase {
 
     public abstract void renderAsBlock();
 
-    public abstract String getTexture();
+    public abstract String getTexture(boolean active);
 }
