@@ -202,7 +202,6 @@ public class GuiTropicsLoading extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		mc.displayGuiScreen(null);
 	}
 
 	@Override
