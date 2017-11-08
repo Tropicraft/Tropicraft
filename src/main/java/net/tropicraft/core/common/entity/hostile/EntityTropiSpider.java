@@ -184,7 +184,7 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 
 	@Override
 	public boolean canBePushed() {
-		return !this.getType().equals(Type.MOTHER);
+		return this.getType() != Type.MOTHER;
 	}
 
 	public void buildNest() {
