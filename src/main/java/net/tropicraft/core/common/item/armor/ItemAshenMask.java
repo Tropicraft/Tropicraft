@@ -15,14 +15,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Names;
 import net.tropicraft.core.common.enums.AshenMasks;
+import net.tropicraft.core.registry.ItemRegistry;
 
 
 public class ItemAshenMask extends ItemTropicraftArmor {
 
-    public ItemAshenMask(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
+    public ItemAshenMask(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot, AshenMasks maskType) {
         super(material, renderIndex, slot);
         setHasSubtypes(true);
         this.maxStackSize = 64;
+        ItemRegistry.maskMap.put(maskType, this);
     }
 
     /**
@@ -35,28 +37,6 @@ public class ItemAshenMask extends ItemTropicraftArmor {
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
 
-    }
-
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List list) {
-        for (AshenMasks type : AshenMasks.VALUES) {
-            list.add(new ItemStack(item, 1, type.getMeta()));
-        }
-    }
-
-    /**
-     * Returns the unlocalized name of this item. This version accepts an
-     * ItemStack so different stacks can have different names based on their
-     * damage or NBT.
-     */
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, 15);
-        return super.getUnlocalizedName() + "." + Names.MASK_NAMES[i];
     }
 
     @Override

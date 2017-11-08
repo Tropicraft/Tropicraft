@@ -1,6 +1,7 @@
 package net.tropicraft.core.registry;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -203,7 +204,21 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item trimix;
 
     public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", "mask", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
-    public static Item ashenMask;
+    public static Item maskSquareZord;
+    public static Item maskHornMonkey;
+    public static Item maskOblongatron;
+    public static Item maskHeadinator;
+    public static Item maskSquareHorn;
+    public static Item maskScrewAttack;
+    public static Item maskTheBrain;
+    public static Item maskBatBoy;
+    public static Item mask1;
+    public static Item mask2;
+    public static Item mask3;
+    public static Item mask4;
+    public static Item mask5;
+    
+    public static final Map<AshenMasks, Item> maskMap = new HashMap<>();
 
     // Linked as to maintain the same order as the block registry
     private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new LinkedHashMap<>();
@@ -335,7 +350,19 @@ public class ItemRegistry extends TropicraftRegistry {
 
         trimix = registerItem(new ItemTropicraft().setMaxStackSize(1), "trimix");
         
-        ashenMask = registerMultiItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD), "mask", AshenMasks.VALUES);
+        maskSquareZord = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SQUARE_ZORD), "mask_square_zord");
+        maskHornMonkey = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.HORN_MONKEY), "mask_horn_monkey");
+        maskOblongatron = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.OBLONGATRON), "mask_oblongatron");
+        maskHeadinator = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.HEADINATOR), "mask_headinator");
+        maskSquareHorn = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SQUARE_HORN), "mask_square_horn");
+        maskScrewAttack = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SCREW_ATTACK), "mask_screw_attack");
+        maskTheBrain = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.THE_BRAIN), "mask_the_brain");
+        maskBatBoy = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.BAT_BOY), "mask_bat_boy");
+        mask1 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK1), "mask_ashen_mask1");
+        mask2 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK2), "mask_ashen_mask2");
+        mask3 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK3), "mask_ashen_mask3");
+        mask4 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK4), "mask_ashen_mask4");
+        mask5 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK5), "mask_ashen_mask5");
     }
 
     public static void init() {

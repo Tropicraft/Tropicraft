@@ -13,6 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityLostMask extends Entity {
@@ -134,7 +135,7 @@ public class EntityLostMask extends Entity {
 	}
 
 	public void dropItemStack() {
-		this.entityDropItem(new ItemStack(ItemRegistry.ashenMask, 1, getColor()), 0.0F);
+		this.entityDropItem(new ItemStack(ItemRegistry.maskMap.get(AshenMasks.VALUES[this.getType()]), 1, getColor()), 0.0F);
 	}
 
 	private void setRotator(int[] a) {
