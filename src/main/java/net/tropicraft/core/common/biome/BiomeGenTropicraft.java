@@ -76,7 +76,7 @@ public class BiomeGenTropicraft extends Biome {
         this.spawnableMonsterList.add(new SpawnListEntry(EntityIguana.class, 15, 1, 1));
 
         this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiCreeper.class, 4, 1, 2));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEIH.class, 10, 1, 1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityEIH.class, 5, 1, 1));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiSkeleton.class, 8, 2, 8));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityAshenHunter.class, 6, 3, 10));
 

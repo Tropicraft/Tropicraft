@@ -1,5 +1,8 @@
 package net.tropicraft.core.common.entity.hostile;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -15,6 +18,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLandHostile;
 import net.tropicraft.core.registry.SoundRegistry;
@@ -29,7 +33,7 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 
 	public EntityEIH(World world) {
 		super(world);
-		setSize(1.2F, 4.0F);
+		setSize(1.2F, 3.8F);
 		this.isImmuneToFire = true;
 		this.experienceValue = 10;
 
@@ -77,6 +81,8 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 	}
 
 	public int getState() {
+		setSize(1.2F, 3.25F);
+
 		return this.getDataManager().get(STATE);
 	}
 
@@ -117,6 +123,7 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
+		
 		//aware was never properly used, so I've adjusted this code to use short noise for angry but without target
 		if (getState() == STATE_ANGRY && getAttackTarget() != null) {
 			return rand.nextInt(10) == 0 ? SoundRegistry.get("headmed") : null;
@@ -141,5 +148,15 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 	@Override
 	protected float getSoundVolume() {
 		return 0.4F;
+	}
+	
+	@Nullable
+	public AxisAlignedBB getCollisionBox(Entity entityIn) {
+		return this.getEntityBoundingBox();
+	}
+
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox() {
+		return this.getEntityBoundingBox();
 	}
 }

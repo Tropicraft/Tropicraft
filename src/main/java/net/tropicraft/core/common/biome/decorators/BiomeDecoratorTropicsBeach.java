@@ -17,7 +17,7 @@ import java.util.Random;
 public class BiomeDecoratorTropicsBeach extends BiomeDecoratorTropicraft {
 
     public static final int TREASURE_CHANCE = 3;
-    private static final int VILLAGE_CHANCE = 15;
+    private static final int VILLAGE_CHANCE = 25;
 
     public BiomeDecoratorTropicsBeach() {
 
