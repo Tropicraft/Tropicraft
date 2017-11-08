@@ -26,32 +26,15 @@ import net.tropicraft.core.common.entity.egg.EntityTropiSpiderEgg;
 
 public class EntityTropiSpider extends EntitySpider implements IMob {
 
-	private static final DataParameter<Byte> TYPE = EntityDataManager.<Byte>createKey(EntityTropiSpider.class,
-			DataSerializers.BYTE);
+	private static final DataParameter<Byte> TYPE = EntityDataManager.<Byte>createKey(EntityTropiSpider.class, DataSerializers.BYTE);
 	private static final int SPIDER_MATURE_AGE = 20 * 60 * 10; // From child to adult in 10 real minutes
 	private static final int SPIDER_MAX_EGGS = 10;
 	private static final long SPIDER_MIN_EGG_DELAY = 12000; // Once per half minecraft day minimum
 	private static final int SPIDER_EGG_CHANCE = 1000;
 
-	@Override
-	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
-		if(damageSrc.getEntity() != null && damageSrc.getEntity() instanceof EntityLivingBase) {
-			this.setAttackTarget((EntityLivingBase)damageSrc.getEntity());
-		}
-		super.damageEntity(damageSrc, damageAmount);
-	}
-
-
 	private BlockPos nestSite;
 	private EntityTropiSpider mother = null;
 	private long ticksSinceLastEgg = 0L;
-
-	public static class Type {
-		public static final byte ADULT = 0;
-		public static final byte MOTHER = 1;
-		public static final byte CHILD = 2;
-	}
-
 	public byte initialType = 0;
 
 	public EntityTropiSpider(World par1World) {
@@ -87,7 +70,14 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 		this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 	}
-
+	
+	@Override
+	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
+		if(damageSrc.getEntity() != null && damageSrc.getEntity() instanceof EntityLivingBase) {
+			this.setAttackTarget((EntityLivingBase)damageSrc.getEntity());
+		}
+		super.damageEntity(damageSrc, damageAmount);
+	}
 
 	@Override
 	protected void dropFewItems(boolean par1, int par2) {
@@ -98,7 +88,6 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 	}
 
 	public boolean isOnLadder() {
-		//return true;
 		return this.isBesideClimbableBlock() && this.getNavigator().noPath();
 	}
 
@@ -124,7 +113,6 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 				&& this.getAttackTarget().getDistanceToEntity(this) < 5) {
 			this.getNavigator().clearPathEntity();
 			this.jump();
-			//this.faceEntity(this.getAttackTarget(), 15f, 15f);
 			this.jumpMovementFactor = 0.3f;
 		}else {
 			this.jumpMovementFactor = 0.2f;
@@ -196,7 +184,7 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 
 	@Override
 	public boolean canBePushed() {
-		return this.getType() != Type.MOTHER;
+		return !this.getType().equals(Type.MOTHER);
 	}
 
 	public void buildNest() {
@@ -204,7 +192,7 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 			this.setType(Type.MOTHER);
 			int r = rand.nextInt(SPIDER_MAX_EGGS)+1;
 			
-			if(r < 1) {
+			if(r < 2) {
 				return;
 			}
 			
@@ -259,5 +247,11 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 
 
 	public void setInWeb() {
+	}
+	
+	public static class Type {
+		public static final byte ADULT = 0;
+		public static final byte MOTHER = 1;
+		public static final byte CHILD = 2;
 	}
 }
