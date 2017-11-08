@@ -145,7 +145,7 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound n) {
-		n.setInteger("frogType", (byte)getType().ordinal());
+		n.setInteger("frogType", getType().ordinal());
 		super.writeEntityToNBT(n);
 	}
 
