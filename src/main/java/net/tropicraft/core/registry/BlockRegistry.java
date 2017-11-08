@@ -209,7 +209,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
 		ore = registerBlock(new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES));
 		// FIXME ew
-		oreBlock = registerBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.VALUES) {
+		oreBlock = registerBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.ORES_WITH_BLOCKS) {
 		    @Override
 		    public Item getItem(Block block) {
 	            return new ItemBlockTropicraft(block, variants.toArray(new ITropicraftVariant[variants.size()])) {
