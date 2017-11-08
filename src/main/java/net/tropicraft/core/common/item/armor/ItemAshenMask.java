@@ -1,20 +1,13 @@
 package net.tropicraft.core.common.item.armor;
 
-import java.util.List;
-
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.Names;
+import net.tropicraft.core.client.entity.model.RenderArmorMask;
 import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -51,7 +44,7 @@ public class ItemAshenMask extends ItemTropicraftArmor {
     @Override
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         if (armorSlot == EntityEquipmentSlot.HEAD) // head
-            return new RenderArmorMask (maskType.getMeta());
+            return new RenderArmorMask(maskType.getMeta());
         else
             return null;
     }

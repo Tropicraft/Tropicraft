@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.item.armor;
+package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
