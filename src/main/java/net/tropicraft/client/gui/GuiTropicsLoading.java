@@ -31,6 +31,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
@@ -68,6 +69,7 @@ public class GuiTropicsLoading extends GuiScreen {
 	private String screenBackground = BACKGROUNDS[0];
 	private boolean screenReassign = false;
 	private boolean isLeaving = false;
+	private boolean isEgg = false;
 
 	public GuiTropicsLoading() {
 		this.connection = (NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler();
@@ -100,6 +102,14 @@ public class GuiTropicsLoading extends GuiScreen {
 			this.assignScreenContent();
 			this.screenReassign = false;
 		}
+		
+		if(this.screenEntities.getLeft() instanceof EntityKoaHunter) {
+			this.screenEntities.getLeft().ticksExisted++;
+		}
+		if(this.screenEntities.getRight() instanceof EntityKoaHunter) {
+			this.screenEntities.getRight().ticksExisted++;
+		}
+		
 		this.animTick++;
 	}
 
@@ -129,11 +139,10 @@ public class GuiTropicsLoading extends GuiScreen {
 		ArrayList<String> ta = new ArrayList<String>(Arrays.asList(backgroundToEntityMap.get(screenBackground)));
 
 		String firstEnt = ta.get(rand.nextInt(ta.size()));
-		Entity ent1 = EntityList.createEntityByName(TropicraftRegistry.getNamePrefixed(firstEnt), mc.world);
+		Entity ent1 = eggWrap(EntityList.createEntityByName(TropicraftRegistry.getNamePrefixed(firstEnt), mc.world),0);
 		ta.remove(firstEnt);
-		Entity ent2 = EntityList.createEntityByName(TropicraftRegistry.getNamePrefixed(ta.get(rand.nextInt(ta.size()))),
-				mc.world);
-
+		Entity ent2 = eggWrap(EntityList.createEntityByName(TropicraftRegistry.getNamePrefixed(ta.get(rand.nextInt(ta.size()))), mc.world),1);
+		
 		// make sure these entities have a random texture assigned
 		if (ent1 instanceof EntityTropicraftWaterBase)
 			((EntityTropicraftWaterBase) ent1).assignRandomTexture();
@@ -289,4 +298,15 @@ public class GuiTropicsLoading extends GuiScreen {
 		tessellator.draw();
 	}
 
+	public Entity eggWrap(Entity e, int s) {
+		if((rand.nextInt(40) == 0 && s == 0) || isEgg) {
+			EntityKoaHunter koa = new EntityKoaHunter(e.world);
+			koa.setDancing(true);
+			koa.setSneaking(true);
+			koa.ticksExisted = rand.nextInt(50);
+			isEgg = !isEgg;
+			return koa;
+		}
+		return e;
+	}
 }

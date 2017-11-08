@@ -32,8 +32,7 @@ public class TropicraftLoadingListener {
 
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent evt) {
-		if (evt.getGui() instanceof GuiDownloadTerrain)
-		{
+		if (evt.getGui() instanceof GuiDownloadTerrain) {
 			if (FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient) {
 				if (mc.player != null) {
 					GuiTropicsLoading guiLoading = new GuiTropicsLoading();
