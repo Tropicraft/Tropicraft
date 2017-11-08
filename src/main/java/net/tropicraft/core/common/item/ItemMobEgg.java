@@ -108,7 +108,6 @@ public class ItemMobEgg extends ItemTropicraft {
 			EntityTreeFrog.Type frogType = null;
 			
 			if(entityID.endsWith("frog")) {
-				System.out.println("Ends in frog");
 				for(EntityTreeFrog.Type type : EntityTreeFrog.Type.values()) {
 					if(entityID.equals(TropicraftRegistry.getNamePrefixed(type.getColor()+"frog"))) {
 						entityID = TropicraftRegistry.getNamePrefixed("treefrog");
