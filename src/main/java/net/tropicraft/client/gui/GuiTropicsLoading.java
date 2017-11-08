@@ -11,7 +11,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.renderer.GlStateManager;
@@ -25,41 +25,48 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketKeepAlive;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.common.entity.hostile.EntityAshenHunter;
+import net.tropicraft.core.common.entity.hostile.EntityIguana;
+import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
+import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.core.common.entity.passive.EntityFailgull;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
+import net.tropicraft.core.common.entity.passive.EntityVMonkey;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityMarlin;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySeahorse;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityShark;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
-import net.tropicraft.core.registry.TropicraftRegistry;
 
 @SideOnly(Side.CLIENT)
-public class GuiTropicsLoading extends GuiScreen {
+public class GuiTropicsLoading extends GuiDownloadTerrain {
 
 	private static final String[] CATEGORIES = { "misc", "knowledge", "hint" };
 	private static final String[] BACKGROUNDS = { "loading_bg1", "loading_bg2", "loading_bg3" };
 
-	private static final String[] MOBS_WATER = { "marlin", "dolphin", "hammerhead", "turtle", "seahorse", "failgull" };
-	private static final String[] MOBS_LAND = { "iguana", "failgull", "redfrog", "bluefrog", "greenfrog", "yellowfrog",
-			"monkey" };
-	private static final String[] MOBS_VILLAGE = { "koa", "ashen", "tropicreeper", "tropiskelly" };
+	private static final Class[] MOBS_WATER = { EntityMarlin.class, EntityDolphin.class, EntityShark.class,
+			EntitySeaTurtle.class, EntitySeahorse.class, EntityFailgull.class };
+	// TODO: Add EntityTreeFrog from merge
+	private static final Class[] MOBS_LAND = { EntityIguana.class, EntityFailgull.class, EntityVMonkey.class };
+	private static final Class[] MOBS_VILLAGE = { EntityKoaBase.class, EntityAshenHunter.class, EntityTropiCreeper.class, EntityTropiSkeleton.class };
 
-	private static final ItemStack[] ITEMS = { 
-			new ItemStack(ItemRegistry.lemon), new ItemStack(ItemRegistry.lime),
+	private static final ItemStack[] ITEMS = { new ItemStack(ItemRegistry.lemon), new ItemStack(ItemRegistry.lime),
 			new ItemStack(ItemRegistry.orange), new ItemStack(BlockRegistry.coconut),
 			new ItemStack(BlockRegistry.coconut), new ItemStack(ItemRegistry.coconutBomb),
-			new ItemStack(ItemRegistry.bambooStick), new ItemStack(ItemRegistry.bambooMug) 
-	};
-	
-	private final Minecraft mc = FMLClientHandler.instance().getClient();
-	private final NetHandlerPlayClient connection;
-	private final HashMap<String, String[]> backgroundToEntityMap = new HashMap<String, String[]>();
+			new ItemStack(ItemRegistry.bambooStick), new ItemStack(ItemRegistry.bambooMug) };
 
-	private int progress;
+	private final Minecraft mc = FMLClientHandler.instance().getClient();
+	private final HashMap<String, Class[]> backgroundToEntityMap = new HashMap<String, Class[]>();
+
 	private Random rand = new Random();
 	private long animTick = 0L;
 
@@ -72,7 +79,7 @@ public class GuiTropicsLoading extends GuiScreen {
 	private boolean isEgg = false;
 
 	public GuiTropicsLoading() {
-		this.connection = (NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler();
+		super((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
 		backgroundToEntityMap.put(BACKGROUNDS[0], MOBS_WATER);
 		backgroundToEntityMap.put(BACKGROUNDS[1], MOBS_LAND);
 		backgroundToEntityMap.put(BACKGROUNDS[2], MOBS_VILLAGE);
@@ -85,31 +92,20 @@ public class GuiTropicsLoading extends GuiScreen {
 	}
 
 	@Override
-	public void initGui() {
-		this.buttonList.clear();
-	}
-
-	@Override
 	public void updateScreen() {
-		++this.progress;
-		if (this.progress % 20 == 0) {
-			this.connection.sendPacket(new CPacketKeepAlive());
-		}
-		if(this.progress % 200 == 0) {
-			assignScreenContent();
-		}
+		super.updateScreen();
 		if (this.screenReassign) {
 			this.assignScreenContent();
 			this.screenReassign = false;
 		}
-		
-		if(this.screenEntities.getLeft() instanceof EntityKoaHunter) {
+
+		if (this.screenEntities.getLeft() instanceof EntityKoaHunter) {
 			this.screenEntities.getLeft().ticksExisted++;
 		}
-		if(this.screenEntities.getRight() instanceof EntityKoaHunter) {
+		if (this.screenEntities.getRight() instanceof EntityKoaHunter) {
 			this.screenEntities.getRight().ticksExisted++;
 		}
-		
+
 		this.animTick++;
 	}
 
@@ -136,13 +132,15 @@ public class GuiTropicsLoading extends GuiScreen {
 		screenBackground = BACKGROUNDS[rand.nextInt(BACKGROUNDS.length)];
 
 		// Assign random entities from the associated background
-		ArrayList<String> ta = new ArrayList<String>(Arrays.asList(backgroundToEntityMap.get(screenBackground)));
+		ArrayList<Class> ta = new ArrayList<Class>(Arrays.asList(backgroundToEntityMap.get(screenBackground)));
 
-		String firstEnt = ta.get(rand.nextInt(ta.size()));
-		Entity ent1 = eggWrap(EntityList.createEntityByName(TropicraftRegistry.getNamePrefixed(firstEnt), mc.world),0);
-		ta.remove(firstEnt);
-		Entity ent2 = eggWrap(EntityList.createEntityByName(TropicraftRegistry.getNamePrefixed(ta.get(rand.nextInt(ta.size()))), mc.world),1);
-		
+		Class firstEntClass = ta.get(rand.nextInt(ta.size()));
+		String firstEnt = EntityList.getEntityStringFromClass(firstEntClass);
+		Entity ent1 = eggWrap(EntityList.createEntityByName(firstEnt, mc.world), 0);
+		ta.remove(firstEntClass);
+		Entity ent2 = eggWrap(EntityList.createEntityByName(EntityList.getEntityStringFromClass(ta.get(rand.nextInt(ta.size()))), mc.world), 1);
+
+		System.out.println(firstEntClass.getName()+":"+ent1+" ");
 		// make sure these entities have a random texture assigned
 		if (ent1 instanceof EntityTropicraftWaterBase)
 			((EntityTropicraftWaterBase) ent1).assignRandomTexture();
@@ -150,7 +148,7 @@ public class GuiTropicsLoading extends GuiScreen {
 			((EntityTropicraftWaterBase) ent2).assignRandomTexture();
 
 		screenEntities = Pair.of(ent1, ent2);
-		
+
 		// Assign random items
 		ArrayList<ItemStack> possibleStacks = new ArrayList<ItemStack>(Arrays.asList(ITEMS));
 		ItemStack left = possibleStacks.get(rand.nextInt(possibleStacks.size()));
@@ -201,8 +199,6 @@ public class GuiTropicsLoading extends GuiScreen {
 				((sr.getScaledHeight() / 1.2f)) + 5, 0xf7bf56);
 
 		GlStateManager.color(1f, 1f, 1f, 1f);
-
-		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
@@ -299,7 +295,7 @@ public class GuiTropicsLoading extends GuiScreen {
 	}
 
 	public Entity eggWrap(Entity e, int s) {
-		if((rand.nextInt(40) == 0 && s == 0) || isEgg) {
+		if ((rand.nextInt(40) == 0 && s == 0) || isEgg) {
 			EntityKoaHunter koa = new EntityKoaHunter(e.world);
 			koa.setDancing(true);
 			koa.setSneaking(true);
