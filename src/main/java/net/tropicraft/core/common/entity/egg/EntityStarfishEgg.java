@@ -1,6 +1,9 @@
-package net.tropicraft.core.common.entity.underdasea;
+package net.tropicraft.core.common.entity.egg;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
+import net.tropicraft.core.common.entity.underdasea.StarfishType;
 
 public class EntityStarfishEgg extends EntityEchinodermEgg {
 	private StarfishType starfishType;
@@ -15,10 +18,17 @@ public class EntityStarfishEgg extends EntityEchinodermEgg {
 		this.starfishType = starfishType;
 	}
 
+
 	@Override
-	public EntityEchinoderm createBaby() {
+	public String getEggTexture() {
+		return "starfishegg";
+	}
+
+	@Override
+	public Entity onHatch() {
 		EntityStarfish baby = new EntityStarfish(world, true);
 		baby.setStarfishType(starfishType);
 		return baby;
 	}
+
 }

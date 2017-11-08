@@ -4,8 +4,10 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLand;
+import net.tropicraft.core.common.entity.egg.EntityEchinodermEgg;
+import net.tropicraft.core.common.entity.egg.EntitySeaUrchinEgg;
+import net.tropicraft.core.common.entity.egg.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityEchinoderm;
-import net.tropicraft.core.common.entity.underdasea.EntityEchinodermEgg;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityPiranha extends EntitySchoolableFish implements IAtlasFish, IPredatorDiet{

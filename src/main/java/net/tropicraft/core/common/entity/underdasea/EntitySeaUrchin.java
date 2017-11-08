@@ -7,6 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.entity.egg.EntityEgg;
+import net.tropicraft.core.common.entity.egg.EntitySeaUrchinEgg;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntitySeaUrchin extends EntityEchinoderm {
@@ -85,7 +87,7 @@ public class EntitySeaUrchin extends EntityEchinoderm {
 	}
 
 	@Override
-	public EntityEchinodermEgg createEgg() {
+	public EntityEgg createEgg() {
 		return new EntitySeaUrchinEgg(world);
 	}
 

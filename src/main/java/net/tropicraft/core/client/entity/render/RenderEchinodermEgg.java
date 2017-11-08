@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
-import net.tropicraft.core.common.entity.underdasea.EntityEchinodermEgg;
+import net.tropicraft.core.common.entity.egg.EntityEchinodermEgg;
 
 public class RenderEchinodermEgg extends Render<EntityEchinodermEgg> {
 
