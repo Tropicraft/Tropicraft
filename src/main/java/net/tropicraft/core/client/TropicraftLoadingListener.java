@@ -33,7 +33,7 @@ public class TropicraftLoadingListener {
 
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent evt) {
-		if (evt.getGui() instanceof GuiDownloadTerrain) {
+		if (evt.getGui() instanceof GuiDownloadTerrain){
 			if (FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient) {
 				if (mc.player != null) {
 					if (guiLoading == null) {
@@ -48,6 +48,7 @@ public class TropicraftLoadingListener {
 					guiLoading.setLeaving(isLeaving);
 
 					if (wasTropicsInvolved() && isDimensionFarewellAllowed(isLeaving)) {
+						guiLoading.assignScreenContent();
 						evt.setGui(guiLoading);
 					}
 				}

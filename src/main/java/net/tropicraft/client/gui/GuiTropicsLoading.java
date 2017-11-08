@@ -83,7 +83,6 @@ public class GuiTropicsLoading extends GuiScreen {
 	@Override
 	public void initGui() {
 		this.buttonList.clear();
-		this.assignScreenContent();
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class GuiTropicsLoading extends GuiScreen {
 		}
 	}
 
-	private void assignScreenContent() {
+	public void assignScreenContent() {
 		// Pick random subtitle
 		String cat = CATEGORIES[rand.nextInt(CATEGORIES.length)];
 
@@ -203,6 +202,7 @@ public class GuiTropicsLoading extends GuiScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		mc.displayGuiScreen(null);
 	}
 
 	@Override
