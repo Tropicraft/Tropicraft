@@ -26,11 +26,3 @@ out
 
 *Thumbs.db
 *.DS_STORE
-
-#oku stuff, fight me irl
-screenshots/
-crash-reports/
-
-usercache.json
-
-usernamecache.json
