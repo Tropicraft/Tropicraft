@@ -37,9 +37,10 @@ public class BlockSeaweed extends BlockTropicraft {
 		public AxisAlignedBB getRenderBoundingBox() {
 			if (height < 0) {
 				rand.setSeed(MathHelper.getPositionRandom(getPos()));
-				height = rand.nextInt(10) + 5;
-				while (height > 0 && (/*(getPos().up(height).getY() > 50 || rand.nextBoolean()) || */!getWorld().getBlockState(getPos().up(height)).getMaterial().isLiquid())) {
-					height--;
+				int maxHeight = rand.nextInt(10) + 5;
+				this.height = 0;
+				while (height <= maxHeight && getWorld().getBlockState(getPos().up(height + 1)).getMaterial().isLiquid()) {
+					height++;
 				}
 				cachedBB = new AxisAlignedBB(getPos()).expand(1.1, height / 2f, 1.1).offset(0, height / 2f, 0);
 				
