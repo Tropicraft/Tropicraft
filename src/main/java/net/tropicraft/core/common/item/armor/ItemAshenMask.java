@@ -2,6 +2,7 @@ package net.tropicraft.core.common.item.armor;
 
 import java.util.List;
 
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,10 +21,13 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class ItemAshenMask extends ItemTropicraftArmor {
 
+    private AshenMasks maskType;
+
     public ItemAshenMask(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot, AshenMasks maskType) {
         super(material, renderIndex, slot);
         setHasSubtypes(true);
         this.maxStackSize = 64;
+        this.maskType = maskType;
         ItemRegistry.maskMap.put(maskType, this);
     }
 
@@ -44,4 +48,11 @@ public class ItemAshenMask extends ItemTropicraftArmor {
         super.damageArmor(player, stack, source, damage, slot);
     }
 
+    @Override
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+        if (armorSlot == EntityEquipmentSlot.HEAD) // head
+            return new RenderArmorMask (maskType.getMeta());
+        else
+            return null;
+    }
 }
