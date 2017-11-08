@@ -55,7 +55,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	private float swimDecelRate = 0.02f;
 	
 	private float swimSpeedDefault = 1f;
-	private float swimSpeedCurrent = 0f;
+	protected float swimSpeedCurrent = 0f;
 	private float swimSpeedPanic = 2f;
 	
 	private float swimSpeedTurn = 5f;
@@ -133,26 +133,54 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		
 		// Client Side
 		if (world.isRemote) {
-			this.rotationPitch = -this.swimPitch;
-			this.rotationYaw = -this.swimYaw;
-			this.rotationYawHead = -this.swimYaw;
-			this.prevRotationYawHead = -this.prevSwimYaw;
-			this.renderYawOffset = 0;
-			this.cameraPitch = -this.swimPitch;
-			this.prevRotationPitch = -this.prevSwimPitch;
-			this.prevRotationYaw = -this.prevSwimYaw;				
-			this.prevSwimYaw = this.swimYaw;
-			this.swimYaw = this.getDataManager().get(SWIMYAW);
-			this.prevSwimPitch = this.swimPitch;
-			this.swimPitch = this.getDataManager().get(SWIMPITCH);
-			
-			this.motionX *= 0.98f;
-			this.motionY *= 0.98f;
-			this.motionZ *= 0.98f;
+			if(!(this instanceof IAmphibian)) {
+				this.rotationPitch = -this.swimPitch;
+				this.rotationYaw = -this.swimYaw;
+				this.rotationYawHead = -this.swimYaw;
+				this.prevRotationYawHead = -this.prevSwimYaw;
+				this.renderYawOffset = 0;
+				this.cameraPitch = -this.swimPitch;
+				this.prevRotationPitch = -this.prevSwimPitch;
+				this.prevRotationYaw = -this.prevSwimYaw;				
+				this.prevSwimYaw = this.swimYaw;
+				this.swimYaw = this.getDataManager().get(SWIMYAW);
+				this.prevSwimPitch = this.swimPitch;
+				this.swimPitch = this.getDataManager().get(SWIMPITCH);
+				
+				this.motionX *= 0.98f;
+				this.motionY *= 0.98f;
+				this.motionZ *= 0.98f;
+			}else {
+				this.rotationPitch = -this.swimPitch;
+				if(this.isInWater()) {
+					this.rotationYaw = -this.swimYaw;
+					this.rotationYawHead = -this.swimYaw;
+					this.prevRotationYawHead = -this.prevSwimYaw;
+					this.renderYawOffset = 0;
+					this.prevRotationYaw = -this.prevSwimYaw;				
+				}else {
+					this.prevSwimYaw = -this.prevRotationYaw;
+					this.swimYaw = -this.rotationYaw;
+					this.rotationYawHead = this.rotationYaw;
+				
+				}
+				this.cameraPitch = -this.swimPitch;
+				this.prevRotationPitch = -this.prevSwimPitch;
+				this.prevSwimYaw = this.swimYaw;
+				this.swimYaw = this.getDataManager().get(SWIMYAW);
+				this.prevSwimPitch = this.swimPitch;
+				this.swimPitch = this.getDataManager().get(SWIMPITCH);
+				
+			//	this.motionX *= 0.98f;
+			//	this.motionY *= 0.98f;
+			//	this.motionZ *= 0.98f;
+			}
 			return;
 		}	
 		
 		// Server Side
+		
+		if(((this instanceof IAmphibian) && this.isInWater()) || !(this instanceof IAmphibian)) {
 		
 		if(this.getHook() != null) {
 			if(this.getHook().isDead || !world.loadedEntityList.contains(this.getHook())) {
@@ -231,7 +259,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				
 			// Wall correction
 				Vec3d angle = this.getHeading();
-				double frontDist = 1f;
+				double frontDist = 1f+rand.nextInt(4);
 				double behindDist = 4f;
 				
 				Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));
@@ -401,7 +429,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 
 		// Out of water
-		if (!this.isInWater()) {
+		if (!this.isInWater() && !(this instanceof IAmphibian)) {
 			this.outOfWaterTime++;
 			this.setTargetHeading(posX, posY-1, posZ, false);
 		}
@@ -472,7 +500,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}
 
 		// out of water motion
-		if (!this.isInWater()) {
+		if (!this.isInWater() && !(this instanceof IAmphibian)) {
 
 			if(this.onGround) {
 				if(rand.nextInt(6) == 0) {
@@ -511,6 +539,15 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			this.motionY -= this.fallVelocity;
 			this.fallVelocity += (this.fallGravity / 10);
 		}
+		
+		if(!this.isInWater() && (this instanceof IAmphibian)) {
+			if(!onGround) {
+				this.motionY -= this.fallVelocity;
+				this.fallVelocity += (this.fallGravity / 10);
+			}else {
+				this.fallVelocity = 0f;
+			}
+		}
 
 			
 		if(swimPitch > 45f) {
@@ -519,6 +556,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		syncSwimAngles();
 		prevSwimPitch = swimPitch;
 		prevSwimYaw = swimYaw;
+		}else {
+			super.onLivingUpdate();
+		}
 	}
 
 	public void setMaxHealth(int h) {
@@ -832,6 +872,10 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	@Override
 	public void moveEntityWithHeading(float f, float f1) {
+		if((this instanceof IAmphibian) && !isInWater()) {
+			super.moveEntityWithHeading(f, f1);
+			return;
+		}
 		move(motionX, motionY, motionZ);
 	}
 

@@ -2,16 +2,19 @@ package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityTurtleEgg extends EntityLiving {
 
     public int hatchingTime;
     public double rotationRand;
+    public BlockPos parentWaterLoc = null;
+    public String parentTexRef = null;
     
     public EntityTurtleEgg(World par1World) {
         super(par1World);
-        setSize(.1F, .1F);
+        setSize(.4F, .7F);
         hatchingTime = 0;
         rotationRand = 10;
         ignoreFrustumCheck = true;
@@ -31,7 +34,7 @@ public class EntityTurtleEgg extends EntityLiving {
         // But if we are starting the process of hatching (not at the end yet), spin and decrement counter
         if (hatchingTime != 0) {
             // Do crazy spinny stuff
-            rotationRand += 1.5707F * world.rand.nextFloat();
+            rotationRand += 0.1707F * world.rand.nextFloat();
             hatchingTime--;
             
             // Hatch time!
@@ -43,6 +46,17 @@ public class EntityTurtleEgg extends EntityLiving {
                     double d5 = this.posZ;
                     babyturtle.setLocationAndAngles(d3, d4, d5, 0.0F, 0.0F);
                     world.spawnEntity(babyturtle);
+                		this.spawnExplosionParticle();
+                		if(this.parentWaterLoc != null) {
+                			babyturtle.log("received parent's water entry point, ms saved \\o/");
+                		}
+                		babyturtle.targetWaterSite = this.parentWaterLoc;
+                		
+                		if(this.parentTexRef != null) {
+                			babyturtle.setTexture(this.parentTexRef);
+                		}
+                		babyturtle.isSeekingWater = true;
+                		babyturtle.isLandPathing = true;
                     this.setDead();
                 }
                 

@@ -41,6 +41,7 @@ import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
 import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
+import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.lang.reflect.Field;
@@ -54,6 +55,8 @@ public class EntityKoaBase extends EntityVillager {
     public long lastTimeFished = 0;
 
     public BlockPos posLastFireplaceFound = null;
+    public List<BlockPos> listPosDrums = new ArrayList<>();
+    public static int MAX_DRUMS = 12;
 
     public InventoryBasic inventory;
 
@@ -61,6 +64,7 @@ public class EntityKoaBase extends EntityVillager {
     private static final DataParameter<Integer> GENDER = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> ORIENTATION = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> LURE_ID = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
 
     private EntityAIBase taskFishing = new EntityAIGoneFishin(this);
@@ -74,7 +78,15 @@ public class EntityKoaBase extends EntityVillager {
     private EntityFishHook lure;
 
     private boolean wasInWater = false;
+    private boolean wasNightLastTick = false;
+    private boolean wantsToParty = false;
 
+    public boolean jumpingOutOfWater = false;
+
+    public int hitIndex = 0;
+    public int hitIndex2 = 0;
+    public int hitIndex3 = 0;
+    public int hitDelay = 0;
     private long lastTradeTime = 0;
     private static int TRADE_COOLDOWN = 24000*3;
     private static int DIVE_TIME_NEEDED = 60*60;
@@ -151,6 +163,14 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().set(SITTING, Boolean.valueOf(sitting));
     }
 
+    public boolean isDancing() {
+        return this.getDataManager().get(DANCING);
+    }
+
+    public void setDancing(boolean val) {
+        this.getDataManager().set(DANCING, Boolean.valueOf(val));
+    }
+
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -158,6 +178,7 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().register(GENDER, Integer.valueOf(0));
         this.getDataManager().register(ORIENTATION, Integer.valueOf(0));
         this.getDataManager().register(SITTING, Boolean.valueOf(false));
+        this.getDataManager().register(DANCING, Boolean.valueOf(false));
         this.getDataManager().register(LURE_ID, Integer.valueOf(-1));
     }
 
@@ -226,28 +247,22 @@ public class EntityKoaBase extends EntityVillager {
                 return (double)(this.attacker.width * 2.5F * this.attacker.width * 2.5F + attackTarget.width);
             }
         });
-        //this.tasks.addTask(1, new EntityAITradePlayer(this));
-        //this.tasks.addTask(1, new EntityAILookAtTradePlayer(this));
         this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1D));
         this.tasks.addTask(5, new EntityAIKoaMate(this));
         this.tasks.addTask(6, new EntityAIChillAtFire(this));
-        //this.tasks.addTask(3, new EntityAIMoveIndoors(this));
-        //this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-        //this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        //this.tasks.addTask(7, new EntityAIFollowGolem(this));
+        this.tasks.addTask(7, new EntityAIPartyTime(this));
 
         if (canFish()) {
-            this.tasks.addTask(7, taskFishing);
+            this.tasks.addTask(8, taskFishing);
         }
 
         if (isChild()) {
-            this.tasks.addTask(8, new EntityAIPlayKoa(this, 1.2D));
+            this.tasks.addTask(9, new EntityAIPlayKoa(this, 1.2D));
         }
 
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        //this.tasks.addTask(9, new EntityAIVillagerInteract(this));
-        this.tasks.addTask(9, new EntityAIWanderNotLazy(this, 1D, 40));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.tasks.addTask(10, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(10, new EntityAIWanderNotLazy(this, 1D, 40));
+        this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         //i dont think this one works, change to predicate
@@ -310,6 +325,7 @@ public class EntityKoaBase extends EntityVillager {
         //adjust home position to chest right nearby for easy item spawning
         findAndSetHomeToCloseChest(false);
         findAndSetFireSource(false);
+        findAndSetDrums(false);
 
     }
 
@@ -471,6 +487,7 @@ public class EntityKoaBase extends EntityVillager {
 
         findAndSetHomeToCloseChest(true);
         findAndSetFireSource(true);
+        findAndSetDrums(true);
 
         IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
 
@@ -545,6 +562,12 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("village_id", villageID);
 
         compound.setLong("lastTradeTime", lastTradeTime);
+
+        for (int i = 0; i < listPosDrums.size(); i++) {
+            compound.setInteger("drum_" + i + "_X", listPosDrums.get(i).getX());
+            compound.setInteger("drum_" + i + "_Y", listPosDrums.get(i).getY());
+            compound.setInteger("drum_" + i + "_Z", listPosDrums.get(i).getZ());
+        }
     }
 
     @Override
@@ -579,6 +602,14 @@ public class EntityKoaBase extends EntityVillager {
         this.getDataManager().set(ORIENTATION, compound.getInteger("orientation_id"));
 
         this.lastTradeTime = compound.getLong("lastTradeTime");
+
+        for (int i = 0; i < MAX_DRUMS; i++) {
+            if (compound.hasKey("drum_" + i + "_X")) {
+                this.listPosDrums.add(new BlockPos(compound.getInteger("drum_" + i + "_X"),
+                        compound.getInteger("drum_" + i + "_Y"),
+                        compound.getInteger("drum_" + i + "_Z")));
+            }
+        }
 
         updateUniqueEntityAI();
     }
@@ -645,8 +676,6 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         if (tryFind) {
-            //TODO: line of sight check
-
             int range = 20;
             for (int x = -range; x <= range; x++) {
                 for (int y = -range/2; y <= range/2; y++) {
@@ -675,10 +704,111 @@ public class EntityKoaBase extends EntityVillager {
                 }
             }
         }
+    }
 
+    //for other system not used
+    public void syncBPM() {
+        if ((world.getTotalWorldTime()+this.getEntityId()) % (20) != 0) return;
 
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(10, 5, 10));
+        //Collections.shuffle(listEnts);
+        for (EntityKoaBase ent : listEnts) {
+            if (hitDelay != ent.hitDelay) {
+                hitDelay = ent.hitDelay;
+                hitIndex = ent.hitIndex;
+                hitIndex2 = ent.hitIndex2;
+                hitIndex3 = ent.hitIndex3;
+                return;
+            }
+        }
+    }
 
+    public void findAndSetDrums(boolean force) {
 
+        //this.setHomePosAndDistance(this.getHomePosition(), 128);
+
+        if (!force && (world.getTotalWorldTime()+this.getEntityId()) % (20*30) != 0) return;
+
+        Iterator<BlockPos> it = listPosDrums.iterator();
+        while (it.hasNext()) {
+            BlockPos pos = it.next();
+            IBlockState state = world.getBlockState(pos);
+            if (state.getBlock() != BlockRegistry.bongo) {
+                it.remove();
+            }
+        }
+
+        if (listPosDrums.size() >= MAX_DRUMS) {
+            return;
+        }
+
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(20, 20, 20));
+        Collections.shuffle(listEnts);
+        for (EntityKoaBase ent : listEnts) {
+            if (listPosDrums.size() >= MAX_DRUMS) {
+                return;
+            }
+            Iterator<BlockPos> it2 = ent.listPosDrums.iterator();
+            while (it2.hasNext()) {
+                BlockPos pos = it2.next();
+                //IBlockState state = world.getBlockState(pos);
+
+                boolean match = false;
+
+                Iterator<BlockPos> it3 = listPosDrums.iterator();
+                while (it3.hasNext()) {
+                    BlockPos pos2 = it3.next();
+                    //IBlockState state2 = world.getBlockState(pos2);
+                    if (pos.equals(pos2)) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (!match) {
+                    //System.out.println("drum pos ent: " + pos);
+                    listPosDrums.add(pos);
+                }
+
+                if (listPosDrums.size() >= MAX_DRUMS) {
+                    return;
+                }
+            }
+        }
+
+        int range = 20;
+        for (int x = -range; x <= range; x++) {
+            for (int y = -range/2; y <= range/2; y++) {
+                for (int z = -range; z <= range; z++) {
+                    BlockPos pos = this.getPosition().add(x, y, z);
+                    IBlockState state = world.getBlockState(pos);
+                    if (state.getBlock() == BlockRegistry.bongo) {
+
+                        boolean match = false;
+
+                        Iterator<BlockPos> it3 = listPosDrums.iterator();
+                        while (it3.hasNext()) {
+                            BlockPos pos2 = it3.next();
+                            //IBlockState state2 = world.getBlockState(pos2);
+                            if (pos.equals(pos2)) {
+                                match = true;
+                                break;
+                            }
+                        }
+
+                        if (!match) {
+                            //System.out.println("drum pos: " + pos);
+                            listPosDrums.add(pos);
+                        }
+
+                        if (listPosDrums.size() >= MAX_DRUMS) {
+                            return;
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     public boolean tryGetVillage() {
@@ -764,13 +894,26 @@ public class EntityKoaBase extends EntityVillager {
 
     @Override
     public void onLivingUpdate() {
+        this.updateArmSwingProgress();
         super.onLivingUpdate();
 
         if (wasInWater) {
             if (!isInWater()) {
                 if (isCollidedHorizontally) {
                     this.motionY += 0.4F;
+                    jumpingOutOfWater = true;
                 }
+            }
+        }
+
+        /**
+         * hacky fix for koa spinning in spot when leaping out of water,
+         * real issue is that their path node is still under the dock when theyre ontop of dock
+         */
+        if (jumpingOutOfWater) {
+            if (onGround) {
+                jumpingOutOfWater = false;
+                this.getNavigator().clearPathEntity();
             }
         }
 
@@ -780,9 +923,21 @@ public class EntityKoaBase extends EntityVillager {
             } else {
                 //this.motionY += 0.02F;
             }
+            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
+        } else {
+            this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         }
 
         wasInWater = isInWater();
+
+        if (!wasNightLastTick) {
+            if (!this.world.isDaytime()) {
+                //roll dice once
+                rollDiceParty();
+            }
+        }
+
+        wasNightLastTick = !this.world.isDaytime();
 
         if (!world.isRemote) {
             //if (world.getTotalWorldTime() % (20*5) == 0) {
@@ -791,6 +946,7 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         if (world.isRemote) {
+            //heal indicator, has a bug that spawns a heart on reload into world but not a big deal
             if (clientHealthLastTracked != this.getHealth()) {
                 if (this.getHealth() > clientHealthLastTracked) {
                     world.spawnParticle(EnumParticleTypes.HEART, false, this.posX, this.posY + 2.2, this.posZ, 0, 0, 0);
@@ -807,8 +963,8 @@ public class EntityKoaBase extends EntityVillager {
 
     @Override
     public boolean getIsWillingToMate(boolean updateFirst) {
-        //TODO: use our own rules
-        //return super.getIsWillingToMate(updateFirst);
+        //vanilla did food check here but hunters dont have any
+        //our population limits work well enough to leave this to always true
         this.setIsWillingToMate(true);
         return true;
     }
@@ -922,5 +1078,34 @@ public class EntityKoaBase extends EntityVillager {
 
             //System.out.println("population size: " + village.getPopulationSize() + ", males: " + maleCount + ", females: " + femaleCount);
         }
+    }
+
+    //do not constantly use throughout night, as the night doesnt happen all on the same day
+    //use asap and store value
+    public boolean isPartyNight() {
+        long time = world.getWorldTime();
+        long day = time / 24000;
+        //party every 3rd night
+        //System.out.println(time + " - " + day + " - " + (day % 3 == 0));
+        return day % 3 == 0;
+    }
+
+    public void rollDiceParty() {
+
+        if (isPartyNight()) {
+            int chance = 90;
+            if (chance >= this.world.rand.nextInt(100)) {
+                wantsToParty = true;
+                //System.out.println("roll dice party: " + wantsToParty);
+                return;
+            }
+        }
+        wantsToParty = false;
+
+        //System.out.println("roll dice party: " + wantsToParty);
+    }
+
+    public boolean getWantsToParty() {
+        return wantsToParty;
     }
 }
