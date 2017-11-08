@@ -74,73 +74,74 @@ public class ScubaHandler {
 
 		EntityPlayer p = event.player;
 
-		PlayerSwimData d = getData(p);
-
-		double above = 1.5D;
-		if (d.currentRotationPitch != 0) {
-			above = 2D;
-		}
-		boolean liquidAbove = isInWater(p, 0, above, 0);
-		boolean inLiquid = isInWater(p) && isInWater(p, 0, -0.5D, 0);
-
-		if (inLiquid && !liquidAbove && d.currentRotationPitch < 45f && d.currentRotationPitch > -15f
-				&& (p.posY - (int) p.posY < 0.5f) && isPlayerWearingFlippers(p)) {
-			// p.motionY += 0.02f;
-
-			d.targetRotationPitch = 0f;
-			if (!inLiquid) {
-				p.motionY -= 4f;
+		if(!p.capabilities.isFlying) {
+			PlayerSwimData d = getData(p);
+			double above = 1.5D;
+			if (d.currentRotationPitch != 0) {
+				above = 2D;
 			}
-		}
-		if (inLiquid && liquidAbove && isPlayerWearingFlippers(p)) {
-
-			p.setNoGravity(true);
-			d.targetSwimSpeed = 0f;
-
-			if (GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindForward)) {
-				d.targetSwimSpeed = getFlipperSpeed(p);
-			}
-			if (GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindBack)) {
-				d.targetSwimSpeed = -getFlipperSpeed(p);
-			}
-			if (p.moveStrafing != 0) {
-				d.targetSwimSpeed = getFlipperSpeed(p) / 2;
-			}
-
-			if (d.currentSwimSpeed < d.targetSwimSpeed) {
-				d.currentSwimSpeed += SWIM_SPEED_ACCEL;
-
-				if (d.currentSwimSpeed > d.targetSwimSpeed) {
-					d.currentSwimSpeed = d.targetSwimSpeed;
+			boolean liquidAbove = isInWater(p, 0, above, 0);
+			boolean inLiquid = isInWater(p) && isInWater(p, 0, -0.5D, 0);
+	
+			if (inLiquid && !liquidAbove && d.currentRotationPitch < 45f && d.currentRotationPitch > -15f
+					&& (p.posY - (int) p.posY < 0.5f) && isPlayerWearingFlippers(p)) {
+				// p.motionY += 0.02f;
+	
+				d.targetRotationPitch = 0f;
+				if (!inLiquid) {
+					p.motionY -= 4f;
 				}
-			} else if (d.currentSwimSpeed > d.targetSwimSpeed) {
-				d.currentSwimSpeed -= SWIM_SPEED_ACCEL;
-
+			}
+			if (inLiquid && liquidAbove && isPlayerWearingFlippers(p)) {
+	
+				p.setNoGravity(true);
+				d.targetSwimSpeed = 0f;
+	
+				if (GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindForward)) {
+					d.targetSwimSpeed = getFlipperSpeed(p);
+				}
+				if (GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindBack)) {
+					d.targetSwimSpeed = -getFlipperSpeed(p);
+				}
+				if (p.moveStrafing != 0) {
+					d.targetSwimSpeed = getFlipperSpeed(p) / 2;
+				}
+	
 				if (d.currentSwimSpeed < d.targetSwimSpeed) {
-					d.currentSwimSpeed = d.targetSwimSpeed;
+					d.currentSwimSpeed += SWIM_SPEED_ACCEL;
+	
+					if (d.currentSwimSpeed > d.targetSwimSpeed) {
+						d.currentSwimSpeed = d.targetSwimSpeed;
+					}
+				} else if (d.currentSwimSpeed > d.targetSwimSpeed) {
+					d.currentSwimSpeed -= SWIM_SPEED_ACCEL;
+	
+					if (d.currentSwimSpeed < d.targetSwimSpeed) {
+						d.currentSwimSpeed = d.targetSwimSpeed;
+					}
 				}
-			}
-
-			float currentSpeed = d.currentSwimSpeed * 0.1f;
-			float offset = 0f;
-
-			p.motionX = currentSpeed * Math.sin(-(d.currentRotationYaw + offset) * (Math.PI / 180.0));
-			p.motionZ = currentSpeed * Math.cos(-(d.currentRotationYaw + offset) * (Math.PI / 180.0));
-			p.motionY = (currentSpeed)
-					* Math.sin((d.currentRotationPitch + d.currentHeadPitchOffset) * (Math.PI / 180.0));
-
-			if (p.isSneaking()) {
-				p.setSneaking(false);
-				if (p.motionY > -0.2f) {
-					p.motionY -= 0.02f;
-				} else {
-					p.motionY = -0.2f;
+	
+				float currentSpeed = d.currentSwimSpeed * 0.1f;
+				float offset = 0f;
+	
+				p.motionX = currentSpeed * Math.sin(-(d.currentRotationYaw + offset) * (Math.PI / 180.0));
+				p.motionZ = currentSpeed * Math.cos(-(d.currentRotationYaw + offset) * (Math.PI / 180.0));
+				p.motionY = (currentSpeed)
+						* Math.sin((d.currentRotationPitch + d.currentHeadPitchOffset) * (Math.PI / 180.0));
+	
+				if (p.isSneaking()) {
+					p.setSneaking(false);
+					if (p.motionY > -0.2f) {
+						p.motionY -= 0.02f;
+					} else {
+						p.motionY = -0.2f;
+					}
 				}
+	
+			} else {
+				d.targetSwimSpeed = 0f;
+				p.setNoGravity(false);
 			}
-
-		} else {
-			d.targetSwimSpeed = 0f;
-			p.setNoGravity(false);
 		}
 		TCPacketHandler.sendToServer(new MessagePlayerSwimData(getData(p)));
 	}
