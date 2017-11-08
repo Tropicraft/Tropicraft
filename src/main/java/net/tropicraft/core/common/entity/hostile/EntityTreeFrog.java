@@ -23,9 +23,10 @@ import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 
 public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob {
 
-	private static final DataParameter<Byte> TYPE = EntityDataManager.<Byte>createKey(EntityTreeFrog.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(EntityTreeFrog.class, DataSerializers.VARINT);
 
 	public int jumpDelay = 0;
+	public boolean initialSet = false;
 	private int attackTime;
 	private EntityAINearestAttackableTarget<EntityPlayer> hostileAI;
 
@@ -40,7 +41,7 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(TYPE, Byte.valueOf((byte) rand.nextInt(4)));
+		this.dataManager.register(TYPE, Integer.valueOf(rand.nextInt(4)));
 	}
 
 	public EntityTreeFrog(World world, byte type) {
@@ -50,7 +51,9 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 	
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-		setType((byte)rand.nextInt(Type.values().length));
+		if(!initialSet) {
+			setType(rand.nextInt(Type.values().length));
+		}
 		return super.onInitialSpawn(difficulty, livingdata);
 	}
 
@@ -129,40 +132,39 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 	public Type getType() {
 		Type[] types = Type.values();
 		for(Type t : types) {
-			if(t.id == this.getDataManager().get(TYPE)) {
+			if(t.ordinal() == this.getDataManager().get(TYPE)) {
 				return t;
 			}
 		}
 		return null;
 	}
 
-	public void setType(byte b) {
-		this.getDataManager().set(TYPE, b);
+	public void setType(int i) {
+		this.getDataManager().set(TYPE, i);
 	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound n) {
-		n.setByte("frogType", getType().id);
+		n.setInteger("frogType", (byte)getType().ordinal());
 		super.writeEntityToNBT(n);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound n) {
-		setType(n.getByte("frogType"));
+		setType(n.getInteger("frogType"));
 		super.readEntityFromNBT(n);
 	}
 
 	public static enum Type {
-		GREEN((byte)0, "green"),
-		RED((byte)1, "red"),
-		BLUE((byte)2, "blue"),
-		YELLOW((byte)3,"yellow");
+		GREEN("green"),
+		RED("red"),
+		BLUE("blue"),
+		YELLOW("yellow");
 		
 		final String color;
-		final byte id;
-		private Type(byte id, String s) {
+
+		private Type(String s) {
 			this.color = s;
-			this.id = id;
 		}
 		
 		public String getColor() {
