@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.block.BlockDrinkMixer;
@@ -25,7 +26,7 @@ import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class TileEntityDrinkMixer extends TileEntity implements ITickable {
+public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMachineTile {
 
 	/**
 	 * Number of ticks the mixer has been mixin'
@@ -268,6 +269,23 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable {
 
 	public boolean canMix() {
 		return !mixing && isMixerFull();
+	}
+	
+	/* == IMachineTile == */
+	
+	@Override
+	public boolean isActive() {
+	    return isMixing();
+	}
+	
+	@Override
+	public int getProgress() {
+	    return ticks;
+	}
+	
+	@Override
+	public EnumFacing getFacing() {
+	    return getWorld().getBlockState(getPos()).getValue(BlockDrinkMixer.FACING);
 	}
 
 	/**

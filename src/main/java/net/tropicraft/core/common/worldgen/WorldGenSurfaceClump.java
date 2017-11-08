@@ -9,7 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.tropicraft.core.registry.BlockRegistry;
 
 public class WorldGenSurfaceClump extends WorldGenerator {
 	

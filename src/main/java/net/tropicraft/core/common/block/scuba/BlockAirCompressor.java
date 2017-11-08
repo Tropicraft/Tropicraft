@@ -4,8 +4,12 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.BlockTropicraft;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
@@ -22,13 +25,22 @@ import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
 
 public class BlockAirCompressor extends BlockTropicraft implements ITileEntityProvider {
 
-	public BlockAirCompressor() {
+    public static final PropertyEnum<EnumFacing> FACING = BlockHorizontal.FACING;
+
+    public BlockAirCompressor() {
 		super(Material.ROCK);
 		//this.setBlockBounds(0, 0, 0, 1, 1.8F, 1);
 		this.isBlockContainer = true;
-	}
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
 
-	@Override
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, new IProperty[] { FACING });
+    }
+
+
+    @Override
     public boolean isFullyOpaque(IBlockState state) {
         return false;
     }
@@ -45,29 +57,6 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
     public boolean isFullCube(IBlockState state) {
         return false;
     }
-
-
-	/**
-	 * Called when the block is placed in the world.
-	 */
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		int var6 = MathHelper.floor((double)(placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-		int meta = 0;
-		if (var6 == 0) {
-			meta = 2;
-		} else if (var6 == 1) {
-			meta = 5;
-		} else if (var6 == 2) {
-			meta = 3;
-		} else if (var6 == 3) {
-			meta = 4;
-		}
-
-		world.setBlockState(pos, state, 2);
-	}
 
 	@Override
 	 public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -132,4 +121,19 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
 		return TileEntityFactory.getAirCompressorTE();
 	}
 
+	@Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        IBlockState ret = super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, stack);
+        return ret.withProperty(FACING, placer.getHorizontalFacing());
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getHorizontalIndex();
+    }
 }

@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.client.PlayerSwimDataClientHandler;
+import net.tropicraft.core.common.block.tileentity.message.MessageAirCompressorInventory;
 import net.tropicraft.core.common.block.tileentity.message.MessageMixerInventory;
 import net.tropicraft.core.common.block.tileentity.message.MessageMixerStart;
 import net.tropicraft.core.common.block.tileentity.message.MessageSifterInventory;
@@ -35,7 +35,7 @@ public class TCPacketHandler {
 		// Scuba server listener
 		INSTANCE.registerMessage(MessagePlayerSwimData.Handler.class, MessagePlayerSwimData.class, 5, Side.SERVER);
 
-
+		INSTANCE.registerMessage(MessageAirCompressorInventory.Handler.class, MessageAirCompressorInventory.class, 6, Side.CLIENT);
 	}
 
 	public static void sendToAllAround(IMessage message, TileEntity te, int range) {

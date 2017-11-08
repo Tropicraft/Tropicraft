@@ -8,14 +8,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.tropicraft.core.common.block.scuba.BlockAirCompressor;
 import net.tropicraft.core.common.block.tileentity.message.MessageAirCompressorInventory;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
 import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.item.scuba.api.IScubaTank;
 import net.tropicraft.core.common.network.TCPacketHandler;
 
-public class TileEntityAirCompressor extends TileEntity implements ITickable  {
+public class TileEntityAirCompressor extends TileEntity implements ITickable, IMachineTile {
 
 	/** Is the compressor currently giving air */
 	public boolean compressing;
@@ -27,7 +29,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	private static final float fillRate = 0.10F;
 
 	/** The stack that is currently being filled */
-	public ItemStack stack;
+	private ItemStack stack;
 	
 	private IScubaTank tank;
 
@@ -44,7 +46,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 		if (nbt.hasKey("Tank")) {
 			setTank(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Tank")));
 		} else {
-			this.tank = null;
+			setTank(null);
 		}
 	}
 
@@ -64,8 +66,12 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	
 	public void setTank(ItemStack tankItemStack) {
 	    this.stack = tankItemStack;
-        this.tank = stack.getCapability(ScubaCapabilities.getTankCapability(), null);
+        this.tank = stack == null ? null : stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	}
+	
+    public ItemStack getTankStack() {
+        return stack;
+    }
 
 	@Override
 	public void update() {
@@ -99,7 +105,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 
 	public boolean addTank(ItemStack stack) {
 		if (tank == null && stack.getItem() != null && stack.getItem() instanceof ItemScubaTank) {
-			this.stack = stack;
+			setTank(stack);
 			this.compressing = true;
 			syncInventory();
 			return true;
@@ -109,10 +115,10 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	}
 
 	public void ejectTank() {
-		if (tank != null) {
+		if (stack != null) {
 			EntityItem tankItem = new EntityItem(world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
 			world.spawnEntity(tankItem);
-			tank = null;
+			setTank(null);
 		}
 
 		this.ticks = 0;
@@ -140,6 +146,23 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	public void finishCompressing() {
 		this.compressing = false;
 		syncInventory();
+	}
+	
+	/* == IMachineTile == */
+	
+	@Override
+	public boolean isActive() {
+	    return getTankStack() != null;
+	}
+	
+	@Override
+	public int getProgress() {
+	    return ticks;
+	}
+	
+	@Override
+	public EnumFacing getFacing() {
+	    return getWorld().getBlockState(getPos()).getValue(BlockAirCompressor.FACING);
 	}
 
 	/**

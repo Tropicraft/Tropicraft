@@ -1,9 +1,8 @@
-package net.tropicraft.core.client.entity.model;
+package net.tropicraft.core.client.block.model;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
-public class ModelAirCompressor extends ModelBase
+public class ModelAirCompressor extends ModelBlock
 {
     //fields
     ModelRenderer Base;
@@ -133,7 +132,8 @@ public class ModelAirCompressor extends ModelBase
         setRotation(Mouth, 0F, 0F, 0F);
     }
 
-    public void renderAirCompressor()
+    @Override
+    public void renderAsBlock()
     {
         float f5 = 0.0625F;
         Base.render(f5);
@@ -153,7 +153,11 @@ public class ModelAirCompressor extends ModelBase
         LidBase.render(f5);
         LidTop.render(f5);
         Mouth.render(f5);
-
+    }
+    
+    @Override
+    public String getTexture() {
+        return "air_compressor";
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

@@ -18,7 +18,7 @@ public class MessageAirCompressorInventory extends MessageTileEntity<TileEntityA
 
     public MessageAirCompressorInventory(TileEntityAirCompressor airCompressor) {
         super(airCompressor);
-        this.tank = airCompressor.stack;
+        this.tank = airCompressor.getTankStack();
     }
 
     @Override
