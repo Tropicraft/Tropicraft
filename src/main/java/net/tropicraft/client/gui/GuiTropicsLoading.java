@@ -3,6 +3,7 @@ package net.tropicraft.client.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -18,12 +19,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.GlStateManager.CullFace;
-import net.minecraft.client.renderer.GlStateManager.DestFactor;
-import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.shader.ShaderLoader.ShaderType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,25 +29,31 @@ import net.minecraft.network.play.client.CPacketKeepAlive;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.Names;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.TropicraftRegistry;
+import net.minecraft.util.text.translation.I18n;
 
 @SideOnly(Side.CLIENT)
 public class GuiTropicsLoading extends GuiScreen {
 
 	private static final String[] CATEGORIES = { "misc", "knowledge", "hint" };
 	private static final String[] BACKGROUNDS = { "loading_bg1", "loading_bg2", "loading_bg3" };
-	private static final String[] BLACKLISTED = { "eih", "seaurchin", "starfish", "fish", "piranha", "sardine","eagleray", "mow" };
 
+	private static final String[] MOBS_WATER = { "marlin", "dolphin", "hammerhead", "turtle", "seahorse", "failgull" };
+	private static final String[] MOBS_LAND = { "iguana", "failgull", "redfrog", "bluefrog", "greenfrog", "yellowfrog",
+			"monkey" };
+	private static final String[] MOBS_VILLAGE = { "koa", "ashen", "tropicreeper", "tropiskelly" };
+
+	private final Minecraft mc = FMLClientHandler.instance().getClient();
 	private final NetHandlerPlayClient connection;
+	private final HashMap<String, String[]> backgroundToEntityMap = new HashMap<String, String[]>();
+
 	private int progress;
 	private Random rand = new Random();
 	private long lastWorldUpdateTick = 0L;
-	private Minecraft mc = FMLClientHandler.instance().getClient();
 
 	private Pair<Entity, Entity> screenEntities = null;
 	private Triple<ItemStack, ItemStack, ItemStack> screenItems = null;
@@ -59,10 +62,13 @@ public class GuiTropicsLoading extends GuiScreen {
 	private boolean screenReassign = false;
 	private boolean isLeaving = false;
 
-	public GuiTropicsLoading(NetHandlerPlayClient netHandler) {
-		this.connection = netHandler;
+	public GuiTropicsLoading() {
+		this.connection = (NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler();
+		backgroundToEntityMap.put(BACKGROUNDS[0], MOBS_WATER);
+		backgroundToEntityMap.put(BACKGROUNDS[1], MOBS_LAND);
+		backgroundToEntityMap.put(BACKGROUNDS[2], MOBS_VILLAGE);
 	}
-	
+
 	public void setLeaving(boolean b) {
 		isLeaving = b;
 	}
@@ -76,17 +82,40 @@ public class GuiTropicsLoading extends GuiScreen {
 	@Override
 	public void updateScreen() {
 		++this.progress;
-
 		if (this.progress % 20 == 0) {
 			this.connection.sendPacket(new CPacketKeepAlive());
 		}
 	}
 
 	private void assignScreenContent() {
-		ArrayList<String> ta = new ArrayList<String>(Arrays.asList(Names.EGG_NAMES));
-		for (String name : BLACKLISTED) {
-			ta.remove(name);
+
+		screenItems = Triple.of(new ItemStack(ItemRegistry.lemon), new ItemStack(BlockRegistry.pineapple),
+				new ItemStack(ItemRegistry.orange));
+
+		// Pick random subtitle
+		String cat = CATEGORIES[rand.nextInt(CATEGORIES.length)];
+
+		int count = 0;
+		String key = "tropicraft.loading." + cat + ".1";
+		while (!(I18n.translateToLocal(key)).equals(key)) {
+			key = "tropicraft.loading." + cat + "." + count++;
 		}
+
+		screenTitle = "tropicraft.loading." + cat + "." + String.valueOf(rand.nextInt(count + 1) + 1);
+		if (cat.equals("knowledge") || cat.equals("hint")) {
+			String prepend = I18n.translateToLocal("tropicraft.loading." + cat + ".pre");
+			screenTitle = I18n.translateToLocalFormatted(screenTitle, prepend);
+		} else {
+			screenTitle = I18n.translateToLocal(screenTitle);
+
+		}
+
+		// Pick random background
+		screenBackground = BACKGROUNDS[rand.nextInt(BACKGROUNDS.length)];
+
+		// Assign random entities from the associated background
+		ArrayList<String> ta = new ArrayList<String>(Arrays.asList(backgroundToEntityMap.get(screenBackground)));
+
 		String firstEnt = ta.get(rand.nextInt(ta.size()));
 		Entity ent1 = EntityList.createEntityByName(TropicraftRegistry.getNamePrefixed(firstEnt), mc.world);
 		ta.remove(firstEnt);
@@ -101,29 +130,6 @@ public class GuiTropicsLoading extends GuiScreen {
 
 		screenEntities = Pair.of(ent1, ent2);
 
-		screenItems = Triple.of(new ItemStack(ItemRegistry.lemon), new ItemStack(BlockRegistry.pineapple), new ItemStack(ItemRegistry.orange));
-
-		// Pick random subtitle
-		String cat = CATEGORIES[rand.nextInt(CATEGORIES.length)];
-
-		int count = 0;
-		String key = "tropicraft.loading." + cat + ".1";
-		while (!(net.minecraft.util.text.translation.I18n.translateToLocal(key)).equals(key)) {
-			key = "tropicraft.loading." + cat + "." + count++;
-		}
-
-		screenTitle = "tropicraft.loading." + cat + "." + String.valueOf(rand.nextInt(count + 1) + 1);
-		if (cat.equals("knowledge") || cat.equals("hint")) {
-			String prepend = net.minecraft.util.text.translation.I18n
-					.translateToLocal("tropicraft.loading." + cat + ".pre");
-			screenTitle = net.minecraft.util.text.translation.I18n.translateToLocalFormatted(screenTitle, prepend);
-		} else {
-			screenTitle = net.minecraft.util.text.translation.I18n.translateToLocal(screenTitle);
-
-		}
-
-		// Pick random background
-		screenBackground = BACKGROUNDS[rand.nextInt(BACKGROUNDS.length)];
 	}
 
 	/**
@@ -152,19 +158,19 @@ public class GuiTropicsLoading extends GuiScreen {
 
 		drawBackground(sr.getScaledWidth(), sr.getScaledHeight());
 		if (screenEntities != null) {
-			//TODO: Cast some kind of entity shadows
-			drawScreenEntity(screenEntities.getLeft(), sr.getScaledWidth() / 2 - 120,
-					(sr.getScaledHeight() / 2) + 60, 50, -90 + (int) (this.lastWorldUpdateTick * 2), 20);
-			drawScreenEntity(screenEntities.getRight(), sr.getScaledWidth() / 2 + 120,
-					(sr.getScaledHeight() / 2) + 60, 50, 90 - (int) (this.lastWorldUpdateTick * 2), 20);
+			// TODO: Cast some kind of entity shadows
+			drawScreenEntity(screenEntities.getLeft(), sr.getScaledWidth() / 2 - 120, (sr.getScaledHeight() / 2) + 60,
+					50, -90 + (int) (this.lastWorldUpdateTick * 2), 20);
+			drawScreenEntity(screenEntities.getRight(), sr.getScaledWidth() / 2 + 120, (sr.getScaledHeight() / 2) + 60,
+					50, 90 - (int) (this.lastWorldUpdateTick * 2), 20);
 			drawScreenItemStack(screenItems.getLeft(), (sr.getScaledWidth() / 2) - 8 - 24,
 					(sr.getScaledHeight() / 2) + 8, 1.5f);
-			drawScreenItemStack(screenItems.getMiddle(), (sr.getScaledWidth() / 2) - 12,
-					(sr.getScaledHeight() / 2) + 8, 1.5f);
+			drawScreenItemStack(screenItems.getMiddle(), (sr.getScaledWidth() / 2) - 12, (sr.getScaledHeight() / 2) + 8,
+					1.5f);
 			drawScreenItemStack(screenItems.getRight(), (sr.getScaledWidth() / 2) - 8 + 16,
 					(sr.getScaledHeight() / 2) + 8, 1.5f);
 		}
-		String msg = net.minecraft.util.text.translation.I18n.translateToLocal("tropicraft.loading.title."+(this.isLeaving ? "greeting" : "farewell"));
+		String msg = I18n.translateToLocal("tropicraft.loading.title." + (this.isLeaving ? "greeting" : "farewell"));
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((sr.getScaledWidth()) / 2 - (f.getStringWidth(msg) / 2),
 				(sr.getScaledHeight() / 4) - 30, 0);
@@ -180,12 +186,12 @@ public class GuiTropicsLoading extends GuiScreen {
 
 		GlStateManager.color(1f, 1f, 1f, 1f);
 
-		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
-	
+
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException { }
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+	}
 
 	@Override
 	public boolean doesGuiPauseGame() {
@@ -229,7 +235,7 @@ public class GuiTropicsLoading extends GuiScreen {
 
 		}
 		GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
-	//	RenderHelper.enableGUIStandardItemLighting();
+		// RenderHelper.enableGUIStandardItemLighting();
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(-((float) Math.atan((double) (pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
@@ -264,7 +270,7 @@ public class GuiTropicsLoading extends GuiScreen {
 		TropicraftRenderUtils.bindTextureGui(screenBackground);
 		GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
 		float f = 32F;
-		if(screenBackground.equals("loading_bg1")) {
+		if (screenBackground.equals("loading_bg1")) {
 			f = 128f;
 		}
 		vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
