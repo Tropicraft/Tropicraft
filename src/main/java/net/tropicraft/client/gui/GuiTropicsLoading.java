@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketKeepAlive;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,7 +35,6 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWa
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.TropicraftRegistry;
-import net.minecraft.util.text.translation.I18n;
 
 @SideOnly(Side.CLIENT)
 public class GuiTropicsLoading extends GuiScreen {
@@ -47,6 +47,13 @@ public class GuiTropicsLoading extends GuiScreen {
 			"monkey" };
 	private static final String[] MOBS_VILLAGE = { "koa", "ashen", "tropicreeper", "tropiskelly" };
 
+	private static final ItemStack[] ITEMS = { 
+			new ItemStack(ItemRegistry.lemon), new ItemStack(ItemRegistry.lime),
+			new ItemStack(ItemRegistry.orange), new ItemStack(BlockRegistry.coconut),
+			new ItemStack(BlockRegistry.coconut), new ItemStack(ItemRegistry.coconutBomb),
+			new ItemStack(ItemRegistry.bambooStick), new ItemStack(ItemRegistry.bambooMug) 
+	};
+	
 	private final Minecraft mc = FMLClientHandler.instance().getClient();
 	private final NetHandlerPlayClient connection;
 	private final HashMap<String, String[]> backgroundToEntityMap = new HashMap<String, String[]>();
@@ -88,10 +95,6 @@ public class GuiTropicsLoading extends GuiScreen {
 	}
 
 	private void assignScreenContent() {
-
-		screenItems = Triple.of(new ItemStack(ItemRegistry.lemon), new ItemStack(BlockRegistry.pineapple),
-				new ItemStack(ItemRegistry.orange));
-
 		// Pick random subtitle
 		String cat = CATEGORIES[rand.nextInt(CATEGORIES.length)];
 
@@ -129,7 +132,16 @@ public class GuiTropicsLoading extends GuiScreen {
 			((EntityTropicraftWaterBase) ent2).assignRandomTexture();
 
 		screenEntities = Pair.of(ent1, ent2);
+		
+		// Assign random items
+		ArrayList<ItemStack> possibleStacks = new ArrayList<ItemStack>(Arrays.asList(ITEMS));
+		ItemStack left = possibleStacks.get(rand.nextInt(possibleStacks.size()));
+		possibleStacks.remove(left);
+		ItemStack mid = possibleStacks.get(rand.nextInt(possibleStacks.size()));
+		possibleStacks.remove(mid);
+		ItemStack right = possibleStacks.get(rand.nextInt(possibleStacks.size()));
 
+		screenItems = Triple.of(left, mid, right);
 	}
 
 	/**
