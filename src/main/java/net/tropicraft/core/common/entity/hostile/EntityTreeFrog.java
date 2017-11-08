@@ -23,7 +23,7 @@ import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 
 public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob {
 
-	private static final DataParameter<Byte> TYPE = EntityDataManager.<Byte>createKey(EntityTropiSpider.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> TYPE = EntityDataManager.<Byte>createKey(EntityTreeFrog.class, DataSerializers.BYTE);
 
 	public int jumpDelay = 0;
 	private int attackTime;
