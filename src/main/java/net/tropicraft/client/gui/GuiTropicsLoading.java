@@ -60,7 +60,7 @@ public class GuiTropicsLoading extends GuiScreen {
 
 	private int progress;
 	private Random rand = new Random();
-	private long lastWorldUpdateTick = 0L;
+	private long animTick = 0L;
 
 	private Pair<Entity, Entity> screenEntities = null;
 	private Triple<ItemStack, ItemStack, ItemStack> screenItems = null;
@@ -74,6 +74,8 @@ public class GuiTropicsLoading extends GuiScreen {
 		backgroundToEntityMap.put(BACKGROUNDS[0], MOBS_WATER);
 		backgroundToEntityMap.put(BACKGROUNDS[1], MOBS_LAND);
 		backgroundToEntityMap.put(BACKGROUNDS[2], MOBS_VILLAGE);
+		this.assignScreenContent();
+		animTick = rand.nextInt(12345);
 	}
 
 	public void setLeaving(boolean b) {
@@ -91,6 +93,14 @@ public class GuiTropicsLoading extends GuiScreen {
 		if (this.progress % 20 == 0) {
 			this.connection.sendPacket(new CPacketKeepAlive());
 		}
+		if(this.progress % 200 == 0) {
+			assignScreenContent();
+		}
+		if (this.screenReassign) {
+			this.assignScreenContent();
+			this.screenReassign = false;
+		}
+		this.animTick++;
 	}
 
 	public void assignScreenContent() {
@@ -147,20 +157,6 @@ public class GuiTropicsLoading extends GuiScreen {
 	 * Draws the screen and all the components in it.
 	 */
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		if (this.screenReassign) {
-			this.assignScreenContent();
-			this.screenReassign = false;
-		}
-		if (mc.world != null) {
-			if (lastWorldUpdateTick != mc.world.getTotalWorldTime() % 240000) {
-
-				lastWorldUpdateTick = mc.world.getTotalWorldTime() % 240000;
-
-				if (lastWorldUpdateTick % 200 == 0) {
-					assignScreenContent();
-				}
-			}
-		}
 		if (screenEntities == null && mc.world != null) {
 			assignScreenContent();
 		}
@@ -171,9 +167,9 @@ public class GuiTropicsLoading extends GuiScreen {
 		if (screenEntities != null) {
 			// TODO: Cast some kind of entity shadows
 			drawScreenEntity(screenEntities.getLeft(), sr.getScaledWidth() / 2 - 120, (sr.getScaledHeight() / 2) + 60,
-					50, -90 + (int) (this.lastWorldUpdateTick * 2), 20);
+					50, -90 + (int) ((this.animTick) * 2), 20);
 			drawScreenEntity(screenEntities.getRight(), sr.getScaledWidth() / 2 + 120, (sr.getScaledHeight() / 2) + 60,
-					50, 90 - (int) (this.lastWorldUpdateTick * 2), 20);
+					50, 90 - (int) ((this.animTick) * 2), 20);
 			drawScreenItemStack(screenItems.getLeft(), (sr.getScaledWidth() / 2) - 8 - 24,
 					(sr.getScaledHeight() / 2) + 8, 1.5f);
 			drawScreenItemStack(screenItems.getMiddle(), (sr.getScaledWidth() / 2) - 12, (sr.getScaledHeight() / 2) + 8,

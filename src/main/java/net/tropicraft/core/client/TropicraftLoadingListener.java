@@ -22,7 +22,6 @@ public class TropicraftLoadingListener {
 
 	private Minecraft mc = FMLClientHandler.instance().getClient();
 	private int lastDimension = 0;
-	private GuiTropicsLoading guiLoading;
 	private ArrayList<Pair<String, Integer>> farewellSkipDimensions = new ArrayList<Pair<String, Integer>>();
 
 	@SubscribeEvent
@@ -33,22 +32,18 @@ public class TropicraftLoadingListener {
 
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent evt) {
-		if (evt.getGui() instanceof GuiDownloadTerrain){
+		if (evt.getGui() instanceof GuiDownloadTerrain)
+		{
 			if (FMLClientHandler.instance().getClientPlayHandler() instanceof NetHandlerPlayClient) {
 				if (mc.player != null) {
-					if (guiLoading == null) {
-						guiLoading = new GuiTropicsLoading();
-					}
+					GuiTropicsLoading guiLoading = new GuiTropicsLoading();
 					boolean isLeaving = false;
 					if (lastDimension != TropicraftWorldUtils.TROPICS_DIMENSION_ID
 							&& mc.player.dimension == TropicraftWorldUtils.TROPICS_DIMENSION_ID) {
 						isLeaving = true;
-					}
-					
+					}	
 					guiLoading.setLeaving(isLeaving);
-
 					if (wasTropicsInvolved() && isDimensionFarewellAllowed(isLeaving)) {
-						guiLoading.assignScreenContent();
 						evt.setGui(guiLoading);
 					}
 				}
