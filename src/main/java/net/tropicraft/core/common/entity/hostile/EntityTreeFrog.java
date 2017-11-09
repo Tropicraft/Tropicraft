@@ -10,16 +10,20 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLand;
 import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
+import net.tropicraft.core.registry.BlockRegistry;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob {
 
@@ -153,6 +157,20 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 	public void readEntityFromNBT(NBTTagCompound n) {
 		setType(n.getInteger("frogType"));
 		super.readEntityFromNBT(n);
+	}
+
+	/**
+	 * drops the loot of this entity upon death
+	 */
+	@Override
+	protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source) {
+	    if (!world.isRemote) {
+	        this.dropItem(ItemRegistry.frogLeg, 2);
+
+	        if (this.getType() != Type.GREEN) {
+	            this.dropItem(ItemRegistry.poisonFrogSkin, 1);
+	        }
+	    }
 	}
 
 	public static enum Type {
