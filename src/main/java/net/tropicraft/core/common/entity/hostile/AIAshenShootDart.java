@@ -24,7 +24,7 @@ public class AIAshenShootDart extends EntityAIBase {
 		this.entity = entity;
 		this.attackCooldown = 60;
 		this.maxAttackDistance = 15 * 15;
-		this.moveSpeedAmplifier = 2.0F;
+		this.moveSpeedAmplifier = 1.0F;
 	}
 	
     public void setAttackCooldown(int attackCooldown) {

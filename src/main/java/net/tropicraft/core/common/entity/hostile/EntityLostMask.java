@@ -69,6 +69,10 @@ public class EntityLostMask extends Entity {
 			if(this.ticksExisted == 1 && type >= 0) {
 				this.setType(type);
 			}
+			//remove masks that have been on the ground abandoned for over a day
+			if (this.ticksExisted >= 24000) {
+				this.setDead();
+			}
 		}
 		if (onGround) {
 			this.motionX *= .5F;
