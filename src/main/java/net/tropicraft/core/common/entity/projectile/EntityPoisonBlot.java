@@ -24,7 +24,6 @@ public class EntityPoisonBlot extends EntityThrowable {
         if (mop.entityHit != null) {
             if (mop.entityHit instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer)mop.entityHit;
-                
                 player.addPotionEffect(new PotionEffect(MobEffects.POISON, 12 * 20, 0));
                 this.setDead();
             }

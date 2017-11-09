@@ -7,6 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.tropicraft.core.common.entity.egg.EntityEgg;
+import net.tropicraft.core.common.entity.egg.EntityStarfishEgg;
 import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -70,7 +72,7 @@ public class EntityStarfish extends EntityEchinoderm implements IEntityAdditiona
 	}
 
 	@Override
-	public EntityEchinodermEgg createEgg() {
+	public EntityEgg createEgg() {
 		return new EntityStarfishEgg(world, this.starfishType);
 	}
 

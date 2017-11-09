@@ -37,7 +37,8 @@ public final class Names {
 	// Item names
 	public static final String[] EGG_NAMES = {"iguana", "starfish", "greenfrog", "redfrog", "yellowfrog", "bluefrog",
 			"eih", "marlin", "fish", "ashen", "turtle", "mow", "monkey", "koa", "tropicreeper",
-			"tropiskelly", "eagleray", "failgull", "seaurchin", "piranha", "sardine", "dolphin", "seahorse", "hammerhead"};
+			"tropiskelly", "eagleray", "failgull", "seaurchin", "piranha", "sardine", "dolphin", 
+			"seahorse", "hammerhead", "tropispider"};
 	public static final String[] COFFEE_NAMES = { "coffee_bean_raw", "coffee_bean_roasted", "coffee_berry" };
 
 	// Tile Entity Names
