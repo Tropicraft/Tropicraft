@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -12,6 +14,7 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -125,6 +128,7 @@ public class BlockIris extends BlockBush implements ITropicraftBlock {
 		return false;
 	}
 	
+	@Override
     public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
         if (state.getBlock() != this) return super.canBlockStay(worldIn, pos, state); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
         if (state.getValue(HALF) == PlantHalf.UPPER) {
@@ -135,8 +139,13 @@ public class BlockIris extends BlockBush implements ITropicraftBlock {
         }
     }
     
+	@Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
     	super.onBlockHarvested(worldIn, pos, state, player);
-    	System.out.println("harvests");
     }
+	
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	    return state.getValue(HALF) == PlantHalf.UPPER ? super.getItemDropped(state, rand, fortune) : null;
+	}
 }
