@@ -18,25 +18,29 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockEvents {
 
-	@SubscribeEvent
-	public void handlePineappleBreakEvent(HarvestDropsEvent event) {
-	    EntityPlayer player = event.getHarvester();
-	    if (player == null) {
-	        return;
-	    }
-	    ItemStack held = player.getHeldItemMainhand();
-	    
-	    IBlockState state = event.getState();
-	    boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
-	    boolean isGrown = isTop || state.getValue(BlockPineapple.STAGE) == BlockPineapple.TOTAL_GROW_TICKS;
-	    
-	    if (isGrown) {
-	        if (held != null && held.getItem() instanceof ItemSword) {
-	            event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(4)));
-	        } else {
-	            event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
-	        }
-	    }
+    @SubscribeEvent
+    public void handlePineappleBreakEvent(HarvestDropsEvent event) {
+        EntityPlayer player = event.getHarvester();
+        if (player == null) {
+            return;
+        }
+        ItemStack held = player.getHeldItemMainhand();
+
+        IBlockState state = event.getState();
+        if (state.getBlock() != BlockRegistry.pineapple) {
+            return;
+        }
+
+        boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
+        boolean isGrown = isTop || state.getValue(BlockPineapple.STAGE) == BlockPineapple.TOTAL_GROW_TICKS;
+
+        if (isGrown) {
+            if (held != null && held.getItem() instanceof ItemSword) {
+                event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(4)));
+            } else {
+                event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
+            }
+        }
         if (!isTop) {
             event.getWorld().setBlockToAir(event.getPos().up());
         }
