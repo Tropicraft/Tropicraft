@@ -46,6 +46,7 @@ import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.block.BlockTropicraftSlab;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
+import net.tropicraft.core.common.block.BlockTropicraftStairsFuzzy;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
 import net.tropicraft.core.common.block.BlockTropicsSapling;
@@ -157,6 +158,7 @@ public class BlockRegistry extends TropicraftRegistry {
     public static Block thatchStairs;
     public static Block bambooStairs;
     public static Block palmStairs;
+    public static Block thatchStairsFuzzy;
 
     /** Fluids */
     public static BlockTropicsWater tropicsWater;
@@ -247,6 +249,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		bambooStairs = registerBlock(new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS, new SimpleItemCreator(Names.BLOCK_BAMBOO_STAIRS, true));
 		palmStairs = registerBlock(new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS, new SimpleItemCreator(Names.BLOCK_PALM_STAIRS, true));
 		chunkStairs = registerBlock(new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS, new SimpleItemCreator(Names.BLOCK_CHUNK_O_HEAD_STAIRS, true));
+		thatchStairsFuzzy = registerBlock(new BlockTropicraftStairsFuzzy(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS_FUZZY, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS_FUZZY, true));
 		
 		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER);
 		tropicsPortal = registerBlockNoItem(new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER), Names.TROPICS_PORTAL);
