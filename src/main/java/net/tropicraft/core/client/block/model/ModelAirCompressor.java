@@ -159,7 +159,7 @@ public class ModelAirCompressor extends MachineModel<TileEntityAirCompressor>
     
     @Override
     public String getTexture(TileEntityAirCompressor te) {
-        return te.getBreatheProgress(Minecraft.getMinecraft().getRenderPartialTicks()) < Math.PI ? "air_compressor" : "air_compressor_blow";
+        return te != null && te.getBreatheProgress(Minecraft.getMinecraft().getRenderPartialTicks()) < Math.PI ? "air_compressor" : "air_compressor_blow";
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)
