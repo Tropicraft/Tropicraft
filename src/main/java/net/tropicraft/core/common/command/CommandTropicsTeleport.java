@@ -22,8 +22,10 @@ public class CommandTropicsTeleport extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender,
 			String[] args) throws CommandException {
-		EntityPlayerMP player = this.getCommandSenderAsPlayer(sender);
-		
+	    if (!(sender.getCommandSenderEntity() instanceof EntityPlayerMP)) {
+	        throw new CommandException("Cannot teleport non-players!");
+	    }
+		EntityPlayerMP player = (EntityPlayerMP) sender.getCommandSenderEntity();
 		TropicraftWorldUtils.teleportPlayer(player);
 	}
 }
