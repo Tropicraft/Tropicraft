@@ -24,8 +24,6 @@ public class ItemAshenMask extends ItemTropicraftArmor {
 
     public ItemAshenMask(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot, AshenMasks maskType) {
         super(material, renderIndex, slot);
-        setHasSubtypes(true);
-        this.maxStackSize = 64;
         this.maskType = maskType;
         ItemRegistry.maskMap.put(maskType, this);
     }
