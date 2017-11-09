@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TeleporterTropics;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -31,15 +32,41 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 		maxStackSize = 1;
 	}
 
+    /**
+     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
+     */
+    @Override
+    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+        ItemStack indirect = new ItemStack(item);
+        Util.getTagCompound(indirect).setBoolean("DirectMode", false);
+        list.add(indirect);
+
+        ItemStack direct = new ItemStack(item);
+        Util.getTagCompound(indirect).setBoolean("DirectMode", true);
+        list.add(direct);
+    }
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer ent, List list, boolean wat) {
-		list.add(I18n.translateToLocal("portalenchanter.type_" + itemstack.getItemDamage()));
+	    boolean hasDirectMode = Util.getTagCompound(itemstack).hasKey("DirectMode");
+	    int mode;
+	    if (hasDirectMode) {
+	        mode = Util.getTagCompound(itemstack).getBoolean("DirectMode") ? 1 : 0;   
+	    } else {
+	        mode = 0;
+	    }
+		list.add(I18n.translateToLocal("portalenchanter.type_" + mode));
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer, EnumHand hand) {
-		if (!world.isRemote && (itemstack.getItemDamage() == 1 || entityplayer.capabilities.isCreativeMode)) {
+	    boolean isDirectMode = false;
+	    if (itemstack.getTagCompound() != null) {
+	        isDirectMode = Util.getTagCompound(itemstack).hasKey("DirectMode") ? Util.getTagCompound(itemstack).getBoolean("DirectMode") : false;   
+	    }
+
+		if (!world.isRemote && (isDirectMode || entityplayer.capabilities.isCreativeMode)) {
 			int destination = entityplayer.dimension == 0 ? TropicraftWorldUtils.TROPICS_DIMENSION_ID : 0;
 			TropicraftWorldUtils.teleportPlayer((EntityPlayerMP) entityplayer);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
@@ -54,13 +81,13 @@ public class ItemPortalEnchanter extends ItemTropicraft {
             BlockPos blockpos = raytraceresult.getBlockPos();
 
             if (!world.isBlockModifiable(entityplayer, blockpos)) {
-                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
             }
             
             if (!entityplayer.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemstack)) {
-                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+                return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
             }
-            
+
             int x = blockpos.getX(), y = blockpos.getY(), z = blockpos.getZ();
 			boolean found = false;
 			for (int searchZ = -4; searchZ <= 4 && !found; searchZ++) {

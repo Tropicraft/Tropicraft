@@ -313,6 +313,8 @@ fluid.tropicraft.portal=Tropics Portal
 
 # Misc localizations
 tropicraft.coconutBombWarning=You do not have permission to use coconut bombs .) Check the coconut bomb whitelist in the Tropicraft config file!
+portalenchanter.type_0=Mode: Portal Build Mode
+portalenchanter.type_1=Mode: Instant Teleport Mode
 
 # Koa Trading
 entity.tropicraft.koa.trade.give=Have some trimix gas!
