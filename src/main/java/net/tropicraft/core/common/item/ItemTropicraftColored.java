@@ -61,7 +61,7 @@ public abstract class ItemTropicraftColored extends ItemTropicraft {
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack itemstack) {
-	    return "item." + TropicraftRegistry.getNamePrefixed(this.itemName) + "." + EnumDyeColor.byDyeDamage(itemstack.getItemDamage()).getUnlocalizedName() + ".name"; 
+	public String getUnlocalizedName(ItemStack itemstack) {
+	    return "item." + TropicraftRegistry.getNamePrefixed(this.itemName) + "." + EnumDyeColor.byDyeDamage(itemstack.getItemDamage()).getUnlocalizedName(); 
 	}
 }

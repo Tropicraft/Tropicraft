@@ -14,6 +14,12 @@
       },
       "zircon": {
          "textures": { "all": "tropicraft:blocks/oreZircon" }
+      },
+      "manganese": {
+        "textures": { "all": "tropicraft:blocks/oreManganese" }
+      },
+      "shaka": {
+        "textures": { "all": "tropicraft:blocks/oreShaka" }
       }
     }
   }

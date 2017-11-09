@@ -11,6 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.enums.TropicraftOres;
+import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOres> {
@@ -32,20 +33,36 @@ public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOr
             return ItemRegistry.eudialyte;
         case ZIRCON:
             return ItemRegistry.zircon;
+        case MANGANESE:
+        case SHAKA:
+            return Item.getItemFromBlock(BlockRegistry.ore);
         }
         return null;
     }
 
+    @Override
+    public int damageDropped(IBlockState state) {
+        TropicraftOres variant = getVariant(state);
+        if (variant == TropicraftOres.MANGANESE || variant == TropicraftOres.SHAKA) {
+            return variant.ordinal();
+        }
+        return super.damageDropped(state);
+    }
+
 	// TODO this is a lazy impl
+    // your mom is a lazy impl
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random) {
-        if (getVariant(state) == TropicraftOres.EUDIALYTE) {
+        TropicraftOres variant = getVariant(state);
+        if (variant == TropicraftOres.EUDIALYTE) {
             return 1 + random.nextInt(4 + fortune);
+        } else if (variant == TropicraftOres.MANGANESE || variant == TropicraftOres.SHAKA) {
+            return 1;
         } else {
             return 1 + random.nextInt(1 + fortune);
         }
     }
-	
+
     @Override
     public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
         Random rand = world instanceof World ? ((World)world).rand : new Random();

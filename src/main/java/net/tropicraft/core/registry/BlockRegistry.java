@@ -46,11 +46,13 @@ import net.tropicraft.core.common.block.BlockTropicraftPlank;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.block.BlockTropicraftSlab;
 import net.tropicraft.core.common.block.BlockTropicraftStairs;
+import net.tropicraft.core.common.block.BlockTropicraftStairsFuzzy;
 import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.block.BlockTropicsPortal;
 import net.tropicraft.core.common.block.BlockTropicsSapling;
 import net.tropicraft.core.common.block.BlockTropicsWater;
 import net.tropicraft.core.common.block.BlockVolcano;
+import net.tropicraft.core.common.block.scuba.BlockAirCompressor;
 import net.tropicraft.core.common.enums.ITropicraftVariant;
 import net.tropicraft.core.common.enums.TropicraftBongos;
 import net.tropicraft.core.common.enums.TropicraftBundles;
@@ -157,6 +159,7 @@ public class BlockRegistry extends TropicraftRegistry {
     public static Block thatchStairs;
     public static Block bambooStairs;
     public static Block palmStairs;
+    public static Block thatchStairsFuzzy;
 
     /** Fluids */
     public static BlockTropicsWater tropicsWater;
@@ -183,6 +186,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	
 	public static Block drinkMixer;
 	public static Block sifter;
+	public static Block airCompressor;
+	
 	public static Block flowerPot;
 	public static Block bambooDoor;
 	public static BlockTropicraftSlab slabs;
@@ -209,7 +214,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
 		ore = registerBlock(new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES));
 		// FIXME ew
-		oreBlock = registerBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.VALUES) {
+		oreBlock = registerBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.ORES_WITH_BLOCKS) {
 		    @Override
 		    public Item getItem(Block block) {
 	            return new ItemBlockTropicraft(block, variants.toArray(new ITropicraftVariant[variants.size()])) {
@@ -247,6 +252,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		bambooStairs = registerBlock(new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS, new SimpleItemCreator(Names.BLOCK_BAMBOO_STAIRS, true));
 		palmStairs = registerBlock(new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS, new SimpleItemCreator(Names.BLOCK_PALM_STAIRS, true));
 		chunkStairs = registerBlock(new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS, new SimpleItemCreator(Names.BLOCK_CHUNK_O_HEAD_STAIRS, true));
+		thatchStairsFuzzy = registerBlock(new BlockTropicraftStairsFuzzy(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS_FUZZY, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS_FUZZY, true));
 		
 		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER);
 		tropicsPortal = registerBlockNoItem(new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER), Names.TROPICS_PORTAL);
@@ -275,6 +281,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
 		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
+		airCompressor = registerBlock(new BlockAirCompressor(), Names.AIR_COMPRESSOR);
+		
 		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT);
 		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR);
 

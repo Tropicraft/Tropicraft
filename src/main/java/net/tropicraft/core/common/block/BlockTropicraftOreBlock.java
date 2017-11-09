@@ -8,7 +8,7 @@ import net.tropicraft.core.common.enums.TropicraftOres;
 public class BlockTropicraftOreBlock extends BlockTropicraftEnumVariants<TropicraftOres> {
 
 	public BlockTropicraftOreBlock() {
-		super(Material.ROCK, TropicraftOres.class);
+		super(Material.ROCK, TropicraftOres.class, TropicraftOres.ORES_WITH_BLOCKS);
         this.setHardness(5.0F);
         this.setResistance(10.0F);
         this.setSoundType(SoundType.STONE);

@@ -8,17 +8,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.tropicraft.core.common.block.scuba.BlockAirCompressor;
 import net.tropicraft.core.common.block.tileentity.message.MessageAirCompressorInventory;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
 import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.item.scuba.api.IScubaTank;
 import net.tropicraft.core.common.network.TCPacketHandler;
 
-public class TileEntityAirCompressor extends TileEntity implements ITickable  {
+public class TileEntityAirCompressor extends TileEntity implements ITickable, IMachineTile {
 
 	/** Is the compressor currently giving air */
-	public boolean compressing;
+	private boolean compressing;
 
 	/** Number of ticks compressed so far */
 	private int ticks;
@@ -27,7 +29,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	private static final float fillRate = 0.10F;
 
 	/** The stack that is currently being filled */
-	public ItemStack stack;
+	private ItemStack stack;
 	
 	private IScubaTank tank;
 
@@ -44,7 +46,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 		if (nbt.hasKey("Tank")) {
 			setTank(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Tank")));
 		} else {
-			this.tank = null;
+			setTank(null);
 		}
 	}
 
@@ -64,8 +66,16 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	
 	public void setTank(ItemStack tankItemStack) {
 	    this.stack = tankItemStack;
-        this.tank = stack.getCapability(ScubaCapabilities.getTankCapability(), null);
+        this.tank = stack == null ? null : stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	}
+	
+    public ItemStack getTankStack() {
+        return stack;
+    }
+    
+    public IScubaTank getTank() {
+        return tank;
+    }
 
 	@Override
 	public void update() {
@@ -98,34 +108,39 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	}
 
 	public boolean addTank(ItemStack stack) {
-		if (tank == null && stack.getItem() != null && stack.getItem() instanceof ItemScubaTank) {
-			this.stack = stack;
-			this.compressing = true;
-			syncInventory();
-			return true;
+        if (tank == null && stack.getItem() != null && stack.getItem() instanceof ItemScubaTank) {
+            setTank(stack);
+            this.compressing = true;
+            syncInventory();
+            return true;
 		}
 
 		return false;
 	}
 
-	public void ejectTank() {
-		if (tank != null) {
-			EntityItem tankItem = new EntityItem(world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
-			world.spawnEntity(tankItem);
-			tank = null;
-		}
+    public void ejectTank() {
+        if (stack != null) {
+            if (!world.isRemote) {
+                EntityItem tankItem = new EntityItem(world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
+                world.spawnEntity(tankItem);
+            }
+        }
 
-		this.ticks = 0;
-		this.compressing = false;
-		syncInventory();
-	}
+        setTank(null);
+        syncInventory();
+        this.ticks = 0;
+        this.compressing = false;
+    }
 
 	public boolean isDoneCompressing() {
 		return this.ticks > 0 && !this.compressing;
 	}
 
-	public float getTickRatio() {
-		return this.ticks / (tank.getAirType().getMaxCapacity() * fillRate);
+	public float getTickRatio(float partialTicks) {
+	    if (tank != null) {
+	        return (this.ticks + partialTicks) / (tank.getAirType().getMaxCapacity() * fillRate);
+	    }
+	    return 0;
 	}
 
 	public boolean isCompressing() {
@@ -141,6 +156,27 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 		this.compressing = false;
 		syncInventory();
 	}
+	
+	public float getBreatheProgress(float partialTicks) {
+	    return (float) (((getProgress(partialTicks) * 10 * Math.PI) + Math.PI) % (Math.PI * 2));
+	}
+	
+	/* == IMachineTile == */
+	
+	@Override
+	public boolean isActive() {
+	    return getTankStack() != null;
+	}
+	
+	@Override
+	public float getProgress(float partialTicks) {
+	    return getTickRatio(partialTicks);
+	}
+	
+	@Override
+	public EnumFacing getFacing() {
+	    return getWorld().getBlockState(getPos()).getValue(BlockAirCompressor.FACING);
+	}
 
 	/**
 	 * Called when you receive a TileEntityData packet for the location this
@@ -154,11 +190,13 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable  {
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
-	}
+    }
 
-	protected void syncInventory() {
-		TCPacketHandler.INSTANCE.sendToDimension(new MessageAirCompressorInventory(this), getWorld().provider.getDimension());
-	}
+    protected void syncInventory() {
+        if (!world.isRemote) {
+            TCPacketHandler.INSTANCE.sendToDimension(new MessageAirCompressorInventory(this), getWorld().provider.getDimension());
+        }
+    }
 
 	@Override
 	@Nullable

@@ -93,7 +93,7 @@ public class ModelScubaTank extends ModelBase {
         Tank1m7.renderWithRotation(par7);
     }
     
-    public void renderBambooMug() {
+    public void render() {
         float f5 = 0.0625F;
         Tank1.render(f5);
         Tank1m1.render(f5);

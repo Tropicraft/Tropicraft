@@ -2,8 +2,6 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,8 +27,8 @@ import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
 public class ItemScubaChestplateGear extends ItemScubaGear {
 
-    /** Number of ticks between updates - every 0.5 seconds ideally */
-    public static final int UPDATE_RATE = 10;
+    /** Number of ticks between updates - every second ideally */
+    public static final int UPDATE_RATE = 20;
 
     public ItemScubaChestplateGear(ArmorMaterial material, ScubaMaterial scubaMaterial, int renderIndex, EntityEquipmentSlot slot) {
         super(material, scubaMaterial, renderIndex, slot);

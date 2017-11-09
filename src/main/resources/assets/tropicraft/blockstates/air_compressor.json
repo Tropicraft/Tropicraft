@@ -1,0 +1,8 @@
+{
+  	"variants": {
+    	"facing=east": { "model": "tropicraft:drink_mixer" },
+    	"facing=west": { "model": "tropicraft:drink_mixer" },
+    	"facing=north": { "model": "tropicraft:drink_mixer" },
+    	"facing=south": { "model": "tropicraft:drink_mixer" }
+ 	}
+}

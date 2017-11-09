@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -56,6 +57,18 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos,
 			IBlockState state) {
 		return false;
+	}
+	
+	@Override
+	public int getMetaFromState(IBlockState state) {
+	    return (state.getValue(HALF).ordinal() << 3) | (state.getValue(STAGE) & 7);
+	}
+	
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+	    int half = (meta >> 3) & 1;
+	    int stage = meta & 7;
+	    return getDefaultState().withProperty(HALF, PlantHalf.values()[half]).withProperty(STAGE, stage);
 	}
 
 	@Override
@@ -107,10 +120,6 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 		return ((Integer)state.getValue(STAGE)) == TOTAL_GROW_TICKS;
 	}
 
-	private boolean canBlockStay(World worldIn, BlockPos pos) {
-		return this.canPlaceBlockAt(worldIn, pos);
-	}
-
 	/**
 	 * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
 	 * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
@@ -129,7 +138,7 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 			worldIn.setBlockToAir(pos);
 			return false;
 		}
-	}	
+	}
 
 	// Called by ItemBlock after the (lower) block has been placed
 	// Use it to add the top half of the block
@@ -180,5 +189,10 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
             	return this.canPlaceBlockAt(worldIn, pos);
             }
         }
+    }
+	
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return null; // Handled in BlockEvents
     }
 }
