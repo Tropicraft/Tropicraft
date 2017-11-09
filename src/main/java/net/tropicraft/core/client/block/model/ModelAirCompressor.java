@@ -1,8 +1,10 @@
 package net.tropicraft.core.client.block.model;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
+import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 
-public class ModelAirCompressor extends ModelBlock
+public class ModelAirCompressor extends MachineModel<TileEntityAirCompressor>
 {
     //fields
     ModelRenderer Base;
@@ -133,7 +135,7 @@ public class ModelAirCompressor extends ModelBlock
     }
 
     @Override
-    public void renderAsBlock()
+    public void renderAsBlock(TileEntityAirCompressor te)
     {
         float f5 = 0.0625F;
         Base.render(f5);
@@ -156,8 +158,8 @@ public class ModelAirCompressor extends ModelBlock
     }
     
     @Override
-    public String getTexture(boolean active) {
-        return active ? "air_compressor_blow" : "air_compressor";
+    public String getTexture(TileEntityAirCompressor te) {
+        return te.getBreatheProgress(Minecraft.getMinecraft().getRenderPartialTicks()) < Math.PI ? "air_compressor" : "air_compressor_blow";
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

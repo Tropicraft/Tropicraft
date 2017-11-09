@@ -279,8 +279,8 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	}
 	
 	@Override
-	public int getProgress() {
-	    return ticks;
+	public float getProgress(float partialTicks) {
+	    return (ticks + partialTicks) / TICKS_TO_MIX;
 	}
 	
 	@Override

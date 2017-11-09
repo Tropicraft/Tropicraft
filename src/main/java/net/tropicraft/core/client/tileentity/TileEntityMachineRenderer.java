@@ -6,20 +6,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
-import net.tropicraft.core.client.block.model.ModelBlock;
+import net.tropicraft.core.client.block.model.MachineModel;
 import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.IMachineTile;
-import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 
 public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineTile> extends TileEntitySpecialRenderer<T> {
 
 	/**
 	 * EIHMixer model instance
 	 */
-	private final ModelBlock model;
+	private final MachineModel<T> model;
 
 
-	public TileEntityMachineRenderer(ModelBlock model) {
+	public TileEntityMachineRenderer(MachineModel<T> model) {
 	    this.model = model;
 	}
 
@@ -40,12 +39,11 @@ public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineT
 		}
 
 		if (te != null && te.isActive()) {
-			float angle = MathHelper.sin((float)(25f * 2f * Math.PI * (te.getProgress() + partialTicks) / TileEntityDrinkMixer.TICKS_TO_MIX)) * 15f;
-			GlStateManager.rotate(angle, 0f, 1f, 0f);
+		    animationTransform(te, partialTicks);
 		}
 
-		TropicraftRenderUtils.bindTextureTE(model.getTexture(te.isActive()));
-		model.renderAsBlock();
+		TropicraftRenderUtils.bindTextureTE(model.getTexture(te));
+		model.renderAsBlock(te);
 		
 		if (te != null) {
 		    renderIngredients(te);
@@ -54,5 +52,10 @@ public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineT
 		GlStateManager.popMatrix();
 	}
 	
-	public abstract void renderIngredients(T te);
+	protected void animationTransform(T te, float partialTicks) {
+        float angle = MathHelper.sin((float) (25f * 2f * Math.PI * te.getProgress(partialTicks))) * 15f;
+        GlStateManager.rotate(angle, 0f, 1f, 0f);
+	}
+	
+	protected abstract void renderIngredients(T te);
 }

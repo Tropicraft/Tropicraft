@@ -39,7 +39,11 @@ public class MessageAirCompressorInventory extends MessageTileEntity<TileEntityA
         public IMessage onMessage(MessageAirCompressorInventory message, MessageContext ctx) {
             TileEntityAirCompressor compressor = message.getClientTileEntity();
             if (compressor != null) {
-                compressor.setTank(message.tank);
+                if (message.tank != null) {
+                    compressor.addTank(message.tank);
+                } else {
+                    compressor.ejectTank();
+                }
             }
             return null;
         }

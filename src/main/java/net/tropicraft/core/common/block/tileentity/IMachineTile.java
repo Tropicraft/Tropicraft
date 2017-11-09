@@ -6,7 +6,7 @@ public interface IMachineTile {
     
     boolean isActive();
     
-    int getProgress();
+    float getProgress(float partialTicks);
     
     EnumFacing getFacing();
 

@@ -1,8 +1,9 @@
 package net.tropicraft.core.client.block.model;
 
 import net.minecraft.client.model.ModelRenderer;
+import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 
-public class ModelDrinkMixer extends ModelBlock
+public class ModelDrinkMixer extends MachineModel<TileEntityDrinkMixer>
 {
     //fields
     ModelRenderer Base;
@@ -133,7 +134,7 @@ public class ModelDrinkMixer extends ModelBlock
     }
 
     @Override
-    public void renderAsBlock()
+    public void renderAsBlock(TileEntityDrinkMixer te)
     {
         float f5 = 0.0625F;
         Base.render(f5);
@@ -156,7 +157,7 @@ public class ModelDrinkMixer extends ModelBlock
     }
     
     @Override
-    public String getTexture(boolean active) {
+    public String getTexture(TileEntityDrinkMixer te) {
         return "drink_mixer";
     }
 
