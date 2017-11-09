@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -8,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -27,8 +30,8 @@ import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
 import net.tropicraft.core.common.event.ItemEvents;
 import net.tropicraft.core.common.event.MiscEvents;
-import net.tropicraft.core.common.event.SpawnEvents;
 import net.tropicraft.core.common.event.ScubaHandlerCommon;
+import net.tropicraft.core.common.event.SpawnEvents;
 import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.common.worldgen.overworld.TCWorldGenerator;
@@ -115,5 +118,21 @@ public class Tropicraft {
 	public void serverStarting(FMLServerStartingEvent event) {
 		CommandRegistry.init(event);
 	}
+	
+    @EventHandler
+    public void imcCallback(FMLInterModComms.IMCEvent event) {
+    		event.applyModContainer(ForgeModContainer.getInstance());
+        for (final FMLInterModComms.IMCMessage imcMessage : event.getMessages()) {
+	        	if (imcMessage.getSender().equals(Info.MODID) || !imcMessage.key.equalsIgnoreCase("loaderFarewellSkip")) {
+	    			return;
+	    		}
+            if (imcMessage.isNBTMessage()) {
+                	NBTTagCompound n = imcMessage.getNBTValue();
+                	int id = n.getInteger("dim_id");
+                	String name = n.getString("dim_name"); 
+                	System.out.println("Received IMC request to add dimension \""+name+":"+id+"\" to farewellSkipDimensions from modid:"+imcMessage.getSender());
+            }
+        }
+    }
 
 }

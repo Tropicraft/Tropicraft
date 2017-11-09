@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -12,11 +13,13 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.enums.AshenMasks;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityLostMask extends Entity {
 
 	//Client side, used for mask bob
-	public int type;
+	public int type = -1;
 	public float bobber;
 	private double launchedSpeed = 1D;
 	
@@ -42,12 +45,12 @@ public class EntityLostMask extends Entity {
 	public EntityLostMask(World world, int type, double x, double y, double z, double angle) {
 		this(world);
 		this.setPosition(x, y, z);		
-		this.setType(type);
 		motionX = Math.cos(Math.toRadians(angle + 90))*launchedSpeed;
 		motionZ = Math.sin(Math.toRadians(angle + 90))*launchedSpeed;
 		double subAngle = MathHelper.wrapDegrees(angle);
 		double subAngle2 = subAngle + (180 - subAngle)*2;
 		this.rotationYaw = (float) (subAngle2);
+		this.type = type;
 	}
 
 	@Override
@@ -62,6 +65,15 @@ public class EntityLostMask extends Entity {
 
 	@Override 
 	public void onUpdate() {
+		if(!world.isRemote) {
+			if(this.ticksExisted == 1 && type >= 0) {
+				this.setType(type);
+			}
+			//remove masks that have been on the ground abandoned for over a day
+			if (this.ticksExisted >= 24000) {
+				this.setDead();
+			}
+		}
 		if (onGround) {
 			this.motionX *= .5F;
 			this.motionZ *= .5F;
@@ -103,7 +115,7 @@ public class EntityLostMask extends Entity {
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("MaskType", this.getColor());
+		nbt.setInteger("MaskType", this.getType());
 
 	}
 	@Override
@@ -132,8 +144,7 @@ public class EntityLostMask extends Entity {
 	}
 
 	public void dropItemStack() {
-		//TODO: Ashen masks
-		//this.entityDropItem(new ItemStack(TCItemRegistry.ashenMasks, 1, getColor()), 0.0F);
+		this.entityDropItem(new ItemStack(ItemRegistry.maskMap.get(AshenMasks.VALUES[this.getType()]), 1, getType()), 0.0F);
 	}
 
 	private void setRotator(int[] a) {
@@ -159,13 +170,9 @@ public class EntityLostMask extends Entity {
 	public int getMode() {
 		return 0;
 	}
-
-	public int getColor() {
-		return this.dataManager.get(MASK_TYPE).intValue();
-	}
 	
 	public int getType() {
-		return this.getColor();
+		return this.dataManager.get(MASK_TYPE).intValue();
 	}
 
 	public int getDirection() {

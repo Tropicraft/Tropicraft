@@ -182,7 +182,7 @@ item.tropicraft.spawn_egg.bluefrog.name=Spawn Poisonous Blue Frog
 item.tropicraft.spawn_egg.yellowfrog.name=Spawn Poisonous Yellow Frog
 item.tropicraft.spawn_egg.eih.name=Eye of Head
 item.tropicraft.spawn_egg.marlin.name=Spawn Marlin
-item.tropicraft.spawn_egg.fish.name=Spawn Tropical Fish
+item.tropicraft.spawn_egg.fish.name=Spawn School of Tropical Fish
 item.tropicraft.spawn_egg.ashen.name=Ashen Ash
 item.tropicraft.spawn_egg.turtle.name=Spawn Sea Turtle Egg
 item.tropicraft.spawn_egg.mow.name=Spawn Man O' War
@@ -196,6 +196,11 @@ item.tropicraft.spawn_egg.seaurchin.name=Spawn Sea Urchin
 item.tropicraft.spawn_egg.dolphin.name=Spawn Dolphin
 item.tropicraft.spawn_egg.seahorse.name=Spawn Seahorse
 item.tropicraft.spawn_egg.hammerhead.name=Spawn Hammerhead
+item.tropicraft.spawn_egg.piranha.name=Spawn School of Piranha
+item.tropicraft.spawn_egg.sardine.name=Spawn School of River Sardine
+item.tropicraft.spawn_egg.tropispider.name=Spawn Tropical Spider
+
+
 item.tropicraft.sea_urchin_roe.name=Sea Urchin Roe
 item.tropicraft.fishing_rod.name=Bamboo Fishing Rod
 
@@ -209,8 +214,7 @@ item.tropicraft.spawn_egg.name=Tropics Mob Spawner Egg
 item.tropicraft.coffee.bean.raw.name=Coffee Beans
 item.tropicraft.coffee.bean.roasted.name=Roasted Coffee Beans
 item.tropicraft.coffee.berry.name=Coffee Berry
-item.tropicraft.spawn_egg.piranha.name=Spawn Piranha
-item.tropicraft.spawn_egg.sardine.name=Spawn River Sardine
+
 
 item.tropicraft.pink_weight_belt.name=Pink Weight Belt
 item.tropicraft.yellow_weight_belt.name=Yellow Weight Belt
@@ -246,6 +250,21 @@ item.tropicraft.summering.name=Summering
 item.tropicraft.the_tribe.name=The Tribe
 item.tropicraft.trade_winds.name=Trade Winds
 
+# Mask localizations
+item.tropicraft.mask_square_zord.name=Square Zord
+item.tropicraft.mask_horn_monkey.name=Horn Monkey
+item.tropicraft.mask_oblongatron.name=Oblongatron
+item.tropicraft.mask_headinator.name=Headinator
+item.tropicraft.mask_square_horn.name=Square Horn
+item.tropicraft.mask_screw_attack.name=Screw Attack
+item.tropicraft.mask_the_brain.name=The Brain
+item.tropicraft.mask_bat_boy.name=Bat Boy
+item.tropicraft.mask_ashen_mask1.name=Ashen Mask
+item.tropicraft.mask_ashen_mask2.name=Ashen Mask
+item.tropicraft.mask_ashen_mask3.name=Ashen Mask
+item.tropicraft.mask_ashen_mask4.name=Ashen Mask
+item.tropicraft.mask_ashen_mask5.name=Ashen Mask
+
 # Menu localizations
 itemGroup.tropicraft=Tropicraft
 
@@ -269,6 +288,15 @@ entity.tropicraft.marlin.name=Marlin
 entity.tropicraft.ashen.name=Ashen
 entity.tropicraft.piranha.name=Piranha
 entity.tropicraft.sardine.name=River Sardine
+entity.tropicraft.dolphin.name=Dolphin
+entity.tropicraft.hammerhead.name=Hammerhead
+entity.tropicraft.tropispider.name=Tropical Spider
+entity.tropicraft.seahorse.name=Seahorse
+entity.tropicraft.seaurchin.name=Sea Urchin
+entity.tropicraft.starfish.name=Starfish
+entity.tropicraft.eagleray.name=Spotted Eagle Ray
+entity.tropicraft.turtle.name=Sea Turtle
+entity.tropicraft.koa.name=Koa
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=If you like pina coladas...
@@ -302,9 +330,27 @@ fluid.tropicraft.portal=Tropics Portal
 
 # Misc localizations
 tropicraft.coconutBombWarning=You do not have permission to use coconut bombs .) Check the coconut bomb whitelist in the Tropicraft config file!
+portalenchanter.type_0=Mode: Portal Build Mode
+portalenchanter.type_1=Mode: Instant Teleport Mode
 
 # Koa Trading
 entity.tropicraft.koa.trade.give=Have some trimix gas!
 entity.tropicraft.koa.trade.not_enough_time=You still need %s more minutes of dive time! No trimix gas for you!
 entity.tropicraft.koa.trade.cooldown=Someone already got trimix gas from me recently
 entity.tropicraft.koa.trade.space=Your inventory is full!
+
+# Loading Screen
+tropicraft.loading.title.greeting=Drifting into the Tropics...
+tropicraft.loading.title.farewell=Wish you were here...
+
+tropicraft.loading.knowledge.pre=Did you know?
+tropicraft.loading.knowledge.1=%s The Tropics are home to Koa Tribes
+tropicraft.loading.knowledge.2=%s Turtles can lay eggs on beaches at night
+tropicraft.loading.knowledge.3=%s Shells can be found by sifting sand
+
+tropicraft.loading.hint.pre=Tip:
+tropicraft.loading.hint.1=%s Mature Turtles can be ridden in the water
+tropicraft.loading.hint.2=%s Iguanas hold a grudge, so try to avoid punching them
+
+tropicraft.loading.misc.1=Don't forget to hold your breath!
+tropicraft.loading.misc.2=Prepare to make a splash

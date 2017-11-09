@@ -4,6 +4,7 @@ package net.tropicraft.core.proxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -43,5 +44,9 @@ public class CommonProxy {
 
 	public void registerClientPacketScuba() {
 
+	}
+
+	public boolean helloIsItMeYoureLookingFor(EntityPlayer player) {
+		return true;
 	}
 }

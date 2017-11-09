@@ -4,17 +4,13 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.tropicraft.core.common.entity.underdasea.EntityTurtleEgg;
+import net.tropicraft.core.common.entity.egg.EntityEgg;
 
-public class ModelTurtleEgg extends ModelBase {
+public class ModelEgg extends ModelBase {
 
     public ModelRenderer Piece1;
-    public int hatching;
-    public double randRotator;
 
-    public ModelTurtleEgg() {
-        hatching = 0;
-        randRotator = 1;
+    public ModelEgg() {
         textureWidth = 64;
         textureHeight = 32;
         setTextureOffset("Piece1.Shape1", 0, 16);
@@ -51,21 +47,22 @@ public class ModelTurtleEgg extends ModelBase {
 
     @Override
     public void setLivingAnimations(EntityLivingBase entityliving, float f, float f1, float f2) {
-        hatching = ((EntityTurtleEgg) entityliving).hatchingTime;
-        randRotator = ((EntityTurtleEgg) entityliving).rotationRand;
-        if (hatching > 0) {
-            Piece1.rotateAngleY = 0F;
-
-            Piece1.rotateAngleY = (float) (Math.sin(hatching*.4))*.2f;
-            Piece1.rotateAngleX = (float) ((Math.sin(randRotator*2)))*.2f;
-            Piece1.rotateAngleZ = (float) ((Math.cos(randRotator * 2)))*.2f;
-          //  Piece1.rotateAngleZ = 0;
-
-        } else {
-            hatching = 0;
-            Piece1.rotateAngleY = 0F;
-            Piece1.rotateAngleX = 0F;
-            Piece1.rotateAngleZ = 0F;
+        if(entityliving instanceof EntityEgg) {
+	    		boolean hatching = ((EntityEgg) entityliving).isNearHatching();
+	        double randRotator = ((EntityEgg) entityliving).rotationRand;
+	        if (hatching) {
+	        	
+	            Piece1.rotateAngleY = 0F;
+	            Piece1.rotateAngleY = (float) (Math.sin(entityliving.ticksExisted*.4))*.2f;
+	            Piece1.rotateAngleX = (float) ((Math.sin(randRotator*2)))*.2f;
+	            Piece1.rotateAngleZ = (float) ((Math.cos(randRotator * 2)))*.2f;
+	          //  Piece1.rotateAngleZ = 0;
+	
+	        } else {
+	            Piece1.rotateAngleY = 0F;
+	            Piece1.rotateAngleX = 0F;
+	            Piece1.rotateAngleZ = 0F;
+	        }
         }
     }
 

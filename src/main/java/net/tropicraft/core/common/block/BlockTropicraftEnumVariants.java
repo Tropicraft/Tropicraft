@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.block;
 
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -27,6 +28,7 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant>
     private final BlockStateContainer blockState;
     
     private final Int2ObjectMap<T> byMeta = new Int2ObjectArrayMap<>();
+    private final T[] variants;
     
     protected BlockTropicraftEnumVariants(Material mat, Class<T> enumClass) {
         this(mat, enumClass, enumClass.getEnumConstants());
@@ -36,6 +38,7 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant>
         super(mat);
         Preconditions.checkNotNull(variants);
         Preconditions.checkArgument(variants.length > 0, "Must supply at least one variant.");
+        this.variants = variants;
         this.property = PropertyEnum.create("variant", enumClass, Lists.newArrayList(variants));
         this.blockState = createBlockState();
         for (T variant : enumClass.getEnumConstants()) {
@@ -99,6 +102,10 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant>
     
     public IBlockState defaultForVariant(T variant) {
         return getDefaultState().withProperty(getProperty(), variant);
+    }
+    
+    public IBlockState randomVariant(Random rand) {
+        return defaultForVariant(variants[rand.nextInt(variants.length)]);
     }
     
     /* == ITropicraftBlock == */

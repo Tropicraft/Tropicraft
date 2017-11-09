@@ -7,16 +7,18 @@ import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.entity.EntityLavaBall;
+import net.tropicraft.core.common.entity.egg.EntitySeaTurtleEgg;
+import net.tropicraft.core.common.entity.egg.EntitySeaUrchinEgg;
+import net.tropicraft.core.common.entity.egg.EntityStarfishEgg;
+import net.tropicraft.core.common.entity.egg.EntityTropiSpiderEgg;
 import net.tropicraft.core.common.entity.hostile.EntityAshenHunter;
 import net.tropicraft.core.common.entity.hostile.EntityEIH;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityLostMask;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBlue;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogGreen;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogRed;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogYellow;
+import net.tropicraft.core.common.entity.hostile.EntityTreeFrog;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.core.common.entity.hostile.EntityTropiSpider;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
 import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
@@ -30,10 +32,7 @@ import net.tropicraft.core.common.entity.projectile.EntityPoisonBlot;
 import net.tropicraft.core.common.entity.underdasea.EntityManOWar;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchin;
-import net.tropicraft.core.common.entity.underdasea.EntitySeaUrchinEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
-import net.tropicraft.core.common.entity.underdasea.EntityStarfishEgg;
-import net.tropicraft.core.common.entity.underdasea.EntityTurtleEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityDolphin;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityHook;
@@ -54,10 +53,7 @@ public class EntityRegistry {
 		registerEntity(EntityEIH.class, "eih", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(EntityTropiCreeper.class, "tropicreeper", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(EntityIguana.class, "iguana", 80, 3, true, SpawnPlacementType.ON_GROUND);
-		registerEntity(EntityTreeFrogGreen.class, "greenfrog", 80, 3, true, SpawnPlacementType.ON_GROUND);
-		registerEntity(EntityTreeFrogRed.class, "redfrog", 80, 3, true, SpawnPlacementType.ON_GROUND);
-		registerEntity(EntityTreeFrogBlue.class, "bluefrog", 80, 3, true, SpawnPlacementType.ON_GROUND);
-		registerEntity(EntityTreeFrogYellow.class, "yellowfrog", 80, 3, true, SpawnPlacementType.ON_GROUND);
+		registerEntity(EntityTreeFrog.class, "treefrog", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(EntityTropiSkeleton.class, "tropiskelly", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(EntityVMonkey.class, "monkey", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(EntityPoisonBlot.class, "PoisonBlot", 32, 1, true);
@@ -77,7 +73,7 @@ public class EntityRegistry {
 		registerEntity(EntityWallItem.class, "WallItem", 64, 10, false);
 		registerEntity(EntityKoaHunter.class, "koa", 64, 3, true);
 		registerEntity(EntitySeaTurtle.class, "turtle", 80, 3, true);
-		registerEntity(EntityTurtleEgg.class, "SeaTurtleEgg", 80, 5, false);
+		registerEntity(EntitySeaTurtleEgg.class, "SeaTurtleEgg", 80, 5, false);
 		registerEntity(EntityTropicalFish.class, "fish", 80, 2, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntitySeahorse.class, "seahorse", 80, 2, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityEagleRay.class, "eagleray", 80, 2, true, SpawnPlacementType.IN_WATER);
@@ -88,7 +84,9 @@ public class EntityRegistry {
 		registerEntity(EntityShark.class, "hammerhead", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityFishHook.class, "tropifishhook", 80, 1, true);
 		registerEntity(EntityHook.class, "tropihook", 80, 1, true);
-
+		
+		registerEntity(EntityTropiSpider.class, "tropispider", 80, 3, true, SpawnPlacementType.ON_GROUND);
+		registerEntity(EntityTropiSpiderEgg.class, "tropispideregg", 80, 5, false);
 	}
 
 	private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange,

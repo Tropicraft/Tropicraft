@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -38,6 +39,7 @@ import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.PlayerSwimDataClientHandler;
 import net.tropicraft.core.client.ScubaHandler;
 import net.tropicraft.core.client.ScubaOverlayHandler;
+import net.tropicraft.core.client.TropicraftLoadingListener;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
@@ -84,6 +86,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
 		MinecraftForge.EVENT_BUS.register(new ScubaOverlayHandler());
+		MinecraftForge.EVENT_BUS.register(new TropicraftLoadingListener());
 
 		// For rendering drink mixer in inventory
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
@@ -233,5 +236,10 @@ public class ClientProxy extends CommonProxy {
 	public void registerClientPacketScuba() {
 		super.registerClientPacketScuba();
 		TCPacketHandler.INSTANCE.registerMessage(PlayerSwimDataClientHandler.class, MessagePlayerSwimData.class, 4, Side.CLIENT);
+	}
+
+	@Override
+	public boolean helloIsItMeYoureLookingFor(EntityPlayer player) {
+		return player == Minecraft.getMinecraft().player;
 	}
 }

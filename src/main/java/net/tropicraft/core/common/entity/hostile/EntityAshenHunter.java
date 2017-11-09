@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.hostile;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -14,6 +15,7 @@ import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -27,6 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.item.armor.ItemAshenMask;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
@@ -50,8 +53,8 @@ public class EntityAshenHunter extends EntityAshen {
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new AIAshenChaseAndPickupLostMask(this, 1.0D));
 		this.tasks.addTask(3, aiArrowAttack);
-		this.tasks.addTask(4, new EntityAIMeleeAndRangedAttack(this, 1.0D, 20*2, 20*10, 5F));
-		this.tasks.addTask(5, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(5, new EntityAIMeleeAndRangedAttack(this, 1.0D, 20*2, 20*10, 5F));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
@@ -124,6 +127,11 @@ public class EntityAshenHunter extends EntityAshen {
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
 	{
+        ItemStack headGear = target.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+        if (headGear != null && headGear.getItem() != null) {
+            if (headGear.getItem() instanceof ItemAshenMask)
+                return;
+        }
 		EntityTippedArrow entitytippedarrow = new EntityTippedArrow(this.world, this);
 		double d0 = target.posX - this.posX;
 		double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entitytippedarrow.posY;

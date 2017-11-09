@@ -3,13 +3,10 @@ package net.tropicraft.core.common.biome;
 import java.util.Random;
 
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.tropicraft.core.common.biome.decorators.BiomeDecoratorRainforest;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogBlue;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogGreen;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogRed;
-import net.tropicraft.core.common.entity.hostile.EntityTreeFrogYellow;
+import net.tropicraft.core.common.entity.hostile.EntityTreeFrog;
+import net.tropicraft.core.common.entity.hostile.EntityTropiSpider;
 
 
 public class BiomeGenRainforest extends BiomeGenTropicraft {
@@ -18,10 +15,10 @@ public class BiomeGenRainforest extends BiomeGenTropicraft {
 		super(props);
 		this.theBiomeDecorator = new BiomeDecoratorRainforest();
 
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogBlue.class, 25, 1, 2));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogGreen.class, 25, 1, 2));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogRed.class, 25, 1, 2));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrogYellow.class, 25, 1, 2));
+		
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrog.class, 25, 2, 5));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiSpider.class, 10, 1, 1));
+
 	}
 	
 	@Override
