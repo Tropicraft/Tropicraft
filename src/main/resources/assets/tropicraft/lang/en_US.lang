@@ -248,6 +248,21 @@ item.tropicraft.summering.name=Summering
 item.tropicraft.the_tribe.name=The Tribe
 item.tropicraft.trade_winds.name=Trade Winds
 
+# Mask localizations
+item.tropicraft.mask_square_zord.name=Square Zord
+item.tropicraft.mask_horn_monkey.name=Horn Monkey
+item.tropicraft.mask_oblongatron.name=Oblongatron
+item.tropicraft.mask_headinator.name=Headinator
+item.tropicraft.mask_square_horn.name=Square Horn
+item.tropicraft.mask_screw_attack.name=Screw Attack
+item.tropicraft.mask_the_brain.name=The Brain
+item.tropicraft.mask_bat_boy.name=Bat Boy
+item.tropicraft.mask_ashen_mask1.name=Ashen Mask
+item.tropicraft.mask_ashen_mask2.name=Ashen Mask
+item.tropicraft.mask_ashen_mask3.name=Ashen Mask
+item.tropicraft.mask_ashen_mask4.name=Ashen Mask
+item.tropicraft.mask_ashen_mask5.name=Ashen Mask
+
 # Menu localizations
 itemGroup.tropicraft=Tropicraft
 

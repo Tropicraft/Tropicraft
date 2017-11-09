@@ -41,10 +41,6 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 
 	public EntityLostMask maskToTrack;
 	public Entity itemToTrack;
-	/* protected int[] dropItems = new int[]{TropicraftMod.poisonSkin.shiftedIndex, Item.bone.shiftedIndex,  Item.rottenFlesh.shiftedIndex};
-    protected List items = Arrays.asList(TropicraftMod.ashenMask.shiftedIndex, TropicraftMod.poisonSkin.shiftedIndex, TropicraftMod.paraDart.shiftedIndex,
-            TropicraftMod.blowGun.shiftedIndex, TropicraftMod.bambooSpear.shiftedIndex, Item.beefRaw.shiftedIndex, Item.porkRaw.shiftedIndex,
-            Item.chickenRaw.shiftedIndex, Item.rottenFlesh);*/
 
 	public EntityAshen(World par1World) {
 		super(par1World);
@@ -64,7 +60,7 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getAttackStrength());
 	}
 

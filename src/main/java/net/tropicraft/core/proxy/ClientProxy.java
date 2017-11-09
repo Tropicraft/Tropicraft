@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -234,5 +235,10 @@ public class ClientProxy extends CommonProxy {
 	public void registerClientPacketScuba() {
 		super.registerClientPacketScuba();
 		TCPacketHandler.INSTANCE.registerMessage(PlayerSwimDataClientHandler.class, MessagePlayerSwimData.class, 4, Side.CLIENT);
+	}
+
+	@Override
+	public boolean helloIsItMeYoureLookingFor(EntityPlayer player) {
+		return player == Minecraft.getMinecraft().player;
 	}
 }

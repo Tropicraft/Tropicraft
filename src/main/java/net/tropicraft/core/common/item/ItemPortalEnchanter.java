@@ -105,7 +105,7 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 			}
         }
 		
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+		return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
 	}
 
 	public boolean canGen(World world, BlockPos pos) {
