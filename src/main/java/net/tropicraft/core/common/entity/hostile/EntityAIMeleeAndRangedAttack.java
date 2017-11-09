@@ -4,8 +4,11 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.tropicraft.core.common.item.armor.ItemAshenMask;
 
 public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 {
@@ -97,6 +100,13 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 	 */
 	public void updateTask()
 	{
+	    if (this.attackTarget != null) {
+	        ItemStack headGear = this.attackTarget.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+	        if (headGear != null && headGear.getItem() != null) {
+	            if (headGear.getItem() instanceof ItemAshenMask)
+	                return;
+	        }
+	    }
 		double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ);
 		boolean flag = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
