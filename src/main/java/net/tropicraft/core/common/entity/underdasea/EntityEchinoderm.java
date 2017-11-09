@@ -9,6 +9,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.entity.egg.EntityEgg;
 
 public abstract class EntityEchinoderm extends EntityWaterMob {
 
@@ -142,7 +143,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 						setGrowingAge(BREEDING_COOLDOWN);
 						mate.setGrowingAge(BREEDING_COOLDOWN);
 
-						EntityEchinodermEgg egg = createEgg();
+						EntityEgg egg = createEgg();
 						double newX = posX+0.5*(mate.posX-posX);
 						double newY = posY+1;
 						double newZ = posZ+0.5*(mate.posZ-posZ);
@@ -154,7 +155,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 		}
     }
 	
-	public abstract EntityEchinodermEgg createEgg();
+	public abstract EntityEgg createEgg();
 	
 	public boolean isChild() {
 		return getGrowingAge() < 0;

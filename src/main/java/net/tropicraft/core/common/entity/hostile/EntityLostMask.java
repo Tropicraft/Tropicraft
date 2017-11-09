@@ -19,7 +19,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 public class EntityLostMask extends Entity {
 
 	//Client side, used for mask bob
-	public int type;
+	public int type = -1;
 	public float bobber;
 	private double launchedSpeed = 1D;
 	
@@ -45,12 +45,12 @@ public class EntityLostMask extends Entity {
 	public EntityLostMask(World world, int type, double x, double y, double z, double angle) {
 		this(world);
 		this.setPosition(x, y, z);		
-		this.setType(type);
 		motionX = Math.cos(Math.toRadians(angle + 90))*launchedSpeed;
 		motionZ = Math.sin(Math.toRadians(angle + 90))*launchedSpeed;
 		double subAngle = MathHelper.wrapDegrees(angle);
 		double subAngle2 = subAngle + (180 - subAngle)*2;
 		this.rotationYaw = (float) (subAngle2);
+		this.type = type;
 	}
 
 	@Override
@@ -65,6 +65,11 @@ public class EntityLostMask extends Entity {
 
 	@Override 
 	public void onUpdate() {
+		if(!world.isRemote) {
+			if(this.ticksExisted == 1 && type >= 0) {
+				this.setType(type);
+			}
+		}
 		if (onGround) {
 			this.motionX *= .5F;
 			this.motionZ *= .5F;
@@ -106,7 +111,7 @@ public class EntityLostMask extends Entity {
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("MaskType", this.getColor());
+		nbt.setInteger("MaskType", this.getType());
 
 	}
 	@Override
@@ -161,13 +166,9 @@ public class EntityLostMask extends Entity {
 	public int getMode() {
 		return 0;
 	}
-
-	public int getColor() {
-		return this.dataManager.get(MASK_TYPE).intValue();
-	}
 	
 	public int getType() {
-		return this.getColor();
+		return this.dataManager.get(MASK_TYPE).intValue();
 	}
 
 	public int getDirection() {
