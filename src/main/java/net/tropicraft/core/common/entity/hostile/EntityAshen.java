@@ -41,10 +41,6 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 
 	public EntityLostMask maskToTrack;
 	public Entity itemToTrack;
-	/* protected int[] dropItems = new int[]{TropicraftMod.poisonSkin.shiftedIndex, Item.bone.shiftedIndex,  Item.rottenFlesh.shiftedIndex};
-    protected List items = Arrays.asList(TropicraftMod.ashenMask.shiftedIndex, TropicraftMod.poisonSkin.shiftedIndex, TropicraftMod.paraDart.shiftedIndex,
-            TropicraftMod.blowGun.shiftedIndex, TropicraftMod.bambooSpear.shiftedIndex, Item.beefRaw.shiftedIndex, Item.porkRaw.shiftedIndex,
-            Item.chickenRaw.shiftedIndex, Item.rottenFlesh);*/
 
 	public EntityAshen(World par1World) {
 		super(par1World);

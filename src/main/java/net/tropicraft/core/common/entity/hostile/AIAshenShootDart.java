@@ -2,10 +2,11 @@ package net.tropicraft.core.common.entity.hostile;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.tropicraft.core.common.item.armor.ItemAshenMask;
 
 public class AIAshenShootDart extends EntityAIBase {
 
@@ -36,6 +37,13 @@ public class AIAshenShootDart extends EntityAIBase {
     @Override
     public boolean shouldExecute()
     {
+        if (this.entity.getAttackTarget() != null) {
+            ItemStack headGear = this.entity.getAttackTarget().getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+            if (headGear != null && headGear.getItem() != null) {
+                if (headGear.getItem() instanceof ItemAshenMask)
+                    return false;
+            }
+        }
         return this.entity.getAttackTarget() != null && this.entity.hasMask();
     }
 
@@ -71,6 +79,12 @@ public class AIAshenShootDart extends EntityAIBase {
         EntityLivingBase entitylivingbase = this.entity.getAttackTarget();
 
         if (entitylivingbase != null) {
+            ItemStack headGear = entitylivingbase.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+            if (headGear != null && headGear.getItem() != null) {
+                if (headGear.getItem() instanceof ItemAshenMask)
+                    return;
+            }
+
             double d0 = this.entity.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
             boolean canSeeEnemy = this.entity.getEntitySenses().canSee(entitylivingbase);
             boolean hasSeenEnemy = this.seeTime > 0;
