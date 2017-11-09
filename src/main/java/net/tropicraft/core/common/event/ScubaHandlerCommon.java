@@ -15,6 +15,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -112,7 +115,9 @@ public class ScubaHandlerCommon {
 	public void setPlayerSize(EntityPlayer p, float x, float y, float offset, float height) {
 		AxisAlignedBB axisalignedbb = p.getEntityBoundingBox();
 		p.setEntityBoundingBox(new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY, axisalignedbb.minZ, axisalignedbb.minX + (double)x, axisalignedbb.minY +(double)y, axisalignedbb.minZ + (double)x));
-		p.posY -= offset;
+		if (Tropicraft.proxy.helloIsItMeYoureLookingFor(p)) {
+			p.posY -= offset;
+		}
 		p.height = height;
 	}
 	
