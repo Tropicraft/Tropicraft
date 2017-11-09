@@ -21,7 +21,7 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
 
 	@Override
 	public boolean shouldExecute() {
-		return !ashen.hasMask();
+		return !ashen.hasMask() && ashen.maskToTrack != null;
 	}
 
 	@Override

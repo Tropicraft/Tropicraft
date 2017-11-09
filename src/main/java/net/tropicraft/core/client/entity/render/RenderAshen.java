@@ -19,6 +19,8 @@ public class RenderAshen extends RenderLiving<EntityAshen> {
 		modelAshen = (ModelAshen) modelbase;
 		this.addLayer(new LayerMaskAshen(modelAshen));
 		this.addLayer(new LayerHeldItemAshen(this, modelAshen));
+		this.shadowOpaque = 0.5f;
+		this.shadowSize = 0.3f;
 	}
 
 	public void renderAshen(EntityAshen entityAshen, double d, double d1, double d2, float f, float f1) {
