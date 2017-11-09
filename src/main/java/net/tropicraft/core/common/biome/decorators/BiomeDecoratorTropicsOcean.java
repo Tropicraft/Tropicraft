@@ -3,12 +3,15 @@ package net.tropicraft.core.common.biome.decorators;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.block.BlockCoral;
+import net.tropicraft.core.common.block.BlockTropicraftOre;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftCorals;
+import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.worldgen.TCNoiseGen;
 import net.tropicraft.core.common.worldgen.WorldGenCoral;
@@ -67,10 +70,26 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
         }
     };
 
+    private static final WorldGenSurfaceClump manganeseGen = new WorldGenSurfaceClump(0.025f, 8, 
+            state -> state.getBlock() == BlockRegistry.sands, 
+            state -> state.getMaterial().isLiquid(),
+            rand -> BlockRegistry.ore.defaultForVariant(TropicraftOres.MANGANESE), 
+            true
+        );
+
+    private static final WorldGenSurfaceClump shakaGen = new WorldGenSurfaceClump(0.025f, 8, 
+            state -> state.getBlock() == BlockRegistry.sands, 
+            state -> state.getMaterial().isLiquid(),
+            rand -> BlockRegistry.ore.defaultForVariant(TropicraftOres.SHAKA), 
+            true
+        );
+    
     public void genDecorations(Biome biome, World world, Random rand) {
         coralGen.generate(world, rand, chunkPos);
         coralReefGen.generate(world, rand, chunkPos);
         seaweedGen.generate(world, rand, chunkPos);
+        manganeseGen.generate(world, rand, chunkPos);
+        shakaGen.generate(world, rand, chunkPos);
         //        if (rand.nextInt(5) == 0) {
         //            int x = randDecorationCoord(rand, chunkPos.getX(), 16) + 8;
         //            int z = randDecorationCoord(rand, chunkPos.getZ(), 16) + 8;

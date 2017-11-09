@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.block.model;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 
-public class ModelDrinkMixer extends ModelBase
+public class ModelDrinkMixer extends MachineModel<TileEntityDrinkMixer>
 {
     //fields
     ModelRenderer Base;
@@ -133,7 +133,8 @@ public class ModelDrinkMixer extends ModelBase
         setRotation(Mouth, 0F, 0F, 0F);
     }
 
-    public void renderEIHMixer()
+    @Override
+    public void renderAsBlock(TileEntityDrinkMixer te)
     {
         float f5 = 0.0625F;
         Base.render(f5);
@@ -153,7 +154,11 @@ public class ModelDrinkMixer extends ModelBase
         LidBase.render(f5);
         LidTop.render(f5);
         Mouth.render(f5);
-
+    }
+    
+    @Override
+    public String getTexture(TileEntityDrinkMixer te) {
+        return "drink_mixer";
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z)

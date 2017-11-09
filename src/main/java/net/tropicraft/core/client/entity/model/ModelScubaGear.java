@@ -1,13 +1,21 @@
 package net.tropicraft.core.client.entity.model;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.util.math.MathHelper;
-import net.tropicraft.core.client.ScubaHandler;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.tropicraft.core.common.item.scuba.ItemScubaGear;
+import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
+import net.tropicraft.core.common.item.scuba.api.IScubaGear;
+import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class ModelScubaGear extends ModelBiped {
     //   ModelRenderer bipedHead;
@@ -384,7 +392,6 @@ public class ModelScubaGear extends ModelBiped {
 
         if (this.isChild)
         {
-            float f = 2.0F;
             GlStateManager.scale(0.75F, 0.75F, 0.75F);
             GlStateManager.translate(0.0F, 16.0F * scale, 0.0F);
             this.bipedHead.render(scale);
@@ -411,9 +418,9 @@ public class ModelScubaGear extends ModelBiped {
         hose4.rotateAngleX = 0.3075211F;
 
         // Don't render if not player
-        if (!(entityIn instanceof EntityPlayer)) return;
+        if (!(entityIn instanceof EntityLivingBase)) return;
 
-        EntityPlayer player = (EntityPlayer)entityIn;
+        EntityLivingBase player = (EntityLivingBase)entityIn;
 
         boolean showHead = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null && this.slot == EntityEquipmentSlot.HEAD;
         bipedHead.showModel = showHead;
@@ -429,7 +436,7 @@ public class ModelScubaGear extends ModelBiped {
         bipedBody.showModel = showChest;
 
         if (showChest) {
-            renderTank(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            renderTank(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
             renderBCD(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
         
@@ -541,86 +548,100 @@ public class ModelScubaGear extends ModelBiped {
          
     }
 
-    private void renderTank(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        Tank2.rotateAngleX = 0F;
-        Tank2.rotateAngleY = 0F;
-        Tank2.rotateAngleZ = 0F;
-        Tank2.renderWithRotation(scale);
+    private void renderTank(EntityLivingBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        ItemStack gearStack = entityIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+        IScubaGear gear = gearStack.getCapability(ScubaCapabilities.getGearCapability(), null);
+        TextureManager tm = Minecraft.getMinecraft().getTextureManager();
+        
+        if (gear.getTanks().getRight() != null) {
+            ScubaMaterial material = gear.getStackInSlot(1).getItem() == ItemRegistry.pinkScubaTank ? ScubaMaterial.PINK : ScubaMaterial.YELLOW;
+            tm.bindTexture(ItemScubaGear.getArmorTexture(material));
+            Tank2.rotateAngleX = 0F;
+            Tank2.rotateAngleY = 0F;
+            Tank2.rotateAngleZ = 0F;
+            Tank2.renderWithRotation(scale);
 
-        Tank2m1.rotateAngleX = 0F;
-        Tank2m1.rotateAngleY = 0F;
-        Tank2m1.rotateAngleZ = 0F;
-        Tank2m1.renderWithRotation(scale);
+            Tank2m1.rotateAngleX = 0F;
+            Tank2m1.rotateAngleY = 0F;
+            Tank2m1.rotateAngleZ = 0F;
+            Tank2m1.renderWithRotation(scale);
 
-        Tank2m2.rotateAngleX = 0F;
-        Tank2m2.rotateAngleY = -1.570796F;
-        Tank2m2.rotateAngleZ = 0F;
-        Tank2m2.renderWithRotation(scale);
+            Tank2m2.rotateAngleX = 0F;
+            Tank2m2.rotateAngleY = -1.570796F;
+            Tank2m2.rotateAngleZ = 0F;
+            Tank2m2.renderWithRotation(scale);
 
-        Tank2m3.rotateAngleX = 0F;
-        Tank2m3.rotateAngleY = -1.570796F;
-        Tank2m3.rotateAngleZ = 0F;
-        Tank2m3.renderWithRotation(scale);
+            Tank2m3.rotateAngleX = 0F;
+            Tank2m3.rotateAngleY = -1.570796F;
+            Tank2m3.rotateAngleZ = 0F;
+            Tank2m3.renderWithRotation(scale);
 
-        Tank2m4.rotateAngleX = 0F;
-        Tank2m4.rotateAngleY = 0F;
-        Tank2m4.rotateAngleZ = 0F;
-        Tank2m4.renderWithRotation(scale);
+            Tank2m4.rotateAngleX = 0F;
+            Tank2m4.rotateAngleY = 0F;
+            Tank2m4.rotateAngleZ = 0F;
+            Tank2m4.renderWithRotation(scale);
 
-        Tank2m5.rotateAngleX = 0F;
-        Tank2m5.rotateAngleY = 0F;
-        Tank2m5.rotateAngleZ = 0F;
-        Tank2m5.renderWithRotation(scale);
+            Tank2m5.rotateAngleX = 0F;
+            Tank2m5.rotateAngleY = 0F;
+            Tank2m5.rotateAngleZ = 0F;
+            Tank2m5.renderWithRotation(scale);
 
-        Tank2m6.rotateAngleX = 0F;
-        Tank2m6.rotateAngleY = 0F;
-        Tank2m6.rotateAngleZ = 0F;
-        Tank2m6.renderWithRotation(scale);
+            Tank2m6.rotateAngleX = 0F;
+            Tank2m6.rotateAngleY = 0F;
+            Tank2m6.rotateAngleZ = 0F;
+            Tank2m6.renderWithRotation(scale);
 
-        Tank2m7.rotateAngleX = 0F;
-        Tank2m7.rotateAngleY = 0F;
-        Tank2m7.rotateAngleZ = 0F;
-        Tank2m7.renderWithRotation(scale);
+            Tank2m7.rotateAngleX = 0F;
+            Tank2m7.rotateAngleY = 0F;
+            Tank2m7.rotateAngleZ = 0F;
+            Tank2m7.renderWithRotation(scale);
+        }
 
-        Tank1.rotateAngleX = 0F;
-        Tank1.rotateAngleY = 0F;
-        Tank1.rotateAngleZ = 0F;
-        Tank1.renderWithRotation(scale);
-
-        Tank1m1.rotateAngleX = 0F;
-        Tank1m1.rotateAngleY = 0F;
-        Tank1m1.rotateAngleZ = 0F;
-        Tank1m1.renderWithRotation(scale);
-
-        Tank1m2.rotateAngleX = 0F;
-        Tank1m2.rotateAngleY = -1.570796F;
-        Tank1m2.rotateAngleZ = 0F;
-        Tank1m2.renderWithRotation(scale);
-
-        Tank1m3.rotateAngleX = 0F;
-        Tank1m3.rotateAngleY = -1.570796F;
-        Tank1m3.rotateAngleZ = 0F;
-        Tank1m3.renderWithRotation(scale);
-
-        Tank1m4.rotateAngleX = 0F;
-        Tank1m4.rotateAngleY = 0F;
-        Tank1m4.rotateAngleZ = 0F;
-        Tank1m4.renderWithRotation(scale);
-
-        Tank1m5.rotateAngleX = 0F;
-        Tank1m5.rotateAngleY = 0F;
-        Tank1m5.rotateAngleZ = 0F;
-        Tank1m5.renderWithRotation(scale);
-
-        Tank1m6.rotateAngleX = 0F;
-        Tank1m6.rotateAngleY = 0F;
-        Tank1m6.rotateAngleZ = 0F;
-        Tank1m6.renderWithRotation(scale);
-
-        Tank1m7.rotateAngleX = 0F;
-        Tank1m7.rotateAngleY = 0F;
-        Tank1m7.rotateAngleZ = 0F;
-        Tank1m7.renderWithRotation(scale);
+        if (gear.getTanks().getLeft() != null) {
+            ScubaMaterial material = gear.getStackInSlot(0).getItem() == ItemRegistry.pinkScubaTank ? ScubaMaterial.PINK : ScubaMaterial.YELLOW;
+            tm.bindTexture(ItemScubaGear.getArmorTexture(material));
+    
+            Tank1.rotateAngleX = 0F;
+            Tank1.rotateAngleY = 0F;
+            Tank1.rotateAngleZ = 0F;
+            Tank1.renderWithRotation(scale);
+    
+            Tank1m1.rotateAngleX = 0F;
+            Tank1m1.rotateAngleY = 0F;
+            Tank1m1.rotateAngleZ = 0F;
+            Tank1m1.renderWithRotation(scale);
+    
+            Tank1m2.rotateAngleX = 0F;
+            Tank1m2.rotateAngleY = -1.570796F;
+            Tank1m2.rotateAngleZ = 0F;
+            Tank1m2.renderWithRotation(scale);
+    
+            Tank1m3.rotateAngleX = 0F;
+            Tank1m3.rotateAngleY = -1.570796F;
+            Tank1m3.rotateAngleZ = 0F;
+            Tank1m3.renderWithRotation(scale);
+    
+            Tank1m4.rotateAngleX = 0F;
+            Tank1m4.rotateAngleY = 0F;
+            Tank1m4.rotateAngleZ = 0F;
+            Tank1m4.renderWithRotation(scale);
+    
+            Tank1m5.rotateAngleX = 0F;
+            Tank1m5.rotateAngleY = 0F;
+            Tank1m5.rotateAngleZ = 0F;
+            Tank1m5.renderWithRotation(scale);
+    
+            Tank1m6.rotateAngleX = 0F;
+            Tank1m6.rotateAngleY = 0F;
+            Tank1m6.rotateAngleZ = 0F;
+            Tank1m6.renderWithRotation(scale);
+    
+            Tank1m7.rotateAngleX = 0F;
+            Tank1m7.rotateAngleY = 0F;
+            Tank1m7.rotateAngleZ = 0F;
+            Tank1m7.renderWithRotation(scale);
+        }
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(((ItemArmor)gearStack.getItem()).getArmorTexture(gearStack, entityIn, EntityEquipmentSlot.CHEST, null)));
     }
 
     private void renderBCD(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {

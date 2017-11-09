@@ -6,14 +6,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
-import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.item.armor.ItemTropicraftArmor;
 import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 import net.tropicraft.core.registry.CreativeTabRegistry;
@@ -42,8 +40,12 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        String color = scubaMaterial == ScubaMaterial.PINK ? "Pink" : "Yellow";
-        return Info.ARMOR_LOCATION + "scubaGear" + color + ".png";   
+        return getArmorTexture(scubaMaterial).toString();
+    }
+    
+    public static ResourceLocation getArmorTexture(ScubaMaterial material) {
+        String color = material == ScubaMaterial.PINK ? "Pink" : "Yellow";
+        return new ResourceLocation(Info.ARMOR_LOCATION + "scubaGear" + color + ".png");   
     }
 
     /**
@@ -73,18 +75,6 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
         }
 
         return null;
-    }
-
-    /**
-     * Retrives an existing nbt tag compound or creates a new one if it is null
-     * @param stack
-     * @return
-     */
-    public NBTTagCompound getTagCompound(ItemStack stack) {
-        if (!stack.hasTagCompound())
-            stack.setTagCompound(new NBTTagCompound());
-
-        return stack.getTagCompound();
     }
 
     /**

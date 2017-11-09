@@ -54,14 +54,9 @@ public class ItemDiveComputer extends ItemMap {
             //            if (!armorCheck(world, player, helmetStack, chestplateStack, leggingsStack, flippersStack))
             //                return;
 
-            int currentDepth = MathHelper.floor(player.posY);
-
             addDiveTime(itemstack, 1);
 
             if (helmetStack != null) {
-                if (currentDepth < getTagCompound(helmetStack).getInteger("MaxDepth") || getTagCompound(helmetStack).getInteger("MaxDepth") == 0) {
-                    helmetStack.getTagCompound().setInteger("MaxDepth", currentDepth);
-                }
 
                 // TODO log max depth in the dive computer and make sure it saves
 
@@ -77,9 +72,15 @@ public class ItemDiveComputer extends ItemMap {
                 while (world.getBlockState(new BlockPos(x, y - waterBlocksBelow - 1, z)).getMaterial().isLiquid()) {
                     waterBlocksBelow++;
                 }
+                
+                NBTTagCompound tag = getTagCompound(helmetStack);
 
-                helmetStack.getTagCompound().setInteger("WaterBlocksAbove", waterBlocksAbove);
-                helmetStack.getTagCompound().setInteger("WaterBlocksBelow", waterBlocksBelow);
+                tag.setInteger("WaterBlocksAbove", waterBlocksAbove);
+                tag.setInteger("WaterBlocksBelow", waterBlocksBelow);
+                
+                if (waterBlocksAbove > tag.getInteger("MaxDepth") || tag.getInteger("MaxDepth") == 0) {
+                    tag.setInteger("MaxDepth", waterBlocksAbove);
+                }
             }
             //TODO save these values in the dive computer as well
 

@@ -38,9 +38,11 @@ import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.PlayerSwimDataClientHandler;
 import net.tropicraft.core.client.ScubaHandler;
+import net.tropicraft.core.client.ScubaOverlayHandler;
 import net.tropicraft.core.client.TropicraftLoadingListener;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.common.block.ITropicraftBlock;
+import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemTropicraftColored;
@@ -72,7 +74,8 @@ public class ClientProxy extends CommonProxy {
 		ignoreProperties(BlockRegistry.thatchFenceGate, BlockFenceGate.POWERED);
 	}
 
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public void init() {
 		super.init();
 
@@ -84,11 +87,12 @@ public class ClientProxy extends CommonProxy {
 
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
+		MinecraftForge.EVENT_BUS.register(new ScubaOverlayHandler());
 		MinecraftForge.EVENT_BUS.register(new TropicraftLoadingListener());
-
 
 		// For rendering drink mixer in inventory
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
+        ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.airCompressor), 0, TileEntityAirCompressor.class);
 	}
 	
 	private void ignoreProperties(Block block, IProperty<?>... props) {
