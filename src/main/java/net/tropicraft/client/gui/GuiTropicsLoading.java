@@ -57,7 +57,7 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 			EntitySeaTurtle.class, EntitySeahorse.class, EntityFailgull.class };
 	// TODO: Add EntityTreeFrog from merge
 	private static final Class[] MOBS_LAND = { EntityIguana.class, EntityFailgull.class, EntityVMonkey.class };
-	private static final Class[] MOBS_VILLAGE = { EntityKoaBase.class, EntityAshenHunter.class, EntityTropiCreeper.class, EntityTropiSkeleton.class };
+	private static final Class[] MOBS_VILLAGE = { EntityKoaHunter.class, EntityAshenHunter.class, EntityTropiCreeper.class, EntityTropiSkeleton.class };
 
 	private static final ItemStack[] ITEMS = { new ItemStack(ItemRegistry.lemon), new ItemStack(ItemRegistry.lime),
 			new ItemStack(ItemRegistry.orange), new ItemStack(BlockRegistry.coconut),
