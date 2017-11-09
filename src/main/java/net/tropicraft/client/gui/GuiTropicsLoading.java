@@ -220,6 +220,7 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 	}
 
 	private void drawScreenEntity(Entity ent, float x, float y, float scale, float yaw, float pitch) {
+	    if (ent == null) return;
 		GlStateManager.enableColorMaterial();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, 500.0F);

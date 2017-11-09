@@ -140,7 +140,7 @@ public class EntityLostMask extends Entity {
 	}
 
 	public void dropItemStack() {
-		this.entityDropItem(new ItemStack(ItemRegistry.maskMap.get(AshenMasks.VALUES[this.getType()]), 1, getColor()), 0.0F);
+		this.entityDropItem(new ItemStack(ItemRegistry.maskMap.get(AshenMasks.VALUES[this.getType()]), 1, getType()), 0.0F);
 	}
 
 	private void setRotator(int[] a) {
