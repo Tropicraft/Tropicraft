@@ -383,6 +383,17 @@ public class CraftingRegistry {
             'X', Items.STICK,
             'I', new ItemStack(BlockRegistry.planks, 1, 0)
         });
+        
+        // Bamboo fishing rod
+        createRecipe(true, new ItemStack(ItemRegistry.fishingRod), new Object[]{
+    			"  I",
+    			" IX",
+    			"I X",
+
+    			'X', Items.STRING,
+    			
+    			'I', ItemRegistry.bambooStick
+    		});
 
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
@@ -580,6 +591,8 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("turtleshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.TURTLE.getMeta()));
         //TODO Tropicraft.encyclopedia.includeItem("waterwand", new ItemStack(ItemRegistry.waterWand));
         Tropicraft.encyclopedia.includeItem("zircon", new ItemStack(ItemRegistry.zircon));
+        Tropicraft.encyclopedia.includeItem("fishingrod", new ItemStack(ItemRegistry.fishingRod));
+
         //Tropicraft.encyclopedia.includeItem("zirconium", new ItemStack(TCItemRegistry.ore, 1, 3));
     }
 

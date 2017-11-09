@@ -9,6 +9,7 @@ public class BlockTropicraftStairs extends BlockStairs {
 	public BlockTropicraftStairs(IBlockState modelState) {
 		super(modelState);
 		this.setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.EAST));
+		this.useNeighborBrightness = true;
 	}
 
 }

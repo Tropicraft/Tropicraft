@@ -77,7 +77,7 @@ public class BlockBongoDrum extends BlockTropicraftEnumVariants<TropicraftBongos
     /**
      * Play the bongo sound in game. Sound played determined by the {@link #size} attribute
      */
-    private void playBongoSound(World world, EntityPlayer entity, BlockPos pos, IBlockState state) {
+    public void playBongoSound(World world, EntityPlayer entity, BlockPos pos, IBlockState state) {
         TropicraftBongos bongo = getVariant(state);
         world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }

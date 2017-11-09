@@ -10,9 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.common.entity.underdasea.EntityStarfish;
 import net.tropicraft.core.common.entity.underdasea.StarfishType;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 public class RenderStarfish extends Render<EntityStarfish> {
 
 	public RenderStarfish() {
@@ -51,27 +48,27 @@ public class RenderStarfish extends Render<EntityStarfish> {
 
 		Tessellator tessellator = Tessellator.getInstance();
 
-		GL11.glPushMatrix();
-		//renderOffsetAABB(starfish.boundingBox, d0 - starfish.lastTickPosX, d1 - starfish.lastTickPosY, d2 - starfish.lastTickPosZ);
-		GL11.glTranslatef((float)d0-0.5f, (float)d1, (float)d2-0.5f);
-		//GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(90f, 1f, 0f, 0f);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(d0-0.5f, d1, d2-0.5f);
+		GlStateManager.rotate(90f, 1f, 0f, 0f);
 
 		float growthProgress = starfish.getGrowthProgress();
 		float scale = BABY_RENDER_SCALE + growthProgress*(ADULT_RENDER_SCALE-BABY_RENDER_SCALE);
 
-		GL11.glScalef(scale, scale, scale);
+		GlStateManager.scale(scale, scale, scale);
 
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GlStateManager.enableRescaleNormal();
 		for (int i = 0; i < type.getLayerCount(); i++) {
 			renderManager.renderEngine.bindTexture(new ResourceLocation(type.getTexturePaths().get(i)));
-			//loadTexture(type.getTexturePaths().get(i));
+			if (entity.hurtTime > 0) {
+				GlStateManager.color(1f, 0f, 0f, 1f);
+			}
 			popper(tessellator, f1, f2, f, f3, f1shifted, f3shifted, type.getLayerHeights()[i]);
-			GL11.glTranslatef(0f, 0f, -type.getLayerHeights()[i]);
+			GlStateManager.translate(0f, 0f, -type.getLayerHeights()[i]);
 		}
 
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
 	}
 
 	private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {

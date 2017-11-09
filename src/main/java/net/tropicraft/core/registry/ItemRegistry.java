@@ -38,6 +38,7 @@ import net.tropicraft.core.common.item.ItemDagger;
 import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
 import net.tropicraft.core.common.item.ItemFishBucket;
+import net.tropicraft.core.common.item.ItemFishingRod;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
@@ -202,6 +203,8 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item yellowWeightBelt;
 
     public static Item trimix;
+    
+    public static Item fishingRod;
 
     public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", "mask", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
     public static Item maskSquareZord;
@@ -349,7 +352,7 @@ public class ItemRegistry extends TropicraftRegistry {
         OreDictionary.registerOre("leather", iguanaLeather);
 
         trimix = registerItem(new ItemTropicraft().setMaxStackSize(1), "trimix");
-        
+
         maskSquareZord = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SQUARE_ZORD), "mask_square_zord");
         maskHornMonkey = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.HORN_MONKEY), "mask_horn_monkey");
         maskOblongatron = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.OBLONGATRON), "mask_oblongatron");
@@ -363,6 +366,9 @@ public class ItemRegistry extends TropicraftRegistry {
         mask3 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK3), "mask_ashen_mask3");
         mask4 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK4), "mask_ashen_mask4");
         mask5 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK5), "mask_ashen_mask5");
+
+        fishingRod = registerItem(new ItemFishingRod(), "fishing_rod");
+
     }
 
     public static void init() {

@@ -47,7 +47,7 @@ import net.tropicraft.core.common.entity.EntityLand;
 import net.tropicraft.core.common.entity.EntityLandTameable;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityVMonkey extends EntityLandTameable implements IMob {
+public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
 
 	public boolean isClimbing = false;
 	//public boolean isSitting = false;

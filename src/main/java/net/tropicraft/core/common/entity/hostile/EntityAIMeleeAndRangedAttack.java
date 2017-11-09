@@ -21,7 +21,7 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 	private int rangedAttackTime;
 	private double entityMoveSpeed;
 	private int field_75318_f;
-	private int field_96561_g;
+	private int maxMeleeAttackTime;
 	/** The maximum time the AI has to wait before peforming another ranged attack. */
 	private int maxRangedAttackTime;
 	private float shootCutoffRange;
@@ -29,12 +29,12 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 	private float meleeHitRange = 2F;
 	private static final String __OBFID = "CL_00001609";
 
-	public EntityAIMeleeAndRangedAttack(IRangedAttackMob p_i1649_1_, double p_i1649_2_, int p_i1649_4_, float p_i1649_5_)
+	public EntityAIMeleeAndRangedAttack(IRangedAttackMob p_i1649_1_, double p_i1649_2_, int maxMeleeAttackTime, int maxRangedAttackTime, float p_i1649_5_)
 	{
-		this(p_i1649_1_, p_i1649_2_, p_i1649_4_, p_i1649_4_, p_i1649_5_, 2F);
+		this(p_i1649_1_, p_i1649_2_, maxMeleeAttackTime, maxRangedAttackTime, p_i1649_5_, 2F);
 	}
 
-	public EntityAIMeleeAndRangedAttack(IRangedAttackMob p_i1650_1_, double p_i1650_2_, int p_i1650_4_, int p_i1650_5_, float p_i1650_6_, float meleeHitRange)
+	public EntityAIMeleeAndRangedAttack(IRangedAttackMob p_i1650_1_, double p_i1650_2_, int maxMeleeAttackTime, int maxRangedAttackTime, float p_i1650_6_, float meleeHitRange)
 	{
 		this.rangedAttackTime = -1;
 
@@ -47,8 +47,8 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 			this.rangedAttackEntityHost = p_i1650_1_;
 			this.entityHost = (EntityLiving)p_i1650_1_;
 			this.entityMoveSpeed = p_i1650_2_;
-			this.field_96561_g = p_i1650_4_;
-			this.maxRangedAttackTime = p_i1650_5_;
+			this.maxMeleeAttackTime = maxMeleeAttackTime;
+			this.maxRangedAttackTime = maxRangedAttackTime;
 			this.shootCutoffRange = p_i1650_6_;
 			this.shootCutoffRangeSqr = p_i1650_6_ * p_i1650_6_;
 			this.meleeHitRange = meleeHitRange;
@@ -127,7 +127,7 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 
 		//System.out.println(rangedAttackTime);
 
-		if (--this.rangedAttackTime == 0)
+		if (--this.rangedAttackTime <= 0)
 		{
 			/*if (d0 > (double)this.shootCutoffRangeSqr || !flag)
             {
@@ -147,21 +147,14 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 				f1 = 1.0F;
 			}
 
-			if (d0 >= (double)this.shootCutoffRange) {
+			if (d0 >= (double)this.shootCutoffRange * (double)this.shootCutoffRange) {
 				this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, f1);
-				this.rangedAttackTime = MathHelper.floor(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
-			} else {
-				if (d0 <= meleeHitRange) {
-					this.entityHost.attackEntityAsMob(attackTarget);
-					this.entityHost.swingArm(EnumHand.MAIN_HAND);
-					rangedAttackTime = 20;
-				}
+				this.rangedAttackTime = maxRangedAttackTime;
+			} else if (d0 <= meleeHitRange * meleeHitRange) {
+				this.entityHost.attackEntityAsMob(attackTarget);
+				this.entityHost.swingArm(EnumHand.MAIN_HAND);
+				rangedAttackTime = maxMeleeAttackTime;
 			}
-		}
-		else if (this.rangedAttackTime < 0)
-		{
-			f = MathHelper.sqrt(d0) / this.shootCutoffRange;
-			this.rangedAttackTime = MathHelper.floor(f * (float)(this.maxRangedAttackTime - this.field_96561_g) + (float)this.field_96561_g);
 		}
 	}
 }

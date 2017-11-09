@@ -44,6 +44,8 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 		}
 
 		this.setDefaultState(iblockstate.withProperty(VARIANT, TropicraftSlabs.BAMBOO));
+
+		this.useNeighborBrightness = true;
 	}
 
     @Override

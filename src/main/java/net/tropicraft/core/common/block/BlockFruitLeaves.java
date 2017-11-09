@@ -33,8 +33,13 @@ public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	public BlockFruitLeaves() {
 		super();
-		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, true).withProperty(VARIANT, TropicraftFruitLeaves.GRAPEFRUIT));
+		setDefaultState(this.blockState.getBaseState().withProperty(CHECK_DECAY, false).withProperty(DECAYABLE, false).withProperty(VARIANT, TropicraftFruitLeaves.GRAPEFRUIT));
 	}
+
+    @Override
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        // ignore decay
+    }
 
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
@@ -58,20 +63,12 @@ public class BlockFruitLeaves extends BlockLeaves implements ITropicraftBlock {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, TropicraftFruitLeaves.byMetadata(meta)).withProperty(DECAYABLE, (meta & 4) == 0).withProperty(CHECK_DECAY, (meta & 8) > 0);
+		return this.getDefaultState().withProperty(VARIANT, TropicraftFruitLeaves.byMetadata(meta));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = state.getValue(VARIANT).getMeta();
-		if (!state.getValue(DECAYABLE)) {
-			i |= 4;
-		}
-
-		if (state.getValue(CHECK_DECAY)) {
-			i |= 8;
-		}
-
 		return i;
 	}
 

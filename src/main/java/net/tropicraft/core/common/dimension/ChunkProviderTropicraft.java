@@ -1,7 +1,9 @@
 package net.tropicraft.core.common.dimension;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -10,10 +12,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
@@ -22,20 +22,17 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.spawning.TropiWorldEntitySpawner;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenTropicsCaves;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenUndergroundGrove;
+import net.tropicraft.core.common.worldgen.mapgen.MapGenUndergroundWaterCove;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenVolcano;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS WILL MOST LIKELY BE COMPLETELY REDONE
 
-    private static final int CHUNK_SIZE_Y = 256;
-
-    private static final int HOME_TREE_RARITY = 350;
-
     private World worldObj;
-    private long seed;
     protected Random rand;
     private Biome[] biomesForGeneration;
     private double[] depthBuffer = new double[256];
@@ -51,13 +48,15 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
     private NoiseGeneratorOctaves noiseGen5;
 
     private MapGenUndergroundGrove groveGen;
+    private MapGenUndergroundWaterCove coveGen;
     private MapGenTropicsCaves caveGenerator;
     private MapGenVolcano volcanoGen;
+
+    private final Set<BlockPos> volcanoCache = new HashSet<BlockPos>();
 
     public ChunkProviderTropicraft(World world, long seed, boolean mapFeaturesEnabled) {
         this.worldObj = world;
         this.rand = new Random(seed);
-        this.seed = seed;
 
         this.surfaceNoise = new NoiseGeneratorPerlin(this.rand, 4);
         this.noiseGen1 = new NoiseGeneratorOctaves(this.rand, 16);
@@ -68,10 +67,9 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
 
         volcanoGen = new MapGenVolcano(worldObj, true);
         groveGen = new MapGenUndergroundGrove(worldObj);
+        coveGen = new MapGenUndergroundWaterCove(worldObj);
         caveGenerator = new MapGenTropicsCaves();
     }
-    
-    private boolean hasSpawned = false;
 
     @Override
     public void populate(int x, int z) {
@@ -84,25 +82,21 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
         long k = this.rand.nextLong() / 2L * 2L + 1L;
         long l = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed((long)x * k + (long)z * l ^ this.worldObj.getSeed());
-        boolean flag = false;
-        ChunkPos chunkpos = new ChunkPos(i, j);
-
+     
         biome.decorate(worldObj, rand, blockpos);
+        
+        this.coveGen.decorate(x, z);
 
-        if (!hasSpawned) {
-            BlockPos volcanoCoords = volcanoGen.getVolcanoNear(worldObj, x, z);
-            if (volcanoCoords != null) {
-                BlockPos posVolcanoTE = new BlockPos(volcanoCoords.getX(), 1, volcanoCoords.getZ());
-                if (worldObj.getBlockState(posVolcanoTE).getBlock() != BlockRegistry.volcano) {
-                    worldObj.setBlockState(posVolcanoTE, BlockRegistry.volcano.getDefaultState());
-                    hasSpawned = true;
-                }
+        BlockPos volcanoCoords = volcanoGen.getVolcanoNear(worldObj, x, z);
+        if (volcanoCoords != null && !volcanoCache.contains(volcanoCoords)) {
+            BlockPos posVolcanoTE = new BlockPos(volcanoCoords.getX(), 1, volcanoCoords.getZ());
+            if (worldObj.getBlockState(posVolcanoTE).getBlock() != BlockRegistry.volcano) {
+                worldObj.setBlockState(posVolcanoTE, BlockRegistry.volcano.getDefaultState());
+                volcanoCache.add(volcanoCoords);
             }
         }
 
-        // generateOres(x,z);
-
-        WorldEntitySpawner.performWorldGenSpawning(worldObj, biome, i + 8, j + 8, 16, 16, rand);
+        TropiWorldEntitySpawner.performWorldGenSpawning(worldObj, biome, i + 8, j + 8, 16, 16, rand);
 
         BlockSand.fallInstantly = false;
     }
@@ -139,6 +133,8 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
         this.volcanoGen.generate(x, z, chunkprimer);
         this.groveGen.generate(x, z, chunkprimer);
         this.caveGenerator.generate(this.worldObj, x, z, chunkprimer);
+        
+        this.coveGen.generate(x, z, chunkprimer);
 
         Chunk chunk = new Chunk(this.worldObj, chunkprimer, x, z);
         byte[] abyte = chunk.getBiomeArray();

@@ -30,16 +30,21 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.ChairColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
+import net.tropicraft.core.client.PlayerSwimDataClientHandler;
 import net.tropicraft.core.client.ScubaHandler;
+import net.tropicraft.core.client.TropicraftLoadingListener;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemTropicraftColored;
+import net.tropicraft.core.common.network.MessagePlayerSwimData;
+import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.CraftingRegistry;
@@ -78,6 +83,7 @@ public class ClientProxy extends CommonProxy {
 
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
 		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
+		MinecraftForge.EVENT_BUS.register(new TropicraftLoadingListener());
 
 
 		// For rendering drink mixer in inventory
@@ -222,5 +228,11 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public World getClientWorld() {
 		return Minecraft.getMinecraft().world;
+	}
+
+	@Override
+	public void registerClientPacketScuba() {
+		super.registerClientPacketScuba();
+		TCPacketHandler.INSTANCE.registerMessage(PlayerSwimDataClientHandler.class, MessagePlayerSwimData.class, 4, Side.CLIENT);
 	}
 }

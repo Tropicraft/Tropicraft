@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMob;
@@ -63,7 +64,7 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.24D);
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getAttackStrength());
 	}
 
@@ -116,11 +117,11 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
-		boolean wasHit = super.attackEntityFrom(p_70097_1_, p_70097_2_);
+	public boolean attackEntityFrom(DamageSource source, float amt) {
+		boolean wasHit = super.attackEntityFrom(source, amt);
 
 		if (!world.isRemote) {
-			if (hasMask() && wasHit) {
+			if (hasMask() && wasHit && !source.equals(DamageSource.outOfWorld)) {
 				dropMask();
 			}
 		}

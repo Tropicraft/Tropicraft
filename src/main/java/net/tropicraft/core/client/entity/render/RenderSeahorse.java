@@ -22,12 +22,13 @@ public class RenderSeahorse extends RenderTropicraftWaterMob {
 			float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y - 2.5f, z);
+		GlStateManager.rotate(90, 0f, 1f, 0f);
 
 		float swimYaw = (par1EntityLiving.prevSwimYaw)
 				+ ((par1EntityLiving.swimYaw) - (par1EntityLiving.prevSwimYaw)) * partialTicks;
 		String n = par1EntityLiving.getCustomNameTag();
 		par1EntityLiving.setCustomNameTag("");
-		super.doRender(par1EntityLiving, 0, 0, 0, swimYaw - 270, partialTicks);
+		super.doRender(par1EntityLiving, 0, 0, 0, swimYaw, partialTicks);
 		GlStateManager.popMatrix();
 		par1EntityLiving.setCustomNameTag(n);
 		if (Minecraft.getMinecraft().pointedEntity != null && par1EntityLiving.getCustomNameTag().length() > 0) {

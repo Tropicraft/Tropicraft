@@ -1,9 +1,15 @@
 package net.tropicraft.core.common.block;
 
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -12,7 +18,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.ITropicraftVariant;
@@ -22,13 +27,23 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant>
     private final IProperty<T> property;
     private final BlockStateContainer blockState;
     
-    private final T[] enumValues;
+    private final Int2ObjectMap<T> byMeta = new Int2ObjectArrayMap<>();
+    private final T[] variants;
     
     protected BlockTropicraftEnumVariants(Material mat, Class<T> enumClass) {
+        this(mat, enumClass, enumClass.getEnumConstants());
+    }
+    
+    protected BlockTropicraftEnumVariants(Material mat, Class<T> enumClass, T[] variants) {
         super(mat);
-        this.property = PropertyEnum.create("variant", enumClass);
+        Preconditions.checkNotNull(variants);
+        Preconditions.checkArgument(variants.length > 0, "Must supply at least one variant.");
+        this.variants = variants;
+        this.property = PropertyEnum.create("variant", enumClass, Lists.newArrayList(variants));
         this.blockState = createBlockState();
-        this.enumValues = enumClass.getEnumConstants();
+        for (T variant : enumClass.getEnumConstants()) {
+            byMeta.put(variant.getMeta(), variant);
+        }
 
         this.setDefaultState(blockState.getBaseState());
     }
@@ -59,7 +74,12 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant>
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(getProperty(), enumValues[meta % enumValues.length]);
+        T variant = byMeta.get(meta);
+        IBlockState ret = this.getDefaultState();
+        if (variant != null) {
+            ret = ret.withProperty(getProperty(), variant);
+        }
+        return ret;
     }
 
     @Override
@@ -82,6 +102,10 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant>
     
     public IBlockState defaultForVariant(T variant) {
         return getDefaultState().withProperty(getProperty(), variant);
+    }
+    
+    public IBlockState randomVariant(Random rand) {
+        return defaultForVariant(variants[rand.nextInt(variants.length)]);
     }
     
     /* == ITropicraftBlock == */

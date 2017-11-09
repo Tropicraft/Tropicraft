@@ -15,6 +15,7 @@ public class RenderKoaMan extends RenderBiped<EntityKoaBase>
 		super(rendermanagerIn, modelbase, f);
 		mainModel = modelbase;
 		shadowSize = f;
+		this.shadowOpaque = 0.5f;
 	}
 	
 	@Override

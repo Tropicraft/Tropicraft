@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.world.World;
 import net.tropicraft.Info;
