@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -39,8 +40,12 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        String color = scubaMaterial == ScubaMaterial.PINK ? "Pink" : "Yellow";
-        return Info.ARMOR_LOCATION + "scubaGear" + color + ".png";   
+        return getArmorTexture(scubaMaterial).toString();
+    }
+    
+    public static ResourceLocation getArmorTexture(ScubaMaterial material) {
+        String color = material == ScubaMaterial.PINK ? "Pink" : "Yellow";
+        return new ResourceLocation(Info.ARMOR_LOCATION + "scubaGear" + color + ".png");   
     }
 
     /**
