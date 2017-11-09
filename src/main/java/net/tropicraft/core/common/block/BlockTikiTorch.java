@@ -148,15 +148,6 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 
 	/**
-	 * Gets the metadata of the item this Block can drop. This method is called when the block gets destroyed. It
-	 * returns the metadata of the dropped item based on the old metadata of the block.
-	 */
-	@Override
-	public int damageDropped(IBlockState state) {
-		return state.getValue(SECTION) != TorchSection.LOWER ? 0 : 2;
-	}
-
-	/**
 	 * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
 	 * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
 	 * block, etc.
