@@ -9,11 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
-import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.core.common.block.BlockPineapple;
-import net.tropicraft.core.common.block.BlockTallPlant;
+import net.tropicraft.core.common.block.BlockTallPlant.PlantHalf;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -21,69 +20,26 @@ public class BlockEvents {
 
 	@SubscribeEvent
 	public void handlePineappleBreakEvent(HarvestDropsEvent event) {
-		World world = event.getWorld();
-		Block block = event.getState().getBlock();
-
-		if (world.isRemote) {
-			return;
-		}
-
-		if (block != BlockRegistry.pineapple) {
-			return;
-		}		
-
-		int stage = event.getState().getValue(BlockPineapple.STAGE);
-		boolean isFullyGrown = ((BlockTallPlant.PlantHalf)event.getState().getValue(BlockPineapple.HALF)) == BlockTallPlant.PlantHalf.UPPER
-				&& stage >= BlockPineapple.TOTAL_GROW_TICKS;
-				int x = event.getPos().getX();
-				int y = event.getPos().getY();
-				int z = event.getPos().getZ();
-				EntityPlayer player = event.getHarvester();
-
-				ItemStack handItemStack = getPlayerItem(world, player);
-				Item inHand;
-
-				if (handItemStack != null)
-					inHand = handItemStack.getItem();
-				else
-					inHand = null;
-
-				ItemStack drop = null;
-
-				if (inHand != null && (inHand instanceof ItemSword || inHand.getItemUseAction(new ItemStack(inHand)) == EnumAction.BLOCK)) {
-					drop = new ItemStack(ItemRegistry.pineappleCubes);
-				} else {
-					drop = new ItemStack(block, 1, 0);
-				}
-
-				int numDrops = isFullyGrown && drop.getItem() == ItemRegistry.pineappleCubes ? world.rand.nextInt(3) + 2 : 1;
-
-				// If it is the top block that is destroyed, drop a pineapple item
-				// Then set the metadata of the bottom to 0 so it can restart its
-				// Growth cycle
-				if (isFullyGrown) {
-					world.setBlockState(event.getPos().down(), event.getState().withProperty(BlockPineapple.STAGE, Integer.valueOf(1)));
-					world.setBlockToAir(event.getPos());
-					for (int i = 0; i < numDrops; i++) {
-						dropBlockAsItem(world, x, y, z, drop);
-					}
-				} else
-					if (stage < BlockPineapple.TOTAL_GROW_TICKS) {
-						IBlockState stateUp = world.getBlockState(event.getPos().up());
-
-						if (stateUp.getBlock() instanceof BlockPineapple) {
-							boolean aboveBlockFullyGrown = stateUp.getValue(BlockPineapple.STAGE) > BlockPineapple.TOTAL_GROW_TICKS;
-							if (aboveBlockFullyGrown) {
-								world.setBlockToAir(event.getPos().up());
-								dropBlockAsItem(world, x, y + 1, z, drop);
-							} else {
-								world.setBlockToAir(event.getPos());
-							}	
-						}
-					} else {
-						world.setBlockToAir(event.getPos());
-						world.setBlockToAir(event.getPos().down());
-					}
+	    EntityPlayer player = event.getHarvester();
+	    if (player == null) {
+	        return;
+	    }
+	    ItemStack held = player.getHeldItemMainhand();
+	    
+	    IBlockState state = event.getState();
+	    boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
+	    boolean isGrown = isTop || state.getValue(BlockPineapple.STAGE) == BlockPineapple.TOTAL_GROW_TICKS;
+	    
+	    if (isGrown) {
+	        if (held != null && held.getItem() instanceof ItemSword) {
+	            event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(4)));
+	        } else {
+	            event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
+	        }
+	    }
+        if (!isTop) {
+            event.getWorld().setBlockToAir(event.getPos().up());
+        }
 	}
 
 	@SubscribeEvent
@@ -101,7 +57,7 @@ public class BlockEvents {
 		if (block != BlockRegistry.coconut)
 			return;
 
-		ItemStack handItemStack = getPlayerItem(world, player);
+		ItemStack handItemStack = player.getHeldItemMainhand();
 		Item inHand;
 
 		if (handItemStack != null)
@@ -137,14 +93,5 @@ public class BlockEvents {
 			entityitem.setPickupDelay(10);
 			world.spawnEntity(entityitem);
 		}
-	}
-
-	private ItemStack getPlayerItem(World world, EntityPlayer player) {
-		if (player == null)
-			return null;
-
-		ItemStack inHand = player.inventory.getStackInSlot(player.inventory.currentItem);
-
-		return inHand;
 	}
 }
