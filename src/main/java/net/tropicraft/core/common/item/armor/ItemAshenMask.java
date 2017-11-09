@@ -12,6 +12,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.entity.model.RenderArmorMask;
 import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.enums.AshenMasks;
@@ -73,6 +75,7 @@ public class ItemAshenMask extends ItemTropicraftArmor {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         if (armorSlot == EntityEquipmentSlot.HEAD) // head
             return new RenderArmorMask(maskType.getMeta());
