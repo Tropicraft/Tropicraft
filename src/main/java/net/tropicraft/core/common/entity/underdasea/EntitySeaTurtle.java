@@ -25,6 +25,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.entity.egg.EntityEgg;
+import net.tropicraft.core.common.entity.egg.EntitySeaTurtleEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.IAmphibian;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -47,7 +49,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	public long timeSinceLastEgg = 0L;
 	public long eggSiteCooldown = EGG_SITE_WAIT_TIME;
 	public PathNavigateGround png;
-	public EntityTurtleEgg lastEgg = null;
+	public EntitySeaTurtleEgg lastEgg = null;
 
 	public EntitySeaTurtle(World par1World) {
 		super(par1World);
@@ -221,7 +223,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 						if (this.eggSiteCooldown <= 0) {
 							log("egg laid!");
 
-							EntityTurtleEgg egg = new EntityTurtleEgg(this.world);
+							EntitySeaTurtleEgg egg = new EntitySeaTurtleEgg(this.world);
 							egg.setPosition(this.currentNestSite.getX() + 0.5f, this.currentNestSite.getY() + 1,
 									this.currentNestSite.getZ() + 0.5f);
 							lastEgg = egg;

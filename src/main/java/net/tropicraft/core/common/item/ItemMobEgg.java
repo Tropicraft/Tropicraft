@@ -26,6 +26,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
+import net.tropicraft.core.common.entity.hostile.EntityTreeFrog;
+import net.tropicraft.core.registry.TropicraftRegistry;
 
 public class ItemMobEgg extends ItemTropicraft {
 
@@ -102,10 +104,25 @@ public class ItemMobEgg extends ItemTropicraft {
 	public static Entity spawnCreature(World worldIn, @Nullable String entityID, double x, double y, double z) {
 		if (entityID != null) {
 			Entity entity = null;
-
+			
+			EntityTreeFrog.Type frogType = null;
+			
+			if(entityID.endsWith("frog")) {
+				for(EntityTreeFrog.Type type : EntityTreeFrog.Type.values()) {
+					if(entityID.equals(TropicraftRegistry.getNamePrefixed(type.getColor()+"frog"))) {
+						entityID = TropicraftRegistry.getNamePrefixed("treefrog");
+						frogType = type;
+					}
+				}
+			}
+			
+			// Wut
 			for (int i = 0; i < 1; ++i) {
 				entity = EntityList.createEntityByIDFromName(entityID, worldIn);
-
+				if(entity instanceof EntityTreeFrog && frogType != null) {
+					((EntityTreeFrog)entity).setType(frogType.ordinal());
+					((EntityTreeFrog)entity).initialSet = true;
+				}
 				if (entity instanceof EntityLivingBase) {
 					EntityLiving entityliving = (EntityLiving)entity;
 					entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);

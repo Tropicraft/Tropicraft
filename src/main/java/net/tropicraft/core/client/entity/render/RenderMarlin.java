@@ -1,9 +1,8 @@
 package net.tropicraft.core.client.entity.render;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ModelMarlin;
@@ -42,6 +41,6 @@ public class RenderMarlin extends RenderTropicraftWaterMob {
 	}
 
 	protected void preRenderScale(EntityMarlin entitymarlin, float f) {
-		GL11.glScalef(1F, 1F, 1F);
+		GlStateManager.scale(1F, 1F, 1F);
 	}
 }
