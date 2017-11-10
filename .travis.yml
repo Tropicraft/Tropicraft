@@ -10,3 +10,4 @@ cache:
     - '$HOME/.gradle'
 before_cache:
     - rm -f $HOME/.gradle/caches/*/*.lock
+script: gradlew check -is

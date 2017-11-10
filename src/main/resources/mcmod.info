@@ -3,7 +3,7 @@
   "modid": "tropicraft",
   "name": "Tropicraft",
   "description": "This is Tropicraft, the utopian idyllic getaway that you have been waiting for!",
-  "version": "",
+  "version": "${version}",
   "mcversion": "${minecraft_version}",
   "url": "http://tropicraft.net",
   "updateUrl": "http://coros.us/versionchecker/tropiversion.txt",
