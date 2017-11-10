@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -50,17 +51,21 @@ public class RenderArmorMask extends ModelBiped {
 		 */
 	    this.setRotationAngles(f0, f1, f2, rotationYaw, f4, f5, entity);
 	    
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
+        
+        if (entity.isSneaking()) {
+            GlStateManager.translate(0, 0.25f, 0);
+        }
         
         // Set head rotation to mask
-        GL11.glRotatef(rotationYaw, 0, 1, 0);
-        GL11.glRotatef(f4, 1, 0, 0);
+        GlStateManager.rotate(rotationYaw, 0, 1, 0);
+        GlStateManager.rotate(f4, 1, 0, 0);
     	
         // Flip mask to face away from the player
-    	GL11.glRotatef(180, 0, 1, 0);
+        GlStateManager.rotate(180, 0, 1, 0);
     	
     	// put it in the middle in front of the face, eyeholes at (Steve's) eye height
-    	GL11.glTranslatef (-0.025F, 0.1F, 0.3F);
+        GlStateManager.translate(-0.025F, 0.1F, 0.3F);
     	
     	/*
     		renderMask handles the rendering of the mask model, but it doesn't set the texture.
@@ -68,6 +73,6 @@ public class RenderArmorMask extends ModelBiped {
     	 */
         mask.renderMask(this.maskType);
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 	}
 }
