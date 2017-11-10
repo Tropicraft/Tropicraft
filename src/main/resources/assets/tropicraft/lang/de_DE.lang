@@ -1,0 +1,358 @@
+﻿# Block localizations
+tile.tropicraft.chunk.name=Stück Kopf
+tile.tropicraft.chunk_stairs.name=Chunk von Haupttreppen
+tile.tropicraft.ore.eudialyte.name=Eudialytisches Erz
+tile.tropicraft.ore.zircon.name=Zirkonerz
+tile.tropicraft.ore.azurite.name=Azurit-Erz
+tile.tropicraft.ore.manganese.name=Manganerz
+tile.tropicraft.ore.shaka.name=Shakastein
+tile.tropicraft.oreblock.azurite.name=Azuritblock
+tile.tropicraft.oreblock.eudialyte.name=Eudialyteblock
+tile.tropicraft.oreblock.zircon.name=Zirkonblock
+tile.tropicraft.flower.commelina_diffusa.name=Zerstreute Commelina
+tile.tropicraft.flower.crocosmia.name=Kupferspitzen Blume
+tile.tropicraft.flower.orchid.name=Orchidee
+tile.tropicraft.flower.canna.name=Cannalilie
+tile.tropicraft.flower.anemone.name=Anemonenblume
+tile.tropicraft.flower.orange_anthurium.name=Orangenanthurie
+tile.tropicraft.flower.red_anthurium.name=Rote Anthuriumblume
+tile.tropicraft.flower.magic_mushroom.name=Magischer Pilz
+tile.tropicraft.flower.pathos.name=Pothos
+tile.tropicraft.flower.acai_vine.name=Acai Rebe
+tile.tropicraft.flower.croton.name=Kroton
+tile.tropicraft.flower.dracaena.name=Dracaena
+tile.tropicraft.flower.fern.name=Farn
+tile.tropicraft.flower.foliage.name=Laub
+tile.tropicraft.flower.bromeliad.name=Bromelie
+tile.tropicraft.log.mahogany.name=Mahagoniholz
+tile.tropicraft.log.palm.name=Palmenholz
+tile.tropicraft.coral.pink.name=Rosa Koralle
+tile.tropicraft.coral.tealy.name=Krickente Koralle
+tile.tropicraft.coral.brain.name=Gehirn-Koralle
+tile.tropicraft.coral.fire.name=Feuerkoralle
+tile.tropicraft.coral.green.name=Grüne Koralle
+tile.tropicraft.coral.spiral.name=Spirale Koralle
+tile.tropicraft.coral.hotpink.name=Pinkfarbene Koralle
+tile.tropicraft.bundle.thatch.name=Strohbündel
+tile.tropicraft.bundle.bamboo.name=Bambus-Bundle
+tile.tropicraft.plank.mahogany.name=Mahagoniholzbretter
+tile.tropicraft.plank.palm.name=Palmenholzbretter
+tile.tropicraft.bamboo_shoot.name=Bambussprossen
+tile.tropicraft.thatch_stairs.name=Thatch-Treppe
+tile.tropicraft.bamboo_stairs.name=Bambus-Treppe
+tile.tropicraft.thatch_stairs_fuzzy.name=Strohdach
+tile.tropicraft.leaves.mahogany.name=Mahagoni Blätter
+tile.tropicraft.leaves.palm.name=Palmenblätter
+tile.tropicraft.leaves.kapok.name=Kapokblätter
+tile.tropicraft.leaves.fruit.name=Fruchtblätter
+tile.tropicraft.bamboo_chest.name=Bambus-Brust
+tile.tropicraft.fruitleaves.grapefruit.name=Grapefruitblätter
+tile.tropicraft.fruitleaves.lemon.name=Zitronenblätter
+tile.tropicraft.fruitleaves.lime.name=Limettenblätter
+tile.tropicraft.fruitleaves.orange.name=Orangenblätter
+tile.tropicraft.sapling.palm.name=Palme-Schössling
+tile.tropicraft.sapling.mahogany.name=Mahagoni Schössling
+tile.tropicraft.sapling.grapefruit.name=Grapefruit-Schössling
+tile.tropicraft.sapling.lemon.name=Zitronenschössling
+tile.tropicraft.sapling.lime.name=Kalkschössling
+tile.tropicraft.sapling.orange.name=Orange Schössling
+tile.tropicraft.coconut.name=Kokosnuss
+tile.tropicraft.sand.purified.name=Gereinigter Sand
+tile.tropicraft.sand.foamy.name=Schaumige Sande
+tile.tropicraft.sand.volcanic.name=Vulkanische Sande
+tile.tropicraft.sand.mineral.name=Mineralische Sande
+tile.tropicraft.sand.coral.name=Korallensand
+tile.tropicraft.iris.name=Iris
+tile.tropicraft.pineapple.name=Ananas
+tile.tropicraft.tiki_torch.name=Tiki Fackel
+tile.tropicraft.drink_mixer.name=Getränkemischer
+tile.tropicraft.sifter.name=Sichter
+tile.tropicraft.air_compressor.name=Luftkompressor
+tile.tropicraft.flower_pot.name=Blumentopf
+tile.tropicraft.palm_stairs.name=Palmtreppe
+tile.tropicraft.slab.bamboo.name=Bambusplatte
+tile.tropicraft.slab.chunk.name=Chunkplatte
+tile.tropicraft.slab.palm.name=Palmenplatte
+tile.tropicraft.slab.thatch.name=Strohplatte
+tile.tropicraft.bongo.small.name=Kleine Bongo-Trommel
+tile.tropicraft.bongo.medium.name=Mittlere Bongo Trommel
+tile.tropicraft.bongo.large.name=Große Bongo-Trommel
+tile.tropicraft.bamboo_fence.name=Bambus Zaun
+tile.tropicraft.bamboo_fence_gate.name=Bambus Zaun Tor
+tile.tropicraft.chunk_fence.name=Brocken Zaun
+tile.tropicraft.chunk_fence_gate.name=Chunk Zaun Tor
+tile.tropicraft.mahogany_fence.name=Mahagoni Holzzaun
+tile.tropicraft.mahogany_fence_gate.name=Mahagoni Holz Zaun Tor
+tile.tropicraft.palm_fence.name=Palmenholz Zaun
+tile.tropicraft.palm_fence_gate.name=Palmenholz Zaun Tor
+tile.tropicraft.thatch_fence.name=Strohzaun
+tile.tropicraft.thatch_fence_gate.name=Thatch Zaun Tor
+
+# Item localizations
+item.tropicraft.eudialyte.name=Eudialyte-Scherbe
+item.tropicraft.zircon.name=Zirkon Kristall
+item.tropicraft.azurite.name=Azurit-Kristall
+item.tropicraft.grapefruit.name=Grapefruit
+item.tropicraft.lemon.name=Zitrone
+item.tropicraft.lime.name=Limette
+item.tropicraft.orange.name=Orange
+item.tropicraft.axe_eudialyte.name=Eudialyte-Axt
+item.tropicraft.hoe_eudialyte.name=Eudialyte Hacke
+item.tropicraft.pickaxe_eudialyte.name=Eudialyte Spitzhacke
+item.tropicraft.shovel_eudialyte.name=Eudialyte-Schaufel
+item.tropicraft.sword_eudialyte.name=Eudialytisches Schwert
+item.tropicraft.axe_zircon.name=Zirkon-Axt
+item.tropicraft.hoe_zircon.name=Zirkon Hoe
+item.tropicraft.pickaxe_zircon.name=Zirkon-Spitzhacke
+item.tropicraft.shovel_zircon.name=Zirkon-Schaufel
+item.tropicraft.sword_zircon.name=Zirkon Speer
+item.tropicraft.fishing_net.name=Fischernetz
+item.tropicraft.bamboo_shoots.name=Bambussprossen
+item.tropicraft.fresh_marlin.name=Frischer Marlin
+item.tropicraft.seared_marlin.name=Gebratener Marlin
+item.tropicraft.bamboo_stick.name=Bambusstab
+item.tropicraft.bamboo_mug.name=Bambusbecher
+item.tropicraft.tropics_water_bucket.name=Tropics Wassereimer
+item.tropicraft.fish_bucket.name=Fisch-Eimer
+item.tropicraft.coconut_chunk.name=Kokosnussbrocken
+item.tropicraft.frog_leg.name=Froschbein
+item.tropicraft.cooked_frog_leg.name=Gekochter Froschschenkel
+item.tropicraft.poison_frog_skin.name=Poison Frog Haut
+item.tropicraft.scale.name=Leguanwaage
+item.tropicraft.scale_boots.name=Schuppenstiefel
+item.tropicraft.scale_chestplate.name=Schuppenbrustplatte
+item.tropicraft.scale_helmet.name=Schuppenhelm
+item.tropicraft.scale_leggings.name=Schuppengamaschen
+item.tropicraft.chair.black.name=Schwarzer Strandstuhl
+item.tropicraft.chair.red.name=Roter Strandstuhl
+item.tropicraft.chair.green.name=Grüner Strandstuhl
+item.tropicraft.chair.brown.name=Brauner Strandstuhl
+item.tropicraft.chair.blue.name=Blauer Strandstuhl
+item.tropicraft.chair.purple.name=Lila Strandkorb
+item.tropicraft.chair.cyan.name=Cyan Strandstuhl
+item.tropicraft.chair.silver.name=Silber Strandkorb
+item.tropicraft.chair.gray.name=Grauer Strandstuhl
+item.tropicraft.chair.pink.name=Rosa Strandstuhl
+item.tropicraft.chair.lime.name=Kalk-Strand-Stuhl
+item.tropicraft.chair.yellow.name=Gelber Strandstuhl
+item.tropicraft.chair.lightBlue.name=Hellblauer Strandstuhl
+item.tropicraft.chair.magenta.name=Magenta Strandstuhl
+item.tropicraft.chair.orange.name=Orange Strandstuhl
+item.tropicraft.chair.white.name=Weißer Strandstuhl
+item.tropicraft.umbrella.black.name=Schwarzer Strandschirm
+item.tropicraft.umbrella.red.name=Roter Strandschirm
+item.tropicraft.umbrella.green.name=Grüner Strandschirm
+item.tropicraft.umbrella.brown.name=Brauner Strandschirm
+item.tropicraft.umbrella.blue.name=Blauer Strandschirm
+item.tropicraft.umbrella.purple.name=Lila Strandschirm
+item.tropicraft.umbrella.cyan.name=Cyan Strandschirm
+item.tropicraft.umbrella.silver.name=Silberner Strandschirm
+item.tropicraft.umbrella.gray.name=Grauer Strandschirm
+item.tropicraft.umbrella.pink.name=Rosa Strandschirm
+item.tropicraft.umbrella.lime.name=Kalk-Strandschirm
+item.tropicraft.umbrella.yellow.name=Gelber Strandschirm
+item.tropicraft.umbrella.lightBlue.name=Hellblauer Strandschirm
+item.tropicraft.umbrella.magenta.name=Magenta Strandschirm
+item.tropicraft.umbrella.orange.name=Orange Strandschirm
+item.tropicraft.umbrella.white.name=Weißer Strandschirm
+item.tropicraft.portal_enchanter.name=Tropenportal Enchanter Zauberstab
+item.tropicraft.shell.solo.name=Solonox Schale
+item.tropicraft.shell.frox.name=Frosch Conch
+item.tropicraft.shell.pab.name=Pab-Schale
+item.tropicraft.shell.rube.name=Rube Nautilus
+item.tropicraft.shell.starfish.name=Seestern Shell
+item.tropicraft.shell.turtle.name=Schildkrötenpanzer
+item.tropicraft.cocktail.name=Tropischer Cocktail
+item.tropicraft.pineapple_cubes.name=Ananas-Würfel
+item.tropicraft.white_pearl.name=Einzelperle
+item.tropicraft.black_pearl.name=Perle von Razzle
+item.tropicraft.fertilizer.name=Dünger
+item.tropicraft.encyclopedia_tropica.name=Enzyklopädie Tropen
+item.tropicraft.bamboo_spear.name=Bambusspeer
+item.tropicraft.dagger.name=Dolch
+item.tropicraft.leaf_ball.name=Blattball
+item.tropicraft.coconut_bomb.name=Kokosnussbombe
+item.tropicraft.flower_pot.name=Blumentopf
+item.tropicraft.bamboo_door.name=Bambus Tür
+item.tropicraft.bamboo_item_frame.name=Bambus-Einzelteil-Rahmen
+item.tropicraft.water_wand.name=Wasserstab
+item.tropicraft.spawn_egg.iguana.name=Leguan zeugen
+item.tropicraft.spawn_egg.starfish.name=Brüten Seestern
+item.tropicraft.spawn_egg.greenfrog.name=Spawn grüner Frosch
+item.tropicraft.spawn_egg.redfrog.name=Spawnen Sie giftigen roten Frosch
+item.tropicraft.spawn_egg.bluefrog.name=Brüten Sie giftigen blauen Frosch
+item.tropicraft.spawn_egg.yellowfrog.name=Laichen Sie giftigen gelben Frosch
+item.tropicraft.spawn_egg.eih.name=Auge des Kopfes
+item.tropicraft.spawn_egg.marlin.name=Brut Marlin
+item.tropicraft.spawn_egg.fish.name=Spawn-Schule für tropische Fische
+item.tropicraft.spawn_egg.ashen.name=Aschige Asche
+item.tropicraft.spawn_egg.turtle.name=Spawn Meeresschildkröte Ei
+item.tropicraft.spawn_egg.mow.name=Brut Mann des Krieges
+item.tropicraft.spawn_egg.monkey.name=Affenpfote
+item.tropicraft.spawn_egg.koa.name=Koa-Stirnband
+item.tropicraft.spawn_egg.tropicreeper.name=TropiCreeper Hut
+item.tropicraft.spawn_egg.tropiskelly.name=TropiSkelly Rock
+item.tropicraft.spawn_egg.eagleray.name=Spotted Adlerrochen
+item.tropicraft.spawn_egg.failgull.name=Spawn-Fehler
+item.tropicraft.spawn_egg.seaurchin.name=Spawn Seeigel
+item.tropicraft.spawn_egg.dolphin.name=Brutdelfin
+item.tropicraft.spawn_egg.seahorse.name=Seepferdchen
+item.tropicraft.spawn_egg.hammerhead.name=Laichen Hammerkopf
+item.tropicraft.spawn_egg.piranha.name=Spawn Schule von Piranha
+item.tropicraft.spawn_egg.sardine.name=Laichschule des Flusses Sardine
+item.tropicraft.spawn_egg.tropispider.name=Spawn tropische Spinne
+
+
+item.tropicraft.sea_urchin_roe.name=Seeigel-Rogen
+item.tropicraft.fishing_rod.name=Bambus Angelrute
+
+item.tropicraft.fire_boots.name=Feuerstiefel
+item.tropicraft.fire_chestplate.name=Feuerbrustplatte
+item.tropicraft.fire_helmet.name=Feuerwehrhelm
+item.tropicraft.fire_leggings.name=Feuer Leggings
+item.tropicraft.iguana_leather.name=Leguan-Leder
+
+item.tropicraft.spawn_egg.name=Tropenmob Spawner Ei
+item.tropicraft.coffee.bean.raw.name=Kaffeebohnen
+item.tropicraft.coffee.bean.roasted.name=Geröstete Kaffeebohnen
+item.tropicraft.coffee.berry.name=Kaffeebeere
+
+
+item.tropicraft.pink_weight_belt.name=Rosa Gewichtsgürtel
+item.tropicraft.yellow_weight_belt.name=Gelber Gewichtsgurt
+item.tropicraft.pink_pony_bottle.name=Rosa Ponyflasche
+item.tropicraft.yellow_pony_bottle.name=Gelbe Ponyflasche
+item.tropicraft.pink_flippers.name=Rosa Flipper
+item.tropicraft.yellow_flippers.name=Gelbe Flossen
+item.tropicraft.pink_bcd.name=Rosa Tarierjacket
+item.tropicraft.yellow_bcd.name=Gelbes Tarierkontrollgerät
+item.tropicraft.pink_regulator.name=Rosa Regler
+item.tropicraft.yellow_regulator.name=Gelber Regler
+item.tropicraft.yellow_scuba_tank.name=Gelbe Tauchflasche
+item.tropicraft.pink_scuba_tank.name=Rosa Tauchflasche
+item.tropicraft.pink_scuba_goggles.name=Rosa Taucherbrille
+item.tropicraft.yellow_scuba_goggles.name=Gelbe Taucherbrille
+item.tropicraft.dive_computer.name=Tauchcomputer
+item.tropicraft.yellow_chestplate_gear.name=Gelber Tauchzeug
+item.tropicraft.pink_chestplate_gear.name=Rosa Tauchzeug
+item.tropicraft.trimix.name=Trimix Gasmischung
+
+# Cocktail localizations
+item.tropicraft.cocktail_Lemonade.name=Limonade
+item.tropicraft.cocktail_Limeade.name=Limeade
+item.tropicraft.cocktail_Orangeade.name=Orangeade
+item.tropicraft.cocktail_Caipirinha.name=Caipirinha
+item.tropicraft.cocktail_Coconut Water.name=Kokosnusswasser
+
+# Record localizations
+item.tropicraft.buried_treasure.name=Vergrabener Schatz
+item.tropicraft.eastern_isles.name=Ostinseln
+item.tropicraft.low_tide.name=Ebbe
+item.tropicraft.summering.name=Summering
+item.tropicraft.the_tribe.name=Der Stamm
+item.tropicraft.trade_winds.name=Passatwinde
+
+# Mask localizations
+item.tropicraft.mask_square_zord.name=Platz Zord
+item.tropicraft.mask_horn_monkey.name=Hornaffe
+item.tropicraft.mask_oblongatron.name=Oblongatron
+item.tropicraft.mask_headinator.name=Kopfzeile
+item.tropicraft.mask_square_horn.name=Quadratisches Horn
+item.tropicraft.mask_screw_attack.name=Schraubenangriff
+item.tropicraft.mask_the_brain.name=Das Gehirn
+item.tropicraft.mask_bat_boy.name=Fledermaus
+item.tropicraft.mask_ashen_mask1.name=Aschene Maske
+item.tropicraft.mask_ashen_mask2.name=Aschene Maske
+item.tropicraft.mask_ashen_mask3.name=Aschene Maske
+item.tropicraft.mask_ashen_mask4.name=Aschene Maske
+item.tropicraft.mask_ashen_mask5.name=Aschene Maske
+
+# Menu localizations
+itemGroup.tropicraft=Tropicraft
+
+# Config localizations
+tropicraft.config.title=Tropicraft-Konfiguration
+tropicraft.config.generation.title=Weltweite Einstellungen
+tropicraft.config.misc.title=Verschiedene Einstellungen
+
+# Entity localizations
+entity.tropicraft.iguana.name=Leguan
+entity.tropicraft.tropiskelly.name=TropiSkelly
+entity.tropicraft.eih.name=Osterinsel Kopf
+entity.tropicraft.greenfrog.name=Grüner Laubfrosch
+entity.tropicraft.redfrog.name=Giftiger roter Laubfrosch
+entity.tropicraft.bluefrog.name=Giftiger blauer Laubfrosch
+entity.tropicraft.yellowfrog.name=Giftiger gelber Laubfrosch
+entity.tropicraft.tropicreeper.name=TropiCreeper
+entity.tropicraft.monkey.name=Vervet-Affe
+entity.tropicraft.PoisonBlot.name=Giftiger Fleck
+entity.tropicraft.marlin.name=Marlin
+entity.tropicraft.ashen.name=Aschfahl
+entity.tropicraft.piranha.name=Piranha
+entity.tropicraft.sardine.name=Fluss Sardine
+entity.tropicraft.dolphin.name=Delphin
+entity.tropicraft.hammerhead.name=Hammerkopf
+entity.tropicraft.tropispider.name=Tropische Spinne
+entity.tropicraft.seahorse.name=Seepferdchen
+entity.tropicraft.seaurchin.name=Seeigel
+entity.tropicraft.starfish.name=Seestern
+entity.tropicraft.eagleray.name=Gefleckter Adlerrochen
+entity.tropicraft.turtle.name=Meeresschildkröte
+entity.tropicraft.koa.name=Koa
+
+# Achievement localizations
+achievement.tc_craft_pina_colada=Wenn Sie Pina Coladas mögen...
+achievement.tc_craft_pina_colada.desc=(Wer nicht?)
+achievement.tc_drink_pina_colada=Im Regen gefangen
+achievement.tc_drink_pina_colada.desc=(Hast du deinen Regenschirm vergessen?)
+
+#Gui localizations
+tropicraft.gui.air.type=Lufttyp. %s
+tropicraft.gui.air.regular=Regulär
+tropicraft.gui.air.trimix=Trimix
+tropicraft.gui.air.capacity=Max. Luftkapazität. %s psi
+tropicraft.gui.air.remaining=Luft bleibt. %s psi
+tropicraft.gui.air.efficiency=Effizienz nutzen. %s%.3f psi/sec
+tropicraft.gui.suit.type=Anzugstyp. %s
+tropicraft.gui.suit.yellow=Gelb
+tropicraft.gui.suit.pink=Rosa
+tropicraft.gui.gear.tank.left.none=Kein linker Lufttank
+tropicraft.gui.gear.tank.left.info=Linker Lufttank.
+tropicraft.gui.gear.tank.right.none=Kein rechter Lufttank
+tropicraft.gui.gear.tank.right.info=Rechter Lufttank.
+gui.tropicraft.temperature=Temperatur
+gui.tropicraft.currentDepth=Tiefe
+gui.tropicraft.maxDepth=Maximal
+gui.tropicraft.timeRemaining=Gaszeit
+gui.tropicraft.amtRefined=Prozentsatz verfeinert
+
+# Fluid localizations
+fluid.tropicraft.water=Tropen Wasser
+fluid.tropicraft.portal=Tropenportal
+
+# Misc localizations
+tropicraft.coconutBombWarning=Du hast keine Erlaubnis, Kokosbomben zu benutzen.) Überprüfe die Kokosnussbomben-Positivliste in der Tropicraft-Konfigurationsdatei!
+portalenchanter.type_0=Modus: Portalerstellungsmodus
+portalenchanter.type_1=Modus: Sofortiger Teleport-Modus
+
+# Koa Trading
+entity.tropicraft.koa.trade.give=Habe etwas Trimixgas!
+entity.tropicraft.koa.trade.not_enough_time=Du brauchst noch %s mehr Minuten Tauchzeit! Kein Trimix-Gas für Sie!
+entity.tropicraft.koa.trade.cooldown=Jemand hat vor kurzem Trimix-Gas von mir bekommen
+entity.tropicraft.koa.trade.space=Dein Inventar ist voll!
+
+# Loading Screen
+tropicraft.loading.title.greeting=In die Tropen treiben ...
+tropicraft.loading.title.farewell=Ich wünschte, du wärst hier...
+
+tropicraft.loading.knowledge.pre=Wusstest du schon?
+tropicraft.loading.knowledge.1=%s Die Tropen sind die Heimat von Koa Tribes
+tropicraft.loading.knowledge.2=%s Schildkröten können Eier an den Stränden in der Nacht legen
+tropicraft.loading.knowledge.3=%s Muscheln können durch Sichten von Sand gefunden werden
+
+tropicraft.loading.hint.pre=Tip:
+tropicraft.loading.hint.1=%s Ältere Schildkröten können im Wasser geritten werden
+tropicraft.loading.hint.2=%s Leguane halten Groll, also versuche sie nicht zu schlagen
+
+tropicraft.loading.misc.1=Vergiss nicht, den Atem anzuhalten!
+tropicraft.loading.misc.2=Bereiten Sie sich auf einen Spritzer vor
