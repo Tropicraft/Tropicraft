@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 
 public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 
-	private static final DataParameter<Boolean> SHOULD_SPAWN_SCHOOL = EntityDataManager.<Boolean>createKey(EntitySchoolableFish.class, DataSerializers.BOOLEAN);
 
+	public boolean shouldSpawnSchool = false;
 	public EntityTropicraftWaterBase leader = null;
 	public int minSchoolAmount = 5;
 	public int maxSchoolAmount = 8;
@@ -49,8 +49,6 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 	@Override
 	public void entityInit() {
 		super.entityInit();
-		this.getDataManager().register(SHOULD_SPAWN_SCHOOL, false);
-
 	}
 
 	@Override
@@ -94,7 +92,7 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 					this.markAsLeader();
 				}
 			}
-			if (this.ticksExisted > 200 && leader == null) {
+			if (this.ticksExisted > 200 && leader == null && !this.getIsLeader()) {
 				this.markAsLeader();
 			}
 
@@ -117,11 +115,11 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 	}
 
 	public void setShouldSpawnSchool(boolean spawnStatus) {
-		this.dataManager.set(SHOULD_SPAWN_SCHOOL, Boolean.valueOf(spawnStatus));
+		this.shouldSpawnSchool = spawnStatus;
 	}
 
 	public boolean getShouldSpawnSchool() {
-		return this.dataManager.get(SHOULD_SPAWN_SCHOOL);
+		return this.shouldSpawnSchool;
 	}
 	
 	public void spawnSchool() {

@@ -29,11 +29,7 @@ import net.minecraft.world.World;
 
 public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
-    private static final DataParameter<Float> SWIMYAW = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> SWIMPITCH = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> SWIMSPEEDCUR = EntityDataManager.<Float>createKey(EntityTropicraftWaterBase.class, DataSerializers.FLOAT);
     private static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
-	private static final DataParameter<Boolean> IS_LEADER = EntityDataManager.<Boolean>createKey(EntityTropicraftWaterBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> HOOK_ID = EntityDataManager.<Integer>createKey(EntityTropicraftWaterBase.class, DataSerializers.VARINT);
 
 	
@@ -86,6 +82,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	private boolean isMovingAwayFromWall = false;
 	
+	public boolean isLeader = false;
+	
 	public EntityTropicraftWaterBase(World world) {
 		super(world);
 		this.experienceValue = 5;
@@ -99,11 +97,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	@Override
 	public void entityInit() {
 		super.entityInit();
-		this.getDataManager().register(SWIMYAW, Float.valueOf(0f));
-		this.getDataManager().register(SWIMPITCH, Float.valueOf(0f));
-		this.getDataManager().register(SWIMSPEEDCUR, Float.valueOf(0f));
 		this.getDataManager().register(TEXTURE, "");
-		this.getDataManager().register(IS_LEADER, false);
 		this.getDataManager().register(HOOK_ID, Integer.valueOf(0));
 		this.assignRandomTexture();
 	}
@@ -142,11 +136,20 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				this.cameraPitch = -this.swimPitch;
 				this.prevRotationPitch = -this.prevSwimPitch;
 				this.prevRotationYaw = -this.prevSwimYaw;				
-				this.prevSwimYaw = this.swimYaw;
-				this.swimYaw = this.getDataManager().get(SWIMYAW);
-				this.prevSwimPitch = this.swimPitch;
-				this.swimPitch = this.getDataManager().get(SWIMPITCH);
 				
+				double x = (this.posX - this.prevPosX);
+				double y = (this.posY - this.prevPosY);
+				double z = (this.posZ - this.prevPosZ);
+				float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
+				float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
+
+				this.prevSwimYaw = this.swimYaw;
+				this.prevSwimPitch = this.swimPitch;
+				
+				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
+				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
+				
+			
 				this.motionX *= 0.98f;
 				this.motionY *= 0.98f;
 				this.motionZ *= 0.98f;
@@ -166,11 +169,19 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				}
 				this.cameraPitch = -this.swimPitch;
 				this.prevRotationPitch = -this.prevSwimPitch;
-				this.prevSwimYaw = this.swimYaw;
-				this.swimYaw = this.getDataManager().get(SWIMYAW);
-				this.prevSwimPitch = this.swimPitch;
-				this.swimPitch = this.getDataManager().get(SWIMPITCH);
 				
+				double x = (this.posX - this.prevPosX);
+				double y = (this.posY - this.prevPosY);
+				double z = (this.posZ - this.prevPosZ);
+				float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
+				float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
+
+				this.prevSwimYaw = this.swimYaw;
+				this.prevSwimPitch = this.swimPitch;
+			
+				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
+				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
+							
 			//	this.motionX *= 0.98f;
 			//	this.motionY *= 0.98f;
 			//	this.motionZ *= 0.98f;
@@ -553,9 +564,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		if(swimPitch > 45f) {
 			swimPitch = 45f;
 		}
-		syncSwimAngles();
-		prevSwimPitch = swimPitch;
-		prevSwimYaw = swimYaw;
+		
 		}else {
 			super.onLivingUpdate();
 		}
@@ -654,17 +663,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	        return x1 + f;
 	}
 	
-	public float getCurrentSwimSpeed() {
-		return this.getDataManager().get(SWIMSPEEDCUR);
-	}
-	
-	
-	public void syncSwimAngles() {
-		this.getDataManager().set(SWIMYAW, swimYaw);
-		this.getDataManager().set(SWIMPITCH, swimPitch);
-		this.getDataManager().set(SWIMSPEEDCUR, swimSpeedCurrent);
-	}
-	
 	public void setAttackDamage(float f) {
 		this.attackDamage = f;
 	}
@@ -725,11 +723,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 	
 	public boolean getIsLeader() {
-		return this.dataManager.get(IS_LEADER);
+		return isLeader;
 	}
 	
 	public void setIsLeader(boolean flag) {
-		this.dataManager.set(IS_LEADER, Boolean.valueOf(flag));
+		isLeader = flag;
 	}
 	
 	public void setHook(EntityHook ent) {
@@ -906,8 +904,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound n) {
 		n.setString("texture", this.getDataManager().get(TEXTURE));
-		n.setFloat("swimYaw", this.getDataManager().get(SWIMYAW));
-		n.setFloat("swimPitch", this.getDataManager().get(SWIMPITCH));
+		n.setFloat("swimYaw", swimYaw);
+		n.setFloat("swimPitch", swimPitch);
 		n.setBoolean("isLeader", getIsLeader());
 		super.writeEntityToNBT(n);
 	}
@@ -917,8 +915,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		setTexture(n.getString("texture"));
 		this.swimYaw = n.getFloat("swimYaw");
 		this.swimPitch = n.getFloat("swimPitch");
-		this.getDataManager().set(SWIMYAW, this.swimYaw);
-		this.getDataManager().set(SWIMPITCH, n.getFloat("swimPitch"));
 		this.setIsLeader(n.getBoolean("isLeader"));
 		super.readEntityFromNBT(n);
 	}

@@ -296,8 +296,6 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 			this.swimYaw = this.rotationYaw;
 			this.prevSwimYaw = this.prevRotationYaw;
 		}
-		this.syncSwimAngles();
-
 	}
 
 	@Override
