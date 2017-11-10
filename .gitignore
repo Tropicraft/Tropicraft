@@ -23,5 +23,5 @@ run
 out
 *.iml
 
-*Thumbs.db
+Thumbs.db
 *.DS_STORE
