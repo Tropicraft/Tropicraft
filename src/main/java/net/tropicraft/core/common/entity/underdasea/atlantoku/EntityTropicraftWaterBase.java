@@ -77,7 +77,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	private ItemStack dropStack = null;
 	private int dropMaxAmt = 3;
-	private float maxHealth = 10f;
 	private float attackDamage = 1f;
 	
 	private boolean isMovingAwayFromWall = false;
@@ -91,7 +90,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		if(this instanceof IPredatorDiet) {
 			this.setHostile();
 		}
-		this.setHealth(maxHealth);		
+		this.setMaxHealth(2);
 	}
 
 	@Override
@@ -104,10 +103,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	@Override
 	public void onLivingUpdate() {
-		if(this.ticksExisted == 0) {
-			this.applyEntityAttributes();
-			this.setHealth(maxHealth);
-		}
 		super.onLivingUpdate();
 		
 		//setDead();
@@ -571,8 +566,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 
 	public void setMaxHealth(int h) {
-		this.maxHealth = h;
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.maxHealth);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(h);
+		this.setHealth(h);
 	}
 	
 	public void markAsLeader() {
@@ -809,7 +804,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.maxHealth);
+		setMaxHealth(2);
 	}
 	
 	@Override

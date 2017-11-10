@@ -18,6 +18,7 @@ public class EntityMarlin extends EntityTropicraftWaterBase implements IPredator
 				this.setTexture("marlin2");
 			}
 		}
+		this.setMaxHealth(5);
 	}
 	
 	@Override
