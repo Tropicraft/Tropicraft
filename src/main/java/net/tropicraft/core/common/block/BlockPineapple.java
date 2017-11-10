@@ -68,7 +68,11 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 	public IBlockState getStateFromMeta(int meta) {
 	    int half = (meta >> 3) & 1;
 	    int stage = meta & 7;
-	    return getDefaultState().withProperty(HALF, PlantHalf.values()[half]).withProperty(STAGE, stage);
+	    IBlockState ret = getDefaultState().withProperty(HALF, PlantHalf.values()[half]);
+	    if (stage > 0) {
+	        ret = ret.withProperty(STAGE, stage);
+	    }
+	    return ret;
 	}
 
 	@Override
