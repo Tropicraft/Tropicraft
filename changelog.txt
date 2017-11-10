@@ -1,0 +1,7 @@
+7.0.0:
+New
+- Initial beta release for MC 1.10.2!
+- The mod has been rewritten, with all the great features you remember, and lots of new things too.
+Changes
+- No longer requires CoroUtil.
+- No longer requires manual installation of schematic files.

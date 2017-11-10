@@ -3,7 +3,6 @@
 .gradle
 
 #forge stuff
-/*.txt
 config/
 saves/
 
