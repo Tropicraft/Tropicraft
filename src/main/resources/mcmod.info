@@ -4,7 +4,7 @@
   "name": "Tropicraft",
   "description": "This is Tropicraft, the utopian idyllic getaway that you have been waiting for!",
   "version": "${version}",
-  "mcversion": "${minecraft_version}",
+  "mcversion": "${mcversion}",
   "url": "http://tropicraft.net",
   "updateUrl": "http://coros.us/versionchecker/tropiversion.txt",
   "authorList": ["Cojomax99", "Corosus", "Fishtaco567", "Mr_okushama", "MrRube", "newthead", "303", "tterrag"],
