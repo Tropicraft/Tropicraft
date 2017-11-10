@@ -143,10 +143,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
 				float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 
-				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
-				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
 				this.prevSwimYaw = this.swimYaw;
 				this.prevSwimPitch = this.swimPitch;
+				
+				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
+				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
 				
 			
 				this.motionX *= 0.98f;
@@ -175,11 +176,12 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
 				float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 
-				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
-				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
 				this.prevSwimYaw = this.swimYaw;
 				this.prevSwimPitch = this.swimPitch;
-						
+			
+				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
+				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
+							
 			//	this.motionX *= 0.98f;
 			//	this.motionY *= 0.98f;
 			//	this.motionZ *= 0.98f;
