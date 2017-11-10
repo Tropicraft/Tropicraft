@@ -1,15 +1,19 @@
 package net.tropicraft.core.registry;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.Names;
+import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
@@ -395,6 +399,291 @@ public class CraftingRegistry {
     			'I', ItemRegistry.bambooStick
     		});
 
+        // Sifter
+        Block[] plankBlocks = new Block[] {Blocks.PLANKS, BlockRegistry.planks};
+        for (Block plankBlock : plankBlocks) {
+            createRecipe(true, new ItemStack(BlockRegistry.sifter), new Object[] {
+                    "XXX", "XIX", "XXX",
+                    'X', plankBlock,
+                    'I', Blocks.GLASS
+                });
+
+            createRecipe(true, new ItemStack(BlockRegistry.sifter), new Object[] {
+                    "XXX", "XIX", "XXX",
+                    'X', plankBlock,
+                    'I', Blocks.GLASS_PANE
+                });
+        }
+
+        // Fishing net
+        createRecipe(true, new ItemStack(ItemRegistry.fishingNet), new Object[] {
+                "  X", " XI", "XII",
+                'X', ItemRegistry.bambooStick,
+                'I', Items.STRING
+            });
+
+        // List of wool colors to use for chair/float/umbrella
+        for (int i = 0; i < 16; i++) {
+            createRecipe(true, new ItemStack(ItemRegistry.chair, 1, i), new Object[] {
+                "XIX", "XIX", "XIX",
+                'X', ItemRegistry.bambooStick,
+                'I', new ItemStack(Blocks.WOOL, 1, i)
+            });
+
+            createRecipe(true, new ItemStack(ItemRegistry.umbrella, 1, i), new Object[] {
+                "XXX", " I ", " I ",
+                'X', new ItemStack(Blocks.WOOL, 1, i),
+                'I', ItemRegistry.bambooStick
+            });
+        }
+
+        // Spear
+        createRecipe(true, new ItemStack(ItemRegistry.bambooSpear, 1), new Object[] {
+                "X ", " X",
+                'X', ItemRegistry.bambooStick
+            });
+
+        // Dagger
+        createRecipe(true, new ItemStack(ItemRegistry.dagger), new Object[] {
+                "X", "X", "I",
+                'X', BlockRegistry.chunk,
+                'I', new ItemStack(BlockRegistry.planks, 1, 1)    // Palm planks
+            });
+
+        // Portal Enchanter
+        createRecipe(true, new ItemStack(ItemRegistry.portalEnchanter, 1), new Object[] {
+                "%@#", "#@%", " @ ", '@', ItemRegistry.bambooStick, '#',
+                new ItemStack(ItemRegistry.azurite),
+                '%', new ItemStack(ItemRegistry.zircon)
+            });
+
+        // Portal Enchanter
+        createRecipe(true, new ItemStack(ItemRegistry.portalEnchanter, 1), new Object[] {
+            "#@%", "%@#", " @ ", '@', ItemRegistry.bambooStick,
+            '#', new ItemStack(ItemRegistry.azurite),
+            '%', new ItemStack(ItemRegistry.zircon)
+        });
+
+        // Water wand
+        createRecipe(true, new ItemStack(ItemRegistry.waterWand), new Object[] {
+                "  X", " Y ", "Y  ", 'X', new ItemStack(ItemRegistry.azurite), 'Y', Items.GOLD_INGOT
+            });
+        
+        // Tropi Item Frame
+        createRecipe(true, new ItemStack(ItemRegistry.bambooItemFrame, 1), new Object[] {
+                "###", "#X#", "###", '#', ItemRegistry.bambooShoot, 'X', Items.LEATHER
+            });
+
+        // Coconut bomb
+        createRecipe(true, new ItemStack(ItemRegistry.coconutBomb, 1), new Object[] {
+                " X ", "XYX", " X ",
+                'X', Items.GUNPOWDER,
+                'Y', BlockRegistry.coconut
+            });
+
+        // Fertilizer
+        createRecipe(true, new ItemStack(ItemRegistry.fertilizer, 3), new Object[]{
+                "XI",
+                'X', new ItemStack(BlockRegistry.flowers, 1, 7),
+                'I', new ItemStack(BlockRegistry.flowers, 1, 10)
+            });
+
+        // Flower dyes
+        createShapelessRecipe(true, new ItemStack(Items.DYE, 4, 5), new Object[]{
+                new ItemStack(BlockRegistry.iris)
+            });
+
+        createShapelessRecipe(true, new ItemStack(Items.DYE, 2, 1), new Object[]{
+            new ItemStack(BlockRegistry.flowers, 1, 6)//r antherium
+        });
+
+        createShapelessRecipe(true, new ItemStack(Items.DYE, 2, 14), new Object[]{
+            new ItemStack(BlockRegistry.flowers, 1, 5)//o antherium
+        });
+
+        createShapelessRecipe(true, new ItemStack(Items.DYE, 2, 12), new Object[]{
+            new ItemStack(BlockRegistry.flowers, 1, 0)//fern
+        });
+
+        createShapelessRecipe(true, new ItemStack(Items.DYE, 2, 2), new Object[]{
+            new ItemStack(BlockRegistry.flowers, 1, 12)//c. diffusa
+        });
+
+        createShapelessRecipe(true, new ItemStack(Items.DYE, 2, 11), new Object[]{
+            new ItemStack(BlockRegistry.flowers, 1, 3) //canna
+        });
+
+        createRecipe(true, new ItemStack(ItemRegistry.encyclopedia, 1), new Object[]{
+                "###", "#$#", "###",
+                '#', ItemRegistry.bambooShoot,
+                '$', Items.BOOK
+            });
+
+        // Drink mixer
+        createRecipe(true, new ItemStack(BlockRegistry.drinkMixer), new Object[] {
+                "XXX", "XYX", "XXX",
+                'X', BlockRegistry.chunk,
+                'Y', ItemRegistry.bambooMug
+            });
+
+        // Air compressor
+        createRecipe(true, new ItemStack(BlockRegistry.airCompressor), new Object[] {
+                "XXX", "XYX", "XXX",
+                'X', BlockRegistry.chunk,
+                'Y', ItemRegistry.azurite
+            });
+
+        // Color damage values found here https://minecraft.gamepedia.com/Glass
+        List<ItemStack> pinkDyes = OreDictionary.getOres("dyePink");
+        List<ItemStack> yellowDyes = OreDictionary.getOres("dyeYellow");
+
+        // Pink scuba tank
+        for (ItemStack pinkGlass : OreDictionary.getOres("blockGlassPink")) {
+            createRecipe(true, new ItemStack(ItemRegistry.pinkScubaTank), new Object[] {
+                    "Y", "X", "X",
+                    'X', pinkGlass,
+                    'Y', Blocks.LEVER
+            });   
+        }
+
+        // Yellow scuba tank
+        for (ItemStack yellowGlass : OreDictionary.getOres("blockGlassYellow")) {
+            createRecipe(true, new ItemStack(ItemRegistry.yellowScubaTank), new Object[] {
+                    "Y", "X", "X",
+                    'X', yellowGlass,
+                    'Y', Blocks.LEVER
+            });   
+        }
+
+        // Pink pony bottle
+        for (ItemStack pinkGlass : OreDictionary.getOres("blockGlassPink")) {
+            createRecipe(true, new ItemStack(ItemRegistry.pinkPonyBottle), new Object[] {
+                    "Y", "X",
+                    'X', pinkGlass,
+                    'Y', Blocks.LEVER
+            });   
+        }
+
+        // Yellow pony bottle
+        for (ItemStack yellowGlass : OreDictionary.getOres("blockGlassYellow")) {
+            createRecipe(true, new ItemStack(ItemRegistry.yellowPonyBottle), new Object[] {
+                    "Y", "X",
+                    'X', yellowGlass,
+                    'Y', Blocks.LEVER
+            });
+        }
+
+        // Yellow scuba flippers
+        for (ItemStack yellowDye : yellowDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.yellowFlippers), new Object[] {
+                "XX", "YY", "XX",
+                'X', yellowDye,
+                'Y', ItemRegistry.zircon
+            });
+        }
+
+        // Pink scuba flippers
+        for (ItemStack dye : pinkDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.pinkFlippers), new Object[] {
+                "XX", "YY", "XX",
+                'X', dye,
+                'Y', ItemRegistry.zircon
+            });
+        }
+
+        // Yellow weight belt
+        for (ItemStack dye : yellowDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.yellowWeightBelt), new Object[] {
+                    "XYX",
+                    'X', BlockRegistry.chunk,
+                    'Y', dye
+                });
+        }
+
+        // Pink weight belt
+        for (ItemStack dye : pinkDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.pinkWeightBelt), new Object[] {
+                "XYX",
+                'X', BlockRegistry.chunk,
+                'Y', dye
+            });
+        }
+
+        // Dive Computer
+        createRecipe(true, new ItemStack(ItemRegistry.diveComputer), new Object[] {
+                "XYX", "XXX",
+                'X', BlockRegistry.chunk,
+                'Y', ItemRegistry.azurite
+            });
+
+        // Pink BCD
+        for (ItemStack dye : pinkDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.pinkBCD), new Object[] {
+                "X X", "YXY", "XXX",
+                'X', ItemRegistry.zircon,
+                'Y', dye
+            });
+        }
+
+        // Yellow BCD
+        for (ItemStack dye : yellowDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.yellowBCD), new Object[] {
+                "X X", "YXY", "XXX",
+                'X', ItemRegistry.zircon,
+                'Y', dye
+            });
+        }
+
+        // Pink Regulator
+        for (ItemStack dye : pinkDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.pinkRegulator), new Object[] {
+                " X ", "XYX", " X ",
+                'X', BlockRegistry.chunk,
+                'Y', dye
+            });
+        }
+
+        // Yellow Regulator
+        for (ItemStack dye : yellowDyes) {
+            createRecipe(true, new ItemStack(ItemRegistry.yellowRegulator), new Object[] {
+                " X ", "XYX", " X ",
+                'X', BlockRegistry.chunk,
+                'Y', dye
+            });
+        }
+
+        // Pink Scuba Goggles
+        createRecipe(true, new ItemStack(ItemRegistry.pinkScubaGoggles), new Object[] {
+            "YYY", "X X", " Z ",
+            'X', Blocks.GLASS,
+            'Y', ItemRegistry.zircon,
+            'Z', ItemRegistry.pinkRegulator
+        });
+
+        // Yellow Scuba Goggles
+        createRecipe(true, new ItemStack(ItemRegistry.yellowScubaGoggles), new Object[] {
+            "YYY", "X X", " Z ",
+            'X', Blocks.GLASS,
+            'Y', ItemRegistry.zircon,
+            'Z', ItemRegistry.yellowRegulator
+        });
+
+        // Pink Scuba Chestplate Gear
+        createRecipe(true, new ItemStack(ItemRegistry.pinkChestplateGear), new Object[] {
+                "Y Y", "YXY", "YZY",
+                'X', ItemRegistry.pinkBCD,
+                'Y', ItemRegistry.zircon,
+                'Z', ItemRegistry.pinkWeightBelt
+            });
+
+        // Yellow Scuba Chestplate Gear
+        createRecipe(true, new ItemStack(ItemRegistry.yellowChestplateGear), new Object[] {
+                "Y Y", "YXY", "YZY",
+                'X', ItemRegistry.yellowBCD,
+                'Y', ItemRegistry.zircon,
+                'Z', ItemRegistry.yellowWeightBelt
+            });
+
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.zircon, 2);
@@ -405,6 +694,22 @@ public class CraftingRegistry {
 
         GameRegistry.addSmelting(ItemRegistry.frogLeg, new ItemStack(ItemRegistry.cookedFrogLeg), 0.35F);
         GameRegistry.addSmelting(new ItemStack(ItemRegistry.coffeeBeans, 1, 0), new ItemStack(ItemRegistry.coffeeBeans, 1, 1), 0.35F);
+        GameRegistry.addSmelting(BlockRegistry.sands, new ItemStack(Blocks.GLASS), 4);
+        GameRegistry.addSmelting(ItemRegistry.freshMarlin, new ItemStack(ItemRegistry.searedMarlin), 6);
+        GameRegistry.addSmelting((BlockRegistry.logs), new ItemStack(Items.COAL, 1, 1), 3); // metadata 1 = charcoal
+        
+        // Custom fuel burn times!
+        GameRegistry.registerFuelHandler(new IFuelHandler() {
+            @Override
+            public int getBurnTime(ItemStack fuel) {
+                // Palm slabs
+                if (fuel.getItem() != null && fuel.getItem() instanceof ItemBlock
+                        && Block.getBlockFromItem(fuel.getItem()) == BlockRegistry.slabs && fuel.getItemDamage() == 3) {
+                    return 150;
+                }
+                return 0;
+            }
+        });
     }
 
     private static void createFullSingleBlockRecipe(Block out, Item ingredient, int blockDmg) {
@@ -572,6 +877,23 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("scalechestplate", new ItemStack(ItemRegistry.scaleChestplate));
         Tropicraft.encyclopedia.includeItem("scalehelm", new ItemStack(ItemRegistry.scaleHelmet));
         Tropicraft.encyclopedia.includeItem("scaleleggings", new ItemStack(ItemRegistry.scaleLeggings));
+        Tropicraft.encyclopedia.includeItem("scubaflippers", new ItemStack(ItemRegistry.pinkFlippers));
+        Tropicraft.encyclopedia.includeItem("scubaflippers", new ItemStack(ItemRegistry.yellowFlippers));
+        Tropicraft.encyclopedia.includeItem("scubachestplate", new ItemStack(ItemRegistry.pinkChestplateGear));
+        Tropicraft.encyclopedia.includeItem("scubachestplate", new ItemStack(ItemRegistry.yellowChestplateGear));
+        Tropicraft.encyclopedia.includeItem("scubagoggles", new ItemStack(ItemRegistry.pinkScubaGoggles));
+        Tropicraft.encyclopedia.includeItem("scubagoggles", new ItemStack(ItemRegistry.yellowScubaGoggles));
+        Tropicraft.encyclopedia.includeItem("divecomputer", new ItemStack(ItemRegistry.diveComputer));
+        Tropicraft.encyclopedia.includeItem("weightbelt", new ItemStack(ItemRegistry.yellowWeightBelt));
+        Tropicraft.encyclopedia.includeItem("weightbelt", new ItemStack(ItemRegistry.pinkWeightBelt));
+        Tropicraft.encyclopedia.includeItem("ponybottle", new ItemStack(ItemRegistry.yellowPonyBottle));
+        Tropicraft.encyclopedia.includeItem("ponybottle", new ItemStack(ItemRegistry.pinkPonyBottle));
+        Tropicraft.encyclopedia.includeItem("bcd", new ItemStack(ItemRegistry.pinkBCD));
+        Tropicraft.encyclopedia.includeItem("bcd", new ItemStack(ItemRegistry.yellowBCD));
+        Tropicraft.encyclopedia.includeItem("regulator", new ItemStack(ItemRegistry.yellowRegulator));
+        Tropicraft.encyclopedia.includeItem("regulator", new ItemStack(ItemRegistry.pinkRegulator));
+        Tropicraft.encyclopedia.includeItem("scubatank", new ItemStack(ItemRegistry.pinkScubaTank));
+        Tropicraft.encyclopedia.includeItem("scubatank", new ItemStack(ItemRegistry.yellowScubaTank));
         Tropicraft.encyclopedia.includeItem("seaurchinroe", new ItemStack(ItemRegistry.seaUrchinRoe));
         Tropicraft.encyclopedia.includeItem("sifter", new ItemStack(BlockRegistry.sifter));
         //TODO Tropicraft.encyclopedia.includeItem("smeltedzircon", new ItemStack(ItemRegistry.ore, 1, 4));
@@ -589,7 +911,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("trimix", new ItemStack(ItemRegistry.trimix));
         Tropicraft.encyclopedia.includeItem("tropiframe", new ItemStack(ItemRegistry.bambooItemFrame));
         Tropicraft.encyclopedia.includeItem("turtleshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.TURTLE.getMeta()));
-        //TODO Tropicraft.encyclopedia.includeItem("waterwand", new ItemStack(ItemRegistry.waterWand));
+        Tropicraft.encyclopedia.includeItem("waterwand", new ItemStack(ItemRegistry.waterWand));
         Tropicraft.encyclopedia.includeItem("zircon", new ItemStack(ItemRegistry.zircon));
         Tropicraft.encyclopedia.includeItem("fishingrod", new ItemStack(ItemRegistry.fishingRod));
 

@@ -350,7 +350,7 @@ thatchfencegate.title = Thatch Fence Gate
 thatchfencegate.desc  = As easy to craft as it is to break, the thatch block provides another sustainable building material to Tropics.
 
 thetribe.title = The Tribe
-thetribe.desc = Upbeat tropical vibes brought to you by Emile van Krieken. Listen to this song while venturing through a Koa Village and you may find yourself a favorite among the villagers.
+thetribe.desc  = Upbeat tropical vibes brought to you by Emile van Krieken. Listen to this song while venturing through a Koa Village and you may find yourself a favorite among the villagers.
 
 tradewinds.title = Tradewinds
 tradewinds.desc  = A chillout song produced by Frox. At 136 bpm, Trade winds is sure to help you relax during your tropical vacation.
@@ -359,7 +359,7 @@ trimix.title = Trimix Gas Mixture
 trimix.desc  = A breathing gas consisting of oxygen, helium, and nitrogen. Trimix can be placed in an air compressor to fill a tank with trimix-infused air, allowing the player to stay underwater for much longer!
 
 tropiframe.title = Tropicraft Item Frame
-tropiframe.desc = This item frame functions the same way as a vanilla item frame but has a bamboo border
+tropiframe.desc  = This item frame functions the same way as a vanilla item frame but has a bamboo border
 
 turtleshell.title = Turtle Shell
 turtleshell.desc  = This shell is great for sprucing up your beach bungalow.
@@ -371,7 +371,34 @@ zircon.title = Zircon
 zircon.desc  = This mystical red crystal can be mined from Zircon ores, which are found deep underground in the tropical realm.
 
 zirconium.title = Zirconium
-zirconium.desc = This rare crystal, when combined with azurite, is rumored to unlock ancient powers. It also can be crafted to make tools of mystical strength!
+zirconium.desc  = This rare crystal, when combined with azurite, is rumored to unlock ancient powers. It also can be crafted to make tools of mystical strength!
 
 fishingrod.title = Bamboo Fishing Rod
-fishingrod.desc = A must have tool for any budding fisherman, this rod has a light weight feel and an ergonomic design that makes fishing for supper a breeze!
+fishingrod.desc  = A must have tool for any budding fisherman, this rod has a light weight feel and an ergonomic design that makes fishing for supper a breeze!
+
+scubaflippers.title = Scuba Flippers
+scubaflippers.desc  = These flexible flippers come in two different colors: pink and yellow! You can glide around the tropics water effortlessly wearing these bad boys. Hint: Do a barrel roll!
+
+scubachestplate.title = Scuba Chestplate Gear
+scubachestplate.desc  = This complicated looking scuba chestplate allows you to wear a number of scuba tanks. Shift + right click the item to wear up to 2 scuba tanks!
+
+scubagoggles.title = Scuba Goggles
+scubagoggles.desc  = This piece of the scuba suit allows you to not only view the values from your Dive Computer, but breathe air from the scuba tanks you're wearing.
+
+divecomputer.title = Dive Computer
+divecomputer.desc  = A rare piece of tropics technology, the dive computer logs various values from your time underwater. After you've swam for an hour, hand your dive computer to a Koa for a surprise!
+
+weightbelt.title = Weight Belt
+weightbelt.desc  = The weight belt allows your scuba chestplate to keep you underwater.
+
+ponybottle.title = Pony Bottle
+ponybottle.desc  = Always bring along a pony bottle on your long scuba dives. When you run out of air, a pony bottle will refill your air temporarily, allowing you to swim to the surface safely.
+
+bcd.title = BCD
+bcd.desc  = Short for "Buoyancy Compensator Device", the BCD helps get air from your tanks to your mouthpiece
+
+regulator.title = Diving Regulator
+regulator.desc  = This device regulates the pressure between the breathing gas and the diver. In other words, this thing helps you not go boom.
+
+scubatank.title = Scuba Tank
+scubatank.desc  = Scuba tanks hold all the air that you breathe while diving. Refill your scuba tanks in an air compressor block.

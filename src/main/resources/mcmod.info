@@ -3,13 +3,13 @@
   "modid": "tropicraft",
   "name": "Tropicraft",
   "description": "This is Tropicraft, the utopian idyllic getaway that you have been waiting for!",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "",
+  "mcversion": "${minecraft_version}",
   "url": "http://tropicraft.net",
   "updateUrl": "http://coros.us/versionchecker/tropiversion.txt",
-  "authors": ["Cojomax99", "Corosus", "Fishtaco567", "Mr_okushama", "MrRube", "newthead", "303"],
-  "credits": "",
-  "logoFile": "",
+  "authorList": ["Cojomax99", "Corosus", "Fishtaco567", "Mr_okushama", "MrRube", "newthead", "303", "tterrag"],
+  "credits": "Special thanks to Terry, medsouz, RazzleberryFox, MrCliftron, frox, Billy Christiansen, Punchaface, PhoenixFireLune, Emile van Krieken, Dino, rakiru, and everybody else who has helped us along the way. We love you all :)",
+  "logoFile": "logo.png",
   "screenshots": [],
   "dependencies": []
 }
