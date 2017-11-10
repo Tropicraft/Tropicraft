@@ -12,7 +12,8 @@ public class EntitySeahorse extends EntityTropicraftWaterBase {
 	public EntitySeahorse(World world) {
 		super(world);
 		this.setSize(0.75F, 1.25F);
-		this.setSwimSpeeds(0.2f, 0.4f, 0.5f);	
+		this.setSwimSpeeds(0.2f, 0.4f, 0.5f);
+		this.setMaxHealth(4);
 	}
 	
 	@Override

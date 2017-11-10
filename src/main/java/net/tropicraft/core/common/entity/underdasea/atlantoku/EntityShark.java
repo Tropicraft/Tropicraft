@@ -32,8 +32,7 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 		this.setApproachesPlayers(true);
 		this.setFishable(true);
 		this.setDropStack(ItemRegistry.fertilizer, 3);
-		this.setMaxHealth(4);
-		this.setHealth(4f);
+		this.setMaxHealth(10);
 		this.setAttackDamage(4f);
 	}
 
@@ -103,10 +102,9 @@ public class EntityShark extends EntityTropicraftWaterBase implements IPredatorD
 		this.setDropStack(ItemRegistry.yellowFlippers, 1);
 		this.setCustomNameTag("Elder Hammerhead");
 		this.setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
-		this.setMaxHealth(10);
+		this.setMaxHealth(20);
 		this.setFishable(false);
-		this.setExpRate(10);
-		this.setHealth(10);	
+		this.setExpRate(20);
 		this.setTexture("hammerhead4");
 		if(!world.isRemote) {
 			this.bossInfo.setName(new TextComponentString("Elder Hammerhead"));

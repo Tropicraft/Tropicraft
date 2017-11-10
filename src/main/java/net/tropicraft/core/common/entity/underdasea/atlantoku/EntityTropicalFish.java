@@ -44,6 +44,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		this.setSchoolSizeRange(12, 24);
 		isCatchable = true;
 		this.setSwimSpeeds(1f, 0.2f, 4f);
+		this.setMaxHealth(2);
 	}
 	
 	

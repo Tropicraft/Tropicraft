@@ -18,6 +18,7 @@ public class EntityPiranha extends EntitySchoolableFish implements IAtlasFish, I
 		this.setSize(0.3F, 0.4F);
 		this.setExpRate(5);
 		this.setDropStack(ItemRegistry.fertilizer, 3);
+		this.setMaxHealth(4);
 	}
 
 	@Override

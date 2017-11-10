@@ -13,6 +13,7 @@ public class EntityRiverSardine extends EntitySchoolableFish implements IAtlasFi
 		this.setDropStack(ItemRegistry.fertilizer, 3);
 		this.setFleesPlayers(true, 5D);
 		this.setSchoolSizeRange(1, 20);
+		this.setMaxHealth(2);
 	}
 
 	@Override
