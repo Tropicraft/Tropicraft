@@ -135,17 +135,21 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				double x = (this.posX - this.prevPosX);
 				double y = (this.posY - this.prevPosY);
 				double z = (this.posZ - this.prevPosZ);
-				float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
-				float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
+				float yaw ;
+				float pitch;
 
 				this.prevSwimYaw = this.swimYaw;
 				this.prevSwimPitch = this.swimPitch;
 				
 				if(this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
 					yaw = this.swimYaw;
+				}else {
+					yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
 				}
 				if(this.posY == this.prevPosY) {
 					pitch = this.swimPitch;
+				}else {
+					pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 				}
 				
 				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
@@ -175,9 +179,19 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				double x = (this.posX - this.prevPosX);
 				double y = (this.posY - this.prevPosY);
 				double z = (this.posZ - this.prevPosZ);
-				float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
-				float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
+				float yaw;
+				float pitch;
 
+				if(this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
+					yaw = this.swimYaw;
+				}else {
+					yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
+				}
+				if(this.posY == this.prevPosY) {
+					pitch = this.swimPitch;
+				}else {
+					pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
+				}
 				this.prevSwimYaw = this.swimYaw;
 				this.prevSwimPitch = this.swimPitch;
 			
