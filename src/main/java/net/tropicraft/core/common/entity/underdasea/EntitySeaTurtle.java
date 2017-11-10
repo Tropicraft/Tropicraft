@@ -85,7 +85,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		this.setAir(30);
-		if (!this.isInWater() && this.isBeingRidden()) {
+		if (!this.isInWater() && this.onGround && this.isBeingRidden()) {
 			this.removePassengers();
 		}
 		if (this.getNavigator() == null) {
@@ -107,6 +107,10 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 		if (world.isRemote) {
 			return;
+		}
+		
+		if(this.onGround && !this.isInWater()) {
+			this.swimSpeedCurrent = 0f;
 		}
 
 		if (renderSize >= 1f) {
