@@ -793,6 +793,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	@Override
 	public boolean getCanSpawnHere() {
+		if (isInLava()) return false;
 		return super.getCanSpawnHere();
 	}
 	
