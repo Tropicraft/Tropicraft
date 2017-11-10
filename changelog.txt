@@ -1,3 +1,13 @@
+7.0.1:
+Changes
+- Now requires forge 2221 or newer to load
+Fixes
+- Fix pineapple worldgen not placing plants fully grown, which made the plant not drop anything
+- Fix chair/umbrella recipes using wrong wool meta
+- Fix crash when planting a pineapple
+- Fix palm planks not having a recipe
+- Fix tropiportal not working. Old portals will remain broken, a new one must be created.
+
 7.0.0:
 New
 - Initial beta release for MC 1.10.2!
