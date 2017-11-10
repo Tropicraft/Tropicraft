@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -423,16 +424,16 @@ public class CraftingRegistry {
             });
 
         // List of wool colors to use for chair/float/umbrella
-        for (int i = 0; i < 16; i++) {
-            createRecipe(true, new ItemStack(ItemRegistry.chair, 1, i), new Object[] {
+        for (EnumDyeColor dye : EnumDyeColor.values()) {
+            createRecipe(true, new ItemStack(ItemRegistry.chair, 1, dye.getDyeDamage()), new Object[] {
                 "XIX", "XIX", "XIX",
                 'X', ItemRegistry.bambooStick,
-                'I', new ItemStack(Blocks.WOOL, 1, i)
+                'I', new ItemStack(Blocks.WOOL, 1, dye.getMetadata())
             });
 
-            createRecipe(true, new ItemStack(ItemRegistry.umbrella, 1, i), new Object[] {
+            createRecipe(true, new ItemStack(ItemRegistry.umbrella, 1, dye.getDyeDamage()), new Object[] {
                 "XXX", " I ", " I ",
-                'X', new ItemStack(Blocks.WOOL, 1, i),
+                'X', new ItemStack(Blocks.WOOL, 1, dye.getMetadata()),
                 'I', ItemRegistry.bambooStick
             });
         }
