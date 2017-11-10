@@ -30,8 +30,8 @@ public class WorldGenTallFlower extends TCGenBase {
             if (worldObj.isAirBlock(newPos) && worldObj.isAirBlock(newPos.up())) { 
             	if (plantBlockState.getBlock() instanceof BlockPineapple) {
             		BlockPineapple block = (BlockPineapple)plantBlockState.getBlock();
-            		IBlockState bottomState = block.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.LOWER);
-            		IBlockState topState = block.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.UPPER).withProperty(BlockPineapple.STAGE, BlockPineapple.TOTAL_GROW_TICKS);
+            		IBlockState bottomState = block.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.LOWER).withProperty(BlockPineapple.STAGE, BlockPineapple.TOTAL_GROW_TICKS);
+            		IBlockState topState = block.getDefaultState().withProperty(BlockPineapple.HALF, BlockTallPlant.PlantHalf.UPPER);
 
             		if (block.canBlockStay(worldObj, newPos, worldObj.getBlockState(newPos))) {
                         worldObj.setBlockState(newPos, bottomState, blockGenNotifyFlag);
