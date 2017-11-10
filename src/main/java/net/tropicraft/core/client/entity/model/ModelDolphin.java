@@ -234,13 +234,8 @@ public class ModelDolphin extends ModelBase {
 		if(par1Entity instanceof EntityDolphin) {
 			EntityDolphin dolphin = (EntityDolphin)par1Entity;
 			if(dolphin.isInWater()) {
-				if(dolphin.getCurrentSwimSpeed() == 0) {
-					tailVertSpeed = 0.125f/2;
-					tailHorzSpeed = 0.125f/4;
-				}else {
 					tailVertSpeed = 0.5f/2;
 					tailHorzSpeed = 0.25f/2;
-				}
 				if(dolphin.getAir() <= 0) {
 					tailVertSpeed = 0.5f;
 					tailHorzSpeed = 0.25f;
