@@ -40,6 +40,7 @@ public class EntityEagleRay extends EntityTropicraftWaterBase {
         super(world);
         this.setSize(1f, 0.25f);
         this.setSwimSpeeds(0.1f, 0.1f, 0.1f);
+        this.setMaxHealth(5);
     }
 
     @Override

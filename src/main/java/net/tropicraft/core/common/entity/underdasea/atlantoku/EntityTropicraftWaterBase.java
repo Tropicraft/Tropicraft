@@ -141,6 +141,13 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				this.prevSwimYaw = this.swimYaw;
 				this.prevSwimPitch = this.swimPitch;
 				
+				if(this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
+					yaw = this.swimYaw;
+				}
+				if(this.posY == this.prevPosY) {
+					pitch = this.swimPitch;
+				}
+				
 				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
 				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
 				
@@ -425,8 +432,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				}
 			}
 			if (this.targetVectorHeading != null) {
-				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn * 2f);
-				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn * 2f);
+				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn);
+				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn);
 			}
 		}
 		
@@ -643,19 +650,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 	
 	public float lerp(float x1, float x2, float t) {
-		 float f = MathHelper.wrapDegrees(x2 - x1);
-
-	        if (f > t)
-	        {
-	            f = t;
-	        }
-
-	        if (f < -t)
-	        {
-	            f = -t;
-	        }
-
-	        return x1 + f;
+		return x1 + (t*0.03f) * MathHelper.wrapDegrees(x2 - x1);
 	}
 	
 	public void setAttackDamage(float f) {
