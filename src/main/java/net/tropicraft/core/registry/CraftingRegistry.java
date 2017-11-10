@@ -256,8 +256,8 @@ public class CraftingRegistry {
         });
 
         // planks -> logs
-        int mahogany_meta = TropicraftLogs.getMetaByName("mahogany_log");
-        int palm_meta = TropicraftLogs.getMetaByName("palm_log");
+        int mahogany_meta = TropicraftLogs.MAHOGANY.getMeta();
+        int palm_meta = TropicraftLogs.PALM.getMeta();
 
         createShapelessRecipe(true, new ItemStack(BlockRegistry.planks, 4, palm_meta), new Object[] {
                 new ItemStack(BlockRegistry.logs, 1, palm_meta)

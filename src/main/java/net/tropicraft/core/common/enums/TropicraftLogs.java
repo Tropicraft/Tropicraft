@@ -28,16 +28,6 @@ public enum TropicraftLogs implements ITropicraftVariant {
 		return this.meta;
 	}
 
-	public static int getMetaByName(String name) {
-		for (TropicraftLogs log : META_LOOKUP) {
-			if (log.getName().equals(name)) {
-				return log.getMeta();
-			}
-		}
-
-		return -1;
-	}
-
 	public static TropicraftLogs byMetadata(int meta) {
 		if (meta < 0 || meta >= META_LOOKUP.length) {
             meta = 0;
