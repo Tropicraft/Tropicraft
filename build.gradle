@@ -11,6 +11,9 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+plugins {
+    id 'com.matthewprenger.cursegradle' version '1.0.9'
+}
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 ext.buildnumber = 0
