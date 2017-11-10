@@ -1,7 +1,11 @@
 package net.tropicraft.core.common.command;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.world.Build;
 import net.tropicraft.core.common.build.world.BuildJob;
@@ -21,13 +25,14 @@ import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommandTropicsVillage extends CommandBase {
 
     @Override
     public String getName() {
-        return "tc_village";
+        return "tc_misc";
     }
 
     @Override
@@ -130,15 +135,15 @@ public class CommandTropicsVillage extends CommandBase {
                     commandSender.sendMessage(new TextComponentString("eg: tc_village schematic_print myfile 5 5 5"));
                 }
             } else if (args[0].equals("entities")) {
-                HashMap<Class, Integer> lookupCounts = new HashMap<>();
+                HashMap<String, Integer> lookupCounts = new HashMap<>();
 
                 for (Entity ent : player.world.loadedEntityList) {
                     if (ent instanceof EntityLivingBase) {
                         int count = 0;
-                        if (lookupCounts.containsKey(ent.getClass())) {
-                            count = lookupCounts.get(ent.getClass());
+                        if (lookupCounts.containsKey(EntityList.CLASS_TO_NAME.get(ent.getClass()))) {
+                            count = lookupCounts.get(EntityList.CLASS_TO_NAME.get(ent.getClass()));
                         }
-                        lookupCounts.put(ent.getClass(), count + 1);
+                        lookupCounts.put(EntityList.CLASS_TO_NAME.get(ent.getClass()), count + 1);
                     }
                 }
 
@@ -146,40 +151,60 @@ public class CommandTropicsVillage extends CommandBase {
 
                 int count = 0;
 
-                for (Map.Entry<Class, Integer> entry : lookupCounts.entrySet()) {
-                    String name = entry.getKey().getSimpleName();
+                for (Map.Entry<String, Integer> entry : lookupCounts.entrySet()) {
+                    String name = entry.getKey();
                     player.sendMessage(new TextComponentString(name + ": " + entry.getValue()));
                     count += entry.getValue();
                 }
 
                 player.sendMessage(new TextComponentString("total: " + count));
-            }
+            } else if (args[0].equals("mount")) {
+                float clDist = 99999;
+                Entity clEntity = null;
+                String name = args[1];
+                boolean reverse = false;
+                boolean playerMode = false;
+                Class clazz = EntityList.NAME_TO_CLASS.get(name);
+                if (clazz == null) {
+                    clazz = EntityPlayer.class;
+                    playerMode = true;
+                }
+                if (args.length > 2) {
+                    reverse = args[2].equals("reverse");
+                    //no greifing
+                    if (reverse) {
+                        playerMode = false;
+                    }
+                }
+                if (clazz != null) {
+                    List<Entity> listEnts = player.world.getEntitiesWithinAABB(clazz, player.getEntityBoundingBox().expand(15, 15, 15));
+                    for (Entity ent : listEnts) {
+                        float dist = player.getDistanceToEntity(ent);
+                        if (dist < clDist) {
+                            if (!playerMode) {
+                                clDist = dist;
+                                clEntity = ent;
+                            } else {
+                                if (player.getName().equals(name)) {
+                                    clEntity = ent;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
 
-                /* else if (args[0].equals("village_clear")) {
-				WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.world);
-				
-				for (Entry<Integer, ISimulationTickable> entry : wd.lookupTickingManagedLocations.entrySet()) {
-					entry.getValue().cleanup();
-					wd.removeTickingLocation(entry.getValue());
-				}
-			} else if (args[0].equals("village_regen")) {
-				WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.world);
-				Iterator it = wd.lookupTickingManagedLocations.values().iterator();
-				while (it.hasNext()) {
-					ManagedLocation ml = (ManagedLocation) it.next();
-					ml.initFirstTime();
-				}
-			} else if (args[0].equals("village_repopulate")) {
-				WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.world);
-				Iterator it = wd.lookupTickingManagedLocations.values().iterator();
-				while (it.hasNext()) {
-					
-					ManagedLocation ml = (ManagedLocation) it.next();
-					if (ml instanceof TownKoaVillage) {
-						//((TownKoaVillage) ml).spawnEntities();
-					}
-				}
-			}*/
+                }
+                if (clEntity != null) {
+                    if (reverse) {
+                        clEntity.startRiding(player);
+                    } else {
+                        player.startRiding(clEntity);
+                    }
+
+                }
+
+            }
         }
     }
 
