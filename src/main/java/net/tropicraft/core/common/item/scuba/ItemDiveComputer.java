@@ -56,7 +56,7 @@ public class ItemDiveComputer extends ItemMap {
 
             addDiveTime(itemstack, 1);
 
-            if (helmetStack != null) {
+            if (helmetStack != null && helmetStack.getItem() instanceof ItemScubaHelmet) {
 
                 // TODO log max depth in the dive computer and make sure it saves
 
