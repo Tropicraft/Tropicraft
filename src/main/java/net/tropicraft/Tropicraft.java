@@ -48,7 +48,7 @@ import net.tropicraft.core.registry.LootRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
-@Mod(modid = Info.MODID, version = Info.VERSION, guiFactory = Info.GUI_FACTORY)
+@Mod(modid = Info.MODID, version = Info.VERSION, dependencies = "after:forge@[12.18.3.2221,)", guiFactory = Info.GUI_FACTORY)
 public class Tropicraft {
 
 	@SidedProxy(clientSide = Info.CLIENT_PROXY, serverSide = Info.SERVER_PROXY)
