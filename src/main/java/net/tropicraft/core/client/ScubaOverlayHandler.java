@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.item.scuba.api.IScubaGear;
 import net.tropicraft.core.common.item.scuba.api.IScubaTank;
@@ -30,7 +31,7 @@ public class ScubaOverlayHandler extends Gui {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
         
-        if (helmet == null) {
+        if (helmet == null || !(helmet.getItem() instanceof ItemScubaHelmet)) {
             return;
         }
 
