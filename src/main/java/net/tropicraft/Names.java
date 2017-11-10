@@ -10,6 +10,7 @@ public final class Names {
 	public static final String BAMBOO_SHOOT = "bamboo_shoot";
 	public static final String TROPICS_WATER = "water";
 	public static final String TROPICS_PORTAL = "portal";
+	public static final String TROPICS_PORTAL_TELEPORTER = "portal_teleporter";
 	public static final String BAMBOO_CHEST = "bamboo_chest";
 	public static final String COCONUT = "coconut";
 	public static final String[] TALL_PLANT_NAMES = {"stem", "plant"};

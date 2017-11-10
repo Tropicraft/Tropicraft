@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -34,20 +34,20 @@ import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 
 public class BlockTropicsPortal extends BlockFluidClassic {
 
-	public static final PropertyInteger TELEPORTABLE = PropertyInteger.create("teleportable", 0, 1);
+	public static final PropertyBool TELEPORTABLE = PropertyBool.create("teleportable");
 
 	/** Amount of time player must spend in teleport block to teleport */
 	private static final int TIME_UNTIL_TELEPORT = 20;
 
 	public int messageTick;
-
-	public BlockTropicsPortal(Fluid fluid, Material material) {
+	
+	public BlockTropicsPortal(Fluid fluid, Material material, boolean canTeleport) {
 		super(fluid, material);
 		this.setCreativeTab(null);
 		setTickRandomly(true);
 		this.setBlockUnbreakable();
 		this.setResistance(6000000.0F);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, 0).withProperty(TELEPORTABLE, Integer.valueOf(0)));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, 0).withProperty(TELEPORTABLE, canTeleport));
 	}
 	
     @Override
@@ -66,11 +66,11 @@ public class BlockTropicsPortal extends BlockFluidClassic {
 			player.timeUntilPortal++;
 
 			if (player.timeUntilPortal > TIME_UNTIL_TELEPORT && 
-					state.getValue(TELEPORTABLE) == 1) {
-				if (player.isPotionActive(MobEffects.POISON)) {
+					state.getValue(TELEPORTABLE)) {
+				if (player.isPotionActive(MobEffects.NAUSEA)) {
 					messageTick = 0;
 					player.timeUntilPortal = 0;
-					player.removePotionEffect(MobEffects.POISON);
+					player.removePotionEffect(MobEffects.NAUSEA);
 					TropicraftWorldUtils.teleportPlayer(player);
 				} else {
 					messageTick++;
@@ -165,7 +165,7 @@ public class BlockTropicsPortal extends BlockFluidClassic {
 
         int maxCount = 2;
 
-        if (state.getValue(TELEPORTABLE) == 0 && world.isRemote) {
+        if (!state.getValue(TELEPORTABLE) && world.isRemote) {
             for (int count = 0; count < maxCount; count++) {
             	double gx = pos.getX() + random.nextDouble();
             	double gy = pos.getY() + random.nextDouble();

@@ -36,6 +36,7 @@ public class TeleporterTropics extends Teleporter {
 
     private static Block PORTAL_WALL_BLOCK;
     private static Block PORTAL_BLOCK;
+    private static Block TELEPORTER_BLOCK;
     private IBlockState thatchBlock = BlockRegistry.bundles.defaultForVariant(TropicraftBundles.THATCH);
 
     private final WorldServer world;
@@ -53,6 +54,7 @@ public class TeleporterTropics extends Teleporter {
     public TeleporterTropics(WorldServer world) {
         super(world);
         PORTAL_BLOCK = BlockRegistry.tropicsPortal;
+        TELEPORTER_BLOCK = BlockRegistry.tropicsPortalTeleporter;
         PORTAL_WALL_BLOCK = BlockRegistry.portalWall;
         this.world = world;
         this.random = new Random(world.getSeed());
@@ -427,8 +429,7 @@ public class TeleporterTropics extends Teleporter {
                             // Set inside of portal
                             boolean isTeleportBlock = yOffset <= -5;
                             if (isTeleportBlock) {
-                                IBlockState state = PORTAL_BLOCK.getDefaultState().withProperty(BlockTropicsPortal.TELEPORTABLE, Integer.valueOf(1));
-                                world.setBlockState(pos, state);								
+                                world.setBlockState(pos, TELEPORTER_BLOCK.getDefaultState());								
                             } else {
                                 world.setBlockState(pos, PORTAL_BLOCK.getDefaultState());
                             }
