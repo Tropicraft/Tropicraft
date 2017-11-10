@@ -18,6 +18,7 @@ public class EntityDolphin extends EntityTropicraftWaterBase implements IPredato
 			}
 		}
 		this.setDropStack(ItemRegistry.fertilizer, 3);
+		this.setMaxHealth(10);
 	}
 	
 	@Override

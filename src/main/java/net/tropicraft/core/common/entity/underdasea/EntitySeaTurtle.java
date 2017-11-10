@@ -58,13 +58,14 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		this.setApproachesPlayers(true);
 		png = new PathNavigateGround(this, par1World);
 		this.stepHeight = 1f;
-		this.setMaxHealth(3);
+		this.setMaxHealth(10);
 	}
 
 	/** Constructor for baby */
 	public EntitySeaTurtle(World world, int age) {
 		this(world);
 		setSize(0.1f, 0.1f);
+		this.setMaxHealth(3);
 	}
 
 	@Override
@@ -429,6 +430,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		if (!isMature()) {
 			this.getDataManager().set(IS_MATURE, true);
 			setSize(0.9f, 0.4f);
+			this.setMaxHealth(10);
 		}
 	}
 
