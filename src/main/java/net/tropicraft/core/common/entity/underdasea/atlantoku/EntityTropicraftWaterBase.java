@@ -30,7 +30,6 @@ import net.minecraft.world.World;
 public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
     private static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
-	private static final DataParameter<Boolean> IS_LEADER = EntityDataManager.<Boolean>createKey(EntityTropicraftWaterBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> HOOK_ID = EntityDataManager.<Integer>createKey(EntityTropicraftWaterBase.class, DataSerializers.VARINT);
 
 	
@@ -83,6 +82,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	private boolean isMovingAwayFromWall = false;
 	
+	public boolean isLeader = false;
+	
 	public EntityTropicraftWaterBase(World world) {
 		super(world);
 		this.experienceValue = 5;
@@ -97,7 +98,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	public void entityInit() {
 		super.entityInit();
 		this.getDataManager().register(TEXTURE, "");
-		this.getDataManager().register(IS_LEADER, false);
 		this.getDataManager().register(HOOK_ID, Integer.valueOf(0));
 		this.assignRandomTexture();
 	}
@@ -723,11 +723,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 	
 	public boolean getIsLeader() {
-		return this.dataManager.get(IS_LEADER);
+		return isLeader;
 	}
 	
 	public void setIsLeader(boolean flag) {
-		this.dataManager.set(IS_LEADER, Boolean.valueOf(flag));
+		isLeader = flag;
 	}
 	
 	public void setHook(EntityHook ent) {
