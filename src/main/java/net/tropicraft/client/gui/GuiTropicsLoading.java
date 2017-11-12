@@ -174,9 +174,9 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 		if (screenEntities != null) {
 			// TODO: Cast some kind of entity shadows
 			drawScreenEntity(screenEntities.getLeft(), sr.getScaledWidth() / 2 - 120, (sr.getScaledHeight() / 2) + 60,
-					50, -90 + (int) ((this.animTick) * 2), 20);
+					50, -90 + (int) ((this.animTick + partialTicks) * 2), 20);
 			drawScreenEntity(screenEntities.getRight(), sr.getScaledWidth() / 2 + 120, (sr.getScaledHeight() / 2) + 60,
-					50, 90 - (int) ((this.animTick) * 2), 20);
+					50, 90 - (int) ((this.animTick + partialTicks) * 2), 20);
 			drawScreenItemStack(screenItems.getLeft(), (sr.getScaledWidth() / 2) - 8 - 24,
 					(sr.getScaledHeight() / 2) + 8, 1.5f);
 			drawScreenItemStack(screenItems.getMiddle(), (sr.getScaledWidth() / 2) - 12, (sr.getScaledHeight() / 2) + 8,
