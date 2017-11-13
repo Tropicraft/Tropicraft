@@ -10,6 +10,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimSchoolFollowLeader;
 
 public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 
@@ -40,16 +41,19 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 		} while (!getCanSpawnHere());
 		return this;
 	}
-	
-	public void setSchoolSizeRange(int min, int max) {
-		minSchoolAmount = min;
-		maxSchoolAmount = max;
-	}
 
 	@Override
 	public void entityInit() {
 		super.entityInit();
 	}
+	
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+        this.tasks.addTask(5, new EntityAISwimSchoolFollowLeader(2, this));
+
+	}
+
 
 	@Override
 	public void onLivingUpdate() {
@@ -61,7 +65,7 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 		}
 		
 		try {
-		spawnSchool();
+			spawnSchool();
 		}catch(Exception e) {
 			//e.printStackTrace();
 		}
@@ -96,22 +100,13 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 				this.markAsLeader();
 			}
 
-			if (this.leader != null && !getIsLeader()) {
-				
-				if(!world.loadedEntityList.contains(leader)) {
-					this.leader = null;
-					this.setRandomTargetHeading();
-					return;
-				}
-				if(this.canEntityBeSeen(leader)  && this.hookTarget == null) {
-				this.setTargetHeading(this.leader.posX, this.leader.posY - 5 + rand.nextInt(10), this.leader.posZ,
-						true);
-				}
-				if (leader.aggressTarget != null) {
-					this.aggressTarget = leader.aggressTarget;
-				}
-			}
+			
 		}
+	}
+
+	public void setSchoolSizeRange(int min, int max) {
+		minSchoolAmount = min;
+		maxSchoolAmount = max;
 	}
 
 	public void setShouldSpawnSchool(boolean spawnStatus) {
