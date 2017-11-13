@@ -21,11 +21,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,7 +35,6 @@ import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
-import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
@@ -53,11 +52,11 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 	private static final String[] CATEGORIES = { "misc", "knowledge", "hint" };
 	private static final String[] BACKGROUNDS = { "loading_bg1", "loading_bg2", "loading_bg3" };
 
-	private static final Class[] MOBS_WATER = { EntityMarlin.class, EntityDolphin.class, EntityShark.class,
+	private static final Class<?>[] MOBS_WATER = { EntityMarlin.class, EntityDolphin.class, EntityShark.class,
 			EntitySeaTurtle.class, EntitySeahorse.class, EntityFailgull.class };
 	// TODO: Add EntityTreeFrog from merge
-	private static final Class[] MOBS_LAND = { EntityIguana.class, EntityFailgull.class, EntityVMonkey.class };
-	private static final Class[] MOBS_VILLAGE = { EntityKoaHunter.class, EntityAshenHunter.class, EntityTropiCreeper.class, EntityTropiSkeleton.class };
+	private static final Class<?>[] MOBS_LAND = { EntityIguana.class, EntityFailgull.class, EntityVMonkey.class };
+	private static final Class<?>[] MOBS_VILLAGE = { EntityKoaHunter.class, EntityAshenHunter.class, EntityTropiCreeper.class, EntityTropiSkeleton.class };
 
 	private static final ItemStack[] ITEMS = { new ItemStack(ItemRegistry.lemon), new ItemStack(ItemRegistry.lime),
 			new ItemStack(ItemRegistry.orange), new ItemStack(BlockRegistry.coconut),
@@ -65,7 +64,7 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 			new ItemStack(ItemRegistry.bambooStick), new ItemStack(ItemRegistry.bambooMug) };
 
 	private final Minecraft mc = FMLClientHandler.instance().getClient();
-	private final HashMap<String, Class[]> backgroundToEntityMap = new HashMap<String, Class[]>();
+	private final HashMap<String, Class<? extends Entity>[]> backgroundToEntityMap = new HashMap<>();
 
 	private Random rand = new Random();
 	private long animTick = 0L;
@@ -78,11 +77,12 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 	private boolean isLeaving = false;
 	private boolean isEgg = false;
 
-	public GuiTropicsLoading() {
+	@SuppressWarnings("unchecked")
+    public GuiTropicsLoading() {
 		super((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
-		backgroundToEntityMap.put(BACKGROUNDS[0], MOBS_WATER);
-		backgroundToEntityMap.put(BACKGROUNDS[1], MOBS_LAND);
-		backgroundToEntityMap.put(BACKGROUNDS[2], MOBS_VILLAGE);
+		backgroundToEntityMap.put(BACKGROUNDS[0], (Class<? extends Entity>[]) MOBS_WATER);
+		backgroundToEntityMap.put(BACKGROUNDS[1], (Class<? extends Entity>[]) MOBS_LAND);
+		backgroundToEntityMap.put(BACKGROUNDS[2], (Class<? extends Entity>[]) MOBS_VILLAGE);
 		this.assignScreenContent();
 		animTick = rand.nextInt(12345);
 	}
@@ -115,26 +115,25 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 
 		int count = 0;
 		String key = "tropicraft.loading." + cat + ".1";
-		while (!(I18n.translateToLocal(key)).equals(key)) {
+		while (!(I18n.format(key)).equals(key)) {
 			key = "tropicraft.loading." + cat + "." + count++;
 		}
 
 		screenTitle = "tropicraft.loading." + cat + "." + String.valueOf(rand.nextInt(count + 1) + 1);
 		if (cat.equals("knowledge") || cat.equals("hint")) {
-			String prepend = I18n.translateToLocal("tropicraft.loading." + cat + ".pre");
-			screenTitle = I18n.translateToLocalFormatted(screenTitle, prepend);
+			String prepend = I18n.format("tropicraft.loading." + cat + ".pre");
+			screenTitle = I18n.format(screenTitle, prepend);
 		} else {
-			screenTitle = I18n.translateToLocal(screenTitle);
-
+			screenTitle = I18n.format(screenTitle);
 		}
 
 		// Pick random background
 		screenBackground = BACKGROUNDS[rand.nextInt(BACKGROUNDS.length)];
 
 		// Assign random entities from the associated background
-		ArrayList<Class> ta = new ArrayList<Class>(Arrays.asList(backgroundToEntityMap.get(screenBackground)));
+		ArrayList<Class<? extends Entity>> ta = new ArrayList<>(Arrays.asList(backgroundToEntityMap.get(screenBackground)));
 
-		Class firstEntClass = ta.get(rand.nextInt(ta.size()));
+		Class<? extends Entity> firstEntClass = ta.get(rand.nextInt(ta.size()));
 		String firstEnt = EntityList.getEntityStringFromClass(firstEntClass);
 		Entity ent1 = eggWrap(EntityList.createEntityByName(firstEnt, mc.world), 0);
 		ta.remove(firstEntClass);
@@ -184,7 +183,7 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 			drawScreenItemStack(screenItems.getRight(), (sr.getScaledWidth() / 2) - 8 + 16,
 					(sr.getScaledHeight() / 2) + 8, 1.5f);
 		}
-		String msg = I18n.translateToLocal("tropicraft.loading.title." + (this.isLeaving ? "greeting" : "farewell"));
+		String msg = I18n.format("tropicraft.loading.title." + (this.isLeaving ? "greeting" : "farewell"));
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((sr.getScaledWidth()) / 2 - (f.getStringWidth(msg) / 2),
 				(sr.getScaledHeight() / 4) - 30, 0);
