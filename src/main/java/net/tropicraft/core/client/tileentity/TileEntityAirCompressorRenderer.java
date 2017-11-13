@@ -6,6 +6,7 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.block.model.ModelAirCompressor;
 import net.tropicraft.core.client.entity.model.ModelScubaTank;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
+import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class TileEntityAirCompressorRenderer extends TileEntityMachineRenderer<TileEntityAirCompressor> {
@@ -13,7 +14,7 @@ public class TileEntityAirCompressorRenderer extends TileEntityMachineRenderer<T
     private final ModelScubaTank tankModel = new ModelScubaTank();
 
     public TileEntityAirCompressorRenderer() {
-        super(new ModelAirCompressor());
+        super(BlockRegistry.airCompressor, new ModelAirCompressor());
     }
     
     @Override

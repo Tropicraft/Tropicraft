@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -284,8 +285,8 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	}
 	
 	@Override
-	public EnumFacing getFacing() {
-	    return getWorld().getBlockState(getPos()).getValue(BlockDrinkMixer.FACING);
+	public EnumFacing getFacing(IBlockState state) {
+	    return state.getValue(BlockDrinkMixer.FACING);
 	}
 
 	/**

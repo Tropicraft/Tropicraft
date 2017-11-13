@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block.tileentity;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 
 public interface IMachineTile {
@@ -8,6 +9,6 @@ public interface IMachineTile {
     
     float getProgress(float partialTicks);
     
-    EnumFacing getFacing();
+    EnumFacing getFacing(IBlockState state);
 
 }

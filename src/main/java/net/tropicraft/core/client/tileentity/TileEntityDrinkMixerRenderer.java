@@ -13,6 +13,7 @@ import net.tropicraft.core.client.block.model.ModelBambooMug;
 import net.tropicraft.core.client.block.model.ModelDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.ItemCocktail;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class TileEntityDrinkMixerRenderer extends TileEntityMachineRenderer<TileEntityDrinkMixer> {
 
@@ -21,7 +22,7 @@ public class TileEntityDrinkMixerRenderer extends TileEntityMachineRenderer<Tile
     private final EntityItem dummyEntityItem = new EntityItem((World) null, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
 
     public TileEntityDrinkMixerRenderer() {
-        super(new ModelDrinkMixer());
+        super(BlockRegistry.drinkMixer, new ModelDrinkMixer());
         this.renderItem = Minecraft.getMinecraft().getRenderItem();
     }
 

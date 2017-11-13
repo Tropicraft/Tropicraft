@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.tileentity;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -7,18 +9,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.block.model.MachineModel;
-import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.IMachineTile;
 
 public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineTile> extends TileEntitySpecialRenderer<T> {
 
-	/**
-	 * EIHMixer model instance
-	 */
+    private final Block block;
 	private final MachineModel<T> model;
 
-
-	public TileEntityMachineRenderer(MachineModel<T> model) {
+	public TileEntityMachineRenderer(Block block, MachineModel<T> model) {
+	    this.block = block;
 	    this.model = model;
 	}
 
@@ -32,7 +31,12 @@ public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineT
 		if (te == null || te.getWorld() == null) {
 			GlStateManager.rotate(180f, 0f, 1f, 0f);
 		} else {
-			EnumFacing facing = getWorld().getBlockState(te.getPos()).getValue(BlockDrinkMixer.FACING);
+		    IBlockState state = te.getWorld().getBlockState(te.getPos());
+		    EnumFacing facing;
+		    if (state.getBlock() != this.block) {
+		        facing = EnumFacing.NORTH;
+		    }
+			facing = te.getFacing(state);
 			GlStateManager.rotate(facing.getHorizontalAngle(), 0, 1, 0);
 		}
 

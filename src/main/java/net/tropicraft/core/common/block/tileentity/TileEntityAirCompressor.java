@@ -2,6 +2,7 @@ package net.tropicraft.core.common.block.tileentity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -174,8 +175,8 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	}
 	
 	@Override
-	public EnumFacing getFacing() {
-	    return getWorld().getBlockState(getPos()).getValue(BlockAirCompressor.FACING);
+	public EnumFacing getFacing(IBlockState state) {
+	    return state.getValue(BlockAirCompressor.FACING);
 	}
 
 	/**
