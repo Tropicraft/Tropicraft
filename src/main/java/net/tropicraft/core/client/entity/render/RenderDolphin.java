@@ -30,6 +30,6 @@ public class RenderDolphin extends RenderTropicraftWaterMob {
 	}
 
 	protected void preRenderScale(EntityDolphin entitymarlin, float f) {
-		GlStateManager.scale(1f, 1f, 1f);
+		GlStateManager.scale(1.2f, 1.2f, 1.2f);
 	}
 }

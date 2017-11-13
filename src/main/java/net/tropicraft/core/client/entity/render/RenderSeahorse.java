@@ -21,7 +21,10 @@ public class RenderSeahorse extends RenderTropicraftWaterMob {
 	public void doRender(EntityTropicraftWaterBase par1EntityLiving, double x, double y, double z, float yaw,
 			float partialTicks) {
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x, y - 2.5f, z);
+
+		GlStateManager.translate(x, y-1f, z);
+		GlStateManager.scale(0.5f, 0.5f, 0.5f);
+
 		GlStateManager.rotate(90, 0f, 1f, 0f);
 
 		float swimYaw = (par1EntityLiving.prevSwimYaw)

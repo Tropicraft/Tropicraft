@@ -32,10 +32,22 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 		if (swimPitch <= -45) {
 			swimPitch = -45;
 		}
+		
 
 		GlStateManager.pushMatrix();
 
 		GlStateManager.disableCull();
+
+		if(!entityliving.isInWater()) {
+			entityliving.outOfWaterTime++;
+			if(entityliving.outOfWaterTime > 90) {
+				entityliving.outOfWaterTime = 90;
+			}
+		}else {
+			if(entityliving.outOfWaterTime > 0) {
+				entityliving.outOfWaterTime--;
+			}
+		}
 
 		GlStateManager.translate(posX, posY, posZ);
 
@@ -45,17 +57,15 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 
 		GlStateManager.rotate(swimYaw + 180, 0F, 1.0F, 0.0F);
 		GlStateManager.rotate(swimPitch, 1.0F, 0.0F, 0.0F);
-
-		if (!entityliving.isInWater()) {
-			float rot = 0F;
-			if (entityliving.outOfWaterTime * 4 < 91) {
-				rot = (float) entityliving.outOfWaterTime * 4;
-			} else {
-				rot = 90F;
-			}
-			GlStateManager.translate(0f, .125f, 0f);
-			GlStateManager.rotate(rot, 0.0F, 0.0F, 1.0F);
+		
+		float rot = 0F;
+		if (entityliving.outOfWaterTime< 91) {
+			rot = (float) entityliving.outOfWaterTime;
+		} else {
+			rot = 90F;
 		}
+		GlStateManager.rotate(rot, 0.0F, 0.0F, 1.0F);
+		
 		float f6 = 0.0625F;
 		GlStateManager.enableNormalize();
 		GlStateManager.scale(-1f, -1f, 1f);

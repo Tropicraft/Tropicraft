@@ -1,22 +1,19 @@
 package net.tropicraft.core.client.entity.render;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ModelFish;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.IAtlasFish;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.GL11;
 
 public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> {
 
@@ -84,8 +81,19 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 				GL11.glColor4f(2f, 0f, 0f, 1f);
 			}
         
+            
+            if(!entity.isInWater()) {
+    			entity.outOfWaterTime++;
+    			if(entity.outOfWaterTime > 90) {
+    				entity.outOfWaterTime = 90;
+    			}
+    		}else {
+    			if(entity.outOfWaterTime > 0) {
+    				entity.outOfWaterTime--;
+    			}
+    		}
 
-            this.renderFishy(entity);
+           this.renderFishy(entity);
 			GL11.glColor4f(1f, 1f, 1f, 1f);
 
             GlStateManager.enableAlpha();
@@ -143,11 +151,12 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
     }
 
 	protected void renderFishy(EntityTropicraftWaterBase entityliving) {
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
+		
 		fish.Body.postRender(.045F);
 		TropicraftRenderUtils.bindTextureEntity("tropicalFish");
-		GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(.85F, 0.0F, 0.0F);
+		GlStateManager.rotate(90F, 0.0F, 1.0F, 0.0F);
+		GlStateManager.translate(.85F, 0.0F, 0.0F);
 		
 		int fishTex = 0;
 		if(entityliving instanceof IAtlasFish) {
@@ -155,17 +164,18 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 		}
 	
 		renderHelper.renderFish(fishTex);
-		GL11.glPopMatrix();
-		GL11.glPushMatrix();
+		GlStateManager.popMatrix();
+		
+		GlStateManager.pushMatrix();
 		fish.Tail.postRender(.045F);
-		GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(-.90F, 0.725F, 0.0F);
-			renderHelper.renderFish(fishTex+1);
-		GL11.glPopMatrix();
+		GlStateManager.rotate(90F, 0.0F, 1.0F, 0.0F);
+		GlStateManager.translate(-.90F, 0.725F, 0.0F);
+		renderHelper.renderFish(fishTex+1);
+		GlStateManager.popMatrix();
 	}
 
 	protected void preRenderScale(EntityTropicraftWaterBase entityTropicalFish, float f) {
-		GL11.glScalef(.75F, .20F, .20F);
+		GlStateManager.scale(.75F, .20F, .20F);
 	}
 
 	@Override

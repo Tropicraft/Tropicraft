@@ -188,16 +188,27 @@ public class ModelHammerheadShark extends ModelBase {
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+			
 		GlStateManager.enableCull();
 		Head1.render(f5);
 		Head3.render(f5);
+		Head2.render(f5);
+
+		
+		
 		Body1Upper.render(f5);
 		Body1Lower.render(f5);
 		Body2Upper.render(f5);
 		Body2Lower.render(f5);
+		
 		Body3UpperLeft.render(f5);
 		Body3LowerLeft.render(f5);
 		Body3LowerRight.render(f5);
+		Body3Lower.render(f5);
+
+		FinCaudalUpper.render(f5);
+		FinCaudalLower.render(f5);
+	
 		FinPectoralLeft.render(f5);
 		FinPectoralRight.render(f5);
 		FinDorsal.render(f5);
@@ -205,11 +216,7 @@ public class ModelHammerheadShark extends ModelBase {
 		FinPelvicRight.render(f5);
 		FinAdipose.render(f5);
 		FinAnal.render(f5);
-		FinCaudalUpper.render(f5);
-		FinCaudalLower.render(f5);
-		Body3Lower.render(f5);
 		Body4Lower.render(f5);
-		Head2.render(f5);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -220,6 +227,33 @@ public class ModelHammerheadShark extends ModelBase {
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
+		float timeScale = 0.05f;
+		
+		if(!e.isInWater()) {
+			timeScale = 0.2f;
+		}
+		
+		FinPectoralLeft.rotateAngleZ = (0.4f -(float) Math.sin(f2*timeScale)*0.3f);
+		FinPectoralRight.rotateAngleZ = (-0.4f -(float) Math.sin(f2*timeScale)*0.3f);
+		
+
+		Body3UpperLeft.rotateAngleY =  -(float) Math.sin(f2*timeScale)*0.2f;
+		Body3LowerLeft.rotateAngleY =  -(float) Math.sin(f2*timeScale)*0.2f;
+		Body3LowerRight.rotateAngleY =  -(float) Math.sin(f2*timeScale)*0.2f;
+
+		
+		FinCaudalUpper.offsetX = -(float) Math.sin(f2*timeScale)*0.175f;
+		FinCaudalUpper.rotateAngleY =  -(float) Math.sin(f2*timeScale)*0.2f;
+
+		FinCaudalLower.offsetX = -(float) Math.sin(f2*timeScale)*0.175f;
+		FinCaudalLower.rotateAngleY =  -(float) Math.sin(f2*timeScale)*0.2f;
+
+		FinAdipose.offsetX = -(float) Math.sin(f2*timeScale)*0.025f;
+		FinAdipose.rotateAngleY =  -(float) Math.sin(f2*timeScale)*0.2f;
+	
+		FinAnal.offsetX = -(float) Math.sin(f2*timeScale)*0.025f;
+		FinAnal.rotateAngleY =  -(float) Math.sin(f2*timeScale)*0.2f;
+
 	}
 
 }

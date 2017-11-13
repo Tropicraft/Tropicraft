@@ -152,13 +152,21 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 					pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 				}
 				
-				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
-				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
+				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*4);
+				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*4);
 				
 			
 				this.motionX *= 0.98f;
 				this.motionY *= 0.98f;
 				this.motionZ *= 0.98f;
+				if(this.isAIDisabled() && this.isInWater()) 
+				{
+					motionY = 0;
+					fallVelocity = 0f;
+					motionX = 0;
+					motionZ = 0;
+					swimSpeedCurrent = 0;
+				}
 			}else {
 				this.rotationPitch = -this.swimPitch;
 				if(this.isInWater()) {
@@ -216,9 +224,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}
 		
 		if (this.isInWater()) {
-			
-			this.outOfWaterTime = 0;
-			
+						
 			BlockPos bp = new BlockPos((int)posX, (int)posY-2, (int)posZ);
 				
 			// Near surface check
@@ -457,7 +463,6 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 		// Out of water
 		if (!this.isInWater() && !(this instanceof IAmphibian)) {
-			this.outOfWaterTime++;
 			this.setTargetHeading(posX, posY-1, posZ, false);
 		}
 		
@@ -525,6 +530,13 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			motionY = currentSpeed * Math.sin(this.swimPitch * (Math.PI / 180.0));
 			fallVelocity = 0f;
 		}
+		if(this.isAIDisabled() && this.isInWater()) {
+			motionY = 0;
+			fallVelocity = 0f;
+			motionX = 0;
+			motionZ = 0;
+			swimSpeedCurrent = 0;
+		}
 
 		// out of water motion
 		if (!this.isInWater() && !(this instanceof IAmphibian)) {
@@ -563,7 +575,13 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				this.swimYaw += turnSpeed;
 			}
 			
-			this.motionY -= this.fallVelocity;
+			float vel = this.fallVelocity;
+			
+			if(this.getPassengers().size() > 0) {
+				vel *= 0.5f;
+			}
+			
+			this.motionY -= vel;
 			this.fallVelocity += (this.fallGravity / 10);
 		}
 		
@@ -683,6 +701,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 
 	public boolean setTargetHeading(double posX, double posY, double posZ, boolean waterChecks) {
+		if(this.isAIDisabled()) {
+			return false;
+		}
 		if(waterChecks) {
 			BlockPos bp = new BlockPos((int)posX, (int)posY, (int)posZ);
 			if(!world.getBlockState(bp).getMaterial().isLiquid()) return false;
@@ -792,7 +813,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	@Override
 	public boolean isAIDisabled() {
-		return true;
+		return super.isAIDisabled();
 	}
 
 	@Override
