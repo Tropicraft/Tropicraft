@@ -1,5 +1,10 @@
 package net.tropicraft.core.client;
 
+import java.util.Set;
+
+import com.google.common.collect.Sets;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -28,6 +33,13 @@ import net.tropicraft.core.registry.BlockRegistry;
 public class TropicraftWaterRenderFixer {
 
     private static final ResourceLocation RES_UNDERWATER_OVERLAY = new ResourceLocation(Info.MODID, "textures/misc/underwater.png");
+    
+    private static final Set<Block> tropicalOverlayBlocks = Sets.newHashSet(
+                BlockRegistry.tropicsWater,
+                BlockRegistry.tropicsPortal,
+                BlockRegistry.tropicsPortalTeleporter,
+                BlockRegistry.coral
+            );
 
     @SubscribeEvent
     public void onBlockOverlay(RenderBlockOverlayEvent event) {
@@ -35,7 +47,7 @@ public class TropicraftWaterRenderFixer {
             double d0 = event.getPlayer().posY + event.getPlayer().getEyeHeight();
             BlockPos blockpos = new BlockPos(event.getPlayer().posX, d0, event.getPlayer().posZ);
             IBlockState atPos = event.getPlayer().getEntityWorld().getBlockState(blockpos);
-            if (atPos.getBlock() == BlockRegistry.tropicsWater || atPos.getBlock() == BlockRegistry.coral) {
+            if (tropicalOverlayBlocks.contains(atPos.getBlock())) {
                 event.setCanceled(true);
                 Minecraft mc = Minecraft.getMinecraft();
                 
@@ -49,12 +61,6 @@ public class TropicraftWaterRenderFixer {
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GlStateManager.pushMatrix();
-                float f1 = 4.0F;
-                float f2 = -1.0F;
-                float f3 = 1.0F;
-                float f4 = -1.0F;
-                float f5 = 1.0F;
-                float f6 = -0.5F;
                 float f7 = -mc.player.rotationYaw / 64.0F;
                 float f8 = mc.player.rotationPitch / 64.0F;
                 vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
