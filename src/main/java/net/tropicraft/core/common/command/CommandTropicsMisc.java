@@ -204,6 +204,10 @@ public class CommandTropicsMisc extends CommandBase {
 
                 }
 
+            } else if (args[0].equals("enc_unlock")) {
+                for (int i = 0; i < Tropicraft.encyclopedia.getPageCount(); i++) {
+                    Tropicraft.encyclopedia.markPageAsNewlyVisible(i);
+                }
             }
         }
     }
