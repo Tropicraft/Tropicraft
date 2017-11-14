@@ -196,8 +196,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 					this.renderYawOffset = 0;
 					this.prevRotationYaw = -this.prevSwimYaw;				
 				}else {
-					this.prevSwimYaw = -this.prevRotationYaw;
-					this.swimYaw = -this.rotationYaw;
+				//	this.prevSwimYaw = this.swimYaw;
+				//	this.swimYaw = -this.rotationYaw;
 					this.rotationYawHead = this.rotationYaw;
 				
 				}

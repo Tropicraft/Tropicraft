@@ -229,10 +229,12 @@ public class ModelDolphin extends ModelBase {
 
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7) {
 
+		boolean mouthOpen = false;
 		
 		
 		if(par1Entity instanceof EntityDolphin) {
 			EntityDolphin dolphin = (EntityDolphin)par1Entity;
+			mouthOpen = dolphin.getMouthOpen();
 			if(dolphin.isInWater()) {
 					tailVertSpeed = 0.5f/2;
 					tailHorzSpeed = 0.25f/2;
@@ -241,8 +243,13 @@ public class ModelDolphin extends ModelBase {
 					tailHorzSpeed = 0.25f;
 				}
 			}else {
-				tailVertSpeed = 1f;
-				tailHorzSpeed = 0.5f;
+				if(dolphin.onGround) {
+					tailVertSpeed = 0.0f;
+					tailHorzSpeed = 0.05f;
+				}else {
+					tailVertSpeed = 1f;
+					tailHorzSpeed = 0.5f;
+				}
 			}
 		}
 		
@@ -277,10 +284,19 @@ public class ModelDolphin extends ModelBase {
 		LowerJaw3.rotateAngleZ = 0F;
 		LowerJaw3.renderWithRotation(par7);
 
-		LowerJaw4.rotateAngleX = 0F;
+		if(mouthOpen) {
+			LowerJaw5.setRotationPoint(0F, 23.4F, -15.3F+0.52f);
+			LowerJaw4.rotateAngleX = 0.5F;
+		}else {
+			LowerJaw5.setRotationPoint(0F, 22.4F, -15.3F);
+			LowerJaw4.rotateAngleX = 0F;
+		}
 		LowerJaw4.rotateAngleY = 0F;
 		LowerJaw4.rotateAngleZ = 0F;
 		LowerJaw4.renderWithRotation(par7);
+
+		
+	
 
 		LowerJaw5.rotateAngleX = -0.2275909F;
 		LowerJaw5.rotateAngleY = 0F;
@@ -339,33 +355,33 @@ public class ModelDolphin extends ModelBase {
 
 		RightPectoralFin1.rotateAngleX = 0.1612329F;
 		RightPectoralFin1.rotateAngleY = 0.2214468F;
-		RightPectoralFin1.rotateAngleZ = -0.6194302F;
+		RightPectoralFin1.rotateAngleZ = -0.6194302F+ (float) (Math.sin(par4 * .025F)) * .3f;
 		RightPectoralFin1.renderWithRotation(par7);
 
 		RightPectoralFin2.rotateAngleX = 0.2393862F;
 		RightPectoralFin2.rotateAngleY = 0.3358756F;
-		RightPectoralFin2.rotateAngleZ = -0.5966207F;
+		RightPectoralFin2.rotateAngleZ = -0.5966207F+ (float) (Math.sin(par4 * .025F)) * .45f;
 		RightPectoralFin2.renderWithRotation(par7);
 
 		RightPectoralFin3.rotateAngleX = 0.3620028F;
 		RightPectoralFin3.rotateAngleY = 0.5368112F;
-		RightPectoralFin3.rotateAngleZ = -0.5368112F;
+		RightPectoralFin3.rotateAngleZ = -0.5368112F+ (float) (Math.sin(par4 * .025F)) * .5f;
 		RightPectoralFin3.renderWithRotation(par7);
 
 		LeftPectoralFin1.rotateAngleX = 0.1612329F;
 		LeftPectoralFin1.rotateAngleY = -0.2214468F;
-		LeftPectoralFin1.rotateAngleZ = 0.6194302F;// + (float) (Math.sin(par4 * .025F)) * .3f;
+		LeftPectoralFin1.rotateAngleZ = 0.6194302F + (float) (Math.sin(par4 * .025F)) * .3f;
 		LeftPectoralFin1.renderWithRotation(par7);
 
 		LeftPectoralFin2.rotateAngleX = 0.2393862F;
 		LeftPectoralFin2.rotateAngleY = -0.3358756F;
-
-		LeftPectoralFin2.rotateAngleZ = 0.5966207F;// + (float) (Math.sin(par4 * .025F)) * .35f;
+		LeftPectoralFin2.rotateAngleZ = 0.5966207F + (float) (Math.sin(par4 * .025F)) * .35f;
 		LeftPectoralFin2.renderWithRotation(par7);
 
+		
 		LeftPectoralFin3.rotateAngleX = 0.3620028F;
 		LeftPectoralFin3.rotateAngleY = -0.5368112F;
-		LeftPectoralFin3.rotateAngleZ = 0.5368112F;// + (float) (Math.sin(par4 * .025F)) * .4f;
+		LeftPectoralFin3.rotateAngleZ = 0.5368112F + (float) (Math.sin(par4 * .025F)) * .4f;
 		LeftPectoralFin3.renderWithRotation(par7);
 
 		Tail1.rotateAngleX = -0.04555309F + (float) (Math.sin(par4 * tailVertSpeed)) * .1f;

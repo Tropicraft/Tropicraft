@@ -394,8 +394,9 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 							-(scanSize / 2) + z);
 					BlockPos airCheck = waterCheck.up(1);
 
-					if (world.getBlockState(waterCheck).getMaterial().equals(Material.WATER)) {
-						// We have a water block
+					if (world.getBlockState(waterCheck).getMaterial().equals(Material.WATER) &&
+							world.getBlockState(waterCheck.down()).getMaterial().equals(Material.WATER)) {
+						// We have deep enough water
 						if (world.getBlockState(airCheck).getMaterial().equals(Material.AIR)) {
 							// We have a water block below an air block!
 							potentials.add(waterCheck);
