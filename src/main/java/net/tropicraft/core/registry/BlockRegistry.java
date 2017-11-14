@@ -292,11 +292,11 @@ public class BlockRegistry extends TropicraftRegistry {
 
 		bongo = registerBlock(new BlockBongoDrum(), Names.BONGO, new MultiBlockItemCreator(TropicraftBongos.VALUES));
 
-		bambooFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.BIRCH), "bamboo_fence_gate");
-		thatchFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.BIRCH), "thatch_fence_gate");
-		chunkFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.DARK_OAK), "chunk_fence_gate");
-		palmFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.SPRUCE), "palm_fence_gate");
-		mahoganyFenceGate = registerBlock(new BlockFenceGate(BlockPlanks.EnumType.OAK), "mahogany_fence_gate");
+		bambooFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "bamboo_fence_gate");
+		thatchFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "thatch_fence_gate");
+		chunkFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.DARK_OAK).setHardness(2.0F).setResistance(30F), "chunk_fence_gate");
+		palmFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.SPRUCE).setHardness(2.0F).setResistance(5.0F), "palm_fence_gate");
+		mahoganyFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.OAK).setHardness(2.0F).setResistance(5.0F), "mahogany_fence_gate");
 
 		bambooFence = registerBlock(new BlockTropicraftFence(bambooFenceGate, Material.PLANTS, MapColor.SAND), "bamboo_fence");
 		thatchFence = registerBlock(new BlockTropicraftFence(thatchFenceGate, Material.PLANTS, MapColor.SAND), "thatch_fence");
