@@ -29,7 +29,7 @@ public enum TropicraftSlabs implements ITropicraftVariant {
 	}
 
 	public float getResistance() {
-	    return this.getResistance();
+	    return this.resistance;
 	}
 
 	public MapColor getMapColor() {

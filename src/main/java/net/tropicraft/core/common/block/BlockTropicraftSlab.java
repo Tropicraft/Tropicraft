@@ -15,15 +15,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.enums.BlockHardnessValues;
 import net.tropicraft.core.common.enums.TropicraftSlabs;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -52,6 +53,11 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     @Deprecated
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
         return blockState.getValue(this.getVariantProperty()).getHardness();
+    }
+    
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+        return world.getBlockState(pos).getValue(this.getVariantProperty()).getResistance();
     }
 
     /**
