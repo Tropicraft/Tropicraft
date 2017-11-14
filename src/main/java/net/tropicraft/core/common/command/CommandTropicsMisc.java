@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandTropicsVillage extends CommandBase {
+public class CommandTropicsMisc extends CommandBase {
 
     @Override
     public String getName() {
