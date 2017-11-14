@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.block;
 
 import java.util.Optional;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -11,9 +10,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent.CreateFluidSourceEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicsWater extends BlockFluidClassic {
@@ -23,6 +26,7 @@ public class BlockTropicsWater extends BlockFluidClassic {
 		this.lightOpacity = 0;
 		this.setCreativeTab(null);
 		this.displacements.put(BlockRegistry.coral, Boolean.valueOf(false));
+		MinecraftForge.EVENT_BUS.register(this);
 		//TODO: this.displacements.put(BlockRegistry.bambooFence, Boolean.valueOf(false));
 	}
 
@@ -36,37 +40,12 @@ public class BlockTropicsWater extends BlockFluidClassic {
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
-
-	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		/*
-		 * TODO: Doesn't work in 1.9. FIXME :)
-		 * Fix so that tropics water can form infinite water sources again.
-		 * Turns blocks into source blocks if they are between two other source blocks.
-		 */    	
-		int currentMeta = getMetaFromState(state);
-		if (currentMeta > 0 && state.getActualState(world, pos.down()).getMaterial() != Material.AIR) {
-			int neighbourSources = 0;
-			BlockPos npos = new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ());
-			if (isNeighbourSource (world, state, npos))
-				neighbourSources++;
-			npos = new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ());
-			if (isNeighbourSource (world, state, npos))
-				neighbourSources++;
-			npos = new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1);
-			if (isNeighbourSource (world, state, npos))
-				neighbourSources++;
-			npos = new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1);
-			if (isNeighbourSource (world, state, npos))
-				neighbourSources++;
-
-			if (neighbourSources >= 2) {
-				world.setBlockState(pos, state.withProperty(LEVEL, 0));
-			}
-		}
-
-		// Need to do this for the water to flow !!
-		super.updateTick(world, pos, state, rand);
+	
+	@SubscribeEvent
+	public void onCreateFluidSource(CreateFluidSourceEvent event) {
+	    if (event.getState().getBlock() == this) {
+	        event.setResult(Result.ALLOW);
+	    }
 	}
 	
 	@Override
@@ -76,12 +55,5 @@ public class BlockTropicsWater extends BlockFluidClassic {
 		return Optional.ofNullable((Integer) state.getProperties().get(BlockFluidBase.LEVEL))
 				.map(i -> quantaPerBlock - i)
 				.orElse(ret);
-	}
-
-	private boolean isNeighbourSource(World world, IBlockState state, BlockPos pos) {
-		if (state.getActualState(world, pos).getBlock() == this && this.getMetaFromState(state) == 0)
-			return true;
-
-		return false;
 	}
 }
