@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.enums.TropicraftLogs;
 import net.tropicraft.core.common.enums.TropicraftShells;
@@ -741,15 +742,9 @@ public class CraftingRegistry {
 		Tropicraft.encyclopedia.includeItem("anthuriumo", new ItemStack(BlockRegistry.flowers, 1, 5));
 		Tropicraft.encyclopedia.includeItem("anthuriumr", new ItemStack(BlockRegistry.flowers, 1, 6));
 
-		/*TODO  for (int i = 0; i < ItemAshenMask.maskTypeNames.length; i++) {
-            Tropicraft.encyclopedia.includeItem("ashenmask", new ItemStack(TCItemRegistry.ashenMask, 1, i));
-        }*/
-
-        //TODO
-        /*
-         * ashenmask.title = Ashen Mask
-ashenmask.desc  = These masks are the source of an Ashen's identity. Without a mask, an Ashen is naked, fearful, and cowardly, while with one, they are perhaps the most agressive hunters in the Tropics. By wearing a mask, you are considered an Ashen. Masks can also be hung on walls for decoration. Be wary though, as a maskless Ashen will take the closest mask.
-         */
+		for (int i = 0; i < AshenMasks.VALUES.length; i++) {
+            Tropicraft.encyclopedia.includeItem("ashenmask", new ItemStack(ItemRegistry.maskMap.get(AshenMasks.VALUES[i]), 1, i));
+        }
 
         Tropicraft.encyclopedia.includeItem("azurite", new ItemStack(ItemRegistry.azurite));
         Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(ItemRegistry.bambooShoot));
