@@ -7,6 +7,8 @@
         "half=top,variant=chunk": { "model": "tropicraft:chunk_upper_slab" },
         "half=bottom,variant=chunk": { "model": "tropicraft:chunk_slab" },
         "half=top,variant=palm": { "model": "tropicraft:palm_upper_slab" },
-        "half=bottom,variant=palm": { "model": "tropicraft:palm_slab" }
+        "half=bottom,variant=palm": { "model": "tropicraft:palm_slab" },
+        "half=top,variant=mahogany": { "model": "tropicraft:mahogany_upper_slab" },
+        "half=bottom,variant=mahogany": { "model": "tropicraft:mahogany_slab" }
     }
 }

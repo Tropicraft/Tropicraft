@@ -1,0 +1,8 @@
+{
+    "parent": "block/stairs",
+    "textures": {
+        "bottom": "tropicraft:blocks/plank_Mahogany",
+        "top": "tropicraft:blocks/plank_Mahogany",
+        "side": "tropicraft:blocks/plank_Mahogany"
+    }
+}
