@@ -6,7 +6,6 @@ import javax.vecmath.Vector2f;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +17,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +24,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimAvoidEntity;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimAvoidPredator;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimAvoidWalls;
@@ -37,6 +37,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
     private static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
 	private static final DataParameter<Integer> HOOK_ID = EntityDataManager.<Integer>createKey(EntityTropicraftWaterBase.class, DataSerializers.VARINT);
 
+	
+	@SideOnly(Side.CLIENT)
+	public boolean isInGui = false;
 	
 	public float swimPitch = 0f;
 	public float swimYaw = 0f;
@@ -210,22 +213,27 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				float yaw;
 				float pitch;
 
-				if(this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
-					yaw = this.swimYaw;
-				}else {
-					yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
-				}
-				if(this.posY == this.prevPosY) {
-					pitch = this.swimPitch;
-				}else {
-					pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
-				}
-				this.prevSwimYaw = this.swimYaw;
-				this.prevSwimPitch = this.swimPitch;
-			
-				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
-				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
-							
+					if(this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
+						yaw = this.swimYaw;
+					}else {
+						yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
+					}
+					if(this.posY == this.prevPosY) {
+						pitch = this.swimPitch;
+					}else {
+						pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
+					}
+					
+					if(this.onGround && !this.isInWater()) {
+						yaw = -this.rotationYawHead;
+					}
+					
+					this.prevSwimYaw = this.swimYaw;
+					this.prevSwimPitch = this.swimPitch;
+				
+					this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
+					this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
+				
 			//	this.motionX *= 0.98f;
 			//	this.motionY *= 0.98f;
 			//	this.motionZ *= 0.98f;

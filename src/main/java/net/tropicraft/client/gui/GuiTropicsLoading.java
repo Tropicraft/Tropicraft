@@ -32,6 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.hostile.EntityAshenHunter;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
+import net.tropicraft.core.common.entity.hostile.EntityTreeFrog;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
 import net.tropicraft.core.common.entity.passive.EntityFailgull;
@@ -54,14 +55,17 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 
 	private static final Class<?>[] MOBS_WATER = { EntityMarlin.class, EntityDolphin.class, EntityShark.class,
 			EntitySeaTurtle.class, EntitySeahorse.class, EntityFailgull.class };
-	// TODO: Add EntityTreeFrog from merge
-	private static final Class<?>[] MOBS_LAND = { EntityIguana.class, EntityFailgull.class, EntityVMonkey.class };
+
+	private static final Class<?>[] MOBS_LAND = { EntityIguana.class, EntityFailgull.class, EntityVMonkey.class, EntityTreeFrog.class };
 	private static final Class<?>[] MOBS_VILLAGE = { EntityKoaHunter.class, EntityAshenHunter.class, EntityTropiCreeper.class, EntityTropiSkeleton.class };
 
-	private static final ItemStack[] ITEMS = { new ItemStack(ItemRegistry.lemon), new ItemStack(ItemRegistry.lime),
+	private static final ItemStack[] ITEMS = { 
+			new ItemStack(ItemRegistry.lemon), new ItemStack(ItemRegistry.lime),
 			new ItemStack(ItemRegistry.orange), new ItemStack(BlockRegistry.coconut),
 			new ItemStack(BlockRegistry.coconut), new ItemStack(ItemRegistry.coconutBomb),
-			new ItemStack(ItemRegistry.bambooStick), new ItemStack(ItemRegistry.bambooMug) };
+			new ItemStack(ItemRegistry.bambooStick), new ItemStack(ItemRegistry.bambooMug) ,
+			new ItemStack(ItemRegistry.grapefruit), new ItemStack(ItemRegistry.yellowFlippers)
+	};
 
 	private final Minecraft mc = FMLClientHandler.instance().getClient();
 	private final HashMap<String, Class<? extends Entity>[]> backgroundToEntityMap = new HashMap<>();
@@ -138,13 +142,17 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 		Entity ent1 = eggWrap(EntityList.createEntityByName(firstEnt, mc.world), 0);
 		ta.remove(firstEntClass);
 		Entity ent2 = eggWrap(EntityList.createEntityByName(EntityList.getEntityStringFromClass(ta.get(rand.nextInt(ta.size()))), mc.world), 1);
-
-		System.out.println(firstEntClass.getName()+":"+ent1+" ");
-		// make sure these entities have a random texture assigned
-		if (ent1 instanceof EntityTropicraftWaterBase)
+				
+		
+		if (ent1 instanceof EntityTropicraftWaterBase) {
 			((EntityTropicraftWaterBase) ent1).assignRandomTexture();
-		if (ent2 instanceof EntityTropicraftWaterBase)
+			((EntityTropicraftWaterBase) ent1).isInGui = true;
+		}
+		
+		if (ent2 instanceof EntityTropicraftWaterBase) {
 			((EntityTropicraftWaterBase) ent2).assignRandomTexture();
+			((EntityTropicraftWaterBase) ent2).isInGui = true;
+		}
 
 		screenEntities = Pair.of(ent1, ent2);
 

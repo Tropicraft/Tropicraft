@@ -51,7 +51,20 @@ public class EntityDolphin extends EntityTropicraftWaterBase implements IPredato
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		this.setAir(30);
+		this.fallVelocity *= 0.5f;
 		if(!world.isRemote) {
+			if(!this.isInWater() && this.onGround && this.ticksExisted % 50 == 0) {
+				this.motionY = 0.3f;
+				this.motionX = this.randFlip(5)*0.01f;
+				this.motionZ = this.randFlip(5)*0.01f;
+				this.rotationPitch+=15;
+				this.fallDistance = 0;
+			}
+			if(!this.isInWater()) {
+				if(this.motionY < -0.2f) {
+					this.motionY = -0.2f;
+				}
+			}
 			if(this.livingSoundTime < -60) {
 				if(this.ticksExisted % 3 > 1) {
 					if(!getMouthOpen()) {
@@ -72,7 +85,7 @@ public class EntityDolphin extends EntityTropicraftWaterBase implements IPredato
 	
 	@Override
 	public int getTalkInterval() {
-		return 80;
+		return 300+rand.nextInt(20);
 	}
 
 	@Override
