@@ -862,7 +862,7 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         Tropicraft.encyclopedia.includeItem("pathos", new ItemStack(BlockRegistry.flowers, 1, 8));
         Tropicraft.encyclopedia.includeItem("pearlb", new ItemStack(ItemRegistry.blackPearl));
         Tropicraft.encyclopedia.includeItem("pearlw", new ItemStack(ItemRegistry.whitePearl));
-        Tropicraft.encyclopedia.includeItem("pineapple", new ItemStack(BlockRegistry.pineapple, 1, 8));
+        Tropicraft.encyclopedia.includeItem("pineapple", new ItemStack(BlockRegistry.pineapple, 1, 0));
         Tropicraft.encyclopedia.includeItem("pineapplecubes", new ItemStack(ItemRegistry.pineappleCubes));
         Tropicraft.encyclopedia.includeItem("pinacolada", MixerRecipes.getItemStack(Drink.pinaColada));
         Tropicraft.encyclopedia.includeItem("portalstarter",  new ItemStack(ItemRegistry.portalEnchanter));
