@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.ChatUtil;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 
 public class BlockTropicsPortal extends BlockFluidClassic {
@@ -38,8 +39,6 @@ public class BlockTropicsPortal extends BlockFluidClassic {
 
 	/** Amount of time player must spend in teleport block to teleport */
 	private static final int TIME_UNTIL_TELEPORT = 20;
-
-	public int messageTick;
 	
 	public BlockTropicsPortal(Fluid fluid, Material material, boolean canTeleport) {
 		super(fluid, material);
@@ -68,20 +67,17 @@ public class BlockTropicsPortal extends BlockFluidClassic {
 			if (player.timeUntilPortal > TIME_UNTIL_TELEPORT && 
 					state.getValue(TELEPORTABLE)) {
 				if (player.isPotionActive(MobEffects.NAUSEA)) {
-					messageTick = 0;
 					player.timeUntilPortal = 0;
 					player.removePotionEffect(MobEffects.NAUSEA);
 					TropicraftWorldUtils.teleportPlayer(player);
 				} else {
-					messageTick++;
-					player.timeUntilPortal = 0;
-
-					if (messageTick % 100 == 0) {
-						player.sendMessage(new TextComponentTranslation("You should drink a pi\u00f1a colada before teleporting!"));
-					}
-				}
-			}
-		}
+                    player.timeUntilPortal = 0;
+                    if (world.getTotalWorldTime() % 20 == 0) {
+                        ChatUtil.sendNoSpamUnloc(player, "tropicraft.chat.teleport.unable");
+                    }
+                }
+            }
+        }
 	}
 
 	@Override
