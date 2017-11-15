@@ -2,10 +2,9 @@ package net.tropicraft.core.common.entity.underdasea.atlantoku.ai;
 
 import java.util.Random;
 
-import net.minecraft.entity.ai.EntityAIBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntitySchoolableFish;
 
-public class EntityAISwimSchoolFollowLeader extends EntityAIBase {
+public class EntityAISwimSchoolFollowLeader extends EntityAISwimBase {
 
 	public EntitySchoolableFish entity;
 	public Random rand;

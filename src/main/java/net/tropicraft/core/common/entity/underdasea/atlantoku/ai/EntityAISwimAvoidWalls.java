@@ -2,12 +2,11 @@ package net.tropicraft.core.common.entity.underdasea.atlantoku.ai;
 
 import java.util.Random;
 
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 
-public class EntityAISwimAvoidWalls extends EntityAIBase {
+public class EntityAISwimAvoidWalls extends EntityAISwimBase {
 
 	public EntityTropicraftWaterBase entity;
 	public Random rand;

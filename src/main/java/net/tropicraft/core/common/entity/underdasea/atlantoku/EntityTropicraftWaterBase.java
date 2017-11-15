@@ -502,7 +502,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		
 		// Try to move towards a player
 		if(this.approachPlayers) {
-			if(rand.nextInt(15) == 0) {
+			if(rand.nextInt(50) == 0) {
 				EntityPlayer closest = world.getClosestPlayerToEntity(this, 32D);
 				if(closest != null) {
 				if(closest.isInWater())

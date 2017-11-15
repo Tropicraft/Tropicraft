@@ -57,7 +57,8 @@ public class EntityDolphin extends EntityTropicraftWaterBase implements IPredato
 				this.motionY = 0.3f;
 				this.motionX = this.randFlip(5)*0.01f;
 				this.motionZ = this.randFlip(5)*0.01f;
-				this.rotationPitch+=15;
+				this.rotationYaw+=randFlip(15);
+				this.swimYaw=this.rotationYaw;
 				this.fallDistance = 0;
 			}
 			if(!this.isInWater()) {
@@ -65,7 +66,7 @@ public class EntityDolphin extends EntityTropicraftWaterBase implements IPredato
 					this.motionY = -0.2f;
 				}
 			}
-			if(this.livingSoundTime < -60) {
+			if(this.livingSoundTime < -(getTalkInterval()-20)) {
 				if(this.ticksExisted % 3 > 1) {
 					if(!getMouthOpen()) {
 						setMouthOpen(true);
@@ -85,7 +86,7 @@ public class EntityDolphin extends EntityTropicraftWaterBase implements IPredato
 	
 	@Override
 	public int getTalkInterval() {
-		return 300+rand.nextInt(20);
+		return 300;
 	}
 
 	@Override

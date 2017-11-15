@@ -5,13 +5,12 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.IPredatorDiet;
 
-public class EntityAISwimTargetPrey extends EntityAIBase {
+public class EntityAISwimTargetPrey extends EntityAISwimBase {
 
 	public EntityTropicraftWaterBase entity;
 	public Random rand;

@@ -24,7 +24,7 @@ public class RenderSeaTurtle extends RenderTropicraftWaterMob {
 	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw,	float partialTicks) {
 		if(entity instanceof EntitySeaTurtle) {
 			EntitySeaTurtle turtle = (EntitySeaTurtle) entity;
-			
+			turtle.outOfWaterTime = 0;
 			float scale = 0.3f;
 			if(entity.ticksExisted < 30) {
 				this.shadowOpaque = 0.5f;

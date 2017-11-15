@@ -8,7 +8,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import scala.actors.threadpool.Arrays;
 
-public class EntityAISwimAvoidEntity extends EntityAIBase {
+public class EntityAISwimAvoidEntity extends EntityAISwimBase {
 
 	public EntityTropicraftWaterBase entity;
 	public Random rand;
