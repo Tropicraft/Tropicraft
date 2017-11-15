@@ -30,6 +30,7 @@ import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.block.BlockFruitLeaves;
 import net.tropicraft.core.common.block.BlockIris;
+import net.tropicraft.core.common.block.BlockPackedPurifiedSand;
 import net.tropicraft.core.common.block.BlockPineapple;
 import net.tropicraft.core.common.block.BlockPortalWall;
 import net.tropicraft.core.common.block.BlockSeaweed;
@@ -207,6 +208,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static BlockFenceGate chunkFenceGate;
 	public static BlockFenceGate palmFenceGate;
 	public static BlockFenceGate mahoganyFenceGate;
+	
+	public static Block blockPackedPurifiedSand;
 
 	/**
 	 * Register blocks in preInit
@@ -303,6 +306,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		chunkFence = registerBlock(new BlockTropicraftFence(chunkFenceGate, Material.PLANTS, MapColor.SAND), "chunk_fence");
 		palmFence = registerBlock(new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence");
 		mahoganyFence = registerBlock(new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence");
+	
+		blockPackedPurifiedSand = registerBlock(new BlockPackedPurifiedSand(), "packed_purified_sand");
 	}
 
 	public static void init() {

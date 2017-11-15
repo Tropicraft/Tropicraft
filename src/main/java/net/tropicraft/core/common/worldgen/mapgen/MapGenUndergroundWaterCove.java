@@ -72,6 +72,10 @@ public class MapGenUndergroundWaterCove {
 				relativeZ *= relativeZ;
 				for (double j = -height; j < height; j++) {
 					if ((relativeX / length) + ((j * j) / height) + (relativeZ / width) <= 1) {
+						if(height == j) {
+							System.out.println("Placed Purified Sand");
+							placeBlock(blockX, y + (int) j + 1, blockZ, BlockRegistry.blockPackedPurifiedSand.getDefaultState(), primer);
+						}
 						placeBlock(blockX, y + (int) j, blockZ, BlockRegistry.tropicsWater.getDefaultState(), primer);
 
 					}
@@ -82,6 +86,7 @@ public class MapGenUndergroundWaterCove {
 				int j = (int) Math.sqrt(height - ((height * relativeX) / length) - ((height * relativeZ) / width));
 
 				placeBlock(blockX, y - j - 1, blockZ, BlockRegistry.sands.getDefaultState(), primer);
+				placeBlock(blockX, y - j - 2, blockZ, BlockRegistry.blockPackedPurifiedSand.getDefaultState(), primer);
 
 				if (noise1 > 0.875 || noise2 > 0.855) {
 					// placeBlock(i, y - j - 1, k, BlockRegistry.sands.getDefaultState(), primer);

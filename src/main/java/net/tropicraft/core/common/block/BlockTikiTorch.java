@@ -224,6 +224,9 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
     public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         super.onBlockHarvested(world, pos, state, player);
         if (!world.isRemote) {
+        		if(player.capabilities.isCreativeMode) {
+        			return;
+        		}
             switch (state.getValue(SECTION)) {
             case MIDDLE:
                 dropBlockAsItem(world, pos, world.getBlockState(pos.up()), 0);
