@@ -6,7 +6,7 @@ public abstract class EntityAISwimBase extends EntityAIBase{
 
 	@Override
 	public void startExecuting() {
-		System.out.println("Started executing task "+this.getClass().getSimpleName());
+		//System.out.println("Started executing task "+this.getClass().getSimpleName());
 		super.startExecuting();
 	}
 
