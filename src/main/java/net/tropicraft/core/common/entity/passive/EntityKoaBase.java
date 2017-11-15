@@ -214,7 +214,7 @@ public class EntityKoaBase extends EntityVillager {
                 setLure((EntityFishHook) ent);
                 ((EntityFishHook) ent).angler = koa;
             } else {
-                System.out.println("fail lookup");
+                //System.out.println("fail lookup");
             }
         });
     }
