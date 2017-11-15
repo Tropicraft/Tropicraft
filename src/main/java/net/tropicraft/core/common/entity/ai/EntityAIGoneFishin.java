@@ -375,7 +375,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     private void castLine() {
-        System.out.println("cast line");
+        //System.out.println("cast line");
         fishingTimeout = fishingTimeoutMax;
         retractLine();
         EntityFishHook lure = new EntityFishHook(entity.world, entity);
