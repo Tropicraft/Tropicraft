@@ -32,7 +32,7 @@ import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock {
 
-	public static enum TorchSection implements IStringSerializable {
+	public enum TorchSection implements IStringSerializable {
 		UPPER, MIDDLE, LOWER;
 
 		@Override
@@ -44,6 +44,13 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 			return this.getName();
 		}
 	};
+	
+	private enum PlaceMode {
+	    FULL,
+	    TOP_ONLY,
+	    BLOCKED,
+	    ;
+	}
 
 	public static final PropertyEnum<TorchSection> SECTION = PropertyEnum.create("section", TorchSection.class);
 
@@ -73,7 +80,16 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		return canPlaceTikiTorchOn(world, pos.down()) && world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2)) ;
+	    if (!super.canPlaceBlockAt(world, pos)) {
+	        return false;
+	    }
+		PlaceMode mode = canPlaceTikiTorchOn(world, pos.down());
+		if (mode == PlaceMode.FULL) {
+		    return world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2));
+		} else if (mode == PlaceMode.TOP_ONLY) {
+		    return true;
+		}
+		return false;
 	}
 
 	/**
@@ -107,24 +123,19 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		return false;
 	}	
 
-	private boolean canPlaceTikiTorchOn(World world, BlockPos pos) {
+	private PlaceMode canPlaceTikiTorchOn(World world, BlockPos pos) {
 		if (world.isBlockNormalCube(pos, false)) {
-			return true;
+			return PlaceMode.FULL;
 		} else {
 			IBlockState state = world.getBlockState(pos);
-			// Can't place on air
-			if (world.isAirBlock(pos)) {
-				return false;
+			boolean canPlace = !world.isAirBlock(pos) && state.getBlock().canPlaceTorchOnTop(state, world, pos);
+			if (canPlace) {
+			    if (state.getBlock() instanceof BlockFence || state.getBlock() instanceof BlockWall) {
+			        return PlaceMode.TOP_ONLY;
+			    }
+			    return PlaceMode.FULL;
 			}
-
-			// If trying to place on a tiki torch already
-			if (state.getBlock() == this &&
-					(((TorchSection)world.getBlockState(pos).getValue(SECTION)) == TorchSection.MIDDLE ||
-					((TorchSection)world.getBlockState(pos).getValue(SECTION)) == TorchSection.LOWER)) {
-				return true;
-			}
-
-			return state.getBlock().canPlaceTorchOnTop(state, world, pos);
+			return PlaceMode.BLOCKED;
 		}
 	}
 
@@ -135,7 +146,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		if (state.getBlock() != this) return null;
 
-		if (state.getValue(SECTION) == TorchSection.UPPER || state.getValue(SECTION) == TorchSection.MIDDLE) {
+		if (state.getValue(SECTION) == TorchSection.LOWER || state.getValue(SECTION) == TorchSection.MIDDLE) {
 			return null;
 		} else {
 			return Item.getItemFromBlock(this);
@@ -163,7 +174,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 			return true;
 		}
 
-		if (!world.isRemote && state.getValue(SECTION) == TorchSection.LOWER && !canPlaceTikiTorchOn(world, pos.down())) {
+		if (!world.isRemote && state.getValue(SECTION) == TorchSection.LOWER && !canPlaceAt(world, pos)) {
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
 		}
@@ -206,7 +217,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 
 	// Taken from BlockTorch
 	private boolean canPlaceAt(World worldIn, BlockPos pos) {
-		return this.canPlaceTikiTorchOn(worldIn, pos.down());
+		return this.canPlaceTikiTorchOn(worldIn, pos.down()) != PlaceMode.BLOCKED;
 	}
 	
 	@Override
@@ -215,10 +226,10 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
         if (!world.isRemote) {
             switch (state.getValue(SECTION)) {
             case MIDDLE:
-                dropBlockAsItem(world, pos.down(), world.getBlockState(pos.down()), 0);
+                dropBlockAsItem(world, pos, world.getBlockState(pos.up()), 0);
                 break;
-            case UPPER:
-                dropBlockAsItem(world, pos.down(2), world.getBlockState(pos.down(2)), 0);
+            case LOWER:
+                dropBlockAsItem(world, pos, world.getBlockState(pos.up(2)), 0);
                 break;
             default:
                 break;

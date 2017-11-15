@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.passive;
 import com.google.common.base.Predicate;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -30,6 +31,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
@@ -186,18 +189,34 @@ public class EntityKoaBase extends EntityVillager {
     public void notifyDataManagerChange(DataParameter<?> key) {
         super.notifyDataManagerChange(key);
 
+        if (!world.isRemote) return;
+
         if (key == LURE_ID) {
             int id = this.getDataManager().get(LURE_ID);
             if (id != -1) {
-                Entity ent = world.getEntityByID(id);
-                if (ent instanceof EntityFishHook) {
-                    setLure((EntityFishHook) ent);
-                    ((EntityFishHook) ent).angler = this;
-                }
+                scheduleEntityLookup(this, id);
             } else {
                 setLure(null);
             }
         }
+    }
+
+    /**
+     * Fixes race condition issue of dataparam packet coming in before lure client spawn packet
+     * @param koa
+     * @param id
+     */
+    @SideOnly(Side.CLIENT)
+    public void scheduleEntityLookup(EntityKoaBase koa, int id) {
+        Minecraft.getMinecraft().addScheduledTask(() -> {
+            Entity ent = world.getEntityByID(id);
+            if (ent instanceof EntityFishHook) {
+                setLure((EntityFishHook) ent);
+                ((EntityFishHook) ent).angler = koa;
+            } else {
+                System.out.println("fail lookup");
+            }
+        });
     }
 
     @Override

@@ -6,7 +6,9 @@ public enum TropicraftSlabs implements ITropicraftVariant {
 	BAMBOO(0, MapColor.GREEN, BlockHardnessValues.BAMBOO.hardness, BlockHardnessValues.BAMBOO.resistance),
 	THATCH(1, MapColor.YELLOW, BlockHardnessValues.THATCH.hardness, BlockHardnessValues.THATCH.resistance),
 	CHUNK(2, MapColor.BLACK, BlockHardnessValues.CHUNK.hardness, BlockHardnessValues.CHUNK.resistance),
-	PALM(3, MapColor.BROWN, BlockHardnessValues.PALM.hardness, BlockHardnessValues.PALM.resistance);
+	PALM(3, MapColor.BROWN, BlockHardnessValues.PALM.hardness, BlockHardnessValues.PALM.resistance),
+    MAHOGANY(4, MapColor.BROWN, BlockHardnessValues.MAHOGANY.hardness, BlockHardnessValues.MAHOGANY.resistance),
+    ;
 
     private final float hardness;
     private final float resistance;
@@ -27,7 +29,7 @@ public enum TropicraftSlabs implements ITropicraftVariant {
 	}
 
 	public float getResistance() {
-	    return this.getResistance();
+	    return this.resistance;
 	}
 
 	public MapColor getMapColor() {

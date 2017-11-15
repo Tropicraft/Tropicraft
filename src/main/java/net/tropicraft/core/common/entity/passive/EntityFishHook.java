@@ -195,7 +195,9 @@ public class EntityFishHook extends Entity
         super.onUpdate();
 
         if (this.angler == null) {
-            setDead();
+            if (this.ticksExisted > 40) {
+                setDead();
+            }
             return;
         }
 

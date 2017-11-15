@@ -72,7 +72,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
         //temp
         //entity.timeBetweenFishing = 20*60*2;
-        //entity.lastTimeFished = 0;
+        entity.lastTimeFished = 0;
         //debugTask = false;
 
         BlockPos blockpos = new BlockPos(this.entity);
@@ -375,6 +375,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     private void castLine() {
+        System.out.println("cast line");
         fishingTimeout = fishingTimeoutMax;
         retractLine();
         EntityFishHook lure = new EntityFishHook(entity.world, entity);

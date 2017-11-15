@@ -10,15 +10,22 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicraftFence extends BlockFence {
+    
+    private final BlockFenceGate gate;
 	
 	public BlockTropicraftFence(BlockFenceGate fenceGate, Material material, MapColor mapColor) {
 		super(material, mapColor);
+		this.gate = fenceGate;
+	}
+	
+	@Override
+	@Deprecated
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+	    return this.gate.getBlockHardness(blockState, worldIn, pos);
 	}
 
 	@Override

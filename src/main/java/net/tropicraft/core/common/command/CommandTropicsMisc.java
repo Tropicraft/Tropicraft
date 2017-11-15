@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandTropicsVillage extends CommandBase {
+public class CommandTropicsMisc extends CommandBase {
 
     @Override
     public String getName() {
@@ -204,6 +204,10 @@ public class CommandTropicsVillage extends CommandBase {
 
                 }
 
+            } else if (args[0].equals("enc_unlock")) {
+                for (int i = 0; i < Tropicraft.encyclopedia.getPageCount(); i++) {
+                    Tropicraft.encyclopedia.markPageAsNewlyVisible(i);
+                }
             }
         }
     }

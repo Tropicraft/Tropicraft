@@ -219,7 +219,7 @@ public class ModelKoaMan extends ModelBiped {
         boolean isDancing = false;
 
         if (entityIn instanceof EntityKoaBase) {
-            this.isRiding = ((EntityKoaBase) entityIn).isSitting();
+            this.isRiding = ((EntityKoaBase) entityIn).isSitting() || entityIn.isRiding();
             isDancing = ((EntityKoaBase) entityIn).isDancing();
         }
 

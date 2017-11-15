@@ -7,6 +7,8 @@
         "half=bottom,variant=chunk": { "model": "tropicraft:chunk" },
         "half=top,variant=chunk": { "model": "tropicraft:chunk" },
         "half=bottom,variant=palm": { "model": "tropicraft:palm_plank" },
-        "half=top,variant=palm": { "model": "tropicraft:palm_plank" }
+        "half=top,variant=palm": { "model": "tropicraft:palm_plank" },
+        "half=bottom,variant=mahogany": { "model": "tropicraft:mahogany_plank" },
+        "half=top,variant=mahogany": { "model": "tropicraft:mahogany_plank" }
     }
 }

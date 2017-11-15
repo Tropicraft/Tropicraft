@@ -151,7 +151,7 @@ public class GuiTropicalBook extends GuiScreen {
 					case INFO:
 						List<ShapedRecipes> recipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
 						if (recipes != null) {
-							buttonList.add(new GuiClearButton(buttonCraftingPage, width / 2 + 158, height / 2 - 80, 11, 22, "aa", 5, pageBackground, 0x440000));
+							buttonList.add(new GuiClearButton(buttonCraftingPage, width / 2 + 158, height / 2 - 80, 11, 22, "", 5, pageBackground, 0x440000));
 						}
 						break;
 					case RECIPE:

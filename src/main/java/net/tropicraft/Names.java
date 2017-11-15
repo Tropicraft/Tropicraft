@@ -7,6 +7,7 @@ public final class Names {
 	public static final String BLOCK_THATCH_STAIRS = "thatch_stairs";
 	public static final String BLOCK_THATCH_STAIRS_FUZZY = "thatch_stairs_fuzzy";
 	public static final String BLOCK_BAMBOO_STAIRS = "bamboo_stairs";
+    public static final String BLOCK_MAHOGANY_STAIRS = "mahogany_stairs";
 	public static final String BAMBOO_SHOOT = "bamboo_shoot";
 	public static final String TROPICS_WATER = "water";
 	public static final String TROPICS_PORTAL = "portal";

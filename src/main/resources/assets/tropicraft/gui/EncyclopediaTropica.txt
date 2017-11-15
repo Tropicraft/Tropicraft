@@ -10,6 +10,9 @@ anthuriumo.desc  = This strong orange colored flower has an red counterpart.
 anthuriumr.title = Anthurium, Red
 anthuriumr.desc  = This strong red colored flower has an orange counterpart.
 
+ashenmask.title = Ashen Mask
+ashenmask.desc  = These masks are the source of an Ashen's identity. Without a mask, an Ashen is naked, fearful, and cowardly, while with one, they are perhaps the most agressive hunters in the Tropics. By wearing a mask, you are considered an Ashen. Masks can also be hung on walls for decoration. Be wary though, as a maskless Ashen will take the closest mask.
+
 azurite.title = Azurite
 azurite.desc  = This soft mineral is actually an ore of copper. It owes it's pretty blue color to the weathering of copper ore deposits.
 
