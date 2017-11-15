@@ -6,7 +6,6 @@ import javax.vecmath.Vector2f;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +17,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +24,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimAvoidEntity;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimAvoidPredator;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimAvoidWalls;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimRandomLocation;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimTargetPrey;
 
 public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
@@ -33,8 +38,12 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	private static final DataParameter<Integer> HOOK_ID = EntityDataManager.<Integer>createKey(EntityTropicraftWaterBase.class, DataSerializers.VARINT);
 
 	
+	@SideOnly(Side.CLIENT)
+	public boolean isInGui = false;
+	
 	public float swimPitch = 0f;
 	public float swimYaw = 0f;
+
 	public Vector2f targetVectorHeading;
 	public Vec3d targetVector;
 	
@@ -77,9 +86,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	private ItemStack dropStack = null;
 	private int dropMaxAmt = 3;
-	private float attackDamage = 1f;
+	public float attackDamage = 1f;
 	
-	private boolean isMovingAwayFromWall = false;
+	public boolean isMovingAwayFromWall = false;
 	
 	public boolean isLeader = false;
 	
@@ -100,12 +109,26 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		this.getDataManager().register(HOOK_ID, Integer.valueOf(0));
 		this.assignRandomTexture();
 	}
+	
+	@Override
+	protected void initEntityAI() {
+		super.initEntityAI();
+        this.tasks.addTask(0, new EntityAISwimAvoidPredator(0, this, 2D));
+        this.tasks.addTask(0, new EntityAISwimAvoidWalls(0, this));
+        if(this.fleeFromPlayers) {
+            this.tasks.addTask(0, new EntityAISwimAvoidEntity(1, this, 5F, new Class[] {EntityPlayer.class}));
+        }
+        this.tasks.addTask(2, new EntityAISwimTargetPrey(2, this));
+        this.tasks.addTask(2, new EntityAISwimRandomLocation(0, this));
+
+
+	}
 
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		
-		//setDead();
+		// Remove this entity if difficulty is peaceful and it is capable of harming a player
 		if(this instanceof IPredatorDiet && world.getDifficulty().equals(EnumDifficulty.PEACEFUL)) {
 			boolean hasPlayer = false;
 			Class[] prey = ((IPredatorDiet)this).getPreyClasses();
@@ -152,13 +175,21 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 					pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 				}
 				
-				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
-				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
+				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*4);
+				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*4);
 				
 			
 				this.motionX *= 0.98f;
 				this.motionY *= 0.98f;
 				this.motionZ *= 0.98f;
+				if(this.isAIDisabled() && this.isInWater()) 
+				{
+					motionY = 0;
+					fallVelocity = 0f;
+					motionX = 0;
+					motionZ = 0;
+					swimSpeedCurrent = 0;
+				}
 			}else {
 				this.rotationPitch = -this.swimPitch;
 				if(this.isInWater()) {
@@ -168,8 +199,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 					this.renderYawOffset = 0;
 					this.prevRotationYaw = -this.prevSwimYaw;				
 				}else {
-					this.prevSwimYaw = -this.prevRotationYaw;
-					this.swimYaw = -this.rotationYaw;
+				//	this.prevSwimYaw = this.swimYaw;
+				//	this.swimYaw = -this.rotationYaw;
 					this.rotationYawHead = this.rotationYaw;
 				
 				}
@@ -182,22 +213,27 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				float yaw;
 				float pitch;
 
-				if(this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
-					yaw = this.swimYaw;
-				}else {
-					yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
-				}
-				if(this.posY == this.prevPosY) {
-					pitch = this.swimPitch;
-				}else {
-					pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
-				}
-				this.prevSwimYaw = this.swimYaw;
-				this.prevSwimPitch = this.swimPitch;
-			
-				this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
-				this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
-							
+					if(this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
+						yaw = this.swimYaw;
+					}else {
+						yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
+					}
+					if(this.posY == this.prevPosY) {
+						pitch = this.swimPitch;
+					}else {
+						pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
+					}
+					
+					if(this.onGround && !this.isInWater()) {
+						yaw = -this.rotationYawHead;
+					}
+					
+					this.prevSwimYaw = this.swimYaw;
+					this.prevSwimPitch = this.swimPitch;
+				
+					this.swimYaw = lerp(swimYaw, (int)-yaw, this.swimSpeedTurn*2);
+					this.swimPitch = lerp(swimPitch, (int)-pitch, this.swimSpeedTurn*2);
+				
 			//	this.motionX *= 0.98f;
 			//	this.motionY *= 0.98f;
 			//	this.motionZ *= 0.98f;
@@ -208,379 +244,207 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		// Server Side
 		
 		if(((this instanceof IAmphibian) && this.isInWater()) || !(this instanceof IAmphibian)) {
-		
-		if(this.getHook() != null) {
-			if(this.getHook().isDead || !world.loadedEntityList.contains(this.getHook())) {
-				this.setHook(null);
-			}
-		}
-		
-		if (this.isInWater()) {
 			
-			this.outOfWaterTime = 0;
-			
-			BlockPos bp = new BlockPos((int)posX, (int)posY-2, (int)posZ);
-				
-			// Near surface check
-			bp = new BlockPos((int)posX, (int)posY+1, (int)posZ);
-			if(!this.world.getBlockState(bp).getMaterial().isLiquid()) {
-				if(this.swimPitch > 0f) {
-					Vec3d angle = this.getHeading();
-					double frontDist = 5f;
-					Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));	
-					this.isPanicking = false;
-					this.setRandomTargetHeadingForce(32);
-				//	this.setTargetHeading(diff.xCoord, posY - 2, diff.zCoord, true);
-					//this.swimPitch -= 15f;
+			if(this.getHook() != null) {
+				if(this.getHook().isDead || !world.loadedEntityList.contains(this.getHook())) {
+					this.setHook(null);
 				}
-				
 			}
 			
-			// Random movements
-			if(ticksExisted % 10+rand.nextInt(20) == 0) {
-				this.setRandomTargetHeading();
+			if (this.isInWater()) {	
+				// Yaw/Pitch lerp
+				float swimSpeedTurn = this.swimSpeedTurn;//*(1 + (swimSpeedCurrent/5));
 				
-				if(this.eatenFishAmount > 0 && rand.nextInt(10) == 0) {
-					this.eatenFishAmount--;
+				if(this.isMovingAwayFromWall) {
+					swimSpeedTurn *= 1.8f;
 				}
+				
+				if(this.isFishable() && (this.ticksExisted+this.getEntityId()) % 80 == 0 && rand.nextInt(35) == 0) {
+					List<EntityHook> ents = world.getEntitiesWithinAABB(EntityHook.class, new AxisAlignedBB(this.getPosition()).expand(16, 8, 16));
+					for(int i =0; i < ents.size(); i++) {
+						EntityHook h = ents.get(i);
+						if(this.canEntityBeSeen(h)) {
+							if(h.getHooked() == null && h.isInWater()) {
+								this.hookTarget = h;
+							}
+						}
+					}
+				}
+				
+				if(this.hookTarget != null) {
+					if(this.hookTarget.isDead || !world.loadedEntityList.contains(this.hookTarget) || this.hookTarget.getHooked() != null) {
+						this.hookTarget = null;
+						this.setRandomTargetHeadingForce(10);
+					}else {
+						if(this.ticksExisted % 20 == 0) {
+							this.setTargetHeading(hookTarget.posX, hookTarget.posY, hookTarget.posZ, false);
+						}
+						if(this.getDistanceSqToEntity(this.hookTarget) < 2D) {
+							if(this.hookTarget.getHooked() == null) {
+								this.hookTarget.setHooked(this);
+								this.hookTarget = null;
+							}
+						}
+					}
+				}
+				
+				if(getHook() != null) {
+					//swimSpeedTurn *= 2f;
+					EntityHook hook = (EntityHook)getHook();
+					if(hook.getHooked() != null) {
+						
+						if(!hook.getHooked().equals(this)) {
+							this.setHook(null);
+						}else {
+							EntityPlayer angler = hook.getAngler();
+							if(angler != null) {
+								if(this.getDistanceToEntity(angler) > 2D) {
+									this.setTargetHeading(angler.posX, angler.posY, angler.posZ, false);
+								}else {
+									hook.bringInHookedEntity();
+									return;
+								}
+							}else {
+								hook.setHooked(null);
+								this.aggressTarget = null;
+								this.setRandomTargetHeadingForce(5);
+							}
+						}
+					}
+				}
+				if (this.targetVectorHeading != null) {
+					this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn);
+					this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn);
+				}
+			}
+			
+			
+	
+	
+	
+			// Out of water
+			if (!this.isInWater() && !(this instanceof IAmphibian)) {
+				this.setTargetHeading(posX, posY-1, posZ, false);
 			}	
 			
-			// Target selection
-			if(canAggress && this.eatenFishAmount < this.maximumEatAmount) {
-				if(this.ticksExisted % 80 == 0 && this.aggressTarget == null|| !world.loadedEntityList.contains(aggressTarget)) {
-					List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
-					if(list.size() > 0) {
-						Entity ent = list.get(rand.nextInt(list.size()));
-						boolean skip = false;
-						if(ent.equals(this)) skip = true;	
-						if(ent.getClass().getName().equals(this.getClass().getName())) skip = true;	
-						if(this instanceof IPredatorDiet) {
-							Class[] prey = ((IPredatorDiet)this).getPreyClasses();
-							boolean contains = false;
-							for(int i =0; i < prey.length; i++) {
-								if(prey[i].getName().equals(ent.getClass().getName())) {
-									contains = true;
-								}
-							}
-							if(!contains) {
-								skip = true;
-							}
-						}
-						if(!ent.isInWater()) skip = true;				
-						if(!this.canEntityBeSeen(ent)) skip = true;
-						
-						if(!skip) {
-							if (ent instanceof EntityLivingBase){
-								if (((EntityLivingBase)ent).isInWater()) {
-									this.aggressTarget = ent;
-								}
-							}
-						}
-					}
-				}
-				if(rand.nextInt(200) == 0) {					
-					this.aggressTarget = null;
-					this.setRandomTargetHeading();
-				}
-			}
-				
-			// Wall correction
-				Vec3d angle = this.getHeading();
-				double frontDist = 1f+rand.nextInt(4);
-				double behindDist = 4f;
-				
-				Vec3d diff = new Vec3d(posX + (angle.xCoord*frontDist), posY + angle.yCoord, posZ + (angle.zCoord*frontDist));
-
-				bp = new BlockPos((int)diff.xCoord, (int)posY, (int)diff.zCoord);
-		
-				if(!this.world.getBlockState(bp).getMaterial().isLiquid() && !isMovingAwayFromWall) 
-				{
-					Vec3d behind = new Vec3d(posX - (angle.xCoord*behindDist), posY + angle.yCoord, posZ - (angle.zCoord*behindDist));
-					this.setRandomTargetHeadingForce(32);
-					isMovingAwayFromWall = true;
-				}
-				
-				if(ticksExisted % 20 == 0 && isMovingAwayFromWall)
-				isMovingAwayFromWall = false;
-				
-				
-				if(this.targetVector != null && isMovingAwayFromWall) {
-					bp = new BlockPos((int)this.targetVector.xCoord, (int)this.targetVector.yCoord, (int)this.targetVector.zCoord);
-	
-					if(this.getPosition().equals(bp) && ticksExisted % 80 == 0) {
-						isMovingAwayFromWall = false;
-					}
-				}
-		
+			// Move speed
+			float currentSpeed = this.swimSpeedCurrent;
+			float desiredSpeed = this.swimSpeedDefault;			
 			
-			// Move away from players
-			if(this.fleeFromPlayers && ticksExisted % 80 == 0) {
-				EntityPlayer closest = world.getClosestPlayerToEntity(this, this.fleeDistance);
-				if(closest != null) {
-					if(closest.isInWater()) {
-						this.fleeEntity(closest);
-						this.isPanicking = true;
-					}
-				}else {
-					this.isPanicking = false;
-				}
-			}else {
-				this.isPanicking = false;
-			}				
-			
-			// Hunt Target and/or Do damage
 			if(this.aggressTarget != null) {
-				if(this.getDistanceSqToEntity(this.aggressTarget) <= this.width) {
-					if(this.aggressTarget instanceof EntityLivingBase) {
-						((EntityLivingBase)this.aggressTarget).attackEntityFrom(DamageSource.causeMobDamage(this), this.attackDamage);
-					}
-					if(this.aggressTarget instanceof EntityTropicraftWaterBase) {
-						// Was eaten, cancel smoke
-						
-						if(this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY > this.aggressTarget.getEntityBoundingBox().maxY - this.aggressTarget.getEntityBoundingBox().minY)
-						{
-							((EntityTropicraftWaterBase) this.aggressTarget).setExpRate(0);
-							this.aggressTarget.setDropItemsWhenDead(false);
-							
-							this.aggressTarget.setDead();
-							this.heal(1);
-							this.eatenFishAmount++;
-						}
-					}
-					this.setRandomTargetHeading();
+				if(this.getDistanceSqToEntity(this.aggressTarget) < 10f) {
+					desiredSpeed = this.swimSpeedCharging;
 				}else {
-					if(this.canEntityBeSeen(this.aggressTarget) && this.ticksExisted % 20 == 0) {	
-						this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY, this.aggressTarget.posZ, true);
-					}
-				}
-				if(this.aggressTarget != null) {
-					if(!this.canEntityBeSeen(aggressTarget) || !this.aggressTarget.isInWater()) {
-						this.aggressTarget = null;
-						this.setRandomTargetHeading();
-					}
-				}
-	
-			}
-
-			if(!this.isAggressing && (this.ticksExisted+this.getEntityId()) % 120 == 0) {
-				List<EntityTropicraftWaterBase> ents = world.getEntitiesWithinAABB(EntityTropicraftWaterBase.class, new AxisAlignedBB(this.getPosition()).expand(4, 4, 4));
-				for(int i =0; i < ents.size(); i++) {
-					EntityTropicraftWaterBase f = ents.get(i);
-					if(this.getDistanceSqToEntity(f) < 2D && this.canEntityBeSeen(f))
-						if(f.aggressTarget != null)
-							if(f.aggressTarget.equals(this)) {
-								this.fleeEntity(f);
-								this.isPanicking = true;
-								break;
-							}
-				}
-			}
-
-			bp = new BlockPos(this.getPosition().down(2));
-
-			// Hitting bottom check
-			if(!this.world.getBlockState(bp).getMaterial().isLiquid()) {
-				if(this.swimPitch < 0f) {
-					this.swimPitch+= 2f;
-				}
-			}
-			
-			// Yaw/Pitch lerp
-			float swimSpeedTurn = this.swimSpeedTurn;//*(1 + (swimSpeedCurrent/5));
-			
-			if(this.isMovingAwayFromWall) {
-				swimSpeedTurn *= 1.8f;
-			}
-			
-			if(this.isFishable() && (this.ticksExisted+this.getEntityId()) % 80 == 0 && rand.nextInt(35) == 0) {
-				List<EntityHook> ents = world.getEntitiesWithinAABB(EntityHook.class, new AxisAlignedBB(this.getPosition()).expand(16, 8, 16));
-				for(int i =0; i < ents.size(); i++) {
-					EntityHook h = ents.get(i);
-					if(this.canEntityBeSeen(h)) {
-						if(h.getHooked() == null && h.isInWater()) {
-							this.hookTarget = h;
-						}
-					}
+					desiredSpeed = this.swimSpeedChasing;
 				}
 			}
 			
 			if(this.hookTarget != null) {
-				if(this.hookTarget.isDead || !world.loadedEntityList.contains(this.hookTarget) || this.hookTarget.getHooked() != null) {
-					this.hookTarget = null;
-					this.setRandomTargetHeadingForce(10);
-				}else {
-					if(this.ticksExisted % 20 == 0) {
-						this.setTargetHeading(hookTarget.posX, hookTarget.posY, hookTarget.posZ, false);
-					}
-					if(this.getDistanceSqToEntity(this.hookTarget) < 2D) {
-						if(this.hookTarget.getHooked() == null) {
-							this.hookTarget.setHooked(this);
-							this.hookTarget = null;
-						}
-					}
-				}
-			}
-			
-			if(getHook() != null) {
-				//swimSpeedTurn *= 2f;
-				EntityHook hook = (EntityHook)getHook();
-				if(hook.getHooked() != null) {
-					
-					if(!hook.getHooked().equals(this)) {
-						this.setHook(null);
-					}else {
-						EntityPlayer angler = hook.getAngler();
-						if(angler != null) {
-							if(this.getDistanceToEntity(angler) > 2D) {
-								this.setTargetHeading(angler.posX, angler.posY, angler.posZ, false);
-							}else {
-								hook.bringInHookedEntity();
-								return;
-							}
-						}else {
-							hook.setHooked(null);
-							this.aggressTarget = null;
-							this.setRandomTargetHeadingForce(5);
-						}
-					}
-				}
-			}
-			if (this.targetVectorHeading != null) {
-				this.swimYaw = lerp(this.swimYaw, -this.targetVectorHeading.x, swimSpeedTurn);
-				this.swimPitch = lerp(this.swimPitch, -this.targetVectorHeading.y, swimSpeedTurn);
-			}
-		}
-		
-		
-
-
-
-		// Out of water
-		if (!this.isInWater() && !(this instanceof IAmphibian)) {
-			this.outOfWaterTime++;
-			this.setTargetHeading(posX, posY-1, posZ, false);
-		}
-		
-		
-
-
-		
-		// Move speed
-		float currentSpeed = this.swimSpeedCurrent;
-		float desiredSpeed = this.swimSpeedDefault;
-		
-	
-		
-		
-		if(this.aggressTarget != null) {
-			if(this.getDistanceSqToEntity(this.aggressTarget) < 10f) {
-				desiredSpeed = this.swimSpeedCharging;
-			}else {
 				desiredSpeed = this.swimSpeedChasing;
-			}
-			if(!world.loadedEntityList.contains(this.aggressTarget) || this.aggressTarget.isDead) {
-				this.aggressTarget = null;
-				this.setRandomTargetHeading();
-			}
-		}
-		
-		if(this.hookTarget != null) {
-			desiredSpeed = this.swimSpeedChasing;
-		}
-		
-		
-		if(this.isPanicking) {
-			desiredSpeed = this.swimSpeedPanic;
-		}
-		
-		if(this.ticksExisted % 50  < 30) {
-			desiredSpeed *= 0.8f;
-		}
-		if(this.getIsLeader()) {
-			desiredSpeed *= 0.95f;
-		}
-		
-		if(this.isMovingAwayFromWall) {
-			desiredSpeed *= 0.6f;
-			currentSpeed *= 0.8f;
-		}
-		
-		if(this.swimSpeedCurrent < desiredSpeed) {
-			this.swimSpeedCurrent += this.swimAccelRate;
-		}
-		if(this.swimSpeedCurrent > desiredSpeed) {
-			this.swimSpeedCurrent -= this.swimDecelRate;
-		}
-		
-		// speed scaled down 1/10th
-		currentSpeed *= 0.1f;
-		
-
-		
-		// In water motion
-		if(this.isInWater()) {
+			}			
 			
-			motionX = currentSpeed * Math.sin(this.swimYaw * (Math.PI / 180.0));
-			motionZ = currentSpeed * Math.cos(this.swimYaw * (Math.PI / 180.0));
-			motionY = currentSpeed * Math.sin(this.swimPitch * (Math.PI / 180.0));
-			fallVelocity = 0f;
-		}
-
-		// out of water motion
-		if (!this.isInWater() && !(this instanceof IAmphibian)) {
-
-			if(this.onGround) {
-				if(rand.nextInt(6) == 0) {
-					this.motionX += rand.nextBoolean() ? rand.nextFloat()/8 : - rand.nextFloat()/8;
-					this.motionZ += rand.nextBoolean() ? rand.nextFloat()/8 : - rand.nextFloat()/8;
-				}
-				this.motionX *= 0.5f;
-				this.motionZ *= 0.5f;
-				if(this.ticksExisted % 4 == 0)
-				this.fallVelocity = -.02f;
+			if(this.isPanicking) {
+				desiredSpeed = this.swimSpeedPanic;
+			}
+			
+			if(this.ticksExisted % 50  < 30) {
+				desiredSpeed *= 0.8f;
+			}
+			if(this.getIsLeader()) {
+				desiredSpeed *= 0.95f;
+			}
+			
+			if(this.isMovingAwayFromWall) {
+				desiredSpeed *= 0.6f;
+				currentSpeed *= 0.8f;
+			}
+			
+			if(this.swimSpeedCurrent < desiredSpeed) {
+				this.swimSpeedCurrent += this.swimAccelRate;
+			}
+			if(this.swimSpeedCurrent > desiredSpeed) {
+				this.swimSpeedCurrent -= this.swimDecelRate;
+			}
+			
+			// speed scaled down 1/10th
+			currentSpeed *= 0.1f;
+					
+			// In water motion
+			if(this.isInWater()) {
 				
-				if(rand.nextInt(20) == 0 || this.hurtTime > 0) {
-					this.fallVelocity = -.03f;
-					this.swimPitch = 25f;
+				motionX = currentSpeed * Math.sin(this.swimYaw * (Math.PI / 180.0));
+				motionZ = currentSpeed * Math.cos(this.swimYaw * (Math.PI / 180.0));
+				motionY = currentSpeed * Math.sin(this.swimPitch * (Math.PI / 180.0));
+				fallVelocity = 0f;
+			}
+			if(this.isAIDisabled() && this.isInWater()) {
+				motionY = 0;
+				fallVelocity = 0f;
+				motionX = 0;
+				motionZ = 0;
+				swimSpeedCurrent = 0;
+			}
+	
+			// out of water motion
+			if (!this.isInWater() && !(this instanceof IAmphibian)) {
+	
+				if(this.onGround) {
+					if(rand.nextInt(6) == 0) {
+						this.motionX += rand.nextBoolean() ? rand.nextFloat()/8 : - rand.nextFloat()/8;
+						this.motionZ += rand.nextBoolean() ? rand.nextFloat()/8 : - rand.nextFloat()/8;
+					}
+					this.motionX *= 0.5f;
+					this.motionZ *= 0.5f;
+					if(this.ticksExisted % 4 == 0)
+					this.fallVelocity = -.02f;
+					
+					if(rand.nextInt(20) == 0 || this.hurtTime > 0) {
+						this.fallVelocity = -.03f;
+						this.swimPitch = 25f;
+					}
+				}
+				
+				if(this.swimPitch > 0f) {
+					this.swimPitch -= 5f;
+				}
+				if(this.ticksExisted % 20 == 0) {
+					this.outOfWaterAngle = rand.nextInt(360);
+				}
+				
+				float turnSpeed = 5f;
+				if(this.hurtTime > 0) {
+					turnSpeed = 15f;
+				}
+				if(this.swimYaw > this.outOfWaterAngle) {
+					this.swimYaw-= turnSpeed;
+				}
+				if(this.swimYaw < this.outOfWaterAngle) {
+					this.swimYaw += turnSpeed;
+				}
+				
+				float vel = this.fallVelocity;
+				
+				if(this.getPassengers().size() > 0) {
+					vel *= 0.5f;
+				}
+				
+				this.motionY -= vel;
+				this.fallVelocity += (this.fallGravity / 10);
+			}
+			
+			if(!this.isInWater() && (this instanceof IAmphibian)) {
+				if(!onGround) {
+					this.motionY -= this.fallVelocity;
+					this.fallVelocity += (this.fallGravity / 10);
+				}else {
+					this.fallVelocity = 0f;
 				}
 			}
-			
-			if(this.swimPitch > 0f) {
-				this.swimPitch -= 5f;
-			}
-			if(this.ticksExisted % 20 == 0) {
-				this.outOfWaterAngle = rand.nextInt(360);
+				
+			if(swimPitch > 45f) {
+				swimPitch = 45f;
 			}
 			
-			float turnSpeed = 5f;
-			if(this.hurtTime > 0) {
-				turnSpeed = 15f;
-			}
-			if(this.swimYaw > this.outOfWaterAngle) {
-				this.swimYaw-= turnSpeed;
-			}
-			if(this.swimYaw < this.outOfWaterAngle) {
-				this.swimYaw += turnSpeed;
-			}
-			
-			this.motionY -= this.fallVelocity;
-			this.fallVelocity += (this.fallGravity / 10);
-		}
-		
-		if(!this.isInWater() && (this instanceof IAmphibian)) {
-			if(!onGround) {
-				this.motionY -= this.fallVelocity;
-				this.fallVelocity += (this.fallGravity / 10);
-			}else {
-				this.fallVelocity = 0f;
-			}
-		}
-
-			
-		if(swimPitch > 45f) {
-			swimPitch = 45f;
-		}
-		
 		}else {
 			super.onLivingUpdate();
 		}
@@ -638,7 +502,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		
 		// Try to move towards a player
 		if(this.approachPlayers) {
-			if(rand.nextInt(15) == 0) {
+			if(rand.nextInt(50) == 0) {
 				EntityPlayer closest = world.getClosestPlayerToEntity(this, 32D);
 				if(closest != null) {
 				if(closest.isInWater())
@@ -683,6 +547,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 
 	public boolean setTargetHeading(double posX, double posY, double posZ, boolean waterChecks) {
+		if(this.isAIDisabled()) {
+			return false;
+		}
 		if(waterChecks) {
 			BlockPos bp = new BlockPos((int)posX, (int)posY, (int)posZ);
 			if(!world.getBlockState(bp).getMaterial().isLiquid()) return false;
@@ -792,7 +659,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	@Override
 	public boolean isAIDisabled() {
-		return true;
+		return super.isAIDisabled();
 	}
 
 	@Override

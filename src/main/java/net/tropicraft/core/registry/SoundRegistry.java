@@ -37,6 +37,7 @@ public class SoundRegistry {
 		register("bongo.low");
 		register("bongo.medium");
 		register("bongo.high");
+		register("dolphin");
 	}
 
 	public static void register(String soundPath) {

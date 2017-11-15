@@ -85,14 +85,15 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		this.setAir(30);
-		if (!this.isInWater() && this.onGround && this.isBeingRidden()) {
-			this.removePassengers();
+		if(this.isAIDisabled()) {
+			return;
 		}
+		
 		if (this.getNavigator() == null) {
 			return;
 		}
 
-		float renderSize = 0.3f + (((float) ticksExisted / 2000));
+		float renderSize = 0.3f + (((float) ticksExisted / 4000));
 		if (renderSize > 1f)
 			renderSize = 1f;
 		if (this.ticksExisted % 40 == 1 && !this.isMature()) {
@@ -104,18 +105,22 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 			if (this.ticksExisted == 1)
 				setSize(0.9f, 0.4f);
 		}
+		
+		if (renderSize >= 1f) {
+			setMature();
+			timeSinceLastEgg++;
+		}
 
 		if (world.isRemote) {
 			return;
 		}
 		
+		if (!this.isInWater() && this.onGround && this.isBeingRidden()) {
+			this.removePassengers();
+		}
+		
 		if(this.onGround && !this.isInWater()) {
 			this.swimSpeedCurrent = 0f;
-		}
-
-		if (renderSize >= 1f) {
-			setMature();
-			timeSinceLastEgg++;
 		}
 
 		if (this.timeSinceLastEgg > EGG_INTERVAL_MINIMUM && !isSeekingLand && rand.nextInt(NEST_SITE_SEARCH_ODDS) == 0
@@ -169,7 +174,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 			} else {
 				if (this.isInWater()) {
 					this.setNoGravity(true);
-					this.setNoAI(true);
+					//this.setNoAI(true);
 					this.isLandPathing = false;
 					this.setTargetHeading(this.currentNestSite.getX(), this.currentNestSite.getY() + 13,
 							this.currentNestSite.getZ(), false);
@@ -200,10 +205,16 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 				} else {
 					this.isLandPathing = true;
 					this.setNoGravity(false);
-					this.setNoAI(false);
+					//this.setNoAI(false);
 					if (this.getDistanceSq(this.currentNestSite.up(1)) > 3D) {
 						if (this.ticksExisted % 10 == 0) {
 							log("Trying to path to nest site");
+						//	this.setPathPriority(PathNodeType.WATER, 10f);
+							this.setPathPriority(PathNodeType.BLOCKED, -1f);
+							this.setPathPriority(PathNodeType.WALKABLE, 10f);
+							this.setPathPriority(PathNodeType.DAMAGE_FIRE, -1f);
+							this.setPathPriority(PathNodeType.DANGER_FIRE, 1f);
+
 							Util.tryMoveToXYZLongDist(this, this.currentNestSite.getX(), this.currentNestSite.getY(),
 									this.currentNestSite.getZ(), 0.2f);
 							if (this.getNavigator().noPath()) {
@@ -270,12 +281,14 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 			} else {
 				this.isLandPathing = true;
-				this.setNoAI(false);
+			//	this.setNoAI(false);
 
 				if (this.ticksExisted % 40 == 0) {
 					this.setPathPriority(PathNodeType.WATER, 10f);
 					this.setPathPriority(PathNodeType.BLOCKED, -1f);
 					this.setPathPriority(PathNodeType.WALKABLE, 10f);
+					this.setPathPriority(PathNodeType.DAMAGE_FIRE, -1f);
+					this.setPathPriority(PathNodeType.DANGER_FIRE, 1f);
 
 					log("Moving to water!");
 					Util.tryMoveToXYZLongDist(this, targetWaterSite, 0.2f);
@@ -298,8 +311,8 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		this.getNavigator().updatePath();
 		this.getNavigator().onUpdateNavigation();
 		if (!this.isInWater()) {
-			this.swimYaw = this.rotationYaw;
-			this.prevSwimYaw = this.prevRotationYaw;
+			this.swimYaw = -this.rotationYaw;
+			//this.prevSwimYaw = -this.prevRotationYaw;
 		}
 	}
 
@@ -381,8 +394,9 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 							-(scanSize / 2) + z);
 					BlockPos airCheck = waterCheck.up(1);
 
-					if (world.getBlockState(waterCheck).getMaterial().equals(Material.WATER)) {
-						// We have a water block
+					if (world.getBlockState(waterCheck).getMaterial().equals(Material.WATER) &&
+							world.getBlockState(waterCheck.down()).getMaterial().equals(Material.WATER)) {
+						// We have deep enough water
 						if (world.getBlockState(airCheck).getMaterial().equals(Material.AIR)) {
 							// We have a water block below an air block!
 							potentials.add(waterCheck);
@@ -494,7 +508,8 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	@Override
 	public boolean isAIDisabled() {
-		return !this.isLandPathing;
+		return super.isAIDisabled();
+		//return !this.isLandPathing;
 	}
 
 	@Override
@@ -542,8 +557,8 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 						this.targetVector = null;
 						this.targetVectorHeading = null;
 						this.swimSpeedCurrent += 0.05f;
-						if(this.swimSpeedCurrent > 6f) {
-							this.swimSpeedCurrent = 6f;
+						if(this.swimSpeedCurrent > 4f) {
+							this.swimSpeedCurrent = 4f;
 						}
 					}
 					if(p.moveForward < 0f) {

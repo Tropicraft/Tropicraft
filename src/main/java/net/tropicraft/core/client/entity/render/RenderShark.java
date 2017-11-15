@@ -26,6 +26,15 @@ public class RenderShark extends RenderTropicraftWaterMob {
 		GlStateManager.translate(0, -1.3D, 0);
 		String t = entityliving.getCustomNameTag();
 		entityliving.setCustomNameTag("");
+		entityliving.outOfWaterTime = 0;
+		if(!entityliving.isInWater()) {
+			if(entityliving.swimPitch > 5f) {
+				entityliving.swimPitch = 5f;
+			}
+			if(entityliving.swimPitch < -5f) {
+				entityliving.swimPitch = -5f;
+			}
+		}
 		this.renderWaterMob((EntityTropicraftWaterBase) entityliving, d, d1, d2, f1);
 		GlStateManager.translate(0, 1.3D, 0);
 		entityliving.setCustomNameTag(t);

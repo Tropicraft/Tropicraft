@@ -1,9 +1,9 @@
 {
 	"headlaughing": { "category": "entity", "sounds": [ "tropicraft:headlaughing", "tropicraft:headlaughing2" ] },
-	"headattack": { "category": "entity", "sounds": [ "tropicraft:headattack" ] }, 
-	"headshort": { "category": "entity", "sounds": [ "tropicraft:headshort" ] }, 
-	"headmed": { "category": "entity", "sounds": [ "tropicraft:headmed" ] }, 
-	"headpain": { "category": "entity", "sounds": [ "tropicraft:headpain" ] }, 
+	"headattack": { "category": "entity", "sounds": [ "tropicraft:headattack" ] },
+	"headshort": { "category": "entity", "sounds": [ "tropicraft:headshort" ] },
+	"headmed": { "category": "entity", "sounds": [ "tropicraft:headmed" ] },
+	"headpain": { "category": "entity", "sounds": [ "tropicraft:headpain" ] },
 	"headdeath": { "category": "entity", "sounds": [ "tropicraft:headdeath" ] },
 	"iggyattack": { "category": "entity", "sounds": [ "tropicraft:iggyattack" ] },
 	"iggydeath": { "category": "entity", "sounds": [ "tropicraft:iggydeath" ] },
@@ -12,6 +12,9 @@
 	"bongo.low": { "category": "block", "sounds": [ "tropicraft:bongolow" ] },
 	"bongo.medium": { "category": "block", "sounds": [ "tropicraft:bongomedium" ] },
 	"bongo.high": { "category": "block", "sounds": [ "tropicraft:bongohigh" ] },
+	"dolphin": { "category": "entity", "sounds": [ "tropicraft:dolphin" ] },
+
+
 	"summering": { "category": "record", "sounds": [
 			{
 				"name": "tropicraft:music/summering",

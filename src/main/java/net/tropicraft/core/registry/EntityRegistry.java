@@ -74,12 +74,12 @@ public class EntityRegistry {
 		registerEntity(EntityKoaHunter.class, "koa", 64, 3, true);
 		registerEntity(EntitySeaTurtleEgg.class, "SeaTurtleEgg", 80, 5, false);
 		registerEntity(EntitySeaTurtle.class, "turtle", 80, 1, true);
-		registerEntity(EntityTropicalFish.class, "fish", 80, 2, true, SpawnPlacementType.IN_WATER);
+		registerEntity(EntityTropicalFish.class, "fish", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntitySeahorse.class, "seahorse", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityEagleRay.class, "eagleray", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityMarlin.class, "marlin", 80, 1, true, SpawnPlacementType.IN_WATER);
-		registerEntity(EntityPiranha.class, "piranha", 80, 2, true, SpawnPlacementType.IN_WATER);
-		registerEntity(EntityRiverSardine.class, "sardine", 80, 2, true, SpawnPlacementType.IN_WATER);
+		registerEntity(EntityPiranha.class, "piranha", 80, 1, true, SpawnPlacementType.IN_WATER);
+		registerEntity(EntityRiverSardine.class, "sardine", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityDolphin.class, "dolphin", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityShark.class, "hammerhead", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(EntityFishHook.class, "tropifishhook", 80, 1, true);

@@ -24,16 +24,16 @@ public class RenderSeaTurtle extends RenderTropicraftWaterMob {
 	public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw,	float partialTicks) {
 		if(entity instanceof EntitySeaTurtle) {
 			EntitySeaTurtle turtle = (EntitySeaTurtle) entity;
-			
+			turtle.outOfWaterTime = 0;
 			float scale = 0.3f;
 			if(entity.ticksExisted < 30) {
 				this.shadowOpaque = 0.5f;
-				this.shadowSize = 0.2f+(((float)entity.ticksExisted/2000));
+				this.shadowSize = 0.2f+(((float)entity.ticksExisted/4000));
 				if(this.shadowSize > 0.5f) {
 					this.shadowSize = 0.5f;
 				}
 			}else {
-				scale = 0.3f+(((float)entity.ticksExisted/2000));
+				scale = 0.3f+(((float)entity.ticksExisted/4000));
 				if(scale > 1f) {
 					scale = 1f;
 				}
@@ -45,10 +45,11 @@ public class RenderSeaTurtle extends RenderTropicraftWaterMob {
 			GlStateManager.translate(x, y, z);
 			GlStateManager.scale(scale, scale, scale);
 
-			if(turtle.isInWater()) {
+			if(turtle.isInWater() || turtle.getPassengers().size() > 0) {
 				this.renderWaterMob(entity, 0, 0, 0, partialTicks, 0f, 0f);
 			}else {
 				super.doRender(entity, 0, 0, 0, 0, partialTicks);
+
 			}
 			GlStateManager.popMatrix();
 
