@@ -37,15 +37,10 @@ import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.common.worldgen.overworld.TCWorldGenerator;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.proxy.CommonProxy;
-import net.tropicraft.core.registry.AchievementRegistry;
-import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.CommandRegistry;
-import net.tropicraft.core.registry.CraftingRegistry;
-import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.LootRegistry;
-import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
 @Mod(modid = Info.MODID, version = Info.VERSION, dependencies = "after:forge@[12.18.3.2221,)", guiFactory = Info.GUI_FACTORY)
@@ -89,7 +84,7 @@ public class Tropicraft {
 	public void init(FMLInitializationEvent event) {
 		TCPacketHandler.init();
 		ItemRegistry.init();
-		AchievementRegistry.init();
+//		AchievementRegistry.init();
 		//EntityRegistry.init();
 		proxy.init();
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
