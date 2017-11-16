@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -114,12 +115,11 @@ public class WorldGenHomeTree extends TCGenBase {
 					int spawnerX = trunkX - 4 + rand.nextInt(9);
 					int spawnerZ = trunkZ - 4 + rand.nextInt(9);
 					TCGenUtils.setBlock(worldObj, spawnerX, y + 1, spawnerZ, Blocks.MOB_SPAWNER);
-					StringBuilder sb = new StringBuilder(String.format("%s.", Info.MODID));
-					sb.append(rand.nextBoolean() ? "ashen" : "iguana");
+					ResourceLocation entityId = new ResourceLocation(Info.MODID, rand.nextBoolean() ? "ashen" : "iguana");
 					BlockPos spawnerPos = new BlockPos(spawnerX, y + 1, spawnerZ);
 					TileEntityMobSpawner spawner = ((TileEntityMobSpawner)worldObj.getTileEntity(spawnerPos));
 					if (spawner != null) {
-						spawner.getSpawnerBaseLogic().setEntityName(sb.toString());
+						spawner.getSpawnerBaseLogic().setEntityId(entityId);
 					}
 				}
 			}
