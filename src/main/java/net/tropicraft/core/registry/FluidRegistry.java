@@ -2,12 +2,12 @@ package net.tropicraft.core.registry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.tropicraft.Info;
+import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Names;
 import net.tropicraft.core.common.fluid.FluidTropicsPortal;
 import net.tropicraft.core.common.fluid.FluidTropicsWater;
 
+@Mod.EventBusSubscriber
 public class FluidRegistry {
 
 	public static final Fluid tropicsWater = new FluidTropicsWater(TropicraftRegistry.getNamePrefixed(Names.TROPICS_WATER));
@@ -16,10 +16,6 @@ public class FluidRegistry {
 	public static void preInit() {
 		registerFluid(tropicsWater);
 		registerFluid(tropicsPortal);
-	}
-
-	public static void init() {
-
 	}
 
 	/**

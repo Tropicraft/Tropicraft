@@ -20,8 +20,11 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemSword;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
@@ -63,6 +66,7 @@ import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
 import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
 
+@Mod.EventBusSubscriber
 public class ItemRegistry extends TropicraftRegistry {
     
     public interface IBlockItemRegistrar {
@@ -226,148 +230,146 @@ public class ItemRegistry extends TropicraftRegistry {
     // Linked as to maintain the same order as the block registry
     private static final Map<Block, IBlockItemRegistrar> blockItemRegistry = new LinkedHashMap<>();
 
-    public static void preInit() {
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
         blockItemRegistry.entrySet().forEach(e -> {
-                Item item = GameRegistry.register(e.getValue().getItem(e.getKey()).setRegistryName(e.getKey().getRegistryName()));
+                Item item = e.getValue().getItem(e.getKey());
+                event.getRegistry().register(item);
+                item.setRegistryName(e.getKey().getRegistryName());
                 e.getValue().postRegister(e.getKey(), item);
         });
+        IForgeRegistry<Item> registry = event.getRegistry();
         
-        diveComputer = registerItem(new ItemDiveComputer(), "dive_computer");
+        diveComputer = registerItem(registry, new ItemDiveComputer(), "dive_computer");
         
-        pinkWeightBelt = registerItem(new ItemTropicraft(), "pink_weight_belt");
-        pinkPonyBottle = registerItem(new ItemPonyBottle(), "pink_pony_bottle");
-        pinkBCD = registerItem(new ItemBCD(), "pink_bcd");
-        //pinkScubaGoggles = registerItem(new ItemTropicraft(), "pink_scuba_goggles");
-        pinkRegulator = registerItem(new ItemTropicraft(), "pink_regulator");
-        pinkScubaTank = registerItem(new ItemScubaTank(), "pink_scuba_tank");
-        pinkFlippers = registerItem(new ItemScubaFlippers(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.FEET), "pink_flippers");
-        //pinkLeggings = registerItem(new ItemScubaLeggings(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.LEGS), "pink_leggings");
-        //pinkChestplate = registerItem(new ItemScubaChestplate(materialPinkSuit, ItemScubaGear.ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate");
-        pinkChestplateGear = registerItem(new ItemScubaChestplateGear(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate_gear");
-        pinkScubaGoggles = registerItem(new ItemScubaHelmet(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.HEAD), "pink_scuba_goggles");
+        pinkWeightBelt = registerItem(registry, new ItemTropicraft(), "pink_weight_belt");
+        pinkPonyBottle = registerItem(registry, new ItemPonyBottle(), "pink_pony_bottle");
+        pinkBCD = registerItem(registry, new ItemBCD(), "pink_bcd");
+        pinkRegulator = registerItem(registry, new ItemTropicraft(), "pink_regulator");
+        pinkScubaTank = registerItem(registry, new ItemScubaTank(), "pink_scuba_tank");
+        pinkFlippers = registerItem(registry, new ItemScubaFlippers(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.FEET), "pink_flippers");
+        pinkChestplateGear = registerItem(registry, new ItemScubaChestplateGear(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.CHEST), "pink_chestplate_gear");
+        pinkScubaGoggles = registerItem(registry, new ItemScubaHelmet(materialPinkSuit, ScubaMaterial.PINK, 0, EntityEquipmentSlot.HEAD), "pink_scuba_goggles");
 
-        yellowWeightBelt = registerItem(new ItemTropicraft(), "yellow_weight_belt");
-        yellowPonyBottle = registerItem(new ItemPonyBottle(), "yellow_pony_bottle");
-        yellowBCD = registerItem(new ItemBCD(), "yellow_bcd");
-        //yellowScubaGoggles = registerItem(new ItemTropicraft(), "yellow_scuba_goggles");
-        yellowRegulator = registerItem(new ItemTropicraft(), "yellow_regulator");
-        yellowScubaTank = registerItem(new ItemScubaTank(), "yellow_scuba_tank");
-        yellowFlippers = registerItem(new ItemScubaFlippers(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.FEET), "yellow_flippers");
-        //yellowLeggings = registerItem(new ItemScubaLeggings(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.LEGS), "yellow_leggings");
-        //yellowChestplate = registerItem(new ItemScubaChestplate(materialYellowSuit, ItemScubaGear.ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate");
-        yellowChestplateGear = registerItem(new ItemScubaChestplateGear(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate_gear");
-        yellowScubaGoggles = registerItem(new ItemScubaHelmet(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "yellow_scuba_goggles");
+        yellowWeightBelt = registerItem(registry, new ItemTropicraft(), "yellow_weight_belt");
+        yellowPonyBottle = registerItem(registry, new ItemPonyBottle(), "yellow_pony_bottle");
+        yellowBCD = registerItem(registry, new ItemBCD(), "yellow_bcd");
+        yellowRegulator = registerItem(registry, new ItemTropicraft(), "yellow_regulator");
+        yellowScubaTank = registerItem(registry, new ItemScubaTank(), "yellow_scuba_tank");
+        yellowFlippers = registerItem(registry, new ItemScubaFlippers(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.FEET), "yellow_flippers");
+        yellowChestplateGear = registerItem(registry, new ItemScubaChestplateGear(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate_gear");
+        yellowScubaGoggles = registerItem(registry, new ItemScubaHelmet(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "yellow_scuba_goggles");
         
-        recordBuriedTreasure = registerItem(new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
-        recordEasternIsles = registerItem(new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");
-        recordSummering = registerItem(new ItemMusicDisc("summering", "Billy Christiansen", SoundRegistry.get("summering")), "summering");
-        recordTheTribe = registerItem(new ItemMusicDisc("the_tribe", "Emile Van Krieken", SoundRegistry.get("the_tribe")), "the_tribe");
-        recordLowTide = registerItem(new ItemMusicDisc("low_tide", "Punchaface", SoundRegistry.get("low_tide")), "low_tide");
-        recordTradeWinds = registerItem(new ItemMusicDisc("trade_winds", "Frox", SoundRegistry.get("trade_winds")), "trade_winds");
+        recordBuriedTreasure = registerItem(registry, new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
+        recordEasternIsles = registerItem(registry, new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");
+        recordSummering = registerItem(registry, new ItemMusicDisc("summering", "Billy Christiansen", SoundRegistry.get("summering")), "summering");
+        recordTheTribe = registerItem(registry, new ItemMusicDisc("the_tribe", "Emile Van Krieken", SoundRegistry.get("the_tribe")), "the_tribe");
+        recordLowTide = registerItem(registry, new ItemMusicDisc("low_tide", "Punchaface", SoundRegistry.get("low_tide")), "low_tide");
+        recordTradeWinds = registerItem(registry, new ItemMusicDisc("trade_winds", "Frox", SoundRegistry.get("trade_winds")), "trade_winds");
 
-        azurite = registerItem(new ItemTropicsOre(), "azurite");
-        eudialyte = registerItem(new ItemTropicsOre(), "eudialyte");
-        zircon = registerItem(new ItemTropicsOre(), "zircon");
+        azurite = registerItem(registry, new ItemTropicsOre(), "azurite");
+        eudialyte = registerItem(registry, new ItemTropicsOre(), "eudialyte");
+        zircon = registerItem(registry, new ItemTropicsOre(), "zircon");
 
-        grapefruit = registerItem(new ItemTropicraftFood(2, 0.2F), "grapefruit");
-        lemon = registerItem(new ItemTropicraftFood(2, 0.2F), "lemon");
-        lime = registerItem(new ItemTropicraftFood(2, 0.2F), "lime");
-        orange = registerItem(new ItemTropicraftFood(2, 0.2F), "orange");
+        grapefruit = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "grapefruit");
+        lemon = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "lemon");
+        lime = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "lime");
+        orange = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "orange");
 
-        hoeEudialyte = registerItem(new ItemHoe(materialEudialyteTools), "hoe_eudialyte");
-        hoeZircon = registerItem(new ItemHoe(materialZirconTools), "hoe_zircon");
-        pickaxeEudialyte = registerItem(new ItemTropicraftPickaxe(materialEudialyteTools), "pickaxe_eudialyte");
-        pickaxeZircon = registerItem(new ItemTropicraftPickaxe(materialZirconTools), "pickaxe_zircon");
-        shovelEudialyte = registerItem(new ItemSpade(materialEudialyteTools), "shovel_eudialyte");
-        shovelZircon = registerItem(new ItemSpade(materialZirconTools), "shovel_zircon");
-        axeEudialyte = registerItem(new ItemTropicraftAxe(materialEudialyteTools, 6.0F, -3.1F), "axe_eudialyte");
-        axeZircon = registerItem(new ItemTropicraftAxe(materialZirconTools, 6.0F, -3.2F), "axe_zircon");
-        swordEudialyte = registerItem(new ItemSword(materialEudialyteTools), "sword_eudialyte");
-        swordZircon = registerItem(new ItemSword(materialZirconTools), "sword_zircon");
+        hoeEudialyte = registerItem(registry, new ItemHoe(materialEudialyteTools), "hoe_eudialyte");
+        hoeZircon = registerItem(registry, new ItemHoe(materialZirconTools), "hoe_zircon");
+        pickaxeEudialyte = registerItem(registry, new ItemTropicraftPickaxe(materialEudialyteTools), "pickaxe_eudialyte");
+        pickaxeZircon = registerItem(registry, new ItemTropicraftPickaxe(materialZirconTools), "pickaxe_zircon");
+        shovelEudialyte = registerItem(registry, new ItemSpade(materialEudialyteTools), "shovel_eudialyte");
+        shovelZircon = registerItem(registry, new ItemSpade(materialZirconTools), "shovel_zircon");
+        axeEudialyte = registerItem(registry, new ItemTropicraftAxe(materialEudialyteTools, 6.0F, -3.1F), "axe_eudialyte");
+        axeZircon = registerItem(registry, new ItemTropicraftAxe(materialZirconTools, 6.0F, -3.2F), "axe_zircon");
+        swordEudialyte = registerItem(registry, new ItemSword(materialEudialyteTools), "sword_eudialyte");
+        swordZircon = registerItem(registry, new ItemSword(materialZirconTools), "sword_zircon");
 
-        fishingNet = registerItem(new ItemTropicraft(), "fishing_net");
+        fishingNet = registerItem(registry, new ItemTropicraft(), "fishing_net");
 
-        bambooShoot = registerItem(new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
-        bambooStick = registerItem(new ItemTropicraft(), "bamboo_stick");
-        bambooMug = registerItem(new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
+        bambooShoot = registerItem(registry, new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
+        bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
+        bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
-        freshMarlin = registerItem(new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
-        searedMarlin = registerItem(new ItemTropicraftFood(8, 0.65F), "seared_marlin");
+        freshMarlin = registerItem(registry, new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
+        searedMarlin = registerItem(registry, new ItemTropicraftFood(8, 0.65F), "seared_marlin");
 
-        tropicsWaterBucket = registerItem((new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
-        fishBucket = registerItem(new ItemFishBucket(), "fish_bucket");
+        tropicsWaterBucket = registerItem(registry, (new ItemBucket(BlockRegistry.tropicsWater)).setContainerItem(Items.BUCKET), "tropics_water_bucket");
+        fishBucket = registerItem(registry, new ItemFishBucket(), "fish_bucket");
 
-        coconutChunk = registerItem(new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
-        pineappleCubes = registerItem(new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
+        coconutChunk = registerItem(registry, new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
+        pineappleCubes = registerItem(registry, new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
 
-        coffeeBeans = registerMultiItem(new ItemCoffeeBean(Names.COFFEE_NAMES, BlockRegistry.coffeePlant), "coffee_beans", Names.COFFEE_NAMES);
+        coffeeBeans = registerMultiItem(registry, new ItemCoffeeBean(Names.COFFEE_NAMES, BlockRegistry.coffeePlant), "coffee_beans", Names.COFFEE_NAMES);
 
-        frogLeg = registerItem(new ItemTropicraft().setMaxStackSize(64), "frog_leg");
-        cookedFrogLeg = registerItem(new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
-        poisonFrogSkin = registerItem(new ItemTropicraft().setMaxStackSize(64), "poison_frog_skin");
+        frogLeg = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "frog_leg");
+        cookedFrogLeg = registerItem(registry, new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
+        poisonFrogSkin = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "poison_frog_skin");
 
-        scale = registerItem(new ItemTropicraft().setMaxStackSize(64), "scale");
+        scale = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "scale");
 
-        scaleBoots = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.FEET), "scale_boots");
-        scaleLeggings = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.LEGS), "scale_leggings");
-        scaleChestplate = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.CHEST), "scale_chestplate");
-        scaleHelmet = registerItem(new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.HEAD), "scale_helmet");
+        scaleBoots = registerItem(registry, new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.FEET), "scale_boots");
+        scaleLeggings = registerItem(registry, new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.LEGS), "scale_leggings");
+        scaleChestplate = registerItem(registry, new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.CHEST), "scale_chestplate");
+        scaleHelmet = registerItem(registry, new ItemScaleArmor(materialScaleArmor, 0, EntityEquipmentSlot.HEAD), "scale_helmet");
 
-        fireBoots = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.FEET), "fire_boots");
-        fireLeggings = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.LEGS), "fire_leggings");
-        fireChestplate = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.CHEST), "fire_chestplate");
-        fireHelmet = registerItem(new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.HEAD), "fire_helmet");
+        fireBoots = registerItem(registry, new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.FEET), "fire_boots");
+        fireLeggings = registerItem(registry, new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.LEGS), "fire_leggings");
+        fireChestplate = registerItem(registry, new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.CHEST), "fire_chestplate");
+        fireHelmet = registerItem(registry, new ItemFireArmor(materialFireArmor, 0, EntityEquipmentSlot.HEAD), "fire_helmet");
         
-        chair = registerMultiItem(new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
-        umbrella = registerMultiItem(new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);
+        chair = registerMultiItem(registry, new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
+        umbrella = registerMultiItem(registry, new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);
 
-        portalEnchanter = registerItem(new ItemPortalEnchanter(), "portal_enchanter");
+        portalEnchanter = registerItem(registry, new ItemPortalEnchanter(), "portal_enchanter");
 
-        shell = registerMultiItem(new ItemShell(), "shell", TropicraftShells.values());
+        shell = registerMultiItem(registry, new ItemShell(), "shell", TropicraftShells.values());
 
-        cocktail = registerMultiItem(new ItemCocktail(), "cocktail", Drink.drinkList.length);
+        cocktail = registerMultiItem(registry, new ItemCocktail(), "cocktail", Drink.drinkList.length);
 
-        whitePearl = registerItem(new ItemTropicraft().setMaxStackSize(64), "white_pearl");
-        blackPearl = registerItem(new ItemTropicraft().setMaxStackSize(64), "black_pearl");
+        whitePearl = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "white_pearl");
+        blackPearl = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "black_pearl");
 
-        fertilizer = registerItem(new ItemFertilizer(), "fertilizer");
+        fertilizer = registerItem(registry, new ItemFertilizer(), "fertilizer");
 
-        encyclopedia = registerItem(new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
+        encyclopedia = registerItem(registry, new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
 
-        dagger = registerItem(new ItemDagger(materialZirconTools), "dagger");
-        bambooSpear = registerItem(new ItemSword(materialBambooTools), "bamboo_spear");
-        coconutBomb = registerItem(new ItemCoconutBomb(), "coconut_bomb");
+        dagger = registerItem(registry, new ItemDagger(materialZirconTools), "dagger");
+        bambooSpear = registerItem(registry, new ItemSword(materialBambooTools), "bamboo_spear");
+        coconutBomb = registerItem(registry, new ItemCoconutBomb(), "coconut_bomb");
 
-        flowerPot = registerItem(new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
-        bambooDoor = registerItem(new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
-        bambooItemFrame = registerItem(new ItemBambooItemFrame(EntityBambooItemFrame.class), "bamboo_item_frame");
+        flowerPot = registerItem(registry, new ItemTropicraftBlockSpecial(BlockRegistry.flowerPot), "flower_pot");
+        bambooDoor = registerItem(registry, new ItemDoor(BlockRegistry.bambooDoor), "bamboo_door");
+        bambooItemFrame = registerItem(registry, new ItemBambooItemFrame(EntityBambooItemFrame.class), "bamboo_item_frame");
         Tropicraft.proxy.registerArbitraryBlockVariants("bamboo_item_frame", "normal", "map");
 
-        waterWand = registerItem(new ItemWaterWand(), "water_wand");
+        waterWand = registerItem(registry, new ItemWaterWand(), "water_wand");
 
-        seaUrchinRoe = registerItem(new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
-        mobEgg = registerMultiItemPrefixed(new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
+        seaUrchinRoe = registerItem(registry, new ItemTropicraftFood(3, 0.3F), "sea_urchin_roe");
+        mobEgg = registerMultiItemPrefixed(registry, new ItemMobEgg(), "spawn_egg", Names.EGG_NAMES);
         
-        iguanaLeather = registerItem(new ItemTropicraft().setMaxStackSize(64), "iguana_leather");
+        iguanaLeather = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "iguana_leather");
         OreDictionary.registerOre("leather", iguanaLeather);
 
-        trimix = registerItem(new ItemTropicraft().setMaxStackSize(1), "trimix");
+        trimix = registerItem(registry, new ItemTropicraft().setMaxStackSize(1), "trimix");
 
-        maskSquareZord = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SQUARE_ZORD), "mask_square_zord");
-        maskHornMonkey = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.HORN_MONKEY), "mask_horn_monkey");
-        maskOblongatron = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.OBLONGATRON), "mask_oblongatron");
-        maskHeadinator = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.HEADINATOR), "mask_headinator");
-        maskSquareHorn = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SQUARE_HORN), "mask_square_horn");
-        maskScrewAttack = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SCREW_ATTACK), "mask_screw_attack");
-        maskTheBrain = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.THE_BRAIN), "mask_the_brain");
-        maskBatBoy = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.BAT_BOY), "mask_bat_boy");
-        mask1 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK1), "mask_ashen_mask1");
-        mask2 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK2), "mask_ashen_mask2");
-        mask3 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK3), "mask_ashen_mask3");
-        mask4 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK4), "mask_ashen_mask4");
-        mask5 = registerItem(new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK5), "mask_ashen_mask5");
+        maskSquareZord = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SQUARE_ZORD), "mask_square_zord");
+        maskHornMonkey = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.HORN_MONKEY), "mask_horn_monkey");
+        maskOblongatron = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.OBLONGATRON), "mask_oblongatron");
+        maskHeadinator = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.HEADINATOR), "mask_headinator");
+        maskSquareHorn = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SQUARE_HORN), "mask_square_horn");
+        maskScrewAttack = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.SCREW_ATTACK), "mask_screw_attack");
+        maskTheBrain = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.THE_BRAIN), "mask_the_brain");
+        maskBatBoy = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.BAT_BOY), "mask_bat_boy");
+        mask1 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK1), "mask_ashen_mask1");
+        mask2 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK2), "mask_ashen_mask2");
+        mask3 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK3), "mask_ashen_mask3");
+        mask4 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK4), "mask_ashen_mask4");
+        mask5 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK5), "mask_ashen_mask5");
 
-        fishingRod = registerItem(new ItemFishingRod(), "fishing_rod");
+        fishingRod = registerItem(registry, new ItemFishingRod(), "fishing_rod");
 
     }
 
@@ -385,39 +387,39 @@ public class ItemRegistry extends TropicraftRegistry {
         blockItemRegistry.put(block, item);
     }
     
-    private static Item registerMultiItem(Item item, String regName, ITropicraftVariant... variants) {
-        return registerMultiItemPrefixed(item, regName, Arrays.stream(variants).map(ITropicraftVariant::getSimpleName).toArray(String[]::new));
+    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String regName, ITropicraftVariant... variants) {
+        return registerMultiItemPrefixed(registry, item, regName, Arrays.stream(variants).map(ITropicraftVariant::getSimpleName).toArray(String[]::new));
     }
 
-    private static Item registerMultiItem(Item item, String regName, String... variantNames) {
-        Item ret = registerItem(item, regName, variantNames[0]);
+    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String regName, String... variantNames) {
+        Item ret = registerItem(registry, item, regName, variantNames[0]);
         for (int i = 1; i < variantNames.length; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
         }
         return ret;
     }
 
-    private static Item registerMultiItemPrefixed(Item item, String name, String[] names) {
-        return registerMultiItem(item, name, Arrays.stream(names).map(s -> name + "_" + s).toArray(String[]::new));
+    private static Item registerMultiItemPrefixed(IForgeRegistry<Item> registry, Item item, String name, String[] names) {
+        return registerMultiItem(registry, item, name, Arrays.stream(names).map(s -> name + "_" + s).toArray(String[]::new));
     }
 
-    private static Item registerMultiItem(Item item, String name, int numPlaces) {
-        Item ret = registerItem(item, name);
+    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String name, int numPlaces) {
+        Item ret = registerItem(registry, item, name);
         for (int i = 1; i < numPlaces; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, name, i);
         }
         return ret;
     }
 
-    private static Item registerItem(Item item, String name) {
-        return registerItem(item, name, name);
+    private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name) {
+        return registerItem(registry, item, name, name);
     }
 
-    private static Item registerItem(Item item, String name, String variantName) {
+    private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name, String variantName) {
         item.setUnlocalizedName(getNamePrefixed(name));
         item.setRegistryName(name);
 
-        GameRegistry.register(item);
+        registry.register(item);
         item.setCreativeTab(CreativeTabRegistry.tropicraftTab);
         Tropicraft.proxy.registerItemVariantModel(item, variantName, 0);
 

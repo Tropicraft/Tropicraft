@@ -4,46 +4,52 @@ import java.util.HashMap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.tropicraft.Info;
 
+@Mod.EventBusSubscriber
 public class SoundRegistry {
 
 	private static HashMap<String, SoundEvent> lookupStringToEvent = new HashMap<String, SoundEvent>();
 
-	public static void init() {
-		register("headlaughing");
-		register("headattack");
-		register("headshort");
-		register("headmed");
-		register("headpain");
-		register("headdeath");
+	@SubscribeEvent
+	public static void init(RegistryEvent.Register<SoundEvent> event) {
+	    IForgeRegistry<SoundEvent> registry = event.getRegistry();
+		register(registry, "headlaughing");
+		register(registry, "headattack");
+		register(registry, "headshort");
+		register(registry, "headmed");
+		register(registry, "headpain");
+		register(registry, "headdeath");
 		// records
-		register("buried_treasure");
-		register("eastern_isles");
-		register("low_tide");
-		register("summering");
-		register("the_tribe");
-		register("trade_winds");
+		register(registry, "buried_treasure");
+		register(registry, "eastern_isles");
+		register(registry, "low_tide");
+		register(registry, "summering");
+		register(registry, "the_tribe");
+		register(registry, "trade_winds");
 		
-		register("pageFlip");
+		register(registry, "pageFlip");
 
-		register("iggyattack");
-		register("iggydeath");
-		register("iggyliving");
+		register(registry, "iggyattack");
+		register(registry, "iggydeath");
+		register(registry, "iggyliving");
 		
-		register("ashenLaugh");
+		register(registry, "ashenLaugh");
 		// bongos
-		register("bongo.low");
-		register("bongo.medium");
-		register("bongo.high");
-		register("dolphin");
+		register(registry, "bongo.low");
+		register(registry, "bongo.medium");
+		register(registry, "bongo.high");
+		register(registry, "dolphin");
 	}
 
-	public static void register(String soundPath) {
+	public static void register(IForgeRegistry<SoundEvent> registry, String soundPath) {
 		ResourceLocation resLoc = new ResourceLocation(Info.MODID, soundPath);
 		SoundEvent event = new SoundEvent(resLoc);
-		GameRegistry.register(event, resLoc);
+		registry.register(event);
 		if (lookupStringToEvent.containsKey(soundPath)) {
 			System.out.println("TCWARNING: duplicate sound registration for " + soundPath);
 		}

@@ -1,7 +1,7 @@
 package net.tropicraft.core.registry;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class CreativeTabRegistry {
 
@@ -13,8 +13,8 @@ public class CreativeTabRegistry {
 		}
 		
 		@Override
-		public Item getTabIconItem() {
-			return Item.getItemFromBlock(BlockRegistry.pineapple);
+		public ItemStack getTabIconItem() {
+			return new ItemStack(BlockRegistry.pineapple);
 		}
 	}
 }

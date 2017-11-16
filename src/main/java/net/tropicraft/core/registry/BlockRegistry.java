@@ -13,8 +13,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
@@ -70,6 +73,7 @@ import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
 import net.tropicraft.core.registry.ItemRegistry.IBlockItemRegistrar;
 
+@Mod.EventBusSubscriber
 public class BlockRegistry extends TropicraftRegistry {
     
     private static class SimpleItemCreator implements IBlockItemRegistrar {
@@ -211,11 +215,13 @@ public class BlockRegistry extends TropicraftRegistry {
 	/**
 	 * Register blocks in preInit
 	 */
-	public static void preInit() {
-		chunk = registerBlock(new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		ore = registerBlock(new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES));
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        IForgeRegistry<Block> registry = event.getRegistry();
+		chunk = registerBlock(registry, new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
+		ore = registerBlock(registry, new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES));
 		// FIXME ew
-		oreBlock = registerBlock(new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.ORES_WITH_BLOCKS) {
+		oreBlock = registerBlock(registry, new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.ORES_WITH_BLOCKS) {
 		    @Override
 		    public Item getItem(Block block) {
 	            return new ItemBlockTropicraft(block, variants.toArray(new ITropicraftVariant[variants.size()])) {
@@ -226,11 +232,11 @@ public class BlockRegistry extends TropicraftRegistry {
 		        };
 		    }
 		});
-		flowers = registerBlock(new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
-		logs = registerBlock(new BlockTropicraftLog(), "log", new MultiBlockItemCreator(TropicraftLogs.values()));
-		coral = registerBlock(new BlockCoral(), "coral", new StandardItemCreator(TropicraftCorals.VALUES));
-		bundles = registerBlock(new BlockBundle(Material.WOOD), "bundle", new StandardItemCreator(TropicraftBundles.values()));
-		seaweed = registerBlockNoItem(new BlockSeaweed(), "seaweed");
+		flowers = registerBlock(registry, new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
+		logs = registerBlock(registry, new BlockTropicraftLog(), "log", new MultiBlockItemCreator(TropicraftLogs.values()));
+		coral = registerBlock(registry, new BlockCoral(), "coral", new StandardItemCreator(TropicraftCorals.VALUES));
+		bundles = registerBlock(registry, new BlockBundle(Material.WOOD), "bundle", new StandardItemCreator(TropicraftBundles.values()));
+		seaweed = registerBlockNoItem(registry, new BlockSeaweed(), "seaweed");
 
 		slabs = new BlockTropicraftSlab(Material.WOOD, false);
 		doubleSlabs = new BlockTropicraftSlab(Material.WOOD, true);
@@ -243,66 +249,66 @@ public class BlockRegistry extends TropicraftRegistry {
 		    }
 		};
 		
-		slabs = registerBlock(slabs, "slab", slabRegistrar);
-		doubleSlabs = registerBlock(doubleSlabs, "double_slab", slabRegistrar);
+		slabs = registerBlock(registry, slabs, "slab", slabRegistrar);
+		doubleSlabs = registerBlock(registry, doubleSlabs, "double_slab", slabRegistrar);
 		
-		planks = registerBlock(new BlockTropicraftPlank(Material.WOOD), "plank", new MultiBlockItemCreator(TropicraftPlanks.VALUES));
-		bambooShoot = registerBlock(new BlockBambooShoot(), Names.BAMBOO_SHOOT, (IBlockItemRegistrar) null);
+		planks = registerBlock(registry, new BlockTropicraftPlank(Material.WOOD), "plank", new MultiBlockItemCreator(TropicraftPlanks.VALUES));
+		bambooShoot = registerBlock(registry, new BlockBambooShoot(), Names.BAMBOO_SHOOT, (IBlockItemRegistrar) null);
 
-		thatchStairs = registerBlock(new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS, true));
-		bambooStairs = registerBlock(new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS, new SimpleItemCreator(Names.BLOCK_BAMBOO_STAIRS, true));
-		palmStairs = registerBlock(new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS, new SimpleItemCreator(Names.BLOCK_PALM_STAIRS, true));
-		chunkStairs = registerBlock(new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS, new SimpleItemCreator(Names.BLOCK_CHUNK_O_HEAD_STAIRS, true));
-		mahoganyStairs = registerBlock(new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.MAHOGANY)), Names.BLOCK_MAHOGANY_STAIRS, new SimpleItemCreator(Names.BLOCK_MAHOGANY_STAIRS, true));
-		thatchStairsFuzzy = registerBlock(new BlockTropicraftStairsFuzzy(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS_FUZZY, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS_FUZZY, true));
+		thatchStairs = registerBlock(registry, new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS, true));
+		bambooStairs = registerBlock(registry, new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS, new SimpleItemCreator(Names.BLOCK_BAMBOO_STAIRS, true));
+		palmStairs = registerBlock(registry, new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS, new SimpleItemCreator(Names.BLOCK_PALM_STAIRS, true));
+		chunkStairs = registerBlock(registry, new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS, new SimpleItemCreator(Names.BLOCK_CHUNK_O_HEAD_STAIRS, true));
+		mahoganyStairs = registerBlock(registry, new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.MAHOGANY)), Names.BLOCK_MAHOGANY_STAIRS, new SimpleItemCreator(Names.BLOCK_MAHOGANY_STAIRS, true));
+		thatchStairsFuzzy = registerBlock(registry, new BlockTropicraftStairsFuzzy(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS_FUZZY, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS_FUZZY, true));
 		
-		tropicsWater = registerBlockNoItem(new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER);
-		tropicsPortal = registerBlockNoItem(new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER, false), Names.TROPICS_PORTAL);
-		tropicsPortalTeleporter = registerBlockNoItem(new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER, true), Names.TROPICS_PORTAL_TELEPORTER);
+		tropicsWater = registerBlockNoItem(registry, new BlockTropicsWater(FluidRegistry.tropicsWater, Material.WATER), Names.TROPICS_WATER);
+		tropicsPortal = registerBlockNoItem(registry, new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER, false), Names.TROPICS_PORTAL);
+		tropicsPortalTeleporter = registerBlockNoItem(registry, new BlockTropicsPortal(FluidRegistry.tropicsPortal, Material.WATER, true), Names.TROPICS_PORTAL_TELEPORTER);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);
 		Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortal, Names.TROPICS_PORTAL);
 	    Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortalTeleporter, Names.TROPICS_PORTAL_TELEPORTER);
-		portalWall = registerBlock(new BlockPortalWall(), Names.PORTAL_WALL, new SimpleItemCreator(Names.PORTAL_WALL, true));
+		portalWall = registerBlock(registry, new BlockPortalWall(), Names.PORTAL_WALL, new SimpleItemCreator(Names.PORTAL_WALL, true));
 
-		leaves = registerBlock(new BlockTropicraftLeaves(), "leaves", new MultiBlockItemCreator(TropicraftLeaves.VALUES));
-		fruitLeaves = registerBlock(new BlockFruitLeaves(), "leaves_fruit", new MultiBlockItemCreator(TropicraftFruitLeaves.VALUES));
+		leaves = registerBlock(registry, new BlockTropicraftLeaves(), "leaves", new MultiBlockItemCreator(TropicraftLeaves.VALUES));
+		fruitLeaves = registerBlock(registry, new BlockFruitLeaves(), "leaves_fruit", new MultiBlockItemCreator(TropicraftFruitLeaves.VALUES));
 
-		bambooChest = registerBlock(new BlockBambooChest(), Names.BAMBOO_CHEST);
+		bambooChest = registerBlock(registry, new BlockBambooChest(), Names.BAMBOO_CHEST);
 		
-		saplings = registerBlock(new BlockTropicsSapling(), "sapling", new StandardItemCreator(TropicraftSaplings.VALUES));
+		saplings = registerBlock(registry, new BlockTropicsSapling(), "sapling", new StandardItemCreator(TropicraftSaplings.VALUES));
 		
-		coconut = registerBlock(new BlockCoconut(), Names.COCONUT);
+		coconut = registerBlock(registry, new BlockCoconut(), Names.COCONUT);
 
-		pineapple = registerBlock(new BlockPineapple(), "pineapple");
-		iris = registerBlock(new BlockIris(), "iris");
-		coffeePlant = registerBlock(new BlockCoffeeBush(), "coffee_bush", (IBlockItemRegistrar) null);
+		pineapple = registerBlock(registry, new BlockPineapple(), "pineapple");
+		iris = registerBlock(registry, new BlockIris(), "iris");
+		coffeePlant = registerBlock(registry, new BlockCoffeeBush(), "coffee_bush", (IBlockItemRegistrar) null);
 		
-		sands = registerBlock(new BlockTropicraftSands(), "sand", new MultiBlockItemCreator(TropicraftSands.VALUES));
+		sands = registerBlock(registry, new BlockTropicraftSands(), "sand", new MultiBlockItemCreator(TropicraftSands.VALUES));
 		
-		volcano = registerBlock(new BlockVolcano(), Names.VOLCANO, (IBlockItemRegistrar) null);
+		volcano = registerBlock(registry, new BlockVolcano(), Names.VOLCANO, (IBlockItemRegistrar) null);
 		
-		tikiTorch = registerBlock(new BlockTikiTorch(), "tiki_torch");
+		tikiTorch = registerBlock(registry, new BlockTikiTorch(), "tiki_torch");
 		
-		drinkMixer = registerBlock(new BlockDrinkMixer(), Names.DRINK_MIXER);
-		sifter = registerBlock(new BlockSifter(), Names.SIFTER);
-		airCompressor = registerBlock(new BlockAirCompressor(), Names.AIR_COMPRESSOR);
+		drinkMixer = registerBlock(registry, new BlockDrinkMixer(), Names.DRINK_MIXER);
+		sifter = registerBlock(registry, new BlockSifter(), Names.SIFTER);
+		airCompressor = registerBlock(registry, new BlockAirCompressor(), Names.AIR_COMPRESSOR);
 		
-		flowerPot = registerBlockNoItem(new BlockTropicraftFlowerPot(), Names.FLOWER_POT);
-		bambooDoor = registerBlockNoItem(new BlockBambooDoor(), Names.BAMBOO_DOOR);
+		flowerPot = registerBlockNoItem(registry, new BlockTropicraftFlowerPot(), Names.FLOWER_POT);
+		bambooDoor = registerBlockNoItem(registry, new BlockBambooDoor(), Names.BAMBOO_DOOR);
 
-		bongo = registerBlock(new BlockBongoDrum(), Names.BONGO, new MultiBlockItemCreator(TropicraftBongos.VALUES));
+		bongo = registerBlock(registry, new BlockBongoDrum(), Names.BONGO, new MultiBlockItemCreator(TropicraftBongos.VALUES));
 
-		bambooFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "bamboo_fence_gate");
-		thatchFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "thatch_fence_gate");
-		chunkFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.DARK_OAK).setHardness(2.0F).setResistance(30F), "chunk_fence_gate");
-		palmFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.SPRUCE).setHardness(2.0F).setResistance(5.0F), "palm_fence_gate");
-		mahoganyFenceGate = registerBlock((BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.OAK).setHardness(2.0F).setResistance(5.0F), "mahogany_fence_gate");
+		bambooFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "bamboo_fence_gate");
+		thatchFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "thatch_fence_gate");
+		chunkFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.DARK_OAK).setHardness(2.0F).setResistance(30F), "chunk_fence_gate");
+		palmFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.SPRUCE).setHardness(2.0F).setResistance(5.0F), "palm_fence_gate");
+		mahoganyFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.OAK).setHardness(2.0F).setResistance(5.0F), "mahogany_fence_gate");
 
-		bambooFence = registerBlock(new BlockTropicraftFence(bambooFenceGate, Material.PLANTS, MapColor.SAND), "bamboo_fence");
-		thatchFence = registerBlock(new BlockTropicraftFence(thatchFenceGate, Material.PLANTS, MapColor.SAND), "thatch_fence");
-		chunkFence = registerBlock(new BlockTropicraftFence(chunkFenceGate, Material.PLANTS, MapColor.SAND), "chunk_fence");
-		palmFence = registerBlock(new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence");
-		mahoganyFence = registerBlock(new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence");
+		bambooFence = registerBlock(registry, new BlockTropicraftFence(bambooFenceGate, Material.PLANTS, MapColor.SAND), "bamboo_fence");
+		thatchFence = registerBlock(registry, new BlockTropicraftFence(thatchFenceGate, Material.PLANTS, MapColor.SAND), "thatch_fence");
+		chunkFence = registerBlock(registry, new BlockTropicraftFence(chunkFenceGate, Material.PLANTS, MapColor.SAND), "chunk_fence");
+		palmFence = registerBlock(registry, new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence");
+		mahoganyFence = registerBlock(registry, new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence");
 	}
 
 	public static void init() {
@@ -313,10 +319,10 @@ public class BlockRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerColoredBlock(sands);
 	}
 
-	public static <T extends Block> T registerBlock(T block, String name, IBlockItemRegistrar item, CreativeTabs tab) {
+	public static <T extends Block> T registerBlock(IForgeRegistry<Block> registry, T block, String name, IBlockItemRegistrar item, CreativeTabs tab) {
 		block.setUnlocalizedName(getNamePrefixed(name));
 		block.setRegistryName(new ResourceLocation(Info.MODID, name));
-		GameRegistry.register(block);
+		registry.register(block);
 		block.setCreativeTab(tab);
 
 		if (item != null) {
@@ -338,20 +344,20 @@ public class BlockRegistry extends TropicraftRegistry {
 		Tropicraft.proxy.registerItemVariantModel(item, registryName, stateMeta, variantName);
 	}
 
-	public static <T extends Block> T registerBlock(T block, String name) {
-		return registerBlock(block, name, new SimpleItemCreator(name, false));
+	public static <T extends Block> T registerBlock(IForgeRegistry<Block> registry, T block, String name) {
+		return registerBlock(registry, block, name, new SimpleItemCreator(name, false));
 	}
 
-	private static <T extends Block> T registerBlock(T block, String name, IBlockItemRegistrar item) {
-	    return registerBlock(block, name, item, CreativeTabRegistry.tropicraftTab);
+	private static <T extends Block> T registerBlock(IForgeRegistry<Block> registry, T block, String name, IBlockItemRegistrar item) {
+	    return registerBlock(registry, block, name, item, CreativeTabRegistry.tropicraftTab);
     }
 
-    public static <T extends Block> T registerBlockNoItem(T block, String name) {
-        return registerBlock(block, name, (IBlockItemRegistrar) null);
+    public static <T extends Block> T registerBlockNoItem(IForgeRegistry<Block> registry, T block, String name) {
+        return registerBlock(registry, block, name, (IBlockItemRegistrar) null);
     }
 
-	public static <T extends Block> T registerBlock(T block, String name, CreativeTabs tab) {
-		return registerBlock(block, name, new SimpleItemCreator(name, false), tab);
+	public static <T extends Block> T registerBlock(IForgeRegistry<Block> registry, T block, String name, CreativeTabs tab) {
+		return registerBlock(registry, block, name, new SimpleItemCreator(name, false), tab);
 	}
 
 	public static void registerOreDictWildcard(String oreDictName, Block block) {

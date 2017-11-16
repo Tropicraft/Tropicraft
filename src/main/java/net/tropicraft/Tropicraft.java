@@ -70,15 +70,15 @@ public class Tropicraft {
 	    TropicsConfigs.init(event.getSuggestedConfigurationFile());
 
 		ColorHelper.init();
-		SoundRegistry.init();
+		//SoundRegistry.init();
 		FluidRegistry.preInit();
-		BlockRegistry.preInit();
+		//BlockRegistry.preInit();
 	    proxy.preInit();
 		TileEntityRegistry.init();
-		ItemRegistry.preInit();
+		//ItemRegistry.preInit();
 		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
-		CraftingRegistry.preInit();
+		//CraftingRegistry.init();
 		ScubaCapabilities.register();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
 		CapabilityManager.INSTANCE.register(WorldDataInstance.class, new ExtendedWorldStorage(), WorldDataInstance.class);
@@ -90,7 +90,7 @@ public class Tropicraft {
 		TCPacketHandler.init();
 		ItemRegistry.init();
 		AchievementRegistry.init();
-		EntityRegistry.init();
+		//EntityRegistry.init();
 		proxy.init();
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
 		MinecraftForge.EVENT_BUS.register(new BlockEvents());
