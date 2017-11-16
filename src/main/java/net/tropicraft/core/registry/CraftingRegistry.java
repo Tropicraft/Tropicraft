@@ -1,6 +1,19 @@
 package net.tropicraft.core.registry;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -18,15 +31,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
-import net.tropicraft.core.common.enums.AshenMasks;
-import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.enums.TropicraftLogs;
-import net.tropicraft.core.common.enums.TropicraftShells;
 
 @Mod.EventBusSubscriber
 public class CraftingRegistry {
@@ -40,7 +50,7 @@ public class CraftingRegistry {
         // Thatch bundle (4 shoots make 2 bundles)
         createRecipe(true, new ItemStack(BlockRegistry.bundles, 2, 0), new Object[] {
                 "XX", "XX",
-                'X', Items.REEDS
+                'X', "sugarcane"
         });
 
         // And back
@@ -299,18 +309,6 @@ public class CraftingRegistry {
                 'X', new ItemStack(BlockRegistry.planks, 1, 1)
         });
 
-        // Palm planks -> crafting table
-        createRecipe(true, new ItemStack(Blocks.CRAFTING_TABLE), new Object[] {
-                "XX", "XX",
-                'X', new ItemStack(BlockRegistry.planks, 1, 1)
-        });
-
-        // Mahogany planks -> crafting table
-        createRecipe(true, new ItemStack(Blocks.CRAFTING_TABLE), new Object[] {
-                "XX", "XX",
-                'X', new ItemStack(BlockRegistry.planks, 1, 0)
-        });
-
         // Small bongo
         createRecipe(true, new ItemStack(BlockRegistry.bongo, 1, 0), new Object[] {
             "Y", "X", "X",
@@ -486,7 +484,7 @@ public class CraftingRegistry {
         // Coconut bomb
         createRecipe(true, new ItemStack(ItemRegistry.coconutBomb, 1), new Object[] {
                 " X ", "XYX", " X ",
-                'X', Items.GUNPOWDER,
+                'X', "gunpowder",
                 'Y', BlockRegistry.coconut
             });
 
@@ -542,81 +540,61 @@ public class CraftingRegistry {
                 'Y', ItemRegistry.azurite
             });
 
-        // Color damage values found here https://minecraft.gamepedia.com/Glass
-        List<ItemStack> pinkDyes = OreDictionary.getOres("dyePink");
-        List<ItemStack> yellowDyes = OreDictionary.getOres("dyeYellow");
-
         // Pink scuba tank
-        for (ItemStack pinkGlass : OreDictionary.getOres("blockGlassPink")) {
-            createRecipe(true, new ItemStack(ItemRegistry.pinkScubaTank), new Object[] {
-                    "Y", "X", "X",
-                    'X', pinkGlass,
-                    'Y', Blocks.LEVER
-            });   
-        }
+        createRecipe(true, new ItemStack(ItemRegistry.pinkScubaTank), new Object[] {
+                "Y", "X", "X",
+                'X', "blockGlassPink",
+                'Y', Blocks.LEVER
+        });   
 
         // Yellow scuba tank
-        for (ItemStack yellowGlass : OreDictionary.getOres("blockGlassYellow")) {
-            createRecipe(true, new ItemStack(ItemRegistry.yellowScubaTank), new Object[] {
-                    "Y", "X", "X",
-                    'X', yellowGlass,
-                    'Y', Blocks.LEVER
-            });   
-        }
+        createRecipe(true, new ItemStack(ItemRegistry.yellowScubaTank), new Object[] {
+                "Y", "X", "X",
+                'X', "blockGlassYellow",
+                'Y', Blocks.LEVER
+        });   
 
         // Pink pony bottle
-        for (ItemStack pinkGlass : OreDictionary.getOres("blockGlassPink")) {
             createRecipe(true, new ItemStack(ItemRegistry.pinkPonyBottle), new Object[] {
                     "Y", "X",
-                    'X', pinkGlass,
+                    'X', "blockGlassPink",
                     'Y', Blocks.LEVER
             });   
-        }
 
         // Yellow pony bottle
-        for (ItemStack yellowGlass : OreDictionary.getOres("blockGlassYellow")) {
             createRecipe(true, new ItemStack(ItemRegistry.yellowPonyBottle), new Object[] {
                     "Y", "X",
-                    'X', yellowGlass,
+                    'X', "blockGlassYellow",
                     'Y', Blocks.LEVER
             });
-        }
 
         // Yellow scuba flippers
-        for (ItemStack yellowDye : yellowDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.yellowFlippers), new Object[] {
                 "XX", "YY", "XX",
-                'X', yellowDye,
+                'X', "dyeYellow",
                 'Y', ItemRegistry.zircon
             });
-        }
 
         // Pink scuba flippers
-        for (ItemStack dye : pinkDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.pinkFlippers), new Object[] {
                 "XX", "YY", "XX",
-                'X', dye,
+                'X', "dyePink",
                 'Y', ItemRegistry.zircon
             });
-        }
 
         // Yellow weight belt
-        for (ItemStack dye : yellowDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.yellowWeightBelt), new Object[] {
                     "XYX",
                     'X', BlockRegistry.chunk,
-                    'Y', dye
+                    'Y', "dyeYellow"
                 });
-        }
 
         // Pink weight belt
-        for (ItemStack dye : pinkDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.pinkWeightBelt), new Object[] {
                 "XYX",
                 'X', BlockRegistry.chunk,
-                'Y', dye
+                'Y', "dyePink"
             });
-        }
 
         // Dive Computer
         createRecipe(true, new ItemStack(ItemRegistry.diveComputer), new Object[] {
@@ -626,45 +604,37 @@ public class CraftingRegistry {
             });
 
         // Pink BCD
-        for (ItemStack dye : pinkDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.pinkBCD), new Object[] {
                 "X X", "YXY", "XXX",
                 'X', ItemRegistry.zircon,
-                'Y', dye
+                'Y', "dyePink"
             });
-        }
 
         // Yellow BCD
-        for (ItemStack dye : yellowDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.yellowBCD), new Object[] {
                 "X X", "YXY", "XXX",
                 'X', ItemRegistry.zircon,
-                'Y', dye
+                'Y', "dyeYellow"
             });
-        }
 
         // Pink Regulator
-        for (ItemStack dye : pinkDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.pinkRegulator), new Object[] {
                 " X ", "XYX", " X ",
                 'X', BlockRegistry.chunk,
-                'Y', dye
+                'Y', "dyePink"
             });
-        }
 
         // Yellow Regulator
-        for (ItemStack dye : yellowDyes) {
             createRecipe(true, new ItemStack(ItemRegistry.yellowRegulator), new Object[] {
                 " X ", "XYX", " X ",
                 'X', BlockRegistry.chunk,
-                'Y', dye
+                'Y', "dyeYellow"
             });
-        }
 
         // Pink Scuba Goggles
         createRecipe(true, new ItemStack(ItemRegistry.pinkScubaGoggles), new Object[] {
             "YYY", "X X", " Z ",
-            'X', Blocks.GLASS,
+            'X', "blockGlass",
             'Y', ItemRegistry.zircon,
             'Z', ItemRegistry.pinkRegulator
         });
@@ -739,20 +709,12 @@ public class CraftingRegistry {
         Tropicraft.encyclopedia.includeRecipe(itemstack, obj);
     }
 
-    public static void createRecipe(IForgeRegistry<IRecipe> registry, boolean addToEncyclopedia, ItemStack itemstack, Object obj[]) {
+    public static void createRecipe(boolean addToEncyclopedia, ItemStack itemstack, Object obj[]) {
         if (addToEncyclopedia && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             addToEncyclopedia(itemstack, obj);
         }
 
-        registry.register(itemstack, obj);
-    }
-
-    public static void createRecipe(boolean isServer, boolean addToEncyclopedia, ItemStack itemstack, Object obj[]) {
-        if (addToEncyclopedia && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            addToEncyclopedia(itemstack, obj);
-        }
-
-        GameRegistry.addRecipe(itemstack, obj);
+        addShapedRecipe(itemstack, obj);
     }
 
     public static void createShapelessRecipe(boolean addToEncyclopedia, ItemStack itemstack, Object obj[]) {
@@ -760,6 +722,165 @@ public class CraftingRegistry {
         /*if (addToEncyclopedia && FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			addToEncyclopedia(itemstack, obj);
 		}*/
-        GameRegistry.addShapelessRecipe(itemstack, obj);
+        addShapelessRecipe(itemstack, obj);
     }
+    
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private static File RECIPE_DIR = null;
+	private static final Set<String> USED_OD_NAMES = new TreeSet<>();
+
+	private static void setupDir() {
+		if (RECIPE_DIR == null) {
+			RECIPE_DIR = TropicsConfigs.getConfig().getConfigFile().toPath().resolve("../recipes/").toFile();
+		}
+
+		if (!RECIPE_DIR.exists()) {
+			RECIPE_DIR.mkdir();
+		}
+	}
+
+	private static void addShapedRecipe(ItemStack result, Object... components) {
+		setupDir();
+
+		// GameRegistry.addShapedRecipe(result, components);
+
+		Map<String, Object> json = new HashMap<>();
+
+		List<String> pattern = new ArrayList<>();
+		int i = 0;
+		while (i < components.length && components[i] instanceof String) {
+			pattern.add((String) components[i]);
+			i++;
+		}
+		json.put("pattern", pattern);
+
+		boolean isOreDict = false;
+		Map<String, Map<String, Object>> key = new HashMap<>();
+		Character curKey = null;
+		for (; i < components.length; i++) {
+			Object o = components[i];
+			if (o instanceof Character) {
+				if (curKey != null)
+					throw new IllegalArgumentException("Provided two char keys in a row");
+				curKey = (Character) o;
+			} else {
+				if (curKey == null)
+					throw new IllegalArgumentException("Providing object without a char key");
+				if (o instanceof String)
+					isOreDict = true;
+				key.put(Character.toString(curKey), serializeItem(o));
+				curKey = null;
+			}
+		}
+		json.put("key", key);
+		json.put("type", isOreDict ? "forge:ore_shaped" : "minecraft:crafting_shaped");
+		json.put("result", serializeItem(result));
+
+		// names the json the same name as the output's registry name
+		// repeatedly adds _alt if a file already exists
+		// janky I know but it works
+		String suffix = result.getItem().getHasSubtypes() ? "_" + result.getItemDamage() : "";
+		File f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+
+		while (f.exists()) {
+			suffix += "_alt";
+			f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+		}
+
+		try (FileWriter w = new FileWriter(f)) {
+			GSON.toJson(json, w);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void addShapelessRecipe(ItemStack result, Object... components)
+	{
+		setupDir();
+
+		// addShapelessRecipe(result, components);
+
+		Map<String, Object> json = new HashMap<>();
+
+		boolean isOreDict = false;
+		List<Map<String, Object>> ingredients = new ArrayList<>();
+		for (Object o : components) {
+			if (o instanceof String)
+				isOreDict = true;
+			ingredients.add(serializeItem(o));
+		}
+		json.put("ingredients", ingredients);
+		json.put("type", isOreDict ? "forge:ore_shapeless" : "minecraft:crafting_shapeless");
+		json.put("result", serializeItem(result));
+
+		// names the json the same name as the output's registry name
+		// repeatedly adds _alt if a file already exists
+		// janky I know but it works
+		String suffix = result.getItem().getHasSubtypes() ? "_" + result.getItemDamage() : "";
+		File f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+
+		while (f.exists()) {
+			suffix += "_alt";
+			f = new File(RECIPE_DIR, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");
+		}
+
+
+		try (FileWriter w = new FileWriter(f)) {
+			GSON.toJson(json, w);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static Map<String, Object> serializeItem(Object thing) {
+		if (thing instanceof Item) {
+			return serializeItem(new ItemStack((Item) thing));
+		}
+		if (thing instanceof Block) {
+			return serializeItem(new ItemStack((Block) thing));
+		}
+		if (thing instanceof ItemStack) {
+			ItemStack stack = (ItemStack) thing;
+			Map<String, Object> ret = new HashMap<>();
+			ret.put("item", stack.getItem().getRegistryName().toString());
+			if (stack.getItem().getHasSubtypes() || stack.getItemDamage() != 0) {
+				ret.put("data", stack.getItemDamage());
+			}
+			if (stack.getCount() > 1) {
+				ret.put("count", stack.getCount());
+			}
+			
+			if (stack.hasTagCompound()) {
+				ret.put("type", "minecraft:item_nbt");
+				ret.put("nbt", stack.getTagCompound().toString());
+			}
+
+			return ret;
+		}
+		if (thing instanceof String) {
+			Map<String, Object> ret = new HashMap<>();
+			USED_OD_NAMES.add((String) thing);
+			ret.put("item", "#" + ((String) thing).toUpperCase(Locale.ROOT));
+			return ret;
+		}
+
+		throw new IllegalArgumentException("Not a block, item, stack, or od name");
+	}
+
+	// Call this after you are done generating
+	private static void generateConstants() {
+		List<Map<String, Object>> json = new ArrayList<>();
+		for (String s : USED_OD_NAMES) {
+			Map<String, Object> entry = new HashMap<>();
+			entry.put("name", s.toUpperCase(Locale.ROOT));
+			entry.put("ingredient", ImmutableMap.of("type", "forge:ore_dict", "ore", s));
+			json.add(entry);
+		}
+
+		try (FileWriter w = new FileWriter(new File(RECIPE_DIR, "_constants.json"))) {
+			GSON.toJson(json, w);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
