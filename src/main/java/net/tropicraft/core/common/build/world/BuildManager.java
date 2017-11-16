@@ -128,7 +128,7 @@ public class BuildManager {
 
         buildJob.build_currentTick++;
 
-        World worldRef = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(buildJob.build.dim);
+        World worldRef = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(buildJob.build.dim);
 
         if (buildJob.timeout > 0) {
             buildJob.timeout--;
@@ -499,14 +499,14 @@ public class BuildManager {
     /* coords: unrotated world coord, rotation: quantify to 90, start: uncentered world coords for structure start point, size: structure size */
     public static BlockPos rotate(BlockPos coords, int direction, Vec3d start, Vec3d size) {
         double rotation = (direction * 90) + 180;
-        double centerX = start.xCoord + (size.xCoord / 2D);
-        double centerZ = start.zCoord + (size.zCoord / 2D);
+        double centerX = start.x + (size.x / 2D);
+        double centerZ = start.z + (size.z / 2D);
         double vecX = coords.getX() - centerX + 0.05; //+0.05 fixes the 0 angle distance calculation issue
         double vecZ = coords.getZ() - centerZ + 0.05;
         double distToCenter = Math.sqrt(vecX * vecX + vecZ * vecZ);
         double rotYaw = (float) (Math.atan2(vecZ, vecX) * 180.0D / Math.PI) - rotation;
-        double newX = start.xCoord + Math.cos(rotYaw * 0.017453D) * distToCenter;
-        double newZ = start.zCoord + Math.sin(rotYaw * 0.017453D) * distToCenter;
+        double newX = start.x + Math.cos(rotYaw * 0.017453D) * distToCenter;
+        double newZ = start.z + Math.sin(rotYaw * 0.017453D) * distToCenter;
 
         //fix some bad centering rotations
         if (direction == 1) {
@@ -530,14 +530,14 @@ public class BuildManager {
         //coords should be offset 0.5 before rotate math, guarantees no strange offset issues, flooring cleans it up afterwards perfectly
 
         double rotation = (direction * Math.PI / 2D);
-        double centerX = start.xCoord + (size.xCoord / 2D);
-        double centerZ = start.zCoord + (size.zCoord / 2D);
+        double centerX = start.x + (size.x / 2D);
+        double centerZ = start.z + (size.z / 2D);
         double vecX = (coords.getX() + 0.5D) - centerX;
         double vecZ = (coords.getZ() + 0.5D) - centerZ;
 
         Vec3d vec = new Vec3d(vecX, 0, vecZ);
         vec = vec.rotateYaw((float) rotation);
-        return new BlockPos((int) Math.floor(start.xCoord + vec.xCoord), coords.getY(), (int) Math.floor(start.zCoord + vec.zCoord));
+        return new BlockPos((int) Math.floor(start.x + vec.x), coords.getY(), (int) Math.floor(start.z + vec.z));
     }
 
     public int rotateMeta(World par1World, BlockPos coords, double rotation, Block id, int meta) {
@@ -635,7 +635,7 @@ public class BuildManager {
 
         Build build = buildJob.build;
 
-        World worldRef = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(build.dim);
+        World worldRef = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(build.dim);
 
         /*List ents = worldRef.loadedEntityList;
 
