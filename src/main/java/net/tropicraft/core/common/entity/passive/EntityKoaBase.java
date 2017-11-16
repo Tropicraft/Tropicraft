@@ -710,7 +710,7 @@ public class EntityKoaBase extends EntityVillager {
                 }
             }
 
-            List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(20, 20, 20));
+            List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).grow(20, 20, 20));
             Collections.shuffle(listEnts);
             for (EntityKoaBase ent : listEnts) {
                 if (ent.posLastFireplaceFound != null) {
@@ -729,7 +729,7 @@ public class EntityKoaBase extends EntityVillager {
     public void syncBPM() {
         if ((world.getTotalWorldTime()+this.getEntityId()) % (20) != 0) return;
 
-        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(10, 5, 10));
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).grow(10, 5, 10));
         //Collections.shuffle(listEnts);
         for (EntityKoaBase ent : listEnts) {
             if (hitDelay != ent.hitDelay) {
@@ -761,7 +761,7 @@ public class EntityKoaBase extends EntityVillager {
             return;
         }
 
-        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(20, 20, 20));
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).grow(20, 20, 20));
         Collections.shuffle(listEnts);
         for (EntityKoaBase ent : listEnts) {
             if (listPosDrums.size() >= MAX_DRUMS) {
@@ -831,7 +831,7 @@ public class EntityKoaBase extends EntityVillager {
     }
 
     public boolean tryGetVillage() {
-        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).expand(20, 20, 20));
+        List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).grow(20, 20, 20));
         Collections.shuffle(listEnts);
         for (EntityKoaBase ent : listEnts) {
             if (ent.villageID != -1) {
@@ -894,7 +894,7 @@ public class EntityKoaBase extends EntityVillager {
             }
         }
 
-        if (itemstack.stackSize != stack.stackSize)
+        if (itemstack.getCount() != stack.getCount())
         {
             chest.markDirty();
         }
@@ -918,7 +918,7 @@ public class EntityKoaBase extends EntityVillager {
 
         if (wasInWater) {
             if (!isInWater()) {
-                if (isCollidedHorizontally) {
+                if (collidedHorizontally) {
                     this.motionY += 0.4F;
                     jumpingOutOfWater = true;
                 }
@@ -932,7 +932,7 @@ public class EntityKoaBase extends EntityVillager {
         if (jumpingOutOfWater) {
             if (onGround) {
                 jumpingOutOfWater = false;
-                this.getNavigator().clearPathEntity();
+                this.getNavigator().clearPath();
             }
         }
 
@@ -1064,7 +1064,7 @@ public class EntityKoaBase extends EntityVillager {
     public boolean attackEntityFrom(DamageSource source, float amount) {
         boolean result = super.attackEntityFrom(source, amount);
         if (this.getHealth() <= 0) {
-            if (source.getEntity() instanceof EntityLivingBase) {
+            if (source.getTrueSource() instanceof EntityLivingBase) {
                 //System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation() + " - " + source.getDeathMessage((EntityLivingBase)source.getEntity()));
             } else {
                 //System.out.println("koa died by: " + source.getDamageType() + " - loc: " + source.getDamageLocation());

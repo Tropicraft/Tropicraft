@@ -202,7 +202,7 @@ public class EntityHook extends Entity {
 
 			if (this.angler.isDead || !this.angler.isEntityAlive() || itemstack.isEmpty()
 					|| itemstack.getItem() != ItemRegistry.fishingRod
-					|| this.getDistanceSqToEntity(this.angler) > 1024.0D) {
+					|| this.getDistanceSq(this.angler) > 1024.0D) {
 				this.setDead();
 				// this.angler.setLure(null);
 				return;
@@ -239,19 +239,19 @@ public class EntityHook extends Entity {
 			vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (result != null) {
-				vec3d = new Vec3d(result.hitVec.xCoord, result.hitVec.yCoord, result.hitVec.zCoord);
+				vec3d = new Vec3d(result.hitVec.x, result.hitVec.y, result.hitVec.z);
 			}
 
 			Entity entity = null;
 			List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this,
-					this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expandXyz(1.0D));
+					this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D));
 			double d0 = 0.0D;
 
 			for (int j = 0; j < list.size(); ++j) {
 				Entity entity1 = (Entity) list.get(j);
 
 				if (this.canBeHooked(entity1) && (entity1 != this.angler || this.ticksInAir >= 5)) {
-					AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expandXyz(0.30000001192092896D);
+					AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
 					RayTraceResult raytraceresult1 = axisalignedbb1.calculateIntercept(vec3d1, vec3d);
 
 					if (raytraceresult1 != null) {

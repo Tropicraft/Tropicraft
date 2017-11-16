@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityWallItem extends EntityHanging implements IEntityAdditionalSpawnData {
 
-	public static final DataParameter<Optional<ItemStack>> ITEM = EntityDataManager.<Optional<ItemStack>> createKey(EntityItemFrame.class, DataSerializers.OPTIONAL_ITEM_STACK);
+    private static final DataParameter<ItemStack> ITEM = EntityDataManager.<ItemStack>createKey(EntityItemFrame.class, DataSerializers.ITEM_STACK);
 
 	public EntityWallItem(World worldIn) {
 		super(worldIn);
@@ -38,7 +39,7 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(ITEM, Optional.absent());
+		this.dataManager.register(ITEM, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -62,7 +63,8 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
 				}
 			}
 
-			this.dataManager.get(ITEM).transform(s -> this.entityDropItem(s, 0.0F));
+			this.playSound(SoundEvents.ENTITY_ITEMFRAME_BREAK, 1.0F, 1.0F);
+			entityDropItem(dataManager.get(ITEM), 0.0F);
 		}
 	}
 
@@ -79,9 +81,8 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
 		this.updateFacingWithBoundingBox(EnumFacing.getHorizontal(additionalData.readByte()));
 	}
 
-	@Nullable
 	public ItemStack getDisplayedItem() {
-		return (ItemStack) ((Optional) this.getDataManager().get(ITEM)).orNull();
+	    return (ItemStack)this.getDataManager().get(ITEM);
 	}
 
 	public void setDisplayedItem(@Nullable ItemStack stack) {
@@ -94,8 +95,8 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
 			stack.setCount(1);
 		}
 
-		this.getDataManager().set(ITEM, Optional.fromNullable(stack));
-		this.getDataManager().setDirty(ITEM);
+        this.getDataManager().set(ITEM, stack);
+        this.getDataManager().setDirty(ITEM);
 	}
 
 	public void writeEntityToNBT(NBTTagCompound compound) {

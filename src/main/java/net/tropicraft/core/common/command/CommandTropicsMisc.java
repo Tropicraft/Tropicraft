@@ -175,7 +175,7 @@ public class CommandTropicsMisc extends CommandBase {
                     }
                 }
                 if (clazz != null) {
-                    List<Entity> listEnts = player.world.getEntitiesWithinAABB(clazz, player.getEntityBoundingBox().expand(15, 15, 15));
+                    List<Entity> listEnts = player.world.getEntitiesWithinAABB(clazz, player.getEntityBoundingBox().grow(15, 15, 15));
                     for (Entity ent : listEnts) {
                         float dist = player.getDistance(ent);
                         if (dist < clDist) {

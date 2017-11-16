@@ -32,10 +32,10 @@ public class EntityAISwimAvoidPredator extends EntityAISwimBase {
 
 		if (!entity.isAggressing && (entity.ticksExisted) % 20 == 0) {
 			List<EntityTropicraftWaterBase> ents = entity.world.getEntitiesWithinAABB(EntityTropicraftWaterBase.class,
-					new AxisAlignedBB(entity.getPosition()).expandXyz(distanceToAvoid));
+					new AxisAlignedBB(entity.getPosition()).grow(distanceToAvoid));
 			for (int i = 0; i < ents.size(); i++) {
 				EntityTropicraftWaterBase f = ents.get(i);
-				if (entity.getDistanceSqToEntity(f) < this.distanceToAvoid && entity.canEntityBeSeen(f)) {
+				if (entity.getDistanceSq(f) < this.distanceToAvoid && entity.canEntityBeSeen(f)) {
 					if (f.aggressTarget != null) {
 						if (f.aggressTarget.equals(entity)) {
 							entity.fleeEntity(f);

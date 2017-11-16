@@ -33,7 +33,7 @@ public class EntityAISwimAvoidEntity extends EntityAISwimBase {
 	public void updateTask() {
 		super.updateTask();
 		
-		List<Entity> ents = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().expandXyz(this.distanceToAvoid));
+		List<Entity> ents = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getEntityBoundingBox().grow(this.distanceToAvoid));
 		List<Class<? extends Entity>> classes = Arrays.asList(entityClassToAvoid);
 		for(int i = 0; i < ents.size(); i++) {
 			if(classes.contains(ents.get(i).getClass())) {

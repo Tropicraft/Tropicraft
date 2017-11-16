@@ -50,7 +50,7 @@ public class EntityAIKoaMate extends EntityAIBase
         else
         {
             if (this.canTownHandleMoreVillagers() && this.villagerObj.getIsWillingToMate(true)) {
-                List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getEntityBoundingBox().expand(8.0D, 3.0D, 8.0D));
+                List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getEntityBoundingBox().grow(8.0D, 3.0D, 8.0D));
                 EntityKoaBase clEnt = null;
                 double clDist = 9999;
                 for (EntityKoaBase ent : listEntities) {

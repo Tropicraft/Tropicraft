@@ -82,13 +82,13 @@ public class EntityManOWar extends EntityWaterMob {
 		
 		if (inWater) {
 			if (this.getAttackTarget() == null) {
-				List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(2D, 4D, 2D).offset(0.0D, -2.0D, 0.0D), EntitySelectors.IS_ALIVE);
+				List<Entity> list = world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(2D, 4D, 2D).offset(0.0D, -2.0D, 0.0D), EntitySelectors.IS_ALIVE);
 				for (int i = 0; i < list.size(); i++) {
 					Entity ent = list.get(i);
 					if (ent instanceof EntityLivingBase && !(ent instanceof EntityManOWar)){
 						if (((EntityLivingBase)ent).isInWater()) {
-							byte byte0 = getAttackStrength();
-							((EntityLivingBase)ent).attackEntityFrom(DamageSource.drown, byte0);
+							byte attackStrength = getAttackStrength();
+							((EntityLivingBase)ent).attackEntityFrom(DamageSource.DROWN, attackStrength);
 							this.setAttackTarget(((EntityLivingBase)ent));
 							attackTimer = 60;
 							continue;
@@ -128,7 +128,7 @@ public class EntityManOWar extends EntityWaterMob {
 			}
 
 			if (onGround && deathTime == 0) {      	
-				this.attackEntityFrom(DamageSource.drown, 1);
+				this.attackEntityFrom(DamageSource.DROWN, 1);
 				int d = 1;
 				int e = 1;
 				if(rand.nextInt(2) == 0) {
@@ -183,7 +183,7 @@ public class EntityManOWar extends EntityWaterMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource damageSource) {
 		return SoundEvents.ENTITY_SQUID_HURT;
 	}
 

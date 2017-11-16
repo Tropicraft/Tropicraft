@@ -152,7 +152,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 
 	public void checkForHook() {
 		List<EntityFishHook> list = world.getEntitiesWithinAABB(EntityFishHook.class,
-				this.getEntityBoundingBox().expand(10, 10, 10));
+				this.getEntityBoundingBox().grow(10, 10, 10));
 		if (list.isEmpty()) {
 			targetHook = false;
 			hook = null;

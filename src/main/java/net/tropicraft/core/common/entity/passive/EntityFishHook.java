@@ -291,7 +291,7 @@ public class EntityFishHook extends Entity
                 }
 
                 Entity entity = null;
-                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expandXyz(1.0D));
+                List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D));
                 double d0 = 0.0D;
 
                 for (int j = 0; j < list.size(); ++j)
@@ -300,7 +300,7 @@ public class EntityFishHook extends Entity
 
                     if (this.canBeHooked(entity1) && (entity1 != this.angler || this.ticksInAir >= 5))
                     {
-                        AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expandXyz(0.30000001192092896D);
+                        AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
                         RayTraceResult raytraceresult1 = axisalignedbb1.calculateIntercept(vec3d1, vec3d);
 
                         if (raytraceresult1 != null)

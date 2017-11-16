@@ -42,7 +42,7 @@ public class BlockSeaweed extends BlockTropicraft {
 				while (height <= maxHeight && getWorld().getBlockState(getPos().up(height + 1)).getMaterial().isLiquid()) {
 					height++;
 				}
-				cachedBB = new AxisAlignedBB(getPos()).expand(1.1, height / 2f, 1.1).offset(0, height / 2f, 0);
+				cachedBB = new AxisAlignedBB(getPos()).grow(1.1, height / 2f, 1.1).offset(0, height / 2f, 0);
 				
 				offset = new Vec3d((rand.nextFloat() - 0.5f) * 0.25f, 0, (rand.nextFloat() - 0.5f) * 0.25f);
 				

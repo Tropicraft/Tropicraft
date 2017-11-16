@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -243,11 +244,11 @@ public class EntityChair extends Entity {
 						
 						if (block == Blocks.SNOW_LAYER) {
 							this.world.setBlockToAir(pos);
-							this.isCollidedHorizontally = false;
+							this.collidedHorizontally = false;
 						} else 
 							if (block == Blocks.WATERLILY) {
 								this.world.setBlockToAir(pos);
-								this.isCollidedHorizontally = false;
+								this.collidedHorizontally = false;
 							}
 					}
 				}
@@ -263,7 +264,7 @@ public class EntityChair extends Entity {
 					this.motionZ = 0;
 				}
 
-			this.move(this.motionX, this.motionY, this.motionZ);
+			this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
 			// This will never trigger since d10 will only ever get up to 0.45 >:D *evil laugh*
 			// In other words, when come sail away, there is no stopping this sucker
@@ -296,7 +297,7 @@ public class EntityChair extends Entity {
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 
 			if (!this.world.isRemote) {
-				List<?> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+				List<?> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
 				if (list != null && !list.isEmpty()) {
 					for (int k1 = 0; k1 < list.size(); ++k1) {
@@ -348,8 +349,8 @@ public class EntityChair extends Entity {
 			this.setForwardDirection(-this.getForwardDirection());
 			this.setTimeSinceHit(10);
 			this.setDamage(this.getDamage() + par2 * 10.0F);
-			this.setBeenAttacked();
-			boolean flag = damageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)damageSource.getEntity()).capabilities.isCreativeMode;
+			this.markVelocityChanged();
+			boolean flag = damageSource.getTrueSource() instanceof EntityPlayer && ((EntityPlayer)damageSource.getTrueSource()).capabilities.isCreativeMode;
 
 			if (flag || this.getDamage() > 40.0F) {
 				if (!flag) {
@@ -384,7 +385,7 @@ public class EntityChair extends Entity {
 	}
 	
 	@Override
-    public boolean processInitialInteract(EntityPlayer player, @Nullable ItemStack stack, EnumHand hand) {
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
         if (!this.world.isRemote && !player.isSneaking()) {
             player.startRiding(this);
         }

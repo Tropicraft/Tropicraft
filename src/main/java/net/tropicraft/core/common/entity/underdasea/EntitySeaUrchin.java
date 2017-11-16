@@ -56,7 +56,7 @@ public class EntitySeaUrchin extends EntityEchinoderm {
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amt) {
 		if (source.getDamageType().equals("player")) {
-			Entity ent = source.getEntity();
+			Entity ent = source.getTrueSource();
 
 			if (ent instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer)ent;

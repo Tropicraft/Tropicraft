@@ -33,7 +33,7 @@ public class EntityAISwimTargetPrey extends EntityAISwimBase {
 		
 		// Target selection
 			if(entity.ticksExisted % 80 == 0 && entity.aggressTarget == null|| !entity.world.loadedEntityList.contains(entity.aggressTarget)) {
-				List<Entity> list = entity.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
+				List<Entity> list = entity.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().grow(20D, 20D, 20D).offset(0.0D, -8.0D, 0.0D), EntitySelectors.IS_ALIVE);
 				if(list.size() > 0) {
 					Entity ent = list.get(rand.nextInt(list.size()));
 					boolean skip = false;

@@ -260,7 +260,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 				}
 				
 				if(this.isFishable() && (this.ticksExisted+this.getEntityId()) % 80 == 0 && rand.nextInt(35) == 0) {
-					List<EntityHook> ents = world.getEntitiesWithinAABB(EntityHook.class, new AxisAlignedBB(this.getPosition()).expand(16, 8, 16));
+					List<EntityHook> ents = world.getEntitiesWithinAABB(EntityHook.class, new AxisAlignedBB(this.getPosition()).grow(16, 8, 16));
 					for(int i =0; i < ents.size(); i++) {
 						EntityHook h = ents.get(i);
 						if(this.canEntityBeSeen(h)) {

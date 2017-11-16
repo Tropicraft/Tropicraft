@@ -103,24 +103,25 @@ public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
 	}
 	
 	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
+	public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
+	    ItemStack stack = player.getHeldItemMainhand();
         if (this.isTamed())
         {
-        	if (this.isOwner(player) && !this.world.isRemote && !this.isBreedingItem(stack))
+        	if (this.isOwner(player) && !this.world.isRemote && !stack.isEmpty() && !this.isBreedingItem(stack))
             {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
-                this.navigator.clearPathEntity();
+                this.navigator.clearPath();
                 this.setAttackTarget((EntityLivingBase)null);
             }
         }
         //TODO: change to cocktail item when possible
-        else if (stack != null && stack.getItem() == ItemRegistry.coconutChunk)
+        else if (!stack.isEmpty() && stack.getItem() == ItemRegistry.coconutChunk)
         {
             if (!player.capabilities.isCreativeMode)
             {
-                --stack.stackSize;
+                stack.shrink(1);
             }
 
             if (!this.world.isRemote)
@@ -128,7 +129,7 @@ public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
                 if (this.rand.nextInt(3) == 0)
                 {
                     this.setTamed(true);
-                    this.navigator.clearPathEntity();
+                    this.navigator.clearPath();
                     this.setAttackTarget((EntityLivingBase)null);
                     this.aiSit.setSitting(true);
                     this.setHealth(20.0F);
@@ -146,7 +147,7 @@ public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
             return true;
         }
 
-        return super.processInteract(player, hand, stack);
+        return super.processInteract(player, hand);
     }
 	
 	@Override
@@ -205,7 +206,7 @@ public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
         }
         else
         {
-            Entity entity = source.getEntity();
+            Entity entity = source.getTrueSource();
 
             if (this.aiSit != null)
             {

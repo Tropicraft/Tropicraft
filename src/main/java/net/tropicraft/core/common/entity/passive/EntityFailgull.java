@@ -217,7 +217,7 @@ public class EntityFailgull extends EntityFlying {
 			}
 
 			if (!failgull.inFlock) {
-				List list = failgull.world.getEntitiesWithinAABB(EntityFailgull.class, failgull.getEntityBoundingBox().expand(10D, 10D, 10D));
+				List list = failgull.world.getEntitiesWithinAABB(EntityFailgull.class, failgull.getEntityBoundingBox().grow(10D, 10D, 10D));
 
 				int lowest = failgull.getEntityId();
 				EntityFailgull f = null;

@@ -32,7 +32,7 @@ public class ItemUmbrella extends ItemTropicraftColored {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		float f = 1.0F;
 		float f1 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * f;
 		float f2 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * f;
@@ -55,13 +55,13 @@ public class ItemUmbrella extends ItemTropicraftColored {
 		} else {
 			Vec3d vec3d2 = playerIn.getLook(f);
 			boolean flag = false;
-			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().addCoord(vec3d2.xCoord * d3, vec3d2.yCoord * d3, vec3d2.zCoord * d3).expandXyz(1.0D));
+			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(vec3d2.x * d3, vec3d2.y * d3, vec3d2.z * d3).grow(1.0D));
 
 			for (int i = 0; i < list.size(); ++i) {
 				Entity entity = (Entity)list.get(i);
 
 				if (entity.canBeCollidedWith()) {
-					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expandXyz((double)entity.getCollisionBorderSize());
+					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
 
 					if (axisalignedbb.isVecInside(vec3d)) {
 						flag = true;
@@ -87,7 +87,7 @@ public class ItemUmbrella extends ItemTropicraftColored {
 
 				umbrella.rotationYaw = playerIn.rotationYaw;
 
-				if (!worldIn.getCollisionBoxes(umbrella, umbrella.getEntityBoundingBox().expandXyz(-0.1D)).isEmpty()) {
+				if (!worldIn.getCollisionBoxes(umbrella, umbrella.getEntityBoundingBox().grow(-0.1D)).isEmpty()) {
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				} else {
 					if (!worldIn.isRemote) {

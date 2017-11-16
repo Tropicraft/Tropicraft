@@ -58,7 +58,7 @@ public class ItemChair extends ItemTropicraftColored {
 		{
 			Vec3d vec3d2 = playerIn.getLook(f);
 			boolean flag = false;
-			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().addCoord(vec3d2.xCoord * d3, vec3d2.yCoord * d3, vec3d2.zCoord * d3).expandXyz(1.0D));
+			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(vec3d2.xCoord * d3, vec3d2.yCoord * d3, vec3d2.zCoord * d3).grow(1.0D));
 
 			for (int i = 0; i < list.size(); ++i)
 			{
@@ -66,7 +66,7 @@ public class ItemChair extends ItemTropicraftColored {
 
 				if (entity.canBeCollidedWith())
 				{
-					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().expandXyz((double)entity.getCollisionBorderSize());
+					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
 
 					if (axisalignedbb.isVecInside(vec3d))
 					{
@@ -99,7 +99,7 @@ public class ItemChair extends ItemTropicraftColored {
 
 				chair.rotationYaw = playerIn.rotationYaw;
 
-				if (!worldIn.getCollisionBoxes(chair, chair.getEntityBoundingBox().expandXyz(-0.1D)).isEmpty())
+				if (!worldIn.getCollisionBoxes(chair, chair.getEntityBoundingBox().grow(-0.1D)).isEmpty())
 				{
 					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
 				}

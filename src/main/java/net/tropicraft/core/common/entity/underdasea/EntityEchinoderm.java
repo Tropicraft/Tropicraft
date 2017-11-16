@@ -91,7 +91,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 	
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amt) {
-		if (source == DamageSource.inWall) {
+		if (source == DamageSource.IN_WALL) {
 			return false;
 		}
 
@@ -170,7 +170,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 		EntityEchinoderm closestMate = null;
 		double closestSqDist = -1f;
 
-		AxisAlignedBB aabb = this.getEntityBoundingBox().expand(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
+		AxisAlignedBB aabb = this.getEntityBoundingBox().grow(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
 		for (Object obj : world.getEntitiesWithinAABB(getClass(), aabb)) {
 			// don't masturbate
 			if (obj == this) {
@@ -185,7 +185,7 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 				continue;
 			}
 			
-			double sqDist = getDistanceSqToEntity(other);
+			double sqDist = getDistanceSq(other);
 			
 			if (sqDist < BREEDING_PROXIMITY && (closestSqDist == -1f || sqDist < closestSqDist)) {
 				closestMate = other;

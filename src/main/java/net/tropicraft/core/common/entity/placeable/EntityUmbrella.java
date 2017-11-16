@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -180,7 +181,7 @@ public class EntityUmbrella extends Entity {
 			this.motionZ = 0;
 		}
 
-		this.move(this.motionX, this.motionY, this.motionZ);
+		this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
 		rotationPitch = 0.0F;
 		double d13 = rotationYaw;
@@ -203,7 +204,7 @@ public class EntityUmbrella extends Entity {
 		}
 		rotationYaw += d19;
 		setRotation(rotationYaw, rotationPitch);
-		List<?> list = world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(0.20000000298023224D, 0.2D, 0.20000000298023224D));
+		List<?> list = world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(0.20000000298023224D, 0.2D, 0.20000000298023224D));
 		if(list != null && list.size() > 0)
 		{
 			for(int j1 = 0; j1 < list.size(); j1++)
@@ -228,8 +229,8 @@ public class EntityUmbrella extends Entity {
 			this.setForwardDirection(-this.getForwardDirection());
 			this.setTimeSinceHit(10);
 			this.setDamage(this.getDamage() + i * 10.0F);
-			this.setBeenAttacked();
-			boolean flag = damagesource.getEntity() instanceof EntityPlayer && ((EntityPlayer)damagesource.getEntity()).capabilities.isCreativeMode;
+			this.markVelocityChanged();
+			boolean flag = damagesource.getTrueSource() instanceof EntityPlayer && ((EntityPlayer)damagesource.getTrueSource()).capabilities.isCreativeMode;
 
 			if (flag || this.getDamage() > DAMAGE_THRESHOLD) {
 				Entity rider = this.getControllingPassenger();

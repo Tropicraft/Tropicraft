@@ -182,9 +182,9 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 					Vec3d angle = this.getHeading();
 					double frontDist = 1.2f;
 
-					Vec3d diff = new Vec3d(posX + (angle.xCoord * frontDist), posY, posZ + (angle.zCoord * frontDist));
+					Vec3d diff = new Vec3d(posX + (angle.x * frontDist), posY, posZ + (angle.z * frontDist));
 
-					BlockPos ahead = new BlockPos((int) diff.xCoord, (int) posY - 1, (int) diff.zCoord);
+					BlockPos ahead = new BlockPos((int) diff.x, (int) posY - 1, (int) diff.z);
 
 					if (!world.getBlockState(above).getMaterial().isLiquid()
 							&& world.getBlockState(ahead).getMaterial().isSolid()) {
@@ -322,7 +322,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	}
 
 	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
 		if (hand.equals(EnumHand.MAIN_HAND)) {
 			if (this.canFitPassenger(player) && this.isMature() && this.isInWater()) {
 				// vvvv maybe, undecided on that vvvv
@@ -333,7 +333,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 				}
 			}
 		}
-		return super.processInteract(player, hand, stack);
+		return super.processInteract(player, hand);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -546,7 +546,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 			Vec3d vec3d = (new Vec3d((double) f, 0.0D, 0.0D))
 					.rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
-			passenger.setPosition(this.posX + vec3d.xCoord, this.posY + (double) f1, this.posZ + vec3d.zCoord);
+			passenger.setPosition(this.posX + vec3d.x, this.posY + (double) f1, this.posZ + vec3d.z);
 
 			if(passenger instanceof EntityPlayer) {
 				EntityPlayer p = (EntityPlayer)passenger;

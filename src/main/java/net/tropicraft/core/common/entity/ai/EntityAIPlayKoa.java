@@ -36,7 +36,7 @@ public class EntityAIPlayKoa extends EntityAIBase
         }
         else
         {
-            List<EntityVillager> list = this.villagerObj.world.<EntityVillager>getEntitiesWithinAABB(EntityVillager.class, this.villagerObj.getEntityBoundingBox().expand(6.0D, 3.0D, 6.0D));
+            List<EntityVillager> list = this.villagerObj.world.<EntityVillager>getEntitiesWithinAABB(EntityVillager.class, this.villagerObj.getEntityBoundingBox().grow(6.0D, 3.0D, 6.0D));
             double d0 = Double.MAX_VALUE;
 
             for (EntityVillager entityvillager : list)
