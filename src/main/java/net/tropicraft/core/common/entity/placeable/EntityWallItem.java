@@ -91,7 +91,7 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
 	private void setDisplayedItemWithUpdate(@Nullable ItemStack stack, boolean p_174864_2_) {
 		if (stack != null) {
 			stack = stack.copy();
-			stack.stackSize = 1;
+			stack.setCount(1);
 		}
 
 		this.getDataManager().set(ITEM, Optional.fromNullable(stack));
@@ -110,7 +110,7 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
 		NBTTagCompound nbttagcompound = compound.getCompoundTag("Item");
 
 		if (nbttagcompound != null && !nbttagcompound.hasNoTags()) {
-			this.setDisplayedItemWithUpdate(ItemStack.loadItemStackFromNBT(nbttagcompound), false);
+			this.setDisplayedItemWithUpdate(new ItemStack(nbttagcompound), false);
 		}
 
 		super.readEntityFromNBT(compound);

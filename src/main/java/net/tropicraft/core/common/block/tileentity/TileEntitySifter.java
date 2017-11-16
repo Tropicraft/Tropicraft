@@ -162,7 +162,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	}
 	
 	public void addItemToSifter(ItemStack stack) {
-		stack.stackSize = 1;
+		stack.setCount(1);
 		this.siftItem = stack; 
 		this.syncInventory();
 	}
@@ -206,7 +206,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 		NBTTagList itemtaglist = nbt.getTagList("Item", 10);
 
 		NBTTagCompound itemtagcompound = itemtaglist.getCompoundTagAt(0);
-		this.siftItem = ItemStack.loadItemStackFromNBT(itemtagcompound);
+		this.siftItem = new ItemStack(itemtagcompound);
 	}
 
 	@Override

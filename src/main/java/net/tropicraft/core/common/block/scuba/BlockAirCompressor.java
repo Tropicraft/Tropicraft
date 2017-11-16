@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.BlockTropicraft;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
@@ -30,7 +31,6 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
     public BlockAirCompressor() {
 		super(Material.ROCK);
 		//this.setBlockBounds(0, 0, 0, 1, 1.8F, 1);
-		this.isBlockContainer = true;
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
@@ -41,7 +41,7 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
 
 
     @Override
-    public boolean isFullyOpaque(IBlockState state) {
+    public boolean isTopSolid(IBlockState state) {
         return false;
     }
 
@@ -59,7 +59,7 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
     }
 
 	@Override
-	 public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	 public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
 			return true;
 		}
@@ -73,13 +73,13 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
 			return true;
 		}
 
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			mixer.ejectTank();
 			return true;
 		}
 
 		ItemStack ingredientStack = stack.copy();
-		ingredientStack.stackSize = 1;
+		ingredientStack.setCount(1);
 
 		if (mixer.addTank(ingredientStack)) {
 			playerIn.inventory.decrStackSize(playerIn.inventory.currentItem, 1);
@@ -122,11 +122,12 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
 	}
 
 	@Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-        IBlockState ret = super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, stack);
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+        IBlockState ret = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
         return ret.withProperty(FACING, placer.getHorizontalFacing());
     }
-
+	
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));

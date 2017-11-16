@@ -60,14 +60,14 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
 			if (nbt.hasKey("Ingredient0")) {
-				this.ingredients[i] = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Ingredient" + i));
+				this.ingredients[i] = new ItemStack(nbt.getCompoundTag("Ingredient" + i));
 			} else {
 				this.ingredients[i] = null;
 			}
 		}
 
 		if (nbt.hasKey("Result")) {
-			this.result = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Result"));
+			this.result = new ItemStack(nbt.getCompoundTag("Result"));
 		} else {
 			this.result = null;
 		}

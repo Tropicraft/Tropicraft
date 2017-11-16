@@ -271,7 +271,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 	public String getItemStackDisplayName(ItemStack itemstack) {
 		String name = null;
 		Drink drink = getDrink(itemstack);
-		if (itemstack == null || drink == null) {
+		if (itemstack.isEmpty() || drink == null) {
 			name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
 					+ ":" + "cocktail.name")).trim();			
 		} else {

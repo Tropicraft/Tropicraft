@@ -212,7 +212,7 @@ public class TeleporterTropics extends Teleporter {
                             if (!hasEncyclopedia) {
                                 for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
                                     ItemStack stack = chest.getStackInSlot(inv);
-                                    if (stack == null) {
+                                    if (stack.isEmpty()) {
                                         chest.setInventorySlotContents(inv, new ItemStack(ItemRegistry.encyclopedia, 1));
                                         break;
                                     }

@@ -610,7 +610,7 @@ public class EntityKoaBase extends EntityVillager {
                 NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
                 int j = nbttagcompound.getByte("Slot") & 255;
 
-                this.inventory.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound));
+                this.inventory.setInventorySlotContents(j, new ItemStack(nbttagcompound));
             }
         }
 

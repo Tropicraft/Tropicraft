@@ -64,13 +64,13 @@ public abstract class MessageTileEntity<T extends TileEntity> implements IMessag
 			return null;
 		}
 		TypeToken<?> teType = TypeToken.of(getClass()).resolveType(MessageTileEntity.class.getTypeParameters()[0]);
-		if (teType.isAssignableFrom(te.getClass())) {
+		if (teType.isSubtypeOf(te.getClass())) {
 			return (T) te;
 		}
 		return null;
 	}
 
 	protected World getWorld(MessageContext ctx) {
-		return ctx.getServerHandler().playerEntity.getEntityWorld();
+		return ctx.getServerHandler().player.getEntityWorld();
 	}
 }

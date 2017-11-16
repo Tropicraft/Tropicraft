@@ -45,7 +45,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 		this.ticks = nbt.getInteger("Ticks");
 
 		if (nbt.hasKey("Tank")) {
-			setTank(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Tank")));
+			setTank(new ItemStack(nbt.getCompoundTag("Tank")));
 		} else {
 			setTank(null);
 		}
@@ -67,7 +67,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	
 	public void setTank(ItemStack tankItemStack) {
 	    this.stack = tankItemStack;
-        this.tank = stack == null ? null : stack.getCapability(ScubaCapabilities.getTankCapability(), null);
+        this.tank = stack.isEmpty() ? null : stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	}
 	
     public ItemStack getTankStack() {

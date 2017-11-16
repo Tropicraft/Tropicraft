@@ -263,7 +263,7 @@ public class Util {
      * @return
      */
     public static boolean isEmpty(ItemStack stack) {
-        return stack == null;
+        return stack.isEmpty();
     }
 
     public static NBTTagCompound getTagCompound(ItemStack stack) {

@@ -200,7 +200,7 @@ public class EntityHook extends Entity {
 		if(!world.isRemote) {
 			ItemStack itemstack = this.angler.getHeldItemMainhand();
 
-			if (this.angler.isDead || !this.angler.isEntityAlive() || itemstack == null
+			if (this.angler.isDead || !this.angler.isEntityAlive() || itemstack.isEmpty()
 					|| itemstack.getItem() != ItemRegistry.fishingRod
 					|| this.getDistanceSqToEntity(this.angler) > 1024.0D) {
 				this.setDead();

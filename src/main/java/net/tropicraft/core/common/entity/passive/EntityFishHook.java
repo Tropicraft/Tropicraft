@@ -215,7 +215,7 @@ public class EntityFishHook extends Entity
         {
             ItemStack itemstack = this.angler.getHeldItemMainhand();
 
-            if (this.angler.isDead || !this.angler.isEntityAlive() || itemstack == null || itemstack.getItem() != Items.FISHING_ROD || this.getDistanceSq(this.angler) > 1024.0D)
+            if (this.angler.isDead || !this.angler.isEntityAlive() || itemstack.isEmpty() || itemstack.getItem() != Items.FISHING_ROD || this.getDistanceSq(this.angler) > 1024.0D)
             {
                 this.setDead();
                 this.angler.setLure(null);

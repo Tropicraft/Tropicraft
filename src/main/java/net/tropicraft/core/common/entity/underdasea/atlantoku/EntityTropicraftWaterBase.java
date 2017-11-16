@@ -750,11 +750,11 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	@Override
 	public void onDeath(DamageSource damagesource) {
 		super.onDeath(damagesource);
-		if(this.dropStack == null) return;
+		if(this.dropstack.isEmpty()) return;
 		if(damagesource.getEntity() instanceof EntityPlayer) {
 			if(!world.isRemote) {
 				int i = rand.nextInt(this.dropMaxAmt) + 1;
-				this.dropStack.stackSize = 1;
+				this.dropStack.setCount(1);
 				for (int j = 0; j < i; j++) {
 						entityDropItem(this.dropStack, 0.0F);
 				}

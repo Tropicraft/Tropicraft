@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -16,13 +14,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
-import net.tropicraft.core.registry.AchievementRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockDrinkMixer extends BlockTropicraft implements
@@ -80,7 +76,7 @@ ITileEntityProvider {
 			return true;
 		}
 
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			mixer.emptyMixer(entityPlayer);
 			return true;
 		}
@@ -101,16 +97,17 @@ ITileEntityProvider {
 			Drink pinaColada = Drink.pinaColada;
 
 			if (craftedDrink != null && craftedDrink.drinkId == pinaColada.drinkId) {
-				entityPlayer.addStat(AchievementRegistry.craftPinaColada);
+				// TODO advancements entityPlayer.addStat(AchievementRegistry.craftPinaColada);
 			}
 		}
 
 		return true;    	
 	}
-
+	
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		IBlockState ret = super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		IBlockState ret = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
 		return ret.withProperty(FACING, placer.getHorizontalFacing());
 	}
 

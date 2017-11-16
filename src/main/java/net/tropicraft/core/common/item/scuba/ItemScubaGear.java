@@ -60,7 +60,7 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
     @Override
     @SideOnly(Side.CLIENT)
     public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemstack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
-        if (itemstack == null) {
+        if (itemstack.isEmpty()) {
             return null;
         }
 
@@ -83,7 +83,7 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemstack) {
         //        for (ItemStack armorStack : player.getArmorInventoryList()) {
-        //            if (armorStack == null) continue;
+        //            if (armorstack.isEmpty()) continue;
         //            if (armorStack.isItemEqualIgnoreDurability(itemstack)) {
         //                this.outOfArmorInventory = false;
         hasCleanedUp = false;
@@ -123,7 +123,7 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 //
 //        EntityPlayer player = (EntityPlayer)entityIn;
 //        for (ItemStack armorStack : player.getArmorInventoryList()) {
-//            if (armorStack == null) continue;
+//            if (armorstack.isEmpty()) continue;
 //            if (armorStack.isItemEqual(stack)) {
 //                this.outOfArmorInventory = false;
 //                return;

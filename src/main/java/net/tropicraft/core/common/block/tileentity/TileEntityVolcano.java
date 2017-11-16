@@ -147,7 +147,7 @@ public class TileEntityVolcano extends TileEntity implements ITickable {
 		// Compute x/y components of angle
 		double motX = force * Math.cos(angle);
 		double motZ = force * Math.sin(-angle);
-		throwLava(pos.xCoord, pos.yCoord, pos.zCoord, motX, 0.86, motZ);
+		throwLava(pos.x, pos.y, pos.z, motX, 0.86, motZ);
 	}
 
 	public void throwLava(double i, double j, double k, double xMot, double yMot, double zMot) {

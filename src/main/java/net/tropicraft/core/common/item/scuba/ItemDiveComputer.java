@@ -128,7 +128,7 @@ public class ItemDiveComputer extends ItemMap {
     //    private boolean armorCheck(World world, EntityPlayer player, ItemStack helmetStack, ItemStack chestplateStack,
     //            ItemStack leggingsStack, ItemStack flippersStack) {
     //
-    //        if (helmetStack == null || chestplateStack == null || leggingsStack == null || flippersStack == null)
+    //        if (helmetstack.isEmpty() || chestplatestack.isEmpty() || leggingsstack.isEmpty() || flippersstack.isEmpty())
     //            return false;
     //
     //        if (!(helmetStack.getItem() instanceof ItemScubaHelmet))
