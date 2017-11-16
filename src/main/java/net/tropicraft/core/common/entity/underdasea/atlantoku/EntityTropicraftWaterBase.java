@@ -6,6 +6,7 @@ import javax.vecmath.Vector2f;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -84,7 +85,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	private boolean fishable = false;
 	
 	
-	private ItemStack dropStack = null;
+	private ItemStack dropStack = ItemStack.EMPTY;
 	private int dropMaxAmt = 3;
 	public float attackDamage = 1f;
 	
@@ -279,7 +280,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						if(this.ticksExisted % 20 == 0) {
 							this.setTargetHeading(hookTarget.posX, hookTarget.posY, hookTarget.posZ, false);
 						}
-						if(this.getDistanceSqToEntity(this.hookTarget) < 2D) {
+						if(this.getDistanceSq(this.hookTarget) < 2D) {
 							if(this.hookTarget.getHooked() == null) {
 								this.hookTarget.setHooked(this);
 								this.hookTarget = null;
@@ -298,7 +299,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 						}else {
 							EntityPlayer angler = hook.getAngler();
 							if(angler != null) {
-								if(this.getDistanceToEntity(angler) > 2D) {
+								if(this.getDistance(angler) > 2D) {
 									this.setTargetHeading(angler.posX, angler.posY, angler.posZ, false);
 								}else {
 									hook.bringInHookedEntity();
@@ -332,7 +333,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 			float desiredSpeed = this.swimSpeedDefault;			
 			
 			if(this.aggressTarget != null) {
-				if(this.getDistanceSqToEntity(this.aggressTarget) < 10f) {
+				if(this.getDistanceSq(this.aggressTarget) < 10f) {
 					desiredSpeed = this.swimSpeedCharging;
 				}else {
 					desiredSpeed = this.swimSpeedChasing;
@@ -498,7 +499,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		int dist = 16;
 		Vec3d randBlock = new Vec3d(posX + randFlip(dist), posY + randFlip(dist/2), posZ + randFlip(dist));
 
-		result = this.setTargetHeading(randBlock.xCoord, randBlock.yCoord, randBlock.zCoord, true);
+		result = this.setTargetHeading(randBlock.x, randBlock.y, randBlock.z, true);
 		
 		// Try to move towards a player
 		if(this.approachPlayers) {
@@ -700,7 +701,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 
 	@Override
-	protected void resetHeight() {
+	public void doWaterSplashEffect() {
 		
 	}
 
@@ -719,7 +720,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource damageSource) {
 		return null;
 	}
 
@@ -739,19 +740,19 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	}
 
 	@Override
-	public void moveEntityWithHeading(float f, float f1) {
+	public void travel(float strafe, float vertical, float forward) {
 		if((this instanceof IAmphibian) && !isInWater()) {
-			super.moveEntityWithHeading(f, f1);
+			super.travel(strafe, vertical, forward);
 			return;
 		}
-		move(motionX, motionY, motionZ);
+		move(MoverType.SELF, motionX, motionY, motionZ);
 	}
 
 	@Override
 	public void onDeath(DamageSource damagesource) {
 		super.onDeath(damagesource);
-		if(this.dropstack.isEmpty()) return;
-		if(damagesource.getEntity() instanceof EntityPlayer) {
+		if(this.dropStack.isEmpty()) return;
+		if(damagesource.getTrueSource() instanceof EntityPlayer) {
 			if(!world.isRemote) {
 				int i = rand.nextInt(this.dropMaxAmt) + 1;
 				this.dropStack.setCount(1);
@@ -764,9 +765,9 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if(source.getEntity() instanceof EntityPlayer) {
+		if(source.getTrueSource() instanceof EntityPlayer) {
 			if(this.canAggress) {
-				this.aggressTarget = source.getEntity();
+				this.aggressTarget = source.getTrueSource();
 				this.setTargetHeading(this.aggressTarget.posX, this.aggressTarget.posY+1, this.aggressTarget.posZ, false);
 			}
 		}

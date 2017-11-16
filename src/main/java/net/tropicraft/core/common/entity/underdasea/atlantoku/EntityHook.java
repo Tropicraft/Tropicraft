@@ -6,7 +6,7 @@ import java.util.UUID;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +22,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityHook extends Entity {
@@ -281,7 +282,7 @@ public class EntityHook extends Entity {
 
 		if (!this.inGround) {
 
-			if (this.world.isAABBInMaterial(this.getEntityBoundingBox().offset(0, 0.0D, 0), Material.WATER)) {
+			if (Util.isAABBInMaterial(this.world, this.getEntityBoundingBox().offset(0, 0.0D, 0), Material.WATER)) {
 				if (this.motionY < -.05f) {
 					this.motionY = -.05f;
 				}
@@ -296,7 +297,7 @@ public class EntityHook extends Entity {
 			this.motionX *= 0.9D;
 			this.motionZ *= 0.9D;
 
-			this.move(this.motionX, this.motionY, this.motionZ);
+			this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 			this.setPosition(this.posX, this.posY, this.posZ);
 			
 			if(this.getHooked() != null) {

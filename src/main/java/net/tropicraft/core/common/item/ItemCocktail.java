@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,6 @@ import net.tropicraft.core.common.drinks.ColorMixer;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipe;
-import net.tropicraft.core.registry.AchievementRegistry;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -50,19 +50,19 @@ public class ItemCocktail extends ItemTropicraftColored {
 	}
 
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.clear();
-		if (par1ItemStack.getTagCompound() == null) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.clear();
+		if (stack.getTagCompound() == null) {
 			return;
 		}
 
-		Drink drink = Drink.drinkList[par1ItemStack.getTagCompound().getByte("DrinkID")];
+		Drink drink = Drink.drinkList[stack.getTagCompound().getByte("DrinkID")];
 
 		if (drink != null) {
-			par3List.add(drink.textFormatting.toString() + TextFormatting.BOLD.toString() + drink.displayName);
+			tooltip.add(drink.textFormatting.toString() + TextFormatting.BOLD.toString() + drink.displayName);
 		}
 
-		NBTTagList ingredients = par1ItemStack.getTagCompound().getTagList("Ingredients", 10);
+		NBTTagList ingredients = stack.getTagCompound().getTagList("Ingredients", 10);
 
 		for (int i = 0; i < ingredients.tagCount(); ++i) {
 			NBTTagCompound ingredient = (NBTTagCompound) ingredients.getCompoundTagAt(i);
@@ -72,7 +72,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 			int ingredientColor = Ingredient.ingredientsList[id].getColor();
 			//String lvl = StatCollector.translateToLocal("enchantment.level." + count);
 			//par3List.add(ingredientName + " " + lvl);
-			par3List.add(ingredientName);
+			tooltip.add(ingredientName);
 		}
 	}
 
@@ -244,20 +244,21 @@ public class ItemCocktail extends ItemTropicraftColored {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		Drink drink = getDrink(itemStackIn);
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	    ItemStack stack = playerIn.getHeldItem(hand);
+		Drink drink = getDrink(stack);
 
 		if (drink != null) {
 			if (!playerIn.canEat(drink.alwaysEdible)) {
-				return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+				return new ActionResult(EnumActionResult.FAIL, stack);
 			}
 		} else if (!playerIn.canEat(false)) {
-			return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+			return new ActionResult(EnumActionResult.FAIL, stack);
 		}
 
 		playerIn.setActiveHand(hand);
 
-		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override

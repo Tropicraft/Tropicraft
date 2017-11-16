@@ -72,7 +72,7 @@ public class EntityAISwimTargetPrey extends EntityAISwimBase {
 		
 		// Hunt Target and/or Do damage
 		if(entity.aggressTarget != null) {
-			if(entity.getDistanceSqToEntity(entity.aggressTarget) <= entity.width) {
+			if(entity.getDistanceSq(entity.aggressTarget) <= entity.width) {
 				if(entity.aggressTarget instanceof EntityLivingBase) {
 					((EntityLivingBase)entity.aggressTarget).attackEntityFrom(DamageSource.causeMobDamage(entity), entity.attackDamage);
 				}

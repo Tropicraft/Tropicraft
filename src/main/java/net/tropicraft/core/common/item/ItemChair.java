@@ -31,8 +31,10 @@ public class ItemChair extends ItemTropicraftColored {
 		return (pass == 0 ? 16777215 : color.intValue());
 	}
 
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
 	{
+	    ItemStack stack = playerIn.getHeldItem(hand);
 		float f = 1.0F;
 		float f1 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * f;
 		float f2 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * f;
@@ -52,13 +54,13 @@ public class ItemChair extends ItemTropicraftColored {
 
 		if (raytraceresult == null)
 		{
-			return new ActionResult(EnumActionResult.PASS, itemStackIn);
+			return new ActionResult(EnumActionResult.PASS, stack);
 		}
 		else
 		{
 			Vec3d vec3d2 = playerIn.getLook(f);
 			boolean flag = false;
-			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(vec3d2.xCoord * d3, vec3d2.yCoord * d3, vec3d2.zCoord * d3).grow(1.0D));
+			List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(vec3d2.x * d3, vec3d2.y * d3, vec3d2.z * d3).grow(1.0D));
 
 			for (int i = 0; i < list.size(); ++i)
 			{
@@ -68,7 +70,7 @@ public class ItemChair extends ItemTropicraftColored {
 				{
 					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
 
-					if (axisalignedbb.isVecInside(vec3d))
+					if (axisalignedbb.contains(vec3d))
 					{
 						flag = true;
 					}
@@ -77,31 +79,31 @@ public class ItemChair extends ItemTropicraftColored {
 
 			if (flag)
 			{
-				return new ActionResult(EnumActionResult.PASS, itemStackIn);
+				return new ActionResult(EnumActionResult.PASS, stack);
 			}
 			else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
 			{
-				return new ActionResult(EnumActionResult.PASS, itemStackIn);
+				return new ActionResult(EnumActionResult.PASS, stack);
 			}
 			else
 			{
 				Block block = worldIn.getBlockState(raytraceresult.getBlockPos()).getBlock();
 				boolean flag1 = block == Blocks.WATER || block == Blocks.FLOWING_WATER;
 
-				double x = raytraceresult.hitVec.xCoord;
-				double y = flag1 ? raytraceresult.hitVec.yCoord - 0.12D : raytraceresult.hitVec.yCoord;
-				double z = raytraceresult.hitVec.zCoord;
+				double x = raytraceresult.hitVec.x;
+				double y = flag1 ? raytraceresult.hitVec.y - 0.12D : raytraceresult.hitVec.y;
+				double z = raytraceresult.hitVec.z;
 
 				//EntityBoat entityboat = new EntityBoat(worldIn, raytraceresult.hitVec.xCoord, flag1 ? raytraceresult.hitVec.yCoord - 0.12D : raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord);
 				//entityboat.setColor(this.type);
-				int color = ColorHelper.getColorFromDamage(itemStackIn.getItemDamage());
+				int color = ColorHelper.getColorFromDamage(stack.getItemDamage());
 				EntityChair chair = new EntityChair(worldIn, x, y + 1.01, z, color, playerIn);
 
 				chair.rotationYaw = playerIn.rotationYaw;
 
 				if (!worldIn.getCollisionBoxes(chair, chair.getEntityBoundingBox().grow(-0.1D)).isEmpty())
 				{
-					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+					return new ActionResult(EnumActionResult.FAIL, stack);
 				}
 				else
 				{
@@ -112,11 +114,11 @@ public class ItemChair extends ItemTropicraftColored {
 
 					if (!playerIn.capabilities.isCreativeMode)
 					{
-						--itemStackIn.stackSize;
+						stack.shrink(1);
 					}
 
 					playerIn.addStat(StatList.getObjectUseStats(this));
-					return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+					return new ActionResult(EnumActionResult.SUCCESS, stack);
 				}
 			}
 		}

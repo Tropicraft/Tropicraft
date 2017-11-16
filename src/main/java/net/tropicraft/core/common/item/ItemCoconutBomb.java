@@ -22,8 +22,11 @@ public class ItemCoconutBomb extends ItemTropicraft {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer player, EnumHand hand) {
-		itemstack.stackSize--;
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	    ItemStack itemstack = player.getHeldItem(hand);
+		if (!itemstack.isEmpty()) {
+		    itemstack.shrink(1);
+		}
 		world.playSound((EntityPlayer)null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
 		if (!world.isRemote) {
 		    if (ArrayUtils.contains(TropicsConfigs.coconutBombWhitelist, player.getGameProfile().getName())) {

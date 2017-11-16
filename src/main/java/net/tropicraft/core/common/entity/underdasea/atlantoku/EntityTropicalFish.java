@@ -72,10 +72,9 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 	}
 
 	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
-
-		if (stack != null && stack.getItem() == ItemRegistry.fishingNet) {
-
+	protected boolean processInteract(EntityPlayer player, EnumHand hand) {   
+	    ItemStack stack = player.getHeldItem(hand);
+		if (!stack.isEmpty() && stack.getItem() == ItemRegistry.fishingNet) {
 			final int firstHotbarSlot = 0;
 			int bucketSlot = -1;
 			for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
@@ -111,7 +110,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 	}
 
 	private boolean isFishHolder(ItemStack stack) {
-		return stack != null
+		return !stack.isEmpty()
 				&& (stack.getItem() == ItemRegistry.tropicsWaterBucket || stack.getItem() == ItemRegistry.fishBucket);
 	}
 

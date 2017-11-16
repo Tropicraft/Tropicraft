@@ -30,9 +30,9 @@ public class EntityAISwimAvoidWalls extends EntityAISwimBase {
 		Vec3d angle = entity.getHeading();
 		double frontDist = 1f+rand.nextInt(4);
 		
-		Vec3d diff = new Vec3d(entity.posX + (angle.xCoord*frontDist), entity.posY + angle.yCoord, entity.posZ + (angle.zCoord*frontDist));
+		Vec3d diff = new Vec3d(entity.posX + (angle.x * frontDist), entity.posY + angle.y, entity.posZ + (angle.z * frontDist));
 
-		BlockPos bp = new BlockPos((int)diff.xCoord, (int)entity.posY, (int)diff.zCoord);
+		BlockPos bp = new BlockPos((int)diff.x, (int)entity.posY, (int)diff.z);
 
 		if(!entity.world.getBlockState(bp).getMaterial().isLiquid() && !entity.isMovingAwayFromWall) 
 		{
@@ -45,7 +45,7 @@ public class EntityAISwimAvoidWalls extends EntityAISwimBase {
 		
 		
 		if(entity.targetVector != null && entity.isMovingAwayFromWall) {
-			bp = new BlockPos((int)entity.targetVector.xCoord, (int)entity.targetVector.yCoord, (int)entity.targetVector.zCoord);
+			bp = new BlockPos((int)entity.targetVector.x, (int)entity.targetVector.y, (int)entity.targetVector.z);
 
 			if(entity.getPosition().equals(bp) && entity.ticksExisted % 80 == 0) {
 				entity.isMovingAwayFromWall = false;
@@ -59,7 +59,7 @@ public class EntityAISwimAvoidWalls extends EntityAISwimBase {
 			if(entity.swimPitch > 0f) {
 				angle = entity.getHeading();
 				frontDist = 5f;
-				diff = new Vec3d(entity.posX + (angle.xCoord*frontDist), entity.posY + angle.yCoord, entity.posZ + (angle.zCoord*frontDist));	
+				diff = new Vec3d(entity.posX + (angle.x * frontDist), entity.posY + angle.y, entity.posZ + (angle.z * frontDist));	
 				entity.isPanicking = false;
 				entity.setRandomTargetHeadingForce(32);
 			//	entity.setTargetHeading(diff.xCoord, posY - 2, diff.zCoord, true);

@@ -105,7 +105,7 @@ public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
 	@Override
 	public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
-	    ItemStack stack = player.getHeldItemMainhand();
+	    ItemStack stack = player.getHeldItem(hand);
         if (this.isTamed())
         {
         	if (this.isOwner(player) && !this.world.isRemote && !stack.isEmpty() && !this.isBreedingItem(stack))

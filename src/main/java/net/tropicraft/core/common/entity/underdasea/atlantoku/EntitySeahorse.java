@@ -27,7 +27,7 @@ public class EntitySeahorse extends EntityTropicraftWaterBase {
 	}
 
 	@Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
         return false;
     }
 

@@ -23,9 +23,10 @@ public class ItemBambooItemFrame extends ItemHangingEntity {
      * Called when a Block is right-clicked with this Item
      */
 	@Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         BlockPos blockpos = pos.offset(facing);
-
+        ItemStack stack = playerIn.getHeldItem(hand);
+        
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && playerIn.canPlayerEdit(blockpos, facing, stack)) {
             EntityBambooItemFrame entityhanging = this.createEntity(worldIn, blockpos, facing);
             entityhanging.setFacing(facing);
@@ -35,8 +36,10 @@ public class ItemBambooItemFrame extends ItemHangingEntity {
                     entityhanging.playPlaceSound();
                     worldIn.spawnEntity(entityhanging);
                 }
-
-                --stack.stackSize;
+                
+                if (!stack.isEmpty()) {
+                    stack.shrink(1);   
+                }
             }
 
             return EnumActionResult.SUCCESS;
