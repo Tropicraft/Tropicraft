@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -39,6 +40,8 @@ public class MapGenUndergroundWaterCove {
 
 	public ChunkPrimer generate(int x, int z, ChunkPrimer primer) {
 		BlockPos coveCoords = getCoveNear(worldObj, x, z);
+        BlockFalling.fallInstantly = true;
+
 
 		if (coveCoords != null) {
 			centerX = coveCoords.getX();
@@ -72,9 +75,13 @@ public class MapGenUndergroundWaterCove {
 				relativeZ *= relativeZ;
 				for (double j = -height; j < height; j++) {
 					if ((relativeX / length) + ((j * j) / height) + (relativeZ / width) <= 1) {
-						if(height == j) {
-							System.out.println("Placed Purified Sand");
-							placeBlock(blockX, y + (int) j + 1, blockZ, BlockRegistry.blockPackedPurifiedSand.getDefaultState(), primer);
+						if(j >= -1) {
+								//System.out.println("Placed Packed Purified Sand "+x+" "+y+" "+z);
+							
+								placeBlock(blockX, y + (int) j + 1, blockZ, BlockRegistry.blockPackedPurifiedSand.getDefaultState(), primer);
+								placeBlock(blockX, y + (int) j + 2, blockZ, BlockRegistry.sands.getDefaultState(), primer);
+
+						//	}
 						}
 						placeBlock(blockX, y + (int) j, blockZ, BlockRegistry.tropicsWater.getDefaultState(), primer);
 
@@ -124,6 +131,7 @@ public class MapGenUndergroundWaterCove {
 			}
 		}
 		
+        BlockFalling.fallInstantly = false;
 		return primer;
 	}
 	
