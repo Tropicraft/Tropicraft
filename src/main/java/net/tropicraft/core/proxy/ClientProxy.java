@@ -22,6 +22,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -51,6 +52,7 @@ import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.CraftingRegistry;
+import net.tropicraft.core.registry.EncyclopediaRegistry;
 import net.tropicraft.core.registry.EntityRenderRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.TileEntityRenderRegistry;
@@ -193,8 +195,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerItemWithSubtypes(Item item, CreativeTabs tab) {
 		if (item.getHasSubtypes()) {
-			List<ItemStack> subItems = new ArrayList<ItemStack>();
-			item.getSubItems(item, tab, subItems);
+			NonNullList<ItemStack> subItems = NonNullList.create();
+			item.getSubItems(tab, subItems);
 			for (ItemStack subItem : subItems) {
 				String subItemName = item.getUnlocalizedName(subItem);
 				subItemName =  subItemName.substring(subItemName.indexOf(".") + 1); // remove 'item.' from the front
@@ -227,7 +229,7 @@ public class ClientProxy extends CommonProxy {
 				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt",
 				"encyclopediaTropica",
 				"encyclopediaTropicaInside");
-		CraftingRegistry.addItemsToEncyclopedia(); // registers items for encyclopedia
+		EncyclopediaRegistry.init(); // registers items for encyclopedia
 	}
 
 	@Override
