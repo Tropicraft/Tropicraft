@@ -43,7 +43,7 @@ ITileEntityProvider {
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
@@ -66,7 +66,7 @@ ITileEntityProvider {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
 			return true;
 		}
@@ -86,7 +86,7 @@ ITileEntityProvider {
 		}
 
 		ItemStack ingredientStack = stack.copy();
-		ingredientStack.stackSize = 1;
+		ingredientStack.setCount(1);
 
 		if (mixer.addToMixer(ingredientStack)) {
 			entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
@@ -109,8 +109,8 @@ ITileEntityProvider {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-		IBlockState ret = super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer, stack);
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		IBlockState ret = super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
 		return ret.withProperty(FACING, placer.getHorizontalFacing());
 	}
 

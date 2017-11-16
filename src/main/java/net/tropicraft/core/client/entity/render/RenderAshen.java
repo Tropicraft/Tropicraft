@@ -25,7 +25,7 @@ public class RenderAshen extends RenderLiving<EntityAshen> {
 
 	public void renderAshen(EntityAshen entityAshen, double d, double d1, double d2, float f, float f1) {
 		modelAshen.actionState = entityAshen.getActionState();
-		if (entityAshen.getAttackTarget() != null && entityAshen.getDistanceToEntity(entityAshen.getAttackTarget()) < 5.0F && !entityAshen.isSwingInProgress) {
+		if (entityAshen.getAttackTarget() != null && entityAshen.getDistance(entityAshen.getAttackTarget()) < 5.0F && !entityAshen.isSwingInProgress) {
 			modelAshen.swinging = true;
 		} else {
 			if (entityAshen.isSwingInProgress && entityAshen.swingProgressInt > 6) {

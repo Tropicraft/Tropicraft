@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.worldgen.perlin.NoiseModule;
@@ -24,10 +24,10 @@ public class MapGenVolcano {
 	protected HashMap coordMap = new HashMap();
 
 	public static List<Biome> volcanoSpawnBiomesLand = Arrays.asList(new Biome[] {
-			BiomeGenTropicraft.tropics, BiomeGenTropicraft.rainforestPlains
+			BiomeTropicraft.tropics, BiomeTropicraft.rainforestPlains
 	});
 	public static List<Biome> volcanoSpawnBiomesOcean = Arrays.asList(new Biome[] {
-			BiomeGenTropicraft.tropicsOcean
+			BiomeTropicraft.tropicsOcean
 	});
 
 	private World worldObj;

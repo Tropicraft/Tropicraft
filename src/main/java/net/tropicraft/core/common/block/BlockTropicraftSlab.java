@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -20,8 +19,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -64,7 +65,7 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
      * Get the MapColor for this Block and the given BlockState
      */
 	@Override
-    public MapColor getMapColor(IBlockState state) {
+	public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         return ((TropicraftSlabs)state.getValue(VARIANT)).getMapColor();
     }
 
@@ -110,10 +111,10 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
      */
 	@Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        if (itemIn != Item.getItemFromBlock(BlockRegistry.doubleSlabs)) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (this != BlockRegistry.doubleSlabs) {
             for (TropicraftSlabs slab : TropicraftSlabs.VALUES) {
-                list.add(new ItemStack(itemIn, 1, slab.getMeta()));
+                list.add(new ItemStack(this, 1, slab.getMeta()));
             }
         }
     }

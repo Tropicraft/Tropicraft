@@ -10,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -56,7 +57,7 @@ public class EntityFailgull extends EntityFlying {
 	private void poop() {
 		if (!world.isRemote && world.rand.nextInt(20) == 0) {
 			EntitySnowball s = new EntitySnowball(world, posX, posY, posZ);
-			s.setThrowableHeading(0, 0, 0, 0, 0);
+			s.shoot(0, 0, 0, 0, 0);
 			world.spawnEntity(s);
 		}
 	}
@@ -70,7 +71,7 @@ public class EntityFailgull extends EntityFlying {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource damageSource) {
 		return null;
 	}
 
@@ -109,7 +110,7 @@ public class EntityFailgull extends EntityFlying {
 				EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
 				double d0 = 64.0D;
 
-				if (entitylivingbase.getDistanceSqToEntity(this.parentEntity) < d0 * d0) {
+				if (entitylivingbase.getDistanceSq(this.parentEntity) < d0 * d0) {
 					double d1 = entitylivingbase.posX - this.parentEntity.posX;
 					double d2 = entitylivingbase.posZ - this.parentEntity.posZ;
 					this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw = -((float)MathHelper.atan2(d1, d2)) * (180F / (float)Math.PI);

@@ -37,7 +37,7 @@ public class BlockTropicsWater extends BlockFluidClassic {
 
 	@Override
 	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 	

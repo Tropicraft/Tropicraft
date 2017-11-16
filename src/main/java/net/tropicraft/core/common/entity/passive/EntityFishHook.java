@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -214,7 +215,7 @@ public class EntityFishHook extends Entity
         {
             ItemStack itemstack = this.angler.getHeldItemMainhand();
 
-            if (this.angler.isDead || !this.angler.isEntityAlive() || itemstack == null || itemstack.getItem() != Items.FISHING_ROD || this.getDistanceSqToEntity(this.angler) > 1024.0D)
+            if (this.angler.isDead || !this.angler.isEntityAlive() || itemstack == null || itemstack.getItem() != Items.FISHING_ROD || this.getDistanceSq(this.angler) > 1024.0D)
             {
                 this.setDead();
                 this.angler.setLure(null);
@@ -286,7 +287,7 @@ public class EntityFishHook extends Entity
 
                 if (raytraceresult != null)
                 {
-                    vec3d = new Vec3d(raytraceresult.hitVec.xCoord, raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord);
+                    vec3d = new Vec3d(raytraceresult.hitVec.x, raytraceresult.hitVec.y, raytraceresult.hitVec.z);
                 }
 
                 Entity entity = null;
@@ -336,7 +337,7 @@ public class EntityFishHook extends Entity
 
             if (!this.inGround)
             {
-                this.move(this.motionX, this.motionY, this.motionZ);
+                this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
                 float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
                 this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
@@ -364,7 +365,7 @@ public class EntityFishHook extends Entity
                 this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
                 float f3 = 0.92F;
 
-                if (this.onGround || this.isCollidedHorizontally)
+                if (this.onGround || this.collidedHorizontally)
                 {
                     f3 = 0.5F;
                 }

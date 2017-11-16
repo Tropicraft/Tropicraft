@@ -26,6 +26,7 @@ public class BlockBambooChest extends BlockChest {
      * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
      * EntityPlayer.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
         TileEntityBambooChest tile = (TileEntityBambooChest) world.getTileEntity(pos);

@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.tropicraft.Info;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -94,7 +94,7 @@ public class TropicraftWaterRenderFixer {
     			BlockPos pos = mc.getRenderViewEntity().getPosition();
     	        double y = mc.getRenderViewEntity().prevPosY + (mc.getRenderViewEntity().posY - mc.getRenderViewEntity().prevPosY) * mc.getRenderPartialTicks();
         		float fogTarget;
-        		if (mc.world.getBiome(pos) == BiomeGenTropicraft.kelpForest) {
+        		if (mc.world.getBiome(pos) == BiomeTropicraft.kelpForest) {
         			float diff = FOG_KELP_FOREST - FOG_OCEAN;
         			double scale = 1 - MathHelper.clamp((y - 45) / 20f, 0, 1);
         			fogTarget = (float) (FOG_OCEAN + (diff * scale));

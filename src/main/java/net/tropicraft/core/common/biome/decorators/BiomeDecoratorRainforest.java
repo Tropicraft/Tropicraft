@@ -5,9 +5,8 @@ import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkProviderSettings;
 import net.tropicraft.configuration.GenRates;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenCoffeePlant;
 import net.tropicraft.core.common.worldgen.WorldGenHomeTree;
 import net.tropicraft.core.common.worldgen.WorldGenTallTree;
@@ -36,7 +35,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 		int z = chunkPos.getZ();
 		int i = 0; int k = 0;
 
-		if (BiomeGenTropicraft.DISABLEDECORATION) {
+		if (BiomeTropicraft.DISABLEDECORATION) {
 			System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
 			return;
 		}

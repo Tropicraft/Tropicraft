@@ -3,11 +3,11 @@ package net.tropicraft.core.common.biome;
 import net.tropicraft.core.common.biome.decorators.BiomeDecoratorTropicsOcean;
 import net.tropicraft.core.registry.BlockRegistry;
 
-public class BiomeGenKelpForest extends BiomeGenTropicraft {
+public class BiomeKelpForest extends BiomeTropicraft {
 
-	public BiomeGenKelpForest(BiomeProperties bgprop) {
+	public BiomeKelpForest(BiomeProperties bgprop) {
 		super(bgprop);
-		this.theBiomeDecorator = new BiomeDecoratorTropicsOcean();
+		this.decorator = new BiomeDecoratorTropicsOcean();
         this.topBlock = this.fillerBlock = BlockRegistry.sands.getDefaultState();
 	}
 }

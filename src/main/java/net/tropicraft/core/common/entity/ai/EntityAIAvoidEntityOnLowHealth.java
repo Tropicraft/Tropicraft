@@ -82,13 +82,13 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
             {
                 return false;
             }
-            else if (this.closestLivingEntity.getDistanceSq(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord) < this.closestLivingEntity.getDistanceSqToEntity(this.theEntity))
+            else if (this.closestLivingEntity.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.getDistanceSq(this.theEntity))
             {
                 return false;
             }
             else
             {
-                this.entityPathEntity = this.entityPathNavigate.getPathToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
+                this.entityPathEntity = this.entityPathNavigate.getPathToXYZ(vec3d.x, vec3d.y, vec3d.z);
                 return this.entityPathEntity != null;
             }
         }
@@ -123,7 +123,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
      */
     public void updateTask()
     {
-        if (this.theEntity.getDistanceSqToEntity(this.closestLivingEntity) < 49.0D)
+        if (this.theEntity.getDistanceSq(this.closestLivingEntity) < 49.0D)
         {
             this.theEntity.getNavigator().setSpeed(this.nearSpeed);
         }

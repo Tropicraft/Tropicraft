@@ -3,13 +3,8 @@ package net.tropicraft.core.client.entity.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityHanging;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 
 public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropicraftWaterBase> {

@@ -48,11 +48,11 @@ public class BlockSeaweed extends BlockTropicraft {
 				
 				Vec3d centerPos = new Vec3d(getPos()).addVector(0.5, 0.5, 0.5).add(offset);
 				
-				swayAngle = angleNoise.getValue(centerPos.xCoord / 200, centerPos.zCoord / 200);
+				swayAngle = angleNoise.getValue(centerPos.x / 200, centerPos.z / 200);
 				swayAngle += 1; // convert to 0..2
 				swayAngle *= Math.PI; // convert to 0..2PI
 				
-				swayDelay = delayNoise.getValue(centerPos.xCoord / 100, centerPos.zCoord / 100);
+				swayDelay = delayNoise.getValue(centerPos.x / 100, centerPos.z / 100);
 				swayDelay *= 20;
 			}
 			return cachedBB;

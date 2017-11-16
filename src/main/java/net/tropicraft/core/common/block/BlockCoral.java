@@ -76,7 +76,7 @@ public class BlockCoral extends BlockTropicraftEnumVariants<TropicraftCorals> im
 
 	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -103,7 +103,7 @@ public class BlockCoral extends BlockTropicraftEnumVariants<TropicraftCorals> im
 	}
 
 	public boolean canThisPlantGrowOnThisBlock(Block b) {
-		return b == Blocks.GRASS || b == Blocks.DIRT || b == Blocks.SAND || b == BlockRegistry.seaweed || b == BlockRegistry.sands; /* TODO: || b == TCBlockRegistry.purifiedSand || b == TCBlockRegistry.mineralSands;*/
+		return b == Blocks.GRASS || b == Blocks.DIRT || b == Blocks.SAND || b == BlockRegistry.seaweed || b == BlockRegistry.sands;
 	}
 
 	@Override

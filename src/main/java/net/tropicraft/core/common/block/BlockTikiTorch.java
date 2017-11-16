@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -101,7 +102,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
@@ -154,7 +155,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 	    return this.getDefaultState().withProperty(SECTION, TorchSection.LOWER);
 	}
 
@@ -164,7 +165,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	 * block, etc.
 	 */
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		this.onNeighborChangeInternal(worldIn, pos, state);
 	}
 

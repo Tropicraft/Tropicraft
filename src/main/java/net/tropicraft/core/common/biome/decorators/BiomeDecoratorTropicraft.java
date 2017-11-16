@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.gen.ChunkProviderSettings;
+import net.minecraft.world.gen.ChunkGeneratorSettings;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.tropicraft.core.common.enums.TropicraftOres;
@@ -37,7 +37,7 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 		if (this.decorating) {
 			throw new RuntimeException("Already decorating");
 		} else {
-		    this.chunkProviderSettings = ChunkProviderSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
+		    this.chunkProviderSettings = ChunkGeneratorSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
 			this.chunkPos = pos;
 			this.decorating = false;
 			this.initOreGen(biome, worldIn, random);

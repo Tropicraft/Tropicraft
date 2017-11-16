@@ -55,9 +55,9 @@ public class EntityAIWanderNotLazy extends EntityAIBase {
         }
         else
         {
-            this.xPosition = vec3d.xCoord;
-            this.yPosition = vec3d.yCoord;
-            this.zPosition = vec3d.zCoord;
+            this.xPosition = vec3d.x;
+            this.yPosition = vec3d.y;
+            this.zPosition = vec3d.z;
             this.mustUpdate = false;
             return true;
         }

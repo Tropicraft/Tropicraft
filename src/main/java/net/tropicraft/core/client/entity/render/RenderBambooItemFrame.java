@@ -91,8 +91,8 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
 
         if (itemstack != null) {
             EntityItem entityitem = new EntityItem(itemFrame.world, 0.0D, 0.0D, 0.0D, itemstack);
-            Item item = entityitem.getEntityItem().getItem();
-            entityitem.getEntityItem().stackSize = 1;
+            Item item = entityitem.getItem().getItem();
+            entityitem.getItem().setCount(1);
             entityitem.hoverStart = 0.0F;
             GlStateManager.pushMatrix();
             GlStateManager.disableLighting();
@@ -110,7 +110,7 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
                 float f = 0.0078125F;
                 GlStateManager.scale(f, f, f);
                 GlStateManager.translate(-64.0F, -64.0F, 0.0F);
-                MapData mapdata = Items.FILLED_MAP.getMapData(entityitem.getEntityItem(), itemFrame.world);
+                MapData mapdata = Items.FILLED_MAP.getMapData(entityitem.getItem(), itemFrame.world);
                 GlStateManager.translate(0.0F, 0.0F, -1.0F);
 
                 if (mapdata != null) {
@@ -119,13 +119,13 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
             } else {
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
 
-                if (!this.itemRenderer.shouldRenderItemIn3D(entityitem.getEntityItem()) || item instanceof ItemSkull) {
+                if (!this.itemRenderer.shouldRenderItemIn3D(entityitem.getItem()) || item instanceof ItemSkull) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 }
 
                 GlStateManager.pushAttrib();
                 RenderHelper.enableStandardItemLighting();
-                this.itemRenderer.renderItem(entityitem.getEntityItem(), ItemCameraTransforms.TransformType.FIXED);
+                this.itemRenderer.renderItem(entityitem.getItem(), ItemCameraTransforms.TransformType.FIXED);
                 RenderHelper.disableStandardItemLighting();
                 GlStateManager.popAttrib();
             }

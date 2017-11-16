@@ -25,7 +25,7 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		if (ashen.maskToTrack == null) return false;
 
 		if (panicTime > 0) {
@@ -41,13 +41,13 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
 				else
 				{
 
-					this.ashen.getNavigator().tryMoveToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord, this.speed);
+					this.ashen.getNavigator().tryMoveToXYZ(vec3.x, vec3.y, vec3.z, this.speed);
 					return true;
 				}
 			}
 
 		} else {
-			if (ashen.getDistanceSqToEntity(ashen.maskToTrack) <= maskGrabDistance) {
+			if (ashen.getDistanceSq(ashen.maskToTrack) <= maskGrabDistance) {
 				if(!ashen.maskToTrack.isDead && ashen.world.loadedEntityList.contains(ashen.maskToTrack)) {
 					ashen.pickupMask(ashen.maskToTrack);
 				}else {

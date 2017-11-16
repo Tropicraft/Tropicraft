@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +16,7 @@ public class RenderEchinodermEgg extends Render<EntityEchinodermEgg> {
 		super(Minecraft.getMinecraft().getRenderManager());
 	}
 
-	private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {
+	private void buf(BufferBuilder buffer, double x, double y, double z, double tex1, double tex2) {
 		buffer.pos(x, y, z).tex(tex1, tex2).endVertex();
 	}
 
@@ -40,7 +40,7 @@ public class RenderEchinodermEgg extends Render<EntityEchinodermEgg> {
 		float f5 = 0.5F;
 		float f6 = 0.25F;
 
-		VertexBuffer buffer = tessellator.getBuffer();
+		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 		buf(buffer, (double)(0.0F - f5), (double)(0.0F - f6), 0.0D, (double)f, (double)f3);

@@ -39,12 +39,12 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
     }
 
 	@Override
-	public boolean isFullyOpaque(IBlockState state) {
+	public boolean isTopSolid(IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
 			return true;
 		}
@@ -56,7 +56,7 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 		if (tileentitysifta != null && stack != null && !tileentitysifta.isSifting()) {
 			Item helditem = stack.getItem();
 			if (helditem == Item.getItemFromBlock(Blocks.SAND) || (helditem == Item.getItemFromBlock(BlockRegistry.sands))) {
-				entityPlayer.getHeldItemMainhand().stackSize--;
+				entityPlayer.getHeldItemMainhand().shrink(1);
 				tileentitysifta.addItemToSifter(stack);
 				tileentitysifta.startSifting();
 			}

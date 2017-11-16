@@ -117,7 +117,7 @@ public abstract class EntityAshen extends EntityMob implements IRangedAttackMob 
 		boolean wasHit = super.attackEntityFrom(source, amt);
 
 		if (!world.isRemote) {
-			if (hasMask() && wasHit && !source.equals(DamageSource.outOfWorld)) {
+			if (hasMask() && wasHit && !source.equals(DamageSource.OUT_OF_WORLD)) {
 				dropMask();
 			}
 		}

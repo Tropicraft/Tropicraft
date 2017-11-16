@@ -73,8 +73,8 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 	
 	@Override
 	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
-		if(damageSrc.getEntity() != null && damageSrc.getEntity() instanceof EntityLivingBase) {
-			this.setAttackTarget((EntityLivingBase)damageSrc.getEntity());
+		if(damageSrc.getTrueSource() != null && damageSrc.getTrueSource() instanceof EntityLivingBase) {
+			this.setAttackTarget((EntityLivingBase)damageSrc.getTrueSource());
 		}
 		super.damageEntity(damageSrc, damageAmount);
 	}
@@ -92,7 +92,7 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 	}
 
 	public boolean isBesideClimbableBlock() {
-		return this.isCollidedHorizontally;
+		return this.collidedHorizontally;
 	}
 
 	@Override
@@ -105,13 +105,13 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 		}
 		super.onLivingUpdate();
 		if(this.getAttackTarget() != null) {
-			if(this.getDistanceSqToEntity(this.getAttackTarget()) < 128D) {
+			if(this.getDistanceSq(this.getAttackTarget()) < 128D) {
 				Util.tryMoveToEntityLivingLongDist(this, this.getAttackTarget(), 0.8f);
 			}
 		}
 		if (!world.isRemote && this.getAttackTarget() != null && onGround && rand.nextInt(3) == 0
-				&& this.getAttackTarget().getDistanceToEntity(this) < 5) {
-			this.getNavigator().clearPathEntity();
+				&& this.getAttackTarget().getDistance(this) < 5) {
+			this.getNavigator().clearPath();
 			this.jump();
 			this.jumpMovementFactor = 0.3f;
 		}else {
@@ -123,10 +123,10 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 					this.setType(Type.ADULT);
 				}
 				if (this.mother != null) {
-					if (this.getDistanceSqToEntity(mother) > 16D) {
+					if (this.getDistanceSq(mother) > 16D) {
 						Util.tryMoveToEntityLivingLongDist(this, mother, 0.8f);
 					} else {
-						this.getNavigator().clearPathEntity();
+						this.getNavigator().clearPath();
 					}
 					if(this.mother.getAttackTarget() != null) {
 						this.setAttackTarget(this.mother.getAttackTarget());
@@ -139,7 +139,7 @@ public class EntityTropiSpider extends EntitySpider implements IMob {
 				if (this.mother != null) {
 					if(this.mother.isDead) {
 						this.mother = null;
-						this.getNavigator().clearPathEntity();
+						this.getNavigator().clearPath();
 						this.setAttackTarget(null);
 					}
 					// issues much?

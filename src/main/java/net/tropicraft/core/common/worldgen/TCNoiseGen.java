@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 
 public abstract class TCNoiseGen extends WorldGenerator {
 

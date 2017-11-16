@@ -14,11 +14,11 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityShark;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 import net.tropicraft.core.registry.BlockRegistry;
 
-public class BiomeGenTropicsOcean extends BiomeGenTropicraft {
+public class BiomeTropicsOcean extends BiomeTropicraft {
 
-	public BiomeGenTropicsOcean(BiomeProperties bgprop) {
+	public BiomeTropicsOcean(BiomeProperties bgprop) {
 		super(bgprop);
-		this.theBiomeDecorator = new BiomeDecoratorTropicsOcean();
+		this.decorator = new BiomeDecoratorTropicsOcean();
 
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeahorse.class, 6, 6, 12));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityMarlin.class, 10, 1, 4));

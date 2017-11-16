@@ -1,9 +1,10 @@
 package net.tropicraft.core.common.biome.decorators;
 
+import java.util.Random;
+
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkProviderSettings;
 import net.tropicraft.configuration.GenRates;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
@@ -11,8 +12,6 @@ import net.tropicraft.core.common.worldgen.WorldGenLargePalmTrees;
 import net.tropicraft.core.common.worldgen.WorldGenNormalPalms;
 import net.tropicraft.core.common.worldgen.WorldGenTropicsTreasure;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
-
-import java.util.Random;
 
 public class BiomeDecoratorTropicsBeach extends BiomeDecoratorTropicraft {
 

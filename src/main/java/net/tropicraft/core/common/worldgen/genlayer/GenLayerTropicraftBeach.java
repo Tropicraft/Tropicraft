@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.worldgen.genlayer;
 
 import net.minecraft.world.gen.layer.IntCache;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 
 public class GenLayerTropicraftBeach extends GenLayerTropicraft {
 
-	private int beachID = getID(BiomeGenTropicraft.tropicsBeach);
+	private int beachID = getID(BiomeTropicraft.tropicsBeach);
 
 	public GenLayerTropicraftBeach(long seed, GenLayerTropicraft parent) {
 		super(seed);

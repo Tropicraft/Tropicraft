@@ -55,7 +55,7 @@ public class BlockBongoDrum extends BlockTropicraftEnumVariants<TropicraftBongos
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         // Only play drum sound if player hits the top
         if (side != EnumFacing.UP) {
             return false;

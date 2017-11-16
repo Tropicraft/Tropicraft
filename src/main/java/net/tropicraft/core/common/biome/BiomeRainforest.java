@@ -9,11 +9,11 @@ import net.tropicraft.core.common.entity.hostile.EntityTreeFrog;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSpider;
 
 
-public class BiomeGenRainforest extends BiomeGenTropicraft {
+public class BiomeRainforest extends BiomeTropicraft {
 
-	public BiomeGenRainforest(BiomeProperties props) {
+	public BiomeRainforest(BiomeProperties props) {
 		super(props);
-		this.theBiomeDecorator = new BiomeDecoratorRainforest();
+		this.decorator = new BiomeDecoratorRainforest();
 
 		
         this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrog.class, 25, 2, 5));

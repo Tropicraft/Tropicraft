@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -30,7 +30,7 @@ public class RenderLure extends Render<EntityHook> {
 		GlStateManager.scale(0.5F, 0.5F, 0.5F);
 		this.bindEntityTexture(entity);
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		BufferBuilder vertexbuffer = tessellator.getBuffer();
 
 		GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(
@@ -100,9 +100,9 @@ public class RenderLure extends Render<EntityHook> {
 						+ (entity.angler.rotationYaw - entity.angler.prevRotationYaw) * partialTicks) * 0.017453292F);
 				vec3d = vec3d.rotateYaw(f8 * 0.5F);
 				vec3d = vec3d.rotatePitch(-f8 * 0.7F);
-				d4 = entity.angler.prevPosX + (entity.angler.posX - entity.angler.prevPosX) * (double) partialTicks + vec3d.xCoord;
-				d5 = entity.angler.prevPosY + (entity.angler.posY - entity.angler.prevPosY) * (double) partialTicks + vec3d.yCoord;
-				d6 = entity.angler.prevPosZ + (entity.angler.posZ - entity.angler.prevPosZ) * (double) partialTicks + vec3d.zCoord;
+				d4 = entity.angler.prevPosX + (entity.angler.posX - entity.angler.prevPosX) * (double) partialTicks + vec3d.x;
+				d5 = entity.angler.prevPosY + (entity.angler.posY - entity.angler.prevPosY) * (double) partialTicks + vec3d.y;
+				d6 = entity.angler.prevPosZ + (entity.angler.posZ - entity.angler.prevPosZ) * (double) partialTicks + vec3d.z;
 				d7 = (double) entity.angler.getEyeHeight();
 			} else {
 				d4 = entity.angler.prevPosX + (entity.angler.posX - entity.angler.prevPosX) * (double) partialTicks - d1 * d2 - d0 * 0.8D;

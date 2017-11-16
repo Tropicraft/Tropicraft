@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity.hostile;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -97,7 +98,7 @@ public class EntityLostMask extends Entity {
 			this.setRotator(a);
 			motionY -= .05f;
 		}
-		this.move(motionX, motionY, motionZ);		
+		this.move(MoverType.SELF, motionX, motionY, motionZ);		
 	}
 	@Override
 	protected void entityInit() {
@@ -125,11 +126,11 @@ public class EntityLostMask extends Entity {
 		} else {
 			if (!this.isDead && !this.world.isRemote) {
 				this.setDead();
-				this.setBeenAttacked();
+				this.markVelocityChanged();
 				EntityPlayer entityplayer = null;
 
-				if (par1DamageSource.getEntity() instanceof EntityPlayer) {
-					entityplayer = (EntityPlayer)par1DamageSource.getEntity();
+				if (par1DamageSource.getTrueSource() instanceof EntityPlayer) {
+					entityplayer = (EntityPlayer)par1DamageSource.getTrueSource();
 				}
 
 				if (entityplayer != null && entityplayer.capabilities.isCreativeMode) {

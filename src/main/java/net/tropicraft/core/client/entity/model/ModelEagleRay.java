@@ -2,10 +2,11 @@ package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityEagleRay;
@@ -41,7 +42,7 @@ public class ModelEagleRay extends ModelBase {
 
 	private void renderTailSimple() {
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer buffer = tessellator.getBuffer();
+		BufferBuilder buffer = tessellator.getBuffer();
 
 		float minU = 0.75f;
 		float maxU = 1.0f;
@@ -76,13 +77,13 @@ public class ModelEagleRay extends ModelBase {
 		GlStateManager.enableLighting();
 	}
 
-	private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {
+	private void buf(BufferBuilder buffer, double x, double y, double z, double tex1, double tex2) {
 		buffer.pos(x, y, z).tex(tex1, tex2).endVertex();
 	}
 
 	private void renderWing(boolean reverse) {
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer buffer = tessellator.getBuffer();
+		BufferBuilder buffer = tessellator.getBuffer();
 
 		float minUFront = 0f;
 		float maxUFront = 0.25f;

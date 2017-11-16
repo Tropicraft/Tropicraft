@@ -51,7 +51,7 @@ public class AIAshenShootDart extends EntityAIBase {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return this.shouldExecute() || !this.entity.getNavigator().noPath();
     }
     
@@ -100,7 +100,7 @@ public class AIAshenShootDart extends EntityAIBase {
             }
 
             if (d0 <= (double)this.maxAttackDistance && this.seeTime >= 20) {
-                this.entity.getNavigator().clearPathEntity();
+                this.entity.getNavigator().clearPath();
                 ++this.strafingTime;
             } else {
                 this.entity.getNavigator().tryMoveToEntityLiving(entitylivingbase, moveSpeedAmplifier);

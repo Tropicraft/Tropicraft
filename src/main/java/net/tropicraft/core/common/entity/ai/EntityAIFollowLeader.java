@@ -33,7 +33,7 @@ public class EntityAIFollowLeader extends EntityAIBase {
 		if (!this.follower.isEntityAlive() || (this.follower.leader != null && !this.follower.leader.isEntityAlive())) {
 			return false;
 		} else {
-			double d0 = this.follower.getDistanceSqToEntity(this.follower.leader);
+			double d0 = this.follower.getDistanceSq(this.follower.leader);
 			return d0 >= 9.0D && d0 <= 256.0D;
 		}
 	}

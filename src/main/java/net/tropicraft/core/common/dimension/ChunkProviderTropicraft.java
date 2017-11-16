@@ -18,10 +18,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 import net.tropicraft.core.common.spawning.TropiWorldEntitySpawner;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.common.worldgen.mapgen.MapGenTropicsCaves;
@@ -77,7 +76,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
         int i = x * 16;
         int j = z * 16;
         BlockPos blockpos = new BlockPos(i, 0, j);
-        BiomeGenTropicraft biome = (BiomeGenTropicraft) this.worldObj.getBiome(blockpos.add(16, 0, 16));
+        BiomeTropicraft biome = (BiomeTropicraft) this.worldObj.getBiome(blockpos.add(16, 0, 16));
         this.rand.setSeed(this.worldObj.getSeed());
         long k = this.rand.nextLong() / 2L * 2L + 1L;
         long l = this.rand.nextLong() / 2L * 2L + 1L;
@@ -170,11 +169,11 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
                 // Somehow this fixes the "random" patches of sand in worldgen: https://i.imgur.com/fWtjlyA.png
                 // Added cast because BiomePlains ended up in here. We should look into why eventually.
                 Biome biomePreCast = biomesIn[xValue + zValue * 16];
-                if (!(biomePreCast instanceof BiomeGenTropicraft)) {
+                if (!(biomePreCast instanceof BiomeTropicraft)) {
                     System.err.println("!!! Weird, ChunkProviderTropicraft encountered a non Tropicraft biome: " + biomePreCast.getBiomeName());
                     continue;
                 }
-                BiomeGenTropicraft biome = (BiomeGenTropicraft)biomePreCast;
+                BiomeTropicraft biome = (BiomeTropicraft)biomePreCast;
                 
                 int yStart = -1;
 

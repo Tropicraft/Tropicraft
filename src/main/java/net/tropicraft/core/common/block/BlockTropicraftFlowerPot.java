@@ -79,8 +79,9 @@ public class BlockTropicraftFlowerPot extends BlockTropicraft implements ITileEn
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {		
-		if (heldItem != null && heldItem.getItem() instanceof ItemBlock) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {		
+		ItemStack heldItem = playerIn.getHeldItemMainhand();
+	    if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemBlock) {
 			TileEntityTropicraftFlowerPot flowerPotTE = this.getTileEntity(worldIn, pos);
 			
 			if (flowerPotTE == null) {
@@ -99,7 +100,7 @@ public class BlockTropicraftFlowerPot extends BlockTropicraft implements ITileEn
 					playerIn.addStat(StatList.FLOWER_POTTED);
 
 					if (!playerIn.capabilities.isCreativeMode) {
-						--heldItem.stackSize;
+						heldItem.shrink(1);
 					}
 
 					return true;
@@ -141,7 +142,7 @@ public class BlockTropicraftFlowerPot extends BlockTropicraft implements ITileEn
 
 	@Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return super.canPlaceBlockAt(worldIn, pos) && worldIn.getBlockState(pos.down()).isFullyOpaque();
+        return super.canPlaceBlockAt(worldIn, pos) && worldIn.getBlockState(pos.down()).isTopSolid();
     }
 
     /**
@@ -150,8 +151,8 @@ public class BlockTropicraftFlowerPot extends BlockTropicraft implements ITileEn
      * block, etc.
      */
 	@Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-        if (!worldIn.getBlockState(pos.down()).isFullyOpaque()) {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!worldIn.getBlockState(pos.down()).isTopSolid()) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
         }

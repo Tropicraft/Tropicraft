@@ -22,12 +22,12 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import net.minecraft.world.storage.WorldInfo;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 import net.tropicraft.core.common.worldgen.genlayer.GenLayerTropicraft;
 
 public class BiomeProviderTropicraft extends BiomeProvider {
 
-	public static final List<Biome> allowedBiomes = Arrays.asList(BiomeGenTropicraft.tropics, BiomeGenTropicraft.rainforestPlains);
+	public static final List<Biome> allowedBiomes = Arrays.asList(BiomeTropicraft.tropics, BiomeTropicraft.rainforestPlains);
 	private GenLayer genBiomes;
 	private GenLayer biomeIndexLayer;
 	private final BiomeCache biomeCache;
@@ -55,7 +55,7 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 	 */
 	@Override
 	public Biome getBiome(BlockPos pos) {
-		return this.getBiome(pos, BiomeGenTropicraft.tropicsOcean);
+		return this.getBiome(pos, BiomeTropicraft.tropicsOcean);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 		{
 			for (int i = 0; i < width * height; ++i)
 			{
-				biomes[i] = Biome.getBiome(aint[i], BiomeGenTropicraft.tropicsOcean);
+				biomes[i] = Biome.getBiome(aint[i], BiomeTropicraft.tropicsOcean);
 			}
 
 			return biomes;
@@ -144,7 +144,7 @@ public class BiomeProviderTropicraft extends BiomeProvider {
 
 			for (int i = 0; i < width * length; ++i)
 			{
-				listToReuse[i] = Biome.getBiome(aint[i], BiomeGenTropicraft.tropicsOcean);
+				listToReuse[i] = Biome.getBiome(aint[i], BiomeTropicraft.tropicsOcean);
 			}
 
 			return listToReuse;

@@ -91,13 +91,13 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if(source.equals(DamageSource.outOfWorld)) {
+		if(source.equals(DamageSource.OUT_OF_WORLD)) {
 			return super.attackEntityFrom(source, amount);
 		}
 		this.getDataManager().set(STATE, STATE_ANGRY);
 
-		if (source.getSourceOfDamage() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) source.getSourceOfDamage();
+		if (source.getImmediateSource() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) source.getImmediateSource();
 			ItemStack heldItem = player.getHeldItemMainhand();
 			if (heldItem != null && heldItem.getItem().canHarvestBlock(Blocks.IRON_ORE.getDefaultState())) {
 				return super.attackEntityFrom(source, amount);
@@ -137,7 +137,7 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 	}
 
 	@Override
-	protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource damageSource) {
 		return SoundRegistry.get("headpain");
 	}
 

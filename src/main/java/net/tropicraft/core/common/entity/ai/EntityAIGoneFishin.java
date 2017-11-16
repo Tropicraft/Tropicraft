@@ -104,7 +104,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return posLastWaterFound != null;
     }
 
@@ -180,7 +180,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             //orig code had || isinWater, is contradicting to above code, hrm, then again find water code doesnt find it near shore...
             if (entity.getDistance(posLastWaterFound.getX(), posLastWaterFound.getY(), posLastWaterFound.getZ()) < 8D || entity.isInWater()) {
-                entity.getNavigator().clearPathEntity();
+                entity.getNavigator().clearPath();
                 setState(FISHING_STATE.FISHING);
                 castLine();
             }
@@ -274,7 +274,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
             if (entity.getDistance(posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround) {
                 posLastLandFound = new BlockPos(entity.getPosition());
-                entity.getNavigator().clearPathEntity();
+                entity.getNavigator().clearPath();
                 setState(FISHING_STATE.FISHING);
                 //TODO: cast line here too
                 castLine();

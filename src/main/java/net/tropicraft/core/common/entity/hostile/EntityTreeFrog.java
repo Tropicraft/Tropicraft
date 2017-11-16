@@ -124,7 +124,7 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 			// world.playSoundAtEntity(this, "frogspit", 1.0F, 1.0F / (rand.nextFloat() *
 			// 0.4F + 0.8F));
 			world.spawnEntity(entitypoisonblot);
-			entitypoisonblot.setThrowableHeading(d, d2 + (double) f1, d1, 0.6F, 12F);
+			entitypoisonblot.shoot(d, d2 + (double) f1, d1, 0.6F, 12F);
 			attackTime = 50;
 
 			rotationYaw = (float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
@@ -189,4 +189,9 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 			return color;
 		}
 	}
+
+    @Override
+    public void setSwingingArms(boolean swingingArms) {
+        
+    }
 }

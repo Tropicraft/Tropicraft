@@ -83,12 +83,12 @@ public class CommandTropicsMisc extends CommandBase {
                     String name = args[1];
                     //Minecraft.getMinecraft().mouseHelper.ungrabMouseCursor();
                     Vec3d vec = commandSender.getPositionVector();
-                    int sx = MathHelper.floor(parseCoordinate(vec.xCoord, args[2], false).getResult());//Integer.parseInt(args[2]);
-                    int sy = MathHelper.floor(parseCoordinate(vec.yCoord, args[3], false).getResult());//Integer.parseInt(args[3]);
-                    int sz = MathHelper.floor(parseCoordinate(vec.zCoord, args[4], false).getResult());//Integer.parseInt(args[4]);
-                    int ex = MathHelper.floor(parseCoordinate(vec.xCoord, args[5], false).getResult());//Integer.parseInt(args[5]);
-                    int ey = MathHelper.floor(parseCoordinate(vec.yCoord, args[6], false).getResult());//Integer.parseInt(args[6]);
-                    int ez = MathHelper.floor(parseCoordinate(vec.zCoord, args[7], false).getResult());//Integer.parseInt(args[7]);
+                    int sx = MathHelper.floor(parseCoordinate(vec.x, args[2], false).getResult());//Integer.parseInt(args[2]);
+                    int sy = MathHelper.floor(parseCoordinate(vec.y, args[3], false).getResult());//Integer.parseInt(args[3]);
+                    int sz = MathHelper.floor(parseCoordinate(vec.z, args[4], false).getResult());//Integer.parseInt(args[4]);
+                    int ex = MathHelper.floor(parseCoordinate(vec.x, args[5], false).getResult());//Integer.parseInt(args[5]);
+                    int ey = MathHelper.floor(parseCoordinate(vec.y, args[6], false).getResult());//Integer.parseInt(args[6]);
+                    int ez = MathHelper.floor(parseCoordinate(vec.z, args[7], false).getResult());//Integer.parseInt(args[7]);
                     Build clipboardData = new Build(0, 0, 0, name, true);
                     clipboardData.newFormat = true;
                     clipboardData.recalculateLevelSize(sx, sy, sz, ex, ey, ez, true);
@@ -105,9 +105,9 @@ public class CommandTropicsMisc extends CommandBase {
                 try {
                     Vec3d vec = commandSender.getPositionVector();
                     String name = args[1];
-                    CoordinateArg sx = parseCoordinate(vec.xCoord, args[2], false);
-                    CoordinateArg sy = parseCoordinate(vec.yCoord, args[3], false);
-                    CoordinateArg sz = parseCoordinate(vec.zCoord, args[4], false);
+                    CoordinateArg sx = parseCoordinate(vec.x, args[2], false);
+                    CoordinateArg sy = parseCoordinate(vec.y, args[3], false);
+                    CoordinateArg sz = parseCoordinate(vec.z, args[4], false);
                     int x = MathHelper.floor(sx.getResult());
                     int y = MathHelper.floor(sy.getResult());
                     int z = MathHelper.floor(sz.getResult());
@@ -179,7 +179,7 @@ public class CommandTropicsMisc extends CommandBase {
                 if (clazz != null) {
                     List<Entity> listEnts = player.world.getEntitiesWithinAABB(clazz, player.getEntityBoundingBox().expand(15, 15, 15));
                     for (Entity ent : listEnts) {
-                        float dist = player.getDistanceToEntity(ent);
+                        float dist = player.getDistance(ent);
                         if (dist < clDist) {
                             if (!playerMode) {
                                 clDist = dist;

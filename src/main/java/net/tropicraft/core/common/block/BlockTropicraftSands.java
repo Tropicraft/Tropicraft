@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
-
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -13,9 +11,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -53,21 +51,22 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 			ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
 			// If player isn't wearing anything on their feetsies
-			if (stack == null) {
-				player.attackEntityFrom(DamageSource.lava, 0.5F);
+			if (stack.isEmpty()) {
+				player.attackEntityFrom(DamageSource.LAVA, 0.5F);
 			}
 		} else {
-			entity.attackEntityFrom(DamageSource.lava, 0.5F);
+			entity.attackEntityFrom(DamageSource.LAVA, 0.5F);
 		}
 	}
 
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {        
 		for (int i = 0; i < TropicraftSands.VALUES.length; i++) {
-			list.add(new ItemStack(item, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 

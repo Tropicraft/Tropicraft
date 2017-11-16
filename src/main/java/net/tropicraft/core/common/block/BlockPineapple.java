@@ -130,7 +130,7 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 	 * block, etc.
 	 */
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		this.checkForDrop(worldIn, pos, state);
 	}
 

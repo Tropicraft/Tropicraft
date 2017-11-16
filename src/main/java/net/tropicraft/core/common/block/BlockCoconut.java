@@ -11,7 +11,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,7 +29,7 @@ public class BlockCoconut extends BlockTropicraft {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return COCONUT_AABB;
 	}
 

@@ -5,11 +5,8 @@ import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkProviderSettings;
 import net.tropicraft.configuration.GenRates;
-import net.tropicraft.core.common.biome.BiomeGenKelpForest;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
-import net.tropicraft.core.common.biome.BiomeGenTropicsBeach;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 import net.tropicraft.core.common.worldgen.WorldGenBamboo;
 import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
 import net.tropicraft.core.common.worldgen.WorldGenEIH;
@@ -30,7 +27,7 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 		int i = 0;
 		int k = 0;
 
-		if (BiomeGenTropicraft.DISABLEDECORATION) {
+		if (BiomeTropicraft.DISABLEDECORATION) {
 			System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
 			return;
 		}

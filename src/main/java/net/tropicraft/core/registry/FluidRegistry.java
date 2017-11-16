@@ -27,7 +27,7 @@ public class FluidRegistry {
 		tropicsPortal.setBlock(BlockRegistry.tropicsPortal);
 
 		FluidRegistry.registerFluid(tropicsWater);
-		FluidContainerRegistry.registerFluidContainer(tropicsWater, new ItemStack(ItemRegistry.tropicsWaterBucket));
+		//TODO no longer needed? FluidContainerRegistry.registerFluidContainer(tropicsWater, new ItemStack(ItemRegistry.tropicsWaterBucket));
 	}
 
 	private static void registerFluid(Fluid fluid) {

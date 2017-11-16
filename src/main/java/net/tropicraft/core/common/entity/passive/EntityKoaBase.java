@@ -422,7 +422,7 @@ public class EntityKoaBase extends EntityVillager {
     private static final Field _buyingPlayer = ReflectionHelper.findField(EntityVillager.class, "field_70962_h", "buyingPlayer");
     
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
 
         if (hand != EnumHand.MAIN_HAND) return false;
 
@@ -466,7 +466,7 @@ public class EntityKoaBase extends EntityVillager {
                 if (doTrade) {
                     // Make the super method think this villager is already trading, to block the GUI from opening
                     _buyingPlayer.set(this, player);
-                    ret = super.processInteract(player, hand, stack);
+                    ret = super.processInteract(player, hand);
                     _buyingPlayer.set(this, null);
                 }
             }
@@ -487,7 +487,7 @@ public class EntityKoaBase extends EntityVillager {
     }
 
     @Override
-    protected SoundEvent getHurtSound() {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return null;
     }
 
@@ -878,14 +878,14 @@ public class EntityKoaBase extends EntityVillager {
             if (ItemStack.areItemsEqual(itemstack1, itemstack))
             {
                 int j = Math.min(chest.getInventoryStackLimit(), itemstack1.getMaxStackSize());
-                int k = Math.min(itemstack.stackSize, j - itemstack1.stackSize);
+                int k = Math.min(itemstack.getCount(), j - itemstack1.getCount());
 
                 if (k > 0)
                 {
-                    itemstack1.stackSize += k;
-                    itemstack.stackSize -= k;
+                    itemstack1.grow(k);
+                    itemstack.shrink(k);
 
-                    if (itemstack.stackSize <= 0)
+                    if (itemstack.getCount() <= 0)
                     {
                         chest.markDirty();
                         return null;

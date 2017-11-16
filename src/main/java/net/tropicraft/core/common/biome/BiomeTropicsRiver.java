@@ -8,9 +8,9 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish
 import net.tropicraft.core.registry.BlockRegistry;
 
 
-public class BiomeGenTropicsRiver extends BiomeGenTropicraft {
+public class BiomeTropicsRiver extends BiomeTropicraft {
 
-	public BiomeGenTropicsRiver(BiomeProperties props) {
+	public BiomeTropicsRiver(BiomeProperties props) {
 		super(props);
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityPiranha.class, 20, 1, 12));
         this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityRiverSardine.class, 20, 1, 15));

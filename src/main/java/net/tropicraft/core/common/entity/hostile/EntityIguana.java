@@ -110,7 +110,7 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 			iattributeinstance.removeModifier(ATTACK_SPEED_BOOST_MODIFIER);
 		}
 
-		if (this.angerLevel > 0 && this.angerTargetUUID != null && this.getAITarget() == null) {
+		if (this.angerLevel > 0 && this.angerTargetUUID != null && this.getRevengeTarget() == null) {
 			EntityPlayer entityplayer = this.world.getPlayerEntityByUUID(this.angerTargetUUID);
 			this.setRevengeTarget(entityplayer);
 			this.attackingPlayer = entityplayer;
@@ -168,7 +168,7 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
 		} else {
-			Entity entity = source.getEntity();
+			Entity entity = source.getTrueSource();
 
 			if (entity instanceof EntityPlayer) {
 				this.becomeAngryAt(entity);

@@ -57,7 +57,7 @@ public class EntityAIPartyTime extends EntityAIBase
 
         BlockPos blockpos = new BlockPos(this.entityObj);
 
-        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky()) {
+        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether()) {
             if (!isTooClose()) {
                 if (entityObj.world.rand.nextInt(20) == 0) {
                     return true;
@@ -81,7 +81,7 @@ public class EntityAIPartyTime extends EntityAIBase
     {
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();
-        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.hasNoSky())
+        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether())
         {
             if (!isTooClose()) {
                 return true;
@@ -130,7 +130,7 @@ public class EntityAIPartyTime extends EntityAIBase
         }
         if (dist < 3D && entityObj.onGround) {
             isClose = true;
-            entityObj.getNavigator().clearPathEntity();
+            entityObj.getNavigator().clearPath();
             if (!bangDrum) {
                 //entityObj.setSitting(true);
                 entityObj.setDancing(true);
@@ -245,7 +245,7 @@ public class EntityAIPartyTime extends EntityAIBase
                     Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                     if (vec3d != null) {
-                        success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.0D);
+                        success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 1.0D);
                     } else {
                         success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
                         //System.out.println("success? " + success);
@@ -285,7 +285,7 @@ public class EntityAIPartyTime extends EntityAIBase
         super.startExecuting();
         //this.insidePosX = -1;
         //reset any previous path so updateTask can start with a fresh path
-        this.entityObj.getNavigator().clearPathEntity();
+        this.entityObj.getNavigator().clearPath();
         if (this.entityObj.listPosDrums.size() > 0) {
             assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
         }

@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +29,7 @@ public class RenderPoisonBlot extends Render<EntityPoisonBlot>{
 
 			//GlStateManager.scale(0.25f, 0.25f, 0.25f);
 
-			VertexBuffer buffer = tessellator.getBuffer();
+			BufferBuilder buffer = tessellator.getBuffer();
 			buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			buffer.pos(-.5, -.5, 0).tex(0, 1).endVertex();

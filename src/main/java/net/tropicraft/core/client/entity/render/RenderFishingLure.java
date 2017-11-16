@@ -1,9 +1,8 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -36,7 +35,7 @@ public class RenderFishingLure extends Render<EntityFishHook>
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
         this.bindEntityTexture(entity);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
         int i = 1;
         int j = 2;
         float f = 0.0625F;
@@ -94,9 +93,9 @@ public class RenderFishingLure extends Render<EntityFishHook>
                 vec3d = vec3d.rotateYaw(-(entity.angler.prevRotationYaw + (entity.angler.rotationYaw - entity.angler.prevRotationYaw) * partialTicks) * 0.017453292F);
                 vec3d = vec3d.rotateYaw(f8 * 0.5F);
                 vec3d = vec3d.rotatePitch(-f8 * 0.7F);
-                d4 = entity.angler.prevPosX + (entity.angler.posX - entity.angler.prevPosX) * (double)partialTicks + vec3d.xCoord;
-                d5 = entity.angler.prevPosY + (entity.angler.posY - entity.angler.prevPosY) * (double)partialTicks + vec3d.yCoord;
-                d6 = entity.angler.prevPosZ + (entity.angler.posZ - entity.angler.prevPosZ) * (double)partialTicks + vec3d.zCoord;
+                d4 = entity.angler.prevPosX + (entity.angler.posX - entity.angler.prevPosX) * (double)partialTicks + vec3d.x;
+                d5 = entity.angler.prevPosY + (entity.angler.posY - entity.angler.prevPosY) * (double)partialTicks + vec3d.y;
+                d6 = entity.angler.prevPosZ + (entity.angler.posZ - entity.angler.prevPosZ) * (double)partialTicks + vec3d.z;
                 d7 = (double)entity.angler.getEyeHeight();
             }
             else

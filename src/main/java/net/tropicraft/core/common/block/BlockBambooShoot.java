@@ -69,7 +69,7 @@ public class BlockBambooShoot extends BlockReed implements IPlantable {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return BAMBOO_SHOOT_AABB;
 	}
 

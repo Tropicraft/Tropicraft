@@ -1,8 +1,8 @@
 package net.tropicraft.core.client.entity.render;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class TropicraftSpecialRenderHelper {
@@ -74,14 +74,14 @@ public class TropicraftSpecialRenderHelper {
         GlStateManager.popMatrix();
     }
     
-    private void buf(VertexBuffer buffer, double x, double y, double z, double tex1, double tex2) {
+    private void buf(BufferBuilder buffer, double x, double y, double z, double tex1, double tex2) {
     	buffer.pos(x, y, z).tex(tex1, tex2).endVertex();
     }
 
     private void popper(Tessellator tessellator, float f, float f1, float f2, float f3, float f1shifted, float f3shifted) {
         float f4 = 1.0F;
         float f5 = 0.03125F;
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
         GlStateManager.glNormal3f(0.0F, 0.0F, 1.0F);
         
@@ -155,7 +155,7 @@ public class TropicraftSpecialRenderHelper {
     }
 
     private void popper2(Tessellator tessellator, float f, float f1, float f2, float f3) {
-    	VertexBuffer vertexbuffer = tessellator.getBuffer();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
         float f4 = 1.0F;
         float f5 = 0.0625F;
         vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);

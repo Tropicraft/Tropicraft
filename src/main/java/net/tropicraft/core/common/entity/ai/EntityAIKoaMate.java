@@ -56,9 +56,9 @@ public class EntityAIKoaMate extends EntityAIBase
                 for (EntityKoaBase ent : listEntities) {
                     if (ent != villagerObj) {
                         if (villagerObj.willBone(ent)) {
-                            if (villagerObj.getDistanceToEntity(ent) < clDist) {
+                            if (villagerObj.getDistance(ent) < clDist) {
                                 clEnt = ent;
-                                clDist = villagerObj.getDistanceToEntity(ent);
+                                clDist = villagerObj.getDistance(ent);
                             }
                         }
                     }
@@ -114,7 +114,7 @@ public class EntityAIKoaMate extends EntityAIBase
         --this.matingTimeout;
         this.villagerObj.getLookHelper().setLookPositionWithEntity(this.mate, 10.0F, 30.0F);
 
-        if (this.villagerObj.getDistanceSqToEntity(this.mate) > 2.25D)
+        if (this.villagerObj.getDistanceSq(this.mate) > 2.25D)
         {
             this.villagerObj.getNavigator().tryMoveToEntityLiving(this.mate, 0.75D);
         }

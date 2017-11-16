@@ -214,7 +214,7 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
 	 */
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
-		if (par1DamageSource.getEntity() instanceof EntitySkeleton) {
+		if (par1DamageSource.getTrueSource() instanceof EntitySkeleton) {
 			this.dropItem(ItemRegistry.recordEasternIsles, 1);
 		}
 		super.onDeath(par1DamageSource);
@@ -226,11 +226,11 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
 
 	public void onDeathBySelf() {
 		//TODO: Custom implementation or something?
-		this.onDeath(DamageSource.flyIntoWall);
+		this.onDeath(DamageSource.FLY_INTO_WALL);
 	}
 
 	@Override
-    protected SoundEvent getHurtSound() {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return SoundEvents.ENTITY_CREEPER_HURT;
     }
 

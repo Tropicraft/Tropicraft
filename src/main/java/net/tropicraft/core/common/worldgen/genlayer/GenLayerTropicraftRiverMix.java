@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.worldgen.genlayer;
 
 import net.minecraft.world.gen.layer.IntCache;
-import net.tropicraft.core.common.biome.BiomeGenTropicraft;
+import net.tropicraft.core.common.biome.BiomeTropicraft;
 
 public class GenLayerTropicraftRiverMix extends GenLayerTropicraft {
-	private int lakeID = getID(BiomeGenTropicraft.tropicsLake);
+	private int lakeID = getID(BiomeTropicraft.tropicsLake);
 
 	private GenLayerTropicraft parentBiome;
 	private GenLayerTropicraft parentRiver;

@@ -100,7 +100,7 @@ public class EntityAIEatToHeal extends EntityAIBase
                         Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                         if (vec3d != null) {
-                            success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, 1.0D);
+                            success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 1.0D);
                         }
                     } else {
                         success = this.entityObj.getNavigator().tryMoveToXYZ((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
@@ -140,7 +140,7 @@ public class EntityAIEatToHeal extends EntityAIBase
         super.startExecuting();
         //this.insidePosX = -1;
         //reset any previous path so updateTask can start with a fresh path
-        this.entityObj.getNavigator().clearPathEntity();
+        this.entityObj.getNavigator().clearPath();
     }
 
     /**
@@ -200,7 +200,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     public boolean hasFoodSource(IInventory inv) {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (!Util.isEmpty(stack) && stack.stackSize > 0) {
+            if (!Util.isEmpty(stack) && stack.getCount() > 0) {
                 if (stack.getItem() instanceof ItemFood) {
                     return true;
                 }
@@ -231,10 +231,10 @@ public class EntityAIEatToHeal extends EntityAIBase
     public ItemStack consumeOneStackSizeOfFood(IInventory inv) {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (!Util.isEmpty(stack) && stack.stackSize > 0) {
+            if (!Util.isEmpty(stack) && stack.getCount() > 0) {
                 if (stack.getItem() instanceof ItemFood) {
-                    stack.stackSize--;
-                    if (stack.stackSize <= 0) {
+                    stack.shrink(1);
+                    if (stack.getCount() <= 0) {
                         inv.setInventorySlotContents(i, null);
                     }
                     return new ItemStack(stack.getItem(), 1, stack.getMetadata());

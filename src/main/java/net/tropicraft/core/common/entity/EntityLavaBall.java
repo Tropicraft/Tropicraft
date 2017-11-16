@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -97,7 +98,7 @@ public class EntityLavaBall extends Entity {
 			}
 		}
 
-		if (isCollidedHorizontally) {
+		if (collidedHorizontally) {
 			motionZ = 0;
 			motionX = 0;
 		}
@@ -139,7 +140,7 @@ public class EntityLavaBall extends Entity {
 			}
 		}
 
-		this.move(motionX, motionY, motionZ);
+		this.move(MoverType.SELF, motionX, motionY, motionZ);
 	}
 
 	@Override

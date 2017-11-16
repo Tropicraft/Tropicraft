@@ -71,14 +71,14 @@ public class BlockCoffeeBush extends BlockCrops implements ITropicraftBlock {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (state.getValue(AGE) == getMaxAge()) {
 	        worldIn.setBlockState(pos, state.withProperty(AGE, 0));
 	        ItemStack stack = new ItemStack(ItemRegistry.coffeeBeans, 1, 2);
 	        spawnAsEntity(worldIn, pos, stack);
 	        return true;
 		}
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
 	}
 	
 	@Override
@@ -117,7 +117,7 @@ public class BlockCoffeeBush extends BlockCrops implements ITropicraftBlock {
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 

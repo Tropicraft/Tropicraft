@@ -43,7 +43,7 @@ public class EntityAIPlayKoa extends EntityAIBase
             {
                 if (entityvillager != this.villagerObj && !entityvillager.isPlaying() && entityvillager.getGrowingAge() < 0)
                 {
-                    double d1 = entityvillager.getDistanceSqToEntity(this.villagerObj);
+                    double d1 = entityvillager.getDistanceSq(this.villagerObj);
 
                     if (d1 <= d0)
                     {
@@ -110,7 +110,7 @@ public class EntityAIPlayKoa extends EntityAIBase
 
         if (this.targetVillager != null)
         {
-            if (this.villagerObj.getDistanceSqToEntity(this.targetVillager) > 4.0D)
+            if (this.villagerObj.getDistanceSq(this.targetVillager) > 4.0D)
             {
                 this.villagerObj.getNavigator().tryMoveToEntityLiving(this.targetVillager, this.speed);
             }
@@ -124,7 +124,7 @@ public class EntityAIPlayKoa extends EntityAIBase
                 return;
             }
 
-            this.villagerObj.getNavigator().tryMoveToXYZ(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, this.speed);
+            this.villagerObj.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, this.speed);
         }
     }
 }
