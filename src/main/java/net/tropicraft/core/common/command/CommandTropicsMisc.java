@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.tropicraft.core.common.build.BuildServerTicks;
@@ -135,15 +136,12 @@ public class CommandTropicsMisc extends CommandBase {
                     commandSender.sendMessage(new TextComponentString("eg: tc_village schematic_print myfile 5 5 5"));
                 }
             } else if (args[0].equals("entities")) {
-                HashMap<String, Integer> lookupCounts = new HashMap<>();
+                HashMap<ResourceLocation, Integer> lookupCounts = new HashMap<>();
 
                 for (Entity ent : player.world.loadedEntityList) {
                     if (ent instanceof EntityLivingBase) {
-                        int count = 0;
-                        if (lookupCounts.containsKey(EntityList.CLASS_TO_NAME.get(ent.getClass()))) {
-                            count = lookupCounts.get(EntityList.CLASS_TO_NAME.get(ent.getClass()));
-                        }
-                        lookupCounts.put(EntityList.CLASS_TO_NAME.get(ent.getClass()), count + 1);
+                        ResourceLocation key = EntityList.getKey(ent.getClass());
+                        lookupCounts.merge(key, 1, (a, b) -> a + b);
                     }
                 }
 
@@ -151,8 +149,8 @@ public class CommandTropicsMisc extends CommandBase {
 
                 int count = 0;
 
-                for (Map.Entry<String, Integer> entry : lookupCounts.entrySet()) {
-                    String name = entry.getKey();
+                for (Map.Entry<ResourceLocation, Integer> entry : lookupCounts.entrySet()) {
+                    ResourceLocation name = entry.getKey();
                     player.sendMessage(new TextComponentString(name + ": " + entry.getValue()));
                     count += entry.getValue();
                 }
@@ -164,7 +162,7 @@ public class CommandTropicsMisc extends CommandBase {
                 String name = args[1];
                 boolean reverse = false;
                 boolean playerMode = false;
-                Class clazz = EntityList.NAME_TO_CLASS.get(name);
+                Class clazz = EntityList.getClass(new ResourceLocation(name));
                 if (clazz == null) {
                     clazz = EntityPlayer.class;
                     playerMode = true;
