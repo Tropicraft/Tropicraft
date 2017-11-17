@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "tropicraft:slab",
+    "data": 2,
+    "count": 6
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    }
+  }
+}

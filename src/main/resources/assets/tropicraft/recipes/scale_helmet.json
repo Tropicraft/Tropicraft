@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "tropicraft:scale_helmet"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:scale"
+    }
+  }
+}

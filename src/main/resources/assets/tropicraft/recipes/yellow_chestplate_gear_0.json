@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "tropicraft:yellow_chestplate_gear",
+    "data": 0
+  },
+  "pattern": [
+    "Y Y",
+    "YXY",
+    "YZY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:yellow_bcd"
+    },
+    "Y": {
+      "item": "tropicraft:zircon"
+    },
+    "Z": {
+      "item": "tropicraft:yellow_weight_belt"
+    }
+  }
+}

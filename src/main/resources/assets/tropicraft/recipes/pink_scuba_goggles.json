@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "tropicraft:pink_scuba_goggles"
+  },
+  "pattern": [
+    "YYY",
+    "X X",
+    " Z "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "#BLOCKGLASS"
+    },
+    "Y": {
+      "item": "tropicraft:zircon"
+    },
+    "Z": {
+      "item": "tropicraft:pink_regulator"
+    }
+  }
+}

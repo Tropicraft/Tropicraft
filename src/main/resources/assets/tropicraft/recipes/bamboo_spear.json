@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "tropicraft:bamboo_spear"
+  },
+  "pattern": [
+    "X ",
+    " X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  }
+}

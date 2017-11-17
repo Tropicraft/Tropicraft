@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "tropicraft:umbrella",
+    "data": 2
+  },
+  "pattern": [
+    "XXX",
+    " I ",
+    " I "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:wool",
+      "data": 13
+    },
+    "I": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  }
+}

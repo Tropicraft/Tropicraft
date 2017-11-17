@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:fishing_net"
+  },
+  "pattern": [
+    "  X",
+    " XI",
+    "XII"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "I": {
+      "item": "minecraft:string"
+    }
+  }
+}

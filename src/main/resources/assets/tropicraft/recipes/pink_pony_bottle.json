@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "tropicraft:pink_pony_bottle"
+  },
+  "pattern": [
+    "Y",
+    "X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "#BLOCKGLASSPINK"
+    },
+    "Y": {
+      "item": "minecraft:lever"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:pink_regulator"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "Y": {
+      "item": "#DYEPINK"
+    }
+  }
+}

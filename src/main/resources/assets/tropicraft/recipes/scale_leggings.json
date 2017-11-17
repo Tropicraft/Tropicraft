@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "tropicraft:scale_leggings"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:scale"
+    }
+  }
+}

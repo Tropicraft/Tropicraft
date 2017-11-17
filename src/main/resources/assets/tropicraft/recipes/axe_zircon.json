@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:axe_zircon"
+  },
+  "pattern": [
+    "XX",
+    "XI",
+    " I"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:zircon"
+    },
+    "I": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  }
+}

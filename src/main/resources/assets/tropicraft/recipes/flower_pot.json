@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "tropicraft:flower_pot"
+  },
+  "pattern": [
+    "# #",
+    " # "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "tropicraft:bamboo_shoots"
+    }
+  }
+}

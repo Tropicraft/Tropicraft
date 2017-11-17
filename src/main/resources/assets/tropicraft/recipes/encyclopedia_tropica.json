@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:encyclopedia_tropica"
+  },
+  "pattern": [
+    "###",
+    "#$#",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "tropicraft:bamboo_shoots"
+    },
+    "$": {
+      "item": "minecraft:book"
+    }
+  }
+}

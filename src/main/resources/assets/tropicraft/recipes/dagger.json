@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "tropicraft:dagger"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "I"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "I": {
+      "item": "tropicraft:plank",
+      "data": 1
+    }
+  }
+}

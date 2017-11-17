@@ -1,0 +1,13 @@
+{
+  "result": {
+    "item": "tropicraft:azurite",
+    "count": 9
+  },
+  "ingredients": [
+    {
+      "item": "tropicraft:oreblock",
+      "data": 0
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

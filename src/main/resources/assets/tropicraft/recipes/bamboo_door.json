@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "tropicraft:bamboo_door"
+  },
+  "pattern": [
+    "XX",
+    "YY",
+    "XX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bundle",
+      "data": 1
+    },
+    "Y": {
+      "item": "tropicraft:bundle",
+      "data": 0
+    }
+  }
+}

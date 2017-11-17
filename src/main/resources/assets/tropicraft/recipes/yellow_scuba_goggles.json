@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "tropicraft:yellow_scuba_goggles"
+  },
+  "pattern": [
+    "YYY",
+    "X X",
+    " Z "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass"
+    },
+    "Y": {
+      "item": "tropicraft:zircon"
+    },
+    "Z": {
+      "item": "tropicraft:yellow_regulator"
+    }
+  }
+}

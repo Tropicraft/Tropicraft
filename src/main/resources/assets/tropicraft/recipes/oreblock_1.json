@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "tropicraft:oreblock",
+    "data": 1
+  },
+  "pattern": [
+    "%%%",
+    "%%%",
+    "%%%"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "%": {
+      "item": "tropicraft:eudialyte"
+    }
+  }
+}

@@ -1,8 +1,6 @@
 package net.tropicraft.core.proxy;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -53,7 +51,6 @@ import net.tropicraft.core.common.network.MessagePlayerSwimData;
 import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.registry.BlockRegistry;
-import net.tropicraft.core.registry.CraftingRegistry;
 import net.tropicraft.core.registry.EncyclopediaRegistry;
 import net.tropicraft.core.registry.EntityRenderRegistry;
 import net.tropicraft.core.registry.ItemRegistry;

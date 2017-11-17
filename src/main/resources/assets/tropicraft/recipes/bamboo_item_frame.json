@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:bamboo_item_frame"
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "tropicraft:bamboo_shoots"
+    },
+    "X": {
+      "item": "minecraft:leather"
+    }
+  }
+}

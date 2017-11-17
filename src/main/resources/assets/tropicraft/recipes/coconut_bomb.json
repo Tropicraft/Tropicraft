@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:coconut_bomb"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "#GUNPOWDER"
+    },
+    "Y": {
+      "item": "tropicraft:coconut"
+    }
+  }
+}

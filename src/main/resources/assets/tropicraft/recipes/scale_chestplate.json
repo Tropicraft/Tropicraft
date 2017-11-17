@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "tropicraft:scale_chestplate"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:scale"
+    }
+  }
+}

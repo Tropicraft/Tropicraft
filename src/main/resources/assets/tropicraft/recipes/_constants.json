@@ -1,0 +1,51 @@
+[
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "blockGlass"
+    },
+    "name": "BLOCKGLASS"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "blockGlassPink"
+    },
+    "name": "BLOCKGLASSPINK"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "blockGlassYellow"
+    },
+    "name": "BLOCKGLASSYELLOW"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "dyePink"
+    },
+    "name": "DYEPINK"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "dyeYellow"
+    },
+    "name": "DYEYELLOW"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "gunpowder"
+    },
+    "name": "GUNPOWDER"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "sugarcane"
+    },
+    "name": "SUGARCANE"
+  }
+]

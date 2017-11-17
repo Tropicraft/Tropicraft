@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:air_compressor"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "Y": {
+      "item": "tropicraft:azurite"
+    }
+  }
+}

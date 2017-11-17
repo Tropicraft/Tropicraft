@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:yellow_bcd"
+  },
+  "pattern": [
+    "X X",
+    "YXY",
+    "XXX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:zircon"
+    },
+    "Y": {
+      "item": "#DYEYELLOW"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:sword_zircon"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "I"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:zircon"
+    },
+    "I": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  }
+}

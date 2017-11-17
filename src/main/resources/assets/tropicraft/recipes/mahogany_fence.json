@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "tropicraft:mahogany_fence",
+    "count": 2
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:plank",
+      "data": 0
+    }
+  }
+}

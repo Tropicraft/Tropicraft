@@ -1,0 +1,13 @@
+{
+  "result": {
+    "item": "tropicraft:coffee_beans",
+    "data": 0
+  },
+  "ingredients": [
+    {
+      "item": "tropicraft:coffee_beans",
+      "data": 2
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

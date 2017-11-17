@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "tropicraft:portal_enchanter"
+  },
+  "pattern": [
+    "%@#",
+    "#@%",
+    " @ "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "@": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "#": {
+      "item": "tropicraft:azurite"
+    },
+    "%": {
+      "item": "tropicraft:zircon"
+    }
+  }
+}

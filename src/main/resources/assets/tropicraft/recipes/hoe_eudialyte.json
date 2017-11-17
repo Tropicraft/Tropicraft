@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:hoe_eudialyte"
+  },
+  "pattern": [
+    "XX",
+    " I",
+    " I"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:eudialyte"
+    },
+    "I": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  }
+}

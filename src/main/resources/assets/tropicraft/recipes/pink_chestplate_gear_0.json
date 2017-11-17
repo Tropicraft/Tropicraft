@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "tropicraft:pink_chestplate_gear",
+    "data": 0
+  },
+  "pattern": [
+    "Y Y",
+    "YXY",
+    "YZY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:pink_bcd"
+    },
+    "Y": {
+      "item": "tropicraft:zircon"
+    },
+    "Z": {
+      "item": "tropicraft:pink_weight_belt"
+    }
+  }
+}

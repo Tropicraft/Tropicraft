@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "tropicraft:yellow_scuba_tank",
+    "data": 0
+  },
+  "pattern": [
+    "Y",
+    "X",
+    "X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "#BLOCKGLASSYELLOW"
+    },
+    "Y": {
+      "item": "minecraft:lever"
+    }
+  }
+}

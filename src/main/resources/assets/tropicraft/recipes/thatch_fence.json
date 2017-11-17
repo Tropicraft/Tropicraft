@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "tropicraft:thatch_fence",
+    "count": 2
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bundle",
+      "data": 0
+    }
+  }
+}

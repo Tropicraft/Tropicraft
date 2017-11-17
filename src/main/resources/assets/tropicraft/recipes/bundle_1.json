@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "tropicraft:bundle",
+    "data": 1,
+    "count": 2
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_shoots"
+    }
+  }
+}

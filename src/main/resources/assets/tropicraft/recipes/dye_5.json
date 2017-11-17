@@ -1,0 +1,13 @@
+{
+  "result": {
+    "item": "minecraft:dye",
+    "data": 5,
+    "count": 4
+  },
+  "ingredients": [
+    {
+      "item": "tropicraft:iris"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

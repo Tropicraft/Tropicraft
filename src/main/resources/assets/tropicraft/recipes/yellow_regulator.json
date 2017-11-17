@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:yellow_regulator"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "Y": {
+      "item": "#DYEYELLOW"
+    }
+  }
+}

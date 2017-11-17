@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "tropicraft:plank",
+    "data": 1,
+    "count": 4
+  },
+  "ingredients": [
+    {
+      "item": "tropicraft:log",
+      "data": 1
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

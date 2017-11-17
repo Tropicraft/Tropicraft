@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:dive_computer",
+    "data": 0
+  },
+  "pattern": [
+    "XYX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "Y": {
+      "item": "tropicraft:azurite"
+    }
+  }
+}

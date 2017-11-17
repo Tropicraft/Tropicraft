@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "tropicraft:yellow_weight_belt"
+  },
+  "pattern": [
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "Y": {
+      "item": "#DYEYELLOW"
+    }
+  }
+}

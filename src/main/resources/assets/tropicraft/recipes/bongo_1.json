@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "tropicraft:bongo",
+    "data": 1
+  },
+  "pattern": [
+    "YY",
+    "XX",
+    "XX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:plank",
+      "data": 0
+    },
+    "Y": {
+      "item": "tropicraft:iguana_leather"
+    }
+  }
+}

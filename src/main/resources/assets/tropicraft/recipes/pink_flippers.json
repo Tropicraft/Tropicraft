@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:pink_flippers"
+  },
+  "pattern": [
+    "XX",
+    "YY",
+    "XX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "#DYEPINK"
+    },
+    "Y": {
+      "item": "tropicraft:zircon"
+    }
+  }
+}

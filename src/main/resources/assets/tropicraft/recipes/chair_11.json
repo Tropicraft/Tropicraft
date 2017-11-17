@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "tropicraft:chair",
+    "data": 11
+  },
+  "pattern": [
+    "XIX",
+    "XIX",
+    "XIX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "I": {
+      "item": "minecraft:wool",
+      "data": 4
+    }
+  }
+}

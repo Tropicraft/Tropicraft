@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:thatch_fence_gate"
+  },
+  "pattern": [
+    "XIX",
+    "XIX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "I": {
+      "item": "tropicraft:bundle",
+      "data": 0
+    }
+  }
+}

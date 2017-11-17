@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "tropicraft:water_wand"
+  },
+  "pattern": [
+    "  X",
+    " Y ",
+    "Y  "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:azurite"
+    },
+    "Y": {
+      "item": "minecraft:gold_ingot"
+    }
+  }
+}

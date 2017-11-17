@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "tropicraft:fertilizer",
+    "count": 3
+  },
+  "pattern": [
+    "XI"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:flower",
+      "data": 7
+    },
+    "I": {
+      "item": "tropicraft:flower",
+      "data": 10
+    }
+  }
+}

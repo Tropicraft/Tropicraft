@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "tropicraft:bamboo_chest"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_shoots"
+    }
+  }
+}
