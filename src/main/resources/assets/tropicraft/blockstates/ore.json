@@ -7,19 +7,19 @@
   "variants": {
     "variant": {
       "azurite": {
-        "textures": { "all": "tropicraft:blocks/oreAzurite" }
+        "textures": { "all": "tropicraft:blocks/ore_azurite" }
       },
       "eudialyte": {
-        "textures": { "all": "tropicraft:blocks/oreEudialyte" }
+        "textures": { "all": "tropicraft:blocks/ore_eudialyte" }
       },
       "zircon": {
-         "textures": { "all": "tropicraft:blocks/oreZircon" }
+         "textures": { "all": "tropicraft:blocks/ore_zircon" }
       },
       "manganese": {
-        "textures": { "all": "tropicraft:blocks/oreManganese" }
+        "textures": { "all": "tropicraft:blocks/ore_manganese" }
       },
       "shaka": {
-        "textures": { "all": "tropicraft:blocks/oreShaka" }
+        "textures": { "all": "tropicraft:blocks/ore_shaka" }
       }
     }
   }

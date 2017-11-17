@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "tropicraft:items/tools/shovelEudialyte"
+        "layer0": "tropicraft:items/tools/shovel_eudialyte"
     },
     "display": {
         "thirdperson": {

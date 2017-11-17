@@ -1,7 +1,0 @@
-{
-    "parent": "block/column_side",
-    "textures": {
-        "end": "tropicraft:blocks/log_Mahogany_End",
-        "side": "tropicraft:blocks/log_Mahogany_Side"
-    }
-}

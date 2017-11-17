@@ -1,7 +1,7 @@
 {
     "variants": {
-        "variant=azurite": { "model": "tropicraft:blockOreAzurite" },
-        "variant=eudialyte": { "model": "tropicraft:blockOreEudialyte" },
-        "variant=zircon": { "model": "tropicraft:blockOreZircon" }
+        "variant=azurite": { "model": "tropicraft:block_azurite" },
+        "variant=eudialyte": { "model": "tropicraft:block_eudialyte" },
+        "variant=zircon": { "model": "tropicraft:block_zircon" }
     }
 }

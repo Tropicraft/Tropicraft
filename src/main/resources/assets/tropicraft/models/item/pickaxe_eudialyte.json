@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "tropicraft:items/tools/pickaxeEudialyte"
+        "layer0": "tropicraft:items/tools/pickaxe_eudialyte"
     },
     "display": {
         "thirdperson": {

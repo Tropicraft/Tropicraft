@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "tropicraft:items/tools/swordZircon"
+        "layer0": "tropicraft:items/tools/sword_zircon"
     }
 }

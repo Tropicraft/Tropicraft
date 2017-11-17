@@ -2,7 +2,7 @@
     "parent": "item/generated",
     "textures": {
         "layer0": "tropicraft:items/umbrella",
-        "layer1": "tropicraft:items/umbrellaInverted"
+        "layer1": "tropicraft:items/umbrella_inverted"
     },
     "display": {
         "thirdperson": {

@@ -1,0 +1,9 @@
+{
+    "parent": "tropicraft:block/stairsnew",
+    "textures": {
+        "bottom": "tropicraft:blocks/thatch_end",
+        "top": "tropicraft:blocks/thatch_end",
+        "side": "tropicraft:blocks/thatch_side",
+        "cross": "tropicraft:blocks/thatchgrass"
+    }
+}

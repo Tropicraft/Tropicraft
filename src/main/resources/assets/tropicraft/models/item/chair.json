@@ -2,7 +2,7 @@
     "parent": "item/generated",
     "textures": {
         "layer0": "tropicraft:items/chair",
-        "layer1": "tropicraft:items/chairInverted"
+        "layer1": "tropicraft:items/chair_inverted"
     },
     "display": {
         "thirdperson": {

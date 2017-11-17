@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "tropicraft:items/tools/axeEudialyte"
+        "layer0": "tropicraft:items/tools/axe_eudialyte"
     },
     "display": {
         "thirdperson": {
