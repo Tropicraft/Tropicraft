@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -352,7 +353,7 @@ public class GuiTropicalBook extends GuiScreen {
 			for(int row = 0; row < recipe.height; row++) {
 				for (int col = 0; col < recipe.width; col++) {
 					int itemIndex = (row * recipe.width) + col;
-					if (recipe.ingredients[itemIndex] != null) {
+					if (recipe.ingredients.get(itemIndex) != Ingredient.EMPTY) {
 						int renderX = newx + (offsetX * col) + 1;
 						int renderY = newy + (offsetY * row) + 1;
 						//GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -362,7 +363,8 @@ public class GuiTropicalBook extends GuiScreen {
 						// TODO 1.12 seriously what was this method for
 //						itemRenderer.isNotRenderingEffectsInGUI(true);
 						//itemRenderer.renderWithColor = true;
-						itemRenderer.renderItemIntoGUI(recipe.ingredients[itemIndex], renderX, renderY);
+						// TODO item cycling
+						itemRenderer.renderItemIntoGUI(recipe.ingredients.get(itemIndex).getMatchingStacks()[0], renderX, renderY);
 						//itemRenderer.renderWithColor = false;
 //						itemRenderer.isNotRenderingEffectsInGUI(false);
 						RenderHelper.disableStandardItemLighting();
@@ -378,7 +380,7 @@ public class GuiTropicalBook extends GuiScreen {
 					int itemIndex = (row * recipe.width) + col;
 					int renderX = newx + (offsetX * col) + 1;
 					int renderY = newy + (offsetY * row) + 1;
-					checkMouseHover(recipe.ingredients[itemIndex], renderX, renderY, 18);
+					checkMouseHover(recipe.ingredients.get(itemIndex), renderX, renderY, 18);
 				}
 			}
 
@@ -400,6 +402,10 @@ public class GuiTropicalBook extends GuiScreen {
 			indexPosition++;
 			newy += 62;
 		}
+	}
+	
+	private void checkMouseHover(Ingredient ingredient, int x, int y, int size) {
+		checkMouseHover(ingredient.getMatchingStacks()[0], x, y, size);
 	}
 
 	/**

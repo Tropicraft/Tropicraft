@@ -11,6 +11,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -493,7 +494,7 @@ public class EntityFishHook extends Entity
                     else
                     {
                         this.ticksCaughtDelay = MathHelper.getInt(this.rand, 100, 900);
-                        this.ticksCaughtDelay -= EnchantmentHelper.getLureModifier(this.angler) * 20 * 5;
+                        this.ticksCaughtDelay -= EnchantmentHelper.getFishingSpeedBonus(EnchantmentHelper.getEnchantedItem(Enchantments.LURE, this.angler)) * 20 * 5;
                     }
 
                     if (this.ticksCatchable > 0)

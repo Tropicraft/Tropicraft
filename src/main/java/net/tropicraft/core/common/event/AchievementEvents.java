@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
-import net.tropicraft.core.registry.AchievementRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class AchievementEvents {
@@ -17,7 +16,7 @@ public class AchievementEvents {
 		if (event.crafting.getItem() == ItemRegistry.cocktail) {
 			ItemStack pinaColada = MixerRecipes.getItemStack(Drink.pinaColada);
 			if (pinaColada.isItemEqual(event.crafting)) {
-				event.player.addStat(AchievementRegistry.craftPinaColada);
+				// TODO advancements event.player.addStat(AchievementRegistry.craftPinaColada);
 			}
 		}
 	}

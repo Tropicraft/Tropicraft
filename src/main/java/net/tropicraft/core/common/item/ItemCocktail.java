@@ -238,7 +238,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 			Drink drink = getDrink(stack);
 
 			if (worldIn.isRainingAt(player.getPosition()) && drink == Drink.pinaColada) {
-				player.addStat(AchievementRegistry.drinkPinaColada);
+				// TODO advancements player.addStat(AchievementRegistry.drinkPinaColada);
 			}
 		}
 

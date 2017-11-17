@@ -10,7 +10,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class Encyclopedia extends TropicalBook {
     
@@ -103,21 +106,18 @@ public class Encyclopedia extends TropicalBook {
             addItemToRecipeContents(recipeContents, itemStack);
         }
 
-        ItemStack[] slotArray = new ItemStack[width * height];
+        NonNullList<Ingredient> slotArray = NonNullList.withSize(width * height, Ingredient.EMPTY);
 
         for (int slots = 0; slots < width * height; slots++) {
             char itemChar = recipeString.charAt(slots);
 
             if (charMap.containsKey(itemChar)) {
-                slotArray[slots] = ((ItemStack) charMap.get(itemChar)).copy();
-            } else {
-                slotArray[slots] = null;
+                slotArray.set(slots, CraftingHelper.getIngredient(charMap.get(itemChar)));
             }
-            
         }
         
         // Added code to register this recipe with the ingredient lookup
-        ShapedRecipes recipe = new ShapedRecipes(width, height, slotArray, result);
+        ShapedRecipes recipe = new ShapedRecipes(null, width, height, slotArray, result);
         for (ItemStack item : recipeContents) {
             boolean foundKey = false;
             for (ItemStack key : recipes.keySet()) {
@@ -252,7 +252,7 @@ public class Encyclopedia extends TropicalBook {
         try {
             int width = recipe.recipeWidth;//(Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "b", "recipeWidth");
             int height = recipe.recipeHeight;//(Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "c", "recipeHeight");
-            ItemStack[] items = recipe.recipeItems;//(ItemStack[]) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "d", "recipeItems");
+            NonNullList<Ingredient> items = recipe.recipeItems;//(ItemStack[]) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "d", "recipeItems");
             ItemStack output = recipe.getRecipeOutput();//(ItemStack) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "e", "recipeOutput");
             return new RecipeEntry(width, height, items, output);
         } catch (Exception ex) {
@@ -265,13 +265,13 @@ public class Encyclopedia extends TropicalBook {
         
         public int width;
         public int height;
-        public ItemStack[] ingredients;
+        public NonNullList<Ingredient> ingredients;
         public ItemStack output;
         
-        public RecipeEntry(int width, int height, ItemStack[] ingredients, ItemStack output) {
+        public RecipeEntry(int width, int height, NonNullList<Ingredient> items, ItemStack output) {
             this.width = width;
             this.height = height;
-            this.ingredients = ingredients;
+            this.ingredients = items;
             this.output = output;
         }
         
