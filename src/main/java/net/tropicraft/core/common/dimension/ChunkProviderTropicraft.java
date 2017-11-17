@@ -18,6 +18,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.tropicraft.core.common.biome.BiomeTropicraft;
@@ -111,9 +112,13 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
     }
 
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName,
-            BlockPos position) {
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
         return null;
+    }
+    
+    @Override
+    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+    	return false;
     }
 
     @Override
@@ -122,7 +127,7 @@ public class ChunkProviderTropicraft implements IChunkGenerator { //NOTE: THIS W
     }
 
     @Override
-    public Chunk provideChunk(int x, int z) {
+    public Chunk generateChunk(int x, int z) {
         this.rand.setSeed((long)x * 341873128712L + (long)z * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
         this.setBlocksInChunk(x, z, chunkprimer);

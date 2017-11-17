@@ -1,9 +1,8 @@
 package net.tropicraft.core.common.dimension;
 
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 
 public class WorldProviderTropicraft extends WorldProvider {
 
@@ -12,23 +11,13 @@ public class WorldProviderTropicraft extends WorldProvider {
 	public static final int INTER_HEIGHT = MAX_HEIGHT - MID_HEIGHT;
 	
 	@Override
-    protected void createBiomeProvider() {
+    protected void init() {
     	this.biomeProvider = new BiomeProviderTropicraft(world.getWorldInfo());
     }
 
 	@Override
 	public IChunkGenerator createChunkGenerator() {
 		return new ChunkProviderTropicraft(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
-	}
-
-	@Override
-	public String getWelcomeMessage() {
-		return "Drifting in to the Tropics of " + this.world.getWorldInfo().getWorldName();
-	}
-
-	@Override
-	public String getDepartMessage() {
-		return "Fading out of the Tropics of " + this.world.getWorldInfo().getWorldName();
 	}
 
 	@Override
