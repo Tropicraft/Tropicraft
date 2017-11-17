@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.tropicraft.core.common.entity.hostile.EntityTropiCreeper;
 
 public class EntityAITropiCreeperSwell extends EntityAIBase

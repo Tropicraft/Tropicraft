@@ -1,16 +1,11 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.Entity;
+import java.util.List;
+
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.world.World;
-import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class EntityAIKoaMate extends EntityAIBase
 {

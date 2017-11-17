@@ -1,7 +1,11 @@
 package net.tropicraft.core.common.build.world;
 
-import net.tropicraft.core.common.build.SchematicData;
-import net.tropicraft.core.common.build.UtilBuild;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -13,13 +17,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import net.tropicraft.core.common.build.SchematicData;
+import net.tropicraft.core.common.build.UtilBuild;
 
 public class Build {
 
@@ -509,12 +508,12 @@ public class Build {
     public HashMap<Block, Integer> getBlockToInternalIDMap() {
         HashMap<Block, Integer> map = new HashMap<Block, Integer>();
 
-        Set set = Block.REGISTRY.getKeys();
-        Iterator it = set.iterator();
+        Set<ResourceLocation> set = Block.REGISTRY.getKeys();
+        Iterator<ResourceLocation> it = set.iterator();
 
         int i = 0;
         while (it.hasNext()) {
-            ResourceLocation tagName = (ResourceLocation) it.next();
+            ResourceLocation tagName = it.next();
             Block block = Block.REGISTRY.getObject(tagName);
 
             if (block != null) {
@@ -544,12 +543,12 @@ public class Build {
 
         //if (getVersion().equals("1.0")) {
 
-        Set set = Block.REGISTRY.getKeys();
-        Iterator it = set.iterator();
+        Set<ResourceLocation> set = Block.REGISTRY.getKeys();
+        Iterator<ResourceLocation> it = set.iterator();
 
         int i = 0;
         while (it.hasNext()) {
-            ResourceLocation tagName = (ResourceLocation) it.next();
+            ResourceLocation tagName = it.next();
             Block block = Block.REGISTRY.getObject(tagName);
 
             if (block != null) {
@@ -762,8 +761,6 @@ public class Build {
         FileInputStream fis = null;
 
         try {
-            InputStream is = new FileInputStream(parBuild.file);
-
             fis = new FileInputStream(parBuild.file);
 
             NBTTagCompound nbttagcompound = CompressedStreamTools.readCompressed(fis);
@@ -779,7 +776,6 @@ public class Build {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-
 
         }
         return true;

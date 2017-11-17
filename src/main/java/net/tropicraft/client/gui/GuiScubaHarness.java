@@ -1,10 +1,8 @@
 package net.tropicraft.client.gui;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 
 public class GuiScubaHarness extends GuiContainer {

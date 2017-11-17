@@ -1,17 +1,11 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.village.Village;
-import net.minecraft.village.VillageDoorInfo;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.registry.ItemRegistry;

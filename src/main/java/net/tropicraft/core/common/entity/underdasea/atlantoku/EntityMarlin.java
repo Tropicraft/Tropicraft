@@ -22,7 +22,7 @@ public class EntityMarlin extends EntityTropicraftWaterBase implements IPredator
 	}
 	
 	@Override
-	public Class[] getPreyClasses() {
+	public Class<?>[] getPreyClasses() {
 		return new Class[]{
 				EntityTropicalFish.class
 				};

@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.tropicraft.Info;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimSchoolFollowLeader;
 
 public class EntitySchoolableFish extends EntityTropicraftWaterBase {

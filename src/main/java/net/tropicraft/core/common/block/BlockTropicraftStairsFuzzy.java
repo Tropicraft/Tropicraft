@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;

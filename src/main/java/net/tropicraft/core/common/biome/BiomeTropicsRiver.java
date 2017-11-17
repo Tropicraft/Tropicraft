@@ -1,10 +1,7 @@
 package net.tropicraft.core.common.biome;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityPiranha;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityRiverSardine;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 import net.tropicraft.core.registry.BlockRegistry;
 
 

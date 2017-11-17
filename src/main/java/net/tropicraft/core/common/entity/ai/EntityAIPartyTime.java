@@ -1,11 +1,14 @@
 package net.tropicraft.core.common.entity.ai;
 
+import java.util.HashMap;
+import java.util.List;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -14,12 +17,7 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.BlockBongoDrum;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.enums.TropicraftBongos;
-import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class EntityAIPartyTime extends EntityAIBase
 {

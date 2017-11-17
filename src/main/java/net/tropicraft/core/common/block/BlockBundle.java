@@ -13,11 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.enums.BlockHardnessValues;
 import net.tropicraft.core.common.enums.TropicraftBundles;
-import net.tropicraft.core.common.enums.TropicraftSlabs;
 
 public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> {
 

@@ -1,33 +1,31 @@
 package net.tropicraft.core.common.command;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.tropicraft.core.common.build.BuildServerTicks;
-import net.tropicraft.core.common.build.world.Build;
-import net.tropicraft.core.common.build.world.BuildJob;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.build.BuildServerTicks;
+import net.tropicraft.core.common.build.world.Build;
+import net.tropicraft.core.common.build.world.BuildJob;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class CommandTropicsMisc extends CommandBase {
 
@@ -190,9 +188,8 @@ public class CommandTropicsMisc extends CommandBase {
                             }
                         }
                     }
-                } else {
-
                 }
+
                 if (clEntity != null) {
                     if (reverse) {
                         clEntity.startRiding(player);

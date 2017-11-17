@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

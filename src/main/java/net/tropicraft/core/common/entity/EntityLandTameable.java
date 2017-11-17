@@ -1,11 +1,8 @@
 package net.tropicraft.core.common.entity;
 
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.world.World;
-import net.tropicraft.Info;
 
 public abstract class EntityLandTameable extends EntityTameable {
 

@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import net.tropicraft.core.common.item.scuba.ItemScubaChestplateGear;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
 
 public class ContainerScubaHarness extends Container {

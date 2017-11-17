@@ -3,13 +3,11 @@ package net.tropicraft.core.common.entity.underdasea;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Vector2f;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -25,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.entity.egg.EntityEgg;
 import net.tropicraft.core.common.entity.egg.EntitySeaTurtleEgg;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.IAmphibian;

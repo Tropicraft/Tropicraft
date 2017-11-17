@@ -3,7 +3,6 @@ package net.tropicraft.core.common.entity.ai;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
-import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAIEatToHeal extends EntityAIBase
 {

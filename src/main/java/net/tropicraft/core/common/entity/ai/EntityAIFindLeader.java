@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.ai;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 

@@ -23,7 +23,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLandHostile;
 import net.tropicraft.core.registry.BlockRegistry;
-import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
 public class EntityEIH extends EntityLandHostile implements IMob {

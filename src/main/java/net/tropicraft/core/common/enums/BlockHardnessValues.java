@@ -1,10 +1,5 @@
 package net.tropicraft.core.common.enums;
 
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.IStringSerializable;
-
 public enum BlockHardnessValues {
     THATCH(0.2F, 5.0F),
     BAMBOO(0.2F, 5.0F),

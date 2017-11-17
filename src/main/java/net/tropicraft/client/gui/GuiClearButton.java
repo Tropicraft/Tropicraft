@@ -9,8 +9,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 
-import org.lwjgl.opengl.GL11;
-
 @SideOnly(Side.CLIENT)
 public class GuiClearButton extends GuiButton {
 

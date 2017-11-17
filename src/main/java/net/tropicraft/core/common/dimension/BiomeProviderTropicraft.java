@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.init.Biomes;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldType;

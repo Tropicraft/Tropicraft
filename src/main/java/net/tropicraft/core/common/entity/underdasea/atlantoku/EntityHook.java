@@ -22,7 +22,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.core.common.Util;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityHook extends Entity {

@@ -1,6 +1,5 @@
 package net.tropicraft.core.registry;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Names;

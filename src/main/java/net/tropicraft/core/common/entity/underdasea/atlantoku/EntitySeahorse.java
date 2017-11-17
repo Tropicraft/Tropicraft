@@ -1,9 +1,6 @@
 package net.tropicraft.core.common.entity.underdasea.atlantoku;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 

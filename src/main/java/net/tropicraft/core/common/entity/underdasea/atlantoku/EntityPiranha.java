@@ -5,8 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLand;
 import net.tropicraft.core.common.entity.egg.EntityEchinodermEgg;
-import net.tropicraft.core.common.entity.egg.EntitySeaUrchinEgg;
-import net.tropicraft.core.common.entity.egg.EntityStarfishEgg;
 import net.tropicraft.core.common.entity.underdasea.EntityEchinoderm;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -27,7 +25,7 @@ public class EntityPiranha extends EntitySchoolableFish implements IAtlasFish, I
 	}
 
 	@Override
-	public Class[] getPreyClasses() {
+	public Class<?>[] getPreyClasses() {
 		return new Class[]{
 				EntityTropicalFish.class, EntitySeahorse.class, 
 				EntityEchinoderm.class, EntityEchinodermEgg.class,

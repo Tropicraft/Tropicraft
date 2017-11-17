@@ -1,12 +1,40 @@
 package net.tropicraft.core.common.entity.passive;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
 import com.google.common.base.Predicate;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIHarvestFarmland;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAIPlay;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,11 +50,13 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -35,9 +65,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
-import net.tropicraft.core.common.entity.ai.*;
+import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
+import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
+import net.tropicraft.core.common.entity.ai.EntityAIEatToHeal;
+import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
+import net.tropicraft.core.common.entity.ai.EntityAIKoaMate;
+import net.tropicraft.core.common.entity.ai.EntityAIPartyTime;
+import net.tropicraft.core.common.entity.ai.EntityAIPlayKoa;
+import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
@@ -46,11 +82,6 @@ import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
-
-import java.lang.reflect.Field;
-import java.util.*;
-
-import javax.annotation.Nullable;
 
 public class EntityKoaBase extends EntityVillager {
 

@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.entity.egg;
 
-import java.util.UUID;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSpider;

@@ -1,19 +1,14 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
+import java.util.Random;
+
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
-import net.tropicraft.core.registry.ItemRegistry;
-
-import java.util.Random;
 
 public class EntityAIGoneFishin extends EntityAIBase {
 
