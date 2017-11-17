@@ -2,18 +2,21 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -24,6 +27,7 @@ import net.tropicraft.core.common.item.scuba.api.IAirType;
 import net.tropicraft.core.common.item.scuba.api.IScubaGear;
 import net.tropicraft.core.common.item.scuba.api.IScubaTank;
 import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
+import net.tropicraft.core.registry.CreativeTabRegistry;
 
 public class ItemScubaChestplateGear extends ItemScubaGear {
 
@@ -40,38 +44,38 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, EntityPlayer player, List<String> list, boolean par4) {
+    public void addInformation(ItemStack itemstack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
         IScubaGear cap = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
         ItemStack leftTank = cap.getStackInSlot(0);
         ItemStack rightTank = cap.getStackInSlot(1);
         
         String suitType = scubaMaterial.getDisplayName();
 
-        list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.suit.type", TextFormatting.GRAY + suitType));
-        list.add("");
+        tooltip.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.suit.type", TextFormatting.GRAY + suitType));
+        tooltip.add("");
         
         if (leftTank == null) {
-            list.add(I18n.format("tropicraft.gui.gear.tank.left.none"));
+            tooltip.add(I18n.format("tropicraft.gui.gear.tank.left.none"));
         } else {
-            list.add(I18n.format("tropicraft.gui.gear.tank.left.info"));
+            tooltip.add(I18n.format("tropicraft.gui.gear.tank.left.info"));
 //            IScubaTank tank = leftTank.getCapability(ScubaCapabilities.getTankCapability(), null);
 //            IAirType airType = tank.getAirType();
 //            String airRemaining = tank.getPressure() + " psi";
-            leftTank.getItem().addInformation(leftTank, player, list, par4);
+            leftTank.getItem().addInformation(leftTank, world, tooltip, flagIn);
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airType", TextFormatting.GRAY + airType.getDisplayName()));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:maxAirCapacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity() + " psi"));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:useEfficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
-            list.add("");
+            tooltip.add("");
         }
         if (rightTank == null) {
-            list.add(I18n.format("tropicraft.gui.gear.tank.right.none"));
+            tooltip.add(I18n.format("tropicraft.gui.gear.tank.right.none"));
         } else {
-            list.add(I18n.format("tropicraft.gui.gear.tank.right.info"));
+            tooltip.add(I18n.format("tropicraft.gui.gear.tank.right.info"));
 //            IScubaTank tank = rightTank.getCapability(ScubaCapabilities.getTankCapability(), null);
 //            IAirType airType = tank.getAirType();
 //            String airRemaining = tank.getPressure() + " psi";
-            rightTank.getItem().addInformation(rightTank, player, list, par4);
+            rightTank.getItem().addInformation(rightTank, world, tooltip, flagIn);
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airType", TextFormatting.GRAY + airType.getDisplayName()));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:maxAirCapacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity() + " psi"));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
@@ -114,8 +118,9 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-        ItemStack noTank = new ItemStack(item, 1, 0);
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (tab != CreativeTabRegistry.tropicraftTab) return;
+        ItemStack noTank = new ItemStack(this, 1, 0);
         list.add(noTank);
         
 //        ItemStack singleTankRegular = new ItemStack(item, 1, 1);
@@ -150,12 +155,13 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
     }
     
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer entityplayer, EnumHand hand) {
         if (entityplayer.isSneaking()) {
+            ItemStack itemstack = entityplayer.getHeldItem(hand);
             entityplayer.openGui(Tropicraft.instance, 0, world, hand.ordinal(), 0, 0);
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
         }
-        return super.onItemRightClick(itemstack, world, entityplayer, hand);
+        return super.onItemRightClick(world, entityplayer, hand);
     }
 
     @Override

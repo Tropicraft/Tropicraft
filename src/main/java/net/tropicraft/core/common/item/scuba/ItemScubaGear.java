@@ -35,7 +35,7 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-        return new ArmorProperties(10, source == DamageSource.drown ? 1.0 : 1.0, Integer.MAX_VALUE);
+        return new ArmorProperties(10, source == DamageSource.DROWN ? 1.0 : 1.0, Integer.MAX_VALUE);
     }
 
     @Override

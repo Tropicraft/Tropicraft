@@ -38,7 +38,7 @@ public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		return new ArmorProperties(10, source == DamageSource.inFire ? 1.0 : 0.3, Integer.MAX_VALUE);
+		return new ArmorProperties(10, source == DamageSource.IN_FIRE ? 1.0 : 0.3, Integer.MAX_VALUE);
 	}
 
 	/**

@@ -42,14 +42,16 @@ public class ItemCoffeeBean extends ItemTropicraft implements IPlantable {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (stack.getItemDamage() > 0) {
-			return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = playerIn.getHeldItem(hand);
+	    
+	    if (stack.getItemDamage() > 0) {
+			return super.onItemUse(playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 		}
         IBlockState state = worldIn.getBlockState(pos);
         if (facing == EnumFacing.UP && playerIn.canPlayerEdit(pos.offset(facing), facing, stack) && state.getBlock().canSustainPlant(state, worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(pos.up())) {
 			worldIn.setBlockState(pos.up(), bush.getDefaultState());
-			stack.stackSize--;
+			stack.shrink(1);
 			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;

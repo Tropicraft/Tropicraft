@@ -1,11 +1,9 @@
 package net.tropicraft.core.common.item;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.ColorHelper;
@@ -54,9 +52,10 @@ public abstract class ItemTropicraftColored extends ItemTropicraft {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+	    if (tab != CreativeTabRegistry.tropicraftTab) return;
 		for (int i = 0; i < ColorHelper.getNumColors(); i++) {
-			list.add(new ItemStack(item, 1, i));
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 

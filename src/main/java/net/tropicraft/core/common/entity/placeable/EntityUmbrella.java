@@ -139,7 +139,7 @@ public class EntityUmbrella extends Entity {
 			double d5 = (umbrellaBB.minY + ((umbrellaBB.maxY - umbrellaBB.minY) * (double)(j + 0)) / (double)i) - 0.125D;
 			double d9 = (umbrellaBB.minY + ((umbrellaBB.maxY - umbrellaBB.minY) * (double)(j + 1)) / (double)i) - 0.125D;
 			AxisAlignedBB axisalignedbb = new AxisAlignedBB(umbrellaBB.minX, d5, umbrellaBB.minZ, umbrellaBB.maxX, d9, umbrellaBB.maxZ);
-			if(world.isAABBInMaterial(axisalignedbb, Material.WATER)) {
+			if(world.isMaterialInBB(axisalignedbb, Material.WATER)) {
 				d += 1.0D / (double)i;
 			}
 		}

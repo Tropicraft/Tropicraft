@@ -2,17 +2,20 @@ package net.tropicraft.core.common.item;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.translation.I18n;
@@ -24,6 +27,7 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TeleporterTropics;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.registry.BlockRegistry;
+import net.tropicraft.core.registry.CreativeTabRegistry;
 
 public class ItemPortalEnchanter extends ItemTropicraft {
 
@@ -36,19 +40,20 @@ public class ItemPortalEnchanter extends ItemTropicraft {
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
     @Override
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
-        ItemStack indirect = new ItemStack(item);
+    public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
+        if (tabs != CreativeTabRegistry.tropicraftTab) return;
+        ItemStack indirect = new ItemStack(this);
         Util.getTagCompound(indirect).setBoolean("DirectMode", false);
         list.add(indirect);
 
-        ItemStack direct = new ItemStack(item);
+        ItemStack direct = new ItemStack(this);
         Util.getTagCompound(indirect).setBoolean("DirectMode", true);
         list.add(direct);
     }
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack itemstack, EntityPlayer ent, List list, boolean wat) {
+	public void addInformation(ItemStack itemstack, @Nullable World world, List list, ITooltipFlag flagIn) {
 	    boolean hasDirectMode = Util.getTagCompound(itemstack).hasKey("DirectMode");
 	    int mode;
 	    if (hasDirectMode) {
@@ -60,7 +65,8 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer entityplayer, EnumHand hand) {
+	    ItemStack itemstack = entityplayer.getHeldItem(hand);
 	    boolean isDirectMode = false;
 	    if (itemstack.getTagCompound() != null) {
 	        isDirectMode = Util.getTagCompound(itemstack).hasKey("DirectMode") ? Util.getTagCompound(itemstack).getBoolean("DirectMode") : false;   
@@ -96,7 +102,7 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 					if (canGen(world, pos)) {
 						found = true;
 						entityplayer.swingArm(EnumHand.MAIN_HAND);
-						(new TeleporterTropics(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(entityplayer.dimension))).buildTeleporterAt(x + searchX, y, z + searchZ, entityplayer);
+						(new TeleporterTropics(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(entityplayer.dimension))).buildTeleporterAt(x + searchX, y, z + searchZ, entityplayer);
 						//ModLoader.getMinecraftInstance().effectRenderer.addEffect(new EntitySplashFX(ModLoader.getMinecraftInstance().world, playerX, playerY, playerZ, 0D, 0D, 0D));
 						itemstack.damageItem(1, entityplayer);
 					}

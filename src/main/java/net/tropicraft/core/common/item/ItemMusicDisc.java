@@ -2,20 +2,13 @@ package net.tropicraft.core.common.item;
 
 import java.util.List;
 
-import net.minecraft.block.BlockJukebox;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -50,8 +43,8 @@ public class ItemMusicDisc extends ItemRecord {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        super.addInformation(stack, playerIn, tooltip, advanced);
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+        super.addInformation(stack, world, tooltip, flag);
         String[] extraInfo = RecordInformation.getInformation(songName);
         
         if (extraInfo != null) {
@@ -59,11 +52,5 @@ public class ItemMusicDisc extends ItemRecord {
         		tooltip.add(line);
         	}
         }
-    }
-    
-    /** I don't think this is used */
-    @Override
-    public ResourceLocation getRecordResource(String name) {
-        return new ResourceLocation("tropicraft:" + songName);
     }
 }

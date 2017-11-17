@@ -65,7 +65,7 @@ public final class TropiWorldEntitySpawner
 
                                 if (!flag && worldServerIn.getWorldBorder().contains(chunkpos))
                                 {
-                                    PlayerChunkMapEntry playerchunkmapentry = worldServerIn.getPlayerChunkMap().getEntry(chunkpos.chunkXPos, chunkpos.chunkZPos);
+                                    PlayerChunkMapEntry playerchunkmapentry = worldServerIn.getPlayerChunkMap().getEntry(chunkpos.x, chunkpos.z);
 
                                     if (playerchunkmapentry != null && playerchunkmapentry.isSentToPlayers())
                                     {
@@ -115,7 +115,7 @@ public final class TropiWorldEntitySpawner
 
                         for (ChunkPos chunkpos1 : shuffled)
                         {
-                            BlockPos blockpos = getRandomChunkPosition(worldServerIn, chunkpos1.chunkXPos, chunkpos1.chunkZPos);
+                            BlockPos blockpos = getRandomChunkPosition(worldServerIn, chunkpos1.x, chunkpos1.z);
                             int k1 = blockpos.getX();
                             int l1 = blockpos.getY();
                             int i2 = blockpos.getZ();

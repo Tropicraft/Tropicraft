@@ -282,7 +282,7 @@ public class EntityHook extends Entity {
 
 		if (!this.inGround) {
 
-			if (Util.isAABBInMaterial(this.world, this.getEntityBoundingBox().offset(0, 0.0D, 0), Material.WATER)) {
+			if (this.world.isMaterialInBB(this.getEntityBoundingBox().offset(0, 0.0D, 0), Material.WATER)) {
 				if (this.motionY < -.05f) {
 					this.motionY = -.05f;
 				}

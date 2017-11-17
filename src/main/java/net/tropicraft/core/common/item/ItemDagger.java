@@ -21,7 +21,7 @@ public class ItemDagger extends ItemTropicraft {
         super();
         maxStackSize = 1;
         setMaxDamage(enumtoolmaterial.getMaxUses());
-        weaponDamage = 4 + enumtoolmaterial.getDamageVsEntity();
+        weaponDamage = 4 + enumtoolmaterial.getAttackDamage();
     }
 
     /**

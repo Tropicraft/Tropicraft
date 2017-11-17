@@ -6,10 +6,9 @@ import java.util.Random;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.tropicraft.Info;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimSchoolFollowLeader;
 
 public class EntitySchoolableFish extends EntityTropicraftWaterBase {
@@ -124,7 +123,7 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 			int minInSchool = minSchoolAmount;
 			int numToSpawn = rand.nextInt(1 + maxInSchool - minInSchool) + minInSchool - 1;
 			for (int i = 0; i < numToSpawn; i++) {
-				EntitySchoolableFish fish = (EntitySchoolableFish) EntityList.createEntityByIDFromName(this.getEntityString(), world);
+				EntitySchoolableFish fish = (EntitySchoolableFish) EntityList.createEntityByIDFromName(new ResourceLocation(Info.MODID + ":" + this.getEntityString()), world);
 				if(fish != null) {
 					fish.setSchoolLeader(this);
 					world.spawnEntity(fish);

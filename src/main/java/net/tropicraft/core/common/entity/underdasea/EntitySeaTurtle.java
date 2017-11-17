@@ -341,11 +341,6 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 	
 	}
 
-	@Override
-	public void moveEntityWithHeading(float forward, float strafe) {
-		super.moveEntityWithHeading(forward, strafe);
-	}
-
 	public BlockPos scanSuitableNests() {
 		long millis = System.currentTimeMillis();
 		log("Scan for suitable nest site started");

@@ -125,7 +125,7 @@ public class EntityChair extends Entity {
 				double d3 = this.getEntityBoundingBox().minY + (this.getEntityBoundingBox().maxY - this.getEntityBoundingBox().minY) * (double)(i + 1) / (double)b0 - 0.125D;
 				AxisAlignedBB axisalignedbb = new AxisAlignedBB(this.getEntityBoundingBox().minX, d1, this.getEntityBoundingBox().minZ, this.getEntityBoundingBox().maxX, d3, this.getEntityBoundingBox().maxZ);
 
-				if (this.world.isAABBInMaterial(axisalignedbb, Material.WATER)) {
+				if (this.world.isMaterialInBB(axisalignedbb, Material.WATER)) {
 					d0 += 1.0D / (double)b0;
 				}
 			}

@@ -3,9 +3,11 @@ package net.tropicraft.core.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -31,13 +33,14 @@ public class ItemFishBucket extends ItemBucket {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer playerIn, EnumHand hand) {
-		ActionResult<ItemStack> ret = super.onItemRightClick(stack, world, playerIn, hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer playerIn, EnumHand hand) {
+		ActionResult<ItemStack> ret = super.onItemRightClick(world, playerIn, hand);
 		if (ret.getType() == EnumActionResult.SUCCESS && !world.isRemote) {
 			RayTraceResult raytraceresult = this.rayTrace(world, playerIn, false);
 
 			if (raytraceresult != null && raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
 				BlockPos pos = raytraceresult.getBlockPos();
+				ItemStack stack = playerIn.getHeldItem(hand);
 				for (EntityTropicalFish fish : loadEntiesFromNBT(stack, world)) {
 					fish.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, world.rand.nextFloat() * 360.0F, 0);
 					world.spawnEntity(fish);
@@ -50,7 +53,7 @@ public class ItemFishBucket extends ItemBucket {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
 		NBTTagList fishList = getFishList(stack);
 		TObjectIntMap<String> fishCounts = new TObjectIntHashMap<>();
 		for (int i = 0; i < fishList.tagCount(); i++) {
@@ -66,7 +69,7 @@ public class ItemFishBucket extends ItemBucket {
 			}
 			tooltip.add(line);
 		}
-		super.addInformation(stack, playerIn, tooltip, advanced);
+		super.addInformation(stack, world, tooltip, flagIn);
 	}
 	
 	private static final String KEY_ENTITIES = "fishies";
@@ -87,6 +90,9 @@ public class ItemFishBucket extends ItemBucket {
 	}
 
 	public static List<EntityTropicalFish> loadEntiesFromNBT(ItemStack stack, World world) {
+	    if (stack.isEmpty()) {
+	        return new ArrayList<EntityTropicalFish>();
+	    }
 		List<EntityTropicalFish> ret = new ArrayList<>();
 		NBTTagList entityTags = getFishList(stack);
 		for (int i = 0; i < entityTags.tagCount(); i++) {

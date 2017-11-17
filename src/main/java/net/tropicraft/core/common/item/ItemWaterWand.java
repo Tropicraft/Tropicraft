@@ -18,13 +18,15 @@ public class ItemWaterWand extends ItemTropicraft {
 
 	/**
 	 * Triggered on item use
-	 * @param itemstack Item in hand (water wand)
 	 * @param world World
 	 * @param player Player holding the water wand
+	 * @param hand Hand holding the water wand
 	 */
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		double inc = Math.PI/12;
+		
+		ItemStack itemstack = player.getHeldItem(hand);
 		
 		player.swingArm(EnumHand.MAIN_HAND);
 		if (!world.isRemote) {

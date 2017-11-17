@@ -381,7 +381,7 @@ public class EntityFishHook extends Entity
                     double d11 = axisalignedbb.minY + d9 * (double)(l + 1) / 5.0D;
                     AxisAlignedBB axisalignedbb2 = new AxisAlignedBB(axisalignedbb.minX, d10, axisalignedbb.minZ, axisalignedbb.maxX, d11, axisalignedbb.maxZ);
 
-                    if (this.world.isAABBInMaterial(axisalignedbb2, Material.WATER))
+                    if (this.world.isMaterialInBB(axisalignedbb2, Material.WATER))
                     {
                         d5 += 0.2D;
                     }

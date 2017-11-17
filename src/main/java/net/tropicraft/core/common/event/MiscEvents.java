@@ -45,7 +45,7 @@ public class MiscEvents {
             lastWorldTracked = overworld;
         }
 
-        World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+        World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
 
         if (world != null && world instanceof WorldServer) {
             for (int ii = 0; ii < world.playerEntities.size(); ii++) {

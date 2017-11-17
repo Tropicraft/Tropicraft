@@ -28,14 +28,14 @@ public class ItemEncyclopediaTropica extends ItemTropicraft {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer entityplayer, EnumHand hand) {
+	    ItemStack stack = entityplayer.getHeldItem(hand);
 		if (world.isRemote && getTropBook() != null) {
-			System.err.println("Gui");
 			getTropBook().updatePagesFromInventory(entityplayer.inventory);
 			FMLCommonHandler.instance().showGuiScreen(new GuiTropicalBook(getTropBook()));     
 		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 	}
 
 	@SideOnly(Side.CLIENT)

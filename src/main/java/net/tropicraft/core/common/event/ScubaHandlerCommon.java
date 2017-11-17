@@ -29,7 +29,7 @@ public class ScubaHandlerCommon {
 	public void onLivingAttack(LivingAttackEvent event) {
 		if(event.getEntity() instanceof EntityPlayer) {
 			if(isInWater((EntityPlayer)event.getEntity()))
-			if(event.getSource().equals(DamageSource.inWall)) {
+			if(event.getSource().equals(DamageSource.IN_WALL)) {
 				event.setCanceled(true);
 			}
 		}
@@ -147,7 +147,7 @@ public class ScubaHandlerCommon {
 	}
 	
 	public boolean isInWater(EntityPlayer p, double offsetX, double offsetY, double offsetZ) {
-		return p.world.isAABBInMaterial(p.getEntityBoundingBox().offset(offsetX, offsetY, offsetZ), Material.WATER);
+		return p.world.isMaterialInBB(p.getEntityBoundingBox().offset(offsetX, offsetY, offsetZ), Material.WATER);
 	}
 	
 	public boolean isInWater(EntityPlayer p) {

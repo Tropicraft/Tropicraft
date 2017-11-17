@@ -132,7 +132,7 @@ public class MessagePlayerSwimData implements IMessage{
 			// We received this on the server, send to all other players
 			if(ctx.side.equals(Side.SERVER)) {
 			
-				EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+				EntityPlayerMP player = ctx.getServerHandler().player;
 				if (!ScubaHandlerCommon.rotationMap.containsKey(player.getUniqueID())) {
 					ScubaHandlerCommon.rotationMap.put(player.getUniqueID(), message.data);
 				}else {

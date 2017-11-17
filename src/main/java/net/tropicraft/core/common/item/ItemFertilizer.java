@@ -34,9 +34,10 @@ public class ItemFertilizer extends ItemTropicraft {
 	 * Called when a Block is right-clicked with this Item
 	 */
     @Override
-    public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         IBlockState iblockstate = world.getBlockState(pos);
-
+        ItemStack heldStack = player.getHeldItem(hand);
+        
         if (iblockstate.getBlock() == Blocks.GRASS && world.provider.getDimensionType() == TropicraftWorldUtils.tropicsDimension) {
             if (!world.isRemote) {
 
@@ -84,12 +85,12 @@ public class ItemFertilizer extends ItemTropicraft {
                         ++j;
                     }
                 }
-                itemstack.stackSize--;
+                heldStack.shrink(1);
             }
             return EnumActionResult.SUCCESS;
         }
 
-        int hook = ForgeEventFactory.onApplyBonemeal(player, world, pos, iblockstate, itemstack);
+        int hook = ForgeEventFactory.onApplyBonemeal(player, world, pos, iblockstate, heldStack, hand);
         if (hook != 0)
             return hook > 0 ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
 
@@ -102,7 +103,7 @@ public class ItemFertilizer extends ItemTropicraft {
                         igrowable.grow(world, world.rand, pos, iblockstate);
                     }
 
-                    --itemstack.stackSize;
+                    heldStack.shrink(1);
                     world.playEvent(2005, pos, 0);
                 }
 

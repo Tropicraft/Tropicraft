@@ -33,6 +33,7 @@ public class ItemUmbrella extends ItemTropicraftColored {
 	
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	    ItemStack heldStack = playerIn.getHeldItem(hand);
 		float f = 1.0F;
 		float f1 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * f;
 		float f2 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * f;
@@ -51,7 +52,7 @@ public class ItemUmbrella extends ItemTropicraftColored {
 		RayTraceResult raytraceresult = worldIn.rayTraceBlocks(vec3d, vec3d1, true);
 
 		if (raytraceresult == null) {
-			return new ActionResult(EnumActionResult.PASS, itemStackIn);
+			return new ActionResult(EnumActionResult.PASS, heldStack);
 		} else {
 			Vec3d vec3d2 = playerIn.getLook(f);
 			boolean flag = false;
@@ -63,43 +64,43 @@ public class ItemUmbrella extends ItemTropicraftColored {
 				if (entity.canBeCollidedWith()) {
 					AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow((double)entity.getCollisionBorderSize());
 
-					if (axisalignedbb.isVecInside(vec3d)) {
+					if (axisalignedbb.contains(vec3d)) {
 						flag = true;
 					}
 				}
 			}
 
 			if (flag) {
-				return new ActionResult(EnumActionResult.PASS, itemStackIn);
+				return new ActionResult(EnumActionResult.PASS, heldStack);
 			}
 			else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
-				return new ActionResult(EnumActionResult.PASS, itemStackIn);
+				return new ActionResult<>(EnumActionResult.PASS, heldStack);
 			} else {
 				Block block = worldIn.getBlockState(raytraceresult.getBlockPos()).getBlock();
 				boolean flag1 = block == Blocks.WATER || block == Blocks.FLOWING_WATER;
 
-				double x = raytraceresult.hitVec.xCoord;
-				double y = flag1 ? raytraceresult.hitVec.yCoord - 0.12D : raytraceresult.hitVec.yCoord;
-				double z = raytraceresult.hitVec.zCoord;
+				double x = raytraceresult.hitVec.x;
+				double y = flag1 ? raytraceresult.hitVec.y - 0.12D : raytraceresult.hitVec.y;
+				double z = raytraceresult.hitVec.z;
 
-				int color = ColorHelper.getColorFromDamage(itemStackIn.getItemDamage());
+				int color = ColorHelper.getColorFromDamage(heldStack.getItemDamage());
 				EntityUmbrella umbrella = new EntityUmbrella(worldIn, x, y + 1.01, z, color);
 
 				umbrella.rotationYaw = playerIn.rotationYaw;
 
 				if (!worldIn.getCollisionBoxes(umbrella, umbrella.getEntityBoundingBox().grow(-0.1D)).isEmpty()) {
-					return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+					return new ActionResult<>(EnumActionResult.FAIL, heldStack);
 				} else {
 					if (!worldIn.isRemote) {
 						worldIn.spawnEntity(umbrella);
 					}
 
 					if (!playerIn.capabilities.isCreativeMode) {
-						--itemStackIn.stackSize;
+						heldStack.shrink(1);
 					}
 
 					playerIn.addStat(StatList.getObjectUseStats(this));
-					return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+					return new ActionResult<>(EnumActionResult.SUCCESS, heldStack);
 				}
 			}
 		}

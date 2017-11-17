@@ -42,12 +42,13 @@ public class ItemPonyBottle extends ItemTropicraft {
      * Called when the equipped item is right clicked.
      */
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         if (player.getAir() < MAX_PLAYER_AIR) {
             player.setActiveHand(hand);
-            return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         } else {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.PASS, stack);
         }
     }
     
@@ -58,7 +59,7 @@ public class ItemPonyBottle extends ItemTropicraft {
     @Nullable
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-        stack.stackSize--;
+        stack.shrink(1);
         entityLiving.setAir(MAX_PLAYER_AIR);        
         worldIn.playSound((EntityPlayer)null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
 

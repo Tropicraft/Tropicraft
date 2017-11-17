@@ -80,7 +80,7 @@ public class ThreadedNetworkWrapper {
 					if (ctx.side == Side.CLIENT) {
 						sendToServer(reply);
 					} else {
-						final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+						final EntityPlayerMP player = ctx.getServerHandler().player;
 						if (player != null) {
 							sendTo(reply, player);
 						}

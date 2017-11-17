@@ -11,13 +11,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -27,6 +27,7 @@ import net.tropicraft.core.common.drinks.ColorMixer;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipe;
+import net.tropicraft.core.registry.CreativeTabRegistry;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -77,7 +78,8 @@ public class ItemCocktail extends ItemTropicraftColored {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List list) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+	    if (tab != CreativeTabRegistry.tropicraftTab) return;
 		for (MixerRecipe recipe: DrinkMixerRegistry.getRecipes()) {
 			list.add(makeCocktail(recipe));
 		}

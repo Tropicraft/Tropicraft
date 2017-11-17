@@ -31,10 +31,11 @@ public class ItemAshenMask extends ItemTropicraftArmor {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (facing.getAxis().isVertical()) {
             return EnumActionResult.FAIL;
         } else {
+            ItemStack stack = playerIn.getHeldItem(hand);
             // It's a wall, place the shell on it.
             pos = pos.offset(facing);
 
@@ -49,7 +50,7 @@ public class ItemAshenMask extends ItemTropicraftArmor {
                         worldIn.spawnEntity(entityhanging);
                     }
 
-                    --stack.stackSize;
+                    stack.shrink(1);
                 }
 
                 return EnumActionResult.SUCCESS;

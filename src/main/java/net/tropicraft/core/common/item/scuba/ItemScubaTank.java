@@ -2,12 +2,15 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -16,8 +19,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.scuba.api.AirTypeRegistry;
 import net.tropicraft.core.common.item.scuba.api.IAirType;
-import net.tropicraft.core.common.item.scuba.api.IAirType.AirType;
 import net.tropicraft.core.common.item.scuba.api.IScubaTank;
+import net.tropicraft.core.registry.CreativeTabRegistry;
 
 public class ItemScubaTank extends ItemTropicraft {
 
@@ -63,7 +66,7 @@ public class ItemScubaTank extends ItemTropicraft {
 	 */
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack itemstack, EntityPlayer player, List<String> list, boolean par4) {
+	public void addInformation(ItemStack itemstack, @Nullable World world, List<String> list, ITooltipFlag flag) {
 	    IScubaTank cap = itemstack.getCapability(ScubaCapabilities.getTankCapability(), null);
 		IAirType airType = cap.getAirType();
 
@@ -78,8 +81,9 @@ public class ItemScubaTank extends ItemTropicraft {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-	    ItemStack stack = new ItemStack(item);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+	    if (tab != CreativeTabRegistry.tropicraftTab) return;
+	    ItemStack stack = new ItemStack(this);
 	    IScubaTank tank = stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	    
 	    for (IAirType airType : AirTypeRegistry.INSTANCE.getTypes()) {

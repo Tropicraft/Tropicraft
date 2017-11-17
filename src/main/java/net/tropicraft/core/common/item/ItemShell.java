@@ -1,19 +1,18 @@
 package net.tropicraft.core.common.item;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.placeable.EntityWallItem;
 import net.tropicraft.core.common.enums.TropicraftShells;
+import net.tropicraft.core.registry.CreativeTabRegistry;
 
 public class ItemShell extends ItemTropicraft {
 
@@ -23,9 +22,10 @@ public class ItemShell extends ItemTropicraft {
 	}
 	
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+	    if (tab != CreativeTabRegistry.tropicraftTab) return;
 	    for (TropicraftShells type : TropicraftShells.values()) {
-	        subItems.add(new ItemStack(itemIn, 1, type.getMeta()));
+	        subItems.add(new ItemStack(this, 1, type.getMeta()));
 	    }
 	}
 	
@@ -35,12 +35,14 @@ public class ItemShell extends ItemTropicraft {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (facing.getAxis().isVertical()) {
 			return EnumActionResult.FAIL;
 		} else {
 			// It's a wall, place the shell on it.
 
+		    ItemStack stack = playerIn.getHeldItem(hand);
+		    
 			pos = pos.offset(facing);
 			
 			// Must set the world coordinates here, or onValidSurface will be false.
@@ -54,7 +56,7 @@ public class ItemShell extends ItemTropicraft {
 						worldIn.spawnEntity(entityhanging);
 					}
 
-					--stack.stackSize;
+					stack.shrink(1);
 				}
 
 				return EnumActionResult.SUCCESS;
