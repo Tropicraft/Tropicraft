@@ -1,7 +1,7 @@
 {
     "parent": "block/half_slab",
     "textures": {
-        "bottom": "tropicraft:blocks/planks_mahogany",
+        "bottom": "tropicraft:blocks/plank_mahogany",
         "top": "tropicraft:blocks/plank_mahogany",
         "side": "tropicraft:blocks/plank_mahogany"
     }
