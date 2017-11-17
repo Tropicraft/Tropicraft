@@ -2,7 +2,6 @@ package net.tropicraft.core.common.item;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +20,6 @@ import net.tropicraft.core.common.block.BlockTropicsFlowers;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.registry.BlockRegistry;
-import scala.collection.mutable.Stack;
 
 public class ItemFertilizer extends ItemTropicraft {
 

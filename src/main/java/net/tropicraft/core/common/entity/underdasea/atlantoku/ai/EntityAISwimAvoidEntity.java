@@ -1,12 +1,11 @@
 package net.tropicraft.core.common.entity.underdasea.atlantoku.ai;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
-import scala.actors.threadpool.Arrays;
 
 public class EntityAISwimAvoidEntity extends EntityAISwimBase {
 
