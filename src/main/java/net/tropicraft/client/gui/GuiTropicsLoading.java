@@ -14,11 +14,11 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
@@ -26,6 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -83,7 +84,6 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 
 	@SuppressWarnings("unchecked")
     public GuiTropicsLoading() {
-		super((NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler());
 		backgroundToEntityMap.put(BACKGROUNDS[0], (Class<? extends Entity>[]) MOBS_WATER);
 		backgroundToEntityMap.put(BACKGROUNDS[1], (Class<? extends Entity>[]) MOBS_LAND);
 		backgroundToEntityMap.put(BACKGROUNDS[2], (Class<? extends Entity>[]) MOBS_VILLAGE);
@@ -138,10 +138,10 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 		ArrayList<Class<? extends Entity>> ta = new ArrayList<>(Arrays.asList(backgroundToEntityMap.get(screenBackground)));
 
 		Class<? extends Entity> firstEntClass = ta.get(rand.nextInt(ta.size()));
-		String firstEnt = EntityList.getEntityStringFromClass(firstEntClass);
-		Entity ent1 = eggWrap(EntityList.createEntityByName(firstEnt, mc.world), 0);
+		ResourceLocation firstEnt = EntityList.getKey(firstEntClass);
+		Entity ent1 = eggWrap(EntityList.createEntityByIDFromName(firstEnt, mc.world), 0);
 		ta.remove(firstEntClass);
-		Entity ent2 = eggWrap(EntityList.createEntityByName(EntityList.getEntityStringFromClass(ta.get(rand.nextInt(ta.size()))), mc.world), 1);
+		Entity ent2 = eggWrap(EntityList.createEntityByIDFromName(EntityList.getKey(ta.get(rand.nextInt(ta.size()))), mc.world), 1);
 				
 		
 		if (ent1 instanceof EntityTropicraftWaterBase) {
@@ -174,7 +174,7 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 		if (screenEntities == null && mc.world != null) {
 			assignScreenContent();
 		}
-		FontRenderer f = mc.fontRendererObj;
+		FontRenderer f = mc.fontRenderer;
 		ScaledResolution sr = new ScaledResolution(mc);
 
 		drawBackground(sr.getScaledWidth(), sr.getScaledHeight());
@@ -263,7 +263,7 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 		RenderManager rendermanager = mc.getRenderManager();
 		rendermanager.setPlayerViewY(180.0F);
 		rendermanager.setRenderShadow(false);
-		rendermanager.doRenderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+		rendermanager.renderEntity(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
 		rendermanager.setRenderShadow(true);
 		if (ent instanceof EntityLivingBase) {
 			EntityLivingBase liv = (EntityLivingBase) ent;
@@ -286,7 +286,7 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 		GlStateManager.disableLighting();
 		GlStateManager.disableFog();
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		BufferBuilder vertexbuffer = tessellator.getBuffer();
 		TropicraftRenderUtils.bindTextureGui(screenBackground);
 		GlStateManager.color(0.9F, 0.9F, 0.9F, 1.0F);
 		float f = 32F;

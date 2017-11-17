@@ -195,7 +195,8 @@ public class GuiTropicalBook extends GuiScreen {
 			GlStateManager.scale(.75F, .75F, .75F);
 			GlStateManager.translate((float) width / 1.5F - 1F, (float) height / 1.5F, 0f);
 			GlStateManager.color(0, 0, 0);
-			itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(entry));
+			// TODO 1.12 ??
+//			itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(entry));
 			ItemStack is = book.getPageItemStack(entry);
 			if(is != null) {
 				itemRenderer.renderItemIntoGUI(is, -(int) (129 * 1.5), -(int) (80 * 1.5) + (indexPosition) * 20);
@@ -264,8 +265,8 @@ public class GuiTropicalBook extends GuiScreen {
 			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
 			drawTexturedModalRect(width / 2 - 162, height / 2 - 115, 145, 201, 111, 32);
 			GlStateManager.popMatrix();
-			fontRendererObj.drawString("Table of Contents", width / 2 - 150, height / 2 - 110, 0x440000);
-			fontRendererObj.drawString(""+(1+indexPage), width / 2 - 159, height / 2 + 93, 0x440000);
+			fontRenderer.drawString("Table of Contents", width / 2 - 150, height / 2 - 110, 0x440000);
+			fontRenderer.drawString(""+(1+indexPage), width / 2 - 159, height / 2 + 93, 0x440000);
 			if (book.hasIndexIcons()) {
 				addIcons();
 			}
@@ -277,11 +278,11 @@ public class GuiTropicalBook extends GuiScreen {
 			switch (contentMode) {
 			case INFO:
 				String pageTitle = book.isPageVisible(selectedIndex) ? book.getPageTitleByIndex(selectedIndex) : "\247nPage not found";
-				fontRendererObj.drawString(pageTitle, width / 2 + 150 - fontRendererObj.getStringWidth(pageTitle), height / 2 - 110, 0x440000);
-				fontRendererObj.drawSplitString("  " + (book.isPageVisible(selectedIndex) ? book.getPageDescriptionsByIndex(selectedIndex) : "???"), width / 2 + 20, height / 2 - 80, 135, 0x440000);
+				fontRenderer.drawString(pageTitle, width / 2 + 150 - fontRenderer.getStringWidth(pageTitle), height / 2 - 110, 0x440000);
+				fontRenderer.drawSplitString("  " + (book.isPageVisible(selectedIndex) ? book.getPageDescriptionsByIndex(selectedIndex) : "???"), width / 2 + 20, height / 2 - 80, 135, 0x440000);
 				break;
 			case RECIPE:
-				fontRendererObj.drawString("Crafting", width / 2 + 110, height / 2 - 110, 0x440000);
+				fontRenderer.drawString("Crafting", width / 2 + 110, height / 2 - 110, 0x440000);
 				try {
 					printRecipes();
 
@@ -305,7 +306,8 @@ public class GuiTropicalBook extends GuiScreen {
 				GlStateManager.translate(width / 3F + .6F, height / 3F - 1.2F, 0F);
 				GlStateManager.color(0, 0, 0);
 				//itemRenderer.renderWithColor = book.isPageVisible(selectedIndex);
-				itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(selectedIndex));
+				// TODO 1.12 ??
+//				itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(selectedIndex));
 				ItemStack is = book.getPageItemStack(selectedIndex);
 				if(is != null) {
 					GlStateManager.enableRescaleNormal();
@@ -357,11 +359,12 @@ public class GuiTropicalBook extends GuiScreen {
 						GlStateManager.pushMatrix();
 						GlStateManager.enableRescaleNormal();
 						RenderHelper.enableGUIStandardItemLighting();
-						itemRenderer.isNotRenderingEffectsInGUI(true);
+						// TODO 1.12 seriously what was this method for
+//						itemRenderer.isNotRenderingEffectsInGUI(true);
 						//itemRenderer.renderWithColor = true;
 						itemRenderer.renderItemIntoGUI(recipe.ingredients[itemIndex], renderX, renderY);
 						//itemRenderer.renderWithColor = false;
-						itemRenderer.isNotRenderingEffectsInGUI(false);
+//						itemRenderer.isNotRenderingEffectsInGUI(false);
 						RenderHelper.disableStandardItemLighting();
 						GlStateManager.disableRescaleNormal();
 						GlStateManager.popMatrix();
@@ -386,7 +389,7 @@ public class GuiTropicalBook extends GuiScreen {
 			GlStateManager.enableRescaleNormal();
 			RenderHelper.enableGUIStandardItemLighting();
 			itemRenderer.renderItemIntoGUI(recipe.output, newx / 3 + 60, newy / 3 + 11);
-			itemRenderer.renderItemOverlayIntoGUI(fontRendererObj, recipe.output, newx / 3 + 60, newy / 3 + 11, "");
+			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, recipe.output, newx / 3 + 60, newy / 3 + 11, "");
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
@@ -417,11 +420,11 @@ public class GuiTropicalBook extends GuiScreen {
 				RenderHelper.disableStandardItemLighting();
 				GlStateManager.disableLighting();
 				GlStateManager.disableDepth();
-				int l2 = fontRendererObj.getStringWidth(s);
+				int l2 = fontRenderer.getStringWidth(s);
 				int i2 = i - l2 - 4;
 				int k2 = j;
 				drawGradientRect(i2 - 3, k2 - 3, i2 + l2 + 3, k2 + 8 + 3, 0xc0000000, 0xc0000000);
-				fontRendererObj.drawStringWithShadow(s, i2, k2, -1);
+				fontRenderer.drawStringWithShadow(s, i2, k2, -1);
 				GlStateManager.enableLighting();
 				GlStateManager.enableDepth();
 			}

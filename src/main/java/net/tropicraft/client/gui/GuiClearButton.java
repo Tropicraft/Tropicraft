@@ -81,14 +81,14 @@ public class GuiClearButton extends GuiButton {
 	}
 
 	@Override
-	public void drawButton(Minecraft minecraft, int i, int j) {
+	public void drawButton(Minecraft minecraft, int i, int j, float partialTicks) {
 		if (!drawButton) {
 			return;
 		}
 
 		boolean flag = i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height;
 
-		FontRenderer fontrenderer = minecraft.fontRendererObj;
+		FontRenderer fontrenderer = minecraft.fontRenderer;
 
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableLighting();
