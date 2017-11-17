@@ -154,7 +154,7 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 		GlStateManager.pushMatrix();
 		
 		fish.Body.postRender(.045F);
-		TropicraftRenderUtils.bindTextureEntity("tropicalFish");
+		bindEntityTexture(entityliving);
 		GlStateManager.rotate(90F, 0.0F, 1.0F, 0.0F);
 		GlStateManager.translate(.85F, 0.0F, 0.0F);
 		
@@ -185,6 +185,6 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTropicraftWaterBase entity) {
-		return TropicraftRenderUtils.bindTextureEntity("tropicalFish");
+		return TropicraftRenderUtils.getTextureEntity("tropical_fish");
 	}
 }
