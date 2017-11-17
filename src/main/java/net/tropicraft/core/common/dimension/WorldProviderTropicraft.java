@@ -12,11 +12,13 @@ public class WorldProviderTropicraft extends WorldProvider {
 	
 	@Override
     protected void init() {
+		super.init();
     	this.biomeProvider = new BiomeProviderTropicraft(world.getWorldInfo());
     }
 
 	@Override
 	public IChunkGenerator createChunkGenerator() {
+		super.createChunkGenerator();
 		return new ChunkProviderTropicraft(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled());
 	}
 
