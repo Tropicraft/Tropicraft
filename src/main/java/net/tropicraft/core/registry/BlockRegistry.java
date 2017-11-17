@@ -73,7 +73,7 @@ import net.tropicraft.core.common.itemblock.ItemBlockTropicraft;
 import net.tropicraft.core.common.itemblock.ItemTropicraftSlab;
 import net.tropicraft.core.registry.ItemRegistry.IBlockItemRegistrar;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = Info.MODID)
 public class BlockRegistry extends TropicraftRegistry {
     
     private static class SimpleItemCreator implements IBlockItemRegistrar {

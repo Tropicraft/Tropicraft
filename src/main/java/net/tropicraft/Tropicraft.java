@@ -62,6 +62,8 @@ public class Tropicraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(proxy);
+
 	    TropicsConfigs.init(event.getSuggestedConfigurationFile());
 
 		ColorHelper.init();

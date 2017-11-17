@@ -26,6 +26,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -68,18 +69,21 @@ public class ClientProxy extends CommonProxy {
 	public void preInit() {
 		super.preInit();
 	}
-
-	@SuppressWarnings("deprecation")
-    @Override
-	public void init() {
-		super.init();
-		
+	
+	@SubscribeEvent
+	public void registerStateMappers(ModelRegistryEvent event) {
 		ignoreProperties(BlockRegistry.coral, BlockFluidBase.LEVEL);
 		ignoreProperties(BlockRegistry.bambooFenceGate, BlockFenceGate.POWERED);
 		ignoreProperties(BlockRegistry.chunkFenceGate, BlockFenceGate.POWERED);
 		ignoreProperties(BlockRegistry.mahoganyFenceGate, BlockFenceGate.POWERED);
 		ignoreProperties(BlockRegistry.palmFenceGate, BlockFenceGate.POWERED);
 		ignoreProperties(BlockRegistry.thatchFenceGate, BlockFenceGate.POWERED);
+	}
+
+	@SuppressWarnings("deprecation")
+    @Override
+	public void init() {
+		super.init();
 
 		ItemRegistry.clientProxyInit();
 		BlockRegistry.clientProxyInit();
