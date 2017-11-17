@@ -2,6 +2,7 @@ package net.tropicraft.core.common.block.tileentity;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.material.Material;
@@ -44,7 +45,8 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	public double yaw;
 	public double yaw2 = 0.0D;
 
-	public ItemStack siftItem;
+	@Nonnull
+	public ItemStack siftItem = ItemStack.EMPTY;
 
 	public TileEntitySifter() {
 		rand = new Random();
@@ -185,7 +187,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 		}
 		currentSiftTime = SIFT_TIME;
 		this.isSifting = false;
-		this.siftItem = null;
+		this.siftItem = ItemStack.EMPTY;
 		this.syncInventory();		
 	}
 

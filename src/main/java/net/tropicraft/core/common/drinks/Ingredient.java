@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
@@ -39,6 +40,7 @@ public class Ingredient implements Comparable<Ingredient> {
 	/**
 	 * An ItemStack representing the item this ingredient is
 	 */
+	@Nonnull
 	private ItemStack itemStack;
 
 	/**
@@ -68,10 +70,10 @@ public class Ingredient implements Comparable<Ingredient> {
 	private List<DrinkAction> actions = new LinkedList<DrinkAction>();
 
 	public Ingredient() {
-
+		this.itemStack = ItemStack.EMPTY;
 	}
 
-	public Ingredient(int id, ItemStack ingredientItemStack, boolean primary, int color) {
+	public Ingredient(int id, @Nonnull ItemStack ingredientItemStack, boolean primary, int color) {
 		if (ingredientsList[id] != null) {
 			throw new IllegalArgumentException("Ingredient Id slot " + id + " already occupied by " + ingredientsList[id].itemStack.getUnlocalizedName() + "!");
 		}
@@ -83,7 +85,7 @@ public class Ingredient implements Comparable<Ingredient> {
 		ingredientsList[id] = this;
 	}
 
-	public Ingredient(int id, ItemStack ingredientItemStack, boolean primary, int color, float alpha) {
+	public Ingredient(int id, @Nonnull ItemStack ingredientItemStack, boolean primary, int color, float alpha) {
 		this(id, ingredientItemStack, primary, color);
 		this.alpha = alpha;
 	}
@@ -102,6 +104,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * Returns full ItemStack of ingredient
      * @return full ItemStack of ingredient
      */
+    @Nonnull
     public ItemStack getIngredient() {
         return this.itemStack;
     }
@@ -141,7 +144,7 @@ public class Ingredient implements Comparable<Ingredient> {
         }
     }
     
-    public static Ingredient findMatchingIngredient(ItemStack stack) {
+    public static Ingredient findMatchingIngredient(@Nonnull ItemStack stack) {
         for (Ingredient ingredient: Ingredient.ingredientsList) {
             if (ingredient == null) {
                 continue;
@@ -157,7 +160,7 @@ public class Ingredient implements Comparable<Ingredient> {
     public static List<Ingredient> listIngredients(ItemStack stack) {
         List<Ingredient> is = new ArrayList<Ingredient>();
         
-        if (stack != null && stack.getItem() != null && stack.getItem() == ItemRegistry.cocktail) {
+        if (!stack.isEmpty() && stack.getItem() == ItemRegistry.cocktail) {
             for (Ingredient ingredient: ItemCocktail.getIngredients(stack)) {
                 is.add(ingredient);
             }

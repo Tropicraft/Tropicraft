@@ -16,6 +16,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.block.BlockDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.message.MessageMixerInventory;
@@ -39,59 +40,53 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	 */
 	public static final int TICKS_TO_MIX = 4*20;
 
-	public ItemStack[] ingredients;
+	@Nonnull
+	public NonNullList<ItemStack> ingredients;
 
 	public boolean mixing;
 
-	public ItemStack result;
+	@Nonnull
+	public ItemStack result = ItemStack.EMPTY;
 
 	public static final int MAX_NUM_INGREDIENTS = 3;
 
 	public TileEntityDrinkMixer() {
 		mixing = false;
-		ingredients = new ItemStack[MAX_NUM_INGREDIENTS];
+		ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(@Nonnull NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.ticks = nbt.getInteger("MixTicks");
 		this.mixing = nbt.getBoolean("Mixing");
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
 			if (nbt.hasKey("Ingredient0")) {
-				this.ingredients[i] = new ItemStack(nbt.getCompoundTag("Ingredient" + i));
-			} else {
-				this.ingredients[i] = null;
+				this.ingredients.set(i, new ItemStack(nbt.getCompoundTag("Ingredient" + i)));
 			}
 		}
 
 		if (nbt.hasKey("Result")) {
 			this.result = new ItemStack(nbt.getCompoundTag("Result"));
-		} else {
-			this.result = null;
 		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public @Nonnull NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setInteger("MixTicks", this.ticks);
 		nbt.setBoolean("Mixing", mixing);
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-			if (this.ingredients[i] != null) {
-				NBTTagCompound var4 = new NBTTagCompound();
-				this.ingredients[i].writeToNBT(var4);
-				nbt.setTag("Ingredient" + i, var4);
-			}
+			NBTTagCompound var4 = new NBTTagCompound();
+			this.ingredients.get(i).writeToNBT(var4);
+			nbt.setTag("Ingredient" + i, var4);
 		}
 
-		if (this.result != null) {
-			NBTTagCompound var4 = new NBTTagCompound();
-			this.result.writeToNBT(var4);
-			nbt.setTag("Result", var4);
-		}
+		NBTTagCompound var4 = new NBTTagCompound();
+		this.result.writeToNBT(var4);
+		nbt.setTag("Result", var4);
 
 		return nbt;
 	}
@@ -107,14 +102,14 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	}
 
 	public boolean isDoneMixing() {
-		return result != null;
+		return !result.isEmpty();
 	}
 
-	public ItemStack[] getIngredients() {
+	public NonNullList<ItemStack> getIngredients() {
 		return this.ingredients;
 	}
 
-	public static Ingredient findMatchingIngredient(ItemStack stack) {
+	public static Ingredient findMatchingIngredient(@Nonnull ItemStack stack) {
 		for (Ingredient ingredient: Ingredient.ingredientsList) {
 			if (ingredient == null) {
 				continue;
@@ -127,10 +122,10 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 		return null;
 	}
 
-	public static List<Ingredient> listIngredients(ItemStack stack) {
+	public static List<Ingredient> listIngredients(@Nonnull ItemStack stack) {
 		List<Ingredient> is = new ArrayList<Ingredient>();
 
-		if (stack != null && stack.getItem() != null && stack.getItem() == ItemRegistry.cocktail) {
+		if (stack.getItem() == ItemRegistry.cocktail) {
 			for (Ingredient ingredient: ItemCocktail.getIngredients(stack)) {
 				is.add(ingredient);
 			}
@@ -161,9 +156,9 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 
 	public void emptyMixer(@Nullable EntityPlayer at) {
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-			if (this.ingredients[i] != null) {
-				dropItem(this.ingredients[i], at);
-				this.ingredients[i] = null;
+			if (!this.ingredients.get(i).isEmpty()) {
+				dropItem(this.ingredients.get(i), at);
+				this.ingredients.set(i, ItemStack.EMPTY);
 			}
 		}
 
@@ -173,7 +168,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	}
 
 	public void retrieveResult(@Nullable EntityPlayer at) {
-	    if (result == null) {
+	    if (result.isEmpty()) {
 	        return;
 	    }
 	    
@@ -181,19 +176,17 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
 			// If we're not using one of the ingredient slots, just move along
-			if (ingredients[i] == null) continue;
+			if (ingredients.get(i).isEmpty()) continue;
 
-			ItemStack container = ingredients[i].getItem().getContainerItem(ingredients[i]);
+			ItemStack container = ingredients.get(i).getItem().getContainerItem(ingredients.get(i));
 
-			if (container != null) {
+			if (!container.isEmpty()) {
 				dropItem(container, at);
 			}
 		}
 
-		this.ingredients[0] = null;
-		this.ingredients[1] = null;
-		this.ingredients[2] = null;
-		this.result = null;
+		this.ingredients.clear();
+		this.result = ItemStack.EMPTY;
 		this.syncInventory();
 	}
 
@@ -204,8 +197,8 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 		this.syncInventory();
 	}
 
-	public boolean addToMixer(ItemStack ingredient) {
-		if (this.ingredients[0] == null) {
+	public boolean addToMixer(@Nonnull ItemStack ingredient) {
+		if (this.ingredients.get(0).isEmpty()) {
 			if (ingredient.getItem() != ItemRegistry.cocktail) {
 				Ingredient i = findMatchingIngredient(ingredient);
 				// Ordinarily we check for primary here, but I don't think that feature
@@ -214,17 +207,17 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 					return false;
 				}
 			}
-			this.ingredients[0] = ingredient;
+			this.ingredients.set(0, ingredient);
 			syncInventory();
 			return true;
-		} else if (this.ingredients[1] == null) {
+		} else if (this.ingredients.get(1).isEmpty()) {
 			if (ingredient.getItem() == ItemRegistry.cocktail) {
 				// prevent mixing multiple primary ingredients
 				// all cocktails already contain one
 				return false;
 			}
 
-			Ingredient ing0 = findMatchingIngredient(this.ingredients[0]);
+			Ingredient ing0 = findMatchingIngredient(this.ingredients.get(0));
 			Ingredient i = findMatchingIngredient(ingredient);
 
 			// See above comment about isPrimary()
@@ -232,18 +225,18 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 				return false;
 			}
 
-			this.ingredients[1] = ingredient;
+			this.ingredients.set(1, ingredient);
 			syncInventory();
 			return true;
-		} else if (this.ingredients[2] == null) {
+		} else if (this.ingredients.get(2).isEmpty()) {
 			if (ingredient.getItem() == ItemRegistry.cocktail) {
 				// prevent mixing multiple primary ingredients
 				// all cocktails already contain one
 				return false;
 			}
 
-			Ingredient ing0 = findMatchingIngredient(this.ingredients[0]);
-			Ingredient ing1 = findMatchingIngredient(this.ingredients[1]);
+			Ingredient ing0 = findMatchingIngredient(this.ingredients.get(0));
+			Ingredient ing1 = findMatchingIngredient(this.ingredients.get(1));
 			Ingredient i = findMatchingIngredient(ingredient);
 
 			// See above comment about isPrimary()
@@ -251,7 +244,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 				return false;
 			}
 
-			this.ingredients[2] = ingredient;
+			this.ingredients.set(2, ingredient);
 			syncInventory();
 			return true;
 		} else {
@@ -299,7 +292,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	 * @param pkt The data packet
 	 */
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(@Nonnull NetworkManager net, @Nonnull SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
 	}
 
@@ -314,12 +307,12 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag() {
+	public @Nonnull NBTTagCompound getUpdateTag() {
 		NBTTagCompound nbttagcompound = this.writeToNBT(new NBTTagCompound());
 		return nbttagcompound;
 	}
 
-	public ItemStack getResult(ItemStack[] ingredients2) {
+	public @Nonnull ItemStack getResult(NonNullList<ItemStack> ingredients2) {
 		return DrinkMixerRegistry.getResult(ingredients2);
 	}
 }

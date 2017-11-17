@@ -2,6 +2,9 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -16,16 +19,22 @@ import net.tropicraft.core.common.item.scuba.api.IScubaTank.ScubaTank;
 
 public class ScubaCapabilities {
     
-    @CapabilityInject(IScubaTank.class)
+    @SuppressWarnings("null")
+	@CapabilityInject(IScubaTank.class)
+    @Nonnull
     private static Capability<IScubaTank> tankCapability;
     
-    @CapabilityInject(IScubaGear.class)
+    @SuppressWarnings("null")
+	@CapabilityInject(IScubaGear.class)
+    @Nonnull
     private static Capability<IScubaGear> gearCapability;
     
+    @Nonnull
     public static Capability<IScubaTank> getTankCapability() {
         return tankCapability;
     }
     
+    @Nonnull
     public static Capability<IScubaGear> getGearCapability() {
         return gearCapability;
     }
@@ -65,12 +74,12 @@ public class ScubaCapabilities {
         return new ICapabilityProvider() {
 
             @Override
-            public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+            public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
                 return capability == cap;
             }
 
             @Override
-            public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+            public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
                 return hasCapability(capability, facing) ? cap.cast(factory.get()) : null;
             }
         };

@@ -3,8 +3,10 @@ package net.tropicraft.core.common.item;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +22,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.drinks.ColorMixer;
@@ -51,7 +52,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(@Nonnull ItemStack stack, @Nullable World world, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
 		tooltip.clear();
 		if (stack.getTagCompound() == null) {
 			return;
@@ -102,7 +103,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 		}
 	}
 
-	public static ItemStack makeCocktail(MixerRecipe recipe) {
+	public static @Nonnull ItemStack makeCocktail(MixerRecipe recipe) {
 		ItemStack stack = new ItemStack(ItemRegistry.cocktail);
 		NBTTagCompound nbt = new NBTTagCompound();
 		Drink drink = recipe.getCraftingResult();
@@ -138,7 +139,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 		return stack;
 	}
 
-	public static ItemStack makeCocktail(Ingredient[] ingredients) {
+	public static @Nonnull ItemStack makeCocktail(Ingredient[] ingredients) {
 		ItemStack stack = new ItemStack(ItemRegistry.cocktail);
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setByte("DrinkID", (byte)0);
@@ -200,12 +201,12 @@ public class ItemCocktail extends ItemTropicraftColored {
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+	public int getMaxItemUseDuration(@Nonnull ItemStack par1ItemStack) {
 		return 32;
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
+	public @Nonnull EnumAction getItemUseAction(@Nonnull ItemStack par1ItemStack) {
 		return EnumAction.DRINK;
 	}
 
@@ -229,8 +230,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 	 * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
 	 * the Item before the action is complete.
 	 */
-	@Nullable
-	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+	public @Nonnull ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityLivingBase entityLiving) {
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entityLiving;
 			this.onFoodEaten(stack, worldIn, player);
@@ -246,21 +246,21 @@ public class ItemCocktail extends ItemTropicraftColored {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand hand) {
 	    ItemStack stack = playerIn.getHeldItem(hand);
 		Drink drink = getDrink(stack);
 
 		if (drink != null) {
 			if (!playerIn.canEat(drink.alwaysEdible)) {
-				return new ActionResult(EnumActionResult.FAIL, stack);
+				return new ActionResult<>(EnumActionResult.FAIL, stack);
 			}
 		} else if (!playerIn.canEat(false)) {
-			return new ActionResult(EnumActionResult.FAIL, stack);
+			return new ActionResult<>(EnumActionResult.FAIL, stack);
 		}
 
 		playerIn.setActiveHand(hand);
 
-		return new ActionResult(EnumActionResult.SUCCESS, stack);
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
@@ -269,20 +269,20 @@ public class ItemCocktail extends ItemTropicraftColored {
 		return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("null")
 	@Override
-	public String getItemStackDisplayName(ItemStack itemstack) {
-		String name = null;
+	public @Nonnull String getItemStackDisplayName(@Nonnull ItemStack itemstack) {
+		@Nonnull String name = "";
 		Drink drink = getDrink(itemstack);
 		if (itemstack.isEmpty() || drink == null) {
-			name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-					+ ":" + "cocktail.name")).trim();			
+			name = I18n.format(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
+					+ ":" + "cocktail.name").trim();			
 		} else {
 			if (drink.drinkId == Drink.pinaColada.drinkId) {
 				name = drink.displayName;
 			} else {
-				name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-						+ ":" + "cocktail.name")).trim();
+				name = I18n.format(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
+						+ ":" + "cocktail.name").trim();
 			}
 		}
 

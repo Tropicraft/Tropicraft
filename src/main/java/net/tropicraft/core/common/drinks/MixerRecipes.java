@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.tropicraft.core.registry.DrinkMixerRegistry;
 
 public final class MixerRecipes {
@@ -48,16 +49,16 @@ public final class MixerRecipes {
 	 * @return ItemStack form of a Drink
 	 */
 	public static ItemStack getItemStack(Drink drink) {
-		List<ItemStack> stack = new ArrayList<ItemStack>();
+		NonNullList<ItemStack> stack = NonNullList.create();
 
 		for (Ingredient i : drinkToIngredientsMap.get(drink)) {
 			stack.add(i.getIngredient());
 		}
 
-		return DrinkMixerRegistry.getResult(stack.toArray(new ItemStack[stack.size()]));
+		return DrinkMixerRegistry.getResult(stack);
 	}
 
-	public static boolean isValidRecipe(ItemStack...ingredientStacks) {
+	public static boolean isValidRecipe(NonNullList<ItemStack> ingredientStacks) {
 		Set<Ingredient> ingredients = new HashSet<Ingredient>();
 
 		for (ItemStack stack : ingredientStacks) {
@@ -82,7 +83,7 @@ public final class MixerRecipes {
 		return false;
 	}
 
-	public static Drink getDrink(ItemStack...ingredientStacks) {
+	public static Drink getDrink(NonNullList<ItemStack> ingredientStacks) {
 		Set<Ingredient> ingredients = new HashSet<Ingredient>();
 
 		for (ItemStack stack : ingredientStacks) {

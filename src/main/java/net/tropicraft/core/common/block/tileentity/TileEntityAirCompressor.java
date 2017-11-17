@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block.tileentity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
@@ -30,16 +31,17 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	private static final float fillRate = 0.10F;
 
 	/** The stack that is currently being filled */
+	@Nonnull
 	private ItemStack stack;
 	
 	private IScubaTank tank;
 
 	public TileEntityAirCompressor() {
-
+		this.stack = ItemStack.EMPTY;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(@Nonnull NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.compressing = nbt.getBoolean("Compressing");
 		this.ticks = nbt.getInteger("Ticks");
@@ -47,25 +49,24 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 		if (nbt.hasKey("Tank")) {
 			setTank(new ItemStack(nbt.getCompoundTag("Tank")));
 		} else {
-			setTank(null);
+			setTank(ItemStack.EMPTY);
 		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+	public @Nonnull NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setBoolean("Compressing", compressing);
 		nbt.setInteger("Ticks", ticks);
 
-		if (this.stack != null) {
-			NBTTagCompound var4 = new NBTTagCompound();
-			this.stack.writeToNBT(var4);
-			nbt.setTag("Tank", var4);
-		}
+		NBTTagCompound var4 = new NBTTagCompound();
+		this.stack.writeToNBT(var4);
+		nbt.setTag("Tank", var4);
+		
 		return nbt;
 	}
 	
-	public void setTank(ItemStack tankItemStack) {
+	public void setTank(@Nonnull ItemStack tankItemStack) {
 	    this.stack = tankItemStack;
         this.tank = stack.isEmpty() ? null : stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	}
@@ -109,7 +110,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	}
 
 	public boolean addTank(ItemStack stack) {
-        if (tank == null && stack.getItem() != null && stack.getItem() instanceof ItemScubaTank) {
+        if (tank == null && stack.getItem() instanceof ItemScubaTank) {
             setTank(stack);
             this.compressing = true;
             syncInventory();
@@ -120,14 +121,14 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	}
 
     public void ejectTank() {
-        if (stack != null) {
+        if (!stack.isEmpty()) {
             if (!world.isRemote) {
                 EntityItem tankItem = new EntityItem(world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), stack);
                 world.spawnEntity(tankItem);
             }
         }
 
-        setTank(null);
+        setTank(ItemStack.EMPTY);
         syncInventory();
         this.ticks = 0;
         this.compressing = false;
@@ -189,7 +190,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	 * @param pkt The data packet
 	 */
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(@Nonnull NetworkManager net, @Nonnull SPacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.getNbtCompound());
     }
 
@@ -206,7 +207,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	}
 
 	@Override
-	public NBTTagCompound getUpdateTag() {
+	public @Nonnull NBTTagCompound getUpdateTag() {
 		NBTTagCompound nbttagcompound = this.writeToNBT(new NBTTagCompound());
 		return nbttagcompound;
 	}

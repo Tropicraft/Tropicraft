@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.block;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -24,6 +26,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 public class BlockDrinkMixer extends BlockTropicraft implements
 ITileEntityProvider {
 
+	@Nonnull
 	public static final PropertyEnum<EnumFacing> FACING = BlockHorizontal.FACING;
 
 	public BlockDrinkMixer() {
@@ -34,12 +37,12 @@ ITileEntityProvider {
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
+	protected @Nonnull BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { FACING });
 	}
 
 	@Override
-	public boolean isTopSolid(IBlockState state) {
+	public boolean isTopSolid(@Nonnull IBlockState state) {
 		return false;
 	}
 
@@ -47,22 +50,22 @@ ITileEntityProvider {
 	 * Used to determine ambient occlusion and culling when rebuilding chunks for render
 	 */
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(@Nonnull IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(@Nonnull IBlockState state) {
 		return false;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(@Nonnull World worldIn, int meta) {
 		return TileEntityFactory.getDrinkMixerTE();
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
 			return true;
 		}
@@ -70,6 +73,9 @@ ITileEntityProvider {
 		ItemStack stack = entityPlayer.getHeldItemMainhand();
 
 		TileEntityDrinkMixer mixer = (TileEntityDrinkMixer)world.getTileEntity(pos);
+		if (mixer == null) {
+			return false;
+		}
 
 		if (mixer.isDoneMixing()) {
 			mixer.retrieveResult(entityPlayer);
@@ -92,8 +98,7 @@ ITileEntityProvider {
 			mixer.startMixing();
 			entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
 
-			ItemStack[] ingredients = mixer.ingredients;
-			Drink craftedDrink = MixerRecipes.getDrink(ingredients);
+			Drink craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
 			Drink pinaColada = Drink.pinaColada;
 
 			if (craftedDrink != null && craftedDrink.drinkId == pinaColada.drinkId) {
@@ -105,19 +110,19 @@ ITileEntityProvider {
 	}
 	
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public @Nonnull IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, @Nonnull EntityLivingBase placer, @Nonnull EnumHand hand) {
 		IBlockState ret = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
 		return ret.withProperty(FACING, placer.getHorizontalFacing());
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public @Nonnull IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(@Nonnull IBlockState state) {
 		return state.getValue(FACING).getHorizontalIndex();
 	}
 

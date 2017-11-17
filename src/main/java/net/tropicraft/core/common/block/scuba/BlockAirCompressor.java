@@ -2,7 +2,7 @@ package net.tropicraft.core.common.block.scuba;
 
 import java.util.Random;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.BlockTropicraft;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
@@ -26,6 +25,7 @@ import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
 
 public class BlockAirCompressor extends BlockTropicraft implements ITileEntityProvider {
 
+	@Nonnull
     public static final PropertyEnum<EnumFacing> FACING = BlockHorizontal.FACING;
 
     public BlockAirCompressor() {

@@ -1,7 +1,10 @@
 package net.tropicraft.core.common.block.tileentity.message;
 
+import javax.annotation.Nonnull;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -10,8 +13,10 @@ import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 
 public class MessageMixerInventory extends MessageTileEntity<TileEntityDrinkMixer> {
 
-	private ItemStack[] inventory;
-	private ItemStack result;
+	@Nonnull
+	private NonNullList<ItemStack> inventory;
+	@Nonnull
+	private ItemStack result = ItemStack.EMPTY;
 
 	public MessageMixerInventory() {
 		super();
@@ -26,7 +31,7 @@ public class MessageMixerInventory extends MessageTileEntity<TileEntityDrinkMixe
 	@Override
 	public void toBytes(ByteBuf buf) {
 		super.toBytes(buf);
-		buf.writeByte(inventory.length);
+		buf.writeByte(inventory.size());
 		for (ItemStack i : inventory) {
 			ByteBufUtils.writeItemStack(buf, i);
 		}
@@ -36,9 +41,9 @@ public class MessageMixerInventory extends MessageTileEntity<TileEntityDrinkMixe
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		super.fromBytes(buf);
-		this.inventory = new ItemStack[buf.readByte()];
-		for (int i = 0; i < inventory.length; i++) {
-			this.inventory[i] = ByteBufUtils.readItemStack(buf);
+		this.inventory = NonNullList.withSize(buf.readByte(), ItemStack.EMPTY);
+		for (int i = 0; i < inventory.size(); i++) {
+			this.inventory.set(i, ByteBufUtils.readItemStack(buf));
 		}
 		this.result = ByteBufUtils.readItemStack(buf);
 	}

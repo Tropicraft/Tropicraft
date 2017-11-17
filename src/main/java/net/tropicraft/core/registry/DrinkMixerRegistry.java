@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.tropicraft.core.common.drinks.Ingredient;
 import net.tropicraft.core.common.drinks.MixerRecipe;
 import net.tropicraft.core.common.item.ItemCocktail;
@@ -32,7 +35,7 @@ public class DrinkMixerRegistry extends TropicraftRegistry {
 	 * @return true if the ItemStack sent in is used in any of the registered recipes
 	 */
 	public static boolean isRegisteredIngredient(ItemStack item) {
-		if (item.getItem() != null && item.getItem() == ItemRegistry.cocktail) {
+		if (item.getItem() == ItemRegistry.cocktail) {
 			return true; // assuming we didn't put garbage in
 		}
 
@@ -47,23 +50,23 @@ public class DrinkMixerRegistry extends TropicraftRegistry {
 		return false;
 	}
 
-	public static boolean isRegisteredIngredient(Item item) {
+	public static boolean isRegisteredIngredient(@Nonnull Item item) {
 		return isRegisteredIngredient(new ItemStack(item, 1, 0));
 	}
 
-	public static ItemStack getResult(ItemStack[] ingredients) {
+	public static @Nonnull ItemStack getResult(NonNullList<ItemStack> ingredients) {
 		for (MixerRecipe recipe : recipes) {
-			if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients[0]) && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients[1])) {
+			if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients.get(0)) && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients.get(1))) {
 				return ItemCocktail.makeCocktail(recipe);
 			}
-			if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients[1]) && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients[0])) {
+			if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients.get(1)) && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients.get(0))) {
 				return ItemCocktail.makeCocktail(recipe);
 			}
 		}
 
 		List<Ingredient> is = new ArrayList<Ingredient>();
-		is.addAll(Ingredient.listIngredients(ingredients[0]));
-		is.addAll(Ingredient.listIngredients(ingredients[1]));
+		is.addAll(Ingredient.listIngredients(ingredients.get(0)));
+		is.addAll(Ingredient.listIngredients(ingredients.get(1)));
 		Collections.sort(is);
 
 		return ItemCocktail.makeCocktail(is.toArray(new Ingredient[is.size()]));
