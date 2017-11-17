@@ -1,6 +1,6 @@
 {
     "parent": "block/fence_gate_closed",
     "textures": {
-        "texture": "tropicraft:blocks/plank_Mahogany"
+        "texture": "tropicraft:blocks/plank_mahogany"
     }
 }

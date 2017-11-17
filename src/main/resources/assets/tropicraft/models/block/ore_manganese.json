@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "tropicraft:blocks/oreManganese"
+        "all": "tropicraft:blocks/ore_manganese"
     }
 }

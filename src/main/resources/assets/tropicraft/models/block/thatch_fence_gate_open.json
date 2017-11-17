@@ -1,6 +1,6 @@
 {
     "parent": "block/fence_gate_open",
     "textures": {
-        "texture": "tropicraft:blocks/thatch_Side"
+        "texture": "tropicraft:blocks/thatch_side"
     }
 }

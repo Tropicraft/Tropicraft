@@ -1,8 +1,8 @@
 {
     "parent": "block/outer_stairs",
     "textures": {
-        "bottom": "tropicraft:blocks/plank_Palm",
-        "top": "tropicraft:blocks/plank_Palm",
-        "side": "tropicraft:blocks/plank_Palm"
+        "bottom": "tropicraft:blocks/plank_palm",
+        "top": "tropicraft:blocks/plank_palm",
+        "side": "tropicraft:blocks/plank_palm"
     }
 }

@@ -1,6 +1,6 @@
 {
     "parent": "block/fence_gate_closed",
     "textures": {
-        "texture": "tropicraft:blocks/bamboo_Side"
+        "texture": "tropicraft:blocks/bamboo_side"
     }
 }

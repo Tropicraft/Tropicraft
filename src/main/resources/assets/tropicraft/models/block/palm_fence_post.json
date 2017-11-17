@@ -1,6 +1,6 @@
 {
     "parent": "block/fence_post",
     "textures": {
-        "texture": "tropicraft:blocks/plank_Palm"
+        "texture": "tropicraft:blocks/plank_palm"
     }
 }

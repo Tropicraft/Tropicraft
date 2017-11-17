@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "tropicraft:blocks/thatch_Side"
+        "all": "tropicraft:blocks/thatch_side"
     }
 }

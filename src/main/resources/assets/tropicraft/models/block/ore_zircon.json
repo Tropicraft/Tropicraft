@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "tropicraft:blocks/oreZircon"
+        "all": "tropicraft:blocks/ore_zircon"
     }
 }

@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "tropicraft:blocks/plank_Palm"
+        "all": "tropicraft:blocks/plank_palm"
     }
 }

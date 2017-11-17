@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "tropicraft:blocks/log_Mahogany_Side"
+        "all": "tropicraft:blocks/log_mahogany_side"
     }
 }
