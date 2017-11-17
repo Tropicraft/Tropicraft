@@ -66,23 +66,23 @@ public class EntityRegistry {
 		registerEntity(registry, EntityTreeFrog.class, "treefrog", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(registry, EntityTropiSkeleton.class, "tropiskelly", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(registry, EntityVMonkey.class, "monkey", 80, 3, true, SpawnPlacementType.ON_GROUND);
-		registerEntity(registry, EntityPoisonBlot.class, "PoisonBlot", 32, 1, true);
-		registerEntity(registry, EntityLavaBall.class, "Lava Ball", 120, 4, true);
+		registerEntity(registry, EntityPoisonBlot.class, "poisonblot", 32, 1, true);
+		registerEntity(registry, EntityLavaBall.class, "lavaball", 120, 4, true);
 		registerEntity(registry, EntityFailgull.class, "failgull", 80, 3, true, SpawnPlacementType.IN_AIR);
-		registerEntity(registry, EntityChair.class, "beachChair", 120, 10, true);
-		registerEntity(registry, EntityUmbrella.class, "beachUmbrella", 120, 10, false);
-		registerEntity(registry, EntityCoconutGrenade.class, "CoconutBomb", 120, 5, true);
+		registerEntity(registry, EntityChair.class, "beach_chair", 120, 10, true);
+		registerEntity(registry, EntityUmbrella.class, "beach_umbrella", 120, 10, false);
+		registerEntity(registry, EntityCoconutGrenade.class, "coconut_bomb", 120, 5, true);
 		registerEntity(registry, EntityAshenHunter.class, "ashen", 80, 3, true, SpawnPlacementType.ON_GROUND);
-		registerEntity(registry, EntityLostMask.class, "LostMask", 64, 3, true);
+		registerEntity(registry, EntityLostMask.class, "lost_mask", 64, 3, true);
 		registerEntity(registry, EntityManOWar.class, "mow", 64, 3, true, SpawnPlacementType.IN_WATER);
 		registerEntity(registry, EntitySeaUrchin.class, "seaurchin", 64, 3, true, SpawnPlacementType.IN_WATER);
-		registerEntity(registry, EntitySeaUrchinEgg.class, "SeaUrchinEgg", 64, 3, false);
+		registerEntity(registry, EntitySeaUrchinEgg.class, "seaurchinegg", 64, 3, false);
 		registerEntity(registry, EntityStarfish.class, "starfish", 64, 3, false, SpawnPlacementType.IN_WATER);
-		registerEntity(registry, EntityStarfishEgg.class, "StarfishEgg", 64, 3, false);
-		registerEntity(registry, EntityBambooItemFrame.class, "TCItemFrame", 64, 10, false);
-		registerEntity(registry, EntityWallItem.class, "WallItem", 64, 10, false);
+		registerEntity(registry, EntityStarfishEgg.class, "starfishegg", 64, 3, false);
+		registerEntity(registry, EntityBambooItemFrame.class, "tc_item_frame", 64, 10, false);
+		registerEntity(registry, EntityWallItem.class, "wall_item", 64, 10, false);
 		registerEntity(registry, EntityKoaHunter.class, "koa", 64, 3, true);
-		registerEntity(registry, EntitySeaTurtleEgg.class, "SeaTurtleEgg", 80, 5, false);
+		registerEntity(registry, EntitySeaTurtleEgg.class, "sea_turtle_egg", 80, 5, false);
 		registerEntity(registry, EntitySeaTurtle.class, "turtle", 80, 1, true);
 		registerEntity(registry, EntityTropicalFish.class, "fish", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(registry, EntitySeahorse.class, "seahorse", 80, 1, true, SpawnPlacementType.IN_WATER);
@@ -94,7 +94,6 @@ public class EntityRegistry {
 		registerEntity(registry, EntityShark.class, "hammerhead", 80, 1, true, SpawnPlacementType.IN_WATER);
 		registerEntity(registry, EntityFishHook.class, "tropifishhook", 80, 1, true);
 		registerEntity(registry, EntityHook.class, "tropihook", 80, 1, true);
-		
 		registerEntity(registry, EntityTropiSpider.class, "tropispider", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(registry, EntityTropiSpiderEgg.class, "tropispideregg", 80, 5, false);
 	}

@@ -123,7 +123,7 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 			int minInSchool = minSchoolAmount;
 			int numToSpawn = rand.nextInt(1 + maxInSchool - minInSchool) + minInSchool - 1;
 			for (int i = 0; i < numToSpawn; i++) {
-				EntitySchoolableFish fish = (EntitySchoolableFish) EntityList.createEntityByIDFromName(new ResourceLocation(Info.MODID + ":" + this.getEntityString()), world);
+				EntitySchoolableFish fish = (EntitySchoolableFish) EntityList.createEntityByIDFromName(new ResourceLocation(this.getEntityString()), world);
 				if(fish != null) {
 					fish.setSchoolLeader(this);
 					world.spawnEntity(fish);

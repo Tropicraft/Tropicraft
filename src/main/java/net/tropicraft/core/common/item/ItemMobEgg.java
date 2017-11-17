@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockFence;
@@ -18,6 +16,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -25,7 +24,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.hostile.EntityTreeFrog;
 import net.tropicraft.core.registry.CreativeTabRegistry;
 import net.tropicraft.core.registry.TropicraftRegistry;
@@ -64,36 +62,23 @@ public class ItemMobEgg extends ItemTropicraft {
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
             ItemStack itemstack = player.getHeldItem(hand);
-
-            String s = "";
-            int damage = itemstack.getItemDamage();
-
-            s = Names.EGG_NAMES[damage];
-
-
-
-            if (s.equals("Koa Man")) {
-                Random rand = new Random();
-                int choice = rand.nextInt(2);
-                s = "KoaHunter";
-                if (choice == 1) s = "KoaFisher";
-            }
+            String s = Names.EGG_NAMES[itemstack.getItemDamage()];
 
             StringBuilder sb = new StringBuilder();
             sb.append(Info.MODID);
-            sb.append(".");
+            sb.append(":");
             sb.append(s);
             s = sb.toString();
 
             pos = pos.offset(facing);
-            double d0 = 0.0D;
+            double ySpawnOffset = 0.0D;
 
             IBlockState iblockstate = world.getBlockState(pos);
 
             if (facing == EnumFacing.UP && iblockstate.getBlock() instanceof BlockFence) //Forge: Fix Vanilla bug comparing state instead of block {
-                d0 = 0.5D;
+                ySpawnOffset = 0.5D;
 
-            spawnCreature(world, s, (double)pos.getX() + 0.5D, (double)pos.getY() + d0, (double)pos.getZ() + 0.5D);
+            spawnCreature(world, s, (double)pos.getX() + 0.5D, (double)pos.getY() + ySpawnOffset, (double)pos.getZ() + 0.5D);
             player.swingArm(EnumHand.MAIN_HAND);
         }
         return EnumActionResult.PASS;
@@ -112,8 +97,8 @@ public class ItemMobEgg extends ItemTropicraft {
 
             if(entityID.endsWith("frog")) {
                 for(EntityTreeFrog.Type type : EntityTreeFrog.Type.values()) {
-                    if(entityID.equals(TropicraftRegistry.getNamePrefixed(type.getColor()+"frog"))) {
-                        entityID = TropicraftRegistry.getNamePrefixed("treefrog");
+                    if(entityID.equals(TropicraftRegistry.getEntityNamePrefixed(type.getColor()+"frog"))) {
+                        entityID = TropicraftRegistry.getEntityNamePrefixed("treefrog");
                         frogType = type;
                     }
                 }
@@ -121,7 +106,7 @@ public class ItemMobEgg extends ItemTropicraft {
 
             // Wut
             for (int i = 0; i < 1; ++i) {
-                entity = EntityList.createEntityByIDFromName(TropicraftRenderUtils.getTexture(entityID), worldIn);
+                entity = EntityList.createEntityByIDFromName(new ResourceLocation(entityID), worldIn);
                 if(entity instanceof EntityTreeFrog && frogType != null) {
                     ((EntityTreeFrog)entity).setType(frogType.ordinal());
                     ((EntityTreeFrog)entity).initialSet = true;

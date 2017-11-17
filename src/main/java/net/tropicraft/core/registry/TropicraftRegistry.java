@@ -12,4 +12,8 @@ public abstract class TropicraftRegistry {
 	public static String getNamePrefixed(String name) {
 		return Info.MODID + "." + name;
 	}
+	
+	public static String getEntityNamePrefixed(String name) {
+	    return Info.MODID + ":" + name;
+	}
 }

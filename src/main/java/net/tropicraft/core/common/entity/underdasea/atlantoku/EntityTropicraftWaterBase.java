@@ -107,7 +107,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	public void entityInit() {
 		super.entityInit();
 		this.getDataManager().register(TEXTURE, "");
-		this.getDataManager().register(HOOK_ID, Integer.valueOf(0));
+		this.getDataManager().register(HOOK_ID, Integer.valueOf(-1));
 		this.assignRandomTexture();
 	}
 	
@@ -604,16 +604,20 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	public void setHook(EntityHook ent) {
 		if(ent == null) {
-			this.getDataManager().set(HOOK_ID, 0);
+			this.getDataManager().set(HOOK_ID, -1);
 			return;
 		}
 		this.getDataManager().set(HOOK_ID, ent.getEntityId());
 	}
-	
+
 	public EntityHook getHook() {
-		return (EntityHook) world.getEntityByID(this.getDataManager().get(HOOK_ID));
+	    Entity hook = world.getEntityByID(this.getDataManager().get(HOOK_ID));
+	    if (hook != null && hook instanceof EntityHook) {
+	        return (EntityHook) hook;
+	    }
+		return null;
 	}
-	
+
 	public boolean isHooked() {
 		return getHook() != null;
 	}
