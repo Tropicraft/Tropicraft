@@ -255,7 +255,6 @@ public class Util {
         }
 
         return false;
-
     }
 
     /**
@@ -274,53 +273,4 @@ public class Util {
 
         return stack.getTagCompound();
     }
-    
-    /**
-    * Copied from 1.10.2 World: checks if the given AABB is in the material given. Used while swimming.
-    */
-   public boolean isAABBInMaterial(IBlockAccess world, AxisAlignedBB bb, Material materialIn)
-   {
-       int i = MathHelper.floor(bb.minX);
-       int j = MathHelper.ceil(bb.maxX);
-       int k = MathHelper.floor(bb.minY);
-       int l = MathHelper.ceil(bb.maxY);
-       int i1 = MathHelper.floor(bb.minZ);
-       int j1 = MathHelper.ceil(bb.maxZ);
-       BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();
-
-       for (int k1 = i; k1 < j; ++k1)
-       {
-           for (int l1 = k; l1 < l; ++l1)
-           {
-               for (int i2 = i1; i2 < j1; ++i2)
-               {
-                   IBlockState iblockstate = world.getBlockState(blockpos$pooledmutableblockpos.setPos(k1, l1, i2));
-
-                   Boolean result = iblockstate.getBlock().isAABBInsideMaterial(this, blockpos$pooledmutableblockpos, bb, materialIn);
-                   if (result != null) return result;
-
-                   if (iblockstate.getMaterial() == materialIn)
-                   {
-                       int j2 = ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue();
-                       double d0 = (double)(l1 + 1);
-
-                       if (j2 < 8)
-                       {
-                           d0 = (double)(l1 + 1) - (double)j2 / 8.0D;
-                       }
-
-                       if (d0 >= bb.minY)
-                       {
-                           blockpos$pooledmutableblockpos.release();
-                           return true;
-                       }
-                   }
-               }
-           }
-       }
-
-       blockpos$pooledmutableblockpos.release();
-       return false;
-   }
-
 }
