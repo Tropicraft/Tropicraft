@@ -64,6 +64,13 @@ public class BiomeDecoratorTropicraft extends BiomeDecorator {
 	    this.zirconGen = new WorldGenMinable(BlockRegistry.ore.defaultForVariant(TropicraftOres.ZIRCON), this.zirconSize);
 	    this.azuriteGen = new AzuriteGenerator();
 	}
+	
+	@Override
+	protected void genDecorations(Biome biomeIn, World worldIn, Random random) {
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.terraingen.DecorateBiomeEvent.Pre(worldIn, random, chunkPos));
+        this.generateOres(worldIn, random);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.terraingen.DecorateBiomeEvent.Post(worldIn, random, chunkPos));
+	}
 
 	/**
 	 * Generates ores in the current chunk
