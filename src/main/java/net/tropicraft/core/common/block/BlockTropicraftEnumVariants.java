@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -18,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.ITropicraftVariant;
@@ -66,9 +66,10 @@ public class BlockTropicraftEnumVariants<T extends Enum<T> & ITropicraftVariant>
     }
     
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {        
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {        
         for (int i = 0; i < property.getAllowedValues().size(); i++) {
-            list.add(new ItemStack(item, 1, i));
+            list.add(new ItemStack(this, 1, i));
         }
     }
 
