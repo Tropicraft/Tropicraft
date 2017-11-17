@@ -49,7 +49,7 @@ public class SoundRegistry {
 	public static void register(IForgeRegistry<SoundEvent> registry, String soundPath) {
 		ResourceLocation resLoc = new ResourceLocation(Info.MODID, soundPath);
 		SoundEvent event = new SoundEvent(resLoc);
-		registry.register(event);
+		registry.register(event.setRegistryName(resLoc));
 		if (lookupStringToEvent.containsKey(soundPath)) {
 			System.out.println("TCWARNING: duplicate sound registration for " + soundPath);
 		}

@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
@@ -45,9 +47,10 @@ public class Encyclopedia extends TropicalBook {
      * Note: the item name should match the page name given in the text file
      */
     public void includeItem(String itemname, ItemStack item) {
-        if (item.getItem() == null) {
-            throw new IllegalArgumentException("Cannot include a null item! Group: " + itemname);
-        }
+    	// TODO find out why this is triggering ??
+//        if (item.isEmpty()) {
+//            throw new IllegalArgumentException("Cannot include an empty stack! Group: " + itemname);
+//        }
         if (!itemEntries.containsKey(itemname)) {
             itemEntries.put(itemname, new ArrayList<ItemStack>());
         }
@@ -59,7 +62,7 @@ public class Encyclopedia extends TropicalBook {
      * Encyclopedia entries related to it
      * Note: This method is borrowed/modified from CraftingManager
      */
-    public void includeRecipe(ItemStack result, Object aobj[]) {
+    public void includeRecipe(@Nonnull ItemStack result, Object aobj[]) {
 
         // Note: Must use TreeSet for guaranteed ordering of elements
         Set<ItemStack> recipeContents = new HashSet<ItemStack>();
@@ -92,7 +95,7 @@ public class Encyclopedia extends TropicalBook {
 
         for (charMap = new HashMap<Character, ItemStack>(); i < aobj.length; i += 2) {
             Character itemChar = (Character) aobj[i];
-            ItemStack itemStack = null;
+            ItemStack itemStack = ItemStack.EMPTY;
 
             if (aobj[i + 1] instanceof Item) {
                 itemStack = new ItemStack((Item) aobj[i + 1]);
@@ -117,7 +120,7 @@ public class Encyclopedia extends TropicalBook {
         }
         
         // Added code to register this recipe with the ingredient lookup
-        ShapedRecipes recipe = new ShapedRecipes(null, width, height, slotArray, result);
+        ShapedRecipes recipe = new ShapedRecipes("", width, height, slotArray, result);
         for (ItemStack item : recipeContents) {
             boolean foundKey = false;
             for (ItemStack key : recipes.keySet()) {
@@ -232,7 +235,7 @@ public class Encyclopedia extends TropicalBook {
      * Adds an ItemStack to the given set, as long as an equivalent item isn't
      * already in the set
      */
-    private void addItemToRecipeContents(Set<ItemStack> items, ItemStack i) {
+    private void addItemToRecipeContents(Set<ItemStack> items, @Nonnull ItemStack i) {
         
         boolean shouldAdd = !(items.contains(i));
         for (ItemStack listItem : items) {

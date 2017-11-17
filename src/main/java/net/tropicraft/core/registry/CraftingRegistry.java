@@ -706,7 +706,8 @@ public class CraftingRegistry {
 
     @SideOnly(Side.CLIENT)
     public static void addToEncyclopedia(ItemStack itemstack, Object obj[]) {
-        Tropicraft.encyclopedia.includeRecipe(itemstack, obj);
+    	// TODO this is misordered, find out proper place??
+//        Tropicraft.encyclopedia.includeRecipe(itemstack, obj);
     }
 
     public static void createRecipe(boolean addToEncyclopedia, ItemStack itemstack, Object obj[]) {

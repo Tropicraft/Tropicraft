@@ -234,8 +234,8 @@ public class ItemRegistry extends TropicraftRegistry {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         blockItemRegistry.entrySet().forEach(e -> {
                 Item item = e.getValue().getItem(e.getKey());
-                event.getRegistry().register(item);
                 item.setRegistryName(e.getKey().getRegistryName());
+                event.getRegistry().register(item);
                 e.getValue().postRegister(e.getKey(), item);
         });
         IForgeRegistry<Item> registry = event.getRegistry();

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.properties.IProperty;
@@ -68,18 +70,19 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit() {
 		super.preInit();
-		ignoreProperties(BlockRegistry.coral, BlockFluidBase.LEVEL);
-		ignoreProperties(BlockRegistry.bambooFenceGate, BlockFenceGate.POWERED);
-		ignoreProperties(BlockRegistry.chunkFenceGate, BlockFenceGate.POWERED);
-		ignoreProperties(BlockRegistry.mahoganyFenceGate, BlockFenceGate.POWERED);
-		ignoreProperties(BlockRegistry.palmFenceGate, BlockFenceGate.POWERED);
-		ignoreProperties(BlockRegistry.thatchFenceGate, BlockFenceGate.POWERED);
 	}
 
 	@SuppressWarnings("deprecation")
     @Override
 	public void init() {
 		super.init();
+		
+		ignoreProperties(BlockRegistry.coral, BlockFluidBase.LEVEL);
+		ignoreProperties(BlockRegistry.bambooFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.chunkFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.mahoganyFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.palmFenceGate, BlockFenceGate.POWERED);
+		ignoreProperties(BlockRegistry.thatchFenceGate, BlockFenceGate.POWERED);
 
 		ItemRegistry.clientProxyInit();
 		BlockRegistry.clientProxyInit();
@@ -97,11 +100,11 @@ public class ClientProxy extends CommonProxy {
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.airCompressor), 0, TileEntityAirCompressor.class);
 	}
 	
-	private void ignoreProperties(Block block, IProperty<?>... props) {
+	private void ignoreProperties(@Nonnull Block block, @Nonnull IProperty<?>... props) {
 	    setStateMapper(block, new StateMap.Builder().ignore(props).build());
 	}
 	
-	private void setStateMapper(Block block, IStateMapper mapper) {
+	private void setStateMapper(@Nonnull Block block, @Nonnull IStateMapper mapper) {
 	    this.stateMappers.put(block, mapper);
 	    ModelLoader.setCustomStateMapper(block, mapper);
 	}
