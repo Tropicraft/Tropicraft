@@ -82,7 +82,10 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
             true
         );
     
+    @Override
     public void genDecorations(Biome biome, World world, Random rand) {
+    	super.genDecorations(biome, world, rand);
+    	
         coralGen.generate(world, rand, chunkPos);
         coralReefGen.generate(world, rand, chunkPos);
         seaweedGen.generate(world, rand, chunkPos);

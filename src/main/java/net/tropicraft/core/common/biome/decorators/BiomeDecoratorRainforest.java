@@ -31,6 +31,7 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
 	@Override
 	public void genDecorations(Biome biome, World world, Random rand) {
+		super.genDecorations(biome, world, rand);
 		int x = chunkPos.getX();
 		int z = chunkPos.getZ();
 		int i = 0; int k = 0;
