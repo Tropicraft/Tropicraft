@@ -18,14 +18,13 @@ public class TileEntitySifterRenderer extends TileEntitySpecialRenderer<TileEnti
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntitySifter sifter, double x, double y,
-			double z, float partialTicks, int destroyStage) {
+	public void render(TileEntitySifter sifter, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float)x + 0.5F, (float)y, (float)z + 0.5F);
 
 		if (item == null && sifter.isSifting()) {
 			item = (EntityItem)(new EntityItem(sifter.getWorld()));
-			((EntityItem)item).setEntityItemStack(sifter.siftItem.copy());
+			((EntityItem)item).setItem(sifter.siftItem.copy());
 		}
 
 		if (item != null)  {
@@ -40,7 +39,7 @@ public class TileEntitySifterRenderer extends TileEntitySpecialRenderer<TileEnti
 
 			item.setLocationAndAngles(x, y, z, 0.0F, 0.0F);
 			if (sifter.isSifting()) {
-				renderManager.doRenderEntity(item, 0, 0, 0, 0.0F, partialTicks, false);
+				renderManager.renderEntity(item, 0, 0, 0, 0.0F, partialTicks, false);
 			} else {
 				item = null;
 			}

@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.tileentity;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
@@ -23,6 +25,7 @@ public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer<Til
 		chestModelLarge = new ModelLargeChest();
 	}
 
+	@SuppressWarnings({ "null", "unused" })
 	public void renderChest(TileEntityBambooChest te, double x, double y, double z, float partialTicks,
 			int destroyStage) {
 		GlStateManager.enableDepth();
@@ -146,10 +149,9 @@ public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer<Til
 			}
 		}
 	}
-
+	
 	@Override
-	public void renderTileEntityAt(TileEntityBambooChest tileentity, double d, double d1, double d2,
-			float f, int destroyStage) {
-		renderChest(tileentity, d, d1, d2, f, destroyStage);
+	public void render(@Nonnull TileEntityBambooChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		renderChest(te, x, y, z, partialTicks, destroyStage);
 	}
 }

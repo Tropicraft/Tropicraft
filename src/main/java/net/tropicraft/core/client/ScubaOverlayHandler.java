@@ -27,7 +27,7 @@ public class ScubaOverlayHandler extends Gui {
         int blocksAbove, blocksBelow, currentDepth, maxDepth;
         
         EntityPlayer player = Minecraft.getMinecraft().player;
-        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+        FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
         
@@ -46,7 +46,7 @@ public class ScubaOverlayHandler extends Gui {
             timeRemaining += getTimeRemaining(gear.getTanks().getLeft());
             timeRemaining += getTimeRemaining(gear.getTanks().getRight());
         }
-        airTemp = player.world.getBiomeForCoordsBody(new BlockPos(MathHelper.floor(player.posX), 0, MathHelper.floor(player.posZ))).getTemperature();
+        airTemp = player.world.getBiomeForCoordsBody(new BlockPos(MathHelper.floor(player.posX), 0, MathHelper.floor(player.posZ))).getTemperature(player.getPosition());
 
         yaw = player.rotationYaw;
         

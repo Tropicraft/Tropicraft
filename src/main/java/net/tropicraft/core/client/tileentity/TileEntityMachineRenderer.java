@@ -22,7 +22,7 @@ public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineT
 	}
 
 	@Override
-    public void renderTileEntityAt(T te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(@SuppressWarnings("null") T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
         GlStateManager.pushMatrix();
 		GlStateManager.translate((float)x+0.5f,(float)y+1.5f,(float)z+0.5f);

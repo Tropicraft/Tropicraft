@@ -413,7 +413,7 @@ public class ScubaHandler {
 	}
 	
 	public boolean isInWater(EntityPlayer p, double offsetX, double offsetY, double offsetZ) {
-		return p.world.isAABBInMaterial(p.getEntityBoundingBox().offset(offsetX, offsetY, offsetZ), Material.WATER);
+		return p.world.isMaterialInBB(p.getEntityBoundingBox().offset(offsetX, offsetY, offsetZ), Material.WATER);
 	}
 	
 	public boolean isInWater(EntityPlayer p) {

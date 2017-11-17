@@ -1,6 +1,6 @@
 package net.tropicraft.core.client.tileentity;
 
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -27,7 +27,7 @@ public class TileEntitySeaweedRenderer extends FastTESR<TileSeaweed> {
 	private static final double SWAY_LAG = 7;
 
 	@Override
-	public void renderTileEntityFast(TileSeaweed te, double x, double y, double z, float partialTicks, int destroyStage, VertexBuffer buf) {
+	public void renderTileEntityFast(TileSeaweed te, double x, double y, double z, float partialTicks, int destroyStage, float alpha, BufferBuilder buf) {
 	    if (te == null) {
 	        return;
 	    }
@@ -65,16 +65,16 @@ public class TileEntitySeaweedRenderer extends FastTESR<TileSeaweed> {
 		return center.add(sway.crossProduct(angle).normalize().scale(0.5));
 	}
 
-	private void renderCorner(VertexBuffer buf, Vec3d center, Vec3d sway, Vec3d angle) {
+	private void renderCorner(BufferBuilder buf, Vec3d center, Vec3d sway, Vec3d angle) {
 		Vec3d pos = computeCorner(center, sway, angle);
-		buf.pos(pos.xCoord, pos.yCoord, pos.zCoord).color(204, 204, 204, 255);
+		buf.pos(pos.x, pos.y, pos.z).color(204, 204, 204, 255);
 	}
 	
-	private void finishVert(VertexBuffer buf, float u, float v) {
+	private void finishVert(BufferBuilder buf, float u, float v) {
 		buf.tex(u, v).lightmap(240, 240).endVertex();
 	}
 	
-	private void renderQuad(VertexBuffer buf, TextureAtlasSprite sprite, Vec3d bot, Vec3d top, Vec3d sway, Vec3d prevSway, Vec3d angle) {
+	private void renderQuad(BufferBuilder buf, TextureAtlasSprite sprite, Vec3d bot, Vec3d top, Vec3d sway, Vec3d prevSway, Vec3d angle) {
 		renderCorner(buf, bot, prevSway, angle);
 		finishVert(buf, sprite.getMinU(), sprite.getMaxV());
 		renderCorner(buf, top, sway, angle);

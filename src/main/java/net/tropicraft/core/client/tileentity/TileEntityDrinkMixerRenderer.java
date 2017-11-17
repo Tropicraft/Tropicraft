@@ -31,39 +31,39 @@ public class TileEntityDrinkMixerRenderer extends TileEntityMachineRenderer<Tile
         ItemStack[] ingredients = te.getIngredients();
 
         if (!te.isDoneMixing()) {
-            if (ingredients[0] != null) {
+            if (!ingredients[0].isEmpty()) {
                 GlStateManager.pushMatrix();
                 GlStateManager.rotate(180f, 1f, 0f, 1f);
                 GlStateManager.translate(0.3f, -0.5f, 0.05f);
                 // GlStateManager.rotate(0, 0.0F, 1.0F, 0.0F);
-                dummyEntityItem.setEntityItemStack(ingredients[0]);
+                dummyEntityItem.setItem(ingredients[0]);
                 renderItem.renderItem(ingredients[0], TransformType.FIXED);
                 GlStateManager.popMatrix();
             }
 
-            if (ingredients[1] != null) {
+            if (!ingredients[1].isEmpty()) {
                 GlStateManager.pushMatrix();
                 GlStateManager.rotate(180f, 1f, 0f, 1f);
                 GlStateManager.translate(-0.3f, -0.5f, 0.05f);
                 // GlStateManager.rotate(0, 0.0F, 1.0F, 0.0F);
-                dummyEntityItem.setEntityItemStack(ingredients[1]);
+                dummyEntityItem.setItem(ingredients[1]);
                 renderItem.renderItem(ingredients[1], TransformType.FIXED);
                 GlStateManager.popMatrix();
             }
 
-            if (ingredients[2] != null) {
+            if (!ingredients[2].isEmpty()) {
                 GlStateManager.pushMatrix();
                 GlStateManager.rotate(180f, 1f, 0f, 1f);
                 GlStateManager.translate(0.0f, 0.3f, -.1f);
                 GlStateManager.scale(0.8F, 0.8F, 0.8F);
                 // GlStateManager.rotate(0, 0.0F, 1.0F, 0.0F);
-                dummyEntityItem.setEntityItemStack(ingredients[2]);
+                dummyEntityItem.setItem(ingredients[2]);
                 renderItem.renderItem(ingredients[2], TransformType.FIXED);
                 GlStateManager.popMatrix();
             }
         }
 
-        if (te.isMixing() || te.result != null) {
+        if (te.isMixing() || !te.result.isEmpty()) {
             GlStateManager.pushMatrix();
             GlStateManager.translate(-0.2f, -0.25f, 0.0f);
             if (te.isDoneMixing()) {
