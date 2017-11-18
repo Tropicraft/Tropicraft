@@ -2,10 +2,14 @@ package net.tropicraft.core.common.block.tileentity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.tropicraft.core.common.block.BambooDoubleChestItemHandler;
+import net.tropicraft.core.common.block.BlockBambooChest;
 
 public class TileEntityBambooChest extends TileEntityChest {
 
@@ -153,31 +157,104 @@ public class TileEntityBambooChest extends TileEntityChest {
     public void setIsUnbreakable(boolean flag) {
         unbreakable = flag;
     }
-//
-//    @Override
-//    public AxisAlignedBB getRenderBoundingBox () {
-//    	/**
-//    	 * The rendering bounding box needs to be bigger for large chests,
-//    	 * since these are two blocks wide.
-//    	 */
-//    	
-//    	checkForAdjacentChests();
-//    	int xCoord = pos.getX();
-//    	int yCoord = pos.getY();
-//    	int zCoord = pos.getZ();
-//
-//    	if (this.adjacentChestZPos != null)
-//    	{
-//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 2);
-//    	}
-//    	else if (this.adjacentChestXPos != null)
-//        {
-//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 1, zCoord + 1);
-//        }
-//    	else
-//    	{
-//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
-//    	}
-//    }
 
+    @Nullable
+    @Override
+    protected TileEntityChest getAdjacentChest(EnumFacing side)
+    {
+        BlockPos blockpos = this.pos.offset(side);
+
+        if (this.isChestAt(blockpos))
+        {
+            TileEntity tileentity = this.world.getTileEntity(blockpos);
+
+            if (tileentity instanceof TileEntityBambooChest)
+            {
+                TileEntityBambooChest tileentitychest = (TileEntityBambooChest)tileentity;
+                tileentitychest.setNeighbor(this, side.getOpposite());
+                return tileentitychest;
+            }
+        }
+
+        return null;
+    }
+    
+    @SuppressWarnings("incomplete-switch")
+    private void setNeighbor(TileEntityChest chestTe, EnumFacing side)
+    {
+        if (chestTe.isInvalid())
+        {
+            this.adjacentChestChecked = false;
+        }
+        else if (this.adjacentChestChecked)
+        {
+            switch (side)
+            {
+                case NORTH:
+
+                    if (this.adjacentChestZNeg != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+
+                    break;
+                case SOUTH:
+
+                    if (this.adjacentChestZPos != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+
+                    break;
+                case EAST:
+
+                    if (this.adjacentChestXPos != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+
+                    break;
+                case WEST:
+
+                    if (this.adjacentChestXNeg != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+            }
+        }
+    }
+    
+    private boolean isChestAt(BlockPos posIn)
+    {
+        if (this.world == null)
+        {
+            return false;
+        }
+        else
+        {
+            Block block = this.world.getBlockState(posIn).getBlock();
+            return block instanceof BlockBambooChest && ((BlockBambooChest)block).chestType == this.getChestType();
+        }
+    }
+    
+    public BambooDoubleChestItemHandler doubleChestHandler;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
+    {
+        if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            if(doubleChestHandler == null || doubleChestHandler.needsRefresh())
+                doubleChestHandler = BambooDoubleChestItemHandler.get(this);
+            if (doubleChestHandler != null && doubleChestHandler != BambooDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
+                return (T) doubleChestHandler;
+        }
+        return super.getCapability(capability, facing);
+    }
+
+    public net.minecraftforge.items.IItemHandler getSingleChestHandler()
+    {
+        return super.getCapability(net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+    }
 }
