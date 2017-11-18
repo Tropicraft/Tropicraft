@@ -123,4 +123,14 @@ public class EntityTropiSkeleton extends EntityLandHostile implements IMob {
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_SKELETON_DEATH;
     }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+
+        if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
+        {
+            this.setDead();
+        }
+    }
 }
