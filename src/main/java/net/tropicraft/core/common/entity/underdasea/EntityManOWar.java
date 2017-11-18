@@ -14,6 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 public class EntityManOWar extends EntityWaterMob {
@@ -236,6 +237,16 @@ public class EntityManOWar extends EntityWaterMob {
 					this.mow.randomMotionVecY = 0F;
 				}
 			}
+		}
+	}
+
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+
+		if (!this.world.isRemote && this.world.getDifficulty() == EnumDifficulty.PEACEFUL)
+		{
+			this.setDead();
 		}
 	}
 }
