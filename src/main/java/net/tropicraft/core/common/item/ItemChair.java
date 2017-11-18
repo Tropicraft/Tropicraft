@@ -54,7 +54,7 @@ public class ItemChair extends ItemTropicraftColored {
 
 		if (raytraceresult == null)
 		{
-			return new ActionResult(EnumActionResult.PASS, stack);
+			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
 		else
 		{
@@ -79,11 +79,11 @@ public class ItemChair extends ItemTropicraftColored {
 
 			if (flag)
 			{
-				return new ActionResult(EnumActionResult.PASS, stack);
+				return new ActionResult<>(EnumActionResult.PASS, stack);
 			}
 			else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
 			{
-				return new ActionResult(EnumActionResult.PASS, stack);
+				return new ActionResult<>(EnumActionResult.PASS, stack);
 			}
 			else
 			{
@@ -94,8 +94,6 @@ public class ItemChair extends ItemTropicraftColored {
 				double y = flag1 ? raytraceresult.hitVec.y - 0.12D : raytraceresult.hitVec.y;
 				double z = raytraceresult.hitVec.z;
 
-				//EntityBoat entityboat = new EntityBoat(worldIn, raytraceresult.hitVec.xCoord, flag1 ? raytraceresult.hitVec.yCoord - 0.12D : raytraceresult.hitVec.yCoord, raytraceresult.hitVec.zCoord);
-				//entityboat.setColor(this.type);
 				int color = ColorHelper.getColorFromDamage(stack.getItemDamage());
 				EntityChair chair = new EntityChair(worldIn, x, y + 1.01, z, color, playerIn);
 
@@ -103,7 +101,7 @@ public class ItemChair extends ItemTropicraftColored {
 
 				if (!worldIn.getCollisionBoxes(chair, chair.getEntityBoundingBox().grow(-0.1D)).isEmpty())
 				{
-					return new ActionResult(EnumActionResult.FAIL, stack);
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
 				}
 				else
 				{
@@ -118,7 +116,7 @@ public class ItemChair extends ItemTropicraftColored {
 					}
 
 					playerIn.addStat(StatList.getObjectUseStats(this));
-					return new ActionResult(EnumActionResult.SUCCESS, stack);
+					return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 				}
 			}
 		}
