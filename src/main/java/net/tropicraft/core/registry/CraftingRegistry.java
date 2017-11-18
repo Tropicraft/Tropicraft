@@ -686,6 +686,12 @@ public class CraftingRegistry {
                 'Z', ItemRegistry.yellowWeightBelt
             });
 
+        // Bamboo ladder
+        createRecipe(true, new ItemStack(BlockRegistry.bambooLadder), new Object[] {
+                "X X", "XXX", "X X",
+                'X', ItemRegistry.bambooStick
+        });
+
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.azurite, 0);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.eudialyte, 1);
         createFullSingleBlockRecipe(BlockRegistry.oreBlock, ItemRegistry.zircon, 2);
@@ -754,6 +760,7 @@ public class CraftingRegistry {
         Tropicraft.encyclopedia.includeItem("bamboodoor", new ItemStack(ItemRegistry.bambooDoor));
         Tropicraft.encyclopedia.includeItem("bamboofence", new ItemStack(BlockRegistry.bambooFence));
         Tropicraft.encyclopedia.includeItem("bamboofencegate", new ItemStack(BlockRegistry.bambooFenceGate));
+        Tropicraft.encyclopedia.includeItem("bambooladder", new ItemStack(BlockRegistry.bambooLadder));
         Tropicraft.encyclopedia.includeItem("bamboospear", new ItemStack(ItemRegistry.bambooSpear));
         Tropicraft.encyclopedia.includeItem("bamboostick", new ItemStack(ItemRegistry.bambooStick));
 

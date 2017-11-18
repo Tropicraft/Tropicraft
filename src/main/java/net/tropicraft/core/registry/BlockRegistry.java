@@ -38,6 +38,7 @@ import net.tropicraft.core.common.block.BlockTikiTorch;
 import net.tropicraft.core.common.block.BlockTropicraftEnumVariants;
 import net.tropicraft.core.common.block.BlockTropicraftFence;
 import net.tropicraft.core.common.block.BlockTropicraftFlowerPot;
+import net.tropicraft.core.common.block.BlockTropicraftLadder;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
 import net.tropicraft.core.common.block.BlockTropicraftOre;
@@ -208,6 +209,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	public static BlockFenceGate palmFenceGate;
 	public static BlockFenceGate mahoganyFenceGate;
 
+	public static Block bambooLadder;
+
 	/**
 	 * Register blocks in preInit
 	 */
@@ -303,6 +306,8 @@ public class BlockRegistry extends TropicraftRegistry {
 		chunkFence = registerBlock(new BlockTropicraftFence(chunkFenceGate, Material.PLANTS, MapColor.SAND), "chunk_fence");
 		palmFence = registerBlock(new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence");
 		mahoganyFence = registerBlock(new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence");
+
+		bambooLadder = registerBlock(new BlockTropicraftLadder(), Names.BAMBOO_LADDER);
 	}
 
 	public static void init() {

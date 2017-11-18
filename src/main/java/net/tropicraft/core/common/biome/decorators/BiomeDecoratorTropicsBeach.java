@@ -23,7 +23,9 @@ public class BiomeDecoratorTropicsBeach extends BiomeDecoratorTropicraft {
 
     }
 
+    @Override
     public void genDecorations(Biome biome, World world, Random rand) {
+    	super.genDecorations(biome, world, rand);
         int i = 0;
         int k = 0;
 
