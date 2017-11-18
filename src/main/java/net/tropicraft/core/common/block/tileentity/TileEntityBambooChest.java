@@ -1,7 +1,10 @@
 package net.tropicraft.core.common.block.tileentity;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityBambooChest extends TileEntityChest {
@@ -150,30 +153,31 @@ public class TileEntityBambooChest extends TileEntityChest {
     public void setIsUnbreakable(boolean flag) {
         unbreakable = flag;
     }
+//
+//    @Override
+//    public AxisAlignedBB getRenderBoundingBox () {
+//    	/**
+//    	 * The rendering bounding box needs to be bigger for large chests,
+//    	 * since these are two blocks wide.
+//    	 */
+//    	
+//    	checkForAdjacentChests();
+//    	int xCoord = pos.getX();
+//    	int yCoord = pos.getY();
+//    	int zCoord = pos.getZ();
+//
+//    	if (this.adjacentChestZPos != null)
+//    	{
+//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 2);
+//    	}
+//    	else if (this.adjacentChestXPos != null)
+//        {
+//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 1, zCoord + 1);
+//        }
+//    	else
+//    	{
+//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+//    	}
+//    }
 
-    @Override
-    public AxisAlignedBB getRenderBoundingBox () {
-    	/**
-    	 * The rendering bounding box needs to be bigger for large chests,
-    	 * since these are two blocks wide.
-    	 */
-    	
-    	checkForAdjacentChests();
-    	int xCoord = pos.getX();
-    	int yCoord = pos.getY();
-    	int zCoord = pos.getZ();
-
-    	if (this.adjacentChestZPos != null)
-    	{
-    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 2);
-    	}
-    	else if (this.adjacentChestXPos != null)
-        {
-    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 1, zCoord + 1);
-        }
-    	else
-    	{
-    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
-    	}
-    }
 }

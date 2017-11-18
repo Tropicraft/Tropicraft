@@ -15,16 +15,13 @@ import net.tropicraft.core.encyclopedia.TropicalBook;
 
 public class ItemEncyclopediaTropica extends ItemTropicraft {
 
-	private String bookName;
-
-	public ItemEncyclopediaTropica(TropicalBook book, String name) {
+	public ItemEncyclopediaTropica(TropicalBook book) {
 		super();
-		this.bookName = name;
 		maxStackSize = 1;
 	}
 
-	public ItemEncyclopediaTropica(String name) {
-		this(null, name);
+	public ItemEncyclopediaTropica() {
+		this(null);
 	}
 
 	@Override

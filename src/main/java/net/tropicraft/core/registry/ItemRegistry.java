@@ -335,7 +335,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
         fertilizer = registerItem(registry, new ItemFertilizer(), "fertilizer");
 
-        encyclopedia = registerItem(registry, new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
+        encyclopedia = registerItem(registry, new ItemEncyclopediaTropica(), "encyclopedia_tropica");
 
         dagger = registerItem(registry, new ItemDagger(materialZirconTools), "dagger");
         bambooSpear = registerItem(registry, new ItemSword(materialBambooTools), "bamboo_spear");

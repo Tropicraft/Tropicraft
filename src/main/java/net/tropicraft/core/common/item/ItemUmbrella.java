@@ -52,7 +52,7 @@ public class ItemUmbrella extends ItemTropicraftColored {
 		RayTraceResult raytraceresult = worldIn.rayTraceBlocks(vec3d, vec3d1, true);
 
 		if (raytraceresult == null) {
-			return new ActionResult(EnumActionResult.PASS, heldStack);
+			return new ActionResult<>(EnumActionResult.PASS, heldStack);
 		} else {
 			Vec3d vec3d2 = playerIn.getLook(f);
 			boolean flag = false;
@@ -71,7 +71,7 @@ public class ItemUmbrella extends ItemTropicraftColored {
 			}
 
 			if (flag) {
-				return new ActionResult(EnumActionResult.PASS, heldStack);
+				return new ActionResult<>(EnumActionResult.PASS, heldStack);
 			}
 			else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK) {
 				return new ActionResult<>(EnumActionResult.PASS, heldStack);
