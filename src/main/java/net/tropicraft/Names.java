@@ -36,6 +36,7 @@ public final class Names {
     public static final String PALM_FENCE_GATE = "palm_fence_gate";
     public static final String MAHOGANY_FENCE = "mahogany_fence";
     public static final String MAHOGANY_FENCE_GATE = "mahogany_fence_gate";
+    public static final String BAMBOO_LADDER = "bamboo_ladder";
 
 	// Item names
 	public static final String[] EGG_NAMES = {"iguana", "starfish", "greenfrog", "redfrog", "yellowfrog", "bluefrog",
