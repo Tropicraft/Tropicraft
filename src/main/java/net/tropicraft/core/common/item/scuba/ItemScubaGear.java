@@ -44,8 +44,8 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
     }
     
     public static ResourceLocation getArmorTexture(ScubaMaterial material) {
-        String color = material == ScubaMaterial.PINK ? "Pink" : "Yellow";
-        return new ResourceLocation(Info.ARMOR_LOCATION + "scubaGear" + color + ".png");   
+        String color = material == ScubaMaterial.PINK ? "pink" : "yellow";
+        return new ResourceLocation(Info.ARMOR_LOCATION + "scuba_gear_" + color + ".png");   
     }
 
     /**

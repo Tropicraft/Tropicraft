@@ -65,6 +65,7 @@ import net.tropicraft.core.common.item.scuba.ItemScubaFlippers;
 import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.common.item.scuba.ItemScubaTank;
 import net.tropicraft.core.common.item.scuba.api.ScubaMaterial;
+import net.tropicraft.core.common.sound.TropicraftSounds;
 
 @Mod.EventBusSubscriber
 public class ItemRegistry extends TropicraftRegistry {
@@ -260,12 +261,12 @@ public class ItemRegistry extends TropicraftRegistry {
         yellowChestplateGear = registerItem(registry, new ItemScubaChestplateGear(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.CHEST), "yellow_chestplate_gear");
         yellowScubaGoggles = registerItem(registry, new ItemScubaHelmet(materialYellowSuit, ScubaMaterial.YELLOW, 0, EntityEquipmentSlot.HEAD), "yellow_scuba_goggles");
         
-        recordBuriedTreasure = registerItem(registry, new ItemMusicDisc("buried_treasure", "Punchaface", SoundRegistry.get("buried_treasure")), "buried_treasure");
-        recordEasternIsles = registerItem(registry, new ItemMusicDisc("eastern_isles", "Frox", SoundRegistry.get("eastern_isles")), "eastern_isles");
-        recordSummering = registerItem(registry, new ItemMusicDisc("summering", "Billy Christiansen", SoundRegistry.get("summering")), "summering");
-        recordTheTribe = registerItem(registry, new ItemMusicDisc("the_tribe", "Emile Van Krieken", SoundRegistry.get("the_tribe")), "the_tribe");
-        recordLowTide = registerItem(registry, new ItemMusicDisc("low_tide", "Punchaface", SoundRegistry.get("low_tide")), "low_tide");
-        recordTradeWinds = registerItem(registry, new ItemMusicDisc("trade_winds", "Frox", SoundRegistry.get("trade_winds")), "trade_winds");
+        recordBuriedTreasure = registerItem(registry, new ItemMusicDisc("buried_treasure", "Punchaface", TropicraftSounds.BURIED_TREASURE), "buried_treasure");
+        recordEasternIsles = registerItem(registry, new ItemMusicDisc("eastern_isles", "Frox", TropicraftSounds.EASTERN_ISLES), "eastern_isles");
+        recordSummering = registerItem(registry, new ItemMusicDisc("summering", "Billy Christiansen", TropicraftSounds.SUMMERING), "summering");
+        recordTheTribe = registerItem(registry, new ItemMusicDisc("the_tribe", "Emile Van Krieken", TropicraftSounds.THE_TRIBE), "the_tribe");
+        recordLowTide = registerItem(registry, new ItemMusicDisc("low_tide", "Punchaface", TropicraftSounds.LOW_TIDE), "low_tide");
+        recordTradeWinds = registerItem(registry, new ItemMusicDisc("trade_winds", "Frox", TropicraftSounds.TRADE_WINDS), "trade_winds");
 
         azurite = registerItem(registry, new ItemTropicsOre(), "azurite");
         eudialyte = registerItem(registry, new ItemTropicsOre(), "eudialyte");

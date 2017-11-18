@@ -55,7 +55,7 @@ public class ScubaOverlayHandler extends Gui {
         GlStateManager.pushMatrix();
         GlStateManager.translate(sr.getScaledWidth() + offset - 20, 120, 0);
         GlStateManager.rotate(yaw + 180, 0.0F, 0.0F, -1.0F);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(TropicraftRenderUtils.getTextureGui("compassBackground"));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TropicraftRenderUtils.getTextureGui("compass_background"));
         drawModalRectWithCustomSizedTexture(offset, offset, 0, 0, size, size, size, size);
         GlStateManager.popMatrix();
 

@@ -95,7 +95,7 @@ public class EntityAshenHunter extends EntityAshen {
 	}
 
 	protected SoundEvent getAmbientSound() {
-		return getAttackTarget() == null ? null : SoundRegistry.get("ashenLaugh");
+		return getAttackTarget() == null ? null : SoundRegistry.get("ashen_laugh");
 	}
 
 	@Override

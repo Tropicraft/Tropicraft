@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.RecordInformation;
+import net.tropicraft.core.registry.SoundRegistry;
 
 public class ItemMusicDisc extends ItemRecord {
     

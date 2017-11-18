@@ -229,10 +229,10 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerBooks() {
-		Tropicraft.encyclopedia = new Encyclopedia("eTsave.dat",
-				Info.TEXTURE_GUI_LOC + "EncyclopediaTropica.txt",
-				"encyclopediaTropica",
-				"encyclopediaTropicaInside");
+		Tropicraft.encyclopedia = new Encyclopedia("etsave.dat",
+				Info.TEXTURE_GUI_LOC + "encyclopedia_tropica.txt",
+				"encyclopedia_tropica",
+				"encyclopedia_tropica_inside");
 		EncyclopediaRegistry.init(); // registers items for encyclopedia
 	}
 

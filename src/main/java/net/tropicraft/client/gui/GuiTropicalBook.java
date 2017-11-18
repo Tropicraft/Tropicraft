@@ -214,7 +214,7 @@ public class GuiTropicalBook extends GuiScreen {
 				GuiButton guibutton = (GuiButton) buttonList.get(l);
 				if (guibutton.mousePressed(mc, x, y)) {
 					mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(
-							SoundRegistry.get("pageFlip"), 1.0F));
+							SoundRegistry.get("page_flip"), 1.0F));
 					actionPerformed(guibutton);
 				}
 			}
