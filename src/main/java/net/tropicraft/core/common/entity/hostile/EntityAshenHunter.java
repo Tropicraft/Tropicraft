@@ -30,6 +30,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.item.armor.ItemAshenMask;
+import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
@@ -95,7 +96,7 @@ public class EntityAshenHunter extends EntityAshen {
 	}
 
 	protected SoundEvent getAmbientSound() {
-		return getAttackTarget() == null ? null : SoundRegistry.get("ashen_laugh");
+		return getAttackTarget() == null ? null : TropicraftSounds.ASHEN_LAUGH;
 	}
 
 	@Override

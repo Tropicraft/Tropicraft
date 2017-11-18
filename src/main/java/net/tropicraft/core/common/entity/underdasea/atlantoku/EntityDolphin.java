@@ -5,8 +5,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.registry.ItemRegistry;
-import net.tropicraft.core.registry.SoundRegistry;
 
 public class EntityDolphin extends EntityTropicraftWaterBase implements IPredatorDiet, IAmphibian{
 
@@ -91,7 +91,7 @@ public class EntityDolphin extends EntityTropicraftWaterBase implements IPredato
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundRegistry.get("dolphin");
+		return TropicraftSounds.DOLPHIN;
 	}
 
 	@Override

@@ -211,7 +211,7 @@ public class EntityAIPartyTime extends EntityAIBase
                             TropicraftBongos bongo = ((BlockBongoDrum) state.getBlock()).getVariant(state);
                             float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
                             entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
-                                    SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 6.0F, pitch);
+                                    bongo.getSoundEvent(), SoundCategory.BLOCKS, 6.0F, pitch);
                             entityObj.swingArm(EnumHand.MAIN_HAND);
                         }
                     }

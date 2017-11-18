@@ -22,6 +22,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLandHostile;
+import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
@@ -101,7 +102,7 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 			if (!heldItem.isEmpty() && heldItem.getItem().canHarvestBlock(Blocks.IRON_ORE.getDefaultState())) {
 				return super.attackEntityFrom(source, amount);
 			} else {
-				this.playSound(SoundRegistry.get("headlaughing"), this.getSoundVolume(), this.getSoundPitch());
+				this.playSound(TropicraftSounds.HEAD_LAUGHING, this.getSoundVolume(), this.getSoundPitch());
 				this.setRevengeTarget(player);
 			}
 		}
@@ -127,9 +128,9 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 	protected SoundEvent getAmbientSound() {
 		//aware was never properly used, so I've adjusted this code to use short noise for angry but without target
 		if (getState() == STATE_ANGRY && getAttackTarget() != null) {
-			return rand.nextInt(10) == 0 ? SoundRegistry.get("headmed") : null;
+			return rand.nextInt(10) == 0 ? TropicraftSounds.HEAD_MED : null;
 		} else if (getState() == STATE_ANGRY) {
-			return rand.nextInt(10) == 0 ? SoundRegistry.get("headshort") : null;
+			return rand.nextInt(10) == 0 ? TropicraftSounds.HEAD_SHORT : null;
 		} else {
 			return null;
 		}
@@ -137,12 +138,12 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSource) {
-		return SoundRegistry.get("headpain");
+		return TropicraftSounds.HEAD_PAIN;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundRegistry.get("headdeath");
+		return TropicraftSounds.HEAD_DEATH;
 	}
 
 	@Override

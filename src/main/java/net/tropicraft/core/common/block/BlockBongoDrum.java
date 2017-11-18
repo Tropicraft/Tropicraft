@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.core.common.enums.TropicraftBongos;
 import net.tropicraft.core.registry.BlockRegistry;
-import net.tropicraft.core.registry.SoundRegistry;
 
 @EventBusSubscriber
 public class BlockBongoDrum extends BlockTropicraftEnumVariants<TropicraftBongos> {
@@ -75,8 +74,8 @@ public class BlockBongoDrum extends BlockTropicraftEnumVariants<TropicraftBongos
      * Play the bongo sound in game. Sound played determined by the {@link #size} attribute
      */
     public void playBongoSound(World world, EntityPlayer entity, BlockPos pos, IBlockState state) {
-        TropicraftBongos bongo = getVariant(state);
-        world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), SoundRegistry.get(bongo.getSoundRegistryName()), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        TropicraftBongos bongo = this.getVariant(state);
+        world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), bongo.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     @Override

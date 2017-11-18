@@ -25,6 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLandHostile;
+import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 
@@ -194,15 +195,15 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 	}
 
 	protected SoundEvent getAmbientSound() {
-		return SoundRegistry.get("iggyliving");
+		return TropicraftSounds.IGGY_LIVING;
 	}
 
 	protected SoundEvent getHurtSound() {
-		return SoundRegistry.get("iggyattack");
+		return TropicraftSounds.IGGY_ATTACK;
 	}
 
 	protected SoundEvent getDeathSound() {
-		return SoundRegistry.get("iggydeath");
+		return TropicraftSounds.IGGY_DEATH;
 	}
 
 	static class AIHurtByAggressor extends EntityAIHurtByTarget {

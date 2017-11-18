@@ -8,7 +8,7 @@
 	"iggyattack": { "category": "entity", "sounds": [ "tropicraft:iggyattack" ] },
 	"iggydeath": { "category": "entity", "sounds": [ "tropicraft:iggydeath" ] },
 	"iggyliving": { "category": "entity", "sounds": [ "tropicraft:iggyliving" ] },
-	"ashenLaugh": { "category": "entity", "sounds": [ "tropicraft:ashenLaugh" ] },
+	"ashen_laugh": { "category": "entity", "sounds": [ "tropicraft:ashen_laugh" ] },
 	"bongo.low": { "category": "block", "sounds": [ "tropicraft:bongolow" ] },
 	"bongo.medium": { "category": "block", "sounds": [ "tropicraft:bongomedium" ] },
 	"bongo.high": { "category": "block", "sounds": [ "tropicraft:bongohigh" ] },
@@ -57,5 +57,5 @@
 			}
 		]
 	},
-	"pageFlip": { "category": "master", "sounds": [ "tropicraft:pageFlip" ] }
+	"page_flip": { "category": "master", "sounds": [ "tropicraft:page_flip" ] }
 }

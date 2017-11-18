@@ -17,6 +17,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.encyclopedia.TropicalBook;
 import net.tropicraft.core.registry.SoundRegistry;
@@ -214,7 +215,7 @@ public class GuiTropicalBook extends GuiScreen {
 				GuiButton guibutton = (GuiButton) buttonList.get(l);
 				if (guibutton.mousePressed(mc, x, y)) {
 					mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(
-							SoundRegistry.get("page_flip"), 1.0F));
+							TropicraftSounds.PAGE_FLIP, 1.0F));
 					actionPerformed(guibutton);
 				}
 			}
