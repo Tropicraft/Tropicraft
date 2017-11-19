@@ -451,7 +451,7 @@ public class WorldGenHomeTree extends TCGenBase {
 		}
 		else
 		{
-			return new ItemStack(ItemRegistry.azurite, 1, 3);
+			return new ItemStack(ItemRegistry.azurite);
 		}
 	}
 }
