@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCoconut extends BlockTropicraft {
 
-	protected static final AxisAlignedBB COCONUT_AABB = new AxisAlignedBB(0.275D, 0.225D, 0.275D, 0.725D, 0.775, 0.725);
+	protected static final AxisAlignedBB COCONUT_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.625D, 0.75);
 	
 	public BlockCoconut() {
 		super(Material.GOURD);
