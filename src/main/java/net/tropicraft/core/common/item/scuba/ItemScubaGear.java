@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
@@ -35,7 +36,11 @@ public abstract class ItemScubaGear extends ItemTropicraftArmor {
 
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-        return new ArmorProperties(10, source == DamageSource.drown ? 1.0 : 1.0, Integer.MAX_VALUE);
+        if (source == DamageSource.drown) {
+            return new ArmorProperties(10, 1.0, Integer.MAX_VALUE);
+        } else {
+            return super.getProperties(player, armor, source, damage, slot);
+        }
     }
 
     @Override

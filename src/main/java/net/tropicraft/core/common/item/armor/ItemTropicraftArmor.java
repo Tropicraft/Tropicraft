@@ -10,6 +10,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
@@ -38,7 +39,8 @@ public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		return new ArmorProperties(10, source == DamageSource.inFire ? 1.0 : 0.3, Integer.MAX_VALUE);
+	    // Default armor damage reduction
+	    return new ArmorProperties(0, this.damageReduceAmount / 25D, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -68,6 +70,6 @@ public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 	 */
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-		stack.damageItem(damage, entity);        
+		stack.damageItem(damage, entity);
 	}
 }

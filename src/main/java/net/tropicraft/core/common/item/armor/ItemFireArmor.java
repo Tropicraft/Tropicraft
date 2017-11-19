@@ -14,6 +14,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.registry.ItemRegistry;
@@ -65,12 +66,12 @@ public class ItemFireArmor extends ItemTropicraftArmor {
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor,
-            DamageSource source, double damage, int slot) {
-        if(source == DamageSource.inFire || source == DamageSource.lava)
-            return new ArmorProperties(10, Integer.MAX_VALUE, Integer.MAX_VALUE);
-        else
-            return new ArmorProperties(10, 0.15, Integer.MAX_VALUE);
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+        if (source == DamageSource.inFire || source == DamageSource.lava) {
+            return new ArmorProperties(10, 1.0, Integer.MAX_VALUE);
+        } else {
+            return super.getProperties(player, armor, source, damage, slot);
+        }
     }
 
     @SideOnly(Side.CLIENT)

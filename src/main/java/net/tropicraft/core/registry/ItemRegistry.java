@@ -133,17 +133,17 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item scale;
 
     // Armor    
-    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
     public static Item scaleBoots;
     public static Item scaleLeggings;
     public static Item scaleChestplate;
     public static Item scaleHelmet;
     
-    public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", "fire", 12, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
-    public static Item fireBoots;// = new ItemFireArmor(materialFireArmor, 0, 3);
-    public static Item fireLeggings;// = new ItemFireArmor(materialFireArmor, 0, 2);
-    public static Item fireChestplate;// = new ItemFireArmor(materialFireArmor, 0, 1);
-    public static Item fireHelmet;// = new ItemFireArmor(materialFireArmor, 0, 0);
+    public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", "fire", 12, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
+    public static Item fireBoots;
+    public static Item fireLeggings;
+    public static Item fireChestplate;
+    public static Item fireHelmet;
 
     public static Item chair;
     public static Item umbrella;
