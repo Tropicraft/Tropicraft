@@ -212,6 +212,8 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 
 	    if (slabType == TropicraftSlabs.BAMBOO || slabType == TropicraftSlabs.THATCH) {
 	        return SoundType.PLANT;
+	    } else if (slabType == TropicraftSlabs.MAHOGANY || slabType == TropicraftSlabs.PALM) {
+	        return SoundType.WOOD;
 	    }
 
 	    return getSoundType();
