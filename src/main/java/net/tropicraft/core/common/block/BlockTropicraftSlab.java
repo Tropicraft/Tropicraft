@@ -210,9 +210,11 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
     public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
         TropicraftSlabs slabType = ((TropicraftSlabs)state.getValue(VARIANT));
 
-        if (slabType == TropicraftSlabs.BAMBOO || slabType == TropicraftSlabs.THATCH) {
-            return SoundType.PLANT;
-        }
+	    if (slabType == TropicraftSlabs.BAMBOO || slabType == TropicraftSlabs.THATCH) {
+	        return SoundType.PLANT;
+	    } else if (slabType == TropicraftSlabs.MAHOGANY || slabType == TropicraftSlabs.PALM) {
+	        return SoundType.WOOD;
+	    }
 
         return getSoundType();
     }
