@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
 import net.tropicraft.core.common.block.tileentity.TileEntitySifter;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -53,7 +54,7 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 
 		TileEntitySifter tileentitysifta = (TileEntitySifter) world.getTileEntity(pos);
 
-		if (tileentitysifta != null && stack != null && !tileentitysifta.isSifting()) {
+		if (tileentitysifta != null && !Util.isEmpty(stack) && !tileentitysifta.isSifting()) {
 			Item helditem = stack.getItem();
 			if (helditem == Item.getItemFromBlock(Blocks.SAND) || (helditem == Item.getItemFromBlock(BlockRegistry.sands))) {
 				entityPlayer.getHeldItemMainhand().stackSize--;

@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.tileentity.TileEntitySifter;
 
 public class TileEntitySifterRenderer extends TileEntitySpecialRenderer<TileEntitySifter> {
@@ -23,7 +24,7 @@ public class TileEntitySifterRenderer extends TileEntitySpecialRenderer<TileEnti
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float)x + 0.5F, (float)y, (float)z + 0.5F);
 
-		if (item == null && sifter.isSifting()) {
+		if (item == null && !Util.isEmpty(sifter.siftItem) && sifter.isSifting()) {
 			item = (EntityItem)(new EntityItem(sifter.getWorld()));
 			((EntityItem)item).setEntityItemStack(sifter.siftItem.copy());
 		}
