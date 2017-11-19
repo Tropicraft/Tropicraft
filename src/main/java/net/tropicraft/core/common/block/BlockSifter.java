@@ -63,18 +63,16 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 			return true;
 		}
 
-		ItemStack stack = entityPlayer.getHeldItemMainhand();
-
 		TileEntitySifter tileentitysifta = (TileEntitySifter) world.getTileEntity(pos);
 
-		if (tileentitysifta != null && !Util.isEmpty(stack) && !tileentitysifta.isSifting()) {
-			Item helditem = stack.getItem();
-			if (helditem == Item.getItemFromBlock(Blocks.SAND) || (helditem == Item.getItemFromBlock(BlockRegistry.sands))) {
-				entityPlayer.getHeldItemMainhand().stackSize--;
-				tileentitysifta.addItemToSifter(stack);
-				tileentitysifta.startSifting();
-			}
-		}
+        if (tileentitysifta != null && !Util.isEmpty(heldItem) && !tileentitysifta.isSifting()) {
+            Item item = heldItem.getItem();
+            if (item == Item.getItemFromBlock(Blocks.SAND) || (item == Item.getItemFromBlock(BlockRegistry.sands))) {
+                tileentitysifta.addItemToSifter(heldItem);
+                tileentitysifta.startSifting();
+                --heldItem.stackSize;
+            }
+        }
 		return true;
 	} // /o/ \o\ /o\ \o\ /o\ \o/ /o/ /o/ \o\ \o\ /o/ /o/ \o/ /o\ \o/ \o/ /o\ /o\ \o/ \o/ /o/ \o\o\o\o\o\o\o\o\o\ :D
 
