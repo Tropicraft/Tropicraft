@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.entity.underdasea.atlantoku.ai;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.math.AxisAlignedBB;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.IPredatorDiet;
-import scala.actors.threadpool.Arrays;
 
 public class EntityAISwimAvoidPredator extends EntityAISwimBase {
 
