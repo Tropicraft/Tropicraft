@@ -227,6 +227,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 	 * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
 	 * the Item before the action is complete.
 	 */
+	@Override
 	@Nullable
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
 		if (entityLiving instanceof EntityPlayer) {
@@ -240,7 +241,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 			}
 		}
 
-		return stack;
+		return new ItemStack(ItemRegistry.bambooMug);
 	}
 
 	@Override
@@ -249,15 +250,15 @@ public class ItemCocktail extends ItemTropicraftColored {
 
 		if (drink != null) {
 			if (!playerIn.canEat(drink.alwaysEdible)) {
-				return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+				return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 			}
 		} else if (!playerIn.canEat(false)) {
-			return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+			return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
 		}
 
 		playerIn.setActiveHand(hand);
 
-		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
 	}
 
 	@Override
@@ -273,13 +274,13 @@ public class ItemCocktail extends ItemTropicraftColored {
 		Drink drink = getDrink(itemstack);
 		if (itemstack == null || drink == null) {
 			name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-					+ ":" + "cocktail.name")).trim();			
+					+ "." + "cocktail.name")).trim();
 		} else {
 			if (drink.drinkId == Drink.pinaColada.drinkId) {
 				name = drink.displayName;
 			} else {
 				name = ("" + I18n.translateToLocal(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-						+ ":" + "cocktail.name")).trim();
+						+ "." + "cocktail.name")).trim();
 			}
 		}
 
