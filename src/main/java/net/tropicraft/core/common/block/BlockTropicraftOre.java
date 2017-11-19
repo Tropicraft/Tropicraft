@@ -46,7 +46,7 @@ public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOr
         if (variant == TropicraftOres.MANGANESE || variant == TropicraftOres.SHAKA) {
             return variant.ordinal();
         }
-        return super.damageDropped(state);
+        return 0;
     }
 
 	// TODO this is a lazy impl
