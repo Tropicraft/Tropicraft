@@ -17,7 +17,7 @@ public class Drink {
 	public static final Drink pinaColada = new Drink(6, 0xefefef, "Pi\u00f1a Colada", TextFormatting.GOLD).addAction(new DrinkActionPotion(MobEffects.NAUSEA, 10, 0)).setAlwaysEdible(true);
 	public static final Drink coconutWater = new Drink(7, 0xdfdfdf, "Coconut Water", TextFormatting.WHITE).addAction(new DrinkActionPotion(MobEffects.SPEED, 5, 1));
 	public static final Drink maiTai = new Drink(8, 0xff772e, "Mai Tai", TextFormatting.GOLD).addAction(new DrinkActionPotion(MobEffects.NAUSEA, 5, 0));
-	public static final Drink blackCoffee = new Drink(5, 0x68442c, "Black Coffee", TextFormatting.BLACK).addAction(new DrinkActionPotion(MobEffects.REGENERATION, 5, 1)).addAction(new DrinkActionPotion(MobEffects.SPEED, 5, 13));
+	public static final Drink blackCoffee = new Drink(5, 0x68442c, "Black Coffee", TextFormatting.BLACK).addAction(new DrinkActionPotion(MobEffects.REGENERATION, 5, 1)).addAction(new DrinkActionPotion(MobEffects.SPEED, 5, 2));
 
 	public int drinkId;
 	public int color;
@@ -33,6 +33,7 @@ public class Drink {
 		this.color = color;
 		this.displayName = displayName;
 		this.textFormatting = textFormatting;
+		this.alwaysEdible = true; // Set all of them always edible for now
 	}
 
 	public Drink setHasUmbrella(boolean has) {
