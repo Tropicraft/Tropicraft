@@ -133,13 +133,13 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item scale;
 
     // Armor    
-    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
+    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0.5F);
     public static Item scaleBoots;
     public static Item scaleLeggings;
     public static Item scaleChestplate;
     public static Item scaleHelmet;
     
-    public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", "fire", 12, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
+    public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", "fire", 12, new int[]{2, 4, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static Item fireBoots;
     public static Item fireLeggings;
     public static Item fireChestplate;
@@ -172,14 +172,14 @@ public class ItemRegistry extends TropicraftRegistry {
     
     public static Item iguanaLeather;
 
-    public static final ArmorMaterial materialPinkSuit = EnumHelper.addArmorMaterial("pink_suit", "pink_suit", 50, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 9.0F);
+    public static final ArmorMaterial materialPinkSuit = EnumHelper.addArmorMaterial("pink_suit", "pink_suit", 15, new int[]{2, 0, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static Item pinkFlippers;
     //public static Item pinkLeggings;
     public static Item pinkChestplate;
     public static Item pinkChestplateGear;
     public static Item pinkHelmet;
 
-    public static final ArmorMaterial materialYellowSuit = EnumHelper.addArmorMaterial("yellow_suit", "yellow_suit", 50, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 9.0F);
+    public static final ArmorMaterial materialYellowSuit = EnumHelper.addArmorMaterial("yellow_suit", "yellow_suit", 15, new int[]{2, 0, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static Item yellowFlippers;
     //public static Item yellowLeggings;
     public static Item yellowChestplate;
@@ -206,7 +206,7 @@ public class ItemRegistry extends TropicraftRegistry {
     
     public static Item fishingRod;
 
-    public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", "mask", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+    public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", "mask", 10, new int[]{0, 0, 0, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
     public static Item maskSquareZord;
     public static Item maskHornMonkey;
     public static Item maskOblongatron;

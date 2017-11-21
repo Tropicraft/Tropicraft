@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.item.armor;
 
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,18 +8,12 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
 
 public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 
 	/** Name of the armor, eg "scale" or "fire", used in getArmorTexture */
 	private String modArmorName;
-
-	@SideOnly(Side.CLIENT)
-	public static List[] fxLayers;
 
 	public ItemTropicraftArmor(ArmorMaterial material, int renderIndex, EntityEquipmentSlot equipmentSlotIn) {
 		super(material, renderIndex, equipmentSlotIn);
@@ -53,7 +45,7 @@ public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 	 */
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-		return 3;
+		return this.damageReduceAmount;
 	}
 
 	/**

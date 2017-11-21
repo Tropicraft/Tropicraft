@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -55,23 +54,6 @@ public class ItemAshenMask extends ItemTropicraftArmor {
                 return EnumActionResult.SUCCESS;
             }
         }
-    }
-
-    /**
-     * Called to tick armor in the armor slot. Override to do something
-     *
-     * @param world
-     * @param player
-     * @param itemStack
-     */
-    @Override
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void damageArmor(EntityLivingBase player, ItemStack stack, DamageSource source, int damage, int slot) {
-        super.damageArmor(player, stack, source, damage, slot);
     }
 
     @Override
