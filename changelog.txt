@@ -1,47 +1,49 @@
 7.0.2:
+New:
+- Add mahogany slabs and stairs
+- Add bamboo ladders
+Changes:
 - Actually requires forge 2221 or newer to load this time
 - Make entity rotation on loading screen smoother
-- Fix overlay for portal water
-- Fix rare crash when breaking/placing a drink mixer or air compressor
 - Sharks are now animated
 - Seahorse and dolphin models resized
 - Sea turtle time to maturity increased
 - Water mobs now respect NoAI:true
-- Add mahogany slabs and stairs
-- Fix tropics water not being infinite
 - Add ashen masks to encyclopedia
-- Fix pineapple render in encyclopedia
-- Fix slab resistances
 - Dolphins can now survive on land
 - Dolphins are chatty now
 - Turtles search for deep water if available
-- Fix tiki torch placement/drop logic when on fence/wall
-- Fix fence/fencegate hardness
 - Made Koa sit while riding things
-- Fix race condition for dedicated servers where dataparams come in before client spawn packets
 - Move tropics water mobs to vanilla AI system (to allow for more vanilla interaction)
-- Add bamboo ladders
-- Fix bamboo chests losing content when block state is different when placed next to adjacent chest
-- Fix ores only generating in some chunks
-- Fix extra vanilla biome decorations appearing in tropics
 - Increase pineapple cube drops from slicing
-- Pop off coral block if sand underneath disappears
-- Fix bounding boxes and UV values on coconuts
-- Fix bug where some ore drops had incorrect damage values
 - Adjust zircon tool strengths to allow for mining of anything iron tools can do
-- Fix mahogany plank texture error
 - Set sounds for thatch and bamboo slabs and bundles
-- Remove scala imports and other unused imports
-- Fix held item display angles for tropics tools
-- Fix occasional sifter crash
-- Fix issue where sifter would use and leave an incorrect amount of sand
-- Fix step sounds for wooden planks
 - Add proper drops and hardnesses for sifter, drink mixer, air compressor
-- Fix cocktail names on scroll
 - Make drinks always edible.
 - Decrease speed given from drinking coffee
 - Iguana armor no longer makes you invincible, sorry!
 - Adjust all armor values and damage amounts
+Fixes:
+- Fix overlay for portal water
+- Fix rare crash when breaking/placing a drink mixer or air compressor
+- Fix tropics water not being infinite
+- Fix pineapple render in encyclopedia
+- Fix slab resistances
+- Fix tiki torch placement/drop logic when on fence/wall
+- Fix fence/fencegate hardness
+- Fix race condition for dedicated servers where dataparams come in before client spawn packets
+- Fix bamboo chests losing content when block state is different when placed next to adjacent chest
+- Fix ores only generating in some chunks
+- Fix extra vanilla biome decorations appearing in tropics
+- Pop off coral block if sand underneath disappears
+- Fix bounding boxes and UV values on coconuts
+- Fix bug where some ore drops had incorrect damage values
+- Fix mahogany plank texture error
+- Fix held item display angles for tropics tools
+- Fix occasional sifter crash
+- Fix issue where sifter would use and leave an incorrect amount of sand
+- Fix step sounds for wooden planks
+- Fix cocktail names on scroll
 
 7.0.1:
 Changes
