@@ -36,7 +36,7 @@ public class BlockEvents {
 
         if (isGrown) {
             if (held != null && held.getItem() instanceof ItemSword) {
-                event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(4)));
+                event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(3) + 2));
             } else {
                 event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
             }

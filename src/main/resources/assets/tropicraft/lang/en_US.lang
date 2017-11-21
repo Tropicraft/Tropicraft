@@ -90,6 +90,7 @@ tile.tropicraft.palm_fence.name=Palm Fence
 tile.tropicraft.palm_fence_gate.name=Palm Fence Gate
 tile.tropicraft.thatch_fence.name=Thatch Fence
 tile.tropicraft.thatch_fence_gate.name=Thatch Fence Gate
+tile.tropicraft.bamboo_ladder.name=Bamboo Ladder
 
 # Item localizations
 item.tropicraft.eudialyte.name=Eudialyte Shard

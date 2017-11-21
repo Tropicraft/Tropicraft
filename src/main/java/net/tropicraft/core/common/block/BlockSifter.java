@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.block.ITileEntityProvider;
@@ -17,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
 import net.tropicraft.core.common.block.tileentity.TileEntitySifter;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -25,8 +28,19 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 
 	public BlockSifter() {
 		super(Material.WOOD);
+		this.blockHardness = 1.0F;
+		this.blockResistance = 4.0F;
 	}
-	
+
+    /**
+     * Get the Item that this Block should drop when harvested.
+     */
+    @Nullable
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return Item.getItemFromBlock(BlockRegistry.sifter);
+    }
+
 	@Override
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
@@ -49,18 +63,16 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 			return true;
 		}
 
-		ItemStack stack = entityPlayer.getHeldItemMainhand();
-
 		TileEntitySifter tileentitysifta = (TileEntitySifter) world.getTileEntity(pos);
 
-		if (tileentitysifta != null && stack != null && !tileentitysifta.isSifting()) {
-			Item helditem = stack.getItem();
-			if (helditem == Item.getItemFromBlock(Blocks.SAND) || (helditem == Item.getItemFromBlock(BlockRegistry.sands))) {
-				entityPlayer.getHeldItemMainhand().stackSize--;
-				tileentitysifta.addItemToSifter(stack);
-				tileentitysifta.startSifting();
-			}
-		}
+        if (tileentitysifta != null && !Util.isEmpty(heldItem) && !tileentitysifta.isSifting()) {
+            Item item = heldItem.getItem();
+            if (item == Item.getItemFromBlock(Blocks.SAND) || (item == Item.getItemFromBlock(BlockRegistry.sands))) {
+                tileentitysifta.addItemToSifter(heldItem);
+                tileentitysifta.startSifting();
+                --heldItem.stackSize;
+            }
+        }
 		return true;
 	} // /o/ \o\ /o\ \o\ /o\ \o/ /o/ /o/ \o\ \o\ /o/ /o/ \o/ /o\ \o/ \o/ /o\ /o\ \o/ \o/ /o/ \o\o\o\o\o\o\o\o\o\ :D
 

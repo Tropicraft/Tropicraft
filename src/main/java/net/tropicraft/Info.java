@@ -5,7 +5,7 @@ public class Info {
 	public static final String MODID = "tropicraft";
 	
 	/** Mod version */
-	public static final String VERSION = "v7.0";
+	public static final String VERSION = "@VERSION@";
 	
 	/** Name of the mod */
 	public static final String NAME = "Tropicraft";
