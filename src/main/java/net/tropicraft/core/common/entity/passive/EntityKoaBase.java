@@ -430,9 +430,9 @@ public class EntityKoaBase extends EntityVillager {
             {
                 EntityPlayer entityplayer = (EntityPlayer)entityIn;
                 ItemStack itemstack = this.getHeldItemMainhand();
-                ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : null;
+                ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
-                if (itemstack != null && itemstack1 != null && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD)
+                if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD)
                 {
                     float f1 = 0.25F + (float)EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
@@ -899,11 +899,11 @@ public class EntityKoaBase extends EntityVillager {
         {
             ItemStack itemstack1 = chest.getStackInSlot(i);
 
-            if (itemstack1 == null)
+            if (itemstack1.isEmpty())
             {
                 chest.setInventorySlotContents(i, itemstack);
                 chest.markDirty();
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (ItemStack.areItemsEqual(itemstack1, itemstack))
@@ -919,7 +919,7 @@ public class EntityKoaBase extends EntityVillager {
                     if (itemstack.getCount() <= 0)
                     {
                         chest.markDirty();
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }

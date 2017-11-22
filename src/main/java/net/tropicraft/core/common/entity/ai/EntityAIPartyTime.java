@@ -75,7 +75,8 @@ public class EntityAIPartyTime extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    @Override
+    public boolean shouldContinueExecuting()
     {
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();

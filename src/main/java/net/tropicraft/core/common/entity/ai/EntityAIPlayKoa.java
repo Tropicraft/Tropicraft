@@ -70,7 +70,7 @@ public class EntityAIPlayKoa extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return this.playTime > 0;
     }

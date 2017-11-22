@@ -51,7 +51,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return shouldExecute();
     }
@@ -233,7 +233,7 @@ public class EntityAIEatToHeal extends EntityAIBase
                 if (stack.getItem() instanceof ItemFood) {
                     stack.shrink(1);
                     if (stack.getCount() <= 0) {
-                        inv.setInventorySlotContents(i, null);
+                        inv.setInventorySlotContents(i, ItemStack.EMPTY);
                     }
                     return new ItemStack(stack.getItem(), 1, stack.getMetadata());
                 }

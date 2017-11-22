@@ -147,7 +147,7 @@ public class EntityFailgull extends EntityFlying {
 		/**
 		 * Returns whether an in-progress EntityAIBase should continue executing
 		 */
-		public boolean continueExecuting() {
+		public boolean shouldContinueExecuting() {
 			return false;
 		}
 

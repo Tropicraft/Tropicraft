@@ -99,7 +99,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return !this.entityPathNavigate.noPath();
     }

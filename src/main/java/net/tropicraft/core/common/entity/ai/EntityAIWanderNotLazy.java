@@ -65,7 +65,7 @@ public class EntityAIWanderNotLazy extends EntityAIBase {
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return !this.entity.getNavigator().noPath();
     }
