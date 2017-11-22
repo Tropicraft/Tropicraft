@@ -196,4 +196,23 @@ public class BlockTropicraftSlab extends BlockSlab implements ITropicraftBlock {
 //        System.out.println(ret);
 //        return ret;
     }
+
+	/**
+     * Sensitive version of getSoundType
+     * @param state The state
+     * @param world The world
+     * @param pos The position. Note that the world may not necessarily have {@code state} here!
+     * @param entity The entity that is breaking/stepping on/placing/hitting/falling on this block, or null if no entity is in this context
+     * @return A SoundType to use
+     */
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        TropicraftSlabs slabType = ((TropicraftSlabs)state.getValue(VARIANT));
+
+        if (slabType == TropicraftSlabs.BAMBOO || slabType == TropicraftSlabs.THATCH) {
+            return SoundType.PLANT;
+        }
+
+        return getSoundType();
+    }
 }
