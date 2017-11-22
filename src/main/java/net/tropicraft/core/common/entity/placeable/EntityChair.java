@@ -85,6 +85,7 @@ public class EntityChair extends Entity {
      * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
      * pushable on contact, like boats or minecarts.
      */
+    @Override
     @Nullable
     public AxisAlignedBB getCollisionBox(Entity entityIn) {
         return entityIn.getEntityBoundingBox();
@@ -102,7 +103,8 @@ public class EntityChair extends Entity {
 	/**
 	 * Called to update the entity's position/logic.
 	 */
-	public void onUpdate() {
+	@Override
+    public void onUpdate() {
 		super.onUpdate();
 
 		if (this.getTimeSinceHit() > 0) {
@@ -453,6 +455,7 @@ public class EntityChair extends Entity {
      * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
      * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
      */
+    @Override
     @Nullable
     public Entity getControllingPassenger() {
         List<Entity> list = this.getPassengers();

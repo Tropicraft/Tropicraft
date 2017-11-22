@@ -272,6 +272,7 @@ public class EntityTropiCreeper extends EntityLand implements IMob {
     /**
      * Called when a lightning bolt hits the entity.
      */
+    @Override
     public void onStruckByLightning(EntityLightningBolt lightningBolt) {
         super.onStruckByLightning(lightningBolt);
         this.dataManager.set(POWERED, Boolean.valueOf(true));

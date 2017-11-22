@@ -31,6 +31,7 @@ public class EntityAIKoaMate extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         //adult cooldown
@@ -71,6 +72,7 @@ public class EntityAIKoaMate extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         this.matingTimeout = 300;
@@ -83,6 +85,7 @@ public class EntityAIKoaMate extends EntityAIBase
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         this.mate = null;
@@ -92,7 +95,8 @@ public class EntityAIKoaMate extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    @Override
+    public boolean shouldContinueExecuting()
     {
         boolean result = this.matingTimeout >= 0 && this.canTownHandleMoreVillagers() && this.villagerObj.getGrowingAge() == 0 && this.villagerObj.getIsWillingToMate(false);
         if (!result) {
@@ -104,6 +108,7 @@ public class EntityAIKoaMate extends EntityAIBase
     /**
      * Updates the task
      */
+    @Override
     public void updateTask()
     {
         --this.matingTimeout;

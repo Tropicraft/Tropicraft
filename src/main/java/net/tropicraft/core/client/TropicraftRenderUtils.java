@@ -77,7 +77,7 @@ public class TropicraftRenderUtils {
 	}
 
 	public static void renderItem(ItemStack stack, float scale) {
-		if (stack != null) {
+		if (!stack.isEmpty()) {
 
 			GlStateManager.pushMatrix();
 			{

@@ -97,7 +97,8 @@ public class EntityUmbrella extends Entity {
 		this.getDataManager().register(TIME_SINCE_HIT, new Integer(0));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public void setVelocity(double d, double d1, double d2) {
 		velocityX = motionX = d;
 		velocityY = motionY = d1;
@@ -108,6 +109,7 @@ public class EntityUmbrella extends Entity {
      * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
      * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
      */
+    @Override
     @Nullable
     public Entity getControllingPassenger() {
         List<Entity> list = this.getPassengers();

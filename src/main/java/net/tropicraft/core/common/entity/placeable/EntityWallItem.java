@@ -95,7 +95,8 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
         this.getDataManager().setDirty(ITEM);
 	}
 
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	@Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
 		if (this.getDisplayedItem() != null) {
 			compound.setTag("Item", this.getDisplayedItem().writeToNBT(new NBTTagCompound()));
 		}
@@ -103,7 +104,8 @@ public class EntityWallItem extends EntityHanging implements IEntityAdditionalSp
 		super.writeEntityToNBT(compound);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	@Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
 		NBTTagCompound nbttagcompound = compound.getCompoundTag("Item");
 
 		if (nbttagcompound != null && !nbttagcompound.hasNoTags()) {

@@ -65,7 +65,8 @@ public class GuiClearButton extends GuiButton {
 
 	}
 
-	public int getHoverState(boolean flag) {
+	@Override
+    public int getHoverState(boolean flag) {
 		byte byte0 = 1;
 		if(!enabled)
 		{
@@ -114,15 +115,18 @@ public class GuiClearButton extends GuiButton {
 	}
 
 
-	protected void mouseDragged(Minecraft minecraft, int i, int j)
+	@Override
+    protected void mouseDragged(Minecraft minecraft, int i, int j)
 	{
 	}
 
-	public void mouseReleased(int i, int j)
+	@Override
+    public void mouseReleased(int i, int j)
 	{
 	}
 
-	public boolean mousePressed(Minecraft minecraft, int i, int j)
+	@Override
+    public boolean mousePressed(Minecraft minecraft, int i, int j)
 	{
 		return enabled && drawButton && i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height;
 	}

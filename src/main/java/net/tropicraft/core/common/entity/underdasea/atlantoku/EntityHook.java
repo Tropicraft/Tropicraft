@@ -83,7 +83,8 @@ public class EntityHook extends Entity {
 		this.handleHookCasting(this.motionX, this.motionY, this.motionZ, 1.5F, 1.0F);
 	}
 
-	protected void entityInit() {
+	@Override
+    protected void entityInit() {
 		this.getDataManager().register(DATA_HOOKED_ID, Integer.valueOf(0));
 		this.getDataManager().register(DATA_ANGLER_UUID, "");
 	}
@@ -124,7 +125,8 @@ public class EntityHook extends Entity {
 	/**
 	 * Checks if the entity is in range to render.
 	 */
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public boolean isInRangeToRenderDist(double distance) {
 		double d0 = this.getEntityBoundingBox().getAverageEdgeLength() * 4.0D;
 
@@ -161,7 +163,8 @@ public class EntityHook extends Entity {
 	/**
 	 * Set the position and rotation values directly without any clamping.
 	 */
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch,
 			int posRotationIncrements, boolean teleport) {
 		this.motionX = this.clientMotionX;
@@ -172,7 +175,8 @@ public class EntityHook extends Entity {
 	/**
 	 * Updates the velocity of the entity to a new value.
 	 */
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public void setVelocity(double x, double y, double z) {
 		this.motionX = x;
 		this.motionY = y;
@@ -185,7 +189,8 @@ public class EntityHook extends Entity {
 	/**
 	 * Called to update the entity's position/logic.
 	 */
-	public void onUpdate() {
+	@Override
+    public void onUpdate() {
 		super.onUpdate();
 
 		if (world.isRemote) {
@@ -315,7 +320,8 @@ public class EntityHook extends Entity {
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	@Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setInteger("xTile", this.pos.getX());
 		compound.setInteger("yTile", this.pos.getY());
 		compound.setInteger("zTile", this.pos.getZ());
@@ -324,7 +330,8 @@ public class EntityHook extends Entity {
 		compound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
 	}
 
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	@Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
 		this.pos = new BlockPos(compound.getInteger("xTile"), compound.getInteger("yTile"),
 				compound.getInteger("zTile"));
 
@@ -337,7 +344,8 @@ public class EntityHook extends Entity {
 		this.inGround = compound.getByte("inGround") == 1;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public void handleStatusUpdate(byte id) {
 		if (id == 31 && this.world.isRemote && this.getHooked() instanceof EntityPlayer
 				&& ((EntityPlayer) this.getHooked()).isUser()) {
@@ -357,7 +365,8 @@ public class EntityHook extends Entity {
 		this.getHooked().motionZ += d2 * 0.05D;
 	}
 
-	public void setDead() {
+	@Override
+    public void setDead() {
 		super.setDead();
 
 		if (this.angler != null) {

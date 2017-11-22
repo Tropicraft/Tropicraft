@@ -33,7 +33,8 @@ public class ItemScubaTank extends ItemTropicraft {
 	/**
 	 * Called when item is crafted/smelted. Used only by maps so far.
 	 */
-	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+	@Override
+    public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 
 	}
 	

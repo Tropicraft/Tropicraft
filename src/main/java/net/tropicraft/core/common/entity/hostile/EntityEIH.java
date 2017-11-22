@@ -57,7 +57,8 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 		super.initEntityAI();
 
 		this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false) {
-			public boolean shouldExecute() {
+			@Override
+            public boolean shouldExecute() {
 				if (getState() != STATE_ANGRY) return false;
 				return super.shouldExecute();
 			}
@@ -68,7 +69,8 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 		this.tasks.addTask(3, leap);
 
 		this.tasks.addTask(5, new EntityAIWander(this, 0.8D) {
-			public boolean shouldExecute() {
+			@Override
+            public boolean shouldExecute() {
 				if (getState() != STATE_ANGRY) return false;
 				return super.shouldExecute();
 			}
@@ -151,12 +153,14 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 		return 0.4F;
 	}
 	
-	@Nullable
+	@Override
+    @Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
 		return this.getEntityBoundingBox();
 	}
 
-	@Nullable
+	@Override
+    @Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
 		return this.getEntityBoundingBox();
 	}

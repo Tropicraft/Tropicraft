@@ -33,7 +33,7 @@ public class LayerHeldItemAshen extends LayerHeldItem {
         ItemStack itemstack = flag ? entitylivingbaseIn.getHeldItemOffhand() : entitylivingbaseIn.getHeldItemMainhand();
         ItemStack itemstack1 = flag ? entitylivingbaseIn.getHeldItemMainhand() : entitylivingbaseIn.getHeldItemOffhand();
 
-        if (itemstack != null || itemstack1 != null)
+        if (!itemstack.isEmpty() || !itemstack1.isEmpty())
         {
             GlStateManager.pushMatrix();
 
@@ -53,7 +53,7 @@ public class LayerHeldItemAshen extends LayerHeldItem {
 	
 	private void renderHeldItem(EntityLivingBase entity, ItemStack itemstack, ItemCameraTransforms.TransformType transformType, EnumHandSide handSide)
 	{
-		if (itemstack != null)
+		if (!itemstack.isEmpty())
 		{
 			this.renderEquippedItems(entity);
 		}

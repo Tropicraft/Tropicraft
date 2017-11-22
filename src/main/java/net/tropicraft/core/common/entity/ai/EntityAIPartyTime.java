@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -46,6 +47,7 @@ public class EntityAIPartyTime extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
 
@@ -75,7 +77,8 @@ public class EntityAIPartyTime extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    @Override
+    public boolean shouldContinueExecuting()
     {
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();
@@ -138,7 +141,7 @@ public class EntityAIPartyTime extends EntityAIBase
                 entityObj.setDancing(false);
                 if (true || lookUpdateTimer <= 0) {
 
-                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
+                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 
                     //keep for testing, was neat sounding
                     int amp = 1;//entityObj.world.rand.nextInt(10) + 1;
@@ -278,6 +281,7 @@ public class EntityAIPartyTime extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         super.startExecuting();
@@ -293,6 +297,7 @@ public class EntityAIPartyTime extends EntityAIBase
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         super.resetTask();

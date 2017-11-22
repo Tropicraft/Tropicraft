@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -68,7 +69,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SECTION, TorchSection.UPPER));
 	}
 
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	@Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		TorchSection section = (TorchSection)state.getValue(SECTION);
 
 		if (section == TorchSection.UPPER) {
@@ -107,7 +109,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 
 	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -143,7 +146,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	/**
 	 * Get the Item that this Block should drop when harvested.
 	 */
-	@Nullable
+	@Override
+    @Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		if (state.getBlock() != this) return null;
 
@@ -303,7 +307,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
@@ -354,4 +359,9 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		return ((TorchSection) state.getValue(SECTION)).ordinal();
 	}
 
+	@Nullable
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return super.getAiPathNodeType(state, world, pos);
+	}
 }

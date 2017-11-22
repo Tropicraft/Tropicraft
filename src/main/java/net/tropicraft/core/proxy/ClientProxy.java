@@ -110,7 +110,8 @@ public class ClientProxy extends CommonProxy {
 	    ModelLoader.setCustomStateMapper(block, mapper);
 	}
 
-	public void registerColoredBlock(Block block) {
+	@Override
+    public void registerColoredBlock(Block block) {
 		ITropicraftBlock tcBlock = (ITropicraftBlock)block;
 		if (tcBlock.getBlockColor() != null) {
 			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(tcBlock.getBlockColor(), block);
@@ -121,7 +122,8 @@ public class ClientProxy extends CommonProxy {
 		}
 	}
 
-	public void registerColoredItem(Item item) {
+	@Override
+    public void registerColoredItem(Item item) {
 		IItemColor itemColor = null;
 		if (item instanceof ItemTropicraftColored) {
 			itemColor = new ChairColorHandler();

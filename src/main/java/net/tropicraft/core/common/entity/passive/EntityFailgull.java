@@ -96,6 +96,7 @@ public class EntityFailgull extends EntityFlying {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
+		@Override
 		public boolean shouldExecute() {
 			return true;
 		}
@@ -103,6 +104,7 @@ public class EntityFailgull extends EntityFlying {
 		/**
 		 * Updates the task
 		 */
+		@Override
 		public void updateTask() {
 			if (this.parentEntity.getAttackTarget() == null) {
 				this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw = -((float)MathHelper.atan2(this.parentEntity.motionX, this.parentEntity.motionZ)) * (180F / (float)Math.PI);
@@ -130,6 +132,7 @@ public class EntityFailgull extends EntityFlying {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
+		@Override
 		public boolean shouldExecute() {
 			EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
 
@@ -147,13 +150,15 @@ public class EntityFailgull extends EntityFlying {
 		/**
 		 * Returns whether an in-progress EntityAIBase should continue executing
 		 */
-		public boolean continueExecuting() {
+		@Override
+		public boolean shouldContinueExecuting() {
 			return false;
 		}
 
 		/**
 		 * Execute a one shot task or start executing a continuous task
 		 */
+		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
 			double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);

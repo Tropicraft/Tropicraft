@@ -64,12 +64,12 @@ public class BlockEvents {
 		ItemStack handItemStack = player.getHeldItemMainhand();
 		Item inHand;
 
-		if (handItemStack != null)
+		if (!handItemStack.isEmpty())
 			inHand = handItemStack.getItem();
 		else
 			inHand = null;
 
-		ItemStack drop = null;
+		ItemStack drop = ItemStack.EMPTY;
 
 		if (inHand != null && (inHand instanceof ItemSword || inHand.getItemUseAction(new ItemStack(inHand)) == EnumAction.BLOCK))
 			drop = new ItemStack(ItemRegistry.coconutChunk);

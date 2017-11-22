@@ -95,11 +95,13 @@ public class EntityFishHook extends Entity
         this.handleHookCasting(this.motionX, this.motionY, this.motionZ, 1.5F, 1.0F);
     }
 
+    @Override
     protected void entityInit()
     {
         this.getDataManager().register(DATA_HOOKED_ENTITY, Integer.valueOf(0));
     }
 
+    @Override
     public void notifyDataManagerChange(DataParameter<?> key)
     {
         if (DATA_HOOKED_ENTITY.equals(key))
@@ -118,6 +120,7 @@ public class EntityFishHook extends Entity
     /**
      * Checks if the entity is in range to render.
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean isInRangeToRenderDist(double distance)
     {
@@ -158,6 +161,7 @@ public class EntityFishHook extends Entity
     /**
      * Set the position and rotation values directly without any clamping.
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
     {
@@ -175,6 +179,7 @@ public class EntityFishHook extends Entity
     /**
      * Updates the velocity of the entity to a new value.
      */
+    @Override
     @SideOnly(Side.CLIENT)
     public void setVelocity(double x, double y, double z)
     {
@@ -189,6 +194,7 @@ public class EntityFishHook extends Entity
     /**
      * Called to update the entity's position/logic.
      */
+    @Override
     public void onUpdate()
     {
         super.onUpdate();
@@ -525,6 +531,7 @@ public class EntityFishHook extends Entity
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         compound.setInteger("xTile", this.pos.getX());
@@ -538,6 +545,7 @@ public class EntityFishHook extends Entity
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         this.pos = new BlockPos(compound.getInteger("xTile"), compound.getInteger("yTile"), compound.getInteger("zTile"));
@@ -554,6 +562,7 @@ public class EntityFishHook extends Entity
         this.inGround = compound.getByte("inGround") == 1;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
@@ -580,6 +589,7 @@ public class EntityFishHook extends Entity
     /**
      * Will get destroyed next tick.
      */
+    @Override
     public void setDead()
     {
         super.setDead();

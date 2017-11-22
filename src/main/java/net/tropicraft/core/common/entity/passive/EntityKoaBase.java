@@ -430,9 +430,9 @@ public class EntityKoaBase extends EntityVillager {
             {
                 EntityPlayer entityplayer = (EntityPlayer)entityIn;
                 ItemStack itemstack = this.getHeldItemMainhand();
-                ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : null;
+                ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
-                if (itemstack != null && itemstack1 != null && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD)
+                if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD)
                 {
                     float f1 = 0.25F + (float)EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
@@ -594,7 +594,7 @@ public class EntityKoaBase extends EntityVillager {
         {
             ItemStack itemstack = this.inventory.getStackInSlot(i);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setByte("Slot", (byte)i);
@@ -881,7 +881,7 @@ public class EntityKoaBase extends EntityVillager {
             for (int i = 0; i < this.inventory.getSizeInventory(); ++i) {
                 ItemStack itemstack = this.inventory.getStackInSlot(i);
 
-                if (itemstack != null) {
+                if (!itemstack.isEmpty()) {
                     this.inventory.setInventorySlotContents(i, this.addItem(chest, itemstack));
                 }
             }
@@ -899,11 +899,11 @@ public class EntityKoaBase extends EntityVillager {
         {
             ItemStack itemstack1 = chest.getStackInSlot(i);
 
-            if (itemstack1 == null)
+            if (itemstack1.isEmpty())
             {
                 chest.setInventorySlotContents(i, itemstack);
                 chest.markDirty();
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (ItemStack.areItemsEqual(itemstack1, itemstack))
@@ -919,7 +919,7 @@ public class EntityKoaBase extends EntityVillager {
                     if (itemstack.getCount() <= 0)
                     {
                         chest.markDirty();
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
@@ -971,6 +971,7 @@ public class EntityKoaBase extends EntityVillager {
             if (this.motionY < -0.2F) {
                 this.motionY += 0.15F;
             } else {
+                //koa drowning more in 1.12 for some reason...
                 //this.motionY += 0.02F;
             }
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);

@@ -69,7 +69,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 		}
 	}
 
-	protected void initEntityAI() {
+	@Override
+    protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
@@ -84,7 +85,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 		this.targetTasks.addTask(2, new EntityIguana.AITargetAggressor(this));
 	}
 
-	protected void applyEntityAttributes() {
+	@Override
+    protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
@@ -94,11 +96,13 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 	/**
 	 * Called to update the entity's position/logic.
 	 */
-	public void onUpdate() {
+	@Override
+    public void onUpdate() {
 		super.onUpdate();
 	}
 
-	protected void updateAITasks() {
+	@Override
+    protected void updateAITasks() {
 		IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
 		if (this.isAngry()) {
@@ -124,14 +128,16 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 	/**
 	 * Checks if the entity's current position is a valid location to spawn this entity.
 	 */
-	public boolean getCanSpawnHere() {
+	@Override
+    public boolean getCanSpawnHere() {
 		return super.getCanSpawnHere();
 	}
 
 	/**
 	 * Helper method to write subclass entity data to NBT.
 	 */
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	@Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setShort("Anger", (short)this.angerLevel);
 
@@ -145,7 +151,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 	/**
 	 * Helper method to read subclass entity data from NBT.
 	 */
-	public void readEntityFromNBT(NBTTagCompound compound) {
+	@Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		this.angerLevel = compound.getShort("Anger");
 		String hurtBy = compound.getString("HurtBy");
@@ -165,7 +172,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 	/**
 	 * Called when the entity is attacked.
 	 */
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	@Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
 		} else {
@@ -194,7 +202,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 		return this.angerLevel > 0;
 	}
 
-	protected SoundEvent getAmbientSound() {
+	@Override
+    protected SoundEvent getAmbientSound() {
 		return TropicraftSounds.IGGY_LIVING;
 	}
 
@@ -202,7 +211,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 		return TropicraftSounds.IGGY_ATTACK;
 	}
 
-	protected SoundEvent getDeathSound() {
+	@Override
+    protected SoundEvent getDeathSound() {
 		return TropicraftSounds.IGGY_DEATH;
 	}
 
@@ -212,7 +222,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 			super(iguana, true, new Class[0]);
 		}
 
-		protected void setEntityAttackTarget(EntityCreature creatureIn, EntityLivingBase entityLivingBaseIn) {
+		@Override
+        protected void setEntityAttackTarget(EntityCreature creatureIn, EntityLivingBase entityLivingBaseIn) {
 			super.setEntityAttackTarget(creatureIn, entityLivingBaseIn);
 
 			if (creatureIn instanceof EntityIguana) {
@@ -229,7 +240,8 @@ public class EntityIguana extends EntityLandHostile implements IMob {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
-		public boolean shouldExecute() {
+		@Override
+        public boolean shouldExecute() {
 			return ((EntityIguana)this.taskOwner).isAngry() && super.shouldExecute();
 		}
 	}

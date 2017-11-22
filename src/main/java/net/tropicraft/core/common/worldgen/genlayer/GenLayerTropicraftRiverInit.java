@@ -11,7 +11,8 @@ public class GenLayerTropicraftRiverInit extends GenLayerTropicraft {
 		this.setZoom(1);
 	}
 
-	public int[] getInts(int x, int y, int width, int length) {
+	@Override
+    public int[] getInts(int x, int y, int width, int length) {
 		int[] resultMap = IntCache.getIntCache(width * length);
 
 		for(int j = 0; j < length; ++j) {

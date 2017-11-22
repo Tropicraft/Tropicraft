@@ -11,7 +11,8 @@ public class GenLayerTropicraftZoom extends GenLayerTropicraft {
 		this.setZoom(1);
 	}
 
-	public int[] getInts(int x, int y, int width, int length)
+	@Override
+    public int[] getInts(int x, int y, int width, int length)
 	{
 		int x2 = x >> 1;
 		int y2 = y >> 1;

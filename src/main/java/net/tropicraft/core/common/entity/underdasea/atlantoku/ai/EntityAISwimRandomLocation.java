@@ -31,7 +31,8 @@ public class EntityAISwimRandomLocation extends EntityAISwimBase {
 		}
 	}
 
-	public boolean continueExecuting() {
+	@Override
+    public boolean shouldContinueExecuting() {
 
 		return entity.targetVector == null;
 	}

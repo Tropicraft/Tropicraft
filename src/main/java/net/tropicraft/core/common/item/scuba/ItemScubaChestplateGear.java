@@ -172,7 +172,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
         if (!world.isRemote && world.getTotalWorldTime() % UPDATE_RATE == 0) {
             ItemStack helmetStack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             // Ensure the player doesn't drown if they have the proper tanks / air in tanks
-            if (itemstack != null && helmetStack != null && helmetStack.getItem() instanceof ItemScubaHelmet) {
+            if (!itemstack.isEmpty() && !helmetStack.isEmpty() && helmetStack.getItem() instanceof ItemScubaHelmet) {
                 IScubaGear gear = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
                 IScubaTank tankToEmpty = gear.getFirstNonEmptyTank();
 

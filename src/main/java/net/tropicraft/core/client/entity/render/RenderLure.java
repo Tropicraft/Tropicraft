@@ -23,7 +23,8 @@ public class RenderLure extends Render<EntityHook> {
 		super(renderManagerIn);
 	}
 
-	public void doRender(EntityHook entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	@Override
+    public void doRender(EntityHook entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x, (float) y, (float) z);
 		GlStateManager.enableRescaleNormal();
@@ -136,7 +137,8 @@ public class RenderLure extends Render<EntityHook> {
 		}
 	}
 
-	protected ResourceLocation getEntityTexture(EntityHook entity) {
+	@Override
+    protected ResourceLocation getEntityTexture(EntityHook entity) {
 		return TropicraftRenderUtils.bindTextureEntity("lures");
 	}
 }
