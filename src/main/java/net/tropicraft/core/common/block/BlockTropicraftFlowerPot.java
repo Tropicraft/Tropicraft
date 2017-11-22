@@ -131,7 +131,7 @@ public class BlockTropicraftFlowerPot extends BlockTropicraft implements ITileEn
 		{
 			ItemStack itemstack = tileentityflowerpot.getFlowerItemStack();
 
-			if (itemstack != null)
+			if (!itemstack.isEmpty())
 			{
 				return itemstack;
 			}

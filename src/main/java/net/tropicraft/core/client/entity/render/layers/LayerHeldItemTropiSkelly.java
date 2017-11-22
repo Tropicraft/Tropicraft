@@ -27,7 +27,7 @@ public class LayerHeldItemTropiSkelly implements LayerRenderer<EntityLivingBase>
 
         //System.out.println("render layer");
         
-        if (itemstack != null || itemstack1 != null)
+        if (!itemstack.isEmpty() || !itemstack1.isEmpty())
         {
             GlStateManager.pushMatrix();
             this.renderHeldItem(entitylivingbaseIn, itemstack1, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
@@ -38,7 +38,7 @@ public class LayerHeldItemTropiSkelly implements LayerRenderer<EntityLivingBase>
 
     private void renderHeldItem(EntityLivingBase entity, ItemStack itemstack, ItemCameraTransforms.TransformType transformType, EnumHandSide handSide)
     {
-        if (itemstack != null)
+        if (!itemstack.isEmpty())
         {
             GlStateManager.pushMatrix();
             // Forge: moved this call down, fixes incorrect offset while sneaking.

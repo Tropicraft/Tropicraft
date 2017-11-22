@@ -421,7 +421,7 @@ public class GuiTropicalBook extends GuiScreen {
         int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 		
 		boolean flag = (i >= k && j >= l && i < k + size && j < l + size);
-		if (itemstack != null && flag) {
+		if (!itemstack.isEmpty() && flag) {
 			String s = itemstack.getItem().getItemStackDisplayName(itemstack);
 			if (s.length() > 0) {
 				RenderHelper.disableStandardItemLighting();

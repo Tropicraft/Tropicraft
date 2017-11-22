@@ -89,7 +89,7 @@ public class RenderBambooItemFrame extends Render<EntityBambooItemFrame> {
 	private void renderItem(EntityBambooItemFrame itemFrame) {
         ItemStack itemstack = itemFrame.getDisplayedItem();
 
-        if (itemstack != null) {
+        if (!itemstack.isEmpty()) {
             EntityItem entityitem = new EntityItem(itemFrame.world, 0.0D, 0.0D, 0.0D, itemstack);
             Item item = entityitem.getItem().getItem();
             entityitem.getItem().setCount(1);

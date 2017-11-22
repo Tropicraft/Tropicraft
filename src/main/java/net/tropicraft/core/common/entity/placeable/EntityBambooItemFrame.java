@@ -80,7 +80,7 @@ public class EntityBambooItemFrame extends EntityItemFrame {
                 this.entityDropItem(new ItemStack(ItemRegistry.bambooItemFrame), 0.0F);
             }
 
-            if (itemstack != null && this.rand.nextFloat() < this.itemDropChance) {
+            if (!itemstack.isEmpty() && this.rand.nextFloat() < this.itemDropChance) {
                 itemstack = itemstack.copy();
                 this.removeFrameFromMap(itemstack);
                 this.entityDropItem(itemstack, 0.0F);
@@ -92,7 +92,7 @@ public class EntityBambooItemFrame extends EntityItemFrame {
      * Removes the dot representing this frame's position from the map when the item frame is broken.
      */
     private void removeFrameFromMap(ItemStack stack) {
-        if (stack != null) {
+        if (!stack.isEmpty()) {
             if (stack.getItem() instanceof net.minecraft.item.ItemMap) {
                 MapData mapdata = ((ItemMap)stack.getItem()).getMapData(stack, this.world);
                 mapdata.mapDecorations.remove("frame-" + this.getEntityId());
