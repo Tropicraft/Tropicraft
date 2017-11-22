@@ -39,36 +39,36 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		public String getName() {
 			return this.name().toLowerCase();
 		}
+
 		@Override
 		public String toString() {
 			return this.getName();
 		}
 	};
-	
+
 	private enum PlaceMode {
-	    FULL,
-	    TOP_ONLY,
-	    BLOCKED,
-	    ;
+		FULL, TOP_ONLY, BLOCKED,;
 	}
 
 	public static final PropertyEnum<TorchSection> SECTION = PropertyEnum.create("section", TorchSection.class);
 
-	protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D, 0.6000000238418579D, 0.999999D, 0.6000000238418579D);
-	protected static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D, 0.6000000238418579D, 0.6000000238418579D, 0.6000000238418579D);
+	protected static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D,
+			0.6000000238418579D, 0.999999D, 0.6000000238418579D);
+	protected static final AxisAlignedBB TOP_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D,
+			0.6000000238418579D, 0.6000000238418579D, 0.6000000238418579D);
 
 	public BlockTikiTorch() {
 		super(Material.CIRCUITS);
 		this.setTickRandomly(true);
 		this.setCreativeTab(null);
 
-		this.lightValue = (int)(15.0F);
+		this.lightValue = (int) (15.0F);
 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SECTION, TorchSection.UPPER));
 	}
 
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		TorchSection section = (TorchSection)state.getValue(SECTION);
+		TorchSection section = (TorchSection) state.getValue(SECTION);
 
 		if (section == TorchSection.UPPER) {
 			return TOP_AABB;
@@ -77,17 +77,16 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		}
 	}
 
-
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-	    if (!super.canPlaceBlockAt(world, pos)) {
-	        return false;
-	    }
+		if (!super.canPlaceBlockAt(world, pos)) {
+			return false;
+		}
 		PlaceMode mode = canPlaceTikiTorchOn(world, pos.down());
 		if (mode == PlaceMode.FULL) {
-		    return world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2));
+			return world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2));
 		} else if (mode == PlaceMode.TOP_ONLY) {
-		    return true;
+			return true;
 		}
 		return false;
 	}
@@ -111,7 +110,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 
 	/**
-	 * Used to determine ambient occlusion and culling when rebuilding chunks for render
+	 * Used to determine ambient occlusion and culling when rebuilding chunks for
+	 * render
 	 */
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
@@ -121,7 +121,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
-	}	
+	}
 
 	private PlaceMode canPlaceTikiTorchOn(World world, BlockPos pos) {
 		if (world.isBlockNormalCube(pos, false)) {
@@ -130,10 +130,10 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 			IBlockState state = world.getBlockState(pos);
 			boolean canPlace = !world.isAirBlock(pos) && state.getBlock().canPlaceTorchOnTop(state, world, pos);
 			if (canPlace) {
-			    if (state.getBlock() instanceof BlockFence || state.getBlock() instanceof BlockWall) {
-			        return PlaceMode.TOP_ONLY;
-			    }
-			    return PlaceMode.FULL;
+				if (state.getBlock() instanceof BlockFence || state.getBlock() instanceof BlockWall) {
+					return PlaceMode.TOP_ONLY;
+				}
+				return PlaceMode.FULL;
 			}
 			return PlaceMode.BLOCKED;
 		}
@@ -144,7 +144,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	 */
 	@Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		if (state.getBlock() != this) return null;
+		if (state.getBlock() != this)
+			return null;
 
 		if (state.getValue(SECTION) == TorchSection.LOWER || state.getValue(SECTION) == TorchSection.MIDDLE) {
 			return null;
@@ -152,16 +153,18 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 			return Item.getItemFromBlock(this);
 		}
 	}
-	
+
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
-	    return this.getDefaultState().withProperty(SECTION, TorchSection.LOWER);
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
+			float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+		return this.getDefaultState().withProperty(SECTION, TorchSection.LOWER);
 	}
 
 	/**
-	 * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
-	 * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
-	 * block, etc.
+	 * Called when a neighboring block was changed and marks that this state should
+	 * perform any checks during a neighbor change. Cases may include when redstone
+	 * power is updated, cactus blocks popping off due to a neighboring solid block,
+	 * etc.
 	 */
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
@@ -183,7 +186,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 
 	// Taken from BlockTorch
 	protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
-		if (state.getValue(SECTION) != TorchSection.LOWER || (state.getBlock() == this && this.canPlaceAt(worldIn, pos))) {
+		if (state.getValue(SECTION) != TorchSection.LOWER
+				|| (state.getBlock() == this && this.canPlaceAt(worldIn, pos))) {
 			return true;
 		} else {
 			if (worldIn.getBlockState(pos).getBlock() == this) {
@@ -196,22 +200,24 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 
 	/**
-	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
+	 * Called by ItemBlocks after a block is set in the world, to allow post-place
+	 * logic
 	 */
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
 		TorchSection section = state.getValue(SECTION);
 
-		if (section == TorchSection.UPPER) return;
+		if (section == TorchSection.UPPER)
+			return;
 
 		// Only place top block if it's on a fence
 		IBlockState stateBelow = worldIn.getBlockState(pos.down());
-		if (stateBelow.getBlock() instanceof BlockFence ||
-				stateBelow.getBlock() instanceof BlockWall) {
+		if (stateBelow.getBlock() instanceof BlockFence || stateBelow.getBlock() instanceof BlockWall) {
 			worldIn.setBlockState(pos, this.getDefaultState().withProperty(SECTION, TorchSection.UPPER), 2);
 		} else {
 			worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(SECTION, TorchSection.MIDDLE), 2);
-			worldIn.setBlockState(pos.up(2), this.getDefaultState().withProperty(SECTION, TorchSection.UPPER), 2);	
+			worldIn.setBlockState(pos.up(2), this.getDefaultState().withProperty(SECTION, TorchSection.UPPER), 2);
 		}
 	}
 
@@ -219,59 +225,59 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	private boolean canPlaceAt(World worldIn, BlockPos pos) {
 		return this.canPlaceTikiTorchOn(worldIn, pos.down()) != PlaceMode.BLOCKED;
 	}
-	
+
 	@Override
-    public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-        super.onBlockHarvested(world, pos, state, player);
-        if (!world.isRemote) {
-        		if(player.capabilities.isCreativeMode) {
-        			return;
-        		}
-            switch (state.getValue(SECTION)) {
-            case MIDDLE:
-                dropBlockAsItem(world, pos, world.getBlockState(pos.up()), 0);
-                break;
-            case LOWER:
-                dropBlockAsItem(world, pos, world.getBlockState(pos.up(2)), 0);
-                break;
-            default:
-                break;
-            }
-        }
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		super.onBlockHarvested(world, pos, state, player);
+		if (!world.isRemote) {
+			if (player.capabilities.isCreativeMode) {
+				return;
+			}
+			switch (state.getValue(SECTION)) {
+			case MIDDLE:
+				dropBlockAsItem(world, pos, world.getBlockState(pos.up()), 0);
+				break;
+			case LOWER:
+				dropBlockAsItem(world, pos, world.getBlockState(pos.up(2)), 0);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-	    super.breakBlock(world, pos, state);
-        if (!world.isRemote) {
-            TorchSection section = state.getValue(SECTION);
-            if (section == TorchSection.LOWER) {
-                if (world.getBlockState(pos.up()).getBlock() == this) {
-                    world.setBlockToAir(pos.up());
-                }
+		super.breakBlock(world, pos, state);
+		if (!world.isRemote) {
+			TorchSection section = state.getValue(SECTION);
+			if (section == TorchSection.LOWER) {
+				if (world.getBlockState(pos.up()).getBlock() == this) {
+					world.setBlockToAir(pos.up());
+				}
 
-                if (world.getBlockState(pos.up(2)).getBlock() == this) {
-                    world.setBlockToAir(pos.up(2));
-                }
-            } else if (section == TorchSection.MIDDLE){
-                if (world.getBlockState(pos.down()).getBlock() == this) {
-                    world.setBlockToAir(pos.down());
-                }
+				if (world.getBlockState(pos.up(2)).getBlock() == this) {
+					world.setBlockToAir(pos.up(2));
+				}
+			} else if (section == TorchSection.MIDDLE) {
+				if (world.getBlockState(pos.down()).getBlock() == this) {
+					world.setBlockToAir(pos.down());
+				}
 
-                if (world.getBlockState(pos.up()).getBlock() == this) {
-                    world.setBlockToAir(pos.up());
-                }
-            } else {
+				if (world.getBlockState(pos.up()).getBlock() == this) {
+					world.setBlockToAir(pos.up());
+				}
+			} else {
 
-                if (world.getBlockState(pos.down()).getBlock() == this) {
-                    world.setBlockToAir(pos.down());
-                }
+				if (world.getBlockState(pos.down()).getBlock() == this) {
+					world.setBlockToAir(pos.down());
+				}
 
-                if (world.getBlockState(pos.down(2)).getBlock() == this) {
-                    world.setBlockToAir(pos.down(2));
-                }
-            }
-        }
+				if (world.getBlockState(pos.down(2)).getBlock() == this) {
+					world.setBlockToAir(pos.down(2));
+				}
+			}
+		}
 	}
 
 	/**
@@ -284,7 +290,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
-		boolean isTop = (TorchSection)state.getValue(SECTION) == TorchSection.UPPER;
+		boolean isTop = (TorchSection) state.getValue(SECTION) == TorchSection.UPPER;
 		if (isTop) {
 			double d = (float) pos.getX() + 0.5F;
 			double d1 = (float) pos.getY() + 0.7F;
@@ -297,7 +303,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		boolean isTop = (TorchSection)state.getValue(SECTION) == TorchSection.UPPER;
+		boolean isTop = (TorchSection) state.getValue(SECTION) == TorchSection.UPPER;
 		if (isTop) {
 			return super.getLightValue(state, world, pos);
 		} else {
@@ -333,7 +339,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		TorchSection section = null;
-		switch(meta) {
+		switch (meta) {
 		case 0:
 			section = TorchSection.UPPER;
 			break;

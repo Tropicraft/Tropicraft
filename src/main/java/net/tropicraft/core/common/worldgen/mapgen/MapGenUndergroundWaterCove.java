@@ -17,7 +17,6 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityShark;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.worldgen.perlin.generator.RidgedMulti;
 import net.tropicraft.core.registry.BlockRegistry;
-import net.tropicraft.core.registry.ItemRegistry;
 
 public class MapGenUndergroundWaterCove {
 
@@ -31,7 +30,7 @@ public class MapGenUndergroundWaterCove {
 	public int y;
 
 	public ArrayList<Pair<BlockPos, TileEntity>> pendingTileEntities = new ArrayList<Pair<BlockPos, TileEntity>>();
-	
+
 	public boolean pendingBossSpawn = true;
 
 	public MapGenUndergroundWaterCove(World worldObj) {
@@ -40,8 +39,7 @@ public class MapGenUndergroundWaterCove {
 
 	public ChunkPrimer generate(int x, int z, ChunkPrimer primer) {
 		BlockPos coveCoords = getCoveNear(worldObj, x, z);
-        BlockFalling.fallInstantly = true;
-
+		BlockFalling.fallInstantly = true;
 
 		if (coveCoords != null) {
 			centerX = coveCoords.getX();
@@ -75,13 +73,13 @@ public class MapGenUndergroundWaterCove {
 				relativeZ *= relativeZ;
 				for (double j = -height; j < height; j++) {
 					if ((relativeX / length) + ((j * j) / height) + (relativeZ / width) <= 1) {
-						if(j >= -1) {
-								//System.out.println("Placed Packed Purified Sand "+x+" "+y+" "+z);
-							
-								placeBlock(blockX, y + (int) j + 1, blockZ, BlockRegistry.blockPackedPurifiedSand.getDefaultState(), primer);
-								placeBlock(blockX, y + (int) j + 2, blockZ, BlockRegistry.sands.getDefaultState(), primer);
+						if (j >= -1) {
+							// System.out.println("Placed Packed Purified Sand "+x+" "+y+" "+z);
+							placeBlock(blockX, y + (int) j + 1, blockZ,
+									BlockRegistry.blockPackedPurifiedSand.getDefaultState(), primer);
+							placeBlock(blockX, y + (int) j + 2, blockZ, BlockRegistry.sands.getDefaultState(), primer);
 
-						//	}
+							// }
 						}
 						placeBlock(blockX, y + (int) j, blockZ, BlockRegistry.tropicsWater.getDefaultState(), primer);
 
@@ -109,10 +107,13 @@ public class MapGenUndergroundWaterCove {
 
 					// Decorate with coral
 					if (rand.nextInt(15) == 0) {
-						placeBlock(blockX, y - j, blockZ, BlockRegistry.coral.defaultForVariant(TropicraftCorals.values()[rand.nextInt(TropicraftCorals.values().length)]),primer);
+						placeBlock(blockX, y - j, blockZ,
+								BlockRegistry.coral.defaultForVariant(
+										TropicraftCorals.values()[rand.nextInt(TropicraftCorals.values().length)]),
+								primer);
 					}
-					
-					if(rand.nextInt(80) == 0) {
+
+					if (rand.nextInt(80) == 0) {
 						placeBlock(blockX, y - j - 1, blockZ, Blocks.SPONGE.getStateFromMeta(1), primer);
 					}
 
@@ -122,19 +123,19 @@ public class MapGenUndergroundWaterCove {
 
 						// Remove any potential blocking object
 						placeBlock(blockX, y - j, blockZ, BlockRegistry.tropicsWater.getDefaultState(), primer);
-						
+
 						// Queue addition of seaweed's tileentity
 						queueTE(x + blockX, y - j - 1, z + blockZ, new BlockSeaweed.TileSeaweed());
-					}	
+					}
 
 				}
 			}
 		}
-		
-        BlockFalling.fallInstantly = false;
+
+		BlockFalling.fallInstantly = false;
 		return primer;
 	}
-	
+
 	public void queueTE(int x, int y, int z, TileEntity e) {
 		this.pendingTileEntities.add(Pair.of(new BlockPos(x, y, z), e));
 	}
@@ -155,16 +156,16 @@ public class MapGenUndergroundWaterCove {
 			}
 			pendingTileEntities.clear();
 		}
-		
-		if(!this.canGenCoveAtCoords(worldObj, chunkX, chunkZ)) {
+
+		if (!this.canGenCoveAtCoords(worldObj, chunkX, chunkZ)) {
 			return;
 		}
-	
-		if(pendingBossSpawn) {
+
+		if (pendingBossSpawn) {
 			EntityShark shark = new EntityShark(worldObj).setBoss();
 			shark.setPosition(centerX, y, centerZ);
 			worldObj.spawnEntity(shark);
-			System.out.println("shark boss spawned at "+centerX+" "+y+" "+centerZ);
+			System.out.println("shark boss spawned at " + centerX + " " + y + " " + centerZ);
 			pendingBossSpawn = false;
 		}
 	}
