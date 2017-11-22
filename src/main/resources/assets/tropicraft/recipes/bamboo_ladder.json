@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "tropicraft:bamboo_ladder",
+    "count": 3
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  }
+}

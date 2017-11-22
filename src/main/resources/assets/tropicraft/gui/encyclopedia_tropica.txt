@@ -405,3 +405,6 @@ regulator.desc  = This device regulates the pressure between the breathing gas a
 
 scubatank.title = Scuba Tank
 scubatank.desc  = Scuba tanks hold all the air that you breathe while diving. Refill your scuba tanks in an air compressor block.
+
+bamboo_ladder.title = Bamboo Ladder
+bamboo_ladder.desc  = Clunk. Clunk. Clunk. Hear that? That's you, climbing up a ladder made out of bamboo.
