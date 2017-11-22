@@ -230,6 +230,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 	 * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
 	 * the Item before the action is complete.
 	 */
+	@Override
 	public @Nonnull ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityLivingBase entityLiving) {
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entityLiving;
@@ -242,7 +243,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 			}
 		}
 
-		return stack;
+		return new ItemStack(ItemRegistry.bambooMug);
 	}
 
 	@Override
@@ -276,13 +277,13 @@ public class ItemCocktail extends ItemTropicraftColored {
 		Drink drink = getDrink(itemstack);
 		if (itemstack.isEmpty() || drink == null) {
 			name = I18n.format(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-					+ ":" + "cocktail.name").trim();			
+					+ "." + "cocktail.name").trim();
 		} else {
 			if (drink.drinkId == Drink.pinaColada.drinkId) {
 				name = drink.displayName;
 			} else {
 				name = I18n.format(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-						+ ":" + "cocktail.name").trim();
+						+ "." + "cocktail.name").trim();
 			}
 		}
 
