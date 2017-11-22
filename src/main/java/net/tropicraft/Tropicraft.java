@@ -41,6 +41,7 @@ import net.tropicraft.core.registry.CommandRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.LootRegistry;
+import net.tropicraft.core.registry.SmeltingRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
@@ -85,11 +86,12 @@ public class Tropicraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		TCPacketHandler.init();
-		ItemRegistry.init();
+	//	ItemRegistry.init();
 //		AchievementRegistry.init();
 		//EntityRegistry.init();
 		proxy.init();
 		proxy.registerBooks();
+		SmeltingRegistry.init();
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
 		MinecraftForge.EVENT_BUS.register(new BlockEvents());
 		MinecraftForge.EVENT_BUS.register(new AchievementEvents());
