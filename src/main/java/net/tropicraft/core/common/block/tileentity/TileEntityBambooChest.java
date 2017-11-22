@@ -2,10 +2,16 @@ package net.tropicraft.core.common.block.tileentity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.tropicraft.core.common.block.BambooDoubleChestItemHandler;
+import net.tropicraft.core.common.block.BlockBambooChest;
 
 public class TileEntityBambooChest extends TileEntityChest {
 
@@ -14,6 +20,22 @@ public class TileEntityBambooChest extends TileEntityChest {
 
     public TileEntityBambooChest() {
         super();
+    }
+    
+    /**
+     * Called from Chunk.setBlockIDWithMetadata and Chunk.fillChunk, determines if this tile entity should be re-created when the ID, or Metadata changes.
+     * Use with caution as this will leave straggler TileEntities, or create conflicts with other TileEntities if not used properly.
+     *
+     * @param world Current world
+     * @param pos Tile's world position
+     * @param oldState The old ID of the block
+     * @param newState The new ID of the block (May be the same)
+     * @return true forcing the invalidation of the existing TE, false not to invalidate the existing TE
+     */
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return oldState.getBlock() != newSate.getBlock();
     }
 
     @Override
@@ -36,109 +58,6 @@ public class TileEntityBambooChest extends TileEntityChest {
     }
 
     /**
-     * Performs the check for adjacent chests to determine if this chest is double or not.
-     */
-//    @Override
-//    public void checkForAdjacentChests() {
-//        if (!this.adjacentChestChecked) {
-//            this.adjacentChestChecked = true;
-//            this.adjacentChestZNeg = null;
-//            this.adjacentChestXPos = null;
-//            this.adjacentChestXNeg = null;
-//            this.adjacentChestZPos = null;
-//
-//            if (this.func_94044_a(this.xCoord - 1, this.yCoord, this.zCoord))
-//            {
-//                this.adjacentChestXNeg = (TileEntityBambooChest)this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
-//            }
-//
-//            if (this.func_94044_a(this.xCoord + 1, this.yCoord, this.zCoord))
-//            {
-//                this.adjacentChestXPos = (TileEntityBambooChest)this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
-//            }
-//
-//            if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord - 1))
-//            {
-//                this.adjacentChestZNeg = (TileEntityBambooChest)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
-//            }
-//
-//            if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord + 1))
-//            {
-//                this.adjacentChestZPos = (TileEntityBambooChest)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
-//            }
-//
-//            // func_90009_a is called here
-//            if (this.adjacentChestZNeg != null)
-//            {
-//                this.adjacentChestZNeg.updateContainingBlockInfo();
-//            }
-//            if (this.adjacentChestZPos != null)
-//            {
-//                this.adjacentChestZPos.updateContainingBlockInfo();
-//            }
-//            if (this.adjacentChestXPos != null)
-//            {
-//                this.adjacentChestXPos.updateContainingBlockInfo();
-//            }
-//            if (this.adjacentChestXNeg != null)
-//            {
-//                this.adjacentChestXNeg.updateContainingBlockInfo();
-//            }
-//        }
-//    }
-
-//    private void func_90009_a(TileEntityBambooChest par1TileEntityChest, int par2)
-//    {
-//        if (par1TileEntityChest.isInvalid())
-//        {
-//            this.adjacentChestChecked = false;
-//        }
-//        else if (this.adjacentChestChecked)
-//        {
-//            switch (par2)
-//            {
-//                case 0:
-//                    if (this.adjacentChestZPos != par1TileEntityChest)
-//                    {
-//                        this.adjacentChestChecked = false;
-//                    }
-//
-//                    break;
-//                case 1:
-//                    if (this.adjacentChestXNeg != par1TileEntityChest)
-//                    {
-//                        this.adjacentChestChecked = false;
-//                    }
-//
-//                    break;
-//                case 2:
-//                    if (this.adjacentChestZNeg != par1TileEntityChest)
-//                    {
-//                        this.adjacentChestChecked = false;
-//                    }
-//
-//                    break;
-//                case 3:
-//                    if (this.adjacentChestXPos != par1TileEntityChest)
-//                    {
-//                        this.adjacentChestChecked = false;
-//                    }
-//            }
-//        }
-//    }
-
-//    /*
-//     * Neighbour is the same block?
-//     */
-//    private boolean func_94044_a(int x, int y, int z)
-//    {
-//        Block block = worldObj.getBlock(x, y, z);
-//        return block != null && 
-//        		block instanceof BlockBambooChest ? 
-//        				((BlockBambooChest)block).field_149956_a == this.func_145980_j() : false;
-//    }
-
-    /**
      *
      * @return Returns if this chest is unbreakable
      */
@@ -153,31 +72,104 @@ public class TileEntityBambooChest extends TileEntityChest {
     public void setIsUnbreakable(boolean flag) {
         unbreakable = flag;
     }
-//
-//    @Override
-//    public AxisAlignedBB getRenderBoundingBox () {
-//    	/**
-//    	 * The rendering bounding box needs to be bigger for large chests,
-//    	 * since these are two blocks wide.
-//    	 */
-//    	
-//    	checkForAdjacentChests();
-//    	int xCoord = pos.getX();
-//    	int yCoord = pos.getY();
-//    	int zCoord = pos.getZ();
-//
-//    	if (this.adjacentChestZPos != null)
-//    	{
-//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 2);
-//    	}
-//    	else if (this.adjacentChestXPos != null)
-//        {
-//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 2, yCoord + 1, zCoord + 1);
-//        }
-//    	else
-//    	{
-//    		return new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
-//    	}
-//    }
 
+    @Nullable
+    @Override
+    protected TileEntityChest getAdjacentChest(EnumFacing side)
+    {
+        BlockPos blockpos = this.pos.offset(side);
+
+        if (this.isChestAt(blockpos))
+        {
+            TileEntity tileentity = this.world.getTileEntity(blockpos);
+
+            if (tileentity instanceof TileEntityBambooChest)
+            {
+                TileEntityBambooChest tileentitychest = (TileEntityBambooChest)tileentity;
+                tileentitychest.setNeighbor(this, side.getOpposite());
+                return tileentitychest;
+            }
+        }
+
+        return null;
+    }
+    
+    @SuppressWarnings("incomplete-switch")
+    private void setNeighbor(TileEntityChest chestTe, EnumFacing side)
+    {
+        if (chestTe.isInvalid())
+        {
+            this.adjacentChestChecked = false;
+        }
+        else if (this.adjacentChestChecked)
+        {
+            switch (side)
+            {
+                case NORTH:
+
+                    if (this.adjacentChestZNeg != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+
+                    break;
+                case SOUTH:
+
+                    if (this.adjacentChestZPos != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+
+                    break;
+                case EAST:
+
+                    if (this.adjacentChestXPos != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+
+                    break;
+                case WEST:
+
+                    if (this.adjacentChestXNeg != chestTe)
+                    {
+                        this.adjacentChestChecked = false;
+                    }
+            }
+        }
+    }
+    
+    private boolean isChestAt(BlockPos posIn)
+    {
+        if (this.world == null)
+        {
+            return false;
+        }
+        else
+        {
+            Block block = this.world.getBlockState(posIn).getBlock();
+            return block instanceof BlockBambooChest && ((BlockBambooChest)block).chestType == this.getChestType();
+        }
+    }
+    
+    public BambooDoubleChestItemHandler doubleChestHandler;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing)
+    {
+        if (capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+            if(doubleChestHandler == null || doubleChestHandler.needsRefresh())
+                doubleChestHandler = BambooDoubleChestItemHandler.get(this);
+            if (doubleChestHandler != null && doubleChestHandler != BambooDoubleChestItemHandler.NO_ADJACENT_CHESTS_INSTANCE)
+                return (T) doubleChestHandler;
+        }
+        return super.getCapability(capability, facing);
+    }
+
+    public net.minecraftforge.items.IItemHandler getSingleChestHandler()
+    {
+        return super.getCapability(net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+    }
 }
