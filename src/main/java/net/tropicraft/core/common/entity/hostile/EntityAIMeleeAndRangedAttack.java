@@ -62,7 +62,8 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 	/**
 	 * Returns whether the EntityAIBase should begin execution.
 	 */
-	public boolean shouldExecute()
+	@Override
+    public boolean shouldExecute()
 	{
 		EntityLivingBase entitylivingbase = this.entityHost.getAttackTarget();
 
@@ -80,7 +81,8 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
-	public boolean shouldContinueExecuting()
+	@Override
+    public boolean shouldContinueExecuting()
 	{
 		return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
 	}
@@ -88,7 +90,8 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 	/**
 	 * Resets the task
 	 */
-	public void resetTask()
+	@Override
+    public void resetTask()
 	{
 		this.attackTarget = null;
 		this.field_75318_f = 0;
@@ -98,7 +101,8 @@ public class EntityAIMeleeAndRangedAttack extends EntityAIBase
 	/**
 	 * Updates the task
 	 */
-	public void updateTask()
+	@Override
+    public void updateTask()
 	{
 	    if (this.attackTarget != null) {
 	        ItemStack headGear = this.attackTarget.getItemStackFromSlot(EntityEquipmentSlot.HEAD);

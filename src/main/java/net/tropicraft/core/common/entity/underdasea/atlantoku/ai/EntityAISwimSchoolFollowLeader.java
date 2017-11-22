@@ -41,7 +41,8 @@ public class EntityAISwimSchoolFollowLeader extends EntityAISwimBase {
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
-	public boolean shouldContinueExecuting() {
+	@Override
+    public boolean shouldContinueExecuting() {
 		return entity.isInWater() && !entity.getIsLeader() && entity.leader != null;
 	}
 }

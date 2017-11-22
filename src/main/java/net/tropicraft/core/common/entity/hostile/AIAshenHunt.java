@@ -44,6 +44,7 @@ public class AIAshenHunt extends EntityAIBase {
         return this.shouldExecute() || !this.ashen.getNavigator().noPath();
     }
 
+    @Override
     public void resetTask() {
         this.target = null;
     //    this.field_75318_f = 0;

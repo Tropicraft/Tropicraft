@@ -70,7 +70,8 @@ public class AIAshenChaseAndPickupLostMask extends EntityAIBase {
 		panicTime = 120;
 	}
 
-	public void resetTask() {
+	@Override
+    public void resetTask() {
 		this.target = null;
 	}
 }

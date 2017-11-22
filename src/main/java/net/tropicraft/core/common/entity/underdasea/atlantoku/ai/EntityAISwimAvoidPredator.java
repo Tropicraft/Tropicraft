@@ -59,7 +59,8 @@ public class EntityAISwimAvoidPredator extends EntityAISwimBase {
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
-	public boolean shouldContinueExecuting() {
+	@Override
+    public boolean shouldContinueExecuting() {
 
 		return entity.isInWater();
 	}

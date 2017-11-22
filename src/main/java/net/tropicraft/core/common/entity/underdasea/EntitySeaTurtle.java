@@ -333,7 +333,8 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		return super.processInteract(player, hand);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public void applyOrientationToEntity(Entity entityToUpdate) {
 	
 	}
@@ -463,12 +464,14 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		return true;
 	}
 
-	@Nullable
+	@Override
+    @Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
 		return this.getEntityBoundingBox();
 	}
 
-	@Nullable
+	@Override
+    @Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
 		return null;
 	}

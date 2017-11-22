@@ -71,6 +71,7 @@ public abstract class EntityEgg extends EntityLiving {
     }
     
     
+    @Override
     public void onUpdate() {
         super.onUpdate();
         

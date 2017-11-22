@@ -50,11 +50,13 @@ public class EntityLavaBall extends Entity {
 		lifeTimer = 0;
 	}
 
-	public boolean canBeCollidedWith() {
+	@Override
+    public boolean canBeCollidedWith() {
 		return true;
 	}
 
-	public boolean canBePushed() {
+	@Override
+    public boolean canBePushed() {
 		return true;
 	}
 
@@ -69,7 +71,8 @@ public class EntityLavaBall extends Entity {
 		}
 	}
 
-	public void onUpdate() {
+	@Override
+    public void onUpdate() {
 		super.onUpdate();
 		// System.out.println("laba ball: " + posX + " " + posY + " " + posZ);
 

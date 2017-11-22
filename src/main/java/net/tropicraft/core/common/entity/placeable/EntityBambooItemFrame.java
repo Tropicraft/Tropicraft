@@ -57,7 +57,8 @@ public class EntityBambooItemFrame extends EntityItemFrame {
 		return this.dataManager.get(FACING);
 	}
 	
-	public void onUpdate() {
+	@Override
+    public void onUpdate() {
 		super.onUpdate();
 	}
 

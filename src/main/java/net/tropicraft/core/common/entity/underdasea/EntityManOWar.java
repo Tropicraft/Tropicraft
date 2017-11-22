@@ -213,14 +213,16 @@ public class EntityManOWar extends EntityWaterMob {
 		/**
 		 * Returns whether the EntityAIBase should begin execution.
 		 */
-		public boolean shouldExecute() {
+		@Override
+        public boolean shouldExecute() {
 			return true;
 		}
 
 		/**
 		 * Updates the task
 		 */
-		public void updateTask() {
+		@Override
+        public void updateTask() {
 			if(this.mow.getRNG().nextInt(150) == 0 || !this.mow.inWater ||
 					this.mow.randomMotionVecX == 0.0F && this.mow.randomMotionVecY == 0.0F && this.mow.randomMotionVecZ == 0.0F) {
 				float f = this.mow.getRNG().nextFloat() * 3.141593F * 2.0F;

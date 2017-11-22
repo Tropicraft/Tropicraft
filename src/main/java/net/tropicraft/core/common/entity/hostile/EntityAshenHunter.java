@@ -95,7 +95,8 @@ public class EntityAshenHunter extends EntityAshen {
 		}
 	}
 
-	protected SoundEvent getAmbientSound() {
+	@Override
+    protected SoundEvent getAmbientSound() {
 		return getAttackTarget() == null ? null : TropicraftSounds.ASHEN_LAUGH;
 	}
 

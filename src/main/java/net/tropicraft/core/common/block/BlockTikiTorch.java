@@ -68,7 +68,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SECTION, TorchSection.UPPER));
 	}
 
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	@Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		TorchSection section = (TorchSection)state.getValue(SECTION);
 
 		if (section == TorchSection.UPPER) {
@@ -143,7 +144,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	/**
 	 * Get the Item that this Block should drop when harvested.
 	 */
-	@Nullable
+	@Override
+    @Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		if (state.getBlock() != this) return null;
 
@@ -303,7 +305,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}

@@ -170,7 +170,8 @@ public class GuiTropicsLoading extends GuiDownloadTerrain {
 	/**
 	 * Draws the screen and all the components in it.
 	 */
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+	@Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		if (screenEntities == null && mc.world != null) {
 			assignScreenContent();
 		}

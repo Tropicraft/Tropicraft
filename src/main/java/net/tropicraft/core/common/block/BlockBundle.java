@@ -39,7 +39,8 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
 	 * IBlockstate
 	 */
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	@Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(BUNDLE_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
 	}
 	
@@ -52,7 +53,8 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
 	 * blockstate.
 	 */
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
+	@Override
+    public IBlockState withRotation(IBlockState state, Rotation rot) {
 		switch (rot) {
 		case COUNTERCLOCKWISE_90:
 		case CLOCKWISE_90:

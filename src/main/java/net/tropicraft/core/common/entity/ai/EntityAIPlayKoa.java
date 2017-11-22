@@ -24,6 +24,7 @@ public class EntityAIPlayKoa extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         if (this.villagerObj.getGrowingAge() >= 0)
@@ -70,6 +71,7 @@ public class EntityAIPlayKoa extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean shouldContinueExecuting()
     {
         return this.playTime > 0;
@@ -78,6 +80,7 @@ public class EntityAIPlayKoa extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         if (this.targetVillager != null)
@@ -91,6 +94,7 @@ public class EntityAIPlayKoa extends EntityAIBase
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         this.villagerObj.setPlaying(false);
@@ -100,6 +104,7 @@ public class EntityAIPlayKoa extends EntityAIBase
     /**
      * Updates the task
      */
+    @Override
     public void updateTask()
     {
         --this.playTime;

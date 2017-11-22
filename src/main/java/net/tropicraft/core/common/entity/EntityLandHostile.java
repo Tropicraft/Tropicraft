@@ -25,7 +25,8 @@ public abstract class EntityLandHostile extends EntityLand {
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
 	}
 
-	public boolean attackEntityAsMob(Entity entityIn) {
+	@Override
+    public boolean attackEntityAsMob(Entity entityIn) {
 		float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		int i = 0;
 

@@ -23,6 +23,7 @@ public class TileEntityTropicraftFlowerPot extends TileEntity {
         this.flowerPotData = potData;
     }
 
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         ResourceLocation resourcelocation = (ResourceLocation)Item.REGISTRY.getNameForObject(this.flowerPotItem);
@@ -31,6 +32,7 @@ public class TileEntityTropicraftFlowerPot extends TileEntity {
         return compound;
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
@@ -43,11 +45,13 @@ public class TileEntityTropicraftFlowerPot extends TileEntity {
         this.flowerPotData = compound.getInteger("Data");
     }
 
+    @Override
     @Nullable
     public SPacketUpdateTileEntity getUpdatePacket() {
         return new SPacketUpdateTileEntity(this.pos, 5, this.getUpdateTag());
     }
 
+    @Override
     public NBTTagCompound getUpdateTag() {
         return this.writeToNBT(new NBTTagCompound());
     }

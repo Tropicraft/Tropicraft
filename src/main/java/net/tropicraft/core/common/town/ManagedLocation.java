@@ -163,7 +163,8 @@ public class ManagedLocation implements ISimulationTickable {
 		return null;
 	}
 	
-	public void cleanup() {
+	@Override
+    public void cleanup() {
 		//we dont care to actually destroy entity instances here so we just clear the lists
 		listLoadedEntities.clear();
 		listPersistantEntities.clear();

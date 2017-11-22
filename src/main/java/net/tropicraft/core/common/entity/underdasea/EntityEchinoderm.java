@@ -157,7 +157,8 @@ public abstract class EntityEchinoderm extends EntityWaterMob {
 	
 	public abstract EntityEgg createEgg();
 	
-	public boolean isChild() {
+	@Override
+    public boolean isChild() {
 		return getGrowingAge() < 0;
 	}
 	

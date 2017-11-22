@@ -39,6 +39,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         if (entityObj.getHealth() < entityObj.getMaxHealth() - missingHealthToHeal) {
@@ -51,6 +52,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean shouldContinueExecuting()
     {
         return shouldExecute();
@@ -133,6 +135,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         super.startExecuting();
@@ -144,6 +147,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         super.resetTask();
