@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -140,7 +141,7 @@ public class EntityAIPartyTime extends EntityAIBase
                 entityObj.setDancing(false);
                 if (true || lookUpdateTimer <= 0) {
 
-                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, null);
+                    entityObj.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 
                     //keep for testing, was neat sounding
                     int amp = 1;//entityObj.world.rand.nextInt(10) + 1;

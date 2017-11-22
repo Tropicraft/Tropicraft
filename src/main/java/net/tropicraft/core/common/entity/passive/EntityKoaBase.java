@@ -594,7 +594,7 @@ public class EntityKoaBase extends EntityVillager {
         {
             ItemStack itemstack = this.inventory.getStackInSlot(i);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setByte("Slot", (byte)i);
@@ -881,7 +881,7 @@ public class EntityKoaBase extends EntityVillager {
             for (int i = 0; i < this.inventory.getSizeInventory(); ++i) {
                 ItemStack itemstack = this.inventory.getStackInSlot(i);
 
-                if (itemstack != null) {
+                if (!itemstack.isEmpty()) {
                     this.inventory.setInventorySlotContents(i, this.addItem(chest, itemstack));
                 }
             }
@@ -971,7 +971,8 @@ public class EntityKoaBase extends EntityVillager {
             if (this.motionY < -0.2F) {
                 this.motionY += 0.15F;
             } else {
-                //this.motionY += 0.02F;
+                //koa drowning more in 1.12 for some reason...
+                this.motionY += 0.02F;
             }
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
         } else {
