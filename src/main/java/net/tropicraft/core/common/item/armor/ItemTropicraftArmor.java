@@ -38,7 +38,8 @@ public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		return new ArmorProperties(10, source == DamageSource.IN_FIRE ? 1.0 : 0.3, Integer.MAX_VALUE);
+	    // Default armor damage reduction
+	    return new ArmorProperties(0, this.damageReduceAmount / 25D, Integer.MAX_VALUE);
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 	 */
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-		return 3;
+	    return this.damageReduceAmount;
 	}
 
 	/**
@@ -68,6 +69,6 @@ public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
 	 */
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-		stack.damageItem(damage, entity);        
+	    stack.damageItem(damage, entity);   
 	}
 }
