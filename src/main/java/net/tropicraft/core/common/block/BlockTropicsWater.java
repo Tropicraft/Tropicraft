@@ -64,6 +64,8 @@ public class BlockTropicsWater extends BlockFluidClassic {
 				.orElse(ret);
 	}
 
+	/** These 5 methods below are a copypasta from BlockLiquid to patch the issue of tropics water pulling your down too much **/
+
 	@Override
 	@Nonnull
 	public Vec3d modifyAcceleration(World worldIn, BlockPos pos, Entity entityIn, Vec3d motion)
