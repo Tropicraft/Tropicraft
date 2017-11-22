@@ -1,5 +1,9 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +27,8 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 
 	public BlockSifter() {
 		super(Material.WOOD);
+		this.setHardness(1.0F);
+		this.setResistance(4.0F);
 	}
 	
 	@Override
@@ -75,4 +81,12 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 		return TileEntityFactory.getSifterTE();
 	}
 
+	/**
+	 * Get the Item that this Block should drop when harvested.
+	 */
+	@Nullable
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	    return Item.getItemFromBlock(BlockRegistry.sifter);
+	}
 }

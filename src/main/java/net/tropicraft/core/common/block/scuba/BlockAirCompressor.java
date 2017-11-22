@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block.scuba;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -13,6 +14,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -22,6 +24,8 @@ import net.minecraft.world.World;
 import net.tropicraft.core.common.block.BlockTropicraft;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
+import net.tropicraft.core.common.enums.BlockHardnessValues;
+import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockAirCompressor extends BlockTropicraft implements ITileEntityProvider {
 
@@ -30,6 +34,8 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
 
     public BlockAirCompressor() {
 		super(Material.ROCK);
+		this.setHardness(2.0F);
+		this.setResistance(BlockHardnessValues.CHUNK.resistance);
 		//this.setBlockBounds(0, 0, 0, 1, 1.8F, 1);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
@@ -136,5 +142,14 @@ public class BlockAirCompressor extends BlockTropicraft implements ITileEntityPr
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(FACING).getHorizontalIndex();
+    }
+
+    /**
+     * Get the Item that this Block should drop when harvested.
+     */
+    @Nullable
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return Item.getItemFromBlock(BlockRegistry.airCompressor);
     }
 }
