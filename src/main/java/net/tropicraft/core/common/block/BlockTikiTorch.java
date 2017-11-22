@@ -109,7 +109,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 
 	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -361,6 +362,6 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	@Nullable
 	@Override
 	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return PathNodeType.BLOCKED;
+		return super.getAiPathNodeType(state, world, pos);
 	}
 }

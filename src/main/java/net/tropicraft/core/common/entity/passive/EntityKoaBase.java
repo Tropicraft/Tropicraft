@@ -972,7 +972,7 @@ public class EntityKoaBase extends EntityVillager {
                 this.motionY += 0.15F;
             } else {
                 //koa drowning more in 1.12 for some reason...
-                this.motionY += 0.02F;
+                //this.motionY += 0.02F;
             }
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
         } else {
