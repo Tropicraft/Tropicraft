@@ -147,7 +147,7 @@ public class BlockCoral extends BlockTropicraftEnumVariants<TropicraftCorals> im
      * Pop off coral block if sand underneath disappears
      */
 	@Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
         this.checkFlowerChange(world, pos, state);
     }
 }
