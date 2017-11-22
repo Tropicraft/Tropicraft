@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -357,4 +358,9 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		return ((TorchSection) state.getValue(SECTION)).ordinal();
 	}
 
+	@Nullable
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return PathNodeType.BLOCKED;
+	}
 }
