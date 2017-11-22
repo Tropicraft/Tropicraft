@@ -164,8 +164,8 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	}
 	
 	public void addItemToSifter(ItemStack stack) {
-		stack.setCount(1);
-		this.siftItem = stack; 
+		this.siftItem = stack.copy();
+		this.siftItem.setCount(1);
 		this.syncInventory();
 	}
 	

@@ -22,7 +22,7 @@ public class TileEntitySifterRenderer extends TileEntitySpecialRenderer<TileEnti
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float)x + 0.5F, (float)y, (float)z + 0.5F);
 
-		if (item == null && sifter.isSifting()) {
+		if (item == null && !sifter.siftItem.isEmpty() && sifter.isSifting()) {
 			item = (EntityItem)(new EntityItem(sifter.getWorld()));
 			((EntityItem)item).setItem(sifter.siftItem.copy());
 		}

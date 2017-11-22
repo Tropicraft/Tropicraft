@@ -47,11 +47,11 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 			return true;
 		}
 
-		ItemStack stack = entityPlayer.getHeldItemMainhand();
+		ItemStack stack = entityPlayer.getHeldItem(hand);
 
 		TileEntitySifter tileentitysifta = (TileEntitySifter) world.getTileEntity(pos);
 
-		if (tileentitysifta != null && stack != null && !tileentitysifta.isSifting()) {
+		if (tileentitysifta != null && !stack.isEmpty() && !tileentitysifta.isSifting()) {
 			Item helditem = stack.getItem();
 			if (helditem == Item.getItemFromBlock(Blocks.SAND) || (helditem == Item.getItemFromBlock(BlockRegistry.sands))) {
 				entityPlayer.getHeldItemMainhand().shrink(1);
