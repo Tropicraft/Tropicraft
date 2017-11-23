@@ -27,6 +27,8 @@ public class BiomeDecoratorTropicsBeach extends BiomeDecoratorTropicraft {
     	super.genDecorations(biome, world, rand);
         int i = 0;
         int k = 0;
+        
+        if (true) return;
 
         if (GenRates.NORMAL_PALM_CHANCE != 0 && rand.nextInt(GenRates.NORMAL_PALM_CHANCE) == 0) {
             i = randDecorationCoord(rand, chunkPos.getX(), 16);

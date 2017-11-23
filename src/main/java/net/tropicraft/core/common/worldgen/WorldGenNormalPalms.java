@@ -26,54 +26,65 @@ public class WorldGenNormalPalms extends TCGenBase {
 
 	@Override
 	public boolean generate(BlockPos pos) {
+        if (TCGenUtils.getBlockState(worldObj, pos.down()).getMaterial() != Material.SAND) {
+            return false;
+        }
+
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 		byte height = (byte)(rand.nextInt(4) + 6);
-		boolean flag = true;
-		if (j < 1 || j + height + 1 > 128) {
-			return false;
-		}
 
-		for (int l = j; l <= j + 1 + height; l++) {
-			byte byte1 = 1;
-			if (l == j) {
-				byte1 = 0;
-			}
+	      boolean canGen = true;
 
-			if (l >= (j + 1 + height) - 2) {
-				byte1 = 2;
-			}
-			
-			for (int k1 = i - byte1; k1 <= i + byte1 && flag; k1++) {
-				for (int i2 = k - byte1; i2 <= k + byte1 && flag; i2++) {
-					if (l >= 0 && l < 128) {
-						BlockPos pos2 = new BlockPos(k1, l, i2);
-						IBlockState j2 = worldObj.getBlockState(pos2);
-						if (!worldObj.isAirBlock(pos2) && j2 != palmLeaves) {
-							flag = false;
-						}
-					} else {
-						flag = false;
-					}
-				}
+	        // Sanity check
+	        if (j < 1 || j + height + 1 > TCGenBase.MAX_CHUNK_HEIGHT) {
+	            return false;
+	        }
 
-			}
+	        for (int l = j; l <= j + 1 + height; l++) {
+	            byte byte1 = 1;
 
-		}
+	            if(l == j) {
+	                byte1 = 0;
+	            }
 
-		if (!flag) {
-			return false;
-		}
+	            if(l >= (j + 1 + height) - 2) {
+	                byte1 = 2;
+	            }
 
-		IBlockState i1 = TCGenUtils.getBlockState(worldObj, i, j - 1, k);
-		if (i1.getMaterial() != Material.SAND || j >= 128 - height - 1) {
-			int ground = worldObj.getHeight(new BlockPos(i, 0, k)).getY();
-			i1 = TCGenUtils.getBlockState(worldObj, i, ground - 1, k);
-			if (i1.getMaterial() != Material.SAND || j >= 128 - height - 1) {
-				return false;
-			}
-			j = ground;
-		}
-		
+	            for(int j1 = i - byte1; j1 <= i + byte1 && canGen; j1++) {
+	                for(int k1 = k - byte1; k1 <= k + byte1 && canGen; k1++) {
+	                    if(l >= 0 && l < TCGenBase.MAX_CHUNK_HEIGHT) {
+	                        Block l1 = TCGenUtils.getBlock(worldObj, j1, l, k1);
+	                        if(l1 != Blocks.AIR && l1 != BlockRegistry.leaves) {
+	                            canGen = false;
+	                        }
+	                    } else
+	                    {
+	                        canGen = false;
+	                    }
+	                }
+
+	            }
+
+	        }
+
+	        if(!canGen) {
+	            return false;
+	        }
+
+	        // Make sure we're still not going off the top of the map
+	        // Also make sure it's sand below the block
+	        Material matBelow = TCGenUtils.getMaterial(worldObj, i, j - 1, k);
+	        if (matBelow != Material.SAND || j >= TCGenBase.MAX_CHUNK_HEIGHT - height - 1) {
+	            int ground = getHeight(i, k);
+	            matBelow = TCGenUtils.getMaterial(worldObj, i, ground - 1, k);
+
+	            if (matBelow != Material.SAND || j >= TCGenBase.MAX_CHUNK_HEIGHT - height - 1) {
+	                return false;
+	            }
+	            j = ground;
+	        }
+
 		setBlockState(worldObj, i, j + height + 2, k, palmLeaves);
 		setBlockState(worldObj, i, j + height + 1, k + 1, palmLeaves);
 		setBlockState(worldObj, i, j + height + 1, k + 2, palmLeaves);

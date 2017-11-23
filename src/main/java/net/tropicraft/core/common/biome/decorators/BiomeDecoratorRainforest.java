@@ -35,6 +35,8 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 		int x = chunkPos.getX();
 		int z = chunkPos.getZ();
 		int i = 0; int k = 0;
+		
+		if (true) return;
 
 		if (BiomeTropicraft.DISABLEDECORATION) {
 			System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
