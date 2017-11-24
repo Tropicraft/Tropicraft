@@ -1,3 +1,7 @@
+7.0.3:
+Fixes:
+- Fix server crash with water mobs
+
 7.0.2:
 New:
 - Add mahogany slabs and stairs

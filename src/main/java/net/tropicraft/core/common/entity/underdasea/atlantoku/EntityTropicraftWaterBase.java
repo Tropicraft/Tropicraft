@@ -37,9 +37,8 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
     private static final DataParameter<String> TEXTURE = EntityDataManager.<String>createKey(EntityTropicraftWaterBase.class, DataSerializers.STRING);
 	private static final DataParameter<Integer> HOOK_ID = EntityDataManager.<Integer>createKey(EntityTropicraftWaterBase.class, DataSerializers.VARINT);
 
-	
 	@SideOnly(Side.CLIENT)
-	public boolean isInGui = false;
+	public boolean isInGui;
 	
 	public float swimPitch = 0f;
 	public float swimYaw = 0f;
