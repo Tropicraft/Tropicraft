@@ -51,6 +51,7 @@ public class TileEntitySeaweedRenderer extends FastTESR<TileSeaweed> {
 			renderQuad(buf, sprite, bot, top, sway, prevSway, new Vec3d(-1, 0, 1));
 
 			bot = top;
+			prevSway = sway;
 		}
 
 		buf.setTranslation(0, 0, 0);
