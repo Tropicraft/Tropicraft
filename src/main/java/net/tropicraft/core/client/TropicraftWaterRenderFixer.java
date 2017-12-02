@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
@@ -87,6 +88,7 @@ public class TropicraftWaterRenderFixer {
     
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event) {
+
 		Minecraft mc = Minecraft.getMinecraft();
     	if (event.phase == Phase.START && mc.world != null && mc.getRenderViewEntity() != null) {
     		IBlockState state = ActiveRenderInfo.getBlockStateAtEntityViewpoint(mc.world, mc.getRenderViewEntity(), mc.getRenderPartialTicks());
@@ -129,6 +131,16 @@ public class TropicraftWaterRenderFixer {
             GlStateManager.setFog(GlStateManager.FogMode.EXP);
             double partialDelta = FOG_DELTA * event.getRenderPartialTicks();
             event.setDensity((float) (lastTickFogDensity > fogDensity ? lastTickFogDensity - partialDelta : lastTickFogDensity < fogDensity ? lastTickFogDensity + partialDelta : fogDensity));
+        }
+    }
+
+    @SubscribeEvent
+    public void onFogColor(EntityViewRenderEvent.FogColors event) {
+        if (event.getState().getBlock() == BlockRegistry.tropicsWater) {
+            //keep the fog colors from 1.10 that we expect for our waters
+            event.setRed(0.02F);
+            event.setGreen(0.02F);
+            event.setBlue(0.2F);
         }
     }
 }
