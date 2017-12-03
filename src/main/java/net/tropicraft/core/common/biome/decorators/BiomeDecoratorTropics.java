@@ -109,12 +109,6 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 
 		BiomeDecoratorTropicsBeach.decorateForVillage(world, rand, chunkPos);
 
-		//		if(rand.nextInt(TREASURE_CHANCE) == 0) {
-		//			int i = randDecorationCoord(rand, x, 16);
-		//			int k = randDecorationCoord(rand, z, 16);
-		//			new WorldGenTropicsTreasure(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
-		//		}
-
         //
         //      for(int a = 0; a < ConfigGenRates.WATERFALL_AMOUNT; a++) {
         //          new WorldGenWaterfall(world, rand).generate(randDecorationCoord(rand, x, 16), WorldProviderTropicraft.MID_HEIGHT + rand.nextInt(WorldProviderTropicraft.INTER_HEIGHT), randDecorationCoord(rand, z, 16));

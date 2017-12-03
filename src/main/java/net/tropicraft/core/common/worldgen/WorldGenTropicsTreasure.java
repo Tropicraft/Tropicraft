@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.BlockPos;
@@ -20,8 +19,6 @@ import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.LootRegistry;
 
 public class WorldGenTropicsTreasure extends TCGenBase {
-
-    private static final List<Item> treasureList = new ArrayList<Item>();
 
     private static final List<Block> sandBlocks = new ArrayList<Block>();
 
@@ -41,8 +38,8 @@ public class WorldGenTropicsTreasure extends TCGenBase {
 
         tryagain:
             for (int tries = 0; tries < 10; tries++) {
-                int x = (i + rand.nextInt(8)) - rand.nextInt(8);
-                int z = (k + rand.nextInt(8)) - rand.nextInt(8);
+                int x = (i + rand.nextInt(4)) - rand.nextInt(4);
+                int z = (k + rand.nextInt(4)) - rand.nextInt(4);
                 j = getTerrainHeightAt(x, z) - 1;
                 int y = j;
                 int sandArea = 2;

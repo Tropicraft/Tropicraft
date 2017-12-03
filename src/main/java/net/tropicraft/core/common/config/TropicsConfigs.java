@@ -34,6 +34,7 @@ public class TropicsConfigs {
     public static int tropicsBeachID = 66;
     public static int tropicsLakeID = 67;
     public static int islandMountainsID = 68;
+    public static int rainforestThicknessAmount = 2;
 
     /* == Misc Configs == */
 
@@ -69,6 +70,8 @@ public class TropicsConfigs {
         coconutBombWhitelist = config.get(C_MISC, "coconutBombWhitelist", coconutBombWhitelist).getStringList();
 
         allowVolcanoEruption = config.get(C_MISC, "allowVolcanoEruption", allowVolcanoEruption).getBoolean();
+
+        rainforestThicknessAmount = config.getInt(C_GENERATION, "rainforestThicknessAmount", rainforestThicknessAmount, 0, 3, "How thick should the trees in rainforest biomes be?");
 
         config.save();
     }

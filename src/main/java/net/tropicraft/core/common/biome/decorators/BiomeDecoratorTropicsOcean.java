@@ -91,19 +91,6 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
         seaweedGen.generate(world, rand, chunkPos);
         manganeseGen.generate(world, rand, chunkPos);
         shakaGen.generate(world, rand, chunkPos);
-        //        if (rand.nextInt(5) == 0) {
-        //            int x = randDecorationCoord(rand, chunkPos.getX(), 16) + 8;
-        //            int z = randDecorationCoord(rand, chunkPos.getZ(), 16) + 8;
-        //            BlockPos pos = new BlockPos(x, 0, z);
-        //            new WorldGenCoral().generate(world, rand, pos);
-        //        }
-        //        
-        //        if (rand.nextInt(8) == 0) {
-        //            int x = randDecorationCoord(rand, chunkPos.getX(), 16) + 8;
-        //            int z = randDecorationCoord(rand, chunkPos.getZ(), 16) + 8;
-        //            BlockPos pos = new BlockPos(x, 0, z);
-        //            new WorldGenSeaweed().generate(world, rand, pos);
-        //        }
 
         //        if (ConfigGenRates.SHIPWRECK_CHANCE != 0 /*&& rand.nextInt(ConfigGenRates.SHIPWRECK_CHANCE) == 0*/) {
         //            int i = randDecorationCoord(rand, chunkPos.getX(), 16);
@@ -111,9 +98,9 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
         //            new WorldGenSunkenShip(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
         //        }
 
-        if(rand.nextInt(TREASURE_CHANCE) == 0) {
-            int i = randDecorationCoord(rand, chunkPos.getX(), 16);
-            int k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+        if (rand.nextInt(TREASURE_CHANCE) == 0) {
+            int i = randDecorationCoord(rand, chunkPos.getX(), 12);
+            int k = randDecorationCoord(rand, chunkPos.getZ(), 12);
             new WorldGenTropicsTreasure(world, rand).generate(world, rand, new BlockPos(i, getTerrainHeightAt(world, i, k), k));
         }
     }
