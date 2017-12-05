@@ -35,20 +35,20 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 		}
 
 		if (GenRates.BAMBOO_CHANCE != 0 && rand.nextInt(GenRates.BAMBOO_CHANCE) == 0) {
-			i = randDecorationCoord(rand, chunkPos.getX(), 16);
-			k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+			i = chunkPos.getX();
+			k = chunkPos.getZ();
 			new WorldGenBamboo(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
 		if (GenRates.NORMAL_PALM_CHANCE != 0 && rand.nextInt(GenRates.NORMAL_PALM_CHANCE) == 0) {
-			i = randDecorationCoord(rand, chunkPos.getX(), 16);
-			k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+            i = chunkPos.getX() + 13 + rand.nextInt(5);
+            k = chunkPos.getZ() + 13 + rand.nextInt(5);
 			new WorldGenNormalPalms(world, rand).generate(new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
 		}
 
 		if (GenRates.CURVED_PALM_CHANCE != 0 && rand.nextInt(GenRates.CURVED_PALM_CHANCE) == 0) {
-			i = randDecorationCoord(rand, chunkPos.getX(), 16);
-			k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+            i = chunkPos.getX() + 13 + rand.nextInt(5);
+            k = chunkPos.getZ() + 13 + rand.nextInt(5);
 			new WorldGenCurvedPalms(world, rand).generate(new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
 		}
 
@@ -63,8 +63,9 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 		new WorldGenTropicalFlowers(world, rand, BlockRegistry.flowers).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 
 		if (GenRates.LARGE_PALM_CHANCE != 0 && rand.nextInt(GenRates.LARGE_PALM_CHANCE) == 0) {
-			i = randDecorationCoord(rand, chunkPos.getX(), 16);
-			k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+		    // Center in chunk to avoid CCG
+			i = chunkPos.getX() + 16;
+			k = chunkPos.getZ() + 16;
 			new WorldGenLargePalmTrees(world, rand).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
 		}
 
@@ -90,29 +91,23 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 		
 		// Pineapples
 		if (GenRates.TALL_FLOWERS_CHANCE != 0 && rand.nextInt(GenRates.TALL_FLOWERS_CHANCE) == 0) {
-			i = randDecorationCoord(rand, chunkPos.getX(), 16);
+			i = chunkPos.getX();
 	        int y = getTerrainHeightAt(world, i, k);
-	        k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+	        k = chunkPos.getZ();
 			BlockPos pos = new BlockPos(i, y, k);
 			(new WorldGenTallFlower(world, rand, BlockRegistry.pineapple.getDefaultState())).generate(pos);
 		}
 		
 		// Irises
 		if (GenRates.TALL_FLOWERS_CHANCE != 0 && rand.nextInt(GenRates.TALL_FLOWERS_CHANCE) == 0) {
-			i = randDecorationCoord(rand, chunkPos.getX(), 16);
+			i = chunkPos.getX();
 	        int y = getTerrainHeightAt(world, i, k);
-	        k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+	        k = chunkPos.getZ();
 			BlockPos pos = new BlockPos(i, y, k);
 			(new WorldGenTallFlower(world, rand, BlockRegistry.iris.getDefaultState())).generate(pos);
 		}
 
 		BiomeDecoratorTropicsBeach.decorateForVillage(world, rand, chunkPos);
-
-		//		if(rand.nextInt(TREASURE_CHANCE) == 0) {
-		//			int i = randDecorationCoord(rand, x, 16);
-		//			int k = randDecorationCoord(rand, z, 16);
-		//			new WorldGenTropicsTreasure(world, rand).generate(i, getTerrainHeightAt(world, i, k), k);
-		//		}
 
         //
         //      for(int a = 0; a < ConfigGenRates.WATERFALL_AMOUNT; a++) {
