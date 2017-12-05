@@ -65,14 +65,14 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 		}
 
 		for (int a = 0; a < SMALL_TUALANG_AMOUNT * TropicsConfigs.rainforestThicknessAmount * 2; a++) {
-			i = randDecorationCoord(rand, x, 4) + 6;
-			k = randDecorationCoord(rand, z, 4) + 6;
+			i = randDecorationCoord(rand, x, 4) + 8;
+			k = randDecorationCoord(rand, z, 4) + 8;
 			new WorldGenTualang(world, rand, 16, 9).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
 		for (int a = 0; a < LARGE_TUALANG_AMOUNT * TropicsConfigs.rainforestThicknessAmount * 2; a++) {
-            i = randDecorationCoord(rand, x, 4) + 6;
-            k = randDecorationCoord(rand, z, 4) + 6;
+            i = randDecorationCoord(rand, x, 4) + 8;
+            k = randDecorationCoord(rand, z, 4) + 8;
 			new WorldGenTualang(world, rand, 25, 11).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
