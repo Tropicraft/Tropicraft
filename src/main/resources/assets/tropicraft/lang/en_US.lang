@@ -242,11 +242,14 @@ item.tropicraft.pink_chestplate_gear.name=Pink Scuba Harness
 item.tropicraft.trimix.name=Trimix Gas Mixture
 
 # Cocktail localizations
-item.tropicraft.cocktail_Lemonade.name=Lemonade
-item.tropicraft.cocktail_Limeade.name=Limeade
-item.tropicraft.cocktail_Orangeade.name=Orangeade
-item.tropicraft.cocktail_Caipirinha.name=Caipirinha
-item.tropicraft.cocktail_Coconut Water.name=Coconut Water
+tropicraft.drink.lemonade.name=Lemonade
+tropicraft.drink.limeade.name=Limeade
+tropicraft.drink.orangeade.name=Orangeade
+tropicraft.drink.caipirinha.name=Caipirinha
+tropicraft.drink.coconut_water.name=Coconut Water
+tropicraft.drink.pina_colada.name=Piña Colada
+tropicraft.drink.black_coffee.name=Black Coffee
+tropicraft.drink.mai_tai.name=Mai Tai
 
 # Record localizations
 item.tropicraft.buried_treasure.name=Buried Treasure

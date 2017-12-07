@@ -75,7 +75,6 @@ public class Tropicraft {
 	    proxy.preInit();
 		TileEntityRegistry.init();
 		//ItemRegistry.preInit();
-		MixerRecipes.addMixerRecipes();
 		//CraftingRegistry.init();
 		ScubaCapabilities.register();
 		CapabilityManager.INSTANCE.register(PlayerDataInstance.class, new ExtendedPlayerStorage(), PlayerDataInstance.class);
@@ -90,6 +89,7 @@ public class Tropicraft {
 //		AchievementRegistry.init();
 		//EntityRegistry.init();
 		proxy.init();
+		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
 		SmeltingRegistry.init();
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
