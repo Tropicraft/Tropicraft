@@ -35,8 +35,9 @@ public abstract class TileEntityMachineRenderer<T extends TileEntity & IMachineT
 		    EnumFacing facing;
 		    if (state.getBlock() != this.block) {
 		        facing = EnumFacing.NORTH;
+		    } else {
+		        facing = te.getFacing(state);
 		    }
-			facing = te.getFacing(state);
 			GlStateManager.rotate(facing.getHorizontalAngle(), 0, 1, 0);
 		}
 
