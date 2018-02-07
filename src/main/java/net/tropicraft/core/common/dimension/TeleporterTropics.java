@@ -167,7 +167,7 @@ public class TeleporterTropics extends Teleporter {
             entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
             int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
             int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-            int worldSpawnY = world.getHeight(new BlockPos(worldSpawnX, 0, worldSpawnZ)).getY() + 3;
+            int worldSpawnY = foundY + 5; // Move to top of portal
 
             entity.motionX = entity.motionY = entity.motionZ = 0.0D;
 
