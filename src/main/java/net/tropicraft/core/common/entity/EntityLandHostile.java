@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.entity;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +28,7 @@ public abstract class EntityLandHostile extends EntityLand {
 	}
 
 	@Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean attackEntityAsMob(@Nonnull Entity entityIn) {
 		float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
 		int i = 0;
 
@@ -53,7 +55,7 @@ public abstract class EntityLandHostile extends EntityLand {
 			if (entityIn instanceof EntityPlayer) {
 				EntityPlayer entityplayer = (EntityPlayer)entityIn;
 				ItemStack itemstack = this.getHeldItemMainhand();
-				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : null;
+				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
 				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD) {
 					float f1 = 0.25F + (float)EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
