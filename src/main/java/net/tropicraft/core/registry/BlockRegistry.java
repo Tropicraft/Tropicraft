@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockPlanks;
@@ -104,9 +106,21 @@ public class BlockRegistry extends TropicraftRegistry {
     
     private static class StandardItemCreator implements IBlockItemRegistrar {
         protected final List<ITropicraftVariant> variants;
+        private final Object2IntMap<String> oredict = new Object2IntArrayMap<>();
         
         public StandardItemCreator(ITropicraftVariant... variants) {
             this.variants = Lists.newArrayList(variants);
+        }
+        
+        public StandardItemCreator withOredict(String name, int... metas) {
+            for (int meta : metas) {
+                oredict.put(name, meta);
+            }
+            return this;
+        }
+        
+        protected final void registerOres(Item item) {
+            oredict.forEach((name, meta) -> OreDictionary.registerOre(name, new ItemStack(item, 1, meta)));
         }
 
         @Override
@@ -123,6 +137,7 @@ public class BlockRegistry extends TropicraftRegistry {
             for (int i = 0; i < variants.size(); i++) {
                 registerVariant(block, item, variants.get(i).getSimpleName() + "_" + variants.get(i).getTypeName(), i);
             }
+            registerOres(item);
         }
     }
     
@@ -135,6 +150,7 @@ public class BlockRegistry extends TropicraftRegistry {
         @Override
         public void postRegister(Block block, Item item) {
             Tropicraft.proxy.registerBlockVariantModels(block, item);
+            registerOres(item);
         }
     }
 
@@ -251,12 +267,13 @@ public class BlockRegistry extends TropicraftRegistry {
 		    public ItemTropicraftSlab getItem(Block block) {
 		        return new ItemTropicraftSlab(block, slabs, doubleSlabs);
 		    }
-		};
+		}.withOredict("slabWood", TropicraftSlabs.PALM.getMeta(), TropicraftSlabs.MAHOGANY.getMeta());
 		
 		slabs = registerBlock(registry, slabs, "slab", slabRegistrar);
 		doubleSlabs = registerBlock(registry, doubleSlabs, "double_slab", slabRegistrar);
 		
-		planks = registerBlock(registry, new BlockTropicraftPlank(Material.WOOD), "plank", new MultiBlockItemCreator(TropicraftPlanks.VALUES));
+		planks = registerBlock(registry, new BlockTropicraftPlank(Material.WOOD), "plank", new MultiBlockItemCreator(TropicraftPlanks.VALUES).withOredict("plankWood", OreDictionary.WILDCARD_VALUE));
+		
 		bambooShoot = registerBlock(registry, new BlockBambooShoot(), Names.BAMBOO_SHOOT, (IBlockItemRegistrar) null);
 
 		thatchStairs = registerBlock(registry, new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS, true));
@@ -305,14 +322,18 @@ public class BlockRegistry extends TropicraftRegistry {
 		bambooFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "bamboo_fence_gate");
 		thatchFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.BIRCH).setHardness(2.0F).setResistance(5.0F), "thatch_fence_gate");
 		chunkFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.DARK_OAK).setHardness(2.0F).setResistance(30F), "chunk_fence_gate");
-		palmFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.SPRUCE).setHardness(2.0F).setResistance(5.0F), "palm_fence_gate");
-		mahoganyFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.OAK).setHardness(2.0F).setResistance(5.0F), "mahogany_fence_gate");
+		
+		IBlockItemRegistrar gateWithOredict = new StandardItemCreator().withOredict("fenceGateWood", OreDictionary.WILDCARD_VALUE);
+		palmFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.SPRUCE).setHardness(2.0F).setResistance(5.0F), "palm_fence_gate", gateWithOredict);
+		mahoganyFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.OAK).setHardness(2.0F).setResistance(5.0F), "mahogany_fence_gate", gateWithOredict);
 
 		bambooFence = registerBlock(registry, new BlockTropicraftFence(bambooFenceGate, Material.PLANTS, MapColor.SAND), "bamboo_fence");
 		thatchFence = registerBlock(registry, new BlockTropicraftFence(thatchFenceGate, Material.PLANTS, MapColor.SAND), "thatch_fence");
 		chunkFence = registerBlock(registry, new BlockTropicraftFence(chunkFenceGate, Material.PLANTS, MapColor.SAND), "chunk_fence");
-		palmFence = registerBlock(registry, new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence");
-		mahoganyFence = registerBlock(registry, new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence");
+		
+	    IBlockItemRegistrar fenceWithOredict = new StandardItemCreator().withOredict("fenceWood", OreDictionary.WILDCARD_VALUE);
+		palmFence = registerBlock(registry, new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence", fenceWithOredict);
+		mahoganyFence = registerBlock(registry, new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence", fenceWithOredict);
 
 		bambooLadder = registerBlock(registry, new BlockTropicraftLadder().setHardness(BlockHardnessValues.BAMBOO.hardness).setResistance(BlockHardnessValues.BAMBOO.resistance), Names.BAMBOO_LADDER);
 	}
