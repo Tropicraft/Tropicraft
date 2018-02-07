@@ -203,7 +203,7 @@ public class TeleporterTropics extends Teleporter {
                             boolean hasEncyclopedia = false;
                             for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
                                 ItemStack stack = chest.getStackInSlot(inv);
-                                if (stack != null && stack.getItem() == ItemRegistry.encyclopedia) {
+                                if (stack.getItem() == ItemRegistry.encyclopedia) {
                                     hasEncyclopedia = true;
                                 }
                             }
