@@ -38,7 +38,7 @@ public class TileEntityAirCompressorRenderer extends TileEntityMachineRenderer<T
             GlStateManager.scale(1.1F, 1.1F, 1.1F);
             GlStateManager.translate(-0.35f, 0.9f, 0.4f);
             GlStateManager.rotate(180, 1, 0, 0);
-            TropicraftRenderUtils.bindTextureArmor(te.getTankStack().getItem() == ItemRegistry.pinkScubaTank ? "scubaGearPink" : "scubaGearYellow");
+            TropicraftRenderUtils.bindTextureArmor(te.getTankStack().getItem() == ItemRegistry.pinkScubaTank ? "scuba_gear_pink" : "scuba_gear_yellow");
             tankModel.render();
             GlStateManager.popMatrix();
         }
