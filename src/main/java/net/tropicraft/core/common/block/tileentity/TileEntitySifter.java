@@ -76,13 +76,8 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	 * Drop all the necessary blocks/items from the sifter after sifting is complete
 	 */
 	public void dumpResults(double x, double y, double z, SiftType type) {
-		if (type == SiftType.HEATED) {
-			//spawn(siftItem, x, y, z);            
-			spawn(new ItemStack(BlockRegistry.sands, 1, 0), x, y, z);
-		} else {
-			dumpBeachResults(x, y, z);
-		}
-
+		// NOTE: Removed check and drop for heated sifter in 1.12
+		dumpBeachResults(x, y, z);
 		this.syncInventory();
 	}
 
@@ -92,8 +87,6 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	private void dumpBeachResults(double x, double y, double z) {
 		int dumpCount = rand.nextInt(3) + 1;
 		ItemStack stack;
-
-		spawn(new ItemStack(BlockRegistry.sands, 1, 0), x, y, z);
 
 		while (dumpCount > 0) {
 			dumpCount--;
