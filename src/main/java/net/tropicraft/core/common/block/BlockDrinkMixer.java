@@ -100,7 +100,7 @@ ITileEntityProvider {
 			entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
 		}
 
-		if (stack.getItem() == ItemRegistry.bambooMug && mixer.canMix()) {
+		if (ingredientStack.getItem() == ItemRegistry.bambooMug && mixer.canMix()) {
 			mixer.startMixing();
 			entityPlayer.inventory.decrStackSize(entityPlayer.inventory.currentItem, 1);
 
