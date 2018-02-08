@@ -59,7 +59,9 @@ public class ItemFishingRod extends Item {
 	/**
 	 * Called when the equipped item is right clicked.
 	 */
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		if (RodLink.playerHasFloat(playerIn)) {
 			// int i = playerIn.fishEntity.handleHookRetraction();
 			// itemStackIn.damageItem(i, playerIn);
@@ -81,7 +83,7 @@ public class ItemFishingRod extends Item {
 			playerIn.swingArm(hand);
 		}
 
-		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
 
 	/**
