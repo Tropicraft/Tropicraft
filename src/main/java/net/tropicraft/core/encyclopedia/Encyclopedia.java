@@ -41,10 +41,9 @@ public class Encyclopedia extends TropicalBook {
      * Note: the item name should match the page name given in the text file
      */
     public void includeItem(String itemname, ItemStack item) {
-    	// TODO find out why this is triggering ??
-//        if (item.isEmpty()) {
-//            throw new IllegalArgumentException("Cannot include an empty stack! Group: " + itemname);
-//        }
+        if (item.isEmpty()) {
+            throw new IllegalArgumentException("Cannot include an empty stack! Group: " + itemname);
+        }
         if (!itemEntries.containsKey(itemname)) {
             itemEntries.put(itemname, new ArrayList<ItemStack>());
         }
