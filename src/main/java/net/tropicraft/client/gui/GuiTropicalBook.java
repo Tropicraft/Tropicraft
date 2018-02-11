@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -40,6 +41,7 @@ public class GuiTropicalBook extends GuiScreen {
 	private String openTextureIndex;
 	private RenderItem itemRenderer;
 	private List<IRecipe> cachedRecipes;
+	private float recipeCycle;
 
 	private final static int buttonNextIndexPage = 2000;
 	private final static int buttonPrevIndexPage = 2001;
@@ -108,6 +110,7 @@ public class GuiTropicalBook extends GuiScreen {
 			contentMode = TropicalBook.ContentMode.INFO;
 			contentPage = 0;
 			cachedRecipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
+			recipeCycle = 0;
 		}
 	}
 
@@ -239,7 +242,7 @@ public class GuiTropicalBook extends GuiScreen {
 
 
 	@Override
-	public void drawScreen(int i, int j, float f) {
+	public void drawScreen(int i, int j, float elapsedPartialTicks) {
 
 		drawDefaultBackground();
 
@@ -289,7 +292,7 @@ public class GuiTropicalBook extends GuiScreen {
 			case RECIPE:
 				fontRenderer.drawString("Crafting", width / 2 + 110, height / 2 - 110, 0x440000);
 				try {
-					printRecipes();
+					printRecipes(elapsedPartialTicks);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -327,11 +330,11 @@ public class GuiTropicalBook extends GuiScreen {
 	}
 
 		addButtons();
-		super.drawScreen(i, j, f);
+		super.drawScreen(i, j, elapsedPartialTicks);
 	}
 
-	private void printRecipes() throws Exception {
-
+	private void printRecipes(float elapsedPartialTicks) throws Exception {
+	    recipeCycle += elapsedPartialTicks;
 		if (cachedRecipes == null || cachedRecipes.isEmpty()) {
 			return;
 		}
@@ -369,8 +372,7 @@ public class GuiTropicalBook extends GuiScreen {
 						// TODO 1.12 seriously what was this method for
 //						itemRenderer.isNotRenderingEffectsInGUI(true);
 						//itemRenderer.renderWithColor = true;
-						// TODO item cycling
-						itemRenderer.renderItemIntoGUI(recipe.ingredients.get(itemIndex).getMatchingStacks()[0], renderX, renderY);
+						itemRenderer.renderItemIntoGUI(recipe.getCycledStack(itemIndex, recipeCycle), renderX, renderY);
 						//itemRenderer.renderWithColor = false;
 //						itemRenderer.isNotRenderingEffectsInGUI(false);
 						RenderHelper.disableStandardItemLighting();
@@ -386,7 +388,7 @@ public class GuiTropicalBook extends GuiScreen {
 					int itemIndex = (row * recipe.width) + col;
 					int renderX = newx + (offsetX * col) + 1;
 					int renderY = newy + (offsetY * row) + 1;
-					checkMouseHover(recipe.ingredients.get(itemIndex), renderX, renderY, 18);
+					checkMouseHover(recipe.getCycledStack(itemIndex, recipeCycle), renderX, renderY, 18);
 				}
 			}
 

@@ -12,7 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class Encyclopedia extends TropicalBook {
@@ -140,15 +142,13 @@ public class Encyclopedia extends TropicalBook {
         // TODO support other kinds of recipes
         if (recipe instanceof ShapedRecipes) {
             ShapedRecipes shaped = (ShapedRecipes) recipe;
-            try {
-                int width = shaped.recipeWidth;// (Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "b", "recipeWidth");
-                int height = shaped.recipeHeight;// (Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "c", "recipeHeight");
-                NonNullList<Ingredient> items = shaped.recipeItems;// (ItemStack[]) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "d", "recipeItems");
-                ItemStack output = recipe.getRecipeOutput();// (ItemStack) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "e", "recipeOutput");
-                return new RecipeEntry(width, height, items, output);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            int width = shaped.recipeWidth;// (Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "b", "recipeWidth");
+            int height = shaped.recipeHeight;// (Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "c", "recipeHeight");
+            NonNullList<Ingredient> items = shaped.recipeItems;// (ItemStack[]) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "d", "recipeItems");
+            ItemStack output = recipe.getRecipeOutput();// (ItemStack) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "e", "recipeOutput");
+            return new RecipeEntry(width, height, items, output);
+        } else if (recipe instanceof ShapelessRecipes) {
+            return new RecipeEntry(3, 3, recipe.getIngredients(), recipe.getRecipeOutput());
         }
         return null;
     }
@@ -164,9 +164,30 @@ public class Encyclopedia extends TropicalBook {
             this.width = width;
             this.height = height;
             this.ingredients = items;
+            // Assure we always have a full list
+            while (this.ingredients.size() < width * height) {
+                this.ingredients.add(Ingredient.EMPTY);
+            }
             this.output = output;
         }
         
+        @Nonnull
+        public ItemStack getCycledStack(int index, float cycle) {
+            if (index >= ingredients.size() || index < 0) {
+                return ItemStack.EMPTY;
+            }
+            Ingredient ing = ingredients.get(index);
+            int i = MathHelper.floor(cycle / 30); // 30 tick = 1.5 second cycle
+            ItemStack[] stacks = ing.getMatchingStacks();
+            if (i < 0 || stacks.length == 0) {
+                return ItemStack.EMPTY;
+            }
+            ItemStack ret = stacks[i % stacks.length];
+            if (ret == null) { // impossible?
+                ret = ItemStack.EMPTY;
+            }
+            return ret;
+        }
     }
     
 }
