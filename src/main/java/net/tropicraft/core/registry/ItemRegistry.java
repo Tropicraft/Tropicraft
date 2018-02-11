@@ -292,6 +292,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
         bambooShoot = registerItem(registry, new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
         bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
+        OreDictionary.registerOre("stickWood", bambooStick);
         bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
         freshMarlin = registerItem(registry, new ItemTropicraftFood(2, 0.3F), "fresh_marlin");

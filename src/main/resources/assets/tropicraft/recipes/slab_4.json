@@ -1,17 +1,15 @@
 {
   "result": {
-    "item": "tropicraft:mahogany_fence_gate"
+    "item": "tropicraft:slab",
+    "data": 4,
+    "count": 6
   },
   "pattern": [
-    "XIX",
-    "XIX"
+    "XXX"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "#STICKWOOD"
-    },
-    "I": {
       "item": "tropicraft:plank",
       "data": 0
     }

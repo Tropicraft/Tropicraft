@@ -47,5 +47,19 @@
       "ore": "sugarcane"
     },
     "name": "SUGARCANE"
+  },
+  {
+  	"ingredient": {
+  	  "type": "forge:ore_dict",
+  	  "ore": "stickWood"
+  	},
+  	"name": "STICKWOOD"
+  },
+  {
+  	"ingredient": {
+  	  "type": "forge:ore_dict",
+  	  "ore": "plankWood"
+  	},
+  	"name": "PLANKWOOD"
   }
 ]

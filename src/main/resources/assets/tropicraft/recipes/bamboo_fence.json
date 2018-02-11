@@ -1,16 +1,20 @@
 {
   "result": {
     "item": "tropicraft:bamboo_fence",
-    "count": 2
+    "count": 3
   },
   "pattern": [
-    "XXX",
-    "XXX"
+    "XYX",
+    "XYX"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
+    "Y": {
+      "item": "#STICKWOOD"
+    },
     "X": {
-      "item": "tropicraft:bamboo_stick"
+      "item": "tropicraft:bundle",
+      "data": 1
     }
   }
 }

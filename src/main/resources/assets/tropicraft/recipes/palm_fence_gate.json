@@ -9,7 +9,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "minecraft:stick"
+      "item": "#STICKWOOD"
     },
     "I": {
       "item": "tropicraft:plank",
