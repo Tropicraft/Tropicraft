@@ -36,11 +36,11 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 				withProperty(STAGE, Integer.valueOf(1))
 				);
 	}
-	  
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, VARIANT, HALF, STAGE);
-    }
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT, HALF, STAGE);
+	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -58,21 +58,21 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 			IBlockState state) {
 		return false;
 	}
-	
+
 	@Override
 	public int getMetaFromState(IBlockState state) {
-	    return (state.getValue(HALF).ordinal() << 3) | (state.getValue(STAGE) & 7);
+		return (state.getValue(HALF).ordinal() << 3) | (state.getValue(STAGE) & 7);
 	}
-	
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-	    int half = (meta >> 3) & 1;
-	    int stage = meta & 7;
-	    IBlockState ret = getDefaultState().withProperty(HALF, PlantHalf.values()[half]);
-	    if (stage > 0) {
-	        ret = ret.withProperty(STAGE, stage);
-	    }
-	    return ret;
+		int half = (meta >> 3) & 1;
+		int stage = meta & 7;
+		IBlockState ret = getDefaultState().withProperty(HALF, PlantHalf.values()[half]);
+		if (stage > 0) {
+			ret = ret.withProperty(STAGE, stage);
+		}
+		return ret;
 	}
 
 	@Override
@@ -83,11 +83,11 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 			world.setBlockState(pos, growthState, 4);
 		} else {
 			IBlockState above = world.getBlockState(pos.up());
-			
+
 			// Don't bother placing if it's already there
 			if (above.getBlock() == this) return;
 			if (((PlantHalf)state.getValue(HALF)) == PlantHalf.UPPER) return;
-			
+
 			// Place actual pineapple plant above stem
 			IBlockState fullGrowth = state.withProperty(BlockTallPlant.HALF, BlockTallPlant.PlantHalf.UPPER);
 			world.setBlockState(pos.up(), fullGrowth, 3);
@@ -121,7 +121,7 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 	}
 
 	private boolean isFullyGrown(IBlockState state) {
-		return ((Integer)state.getValue(STAGE)) == TOTAL_GROW_TICKS;
+		return ((Integer)state.getValue(STAGE)) == TOTAL_GROW_TICKS || ((PlantHalf)state.getValue(BlockTallPlant.HALF)) == PlantHalf.UPPER;
 	}
 
 	/**
@@ -178,25 +178,26 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 	}
 
 	@Override
-    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
+	public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
 		// Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
-        if (state.getBlock() != this)
-        	return super.canBlockStay(worldIn, pos, state);
+		if (state.getBlock() != this)
+			return super.canBlockStay(worldIn, pos, state);
 
-        if (state.getValue(HALF) == PlantHalf.UPPER) {
-            return worldIn.getBlockState(pos.down()).getBlock() == this;
-        } else {
-            IBlockState iblockstate = worldIn.getBlockState(pos.up());
-            if (iblockstate.getBlock() == this) {
-            	return super.canBlockStay(worldIn, pos, iblockstate);
-            } else { // If just the stem
-            	return this.canPlaceBlockAt(worldIn, pos);
-            }
-        }
-    }
-	
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return null; // Handled in BlockEvents
-    }
+		if (state.getValue(HALF) == PlantHalf.UPPER) {
+			return worldIn.getBlockState(pos.down()).getBlock() == this;
+		} else {
+			IBlockState iblockstate = worldIn.getBlockState(pos.up());
+			if (iblockstate.getBlock() == this) {
+				return super.canBlockStay(worldIn, pos, iblockstate);
+			} else { // If just the stem
+				return this.canPlaceBlockAt(worldIn, pos);
+			}
+		}
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return null; // Handled in BlockEvents
+	}
+
 }

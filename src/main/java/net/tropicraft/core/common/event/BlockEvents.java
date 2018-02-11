@@ -18,38 +18,40 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockEvents {
 
-    @SubscribeEvent
-    public void handlePineappleBreakEvent(HarvestDropsEvent event) {
-        EntityPlayer player = event.getHarvester();
-        if (player == null) {
-            return;
-        }
-        ItemStack held = player.getHeldItemMainhand();
+	@SubscribeEvent
+	public void handlePineappleBreakEvent(HarvestDropsEvent event) {
+		EntityPlayer player = event.getHarvester();
 
-        IBlockState state = event.getState();
-        if (state.getBlock() != BlockRegistry.pineapple) {
-            return;
-        }
-        
-        IBlockState stateUp = event.getWorld().getBlockState(event.getPos().up());
+		ItemStack held = ItemStack.EMPTY;
+		if (player != null)
+			held = player.getHeldItemMainhand();
 
-        boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
-        boolean isGrown = isTop ||
-        		(state.getValue(BlockPineapple.STAGE) == BlockPineapple.TOTAL_GROW_TICKS
-        		&& stateUp.getBlock() instanceof BlockPineapple
-        		&& stateUp.getValue(BlockPineapple.HALF) == PlantHalf.UPPER);
+		IBlockState state = event.getState();
+		if (state.getBlock() != BlockRegistry.pineapple) {
+			return;
+		}
 
-        if (isGrown) {
-        	if (held != null && held.getItem() instanceof ItemSword) {
-        		event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(3) + 2));
-        	} else {
-        		event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
-        	}
-        }
-        if (!isTop) {
-        	event.getWorld().setBlockToAir(event.getPos().up());
-        }
-    }
+		IBlockState stateUp = event.getWorld().getBlockState(event.getPos().up());
+
+		boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
+		boolean isGrown = isTop ||
+				(state.getValue(BlockPineapple.HALF) == PlantHalf.LOWER
+				&& stateUp.getBlock() instanceof BlockPineapple
+				&& stateUp.getValue(BlockPineapple.HALF) == PlantHalf.UPPER);
+
+		if (isGrown) {
+			if (!held.isEmpty() && held.getItem() instanceof ItemSword) {
+				event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(3) + 2));
+			} else {
+				event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
+			}
+		}
+
+		// If the stem remains after a block break, reset its growth stage so it doesn't insta-create a pineapple
+		if (!isTop) {
+			event.getWorld().setBlockState(event.getPos(), state.withProperty(BlockPineapple.STAGE, Integer.valueOf(1)));
+		}
+	}
 
 	@SubscribeEvent
 	public void handleCoconutBreakEvent(HarvestDropsEvent event) {
