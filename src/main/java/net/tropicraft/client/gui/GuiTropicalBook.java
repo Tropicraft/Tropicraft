@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.fml.relauncher.Side;
@@ -38,6 +39,7 @@ public class GuiTropicalBook extends GuiScreen {
 	private String closedTextureIndex;
 	private String openTextureIndex;
 	private RenderItem itemRenderer;
+	private List<IRecipe> cachedRecipes;
 
 	private final static int buttonNextIndexPage = 2000;
 	private final static int buttonPrevIndexPage = 2001;
@@ -105,6 +107,7 @@ public class GuiTropicalBook extends GuiScreen {
 			}
 			contentMode = TropicalBook.ContentMode.INFO;
 			contentPage = 0;
+			cachedRecipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
 		}
 	}
 
@@ -151,7 +154,7 @@ public class GuiTropicalBook extends GuiScreen {
 				if (book.hasRecipeList()) {
 					switch(contentMode) {
 					case INFO:
-						List<ShapedRecipes> recipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
+						List<IRecipe> recipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
 						if (recipes != null) {
 							buttonList.add(new GuiClearButton(buttonCraftingPage, width / 2 + 158, height / 2 - 80, 11, 22, "", 5, pageBackground, 0x440000));
 						}
@@ -329,8 +332,7 @@ public class GuiTropicalBook extends GuiScreen {
 
 	private void printRecipes() throws Exception {
 
-		List<ShapedRecipes> recipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
-		if (recipes == null || recipes.isEmpty()) {
+		if (cachedRecipes == null || cachedRecipes.isEmpty()) {
 			return;
 		}
 		int newx = width / 2 + 25;
@@ -341,7 +343,10 @@ public class GuiTropicalBook extends GuiScreen {
 			if (entry >= book.getContentPageCount(selectedIndex, contentMode)) {
 				return;
 			}
-			Encyclopedia.RecipeEntry recipe = ((Encyclopedia)book).getFormattedRecipe(recipes.get(entry));
+			Encyclopedia.RecipeEntry recipe = ((Encyclopedia)book).getFormattedRecipe(cachedRecipes.get(entry));
+			if (recipe == null) {
+			    continue; // FIXME
+			}
 
 			// Draw recipe frame //
 			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
@@ -406,7 +411,9 @@ public class GuiTropicalBook extends GuiScreen {
 	}
 	
 	private void checkMouseHover(Ingredient ingredient, int x, int y, int size) {
-		checkMouseHover(ingredient.getMatchingStacks()[0], x, y, size);
+	    if (ingredient.getMatchingStacks().length > 0) {
+	        checkMouseHover(ingredient.getMatchingStacks()[0], x, y, size);
+	    }
 	}
 
 	/**
