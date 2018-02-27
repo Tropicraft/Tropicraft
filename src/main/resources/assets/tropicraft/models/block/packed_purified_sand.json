@@ -1,0 +1,6 @@
+{
+    "parent": "tropicraft:block/cube_all_overlay_all",
+    "textures": {
+        "all": "tropicraft:blocks/packed_purified_sand"
+    }
+}
