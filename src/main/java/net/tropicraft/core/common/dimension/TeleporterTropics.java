@@ -251,7 +251,7 @@ public class TeleporterTropics extends Teleporter {
                     int y = world.getHeight() - 1;
                     BlockPos pos = new BlockPos(x, y, z);
                     for (; y >= 63 - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
-                            !world.getBlockState(pos).isOpaqueCube()); pos = pos.down()) {
+                            !getValidBuildBlocks().contains(world.getBlockState(pos))); pos = pos.down()) {
                         y = pos.getY();
                     }
                     // Only generate portal between sea level and sea level + 20

@@ -1,6 +1,10 @@
 package net.tropicraft.core.common.worldgen;
 
+import static net.tropicraft.core.common.worldgen.TCGenUtils.setBlock;
+
 import java.util.Random;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -8,15 +12,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
 import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.registry.BlockRegistry;
-import static net.tropicraft.core.common.worldgen.TCGenUtils.setBlock;
 
 public class WorldGenEIH extends TCGenBase {
 	
 	private static final int CHUNK_SIZE_Y = 256;
 	private static final Block EIH_BLOCK = BlockRegistry.chunk;
+	private static final Material[] VALID_MATERIALS_FOR_PLACEMENT = new Material[] {Material.GROUND, Material.GRASS, Material.ROCK, Material.PLANTS};
 
 	public WorldGenEIH(World world, Random random) {
 		super(world, random);
@@ -32,14 +35,14 @@ public class WorldGenEIH extends TCGenBase {
         int i = pos.getX();
         int j = pos.getY();
         int k = pos.getZ();
-        
+
         if (j < 1 || j + height + 1 > CHUNK_SIZE_Y) {
             return false;
         }
 
         Material matDown = worldObj.getBlockState(pos.down()).getMaterial();
-    	
-        if (matDown == Material.GROUND && TCGenUtils.isAirBlock(worldObj, i, j, k)) {
+
+        if (ArrayUtils.contains(VALID_MATERIALS_FOR_PLACEMENT, matDown) && TCGenUtils.isAirBlock(worldObj, i, j, k)) {
             j++;
             setBlock(worldObj, i + 0, j + 0, k + 2, EIH_BLOCK);
             setBlock(worldObj, i + 0, j + 0, k + 3, EIH_BLOCK);
