@@ -153,7 +153,7 @@ public class BlockPineapple extends BlockTallPlant implements IGrowable, IPlanta
 
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
