@@ -101,7 +101,7 @@ public class EntityEIH extends EntityLandHostile implements IMob {
 		if (source.getImmediateSource() instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) source.getImmediateSource();
 			ItemStack heldItem = player.getHeldItemMainhand();
-			if (!heldItem.isEmpty() && heldItem.getItem().canHarvestBlock(Blocks.IRON_ORE.getDefaultState())) {
+			if (!heldItem.isEmpty() && heldItem.getItem().getHarvestLevel(heldItem, "pickaxe", player, null) >= 1) {
 				return super.attackEntityFrom(source, amount);
 			} else {
 				this.playSound(TropicraftSounds.HEAD_LAUGHING, this.getSoundVolume(), this.getSoundPitch());
