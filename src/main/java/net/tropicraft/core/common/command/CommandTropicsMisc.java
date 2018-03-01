@@ -45,7 +45,16 @@ public class CommandTropicsMisc extends CommandBase {
         EntityPlayerMP player = this.getCommandSenderAsPlayer(commandSender);
 
         if (args.length > 0) {
-            if (args[0].equals("village_new")) {
+            if (args[0].equals("village_coord")) {
+                int x = 8452;
+                int z = 5921;
+
+                int relX = x - player.getPosition().getX();
+                int relZ = z - player.getPosition().getZ();
+
+                //x and z swapped on purpose
+                System.out.println("pos: " + relZ + ", " + 0 + ", " + relX);
+            } else if (args[0].equals("village_new")) {
                 int x = MathHelper.floor(player.posX);
                 int z = MathHelper.floor(player.posZ);
                 int y = player.world.getHeight(x, z);

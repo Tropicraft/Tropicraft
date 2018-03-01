@@ -269,35 +269,76 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
             spawnEntitiesForce();
 
             IBlockState id = BlockRegistry.bambooFence.getDefaultState();
-            //id = Blocks.DIAMOND_BLOCK.getDefaultState();
-            /*placeDownTilGround(world, parBuildJob, 1, -1, 10, id);
-            placeDownTilGround(world, parBuildJob, parBuildJob.build.map_sizeZ-2, -1, 10, id);
-            placeDownTilGround(world, parBuildJob, 1, -1, parBuildJob.build.map_sizeX-2, id);
-            placeDownTilGround(world, parBuildJob, parBuildJob.build.map_sizeZ-2, -1, parBuildJob.build.map_sizeX-2, id);*/
 
+            //fix 1 off error for rotated schematic that isnt odd number in width and length
             int offsetFix = 0;
             if (parBuildJob.direction == 1 || parBuildJob.direction == 2) {
                 offsetFix = -1;
             }
 
-            /*placeDownTilGround(world, parBuildJob, 0, -1, 0+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 5, -1, 0+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 0, -1, 10+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 50, -1, 50+offsetFix, id);*/
+            //for testing
+            //placeDownTilGround(world, parBuildJob, 0, -1, 0+offsetFix, Blocks.DIAMOND_BLOCK.getDefaultState());
 
-            //placeDownTilGround(world, parBuildJob, 1, 0, 10+offsetFix, id);
-            //placeDownTilGround(world, parBuildJob, 5, 0, 10+offsetFix, id);
+            /**"left" is relative to what the 0 0 coords are considered for this code,
+             * basically the big hut side looking towards the main entrance
+              */
 
             //main hut
-            /*placeDownTilGround(world, parBuildJob, 1, -1, 29+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 1, -1, 45+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 11, -1, 45+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 11, -1, 29+offsetFix, id);*/
-
             placeDownTilGround(world, parBuildJob, 29, -1, 1+offsetFix, id);
             placeDownTilGround(world, parBuildJob, 45, -1, 1+offsetFix, id);
             placeDownTilGround(world, parBuildJob, 45, -1, 11+offsetFix, id);
             placeDownTilGround(world, parBuildJob, 29, -1, 11+offsetFix, id);
+
+            //left outter
+            placeDownTilGround(world, parBuildJob, 1, 0, 10+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 1, 0, 18+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 1, 0, 22+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 1, 0, 30+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 12, 0, 41+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 12, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 18, 0, 56+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 18, 0, 64+offsetFix, id);
+
+            //left inner
+            placeDownTilGround(world, parBuildJob, 19, 0, 16+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 19, 0, 24+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 21, 0, 37+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 29, 0, 32+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 21, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 27, 0, 64+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 10, 0, 20+offsetFix, id);
+
+            //right outter
+            placeDownTilGround(world, parBuildJob, 73, 0, 10+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 73, 0, 18+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 73, 0, 22+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 73, 0, 30+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 62, 0, 41+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 62, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 56, 0, 56+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 56, 0, 64+offsetFix, id);
+
+            //right inner
+            placeDownTilGround(world, parBuildJob, 55, 0, 16+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 55, 0, 24+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 53, 0, 37+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 53, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 47, 0, 64+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 64, 0, 14+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 45, 0, 32+offsetFix, id);
+
+            //main inside support
+            placeDownTilGround(world, parBuildJob, 35, -1, 43+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 39, -1, 43+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 41, -1, 54+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 33, -1, 54+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 33, -1, 62+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 41, -1, 62+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 39, -1, 66+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 35, -1, 66+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 36, 0, 80+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 38, 0, 80+offsetFix, id);
+
         }
     }
 
