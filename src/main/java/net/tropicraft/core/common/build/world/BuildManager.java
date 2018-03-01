@@ -485,15 +485,22 @@ public class BuildManager {
         //worldRef.editingBlocks = false;
     }
 
-    public static void rotateSet(BuildJob parBuildJob, BlockPos coords, Block id, int meta) {
+    public static void rotateSet(BuildJob parBuildJob, BlockPos coords, IBlockState blockState) {
 
         coords = rotate(coords, parBuildJob.direction,
                 new Vec3d(parBuildJob.build_startX, parBuildJob.build_startY, parBuildJob.build_startZ),
                 new Vec3d(parBuildJob.build.map_sizeX, parBuildJob.build.map_sizeY, parBuildJob.build.map_sizeZ));
         World world = DimensionManager.getWorld(parBuildJob.build.dim);
         if (world != null) {
-            world.setBlockState(coords, id.getDefaultState(), 2);
+            world.setBlockState(coords, blockState, 2);
         }
+    }
+
+    public static BlockPos rotatePos(BuildJob parBuildJob, BlockPos coords) {
+        BlockPos pos = rotate(coords, parBuildJob.direction,
+                new Vec3d(parBuildJob.build_startX, parBuildJob.build_startY, parBuildJob.build_startZ),
+                new Vec3d(parBuildJob.build.map_sizeX, parBuildJob.build.map_sizeY, parBuildJob.build.map_sizeZ));
+        return pos;
     }
 
     /* coords: unrotated world coord, rotation: quantify to 90, start: uncentered world coords for structure start point, size: structure size */

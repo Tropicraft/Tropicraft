@@ -1,5 +1,8 @@
 package net.tropicraft.core.common.worldgen.village;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.ICustomGen;
 import net.tropicraft.core.common.build.UtilBuild;
@@ -17,6 +20,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.town.SpawnLocationData;
 import net.tropicraft.core.common.town.TownObject;
+import net.tropicraft.core.registry.BlockRegistry;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -263,7 +267,48 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
     public void genPassPre(World world, BuildJob parBuildJob, int parPass) {
         if (parPass == -1) {
             spawnEntitiesForce();
+
+            IBlockState id = BlockRegistry.bambooFence.getDefaultState();
+            id = Blocks.DIAMOND_BLOCK.getDefaultState();
+            /*placeDownTilGround(world, parBuildJob, 1, -1, 10, id);
+            placeDownTilGround(world, parBuildJob, parBuildJob.build.map_sizeZ-2, -1, 10, id);
+            placeDownTilGround(world, parBuildJob, 1, -1, parBuildJob.build.map_sizeX-2, id);
+            placeDownTilGround(world, parBuildJob, parBuildJob.build.map_sizeZ-2, -1, parBuildJob.build.map_sizeX-2, id);*/
+
+            int offsetFix = 0;
+            if (parBuildJob.direction == 1 || parBuildJob.direction == 2) {
+                offsetFix = -1;
+            }
+
+            placeDownTilGround(world, parBuildJob, 0, -1, 0+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 10, -1, 10+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 50, -1, 50+offsetFix, id);
         }
+    }
+
+    protected void placeDownTilGround(World world, BuildJob bj, int x, int y, int z, IBlockState blockState) {
+        if (world == null) return;
+        int absY = bj.build_startY+y;
+        //int idCheck = world.getBlockId(bj.build_startX+x, absY, bj.build_startZ+z);
+        //BlockPos pos = new BlockPos(bj.build_startX+x, absY, bj.build_startZ+z);
+        BlockPos pos = BuildManager.rotatePos(bj, new BlockPos(bj.build_startX+x, absY, bj.build_startZ+z));
+        IBlockState stateCheck = world.getBlockState(pos);
+
+        while (absY > 0 && (world.isAirBlock(pos) || stateCheck.getMaterial() == Material.WATER)) {
+            setRel(bj, x, y, z, blockState);
+            //System.out.println("gen pillar at " + x + ", " + y + ", " + z);
+            y--;
+            absY = bj.build_startY+y;
+            //idCheck = world.getBlockId(bj.build_startX+x, absY, bj.build_startZ+z);
+            pos = BuildManager.rotatePos(bj, new BlockPos(bj.build_startX+x, absY, bj.build_startZ+z));
+            stateCheck = world.getBlockState(pos);
+
+
+        }
+    }
+
+    public void setRel(BuildJob bj, int width, int height, int depth, IBlockState blockState) {
+        BuildManager.rotateSet(bj, new BlockPos(bj.build_startX+depth, bj.build_startY+height, bj.build_startZ+width), blockState);
     }
 
     @Override
