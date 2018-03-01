@@ -269,7 +269,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
             spawnEntitiesForce();
 
             IBlockState id = BlockRegistry.bambooFence.getDefaultState();
-            id = Blocks.DIAMOND_BLOCK.getDefaultState();
+            //id = Blocks.DIAMOND_BLOCK.getDefaultState();
             /*placeDownTilGround(world, parBuildJob, 1, -1, 10, id);
             placeDownTilGround(world, parBuildJob, parBuildJob.build.map_sizeZ-2, -1, 10, id);
             placeDownTilGround(world, parBuildJob, 1, -1, parBuildJob.build.map_sizeX-2, id);
@@ -280,9 +280,24 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
                 offsetFix = -1;
             }
 
-            placeDownTilGround(world, parBuildJob, 0, -1, 0+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 10, -1, 10+offsetFix, id);
-            placeDownTilGround(world, parBuildJob, 50, -1, 50+offsetFix, id);
+            /*placeDownTilGround(world, parBuildJob, 0, -1, 0+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 5, -1, 0+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 0, -1, 10+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 50, -1, 50+offsetFix, id);*/
+
+            //placeDownTilGround(world, parBuildJob, 1, 0, 10+offsetFix, id);
+            //placeDownTilGround(world, parBuildJob, 5, 0, 10+offsetFix, id);
+
+            //main hut
+            /*placeDownTilGround(world, parBuildJob, 1, -1, 29+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 1, -1, 45+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 11, -1, 45+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 11, -1, 29+offsetFix, id);*/
+
+            placeDownTilGround(world, parBuildJob, 29, -1, 1+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 45, -1, 1+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 45, -1, 11+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 29, -1, 11+offsetFix, id);
         }
     }
 
@@ -291,7 +306,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
         int absY = bj.build_startY+y;
         //int idCheck = world.getBlockId(bj.build_startX+x, absY, bj.build_startZ+z);
         //BlockPos pos = new BlockPos(bj.build_startX+x, absY, bj.build_startZ+z);
-        BlockPos pos = BuildManager.rotatePos(bj, new BlockPos(bj.build_startX+x, absY, bj.build_startZ+z));
+        BlockPos pos = getRel(bj, x, y, z);
         IBlockState stateCheck = world.getBlockState(pos);
 
         while (absY > 0 && (world.isAirBlock(pos) || stateCheck.getMaterial() == Material.WATER)) {
@@ -300,15 +315,21 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
             y--;
             absY = bj.build_startY+y;
             //idCheck = world.getBlockId(bj.build_startX+x, absY, bj.build_startZ+z);
-            pos = BuildManager.rotatePos(bj, new BlockPos(bj.build_startX+x, absY, bj.build_startZ+z));
+            pos = getRel(bj, x, y, z);
             stateCheck = world.getBlockState(pos);
+            //System.out.println("next check at " + pos.getX() + ", " + absY + ", " + pos.getZ() + " - block is " + stateCheck.getBlock());
 
 
         }
     }
 
+    public BlockPos getRel(BuildJob bj, int width, int height, int depth) {
+        return BuildManager.rotatePos(bj, new BlockPos(bj.build_startX+depth, bj.build_startY+height, bj.build_startZ+width));
+    }
+
     public void setRel(BuildJob bj, int width, int height, int depth, IBlockState blockState) {
         BuildManager.rotateSet(bj, new BlockPos(bj.build_startX+depth, bj.build_startY+height, bj.build_startZ+width), blockState);
+        //System.out.println("gen pillar at " + (bj.build_startX+depth) + ", " + (bj.build_startY+height) + ", " + (bj.build_startZ+width));
     }
 
     @Override

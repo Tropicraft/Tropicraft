@@ -333,13 +333,13 @@ public class BlockRegistry extends TropicraftRegistry {
 		mahoganyFenceGate = registerBlock(registry, (BlockFenceGate) new BlockFenceGate(BlockPlanks.EnumType.OAK).setHardness(2.0F).setResistance(5.0F), "mahogany_fence_gate",
 		        new SimpleItemCreator("mahogany_fence_gate", false).withOredict("fenceGateWood", OreDictionary.WILDCARD_VALUE));
 
-		bambooFence = registerBlock(registry, new BlockTropicraftFence(bambooFenceGate, Material.PLANTS, MapColor.SAND), "bamboo_fence");
+		bambooFence = registerBlock(registry, new BlockTropicraftFence(bambooFenceGate, Material.WOOD, MapColor.SAND), "bamboo_fence");
 		thatchFence = registerBlock(registry, new BlockTropicraftFence(thatchFenceGate, Material.PLANTS, MapColor.SAND), "thatch_fence");
-		chunkFence = registerBlock(registry, new BlockTropicraftFence(chunkFenceGate, Material.PLANTS, MapColor.SAND), "chunk_fence");
+		chunkFence = registerBlock(registry, new BlockTropicraftFence(chunkFenceGate, Material.ROCK, MapColor.SAND), "chunk_fence");
 		
-		palmFence = registerBlock(registry, new BlockTropicraftFence(palmFenceGate, Material.PLANTS, MapColor.SAND), "palm_fence",
+		palmFence = registerBlock(registry, new BlockTropicraftFence(palmFenceGate, Material.WOOD, MapColor.SAND), "palm_fence",
 		        new SimpleItemCreator("palm_fence", true).withOredict("fenceWood", OreDictionary.WILDCARD_VALUE));
-		mahoganyFence = registerBlock(registry, new BlockTropicraftFence(mahoganyFenceGate, Material.PLANTS, MapColor.SAND), "mahogany_fence",
+		mahoganyFence = registerBlock(registry, new BlockTropicraftFence(mahoganyFenceGate, Material.WOOD, MapColor.SAND), "mahogany_fence",
 		        new SimpleItemCreator("mahogany_fence", true).withOredict("fenceWood", OreDictionary.WILDCARD_VALUE));
 
 		bambooLadder = registerBlock(registry, new BlockTropicraftLadder().setHardness(BlockHardnessValues.BAMBOO.hardness).setResistance(BlockHardnessValues.BAMBOO.resistance), Names.BAMBOO_LADDER);
