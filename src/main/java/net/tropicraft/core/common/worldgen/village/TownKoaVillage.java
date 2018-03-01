@@ -1,5 +1,8 @@
 package net.tropicraft.core.common.worldgen.village;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.ICustomGen;
 import net.tropicraft.core.common.build.UtilBuild;
@@ -17,6 +20,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.town.SpawnLocationData;
 import net.tropicraft.core.common.town.TownObject;
+import net.tropicraft.core.registry.BlockRegistry;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -263,7 +267,110 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
     public void genPassPre(World world, BuildJob parBuildJob, int parPass) {
         if (parPass == -1) {
             spawnEntitiesForce();
+
+            IBlockState id = BlockRegistry.bambooFence.getDefaultState();
+
+            //fix 1 off error for rotated schematic that isnt odd number in width and length
+            int offsetFix = 0;
+            if (parBuildJob.direction == 1 || parBuildJob.direction == 2) {
+                offsetFix = -1;
+            }
+
+            //for testing
+            //placeDownTilGround(world, parBuildJob, 0, -1, 0+offsetFix, Blocks.DIAMOND_BLOCK.getDefaultState());
+
+            /**"left" is relative to what the 0 0 coords are considered for this code,
+             * basically the big hut side looking towards the main entrance
+              */
+
+            //main hut
+            placeDownTilGround(world, parBuildJob, 29, -1, 1+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 45, -1, 1+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 45, -1, 11+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 29, -1, 11+offsetFix, id);
+
+            //left outter
+            placeDownTilGround(world, parBuildJob, 1, 0, 10+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 1, 0, 18+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 1, 0, 22+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 1, 0, 30+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 12, 0, 41+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 12, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 18, 0, 56+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 18, 0, 64+offsetFix, id);
+
+            //left inner
+            placeDownTilGround(world, parBuildJob, 19, 0, 16+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 19, 0, 24+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 21, 0, 37+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 29, 0, 32+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 21, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 27, 0, 64+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 10, 0, 20+offsetFix, id);
+
+            //right outter
+            placeDownTilGround(world, parBuildJob, 73, 0, 10+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 73, 0, 18+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 73, 0, 22+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 73, 0, 30+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 62, 0, 41+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 62, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 56, 0, 56+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 56, 0, 64+offsetFix, id);
+
+            //right inner
+            placeDownTilGround(world, parBuildJob, 55, 0, 16+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 55, 0, 24+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 53, 0, 37+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 53, 0, 49+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 47, 0, 64+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 64, 0, 14+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 45, 0, 32+offsetFix, id);
+
+            //main inside support
+            placeDownTilGround(world, parBuildJob, 35, -1, 43+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 39, -1, 43+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 41, -1, 54+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 33, -1, 54+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 33, -1, 62+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 41, -1, 62+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 39, -1, 66+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 35, -1, 66+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 36, 0, 80+offsetFix, id);
+            placeDownTilGround(world, parBuildJob, 38, 0, 80+offsetFix, id);
+
         }
+    }
+
+    protected void placeDownTilGround(World world, BuildJob bj, int x, int y, int z, IBlockState blockState) {
+        if (world == null) return;
+        int absY = bj.build_startY+y;
+        //int idCheck = world.getBlockId(bj.build_startX+x, absY, bj.build_startZ+z);
+        //BlockPos pos = new BlockPos(bj.build_startX+x, absY, bj.build_startZ+z);
+        BlockPos pos = getRel(bj, x, y, z);
+        IBlockState stateCheck = world.getBlockState(pos);
+
+        while (absY > 0 && (world.isAirBlock(pos) || stateCheck.getMaterial() == Material.WATER)) {
+            setRel(bj, x, y, z, blockState);
+            //System.out.println("gen pillar at " + x + ", " + y + ", " + z);
+            y--;
+            absY = bj.build_startY+y;
+            //idCheck = world.getBlockId(bj.build_startX+x, absY, bj.build_startZ+z);
+            pos = getRel(bj, x, y, z);
+            stateCheck = world.getBlockState(pos);
+            //System.out.println("next check at " + pos.getX() + ", " + absY + ", " + pos.getZ() + " - block is " + stateCheck.getBlock());
+
+
+        }
+    }
+
+    public BlockPos getRel(BuildJob bj, int width, int height, int depth) {
+        return BuildManager.rotatePos(bj, new BlockPos(bj.build_startX+depth, bj.build_startY+height, bj.build_startZ+width));
+    }
+
+    public void setRel(BuildJob bj, int width, int height, int depth, IBlockState blockState) {
+        BuildManager.rotateSet(bj, new BlockPos(bj.build_startX+depth, bj.build_startY+height, bj.build_startZ+width), blockState);
+        //System.out.println("gen pillar at " + (bj.build_startX+depth) + ", " + (bj.build_startY+height) + ", " + (bj.build_startZ+width));
     }
 
     @Override

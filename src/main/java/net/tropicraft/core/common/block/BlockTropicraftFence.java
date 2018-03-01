@@ -1,27 +1,130 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.tropicraft.core.common.worldgen.TCGenUtils;
 import net.tropicraft.core.registry.BlockRegistry;
 
 public class BlockTropicraftFence extends BlockFence {
     
+    public enum WaterState implements IStringSerializable {
+        UNDER,
+        SURFACE,
+        NONE;
+        
+        @Override
+        public @Nonnull String getName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+    }
+    
+    public static final IProperty<WaterState> WATER = PropertyEnum.create("water", WaterState.class);
+    
     private final BlockFenceGate gate;
 	
 	public BlockTropicraftFence(BlockFenceGate fenceGate, Material material, MapColor mapColor) {
 		super(material, mapColor);
+		this.useNeighborBrightness = true;
+		this.setDefaultState(getDefaultState().withProperty(WATER, WaterState.NONE));
 		this.gate = fenceGate;
 	}
+	
+	@Override
+	protected @Nonnull BlockStateContainer createBlockState() {
+	    IProperty<?>[] superProps = super.createBlockState().getProperties().toArray(new IProperty<?>[4]);
+	    return new BlockStateContainer(this, ArrayUtils.addAll(superProps, WATER, BlockFluidBase.LEVEL));
+	}
+	
+	@Override
+	public int getMetaFromState(IBlockState state) {
+	    return state.getValue(WATER).ordinal();
+	}
+	
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+	    return getDefaultState().withProperty(WATER, WaterState.values()[meta % WaterState.values().length]);
+	}
+	
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+	    super.onBlockAdded(worldIn, pos, state);
+	    updateWaterState(state, worldIn, pos);
+	}
+	
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	    return getWaterState(super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand), world, pos);
+	}
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        updateWaterState(state, worldIn, pos);
+    }
+
+    protected final IBlockState getWaterState(IBlockState state, World world, BlockPos pos) {
+        WaterState water = WaterState.UNDER;
+        IBlockState up = world.getBlockState(pos.up());
+        if (up.getBlock() != BlockRegistry.tropicsWater && (up.getBlock() != this || up.getValue(WATER) == WaterState.NONE)) {
+            for (EnumFacing dir : EnumFacing.HORIZONTALS) {
+                IBlockState neighbor = world.getBlockState(pos.offset(dir));
+                if ((neighbor.getBlock() != BlockRegistry.tropicsWater || neighbor.getValue(BlockFluidBase.LEVEL) != 0)
+                        && neighbor.getBlock() != this) {
+                    water = WaterState.NONE;
+                    break;
+                }
+            }
+        }
+        if (water == WaterState.UNDER && up.getBlock() != BlockRegistry.tropicsWater && (up.getBlock() != this || up.getValue(WATER) == WaterState.NONE)) {
+            water = WaterState.SURFACE;
+        }
+        return state.withProperty(WATER, water);
+    }
+
+    protected final void updateWaterState(IBlockState state, World world, BlockPos pos) {
+        IBlockState newState = getWaterState(state, world, pos);
+        if (state.getValue(WATER) != newState.getValue(WATER)) {
+            world.setBlockState(pos, newState);
+        }
+    }
+
+    @Override
+	public @Nonnull Material getMaterial(IBlockState state) {
+	    return state.getValue(WATER) == WaterState.NONE ? super.getMaterial(state) : Material.WATER;
+	}
+    
+    @Override
+    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.TRANSLUCENT;
+    }
 	
 	@Override
 	@Deprecated

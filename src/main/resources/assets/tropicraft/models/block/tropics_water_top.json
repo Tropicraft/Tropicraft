@@ -1,0 +1,16 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"top": "tropicraft:blocks/tropics_water_still"
+	},
+	"elements": [
+		{
+			"from": [0, 14, 0], "to": [16, 14, 16],
+			"faces": {
+				"up":   { "uv": [ 0, 0, 16, 16 ], "texture": "#top" },
+				"down": { "uv": [ 0, 0, 16, 16 ], "texture": "#top" }
+			},
+			"shade": false
+		}
+	]
+}

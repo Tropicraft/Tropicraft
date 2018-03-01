@@ -1,30 +1,41 @@
 package net.tropicraft.core.proxy;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.IModel;
@@ -43,6 +54,8 @@ import net.tropicraft.core.client.ScubaHandler;
 import net.tropicraft.core.client.ScubaOverlayHandler;
 import net.tropicraft.core.client.TropicraftLoadingListener;
 import net.tropicraft.core.client.TropicraftWaterRenderFixer;
+import net.tropicraft.core.common.block.BlockTropicraftFence;
+import net.tropicraft.core.common.block.BlockTropicraftFence.WaterState;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
@@ -78,6 +91,9 @@ public class ClientProxy extends CommonProxy {
 		ignoreProperties(BlockRegistry.mahoganyFenceGate, BlockFenceGate.POWERED);
 		ignoreProperties(BlockRegistry.palmFenceGate, BlockFenceGate.POWERED);
 		ignoreProperties(BlockRegistry.thatchFenceGate, BlockFenceGate.POWERED);
+		
+		// Fence water hacks
+		ignoreAll(BlockRegistry.bambooFence, BlockRegistry.chunkFence, BlockRegistry.mahoganyFence, BlockRegistry.palmFence, BlockRegistry.thatchFence);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -99,6 +115,12 @@ public class ClientProxy extends CommonProxy {
 		// For rendering drink mixer in inventory
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.drinkMixer), 0, TileEntityDrinkMixer.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.airCompressor), 0, TileEntityAirCompressor.class);
+	}
+	
+	private void ignoreAll(@Nonnull Block... blocks) {
+	    for (Block block : blocks) {
+	        ignoreProperties(block, block.getBlockState().getProperties().toArray(new IProperty<?>[0]));
+	    }
 	}
 	
 	private void ignoreProperties(@Nonnull Block block, @Nonnull IProperty<?>... props) {
@@ -192,6 +214,55 @@ public class ClientProxy extends CommonProxy {
 				event.getModelRegistry().putObject(loc, model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter()));
 			}
 		}
+		try {
+		    IModel waterTop = ModelLoaderRegistry.getModel(new ResourceLocation("tropicraft:block/tropics_water_top"));
+		    final IBakedModel waterTopBaked = waterTop.bake(waterTop.getDefaultState(), DefaultVertexFormats.ITEM, ModelLoader.defaultTextureGetter());
+		    Block[] fences = new Block[] { BlockRegistry.bambooFence, BlockRegistry.chunkFence, BlockRegistry.mahoganyFence, BlockRegistry.palmFence, BlockRegistry.thatchFence };
+            for (Block block : fences) {
+                ModelResourceLocation loc = new ModelResourceLocation(block.getRegistryName(), "normal");
+                final IBakedModel fenceModel = event.getModelRegistry().getObject(loc);
+                event.getModelRegistry().putObject(loc, new IBakedModel() {
+
+                    @Override
+                    public @Nonnull List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+                        BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
+                        if (layer == null || layer == BlockRenderLayer.SOLID) {
+                            return fenceModel.getQuads(state, side, rand);
+                        } else if (layer == BlockRenderLayer.TRANSLUCENT && state.getValue(BlockTropicraftFence.WATER) == WaterState.SURFACE) {
+                            return waterTopBaked.getQuads(state, side, rand);
+                        }
+                        return Collections.emptyList();
+                    }
+
+                    @Override
+                    public boolean isGui3d() {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isBuiltInRenderer() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isAmbientOcclusion() {
+                        return true;
+                    }
+
+                    @Override
+                    public @Nonnull TextureAtlasSprite getParticleTexture() {
+                        return fenceModel.getParticleTexture();
+                    }
+
+                    @Override
+                    public @Nonnull ItemOverrideList getOverrides() {
+                        return fenceModel.getOverrides();
+                    }
+                });
+		    }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
 	}
 
 	// Another nice method based on code from BoP. Those guys rock :D
@@ -223,7 +294,7 @@ public class ClientProxy extends CommonProxy {
 		// use a custom state mapper which will ignore the LEVEL property
 		ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
 			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+			protected @Nonnull ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return fluidLocation;
 			}
 		});

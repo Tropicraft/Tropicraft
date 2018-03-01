@@ -32,7 +32,13 @@ public class BlockTropicsWater extends BlockFluidClassic {
 		super(fluid, material);
 		this.lightOpacity = 0;
 		this.setCreativeTab(null);
-		this.displacements.put(BlockRegistry.coral, Boolean.valueOf(false));
+		this.displacements.put(BlockRegistry.coral, false);
+		this.displacements.put(BlockRegistry.bambooFence, false);
+		this.displacements.put(BlockRegistry.chunkFence, false);
+        this.displacements.put(BlockRegistry.mahoganyFence, false);
+        this.displacements.put(BlockRegistry.palmFence, false);
+        this.displacements.put(BlockRegistry.thatchFence, false);
+
 		MinecraftForge.EVENT_BUS.register(this);
 		//TODO: this.displacements.put(BlockRegistry.bambooFence, Boolean.valueOf(false));
 	}
