@@ -53,5 +53,6 @@ public final class Names {
 	public static final String TE_VOLCANO = "volcano";
 	public static final String TE_DRINK_MIXER = "drink_mixer";
 	public static final String TE_SIFTER = "sifter";
-	public static final String TE_FLOWER_POT = "flower_pot";
+	// Make sure to namespace this since it collides with vanilla
+	public static final String TE_FLOWER_POT = Info.MODID + ":flower_pot";
 }
