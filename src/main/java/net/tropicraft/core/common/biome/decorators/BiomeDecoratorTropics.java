@@ -20,7 +20,7 @@ import net.tropicraft.core.registry.BlockRegistry;
 public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 
 	public BiomeDecoratorTropics() {
-
+	    this.reedsPerChunk = 30;
 	}
 
 	@Override
@@ -106,6 +106,20 @@ public class BiomeDecoratorTropics extends BiomeDecoratorTropicraft {
 			BlockPos pos = new BlockPos(i, y, k);
 			(new WorldGenTallFlower(world, rand, BlockRegistry.iris.getDefaultState())).generate(pos);
 		}
+		
+		// Vanilla Logic
+        for (int k4 = 0; k4 < reedsPerChunk; ++k4)
+        {
+            int i9 = rand.nextInt(16) + 8;
+            int l12 = rand.nextInt(16) + 8;
+            int i16 = world.getHeight(this.chunkPos.add(i9, 0, l12)).getY() * 2;
+
+            if (i16 > 0)
+            {
+                int l18 = rand.nextInt(i16);
+                this.reedGen.generate(world, rand, this.chunkPos.add(i9, l18, l12));
+            }
+        }
 
 		BiomeDecoratorTropicsBeach.decorateForVillage(world, rand, chunkPos);
 
