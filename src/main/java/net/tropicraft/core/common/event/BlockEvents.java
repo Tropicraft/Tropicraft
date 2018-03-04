@@ -32,6 +32,7 @@ public class BlockEvents {
 		}
 
 		IBlockState stateUp = event.getWorld().getBlockState(event.getPos().up());
+		IBlockState stateDown = event.getWorld().getBlockState(event.getPos().down());
 
 		boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
 		boolean isGrown = isTop ||
@@ -48,8 +49,8 @@ public class BlockEvents {
 		}
 
 		// If the stem remains after a block break, reset its growth stage so it doesn't insta-create a pineapple
-		if (!isTop) {
-			event.getWorld().setBlockState(event.getPos(), state.withProperty(BlockPineapple.STAGE, Integer.valueOf(1)));
+		if (isTop && stateDown.getBlock() instanceof BlockPineapple) {
+			event.getWorld().setBlockState(event.getPos().down(), BlockRegistry.pineapple.getDefaultState().withProperty(BlockPineapple.STAGE, Integer.valueOf(1)));
 		}
 	}
 
