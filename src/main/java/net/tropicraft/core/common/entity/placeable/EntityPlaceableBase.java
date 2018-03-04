@@ -16,9 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityPlaceableBase extends Entity {
 
-	private static final DataParameter<Float> DAMAGE = EntityDataManager.<Float>createKey(EntityChair.class, DataSerializers.FLOAT);
-	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.<Integer>createKey(EntityChair.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.<Integer>createKey(EntityChair.class, DataSerializers.VARINT);
+	private static final DataParameter<Float> DAMAGE = EntityDataManager.<Float>createKey(EntityPlaceableBase.class, DataSerializers.FLOAT);
+	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.<Integer>createKey(EntityPlaceableBase.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.<Integer>createKey(EntityPlaceableBase.class, DataSerializers.VARINT);
 
 	public EntityPlaceableBase(World worldIn) {
 		super(worldIn);

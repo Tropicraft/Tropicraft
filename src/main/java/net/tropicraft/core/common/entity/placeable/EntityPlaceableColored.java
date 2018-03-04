@@ -9,7 +9,7 @@ import net.tropicraft.ColorHelper;
 
 public abstract class EntityPlaceableColored extends EntityPlaceableBase {
 
-	protected static final DataParameter<Integer> COLOR = EntityDataManager.<Integer>createKey(EntityBeachFloat.class, DataSerializers.VARINT);
+	protected static final DataParameter<Integer> COLOR = EntityDataManager.<Integer>createKey(EntityPlaceableColored.class, DataSerializers.VARINT);
 
 	public EntityPlaceableColored(World worldIn) {
 		super(worldIn);
@@ -18,6 +18,7 @@ public abstract class EntityPlaceableColored extends EntityPlaceableBase {
 	@Override
 	protected void entityInit() {
 		this.getDataManager().register(COLOR, Integer.valueOf(ColorHelper.DEFAULT_VALUE));
+		super.entityInit();
 	}
 
 	@Override
