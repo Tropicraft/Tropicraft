@@ -35,7 +35,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 		green = ColorHelper.getGreen(entity.getColor());
 		blue = ColorHelper.getBlue(entity.getColor());
 
-		GL11.glTranslatef((float) x, (float) y + .3125F, (float) z);
+		GL11.glTranslatef((float) x, (float) y + .5125F, (float) z);
 		GL11.glRotatef(yaw + (180 - yaw)*2, 0.0F, 1.0F, 0.0F);
 
 		// Draw arms of chair

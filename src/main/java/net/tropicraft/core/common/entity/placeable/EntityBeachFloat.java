@@ -1,25 +1,43 @@
 package net.tropicraft.core.common.entity.placeable;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.tropicraft.ColorHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityBeachFloat extends Entity {
+public class EntityBeachFloat extends EntityPlaceableColored {
 
-	private static final DataParameter<Integer> COLOR = EntityDataManager.<Integer>createKey(EntityBeachFloat.class, DataSerializers.VARINT);
+	/** Is any entity laying on the float? */
+	public boolean isEmpty;
 
+	@SideOnly(Side.CLIENT)
+	private double velocityX;
+	@SideOnly(Side.CLIENT)
+	private double velocityY;
+	@SideOnly(Side.CLIENT)
+	private double velocityZ;
+
+	/** Acceleration */
+	private double speedMultiplier;
+	
+	
 	public EntityBeachFloat(World worldIn) {
 		super(worldIn);
 		setSize(2F, 0.5F);
+		this.ignoreFrustumCheck = true;
+		this.isEmpty = true;
+		this.speedMultiplier = 0.10D;
+		this.preventEntitySpawning = true;
+		this.entityCollisionReduction = .95F;
 	}
 
 	public EntityBeachFloat(World world, double x, double y, double z, int color, EntityPlayer player) {
@@ -36,64 +54,77 @@ public class EntityBeachFloat extends Entity {
 	}
 	
 	/**
-	 * Given a player, get the angle that the chair should be at to face the player
-	 * @param player
-	 * @return The angle the chair should be at to face the players
+	 * Called when the entity is attacked.
 	 */
-	private float getAngleToPlayer(EntityPlayer player) {
-		return MathHelper.wrapDegrees(player.rotationYaw);
+	@Override
+	public boolean attackEntityFrom(DamageSource damageSource, float par2) {
+		if (this.isEntityInvulnerable(damageSource)) {
+			return false;
+		} else if (!this.world.isRemote && !this.isDead) {
+			this.setForwardDirection(-this.getForwardDirection());
+			this.setTimeSinceHit(10);
+			this.setDamage(this.getDamage() + par2 * 10.0F);
+			this.markVelocityChanged();
+			boolean flag = damageSource.getTrueSource() instanceof EntityPlayer && ((EntityPlayer)damageSource.getTrueSource()).capabilities.isCreativeMode;
+
+			if (flag || this.getDamage() > 40.0F) {
+				if (!flag) {
+					this.entityDropItem(new ItemStack(ItemRegistry.beach_float, 1,  getDamageFromColor()), 0.0F);
+				}
+
+				this.setDead();
+			}
+
+			return true;
+		} else {
+			return true;
+		}
 	}
 
+	/**
+	 * Returns true if this entity should push and be pushed by other entities when colliding.
+	 */
 	@Override
-	protected void entityInit() {
-		this.getDataManager().register(COLOR, Integer.valueOf(ColorHelper.DEFAULT_VALUE));
+	public boolean canBePushed() {
+		return true;
 	}
 
+	/**
+	 * Returns the Y offset from the entity's position for any entity riding this one.
+	 */
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
-		this.setColor(Integer.valueOf(nbt.getInteger("COLOR")));
+	public double getMountedYOffset() {
+		return (double)this.height - 0.65D;
 	}
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("COLOR", Integer.valueOf(this.getColor()));
-	}
-	
     /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
+     * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
+     * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
      */
     @Override
     @Nullable
-    public AxisAlignedBB getCollisionBox(Entity entityIn) {
-        return entityIn.getEntityBoundingBox();
+    public Entity getControllingPassenger() {
+        List<Entity> list = this.getPassengers();
+        return list.isEmpty() ? null : (Entity)list.get(0);
     }
 
-    /**
-     * Returns the collision bounding box for this entity
-     */
-    @Nullable
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getEntityBoundingBox();
-    }
-
-    /**
-	 * @return Returns the damage value associated with the color of this chair
+	/**
+	 * Sets the velocity to the args. Args: x, y, z
 	 */
-	public int getDamageFromColor() {
-		return ColorHelper.getDamageFromColor(this.getColor());
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void setVelocity(double xVelocity, double yVelocity, double zVelocity) {
+		this.velocityX = this.motionX = xVelocity;
+		this.velocityY = this.motionY = yVelocity;
+		this.velocityZ = this.motionZ = zVelocity;
 	}
 
-	public void setColor(int color) {
-		this.dataManager.set(COLOR, Integer.valueOf(color));
-	}
-
-	public void setColor(float red, float green, float blue) {
-		this.dataManager.set(COLOR, Integer.valueOf(ColorHelper.getColor(red, green, blue)));
-	}
-
-	public int getColor() {
-		return ((Integer)this.dataManager.get(COLOR)).intValue();
-	}
+    /**
+     * Gets the horizontal facing direction of this Entity, adjusted to take specially-treated entity types into
+     * account.
+     */
+	@Override
+    public EnumFacing getAdjustedHorizontalFacing() {
+        return this.getHorizontalFacing().rotateY();
+    }
 }
