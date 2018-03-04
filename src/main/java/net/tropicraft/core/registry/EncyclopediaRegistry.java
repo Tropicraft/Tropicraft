@@ -43,7 +43,7 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
         Tropicraft.encyclopedia.includeItem("bamboospear", new ItemStack(ItemRegistry.bambooSpear));
         Tropicraft.encyclopedia.includeItem("bamboostick", new ItemStack(ItemRegistry.bambooStick));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 16; i++) {
             Tropicraft.encyclopedia.includeItem("beachchair", new ItemStack(ItemRegistry.chair, 1, i));
             //TODO  Tropicraft.encyclopedia.includeItem("beachfloat", new ItemStack(TCItemRegistry.beachFloat, 1, i));
             /*

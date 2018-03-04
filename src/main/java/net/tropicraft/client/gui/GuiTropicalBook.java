@@ -1,7 +1,10 @@
 package net.tropicraft.client.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -11,17 +14,21 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.encyclopedia.TropicalBook;
+import net.tropicraft.core.encyclopedia.TropicalBook.ContentMode;
 import net.tropicraft.core.registry.SoundRegistry;
 
 import org.lwjgl.input.Keyboard;
@@ -32,17 +39,21 @@ public class GuiTropicalBook extends GuiScreen {
 
 	private TropicalBook book;
 	private int indexPage = -1;
-	private int selectedIndex = 0;
-	private TropicalBook.ContentMode contentMode = TropicalBook.ContentMode.INFO;
+	private int selectedIndex = -1;
 	private int contentPage = 0;
 	private String coverBackground;
-	private String pageBackground;
+	private String pageBackgroundL, pageBackgroundR;
 	private String closedTextureIndex;
 	private String openTextureIndex;
 	private RenderItem itemRenderer;
-	private List<IRecipe> cachedRecipes;
+	private @Nonnull List<IRecipe> cachedRecipes = new ArrayList<>();
 	private float recipeCycle;
-
+	
+	private GuiIndexButton[][] indexButtons;
+	
+	private GuiButton prevPage, nextPage;
+	private GuiButton prevContentPage, nextContentPage;
+	
 	private final static int buttonNextIndexPage = 2000;
 	private final static int buttonPrevIndexPage = 2001;
 	private final static int buttonBookCover = 2003;
@@ -53,10 +64,12 @@ public class GuiTropicalBook extends GuiScreen {
 
 	public GuiTropicalBook(TropicalBook tropbook) {
 		book = tropbook;
+		indexButtons = new GuiIndexButton[2][book.entriesPerIndexPage()];
 		coverBackground = tropbook.outsideTexture;
-		pageBackground = tropbook.insideTexture;
-		closedTextureIndex = tropbook.outsideTexture;//ModLoader.getMinecraftInstance().renderEngine.getTexture(tropbook.outsideTexture);
-		openTextureIndex = tropbook.insideTexture;//ModLoader.getMinecraftInstance().renderEngine.getTexture(tropbook.insideTexture);
+		pageBackgroundL = "encyclopedia_background_left";
+	    pageBackgroundR = "encyclopedia_background_right";
+		closedTextureIndex = tropbook.outsideTexture;
+		openTextureIndex = tropbook.insideTexture;
 		itemRenderer = Minecraft.getMinecraft().getRenderItem();
 	}
 
@@ -68,49 +81,50 @@ public class GuiTropicalBook extends GuiScreen {
 	@Override
 	public void initGui(){
 		addButtons();
+		updateIndex();
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
+	protected void actionPerformed(@Nonnull GuiButton guibutton) {
 
 		switch (guibutton.id) {
 		case buttonBookCover:
 			indexPage = 0;
-			contentMode = TropicalBook.ContentMode.INFO;
 			contentPage = 0;
+			addButtons();
+			updateIndex();
 			break;
 		case buttonNextIndexPage:
 			indexPage++;
 			contentPage = 0;
+			addButtons();
+			updateIndex();
 			break;
 		case buttonPrevIndexPage:
 			indexPage--;
 			contentPage = 0;
-			break;
-		case buttonCraftingPage:
-			contentMode = TropicalBook.ContentMode.RECIPE;
-			contentPage = 0;
-			break;
-		case buttonInfoPage:
-			contentMode = TropicalBook.ContentMode.INFO;
-			contentPage = 0;
+			addButtons();
+			updateIndex();
 			break;
 		case buttonNextContentPage:
 			contentPage++;
+			addButtons();
 			break;
 		case buttonPrevContentPage:
 			contentPage--;
+			addButtons();
 			break;
 		default:
 			// Selected a page from the index list
-			selectedIndex = guibutton.id;
+			selectedIndex = (indexPage * book.entriesPerIndexPage() * 2) + guibutton.id;
 			if (book.isPageVisible(selectedIndex) && !book.hasPageBeenRead(selectedIndex)) {
 				book.markPageAsRead(selectedIndex);
 			}
-			contentMode = TropicalBook.ContentMode.INFO;
 			contentPage = 0;
 			cachedRecipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
 			recipeCycle = 0;
+			addButtons();
+			updateIndex();
 		}
 	}
 
@@ -121,96 +135,105 @@ public class GuiTropicalBook extends GuiScreen {
 
 		if (indexPage == -1) {
 			buttonList.add(new GuiClearButton(buttonBookCover, 0, 0, width, height, "", 0, coverBackground, 0x440000));
+		} else if (selectedIndex >= 0) {
+            // Add prev/next page for content //
+            buttonList.add(prevContentPage = new GuiClearButton(buttonPrevContentPage, width / 2 - 164, height / 2 - 20 , 11, 22, "", 1, openTextureIndex, 0x440000));
+            prevContentPage.visible = contentPage > 0;
+
+            buttonList.add(nextPage = new GuiClearButton(buttonNextContentPage, width / 2 + 152, height / 2 - 20, 11, 22, "", 2, openTextureIndex, 0x440000));
+            int max = contentPage == 0 ? 0 : (contentPage * 6) + 3;
+            nextPage.visible = cachedRecipes.size() > max;
 		} else {
 
 			// Add index buttons //
-			int indexPosition = 0;
-			for (int entry = indexPage * book.entriesPerIndexPage(); entry < (indexPage + 1) * book.entriesPerIndexPage(); entry++) {
-				if (entry >= book.getPageCount()) {
-					break;
-				}
-
-				String pageTitle = book.getPageTitleNotVisible(entry);
-				int color = 0x440000;
-				if (book.isPageVisible(entry)) {
-					pageTitle = book.getPageTitleByIndex(entry);
-
-					if (!book.hasPageBeenRead(entry)) {
-						color = 0x3333ff;
-					}
-				}
-				buttonList.add(new GuiClearButton(entry, width / 2 - 129, height / 2 - 87 + (indexPosition) * 15, 90, 10, pageTitle, -1, pageBackground, color));
-				indexPosition++;
+			int perPage = book.entriesPerIndexPage();
+			for (int i = 0; i < perPage * 2; i++) {
+			    int row = i % perPage;
+			    int col = i / perPage;
+				buttonList.add(indexButtons[col][row] = new GuiIndexButton(i, width / 2 + (col == 0 ? -129 : 35), height / 2 - 87 + row * 15, 116, 10, "", -1, openTextureIndex, -1));
 			}
-
 
 			// Add prev/next page for index //
-			if (indexPage > 0) {
-				buttonList.add(new GuiClearButton(buttonPrevIndexPage , width / 2 - 168, height / 2 - 20 , 11, 22, "", 2, pageBackground, 0x440000));
-			}
-			if ((indexPage + 1) * book.entriesPerIndexPage() < book.getPageCount()) {
-				buttonList.add(new GuiClearButton(buttonNextIndexPage, width / 2 - 168, height / 2 - 50, 11, 22, "", 1, pageBackground, 0x440000));
-			}
+			buttonList.add(prevPage = new GuiClearButton(buttonPrevIndexPage , width / 2 - 164, height / 2 - 20 , 11, 22, "", 1, openTextureIndex, 0x440000));
+			prevPage.visible = indexPage > 0;
+			
+			buttonList.add(nextPage = new GuiClearButton(buttonNextIndexPage, width / 2 + 152, height / 2 - 20, 11, 22, "", 2, openTextureIndex, 0x440000));
+			nextPage.visible = (indexPage + 1) * (book.entriesPerIndexPage() * 2) < book.getPageCount();
+        }
+    }
 
-			if (indexPage >= 0) {
-				// Add buttons to switch between content modes //
-				if (book.hasRecipeList()) {
-					switch(contentMode) {
-					case INFO:
-						List<IRecipe> recipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
-						if (recipes != null) {
-							buttonList.add(new GuiClearButton(buttonCraftingPage, width / 2 + 158, height / 2 - 80, 11, 22, "", 5, pageBackground, 0x440000));
-						}
-						break;
-					case RECIPE:
-						buttonList.add(new GuiClearButton(buttonInfoPage, width / 2 + 158, height / 2 - 80, 11, 22, "", 6, pageBackground, 0x440000));
-						break;
-					default:
-						break;
-					}
-				}
+    private void updateIndex() {
+        if (indexPage < 0) {
+            return;
+        }
+        for (int col = 0; col < indexButtons.length; col++) {
+            for (int row = 0; row < indexButtons[col].length; row++) {
+                GuiIndexButton button = indexButtons[col][row];
+                int entry = indexPage * (book.entriesPerIndexPage() * 2) + row + (col * book.entriesPerIndexPage());
+                if (entry < book.getPageCount()) {
+                    String pageTitle = book.getPageTitleNotVisible(entry);
+                    int color = 0x440000;
+                    if (book.isPageVisible(entry)) {
+                        pageTitle = book.getPageTitleByIndex(entry);
 
-				// Add prev/next buttons for contents //
-				if (contentPage > 0) {
-					buttonList.add(new GuiClearButton(buttonPrevContentPage, width/2 + 158, height/2 - 20 , 11, 22, "", 4, pageBackground, 0x440000));
-				}
-
-				if ((contentPage + 1) * book.entriesPerContentPage(contentMode) < book.getContentPageCount(selectedIndex, contentMode)) {
-					buttonList.add(new GuiClearButton(buttonNextContentPage, width / 2 + 158, height / 2 - 50, 11, 22, "", 3, pageBackground, 0x440000));
-				}
-			}
-		}
-	}
+                        if (!book.hasPageBeenRead(entry)) {
+                            color = 0x3333ff;
+                        }
+                    }
+                    
+                    // Make sure the title fits
+                    int titleW = fontRenderer.getStringWidth(pageTitle);
+                    int maxW = 116;
+                    if (titleW > maxW) {
+                        pageTitle += "...";
+                    }
+                    while (titleW > maxW) {
+                        pageTitle = pageTitle.substring(0, pageTitle.length() - 4) + "...";
+                        titleW = fontRenderer.getStringWidth(pageTitle);
+                    }
+                    
+                    button.displayString = pageTitle;
+                    button.color = color;
+                    button.visible = true;
+                    button.pageID = entry;
+                } else {
+                    button.visible = false;
+                }
+            }
+        }
+    }
 
 	public void addIcons() {
-		int indexPosition = 0;
-		for (int entry = indexPage * book.entriesPerIndexPage(); entry < (indexPage + 1) * book.entriesPerIndexPage(); entry++) {
-			if (entry >= book.getPageCount()) {
-				return;
-			}
-			GlStateManager.pushMatrix();
-			GlStateManager.disableLighting();
-
-			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
-			//mc.renderEngine.bindTextureMod(openTextureIndex);
-			GlStateManager.scale(.75F, .75F, .75F);
-			GlStateManager.translate((float) width / 1.5F, (float) height / 1.5F, 0f);
-			drawTexturedModalRect(-(int) (130 * 1.5), -(int) (81 * 1.5) + (indexPosition) * 20, 3, 190, 18, 18);
-			GlStateManager.popMatrix();
-
-			//RenderHelper.disableStandardItemLighting();
-			GlStateManager.pushMatrix();
-			GlStateManager.scale(.75F, .75F, .75F);
-			GlStateManager.translate((float) width / 1.5F - 1F, (float) height / 1.5F, 0f);
-			GlStateManager.color(0, 0, 0);
-			// TODO 1.12 ??
-//			itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(entry));
-			ItemStack is = book.getPageItemStack(entry);
-			if(is != null) {
-				itemRenderer.renderItemIntoGUI(is, -(int) (129 * 1.5), -(int) (80 * 1.5) + (indexPosition) * 20);
-			}
-			GlStateManager.popMatrix();
-			indexPosition++;
+        for (int col = 0; col < indexButtons.length; col++) {
+            for (int row = 0; row < indexButtons[col].length; row++) {
+                GuiIndexButton button = indexButtons[col][row];
+                if (button.visible && button.pageID < book.getPageCount()) {
+        			GlStateManager.pushMatrix();
+        			GlStateManager.disableLighting();
+        
+        			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
+        			//mc.renderEngine.bindTextureMod(openTextureIndex);
+        			GlStateManager.scale(.75F, .75F, .75F);
+        			GlStateManager.translate((float) width / 1.5F, (float) height / 1.5F, 0f);
+        			drawTexturedModalRect((int) ((col == 0 ? -130 : 16) * 1.5), -(int) (81 * 1.5) + row * 20, 3, 190, 18, 18);
+        			GlStateManager.popMatrix();
+        
+        			//RenderHelper.disableStandardItemLighting();
+        			GlStateManager.pushMatrix();
+        			GlStateManager.enableLighting();
+        			RenderHelper.enableGUIStandardItemLighting();
+        			GlStateManager.scale(.75F, .75F, .75F);
+        			GlStateManager.translate((float) width / 1.5F - 1F, (float) height / 1.5F, 0f);
+        			GlStateManager.color(0, 0, 0);
+        			// TODO 1.12 ??
+        //			itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(entry));
+        			ItemStack is = book.getPageItemStack(button.pageID);
+        			if(is != null) {
+        				itemRenderer.renderItemIntoGUI(is, (int) ((col == 0 ? -129 : 17.5) * 1.5), -(int) (80 * 1.5) + row * 20);
+        			}
+        			GlStateManager.popMatrix();
+                }
+            }
 		}
 	}
 
@@ -225,6 +248,17 @@ public class GuiTropicalBook extends GuiScreen {
 					actionPerformed(guibutton);
 				}
 			}
+		} else if (mousebutton == 1) {
+		    if (selectedIndex >= 0) {
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
+                selectedIndex = -1;
+                addButtons();
+                updateIndex();
+		    } else if (indexPage >= 0) {
+                mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
+                indexPage = -1;
+                addButtons();
+		    }
 		}
 	}
 
@@ -240,116 +274,149 @@ public class GuiTropicalBook extends GuiScreen {
 		}
 	}
 
+	private List<String> ttLines;
 
 	@Override
 	public void drawScreen(int i, int j, float elapsedPartialTicks) {
 
+	    ttLines = null;
+	    
 		drawDefaultBackground();
+		
+		int w = width / 2;
+		int h = height / 2;
 
 		if (indexPage == -1) {
 			// Draw outer book cover //
-			float f1 = 1.35F;
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.disableLighting();
-			TropicraftRenderUtils.bindTextureGui(closedTextureIndex);
-			GlStateManager.translate(width / 2, height / 2, 0F);
-			GlStateManager.scale(f1, f1, f1);
-			drawTexturedModalRect(-64, -86, 0, 0, 128, 173);
+			TropicraftRenderUtils.bindTextureGui(coverBackground);
+			drawTexturedModalRect(w - 64, h - 86, 0, 0, 128, 173);
 		} else {
 			// Draw table of contents //
-			float f2 = 1.35F;
-			GlStateManager.pushMatrix();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.disableLighting();
-			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
-			GlStateManager.translate(width / 2, height / 2, 0F);
-			GlStateManager.scale(f2, f2, f2);
-			drawTexturedModalRect(-128, -88, 0, 0, 256, 176);
-			GlStateManager.popMatrix();
+			
+			// Left page
+			TropicraftRenderUtils.bindTextureGui(pageBackgroundL);
+			drawTexturedModalRect(w - 167, h - 117, 89, 0, 167, 235);
 
-			GlStateManager.pushMatrix();
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			GlStateManager.disableLighting();
-			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
-			drawTexturedModalRect(width / 2 - 162, height / 2 - 115, 145, 201, 111, 32);
-			GlStateManager.popMatrix();
-			fontRenderer.drawString("Table of Contents", width / 2 - 150, height / 2 - 110, 0x440000);
-			fontRenderer.drawString(""+(1+indexPage), width / 2 - 159, height / 2 + 93, 0x440000);
-			if (book.hasIndexIcons()) {
-				addIcons();
-			}
+			// Right page
+			TropicraftRenderUtils.bindTextureGui(pageBackgroundR);
+            drawTexturedModalRect(w, h - 117, 0, 0, 166, 235);
+            
+            if (selectedIndex >= 0) {
+                // Draw content for selected index page //
+                if (book.isPageVisible(selectedIndex)) {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                    GlStateManager.disableLighting();
+                    String pageTitle = book.isPageVisible(selectedIndex) ? book.getPageTitleByIndex(selectedIndex) : "\247nPage not found";
+                    
+                    // Render item title and description
+                    if (contentPage == 0) {
+                        fontRenderer.drawString(pageTitle, width / 2 - 150, height / 2 - 110, 0x440000);
+                        fontRenderer.drawSplitString("  " + (book.isPageVisible(selectedIndex) ? book.getPageDescriptionsByIndex(selectedIndex) : "???"), width / 2 - 150, height / 2 - 80, 135, 0x440000);
+                    }
+                    if (cachedRecipes.size() > 0) {
+                        fontRenderer.drawString("Crafting", width / 2 + 110, height / 2 - 110, 0x440000);
+                        if (contentPage > 0) {
+                            fontRenderer.drawString("Crafting", width / 2 - 150, height / 2 - 110, 0x440000);
+                        }
+                        GlStateManager.color(1, 1, 1);
+                        TropicraftRenderUtils.bindTextureGui(openTextureIndex);
+                        drawTexturedModalRect(width / 2 + 45, height / 2 - 115, 122, 201, 113, 32);
+                        if (contentPage > 0) {
+                            drawTexturedModalRect(width / 2 - 159, height / 2 - 115, 145, 201, 113, 32);
+                        }
+                    }
+                    
+                    // Draw recipe(s)
+                    try {
+                        printRecipes(i, j, elapsedPartialTicks);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-			// Draw content for selected index page //
-			//if (book.isPageVisible(selectedIndex)) {
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			GlStateManager.disableLighting();
-			switch (contentMode) {
-			case INFO:
-				String pageTitle = book.isPageVisible(selectedIndex) ? book.getPageTitleByIndex(selectedIndex) : "\247nPage not found";
-				fontRenderer.drawString(pageTitle, width / 2 + 150 - fontRenderer.getStringWidth(pageTitle), height / 2 - 110, 0x440000);
-				fontRenderer.drawSplitString("  " + (book.isPageVisible(selectedIndex) ? book.getPageDescriptionsByIndex(selectedIndex) : "???"), width / 2 + 20, height / 2 - 80, 135, 0x440000);
-				break;
-			case RECIPE:
-				fontRenderer.drawString("Crafting", width / 2 + 110, height / 2 - 110, 0x440000);
-				try {
-					printRecipes(elapsedPartialTicks);
+                    if (contentPage == 0) {
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                        GlStateManager.disableLighting();
+                        TropicraftRenderUtils.bindTextureGui(openTextureIndex);
 
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				break;
-			default:
-				break;
-			}
+                        // Draw title underline and item box
+                        drawTexturedModalRect(width / 2 - 159, height / 2 - 115, 145, 201, 113, 32);
+                        drawTexturedModalRect(width / 2 - 47, height / 2 - 115, 90, 201, 32, 32);
 
-			GlStateManager.pushMatrix();
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			GlStateManager.disableLighting();
-			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
-			drawTexturedModalRect(width / 2 + 20, height / 2 - 115, 90, 201, 142, 32);
-			GlStateManager.popMatrix();
-			if (book.hasIndexIcons()) {
-				GlStateManager.pushMatrix();
-				GlStateManager.scale(1.5F, 1.5F, 1.5F);
-				GlStateManager.translate(width / 3F + .6F, height / 3F - 1.2F, 0F);
-				GlStateManager.color(0, 0, 0);
-				//itemRenderer.renderWithColor = book.isPageVisible(selectedIndex);
-				// TODO 1.12 ??
-//				itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(selectedIndex));
-				ItemStack is = book.getPageItemStack(selectedIndex);
-				if(is != null) {
-					GlStateManager.enableRescaleNormal();
-					RenderHelper.enableGUIStandardItemLighting();
-					itemRenderer.renderItemIntoGUI(is, 15, -73);
-					RenderHelper.disableStandardItemLighting();
-					GlStateManager.disableRescaleNormal();
-				}
-				GlStateManager.popMatrix();
-			}
-			//}
-	}
+                        // Render item icon
+                        if (book.hasIndexIcons()) {
+                            GlStateManager.pushMatrix();
+                            GlStateManager.color(0, 0, 0);
+                            // itemRenderer.renderWithColor = book.isPageVisible(selectedIndex);
+                            // TODO 1.12 ??
+                            // itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(selectedIndex));
+                            ItemStack is = book.getPageItemStack(selectedIndex);
+                            if (is != null) {
+                                GlStateManager.enableRescaleNormal();
+                                RenderHelper.enableGUIStandardItemLighting();
+                                GlStateManager.scale(1.25f, 1.25f, 1.25f);
+                                itemRenderer.renderItemIntoGUI(is, (int) ((width / 2) * (4 / 5f) - 33), (int) ((height / 2) * (4 / 5f) - 87));
+                                RenderHelper.disableStandardItemLighting();
+                                GlStateManager.disableRescaleNormal();
+                            }
+                            GlStateManager.popMatrix();
+                        }
+                    }
+                }
+            } else {
+                
+                // TOC underline
+                TropicraftRenderUtils.bindTextureGui(openTextureIndex);
+                drawTexturedModalRect(w - 156, h - 102, 122, 214, 134, 8);
+                
+                fontRenderer.drawString("Table of Contents", w - 150, h - 110, 0x440000);
+                fontRenderer.drawString("" + (1 + (indexPage * 2)), w - 157, h + 97, 0x440000);
+                String secondPageNum = "" + (2 + (indexPage * 2));
+                int sw = fontRenderer.getStringWidth(secondPageNum);
+                fontRenderer.drawString(secondPageNum, w + 157 - sw, h + 97, 0x440000);
+                if (book.hasIndexIcons()) {
+                    addIcons();
+    			}
+            }
+		}
 
-		addButtons();
 		super.drawScreen(i, j, elapsedPartialTicks);
+		
+		if (ttLines != null) {
+		    drawHoveringText(ttLines, i, j);
+		}
 	}
 
-	private void printRecipes(float elapsedPartialTicks) throws Exception {
+	private void printRecipes(int mx, int my, float elapsedPartialTicks) throws Exception {
 	    recipeCycle += elapsedPartialTicks;
-		if (cachedRecipes == null || cachedRecipes.isEmpty()) {
+		if (cachedRecipes.isEmpty()) {
 			return;
 		}
-		int newx = width / 2 + 25;
+		int newx = contentPage == 0 ? width / 2 + 25 : width / 2 - 136;
 		int newy = height / 2 - 80;
 
-		int indexPosition = 0;
-		for (int entry = contentPage * book.entriesPerContentPage(contentMode); entry < (contentPage + 1) * book.entriesPerContentPage(contentMode); entry++) {
-			if (entry >= book.getContentPageCount(selectedIndex, contentMode)) {
-				return;
+		ContentMode contentMode = ContentMode.RECIPE;
+		int max = book.entriesPerContentPage(contentMode);
+		if (contentPage > 0) {
+		    max *= 2;
+		}
+		int start = contentPage == 0 ? 0 : ((contentPage - 1) * 6) + 3;
+		max += start;
+		int idx = 0;
+		for (int entry = start; entry < max; entry++) {
+			if (entry >= cachedRecipes.size()) {
+				break;
 			}
 			Encyclopedia.RecipeEntry recipe = ((Encyclopedia)book).getFormattedRecipe(cachedRecipes.get(entry));
 			if (recipe == null) {
 			    continue; // FIXME
 			}
+			
+			GlStateManager.disableLighting();
+			GlStateManager.color(1, 1, 1);
 
 			// Draw recipe frame //
 			TropicraftRenderUtils.bindTextureGui(openTextureIndex);
@@ -388,62 +455,60 @@ public class GuiTropicalBook extends GuiScreen {
 					int itemIndex = (row * recipe.width) + col;
 					int renderX = newx + (offsetX * col) + 1;
 					int renderY = newy + (offsetY * row) + 1;
-					checkMouseHover(recipe.getCycledStack(itemIndex, recipeCycle), renderX, renderY, 18);
+					checkMouseHover(recipe.getCycledStack(itemIndex, recipeCycle), renderX, renderY, mx, my, 18);
 				}
 			}
 
 			// Draw recipe output ItemStack //
 			GlStateManager.pushMatrix();
-			GlStateManager.scale(1.5F, 1.5F, 1.5F);
-			GlStateManager.translate(newx / 3F + 1F, newy / 3F - .75F, 0F);
+//			GlStateManager.scale(1.25F, 1.25F, 1.25F);
+//			GlStateManager.translate(newx / 1.93F + 1F, newy / 1.85F - .75F, 0F);
 			GlStateManager.enableRescaleNormal();
 			RenderHelper.enableGUIStandardItemLighting();
-			itemRenderer.renderItemIntoGUI(recipe.output, newx / 3 + 60, newy / 3 + 11);
+			itemRenderer.renderItemIntoGUI(recipe.output, newx + 95, newy + 19);
 			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, recipe.output, newx / 3 + 60, newy / 3 + 11, "");
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
 			GlStateManager.pushMatrix();
-			checkMouseHover(recipe.output, newx + 90, newy + 20, 25);
+			checkMouseHover(recipe.output, newx + 90, newy + 20, mx, my, 25);
 			GlStateManager.popMatrix();
 
-			indexPosition++;
 			newy += 62;
+			idx++;
+			if (idx == 3) {
+			    newx = width / 2 + 25;
+			    newy = height / 2 - 80;
+			}
 		}
 	}
 	
-	private void checkMouseHover(Ingredient ingredient, int x, int y, int size) {
+	private void checkMouseHover(Ingredient ingredient, int x, int y, int mx, int my, int size) {
 	    if (ingredient.getMatchingStacks().length > 0) {
-	        checkMouseHover(ingredient.getMatchingStacks()[0], x, y, size);
+	        checkMouseHover(ingredient.getMatchingStacks()[0], x, y, mx, my, size);
 	    }
 	}
 
 	/**
 	 * Draw the name of an item when it's hovered over in game
 	 * @param itemstack ItemStack being hovered over
-	 * @param k x coord
-	 * @param l y coord
+	 * @param x x coord
+	 * @param y y coord
 	 * @param size size...of something idk what :D
 	 */
-	private void checkMouseHover(ItemStack itemstack, int k, int l, int size) {
-        int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-		
-		boolean flag = (i >= k && j >= l && i < k + size && j < l + size);
-		if (!itemstack.isEmpty() && flag) {
-			String s = itemstack.getItem().getItemStackDisplayName(itemstack);
-			if (s.length() > 0) {
-				RenderHelper.disableStandardItemLighting();
-				GlStateManager.disableLighting();
-				GlStateManager.disableDepth();
-				int l2 = fontRenderer.getStringWidth(s);
-				int i2 = i - l2 - 4;
-				int k2 = j;
-				drawGradientRect(i2 - 3, k2 - 3, i2 + l2 + 3, k2 + 8 + 3, 0xc0000000, 0xc0000000);
-				fontRenderer.drawStringWithShadow(s, i2, k2, -1);
-				GlStateManager.enableLighting();
-				GlStateManager.enableDepth();
-			}
+	private void checkMouseHover(ItemStack itemstack, int x, int y, int mx, int my, int size) {		
+		boolean checkHover = (mx >= x && my >= y && mx < x + size && my < y + size);
+		float z = this.zLevel;
+		this.zLevel = 500;
+		if (!itemstack.isEmpty() && checkHover) {
+		    ITooltipFlag flag = mc.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
+		    ItemTooltipEvent evt = new ItemTooltipEvent(itemstack, mc.player, itemstack.getTooltip(mc.player, flag), flag);
+		    if (!MinecraftForge.EVENT_BUS.post(evt)) {
+		        ttLines = evt.getToolTip();
+		    } else {
+		        ttLines = null;
+		    }
 		}
+		this.zLevel = z;
 	}
 }
