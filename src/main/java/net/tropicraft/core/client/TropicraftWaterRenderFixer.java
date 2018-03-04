@@ -120,7 +120,7 @@ public class TropicraftWaterRenderFixer {
 		Minecraft mc = Minecraft.getMinecraft();
     	if (event.phase == Phase.START && mc.world != null && mc.getRenderViewEntity() != null) {
     		IBlockState state = ActiveRenderInfo.getBlockStateAtEntityViewpoint(mc.world, mc.getRenderViewEntity(), mc.getRenderPartialTicks());
-    		if (state.getBlock() == BlockRegistry.tropicsWater) {
+    		if (tropicalOverlayBlocks.contains(state)) {
     			BlockPos pos = mc.getRenderViewEntity().getPosition();
     	        double y = mc.getRenderViewEntity().prevPosY + (mc.getRenderViewEntity().posY - mc.getRenderViewEntity().prevPosY) * mc.getRenderPartialTicks();
         		float fogTarget;
@@ -143,7 +143,7 @@ public class TropicraftWaterRenderFixer {
     
     @SubscribeEvent
     public void onFogDensity(FogDensity event) {
-        if (event.getState().getBlock() == BlockRegistry.tropicsWater) {
+        if (tropicalOverlayBlocks.contains(event.getState())) {
             event.setCanceled(true);
 
             Entity ent = event.getEntity();
@@ -164,7 +164,7 @@ public class TropicraftWaterRenderFixer {
 
     @SubscribeEvent
     public void onFogColor(EntityViewRenderEvent.FogColors event) {
-        if (event.getState().getBlock() == BlockRegistry.tropicsWater) {
+        if (tropicalOverlayBlocks.contains(event.getState())) {
             //keep the fog colors from 1.10 that we expect for our waters
             event.setRed(0.02F);
             event.setGreen(0.02F);
