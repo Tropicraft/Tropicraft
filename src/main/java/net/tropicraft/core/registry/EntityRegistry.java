@@ -33,6 +33,7 @@ import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
 import net.tropicraft.core.common.entity.placeable.EntityWallItem;
@@ -73,6 +74,7 @@ public class EntityRegistry {
 		registerEntity(registry, EntityFailgull.class, "failgull", 80, 3, true, SpawnPlacementType.IN_AIR);
 		registerEntity(registry, EntityChair.class, "beach_chair", 120, 10, true);
 		registerEntity(registry, EntityUmbrella.class, "beach_umbrella", 120, 10, false);
+		registerEntity(registry, EntityBeachFloat.class, "beach_float", 120, 10, true);
 		registerEntity(registry, EntityCoconutGrenade.class, "coconut_bomb", 120, 5, true);
 		registerEntity(registry, EntityAshenHunter.class, "ashen", 80, 3, true, SpawnPlacementType.ON_GROUND);
 		registerEntity(registry, EntityLostMask.class, "lost_mask", 64, 3, true);
