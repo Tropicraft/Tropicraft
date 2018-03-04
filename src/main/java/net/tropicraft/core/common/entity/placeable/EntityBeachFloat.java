@@ -127,4 +127,9 @@ public class EntityBeachFloat extends EntityPlaceableColored {
     public EnumFacing getAdjustedHorizontalFacing() {
         return this.getHorizontalFacing().rotateY();
     }
+	
+	@Override
+	public boolean shouldRiderSit() {
+	    return false;
+	}
 }

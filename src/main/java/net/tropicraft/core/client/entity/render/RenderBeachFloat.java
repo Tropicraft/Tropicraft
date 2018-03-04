@@ -9,7 +9,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.ColorHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ModelBeachFloat;
@@ -25,6 +32,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 		super(Minecraft.getMinecraft().getRenderManager());
 		shadowSize = .5F;
 		modelFloat = new ModelBeachFloat();
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	@Override
@@ -35,7 +43,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 		green = ColorHelper.getGreen(entity.getColor());
 		blue = ColorHelper.getBlue(entity.getColor());
 
-		GL11.glTranslatef((float) x, (float) y + .5125F, (float) z);
+		GL11.glTranslatef((float) x, (float) y + 1.325f, (float) z);
 		GL11.glRotatef(yaw + (180 - yaw)*2, 0.0F, 1.0F, 0.0F);
 
 		// Draw arms of chair
@@ -81,5 +89,46 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 		// NOOP
 		return null;
 	}
+	
+	private static float rotationPitch, prevRotationPitch;
+	
+	@SubscribeEvent
+	public void onRenderPlayer(RenderPlayerEvent.Pre event) {
+	    EntityPlayer p = event.getEntityPlayer();
+	    Entity riding = p.getRidingEntity();
+	    if (riding instanceof EntityBeachFloat) {
+	        EntityBeachFloat floaty = (EntityBeachFloat) riding;
+	        GlStateManager.pushMatrix();
+	        GlStateManager.rotate(-floaty.rotationYaw - 90, 0, 1, 0);
+	        GlStateManager.translate(0, 0.6, 0.94);
+	        GlStateManager.rotate(-90, 1, 0, 0);
 
+	        // Cancel out player camera rotation
+	        float f = p.renderYawOffset - p.prevRenderYawOffset;
+	        while (f < -180) f += 360;
+	        while (f >= 180) f -= 360;
+	        f = p.prevRenderYawOffset + (event.getPartialRenderTick() * f);
+	        
+	        GlStateManager.rotate(f, 0, 1, 0);
+	        
+	        // Lock in head
+	        p.rotationYawHead = p.renderYawOffset;
+	        p.prevRotationYawHead = p.prevRenderYawOffset;
+	        rotationPitch = p.rotationPitch;
+	        prevRotationPitch = p.prevRotationPitch;
+	        p.rotationPitch = 10f;
+	        p.prevRotationPitch = 10f;
+	    }
+	}
+
+	@SubscribeEvent
+	public void onRenderPlayerPost(RenderPlayerEvent.Post event) {
+	    EntityPlayer p = event.getEntityPlayer();
+	    if (p.getRidingEntity() instanceof EntityBeachFloat) {
+	        GlStateManager.popMatrix();
+	        p.rotationPitch = rotationPitch;
+	        p.prevRotationPitch = prevRotationPitch;
+	        p.getRidingEntity().rotationYaw += 0.25f;
+	    }
+	}
 }

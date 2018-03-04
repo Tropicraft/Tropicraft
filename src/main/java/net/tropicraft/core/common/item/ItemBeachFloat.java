@@ -95,7 +95,7 @@ public class ItemBeachFloat extends ItemTropicraftColored {
 				double z = raytraceresult.hitVec.z;
 
 				int color = ColorHelper.getColorFromDamage(stack.getItemDamage());
-				EntityBeachFloat beachFloat = new EntityBeachFloat(worldIn, x, y + 1.01, z, color, playerIn);
+				EntityBeachFloat beachFloat = new EntityBeachFloat(worldIn, x, y, z, color, playerIn);
 
 				beachFloat.rotationYaw = playerIn.rotationYaw;
 

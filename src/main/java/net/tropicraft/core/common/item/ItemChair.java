@@ -95,7 +95,7 @@ public class ItemChair extends ItemTropicraftColored {
 				double z = raytraceresult.hitVec.z;
 
 				int color = ColorHelper.getColorFromDamage(stack.getItemDamage());
-				EntityChair chair = new EntityChair(worldIn, x, y + 1.01, z, color, playerIn);
+				EntityChair chair = new EntityChair(worldIn, x, y, z, color, playerIn);
 
 				chair.rotationYaw = playerIn.rotationYaw;
 

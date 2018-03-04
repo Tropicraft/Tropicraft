@@ -108,7 +108,7 @@ public class ClientProxy extends CommonProxy {
 		TileEntityRenderRegistry.init();
 
 		MinecraftForge.EVENT_BUS.register(new TropicraftWaterRenderFixer());
-		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
+//		MinecraftForge.EVENT_BUS.register(new ScubaHandler());
 		MinecraftForge.EVENT_BUS.register(new ScubaOverlayHandler());
 		MinecraftForge.EVENT_BUS.register(new TropicraftLoadingListener());
 
