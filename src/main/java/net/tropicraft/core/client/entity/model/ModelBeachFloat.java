@@ -2,6 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 
 public class ModelBeachFloat extends ModelBase {
@@ -143,6 +144,8 @@ public class ModelBeachFloat extends ModelBase {
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        GlStateManager.pushMatrix();
+        GlStateManager.rotate(-90, 0, 1, 0);
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(f, f1, f2, f3, f4, f5, entity);
         floatCross4.render(f5);
@@ -158,6 +161,7 @@ public class ModelBeachFloat extends ModelBase {
         headPillow.render(f5);
         topBed.render(f5);
         bottomBed.render(f5);
+        GlStateManager.popMatrix();
     }
 
     @Override

@@ -10,10 +10,9 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -37,6 +36,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 	
 	@Override
 	public void doRender(EntityBeachFloat entity, double x, double y, double z, float yaw, float partialTicks) {
+	    this.modelFloat = new ModelBeachFloat();
 		GL11.glPushMatrix();
 
 		red = ColorHelper.getRed(entity.getColor());
@@ -99,9 +99,13 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 	    if (riding instanceof EntityBeachFloat) {
 	        EntityBeachFloat floaty = (EntityBeachFloat) riding;
 	        GlStateManager.pushMatrix();
-	        GlStateManager.rotate(-floaty.rotationYaw - 90, 0, 1, 0);
-	        GlStateManager.translate(0, 0.6, 0.94);
-	        GlStateManager.rotate(-90, 1, 0, 0);
+	        if (p != Minecraft.getMinecraft().getRenderViewEntity()) {
+	            GlStateManager.translate(event.getX(), event.getY(), event.getZ());
+	        }
+	        
+            GlStateManager.rotate(-(floaty.prevRotationYaw + (event.getPartialRenderTick() * (floaty.rotationYaw - floaty.prevRotationYaw))), 0, 1, 0);
+            GlStateManager.translate(0, 1.52, 1.55);
+            GlStateManager.rotate(-90, 1, 0, 0);
 
 	        // Cancel out player camera rotation
 	        float f = p.renderYawOffset - p.prevRenderYawOffset;
@@ -118,6 +122,17 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 	        prevRotationPitch = p.prevRotationPitch;
 	        p.rotationPitch = 10f;
 	        p.prevRotationPitch = 10f;
+	        
+	        if (p != Minecraft.getMinecraft().getRenderViewEntity()) { 
+                GlStateManager.translate(-event.getX(), -event.getY(), -event.getZ());
+            }
+	        
+	        // Handle forced camera rotation
+//	        double speed = floaty.rotationSpeed * event.getPartialRenderTick();
+//	        
+//	        p.rotationYaw = (float) (p.prevRotationYaw + speed);
+//	        p.renderYawOffset += floaty.rotationSpeed;
+//	        p.prevRenderYawOffset += floaty.rotationSpeed;
 	    }
 	}
 
@@ -128,7 +143,13 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 	        GlStateManager.popMatrix();
 	        p.rotationPitch = rotationPitch;
 	        p.prevRotationPitch = prevRotationPitch;
-	        p.getRidingEntity().rotationYaw += 0.25f;
+	    }
+	}
+	
+	@SubscribeEvent
+	public void onRenderPlayerSpecials(RenderLivingEvent.Specials.Pre<EntityPlayer> event) {
+	    if (event.getEntity().getRidingEntity() instanceof EntityBeachFloat) {
+	        event.setCanceled(true);
 	    }
 	}
 }
