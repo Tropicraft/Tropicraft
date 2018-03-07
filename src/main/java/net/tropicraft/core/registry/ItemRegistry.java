@@ -42,6 +42,7 @@ import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
 import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.common.item.ItemFishingRod;
+import net.tropicraft.core.common.item.ItemLoveTropicsShell;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
@@ -226,6 +227,8 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item mask4;
     public static Item mask5;
     
+    public static Item ltShell;
+
     public static final Map<AshenMasks, Item> maskMap = new HashMap<>();
 
     // Linked as to maintain the same order as the block registry
@@ -372,7 +375,7 @@ public class ItemRegistry extends TropicraftRegistry {
         mask5 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK5), "mask_ashen_mask5");
 
         fishingRod = registerItem(registry, new ItemFishingRod(), "fishing_rod");
-
+        ltShell = registerMultiItem(registry, new ItemLoveTropicsShell(), "ltshell", Names.LOVE_TROPICS_NAMES.length);
     }
 
     public static void init() {
@@ -383,6 +386,7 @@ public class ItemRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerColoredItem(chair);
         Tropicraft.proxy.registerColoredItem(umbrella);
         Tropicraft.proxy.registerColoredItem(cocktail);
+        Tropicraft.proxy.registerColoredItem(ltShell);
     }
     
     public static void addBlockItem(Block block, IBlockItemRegistrar item) {

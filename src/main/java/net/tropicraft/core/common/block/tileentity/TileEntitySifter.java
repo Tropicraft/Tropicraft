@@ -16,6 +16,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.tropicraft.Names;
 import net.tropicraft.core.common.block.tileentity.message.MessageSifterInventory;
 import net.tropicraft.core.common.block.tileentity.message.MessageSifterStart;
 import net.tropicraft.core.common.enums.TropicraftShells;
@@ -93,6 +94,9 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 
 			if (rand.nextInt(10) == 0) {
 				stack = getRareItem();
+			} else if (rand.nextInt(10) < 3) {
+				int damage = rand.nextInt(Names.LOVE_TROPICS_NAMES.length);
+				stack = new ItemStack(ItemRegistry.ltShell, 1, damage);
 			} else {
 				stack = getCommonItem();
 			}
