@@ -1,3 +1,21 @@
+7.1.0:
+Changes
+- Updated to 1.12.2!!!
+- Added Love Tropics shells
+- Reworked encyclopedia, but not fully
+- Parrots and ocelots now spawn in the Tropics!
+- Added packed purified sands to prevent coves from collapsing
+- Fix crashes with tropimachines due to Optifine conflict
+- Wooden steps now have the wooden step sound
+Fixes
+- Pineapples are officially un-derped
+- Re-added fences to koa villages underwater
+- Increased gen popularity of EIH statues
+- Added recipe for thatch roofs
+- Easter Island Heads now get properly damaged by modded pickaxes
+- Fix issue where portal chest doesn't gen the encyclopedia properly
+- Fix some cascading chunk gen issues. Some still exist :(
+
 7.0.1:
 Changes
 - Now requires forge 2221 or newer to load
