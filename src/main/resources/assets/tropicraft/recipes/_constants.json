@@ -61,5 +61,19 @@
   	  "ore": "plankWood"
   	},
   	"name": "PLANKWOOD"
+  },
+  {
+  	"ingredient": {
+  	  "type": "forge:ore_dict",
+  	  "ore": "itemCoal"
+  	},
+  	"name": "ITEMCOAL"
+  },
+  {
+  	"ingredient": {
+  	  "type": "forge:ore_dict",
+  	  "ore": "itemCharcoal"
+  	},
+  	"name": "ITEMCHARCOAL"
   }
 ]

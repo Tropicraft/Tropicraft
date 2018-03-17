@@ -1,13 +1,12 @@
 {
   "result": {
     "item": "tropicraft:tiki_torch",
-    "data": 2,
     "count": 2
   },
   "pattern": [
-    " Y ",
+    "  Y",
     " X ",
-    " X "
+    "X  "
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
@@ -15,8 +14,7 @@
       "item": "tropicraft:bamboo_stick"
     },
     "Y": {
-      "item": "minecraft:coal",
-      "data": 1
+      "item": "#ITEMCOAL"
     }
   }
 }
