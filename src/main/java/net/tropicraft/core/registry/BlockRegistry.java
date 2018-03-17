@@ -348,7 +348,7 @@ public class BlockRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsWater, Names.TROPICS_WATER);
         Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortal, Names.TROPICS_PORTAL);
         Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortalTeleporter, Names.TROPICS_PORTAL_TELEPORTER);
-        portalWall = registerBlock(registry, new BlockPortalWall(), Names.PORTAL_WALL, new SimpleItemCreator(Names.PORTAL_WALL, true));
+        portalWall = registerBlockNoItem(registry, new BlockPortalWall(), Names.PORTAL_WALL);
     }
 
 	public static void init() {
