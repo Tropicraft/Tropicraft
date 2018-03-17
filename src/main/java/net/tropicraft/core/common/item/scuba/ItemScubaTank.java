@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.item.scuba;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -61,6 +63,10 @@ public class ItemScubaTank extends ItemTropicraft {
             return ret;
         });
     }
+	
+	private final NumberFormat efficiencyFmt = DecimalFormat.getNumberInstance(); {
+	    efficiencyFmt.setMaximumFractionDigits(2);
+	}
 
 	/**
 	 * allows items to add custom lines of information to the mouseover description
@@ -74,7 +80,7 @@ public class ItemScubaTank extends ItemTropicraft {
 		list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.air.type", TextFormatting.GRAY + airType.getDisplayName()));
 		list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.air.capacity", TextFormatting.GRAY.toString() + airType.getMaxCapacity()));
 		list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.air.remaining", TextFormatting.GRAY.toString() + cap.getPressure()));
-		list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.air.efficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
+		list.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.air.efficiency", TextFormatting.GRAY + efficiencyFmt.format(airType.getUsageRate() * 20)));
 	}
 
 	/**

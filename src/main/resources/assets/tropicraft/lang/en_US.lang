@@ -318,19 +318,19 @@ achievement.tc_drink_pina_colada=Caught in the rain
 achievement.tc_drink_pina_colada.desc=(Did you forget your umbrella?)
 
 #Gui localizations
-tropicraft.gui.air.type=Air Type. %s
+tropicraft.gui.air.type=Air Type: %s
 tropicraft.gui.air.regular=Regular
 tropicraft.gui.air.trimix=Trimix
-tropicraft.gui.air.capacity=Max Air Capacity. %s psi
-tropicraft.gui.air.remaining=Air Remaining. %s psi
-tropicraft.gui.air.efficiency=Use Efficiency. %s%.3f psi/sec
-tropicraft.gui.suit.type=Suit Type. %s
+tropicraft.gui.air.capacity=Max Air Capacity: %s psi
+tropicraft.gui.air.remaining=Air Remaining: %s psi
+tropicraft.gui.air.efficiency=Use Efficiency: %s psi/sec
+tropicraft.gui.suit.type=Suit Type: %s
 tropicraft.gui.suit.yellow=Yellow
 tropicraft.gui.suit.pink=Pink
 tropicraft.gui.gear.tank.left.none=No left tank
-tropicraft.gui.gear.tank.left.info=Left tank.
+tropicraft.gui.gear.tank.left.info=Left tank:
 tropicraft.gui.gear.tank.right.none=No right tank
-tropicraft.gui.gear.tank.right.info=Right tank.
+tropicraft.gui.gear.tank.right.info=Right tank:
 gui.tropicraft.temperature=Temp
 gui.tropicraft.currentDepth=Depth
 gui.tropicraft.maxDepth=Max
@@ -342,7 +342,7 @@ fluid.tropicraft.water=Tropics Water
 fluid.tropicraft.portal=Tropics Portal
 
 # Misc localizations
-tropicraft.coconutBombWarning=You do not have permission to use coconut bombs .) Check the coconut bomb whitelist in the Tropicraft config file!
+tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!
 portalenchanter.type_0=Mode: Portal Build Mode
 portalenchanter.type_1=Mode: Instant Teleport Mode
 
