@@ -9,7 +9,8 @@ import net.tropicraft.core.common.entity.hostile.EntityIguana;
 
 public class RenderIguana extends RenderLiving<EntityIguana> {
 	
-	private static final ResourceLocation TEXTURE = new ResourceLocation(Info.MODID + ":textures/entity/iggytexture.png");
+	private static final ResourceLocation DEFAULT_TEXTURE = new ResourceLocation(Info.MODID + ":textures/entity/iggytexture.png");
+	private static final ResourceLocation IGOR_TEXTURE = new ResourceLocation(Info.MODID + ":textures/entity/iggy_igor.png");
 
     public RenderIguana() {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelIguana(), 0.5F);
@@ -18,6 +19,10 @@ public class RenderIguana extends RenderLiving<EntityIguana> {
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityIguana entity) {
-		return TEXTURE;
+		if (entity.getName().equalsIgnoreCase("igor")) {
+			return IGOR_TEXTURE;
+		}
+
+    	return DEFAULT_TEXTURE;
 	}
 }
