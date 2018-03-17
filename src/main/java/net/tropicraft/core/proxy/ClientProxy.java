@@ -47,7 +47,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.client.ChairColorHandler;
+import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.PlayerSwimDataClientHandler;
 import net.tropicraft.core.client.ScubaHandler;
@@ -59,6 +59,7 @@ import net.tropicraft.core.common.block.BlockTropicraftFence.WaterState;
 import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
+import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemTropicraftColored;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
@@ -145,15 +146,10 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-    public void registerColoredItem(Item item) {
-		IItemColor itemColor = null;
-		if (item instanceof ItemTropicraftColored) {
-			itemColor = new ChairColorHandler();
-		} else if (item instanceof ItemCocktail) {
-			itemColor = new CocktailColorHandler();
-		}
+    public <T extends Item & IColoredItem> void registerColoredItem(T item) {
+		IItemColor itemColor = item.getColorHandler();
 		if (itemColor != null) {
-			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ChairColorHandler(), item);
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(itemColor, item);
 		} else {
 			System.err.println("!!! FAILED TO REGISTER COLOR HANDLER FOR ITEM " + item.getUnlocalizedName() + " !!!");
 		}

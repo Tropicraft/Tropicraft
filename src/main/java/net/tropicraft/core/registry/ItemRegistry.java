@@ -150,13 +150,13 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item fireChestplate;
     public static Item fireHelmet;
 
-    public static Item chair;
-    public static Item umbrella;
+    public static ItemChair chair;
+    public static ItemUmbrella umbrella;
 
     public static Item portalEnchanter;
 
-    public static Item shell;
-    public static Item cocktail;
+    public static ItemShell shell;
+    public static ItemCocktail cocktail;
 
     public static Item whitePearl;
     public static Item blackPearl;
@@ -226,7 +226,7 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item mask4;
     public static Item mask5;
     
-    public static Item ltShell;
+    public static ItemLoveTropicsShell ltShell;
 
     public static final Map<AshenMasks, Item> maskMap = new HashMap<>();
 
@@ -391,35 +391,35 @@ public class ItemRegistry extends TropicraftRegistry {
         blockItemRegistry.put(block, item);
     }
     
-    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String regName, ITropicraftVariant... variants) {
+    private static <T extends Item> T registerMultiItem(IForgeRegistry<Item> registry, T item, String regName, ITropicraftVariant... variants) {
         return registerMultiItemPrefixed(registry, item, regName, Arrays.stream(variants).map(ITropicraftVariant::getSimpleName).toArray(String[]::new));
     }
 
-    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String regName, String... variantNames) {
-        Item ret = registerItem(registry, item, regName, variantNames[0]);
+    private static <T extends Item> T registerMultiItem(IForgeRegistry<Item> registry, T item, String regName, String... variantNames) {
+        T ret = registerItem(registry, item, regName, variantNames[0]);
         for (int i = 1; i < variantNames.length; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
         }
         return ret;
     }
 
-    private static Item registerMultiItemPrefixed(IForgeRegistry<Item> registry, Item item, String name, String[] names) {
+    private static <T extends Item> T registerMultiItemPrefixed(IForgeRegistry<Item> registry, T item, String name, String[] names) {
         return registerMultiItem(registry, item, name, Arrays.stream(names).map(s -> name + "_" + s).toArray(String[]::new));
     }
 
-    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String name, int numPlaces) {
-        Item ret = registerItem(registry, item, name);
+    private static <T extends Item> T registerMultiItem(IForgeRegistry<Item> registry, T item, String name, int numPlaces) {
+        T ret = registerItem(registry, item, name);
         for (int i = 1; i < numPlaces; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, name, i);
         }
         return ret;
     }
 
-    private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name) {
+    private static <T extends Item> T registerItem(IForgeRegistry<Item> registry, T item, String name) {
         return registerItem(registry, item, name, name);
     }
 
-    private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name, String variantName) {
+    private static <T extends Item> T registerItem(IForgeRegistry<Item> registry, T item, String name, String variantName) {
         item.setUnlocalizedName(getNamePrefixed(name));
         item.setRegistryName(name);
 

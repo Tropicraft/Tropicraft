@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
+import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.common.drinks.ColorMixer;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
@@ -269,6 +271,12 @@ public class ItemCocktail extends ItemTropicraftColored {
 	public int getColor(ItemStack itemstack, int tintIndex) {
 		Drink drink = getDrink(itemstack);
 		return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IItemColor getColorHandler() {
+	    return new CocktailColorHandler();
 	}
 	
 	@Override
