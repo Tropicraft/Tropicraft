@@ -33,7 +33,7 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
         }
 
         Tropicraft.encyclopedia.includeItem("azurite", new ItemStack(ItemRegistry.azurite));
-        Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(ItemRegistry.bambooShoot));
+        Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(BlockRegistry.bambooShoot));
         Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(ItemRegistry.bambooMug));
         Tropicraft.encyclopedia.includeItem("bambooblock", new ItemStack(BlockRegistry.bundles, 1, 1));
         Tropicraft.encyclopedia.includeItem("bamboochest", new ItemStack(BlockRegistry.bambooChest));

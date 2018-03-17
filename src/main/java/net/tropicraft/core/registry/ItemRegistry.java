@@ -115,7 +115,6 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item fishingNet;
 
     // Bamboo n stuff
-    public static Item bambooShoot;
     public static Item bambooStick;
     public static Item bambooMug;
 
@@ -293,7 +292,6 @@ public class ItemRegistry extends TropicraftRegistry {
 
         fishingNet = registerItem(registry, new ItemTropicraft(), "fishing_net");
 
-        bambooShoot = registerItem(registry, new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
         bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
         OreDictionary.registerOre("stickWood", bambooStick);
         bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");

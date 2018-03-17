@@ -1,11 +1,12 @@
 package net.tropicraft.core.registry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockPlanks;
@@ -84,7 +85,7 @@ public class BlockRegistry extends TropicraftRegistry {
     private static class SimpleItemCreator implements IBlockItemRegistrar {
         private final String name;
         private final boolean useBlock;
-        private final Object2IntMap<String> oredict = new Object2IntArrayMap<>();
+        private final Int2ObjectMap<List<String>> oredict = new Int2ObjectArrayMap<>();
 
         public SimpleItemCreator(String name, boolean useBlock) {
             this.name = name;
@@ -93,7 +94,7 @@ public class BlockRegistry extends TropicraftRegistry {
         
         public SimpleItemCreator withOredict(String name, int... metas) {
             for (int meta : metas) {
-                oredict.put(name, meta);
+                oredict.computeIfAbsent(meta, ArrayList::new).add(name);
             }
             return this;
         }
@@ -104,7 +105,7 @@ public class BlockRegistry extends TropicraftRegistry {
         }
         
         protected final void registerOres(Item item) {
-            oredict.forEach((name, meta) -> OreDictionary.registerOre(name, new ItemStack(item, 1, meta)));
+            oredict.forEach((meta, names) -> names.forEach(name -> OreDictionary.registerOre(name, new ItemStack(item, 1, meta))));
         }
         
         @Override
@@ -258,9 +259,12 @@ public class BlockRegistry extends TropicraftRegistry {
 		    }
 		});
 		flowers = registerBlock(registry, new BlockTropicsFlowers(), "flower", new StandardItemCreator(TropicraftFlowers.VALUES));
-		logs = registerBlock(registry, new BlockTropicraftLog(), "log", new MultiBlockItemCreator(TropicraftLogs.values()));
+		logs = registerBlock(registry, new BlockTropicraftLog(), "log", new MultiBlockItemCreator(TropicraftLogs.values()).withOredict("logWood", OreDictionary.WILDCARD_VALUE));
 		coral = registerBlock(registry, new BlockCoral(), "coral", new StandardItemCreator(TropicraftCorals.VALUES));
-		bundles = registerBlock(registry, new BlockBundle(Material.WOOD), "bundle", new StandardItemCreator(TropicraftBundles.values()));
+		bundles = registerBlock(registry, new BlockBundle(Material.WOOD), "bundle", new StandardItemCreator(TropicraftBundles.values())
+		        .withOredict("blockThatch", TropicraftBundles.THATCH.getMeta())
+		        .withOredict("blockBamboo", TropicraftBundles.BAMBOO.getMeta()));
+		
 		seaweed = registerBlockNoItem(registry, new BlockSeaweed(), "seaweed");
 
 		slabs = new BlockTropicraftSlab(Material.WOOD, false);
@@ -279,21 +283,21 @@ public class BlockRegistry extends TropicraftRegistry {
 		
 		planks = registerBlock(registry, new BlockTropicraftPlank(Material.WOOD), "plank", new MultiBlockItemCreator(TropicraftPlanks.VALUES).withOredict("plankWood", OreDictionary.WILDCARD_VALUE));
 		
-		bambooShoot = registerBlock(registry, new BlockBambooShoot(), Names.BAMBOO_SHOOT, (IBlockItemRegistrar) null);
+		bambooShoot = registerBlock(registry, new BlockBambooShoot(), Names.BAMBOO_SHOOT, new SimpleItemCreator(Names.BAMBOO_SHOOT, false).withOredict("bamboo", 0));
 
 		thatchStairs = registerBlock(registry, new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS, true));
 		bambooStairs = registerBlock(registry, new BlockTropicraftStairs(bundles.defaultForVariant(TropicraftBundles.BAMBOO)), Names.BLOCK_BAMBOO_STAIRS, new SimpleItemCreator(Names.BLOCK_BAMBOO_STAIRS, true));
-		palmStairs = registerBlock(registry, new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS, new SimpleItemCreator(Names.BLOCK_PALM_STAIRS, true));
+		palmStairs = registerBlock(registry, new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.PALM)), Names.BLOCK_PALM_STAIRS, new SimpleItemCreator(Names.BLOCK_PALM_STAIRS, true).withOredict("stairsWood", OreDictionary.WILDCARD_VALUE));
 		chunkStairs = registerBlock(registry, new BlockTropicraftStairs(chunk.getDefaultState()), Names.BLOCK_CHUNK_O_HEAD_STAIRS, new SimpleItemCreator(Names.BLOCK_CHUNK_O_HEAD_STAIRS, true));
-		mahoganyStairs = registerBlock(registry, new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.MAHOGANY)), Names.BLOCK_MAHOGANY_STAIRS, new SimpleItemCreator(Names.BLOCK_MAHOGANY_STAIRS, true));
+		mahoganyStairs = registerBlock(registry, new BlockTropicraftStairs(planks.defaultForVariant(TropicraftPlanks.MAHOGANY)), Names.BLOCK_MAHOGANY_STAIRS, new SimpleItemCreator(Names.BLOCK_MAHOGANY_STAIRS, true).withOredict("stairsWood", OreDictionary.WILDCARD_VALUE));
 		thatchStairsFuzzy = registerBlock(registry, new BlockTropicraftStairsFuzzy(bundles.defaultForVariant(TropicraftBundles.THATCH)), Names.BLOCK_THATCH_STAIRS_FUZZY, new SimpleItemCreator(Names.BLOCK_THATCH_STAIRS_FUZZY, true));
 	
-		leaves = registerBlock(registry, new BlockTropicraftLeaves(), "leaves", new MultiBlockItemCreator(TropicraftLeaves.VALUES));
-		fruitLeaves = registerBlock(registry, new BlockFruitLeaves(), "leaves_fruit", new MultiBlockItemCreator(TropicraftFruitLeaves.VALUES));
+		leaves = registerBlock(registry, new BlockTropicraftLeaves(), "leaves", new MultiBlockItemCreator(TropicraftLeaves.VALUES).withOredict("treeLeaves", OreDictionary.WILDCARD_VALUE));
+		fruitLeaves = registerBlock(registry, new BlockFruitLeaves(), "leaves_fruit", new MultiBlockItemCreator(TropicraftFruitLeaves.VALUES).withOredict("treeLeaves", OreDictionary.WILDCARD_VALUE));
 
 		bambooChest = registerBlock(registry, new BlockBambooChest(), Names.BAMBOO_CHEST);
 		
-		saplings = registerBlock(registry, new BlockTropicsSapling(), "sapling", new StandardItemCreator(TropicraftSaplings.VALUES));
+		saplings = registerBlock(registry, new BlockTropicsSapling(), "sapling", new StandardItemCreator(TropicraftSaplings.VALUES).withOredict("treeSapling", OreDictionary.WILDCARD_VALUE));
 		
 		coconut = registerBlock(registry, new BlockCoconut(), Names.COCONUT);
 
@@ -301,7 +305,7 @@ public class BlockRegistry extends TropicraftRegistry {
 		iris = registerBlock(registry, new BlockIris(), "iris");
 		coffeePlant = registerBlock(registry, new BlockCoffeeBush(), "coffee_bush", (IBlockItemRegistrar) null);
 		
-		sands = registerBlock(registry, new BlockTropicraftSands(), "sand", new MultiBlockItemCreator(TropicraftSands.VALUES));
+		sands = registerBlock(registry, new BlockTropicraftSands(), "sand", new MultiBlockItemCreator(TropicraftSands.VALUES).withOredict("sand", TropicraftSands.PURIFIED.getMeta()));
 		
 		volcano = registerBlock(registry, new BlockVolcano(), Names.VOLCANO, (IBlockItemRegistrar) null);
 		

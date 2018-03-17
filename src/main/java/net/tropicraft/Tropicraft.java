@@ -1,11 +1,14 @@
 package net.tropicraft;
 
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.event.RegistryEvent.MissingMappings;
+import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -14,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.client.gui.TropicraftGuiHandler;
@@ -37,6 +41,7 @@ import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.common.worldgen.overworld.TCWorldGenerator;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.proxy.CommonProxy;
+import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.CommandRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
@@ -64,6 +69,7 @@ public class Tropicraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+	    MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(proxy);
 
 	    TropicsConfigs.init(event.getSuggestedConfigurationFile());
@@ -135,4 +141,12 @@ public class Tropicraft {
         }
     }
 
+    @SubscribeEvent
+    public void fixMissingItems(MissingMappings<Item> event) {
+        for (Mapping<Item> mapping : event.getMappings()) {
+            if (mapping.key.getResourcePath().equals("bamboo_shoots")) {
+                mapping.remap(Item.getItemFromBlock(BlockRegistry.bambooShoot));
+            }
+        }
+    }
 }
