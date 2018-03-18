@@ -2,6 +2,7 @@ package net.tropicraft.core.common.item;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -13,7 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Names;
 import net.tropicraft.core.registry.CreativeTabRegistry;
-import scala.actors.threadpool.Arrays;
 
 public class ItemLoveTropicsShell extends ItemShell implements IColoredItem {
 
