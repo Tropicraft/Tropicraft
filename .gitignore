@@ -22,6 +22,8 @@ run
 .idea
 out
 *.iml
+*.ipr
+*.iws
 
 Thumbs.db
 *.DS_STORE

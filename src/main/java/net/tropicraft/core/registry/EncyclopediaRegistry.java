@@ -33,7 +33,7 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
         }
 
         Tropicraft.encyclopedia.includeItem("azurite", new ItemStack(ItemRegistry.azurite));
-        Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(ItemRegistry.bambooShoot));
+        Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(BlockRegistry.bambooShoot));
         Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(ItemRegistry.bambooMug));
         Tropicraft.encyclopedia.includeItem("bambooblock", new ItemStack(BlockRegistry.bundles, 1, 1));
         Tropicraft.encyclopedia.includeItem("bamboochest", new ItemStack(BlockRegistry.bambooChest));
@@ -43,7 +43,7 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
         Tropicraft.encyclopedia.includeItem("bamboospear", new ItemStack(ItemRegistry.bambooSpear));
         Tropicraft.encyclopedia.includeItem("bamboostick", new ItemStack(ItemRegistry.bambooStick));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 16; i++) {
             Tropicraft.encyclopedia.includeItem("beachchair", new ItemStack(ItemRegistry.chair, 1, i));
             //TODO  Tropicraft.encyclopedia.includeItem("beachfloat", new ItemStack(TCItemRegistry.beachFloat, 1, i));
             /*

@@ -9,12 +9,14 @@ import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
@@ -86,7 +88,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	    if (!super.canPlaceBlockAt(world, pos)) {
 	        return false;
 	    }
-		PlaceMode mode = canPlaceTikiTorchOn(world, pos.down());
+		PlaceMode mode = canPlaceTikiTorchOn(world, pos);
 		if (mode == PlaceMode.FULL) {
 		    return world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2));
 		} else if (mode == PlaceMode.TOP_ONLY) {
@@ -127,21 +129,16 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		return false;
 	}	
 
-	private PlaceMode canPlaceTikiTorchOn(World world, BlockPos pos) {
-		if (world.isBlockNormalCube(pos, false)) {
-			return PlaceMode.FULL;
-		} else {
-			IBlockState state = world.getBlockState(pos);
-			boolean canPlace = !world.isAirBlock(pos) && state.getBlock().canPlaceTorchOnTop(state, world, pos);
-			if (canPlace) {
-			    if (state.getBlock() instanceof BlockFence || state.getBlock() instanceof BlockWall) {
-			        return PlaceMode.TOP_ONLY;
-			    }
-			    return PlaceMode.FULL;
-			}
-			return PlaceMode.BLOCKED;
-		}
-	}
+    private PlaceMode canPlaceTikiTorchOn(World world, BlockPos pos) {
+        if (Blocks.TORCH.canPlaceBlockAt(world, pos)) {
+            IBlockState state = world.getBlockState(pos);
+            if (state.getBlock() instanceof BlockFence || state.getBlock() instanceof BlockWall) {
+                return PlaceMode.TOP_ONLY;
+            }
+            return PlaceMode.FULL;
+        }
+        return PlaceMode.BLOCKED;
+    }
 
 	/**
 	 * Get the Item that this Block should drop when harvested.
@@ -305,6 +302,11 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		} else {
 			return 0;
 		}
+	}
+	
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	    return BlockFaceShape.UNDEFINED;
 	}
 
 	@Override

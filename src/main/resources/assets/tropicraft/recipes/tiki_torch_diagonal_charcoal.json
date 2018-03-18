@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "tropicraft:tiki_torch",
-    "data": 2,
     "count": 2
   },
   "pattern": [
@@ -15,8 +14,7 @@
       "item": "tropicraft:bamboo_stick"
     },
     "Y": {
-      "item": "minecraft:coal",
-      "data": 0
+      "item": "#ITEMCHARCOAL"
     }
   }
 }

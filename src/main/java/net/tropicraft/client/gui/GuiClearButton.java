@@ -18,8 +18,6 @@ public class GuiClearButton extends GuiButton {
 	public int yPosition;
 	public String displayString;
 	public int id;
-	public boolean enabled;
-	public boolean drawButton;
 	public int type;
 	public String buttonImageLoc;
 	public int color;
@@ -32,8 +30,6 @@ public class GuiClearButton extends GuiButton {
 		super(i,j,k,l,i1,"");
 		width = 200;
 		height = 20;
-		enabled = true;
-		drawButton = true;
 		id = i;
 		xPosition = j;
 		yPosition = k;
@@ -47,8 +43,6 @@ public class GuiClearButton extends GuiButton {
 		super(i,j,k,l,i1,"");
 		width = 200;
 		height = 20;
-		enabled = true;
-		drawButton = true;
 		id = i;
 		xPosition = j;
 		yPosition = k;
@@ -81,7 +75,7 @@ public class GuiClearButton extends GuiButton {
 
 	@Override
 	public void drawButton(Minecraft minecraft, int i, int j, float partialTicks) {
-		if (!drawButton) {
+		if (!visible) {
 			return;
 		}
 
@@ -96,8 +90,7 @@ public class GuiClearButton extends GuiButton {
 		TropicraftRenderUtils.bindTextureGui(buttonImageLoc);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		int k = getHoverState(flag);	        	   
-		GlStateManager.scale(1.35F, 1.35F, 1.35F);	           
-		drawTexturedModalRect((int)(xPosition/1.35), (int)(yPosition/1.35), type*16 + 128 + (k -1)*8 , 240, 8, 16);
+		drawTexturedModalRect(xPosition, yPosition, type * 22 + 168 + (k - 1) * 11 , 236, 11, 20);
 		GlStateManager.popMatrix();
 		mouseDragged(minecraft, i, j);
 
@@ -128,6 +121,6 @@ public class GuiClearButton extends GuiButton {
 	@Override
     public boolean mousePressed(Minecraft minecraft, int i, int j)
 	{
-		return enabled && drawButton && i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height;
+		return enabled && visible && i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height;
 	}
 }

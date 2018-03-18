@@ -3,7 +3,6 @@ package net.tropicraft.core.encyclopedia;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -53,7 +52,7 @@ public class Encyclopedia extends TropicalBook {
     /*
      * Returns all recipes related to a given entry page
      */
-    public List<IRecipe> getRecipesForEntry(int page) {
+    public @Nonnull List<IRecipe> getRecipesForEntry(int page) {
         List<ItemStack> entryItems = itemEntries.get(getPageName(page));
         List<IRecipe> recipeList = new ArrayList<>();
         if (entryItems != null) {
@@ -141,10 +140,10 @@ public class Encyclopedia extends TropicalBook {
         // TODO support other kinds of recipes
         if (recipe instanceof ShapedRecipes) {
             ShapedRecipes shaped = (ShapedRecipes) recipe;
-            int width = shaped.recipeWidth;// (Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "b", "recipeWidth");
-            int height = shaped.recipeHeight;// (Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "c", "recipeHeight");
-            NonNullList<Ingredient> items = shaped.recipeItems;// (ItemStack[]) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "d", "recipeItems");
-            ItemStack output = recipe.getRecipeOutput();// (ItemStack) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "e", "recipeOutput");
+            int width = shaped.recipeWidth;
+            int height = shaped.recipeHeight;
+            NonNullList<Ingredient> items = shaped.recipeItems;
+            ItemStack output = recipe.getRecipeOutput();
             return new RecipeEntry(width, height, items, output);
         } else if (recipe instanceof ShapelessRecipes) {
             return new RecipeEntry(3, 3, recipe.getIngredients(), recipe.getRecipeOutput());

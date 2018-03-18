@@ -101,7 +101,7 @@ public class BlockTropicraftFence extends BlockFence {
         if (water == WaterState.UNDER && up.getBlock() != BlockRegistry.tropicsWater && (up.getBlock() != this || up.getValue(WATER) == WaterState.NONE)) {
             water = WaterState.SURFACE;
         }
-        return state.withProperty(WATER, water);
+        return state.withProperty(WATER, water).withProperty(BlockFluidBase.LEVEL, water == WaterState.NONE ? 15 : 0);
     }
 
     protected final void updateWaterState(IBlockState state, World world, BlockPos pos) {

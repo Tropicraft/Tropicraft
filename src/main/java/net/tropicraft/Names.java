@@ -55,4 +55,17 @@ public final class Names {
 	public static final String TE_SIFTER = "sifter";
 	// Make sure to namespace this since it collides with vanilla
 	public static final String TE_FLOWER_POT = Info.MODID + ":flower_pot";
+
+	public static final String[] LOVE_TROPICS_NAMES = {
+			"Emibelle", "Mark Conrad", "MongoTheElder", "Taelnia", "Direwolf20", "MrRube", "rckymtnrfc", "Drullkus",
+			"Herobrineblazing", "PhoenixfireLune", "Cloudy", "tterrag", "iChun", "StellarMC", "Ashinos", "Ali_MC_YT",
+			"AndreaVinkler", "CitiesXL2815", "Pahimar", "TamasHenning", "GWSheridan", "MODKILLER1001", "TekPK",
+			"MCPEDL.com", "Corosus", "Wyld", "beta", "Momibelle", "pbj_muffin", "MrByteTV", "HelenAngel",
+			"Purplicious_Cow", "shamhat", "Onyx", "Tom Tyley", "Cojomax99's parental units", "MrCompost", "bamCRASHkapow",
+			"atlanticcraft", "vadis365", "Roundaround", "Crafted_King", "JenniferAveryYT", "SOTMead", "Shireen",
+			"MrZeusyMoosey", "fuj1n", "mallrat208", "LawrenceWolf", "Dusk125", "WasThisUsernameTaken", "koncan5",
+			"SpitefulFox", "Handspiker", "Razzleberries AB", "Llorelei", "Searge", "cwsterling", "AxelJDavenport",
+			"Sirin15", "Alan L. Guile", "Jabartik", "caigan", "legomaster14", "tranawolf", "Jake E. - Creeperhost",
+			"Sakkra", "LinkMcCloud117", "AnomalousWaffle", "TurtleEngine4", "Satonka", "darklordprime", "MrCliftron"
+	};
 }

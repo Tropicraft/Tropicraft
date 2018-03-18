@@ -30,6 +30,13 @@ public abstract class TropicalBook {
         INFO,
         RECIPE
     }
+    
+    public static enum ReadState {
+        HIDDEN,
+        VISIBLE,
+        READ,
+        ;
+    }
 
     // Data file that saves which pages should be visible
     private File dataFile;
@@ -41,7 +48,7 @@ public abstract class TropicalBook {
      * The pages should only be considered visible if the byte > 0
      * The pages are also marked as read if the byte > 1
      */
-    private HashMap<String, Byte> visiblePages = new HashMap<String, Byte>();
+    private HashMap<String, ReadState> visiblePages = new HashMap<String, ReadState>();
     
     /** Maps of internal page names to translated strings (from the contents file)
      Pages are sorted according to the order of the "<pagename>.title" entries
@@ -69,8 +76,8 @@ public abstract class TropicalBook {
                 
                 while (it.hasNext()) {
                     String tagName = (String)it.next();
-                    Byte b = data.getByte(tagName);
-                    visiblePages.put(tagName, b);
+                    ReadState s = ReadState.values()[data.getByte(tagName) % ReadState.values().length];
+                    visiblePages.put(tagName, s);
                 }
 
                 dataInput.close();
@@ -114,7 +121,7 @@ public abstract class TropicalBook {
                 OutputStream dataOutput = new FileOutputStream(dataFile);
                 NBTTagCompound data = new NBTTagCompound();
                 for (String s : visiblePages.keySet()) {
-                    data.setByte(s, visiblePages.get(s));
+                    data.setByte(s, (byte) visiblePages.get(s).ordinal());
                 }
                 CompressedStreamTools.writeCompressed(data, dataOutput);
                 dataOutput.close();
@@ -129,7 +136,7 @@ public abstract class TropicalBook {
     }
     
     public boolean isPageVisible(String entry) {
-        return visiblePages.containsKey(entry) && visiblePages.get(entry) > 0;
+        return visiblePages.containsKey(entry) && visiblePages.get(entry) != ReadState.HIDDEN;
     }
     
     public boolean isPageVisible(int i) {
@@ -137,7 +144,7 @@ public abstract class TropicalBook {
     }
     
     public boolean hasPageBeenRead(String entry) {
-        return visiblePages.containsKey(entry) && visiblePages.get(entry) > 1;
+        return visiblePages.containsKey(entry) && visiblePages.get(entry) == ReadState.READ;
     }
     
     public boolean hasPageBeenRead(int i) {
@@ -145,7 +152,7 @@ public abstract class TropicalBook {
     }
     
     public void markPageAsNewlyVisible(String entry) {
-        visiblePages.put(entry, (byte)1);
+        visiblePages.put(entry, ReadState.VISIBLE);
         saveData();
     }
     
@@ -154,7 +161,7 @@ public abstract class TropicalBook {
     }
     
     public void markPageAsRead(String entry) {
-        visiblePages.put(entry, (byte)2);
+        visiblePages.put(entry, ReadState.READ);
         saveData();
     }
     

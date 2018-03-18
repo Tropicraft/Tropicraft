@@ -115,7 +115,7 @@ public class BlockBambooShoot extends BlockReed implements IPlantable {
 
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(ItemRegistry.bambooShoot);
+		return new ItemStack(BlockRegistry.bambooShoot);
 	}
 
 	/**
@@ -124,6 +124,6 @@ public class BlockBambooShoot extends BlockReed implements IPlantable {
 	@Override
 	@Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return ItemRegistry.bambooShoot;
+		return Item.getItemFromBlock(BlockRegistry.bambooShoot);
 	}
 }

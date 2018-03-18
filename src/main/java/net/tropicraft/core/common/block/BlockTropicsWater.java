@@ -61,6 +61,26 @@ public class BlockTropicsWater extends BlockFluidClassic {
 	    }
 	}
 	
+	// These two overrides prevent flowing into vanilla water and lagging out
+	
+	@Override
+	public boolean canDisplace(IBlockAccess world, BlockPos pos) {
+	    IBlockState state = world.getBlockState(pos);
+	    if (state.getMaterial() == Material.WATER) {
+	        return false;
+	    }
+	    return super.canDisplace(world, pos);
+	}
+	
+	@Override
+	public boolean displaceIfPossible(World world, BlockPos pos) {
+	    IBlockState state = world.getBlockState(pos);
+	    if (state.getMaterial() == Material.WATER) {
+	        return false;
+	    }
+	    return super.displaceIfPossible(world, pos);
+	}
+	
 	@Override
 	public int getQuantaValue(IBlockAccess world, BlockPos pos) {
 		int ret = super.getQuantaValue(world, pos);
