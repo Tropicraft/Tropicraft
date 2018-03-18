@@ -7,6 +7,11 @@ import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.LogManager;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -14,14 +19,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityBeachFloat extends EntityPlaceableColored {
+public class EntityBeachFloat extends EntityPlaceableColored implements IEntityAdditionalSpawnData {
 
 	/** Is any entity laying on the float? */
 	public boolean isEmpty;
@@ -35,6 +42,9 @@ public class EntityBeachFloat extends EntityPlaceableColored {
 
 	/** Acceleration */
 	public float rotationSpeed;
+	
+	/** Water checks */
+	private double prevMotionY;
 	
 	public EntityBeachFloat(World worldIn) {
 		super(worldIn);
@@ -55,7 +65,12 @@ public class EntityBeachFloat extends EntityPlaceableColored {
 		prevPosY = y;
 		prevPosZ = z;
 		setColor(color);		
-		rotationYaw = this.getAngleToPlayer(player);
+		lerpYaw = rotationYaw = this.getAngleToPlayer(player);
+	}
+	
+	@Override
+	protected float getAngleToPlayer(EntityPlayer player) {
+	    return MathHelper.wrapDegrees(super.getAngleToPlayer(player) + 180);
 	}
 	
 	@Override
@@ -77,12 +92,27 @@ public class EntityBeachFloat extends EntityPlaceableColored {
             motionZ += moveZ;
 	    }
 	    
-	    motionY = 0;
+        double water = getWaterLevel();
+        double center = getEntityBoundingBox().getCenter().y;
+        double eps = 1 / 16D;
+        if (water < center - eps) { // Gravity
+            motionY -= MathHelper.clamp(center - water, 0, 0.04);
+        } else if (water > center + eps) {
+            double floatpush = MathHelper.clamp(water - center, 0, 0.02);
+            motionY += floatpush;
+	    } else if (Math.abs(posY - prevPosY) < 0.00001) { // Close enough, just force to the correct spot
+	        if (motionY != 0) {
+	            lerpY = water - 0.011;
+	        }
+	        motionY = 0;
+	        prevMotionY = 0;
+	    }
 	    
 	    rotationYaw += rotationSpeed;
 	    move(MoverType.PLAYER, motionX, motionY, motionZ);
 	    
 	    motionX *= 0.9f;
+	    motionY *= 0.9f;
 	    motionZ *= 0.9f;
 	    rotationSpeed *= 0.9f;
 
@@ -104,7 +134,30 @@ public class EntityBeachFloat extends EntityPlaceableColored {
         }
 	}
 	
-    /** Following two methods mostly copied from EntityBoat interpolation code */
+	@Override
+	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+        this.prevMotionY = this.motionY;
+	    super.updateFallState(y, onGroundIn, state, pos);
+	}
+	
+    @Override
+    public boolean handleWaterMovement() {
+        AxisAlignedBB temp = getEntityBoundingBox();
+        setEntityBoundingBox(temp.contract(1, 0, 1).contract(-1, -0.125, -1));
+        if (this.world.handleMaterialAcceleration(this.getEntityBoundingBox(), Material.WATER, this)) {
+            if (!this.inWater && !this.firstUpdate) {
+                this.doWaterSplashEffect();
+            }
+
+            this.inWater = true;
+        } else {
+            this.inWater = false;
+        }
+        setEntityBoundingBox(temp);
+        return this.inWater;
+    }
+
+    /* Following two methods mostly copied from EntityBoat interpolation code */
 
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
@@ -136,7 +189,7 @@ public class EntityBeachFloat extends EntityPlaceableColored {
         }
     }
     
-    /** Following three methods copied from EntityBoat for passenger updates */
+    /* Following three methods copied from EntityBoat for passenger updates */
     
     @Override
     public void updatePassenger(@Nonnull Entity passenger) {
@@ -177,24 +230,72 @@ public class EntityBeachFloat extends EntityPlaceableColored {
             }
             
             if (passenger instanceof EntityPlayer) {
-                ((EntityPlayer)passenger).setEntityBoundingBox(getEntityBoundingBox().expand(0, 0.3, 0));
+                ((EntityPlayer)passenger).setEntityBoundingBox(getEntityBoundingBox().expand(0, 0.3, 0).contract(0, -0.1875, 0));
             }
         }
     }
 
     protected void applyYawToEntity(Entity entityToUpdate) {
-        entityToUpdate.setRenderYawOffset(this.rotationYaw);
-        float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
-        float f1 = MathHelper.clamp(f, -105.0F, 105.0F);
-        entityToUpdate.prevRotationYaw += f1 - f;
-        entityToUpdate.rotationYaw += f1 - f;
-        entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
+        if (!entityToUpdate.world.isRemote || isClientFirstPerson()) {
+            entityToUpdate.setRenderYawOffset(this.rotationYaw);
+            float yaw = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
+            float pitch = MathHelper.wrapDegrees(entityToUpdate.rotationPitch - this.rotationPitch);
+            float clampedYaw = MathHelper.clamp(yaw, -105.0F, 105.0F);
+            float clampedPitch = MathHelper.clamp(pitch, -100F, -10F);
+            entityToUpdate.prevRotationYaw += clampedYaw - yaw;
+            entityToUpdate.rotationYaw += clampedYaw - yaw;
+            entityToUpdate.prevRotationPitch += clampedPitch - pitch;
+            entityToUpdate.rotationPitch += clampedPitch - pitch;
+            entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
+        }
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public void applyOrientationToEntity(@Nonnull Entity entityToUpdate) {
         this.applyYawToEntity(entityToUpdate);
+    }
+    
+    @SideOnly(Side.CLIENT)
+    private boolean isClientFirstPerson() {
+        return Minecraft.getMinecraft().gameSettings.thirdPersonView == 0;
+    }
+    
+    /* Again, from entity boat, for water checks */
+    
+    private float getWaterLevel() {
+        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+        int minX = MathHelper.floor(axisalignedbb.minX);
+        int maxX = MathHelper.ceil(axisalignedbb.maxX);
+        int minY = MathHelper.floor(axisalignedbb.minY - prevMotionY);
+        int maxY = minY + 1;
+        int minZ = MathHelper.floor(axisalignedbb.minZ);
+        int maxZ = MathHelper.ceil(axisalignedbb.maxZ);
+        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
+
+        try {
+            float waterHeight = minY - 1;
+
+            for (int y = maxY; y >= minY; --y) {
+                for (int x = minX; x < maxX; x++) {
+                    for (int z = minZ; z < maxZ; ++z) {
+                        pos.setPos(x, y, z);
+                        IBlockState iblockstate = this.world.getBlockState(pos);
+
+                        if (iblockstate.getMaterial() == Material.WATER) {
+                            waterHeight = Math.max(waterHeight, pos.getY() + BlockLiquid.getBlockLiquidHeight(iblockstate, this.world, pos));
+                        }
+                        if (waterHeight >= maxY) {
+                            return waterHeight;
+                        }
+                    }
+                }
+            }
+
+            return waterHeight;
+        } finally {
+            pos.release();
+        }
     }
 
 	/**
@@ -232,13 +333,18 @@ public class EntityBeachFloat extends EntityPlaceableColored {
 	public boolean canBePushed() {
 		return true;
 	}
+	
+	@Override
+	public double getYOffset() {
+	    return 0;
+	}
 
 	/**
 	 * Returns the Y offset from the entity's position for any entity riding this one.
 	 */
 	@Override
 	public double getMountedYOffset() {
-		return height - 1.25;
+		return height - 1.1;
 	}
 
     /**
@@ -265,4 +371,14 @@ public class EntityBeachFloat extends EntityPlaceableColored {
 	public boolean shouldRiderSit() {
 	    return false;
 	}
+
+    @Override
+    public void writeSpawnData(ByteBuf buffer) {
+        buffer.writeDouble(this.lerpYaw);
+    }
+
+    @Override
+    public void readSpawnData(ByteBuf additionalData) {
+        this.lerpYaw = additionalData.readDouble();
+    }
 }

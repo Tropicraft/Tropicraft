@@ -43,7 +43,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 		green = ColorHelper.getGreen(entity.getColor());
 		blue = ColorHelper.getBlue(entity.getColor());
 
-		GL11.glTranslatef((float) x, (float) y + 1.325f, (float) z);
+		GL11.glTranslatef((float) x, (float) y + 1.5125f, (float) z);
 		GL11.glRotatef(yaw + (180 - yaw)*2, 0.0F, 1.0F, 0.0F);
 
 		// Draw arms of chair
@@ -104,7 +104,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
 	        }
 	        
             GlStateManager.rotate(-(floaty.prevRotationYaw + (event.getPartialRenderTick() * (floaty.rotationYaw - floaty.prevRotationYaw))), 0, 1, 0);
-            GlStateManager.translate(0, 1.52, 1.55);
+            GlStateManager.translate(0, 1.55, 1.55);
             GlStateManager.rotate(-90, 1, 0, 0);
 
 	        // Cancel out player camera rotation

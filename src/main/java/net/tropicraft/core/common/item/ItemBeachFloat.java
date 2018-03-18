@@ -97,8 +97,6 @@ public class ItemBeachFloat extends ItemTropicraftColored {
 				int color = ColorHelper.getColorFromDamage(stack.getItemDamage());
 				EntityBeachFloat beachFloat = new EntityBeachFloat(worldIn, x, y, z, color, playerIn);
 
-				beachFloat.rotationYaw = playerIn.rotationYaw;
-
 				if (!worldIn.getCollisionBoxes(beachFloat, beachFloat.getEntityBoundingBox().grow(-0.1D)).isEmpty())
 				{
 					return new ActionResult<>(EnumActionResult.FAIL, stack);
