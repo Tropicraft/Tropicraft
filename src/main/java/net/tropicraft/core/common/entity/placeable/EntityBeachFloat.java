@@ -34,74 +34,74 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
     private static final Random rand = new Random(298457L);
     @Nonnull
     private static final NoiseGeneratorPerlin windNoise = new NoiseGeneratorPerlin(rand, 1);
-    
+
     /* Wind */
     private double windModifier = 0;
 
-	/* Is any entity laying on the float? */
-	public boolean isEmpty;
-	
-	/* Interpolation values */
+    /* Is any entity laying on the float? */
+    public boolean isEmpty;
+
+    /* Interpolation values */
     private int lerpSteps;
     private double lerpX;
     private double lerpY;
     private double lerpZ;
     private double lerpYaw;
 
-	/* Acceleration */
-	public float rotationSpeed;
-	
-	/* Water checks */
-	private double prevMotionY;
-	
-	public EntityBeachFloat(World worldIn) {
-		super(worldIn);
-		setSize(2F, 0.175F);
-		this.ignoreFrustumCheck = true;
-		this.isEmpty = true;
-		this.preventEntitySpawning = true;
-		this.entityCollisionReduction = .95F;
-		setEntityId(this.getEntityId());
-	}
+    /* Acceleration */
+    public float rotationSpeed;
 
-	public EntityBeachFloat(World world, double x, double y, double z, int color, EntityPlayer player) {
-		this(world);
-		setPosition(x, y, z);
-		motionX = 0.0D;
-		motionY = 0.0D;
-		motionZ = 0.0D;
-		prevPosX = x;
-		prevPosY = y;
-		prevPosZ = z;
-		setColor(color);		
-		lerpYaw = rotationYaw = this.getAngleToPlayer(player);
-	}
-	
-	@Override
-	public void setEntityId(int id) {
-	    super.setEntityId(id);
-	    rand.setSeed(id);
-	    this.windModifier = (1 + (rand.nextGaussian() * 0.1)) -  0.05;
-	}
-	
-	@Override
-	protected float getAngleToPlayer(EntityPlayer player) {
-	    return MathHelper.wrapDegrees(super.getAngleToPlayer(player) + 180);
-	}
-	
-	@Override
-	public void onEntityUpdate() {
-	    super.onEntityUpdate();
-	    tickLerp();
+    /* Water checks */
+    private double prevMotionY;
 
-	    Entity rider = getControllingPassenger();
-	    if (world.isRemote && rider instanceof EntityPlayer) {
-	        EntityPlayer controller = (EntityPlayer) rider;
-	        float move = controller.moveForward;
-	        float rot = -controller.moveStrafing;
-	        rotationSpeed += rot * 0.25f;
-	        
-	        float ang = rotationYaw;
+    public EntityBeachFloat(World worldIn) {
+        super(worldIn);
+        setSize(2F, 0.175F);
+        this.ignoreFrustumCheck = true;
+        this.isEmpty = true;
+        this.preventEntitySpawning = true;
+        this.entityCollisionReduction = .95F;
+        setEntityId(this.getEntityId());
+    }
+
+    public EntityBeachFloat(World world, double x, double y, double z, int color, EntityPlayer player) {
+        this(world);
+        setPosition(x, y, z);
+        motionX = 0.0D;
+        motionY = 0.0D;
+        motionZ = 0.0D;
+        prevPosX = x;
+        prevPosY = y;
+        prevPosZ = z;
+        setColor(color);
+        lerpYaw = rotationYaw = this.getAngleToPlayer(player);
+    }
+
+    @Override
+    public void setEntityId(int id) {
+        super.setEntityId(id);
+        rand.setSeed(id);
+        this.windModifier = (1 + (rand.nextGaussian() * 0.1)) - 0.05;
+    }
+
+    @Override
+    protected float getAngleToPlayer(EntityPlayer player) {
+        return MathHelper.wrapDegrees(super.getAngleToPlayer(player) + 180);
+    }
+
+    @Override
+    public void onEntityUpdate() {
+        super.onEntityUpdate();
+        tickLerp();
+
+        Entity rider = getControllingPassenger();
+        if (world.isRemote && rider instanceof EntityPlayer) {
+            EntityPlayer controller = (EntityPlayer) rider;
+            float move = controller.moveForward;
+            float rot = -controller.moveStrafing;
+            rotationSpeed += rot * 0.25f;
+
+            float ang = rotationYaw;
             float moveX = MathHelper.sin(-ang * 0.017453292F) * move * 0.0035f;
             float moveZ = MathHelper.cos(ang * 0.017453292F) * move * 0.0035f;
             motionX += moveX;
@@ -110,8 +110,8 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
 
         if (this.inWater) {
             double windAng = (windNoise.getValue(posX / 1000, posZ / 1000) + 1) * Math.PI;
-            double windX = Math.sin(windAng) * 0.0005f * windModifier;
-            double windZ = Math.cos(windAng) * 0.0005f * windModifier;
+            double windX = Math.sin(windAng) * 0.0005 * windModifier;
+            double windZ = Math.cos(windAng) * 0.0005 * windModifier;
             motionX += windX;
             motionZ += windZ;
             // Rotate towards a target yaw with some random perturbance
@@ -119,12 +119,12 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
             double yaw = (MathHelper.wrapDegrees(this.rotationYaw) + 180 - 35) % 360;
             double angleDiff = targetYaw - yaw;
             if (angleDiff > 0) {
-                this.rotationSpeed += Math.min(0.05 * windModifier, angleDiff);
+                this.rotationSpeed += Math.min(0.005 * windModifier, angleDiff);
             } else {
-                this.rotationSpeed += Math.max(-0.05 * windModifier, angleDiff);
+                this.rotationSpeed += Math.max(-0.005 * windModifier, angleDiff);
             }
         }
-        
+
         double water = getWaterLevel();
         double center = getEntityBoundingBox().getCenter().y;
         double eps = 1 / 16D;
@@ -133,21 +133,21 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
         } else if (water > center + eps) {
             double floatpush = MathHelper.clamp(water - center, 0, 0.02);
             motionY += floatpush;
-	    } else if (Math.abs(posY - prevPosY) < 0.00001) { // Close enough, just force to the correct spot
-	        if (motionY != 0) {
-	            lerpY = water - 0.011;
-	        }
-	        motionY = 0;
-	        prevMotionY = 0;
-	    }
-	    
-	    rotationYaw += rotationSpeed;
-	    move(MoverType.PLAYER, motionX, motionY, motionZ);
-	    
-	    motionX *= 0.9f;
-	    motionY *= 0.9f;
-	    motionZ *= 0.9f;
-	    rotationSpeed *= 0.9f;
+        } else if (Math.abs(posY - prevPosY) < 0.00001) { // Close enough, just force to the correct spot
+            if (motionY != 0) {
+                lerpY = water - 0.011;
+            }
+            motionY = 0;
+            prevMotionY = 0;
+        }
+
+        rotationYaw += rotationSpeed;
+        move(MoverType.PLAYER, motionX, motionY, motionZ);
+
+        motionX *= 0.9f;
+        motionY *= 0.9f;
+        motionZ *= 0.9f;
+        rotationSpeed *= 0.9f;
 
         if (!this.world.isRemote) {
             List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
@@ -165,14 +165,14 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
                 this.removePassengers();
             }
         }
-	}
-	
-	@Override
-	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+    }
+
+    @Override
+    protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
         this.prevMotionY = this.motionY;
-	    super.updateFallState(y, onGroundIn, state, pos);
-	}
-	
+        super.updateFallState(y, onGroundIn, state, pos);
+    }
+
     @Override
     public boolean handleWaterMovement() {
         AxisAlignedBB temp = getEntityBoundingBox();
@@ -221,9 +221,9 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
             this.setRotation(this.rotationYaw, this.rotationPitch);
         }
     }
-    
+
     /* Following three methods copied from EntityBoat for passenger updates */
-    
+
     @Override
     public void updatePassenger(@Nonnull Entity passenger) {
         if (this.isPassenger(passenger)) {
@@ -261,9 +261,9 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
                 passenger.setRenderYawOffset(((EntityAnimal) passenger).renderYawOffset + (float) j);
                 passenger.setRotationYawHead(passenger.getRotationYawHead() + (float) j);
             }
-            
+
             if (passenger instanceof EntityPlayer) {
-                ((EntityPlayer)passenger).setEntityBoundingBox(getEntityBoundingBox().expand(0, 0.3, 0).contract(0, -0.1875, 0));
+                ((EntityPlayer) passenger).setEntityBoundingBox(getEntityBoundingBox().expand(0, 0.3, 0).contract(0, -0.1875, 0));
             }
         }
     }
@@ -288,14 +288,14 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
     public void applyOrientationToEntity(@Nonnull Entity entityToUpdate) {
         this.applyYawToEntity(entityToUpdate);
     }
-    
+
     @SideOnly(Side.CLIENT)
     private boolean isClientFirstPerson() {
         return Minecraft.getMinecraft().gameSettings.thirdPersonView == 0;
     }
-    
+
     /* Again, from entity boat, for water checks */
-    
+
     private float getWaterLevel() {
         AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
         int minX = MathHelper.floor(axisalignedbb.minX);
@@ -331,79 +331,77 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
         }
     }
 
-	/**
-	 * Called when the entity is attacked.
-	 */
-	@Override
-	public boolean attackEntityFrom(@Nonnull DamageSource damageSource, float par2) {
-		if (this.isEntityInvulnerable(damageSource)) {
-			return false;
-		} else if (!this.world.isRemote && !this.isDead) {
-			this.setForwardDirection(-this.getForwardDirection());
-			this.setTimeSinceHit(10);
-			this.setDamage(this.getDamage() + par2 * 10.0F);
-			this.markVelocityChanged();
-			boolean flag = damageSource.getTrueSource() instanceof EntityPlayer && ((EntityPlayer)damageSource.getTrueSource()).capabilities.isCreativeMode;
+    /**
+     * Called when the entity is attacked.
+     */
+    @Override
+    public boolean attackEntityFrom(@Nonnull DamageSource damageSource, float par2) {
+        if (this.isEntityInvulnerable(damageSource)) {
+            return false;
+        } else if (!this.world.isRemote && !this.isDead) {
+            this.setForwardDirection(-this.getForwardDirection());
+            this.setTimeSinceHit(10);
+            this.setDamage(this.getDamage() + par2 * 10.0F);
+            this.markVelocityChanged();
+            boolean flag = damageSource.getTrueSource() instanceof EntityPlayer && ((EntityPlayer) damageSource.getTrueSource()).capabilities.isCreativeMode;
 
-			if (flag || this.getDamage() > 40.0F) {
-				if (!flag) {
-					this.entityDropItem(new ItemStack(ItemRegistry.beach_float, 1,  getDamageFromColor()), 0.0F);
-				}
+            if (flag || this.getDamage() > 40.0F) {
+                if (!flag) {
+                    this.entityDropItem(new ItemStack(ItemRegistry.beach_float, 1, getDamageFromColor()), 0.0F);
+                }
 
-				this.setDead();
-			}
+                this.setDead();
+            }
 
-			return true;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * Returns true if this entity should push and be pushed by other entities when colliding.
-	 */
-	@Override
-	public boolean canBePushed() {
-		return true;
-	}
-	
-	@Override
-	public double getYOffset() {
-	    return 0;
-	}
-
-	/**
-	 * Returns the Y offset from the entity's position for any entity riding this one.
-	 */
-	@Override
-	public double getMountedYOffset() {
-		return height - 1.1;
-	}
+            return true;
+        } else {
+            return true;
+        }
+    }
 
     /**
-     * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
-     * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
+     * Returns true if this entity should push and be pushed by other entities when colliding.
+     */
+    @Override
+    public boolean canBePushed() {
+        return true;
+    }
+
+    @Override
+    public double getYOffset() {
+        return 0;
+    }
+
+    /**
+     * Returns the Y offset from the entity's position for any entity riding this one.
+     */
+    @Override
+    public double getMountedYOffset() {
+        return height - 1.1;
+    }
+
+    /**
+     * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example, Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
      */
     @Override
     @Nullable
     public Entity getControllingPassenger() {
         List<Entity> list = this.getPassengers();
-        return list.isEmpty() ? null : (Entity)list.get(0);
+        return list.isEmpty() ? null : (Entity) list.get(0);
     }
 
     /**
-     * Gets the horizontal facing direction of this Entity, adjusted to take specially-treated entity types into
-     * account.
+     * Gets the horizontal facing direction of this Entity, adjusted to take specially-treated entity types into account.
      */
-	@Override
+    @Override
     public EnumFacing getAdjustedHorizontalFacing() {
         return this.getHorizontalFacing().rotateY();
     }
-	
-	@Override
-	public boolean shouldRiderSit() {
-	    return false;
-	}
+
+    @Override
+    public boolean shouldRiderSit() {
+        return false;
+    }
 
     @Override
     public void writeSpawnData(ByteBuf buffer) {
