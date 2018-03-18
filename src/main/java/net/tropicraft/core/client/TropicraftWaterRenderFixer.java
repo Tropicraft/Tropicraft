@@ -1,8 +1,9 @@
 package net.tropicraft.core.client;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import com.google.common.collect.Sets;
+import com.google.common.base.Predicate;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
@@ -27,6 +29,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.biome.BiomeTropicraft;
+import net.tropicraft.core.common.block.BlockTropicraftFence;
+import net.tropicraft.core.common.block.BlockTropicraftFence.WaterState;
 import net.tropicraft.core.common.item.scuba.ItemScubaHelmet;
 import net.tropicraft.core.registry.BlockRegistry;
 
@@ -34,12 +38,37 @@ public class TropicraftWaterRenderFixer {
 
     private static final ResourceLocation RES_UNDERWATER_OVERLAY = new ResourceLocation(Info.MODID, "textures/misc/underwater.png");
     
-    private static final Set<Block> tropicalOverlayBlocks = Sets.newHashSet(
-                BlockRegistry.tropicsWater,
-                BlockRegistry.tropicsPortal,
-                BlockRegistry.tropicsPortalTeleporter,
-                BlockRegistry.coral
-            );
+    private static final Set<IBlockState> tropicalOverlayBlocks = new HashSet<>();
+    
+    private static void addOverlayAll(Block block) {
+        tropicalOverlayBlocks.addAll(block.getBlockState().getValidStates());
+    }
+    
+    private static void addOverlayMatching(Block block, Predicate<IBlockState> pred) {
+        for (IBlockState state : block.getBlockState().getValidStates()) {
+            if (pred.apply(state)) {
+                addOverlay(state);
+            }
+        }
+    }
+    
+    private static void addOverlay(IBlockState state) {
+        tropicalOverlayBlocks.add(state);
+    }
+    
+    static {
+        addOverlayAll(BlockRegistry.tropicsWater);
+        addOverlayAll(BlockRegistry.tropicsPortal);
+        addOverlayAll(BlockRegistry.tropicsPortalTeleporter);
+        addOverlayAll(BlockRegistry.coral);
+        
+        Predicate<IBlockState> waterPred = s -> s.getValue(BlockTropicraftFence.WATER) != WaterState.NONE;
+        addOverlayMatching(BlockRegistry.bambooFence, waterPred);
+        addOverlayMatching(BlockRegistry.chunkFence, waterPred);
+        addOverlayMatching(BlockRegistry.mahoganyFence, waterPred);
+        addOverlayMatching(BlockRegistry.palmFence, waterPred);
+        addOverlayMatching(BlockRegistry.thatchFence, waterPred);
+    }
 
     @SubscribeEvent
     public void onBlockOverlay(RenderBlockOverlayEvent event) {
@@ -47,7 +76,7 @@ public class TropicraftWaterRenderFixer {
             double d0 = event.getPlayer().posY + event.getPlayer().getEyeHeight();
             BlockPos blockpos = new BlockPos(event.getPlayer().posX, d0, event.getPlayer().posZ);
             IBlockState atPos = event.getPlayer().getEntityWorld().getBlockState(blockpos);
-            if (tropicalOverlayBlocks.contains(atPos.getBlock())) {
+            if (tropicalOverlayBlocks.contains(atPos)) {
                 event.setCanceled(true);
                 Minecraft mc = Minecraft.getMinecraft();
                 
@@ -87,10 +116,11 @@ public class TropicraftWaterRenderFixer {
     
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event) {
+
 		Minecraft mc = Minecraft.getMinecraft();
     	if (event.phase == Phase.START && mc.world != null && mc.getRenderViewEntity() != null) {
     		IBlockState state = ActiveRenderInfo.getBlockStateAtEntityViewpoint(mc.world, mc.getRenderViewEntity(), mc.getRenderPartialTicks());
-    		if (state.getBlock() == BlockRegistry.tropicsWater) {
+    		if (tropicalOverlayBlocks.contains(state)) {
     			BlockPos pos = mc.getRenderViewEntity().getPosition();
     	        double y = mc.getRenderViewEntity().prevPosY + (mc.getRenderViewEntity().posY - mc.getRenderViewEntity().prevPosY) * mc.getRenderPartialTicks();
         		float fogTarget;
@@ -113,7 +143,7 @@ public class TropicraftWaterRenderFixer {
     
     @SubscribeEvent
     public void onFogDensity(FogDensity event) {
-        if (event.getState().getBlock() == BlockRegistry.tropicsWater) {
+        if (tropicalOverlayBlocks.contains(event.getState())) {
             event.setCanceled(true);
 
             Entity ent = event.getEntity();
@@ -129,6 +159,16 @@ public class TropicraftWaterRenderFixer {
             GlStateManager.setFog(GlStateManager.FogMode.EXP);
             double partialDelta = FOG_DELTA * event.getRenderPartialTicks();
             event.setDensity((float) (lastTickFogDensity > fogDensity ? lastTickFogDensity - partialDelta : lastTickFogDensity < fogDensity ? lastTickFogDensity + partialDelta : fogDensity));
+        }
+    }
+
+    @SubscribeEvent
+    public void onFogColor(EntityViewRenderEvent.FogColors event) {
+        if (tropicalOverlayBlocks.contains(event.getState())) {
+            //keep the fog colors from 1.10 that we expect for our waters
+            event.setRed(0.02F);
+            event.setGreen(0.02F);
+            event.setBlue(0.2F);
         }
     }
 }

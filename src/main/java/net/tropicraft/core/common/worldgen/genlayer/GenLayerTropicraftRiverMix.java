@@ -16,13 +16,15 @@ public class GenLayerTropicraftRiverMix extends GenLayerTropicraft {
 		this.setZoom(1);
 	}
 
-	public void initWorldGenSeed(long par1) {
+	@Override
+    public void initWorldGenSeed(long par1) {
 		this.parentBiome.initWorldGenSeed(par1);
 		this.parentRiver.initWorldGenSeed(par1);
 		super.initWorldGenSeed(par1);
 	}
 
-	public int[] getInts(int x, int y, int width, int length) {
+	@Override
+    public int[] getInts(int x, int y, int width, int length) {
 		int[] biomeMap = this.parentBiome.getInts(x, y, width, length);
 		int[] riverMap = this.parentRiver.getInts(x, y, width, length);
 		int[] resultMap = IntCache.getIntCache(width * length);

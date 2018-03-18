@@ -7,7 +7,7 @@
     "YXY",
     "XXX"
   ],
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
       "item": "tropicraft:zircon"

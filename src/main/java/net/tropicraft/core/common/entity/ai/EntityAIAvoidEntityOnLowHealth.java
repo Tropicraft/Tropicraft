@@ -43,6 +43,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
     {
         this.canBeSeenSelector = new Predicate<Entity>()
         {
+            @Override
             public boolean apply(@Nullable Entity p_apply_1_)
             {
                 return p_apply_1_.isEntityAlive() && EntityAIAvoidEntityOnLowHealth.this.theEntity.getEntitySenses().canSee(p_apply_1_);
@@ -62,6 +63,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
 
@@ -99,7 +101,8 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    @Override
+    public boolean shouldContinueExecuting()
     {
         return !this.entityPathNavigate.noPath();
     }
@@ -107,6 +110,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         this.entityPathNavigate.setPath(this.entityPathEntity, this.farSpeed);
@@ -115,6 +119,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         this.closestLivingEntity = null;
@@ -123,6 +128,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends EntityAIBa
     /**
      * Updates the task
      */
+    @Override
     public void updateTask()
     {
         if (this.theEntity.getDistanceSq(this.closestLivingEntity) < 49.0D)

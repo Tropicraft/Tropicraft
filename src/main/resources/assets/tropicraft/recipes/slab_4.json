@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "tropicraft:slab",
+    "data": 4,
+    "count": 6
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:plank",
+      "data": 0
+    }
+  }
+}

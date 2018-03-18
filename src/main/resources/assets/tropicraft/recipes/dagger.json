@@ -4,7 +4,6 @@
   },
   "pattern": [
     "X",
-    "X",
     "I"
   ],
   "type": "minecraft:crafting_shaped",
@@ -13,8 +12,7 @@
       "item": "tropicraft:chunk"
     },
     "I": {
-      "item": "tropicraft:plank",
-      "data": 1
+      "item": "#STICKWOOD"
     }
   }
 }

@@ -16,6 +16,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.tropicraft.Names;
 import net.tropicraft.core.common.block.tileentity.message.MessageSifterInventory;
 import net.tropicraft.core.common.block.tileentity.message.MessageSifterStart;
 import net.tropicraft.core.common.enums.TropicraftShells;
@@ -76,13 +77,8 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	 * Drop all the necessary blocks/items from the sifter after sifting is complete
 	 */
 	public void dumpResults(double x, double y, double z, SiftType type) {
-		if (type == SiftType.HEATED) {
-			//spawn(siftItem, x, y, z);            
-			spawn(new ItemStack(BlockRegistry.sands, 1, 0), x, y, z);
-		} else {
-			dumpBeachResults(x, y, z);
-		}
-
+		// NOTE: Removed check and drop for heated sifter in 1.12
+		dumpBeachResults(x, y, z);
 		this.syncInventory();
 	}
 
@@ -93,13 +89,14 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 		int dumpCount = rand.nextInt(3) + 1;
 		ItemStack stack;
 
-		spawn(new ItemStack(BlockRegistry.sands, 1, 0), x, y, z);
-
 		while (dumpCount > 0) {
 			dumpCount--;
 
 			if (rand.nextInt(10) == 0) {
 				stack = getRareItem();
+			} else if (rand.nextInt(10) < 3) {
+				int damage = rand.nextInt(Names.LOVE_TROPICS_NAMES.length);
+				stack = new ItemStack(ItemRegistry.ltShell, 1, damage);
 			} else {
 				stack = getCommonItem();
 			}
@@ -164,8 +161,8 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 	}
 	
 	public void addItemToSifter(ItemStack stack) {
-		stack.setCount(1);
-		this.siftItem = stack; 
+		this.siftItem = stack;
+		this.siftItem.setCount(1);
 		this.syncInventory();
 	}
 	

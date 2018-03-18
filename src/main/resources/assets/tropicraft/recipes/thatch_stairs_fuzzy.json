@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "tropicraft:thatch_stairs_fuzzy",
+    "count": 4
+  },
+  "pattern": [
+    "C  ",
+    "XC ",
+    "XXC"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bundle",
+      "data": 0
+    },
+    "C": {
+      "item": "#SUGARCANE"
+    }
+  }
+}

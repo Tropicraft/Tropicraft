@@ -27,7 +27,8 @@ public class ItemFishingRod extends Item {
 		this.setMaxDamage(64);
 		this.setMaxStackSize(1);
 		this.addPropertyOverride(TropicraftRenderUtils.getTexture("items/fishing_rod_cast"), new IItemPropertyGetter() {
-			@SideOnly(Side.CLIENT)
+			@Override
+            @SideOnly(Side.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				return entityIn == null ? 0.0F
 						: (entityIn.getHeldItemMainhand() == stack && entityIn instanceof EntityPlayer
@@ -39,7 +40,8 @@ public class ItemFishingRod extends Item {
 	/**
 	 * Returns True is the item is renderer in full 3D when hold.
 	 */
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public boolean isFull3D() {
 		return true;
 	}
@@ -48,7 +50,8 @@ public class ItemFishingRod extends Item {
 	 * Returns true if this item should be rotated by 180 degrees around the Y axis
 	 * when being held in an entities hands.
 	 */
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public boolean shouldRotateAroundWhenRendering() {
 		return true;
 	}
@@ -56,7 +59,9 @@ public class ItemFishingRod extends Item {
 	/**
 	 * Called when the equipped item is right clicked.
 	 */
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemstack = playerIn.getHeldItem(hand);
 		if (RodLink.playerHasFloat(playerIn)) {
 			// int i = playerIn.fishEntity.handleHookRetraction();
 			// itemStackIn.damageItem(i, playerIn);
@@ -78,13 +83,14 @@ public class ItemFishingRod extends Item {
 			playerIn.swingArm(hand);
 		}
 
-		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
 
 	/**
 	 * Checks isDamagable and if it cannot be stacked
 	 */
-	public boolean isEnchantable(ItemStack stack) {
+	@Override
+    public boolean isEnchantable(ItemStack stack) {
 		return super.isEnchantable(stack);
 	}
 
@@ -92,7 +98,8 @@ public class ItemFishingRod extends Item {
 	 * Return the enchantability factor of the item, most of the time is based on
 	 * material.
 	 */
-	public int getItemEnchantability() {
+	@Override
+    public int getItemEnchantability() {
 		return 1;
 	}
 }

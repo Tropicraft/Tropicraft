@@ -31,6 +31,7 @@ public class EntityAIWanderNotLazy extends EntityAIBase {
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         if (!this.mustUpdate)
@@ -65,7 +66,8 @@ public class EntityAIWanderNotLazy extends EntityAIBase {
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    @Override
+    public boolean shouldContinueExecuting()
     {
         return !this.entity.getNavigator().noPath();
     }
@@ -73,6 +75,7 @@ public class EntityAIWanderNotLazy extends EntityAIBase {
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         this.entity.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);

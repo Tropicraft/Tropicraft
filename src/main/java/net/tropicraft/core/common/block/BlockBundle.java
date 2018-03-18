@@ -1,11 +1,14 @@
 package net.tropicraft.core.common.block;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,7 +39,8 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
 	 * IBlockstate
 	 */
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	@Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getStateFromMeta(meta).withProperty(BUNDLE_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
 	}
 	
@@ -49,7 +53,8 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
 	 * blockstate.
 	 */
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
+	@Override
+    public IBlockState withRotation(IBlockState state, Rotation rot) {
 		switch (rot) {
 		case COUNTERCLOCKWISE_90:
 		case CLOCKWISE_90:
@@ -94,4 +99,23 @@ public class BlockBundle extends BlockTropicraftEnumVariants<TropicraftBundles> 
 	protected ItemStack getSilkTouchDrop(IBlockState state) {
 		return new ItemStack(Item.getItemFromBlock(this), 1, damageDropped(state));
 	}
+
+    /**
+     * Sensitive version of getSoundType
+     * @param state The state
+     * @param world The world
+     * @param pos The position. Note that the world may not necessarily have {@code state} here!
+     * @param entity The entity that is breaking/stepping on/placing/hitting/falling on this block, or null if no entity is in this context
+     * @return A SoundType to use
+     */
+    @Override
+    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+        TropicraftBundles slabType = this.getVariant(state);
+
+        if (slabType == TropicraftBundles.BAMBOO || slabType == TropicraftBundles.THATCH) {
+            return SoundType.PLANT;
+        }
+
+        return getSoundType();
+    }
 }

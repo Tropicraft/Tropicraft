@@ -113,7 +113,8 @@ public class EntityAISwimTargetPrey extends EntityAISwimBase {
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
-	public boolean continueExecuting() {
+	@Override
+    public boolean shouldContinueExecuting() {
 
 		return this.shouldExecute();
 	}

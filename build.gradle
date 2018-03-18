@@ -32,7 +32,13 @@ minecraft {
     runDir = "run"
 
     mappings = "snapshot_20171116"
+
+    replaceIn "Info.java"
+    replace "@VERSION@", project.version
 }
+
+jar.appendix = "MC${minecraft_version}"
+sourceJar.appendix = jar.appendix
 
 processResources
 {
@@ -45,7 +51,7 @@ processResources
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraft_version
     }
         
     // copy everything else, thats not the mcmod.info

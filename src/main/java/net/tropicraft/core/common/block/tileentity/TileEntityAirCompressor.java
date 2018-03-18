@@ -71,6 +71,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
         this.tank = stack.isEmpty() ? null : stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	}
 	
+	@Nonnull
     public ItemStack getTankStack() {
         return stack;
     }
@@ -167,7 +168,7 @@ public class TileEntityAirCompressor extends TileEntity implements ITickable, IM
 	
 	@Override
 	public boolean isActive() {
-	    return getTankStack() != null;
+	    return !getTankStack().isEmpty();
 	}
 	
 	@Override

@@ -18,32 +18,40 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class BlockEvents {
 
-    @SubscribeEvent
-    public void handlePineappleBreakEvent(HarvestDropsEvent event) {
-        EntityPlayer player = event.getHarvester();
-        if (player == null) {
-            return;
-        }
-        ItemStack held = player.getHeldItemMainhand();
+	@SubscribeEvent
+	public void handlePineappleBreakEvent(HarvestDropsEvent event) {
+		EntityPlayer player = event.getHarvester();
 
-        IBlockState state = event.getState();
-        if (state.getBlock() != BlockRegistry.pineapple) {
-            return;
-        }
+		ItemStack held = ItemStack.EMPTY;
+		if (player != null)
+			held = player.getHeldItemMainhand();
 
-        boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
-        boolean isGrown = isTop || state.getValue(BlockPineapple.STAGE) == BlockPineapple.TOTAL_GROW_TICKS;
+		IBlockState state = event.getState();
+		if (state.getBlock() != BlockRegistry.pineapple) {
+			return;
+		}
 
-        if (isGrown) {
-            if (held != null && held.getItem() instanceof ItemSword) {
-                event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(4)));
-            } else {
-                event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
-            }
-        }
-        if (!isTop) {
-            event.getWorld().setBlockToAir(event.getPos().up());
-        }
+		IBlockState stateUp = event.getWorld().getBlockState(event.getPos().up());
+		IBlockState stateDown = event.getWorld().getBlockState(event.getPos().down());
+
+		boolean isTop = state.getValue(BlockPineapple.HALF) == PlantHalf.UPPER;
+		boolean isGrown = isTop ||
+				(state.getValue(BlockPineapple.HALF) == PlantHalf.LOWER
+				&& stateUp.getBlock() instanceof BlockPineapple
+				&& stateUp.getValue(BlockPineapple.HALF) == PlantHalf.UPPER);
+
+		if (isGrown) {
+			if (!held.isEmpty() && held.getItem() instanceof ItemSword) {
+				event.getDrops().add(new ItemStack(ItemRegistry.pineappleCubes, event.getWorld().rand.nextInt(3) + 2));
+			} else {
+				event.getDrops().add(new ItemStack(BlockRegistry.pineapple));
+			}
+		}
+
+		// If the stem remains after a block break, reset its growth stage so it doesn't insta-create a pineapple
+		if (isTop && stateDown.getBlock() instanceof BlockPineapple) {
+			event.getWorld().setBlockState(event.getPos().down(), BlockRegistry.pineapple.getDefaultState().withProperty(BlockPineapple.STAGE, Integer.valueOf(1)));
+		}
 	}
 
 	@SubscribeEvent
@@ -64,12 +72,12 @@ public class BlockEvents {
 		ItemStack handItemStack = player.getHeldItemMainhand();
 		Item inHand;
 
-		if (handItemStack != null)
+		if (!handItemStack.isEmpty())
 			inHand = handItemStack.getItem();
 		else
 			inHand = null;
 
-		ItemStack drop = null;
+		ItemStack drop = ItemStack.EMPTY;
 
 		if (inHand != null && (inHand instanceof ItemSword || inHand.getItemUseAction(new ItemStack(inHand)) == EnumAction.BLOCK))
 			drop = new ItemStack(ItemRegistry.coconutChunk);

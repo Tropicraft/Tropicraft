@@ -65,12 +65,13 @@ public class ItemFireArmor extends ItemTropicraftArmor {
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor,
-            DamageSource source, double damage, int slot) {
-        if(source == DamageSource.IN_FIRE || source == DamageSource.LAVA)
-            return new ArmorProperties(10, Integer.MAX_VALUE, Integer.MAX_VALUE);
-        else
-            return new ArmorProperties(10, 0.15, Integer.MAX_VALUE);
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+        if (source == DamageSource.IN_FIRE || source == DamageSource.LAVA) {
+            // Invincible to fire damage
+            return new ArmorProperties(10, 1.0, Integer.MAX_VALUE);
+        } else {
+            return super.getProperties(player, armor, source, damage, slot);
+        }
     }
 
     @SideOnly(Side.CLIENT)

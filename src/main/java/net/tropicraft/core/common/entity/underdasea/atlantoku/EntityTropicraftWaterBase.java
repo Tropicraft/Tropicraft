@@ -40,7 +40,7 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 
 	
 	@SideOnly(Side.CLIENT)
-	public boolean isInGui = false;
+	public boolean isInGui;
 	
 	public float swimPitch = 0f;
 	public float swimYaw = 0f;

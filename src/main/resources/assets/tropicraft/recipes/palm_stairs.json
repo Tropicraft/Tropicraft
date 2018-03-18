@@ -1,20 +1,18 @@
 {
   "result": {
-    "item": "tropicraft:sifter"
+    "item": "tropicraft:palm_stairs",
+    "count": 4
   },
   "pattern": [
-    "XXX",
-    "XIX",
+    "X  ",
+    "XX ",
     "XXX"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
       "item": "tropicraft:plank",
-      "data": 0
-    },
-    "I": {
-      "item": "minecraft:glass"
+      "data": 1
     }
   }
 }

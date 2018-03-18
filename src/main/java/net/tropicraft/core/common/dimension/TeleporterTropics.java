@@ -167,7 +167,7 @@ public class TeleporterTropics extends Teleporter {
             entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
             int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
             int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-            int worldSpawnY = world.getHeight(new BlockPos(worldSpawnX, 0, worldSpawnZ)).getY() + 3;
+            int worldSpawnY = foundY + 5; // Move to top of portal
 
             entity.motionX = entity.motionY = entity.motionZ = 0.0D;
 
@@ -203,7 +203,7 @@ public class TeleporterTropics extends Teleporter {
                             boolean hasEncyclopedia = false;
                             for (int inv = 0; inv < chest.getSizeInventory(); inv++) {
                                 ItemStack stack = chest.getStackInSlot(inv);
-                                if (stack != null && stack.getItem() == ItemRegistry.encyclopedia) {
+                                if (stack.getItem() == ItemRegistry.encyclopedia) {
                                     hasEncyclopedia = true;
                                 }
                             }
@@ -251,7 +251,7 @@ public class TeleporterTropics extends Teleporter {
                     int y = world.getHeight() - 1;
                     BlockPos pos = new BlockPos(x, y, z);
                     for (; y >= 63 - 1 && (world.getBlockState(pos).getBlock() == Blocks.AIR ||
-                            !world.getBlockState(pos).isOpaqueCube()); pos = pos.down()) {
+                            !getValidBuildBlocks().contains(world.getBlockState(pos))); pos = pos.down()) {
                         y = pos.getY();
                     }
                     // Only generate portal between sea level and sea level + 20

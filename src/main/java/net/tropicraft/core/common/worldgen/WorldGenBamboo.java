@@ -22,6 +22,8 @@ public class WorldGenBamboo extends TCGenBase {
 
 	@Override
 	public boolean generate(BlockPos pos) {
+	    // Starting offset into valid chunk
+	    pos = pos.add(8, 0, 8);
 		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 		j = this.getTerrainHeightAt(i, k);
 		pos = new BlockPos(i, j, k);
@@ -34,20 +36,23 @@ public class WorldGenBamboo extends TCGenBase {
 		int spread = rand.nextInt(3) - 1 + (int)(Math.sqrt(amount) / 2);
 
 		for(int l = 0; l < amount; l++) {
-			int x = i + rand.nextInt(spread) - rand.nextInt(spread);
-			int z = k + rand.nextInt(spread) - rand.nextInt(spread);
-			int y = this.getTerrainHeightAt(x, z) - 1;
-			int height = rand.nextInt(MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
-			BlockPos bpos = new BlockPos(x, y, z);
-			for(int h = 0; h < height; h++) {
-				bpos = bpos.up();
-				boolean canPlace = BlockRegistry.bambooShoot.canBlockStay(worldObj, bpos);
-				if(TCGenUtils.isAirBlock(worldObj, bpos) && canPlace) {
-                    worldObj.setBlockState(bpos, BAMBOO_BLOCK_STATE, blockGenNotifyFlag);
-                } else {
-                	break;
+		    boolean genStalk = true;
+		    if (genStalk) {
+		        int x = i + rand.nextInt(spread);
+                int z = k + rand.nextInt(spread);
+                int y = this.getTerrainHeightAt(x, z) - 1;
+                int height = rand.nextInt(MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
+                BlockPos bpos = new BlockPos(x, y, z);
+                for(int h = 0; h < height; h++) {
+                    bpos = bpos.up();
+                    boolean canPlace = BlockRegistry.bambooShoot.canBlockStay(worldObj, bpos);
+                    if(TCGenUtils.isAirBlock(worldObj, bpos) && canPlace) {
+                        worldObj.setBlockState(bpos, BAMBOO_BLOCK_STATE, blockGenNotifyFlag);
+                    } else {
+                        break;
+                    }
                 }
-			}
+		    }
 		}
 		return true;
 	}

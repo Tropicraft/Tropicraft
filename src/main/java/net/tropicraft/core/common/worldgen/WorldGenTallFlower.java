@@ -22,11 +22,13 @@ public class WorldGenTallFlower extends TCGenBase {
 
 	@Override
 	public boolean generate(BlockPos pos) {
+	    // Move pos into valid chunk to prevent cascading chunk gen
+	    pos = pos.add(8, 0, 8);
         for(int l = 0; l < FLOWER_TRIES; l++) {
-            int i1 = (pos.getX() + rand.nextInt(12)) - rand.nextInt(12);
-            int j1 = (pos.getY() + rand.nextInt(3)) - rand.nextInt(3);
-            int k1 = (pos.getZ() + rand.nextInt(12)) - rand.nextInt(12);
-            BlockPos newPos = new BlockPos(i1, j1, k1);
+            int x = rand.nextInt(16);
+            int y = rand.nextInt(3) - rand.nextInt(3);
+            int z = rand.nextInt(16);
+            BlockPos newPos = pos.add(x, y, z);
             if (worldObj.isAirBlock(newPos) && worldObj.isAirBlock(newPos.up())) { 
             	if (plantBlockState.getBlock() instanceof BlockPineapple) {
             		BlockPineapple block = (BlockPineapple)plantBlockState.getBlock();

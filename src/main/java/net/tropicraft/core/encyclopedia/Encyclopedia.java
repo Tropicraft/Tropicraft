@@ -2,28 +2,21 @@ package net.tropicraft.core.encyclopedia;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class Encyclopedia extends TropicalBook {
-    
-    /*
-     * Holds references from each item stack to all of the recipes it is related
-     * to (either as result or as an ingredient)
-     */
-    private HashMap<ItemStack, List<ShapedRecipes>> recipes = new HashMap<ItemStack, List<ShapedRecipes>>();
     
     /*
      * A mapping of page names to each item that should be included in the
@@ -47,10 +40,9 @@ public class Encyclopedia extends TropicalBook {
      * Note: the item name should match the page name given in the text file
      */
     public void includeItem(String itemname, ItemStack item) {
-    	// TODO find out why this is triggering ??
-//        if (item.isEmpty()) {
-//            throw new IllegalArgumentException("Cannot include an empty stack! Group: " + itemname);
-//        }
+        if (item.isEmpty()) {
+            throw new IllegalArgumentException("Cannot include an empty stack! Group: " + itemname);
+        }
         if (!itemEntries.containsKey(itemname)) {
             itemEntries.put(itemname, new ArrayList<ItemStack>());
         }
@@ -58,105 +50,18 @@ public class Encyclopedia extends TropicalBook {
     }
     
     /*
-     * Creates a new ShapedRecipe from the given args, and registers it with any
-     * Encyclopedia entries related to it
-     * Note: This method is borrowed/modified from CraftingManager
-     */
-    public void includeRecipe(@Nonnull ItemStack result, Object aobj[]) {
-
-        // Note: Must use TreeSet for guaranteed ordering of elements
-        Set<ItemStack> recipeContents = new HashSet<ItemStack>();
-        addItemToRecipeContents(recipeContents, result);
-
-        String recipeString = "";
-        int i = 0;
-        int width = 0;
-        int height = 0;
-
-        if (aobj[i] instanceof String[]) {
-            String[] cols = (String[]) ((String[]) aobj[i++]);
-
-            for (int j = 0; j < cols.length; ++j) {
-                String row = cols[j];
-                ++height;
-                width = row.length();
-                recipeString = recipeString + row;
-            }
-        } else {
-            while (aobj[i] instanceof String) {
-                String row = (String) aobj[i++];
-                ++height;
-                width = row.length();
-                recipeString = recipeString + row;
-            }
-        }
-
-        HashMap<Character, ItemStack> charMap;
-
-        for (charMap = new HashMap<Character, ItemStack>(); i < aobj.length; i += 2) {
-            Character itemChar = (Character) aobj[i];
-            ItemStack itemStack = ItemStack.EMPTY;
-
-            if (aobj[i + 1] instanceof Item) {
-                itemStack = new ItemStack((Item) aobj[i + 1]);
-            } else if (aobj[i + 1] instanceof Block) {
-                itemStack = new ItemStack((Block) aobj[i + 1], 1, -1);
-            } else if (aobj[i + 1] instanceof ItemStack) {
-                itemStack = (ItemStack) aobj[i + 1];
-            }
-
-            charMap.put(itemChar, itemStack);
-            addItemToRecipeContents(recipeContents, itemStack);
-        }
-
-        NonNullList<Ingredient> slotArray = NonNullList.withSize(width * height, Ingredient.EMPTY);
-
-        for (int slots = 0; slots < width * height; slots++) {
-            char itemChar = recipeString.charAt(slots);
-
-            if (charMap.containsKey(itemChar)) {
-                slotArray.set(slots, CraftingHelper.getIngredient(charMap.get(itemChar)));
-            }
-        }
-        
-        // Added code to register this recipe with the ingredient lookup
-        ShapedRecipes recipe = new ShapedRecipes("", width, height, slotArray, result);
-        for (ItemStack item : recipeContents) {
-            boolean foundKey = false;
-            for (ItemStack key : recipes.keySet()) {
-                if (item.isItemEqual(key)) {
-                    foundKey = true;
-                    recipes.get(key).add(recipe);
-                    break;
-                }
-            }
-            
-            if (foundKey == false) {
-                recipes.put(item, new ArrayList<ShapedRecipes>());
-                recipes.get(item).add(recipe);
-            }
-            
-        }
-    }
-    
-    /*
      * Returns all recipes related to a given entry page
      */
-    public List<ShapedRecipes> getRecipesForEntry(int page) {
+    public @Nonnull List<IRecipe> getRecipesForEntry(int page) {
         List<ItemStack> entryItems = itemEntries.get(getPageName(page));
-        List<ShapedRecipes> recipeList = new ArrayList<ShapedRecipes>();
+        List<IRecipe> recipeList = new ArrayList<>();
         if (entryItems != null) {
             for (ItemStack item : entryItems) {
                 //System.out.println();
 
-                for (ItemStack recipeItem : recipes.keySet()) {
-                    
-                    if (recipeItem.isItemEqual(item)) {
-                        List<ShapedRecipes> itemRecipes = recipes.get(recipeItem);
-
-                        if (itemRecipes != null) {
-                            recipeList.addAll(itemRecipes);
-                        }
+                for (IRecipe recipe : ForgeRegistries.RECIPES.getValues()) {
+                    if (recipe.getRecipeOutput().isItemEqual(item)) {
+                        recipeList.add(recipe);
                     }
                 }
             }
@@ -177,7 +82,7 @@ public class Encyclopedia extends TropicalBook {
             if (mode == ContentMode.INFO) {
                 return 1;
             } else if (mode == ContentMode.RECIPE) {
-                List<ShapedRecipes> recipeList = getRecipesForEntry(page);
+                List<IRecipe> recipeList = getRecipesForEntry(page);
                 if (recipeList != null) {
                     return recipeList.size();
                 }
@@ -230,36 +135,18 @@ public class Encyclopedia extends TropicalBook {
             }
         }
     }
-    
-    /*
-     * Adds an ItemStack to the given set, as long as an equivalent item isn't
-     * already in the set
-     */
-    private void addItemToRecipeContents(Set<ItemStack> items, @Nonnull ItemStack i) {
-        
-        boolean shouldAdd = !(items.contains(i));
-        for (ItemStack listItem : items) {
-            if (listItem.isItemEqual(i)) {
-                shouldAdd = false;
-                break;
-            }
-        }
-        
-        if (shouldAdd) {
-            items.add(i);
-        }
-        
-    }
-    
-    public RecipeEntry getFormattedRecipe(ShapedRecipes recipe) {
-        try {
-            int width = recipe.recipeWidth;//(Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "b", "recipeWidth");
-            int height = recipe.recipeHeight;//(Integer) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "c", "recipeHeight");
-            NonNullList<Ingredient> items = recipe.recipeItems;//(ItemStack[]) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "d", "recipeItems");
-            ItemStack output = recipe.getRecipeOutput();//(ItemStack) TropicraftMod.getPrivateValueBoth(ShapedRecipes.class, recipe, "e", "recipeOutput");
+
+    public RecipeEntry getFormattedRecipe(IRecipe recipe) {
+        // TODO support other kinds of recipes
+        if (recipe instanceof ShapedRecipes) {
+            ShapedRecipes shaped = (ShapedRecipes) recipe;
+            int width = shaped.recipeWidth;
+            int height = shaped.recipeHeight;
+            NonNullList<Ingredient> items = shaped.recipeItems;
+            ItemStack output = recipe.getRecipeOutput();
             return new RecipeEntry(width, height, items, output);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } else if (recipe instanceof ShapelessRecipes) {
+            return new RecipeEntry(3, 3, recipe.getIngredients(), recipe.getRecipeOutput());
         }
         return null;
     }
@@ -275,9 +162,30 @@ public class Encyclopedia extends TropicalBook {
             this.width = width;
             this.height = height;
             this.ingredients = items;
+            // Assure we always have a full list
+            while (this.ingredients.size() < width * height) {
+                this.ingredients.add(Ingredient.EMPTY);
+            }
             this.output = output;
         }
         
+        @Nonnull
+        public ItemStack getCycledStack(int index, float cycle) {
+            if (index >= ingredients.size() || index < 0) {
+                return ItemStack.EMPTY;
+            }
+            Ingredient ing = ingredients.get(index);
+            int i = MathHelper.floor(cycle / 30); // 30 tick = 1.5 second cycle
+            ItemStack[] stacks = ing.getMatchingStacks();
+            if (i < 0 || stacks.length == 0) {
+                return ItemStack.EMPTY;
+            }
+            ItemStack ret = stacks[i % stacks.length];
+            if (ret == null) { // impossible?
+                ret = ItemStack.EMPTY;
+            }
+            return ret;
+        }
     }
     
 }

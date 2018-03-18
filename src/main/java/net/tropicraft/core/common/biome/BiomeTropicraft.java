@@ -3,6 +3,7 @@ package net.tropicraft.core.common.biome;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.passive.EntityParrot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -72,6 +73,7 @@ public class BiomeTropicraft extends Biome {
 
 		this.decorator = new BiomeDecoratorTropicraft();
 
+		this.spawnableCreatureList.add(new SpawnListEntry(EntityParrot.class, 20, 1, 2));
         this.spawnableCreatureList.add(new SpawnListEntry(EntityVMonkey.class, 20, 1, 3));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityIguana.class, 15, 1, 1));
 

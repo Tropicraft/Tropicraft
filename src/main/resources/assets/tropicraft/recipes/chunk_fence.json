@@ -1,16 +1,19 @@
 {
   "result": {
     "item": "tropicraft:chunk_fence",
-    "count": 2
+    "count": 3
   },
   "pattern": [
-    "XXX",
-    "XXX"
+    "XYX",
+    "XYX"
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
       "item": "tropicraft:chunk"
+    },
+    "Y": {
+      "item": "#STICKWOOD"
     }
   }
 }

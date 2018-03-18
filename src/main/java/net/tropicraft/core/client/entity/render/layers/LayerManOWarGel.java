@@ -20,6 +20,7 @@ public class LayerManOWarGel implements LayerRenderer<EntityManOWar>
         this.mowRenderer = manOWarRenderer;
     }
 
+    @Override
     public void doRenderLayer(EntityManOWar entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (!entity.isInvisible()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -33,6 +34,7 @@ public class LayerManOWarGel implements LayerRenderer<EntityManOWar>
         }
     }
 
+    @Override
     public boolean shouldCombineTextures() {
         return true;
     }

@@ -7,7 +7,7 @@
     "X X",
     " Z "
   ],
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
       "item": "#BLOCKGLASS"

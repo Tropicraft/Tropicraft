@@ -13,10 +13,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.common.enums.TropicraftSands;
@@ -57,6 +60,12 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 		} else {
 			entity.attackEntityFrom(DamageSource.LAVA, 0.5F);
 		}
+	}
+	
+	@Override
+	public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
+	    return super.canSustainPlant(state, world, pos, direction, plantable) ||
+	            plantable.getPlantType(world, pos) == EnumPlantType.Beach;
 	}
 
 	/**

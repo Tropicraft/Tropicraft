@@ -58,23 +58,6 @@ public class ItemAshenMask extends ItemTropicraftArmor {
         }
     }
 
-    /**
-     * Called to tick armor in the armor slot. Override to do something
-     *
-     * @param world
-     * @param player
-     * @param itemStack
-     */
-    @Override
-    public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void damageArmor(EntityLivingBase player, ItemStack stack, DamageSource source, int damage, int slot) {
-        super.damageArmor(player, stack, source, damage, slot);
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {

@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.tropicraft.configuration.GenRates;
 import net.tropicraft.core.common.biome.BiomeTropicraft;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.worldgen.WorldGenCoffeePlant;
 import net.tropicraft.core.common.worldgen.WorldGenHomeTree;
 import net.tropicraft.core.common.worldgen.WorldGenTallTree;
@@ -18,11 +19,9 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 
     private static final int COFFEE_PLANT_AMOUNT = 2;
     private static final int ALTAR_CHANCE = 70;
-    private static final int TALL_TREE_CHANCE = 2;
-    private static final int UP_TREE_CHANCE = 2;
     private static final int UNDERGROWTH_AMOUNT = 15;
-    private static final int SMALL_TUALANG_AMOUNT = 4;
-    private static final int LARGE_TUALANG_AMOUNT = 2;
+    private static final int SMALL_TUALANG_AMOUNT = 2;
+    private static final int LARGE_TUALANG_AMOUNT = 3;
     private static final int HOME_TREE_RARITY = 240;
 
 	public BiomeDecoratorRainforest() {
@@ -42,11 +41,10 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 		}
 
 		if(rand.nextInt(HOME_TREE_RARITY) == 0) {
-			int cx = x/* * 16*/;
-			//	System.out.println("Trying!!!");
-			int cz = z/* * 16*/;
+			int cx = x;
+			int cz = z;
 			int xx = rand.nextInt(16) + cx + 8;
-			int zz= rand.nextInt(16) + cz + 8;
+			int zz = rand.nextInt(16) + cz + 8;
 			new WorldGenHomeTree(world, rand).generate(new BlockPos(xx, 0, zz));
 		}
 		//
@@ -54,27 +52,27 @@ public class BiomeDecoratorRainforest extends BiomeDecoratorTropicraft {
 		//			new WorldGenForestAltarRuin(world, rand).generate(randDecorationCoord(rand, x, 16), 0, randDecorationCoord(rand, x, 16));
 		//		}
 		//
-		if (rand.nextInt(TALL_TREE_CHANCE) == 0) {
-			i = randDecorationCoord(rand, x, 16);
-			k = randDecorationCoord(rand, z, 16);
-			new WorldGenTallTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+		for (int l = 0; l < TropicsConfigs.rainforestThicknessAmount; l++) {
+		    i = randDecorationCoord(rand, x, 2) + 8;
+		    k = randDecorationCoord(rand, z, 2) + 8;
+		    new WorldGenTallTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
-		if (rand.nextInt(UP_TREE_CHANCE) == 0) {
-			i = randDecorationCoord(rand, x, 16);
-			k = randDecorationCoord(rand, z, 16);
-			new WorldGenUpTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));			
+		for (int l = 0; l < TropicsConfigs.rainforestThicknessAmount; l++) {
+		    i = randDecorationCoord(rand, x, 4) + 8;
+		    k = randDecorationCoord(rand, z, 4) + 8;
+		    new WorldGenUpTree(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
-		for (int a = 0; a < SMALL_TUALANG_AMOUNT; a++) {
-			i = randDecorationCoord(rand, x, 16);
-			k = randDecorationCoord(rand, z, 16);
+		for (int a = 0; a < SMALL_TUALANG_AMOUNT * TropicsConfigs.rainforestThicknessAmount * 2; a++) {
+			i = randDecorationCoord(rand, x, 4) + 8;
+			k = randDecorationCoord(rand, z, 4) + 8;
 			new WorldGenTualang(world, rand, 16, 9).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 
-		for (int a = 0; a < LARGE_TUALANG_AMOUNT; a++) {
-			i = randDecorationCoord(rand, x, 16);
-			k = randDecorationCoord(rand, z, 16);
+		for (int a = 0; a < LARGE_TUALANG_AMOUNT * TropicsConfigs.rainforestThicknessAmount * 2; a++) {
+            i = randDecorationCoord(rand, x, 4) + 8;
+            k = randDecorationCoord(rand, z, 4) + 8;
 			new WorldGenTualang(world, rand, 25, 11).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
 		}
 

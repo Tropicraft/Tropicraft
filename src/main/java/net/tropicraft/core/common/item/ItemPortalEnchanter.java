@@ -53,7 +53,7 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack itemstack, @Nullable World world, List list, ITooltipFlag flagIn) {
+	public void addInformation(ItemStack itemstack, @Nullable World world, List<String> list, ITooltipFlag flagIn) {
 	    boolean hasDirectMode = Util.getTagCompound(itemstack).hasKey("DirectMode");
 	    int mode;
 	    if (hasDirectMode) {
@@ -73,7 +73,6 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 	    }
 
 		if (!world.isRemote && (isDirectMode || entityplayer.capabilities.isCreativeMode)) {
-			int destination = entityplayer.dimension == 0 ? TropicraftWorldUtils.TROPICS_DIMENSION_ID : 0;
 			TropicraftWorldUtils.teleportPlayer((EntityPlayerMP) entityplayer);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 		}

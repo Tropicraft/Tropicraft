@@ -1,8 +1,8 @@
 acaivine.title = Acai Vine
 acaivine.desc  = Rotten branches that are growing from the ground that used to grow the acai fruit.
 
-anenome.title = Anemone
-anenome.desc  = This bleach white flower adds a nice innocent, calm color to the realm.
+anemone.title = Anemone
+anemone.desc  = This bleach white flower adds a nice innocent, calm color to the realm.
 
 anthuriumo.title = Anthurium, Orange
 anthuriumo.desc  = This strong orange colored flower has an red counterpart.
@@ -55,8 +55,8 @@ blackcoffee.desc = Who doesn't like coffee? Brew yourself a nice cup o' joe and 
 blacksand.title = Volcanic Sands
 blacksand.dec = Tread lightly on this sand...or don't at all. If you aren't wearing any scale or fire armor, you better be ready to run reaaaaaaaaally fast.
 
-blowgun.title = Blow Gun
-blowgun.desc  = This tube of bamboo is used to shoot neurotoxin-laced darts at your pray. You will be surprised how a far and fast you can shoot a dart with a hefty blow.
+#blowgun.title = Blow Gun
+#blowgun.desc  = This tube of bamboo is used to shoot neurotoxin-laced darts at your pray. You will be surprised how a far and fast you can shoot a dart with a hefty blow.
 
 bromeliad.title = Bromeliad
 bromeliad.desc  = This exotic red flower thrives in the thick of rainforests among the tree frogs and moist conditions.
@@ -103,17 +103,17 @@ crocosmia.desc = These fiery little flowers are like miniature suns resting on t
 croton.title = Croton
 croton.desc = Go ahead and try to figure out what color this is. I DARE you.
 
-curare.title = Curare
-curare.desc = Mix various types of flowers together to make different types of curare, which can be used to make darts with all sorts of potion effects.
+#curare.title = Curare
+#curare.desc = Mix various types of flowers together to make different types of curare, which can be used to make darts with all sorts of potion effects.
 
-curarebowl.title = Curare Bowl
-curarebowl.desc = Mix various types of flowers in this bowl to create different types of curare, which can be used to make darts with all sorts of potion effects.
+#curarebowl.title = Curare Bowl
+#curarebowl.desc = Mix various types of flowers in this bowl to create different types of curare, which can be used to make darts with all sorts of potion effects.
 
 dagger.title = Dagger
 dagger.desc  = Weilded by the Koa tribe when hunting or when attacked.
 
-dart.title = Dart
-dart.desc  = This neurotoxin-laced dart is capable of stopping most mobs in their tracks. Be careful though, the effect is only temporary. Darts can have varying potion effects associated with them.
+#dart.title = Dart
+#dart.desc  = This neurotoxin-laced dart is capable of stopping most mobs in their tracks. Be careful though, the effect is only temporary. Darts can have varying potion effects associated with them.
 
 dracaena.title = Dracaena
 dracaena.desc  = This interesting peach and green colored plant can be found only in the rainforest.
@@ -151,9 +151,6 @@ fishbucket.desc  = Use this to place the fish that you catch in the wild. Make a
 fishingnet.title = Fishing Net
 fishingnet.desc  = This sturdy net is great for picking up the small fish that inhabit the Tropics. Be sure to have a water bucket, or you won't have anywhere to place you fish.
 
-flippers.title = Flippers
-flippers.desc  = If you wear these flippers on land, you will walk much more slowly; But, if you wear them in the water, you will swim as fast as a dolphin!
-
 flowerpot.title = Flower Pot
 flowerpot.desc = This flower pot can be used to beautify any garden by holding any tropical flower, plant, or sapling
 
@@ -190,14 +187,14 @@ iris.desc  = These tall purple flowers are quite a sight. They can easily be rep
 kapok.title = Kapok Leaves
 kapok.desc  = These leaves are found on humongous trees that appear on rare occasions in rainforest biomes
 
-koachest.title = Koa Chest
-koachest.desc = A chest that spawns Koa. Use it to populate a village or bungalow!
+#koachest.title = Koa Chest
+#koachest.desc = A chest that spawns Koa. Use it to populate a village or bungalow!
 
-leafball.title = Leaf Ball
-leafball.desc  = Leaf balls can only be obtained via a trade with a Koa tribe member. When you throw a leaf ball, as soon as it makes contact it disperses into many leaves.
+#leafball.title = Leaf Ball
+#leafball.desc  = Leaf balls can only be obtained via a trade with a Koa tribe member. When you throw a leaf ball, as soon as it makes contact it disperses into many leaves.
 
-leather.title = Leather
-leather.desc = Leather is not only great for making stylish boots, it can also make flippers.
+#leather.title = Leather
+#leather.desc = Leather is not only great for making stylish boots, it can also make flippers.
 
 lemon.title = Lemon
 lemon.desc  = Tasty lemon citrus fruit that drops from Lemon leaves.
@@ -296,7 +293,7 @@ portalstarter.title = Tropicraft Portal Enchanter
 portalstarter.desc = This item, made with enchanted azurite and zircon, forms a portal that can be used to teleport between the Tropics and overworld when right-clicked on a 3x3 flat square of sandstone filled with water inside.
 
 purifiedsand.title = Purified Sand
-purifiedsand.desc  = Purified sand is the result of sand being moved around by people, be it by sifter or otherwise.
+purifiedsand.desc  = Purified sand makes up the majority of the Tropics, with rare patches of special types of sand.
 
 reeds.title = Reeds
 reeds.desc  = In the Tropics, sugar cane serves a new purpose: thatching.
@@ -320,16 +317,16 @@ seaurchinroe.title = Sea Urchin Roe
 seaurchinroe.desc = Sea Urchin Eggs. Excellent source of Omega-3 fatty acids. That's all you need to know.
 
 sifter.title = Sifter
-sifter.desc  = Right click a sifter with a block of regular sand, wait about ten seconds, and out will pop three items. It could be purified sand, rare shells, even gold nuggets!
+sifter.desc  = Right click a sifter with a any kind of sand, wait about ten seconds, and out will pop up to three items. It could be rare shells, gold nuggets, or more!
 
-smeltedzircon.title = Smelted Zircon
-smeltedzircon.desc = If you have this, you are only 4 diamonds away from having zirconium.
+#smeltedzircon.title = Smelted Zircon
+#smeltedzircon.desc = If you have this, you are only 4 diamonds away from having zirconium.
 
-snaretrap.title = Snare Trap
-snaretrap.desc = This device is used for trapping mobs and players, rendering them immobile.
+#snaretrap.title = Snare Trap
+#snaretrap.desc = This device is used for trapping mobs and players, rendering them immobile.
 
-snorkel.title = Snorkel
-snorkel.desc  = With this you can dive deep into the crystal-clear blue waters of the tropical realm without fear of drowning! You can stay under water four times as long when wearing a snorkel!
+#snorkel.title = Snorkel
+#snorkel.desc  = With this you can dive deep into the crystal-clear blue waters of the tropical realm without fear of drowning! You can stay under water four times as long when wearing a snorkel!
 
 solonoxshell.title = Solonox Shell
 solonoxshell.desc  = Named after a nickname of the creator of Tropicraft's theme song "Trade Winds", the Solonox shell yields a chance of finding a black or white pearl inside, so be on the lookout!
@@ -373,8 +370,8 @@ waterwand.desc  = This mysterious rod has the unique ability to absorb 1000 bloc
 zircon.title = Zircon
 zircon.desc  = This mystical red crystal can be mined from Zircon ores, which are found deep underground in the tropical realm.
 
-zirconium.title = Zirconium
-zirconium.desc  = This rare crystal, when combined with azurite, is rumored to unlock ancient powers. It also can be crafted to make tools of mystical strength!
+#zirconium.title = Zirconium
+#zirconium.desc  = This rare crystal, when combined with azurite, is rumored to unlock ancient powers. It also can be crafted to make tools of mystical strength!
 
 fishingrod.title = Bamboo Fishing Rod
 fishingrod.desc  = A must have tool for any budding fisherman, this rod has a light weight feel and an ergonomic design that makes fishing for supper a breeze!
@@ -382,8 +379,20 @@ fishingrod.desc  = A must have tool for any budding fisherman, this rod has a li
 scubaflippers.title = Scuba Flippers
 scubaflippers.desc  = These flexible flippers come in two different colors: pink and yellow! You can glide around the tropics water effortlessly wearing these bad boys. Hint: Do a barrel roll!
 
+weightbelt.title = Weight Belt
+weightbelt.desc  = The weight belt allows your scuba chestplate to keep you underwater.
+
+bcd.title = BCD
+bcd.desc  = Short for "Buoyancy Compensator Device", the BCD helps get air from your tanks to your mouthpiece
+
 scubachestplate.title = Scuba Chestplate Gear
 scubachestplate.desc  = This complicated looking scuba chestplate allows you to wear a number of scuba tanks. Shift + right click the item to wear up to 2 scuba tanks!
+
+scubatank.title = Scuba Tank
+scubatank.desc  = Scuba tanks hold all the air that you breathe while diving. Refill your scuba tanks in an air compressor block.
+
+regulator.title = Diving Regulator
+regulator.desc  = This device regulates the pressure between the breathing gas and the diver. In other words, this thing helps you not go boom.
 
 scubagoggles.title = Scuba Goggles
 scubagoggles.desc  = This piece of the scuba suit allows you to not only view the values from your Dive Computer, but breathe air from the scuba tanks you're wearing.
@@ -391,17 +400,8 @@ scubagoggles.desc  = This piece of the scuba suit allows you to not only view th
 divecomputer.title = Dive Computer
 divecomputer.desc  = A rare piece of tropics technology, the dive computer logs various values from your time underwater. After you've swam for an hour, hand your dive computer to a Koa for a surprise!
 
-weightbelt.title = Weight Belt
-weightbelt.desc  = The weight belt allows your scuba chestplate to keep you underwater.
-
 ponybottle.title = Pony Bottle
 ponybottle.desc  = Always bring along a pony bottle on your long scuba dives. When you run out of air, a pony bottle will refill your air temporarily, allowing you to swim to the surface safely.
 
-bcd.title = BCD
-bcd.desc  = Short for "Buoyancy Compensator Device", the BCD helps get air from your tanks to your mouthpiece
-
-regulator.title = Diving Regulator
-regulator.desc  = This device regulates the pressure between the breathing gas and the diver. In other words, this thing helps you not go boom.
-
-scubatank.title = Scuba Tank
-scubatank.desc  = Scuba tanks hold all the air that you breathe while diving. Refill your scuba tanks in an air compressor block.
+bamboo_ladder.title = Bamboo Ladder
+bamboo_ladder.desc  = Clunk. Clunk. Clunk. Hear that? That's you, climbing up a ladder made out of bamboo.

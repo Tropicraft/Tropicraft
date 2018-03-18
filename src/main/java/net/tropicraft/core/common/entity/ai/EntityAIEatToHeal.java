@@ -39,6 +39,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         if (entityObj.getHealth() < entityObj.getMaxHealth() - missingHealthToHeal) {
@@ -51,7 +52,8 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    @Override
+    public boolean shouldContinueExecuting()
     {
         return shouldExecute();
     }
@@ -133,6 +135,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         super.startExecuting();
@@ -144,6 +147,7 @@ public class EntityAIEatToHeal extends EntityAIBase
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         super.resetTask();
@@ -233,7 +237,7 @@ public class EntityAIEatToHeal extends EntityAIBase
                 if (stack.getItem() instanceof ItemFood) {
                     stack.shrink(1);
                     if (stack.getCount() <= 0) {
-                        inv.setInventorySlotContents(i, null);
+                        inv.setInventorySlotContents(i, ItemStack.EMPTY);
                     }
                     return new ItemStack(stack.getItem(), 1, stack.getMetadata());
                 }

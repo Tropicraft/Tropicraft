@@ -10,7 +10,7 @@ import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 
 public class MessageAirCompressorInventory extends MessageTileEntity<TileEntityAirCompressor> {
 
-    private ItemStack tank;
+    private ItemStack tank = ItemStack.EMPTY;
 
     public MessageAirCompressorInventory() {
         super();
@@ -39,7 +39,7 @@ public class MessageAirCompressorInventory extends MessageTileEntity<TileEntityA
         public IMessage onMessage(MessageAirCompressorInventory message, MessageContext ctx) {
             TileEntityAirCompressor compressor = message.getClientTileEntity();
             if (compressor != null) {
-                if (message.tank != null) {
+                if (!message.tank.isEmpty()) {
                     compressor.addTank(message.tank);
                 } else {
                     compressor.ejectTank();

@@ -9,14 +9,17 @@ import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -68,7 +71,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		this.setDefaultState(this.blockState.getBaseState().withProperty(SECTION, TorchSection.UPPER));
 	}
 
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	@Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		TorchSection section = (TorchSection)state.getValue(SECTION);
 
 		if (section == TorchSection.UPPER) {
@@ -84,7 +88,7 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	    if (!super.canPlaceBlockAt(world, pos)) {
 	        return false;
 	    }
-		PlaceMode mode = canPlaceTikiTorchOn(world, pos.down());
+		PlaceMode mode = canPlaceTikiTorchOn(world, pos);
 		if (mode == PlaceMode.FULL) {
 		    return world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2));
 		} else if (mode == PlaceMode.TOP_ONLY) {
@@ -107,7 +111,8 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 	}
 
 	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
 		return NULL_AABB;
 	}
 
@@ -124,26 +129,22 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		return false;
 	}	
 
-	private PlaceMode canPlaceTikiTorchOn(World world, BlockPos pos) {
-		if (world.isBlockNormalCube(pos, false)) {
-			return PlaceMode.FULL;
-		} else {
-			IBlockState state = world.getBlockState(pos);
-			boolean canPlace = !world.isAirBlock(pos) && state.getBlock().canPlaceTorchOnTop(state, world, pos);
-			if (canPlace) {
-			    if (state.getBlock() instanceof BlockFence || state.getBlock() instanceof BlockWall) {
-			        return PlaceMode.TOP_ONLY;
-			    }
-			    return PlaceMode.FULL;
-			}
-			return PlaceMode.BLOCKED;
-		}
-	}
+    private PlaceMode canPlaceTikiTorchOn(World world, BlockPos pos) {
+        if (Blocks.TORCH.canPlaceBlockAt(world, pos)) {
+            IBlockState state = world.getBlockState(pos);
+            if (state.getBlock() instanceof BlockFence || state.getBlock() instanceof BlockWall) {
+                return PlaceMode.TOP_ONLY;
+            }
+            return PlaceMode.FULL;
+        }
+        return PlaceMode.BLOCKED;
+    }
 
 	/**
 	 * Get the Item that this Block should drop when harvested.
 	 */
-	@Nullable
+	@Override
+    @Nullable
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		if (state.getBlock() != this) return null;
 
@@ -302,8 +303,14 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 			return 0;
 		}
 	}
+	
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	    return BlockFaceShape.UNDEFINED;
+	}
 
-	@SideOnly(Side.CLIENT)
+	@Override
+    @SideOnly(Side.CLIENT)
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
@@ -354,4 +361,9 @@ public class BlockTikiTorch extends BlockTropicraft implements ITropicraftBlock 
 		return ((TorchSection) state.getValue(SECTION)).ordinal();
 	}
 
+	@Nullable
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return super.getAiPathNodeType(state, world, pos);
+	}
 }

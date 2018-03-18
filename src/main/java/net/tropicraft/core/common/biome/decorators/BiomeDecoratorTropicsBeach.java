@@ -29,26 +29,26 @@ public class BiomeDecoratorTropicsBeach extends BiomeDecoratorTropicraft {
         int k = 0;
 
         if (GenRates.NORMAL_PALM_CHANCE != 0 && rand.nextInt(GenRates.NORMAL_PALM_CHANCE) == 0) {
-            i = randDecorationCoord(rand, chunkPos.getX(), 16);
-            k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+            i = chunkPos.getX() + 13 + rand.nextInt(5);
+            k = chunkPos.getZ() + 13 + rand.nextInt(5);
             new WorldGenNormalPalms(world, rand).generate(new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
         }
 
         if (GenRates.CURVED_PALM_CHANCE != 0 && rand.nextInt(GenRates.CURVED_PALM_CHANCE) == 0) {
-            i = randDecorationCoord(rand, chunkPos.getX(), 16);
-            k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+            i = chunkPos.getX() + 13 + rand.nextInt(5);
+            k = chunkPos.getZ() + 13 + rand.nextInt(5);
             new WorldGenCurvedPalms(world, rand).generate(new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
         }
 
         if (GenRates.LARGE_PALM_CHANCE != 0 && rand.nextInt(GenRates.LARGE_PALM_CHANCE) == 0) {
-            i = randDecorationCoord(rand, chunkPos.getX(), 16);
-            k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+            i = chunkPos.getX() + 16;
+            k = chunkPos.getZ() + 16;
             new WorldGenLargePalmTrees(world, rand).generate(world, rand, new BlockPos(i, this.getTerrainHeightAt(world, i, k), k));
         }
 
         if(rand.nextInt(TREASURE_CHANCE) == 0) {
-            i = randDecorationCoord(rand, chunkPos.getX(), 16);
-            k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+            i = chunkPos.getX() + 13 + rand.nextInt(5);
+            k = chunkPos.getZ() + 13 + rand.nextInt(5);
             new WorldGenTropicsTreasure(world, rand).generate(world, rand, new BlockPos(i, getTerrainHeightAt(world, i, k), k));
         }
 

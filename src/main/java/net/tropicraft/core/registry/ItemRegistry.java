@@ -42,6 +42,7 @@ import net.tropicraft.core.common.item.ItemEncyclopediaTropica;
 import net.tropicraft.core.common.item.ItemFertilizer;
 import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.common.item.ItemFishingRod;
+import net.tropicraft.core.common.item.ItemLoveTropicsShell;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
@@ -91,7 +92,7 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item coffeeBeans;
 
     // Tool materials
-    public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 1, 200, 4.5F, 1.0F, 14);
+    public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 2, 200, 4.5F, 1.0F, 14);
     public static ToolMaterial materialEudialyteTools = EnumHelper.addToolMaterial("eudialyte", 2, 750, 6.0F, 2.0F, 14);
     public static ToolMaterial materialZirconiumTools = EnumHelper.addToolMaterial("zirconium", 3, 1800, 8.5F, 3.0F, 10);
     public static ToolMaterial materialBambooTools = EnumHelper.addToolMaterial("bamboo", 1, 110, 1.2F, 1F, 6);
@@ -114,7 +115,6 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item fishingNet;
 
     // Bamboo n stuff
-    public static Item bambooShoot;
     public static Item bambooStick;
     public static Item bambooMug;
 
@@ -138,25 +138,25 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item scale;
 
     // Armor    
-    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+    public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0.5F);
     public static Item scaleBoots;
     public static Item scaleLeggings;
     public static Item scaleChestplate;
     public static Item scaleHelmet;
     
-    public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", "fire", 12, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
-    public static Item fireBoots;// = new ItemFireArmor(materialFireArmor, 0, 3);
-    public static Item fireLeggings;// = new ItemFireArmor(materialFireArmor, 0, 2);
-    public static Item fireChestplate;// = new ItemFireArmor(materialFireArmor, 0, 1);
-    public static Item fireHelmet;// = new ItemFireArmor(materialFireArmor, 0, 0);
+    public static final ArmorMaterial materialFireArmor = EnumHelper.addArmorMaterial("fire", "fire", 12, new int[]{2, 4, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
+    public static Item fireBoots;
+    public static Item fireLeggings;
+    public static Item fireChestplate;
+    public static Item fireHelmet;
 
-    public static Item chair;
-    public static Item umbrella;
+    public static ItemChair chair;
+    public static ItemUmbrella umbrella;
 
     public static Item portalEnchanter;
 
-    public static Item shell;
-    public static Item cocktail;
+    public static ItemShell shell;
+    public static ItemCocktail cocktail;
 
     public static Item whitePearl;
     public static Item blackPearl;
@@ -177,14 +177,14 @@ public class ItemRegistry extends TropicraftRegistry {
     
     public static Item iguanaLeather;
 
-    public static final ArmorMaterial materialPinkSuit = EnumHelper.addArmorMaterial("pink_suit", "pink_suit", 50, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 9.0F);
+    public static final ArmorMaterial materialPinkSuit = EnumHelper.addArmorMaterial("pink_suit", "pink_suit", 15, new int[]{2, 0, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static Item pinkFlippers;
     //public static Item pinkLeggings;
     public static Item pinkChestplate;
     public static Item pinkChestplateGear;
     public static Item pinkHelmet;
 
-    public static final ArmorMaterial materialYellowSuit = EnumHelper.addArmorMaterial("yellow_suit", "yellow_suit", 50, new int[]{2, 4, 5, 6}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 9.0F);
+    public static final ArmorMaterial materialYellowSuit = EnumHelper.addArmorMaterial("yellow_suit", "yellow_suit", 15, new int[]{2, 0, 4, 1}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static Item yellowFlippers;
     //public static Item yellowLeggings;
     public static Item yellowChestplate;
@@ -211,7 +211,7 @@ public class ItemRegistry extends TropicraftRegistry {
     
     public static Item fishingRod;
 
-    public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", "mask", 18, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 9.0F);
+    public static final ArmorMaterial materialMaskArmor = EnumHelper.addArmorMaterial("mask", "mask", 10, new int[]{0, 0, 0, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
     public static Item maskSquareZord;
     public static Item maskHornMonkey;
     public static Item maskOblongatron;
@@ -226,6 +226,8 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item mask4;
     public static Item mask5;
     
+    public static ItemLoveTropicsShell ltShell;
+
     public static final Map<AshenMasks, Item> maskMap = new HashMap<>();
 
     // Linked as to maintain the same order as the block registry
@@ -290,8 +292,8 @@ public class ItemRegistry extends TropicraftRegistry {
 
         fishingNet = registerItem(registry, new ItemTropicraft(), "fishing_net");
 
-        bambooShoot = registerItem(registry, new ItemBlockSpecial(BlockRegistry.bambooShoot), "bamboo_shoots");
         bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
+        OreDictionary.registerOre("stickWood", bambooStick);
         bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
         freshMarlin = registerItem(registry, new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
@@ -335,7 +337,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
         fertilizer = registerItem(registry, new ItemFertilizer(), "fertilizer");
 
-        encyclopedia = registerItem(registry, new ItemEncyclopediaTropica("encTropica"), "encyclopedia_tropica");
+        encyclopedia = registerItem(registry, new ItemEncyclopediaTropica(), "encyclopedia_tropica");
 
         dagger = registerItem(registry, new ItemDagger(materialZirconTools), "dagger");
         bambooSpear = registerItem(registry, new ItemSword(materialBambooTools), "bamboo_spear");
@@ -371,7 +373,7 @@ public class ItemRegistry extends TropicraftRegistry {
         mask5 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK5), "mask_ashen_mask5");
 
         fishingRod = registerItem(registry, new ItemFishingRod(), "fishing_rod");
-
+        ltShell = registerMultiItem(registry, new ItemLoveTropicsShell(), "ltshell", Names.LOVE_TROPICS_NAMES.length);
     }
 
     public static void init() {
@@ -382,41 +384,42 @@ public class ItemRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerColoredItem(chair);
         Tropicraft.proxy.registerColoredItem(umbrella);
         Tropicraft.proxy.registerColoredItem(cocktail);
+        Tropicraft.proxy.registerColoredItem(ltShell);
     }
     
     public static void addBlockItem(Block block, IBlockItemRegistrar item) {
         blockItemRegistry.put(block, item);
     }
     
-    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String regName, ITropicraftVariant... variants) {
+    private static <T extends Item> T registerMultiItem(IForgeRegistry<Item> registry, T item, String regName, ITropicraftVariant... variants) {
         return registerMultiItemPrefixed(registry, item, regName, Arrays.stream(variants).map(ITropicraftVariant::getSimpleName).toArray(String[]::new));
     }
 
-    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String regName, String... variantNames) {
-        Item ret = registerItem(registry, item, regName, variantNames[0]);
+    private static <T extends Item> T registerMultiItem(IForgeRegistry<Item> registry, T item, String regName, String... variantNames) {
+        T ret = registerItem(registry, item, regName, variantNames[0]);
         for (int i = 1; i < variantNames.length; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, variantNames[i], i);
         }
         return ret;
     }
 
-    private static Item registerMultiItemPrefixed(IForgeRegistry<Item> registry, Item item, String name, String[] names) {
+    private static <T extends Item> T registerMultiItemPrefixed(IForgeRegistry<Item> registry, T item, String name, String[] names) {
         return registerMultiItem(registry, item, name, Arrays.stream(names).map(s -> name + "_" + s).toArray(String[]::new));
     }
 
-    private static Item registerMultiItem(IForgeRegistry<Item> registry, Item item, String name, int numPlaces) {
-        Item ret = registerItem(registry, item, name);
+    private static <T extends Item> T registerMultiItem(IForgeRegistry<Item> registry, T item, String name, int numPlaces) {
+        T ret = registerItem(registry, item, name);
         for (int i = 1; i < numPlaces; i++) {
             Tropicraft.proxy.registerItemVariantModel(item, name, i);
         }
         return ret;
     }
 
-    private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name) {
+    private static <T extends Item> T registerItem(IForgeRegistry<Item> registry, T item, String name) {
         return registerItem(registry, item, name, name);
     }
 
-    private static Item registerItem(IForgeRegistry<Item> registry, Item item, String name, String variantName) {
+    private static <T extends Item> T registerItem(IForgeRegistry<Item> registry, T item, String name, String variantName) {
         item.setUnlocalizedName(getNamePrefixed(name));
         item.setRegistryName(name);
 

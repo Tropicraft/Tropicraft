@@ -1,57 +1,70 @@
 package net.tropicraft.core.common.item;
 
+import com.google.common.collect.Multimap;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemDagger extends ItemTropicraft {
 
-    private float weaponDamage;
+    private final ToolMaterial toolMaterial;
 
-    public ItemDagger(ToolMaterial enumtoolmaterial) {
+    public ItemDagger(ToolMaterial toolMaterial) {
         super();
         maxStackSize = 1;
-        setMaxDamage(enumtoolmaterial.getMaxUses());
-        weaponDamage = 4 + enumtoolmaterial.getAttackDamage();
+        this.toolMaterial = toolMaterial;
+        setMaxDamage(toolMaterial.getMaxUses());
     }
 
     /**
-     * Metadata-sensitive version of getStrVsBlock
+     * Modifies destroy speed of blocks - copied from ItemSword
      * @param itemstack The Item Stack
-     * @param block The block the item is trying to break
-     * @param metadata The items current metadata
+     * @param state blockstate being hit
      * @return The damage strength
      */
-    public float getDigSpeed(ItemStack itemstack, Block block, int metadata) {
-        return block != Blocks.WEB ? 1.5F : 15F;
+    @Override
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        Block block = state.getBlock();
+
+        if (block == Blocks.WEB) {
+            return 15.0F;
+        } else {
+            Material material = state.getMaterial();
+            return material != Material.PLANTS && material != Material.VINE && material != Material.CORAL && material != Material.LEAVES && material != Material.GOURD ? 1.0F : 1.5F;
+        }
     }
 
+    /**
+     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
+     * the damage on the stack.
+     */
     @Override
-    public boolean hitEntity(ItemStack itemstack, EntityLivingBase entityliving, EntityLivingBase entityliving1) {
-        itemstack.damageItem(1, entityliving1);
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+        stack.damageItem(1, attacker);
         return true;
     }
 
+    /**
+     * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
+     */
     @Override
-    public boolean onBlockDestroyed(ItemStack par1ItemStack, World par2World, IBlockState state, BlockPos pos, EntityLivingBase par7EntityLiving) {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+        if ((double)state.getBlockHardness(worldIn, pos) != 0.0D) {
+            stack.damageItem(2, entityLiving);
+        }
+
         return true;
     }
-
-    //  @Override
-    //   public int getDamageVsEntity(Entity entity) {
-    //  public float func_82803_g() {
-    //     return weaponDamage;
-    //TODO
-    //  }
 
     @Override
     public boolean isFull3D() {
@@ -67,15 +80,24 @@ public class ItemDagger extends ItemTropicraft {
     public int getMaxItemUseDuration(ItemStack itemstack) {
         return 0x11940;
     }
-    
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemstack, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-    	playerIn.setActiveHand(hand);
-        return new ActionResult(EnumActionResult.PASS, itemstack);
-    }
 
     @Override
     public boolean canHarvestBlock(IBlockState block) {
         return block == Blocks.WEB;
     }
 
+    /**
+     * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
+     */
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+
+        if (slot == EntityEquipmentSlot.MAINHAND) {
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.toolMaterial.getAttackDamage() + 2.5D, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", 0D, 0));
+        }
+
+        return multimap;
+    }
 }

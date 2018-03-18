@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.tropicraft.Info;
+import net.tropicraft.core.common.item.IColoredItem;
 
 public class CommonProxy {
 
@@ -35,7 +36,7 @@ public class CommonProxy {
 	public void registerItemWithSubtypes(Item item, CreativeTabs tabs) {}
 	public void registerFluidBlockRendering(Block block, String name) {}
 	public void registerColoredBlock(Block block) {}
-	public void registerColoredItem(Item item) {}
+    public <T extends Item & IColoredItem> void registerColoredItem(T item) {}
 	public void registerBooks() {}
 	
 	public World getClientWorld() {

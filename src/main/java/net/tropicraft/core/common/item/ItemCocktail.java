@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,7 +24,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
+import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.common.drinks.ColorMixer;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Ingredient;
@@ -52,16 +56,15 @@ public class ItemCocktail extends ItemTropicraftColored {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(@Nonnull ItemStack stack, @Nullable World world, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
-		tooltip.clear();
 		if (stack.getTagCompound() == null) {
 			return;
 		}
-
-		Drink drink = Drink.drinkList[stack.getTagCompound().getByte("DrinkID")];
-
+		
+		Drink drink = getDrink(stack);
 		if (drink != null) {
-			tooltip.add(drink.textFormatting.toString() + TextFormatting.BOLD.toString() + drink.displayName);
+			tooltip.add(TextFormatting.ITALIC + I18n.format(getUnlocalizedName() + ".name"));
 		}
 
 		NBTTagList ingredients = stack.getTagCompound().getTagList("Ingredients", 10);
@@ -230,6 +233,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 	 * Called when the player finishes using this Item (E.g. finishes eating.). Not called when the player stops using
 	 * the Item before the action is complete.
 	 */
+	@Override
 	public @Nonnull ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityLivingBase entityLiving) {
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entityLiving;
@@ -242,7 +246,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 			}
 		}
 
-		return stack;
+		return new ItemStack(ItemRegistry.bambooMug);
 	}
 
 	@Override
@@ -268,24 +272,31 @@ public class ItemCocktail extends ItemTropicraftColored {
 		Drink drink = getDrink(itemstack);
 		return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
 	}
-
-	@SuppressWarnings("null")
+	
 	@Override
-	public @Nonnull String getItemStackDisplayName(@Nonnull ItemStack itemstack) {
-		@Nonnull String name = "";
+	@SideOnly(Side.CLIENT)
+	public IItemColor getColorHandler() {
+	    return new CocktailColorHandler();
+	}
+	
+	@Override
+	public String getUnlocalizedName(ItemStack itemstack) {
+		@Nonnull
+		String name = getUnlocalizedName();
 		Drink drink = getDrink(itemstack);
-		if (itemstack.isEmpty() || drink == null) {
-			name = I18n.format(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-					+ ":" + "cocktail.name").trim();			
-		} else {
-			if (drink.drinkId == Drink.pinaColada.drinkId) {
-				name = drink.displayName;
-			} else {
-				name = I18n.format(this.getUnlocalizedName().replace("item.", String.format("item.%s:", Info.MODID)).split(":")[0]
-						+ ":" + "cocktail.name").trim();
-			}
+		if (drink != null) {
+			name = Info.MODID + ".drink." + drink.name;
 		}
 
 		return name;
+	}
+	
+	@Override
+	public @Nonnull String getItemStackDisplayName(@Nonnull ItemStack stack) {
+		Drink drink = getDrink(stack);
+		if (drink != null) {
+			return drink.textFormatting.toString() + TextFormatting.BOLD + super.getItemStackDisplayName(stack);
+		}
+		return super.getItemStackDisplayName(stack);
 	}
 }

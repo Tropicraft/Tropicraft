@@ -2,6 +2,7 @@ package net.tropicraft.core.common.item.scuba;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.resources.I18n;
@@ -44,7 +45,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemstack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack itemstack, @Nullable World world, List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
         IScubaGear cap = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
         ItemStack leftTank = cap.getStackInSlot(0);
         ItemStack rightTank = cap.getStackInSlot(1);
@@ -54,7 +55,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
         tooltip.add(TextFormatting.BLUE + I18n.format("tropicraft.gui.suit.type", TextFormatting.GRAY + suitType));
         tooltip.add("");
         
-        if (leftTank == null) {
+        if (leftTank.isEmpty()) {
             tooltip.add(I18n.format("tropicraft.gui.gear.tank.left.none"));
         } else {
             tooltip.add(I18n.format("tropicraft.gui.gear.tank.left.info"));
@@ -68,7 +69,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:useEfficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
             tooltip.add("");
         }
-        if (rightTank == null) {
+        if (rightTank.isEmpty()) {
             tooltip.add(I18n.format("tropicraft.gui.gear.tank.right.none"));
         } else {
             tooltip.add(I18n.format("tropicraft.gui.gear.tank.right.info"));
@@ -172,7 +173,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
         if (!world.isRemote && world.getTotalWorldTime() % UPDATE_RATE == 0) {
             ItemStack helmetStack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             // Ensure the player doesn't drown if they have the proper tanks / air in tanks
-            if (itemstack != null && helmetStack != null && helmetStack.getItem() instanceof ItemScubaHelmet) {
+            if (!itemstack.isEmpty() && !helmetStack.isEmpty() && helmetStack.getItem() instanceof ItemScubaHelmet) {
                 IScubaGear gear = itemstack.getCapability(ScubaCapabilities.getGearCapability(), null);
                 IScubaTank tankToEmpty = gear.getFirstNonEmptyTank();
 

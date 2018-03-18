@@ -35,6 +35,7 @@ public class RenderTropicalFish extends RenderLiving<EntityTropicraftWaterBase> 
 	/**
      * Renders the desired {@code T} type Entity.
      */
+    @Override
     public void doRender(EntityTropicraftWaterBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
     		this.shadowSize = 0.08f;
 		this.shadowOpaque = 0.3f;

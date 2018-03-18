@@ -18,14 +18,16 @@ public class EntityAIFollowLeader extends EntityAIBase {
 	/**
 	 * Returns whether the EntityAIBase should begin execution.
 	 */
-	public boolean shouldExecute() {		
+	@Override
+	public boolean shouldExecute() {
 		return this.follower.leader != null;
 	}
 
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
 	 */
-	public boolean continueExecuting() {
+	@Override
+	public boolean shouldContinueExecuting() {
 		if (!this.follower.isEntityAlive() || (this.follower.leader != null && !this.follower.leader.isEntityAlive())) {
 			return false;
 		} else {
@@ -37,6 +39,7 @@ public class EntityAIFollowLeader extends EntityAIBase {
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
+	@Override
 	public void startExecuting() {
 		this.delayCounter = 0;
 	}
@@ -44,6 +47,7 @@ public class EntityAIFollowLeader extends EntityAIBase {
 	/**
 	 * Resets the task
 	 */
+	@Override
 	public void resetTask() {
 		//this.leader = null;
 	}
@@ -51,6 +55,7 @@ public class EntityAIFollowLeader extends EntityAIBase {
 	/**
 	 * Updates the task
 	 */
+	@Override
 	public void updateTask() {
 		if (--this.delayCounter <= 0) {
 			this.delayCounter = 4;

@@ -1,5 +1,9 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +27,8 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 
 	public BlockSifter() {
 		super(Material.WOOD);
+		this.setHardness(1.0F);
+		this.setResistance(4.0F);
 	}
 	
 	@Override
@@ -47,15 +53,14 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 			return true;
 		}
 
-		ItemStack stack = entityPlayer.getHeldItemMainhand();
+		ItemStack stack = entityPlayer.getHeldItem(hand);
 
 		TileEntitySifter tileentitysifta = (TileEntitySifter) world.getTileEntity(pos);
 
-		if (tileentitysifta != null && stack != null && !tileentitysifta.isSifting()) {
+		if (tileentitysifta != null && !stack.isEmpty() && !tileentitysifta.isSifting()) {
 			Item helditem = stack.getItem();
 			if (helditem == Item.getItemFromBlock(Blocks.SAND) || (helditem == Item.getItemFromBlock(BlockRegistry.sands))) {
-				entityPlayer.getHeldItemMainhand().shrink(1);
-				tileentitysifta.addItemToSifter(stack);
+				tileentitysifta.addItemToSifter(stack.splitStack(1));
 				tileentitysifta.startSifting();
 			}
 		}
@@ -75,4 +80,12 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
 		return TileEntityFactory.getSifterTE();
 	}
 
+	/**
+	 * Get the Item that this Block should drop when harvested.
+	 */
+	@Nullable
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	    return Item.getItemFromBlock(BlockRegistry.sifter);
+	}
 }

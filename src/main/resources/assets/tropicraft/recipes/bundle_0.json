@@ -8,7 +8,7 @@
     "XX",
     "XX"
   ],
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
       "item": "#SUGARCANE"

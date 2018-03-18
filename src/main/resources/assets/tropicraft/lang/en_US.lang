@@ -90,6 +90,8 @@ tile.tropicraft.palm_fence_gate.name=Palm Fence Gate
 tile.tropicraft.thatch_fence.name=Thatch Fence
 tile.tropicraft.thatch_fence_gate.name=Thatch Fence Gate
 tile.tropicraft.portal_wall.name=Tropics Portal Wall
+tile.tropicraft.bamboo_ladder.name=Bamboo Ladder
+tile.tropicraft.packed_purified_sand.name=Packed Purified Sand
 
 # Item localizations
 item.tropicraft.eudialyte.name=Eudialyte Shard
@@ -159,12 +161,15 @@ item.tropicraft.umbrella.magenta.name=Magenta Beach Umbrella
 item.tropicraft.umbrella.orange.name=Orange Beach Umbrella
 item.tropicraft.umbrella.white.name=White Beach Umbrella
 item.tropicraft.portal_enchanter.name=Tropics Portal Enchanter Wand
+item.tropicraft.shell.name=Shell
 item.tropicraft.shell.solo.name=Solonox Shell
 item.tropicraft.shell.frox.name=Frox Conch
 item.tropicraft.shell.pab.name=Pab Shell
 item.tropicraft.shell.rube.name=Rube Nautilus
 item.tropicraft.shell.starfish.name=Starfish Shell
 item.tropicraft.shell.turtle.name=Turtle Shell
+item.tropicraft.shell.owned.normal.name=%s's Shell
+item.tropicraft.shell.owned.with_s.name=%s' Shell
 item.tropicraft.cocktail.name=Tropical Cocktail
 item.tropicraft.pineapple_cubes.name=Pineapple Cubes
 item.tropicraft.white_pearl.name=Solo Pearl
@@ -241,11 +246,14 @@ item.tropicraft.pink_chestplate_gear.name=Pink Scuba Harness
 item.tropicraft.trimix.name=Trimix Gas Mixture
 
 # Cocktail localizations
-item.tropicraft.cocktail_Lemonade.name=Lemonade
-item.tropicraft.cocktail_Limeade.name=Limeade
-item.tropicraft.cocktail_Orangeade.name=Orangeade
-item.tropicraft.cocktail_Caipirinha.name=Caipirinha
-item.tropicraft.cocktail_Coconut Water.name=Coconut Water
+tropicraft.drink.lemonade.name=Lemonade
+tropicraft.drink.limeade.name=Limeade
+tropicraft.drink.orangeade.name=Orangeade
+tropicraft.drink.caipirinha.name=Caipirinha
+tropicraft.drink.coconut_water.name=Coconut Water
+tropicraft.drink.pina_colada.name=Piña Colada
+tropicraft.drink.black_coffee.name=Black Coffee
+tropicraft.drink.mai_tai.name=Mai Tai
 
 # Record localizations
 item.tropicraft.buried_treasure.name=Buried Treasure
@@ -310,19 +318,19 @@ achievement.tc_drink_pina_colada=Caught in the rain
 achievement.tc_drink_pina_colada.desc=(Did you forget your umbrella?)
 
 #Gui localizations
-tropicraft.gui.air.type=Air Type. %s
+tropicraft.gui.air.type=Air Type: %s
 tropicraft.gui.air.regular=Regular
 tropicraft.gui.air.trimix=Trimix
-tropicraft.gui.air.capacity=Max Air Capacity. %s psi
-tropicraft.gui.air.remaining=Air Remaining. %s psi
-tropicraft.gui.air.efficiency=Use Efficiency. %s%.3f psi/sec
-tropicraft.gui.suit.type=Suit Type. %s
+tropicraft.gui.air.capacity=Max Air Capacity: %s psi
+tropicraft.gui.air.remaining=Air Remaining: %s psi
+tropicraft.gui.air.efficiency=Use Efficiency: %s psi/sec
+tropicraft.gui.suit.type=Suit Type: %s
 tropicraft.gui.suit.yellow=Yellow
 tropicraft.gui.suit.pink=Pink
 tropicraft.gui.gear.tank.left.none=No left tank
-tropicraft.gui.gear.tank.left.info=Left tank.
+tropicraft.gui.gear.tank.left.info=Left tank:
 tropicraft.gui.gear.tank.right.none=No right tank
-tropicraft.gui.gear.tank.right.info=Right tank.
+tropicraft.gui.gear.tank.right.info=Right tank:
 gui.tropicraft.temperature=Temp
 gui.tropicraft.currentDepth=Depth
 gui.tropicraft.maxDepth=Max
@@ -334,7 +342,7 @@ fluid.tropicraft.water=Tropics Water
 fluid.tropicraft.portal=Tropics Portal
 
 # Misc localizations
-tropicraft.coconutBombWarning=You do not have permission to use coconut bombs .) Check the coconut bomb whitelist in the Tropicraft config file!
+tropicraft.coconutBombWarning=You do not have permission to use coconut bombs :) Check the coconut bomb whitelist in the Tropicraft config file!
 portalenchanter.type_0=Mode: Portal Build Mode
 portalenchanter.type_1=Mode: Instant Teleport Mode
 

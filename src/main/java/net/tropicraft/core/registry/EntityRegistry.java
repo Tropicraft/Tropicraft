@@ -2,6 +2,8 @@ package net.tropicraft.core.registry;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
@@ -104,22 +106,16 @@ public class EntityRegistry {
 			notifyDuplicate(entityClass, entityName);
 			return;
 		}
-		net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(Info.MODID + ":" + entityName), entityClass, entityName, entityID++,
+		net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity(new ResourceLocation(Info.MODID + ":" + entityName), entityClass, Info.MODID + "." + entityName, entityID++,
 				Tropicraft.instance, trackingRange, updateFrequency, sendsVelocityUpdates);
 		registeredEntityNames.add(entityName);
 		registeredEntityClasses.add(entityClass);
 	}
 
-	private static void registerEntity(IForgeRegistry<EntityEntry> registry, Class<? extends Entity> entityClass, String entityName, int trackingRange,
-			int updateFrequency, boolean sendsVelocityUpdates, SpawnPlacementType spawnPlacementType) {
-		if (registeredEntityNames.contains(entityName)) {
-			notifyDuplicate(entityClass, entityName);
-			return;
-		}
+	private static void registerEntity(IForgeRegistry<EntityEntry> registry, @Nonnull Class<? extends Entity> entityClass, String entityName, int trackingRange,
+			int updateFrequency, boolean sendsVelocityUpdates, @Nonnull SpawnPlacementType spawnPlacementType) {
 		registerEntity(registry, entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates);
 		EntitySpawnPlacementRegistry.setPlacementType(entityClass, spawnPlacementType);
-		registeredEntityNames.add(entityName);
-		registeredEntityClasses.add(entityClass);
 	}
 
 	private static void notifyDuplicate(Class<? extends Entity> clazz, String name) {

@@ -1,16 +1,16 @@
 {
   "result": {
-    "nbt": "{Ingredients:[{IngredientID:14b},{IngredientID:15b}],Color:16777215,DrinkID:5b}",
+    "nbt": "{Ingredients:[{IngredientID:12b},{IngredientID:9b}],Color:15724527,DrinkID:6b}",
     "item": "tropicraft:cocktail",
     "data": 0,
     "type": "minecraft:item_nbt"
   },
   "ingredients": [
     {
-      "item": "tropicraft:coconut"
+      "item": "tropicraft:coconut_chunk"
     },
     {
-      "item": "tropicraft:pineapple_cubes"
+      "item": "tropicraft:pineapple"
     },
     {
       "item": "tropicraft:bamboo_mug"

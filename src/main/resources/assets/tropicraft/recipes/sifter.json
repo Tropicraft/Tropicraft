@@ -10,8 +10,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "minecraft:planks",
-      "data": 0
+      "item": "#PLANKWOOD"
     },
     "I": {
       "item": "minecraft:glass"
