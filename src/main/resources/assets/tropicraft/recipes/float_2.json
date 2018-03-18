@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "tropicraft:float",
+    "data": 2
+  },
+  "pattern": [
+    "III",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "I": {
+      "item": "minecraft:wool",
+      "data": 13
+    }
+  }
+}
