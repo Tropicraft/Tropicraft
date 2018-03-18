@@ -1,11 +1,10 @@
 package net.tropicraft.core.common.entity.placeable;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.apache.logging.log4j.LogManager;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.BlockLiquid;
@@ -23,6 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,20 +30,28 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityBeachFloat extends EntityPlaceableColored implements IEntityAdditionalSpawnData {
 
-	/** Is any entity laying on the float? */
+    @Nonnull
+    private static final Random rand = new Random(298457L);
+    @Nonnull
+    private static final NoiseGeneratorPerlin windNoise = new NoiseGeneratorPerlin(rand, 1);
+    
+    /* Wind */
+    private double windModifier = 0;
+
+	/* Is any entity laying on the float? */
 	public boolean isEmpty;
 	
-	/** Interpolation values */
+	/* Interpolation values */
     private int lerpSteps;
     private double lerpX;
     private double lerpY;
     private double lerpZ;
     private double lerpYaw;
 
-	/** Acceleration */
+	/* Acceleration */
 	public float rotationSpeed;
 	
-	/** Water checks */
+	/* Water checks */
 	private double prevMotionY;
 	
 	public EntityBeachFloat(World worldIn) {
@@ -53,6 +61,7 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
 		this.isEmpty = true;
 		this.preventEntitySpawning = true;
 		this.entityCollisionReduction = .95F;
+		setEntityId(this.getEntityId());
 	}
 
 	public EntityBeachFloat(World world, double x, double y, double z, int color, EntityPlayer player) {
@@ -66,6 +75,13 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
 		prevPosZ = z;
 		setColor(color);		
 		lerpYaw = rotationYaw = this.getAngleToPlayer(player);
+	}
+	
+	@Override
+	public void setEntityId(int id) {
+	    super.setEntityId(id);
+	    rand.setSeed(id);
+	    this.windModifier = (1 + (rand.nextGaussian() * 0.1)) -  0.05;
 	}
 	
 	@Override
@@ -90,8 +106,25 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
             float moveZ = MathHelper.cos(ang * 0.017453292F) * move * 0.0035f;
             motionX += moveX;
             motionZ += moveZ;
-	    }
-	    
+        }
+
+        if (this.inWater) {
+            double windAng = (windNoise.getValue(posX / 1000, posZ / 1000) + 1) * Math.PI;
+            double windX = Math.sin(windAng) * 0.0005f * windModifier;
+            double windZ = Math.cos(windAng) * 0.0005f * windModifier;
+            motionX += windX;
+            motionZ += windZ;
+            // Rotate towards a target yaw with some random perturbance
+            double targetYaw = Math.toDegrees(windAng) + ((windModifier - 1) * 45);
+            double yaw = (MathHelper.wrapDegrees(this.rotationYaw) + 180 - 35) % 360;
+            double angleDiff = targetYaw - yaw;
+            if (angleDiff > 0) {
+                this.rotationSpeed += Math.min(0.05 * windModifier, angleDiff);
+            } else {
+                this.rotationSpeed += Math.max(-0.05 * windModifier, angleDiff);
+            }
+        }
+        
         double water = getWaterLevel();
         double center = getEntityBoundingBox().getCenter().y;
         double eps = 1 / 16D;
