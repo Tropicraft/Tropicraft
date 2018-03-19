@@ -15,11 +15,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.logging.log4j.LogManager;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -37,11 +43,6 @@ public abstract class TropicalBook {
         READ,
         ;
     }
-
-    // Data file that saves which pages should be visible
-    private File dataFile;
-    
-    public static File file = null;
     
     /**
      * List of page names that may be visible by the player
@@ -57,34 +58,16 @@ public abstract class TropicalBook {
     private HashMap<String, String> pageDescriptions = new HashMap<String, String>();
     private List<String> sortedPages = new ArrayList<String>();
     
+    private final String fileName;
+    
     public String outsideTexture;
     public String insideTexture;
     
     public TropicalBook(String savedDataFile, String contentsFile, String outsideTex, String insideTex) {
 
+        fileName = savedDataFile;
         outsideTexture = outsideTex;
         insideTexture = insideTex;
-
-        dataFile = new File(getClientSidePath(), savedDataFile);        
-
-        try {
-            if (dataFile.canRead()) {
-                InputStream dataInput = new FileInputStream(dataFile);
-                NBTTagCompound data = CompressedStreamTools.readCompressed(dataInput);
-                
-                Iterator<?> it = data.getKeySet().iterator();
-                
-                while (it.hasNext()) {
-                    String tagName = (String)it.next();
-                    ReadState s = ReadState.values()[data.getByte(tagName) % ReadState.values().length];
-                    visiblePages.put(tagName, s);
-                }
-
-                dataInput.close();
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
         BufferedReader contents = new BufferedReader(new InputStreamReader(TropicalBook.class.getResourceAsStream(contentsFile)));
         String line;
@@ -106,28 +89,64 @@ public abstract class TropicalBook {
         } catch (IOException ex) {
             Logger.getLogger(TropicalBook.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
+        MinecraftForge.EVENT_BUS.register(this);
     }
     
-    @SideOnly(Side.CLIENT)
-    public static String getClientSidePath() {
-        return FMLClientHandler.instance().getClient().mcDataDir.getPath();
+    protected File getSaveFile() {
+        File root = DimensionManager.getCurrentSaveRootDirectory();
+        if (root == null) {
+            throw new IllegalStateException("Cannot load encyclopedia outside of a save!");
+        }
+        return new File(root, fileName);
     }
     
-    protected void saveData() {
+    @SubscribeEvent
+    public void loadData(WorldEvent.Load event) {
+        if (event.getWorld().provider.getDimension() != 0) {
+            return;
+        }
         try {
-            dataFile.createNewFile();
-            if (dataFile.canWrite()) {
-                OutputStream dataOutput = new FileOutputStream(dataFile);
-                NBTTagCompound data = new NBTTagCompound();
-                for (String s : visiblePages.keySet()) {
-                    data.setByte(s, (byte) visiblePages.get(s).ordinal());
+            File dataFile = getSaveFile();
+            visiblePages.clear();
+            if (dataFile.canRead()) {
+                try (InputStream dataInput = new FileInputStream(dataFile)) {
+                    NBTTagCompound data = CompressedStreamTools.readCompressed(dataInput);
+
+                    Iterator<String> it = data.getKeySet().iterator();
+
+                    while (it.hasNext()) {
+                        String tagName = it.next();
+                        ReadState s = ReadState.values()[data.getByte(tagName) % ReadState.values().length];
+                        visiblePages.put(tagName, s);
+                    }
                 }
-                CompressedStreamTools.writeCompressed(data, dataOutput);
-                dataOutput.close();
             }
         } catch (IOException ex) {
-            Logger.getLogger(TropicalBook.class.getName()).log(Level.SEVERE, null, ex);
+            LogManager.getLogger().error("Error reading encyclopedia data.", ex);
+        }
+    }
+    
+    @SubscribeEvent
+    protected void saveData(WorldEvent.Save event) {
+        if (event.getWorld().provider.getDimension() != 0) {
+            return;
+        }
+        System.out.println("Saving encyclopedia...");
+        try {
+            File dataFile = getSaveFile();
+            dataFile.createNewFile();
+            if (dataFile.canWrite()) {
+                try (OutputStream dataOutput = new FileOutputStream(dataFile)) {
+                    NBTTagCompound data = new NBTTagCompound();
+                    for (String s : visiblePages.keySet()) {
+                        data.setByte(s, (byte) visiblePages.get(s).ordinal());
+                    }
+                    CompressedStreamTools.writeCompressed(data, dataOutput);
+                }
+            }
+        } catch (IOException ex) {
+            LogManager.getLogger().error("Error writing encyclopedia data.", ex);
         }
     }
     
@@ -153,7 +172,6 @@ public abstract class TropicalBook {
     
     public void markPageAsNewlyVisible(String entry) {
         visiblePages.put(entry, ReadState.VISIBLE);
-        saveData();
     }
     
     public void markPageAsNewlyVisible(int i) {
@@ -162,7 +180,6 @@ public abstract class TropicalBook {
     
     public void markPageAsRead(String entry) {
         visiblePages.put(entry, ReadState.READ);
-        saveData();
     }
     
     public void markPageAsRead(int i) {
