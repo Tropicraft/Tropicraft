@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -7,6 +8,8 @@ import javax.annotation.Nullable;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -36,7 +39,17 @@ public class BlockSifter extends BlockTropicraft implements ITileEntityProvider 
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
-	
+
+    /**
+     * allows items to add custom lines of information to the mouseover description
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+        super.addInformation(stack, world, tooltip, flag);
+        tooltip.add(I18n.format("tropicraft.tooltip.sifter"));
+    }
+
 	@Override
     public boolean isFullCube(IBlockState state) {
         return false;

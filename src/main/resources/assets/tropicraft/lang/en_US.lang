@@ -347,6 +347,7 @@ tropicraft.gui.gear.tank.left.none=No left tank
 tropicraft.gui.gear.tank.left.info=Left tank:
 tropicraft.gui.gear.tank.right.none=No right tank
 tropicraft.gui.gear.tank.right.info=Right tank:
+tropicraft.gui.gear.tank.tank.click=Shift+Right Click to place tanks inside!
 gui.tropicraft.temperature=Temp
 gui.tropicraft.currentDepth=Depth
 gui.tropicraft.maxDepth=Max
@@ -386,3 +387,8 @@ tropicraft.loading.hint.2=%s Iguanas hold a grudge, so try to avoid punching the
 
 tropicraft.loading.misc.1=Don't forget to hold your breath!
 tropicraft.loading.misc.2=Prepare to make a splash
+
+# Tooltips
+tropicraft.tooltip.air_compressor=Place one or two empty scuba tanks in the compressor to fill them with air!
+tropicraft.tooltip.drink_mixer=Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!
+tropicraft.tooltip.sifter=Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?

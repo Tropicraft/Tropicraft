@@ -82,6 +82,8 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:airRemaining", TextFormatting.GRAY + airRemaining));
 //            list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:useEfficiency", TextFormatting.GRAY, (airType.getUsageRate() * 20)));
         }
+
+        tooltip.add(I18n.format("tropicraft.gui.gear.tank.click"));
 //        list.add(TextFormatting.BLUE + I18n.format("gui.tropicraft:numTanks", TextFormatting.GRAY + numTanks));
 }
     
