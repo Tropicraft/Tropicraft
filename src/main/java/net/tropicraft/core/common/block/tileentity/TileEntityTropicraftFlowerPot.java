@@ -63,7 +63,7 @@ public class TileEntityTropicraftFlowerPot extends TileEntity {
 
     @Nullable
     public ItemStack getFlowerItemStack() {
-        return this.flowerPotItem == null ? null : new ItemStack(this.flowerPotItem, 1, this.flowerPotData);
+        return this.flowerPotItem == null ? ItemStack.EMPTY : new ItemStack(this.flowerPotItem, 1, this.flowerPotData);
     }
 
     @Nullable
