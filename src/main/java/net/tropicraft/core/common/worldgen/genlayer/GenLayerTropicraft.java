@@ -60,6 +60,7 @@ public abstract class GenLayerTropicraft extends GenLayer {
 		GenLayerTropicraft genLayerOceans = new GenLayerTropicraftAddWeightedSubBiomes(16L, genLayerBiomes, oceanID, oceanBiomeIDs, oceanBiomeWeights);
 		GenLayerTropicraft genLayerHills = new GenLayerTropicraftAddSubBiomes(17L/*16*/, genLayerOceans, getID(BiomeTropicraft.rainforestPlains), rainforestBiomeIDs);
 		layerZoom = new GenLayerTropicraftZoom(2002L, genLayerHills);
+		layerZoom = new GenLayerTropicraftZoom(2003L, genLayerHills);
 		layerExpand = new GenLayerTropicraftExpandIsland(10L, layerZoom);
 
 		for(int i = 0; i < 4; i++) {
