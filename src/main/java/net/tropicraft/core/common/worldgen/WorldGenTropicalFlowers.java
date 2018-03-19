@@ -33,6 +33,13 @@ public class WorldGenTropicalFlowers extends TCGenBase {
 				if (rand.nextInt(3) == 0) {
 					int meta = rand.nextInt(TropicraftFlowers.VALUES.length);
 					TropicraftFlowers flowerEnum = TropicraftFlowers.VALUES[meta];
+					// Get random flower until we get one that isn't magic mushroom
+					// since magic mushrooms should only generate in/around rainforests,
+					// not along with the rest of the flowers.
+					while (flowerEnum == TropicraftFlowers.MAGIC_MUSHROOM) {
+						meta = rand.nextInt(TropicraftFlowers.VALUES.length);
+						flowerEnum = TropicraftFlowers.VALUES[meta];
+					}
 					TCGenUtils.setBlockState(worldObj, x, y, z, plantBlock.getDefaultState().withProperty(BlockTropicsFlowers.VARIANT, flowerEnum), blockGenNotifyFlag);
 				}
 			}
