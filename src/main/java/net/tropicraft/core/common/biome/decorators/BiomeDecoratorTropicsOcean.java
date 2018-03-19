@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.tropicraft.configuration.GenRates;
 import net.tropicraft.core.common.block.BlockCoral;
 import net.tropicraft.core.common.block.BlockTropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftCorals;
@@ -13,6 +14,7 @@ import net.tropicraft.core.common.enums.TropicraftOres;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.worldgen.TCNoiseGen;
 import net.tropicraft.core.common.worldgen.WorldGenCoral;
+import net.tropicraft.core.common.worldgen.WorldGenSunkenShip;
 import net.tropicraft.core.common.worldgen.WorldGenSurfaceClump;
 import net.tropicraft.core.common.worldgen.WorldGenTropicsTreasure;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -92,11 +94,11 @@ public class BiomeDecoratorTropicsOcean extends BiomeDecoratorTropicraft {
         manganeseGen.generate(world, rand, chunkPos);
         shakaGen.generate(world, rand, chunkPos);
 
-        //        if (ConfigGenRates.SHIPWRECK_CHANCE != 0 /*&& rand.nextInt(ConfigGenRates.SHIPWRECK_CHANCE) == 0*/) {
-        //            int i = randDecorationCoord(rand, chunkPos.getX(), 16);
-        //            int k = randDecorationCoord(rand, chunkPos.getZ(), 16);
-        //            new WorldGenSunkenShip(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
-        //        }
+        if (GenRates.SHIPWRECK_CHANCE != 0 && rand.nextInt(GenRates.SHIPWRECK_CHANCE) == 0) {
+            int i = randDecorationCoord(rand, chunkPos.getX(), 16);
+            int k = randDecorationCoord(rand, chunkPos.getZ(), 16);
+            new WorldGenSunkenShip(world, rand).generate(new BlockPos(i, getTerrainHeightAt(world, i, k), k));
+        }
 
         if (rand.nextInt(TREASURE_CHANCE) == 0) {
             int i = randDecorationCoord(rand, chunkPos.getX(), 12);

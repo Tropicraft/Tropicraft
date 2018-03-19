@@ -72,7 +72,9 @@ public class WorldGenSunkenShip extends TCDirectionalGen {
 								TileEntityBambooChest chest = (TileEntityBambooChest)this.getTEWithDir(pos2);
 
 								if(chest != null) {
-									chest.setInventorySlotContents(0, this.randLoot());
+									for (int b = 0; b < rand.nextInt(5) + 10; b++) {
+										chest.setInventorySlotContents(b, this.randLoot());
+									}
 								}
 							} else if (z == -width || z == width) {
 								this.placeBlockWithDir(x, y, z, PLANK_STATE);						
