@@ -17,14 +17,14 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.tropicraft.ColorHelper;
-import net.tropicraft.core.common.entity.placeable.EntityChair;
+import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 
-public class ItemChair extends ItemTropicraftColored {
+public class ItemBeachFloat extends ItemTropicraftColored {
 
-	public ItemChair() {
-		super("chair");
+	public ItemBeachFloat() {
+		super("float");
 	}
-	
+
 	@Override
 	public int getColor(ItemStack itemstack, int pass) {
 		Integer color = ColorHelper.getColorFromDamage(itemstack.getItemDamage());
@@ -34,7 +34,7 @@ public class ItemChair extends ItemTropicraftColored {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
 	{
-	    ItemStack stack = playerIn.getHeldItem(hand);
+		ItemStack stack = playerIn.getHeldItem(hand);
 		float f = 1.0F;
 		float f1 = playerIn.prevRotationPitch + (playerIn.rotationPitch - playerIn.prevRotationPitch) * f;
 		float f2 = playerIn.prevRotationYaw + (playerIn.rotationYaw - playerIn.prevRotationYaw) * f;
@@ -95,11 +95,9 @@ public class ItemChair extends ItemTropicraftColored {
 				double z = raytraceresult.hitVec.z;
 
 				int color = ColorHelper.getColorFromDamage(stack.getItemDamage());
-				EntityChair chair = new EntityChair(worldIn, x, y, z, color, playerIn);
+				EntityBeachFloat beachFloat = new EntityBeachFloat(worldIn, x, y, z, color, playerIn);
 
-				chair.rotationYaw = playerIn.rotationYaw;
-
-				if (!worldIn.getCollisionBoxes(chair, chair.getEntityBoundingBox().grow(-0.1D)).isEmpty())
+				if (!worldIn.getCollisionBoxes(beachFloat, beachFloat.getEntityBoundingBox().grow(-0.1D)).isEmpty())
 				{
 					return new ActionResult<>(EnumActionResult.FAIL, stack);
 				}
@@ -107,7 +105,7 @@ public class ItemChair extends ItemTropicraftColored {
 				{
 					if (!worldIn.isRemote)
 					{
-						worldIn.spawnEntity(chair);
+						worldIn.spawnEntity(beachFloat);
 					}
 
 					if (!playerIn.capabilities.isCreativeMode)

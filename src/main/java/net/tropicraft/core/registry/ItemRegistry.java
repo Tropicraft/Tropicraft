@@ -33,6 +33,7 @@ import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.common.enums.ITropicraftVariant;
 import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.common.item.ItemBambooItemFrame;
+import net.tropicraft.core.common.item.ItemBeachFloat;
 import net.tropicraft.core.common.item.ItemChair;
 import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.common.item.ItemCoconutBomb;
@@ -84,7 +85,7 @@ public class ItemRegistry extends TropicraftRegistry {
     // Yummy delicious fruits
     public static Item grapefruit, lemon, lime, orange;
 
-    // Foodstuffs
+    // Foodstuffs   
     public static Item freshMarlin;
     public static Item searedMarlin;
     public static Item coconutChunk;
@@ -152,6 +153,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
     public static ItemChair chair;
     public static ItemUmbrella umbrella;
+    public static ItemBeachFloat beach_float;
 
     public static Item portalEnchanter;
 
@@ -325,6 +327,7 @@ public class ItemRegistry extends TropicraftRegistry {
         
         chair = registerMultiItem(registry, new ItemChair(), "chair", ItemDye.DYE_COLORS.length);
         umbrella = registerMultiItem(registry, new ItemUmbrella(), "umbrella", ItemDye.DYE_COLORS.length);
+        beach_float = registerMultiItem(registry, new ItemBeachFloat(), "float", ItemDye.DYE_COLORS.length);
 
         portalEnchanter = registerItem(registry, new ItemPortalEnchanter(), "portal_enchanter");
 
@@ -384,6 +387,7 @@ public class ItemRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerColoredItem(chair);
         Tropicraft.proxy.registerColoredItem(umbrella);
         Tropicraft.proxy.registerColoredItem(cocktail);
+        Tropicraft.proxy.registerColoredItem(beach_float);
         Tropicraft.proxy.registerColoredItem(ltShell);
     }
     

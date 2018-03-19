@@ -19,6 +19,7 @@ import net.tropicraft.core.client.entity.model.ModelSeaTurtle;
 import net.tropicraft.core.client.entity.model.ModelSeahorse;
 import net.tropicraft.core.client.entity.render.RenderAshen;
 import net.tropicraft.core.client.entity.render.RenderBambooItemFrame;
+import net.tropicraft.core.client.entity.render.RenderBeachFloat;
 import net.tropicraft.core.client.entity.render.RenderChair;
 import net.tropicraft.core.client.entity.render.RenderDolphin;
 import net.tropicraft.core.client.entity.render.RenderEIH;
@@ -65,6 +66,7 @@ import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.entity.placeable.EntityUmbrella;
 import net.tropicraft.core.common.entity.placeable.EntityWallItem;
@@ -106,6 +108,7 @@ public class EntityRenderRegistry {
         registerEntityRender(EntityFailgull.class, new RenderFailgull(0.25F));
         registerEntityRender(EntityChair.class, new RenderChair());
         registerEntityRender(EntityUmbrella.class, new RenderUmbrella());
+        registerEntityRender(EntityBeachFloat.class, new RenderBeachFloat());
         registerEntityRender(EntityCoconutGrenade.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),
                 ItemRegistry.coconutBomb,
                 Minecraft.getMinecraft().getRenderItem()));

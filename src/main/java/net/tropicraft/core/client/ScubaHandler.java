@@ -18,6 +18,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
 import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
@@ -167,7 +168,7 @@ public class ScubaHandler {
 		EntityPlayer p = event.getEntityPlayer();
 		PlayerSwimData d = getData(p);
 
-		if (p.isElytraFlying()) {
+		if (p.isElytraFlying() || p.getRidingEntity() instanceof EntityBeachFloat) {
 			return;
 		}
 
@@ -218,7 +219,7 @@ public class ScubaHandler {
 		if (inGUI) {
 			return;
 		}
-		if (event.getEntityPlayer().isElytraFlying()) {
+		if (event.getEntityPlayer().isElytraFlying() || event.getEntityPlayer().getRidingEntity() instanceof EntityBeachFloat) {
 			return;
 		}
 
