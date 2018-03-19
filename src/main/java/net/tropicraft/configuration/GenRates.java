@@ -12,4 +12,6 @@ public class GenRates {
 	public static final int NORMAL_PALM_CHANCE = 3;
 	public static final int FRUIT_TREE_CHANCE = 2;
 	public static final int TREASURE_CHANCE = 225;
+	public static final int MIN_BAMBOO = 60;
+	public static final int MAX_BAMBOO = 120;
 }

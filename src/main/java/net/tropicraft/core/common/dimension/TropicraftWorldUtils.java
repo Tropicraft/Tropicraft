@@ -8,12 +8,12 @@ import net.minecraft.world.Teleporter;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.tropicraft.core.common.config.TropicsConfigs;
 
 public class TropicraftWorldUtils {
 
-	// TODO make configurable
-	public static final int TROPICS_DIMENSION_ID = -127;
-	public static final DimensionType tropicsDimension = DimensionType.register("Tropics", "_tropics", -127,
+	public static final int TROPICS_DIMENSION_ID = TropicsConfigs.tropicsDimensionID;
+	public static final DimensionType tropicsDimension = DimensionType.register("Tropics", "_tropics", TROPICS_DIMENSION_ID,
 			WorldProviderTropicraft.class, true);
 
 	public static void initializeDimension() {

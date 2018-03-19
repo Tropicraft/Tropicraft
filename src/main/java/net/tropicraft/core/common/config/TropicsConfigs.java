@@ -7,6 +7,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.Info;
+import net.tropicraft.configuration.GenRates;
 
 @EventBusSubscriber
 public class TropicsConfigs {
@@ -23,6 +24,10 @@ public class TropicsConfigs {
     public static boolean genOverworldFlowers = true;
     public static boolean genOverworldPineapples = true;
     public static boolean genOverworldBamboo = true;
+    public static int minBambooPerPatchOverworld = GenRates.MIN_BAMBOO;
+    public static int maxBambooPerPatchOverworld = GenRates.MAX_BAMBOO;
+    public static int minBambooPerPatchTropics = GenRates.MIN_BAMBOO;
+    public static int maxBambooPerPatchTropics = GenRates.MAX_BAMBOO;
     public static boolean allowVolcanoEruption = true;
 
     public static int tropicsOceanID = 60;
@@ -35,6 +40,8 @@ public class TropicsConfigs {
     public static int tropicsLakeID = 67;
     public static int islandMountainsID = 68;
     public static int rainforestThicknessAmount = 2;
+
+    public static int tropicsDimensionID = -127;
 
     /* == Misc Configs == */
 
@@ -66,10 +73,16 @@ public class TropicsConfigs {
         genOverworldFlowers = config.get(C_GENERATION, "genTropicraftFlowersInOverworld", genOverworldFlowers).getBoolean();
         genOverworldPineapples = config.get(C_GENERATION, "genPineapplesInOverworld", genOverworldPineapples).getBoolean();
         genOverworldBamboo = config.get(C_GENERATION, "genBambooInOverworld", genOverworldBamboo).getBoolean();
+        minBambooPerPatchOverworld = config.get(C_GENERATION, "minBambooPerPatchOverworld", minBambooPerPatchOverworld).getInt();
+        maxBambooPerPatchOverworld = config.get(C_GENERATION, "maxBambooPerPatchOverworld", maxBambooPerPatchOverworld).getInt();
+        minBambooPerPatchTropics = config.get(C_GENERATION, "minBambooPerPatchTropics", minBambooPerPatchTropics).getInt();
+        maxBambooPerPatchTropics = config.get(C_GENERATION, "maxBambooPerPatchTropics", maxBambooPerPatchTropics).getInt();
 
         coconutBombWhitelist = config.get(C_MISC, "coconutBombWhitelist", coconutBombWhitelist).getStringList();
 
         allowVolcanoEruption = config.get(C_MISC, "allowVolcanoEruption", allowVolcanoEruption).getBoolean();
+
+        tropicsDimensionID = config.get(C_MISC, "tropicsDimensionID", tropicsDimensionID).getInt();
 
         rainforestThicknessAmount = config.getInt(C_GENERATION, "rainforestThicknessAmount", rainforestThicknessAmount, 0, 3, "How thick should the trees in rainforest biomes be?");
 
