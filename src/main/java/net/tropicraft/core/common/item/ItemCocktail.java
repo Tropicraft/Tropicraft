@@ -254,11 +254,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 	    ItemStack stack = playerIn.getHeldItem(hand);
 		Drink drink = getDrink(stack);
 
-		if (drink != null) {
-			if (!playerIn.canEat(drink.alwaysEdible)) {
-				return new ActionResult<>(EnumActionResult.FAIL, stack);
-			}
-		} else if (!playerIn.canEat(false)) {
+		if (drink == null) {
 			return new ActionResult<>(EnumActionResult.FAIL, stack);
 		}
 
