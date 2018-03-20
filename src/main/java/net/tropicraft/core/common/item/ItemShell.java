@@ -23,7 +23,7 @@ public class ItemShell extends ItemTropicraft {
 	
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-	    if (tab != CreativeTabRegistry.tropicraftTab) return;
+        if (!isInCreativeTab(tab)) return;
 	    for (TropicraftShells type : TropicraftShells.values()) {
 	        subItems.add(new ItemStack(this, 1, type.getMeta()));
 	    }

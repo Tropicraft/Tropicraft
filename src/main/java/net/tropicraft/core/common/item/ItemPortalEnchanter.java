@@ -40,8 +40,8 @@ public class ItemPortalEnchanter extends ItemTropicraft {
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
     @Override
-    public void getSubItems(CreativeTabs tabs, NonNullList<ItemStack> list) {
-        if (tabs != CreativeTabRegistry.tropicraftTab) return;
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (!isInCreativeTab(tab)) return;
         ItemStack indirect = new ItemStack(this);
         Util.getTagCompound(indirect).setBoolean("DirectMode", false);
         list.add(indirect);

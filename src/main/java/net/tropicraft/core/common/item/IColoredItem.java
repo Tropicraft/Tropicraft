@@ -5,13 +5,11 @@ import java.util.List;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.ColorHelper;
 import net.tropicraft.core.client.BasicColorHandler;
-import net.tropicraft.core.registry.CreativeTabRegistry;
 import net.tropicraft.core.registry.TropicraftRegistry;
 
 public interface IColoredItem {
@@ -25,10 +23,11 @@ public interface IColoredItem {
     
     /** Helpers **/
     
-    default void addColoredSubitems(CreativeTabs tab, List<ItemStack> list, Item item) {
-        if (tab != CreativeTabRegistry.tropicraftTab) return;
-        for (int i = 0; i < ColorHelper.getNumColors(); i++) {
-            list.add(new ItemStack(item, 1, i));
+    default void addColoredSubitems(CreativeTabs tab, List<ItemStack> list, ItemTropicraft item) {
+        if (item.isInCreativeTab(tab)) {
+            for (int i = 0; i < ColorHelper.getNumColors(); i++) {
+                list.add(new ItemStack(item, 1, i));
+            }
         }
     }
     

@@ -122,7 +122,7 @@ public class ItemScubaChestplateGear extends ItemScubaGear {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-        if (tab != CreativeTabRegistry.tropicraftTab) return;
+        if (!isInCreativeTab(tab)) return;
         ItemStack noTank = new ItemStack(this, 1, 0);
         list.add(noTank);
         
