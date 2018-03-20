@@ -1,6 +1,6 @@
 # Block localizations
-tile.tropicraft.chunk.name=Chunk O' Head
-tile.tropicraft.chunk_stairs.name=Chunk O' Head Stairs
+tile.tropicraft.chunk.name=凝灰岩
+tile.tropicraft.chunk_stairs.name=凝灰岩楼梯
 tile.tropicraft.ore.eudialyte.name=异性石矿石
 tile.tropicraft.ore.zircon.name=锆矿石
 tile.tropicraft.ore.azurite.name=石青矿石
@@ -72,7 +72,7 @@ tile.tropicraft.flower_pot.name=花盆
 tile.tropicraft.palm_stairs.name=棕榈木楼梯
 tile.tropicraft.mahogany_stairs.name=红木楼梯
 tile.tropicraft.slab.bamboo.name=竹台阶
-tile.tropicraft.slab.chunk.name=Chunk台阶
+tile.tropicraft.slab.chunk.name=凝灰岩台阶
 tile.tropicraft.slab.palm.name=棕榈木台阶
 tile.tropicraft.slab.mahogany.name=红木台阶
 tile.tropicraft.slab.thatch.name=茅草台阶
@@ -206,18 +206,18 @@ item.tropicraft.spawn_egg.greenfrog.name=生成 绿树蛙
 item.tropicraft.spawn_egg.redfrog.name=生成 红色毒树蛙
 item.tropicraft.spawn_egg.bluefrog.name=生成 蓝色毒树蛙
 item.tropicraft.spawn_egg.yellowfrog.name=生成 黄色毒树蛙
-item.tropicraft.spawn_egg.eih.name=生成 复活石
+item.tropicraft.spawn_egg.eih.name=生成 摩埃石像
 item.tropicraft.spawn_egg.marlin.name=生成 马林鱼
 item.tropicraft.spawn_egg.fish.name=生成 热带鱼
-item.tropicraft.spawn_egg.ashen.name=生成 Ashen Ash
+item.tropicraft.spawn_egg.ashen.name=生成 假面投手
 item.tropicraft.spawn_egg.turtle.name=生成 海龟
 item.tropicraft.spawn_egg.mow.name=生成 僧帽水母
 item.tropicraft.spawn_egg.monkey.name=生成 草原猴
-item.tropicraft.spawn_egg.koa.name=生成 Koa Headband
+item.tropicraft.spawn_egg.koa.name=生成 原始人
 item.tropicraft.spawn_egg.tropicreeper.name=生成 热带爬行者
 item.tropicraft.spawn_egg.tropiskelly.name=生成 热带骷髅
 item.tropicraft.spawn_egg.eagleray.name=生成 斑点鹰魟
-item.tropicraft.spawn_egg.failgull.name=生成 Failgull
+item.tropicraft.spawn_egg.failgull.name=生成 海鸟
 item.tropicraft.spawn_egg.seaurchin.name=生成 海胆
 item.tropicraft.spawn_egg.dolphin.name=生成 海豚
 item.tropicraft.spawn_egg.seahorse.name=生成 海马
@@ -280,8 +280,8 @@ item.tropicraft.the_tribe.name=部落
 item.tropicraft.trade_winds.name=信风
 
 # Mask localizations
-item.tropicraft.mask_square_zord.name=Square Zord
-item.tropicraft.mask_horn_monkey.name=Horn Monkey
+item.tropicraft.mask_square_zord.name=方格面具
+item.tropicraft.mask_horn_monkey.name=猴面具
 item.tropicraft.mask_oblongatron.name=Oblongatron
 item.tropicraft.mask_headinator.name=Headinator
 item.tropicraft.mask_square_horn.name=号角面具
@@ -299,13 +299,13 @@ itemGroup.tropicraft=热带世界
 
 # Config localizations
 tropicraft.config.title=热带世界配置
-tropicraft.config.generation.title=生成配置
-tropicraft.config.misc.title=局部配置
+tropicraft.config.generation.title=生成设置
+tropicraft.config.misc.title=局部设置
 
 # Entity localizations
 entity.tropicraft.iguana.name=鬣蜥
 entity.tropicraft.tropiskelly.name=热带骷髅
-entity.tropicraft.eih.name=复活石
+entity.tropicraft.eih.name=摩埃石像
 entity.tropicraft.greenfrog.name=绿树蛙
 entity.tropicraft.redfrog.name=红色毒树蛙
 entity.tropicraft.bluefrog.name=蓝色毒树蛙
@@ -314,7 +314,7 @@ entity.tropicraft.tropicreeper.name=热带爬行者
 entity.tropicraft.monkey.name=草原猴
 entity.tropicraft.PoisonBlot.name=毒液污渍
 entity.tropicraft.marlin.name=马林鱼
-entity.tropicraft.ashen.name=Ashen
+entity.tropicraft.ashen.name=假面投手
 entity.tropicraft.piranha.name=水虎鱼
 entity.tropicraft.sardine.name=淡水沙丁鱼
 entity.tropicraft.dolphin.name=海豚
@@ -325,7 +325,7 @@ entity.tropicraft.seaurchin.name=海胆
 entity.tropicraft.starfish.name=海星
 entity.tropicraft.eagleray.name=斑点鹰魟
 entity.tropicraft.turtle.name=海龟
-entity.tropicraft.koa.name=Koa
+entity.tropicraft.koa.name=原始人
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=如果你喜欢pina coladas...
@@ -347,6 +347,7 @@ tropicraft.gui.gear.tank.left.none=缺少左储罐
 tropicraft.gui.gear.tank.left.info=左储罐
 tropicraft.gui.gear.tank.right.none=缺少右储罐
 tropicraft.gui.gear.tank.right.info=右储罐
+tropicraft.gui.gear.tank.tank.click=按住 Shift 右击装填储罐！
 gui.tropicraft.temperature=温度
 gui.tropicraft.currentDepth=深度
 gui.tropicraft.maxDepth=最大
@@ -366,7 +367,7 @@ portalenchanter.type_1=模式：立即传送
 entity.tropicraft.koa.trade.give=有一些混合气体！
 entity.tropicraft.koa.trade.not_enough_time=在没有混合气体的情况下，你没有办法在海底潜水更多时间！
 entity.tropicraft.koa.trade.cooldown=最近有人已经从我这购走了混合气体。
-entity.tropicraft.koa.trade.space=你的背包库存已满！
+entity.tropicraft.koa.trade.space=你的物品栏已满！
 
 # Misc chat notifications
 tropicraft.chat.teleport.unable=在传送之前你应该来一杯Pinha Colada！
@@ -386,3 +387,8 @@ tropicraft.loading.hint.2=%s，鬣蜥十分记仇，所以必要时请远离它�
 
 tropicraft.loading.misc.1=别忘了屏住呼吸！
 tropicraft.loading.misc.2=准备一个飞溅
+
+# Tooltips
+tropicraft.tooltip.air_compressor=在空气压缩机中放置氧气瓶以填充空气！
+tropicraft.tooltip.drink_mixer=将饮料原料放置在搅拌机上，并在底部放上竹杯，然后？？？尽情享受吧！
+tropicraft.tooltip.sifter=在筛子中放置沙子会筛出什么东西呢？
