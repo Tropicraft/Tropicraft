@@ -15,13 +15,19 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 import net.tropicraft.core.common.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
 
 public class BlockBambooChest extends BlockChest {
+    
+    private static final BlockChest.Type TYPE;
+    static {
+        TYPE = EnumHelper.addEnum(BlockChest.Type.class, "BAMBOO", new Class<?>[0]);
+    }
 
 	public BlockBambooChest() {
-		super(Type.BASIC);
+		super(TYPE);
 		this.setHardness(2.5F);
 		this.disableStats();
 	}
