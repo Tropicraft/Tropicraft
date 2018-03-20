@@ -37,7 +37,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
         this.navigation = entity.getNavigator();
         this.stopDistance = stopDistance;
         this.areaSize = areaSize;
-        this.setMutexBits(3);
+        this.setMutexBits(1);
 
         if (!(entity.getNavigator() instanceof PathNavigateGround) && !(entity.getNavigator() instanceof PathNavigateFlying))
         {
@@ -59,7 +59,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
                 if (!entityliving.isInvisible())
                 {
                     this.entity.setFollowingEntity(entityliving);
-                    this.entity.setState(EntityVMonkey.STATE_FOLLOWING);
+                    //this.entity.setState(EntityVMonkey.STATE_FOLLOWING);
                     return true;
                 }
             }
@@ -75,7 +75,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
     {
         return this.entity.getFollowingEntity() != null &&
                 !this.navigation.noPath() &&
-                this.entity.getDistanceSq(this.entity.getFollowingEntity()) > (double)(this.stopDistance * this.stopDistance) &&
+             //   this.entity.getDistanceSq(this.entity.getFollowingEntity()) > (double)(this.stopDistance * this.stopDistance) &&
                 this.entity.followingHoldingPinaColada();
     }
 
@@ -87,7 +87,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
         this.timeToRecalcPath = 0;
         this.oldWaterCost = this.entity.getPathPriority(PathNodeType.WATER);
         this.entity.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.entity.setState(EntityVMonkey.STATE_FOLLOWING);
+        //this.entity.setState(EntityVMonkey.STATE_FOLLOWING);
     }
 
     /**
@@ -112,33 +112,37 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
             followCounter++;
 
             if (followCounter >= 20) {
-                this.entity.setState(EntityVMonkey.STATE_ANGRY);
+                this.entity.setAngry(true);
+            } else {
+                //this.entity.setAngry(false);
             }
 
             this.entity.getLookHelper().setLookPositionWithEntity(this.entity.getFollowingEntity(), 10.0F, (float)this.entity.getVerticalFaceSpeed());
 
-            if (--this.timeToRecalcPath <= 0)
-            {
-                this.timeToRecalcPath = 10;
-                double d0 = this.entity.posX - this.entity.getFollowingEntity().posX;
-                double d1 = this.entity.posY - this.entity.getFollowingEntity().posY;
-                double d2 = this.entity.posZ - this.entity.getFollowingEntity().posZ;
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-
-                if (d3 > (double)(this.stopDistance * this.stopDistance))
+            if (this.navigation.noPath() && this.entity.getDistanceSq(this.entity.getFollowingEntity()) > (double)(this.stopDistance * this.stopDistance)) {
+                if (--this.timeToRecalcPath <= 0)
                 {
-                    this.navigation.tryMoveToEntityLiving(this.entity.getFollowingEntity(), this.speedModifier);
-                }
-                else
-                {
-                    this.navigation.clearPath();
-                    //EntityLookHelper entitylookhelper = this.followingEntity.getLookHelper();
+                    this.timeToRecalcPath = 10;
+                    double d0 = this.entity.posX - this.entity.getFollowingEntity().posX;
+                    double d1 = this.entity.posY - this.entity.getFollowingEntity().posY;
+                    double d2 = this.entity.posZ - this.entity.getFollowingEntity().posZ;
+                    double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-                    if (d3 <= (double)this.stopDistance)
+                    if (d3 > (double)(this.stopDistance * this.stopDistance))
                     {
-                        double d4 = this.entity.getFollowingEntity().posX - this.entity.posX;
-                        double d5 = this.entity.getFollowingEntity().posZ - this.entity.posZ;
-                        this.navigation.tryMoveToXYZ(this.entity.posX - d4, this.entity.posY, this.entity.posZ - d5, this.speedModifier);
+                        this.navigation.tryMoveToEntityLiving(this.entity.getFollowingEntity(), this.speedModifier);
+                    }
+                    else
+                    {
+                        this.navigation.clearPath();
+                        //EntityLookHelper entitylookhelper = this.followingEntity.getLookHelper();
+
+                        if (d3 <= (double)this.stopDistance)
+                        {
+                            double d4 = this.entity.getFollowingEntity().posX - this.entity.posX;
+                            double d5 = this.entity.getFollowingEntity().posZ - this.entity.posZ;
+                            this.navigation.tryMoveToXYZ(this.entity.posX - d4, this.entity.posY, this.entity.posZ - d5, this.speedModifier);
+                        }
                     }
                 }
             }

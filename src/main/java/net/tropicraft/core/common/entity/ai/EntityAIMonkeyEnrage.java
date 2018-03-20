@@ -16,7 +16,7 @@ public class EntityAIMonkeyEnrage  extends EntityAIBase {
     public EntityAIMonkeyEnrage(EntityVMonkey monkey)
     {
         this.entity = monkey;
-        this.setMutexBits(1);
+        this.setMutexBits(2);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class EntityAIMonkeyEnrage  extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        return entity.getState() == EntityVMonkey.STATE_ANGRY;
+        return entity.isAngry();
     }
 
     /**
@@ -35,7 +35,7 @@ public class EntityAIMonkeyEnrage  extends EntityAIBase {
     @Override
     public void resetTask() {
         entity.setAttackTarget(null);
-        entity.setState(EntityVMonkey.STATE_FOLLOWING);
+        //entity.setState(EntityVMonkey.STATE_FOLLOWING);
     }
 
     /**
@@ -44,8 +44,8 @@ public class EntityAIMonkeyEnrage  extends EntityAIBase {
     @Override
     public void updateTask() {
         System.out.println("angr");
-        if (entity.getState() == EntityVMonkey.STATE_ANGRY) {
-           // entity.setAttackTarget(entity.getFollowingEntity());
+        if (entity.isAngry()) {
+            entity.setAttackTarget(entity.getFollowingEntity());
         }
     }
 
@@ -54,6 +54,6 @@ public class EntityAIMonkeyEnrage  extends EntityAIBase {
      */
     @Override
     public void startExecuting() {
-      //  entity.setAttackTarget(entity.getFollowingEntity());
+        entity.setAttackTarget(entity.getFollowingEntity());
     }
 }

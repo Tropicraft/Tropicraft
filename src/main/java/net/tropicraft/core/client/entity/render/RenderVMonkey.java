@@ -25,7 +25,7 @@ public class RenderVMonkey extends RenderLiving<EntityVMonkey> {
 	 */
     @Override
 	protected ResourceLocation getEntityTexture(EntityVMonkey entity) {
-    	if (entity.getState() == EntityVMonkey.STATE_ANGRY) {
+    	if (entity.isAngry()) {
     		return ANGRY_TEXTURE;
 		}
 
