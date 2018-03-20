@@ -1,69 +1,140 @@
 package net.tropicraft.core.common.entity.passive;
 
+import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIFollowOwner;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
-import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
-import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.EntityLandTameable;
+import net.tropicraft.core.common.entity.ai.EntityAIMonkeyFollowNearestWithCondition;
+import net.tropicraft.core.common.entity.ai.EntityAIMonkeyEnrage;
+import net.tropicraft.core.common.entity.ai.IEntityFollower;
+import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.registry.ItemRegistry;
 
-public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
+import javax.annotation.Nullable;
+
+public class EntityVMonkey extends EntityLandTameable implements IEntityFollower /* implements IMob*/ {
 
 	public boolean isClimbing = false;
 	//public boolean isSitting = false;
 
+    public static final int STATE_REGULAR = 0;
+    public static final int STATE_FOLLOWING = 1;
+    public static final int STATE_ANGRY = 2;
+    public static final int STATE_DRINKING = 3;
+
+    private static final DataParameter<Integer> STATE = EntityDataManager.<Integer>createKey(EntityVMonkey.class, DataSerializers.VARINT);
+
+    private EntityLivingBase followingEntity;
+
+    public static final Predicate followPredicate = new Predicate<EntityLivingBase>()
+    {
+        public boolean apply(@Nullable EntityLivingBase ent)
+        {
+            if (ent == null) return false;
+            if (!(ent instanceof EntityPlayer)) return false;
+
+            EntityPlayer player = (EntityPlayer)ent;
+            ItemStack heldMain = player.getHeldItemMainhand();
+            ItemStack heldOff = player.getHeldItemOffhand();
+
+            if (!heldMain.isEmpty() && heldMain.getItem() instanceof ItemCocktail) {
+                if (ItemCocktail.getDrink(heldMain) == Drink.pinaColada) {
+                    return true;
+                }
+            }
+
+            if (!heldOff.isEmpty() && heldOff.getItem() instanceof ItemCocktail) {
+                if (ItemCocktail.getDrink(heldOff) == Drink.pinaColada) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    };
+
 	public EntityVMonkey(World world) {
 		super(world);
+		followingEntity = null;
 		setSize(0.8F, 0.8F);
 		this.experienceValue = 4;
 	}
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.getDataManager().register(STATE, Integer.valueOf(0));
+    }
+
+    public int getState() {
+        return this.getDataManager().get(STATE);
+    }
+
+    public void setState(int state) {
+	    this.getDataManager().set(STATE, state);
+    }
 
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
 
 		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, this.aiSit = new EntityAISit(this));
-		this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
-		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		//this.tasks.addTask(6, new EntityAIMate(this, 1.0D));
-		this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
-		//this.tasks.addTask(8, new EntityAIBeg(this, 8.0F));
-		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(9, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
-		/*this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntityAnimal.class, false, new Predicate<Entity>()
-        {
-            public boolean apply(@Nullable Entity p_apply_1_)
-            {
-                return p_apply_1_ instanceof EntitySheep || p_apply_1_ instanceof EntityRabbit;
-            }
-        }));*/
-		//this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, false));
+		this.tasks.addTask(2, new EntityAIMonkeyFollowNearestWithCondition(this, 1.0D, 2.0F, 10.0F, followPredicate));
+		this.tasks.addTask(2, new EntityAIMonkeyEnrage(this));
+//		this.tasks.addTask(2, this.aiSit = new EntityAISit(this));
+		//this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
+//		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, true));
+//		this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+//		//this.tasks.addTask(6, new EntityAIMate(this, 1.0D));
+//		this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+//		//this.tasks.addTask(8, new EntityAIBeg(this, 8.0F));
+//		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+//		this.tasks.addTask(9, new EntityAILookIdle(this));
+//		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+//		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+//		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
 	}
+
+    public boolean followingHoldingPinaColada() {
+        if (getFollowingEntity() == null) return false;
+        if (!(getFollowingEntity() instanceof EntityPlayer)) return false;
+
+        EntityLivingBase player = getFollowingEntity();
+        ItemStack heldMain = player.getHeldItemMainhand();
+        ItemStack heldOff = player.getHeldItemOffhand();
+
+        if (!heldMain.isEmpty() && heldMain.getItem() instanceof ItemCocktail) {
+            if (ItemCocktail.getDrink(heldMain) == Drink.pinaColada) {
+                return true;
+            }
+        }
+
+        if (!heldOff.isEmpty() && heldOff.getItem() instanceof ItemCocktail) {
+            if (ItemCocktail.getDrink(heldOff) == Drink.pinaColada) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 	@Override
 	protected void applyEntityAttributes() {
@@ -198,4 +269,26 @@ public class EntityVMonkey extends EntityLandTameable/* implements IMob*/ {
 			return super.attackEntityFrom(source, amount);
 		}
 	}
+
+    @Override
+    public EntityLivingBase getFollowingEntity() {
+        return this.followingEntity;
+    }
+
+    @Override
+    public void setFollowingEntity(EntityLivingBase entity) {
+        this.followingEntity = entity;
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setInteger("state", getState());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        this.getDataManager().set(STATE, compound.getInteger("state"));
+    }
 }

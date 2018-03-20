@@ -7,9 +7,12 @@ import net.tropicraft.Info;
 import net.tropicraft.core.client.entity.model.ModelVMonkey;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
 
+import javax.annotation.Resource;
+
 public class RenderVMonkey extends RenderLiving<EntityVMonkey> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(Info.MODID + ":textures/entity/monkeytext.png");
+	private static final ResourceLocation ANGRY_TEXTURE = new ResourceLocation(Info.MODID + ":textures/entity/monkey_angrytext.png");
 	
     public RenderVMonkey() {
         super(Minecraft.getMinecraft().getRenderManager(), new ModelVMonkey(), 0.5F);
@@ -22,6 +25,10 @@ public class RenderVMonkey extends RenderLiving<EntityVMonkey> {
 	 */
     @Override
 	protected ResourceLocation getEntityTexture(EntityVMonkey entity) {
+    	if (entity.getState() == EntityVMonkey.STATE_ANGRY) {
+    		return ANGRY_TEXTURE;
+		}
+
 		return TEXTURE;
 	}
 }
