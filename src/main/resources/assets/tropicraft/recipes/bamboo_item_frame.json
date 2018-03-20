@@ -10,7 +10,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "tropicraft:bamboo_shoots"
+      "item": "tropicraft:bamboo_shoot"
     },
     "X": {
       "item": "minecraft:leather"
