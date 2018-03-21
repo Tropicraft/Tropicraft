@@ -40,6 +40,9 @@ public class EntityAIStealDrink extends EntityAIBase {
 
     private void leapTowardTarget() {
         EntityLivingBase leapTarget = entity.getAttackTarget();
+
+        if (leapTarget == null) return;
+
         double d0 = leapTarget.posX - this.entity.posX;
         double d1 = leapTarget.posZ - this.entity.posZ;
         float f = MathHelper.sqrt(d0 * d0 + d1 * d1);
@@ -51,7 +54,7 @@ public class EntityAIStealDrink extends EntityAIBase {
         }
 
         // leap momentum
-        this.entity.motionY = 0.4D;
+        this.entity.motionY = 0.25D;
     }
 
     /**
@@ -67,8 +70,8 @@ public class EntityAIStealDrink extends EntityAIBase {
      */
     @Override
     public void updateTask() {
-        System.out.println("Stealing");
         if (this.entity.getDistanceSq(this.entity.getFollowingEntity()) < 4.0F) {
+            System.out.println("Stealing");
             // if main hand
             if (!entity.getFollowingEntity().getHeldItemMainhand().isEmpty() && entity.getFollowingEntity().getHeldItemMainhand().getItem() instanceof ItemCocktail) {
                 if (ItemCocktail.getDrink(entity.getFollowingEntity().getHeldItemMainhand()) == Drink.pinaColada) {
