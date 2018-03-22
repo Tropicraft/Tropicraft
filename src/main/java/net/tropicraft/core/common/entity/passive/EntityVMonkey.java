@@ -32,7 +32,7 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
 	public boolean isClimbing = false;
 
 	private static final DataParameter<Boolean> IS_ANGRY = EntityDataManager.<Boolean>createKey(EntityVMonkey.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_CLIMBING = EntityDataManager.<Boolean>createKey(EntityVMonkey.class, DataSerializers.BOOLEAN);
+    //TODO private static final DataParameter<Boolean> IS_CLIMBING = EntityDataManager.<Boolean>createKey(EntityVMonkey.class, DataSerializers.BOOLEAN);
 
     private EntityLivingBase followingEntity;
 
@@ -74,16 +74,16 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(IS_ANGRY, Boolean.valueOf(false));
-        this.getDataManager().register(IS_CLIMBING, Boolean.valueOf(false));
+        //this.getDataManager().register(IS_CLIMBING, Boolean.valueOf(false));
     }
 
-    public boolean isClimbing() {
-        return this.getDataManager().get(IS_CLIMBING);
-    }
-
-    public void setClimbing(boolean isClimbing) {
-        this.getDataManager().set(IS_CLIMBING, isClimbing);
-    }
+//    public boolean isClimbing() {
+//        return this.getDataManager().get(IS_CLIMBING);
+//    }
+//
+//    public void setClimbing(boolean isClimbing) {
+//        this.getDataManager().set(IS_CLIMBING, isClimbing);
+//    }
 
     public boolean isAngry() {
 		return this.getDataManager().get(IS_ANGRY);
@@ -92,14 +92,6 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
 	public void setAngry(boolean isAngry) {
 		this.getDataManager().set(IS_ANGRY, isAngry);
 	}
-//
-//    public int getState() {
-//        return this.getDataManager().get(STATE);
-//    }
-//
-//    public void setState(int state) {
-//	    this.getDataManager().set(STATE, state);
-//    }
 
 	@Override
 	protected void initEntityAI() {
@@ -309,13 +301,13 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
 		compound.setBoolean("isAngry", isAngry());
-        compound.setBoolean("isClimbing", isClimbing());
+        //compound.setBoolean("isClimbing", isClimbing());
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
 		this.getDataManager().set(IS_ANGRY, compound.getBoolean("isAngry"));
-        this.getDataManager().set(IS_CLIMBING, compound.getBoolean("isClimbing"));
+        //this.getDataManager().set(IS_CLIMBING, compound.getBoolean("isClimbing"));
     }
 }
