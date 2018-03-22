@@ -44,7 +44,6 @@ public class LayerHeldItemVMonkey extends LayerHeldItem {
     protected void renderEquippedItems(EntityVMonkey monkey) {
         if (monkey.isSitting() && !monkey.getHeldItemMainhand().isEmpty()) {
             GL11.glPushMatrix();
-            //modelVMonkey.leftArm.postRender(0.0625F);
             GL11.glTranslatef(0.0F, 1.30F, -0.425F);
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
             float scale = 0.5F;

@@ -1,20 +1,12 @@
 package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Info;
 import net.tropicraft.core.client.entity.model.ModelVMonkey;
 import net.tropicraft.core.client.entity.render.layers.LayerHeldItemVMonkey;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
-
-import javax.annotation.Resource;
 
 public class RenderVMonkey extends RenderLiving<EntityVMonkey> {
 
