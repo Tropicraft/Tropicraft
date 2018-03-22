@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
@@ -10,14 +11,16 @@ import java.util.List;
 
 public class EntityAIMonkeySitInChair extends EntityAIBase {
     private EntityVMonkey entity;
+    private EntityAISit aiSit;
 
-    public EntityAIMonkeySitInChair(EntityVMonkey monkey) {
+    public EntityAIMonkeySitInChair(EntityVMonkey monkey, EntityAISit aiSit) {
         this.entity = monkey;
+        this.aiSit = aiSit;
         this.setMutexBits(5);
     }
 
     private boolean isEmptyChairNear() {
-        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getEntityBoundingBox().grow(16D));
+        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getEntityBoundingBox().grow(32D));
         boolean emptyChairFound = false;
 
         if (!list.isEmpty()) {
@@ -36,19 +39,26 @@ public class EntityAIMonkeySitInChair extends EntityAIBase {
     private boolean isOwnerNear() {
         return this.entity.getOwner() != null &&
                 this.entity != null &&
-                this.entity.getOwner().getDistanceSq(this.entity) < 16D;
+                this.entity.getOwner().getDistanceSq(this.entity) < 32D;
+    }
+
+    private boolean isOwnerNearAndSitting() {
+        return isOwnerNear() && this.entity.getOwner().getRidingEntity() != null
+                && this.entity.getOwner().getRidingEntity() instanceof EntityChair;
     }
 
     @Override
     public void resetTask() {
         this.entity.dismountRidingEntity();
         this.entity.setSitting(false);
+        this.aiSit.setSitting(false);
+        this.entity.resetRideCooldown();
     }
 
     @Override
     public boolean shouldExecute() {
-        if (this.entity.getOwner() == null || this.entity == null) return false;
-        return isOwnerNear() && isEmptyChairNear();
+        if (!this.entity.isTamed() || this.entity == null) return false;
+        return /*isEmptyChairNear() && */isOwnerNearAndSitting();
     }
 
     /**
@@ -56,7 +66,7 @@ public class EntityAIMonkeySitInChair extends EntityAIBase {
      */
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.entity.isRiding();
+        return isOwnerNearAndSitting();
     }
 
     /**
@@ -64,14 +74,16 @@ public class EntityAIMonkeySitInChair extends EntityAIBase {
      */
     @Override
     public void startExecuting() {
-        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getEntityBoundingBox().grow(16D));
+        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getEntityBoundingBox().grow(32D));
 
         if (!list.isEmpty()) {
             for (EntityChair chair : list) {
                 if (!chair.isInvisible()) {
                     if(!chair.isBeingRidden()) {
-                        this.entity.startRiding(chair);
                         this.entity.setSitting(true);
+                        this.aiSit.setSitting(true);
+                        this.entity.startRiding(chair);
+                        return;
                     }
                 }
             }

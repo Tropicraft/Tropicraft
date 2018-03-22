@@ -30,12 +30,12 @@ public class EntityAIStealDrink extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return entity.followingHoldingPinaColada() && !selfHoldingDrink(Drink.pinaColada);
+        return entity.getOwner() == null && entity.followingHoldingPinaColada() && !selfHoldingDrink(Drink.pinaColada);
     }
 
     @Override
     public boolean shouldExecute() {
-        return entity.followingHoldingPinaColada() && !selfHoldingDrink(Drink.pinaColada) && entity.isAngry();
+        return entity.getOwner() == null && entity.followingHoldingPinaColada() && !selfHoldingDrink(Drink.pinaColada) && entity.isAngry();
     }
 
     private void leapTowardTarget() {

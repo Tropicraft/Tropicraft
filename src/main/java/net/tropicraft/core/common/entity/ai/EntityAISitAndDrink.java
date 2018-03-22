@@ -6,9 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.passive.EntityVMonkey;
-import net.tropicraft.core.common.item.ItemCocktail;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAISitAndDrink extends EntityAIBase {
@@ -21,14 +19,6 @@ public class EntityAISitAndDrink extends EntityAIBase {
     {
         this.entity = monkey;
         this.setMutexBits(2);
-    }
-
-    private boolean selfHoldingDrink(Drink drink) {
-        ItemStack heldItem = entity.getHeldItemMainhand();
-        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemCocktail) {
-            return ItemCocktail.getDrink(heldItem) == drink;
-        }
-        return false;
     }
 
     /**
@@ -44,12 +34,12 @@ public class EntityAISitAndDrink extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return selfHoldingDrink(Drink.pinaColada);
+        return this.entity.selfHoldingDrink(Drink.pinaColada);
     }
 
     @Override
     public boolean shouldExecute() {
-        return selfHoldingDrink(Drink.pinaColada);
+        return this.entity.selfHoldingDrink(Drink.pinaColada);
     }
 
     /**

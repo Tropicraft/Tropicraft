@@ -104,23 +104,35 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
 	@Override
 	protected void initEntityAI() {
 		super.initEntityAI();
-        this.aiSit = new EntityAISit(this);
+        this.aiSit = new EntityAIMonkeySit(this);
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIMonkeyFollowNearestWithCondition(this, 1.0D, 2.0F, 10.0F, followPredicate));
 		this.tasks.addTask(3, new EntityAIMonkeyLeap(this, 0.4F));
 		this.tasks.addTask(2, new EntityAIStealDrink(this));
 		this.tasks.addTask(2, new EntityAISitAndDrink(this));
-		this.tasks.addTask(4, new EntityAIMonkeySitInChair(this));
+		this.tasks.addTask(4, new EntityAIMonkeySitInChair(this, this.aiSit));
         this.tasks.addTask(4, this.aiSit);
-		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(7, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+		this.tasks.addTask(8, new EntityAIWander(this, 1.0D));
 		this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(9, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
 		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
 		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
 	}
+
+    public boolean selfHoldingDrink(Drink drink) {
+        ItemStack heldItem = getHeldItemMainhand();
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemCocktail) {
+            return ItemCocktail.getDrink(heldItem) == drink;
+        }
+        return false;
+    }
+
+	public void resetRideCooldown() {
+	    this.rideCooldown = 0;
+    }
 
     public boolean followingHoldingPinaColada() {
         if (getFollowingEntity() == null) {
@@ -168,12 +180,14 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
 		ItemStack stack = player.getHeldItem(hand);
 		if (this.isTamed())
 		{
-			if (this.isOwner(player) && !this.world.isRemote && !stack.isEmpty() && !this.isBreedingItem(stack))
+			if (this.isOwner(player) && !this.world.isRemote)
 			{
+			    System.out.println("hello world" + ((EntityAIMonkeySit)this.aiSit).getSitting());
 				this.aiSit.setSitting(!this.isSitting());
 				this.isJumping = false;
 				this.navigator.clearPath();
 				this.setAttackTarget((EntityLivingBase)null);
+				this.setAngry(false);
 			}
 		}
 		else if (!stack.isEmpty() && stack.getItem() == ItemRegistry.cocktail)

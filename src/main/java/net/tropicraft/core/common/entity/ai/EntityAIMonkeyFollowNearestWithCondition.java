@@ -48,20 +48,16 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
-    public boolean shouldExecute()
-    {
+    public boolean shouldExecute() {
         if (this.entity.isSitting()) return false;
-
-        if (this.entity.getOwner() != null) return false;
+        if (this.entity.isTamed()) return false;
+        if (this.entity.selfHoldingDrink(Drink.pinaColada)) return false;
 
         List<EntityPlayer> list = this.entity.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow((double)this.areaSize), this.followPredicate);
 
-        if (!list.isEmpty())
-        {
-            for (EntityPlayer entityliving : list)
-            {
-                if (!entityliving.isInvisible())
-                {
+        if (!list.isEmpty()) {
+            for (EntityPlayer entityliving : list) {
+                if (!entityliving.isInvisible()) {
                     this.entity.setFollowingEntity(entityliving);
                     return true;
                 }
@@ -76,7 +72,8 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
      */
     public boolean shouldContinueExecuting() {
         return this.entity.getFollowingEntity() != null &&
-                this.entity.followingHoldingPinaColada();
+                this.entity.followingHoldingPinaColada() &&
+                !this.entity.isTamed();
     }
 
     /**
@@ -91,8 +88,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
-    public void resetTask()
-    {
+    public void resetTask() {
         this.entity.setFollowingEntity(null);
         this.entity.setAngry(false);
         this.entity.setAttackTarget(null);
@@ -127,7 +123,6 @@ public class EntityAIMonkeyFollowNearestWithCondition extends EntityAIBase
                         this.navigation.tryMoveToEntityLiving(this.entity.getFollowingEntity(), this.speedModifier);
                     } else {
                         this.navigation.clearPath();
-                        //EntityLookHelper entitylookhelper = this.followingEntity.getLookHelper();
 
                         if (d3 <= (double)this.stopDistance) {
                             double d4 = this.entity.getFollowingEntity().posX - this.entity.posX;
