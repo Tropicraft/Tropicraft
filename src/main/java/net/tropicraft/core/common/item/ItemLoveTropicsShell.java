@@ -42,7 +42,7 @@ public class ItemLoveTropicsShell extends ItemShell implements IColoredItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-//        if (tab != CreativeTabRegistry.tropicraftTab) return;
+//        if (!isInCreativeTab(tab)) return;
 //        for (int i = 0; i < Names.LOVE_TROPICS_NAMES.length; i++) {
 //            list.add(new ItemStack(this, 1, i));
 //        }

@@ -89,7 +89,7 @@ public class ItemScubaTank extends ItemTropicraft {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-	    if (tab != CreativeTabRegistry.tropicraftTab) return;
+        if (!isInCreativeTab(tab)) return;
 	    ItemStack stack = new ItemStack(this);
 	    IScubaTank tank = stack.getCapability(ScubaCapabilities.getTankCapability(), null);
 	    

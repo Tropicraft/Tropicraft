@@ -51,8 +51,8 @@ public class ItemMobEgg extends ItemTropicraft {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs creativeTabs, NonNullList<ItemStack> list) {
-        if (creativeTabs != CreativeTabRegistry.tropicraftTab) return;
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if (!isInCreativeTab(tab)) return;
         for (int var4 = 0; var4 < Names.EGG_NAMES.length; ++var4) {
             list.add(new ItemStack(this, 1, var4));
         }

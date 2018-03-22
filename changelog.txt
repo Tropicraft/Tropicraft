@@ -1,3 +1,24 @@
+7.1.1:
+Changes
+- Made all drinks always edible, even in creative mode
+- Prevented magic mushrooms from spawning along with other tropics flowers
+- Made bamboo gen rates and dimension ID configurable
+- Added helpful tooltips to tropics machines
+- Added save-local encyclopedia data files
+- Added Sunken ships
+- Added beach floats
+- Added scuba harness tooltip
+- Added Igor, the multi-colored Iguana
+- Added oredict for bamboo
+Fixes
+- Fix flower pots causing the game to crash
+- Remove extra ItemBlock for portal wall
+- Fix inconsistencies when placing tiki torches
+- Fix tropics fences acting as water sources sometimes
+- Fix tropics water bugging out when introduced to vanilla water
+- Fix tiki torch recipes
+- Fix colored item inconsistencies and persist love tropics shell colors
+
 7.1.0:
 Changes
 - Updated to 1.12.2!!!

@@ -83,7 +83,7 @@ public class ItemCocktail extends ItemTropicraftColored {
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-	    if (tab != CreativeTabRegistry.tropicraftTab) return;
+        if (!isInCreativeTab(tab)) return;
 		for (MixerRecipe recipe: DrinkMixerRegistry.getRecipes()) {
 			list.add(makeCocktail(recipe));
 		}

@@ -21,6 +21,9 @@ public enum TropicraftFlowers implements ITropicraftVariant {
 	BROMELIAD(9);
 
 	public static final TropicraftFlowers VALUES[] = values();
+	public static final TropicraftFlowers OVERWORLD_FLOWERS[] = new TropicraftFlowers[] {
+		ORCHID, PATHOS, RED_ANTHURIUM, COMMELINA_DIFFUSA, ANEMONE, ORANGE_ANTHURIUM
+	};
 
 	private final AxisAlignedBB bounds;
 
