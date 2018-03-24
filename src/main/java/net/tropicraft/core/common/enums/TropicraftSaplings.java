@@ -3,7 +3,7 @@ package net.tropicraft.core.common.enums;
 public enum TropicraftSaplings implements ITropicraftVariant {
 
 	PALM(0), MAHOGANY(1), GRAPEFRUIT(2), LEMON(3), LIME(4), ORANGE(5);
-	
+
 	private final int meta;
 	private static final TropicraftSaplings[] META_LOOKUP = new TropicraftSaplings[values().length];
 	public static final TropicraftSaplings VALUES[] = values();
