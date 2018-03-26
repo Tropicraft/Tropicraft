@@ -21,6 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -126,7 +127,7 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
         }
 
         double water = getWaterLevel();
-        double center = getEntityBoundingBox().getCenter().y;
+        double center = getCenterY();
         double eps = 1 / 16D;
         if (water < center - eps) { // Gravity
             motionY -= MathHelper.clamp(center - water, 0, 0.04);
@@ -165,6 +166,11 @@ public class EntityBeachFloat extends EntityPlaceableColored implements IEntityA
                 this.removePassengers();
             }
         }
+    }
+    
+    private double getCenterY() {
+        AxisAlignedBB bb = getEntityBoundingBox();
+        return bb.minY + (bb.maxY - bb.minY) * 0.5D;
     }
 
     @Override
