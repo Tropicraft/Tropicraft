@@ -100,6 +100,7 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(3, new EntityAIMonkeyFollowNearestWithCondition(this, 1.0D, 2.0F, 10.0F, followPredicate));
 		this.tasks.addTask(3, new EntityAIMonkeyLeap(this, 0.4F));
+		this.tasks.addTask(3, new EntityAIMonkeyPickUpPinaColada(this));
 		this.tasks.addTask(2, new EntityAIStealDrink(this));
 		this.tasks.addTask(2, new EntityAISitAndDrink(this));
 		this.tasks.addTask(4, new EntityAIMonkeySitInChair(this, this.aiSit));
