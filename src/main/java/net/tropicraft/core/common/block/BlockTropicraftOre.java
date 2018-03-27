@@ -80,6 +80,6 @@ public class BlockTropicraftOre extends BlockTropicraftEnumVariants<TropicraftOr
      */
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-    	return new ItemStack(BlockRegistry.ore, 1, getVariant(state).ordinal());
+        return new ItemStack(BlockRegistry.ore, 1, getVariant(state).getMeta());
     }
 }

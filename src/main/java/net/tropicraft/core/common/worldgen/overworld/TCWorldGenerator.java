@@ -100,22 +100,22 @@ public class TCWorldGenerator implements IWorldGenerator {
 
                 // Pineapples
                 if (biome.getRainfall() > 0.3F && biome.getDefaultTemperature() > 0.0F) {
-                	if (TropicsConfigs.genOverworldPineapples && random.nextInt(GenRates.TALL_FLOWERS_CHANCE) == 0) {
-                		l = world.getHeight(chunkX, chunkZ);
-                		BlockPos pineapplePos = new BlockPos(chunkX, l, chunkZ);
-                		for (int t = 0; t < 3; t++) {
-                			(new WorldGenTallFlower(world, random, BlockRegistry.pineapple.getDefaultState())).generate(pineapplePos);
-                		}
-                	}	
+                    if (TropicsConfigs.genOverworldPineapples && random.nextInt(TropicsConfigs.tallFlowerGenChanceOverworld) == 0) {
+                        l = world.getHeight(chunkX, chunkZ);
+                        BlockPos pineapplePos = new BlockPos(chunkX, l, chunkZ);
+                        for (int t = 0; t < 3; t++) {
+                            (new WorldGenTallFlower(world, random, BlockRegistry.pineapple.getDefaultState())).generate(pineapplePos);
+                        }
+                    }
                 }
 
                 // Bamboo
                 if (biome.getDefaultTemperature() > 0.2F) {
-                	if (TropicsConfigs.genOverworldBamboo && random.nextInt(GenRates.BAMBOO_CHANCE) == 0) {
-                		l = random.nextInt(62) + 64;
-                		BlockPos bambooPos = new BlockPos(chunkX, l, chunkZ);
-                		(new WorldGenBamboo(world, random)).generate(world, random, bambooPos);
-                	}	
+                    if (TropicsConfigs.genOverworldBamboo && random.nextInt(TropicsConfigs.bambooGenChanceOverworld) == 0) {
+                        l = random.nextInt(62) + 64;
+                        BlockPos bambooPos = new BlockPos(chunkX, l, chunkZ);
+                        (new WorldGenBamboo(world, random)).generate(world, random, bambooPos);
+                    }
                 }
             }
         }
