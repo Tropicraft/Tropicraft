@@ -161,10 +161,10 @@ public class Ingredient implements Comparable<Ingredient> {
         List<Ingredient> is = new ArrayList<Ingredient>();
         
         if (!stack.isEmpty() && stack.getItem() == ItemRegistry.cocktail) {
-            for (Ingredient ingredient: ItemCocktail.getIngredients(stack)) {
+            for (Ingredient ingredient : ItemCocktail.getIngredients(stack)) {
                 is.add(ingredient);
             }
-        } else {
+        } else if (!stack.isEmpty()) {
             Ingredient i = findMatchingIngredient(stack);
             is.add(i);
         }

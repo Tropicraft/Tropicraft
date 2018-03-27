@@ -67,7 +67,8 @@ public class DrinkMixerRegistry extends TropicraftRegistry {
             }
 
             // If mixer ingredients match those of a valid recipe, we have a proper result
-            if (validIngredientsFound == ingredients.size()) {
+            // Make sure to only count valid ingredients (non-empty) when getting size
+            if (validIngredientsFound == ingredients.stream().filter(i -> !i.isEmpty()).count()) {
                 return ItemCocktail.makeCocktail(recipe);
             }
         }
