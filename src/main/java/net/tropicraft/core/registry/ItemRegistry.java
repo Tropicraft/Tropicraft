@@ -295,7 +295,8 @@ public class ItemRegistry extends TropicraftRegistry {
         fishingNet = registerItem(registry, new ItemTropicraft(), "fishing_net");
 
         bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
-        OreDictionary.registerOre("stickWood", bambooStick);
+        // Note: Commented out because bamboo ladder recipe would make wooden ladders
+        // OreDictionary.registerOre("stickWood", bambooStick);
         bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
         freshMarlin = registerItem(registry, new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
