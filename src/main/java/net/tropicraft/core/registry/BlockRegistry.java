@@ -13,6 +13,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -352,7 +353,23 @@ public class BlockRegistry extends TropicraftRegistry {
     }
 
 	public static void init() {
+	    setFireInfo(BlockRegistry.leaves, 30, 60);
+	    setFireInfo(BlockRegistry.fruitLeaves, 30, 60);
+	    setFireInfo(BlockRegistry.logs, 5, 5);
+	    setFireInfo(BlockRegistry.mahoganyStairs, 5, 20);
+	    setFireInfo(BlockRegistry.palmStairs, 5, 20);
+	    setFireInfo(BlockRegistry.thatchFence, 30, 60);
+	    setFireInfo(BlockRegistry.thatchStairs, 30, 60);
+	    setFireInfo(BlockRegistry.thatchStairsFuzzy, 30, 60);
+	    setFireInfo(BlockRegistry.thatchFenceGate, 30, 60);
+	    setFireInfo(BlockRegistry.planks, 5, 20);
+	    setFireInfo(BlockRegistry.flowers, 60, 100);
+	    setFireInfo(BlockRegistry.iris, 60, 100);
+	    setFireInfo(BlockRegistry.pineapple, 60, 100);
+	}
 
+	private static final void setFireInfo(Block block, int encouragement, int flammability) {
+	    Blocks.FIRE.setFireInfo(block, encouragement, flammability);
 	}
 	
 	public static void clientProxyInit() {
