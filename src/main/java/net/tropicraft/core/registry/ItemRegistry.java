@@ -273,9 +273,12 @@ public class ItemRegistry extends TropicraftRegistry {
         recordTradeWinds = registerItem(registry, new ItemMusicDisc("trade_winds", "Frox", TropicraftSounds.TRADE_WINDS), "trade_winds");
 
         azurite = registerItem(registry, new ItemTropicsOre(), "azurite");
+        OreDictionary.registerOre("gemAzurite", azurite);
         eudialyte = registerItem(registry, new ItemTropicsOre(), "eudialyte");
+        OreDictionary.registerOre("gemEudialyte", eudialyte);
         zircon = registerItem(registry, new ItemTropicsOre(), "zircon");
-
+        OreDictionary.registerOre("gemZircon", zircon);
+        
         grapefruit = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "grapefruit");
         lemon = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "lemon");
         lime = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "lime");
