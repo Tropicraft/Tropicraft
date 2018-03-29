@@ -2,6 +2,11 @@ package net.tropicraft.core.common.enums;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.tropicraft.core.registry.TropicraftRegistry;
 
@@ -12,7 +17,7 @@ import net.tropicraft.core.registry.TropicraftRegistry;
  */
 public interface ITropicraftVariant extends IStringSerializable {
 
-    default String getSimpleName() {
+    default @Nonnull String getSimpleName() {
         return ((Enum<?>) this).name().toLowerCase(Locale.ROOT);
     }
 
@@ -23,7 +28,7 @@ public interface ITropicraftVariant extends IStringSerializable {
     }
 
     @Override
-    default String getName() {
+    default @Nonnull String getName() {
         return getSimpleName();
     }
 
@@ -32,4 +37,12 @@ public interface ITropicraftVariant extends IStringSerializable {
     }
 
     String toString();
+    
+    default @Nonnull ItemStack makeStack(@Nonnull Item item) {
+        return new ItemStack(item, 1, getMeta());
+    }
+    
+    default @Nonnull ItemStack makeStack(@Nonnull Block block) {
+        return new ItemStack(block, 1, getMeta());
+    }
 }

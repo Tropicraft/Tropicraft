@@ -246,7 +246,11 @@ public class BlockRegistry extends TropicraftRegistry {
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
 		chunk = registerBlock(registry, new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
-		ore = registerBlock(registry, new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES));
+		ore = registerBlock(registry, new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES)
+		        .withOredict("oreAzurite", TropicraftOres.AZURITE.getMeta())
+		        .withOredict("oreEudialyte", TropicraftOres.EUDIALYTE.getMeta())
+		        .withOredict("oreZircon", TropicraftOres.ZIRCON.getMeta())
+		        .withOredict("oreManganese", TropicraftOres.MANGANESE.getMeta()));
 		// FIXME ew
 		oreBlock = registerBlock(registry, new BlockTropicraftOreBlock(), "oreblock", new MultiBlockItemCreator(TropicraftOres.ORES_WITH_BLOCKS) {
 		    @Override
