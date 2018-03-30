@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="http://files.tropicraft.net/logo.png">
+  <img src="https://files.tropicraft.net/logo.png">
 </p>
 <p align="center">
   <a href="https://travis-ci.org/Tropicraft/Tropicraft">
@@ -15,7 +15,7 @@
       <img src="http://cf.way2muchnoise.eu/versions/tropicraft.svg" alt="Minecraft Version">
   </a>
   <br>
-  <strong><a href="http://tropicraft.net/">Website</a> | <a href="http://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
+  <strong><a href="https://tropicraft.net/">Website</a> | <a href="https://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
 </p><br><br><br>
 <!-- I apologize for the HTML but it looks so pretty :) -->
 
@@ -23,11 +23,11 @@ FAQ
 ===
 **How do I contact the team?**<br>
 There are numerous ways to contact the team:<br>
-Visit us on our IRC channel: [#Tropicraft on EsperNet](https://webchat.esper.net/?nick=Tropi....&channels=tropicraft)<br>
-Join us on our [Discord guild](https://discord.gg/Q24TRnx)<br><br>
+Join us on our [Discord guild](https://discord.gg/Q24TRnx)<br>
+Visit us on our IRC channel: [#Tropicraft on EsperNet](https://webchat.esper.net/?nick=Tropi....&channels=tropicraft)<br><br>
 
 **Can I use Tropicraft in my public/private mod pack?**<br>
-Probably! Find Cojo on IRC or Discord to receive permission and find out what is required from you.<br><br><br>
+Probably! Find Cojo on Discord or IRC to receive permission and find out what is required from you.<br><br><br>
 
 Licensing
 =========
