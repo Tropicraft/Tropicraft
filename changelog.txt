@@ -1,4 +1,4 @@
-7.1.3:
+7.1.3 for 1.12.2:
 Fixes
 - Fix broken forge dependency, and update it to the correct version
 - Add missing oredict names that caused a few recipes (tiki torches) to be broken
@@ -6,7 +6,7 @@ Fixes
 - #253 Fix tropics leaves not dropping sapplings
 - #254 Fix error loading encyclopedia data when client connects to server
 
-7.1.2:
+7.1.2 for 1.12.2:
 Changes
 - Monkeys now chase after you if they are untamed and you are holding a pina colada
 - Monkeys now sit with you if tamed. Sit in a chair with an empty chair nearby and your monkey pet will sit with you!
@@ -19,7 +19,7 @@ Fixes
 - Fix issue where many Tropicraft items and blocks were not available in the search tab of creative mode
 - Fix pick block image for pineapples (Fixes issue with HWYLA)
 
-7.1.1:
+7.1.1 for 1.12.2:
 Changes
 - Made all drinks always edible, even in creative mode
 - Prevented magic mushrooms from spawning along with other tropics flowers
@@ -40,7 +40,7 @@ Fixes
 - Fix tiki torch recipes
 - Fix colored item inconsistencies and persist love tropics shell colors
 
-7.1.0:
+7.1.0 for 1.12.2:
 Changes
 - Updated to 1.12.2!!!
 - Added Love Tropics shells
@@ -58,7 +58,7 @@ Fixes
 - Fix issue where portal chest doesn't gen the encyclopedia properly
 - Fix some cascading chunk gen issues. Some still exist :(
 
-7.0.1:
+7.0.1 for 1.10.2:
 Changes
 - Now requires forge 2221 or newer to load
 Fixes
@@ -68,7 +68,7 @@ Fixes
 - Fix palm planks not having a recipe
 - Fix tropiportal not working. Old portals will remain broken, a new one must be created.
 
-7.0.0:
+7.0.0 for 1.10.2:
 New
 - Initial beta release for MC 1.10.2!
 - The mod has been rewritten, with all the great features you remember, and lots of new things too.
@@ -80,3 +80,320 @@ Changes
 - No longer requires manual installation of schematic files.
 - Removed curare darts
 - Removed snare traps, for now.
+
+
+6.0.5 for 1.7.10:
+Changes
+- Tropicraft portal no longer sets spawn location
+- Coral no longer looks sad/blocky underwater
+- Bamboo chutes are back to their usual one-click destruction now
+- Flowers no longer make stone sound when placed/broken
+Fixes
+- Fixed crash with NEI
+
+6.0.4 for 1.7.10:
+Changes
+- Mod is now open source :D
+- Renamed EIH
+- Re-added coral gen
+- Re-added tropics ore gen
+Fixes
+- Fixed issue where player could not teleport back to the overworld
+- Fixed issues with fertilizer using two items at once
+- Fixed tropical fish bucket derps
+- Fixed chair and umbrella recipes
+- Fixed umbrella not rendering in bamboo mug
+- Fixed crash when rainforest saplings grew
+- Fixed EIH collision box
+- #35 Fixed a possible server crash
+- #39 Made leaves only drop items server-side
+
+6.0.3 for 1.7.10:
+Changes
+- Made Koa villages more common
+- Made pineapples spawn in the overworld
+Fixes
+- Fixed iris placement
+- Fixed incompatibility with Thermal Expansion
+- Fixed incompatibility with mods that had tanks/fluid container (specifically, a crash with MFR)
+
+6.0.2 for 1.7.10:
+Fixes
+- Fixed crash on servers that prevented people from joining or accessing inventory
+- Added back the teleportation by drinking a pina colada in a beach chair at sunset to get to the tropics. Forgot to add that in, oops :)
+
+6.0.1 for 1.7.10:
+Fixes
+- Fixed missing images on frog leg, portal enchanter, and snare trap items
+- Fixed issue where palm saplings could not be planted on sand
+
+6.0 for 1.7.10:
+New
+- Added 4 new sands for beaches (green sands, coral sands, mineral sands, and black sands)
+- Added a new ore type that can be refined through sifting mineral sands over a heat source
+- Added zirconium and zirconium toolset (get zirconium by smelting zircon, then taking that and surrounding a diamond with it)
+- Added fire armor
+- Added pretty seahorses courtesy of RazzleberryFox!
+Changes
+- Removed oku’s fishing for now
+- Made terrain gen way more islandy and 200% moar relaxing
+- Removed dart gun types. Dart gun now shoots darts based on whichever curare darts are in order in the inventory.
+
+5.1.5 for 1.6.4:
+New
+- Added fire pit texture, thanks to our newest helper, OblivionKing13x!
+Fixes
+- Fixed a crash with sea turtle eggs, when they are supposed to hatch they insteadcrashed the game!
+
+5.1.4 for 1.6.4:
+New
+- Added in null-check during bucket placement
+Changes
+- Coffee plants now turn into their berriless state when right-clicked instead of into air
+Fixes
+- Fixed bamboo chute and coconuts giving their blocks instead of items on middle click pick
+- Fixed missing koa textures
+- Fixed crash with echinoderm eggs
+- Fixed incorrect mod version
+- Fixed static id lookup issue caused by id resolvers
+Possibly other things!
+
+5.1.3 for 1.6.4:
+New
+- Added null check in bucket event thingy, should fix a crash with dartcraft and possibly other mods as well
+Fixes
+- Actually fixed the missing ashen mask texture this time!
+
+5.1.2 for 1.6.4:
+Changes
+- Coconut bombs tell player they don't have permission to use them when they are not on the coconut bomb whitelist
+Fixes
+- Changing resource packs mid-game no longer crashes weathermod
+- Coconuts no longer suffocate player
+- Fixed the genOverworldPalmsInBeachOnly config option to actually work :D
+- Fixed indestructible umbrella bug
+- Fixed missing horn monkey ashen mask texture
+
+5.1.1 for 1.6.4:
+New
+- Added warning in portal that lets you know if you need to drink a pina colada in order to teleport
+- Added biome ids to config file
+Fixes
+- Fixed bug where nothing generated in the overworld because I messed up a boolean (if you have this bug, simply upgrade to the newest Tropicraft and delete your old Tropicraft config!)
+- Fixed coremod rendering (thanks cpw and zeldo :D)
+- Fixed encyclopedia gui bug
+
+5.1 for 1.6.4:
+- Updated to Minecraft 1.6.4
+
+5.0.1 for 1.5.2:
+New
+- Now notifies you if a new update is out
+- Added crafting recipes for curare bowl and EIH mixer
+- Coremod tomfoolery
+Fixes
+- Fixed fruit leaves dropping vanilla leaf drops
+- Fixed palm wood breaking way too fast
+- Fixed being unable to harvest whole coconut
+- Fixed all blocks breaking too easy
+- Fixed portal enchanter not having a texture
+- Fixed the unused enchanting ids
+- Fixed TradeHut not breaking with different block ID defaults
+
+
+5.0a for 1.5.2:
+New
+- Added bamboo flower pots
+- Added coffee plants
+- Added an Easter Island Head drink mixer
+- Added playable bongo drums (3 sizes!)
+- Added curare bowl for mixing plants together to make different types of poison for darts
+- Added failgulls
+- Added sea urchins and sea urchin eggs. Sea urchins breed automatically in close proximity with a maximum number of neighbors.
+- Added multiple types of starfish (Royal, Red). Starfish breed similarly to sea urchins.
+- Added spotted eagle rays
+- Added koa traders (one per village)
+- Added secret cave-dwelling mob
+- Added snare trap item: catches mobs and players when placed, preventing them from moving. Attack it with your hands to free yourself.
+- Added coffee: raw coffee beans roastable in furnaces to be used in the drink mixer block.
+- Added fire armor: prevents damage while in lava. Has awesome flame particle effects. Currently only obtainable in creative mode.
+- Added fire ball staff: shoots fire balls setting mobs on fire
+- Added tame ball staff: shoots cages to tame mobs
+- Added sea urchin roe as food: obtainable by killing adult sea urchins
+- Added curare for making darts of many types of poisons
+- Added darts of many types of poisons
+- Added blow guns of many types to shoot the darts of many types of poisons
+- Added placeable bamboo mugs
+- Added bamboo item frames
+- Added 4 new music discs:
+ * Punchaface – Buried Treasure
+ * Punchaface – Low Tide
+ * Emile Van Krieken – The Tribe
+ * Billy Christiansen – Summering
+Changes
+- The world, we changed it
+- Boosted strength of tools and weapons made from tropicraft ores
+- All NPCs were given a redux by Corosus
+
+
+4.2.3 for 1.4.6:
+– Fixes teleportation bug when drinking pina colada
+
+4.2.2a for 1.4.6:
+– Updated Weather to 1.3
+
+4.2.2 for 1.4.6:
+Changes
+– You sleep in a bed at any time during the day or night while in the tropics and you will immediately be teleported back to the main world. Make sure the bed is in a dark enough area.
+- Drinking a pina colada and sitting in a chair to get back to the main world now works at sunset again.
+
+4.2.1 for 1.4.6:
+Fixes
+- Fixed server lag (snorkels and flippers won’t work as a result, this will be fixed, don’t worry!)
+- Fixed teleportation (you will only be able to teleport at night currently, but it’s better than only during the first day you play, which was the bug that was fixed!)
+– Fixed version number (just kidding, just realized I derped, it should be 4.2.1 not 4.2.a……oh well)
+
+4.2 for 1.4.6:
+New
+- Updated to Minecraft 1.4.6
+- Added snare traps
+- Added screen overlays for snorkels and ashen masks
+Changes
+- Datawatcher enabled ashens and mask entities
+- Disabled initial chunk gen (will take a bit longer to enter realm but it shouldn’t crash anymore)
+- Removed need for RenderPlayerAPI!
+- Made palm plank half slabs usable as furnace fuel
+- Rewrote sound installing to load sounds from the jar, fixing lacking sounds in-game
+Fixes
+- Fixed console spam
+- Fixed bamboo and tiki torches giving block instead of item
+- Fixed sifter sync issues where only the activating user can see the changes
+- Fixed turtle eggs spawning a client side turtle, too
+- Fixed Man O’ Wars spawning client side slime balls on death
+- Fixed baby turtles not rendering as such
+- More pick block bugs fixed (iris flowers, pineapples and bamboo doors)
+- Fixed flipper names
+- Fix for portal blocks crashing dedicated server
+- Fixed snorkel and flippers
+- Fixed bamboo doors not responding to redstone
+– Removed Tropical Herobrine
+
+4.1.2a for 1.4.5:
+New
+– Volcano eruptions
+– Koa stuff
+Fixes
+– Infinite fish spawning bug (ugh that was annoying!)
+– Head armor bug
+– Not being able to place bamboo doors bug
+– Fixed sifters dropping items that couldnâ€™t be picked up
+
+4.1a for 1.4.5:
+- Simple update to 1.4.5
+
+4.0.4a for 1.4.2:
+Changes
+- Encyclopedias now generate at spawn in the chest
+Fixes
+- Re-fixed tropical water buckets
+- Fixed incorrect version number
+- Snorkels work correctly now (they give 4x air)
+- Flippers work correctly now (they improve maneuver speed underwater, impede movement speed when out of water)
+- Tropical fish spawns fixed
+
+4.0.3a for 1.4.2:
+New
+- Added ashen spawn to realm
+- Added tropical fish spawn to realm
+Changes
+- Moved purified sand to misc. tab
+Fixes
+- Fixed chair/portal teleportation
+- Fixed weird texture overlay bugs with ashen masks, snorkels, and flippers
+
+4.0.2a for 1.4.2:
+New
+- Added all tropical fish buckets to creative mode
+Changes
+- Changed water wands water removal (you no longer need to click on a surface)
+Fixes
+- Fixed logs dropping sideways metadata, they all drop the original block now
+- Fix to ConcurrentModificationException with Man O Wars
+- Fixed tropical water buckets
+- Fixed tropical fish buckrets
+- "Fixed" the time offset. It no longer exists, but may come back in the future in a different form.
+– Removed herobrine (jeb forgot to)
+
+4.0.1a for 1.3.2:
+New
+- Added recipe to craft encyclopedia
+- Added recipes INTO encyclopedia
+- Added Water Wand
+- Added Portal Enchanter item
+Changes
+- Torches can be placed on bamboo fences
+- Palm and Mahagony logs can be placed on their sides
+- Bamboo Has a side texture and can be placed like a log
+- Bamboo Doors are in (needs an item sprite and recipe)
+- Includes Weather Mod 1.21 & 1.22 updates, new tropicraft specific configs
+- Tiki Torches emit light
+Fixes
+- Hopefully fixed snorkels/flippers crashing server
+- Fixed koa crash on server
+- Fixed missing main world generation of tropicraft trees, bamboo etc
+- Fixed generation of world features only happening around X: 0, Z: 0
+- Fixed darts causing FOV changes on all players
+- Fixed darts not freezing mobs on server side
+- Fixed bamboo chests not animating
+
+4.0 for 1.3.2:
+New
+- Added SMP support
+- Added waves on water
+- Added hidden configuration options
+- Added crop circles
+
+3.0.3 for 1.2.5:
+New
+- Added some missing wood-based recipes
+- Added recipes involving charcoal
+- Added configuration option to disable volcano generation
+- Turtles drop shells, and Manowars drop slime balls for now
+Changes
+- Removed purple textured items from showing up in TMI
+- Fish can despawn if they haven't been caught
+- Achievement ID is now configurable
+- Small adjustment to pineapple growth rate
+- Tiki torches now placeable on fences, glass, and upside-down stairs
+- Chairs are less pushable, and Umbrellas can't be pushed
+- Encyclopedia Tropica now has sound
+- EIH should be damageable with other mod's pickaxes so long as they can mine iron
+- Ashen should spawn in groups as large as 3. GL HF
+- TMI and NEI shouldn't create a bunch of textureless items
+Fixes
+- Fixed encyclopedia giving folks things they haven't even seen
+- Encyclopedia should now appear in the portal chest
+- Fixed slabs only being minable with a pickaxe
+- Dropped saplings should remain the correct type
+
+3.0.2 for 1.2.5:
+New
+- Bamboo grows in jebungles and plains
+Changes
+- Palm Planks give sticks and can be crafted into tools
+- Pina Coladas are now a shapeless recipe! Yay for 2x2 crafting!
+- Craftable Encyclopedias
+- Darts give 4 instead of 1
+Fixes
+- Sifters giving infinite items
+- Bamboo Spears not breaking
+- Fishing nets not swinging when used
+- Being able to consume food when the hunger meter is full. Pina coladas will still be drinkable when hunger is full.
+- Volcanoes generating "Arms" when reforming the caldera
+- Eruptions not saving
+- Lighting glitches
+- Slabs transforming
+- Iris bugs
+- MLProp not using the values you provide in the config
+- Tribal Fishing Rod should not be visible in TMI anymore
+- Fixed Eudialyte Axe Recipe
