@@ -12,6 +12,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.tropicraft.configuration.GenRates;
 import net.tropicraft.core.common.config.TropicsConfigs;
+import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.common.worldgen.WorldGenBamboo;
 import net.tropicraft.core.common.worldgen.WorldGenCurvedPalms;
 import net.tropicraft.core.common.worldgen.WorldGenEIH;
@@ -41,9 +42,7 @@ public class TCWorldGenerator implements IWorldGenerator {
      * @param chunkZ chunkZ
      */
     public void generateSurface(World world, Random random, int chunkX, int chunkZ) {
-
-        int cx = chunkX;
-        int cz = chunkZ;
+    	Biome biome = world.getBiome(new BlockPos(chunkX, 0, chunkZ));
 
         if (TropicsConfigs.genOverworld) {
             // Convert to block coords rather than chunk coords
@@ -59,7 +58,7 @@ public class TCWorldGenerator implements IWorldGenerator {
                     for (int j3 = 0; j3 < 10; j3++) {
                         l = random.nextInt(62) + 64;
                         BlockPos flowerPos = new BlockPos(k, l, i1);
-                        (new WorldGenTropicalFlowers(world, random, BlockRegistry.flowers)).generate(world, random, flowerPos);
+                        (new WorldGenTropicalFlowers(world, random, BlockRegistry.flowers, TropicraftFlowers.OVERWORLD_FLOWERS)).generate(world, random, flowerPos);
                     }	
                 }
 
@@ -71,46 +70,52 @@ public class TCWorldGenerator implements IWorldGenerator {
 
                 //*********** HERE TO BOTTOM ARE THINGS NECESSARY TO GET TO THE TROPICS ***********//
 
-                if (TropicsConfigs.genOverworldPalms && random.nextInt(10) == 0) {
-                    BlockPos posChunk = new BlockPos(chunkX, 0, chunkZ);
-                    Biome biome = world.getBiomeProvider().getBiome(posChunk);			
+                if (biome.getDefaultTemperature() > 0.5F && !biome.getEnableSnow()) {
+	                if (TropicsConfigs.genOverworldPalms && random.nextInt(10) == 0) {
+	                    if ((TropicsConfigs.genOverworldPalmsBeachOnly && biome == Biomes.BEACH) || !TropicsConfigs.genOverworldPalmsBeachOnly) {
+	                        if (TropicsConfigs.chancePalmOverworld < 0 || random.nextFloat() < (float)(TropicsConfigs.chancePalmOverworld / 100F)) {
+	                            for (int j3 = 0; j3 < TropicsConfigs.factorPalmOverworld; j3++) {
+	                                l = random.nextInt(62) + 64;
 
-                    if ((TropicsConfigs.genOverworldPalmsBeachOnly && biome == Biomes.BEACH) || !TropicsConfigs.genOverworldPalmsBeachOnly)
-                        if (TropicsConfigs.chancePalmOverworld < 0 || random.nextFloat() < (float)(TropicsConfigs.chancePalmOverworld / 100F)) {
-                            for (int j3 = 0; j3 < TropicsConfigs.factorPalmOverworld; j3++) {
-                                l = random.nextInt(62) + 64;
-
-                                BlockPos pos;
-                                if (random.nextInt(5) == 0) {
-                                    pos = new BlockPos(chunkX + 16, l, chunkZ + 16);
-                                    (new WorldGenLargePalmTrees(world, random)).generate(world, random, pos);
-                                } else if (random.nextInt(5) < 3) {
-                                    int x = chunkX + 13 + random.nextInt(5);
-                                    int z = chunkZ + 13 + random.nextInt(5);
-                                    pos = new BlockPos(x, l, z);
-                                    (new WorldGenCurvedPalms(world, random)).generate(world, random, pos);
-                                } else {
-                                    int x = chunkX + 13 + random.nextInt(5);
-                                    int z = chunkZ + 13 + random.nextInt(5);
-                                    pos = new BlockPos(x, l, z);
-                                    (new WorldGenNormalPalms(world, random)).generate(world, random, pos);
-                                }
-                            }
-                        }
+	                                BlockPos pos;
+	                                if (random.nextInt(5) == 0) {
+	                                    pos = new BlockPos(chunkX + 16, l, chunkZ + 16);
+	                                    (new WorldGenLargePalmTrees(world, random)).generate(world, random, pos);
+	                                } else if (random.nextInt(5) < 3) {
+	                                    int x = chunkX + 13 + random.nextInt(5);
+	                                    int z = chunkZ + 13 + random.nextInt(5);
+	                                    pos = new BlockPos(x, l, z);
+	                                    (new WorldGenCurvedPalms(world, random)).generate(world, random, pos);
+	                                } else {
+	                                    int x = chunkX + 13 + random.nextInt(5);
+	                                    int z = chunkZ + 13 + random.nextInt(5);
+	                                    pos = new BlockPos(x, l, z);
+	                                    (new WorldGenNormalPalms(world, random)).generate(world, random, pos);
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
                 }
 
                 // Pineapples
-                if (TropicsConfigs.genOverworldPineapples && random.nextInt(GenRates.TALL_FLOWERS_CHANCE) == 0) {
-                    l = random.nextInt(62) + 64;
-                    BlockPos pineapplePos = new BlockPos(chunkX, l, chunkZ);
-                    (new WorldGenTallFlower(world, random, BlockRegistry.pineapple.getDefaultState())).generate(pineapplePos);
+                if (biome.getRainfall() > 0.3F && biome.getDefaultTemperature() > 0.0F) {
+                    if (TropicsConfigs.genOverworldPineapples && random.nextInt(TropicsConfigs.tallFlowerGenChanceOverworld) == 0) {
+                        l = world.getHeight(chunkX, chunkZ);
+                        BlockPos pineapplePos = new BlockPos(chunkX, l, chunkZ);
+                        for (int t = 0; t < 3; t++) {
+                            (new WorldGenTallFlower(world, random, BlockRegistry.pineapple.getDefaultState())).generate(pineapplePos);
+                        }
+                    }
                 }
 
                 // Bamboo
-                if (TropicsConfigs.genOverworldBamboo && random.nextInt(GenRates.BAMBOO_CHANCE) == 0) {
-                    l = random.nextInt(62) + 64;
-                    BlockPos bambooPos = new BlockPos(chunkX, l, chunkZ);
-                    (new WorldGenBamboo(world, random)).generate(world, random, bambooPos);
+                if (biome.getDefaultTemperature() > 0.2F) {
+                    if (TropicsConfigs.genOverworldBamboo && random.nextInt(TropicsConfigs.bambooGenChanceOverworld) == 0) {
+                        l = random.nextInt(62) + 64;
+                        BlockPos bambooPos = new BlockPos(chunkX, l, chunkZ);
+                        (new WorldGenBamboo(world, random)).generate(world, random, bambooPos);
+                    }
                 }
             }
         }

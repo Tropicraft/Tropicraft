@@ -29,8 +29,8 @@ public class EntityTropiSkeleton extends EntityLandHostile implements IMob {
 
     public EntityTropiSkeleton(World world) {
         super(world);
-
         this.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(ItemRegistry.bambooSpear));
+        this.experienceValue = 5;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class EntityTropiSkeleton extends EntityLandHostile implements IMob {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
     }
 

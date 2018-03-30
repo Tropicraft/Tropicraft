@@ -1,3 +1,24 @@
+7.1.3:
+Fixes
+- Fix broken forge dependency, and update it to the correct version
+- Add missing oredict names that caused a few recipes (tiki torches) to be broken
+- Fix drink mixers not creating drinks correctly with out of order ingredients
+- #253 Fix tropics leaves not dropping sapplings
+- #254 Fix error loading encyclopedia data when client connects to server
+
+7.1.2:
+Changes
+- Monkeys now chase after you if they are untamed and you are holding a pina colada
+- Monkeys now sit with you if tamed. Sit in a chair with an empty chair nearby and your monkey pet will sit with you!
+- Make overworld terrain generation more realistic. Flowers, pineapples, and bamboo now spawn in biomes that make more sense.
+Fixes
+- Make overworld pineapples less rare
+- Fix z-fighting on bamboo chest model
+- Fix issue where bamboo shoots couldn't be used in recipes
+- Fix bamboo chests connecting to vanilla chests
+- Fix issue where many Tropicraft items and blocks were not available in the search tab of creative mode
+- Fix pick block image for pineapples (Fixes issue with HWYLA)
+
 7.1.1:
 Changes
 - Made all drinks always edible, even in creative mode

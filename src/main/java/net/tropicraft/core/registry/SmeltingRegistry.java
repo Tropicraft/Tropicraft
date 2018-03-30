@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
+import net.tropicraft.core.common.enums.TropicraftOres;
 
 @Mod.EventBusSubscriber(modid = Info.MODID)
 public class SmeltingRegistry extends TropicraftRegistry {
@@ -19,6 +20,12 @@ public class SmeltingRegistry extends TropicraftRegistry {
         GameRegistry.addSmelting(BlockRegistry.sands, new ItemStack(Blocks.GLASS), 4);
         GameRegistry.addSmelting(ItemRegistry.freshMarlin, new ItemStack(ItemRegistry.searedMarlin), 6);
         GameRegistry.addSmelting(BlockRegistry.logs, new ItemStack(Items.COAL, 1, 1), 3); // metadata 1 = charcoal
+        
+        // Silk touched ore smelting
+        Block ore = BlockRegistry.ore;
+        GameRegistry.addSmelting(TropicraftOres.AZURITE.makeStack(ore), new ItemStack(ItemRegistry.azurite), 0.7F);
+        GameRegistry.addSmelting(TropicraftOres.EUDIALYTE.makeStack(ore), new ItemStack(ItemRegistry.eudialyte), 0.7F);
+        GameRegistry.addSmelting(TropicraftOres.ZIRCON.makeStack(ore), new ItemStack(ItemRegistry.zircon), 0.7F);
     }
 
     /**

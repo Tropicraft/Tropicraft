@@ -46,11 +46,12 @@ import net.tropicraft.core.registry.CommandRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.LootRegistry;
+import net.tropicraft.core.registry.OreDict;
 import net.tropicraft.core.registry.SmeltingRegistry;
 import net.tropicraft.core.registry.SoundRegistry;
 import net.tropicraft.core.registry.TileEntityRegistry;
 
-@Mod(modid = Info.MODID, version = Info.VERSION, dependencies = "after:Forge@[12.18.3.2221,)", guiFactory = Info.GUI_FACTORY)
+@Mod(modid = Info.MODID, version = Info.VERSION, dependencies = "after:forge@[14.23.0.2544,)", guiFactory = Info.GUI_FACTORY)
 public class Tropicraft {
 
 	@SidedProxy(clientSide = Info.CLIENT_PROXY, serverSide = Info.SERVER_PROXY)
@@ -98,6 +99,7 @@ public class Tropicraft {
 		MixerRecipes.addMixerRecipes();
 		proxy.registerBooks();
 		SmeltingRegistry.init();
+		OreDict.registerVanilla();
 		MinecraftForge.EVENT_BUS.register(new ItemEvents());
 		MinecraftForge.EVENT_BUS.register(new BlockEvents());
 		MinecraftForge.EVENT_BUS.register(new AchievementEvents());

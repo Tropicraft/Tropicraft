@@ -273,9 +273,12 @@ public class ItemRegistry extends TropicraftRegistry {
         recordTradeWinds = registerItem(registry, new ItemMusicDisc("trade_winds", "Frox", TropicraftSounds.TRADE_WINDS), "trade_winds");
 
         azurite = registerItem(registry, new ItemTropicsOre(), "azurite");
+        OreDictionary.registerOre("gemAzurite", azurite);
         eudialyte = registerItem(registry, new ItemTropicsOre(), "eudialyte");
+        OreDictionary.registerOre("gemEudialyte", eudialyte);
         zircon = registerItem(registry, new ItemTropicsOre(), "zircon");
-
+        OreDictionary.registerOre("gemZircon", zircon);
+        
         grapefruit = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "grapefruit");
         lemon = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "lemon");
         lime = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "lime");
@@ -295,7 +298,8 @@ public class ItemRegistry extends TropicraftRegistry {
         fishingNet = registerItem(registry, new ItemTropicraft(), "fishing_net");
 
         bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
-        OreDictionary.registerOre("stickWood", bambooStick);
+        // Note: Commented out because bamboo ladder recipe would make wooden ladders
+        // OreDictionary.registerOre("stickWood", bambooStick);
         bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
         freshMarlin = registerItem(registry, new ItemTropicraftFood(2, 0.3F), "fresh_marlin");

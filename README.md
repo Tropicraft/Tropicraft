@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="http://files.tropicraft.net/logo.png">
+  <img src="https://files.tropicraft.net/logo.png">
 </p>
 <p align="center">
   <a href="https://travis-ci.org/Tropicraft/Tropicraft">
@@ -15,23 +15,26 @@
       <img src="http://cf.way2muchnoise.eu/versions/tropicraft.svg" alt="Minecraft Version">
   </a>
   <br>
-  <strong><a href="http://tropicraft.net/">Website</a> | <a href="http://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
+  <strong><a href="https://tropicraft.net/">Website</a> | <a href="https://www.minecraftforum.net/topic/533512">Minecraft Forum Thread</a> </strong>
 </p><br><br><br>
 <!-- I apologize for the HTML but it looks so pretty :) -->
 
 FAQ
 ===
-**How do I contact the team?**<br>
-There are numerous ways to contact the team:<br>
-Visit us on our IRC channel: [#Tropicraft on EsperNet](https://webchat.esper.net/?nick=Tropi....&channels=tropicraft)<br>
-Join us on our [Discord guild](https://discord.gg/Q24TRnx)<br><br>
+**How do I contact the team?**   
+There are numerous ways to contact the team:   
+- Join us on our [Discord guild](https://discord.gg/Q24TRnx)   
+- Visit us on our IRC channel: [#Tropicraft on EsperNet](https://webchat.esper.net/?nick=Tropi....&channels=tropicraft)   
 
-**Can I use Tropicraft in my public/private mod pack?**<br>
-Probably! Find Cojo on IRC or Discord to receive permission and find out what is required from you.<br><br><br>
+**Can I use Tropicraft in my public/private mod pack?**   
+Probably! Find Cojo on Discord or IRC to receive permission and find out what is required from you.   
+
+
 
 Licensing
 =========
-**Tropicraft** and its associated source code is licensed under the [Mozilla Public License v2](https://www.mozilla.org/MPL/2.0/).<br><br><br>
+**Tropicraft** and its associated source code is licensed under the [Mozilla Public License v2](https://www.mozilla.org/MPL/2.0/).   
+
 
 Contributing
 ============
@@ -40,7 +43,8 @@ Before creating an issue please make sure you've covered the following:
 * Describe the whole issue
 * Provide directions how to replicate the issue
 * Provide the Tropicraft and Forge versions
-* Post the crash log surrounded by code tags (Ex: \`\`\`Tropicraft is cool!\`\`\` ```Tropicraft is cool!```)<br><br>
+* Post the crash log surrounded by code tags (Ex: \`\`\`Tropicraft is cool!\`\`\` ```Tropicraft is cool!```)   
+
 
 ### Pull Request Guidelines
 *[For a guide on how to create a pull request click here](https://help.github.com/articles/creating-a-pull-request/)*

@@ -62,7 +62,7 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 		this.mixing = nbt.getBoolean("Mixing");
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-			if (nbt.hasKey("Ingredient0")) {
+			if (nbt.hasKey("Ingredient" + i)) {
 				this.ingredients.set(i, new ItemStack(nbt.getCompoundTag("Ingredient" + i)));
 			}
 		}
@@ -79,9 +79,9 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 		nbt.setBoolean("Mixing", mixing);
 
 		for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-			NBTTagCompound var4 = new NBTTagCompound();
-			this.ingredients.get(i).writeToNBT(var4);
-			nbt.setTag("Ingredient" + i, var4);
+	        NBTTagCompound var4 = new NBTTagCompound();
+	        this.ingredients.get(i).writeToNBT(var4);
+	        nbt.setTag("Ingredient" + i, var4);
 		}
 
 		NBTTagCompound var4 = new NBTTagCompound();
@@ -110,6 +110,8 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 	}
 
 	public static Ingredient findMatchingIngredient(@Nonnull ItemStack stack) {
+	    if (stack.isEmpty()) return null;
+
 		for (Ingredient ingredient: Ingredient.ingredientsList) {
 			if (ingredient == null) {
 				continue;
@@ -131,7 +133,9 @@ public class TileEntityDrinkMixer extends TileEntity implements ITickable, IMach
 			}
 		} else {
 			Ingredient i = findMatchingIngredient(stack);
-			is.add(i);
+			if (i != null) {
+			    is.add(i);
+			}
 		}
 
 		return is;

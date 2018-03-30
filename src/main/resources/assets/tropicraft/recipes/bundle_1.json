@@ -11,7 +11,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "tropicraft:bamboo_shoots"
+      "item": "tropicraft:bamboo_shoot"
     }
   }
 }

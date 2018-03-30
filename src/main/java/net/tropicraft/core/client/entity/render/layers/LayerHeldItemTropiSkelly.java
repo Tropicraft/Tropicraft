@@ -45,8 +45,8 @@ public class LayerHeldItemTropiSkelly implements LayerRenderer<EntityLivingBase>
             ((ModelBiped)this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F, handSide);
             GlStateManager.rotate(-90.0F, 1.0F, -1.0F, 0.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.translate((float) 2 / 16.0F, 0.255F, -0.455F);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(entity, itemstack, transformType, false);
+            GlStateManager.translate(0.015F, .535F, -0.405F);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(entity, itemstack, ItemCameraTransforms.TransformType.NONE, false);
             GlStateManager.popMatrix();
         }
     }

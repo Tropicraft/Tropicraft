@@ -29,6 +29,8 @@ public class TropicsConfigs {
     public static int minBambooPerPatchTropics = GenRates.MIN_BAMBOO;
     public static int maxBambooPerPatchTropics = GenRates.MAX_BAMBOO;
     public static boolean allowVolcanoEruption = true;
+    public static int bambooGenChanceOverworld = GenRates.BAMBOO_CHANCE;
+    public static int tallFlowerGenChanceOverworld = GenRates.TALL_FLOWERS_CHANCE;
 
     public static int tropicsOceanID = 60;
     public static int tropicsID = 61;
@@ -77,6 +79,8 @@ public class TropicsConfigs {
         maxBambooPerPatchOverworld = config.get(C_GENERATION, "maxBambooPerPatchOverworld", maxBambooPerPatchOverworld).getInt();
         minBambooPerPatchTropics = config.get(C_GENERATION, "minBambooPerPatchTropics", minBambooPerPatchTropics).getInt();
         maxBambooPerPatchTropics = config.get(C_GENERATION, "maxBambooPerPatchTropics", maxBambooPerPatchTropics).getInt();
+        bambooGenChanceOverworld = config.getInt(C_GENERATION, "bambooGenChanceOverworld", bambooGenChanceOverworld, 0, 1000, "Chance of bamboo spawn. Lower values = more common");
+        tallFlowerGenChanceOverworld = config.getInt(C_GENERATION, "tallFlowerGenChanceOverworld", tallFlowerGenChanceOverworld, 0, 1000, "Chance of pineapple/iris spawn. Lower values = more common");
 
         coconutBombWhitelist = config.get(C_MISC, "coconutBombWhitelist", coconutBombWhitelist).getStringList();
 

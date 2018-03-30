@@ -1,14 +1,24 @@
 package net.tropicraft.core.common.enums;
 
 public enum TropicraftFruitLeaves implements ITropicraftVariant {
-    GRAPEFRUIT(0), LEMON(1), LIME(2), ORANGE(3);
+    GRAPEFRUIT(0, TropicraftSaplings.GRAPEFRUIT),
+	LEMON(1, TropicraftSaplings.LEMON),
+	LIME(2, TropicraftSaplings.LIME),
+    ORANGE(3, TropicraftSaplings.ORANGE);
     
     private static final TropicraftFruitLeaves[] META_LOOKUP = new TropicraftFruitLeaves[values().length];
     private final int meta;
+    /** Sapling that matches with this leaf type */
+    private final TropicraftSaplings sapling;
     public static final TropicraftFruitLeaves[] VALUES = values();
-    
-    private TropicraftFruitLeaves(int meta) {
-    	this.meta = meta;
+
+    private TropicraftFruitLeaves(int meta, TropicraftSaplings sapling) {
+        this.meta = meta;
+        this.sapling = sapling;
+    }
+
+    public int getSaplingMeta() {
+        return this.sapling.getMetadata();
     }
     
     @Override

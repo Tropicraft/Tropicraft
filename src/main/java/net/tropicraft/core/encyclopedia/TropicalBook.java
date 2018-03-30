@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +18,8 @@ import java.util.logging.Logger;
 
 import org.apache.logging.log4j.LogManager;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -26,6 +29,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -96,11 +100,18 @@ public abstract class TropicalBook {
     protected File getSaveFile() {
         File root = DimensionManager.getCurrentSaveRootDirectory();
         if (root == null) {
-            throw new IllegalStateException("Cannot load encyclopedia outside of a save!");
+            ServerData server = Minecraft.getMinecraft().getCurrentServerData();
+            if (server == null) {
+                throw new IllegalStateException("Cannot load encyclopedia outside of a game!");
+            }
+            // FIXME Encyclopedia save data breaks if the client changes the server name
+            // Needs to be moved to serverside storage
+            return Paths.get("encyclopedia-servers", server.serverName, fileName).toFile();
         }
         return new File(root, fileName);
     }
     
+    // This method is fired on both sides so will work in SSP/SMP
     @SubscribeEvent
     public void loadData(WorldEvent.Load event) {
         if (event.getWorld().provider.getDimension() != 0) {
@@ -127,14 +138,25 @@ public abstract class TropicalBook {
         }
     }
     
+    // SSP fallback save
     @SubscribeEvent
-    protected void saveData(WorldEvent.Save event) {
+    public void saveData(WorldEvent.Save event) {
         if (event.getWorld().provider.getDimension() != 0) {
             return;
         }
-        System.out.println("Saving encyclopedia...");
+        saveData();
+    }
+    
+    // SMP fallback save
+    @SubscribeEvent
+    public void saveData(ClientDisconnectionFromServerEvent event) {
+        saveData();
+    }
+    
+    private void saveData() {
         try {
             File dataFile = getSaveFile();
+            dataFile.getParentFile().mkdirs();
             dataFile.createNewFile();
             if (dataFile.canWrite()) {
                 try (OutputStream dataOutput = new FileOutputStream(dataFile)) {
@@ -172,6 +194,7 @@ public abstract class TropicalBook {
     
     public void markPageAsNewlyVisible(String entry) {
         visiblePages.put(entry, ReadState.VISIBLE);
+        saveData();
     }
     
     public void markPageAsNewlyVisible(int i) {
@@ -180,6 +203,7 @@ public abstract class TropicalBook {
     
     public void markPageAsRead(String entry) {
         visiblePages.put(entry, ReadState.READ);
+        saveData();
     }
     
     public void markPageAsRead(int i) {

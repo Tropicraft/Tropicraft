@@ -52,6 +52,7 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+		Random rand = world instanceof World ? ((World)world).rand : new Random();
 		int chance = this.getSaplingDropChance(state);
 
 		if (fortune > 0) {
@@ -63,6 +64,13 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 		if (fortune > 0) {
 			chance -= 10 << fortune;
 			if (chance < 40) chance = 40;
+		}
+
+		if (rand.nextInt(chance) == 0) {
+			int meta = getSaplingMeta(state);
+			if (meta >= 0) {
+                ret.add(new ItemStack(getItemDropped(state, rand, fortune), 1, meta));
+            }
 		}
 
 		this.captureDrops(true);
@@ -81,6 +89,10 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 		int i = ((TropicraftLeaves)state.getValue(VARIANT)).getMeta();
 		return i;
 	}
+
+	private int getSaplingMeta(IBlockState state) {
+	    return state.getValue(VARIANT).getSaplingMeta();
+    }
 
 	@Override
 	@SideOnly(Side.CLIENT)
