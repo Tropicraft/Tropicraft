@@ -27,10 +27,4 @@ There are numerous ways to contact the team:
 - Visit us on our IRC channel: [#Tropicraft on EsperNet](https://webchat.esper.net/?nick=Tropi....&channels=tropicraft)   
 
 **Can I use Tropicraft in my public/private mod pack?**   
-Probably! Find Cojo on Discord or IRC to receive permission and find out what is required from you.   
-
-
-
-Licensing
-=========
-**Tropicraft** and its associated source code is licensed under the [Mozilla Public License v2](https://www.mozilla.org/MPL/2.0/).
+Probably! Find Cojo on Discord or IRC to receive permission and find out what is required from you.
