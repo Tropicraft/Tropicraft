@@ -2,6 +2,8 @@ package net.tropicraft.core.common.config;
 
 import java.io.File;
 
+import com.google.common.base.Preconditions;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -75,12 +77,12 @@ public class TropicsConfigs {
         genOverworldFlowers = config.get(C_GENERATION, "genTropicraftFlowersInOverworld", genOverworldFlowers).getBoolean();
         genOverworldPineapples = config.get(C_GENERATION, "genPineapplesInOverworld", genOverworldPineapples).getBoolean();
         genOverworldBamboo = config.get(C_GENERATION, "genBambooInOverworld", genOverworldBamboo).getBoolean();
-        minBambooPerPatchOverworld = config.get(C_GENERATION, "minBambooPerPatchOverworld", minBambooPerPatchOverworld).getInt();
-        maxBambooPerPatchOverworld = config.get(C_GENERATION, "maxBambooPerPatchOverworld", maxBambooPerPatchOverworld).getInt();
-        minBambooPerPatchTropics = config.get(C_GENERATION, "minBambooPerPatchTropics", minBambooPerPatchTropics).getInt();
-        maxBambooPerPatchTropics = config.get(C_GENERATION, "maxBambooPerPatchTropics", maxBambooPerPatchTropics).getInt();
-        bambooGenChanceOverworld = config.getInt(C_GENERATION, "bambooGenChanceOverworld", bambooGenChanceOverworld, 0, 1000, "Chance of bamboo spawn. Lower values = more common");
-        tallFlowerGenChanceOverworld = config.getInt(C_GENERATION, "tallFlowerGenChanceOverworld", tallFlowerGenChanceOverworld, 0, 1000, "Chance of pineapple/iris spawn. Lower values = more common");
+        minBambooPerPatchOverworld = config.getInt("minBambooPerPatchOverworld", C_GENERATION, minBambooPerPatchOverworld, 0, 1000, "Minimum amount of bamboo in a patch in the overworld");
+        maxBambooPerPatchOverworld = config.getInt("maxBambooPerPatchOverworld", C_GENERATION, maxBambooPerPatchOverworld, minBambooPerPatchOverworld + 1, 1001, "Maximum amount of bamboo in a patch in the overworld");
+        minBambooPerPatchTropics = config.getInt("minBambooPerPatchTropics", C_GENERATION, minBambooPerPatchTropics, 0, 1000, "Minimum amount of bamboo in a patch in the tropics");
+        maxBambooPerPatchTropics = config.getInt("maxBambooPerPatchTropics", C_GENERATION, maxBambooPerPatchTropics, minBambooPerPatchTropics + 1, 1001, "Maximum amount of bamboo in a patch in the tropics");
+        bambooGenChanceOverworld = config.getInt("bambooGenChanceOverworld", C_GENERATION, bambooGenChanceOverworld, 0, 1000, "Chance of bamboo spawn. Lower values = more common");
+        tallFlowerGenChanceOverworld = config.getInt("tallFlowerGenChanceOverworld", C_GENERATION, tallFlowerGenChanceOverworld, 0, 1000, "Chance of pineapple/iris spawn. Lower values = more common");
 
         coconutBombWhitelist = config.get(C_MISC, "coconutBombWhitelist", coconutBombWhitelist).getStringList();
 
