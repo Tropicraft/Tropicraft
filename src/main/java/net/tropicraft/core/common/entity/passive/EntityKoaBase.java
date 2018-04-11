@@ -60,12 +60,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.capability.WorldDataInstance;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
 import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
 import net.tropicraft.core.common.entity.ai.EntityAIEatToHeal;
@@ -107,7 +109,10 @@ public class EntityKoaBase extends EntityVillager {
 
     public static int MAX_HOME_DISTANCE = 128;
 
+    private static final int INVALID_DIM = Integer.MAX_VALUE;
     private int villageID = -1;
+
+    private int villageDimID = INVALID_DIM;
 
     private EntityFishHook lure;
 
@@ -376,6 +381,7 @@ public class EntityKoaBase extends EntityVillager {
         findAndSetHomeToCloseChest(false);
         findAndSetFireSource(false);
         findAndSetDrums(false);
+        findAndSetTownID(false);
 
     }
 
@@ -610,6 +616,7 @@ public class EntityKoaBase extends EntityVillager {
         compound.setInteger("orientation_id", this.getDataManager().get(ORIENTATION));
 
         compound.setInteger("village_id", villageID);
+        compound.setInteger("village_dim_id", villageDimID);
 
         compound.setLong("lastTradeTime", lastTradeTime);
 
@@ -646,6 +653,16 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         this.villageID = compound.getInteger("village_id");
+
+        //backwards compat
+        if (!compound.hasKey("village_dim_id")) {
+            this.villageDimID = TropicsConfigs.tropicsDimensionID;
+        } else {
+            this.villageDimID = compound.getInteger("village_dim_id");
+        }
+
+
+
 
         this.getDataManager().set(ROLE, compound.getInteger("role_id"));
         this.getDataManager().set(GENDER, compound.getInteger("gender_id"));
@@ -704,6 +721,29 @@ public class EntityKoaBase extends EntityVillager {
                 }
             }
         }
+    }
+
+    public boolean findAndSetTownID(boolean force) {
+        if (!force && (world.getTotalWorldTime()+this.getEntityId()) % (20*30) != 0) return false;
+
+        boolean tryFind = false;
+
+        if (villageID == -1) {
+            tryFind = true;
+        }
+
+        if (tryFind) {
+            List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).grow(20, 20, 20));
+            Collections.shuffle(listEnts);
+            for (EntityKoaBase ent : listEnts) {
+                if (ent.villageID != -1 && ent.villageDimID != INVALID_DIM) {
+                    this.setVillageAndDimID(ent.villageID, ent.villageDimID);
+                    break;
+                }
+            }
+        }
+
+        return this.villageID != -1;
     }
 
     public void findAndSetFireSource(boolean force) {
@@ -861,7 +901,7 @@ public class EntityKoaBase extends EntityVillager {
         }
     }
 
-    public boolean tryGetVillage() {
+    /*public boolean tryGetVillage() {
         List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).grow(20, 20, 20));
         Collections.shuffle(listEnts);
         for (EntityKoaBase ent : listEnts) {
@@ -871,7 +911,7 @@ public class EntityKoaBase extends EntityVillager {
             }
         }
         return false;
-    }
+    }*/
 
     public boolean tryDumpInventoryIntoHomeChest() {
         TileEntity tile = world.getTileEntity(this.getHomePosition());
@@ -1036,21 +1076,40 @@ public class EntityKoaBase extends EntityVillager {
         return villageID;
     }
 
-    public void setVillageID(int villageID) {
+    /*public void setVillageID(int villageID) {
         this.villageID = villageID;
+    }*/
+
+    public void setVillageAndDimID(int villageID, int villageDimID) {
+        this.villageID = villageID;
+        this.villageDimID = villageDimID;
     }
 
+    public int getVillageDimID() {
+        return villageDimID;
+    }
+
+    /*public void setVillageDimID(int villageDimID) {
+        this.villageDimID = villageDimID;
+    }*/
+
     public TownKoaVillage getVillage() {
-        WorldDataInstance data = this.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
-        if (data != null) {
-            ISimulationTickable sim = data.getLocationByID(villageID);
-            if (sim instanceof TownKoaVillage) {
-                return (TownKoaVillage) sim;
+        if (this.villageDimID == INVALID_DIM || this.villageID == -1) return null;
+
+        World world = DimensionManager.getWorld(villageDimID);
+
+        if (world != null) {
+            WorldDataInstance data = world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+            if (data != null) {
+                ISimulationTickable sim = data.getLocationByID(villageID);
+                if (sim instanceof TownKoaVillage) {
+                    return (TownKoaVillage) sim;
+                } else {
+                    //System.out.println("critical: couldnt find village by ID");
+                }
             } else {
-                //System.out.println("critical: couldnt find village by ID");
+                //System.out.println("critical: no world cap");
             }
-        } else {
-            //System.out.println("critical: no world cap");
         }
         return null;
     }

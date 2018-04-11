@@ -136,23 +136,19 @@ public class EntityAIKoaMate extends EntityAIBase
     private boolean canTownHandleMoreVillagers()
     {
         TownKoaVillage village = villagerObj.getVillage();
-        if (village != null) {
-            if (village.getPopulationSize() < 20) {
-                //System.out.println("population size: " + village.getPopulationSize());
-                return true;
+
+        if (village == null) {
+            if (villagerObj.findAndSetTownID(true)) {
+                village = villagerObj.getVillage();
+
+                //just in case
+                if (village == null) return false;
             } else {
                 return false;
-            }
-        } else {
-            boolean success = villagerObj.tryGetVillage();
-            if (!success) {
-                //System.out.println("no village found");
-                return false;
-            } else {
-                //System.out.println("fixed village");
             }
         }
-        return false;
+
+        return village.getPopulationSize() < 20;
     }
 
     private void giveBirth()
@@ -169,7 +165,7 @@ public class EntityAIKoaMate extends EntityAIBase
         entityvillager.setGrowingAge(-24000);
         entityvillager.setLocationAndAngles(this.villagerObj.posX, this.villagerObj.posY, this.villagerObj.posZ, 0.0F, 0.0F);
         if (entityvillager instanceof EntityKoaBase) {
-            ((EntityKoaBase) entityvillager).setVillageID(villagerObj.getVillageID());
+            ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimID());
             entityvillager.setHomePosAndDistance(villagerObj.getHomePosition(), EntityKoaBase.MAX_HOME_DISTANCE);
             TownKoaVillage village = villagerObj.getVillage();
             if (village != null) {
