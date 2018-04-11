@@ -68,7 +68,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
         //temp
         //entity.timeBetweenFishing = 20*60*2;
         entity.lastTimeFished = 0;
-        //debugTask = false;
+        debugTask = true;
 
         BlockPos blockpos = new BlockPos(this.entity);
 
@@ -79,6 +79,12 @@ public class EntityAIGoneFishin extends EntityAIBase {
         boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
         if (entity.lastTimeFished < entity.world.getTotalWorldTime() && entity.world.rand.nextInt(3) == 0) {
             BlockPos posWater = findWater();
+
+            //find close if failed
+            if (posWater == null) {
+                posWater = Util.findBlock(entity, 5, Util::isDeepWater);
+            }
+
             if (posWater != null) {
                 if (Util.tryMoveToXYZLongDist(entity, posWater, moveSpeedAmp)) {
                     posLastWaterFound = posWater;

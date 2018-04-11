@@ -3,6 +3,9 @@ package net.tropicraft.core.common.entity.ai;
 import java.util.List;
 
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
@@ -175,6 +178,8 @@ public class EntityAIKoaMate extends EntityAIBase
             }
 
             ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
+
+            ((EntityKoaBase) entityvillager).getWorld().playSound(null, entityvillager.getPosition(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.AMBIENT, 1, 1);
         }
 
 
