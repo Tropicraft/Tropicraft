@@ -103,12 +103,26 @@ public class CommandTropicsMisc extends CommandBase {
                     //TEMP!?
                     village.direction = 0;
 
+                    //custom village changes
+                    village.isCustomVillage = true;
+
+                    //no koa regen
+                    village.minEntitiesToKeepAlive = 2;
+
                     village.initFirstTime();
+
+                    //force new spawn coords for the 2 koa
+                    village.generateSpawnCoords();
 
                     //NO GEN FOR CUSTOM!
                     //village.genStructure();
 
+
+                    player.sendMessage(new TextComponentString("spawned a new custom village"));
+
                     storage.addTickingLocation(village);
+                } else {
+                    player.sendMessage(new TextComponentString("couldnt spawn a new custom village"));
                 }
             } else if (args[0].equals("schematic_save")) {
                 try {

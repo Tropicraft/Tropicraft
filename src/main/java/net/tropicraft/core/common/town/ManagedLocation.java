@@ -139,7 +139,6 @@ public class ManagedLocation implements ISimulationTickable {
 
 				if (data.entityUUID == null) {
 					//System.out.println("detected missing entity, attempting to respawn a " + data.type + " at coords: " + data.coords);
-					//TODO: for new village, i want koa mating to repopulate the numbers, not magic extra spawning
 					EntityLivingBase ent = spawnMemberAtSpawnLocation(data);
 					if (data.entityUUID == null) {
 						//System.out.println("spawned location failed to spawn a new entity, perhaps spawnMemberAtSpawnLocation() method not overridden properly?");
@@ -180,6 +179,9 @@ public class ManagedLocation implements ISimulationTickable {
 		
 		var1.setInteger("locationID", locationID);
 		var1.setInteger("dimID", dimID);
+
+		var1.setInteger("minEntitiesToKeepAlive", minEntitiesToKeepAlive);
+
 		UtilBuild.writeCoords("spawn", spawn, var1);
 		
 		NBTTagCompound nbtListPersistantEntities = new NBTTagCompound();
@@ -200,6 +202,11 @@ public class ManagedLocation implements ISimulationTickable {
 		hasInit = true;
     	locationID = var1.getInteger("locationID");
     	dimID = var1.getInteger("dimID");
+
+    	if (var1.hasKey("minEntitiesToKeepAlive")) {
+			minEntitiesToKeepAlive = var1.getInteger("minEntitiesToKeepAlive");
+		}
+
     	spawn = UtilBuild.readCoords("spawn", var1);
     	
     	NBTTagCompound nbtPersistantEntities = var1.getCompoundTag("listPersistantEntities");
