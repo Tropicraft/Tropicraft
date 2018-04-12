@@ -108,6 +108,7 @@ public class GuiTropicalBook extends GuiScreen {
             if (selectedPage.hasContent()) {
                 if (book.isPageVisible(selectedPage.getId()) && !book.hasPageBeenRead(selectedPage.getId())) {
                     book.markPageAsRead(selectedPage.getId());
+                    ((GuiClearButton)guibutton).color = 0x440000;
                 }
                 contentPage = 0;
                 cachedRecipes = selectedPage.getRelevantRecipes();
