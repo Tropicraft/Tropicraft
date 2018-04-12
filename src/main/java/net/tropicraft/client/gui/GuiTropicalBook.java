@@ -154,7 +154,7 @@ public class GuiTropicalBook extends GuiScreen {
             }
         }
         
-        bookmarkButton.visible = !showingBookmarks && indexPage >= 0;
+        bookmarkButton.visible = !showingBookmarks && indexPage >= 0 && selectedPage == null;
         for (GuiBookmarkButton btn : bookmarks) {
             btn.visible = showingBookmarks;
         }
