@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.tropicraft.configuration.GenRates;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.common.worldgen.WorldGenBamboo;
@@ -53,8 +54,10 @@ public class TCWorldGenerator implements IWorldGenerator {
                 int k = chunkX + random.nextInt(16) + 8;
                 int l = random.nextInt(62) + 64;
                 int i1 = chunkZ + random.nextInt(16) + 8;
+                
+                Biome biomeFlowers = world.getBiome(new BlockPos(k, l, i1));
 
-                if (TropicsConfigs.genOverworldFlowers) {
+                if (TropicsConfigs.genOverworldFlowers && Util.isBiomeTropical(biomeFlowers)) {
                     for (int j3 = 0; j3 < 10; j3++) {
                         l = random.nextInt(62) + 64;
                         BlockPos flowerPos = new BlockPos(k, l, i1);

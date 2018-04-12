@@ -301,6 +301,7 @@ itemGroup.tropicraft=Tropicraft
 tropicraft.config.title=Tropicraft Configuration
 tropicraft.config.generation.title=Worldgen Settings
 tropicraft.config.misc.title=Misc Settings
+tropicraft.config.entity.title=Entity Settings
 
 # Entity localizations
 entity.tropicraft.iguana.name=Iguana

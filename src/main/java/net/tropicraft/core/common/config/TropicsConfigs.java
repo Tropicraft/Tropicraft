@@ -22,6 +22,7 @@ public class TropicsConfigs {
     public static boolean genOverworldPalmsBeachOnly = false;
     public static int chancePalmOverworld = -1;
     public static int factorPalmOverworld = 3;
+
     public static boolean genOverworldEIH = true;
     public static boolean genOverworldFlowers = true;
     public static boolean genOverworldPineapples = true;
@@ -33,6 +34,8 @@ public class TropicsConfigs {
     public static boolean allowVolcanoEruption = true;
     public static int bambooGenChanceOverworld = GenRates.BAMBOO_CHANCE;
     public static int tallFlowerGenChanceOverworld = GenRates.TALL_FLOWERS_CHANCE;
+    
+    public static boolean onlyGenFlowersInTropicalBiomes = true;
 
     public static int tropicsOceanID = 60;
     public static int tropicsID = 61;
@@ -50,8 +53,15 @@ public class TropicsConfigs {
     /* == Misc Configs == */
 
     public static String[] coconutBombWhitelist = {};
+    
+    /* == Entity Configs == */
+    public static boolean spawnPassiveTropicsOceanMobsOverworld = false;
+    public static boolean spawnHostileTropicsOceanMobsOverworld = false;
+    public static boolean spawnPassiveTropicsLandMobsOverworld = false;
+    public static boolean spawnHostileTropicsLandMobsOverworld = false;
 
     private static final String C_GENERATION = "generation";
+    private static final String C_ENTITY = "entity";
     private static final String C_MISC = "misc";
 
     private static Configuration config;
@@ -84,6 +94,8 @@ public class TropicsConfigs {
         bambooGenChanceOverworld = config.getInt("bambooGenChanceOverworld", C_GENERATION, bambooGenChanceOverworld, 0, 1000, "Chance of bamboo spawn. Lower values = more common");
         tallFlowerGenChanceOverworld = config.getInt("tallFlowerGenChanceOverworld", C_GENERATION, tallFlowerGenChanceOverworld, 0, 1000, "Chance of pineapple/iris spawn. Lower values = more common");
 
+        onlyGenFlowersInTropicalBiomes = config.get(C_GENERATION, "onlyGenFlowersInTropicalBiomesOverworld", onlyGenFlowersInTropicalBiomes, "Should Tropicraft flowers only generate in tropical biomes in the overworld?").getBoolean();
+        
         coconutBombWhitelist = config.get(C_MISC, "coconutBombWhitelist", coconutBombWhitelist).getStringList();
 
         allowVolcanoEruption = config.get(C_MISC, "allowVolcanoEruption", allowVolcanoEruption).getBoolean();
@@ -92,6 +104,11 @@ public class TropicsConfigs {
 
         rainforestThicknessAmount = config.getInt(C_GENERATION, "rainforestThicknessAmount", rainforestThicknessAmount, 0, 3, "How thick should the trees in rainforest biomes be?");
 
+        spawnPassiveTropicsOceanMobsOverworld = config.get(C_ENTITY, "spawnPassiveTropicsOceanMobsOverworld", spawnPassiveTropicsOceanMobsOverworld, "Should Tropicraft's passive water mobs spawn in the overworld?").getBoolean();
+        spawnHostileTropicsOceanMobsOverworld = config.get(C_ENTITY, "spawnHostileTropicsOceanMobsOverworld", spawnHostileTropicsOceanMobsOverworld, "Should Tropicraft's hostile water mobs spawn in the overworld?").getBoolean();
+
+        spawnPassiveTropicsLandMobsOverworld = config.get(C_ENTITY, "spawnPassiveTropicsLandMobsOverworld", spawnPassiveTropicsLandMobsOverworld, "Should Tropicraft's passive land mobs spawn in the overworld?").getBoolean();
+        spawnHostileTropicsLandMobsOverworld = config.get(C_ENTITY, "spawnHostileTropicsLandMobsOverworld", spawnHostileTropicsLandMobsOverworld, "Should Tropicraft's hostile land mobs spawn in the overworld?").getBoolean();
         config.save();
     }
 

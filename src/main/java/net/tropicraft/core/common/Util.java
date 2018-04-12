@@ -4,9 +4,7 @@ import java.util.Random;
 import java.util.function.BiPredicate;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
@@ -15,11 +13,10 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
 public class Util {
 
@@ -272,5 +269,22 @@ public class Util {
             stack.setTagCompound(new NBTTagCompound());
 
         return stack.getTagCompound();
+    }
+    
+    /**
+     * Helper method to determine if a provided biome is to be
+     * considered 'tropical'. Used in overworld gen currently.
+     * @return
+     */
+    public static boolean isBiomeTropical(Biome biome) {
+        return isBiomeHot(biome) && isBiomeWet(biome);
+    }
+    
+    public static boolean isBiomeHot(Biome biome) {
+        return biome.getDefaultTemperature() >= 0.8F;
+    }
+    
+    public static boolean isBiomeWet(Biome biome) {
+        return biome.getRainfall() > 0.3F;
     }
 }

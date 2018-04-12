@@ -15,6 +15,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
@@ -37,8 +38,14 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 		setSize(0.8F, 0.8F);
 		this.entityCollisionReduction = 0.8F;
 		this.experienceValue = 5;
-
 	}
+	
+    /**
+     * Checks if the entity's current position is a valid location to spawn this entity.
+     */
+    public boolean getCanSpawnHere() {
+        return true;
+    }
 
 	@Override
 	protected void entityInit() {
