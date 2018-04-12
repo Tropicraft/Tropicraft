@@ -39,12 +39,11 @@ import net.tropicraft.core.common.event.SpawnEvents;
 import net.tropicraft.core.common.item.scuba.ScubaCapabilities;
 import net.tropicraft.core.common.network.TCPacketHandler;
 import net.tropicraft.core.common.worldgen.overworld.TCWorldGenerator;
-import net.tropicraft.core.encyclopedia.Encyclopedia;
+import net.tropicraft.core.encyclopedia.TropicalBook;
 import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.CommandRegistry;
 import net.tropicraft.core.registry.FluidRegistry;
-import net.tropicraft.core.registry.ItemRegistry;
 import net.tropicraft.core.registry.LootRegistry;
 import net.tropicraft.core.registry.OreDict;
 import net.tropicraft.core.registry.SmeltingRegistry;
@@ -60,7 +59,7 @@ public class Tropicraft {
 	@Mod.Instance(Info.MODID)
 	public static Tropicraft instance;
 	
-	public static Encyclopedia encyclopedia;
+	public static TropicalBook encyclopedia;
 	
     @CapabilityInject(PlayerDataInstance.class)
     public static final Capability<PlayerDataInstance> PLAYER_DATA_INSTANCE = null;

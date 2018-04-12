@@ -1,5 +1,8 @@
 package net.tropicraft.core.registry;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.Tropicraft;
@@ -10,6 +13,9 @@ import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftShells;
+import net.tropicraft.core.encyclopedia.ItemPage;
+import net.tropicraft.core.encyclopedia.MultiItemPage;
+import net.tropicraft.core.encyclopedia.TropicalBook;
 
 public class EncyclopediaRegistry extends TropicraftRegistry {
     
@@ -23,182 +29,171 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
      * if possible)
      */
     public static void init() {
-        Tropicraft.encyclopedia.includeItem("acaivine", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.ACAI_VINE.getMeta()));
-        Tropicraft.encyclopedia.includeItem("anemone", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.ANEMONE.getMeta()));
-        Tropicraft.encyclopedia.includeItem("anthuriumo", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.ORANGE_ANTHURIUM.getMeta()));
-        Tropicraft.encyclopedia.includeItem("anthuriumr", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.RED_ANTHURIUM.getMeta()));
+        TropicalBook enc = Tropicraft.encyclopedia;
+        enc.addPage(new ItemPage("acaivine", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.ACAI_VINE.getMeta())));
+        enc.addPage(new ItemPage("anemone", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.ANEMONE.getMeta())));
+        enc.addPage(new ItemPage("anthuriumo", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.ORANGE_ANTHURIUM.getMeta())));
+        enc.addPage(new ItemPage("anthuriumr", new ItemStack(BlockRegistry.flowers, 1, TropicraftFlowers.RED_ANTHURIUM.getMeta())));
 
-        for (int i = 0; i < AshenMasks.VALUES.length; i++) {
-            Tropicraft.encyclopedia.includeItem("ashenmask", new ItemStack(ItemRegistry.maskMap.get(AshenMasks.VALUES[i]), 1, i));
-        }
+        enc.addPage(new MultiItemPage("ashenmask", Arrays.stream(AshenMasks.VALUES).map(v -> new ItemStack(ItemRegistry.maskMap.get(v))).toArray(ItemStack[]::new)));
 
-        Tropicraft.encyclopedia.includeItem("azurite", new ItemStack(ItemRegistry.azurite));
-        Tropicraft.encyclopedia.includeItem("bamboo", new ItemStack(BlockRegistry.bambooShoot));
-        Tropicraft.encyclopedia.includeItem("bamboomug", new ItemStack(ItemRegistry.bambooMug));
-        Tropicraft.encyclopedia.includeItem("bambooblock", new ItemStack(BlockRegistry.bundles, 1, 1));
-        Tropicraft.encyclopedia.includeItem("bamboochest", new ItemStack(BlockRegistry.bambooChest));
-        Tropicraft.encyclopedia.includeItem("bamboodoor", new ItemStack(ItemRegistry.bambooDoor));
-        Tropicraft.encyclopedia.includeItem("bamboofence", new ItemStack(BlockRegistry.bambooFence));
-        Tropicraft.encyclopedia.includeItem("bamboofencegate", new ItemStack(BlockRegistry.bambooFenceGate));
-        Tropicraft.encyclopedia.includeItem("bamboospear", new ItemStack(ItemRegistry.bambooSpear));
-        Tropicraft.encyclopedia.includeItem("bamboostick", new ItemStack(ItemRegistry.bambooStick));
+        enc.addPage(new ItemPage("azurite", new ItemStack(ItemRegistry.azurite)));
+        enc.addPage(new ItemPage("bamboo", new ItemStack(BlockRegistry.bambooShoot)));
+        enc.addPage(new ItemPage("bamboomug", new ItemStack(ItemRegistry.bambooMug)));
+        enc.addPage(new ItemPage("bambooblock", new ItemStack(BlockRegistry.bundles, 1, 1)));
+        enc.addPage(new ItemPage("bamboochest", new ItemStack(BlockRegistry.bambooChest)));
+        enc.addPage(new ItemPage("bamboodoor", new ItemStack(ItemRegistry.bambooDoor)));
+        enc.addPage(new ItemPage("bamboofence", new ItemStack(BlockRegistry.bambooFence)));
+        enc.addPage(new ItemPage("bamboofencegate", new ItemStack(BlockRegistry.bambooFenceGate)));
+        enc.addPage(new ItemPage("bamboospear", new ItemStack(ItemRegistry.bambooSpear)));
+        enc.addPage(new ItemPage("bamboostick", new ItemStack(ItemRegistry.bambooStick)));
 
-        for (int i = 0; i < 16; i++) {
-            Tropicraft.encyclopedia.includeItem("beachchair", new ItemStack(ItemRegistry.chair, 1, i));
-            //TODO  Tropicraft.encyclopedia.includeItem("beachfloat", new ItemStack(TCItemRegistry.beachFloat, 1, i));
-            /*
-             * beachfloat.title = Beach Float
-beachfloat.desc  = These uncontrollable floats allow the gentle currents of the tropics to move you. They come in five different colors.
-             */
-            Tropicraft.encyclopedia.includeItem("beachumbrella", new ItemStack(ItemRegistry.umbrella, 1, i));
-        }
+        enc.addPage(new MultiItemPage("beachchair",     IntStream.range(0, 16).mapToObj(i -> new ItemStack(ItemRegistry.chair, 1, i)).toArray(ItemStack[]::new)));
+//      //TODO  enc.addPage(new ItemPage("beachfloat", new ItemStack(TCItemRegistry.beachFloat, 1, i)));
+//      /*
+//       * beachfloat.title = Beach Float
+//beachfloat.desc  = These uncontrollable floats allow the gentle currents of the tropics to move you. They come in five different colors.
+//       */
+        enc.addPage(new MultiItemPage("beachfloat",     IntStream.range(0, 16).mapToObj(i -> new ItemStack(ItemRegistry.beach_float, 1, i)).toArray(ItemStack[]::new)));
+        enc.addPage(new MultiItemPage("beachumbrella",  IntStream.range(0, 16).mapToObj(i -> new ItemStack(ItemRegistry.umbrella, 1, i)).toArray(ItemStack[]::new)));
 
-        Tropicraft.encyclopedia.includeItem("blackcoffee", MixerRecipes.getItemStack(Drink.blackCoffee));
-        Tropicraft.encyclopedia.includeItem("blacksand", new ItemStack(BlockRegistry.sands, 1, 3));
-        //TODO Tropicraft.encyclopedia.includeItem("blowgun", new ItemStack(ItemRegistry.blowGun, 1, 0));
-        Tropicraft.encyclopedia.includeItem("bromeliad", new ItemStack(BlockRegistry.flowers, 1, 14));
-        Tropicraft.encyclopedia.includeItem("caipirinha", MixerRecipes.getItemStack(Drink.caipirinha));
-        Tropicraft.encyclopedia.includeItem("canna", new ItemStack(BlockRegistry.flowers, 1, 3));
-        Tropicraft.encyclopedia.includeItem("chunkohead", new ItemStack(BlockRegistry.chunk));
-        Tropicraft.encyclopedia.includeItem("chunkfence", new ItemStack(BlockRegistry.chunkFence));
-        Tropicraft.encyclopedia.includeItem("chunkfencegate", new ItemStack(BlockRegistry.chunkFenceGate));
-        Tropicraft.encyclopedia.includeItem("coconut", new ItemStack(BlockRegistry.coconut));
-        Tropicraft.encyclopedia.includeItem("coconutchunks", new ItemStack(ItemRegistry.coconutChunk));
-        Tropicraft.encyclopedia.includeItem("coconutbomb", new ItemStack(ItemRegistry.coconutBomb));
-        Tropicraft.encyclopedia.includeItem("coffeebean", new ItemStack(ItemRegistry.coffeeBeans, 1, 0));
-        Tropicraft.encyclopedia.includeItem("commelina", new ItemStack(BlockRegistry.flowers, 1, 0));
+        enc.addPage(new ItemPage("blackcoffee", MixerRecipes.getItemStack(Drink.blackCoffee)));
+        enc.addPage(new ItemPage("blacksand", new ItemStack(BlockRegistry.sands, 1, 3)));
+        //TODO enc.addPage(new ItemPage("blowgun", new ItemStack(ItemRegistry.blowGun, 1, 0)));
+        enc.addPage(new ItemPage("bromeliad", new ItemStack(BlockRegistry.flowers, 1, 14)));
+        enc.addPage(new ItemPage("caipirinha", MixerRecipes.getItemStack(Drink.caipirinha)));
+        enc.addPage(new ItemPage("canna", new ItemStack(BlockRegistry.flowers, 1, 3)));
+        enc.addPage(new ItemPage("chunkohead", new ItemStack(BlockRegistry.chunk)));
+        enc.addPage(new ItemPage("chunkfence", new ItemStack(BlockRegistry.chunkFence)));
+        enc.addPage(new ItemPage("chunkfencegate", new ItemStack(BlockRegistry.chunkFenceGate)));
+        enc.addPage(new ItemPage("coconut", new ItemStack(BlockRegistry.coconut)));
+        enc.addPage(new ItemPage("coconutchunks", new ItemStack(ItemRegistry.coconutChunk)));
+        enc.addPage(new ItemPage("coconutbomb", new ItemStack(ItemRegistry.coconutBomb)));
+        enc.addPage(new ItemPage("coffeebean", new ItemStack(ItemRegistry.coffeeBeans, 1, 0)));
+        enc.addPage(new ItemPage("commelina", new ItemStack(BlockRegistry.flowers, 1, 0)));
 
-        for (int i = 0; i < TropicraftCorals.VALUES.length; i++) {
-            Tropicraft.encyclopedia.includeItem("coral", new ItemStack(BlockRegistry.coral, 1, i));
-        }
+        enc.addPage(new MultiItemPage("coral", Arrays.stream(TropicraftCorals.VALUES).map(v -> new ItemStack(BlockRegistry.coral, 1, v.getMeta())).toArray(ItemStack[]::new)));
 
-        Tropicraft.encyclopedia.includeItem("coralsand", new ItemStack(BlockRegistry.sands, 1, 1));
-        Tropicraft.encyclopedia.includeItem("crocosmia", new ItemStack(BlockRegistry.flowers, 1, 1));
-        Tropicraft.encyclopedia.includeItem("croton", new ItemStack(BlockRegistry.flowers, 1, 10));
+        enc.addPage(new ItemPage("coralsand", new ItemStack(BlockRegistry.sands, 1, 1)));
+        enc.addPage(new ItemPage("crocosmia", new ItemStack(BlockRegistry.flowers, 1, 1)));
+        enc.addPage(new ItemPage("croton", new ItemStack(BlockRegistry.flowers, 1, 10)));
+        
         //      TODO for (int i = 0; i < ItemCurare.effectNames.length; i++) {
-        //          Tropicraft.encyclopedia.includeItem("curare", new ItemStack(TCItemRegistry.curare, 1, i));
+        //          enc.addPage(new ItemPage("curare", new ItemStack(TCItemRegistry.curare, 1, i)));
         //      }
-        //TODO Tropicraft.encyclopedia.includeItem("curarebowl", new ItemStack(BlockRegistry.curareBowl));
-        Tropicraft.encyclopedia.includeItem("dagger", new ItemStack(ItemRegistry.dagger));
+        //TODO enc.addPage(new ItemPage("curarebowl", new ItemStack(BlockRegistry.curareBowl)));
+        enc.addPage(new ItemPage("dagger", new ItemStack(ItemRegistry.dagger)));
         //      TODO for (int i = 0; i < ItemCurare.effectNames.length; i++) {
-        //          Tropicraft.encyclopedia.includeItem("dart", new ItemStack(TCItemRegistry.dart, 1, i));
+        //          enc.addPage(new ItemPage("dart", new ItemStack(TCItemRegistry.dart, 1, i)));
         //      }
-        Tropicraft.encyclopedia.includeItem("dracaena", new ItemStack(BlockRegistry.flowers, 1, 11));
-        Tropicraft.encyclopedia.includeItem("easternisles", new ItemStack(ItemRegistry.recordEasternIsles));
-        //  Tropicraft.encyclopedia.includeItem("enchantwand", new ItemStack(TCItemRegistry.enchantWand));
-        Tropicraft.encyclopedia.includeItem("encyclopedia", new ItemStack(ItemRegistry.encyclopedia));
-        Tropicraft.encyclopedia.includeItem("eudialyte", new ItemStack(ItemRegistry.eudialyte));
-        Tropicraft.encyclopedia.includeItem("fern", new ItemStack(BlockRegistry.flowers, 1, 12));
-        Tropicraft.encyclopedia.includeItem("fertilizer", new ItemStack(ItemRegistry.fertilizer));
-        Tropicraft.encyclopedia.includeItem("fireboots", new ItemStack(ItemRegistry.fireBoots));
-        Tropicraft.encyclopedia.includeItem("firechestplate", new ItemStack(ItemRegistry.fireChestplate));
-        Tropicraft.encyclopedia.includeItem("firehelm", new ItemStack(ItemRegistry.fireHelmet));
-        Tropicraft.encyclopedia.includeItem("fireleggings", new ItemStack(ItemRegistry.fireLeggings));
-        //  Tropicraft.encyclopedia.includeItem("firestaff", new ItemStack(TCItemRegistry.staffFire));
+        enc.addPage(new ItemPage("dracaena", new ItemStack(BlockRegistry.flowers, 1, 11)));
+        enc.addPage(new ItemPage("easternisles", new ItemStack(ItemRegistry.recordEasternIsles)));
+        //  enc.addPage(new ItemPage("enchantwand", new ItemStack(TCItemRegistry.enchantWand)));
+        enc.addPage(new ItemPage("encyclopedia", new ItemStack(ItemRegistry.encyclopedia)));
+        enc.addPage(new ItemPage("eudialyte", new ItemStack(ItemRegistry.eudialyte)));
+        enc.addPage(new ItemPage("fern", new ItemStack(BlockRegistry.flowers, 1, 12)));
+        enc.addPage(new ItemPage("fertilizer", new ItemStack(ItemRegistry.fertilizer)));
+        enc.addPage(new ItemPage("fireboots", new ItemStack(ItemRegistry.fireBoots)));
+        enc.addPage(new ItemPage("firechestplate", new ItemStack(ItemRegistry.fireChestplate)));
+        enc.addPage(new ItemPage("firehelm", new ItemStack(ItemRegistry.fireHelmet)));
+        enc.addPage(new ItemPage("fireleggings", new ItemStack(ItemRegistry.fireLeggings)));
+        //  enc.addPage(new ItemPage("firestaff", new ItemStack(TCItemRegistry.staffFire)));
         /*
          * firestaff.title = Fire Staff
 firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows the holder to shoot fireballs that resemble meteors from the Catacombs
          */
-        Tropicraft.encyclopedia.includeItem("fishbucket", new ItemStack(ItemRegistry.fishBucket));
-        Tropicraft.encyclopedia.includeItem("fishingnet", new ItemStack(ItemRegistry.fishingNet));
-        //TODO Tropicraft.encyclopedia.includeItem("flippers", new ItemStack(ItemRegistry.flippers));
-        //TODO Tropicraft.encyclopedia.includeItem("flippers", new ItemStack(Items.LEATHER));
-        Tropicraft.encyclopedia.includeItem("flowerpot", new ItemStack(ItemRegistry.flowerPot));
-        Tropicraft.encyclopedia.includeItem("froglegs", new ItemStack(ItemRegistry.frogLeg));
-        Tropicraft.encyclopedia.includeItem("froglegscooked", new ItemStack(ItemRegistry.cookedFrogLeg));
-        Tropicraft.encyclopedia.includeItem("frogskin", new ItemStack(ItemRegistry.poisonFrogSkin));
-        Tropicraft.encyclopedia.includeItem("froxconch", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.FROX.getMeta()));
-        Tropicraft.encyclopedia.includeItem("grapefruit", new ItemStack(ItemRegistry.grapefruit));
-        Tropicraft.encyclopedia.includeItem("grapefruitsapling", new ItemStack(BlockRegistry.saplings, 1, 1));
-        Tropicraft.encyclopedia.includeItem("greensand", new ItemStack(BlockRegistry.sands, 1, 2));
-        //Tropicraft.encyclopedia.includeItem("icestaff", new ItemStack(TCItemRegistry.staffIce));
-        Tropicraft.encyclopedia.includeItem("iggyscale", new ItemStack(ItemRegistry.scale));
-        Tropicraft.encyclopedia.includeItem("iguana_leather", new ItemStack(ItemRegistry.iguanaLeather));
-        Tropicraft.encyclopedia.includeItem("iris", new ItemStack(BlockRegistry.iris));
-        //  Tropicraft.encyclopedia.includeItem("journalpage", new ItemStack(TCItemRegistry.journalPage));
-        Tropicraft.encyclopedia.includeItem("kapok", new ItemStack(BlockRegistry.leaves, 1, 2));
-        //TODO Tropicraft.encyclopedia.includeItem("koachest", new ItemStack(BlockRegistry.koaChest));
-        //TODO Tropicraft.encyclopedia.includeItem("leafball", new ItemStack(ItemRegistry.leafBall));
-        //Tropicraft.encyclopedia.includeItem("leather", new ItemStack(Items.LEATHER));
-        Tropicraft.encyclopedia.includeItem("lemon", new ItemStack(ItemRegistry.lemon));
-        Tropicraft.encyclopedia.includeItem("lemonade", MixerRecipes.getItemStack(Drink.lemonade));
-        Tropicraft.encyclopedia.includeItem("lemonsapling", new ItemStack(BlockRegistry.saplings, 1, 2));
-        Tropicraft.encyclopedia.includeItem("lime", new ItemStack(ItemRegistry.lime));
-        Tropicraft.encyclopedia.includeItem("limeade", MixerRecipes.getItemStack(Drink.limeade));
-        Tropicraft.encyclopedia.includeItem("limesapling", new ItemStack(BlockRegistry.saplings, 1, 4));
-        Tropicraft.encyclopedia.includeItem("lowtide", new ItemStack(ItemRegistry.recordLowTide));
-        Tropicraft.encyclopedia.includeItem("magicmushroom", new ItemStack(BlockRegistry.flowers, 1, 7));
-        Tropicraft.encyclopedia.includeItem("mahogany", new ItemStack(BlockRegistry.logs, 1, 1));
-        Tropicraft.encyclopedia.includeItem("mahoganyfence", new ItemStack(BlockRegistry.mahoganyFence));
-        Tropicraft.encyclopedia.includeItem("mahoganyfencegate", new ItemStack(BlockRegistry.mahoganyFenceGate));
-        Tropicraft.encyclopedia.includeItem("marlinmeat", new ItemStack(ItemRegistry.freshMarlin));
-        Tropicraft.encyclopedia.includeItem("marlincooked", new ItemStack(ItemRegistry.searedMarlin));
-        Tropicraft.encyclopedia.includeItem("mineralsand", new ItemStack(BlockRegistry.sands, 1, 4));
-        Tropicraft.encyclopedia.includeItem("mixer", new ItemStack(BlockRegistry.drinkMixer));
-        //  Tropicraft.encyclopedia.includeItem("nigeljournal", new ItemStack(TCItemRegistry.nigelJournal));
-        Tropicraft.encyclopedia.includeItem("orange", new ItemStack(ItemRegistry.orange));
-        Tropicraft.encyclopedia.includeItem("orangeade", MixerRecipes.getItemStack(Drink.orangeade));
-        Tropicraft.encyclopedia.includeItem("orangesapling", new ItemStack(BlockRegistry.saplings, 1, 3));
-        Tropicraft.encyclopedia.includeItem("orchid", new ItemStack(BlockRegistry.flowers, 1, 2));
-        Tropicraft.encyclopedia.includeItem("pabshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.PAB.getMeta()));
-        Tropicraft.encyclopedia.includeItem("palmplanks", new ItemStack(BlockRegistry.planks, 1, 0)); //0 is palm, 1 is mahogany
-        Tropicraft.encyclopedia.includeItem("palmwood", new ItemStack(BlockRegistry.logs, 1, 0));
-        Tropicraft.encyclopedia.includeItem("palmsapling", new ItemStack(BlockRegistry.saplings, 1, 0));
-        Tropicraft.encyclopedia.includeItem("palmfence", new ItemStack(BlockRegistry.palmFence));
-        Tropicraft.encyclopedia.includeItem("palmfencegate", new ItemStack(BlockRegistry.palmFenceGate));
-        Tropicraft.encyclopedia.includeItem("pathos", new ItemStack(BlockRegistry.flowers, 1, 8));
-        Tropicraft.encyclopedia.includeItem("pearlb", new ItemStack(ItemRegistry.blackPearl));
-        Tropicraft.encyclopedia.includeItem("pearlw", new ItemStack(ItemRegistry.whitePearl));
-        Tropicraft.encyclopedia.includeItem("pineapple", new ItemStack(BlockRegistry.pineapple, 1, 0));
-        Tropicraft.encyclopedia.includeItem("pineapplecubes", new ItemStack(ItemRegistry.pineappleCubes));
-        Tropicraft.encyclopedia.includeItem("pinacolada", MixerRecipes.getItemStack(Drink.pinaColada));
-        Tropicraft.encyclopedia.includeItem("portalstarter",  new ItemStack(ItemRegistry.portalEnchanter));
-        Tropicraft.encyclopedia.includeItem("purifiedsand", new ItemStack(BlockRegistry.sands, 1, TropicraftSands.PURIFIED.getMeta()));
-        Tropicraft.encyclopedia.includeItem("reeds", new ItemStack(Items.REEDS));
-        Tropicraft.encyclopedia.includeItem("rubenautilus", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.RUBE.getMeta()));
-        Tropicraft.encyclopedia.includeItem("scaleboots", new ItemStack(ItemRegistry.scaleBoots));
-        Tropicraft.encyclopedia.includeItem("scalechestplate", new ItemStack(ItemRegistry.scaleChestplate));
-        Tropicraft.encyclopedia.includeItem("scalehelm", new ItemStack(ItemRegistry.scaleHelmet));
-        Tropicraft.encyclopedia.includeItem("scaleleggings", new ItemStack(ItemRegistry.scaleLeggings));
-        Tropicraft.encyclopedia.includeItem("scubaflippers", new ItemStack(ItemRegistry.pinkFlippers));
-        Tropicraft.encyclopedia.includeItem("scubaflippers", new ItemStack(ItemRegistry.yellowFlippers));
-        Tropicraft.encyclopedia.includeItem("scubachestplate", new ItemStack(ItemRegistry.pinkChestplateGear));
-        Tropicraft.encyclopedia.includeItem("scubachestplate", new ItemStack(ItemRegistry.yellowChestplateGear));
-        Tropicraft.encyclopedia.includeItem("scubagoggles", new ItemStack(ItemRegistry.pinkScubaGoggles));
-        Tropicraft.encyclopedia.includeItem("scubagoggles", new ItemStack(ItemRegistry.yellowScubaGoggles));
-        Tropicraft.encyclopedia.includeItem("divecomputer", new ItemStack(ItemRegistry.diveComputer));
-        Tropicraft.encyclopedia.includeItem("weightbelt", new ItemStack(ItemRegistry.yellowWeightBelt));
-        Tropicraft.encyclopedia.includeItem("weightbelt", new ItemStack(ItemRegistry.pinkWeightBelt));
-        Tropicraft.encyclopedia.includeItem("ponybottle", new ItemStack(ItemRegistry.yellowPonyBottle));
-        Tropicraft.encyclopedia.includeItem("ponybottle", new ItemStack(ItemRegistry.pinkPonyBottle));
-        Tropicraft.encyclopedia.includeItem("bcd", new ItemStack(ItemRegistry.pinkBCD));
-        Tropicraft.encyclopedia.includeItem("bcd", new ItemStack(ItemRegistry.yellowBCD));
-        Tropicraft.encyclopedia.includeItem("regulator", new ItemStack(ItemRegistry.yellowRegulator));
-        Tropicraft.encyclopedia.includeItem("regulator", new ItemStack(ItemRegistry.pinkRegulator));
-        Tropicraft.encyclopedia.includeItem("scubatank", new ItemStack(ItemRegistry.pinkScubaTank));
-        Tropicraft.encyclopedia.includeItem("scubatank", new ItemStack(ItemRegistry.yellowScubaTank));
-        Tropicraft.encyclopedia.includeItem("seaurchinroe", new ItemStack(ItemRegistry.seaUrchinRoe));
-        Tropicraft.encyclopedia.includeItem("sifter", new ItemStack(BlockRegistry.sifter));
-        //TODO Tropicraft.encyclopedia.includeItem("smeltedzircon", new ItemStack(ItemRegistry.ore, 1, 4));
-        //TODO Tropicraft.encyclopedia.includeItem("snaretrap", new ItemStack(ItemRegistry.snareTrap));
-        //TODO Tropicraft.encyclopedia.includeItem("snorkel", new ItemStack(ItemRegistry.snorkel));
-        Tropicraft.encyclopedia.includeItem("solonoxshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.SOLO.getMeta()));
-        Tropicraft.encyclopedia.includeItem("starfishshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.STARFISH.getMeta()));
-        Tropicraft.encyclopedia.includeItem("summering", new ItemStack(ItemRegistry.recordSummering));
-        Tropicraft.encyclopedia.includeItem("tikitorch", new ItemStack(BlockRegistry.tikiTorch));
-        Tropicraft.encyclopedia.includeItem("thatchblock", new ItemStack(BlockRegistry.bundles, 1, 0));
-        Tropicraft.encyclopedia.includeItem("thatchfence", new ItemStack(BlockRegistry.thatchFence));
-        Tropicraft.encyclopedia.includeItem("thatchfencegate", new ItemStack(BlockRegistry.thatchFenceGate));
-        Tropicraft.encyclopedia.includeItem("thetribe", new ItemStack(ItemRegistry.recordTheTribe));
-        Tropicraft.encyclopedia.includeItem("tradewinds", new ItemStack(ItemRegistry.recordTradeWinds));
-        Tropicraft.encyclopedia.includeItem("trimix", new ItemStack(ItemRegistry.trimix));
-        Tropicraft.encyclopedia.includeItem("tropiframe", new ItemStack(ItemRegistry.bambooItemFrame));
-        Tropicraft.encyclopedia.includeItem("turtleshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.TURTLE.getMeta()));
-        Tropicraft.encyclopedia.includeItem("waterwand", new ItemStack(ItemRegistry.waterWand));
-        Tropicraft.encyclopedia.includeItem("zircon", new ItemStack(ItemRegistry.zircon));
-        Tropicraft.encyclopedia.includeItem("fishingrod", new ItemStack(ItemRegistry.fishingRod));
-        Tropicraft.encyclopedia.includeItem("bamboo_ladder", new ItemStack(BlockRegistry.bambooLadder));
+        enc.addPage(new ItemPage("fishbucket", new ItemStack(ItemRegistry.fishBucket)));
+        enc.addPage(new ItemPage("fishingnet", new ItemStack(ItemRegistry.fishingNet)));
+        //TODO enc.addPage(new ItemPage("flippers", new ItemStack(ItemRegistry.flippers)));
+        //TODO enc.addPage(new ItemPage("flippers", new ItemStack(Items.LEATHER)));
+        enc.addPage(new ItemPage("flowerpot", new ItemStack(ItemRegistry.flowerPot)));
+        enc.addPage(new ItemPage("froglegs", new ItemStack(ItemRegistry.frogLeg)));
+        enc.addPage(new ItemPage("froglegscooked", new ItemStack(ItemRegistry.cookedFrogLeg)));
+        enc.addPage(new ItemPage("frogskin", new ItemStack(ItemRegistry.poisonFrogSkin)));
+        enc.addPage(new ItemPage("froxconch", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.FROX.getMeta())));
+        enc.addPage(new ItemPage("grapefruit", new ItemStack(ItemRegistry.grapefruit)));
+        enc.addPage(new ItemPage("grapefruitsapling", new ItemStack(BlockRegistry.saplings, 1, 1)));
+        enc.addPage(new ItemPage("greensand", new ItemStack(BlockRegistry.sands, 1, 2)));
+        //enc.addPage(new ItemPage("icestaff", new ItemStack(TCItemRegistry.staffIce)));
+        enc.addPage(new ItemPage("iggyscale", new ItemStack(ItemRegistry.scale)));
+        enc.addPage(new ItemPage("iguana_leather", new ItemStack(ItemRegistry.iguanaLeather)));
+        enc.addPage(new ItemPage("iris", new ItemStack(BlockRegistry.iris)));
+        //  enc.addPage(new ItemPage("journalpage", new ItemStack(TCItemRegistry.journalPage)));
+        enc.addPage(new ItemPage("kapok", new ItemStack(BlockRegistry.leaves, 1, 2)));
+        //TODO enc.addPage(new ItemPage("koachest", new ItemStack(BlockRegistry.koaChest)));
+        //TODO enc.addPage(new ItemPage("leafball", new ItemStack(ItemRegistry.leafBall)));
+        //enc.addPage(new ItemPage("leather", new ItemStack(Items.LEATHER)));
+        enc.addPage(new ItemPage("lemon", new ItemStack(ItemRegistry.lemon)));
+        enc.addPage(new ItemPage("lemonade", MixerRecipes.getItemStack(Drink.lemonade)));
+        enc.addPage(new ItemPage("lemonsapling", new ItemStack(BlockRegistry.saplings, 1, 2)));
+        enc.addPage(new ItemPage("lime", new ItemStack(ItemRegistry.lime)));
+        enc.addPage(new ItemPage("limeade", MixerRecipes.getItemStack(Drink.limeade)));
+        enc.addPage(new ItemPage("limesapling", new ItemStack(BlockRegistry.saplings, 1, 4)));
+        enc.addPage(new ItemPage("lowtide", new ItemStack(ItemRegistry.recordLowTide)));
+        enc.addPage(new ItemPage("magicmushroom", new ItemStack(BlockRegistry.flowers, 1, 7)));
+        enc.addPage(new ItemPage("mahogany", new ItemStack(BlockRegistry.logs, 1, 1)));
+        enc.addPage(new ItemPage("mahoganyfence", new ItemStack(BlockRegistry.mahoganyFence)));
+        enc.addPage(new ItemPage("mahoganyfencegate", new ItemStack(BlockRegistry.mahoganyFenceGate)));
+        enc.addPage(new ItemPage("marlinmeat", new ItemStack(ItemRegistry.freshMarlin)));
+        enc.addPage(new ItemPage("marlincooked", new ItemStack(ItemRegistry.searedMarlin)));
+        enc.addPage(new ItemPage("mineralsand", new ItemStack(BlockRegistry.sands, 1, 4)));
+        enc.addPage(new ItemPage("mixer", new ItemStack(BlockRegistry.drinkMixer)));
+        //  enc.addPage(new ItemPage("nigeljournal", new ItemStack(TCItemRegistry.nigelJournal)));
+        enc.addPage(new ItemPage("orange", new ItemStack(ItemRegistry.orange)));
+        enc.addPage(new ItemPage("orangeade", MixerRecipes.getItemStack(Drink.orangeade)));
+        enc.addPage(new ItemPage("orangesapling", new ItemStack(BlockRegistry.saplings, 1, 3)));
+        enc.addPage(new ItemPage("orchid", new ItemStack(BlockRegistry.flowers, 1, 2)));
+        enc.addPage(new ItemPage("pabshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.PAB.getMeta())));
+        enc.addPage(new ItemPage("palmplanks", new ItemStack(BlockRegistry.planks, 1, 0))); //0 is palm, 1 is mahogany
+        enc.addPage(new ItemPage("palmwood", new ItemStack(BlockRegistry.logs, 1, 0)));
+        enc.addPage(new ItemPage("palmsapling", new ItemStack(BlockRegistry.saplings, 1, 0)));
+        enc.addPage(new ItemPage("palmfence", new ItemStack(BlockRegistry.palmFence)));
+        enc.addPage(new ItemPage("palmfencegate", new ItemStack(BlockRegistry.palmFenceGate)));
+        enc.addPage(new ItemPage("pathos", new ItemStack(BlockRegistry.flowers, 1, 8)));
+        enc.addPage(new ItemPage("pearlb", new ItemStack(ItemRegistry.blackPearl)));
+        enc.addPage(new ItemPage("pearlw", new ItemStack(ItemRegistry.whitePearl)));
+        enc.addPage(new ItemPage("pineapple", new ItemStack(BlockRegistry.pineapple, 1, 0)));
+        enc.addPage(new ItemPage("pineapplecubes", new ItemStack(ItemRegistry.pineappleCubes)));
+        enc.addPage(new ItemPage("pinacolada", MixerRecipes.getItemStack(Drink.pinaColada)));
+        enc.addPage(new ItemPage("portalstarter",  new ItemStack(ItemRegistry.portalEnchanter)));
+        enc.addPage(new ItemPage("purifiedsand", new ItemStack(BlockRegistry.sands, 1, TropicraftSands.PURIFIED.getMeta())));
+        enc.addPage(new ItemPage("reeds", new ItemStack(Items.REEDS)));
+        enc.addPage(new ItemPage("rubenautilus", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.RUBE.getMeta())));
+        enc.addPage(new ItemPage("scaleboots", new ItemStack(ItemRegistry.scaleBoots)));
+        enc.addPage(new ItemPage("scalechestplate", new ItemStack(ItemRegistry.scaleChestplate)));
+        enc.addPage(new ItemPage("scalehelm", new ItemStack(ItemRegistry.scaleHelmet)));
+        enc.addPage(new ItemPage("scaleleggings", new ItemStack(ItemRegistry.scaleLeggings)));
+        enc.addPage(new MultiItemPage("scubaflippers", new ItemStack(ItemRegistry.pinkFlippers), new ItemStack(ItemRegistry.yellowFlippers)));
+        enc.addPage(new MultiItemPage("scubachestplate", new ItemStack(ItemRegistry.pinkChestplateGear), new ItemStack(ItemRegistry.yellowChestplateGear)));
+        enc.addPage(new MultiItemPage("scubagoggles", new ItemStack(ItemRegistry.pinkScubaGoggles), new ItemStack(ItemRegistry.yellowScubaGoggles)));
+        enc.addPage(new ItemPage("divecomputer", new ItemStack(ItemRegistry.diveComputer)));
+        enc.addPage(new MultiItemPage("weightbelt", new ItemStack(ItemRegistry.yellowWeightBelt), new ItemStack(ItemRegistry.pinkWeightBelt)));
+        enc.addPage(new MultiItemPage("ponybottle", new ItemStack(ItemRegistry.yellowPonyBottle), new ItemStack(ItemRegistry.pinkPonyBottle)));
+        enc.addPage(new MultiItemPage("bcd", new ItemStack(ItemRegistry.pinkBCD), new ItemStack(ItemRegistry.yellowBCD)));
+        enc.addPage(new MultiItemPage("regulator", new ItemStack(ItemRegistry.yellowRegulator), new ItemStack(ItemRegistry.pinkRegulator)));
+        enc.addPage(new MultiItemPage("scubatank", new ItemStack(ItemRegistry.pinkScubaTank), new ItemStack(ItemRegistry.yellowScubaTank)));
+        enc.addPage(new ItemPage("seaurchinroe", new ItemStack(ItemRegistry.seaUrchinRoe)));
+        enc.addPage(new ItemPage("sifter", new ItemStack(BlockRegistry.sifter)));
+        //TODO enc.addPage(new ItemPage("smeltedzircon", new ItemStack(ItemRegistry.ore, 1, 4)));
+        //TODO enc.addPage(new ItemPage("snaretrap", new ItemStack(ItemRegistry.snareTrap)));
+        //TODO enc.addPage(new ItemPage("snorkel", new ItemStack(ItemRegistry.snorkel)));
+        enc.addPage(new ItemPage("solonoxshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.SOLO.getMeta())));
+        enc.addPage(new ItemPage("starfishshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.STARFISH.getMeta())));
+        enc.addPage(new ItemPage("summering", new ItemStack(ItemRegistry.recordSummering)));
+        enc.addPage(new ItemPage("tikitorch", new ItemStack(BlockRegistry.tikiTorch)));
+        enc.addPage(new ItemPage("thatchblock", new ItemStack(BlockRegistry.bundles, 1, 0)));
+        enc.addPage(new ItemPage("thatchfence", new ItemStack(BlockRegistry.thatchFence)));
+        enc.addPage(new ItemPage("thatchfencegate", new ItemStack(BlockRegistry.thatchFenceGate)));
+        enc.addPage(new ItemPage("thetribe", new ItemStack(ItemRegistry.recordTheTribe)));
+        enc.addPage(new ItemPage("tradewinds", new ItemStack(ItemRegistry.recordTradeWinds)));
+        enc.addPage(new ItemPage("trimix", new ItemStack(ItemRegistry.trimix)));
+        enc.addPage(new ItemPage("tropiframe", new ItemStack(ItemRegistry.bambooItemFrame)));
+        enc.addPage(new ItemPage("turtleshell", new ItemStack(ItemRegistry.shell, 1, TropicraftShells.TURTLE.getMeta())));
+        enc.addPage(new ItemPage("waterwand", new ItemStack(ItemRegistry.waterWand)));
+        enc.addPage(new ItemPage("zircon", new ItemStack(ItemRegistry.zircon)));
+        enc.addPage(new ItemPage("fishingrod", new ItemStack(ItemRegistry.fishingRod)));
+        enc.addPage(new ItemPage("bamboo_ladder", new ItemStack(BlockRegistry.bambooLadder)));
 
-        //Tropicraft.encyclopedia.includeItem("zirconium", new ItemStack(TCItemRegistry.ore, 1, 3));
+        //enc.addPage(new ItemPage("zirconium", new ItemStack(TCItemRegistry.ore, 1, 3)));
     }
 }

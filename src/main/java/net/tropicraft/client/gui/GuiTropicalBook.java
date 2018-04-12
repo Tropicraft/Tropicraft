@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -26,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.sound.TropicraftSounds;
-import net.tropicraft.core.encyclopedia.Encyclopedia;
+import net.tropicraft.core.encyclopedia.RecipeEntry;
 import net.tropicraft.core.encyclopedia.TropicalBook;
 
 @SideOnly(Side.CLIENT)
@@ -41,7 +40,7 @@ public class GuiTropicalBook extends GuiScreen {
 	private String closedTextureIndex;
 	private String openTextureIndex;
 	private RenderItem itemRenderer;
-	private @Nonnull List<IRecipe> cachedRecipes = new ArrayList<>();
+	private @Nonnull List<RecipeEntry> cachedRecipes = new ArrayList<>();
 	private float recipeCycle;
 	
 	private GuiIndexButton[][] indexButtons;
@@ -112,7 +111,7 @@ public class GuiTropicalBook extends GuiScreen {
 				book.markPageAsRead(selectedIndex);
 			}
 			contentPage = 0;
-			cachedRecipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
+			cachedRecipes = book.getPage(selectedIndex).getRelevantRecipes();
 			recipeCycle = 0;
 			addButtons();
 		}
@@ -164,7 +163,7 @@ public class GuiTropicalBook extends GuiScreen {
         String pageTitle = book.getPageTitleNotVisible(page);
         int color = 0x440000;
         if (book.isPageVisible(page)) {
-            pageTitle = book.getPageTitleByIndex(page);
+            pageTitle = book.getPage(page).getLocalizedTitle();
 
             if (!book.hasPageBeenRead(page)) {
                 color = 0x3333ff;
@@ -188,7 +187,7 @@ public class GuiTropicalBook extends GuiScreen {
         btn.pageID = page;
 	}
 
-	public void addIcons() {
+	public void addIcons(float partialTicks) {
         for (int col = 0; col < indexButtons.length; col++) {
             for (int row = 0; row < indexButtons[col].length; row++) {
                 GuiIndexButton button = indexButtons[col][row];
@@ -210,12 +209,9 @@ public class GuiTropicalBook extends GuiScreen {
         			GlStateManager.scale(.75F, .75F, .75F);
         			GlStateManager.translate((float) width / 1.5F - 1F, (float) height / 1.5F, 0f);
         			GlStateManager.color(0, 0, 0);
-        			// TODO 1.12 ??
-        //			itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(entry));
-        			ItemStack is = book.getPageItemStack(button.pageID);
-        			if(is != null) {
-        				itemRenderer.renderItemIntoGUI(is, (int) ((col == 0 ? -129 : 17.5) * 1.5), -(int) (80 * 1.5) + row * 20);
-        			}
+        		
+        			book.getPage(button.pageID).drawIcon((int) ((col == 0 ? -129 : 17.5) * 1.5), -(int) (80 * 1.5) + row * 20, partialTicks);
+//        			}
         			GlStateManager.popMatrix();
                 }
             }
@@ -294,12 +290,12 @@ public class GuiTropicalBook extends GuiScreen {
                 if (book.isPageVisible(selectedIndex)) {
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                     GlStateManager.disableLighting();
-                    String pageTitle = book.isPageVisible(selectedIndex) ? book.getPageTitleByIndex(selectedIndex) : "\247nPage not found";
+                    String pageTitle = book.isPageVisible(selectedIndex) ? book.getPage(selectedIndex).getLocalizedTitle() : book.getPageTitleNotVisible(selectedIndex);
                     
                     // Render item title and description
                     if (contentPage == 0) {
                         fontRenderer.drawString(pageTitle, width / 2 - 150, height / 2 - 110, 0x440000);
-                        fontRenderer.drawSplitString("  " + (book.isPageVisible(selectedIndex) ? book.getPageDescriptionsByIndex(selectedIndex) : "???"), width / 2 - 150, height / 2 - 80, 135, 0x440000);
+                        fontRenderer.drawSplitString("  " + (book.isPageVisible(selectedIndex) ? book.getPage(selectedIndex).getLocalizedDescription() : "???"), width / 2 - 150, height / 2 - 80, 135, 0x440000);
                     }
                     if (cachedRecipes.size() > 0) {
                         fontRenderer.drawString("Crafting", width / 2 + 110, height / 2 - 110, 0x440000);
@@ -329,25 +325,11 @@ public class GuiTropicalBook extends GuiScreen {
                         // Draw title underline and item box
                         drawTexturedModalRect(width / 2 - 159, height / 2 - 115, 145, 201, 113, 32);
                         drawTexturedModalRect(width / 2 - 47, height / 2 - 115, 90, 201, 32, 32);
-
-                        // Render item icon
-                        if (book.hasIndexIcons()) {
-                            GlStateManager.pushMatrix();
-                            GlStateManager.color(0, 0, 0);
-                            // itemRenderer.renderWithColor = book.isPageVisible(selectedIndex);
-                            // TODO 1.12 ??
-                            // itemRenderer.isNotRenderingEffectsInGUI(book.isPageVisible(selectedIndex));
-                            ItemStack is = book.getPageItemStack(selectedIndex);
-                            if (is != null) {
-                                GlStateManager.enableRescaleNormal();
-                                RenderHelper.enableGUIStandardItemLighting();
-                                GlStateManager.scale(1.25f, 1.25f, 1.25f);
-                                itemRenderer.renderItemIntoGUI(is, (int) ((width / 2) * (4 / 5f) - 33), (int) ((height / 2) * (4 / 5f) - 87));
-                                RenderHelper.disableStandardItemLighting();
-                                GlStateManager.disableRescaleNormal();
-                            }
-                            GlStateManager.popMatrix();
-                        }
+                        
+                        GlStateManager.pushMatrix();
+                        GlStateManager.scale(1.25f, 1.25f, 1.25f);
+                        book.getPage(selectedIndex).drawIcon((int) ((width / 2) * (4 / 5f) - 33), (int) ((height / 2) * (4 / 5f) - 87), elapsedPartialTicks);
+                        GlStateManager.popMatrix();
                     }
                 }
             } else {
@@ -361,9 +343,7 @@ public class GuiTropicalBook extends GuiScreen {
                 String secondPageNum = "" + (2 + (indexPage * 2));
                 int sw = fontRenderer.getStringWidth(secondPageNum);
                 fontRenderer.drawString(secondPageNum, w + 157 - sw, h + 97, 0x440000);
-                if (book.hasIndexIcons()) {
-                    addIcons();
-    			}
+                addIcons(elapsedPartialTicks);
             }
 		}
 
@@ -393,7 +373,7 @@ public class GuiTropicalBook extends GuiScreen {
 			if (entry >= cachedRecipes.size()) {
 				break;
 			}
-			Encyclopedia.RecipeEntry recipe = ((Encyclopedia)book).getFormattedRecipe(cachedRecipes.get(entry));
+			RecipeEntry recipe = cachedRecipes.get(entry);
 			if (recipe == null) {
 			    continue; // FIXME
 			}
@@ -409,10 +389,10 @@ public class GuiTropicalBook extends GuiScreen {
 			int offsetY = 18;
 
 			// Draw recipe ingredients //
-			for(int row = 0; row < recipe.height; row++) {
-				for (int col = 0; col < recipe.width; col++) {
-					int itemIndex = (row * recipe.width) + col;
-					if (recipe.ingredients.get(itemIndex) != Ingredient.EMPTY) {
+			for(int row = 0; row < recipe.getHeight(); row++) {
+				for (int col = 0; col < recipe.getWidth(); col++) {
+					int itemIndex = (row * recipe.getWidth()) + col;
+					if (recipe.getIngredients().get(itemIndex) != Ingredient.EMPTY) {
 						int renderX = newx + (offsetX * col) + 1;
 						int renderY = newy + (offsetY * row) + 1;
 						//GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -433,9 +413,9 @@ public class GuiTropicalBook extends GuiScreen {
 			}
 
 			// Draw item label if mouse is hovering over an item
-			for (int row = 0; row < recipe.height; row++) {
-				for (int col = 0; col < recipe.width; col++) {
-					int itemIndex = (row * recipe.width) + col;
+			for (int row = 0; row < recipe.getHeight(); row++) {
+				for (int col = 0; col < recipe.getWidth(); col++) {
+					int itemIndex = (row * recipe.getWidth()) + col;
 					int renderX = newx + (offsetX * col) + 1;
 					int renderY = newy + (offsetY * row) + 1;
 					checkMouseHover(recipe.getCycledStack(itemIndex, recipeCycle), renderX, renderY, mx, my, 18);
@@ -448,13 +428,13 @@ public class GuiTropicalBook extends GuiScreen {
 //			GlStateManager.translate(newx / 1.93F + 1F, newy / 1.85F - .75F, 0F);
 			GlStateManager.enableRescaleNormal();
 			RenderHelper.enableGUIStandardItemLighting();
-			itemRenderer.renderItemIntoGUI(recipe.output, newx + 95, newy + 19);
-			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, recipe.output, newx / 3 + 60, newy / 3 + 11, "");
+			itemRenderer.renderItemIntoGUI(recipe.getOutput(), newx + 95, newy + 19);
+			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, recipe.getOutput(), newx / 3 + 60, newy / 3 + 11, "");
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
 			GlStateManager.pushMatrix();
-			checkMouseHover(recipe.output, newx + 90, newy + 20, mx, my, 25);
+			checkMouseHover(recipe.getOutput(), newx + 90, newy + 20, mx, my, 25);
 			GlStateManager.popMatrix();
 
 			newy += 62;
