@@ -396,6 +396,11 @@ tropicraft.tooltip.air_compressor=Place one or two empty scuba tanks in the comp
 tropicraft.tooltip.drink_mixer=Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!
 tropicraft.tooltip.sifter=Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?
 
+# Book text
+tropicraft.book.toc.title=Table of Contents
+tropicraft.book.bookmarks.title=Bookmarks
+tropicraft.book.bookmarks.tooltip=View Bookmarks
+
 # Encyclopedia Sections
 tropicraft.encyclopedia.section.foods.title=Tropical Food
 tropicraft.encyclopedia.section.drinks.title=Tropical Drinks
