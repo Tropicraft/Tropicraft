@@ -21,7 +21,7 @@ public class BiomeRainforest extends BiomeTropicraft {
 		this.spawnableCreatureList.add(new SpawnListEntry(EntityParrot.class, 40, 1, 2));
 		
         this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrog.class, 25, 2, 5));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiSpider.class, 10, 1, 1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiSpider.class, 30, 1, 1));
 
 	}
 	

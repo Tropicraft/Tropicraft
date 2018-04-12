@@ -1,46 +1,37 @@
 package net.tropicraft.core.encyclopedia;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TropicalBook {
-    
-    // Content mode is used to determine what tabs are avaliable in this book
-    public static enum ContentMode {
-        INFO,
-        RECIPE
-    }
-    
+public class TropicalBook {
+
     public static enum ReadState {
         HIDDEN,
         VISIBLE,
@@ -48,53 +39,32 @@ public abstract class TropicalBook {
         ;
     }
     
-    /**
-     * List of page names that may be visible by the player
-     * The pages should only be considered visible if the byte > 0
-     * The pages are also marked as read if the byte > 1
-     */
-    private HashMap<String, ReadState> visiblePages = new HashMap<String, ReadState>();
+    private LinkedHashMap<String, Page> pages = new LinkedHashMap<>();
+    private List<String> pageIds = new ArrayList<>();
     
-    /** Maps of internal page names to translated strings (from the contents file)
-     Pages are sorted according to the order of the "<pagename>.title" entries
-     in the contents file */
-    private HashMap<String, String> pageTitles = new HashMap<String, String>();
-    private HashMap<String, String> pageDescriptions = new HashMap<String, String>();
-    private List<String> sortedPages = new ArrayList<String>();
-    
+    private HashMap<String, ReadState> visibilities = new HashMap<>();
+
     private final String fileName;
     
     public String outsideTexture;
     public String insideTexture;
     
-    public TropicalBook(String savedDataFile, String contentsFile, String outsideTex, String insideTex) {
+    public TropicalBook(String savedDataFile, String outsideTex, String insideTex) {
 
         fileName = savedDataFile;
         outsideTexture = outsideTex;
         insideTexture = insideTex;
 
-        BufferedReader contents = new BufferedReader(new InputStreamReader(TropicalBook.class.getResourceAsStream(contentsFile)));
-        String line;
-        try {
-            while ((line = contents.readLine()) != null) {
-                if (!line.contains("=") || line.trim().startsWith("#")) {
-                    continue;
-                }
-                String[] split = line.split("=", 2);
-                String name = split[0].trim();
-                String entry = split[1].trim();
-                if (name.toLowerCase().endsWith(".title")) {
-                    pageTitles.put(name.substring(0, name.length() - ".title".length()), entry);
-                    sortedPages.add(name.substring(0, name.length() - ".title".length()));
-                } else if (name.toLowerCase().endsWith(".desc")) {
-                    pageDescriptions.put(name.substring(0, name.length() - ".desc".length()), entry);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(TropicalBook.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
         MinecraftForge.EVENT_BUS.register(this);
+    }
+    
+    public void addPage(Page page) {
+        if (!pages.containsKey(page.getId())) {
+            this.pages.put(page.getId(), page);
+            this.pageIds.add(page.getId());
+        } else {
+            throw new IllegalArgumentException("Duplicate page: " + page.getId());
+        }
     }
     
     protected File getSaveFile() {
@@ -119,7 +89,7 @@ public abstract class TropicalBook {
         }
         try {
             File dataFile = getSaveFile();
-            visiblePages.clear();
+            visibilities.clear();
             if (dataFile.canRead()) {
                 try (InputStream dataInput = new FileInputStream(dataFile)) {
                     NBTTagCompound data = CompressedStreamTools.readCompressed(dataInput);
@@ -129,7 +99,7 @@ public abstract class TropicalBook {
                     while (it.hasNext()) {
                         String tagName = it.next();
                         ReadState s = ReadState.values()[data.getByte(tagName) % ReadState.values().length];
-                        visiblePages.put(tagName, s);
+                        visibilities.put(tagName, s);
                     }
                 }
             }
@@ -161,8 +131,8 @@ public abstract class TropicalBook {
             if (dataFile.canWrite()) {
                 try (OutputStream dataOutput = new FileOutputStream(dataFile)) {
                     NBTTagCompound data = new NBTTagCompound();
-                    for (String s : visiblePages.keySet()) {
-                        data.setByte(s, (byte) visiblePages.get(s).ordinal());
+                    for (String s : visibilities.keySet()) {
+                        data.setByte(s, (byte) visibilities.get(s).ordinal());
                     }
                     CompressedStreamTools.writeCompressed(data, dataOutput);
                 }
@@ -177,7 +147,7 @@ public abstract class TropicalBook {
     }
     
     public boolean isPageVisible(String entry) {
-        return visiblePages.containsKey(entry) && visiblePages.get(entry) != ReadState.HIDDEN;
+        return visibilities.containsKey(entry) && visibilities.get(entry) != ReadState.HIDDEN;
     }
     
     public boolean isPageVisible(int i) {
@@ -185,7 +155,7 @@ public abstract class TropicalBook {
     }
     
     public boolean hasPageBeenRead(String entry) {
-        return visiblePages.containsKey(entry) && visiblePages.get(entry) == ReadState.READ;
+        return visibilities.containsKey(entry) && visibilities.get(entry) == ReadState.READ;
     }
     
     public boolean hasPageBeenRead(int i) {
@@ -193,7 +163,7 @@ public abstract class TropicalBook {
     }
     
     public void markPageAsNewlyVisible(String entry) {
-        visiblePages.put(entry, ReadState.VISIBLE);
+        visibilities.put(entry, ReadState.VISIBLE);
         saveData();
     }
     
@@ -202,7 +172,7 @@ public abstract class TropicalBook {
     }
     
     public void markPageAsRead(String entry) {
-        visiblePages.put(entry, ReadState.READ);
+        visibilities.put(entry, ReadState.READ);
         saveData();
     }
     
@@ -211,80 +181,50 @@ public abstract class TropicalBook {
     }
     
     public boolean pageExists(String name) {
-        if (pageTitles.containsKey(name)) {
+        if (pages.containsKey(name)) {
             return true;
         }
         return false;
+    }
+    
+    protected String getPageName(int i) {
+        if (i >= 0 && i < pageIds.size()) {
+            return pageIds.get(i);
+        }
+        return null;
     }
     
     /*
      * Decides what pages to mark as visible based on the contents of the
      * given player inventory
      */
-    public abstract void updatePagesFromInventory(InventoryPlayer inv);
+//    public abstract void updatePagesFromInventory(InventoryPlayer inv);
     
     public int getPageCount() {
-        return sortedPages.size();
+        return pages.size();
     }
     
-    /*
-     * Returns the number of content pages the given page contains
-     */
-    public int getContentPageCount(int page, ContentMode mode) {
-        return 1;
-    }
-    
-    public int entriesPerIndexPage() {
-        return 12;
-    }
-    
-    public int entriesPerContentPage(ContentMode mode) {
-        return 1;
-    }
-    
-    public boolean hasIndexIcons() {
-        return false;
-    }
-    
-    public ItemStack getPageItemStack(int page) {
-        return null;
-    }
-
-    protected String getPageName(int i) {
-        if (i >= 0 && i < sortedPages.size()) {
-            return sortedPages.get(i);
-        }
-        return null;
-    }
-    
-    public String getPageTitleNotVisible(int i) {
+    public String getPageTitleNotVisible() {
         return "Page not found";
     }
+
+    public int getRecipeCount(int page) {
+        return 0;
+    }
+
+    public Page getPage(int i) {
+        return getPage(pageIds.get(i));
+    }
     
-    private String getPageTitleByName(String name) {
-        if (pageExists(name)) {
-            return /* this part adds underline, silly tundy"\247n"+*/pageTitles.get(name);
+    public Page getPage(String key) {
+        return pages.get(key);
+    }
+    
+    public void discoverPages(@Nonnull World world, @Nonnull EntityPlayer player) {
+        for (Entry<String, Page> e : pages.entrySet()) {
+            if (!isPageVisible(e.getKey()) && e.getValue().discover(world, player)) {
+                markPageAsNewlyVisible(e.getKey());
+            }
         }
-        return null;
     }
-    
-    public String getPageTitleByIndex(int i) {
-        return getPageTitleByName(getPageName(i));
-    }
-    
-    private String getPageDescriptionByName(String name) {
-        if (pageExists(name)) {
-            return pageDescriptions.get(name);
-        }
-        return null;
-    }
-    
-    public String getPageDescriptionsByIndex(int i) {
-        return getPageDescriptionByName(getPageName(i));
-    }
-    
-    protected List<String> getSortedPages() {
-        return sortedPages;
-    }
-    
 }

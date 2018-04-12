@@ -72,6 +72,7 @@ public class CommandTropicsMisc extends CommandBase {
                     village.direction = 0;
 
                     village.initFirstTime();
+                    village.genStructure();
                     //wd.addTickingLocation(village);
 
                     storage.addTickingLocation(village);
@@ -85,6 +86,43 @@ public class CommandTropicsMisc extends CommandBase {
 				boolean result = TownKoaVillageGenHelper.hookTryGenVillage(new BlockPos(x, y, z), player.world);
                 if (!result) {
                     System.out.println("failed to gen village");
+                }
+            } else if (args[0].equals("village_custom")) {
+                int x = MathHelper.floor(player.posX);
+                int z = MathHelper.floor(player.posZ);
+                int y = MathHelper.floor(player.posY);
+
+                WorldDataInstance storage = player.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+
+                if (storage != null) {
+                    TownKoaVillage village = new TownKoaVillage();
+
+                    int newID = storage.getAndIncrementKoaIDVillage();
+                    village.initData(newID, player.world.provider.getDimension(), new BlockPos(x, y, z));
+
+                    //TEMP!?
+                    village.direction = 0;
+
+                    //custom village changes
+                    village.isCustomVillage = true;
+
+                    //no koa regen
+                    village.minEntitiesToKeepAlive = 2;
+
+                    village.initFirstTime();
+
+                    //force new spawn coords for the 2 koa
+                    village.generateSpawnCoords();
+
+                    //NO GEN FOR CUSTOM!
+                    //village.genStructure();
+
+
+                    player.sendMessage(new TextComponentString("spawned a new custom village"));
+
+                    storage.addTickingLocation(village);
+                } else {
+                    player.sendMessage(new TextComponentString("couldnt spawn a new custom village"));
                 }
             } else if (args[0].equals("schematic_save")) {
                 try {

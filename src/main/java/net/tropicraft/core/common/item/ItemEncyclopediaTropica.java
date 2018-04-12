@@ -28,7 +28,7 @@ public class ItemEncyclopediaTropica extends ItemTropicraft {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer entityplayer, EnumHand hand) {
 	    ItemStack stack = entityplayer.getHeldItem(hand);
 		if (world.isRemote && getTropBook() != null) {
-			getTropBook().updatePagesFromInventory(entityplayer.inventory);
+			getTropBook().discoverPages(world, entityplayer);
 			FMLCommonHandler.instance().showGuiScreen(new GuiTropicalBook(getTropBook()));     
 		}
 

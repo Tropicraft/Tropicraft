@@ -47,8 +47,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.client.BasicColorHandler;
-import net.tropicraft.core.client.CocktailColorHandler;
 import net.tropicraft.core.client.PlayerSwimDataClientHandler;
 import net.tropicraft.core.client.ScubaHandler;
 import net.tropicraft.core.client.ScubaOverlayHandler;
@@ -60,11 +58,9 @@ import net.tropicraft.core.common.block.ITropicraftBlock;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.item.IColoredItem;
-import net.tropicraft.core.common.item.ItemCocktail;
-import net.tropicraft.core.common.item.ItemTropicraftColored;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
 import net.tropicraft.core.common.network.TCPacketHandler;
-import net.tropicraft.core.encyclopedia.Encyclopedia;
+import net.tropicraft.core.encyclopedia.TropicalBook;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.EncyclopediaRegistry;
 import net.tropicraft.core.registry.EntityRenderRegistry;
@@ -298,10 +294,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerBooks() {
-		Tropicraft.encyclopedia = new Encyclopedia("etsave.dat",
-				Info.TEXTURE_GUI_LOC + "encyclopedia_tropica.txt",
-				"encyclopedia_tropica",
-				"encyclopedia_tropica_inside");
+		Tropicraft.encyclopedia = new TropicalBook("etsave.dat", "encyclopedia_tropica", "encyclopedia_tropica_inside");
 		EncyclopediaRegistry.init(); // registers items for encyclopedia
 	}
 

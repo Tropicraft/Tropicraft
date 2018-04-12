@@ -68,6 +68,7 @@ public class TownKoaVillageGenHelper {
                 village.initData(newID, parWorld.provider.getDimension(), centerCoords);
                 village.direction = directionTry;
                 village.initFirstTime();
+                village.genStructure();
                 storage.addTickingLocation(village);
 
                 return true;

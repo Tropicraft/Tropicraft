@@ -79,12 +79,13 @@ public class MiscEvents {
 
     @SubscribeEvent
     public void tickServer(TickEvent.WorldTickEvent event) {
-        if (event.world.provider instanceof WorldProviderTropicraft) {
+        //tick for all dims now!
+        //if (event.world.provider instanceof WorldProviderTropicraft) {
             WorldDataInstance storage = event.world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
             if (storage != null) {
                 storage.tick();
             }
-        }
+        //}
 
         if (!lookupDimIDToRegisteredListener.contains(event.world.provider.getDimension())) {
             System.out.println("adding world listener for dim " + event.world.provider.getDimension());
