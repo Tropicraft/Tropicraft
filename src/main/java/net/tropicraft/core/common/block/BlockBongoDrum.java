@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -15,6 +16,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.tropicraft.core.common.enums.TropicraftBongos;
 import net.tropicraft.core.registry.BlockRegistry;
+
+import javax.annotation.Nullable;
 
 @EventBusSubscriber
 public class BlockBongoDrum extends BlockTropicraftEnumVariants<TropicraftBongos> {
@@ -98,5 +101,11 @@ public class BlockBongoDrum extends BlockTropicraftEnumVariants<TropicraftBongos
         }
 
         return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
+
+    @Nullable
+    @Override
+    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return PathNodeType.FENCE;
     }
 }
