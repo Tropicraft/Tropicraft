@@ -44,6 +44,8 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
     //12-21: hunters
     //public List<BlockPos> listCoordsSpawn = new ArrayList<BlockPos>();
 
+    private int maxPopulationSize = 20;
+
     public TownKoaVillage() {
         super();
 
@@ -469,5 +471,13 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
         super.hookEntityDied(ent);
 
         lookupEntityToGender.remove(ent.getPersistentID());
+    }
+
+    public int getMaxPopulationSize() {
+        return maxPopulationSize;
+    }
+
+    public void setMaxPopulationSize(int maxPopulationSize) {
+        this.maxPopulationSize = maxPopulationSize;
     }
 }

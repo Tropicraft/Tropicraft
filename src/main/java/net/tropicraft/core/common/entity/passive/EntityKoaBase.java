@@ -36,6 +36,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemAxe;
@@ -45,6 +46,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityNote;
@@ -129,6 +131,8 @@ public class EntityKoaBase extends EntityVillager {
     private long lastTradeTime = 0;
     private static int TRADE_COOLDOWN = 24000*3;
     private static int DIVE_TIME_NEEDED = 60*60;
+
+    public boolean debug = true;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> (input instanceof EntityMob && !(input instanceof EntityCreeper)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -377,15 +381,12 @@ public class EntityKoaBase extends EntityVillager {
             onGrowingAdult();
         }*/
 
+        monitorHomeVillage();
         //adjust home position to chest right nearby for easy item spawning
         findAndSetHomeToCloseChest(false);
         findAndSetFireSource(false);
         findAndSetDrums(false);
         findAndSetTownID(false);
-
-        String str = getDisplayName().getFormattedText();
-
-        System.out.println(str);
 
     }
 
@@ -472,38 +473,51 @@ public class EntityKoaBase extends EntityVillager {
             boolean doTrade = false;
             if (!this.world.isRemote) {
 
-                long diveTime = 0;
+                ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+                if (!stack.isEmpty() && stack.getItem() == ItemRegistry.poisonFrogSkin) {
 
-                //scan hotbar
-                for (int i = 0; i < 9; i++) {
-                    ItemStack stackScan = player.inventory.getStackInSlot(i);
-                    if (!Util.isEmpty(stackScan) && stackScan.getItem() == ItemRegistry.diveComputer) {
+                    //drug the koa and make him forget everything
+                    dbg("koa drugged, zapping memory");
+                    stack.shrink(1);
+                    zapMemory();
+                    addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 30));
 
-                        //for testing
-                        //((ItemDiveComputer)stackScan.getItem()).setDiveTime(stackScan, 60 * 59);
-
-                        diveTime = ((ItemDiveComputer)stackScan.getItem()).getDiveTime(stackScan);
-                        break;
-                    }
-                }
-
-                if (diveTime >= DIVE_TIME_NEEDED) {
-                    if (world.getTotalWorldTime() > lastTradeTime + TRADE_COOLDOWN) {
-                        if (player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.trimix, 1))) {
-                            player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.give"));
-                            lastTradeTime = world.getTotalWorldTime();
-                        } else {
-                            player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.space"));
-                        }
-
-                    } else {
-                        player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.cooldown"));
-                    }
                 } else {
-                    int timeLeft = (int) (DIVE_TIME_NEEDED - diveTime) / 60;
-                    if (timeLeft == 0) timeLeft = 1;
-                    player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.not_enough_time", timeLeft));
+                    long diveTime = 0;
+
+                    //scan hotbar
+                    for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                        ItemStack stackScan = player.inventory.getStackInSlot(i);
+                        if (!Util.isEmpty(stackScan) && stackScan.getItem() == ItemRegistry.diveComputer) {
+
+                            //for testing
+                            //((ItemDiveComputer)stackScan.getItem()).setDiveTime(stackScan, 60 * 59);
+
+                            diveTime = ((ItemDiveComputer)stackScan.getItem()).getDiveTime(stackScan);
+                            break;
+                        }
+                    }
+
+                    if (diveTime >= DIVE_TIME_NEEDED) {
+                        if (world.getTotalWorldTime() > lastTradeTime + TRADE_COOLDOWN) {
+                            if (player.inventory.addItemStackToInventory(new ItemStack(ItemRegistry.trimix, 1))) {
+                                player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.give"));
+                                lastTradeTime = world.getTotalWorldTime();
+                            } else {
+                                player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.space"));
+                            }
+
+                        } else {
+                            player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.cooldown"));
+                        }
+                    } else {
+                        int timeLeft = (int) (DIVE_TIME_NEEDED - diveTime) / 60;
+                        if (timeLeft == 0) timeLeft = 1;
+                        player.sendMessage(new TextComponentTranslation("entity.tropicraft.koa.trade.not_enough_time", timeLeft));
+                    }
                 }
+
+
                 if (doTrade) {
                     // Make the super method think this villager is already trading, to block the GUI from opening
                     _buyingPlayer.set(this, player);
@@ -693,6 +707,78 @@ public class EntityKoaBase extends EntityVillager {
         this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ItemRegistry.dagger));
     }
 
+    public void monitorHomeVillage() {
+        if (villageDimID != INVALID_DIM) {
+            //if (villageID != -1) {
+
+                //if not in home dimension, full reset
+                if (this.world.provider.getDimension() != villageDimID) {
+                    dbg("koa detected different dimension, zapping memory");
+                    zapMemory();
+                    addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 5));
+                }
+            //}
+        }
+
+        findOrCreateNewVillage();
+    }
+
+    public void findOrCreateNewVillage() {
+        if ((world.getTotalWorldTime()+this.getEntityId()) % (20*5) != 0) return;
+
+        if (getVillage() == null) {
+            TownKoaVillage village = getVillageWithinRange(128);
+            if (village != null) {
+                dbg("Koa found a village to join: " + village.locationID);
+                this.setVillageAndDimID(village.locationID, village.dimID);
+            } else {
+                //check we have a chest locked in
+                TileEntity tile = world.getTileEntity(getHomePosition());
+                if ((tile instanceof TileEntityChest)) {
+                    village = createNewVillage(getHomePosition());
+                    if (village != null) {
+                        this.setVillageAndDimID(village.locationID, village.dimID);
+                        dbg("Koa created a new village!");
+                    } else {
+                        dbg("village wasnt created, critical error!");
+                    }
+                } else {
+                    dbg("no village near and no chest!");
+                }
+            }
+        }
+    }
+
+    public TownKoaVillage createNewVillage(BlockPos pos) {
+        WorldDataInstance storage = world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+
+        if (storage != null) {
+            TownKoaVillage village = new TownKoaVillage();
+
+            int newID = storage.getAndIncrementKoaIDVillage();
+            village.initData(newID, world.provider.getDimension(), pos);
+
+            //custom village changes
+            village.isCustomVillage = true;
+
+            //no koa regen
+            village.minEntitiesToKeepAlive = 0;
+
+            village.initFirstTime();
+
+            //force new spawn coords for the 2 koa
+            village.generateSpawnCoords();
+
+            //NO GEN FOR CUSTOM!
+            //village.genStructure();
+
+            storage.addTickingLocation(village);
+
+            return village;
+        }
+        return null;
+    }
+
     public void findAndSetHomeToCloseChest(boolean force) {
 
         if (!force && (world.getTotalWorldTime()+this.getEntityId()) % (20*30) != 0) return;
@@ -718,6 +804,7 @@ public class EntityKoaBase extends EntityVillager {
                         TileEntity tile = world.getTileEntity(pos);
                         if (tile instanceof TileEntityChest) {
                             //System.out.println("found chest, updating home position to " + pos);
+                            dbg("found chest, updating home position to " + pos);
                             setHomePosAndDistance(pos, MAX_HOME_DISTANCE);
                             return;
                         }
@@ -732,8 +819,10 @@ public class EntityKoaBase extends EntityVillager {
 
         boolean tryFind = false;
 
-        if (villageID == -1) {
+        if (villageID == -1 || villageDimID == INVALID_DIM) {
             tryFind = true;
+            //make sure return status is correct
+            villageID = -1;
         }
 
         if (tryFind) {
@@ -777,7 +866,7 @@ public class EntityKoaBase extends EntityVillager {
                         BlockPos pos = this.getPosition().add(x, y, z);
                         IBlockState state = world.getBlockState(pos);
                         if (state.getMaterial() == Material.FIRE) {
-                            //System.out.println("found fire place spot to chill");
+                            dbg("found fire place spot to chill");
                             setFirelacePos(pos);
                             return;
                         }
@@ -792,7 +881,7 @@ public class EntityKoaBase extends EntityVillager {
                     IBlockState state = world.getBlockState(ent.posLastFireplaceFound);
                     if (state.getMaterial() == Material.FIRE) {
                         posLastFireplaceFound = new BlockPos(ent.posLastFireplaceFound);
-                        //System.out.println("found fire place spot to chill from entity");
+                        dbg("found fire place spot to chill from entity");
                         return;
                     }
                 }
@@ -1131,6 +1220,36 @@ public class EntityKoaBase extends EntityVillager {
         return null;
     }
 
+    public TownKoaVillage getVillageWithinRange(int range) {
+        World world = this.world;
+
+
+        double distSq = range * range;
+        double closestDist = 99999;
+        TownKoaVillage closestVillage = null;
+
+        if (world != null) {
+            WorldDataInstance data = world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
+            if (data != null) {
+                for (ISimulationTickable entry : data.lookupTickingManagedLocations.values()) {
+                    if (entry instanceof TownKoaVillage) {
+                        TownKoaVillage village = (TownKoaVillage) entry;
+                        if (village.getPopulationSize() < village.getMaxPopulationSize()) {
+                            double dist = village.getOrigin().distanceSq(this.getPos());
+                            if (dist < distSq && dist < closestDist) {
+                                closestDist = dist;
+                                closestVillage = village;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return closestVillage;
+    }
+
     @Override
     public void setDead() {
         super.setDead();
@@ -1249,5 +1368,19 @@ public class EntityKoaBase extends EntityVillager {
         //cancel super witch code
     }
 
+    public void zapMemory() {
+        listPosDrums.clear();
+        setHomePosAndDistance(BlockPos.ORIGIN, -1);
+        setFirelacePos(null);
+
+        villageDimID = INVALID_DIM;
+        villageID = -1;
+    }
+
+    public void dbg(String msg) {
+        if (debug) {
+            System.out.println(msg);
+        }
+    }
 
 }

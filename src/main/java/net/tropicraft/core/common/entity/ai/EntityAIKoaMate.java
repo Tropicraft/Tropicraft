@@ -151,7 +151,7 @@ public class EntityAIKoaMate extends EntityAIBase
             }
         }
 
-        return village.getPopulationSize() < 20;
+        return village.getPopulationSize() < village.getMaxPopulationSize();
     }
 
     private void giveBirth()
