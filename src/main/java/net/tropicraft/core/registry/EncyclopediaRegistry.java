@@ -52,7 +52,7 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
 //      //TODO  enc.addPage(new ItemPage("beachfloat", new ItemStack(TCItemRegistry.beachFloat, 1, i)));
 //      /*
 //       * beachfloat.title = Beach Float
-//beachfloat.desc  = These uncontrollable floats allow the gentle currents of the tropics to move you. They come in five different colors.
+//beachfloat.desc  = 
 //       */
         enc.addPage(new MultiItemPage("beachfloat",     IntStream.range(0, 16).mapToObj(i -> new ItemStack(ItemRegistry.beach_float, 1, i)).toArray(ItemStack[]::new)));
         enc.addPage(new MultiItemPage("beachumbrella",  IntStream.range(0, 16).mapToObj(i -> new ItemStack(ItemRegistry.umbrella, 1, i)).toArray(ItemStack[]::new)));

@@ -12,11 +12,6 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 @SideOnly(Side.CLIENT)
 public class GuiClearButton extends GuiButton {
 
-	protected int width;
-	protected int height;
-	public int xPosition;
-	public int yPosition;
-	public String displayString;
 	public int id;
 	public int type;
 	public String buttonImageLoc;
@@ -26,33 +21,17 @@ public class GuiClearButton extends GuiButton {
 		this(i, j, k, 45, 45, s);
 	}
 
-	public GuiClearButton(int i, int j, int k, int l, int i1, String s) {
-		super(i,j,k,l,i1,"");
-		width = 200;
-		height = 20;
-		id = i;
-		xPosition = j;
-		yPosition = k;
-		width = l;
-		height = i1;
-		displayString = s;   
+    public GuiClearButton(int i, int j, int k, int l, int i1, String s) {
+        super(i, j, k, l, i1, s);
+        id = i;
+    }
 
-	}
-
-	public GuiClearButton(int i, int j, int k, int l, int i1, String s, int Type, String img, int TextColor) {
-		super(i,j,k,l,i1,"");
-		width = 200;
-		height = 20;
+    public GuiClearButton(int i, int j, int k, int l, int i1, String s, int Type, String img, int TextColor) {
+        super(i, j, k, l, i1, s);
 		id = i;
-		xPosition = j;
-		yPosition = k;
-		width = l;
-		height = i1;
-		displayString = s;
 		type = Type;
 		buttonImageLoc = img;
 		color = TextColor;
-
 	}
 
 	public void initGui() {
@@ -79,7 +58,7 @@ public class GuiClearButton extends GuiButton {
 			return;
 		}
 
-		boolean flag = i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height;
+		boolean flag = i >= x && j >= y && i < x + width && j < y + height;
 
 		FontRenderer fontrenderer = minecraft.fontRenderer;
 
@@ -90,16 +69,16 @@ public class GuiClearButton extends GuiButton {
 		TropicraftRenderUtils.bindTextureGui(buttonImageLoc);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		int k = getHoverState(flag);	        	   
-		drawTexturedModalRect(xPosition, yPosition, type * 22 + 168 + (k - 1) * 11 , 236, 11, 20);
+		drawTexturedModalRect(x, y, type * 22 + 168 + (k - 1) * 11 , 236, 11, 20);
 		GlStateManager.popMatrix();
 		mouseDragged(minecraft, i, j);
 
 		if(!enabled) {
-			fontrenderer.drawString( displayString, xPosition , yPosition + (height - 8) / 2, 0xffa0a0a0);
+			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, 0xffa0a0a0);
 		} else if(flag) {
-			fontrenderer.drawString(displayString, xPosition , yPosition + (height - 8) / 2, 0x990000);
+			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, 0x990000);
 		} else {
-			fontrenderer.drawString(displayString, xPosition,yPosition + (height - 8) / 2, color);	            
+			fontrenderer.drawString(displayString, x,y + (height - 8) / 2, color);	            
 		}
 		GlStateManager.enableLighting();
 		GlStateManager.enableDepth();
@@ -121,6 +100,6 @@ public class GuiClearButton extends GuiButton {
 	@Override
     public boolean mousePressed(Minecraft minecraft, int i, int j)
 	{
-		return enabled && visible && i >= xPosition && j >= yPosition && i < xPosition + width && j < yPosition + height;
+		return enabled && visible && i >= x && j >= y && i < x + width && j < y + height;
 	}
 }

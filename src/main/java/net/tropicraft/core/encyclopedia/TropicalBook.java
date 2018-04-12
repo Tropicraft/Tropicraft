@@ -204,11 +204,7 @@ public class TropicalBook {
         return pages.size();
     }
     
-    public int entriesPerIndexPage() {
-        return 12;
-    }
-    
-    public String getPageTitleNotVisible(int i) {
+    public String getPageTitleNotVisible() {
         return "Page not found";
     }
 
