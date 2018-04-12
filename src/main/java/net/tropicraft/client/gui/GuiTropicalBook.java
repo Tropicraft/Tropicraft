@@ -87,25 +87,20 @@ public class GuiTropicalBook extends GuiScreen {
 		case buttonBookCover:
 			indexPage = 0;
 			contentPage = 0;
-			updateButtons();
 			break;
 		case buttonNextIndexPage:
 			indexPage++;
 			contentPage = 0;
-			updateButtons();
 			break;
 		case buttonPrevIndexPage:
 			indexPage--;
 			contentPage = 0;
-			updateButtons();
 			break;
 		case buttonNextContentPage:
 			contentPage++;
-			updateButtons();
 			break;
 		case buttonPrevContentPage:
 			contentPage--;
-			updateButtons();
 			break;
 		default:
 			// Selected a page from the index list
@@ -116,7 +111,6 @@ public class GuiTropicalBook extends GuiScreen {
 			contentPage = 0;
 			cachedRecipes = selectedPage.getRelevantRecipes();
 			recipeCycle = 0;
-			updateButtons();
 		}
 	}
 	
@@ -217,13 +211,12 @@ public class GuiTropicalBook extends GuiScreen {
 		    if (selectedPage != null) {
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
                 selectedPage = null;
-                updateButtons();
 		    } else if (indexPage >= 0) {
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
                 indexPage = -1;
-                updateButtons();
 		    }
 		}
+		updateButtons();
 	}
 
 	@Override
