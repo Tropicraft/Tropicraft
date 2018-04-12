@@ -3,6 +3,9 @@ package net.tropicraft.core.common.entity.ai;
 import java.util.List;
 
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
@@ -136,23 +139,19 @@ public class EntityAIKoaMate extends EntityAIBase
     private boolean canTownHandleMoreVillagers()
     {
         TownKoaVillage village = villagerObj.getVillage();
-        if (village != null) {
-            if (village.getPopulationSize() < 20) {
-                //System.out.println("population size: " + village.getPopulationSize());
-                return true;
+
+        if (village == null) {
+            if (villagerObj.findAndSetTownID(true)) {
+                village = villagerObj.getVillage();
+
+                //just in case
+                if (village == null) return false;
             } else {
                 return false;
-            }
-        } else {
-            boolean success = villagerObj.tryGetVillage();
-            if (!success) {
-                //System.out.println("no village found");
-                return false;
-            } else {
-                //System.out.println("fixed village");
             }
         }
-        return false;
+
+        return village.getPopulationSize() < village.getMaxPopulationSize();
     }
 
     private void giveBirth()
@@ -169,7 +168,7 @@ public class EntityAIKoaMate extends EntityAIBase
         entityvillager.setGrowingAge(-24000);
         entityvillager.setLocationAndAngles(this.villagerObj.posX, this.villagerObj.posY, this.villagerObj.posZ, 0.0F, 0.0F);
         if (entityvillager instanceof EntityKoaBase) {
-            ((EntityKoaBase) entityvillager).setVillageID(villagerObj.getVillageID());
+            ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimID());
             entityvillager.setHomePosAndDistance(villagerObj.getHomePosition(), EntityKoaBase.MAX_HOME_DISTANCE);
             TownKoaVillage village = villagerObj.getVillage();
             if (village != null) {
@@ -179,6 +178,8 @@ public class EntityAIKoaMate extends EntityAIBase
             }
 
             ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
+
+            ((EntityKoaBase) entityvillager).getWorld().playSound(null, entityvillager.getPosition(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.AMBIENT, 1, 1);
         }
 
 

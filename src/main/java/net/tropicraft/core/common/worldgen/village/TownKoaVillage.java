@@ -35,12 +35,16 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 
     public int direction = 1;
 
+    public boolean isCustomVillage = false;
+
     //spawn coords pertaining to each member, in a static order
     //0: shaman
     //1: trader
     //2-11: fishers
     //12-21: hunters
     //public List<BlockPos> listCoordsSpawn = new ArrayList<BlockPos>();
+
+    private int maxPopulationSize = 20;
 
     public TownKoaVillage() {
         super();
@@ -61,8 +65,6 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
     @Override
     public void initFirstTime() {
         super.initFirstTime();
-
-        genStructure();
     }
 
     public void genStructure() {
@@ -141,49 +143,71 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
         int y = 2;
 
 
-        //listCoordsSpawn.clear();
-        //shaman
-        //listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(34, 2+y, 0));
-        //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(77, 2+y, 37));
-        registerSpawnLocation(new SpawnLocationData(getRotatedCoordsWithRelFromCorner(77, 2 + y, 37), "shaman"));
-        //trader
-        //listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(-17, y, 0));
-        //25 37 is true position for trader best spot in rotation 0 for double odd sized village
-        registerSpawnLocation(new SpawnLocationData(getRotatedCoordsWithRelFromCorner(25, y, 37), "trader"));
-        //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(26, y, 38));
+        boolean oldSpawns = false;
+        if (oldSpawns) {
+            //listCoordsSpawn.clear();
+            //shaman
+            //listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(34, 2+y, 0));
+            //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(77, 2+y, 37));
+            registerSpawnLocation(new SpawnLocationData(getRotatedCoordsWithRelFromCorner(77, 2 + y, 37), "shaman"));
+            //trader
+            //listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(-17, y, 0));
+            //25 37 is true position for trader best spot in rotation 0 for double odd sized village
+            registerSpawnLocation(new SpawnLocationData(getRotatedCoordsWithRelFromCorner(25, y, 37), "trader"));
+            //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(26, y, 38));
 
-        //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(24, y, 37));
+            //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(24, y, 37));
 
-        //huts, left side front to back
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(23, 1 + y, 20), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(38, 1 + y, 14), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(57, 1 + y, 3), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(63, 1 + y, 17), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(69, 1 + y, 3), "fisher", "hunter");
-        //-787 88 -233
-        //-768 88 -244
-        //-762 -230
-        //-756 -244
+            //huts, left side front to back
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(23, 1 + y, 20), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(38, 1 + y, 14), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(57, 1 + y, 3), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(63, 1 + y, 17), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(69, 1 + y, 3), "fisher", "hunter");
+            //-787 88 -233
+            //-768 88 -244
+            //-762 -230
+            //-756 -244
 
-        //huts, right side front to back
-        //-802 -193
-        //-787 -187
-        //-768 -176
-        //-762 -190
-        //-756 -176
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(23, 1 + y, 54), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(38, 1 + y, 60), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(57, 1 + y, 71), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(63, 1 + y, 57), "fisher", "hunter");
-        registerSpawnLocation(getRotatedCoordsWithRelFromCorner(69, 1 + y, 71), "fisher", "hunter");
+            //huts, right side front to back
+            //-802 -193
+            //-787 -187
+            //-768 -176
+            //-762 -190
+            //-756 -176
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(23, 1 + y, 54), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(38, 1 + y, 60), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(57, 1 + y, 71), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(63, 1 + y, 57), "fisher", "hunter");
+            registerSpawnLocation(getRotatedCoordsWithRelFromCorner(69, 1 + y, 71), "fisher", "hunter");
 
-        //test koa
-        //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(0, y, 0));
+            //test koa
+            //listCoordsSpawn.add(getRotatedCoordsWithRelFromCorner(0, y, 0));
 
-        //listCoordsSpawn.add(getRotatedCoords(-5, 2, 0));
-        //listCoordsSpawn.add(getRotatedCoords(-10, 2, 0));
+            //listCoordsSpawn.add(getRotatedCoords(-5, 2, 0));
+            //listCoordsSpawn.add(getRotatedCoords(-10, 2, 0));
 
-        //listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(0, 2, 0));
+            //listCoordsSpawn.add(getRotatedCoordsWithRelFromCenter(0, 2, 0));
+        } else {
+            //totally not a hack
+            if (isCustomVillage) {
+                listSpawnLocations.clear();
+
+                for (int i = 0; i < minEntitiesToKeepAlive; i++) {
+                    //type unused atm
+
+                    //registerSpawnLocation(getRotatedCoordsWithRelFromCorner(0, 0 + y, 0), "fisher");
+                    registerSpawnLocation(new BlockPos(0, 0, 0), "fisher");
+                }
+            } else {
+                for (int i = 0; i < minEntitiesToKeepAlive; i++) {
+                    //type unused atm
+
+                    registerSpawnLocation(getRotatedCoordsWithRelFromCorner(42, 0 + y, 42), "fisher");
+                }
+            }
+
+        }
     }
 
     public BlockPos getRotatedCoordsWithRelFromCorner(int x, int y, int z) {
@@ -233,7 +257,8 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
         super.spawnMemberAtSpawnLocation(parData);
 
         EntityKoaBase ent = null;
-		
+
+        //TODO: readd predetermined roles?
 		/*if (parData.type.equals("fisher")) {
 			ent = new EntityKoaFisher(getWorld());
 		} else if (parData.type.equals("hunter")) {
@@ -248,7 +273,7 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
 
         if (ent != null) {
             //ent.getAIAgent().setManagedLocation(this);
-            ent.setVillageID(this.locationID);
+            ent.setVillageAndDimID(this.locationID, this.dimID);
             ent.setPosition(spawn.getX() + parData.coords.getX() + 0.5F, spawn.getY() + parData.coords.getY(), spawn.getZ() + parData.coords.getZ() + 0.5F);
             //ent.setPosition(parCoords.xCoord + 0.5F, parCoords.yCoord, parCoords.zCoord + 0.5F);
             getWorld().spawnEntity(ent);
@@ -394,6 +419,8 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
             lookupEntityToGender.put(uuid, gender);
         }
 
+        isCustomVillage = var1.getBoolean("isCustomVillage");
+
     }
 
     @Override
@@ -410,6 +437,8 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
             nbtListPersistantEntities.setTag("entry_" + count++, nbtEntry);
         }
         var1.setTag("lookupGenders", nbtListPersistantEntities);
+
+        var1.setBoolean("isCustomVillage", isCustomVillage);
 
         return var1;
     }
@@ -442,5 +471,13 @@ public class TownKoaVillage extends TownObject implements ICustomGen {
         super.hookEntityDied(ent);
 
         lookupEntityToGender.remove(ent.getPersistentID());
+    }
+
+    public int getMaxPopulationSize() {
+        return maxPopulationSize;
+    }
+
+    public void setMaxPopulationSize(int maxPopulationSize) {
+        this.maxPopulationSize = maxPopulationSize;
     }
 }

@@ -5,11 +5,14 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.BlockNote;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityNote;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -216,6 +219,19 @@ public class EntityAIPartyTime extends EntityAIBase
                             entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
                                     bongo.getSoundEvent(), SoundCategory.BLOCKS, 6.0F, pitch);
                             entityObj.swingArm(EnumHand.MAIN_HAND);
+                        } else if (state.getBlock() instanceof BlockNote) {
+                            TileEntity tEnt = entityObj.world.getTileEntity(blockposGoal);
+                            if (tEnt instanceof TileEntityNote) {
+                                TileEntityNote note = (TileEntityNote) tEnt;
+                                if (entityObj.world.rand.nextInt(10) == 0) {
+                                    for (int i = 0; i < 1 + entityObj.world.rand.nextInt(4); i++) {
+                                        note.changePitch();
+                                    }
+                                } else {
+                                    note.triggerNote(entityObj.world, blockposGoal);
+                                }
+                                entityObj.swingArm(EnumHand.MAIN_HAND);
+                            }
                         }
                     }
 
