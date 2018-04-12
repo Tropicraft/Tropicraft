@@ -37,7 +37,7 @@ public class ItemPage extends SimplePage {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawIcon(int x, int y, float partialTick) {
+    public void drawIcon(int x, int y, float cycle) {
         GlStateManager.color(0, 0, 0);
         // itemRenderer.renderWithColor = book.isPageVisible(selectedIndex);
         // TODO 1.12 ??

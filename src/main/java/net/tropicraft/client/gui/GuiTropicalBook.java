@@ -42,7 +42,8 @@ public class GuiTropicalBook extends GuiScreen {
 	private String openTextureIndex;
 	private RenderItem itemRenderer;
 	private @Nonnull List<RecipeEntry> cachedRecipes = new ArrayList<>();
-	private float recipeCycle;
+	
+	float recipeCycle;
 		
 	private GuiButton coverButton;
 	private GuiButton prevPage, nextPage;
@@ -133,6 +134,8 @@ public class GuiTropicalBook extends GuiScreen {
                 btn.visible = selectedPage == null && i == indexPage;
             }
         }
+        
+        recipeCycle = 0; // Reset cycling
 	}
 
 	private void addButtons() {
@@ -191,7 +194,7 @@ public class GuiTropicalBook extends GuiScreen {
             titleW = fontRenderer.getStringWidth(pageTitle);
         }
         
-        GuiIndexButton btn = new GuiIndexButton(book.getPage(entry), entry, x, y, 116, 15, pageTitle, -1, openTextureIndex, color);
+        GuiIndexButton btn = new GuiIndexButton(this, book.getPage(entry), entry, x, y, 116, 15, pageTitle, -1, openTextureIndex, color);
 	    buttonList.add(btn);
 	    if (pageButtons.size() == page) {
 	        pageButtons.add(new ArrayList<>());
@@ -239,7 +242,7 @@ public class GuiTropicalBook extends GuiScreen {
 
 	@Override
 	public void drawScreen(int i, int j, float elapsedPartialTicks) {
-
+        recipeCycle += elapsedPartialTicks;
 	    ttLines = null;
 	    
 		drawDefaultBackground();
@@ -316,7 +319,7 @@ public class GuiTropicalBook extends GuiScreen {
                         
                         GlStateManager.pushMatrix();
                         GlStateManager.scale(1.25f, 1.25f, 1.25f);
-                        selectedPage.drawIcon((int) ((width / 2) * (4 / 5f) - 33), (int) ((height / 2) * (4 / 5f) - 87), elapsedPartialTicks);
+                        selectedPage.drawIcon((int) ((width / 2) * (4 / 5f) - 33), (int) ((height / 2) * (4 / 5f) - 87), recipeCycle);
                         GlStateManager.popMatrix();
                     }
                 }
@@ -342,7 +345,6 @@ public class GuiTropicalBook extends GuiScreen {
 	}
 
 	private void printRecipes(int mx, int my, float elapsedPartialTicks) throws Exception {
-	    recipeCycle += elapsedPartialTicks;
 		if (cachedRecipes.isEmpty()) {
 			return;
 		}

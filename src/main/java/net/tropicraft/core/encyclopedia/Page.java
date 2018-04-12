@@ -20,7 +20,7 @@ public interface Page {
     void drawHeader(int x, int y, float partialTick);
     
     @SideOnly(Side.CLIENT)
-    void drawIcon(int x, int y, float partialTick);
+    void drawIcon(int x, int y, float cycle);
     
     int getHeaderHeight();
     

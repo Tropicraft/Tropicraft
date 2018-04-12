@@ -19,7 +19,7 @@ public class MultiItemPage extends ItemPage {
     
     private final ItemStack[] stacks;
     
-    private float tick;
+    private int tick;
     
     public MultiItemPage(String id, ItemStack... stacks) {
         super(id, stacks[0]);
@@ -28,14 +28,14 @@ public class MultiItemPage extends ItemPage {
 
     @Override
     protected ItemStack getStack() {
-        return stacks[MathHelper.floor(tick) % stacks.length];
+        return stacks[tick % stacks.length];
     }
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void drawIcon(int x, int y, float partialTick) {
-        tick += partialTick * 0.05f;
-        super.drawIcon(x, y, partialTick);
+    public void drawIcon(int x, int y, float cycle) {
+        this.tick = MathHelper.floor(cycle * 0.05);
+        super.drawIcon(x, y, cycle);
     }
 
     @Override

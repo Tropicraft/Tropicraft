@@ -8,10 +8,12 @@ import net.tropicraft.core.encyclopedia.Page;
 
 public class GuiIndexButton extends GuiClearButton {
     
+    private final GuiTropicalBook parent;
     private final Page page;
 
-    public GuiIndexButton(Page page, int id, int x, int y, int width, int height, String displayString, int type, String img, int textColor) {
+    public GuiIndexButton(GuiTropicalBook parent, Page page, int id, int x, int y, int width, int height, String displayString, int type, String img, int textColor) {
         super(id, x, y, width, height, "     " + displayString, type, img, textColor);
+        this.parent = parent;
         this.page = page;
     }
 
@@ -34,7 +36,7 @@ public class GuiIndexButton extends GuiClearButton {
             RenderHelper.enableGUIStandardItemLighting();
             GlStateManager.color(0, 0, 0);
 
-            page.drawIcon(x + 1, y - 2, partialTicks);
+            page.drawIcon(x + 1, y - 2, parent.recipeCycle);
         }
     }
 }
