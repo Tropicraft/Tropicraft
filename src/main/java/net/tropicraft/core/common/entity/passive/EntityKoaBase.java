@@ -132,7 +132,7 @@ public class EntityKoaBase extends EntityVillager {
     private static int TRADE_COOLDOWN = 24000*3;
     private static int DIVE_TIME_NEEDED = 60*60;
 
-    public boolean debug = true;
+    public boolean debug = false;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> (input instanceof EntityMob && !(input instanceof EntityCreeper)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
