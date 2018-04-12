@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.BambooDoubleChestItemHandler;
@@ -55,6 +56,12 @@ public class TileEntityBambooChest extends TileEntityChest {
         nbttagcompound.setBoolean("unbreakable", unbreakable);
         
         return nbttagcompound;
+    }
+    
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        BlockPos pos = getPos();
+        return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
     }
 
     /**
