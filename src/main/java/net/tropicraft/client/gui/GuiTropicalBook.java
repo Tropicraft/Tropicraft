@@ -123,8 +123,8 @@ public class GuiTropicalBook extends GuiScreen {
 	private void updateButtons() {
 	    coverButton.visible = indexPage == -1;
 	    
-        nextContentPage.visible = indexPage >= 0 && cachedRecipes.size() > (contentPage * 6) + 3;
-        prevContentPage.visible = contentPage > 0;
+        nextContentPage.visible = selectedPage != null && cachedRecipes.size() > (contentPage * 6) + 3;
+        prevContentPage.visible = selectedPage != null && contentPage > 0;
         
         nextPage.visible = indexPage >= 0 && selectedPage == null && indexPage < pageButtons.size() - 1;
         prevPage.visible = indexPage > 0 && selectedPage == null;
