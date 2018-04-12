@@ -105,16 +105,16 @@ public class GuiTropicalBook extends GuiScreen {
 		default:
 			// Selected a page from the index list
             selectedPage = ((GuiIndexButton) guibutton).getPage();
-//            if (selectedPage.hasContent()) {
+            if (selectedPage.hasContent()) {
                 if (book.isPageVisible(selectedPage.getId()) && !book.hasPageBeenRead(selectedPage.getId())) {
                     book.markPageAsRead(selectedPage.getId());
                 }
                 contentPage = 0;
                 cachedRecipes = selectedPage.getRelevantRecipes();
                 recipeCycle = 0;
-//            } else {
-//                selectedPage = null;
-//            }
+            } else {
+                selectedPage = null;
+            }
         }
 	}
 	
