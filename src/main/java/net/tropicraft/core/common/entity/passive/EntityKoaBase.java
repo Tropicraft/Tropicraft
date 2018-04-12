@@ -30,6 +30,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -46,6 +47,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityNote;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -53,6 +55,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -378,6 +382,10 @@ public class EntityKoaBase extends EntityVillager {
         findAndSetFireSource(false);
         findAndSetDrums(false);
         findAndSetTownID(false);
+
+        String str = getDisplayName().getFormattedText();
+
+        System.out.println(str);
 
     }
 
@@ -809,6 +817,20 @@ public class EntityKoaBase extends EntityVillager {
         }
     }
 
+    public boolean isInstrument(BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() == BlockRegistry.bongo) {
+            return true;
+        } else {
+            TileEntity tEnt = world.getTileEntity(pos);
+            if (tEnt instanceof TileEntityNote) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void findAndSetDrums(boolean force) {
 
         //this.setHomePosAndDistance(this.getHomePosition(), 128);
@@ -818,8 +840,7 @@ public class EntityKoaBase extends EntityVillager {
         Iterator<BlockPos> it = listPosDrums.iterator();
         while (it.hasNext()) {
             BlockPos pos = it.next();
-            IBlockState state = world.getBlockState(pos);
-            if (state.getBlock() != BlockRegistry.bongo) {
+            if (!isInstrument(pos)) {
                 it.remove();
             }
         }
@@ -867,8 +888,8 @@ public class EntityKoaBase extends EntityVillager {
             for (int y = -range/2; y <= range/2; y++) {
                 for (int z = -range; z <= range; z++) {
                     BlockPos pos = this.getPosition().add(x, y, z);
-                    IBlockState state = world.getBlockState(pos);
-                    if (state.getBlock() == BlockRegistry.bongo) {
+                    if (isInstrument(pos)) {
+                    //if (state.getBlock() == BlockRegistry.bongo) {
 
                         boolean match = false;
 
@@ -1214,4 +1235,19 @@ public class EntityKoaBase extends EntityVillager {
     public boolean getWantsToParty() {
         return wantsToParty;
     }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        String gender = getGender().toString().substring(0, 1) + getGender().toString().substring(1).toLowerCase();
+        String role = getRole().toString().substring(0, 1) + getRole().toString().substring(1).toLowerCase();
+        return new TextComponentString(gender + " Koa " + role);
+        //return super.getDisplayName();
+    }
+
+    @Override
+    public void onStruckByLightning(EntityLightningBolt lightningBolt) {
+        //cancel super witch code
+    }
+
+
 }

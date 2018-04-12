@@ -68,7 +68,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
         //temp
         //entity.timeBetweenFishing = 20*60*2;
         entity.lastTimeFished = 0;
-        debugTask = true;
+        debugTask = false;
 
         BlockPos blockpos = new BlockPos(this.entity);
 
