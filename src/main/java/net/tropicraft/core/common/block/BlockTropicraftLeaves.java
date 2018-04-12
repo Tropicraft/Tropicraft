@@ -12,6 +12,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -157,5 +158,10 @@ public class BlockTropicraftLeaves extends BlockLeaves implements ITropicraftBlo
 	@Override
 	public EnumType getWoodType(int meta) {
 		return null;
+	}
+
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
+		return type == EntityLiving.SpawnPlacementType.ON_GROUND;
 	}
 }

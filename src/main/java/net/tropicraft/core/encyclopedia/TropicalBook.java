@@ -34,13 +34,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TropicalBook {
-    
-    // Content mode is used to determine what tabs are avaliable in this book
-    public static enum ContentMode {
-        INFO,
-        RECIPE
-    }
-    
+
     public static enum ReadState {
         HIDDEN,
         VISIBLE,
@@ -227,19 +221,8 @@ public abstract class TropicalBook {
         return sortedPages.size();
     }
     
-    /*
-     * Returns the number of content pages the given page contains
-     */
-    public int getContentPageCount(int page, ContentMode mode) {
-        return 1;
-    }
-    
     public int entriesPerIndexPage() {
         return 12;
-    }
-    
-    public int entriesPerContentPage(ContentMode mode) {
-        return 1;
     }
     
     public boolean hasIndexIcons() {
@@ -285,6 +268,10 @@ public abstract class TropicalBook {
     
     protected List<String> getSortedPages() {
         return sortedPages;
+    }
+
+    public int getRecipeCount(int page) {
+        return 0;
     }
     
 }

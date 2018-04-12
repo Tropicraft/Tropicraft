@@ -69,36 +69,13 @@ public class Encyclopedia extends TropicalBook {
         return recipeList;
     }
     
-    /*
-     * Returns the number of content pages associated with the given entry and
-     * content type
-     * Note: Individual recipes are counted as 1 page each - the GUI must
-     * join them up according to the number of recipes to display per page
-     */
     @Override
-    public int getContentPageCount(int page, ContentMode mode) {
-        
+    public int getRecipeCount(int page) {
         if (page >= 0 && page < getPageCount()) {
-            if (mode == ContentMode.INFO) {
-                return 1;
-            } else if (mode == ContentMode.RECIPE) {
-                List<IRecipe> recipeList = getRecipesForEntry(page);
-                if (recipeList != null) {
-                    return recipeList.size();
-                }
-            }
+            List<IRecipe> recipeList = getRecipesForEntry(page);
+            return recipeList.size();
         }
-        
         return 0;
-    }
-
-    @Override
-    public int entriesPerContentPage(ContentMode mode) {
-        if (mode == ContentMode.RECIPE) {
-            return 3;
-        } 
-        
-        return super.entriesPerContentPage(mode);
     }
 
     @Override

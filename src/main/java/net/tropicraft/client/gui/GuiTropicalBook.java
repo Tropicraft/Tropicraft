@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
@@ -18,8 +20,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,11 +28,6 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.encyclopedia.Encyclopedia;
 import net.tropicraft.core.encyclopedia.TropicalBook;
-import net.tropicraft.core.encyclopedia.TropicalBook.ContentMode;
-import net.tropicraft.core.registry.SoundRegistry;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 @SideOnly(Side.CLIENT)
 public class GuiTropicalBook extends GuiScreen {
@@ -54,13 +49,13 @@ public class GuiTropicalBook extends GuiScreen {
 	private GuiButton prevPage, nextPage;
 	private GuiButton prevContentPage, nextContentPage;
 	
-	private final static int buttonNextIndexPage = 2000;
-	private final static int buttonPrevIndexPage = 2001;
-	private final static int buttonBookCover = 2003;
-	private final static int buttonCraftingPage = 2010;
-	private final static int buttonInfoPage = 2011;
-	private final static int buttonNextContentPage = 2012;
-	private final static int buttonPrevContentPage = 2013;
+	private final static int buttonNextIndexPage = -1;
+	private final static int buttonPrevIndexPage = -2;
+	private final static int buttonBookCover = -3;
+	private final static int buttonCraftingPage = -4;
+	private final static int buttonInfoPage = -5;
+	private final static int buttonNextContentPage = -6;
+	private final static int buttonPrevContentPage = -7;
 
 	public GuiTropicalBook(TropicalBook tropbook) {
 		book = tropbook;
@@ -81,7 +76,6 @@ public class GuiTropicalBook extends GuiScreen {
 	@Override
 	public void initGui(){
 		addButtons();
-		updateIndex();
 	}
 
 	@Override
@@ -92,19 +86,16 @@ public class GuiTropicalBook extends GuiScreen {
 			indexPage = 0;
 			contentPage = 0;
 			addButtons();
-			updateIndex();
 			break;
 		case buttonNextIndexPage:
 			indexPage++;
 			contentPage = 0;
 			addButtons();
-			updateIndex();
 			break;
 		case buttonPrevIndexPage:
 			indexPage--;
 			contentPage = 0;
 			addButtons();
-			updateIndex();
 			break;
 		case buttonNextContentPage:
 			contentPage++;
@@ -124,10 +115,8 @@ public class GuiTropicalBook extends GuiScreen {
 			cachedRecipes = ((Encyclopedia)book).getRecipesForEntry(selectedIndex);
 			recipeCycle = 0;
 			addButtons();
-			updateIndex();
 		}
 	}
-
 
 	private void addButtons() {
 
@@ -146,11 +135,15 @@ public class GuiTropicalBook extends GuiScreen {
 		} else {
 
 			// Add index buttons //
-			int perPage = book.entriesPerIndexPage();
-			for (int i = 0; i < perPage * 2; i++) {
-			    int row = i % perPage;
-			    int col = i / perPage;
-				buttonList.add(indexButtons[col][row] = new GuiIndexButton(i, width / 2 + (col == 0 ? -129 : 35), height / 2 - 87 + row * 15, 116, 10, "", -1, openTextureIndex, -1));
+	        int perPage = book.entriesPerIndexPage();
+			int position = 0;
+			for (int entry = 0; position < perPage * 2 && entry < book.getPageCount(); entry++) {
+			    if (book.isPageVisible(entry)) {
+				    addIndexButton(entry, position++);
+			    }
+			}
+			for (int i = position; i < perPage * 2; i++) {
+			    indexButtons[i / perPage][i % perPage] = null;
 			}
 
 			// Add prev/next page for index //
@@ -161,53 +154,45 @@ public class GuiTropicalBook extends GuiScreen {
 			nextPage.visible = (indexPage + 1) * (book.entriesPerIndexPage() * 2) < book.getPageCount();
         }
     }
+	
+	private void addIndexButton(int page, int position) {
+        int row = position % book.entriesPerIndexPage();
+        int col = position / book.entriesPerIndexPage();
+        GuiIndexButton btn = new GuiIndexButton(page, width / 2 + (col == 0 ? -129 : 35), height / 2 - 87 + row * 15, 116, 10, "", -1, openTextureIndex, -1);
+	    buttonList.add(indexButtons[col][row] = btn);
+	    
+        String pageTitle = book.getPageTitleNotVisible(page);
+        int color = 0x440000;
+        if (book.isPageVisible(page)) {
+            pageTitle = book.getPageTitleByIndex(page);
 
-    private void updateIndex() {
-        if (indexPage < 0) {
-            return;
-        }
-        for (int col = 0; col < indexButtons.length; col++) {
-            for (int row = 0; row < indexButtons[col].length; row++) {
-                GuiIndexButton button = indexButtons[col][row];
-                int entry = indexPage * (book.entriesPerIndexPage() * 2) + row + (col * book.entriesPerIndexPage());
-                if (entry < book.getPageCount()) {
-                    String pageTitle = book.getPageTitleNotVisible(entry);
-                    int color = 0x440000;
-                    if (book.isPageVisible(entry)) {
-                        pageTitle = book.getPageTitleByIndex(entry);
-
-                        if (!book.hasPageBeenRead(entry)) {
-                            color = 0x3333ff;
-                        }
-                    }
-                    
-                    // Make sure the title fits
-                    int titleW = fontRenderer.getStringWidth(pageTitle);
-                    int maxW = 116;
-                    if (titleW > maxW) {
-                        pageTitle += "...";
-                    }
-                    while (titleW > maxW) {
-                        pageTitle = pageTitle.substring(0, pageTitle.length() - 4) + "...";
-                        titleW = fontRenderer.getStringWidth(pageTitle);
-                    }
-                    
-                    button.displayString = pageTitle;
-                    button.color = color;
-                    button.visible = true;
-                    button.pageID = entry;
-                } else {
-                    button.visible = false;
-                }
+            if (!book.hasPageBeenRead(page)) {
+                color = 0x3333ff;
             }
         }
-    }
+        
+        // Make sure the title fits
+        int titleW = fontRenderer.getStringWidth(pageTitle);
+        int maxW = 116;
+        if (titleW > maxW) {
+            pageTitle += "...";
+        }
+        while (titleW > maxW) {
+            pageTitle = pageTitle.substring(0, pageTitle.length() - 4) + "...";
+            titleW = fontRenderer.getStringWidth(pageTitle);
+        }
+        
+        btn.displayString = pageTitle;
+        btn.color = color;
+        btn.visible = true;
+        btn.pageID = page;
+	}
 
 	public void addIcons() {
         for (int col = 0; col < indexButtons.length; col++) {
             for (int row = 0; row < indexButtons[col].length; row++) {
                 GuiIndexButton button = indexButtons[col][row];
-                if (button.visible && button.pageID < book.getPageCount()) {
+                if (button != null && button.visible && button.pageID < book.getPageCount()) {
         			GlStateManager.pushMatrix();
         			GlStateManager.disableLighting();
         
@@ -253,7 +238,6 @@ public class GuiTropicalBook extends GuiScreen {
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
                 selectedIndex = -1;
                 addButtons();
-                updateIndex();
 		    } else if (indexPage >= 0) {
                 mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
                 indexPage = -1;
@@ -398,8 +382,7 @@ public class GuiTropicalBook extends GuiScreen {
 		int newx = contentPage == 0 ? width / 2 + 25 : width / 2 - 136;
 		int newy = height / 2 - 80;
 
-		ContentMode contentMode = ContentMode.RECIPE;
-		int max = book.entriesPerContentPage(contentMode);
+		int max = 3;
 		if (contentPage > 0) {
 		    max *= 2;
 		}
