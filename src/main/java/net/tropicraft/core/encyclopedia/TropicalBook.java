@@ -194,6 +194,15 @@ public class TropicalBook {
         markPageAsRead(getPageName(i));
     }
     
+    public void hidePage(int i) {
+        hidePage(getPageName(i));
+    }
+    
+    public void hidePage(String entry) {
+        visibilities.remove(entry);
+        saveData();
+    }
+    
     public boolean pageExists(String name) {
         if (pages.containsKey(name)) {
             return true;
