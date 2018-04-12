@@ -104,14 +104,18 @@ public class GuiTropicalBook extends GuiScreen {
 			break;
 		default:
 			// Selected a page from the index list
-			selectedPage = ((GuiIndexButton)guibutton).getPage();
-			if (book.isPageVisible(selectedPage.getId()) && !book.hasPageBeenRead(selectedPage.getId())) {
-				book.markPageAsRead(selectedPage.getId());
-			}
-			contentPage = 0;
-			cachedRecipes = selectedPage.getRelevantRecipes();
-			recipeCycle = 0;
-		}
+            selectedPage = ((GuiIndexButton) guibutton).getPage();
+//            if (selectedPage.hasContent()) {
+                if (book.isPageVisible(selectedPage.getId()) && !book.hasPageBeenRead(selectedPage.getId())) {
+                    book.markPageAsRead(selectedPage.getId());
+                }
+                contentPage = 0;
+                cachedRecipes = selectedPage.getRelevantRecipes();
+                recipeCycle = 0;
+//            } else {
+//                selectedPage = null;
+//            }
+        }
 	}
 	
 	private void updateButtons() {
@@ -148,15 +152,15 @@ public class GuiTropicalBook extends GuiScreen {
 		int page = 0;
 		for (int entry = 0; entry < book.getPageCount(); entry++) {
 		    if (book.isPageVisible(entry)) {
-			    addIndexButton(entry, page, width / 2 + (left ? -150 : 14), height / 2 - 87 + y);
-			    y += 20;
-			    if (y > 175) {
+			    if (y > (book.getPage(entry).isBookmark() ? 155 : 175)) {
 			        if (!left) {
 			            page++;
 			        }
 			        left = !left;
-			        y = 0;
+			        y = left ? 0 : -20;
 			    }
+	            addIndexButton(entry, page, width / 2 + (left ? -150 : 14), height / 2 - 84 + y);
+	            y += 20;
 		    }
 		}
 

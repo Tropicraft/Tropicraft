@@ -42,4 +42,9 @@ public class SimplePage implements Page {
     public boolean discover(World world, EntityPlayer player) {
         return false;
     }
+    
+    @Override
+    public String toString() {
+        return id;
+    }
 }

@@ -42,6 +42,18 @@ public interface Page {
         return I18n.format(getDescription());
     }
     
+    default boolean isBookmark() {
+        return false;
+    }
+    
+    default boolean hasContent() {
+        return !isBookmark();
+    }
+    
+    default boolean hasIcon() {
+        return !isBookmark();
+    }
+    
     List<RecipeEntry> getRelevantRecipes();
     
     /**
