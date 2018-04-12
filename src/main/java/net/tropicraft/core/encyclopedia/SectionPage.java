@@ -21,9 +21,4 @@ public class SectionPage extends SimplePage {
     public String getTitle() {
         return super.getTitle().replace("encyclopedia", "encyclopedia.section");
     }
-    
-    @Override
-    public boolean discover(World world, EntityPlayer player) {
-        return true;
-    }
 }
