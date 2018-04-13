@@ -348,7 +348,7 @@ public class GuiTropicalBook extends GuiScreen {
                             fontRenderer.setUnicodeFlag(false);
                         }
                         
-                        selectedPage.drawHeader(width / 2 - 150, height / 2 - 80 + selectedPage.getHeaderHeight(), i, j, recipeCycle);
+                        selectedPage.drawHeader(width / 2 - 150, height / 2 - 80, i, j, recipeCycle);
                         fontRenderer.drawSplitString("  " + (book.isPageVisible(selectedPage.getId()) ? selectedPage.getLocalizedDescription() : "???"), width / 2 - 150, height / 2 - 80 + selectedPage.getHeaderHeight(), 135, 0x440000);
                     }
                     if (cachedRecipes.size() > 0) {

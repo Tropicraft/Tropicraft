@@ -39,12 +39,12 @@ public class LoveTropicsPage extends SimplePage {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
         TropicraftRenderUtils.bindTextureGui("lovetropics");
-        drawScaledCustomSizeModalRect(x, y, 0, 0, 825, 216, 125, 33, 825, 216);
+        drawScaledCustomSizeModalRect(x, y - 10, 0, 0, 825, 216, 125, 33, 825, 216);
     }
 
     @Override
     public int getHeaderHeight() {
-        return 40;
+        return 30;
     }
 
     @Override
