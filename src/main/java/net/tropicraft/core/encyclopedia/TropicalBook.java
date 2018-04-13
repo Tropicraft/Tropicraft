@@ -9,14 +9,19 @@ import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
 import org.apache.logging.log4j.LogManager;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
@@ -42,6 +47,9 @@ public class TropicalBook {
     private LinkedHashMap<String, Page> pages = new LinkedHashMap<>();
     private List<String> pageIds = new ArrayList<>();
     
+    private Page currentBookmark;
+    private Map<Page, Page> pageToBookmark = new IdentityHashMap<>();
+    
     private HashMap<String, ReadState> visibilities = new HashMap<>();
 
     private final String fileName;
@@ -57,16 +65,21 @@ public class TropicalBook {
 
         MinecraftForge.EVENT_BUS.register(this);
     }
-    
+
     public void addPage(Page page) {
         if (!pages.containsKey(page.getId())) {
             this.pages.put(page.getId(), page);
             this.pageIds.add(page.getId());
+            if (page.isBookmark()) {
+                currentBookmark = page;
+            } else if (currentBookmark != null) {
+                this.pageToBookmark.put(page, currentBookmark);
+            }
         } else {
             throw new IllegalArgumentException("Duplicate page: " + page.getId());
         }
     }
-    
+
     protected File getSaveFile() {
         File root = DimensionManager.getCurrentSaveRootDirectory();
         if (root == null) {
@@ -163,7 +176,8 @@ public class TropicalBook {
     }
     
     public void markPageAsNewlyVisible(String entry) {
-        visibilities.put(entry, ReadState.VISIBLE);
+        Page page = getPage(entry);
+        visibilities.put(entry, page == null || !page.isBookmark() ? ReadState.VISIBLE : ReadState.READ);
         saveData();
     }
     
@@ -178,6 +192,15 @@ public class TropicalBook {
     
     public void markPageAsRead(int i) {
         markPageAsRead(getPageName(i));
+    }
+    
+    public void hidePage(int i) {
+        hidePage(getPageName(i));
+    }
+    
+    public void hidePage(String entry) {
+        visibilities.remove(entry);
+        saveData();
     }
     
     public boolean pageExists(String name) {
@@ -224,7 +247,19 @@ public class TropicalBook {
         for (Entry<String, Page> e : pages.entrySet()) {
             if (!isPageVisible(e.getKey()) && e.getValue().discover(world, player)) {
                 markPageAsNewlyVisible(e.getKey());
+                Page bookmark = pageToBookmark.get(e.getValue());
+                if (bookmark != null) {
+                    markPageAsRead(bookmark.getId());
+                }
             }
         }
+    }
+
+    public void dumpSections() {
+        Multimap<Page, Page> inverseSections = HashMultimap.create();
+        for (Entry<Page, Page> e : pageToBookmark.entrySet()) {
+            inverseSections.put(e.getValue(), e.getKey());
+        }
+        inverseSections.asMap().entrySet().forEach(System.out::println);
     }
 }

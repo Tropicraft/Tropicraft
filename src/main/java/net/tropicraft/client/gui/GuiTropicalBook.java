@@ -2,6 +2,7 @@ package net.tropicraft.client.gui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -23,6 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.tropicraft.Info;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.sound.TropicraftSounds;
 import net.tropicraft.core.encyclopedia.Page;
@@ -36,6 +39,7 @@ public class GuiTropicalBook extends GuiScreen {
 	private int indexPage = -1;
 	private Page selectedPage;
 	private int contentPage = 0;
+	private boolean showingBookmarks;
 	private String coverBackground;
 	private String pageBackgroundL, pageBackgroundR;
 	private String closedTextureIndex;
@@ -50,6 +54,9 @@ public class GuiTropicalBook extends GuiScreen {
 	private GuiButton prevContentPage, nextContentPage;
 	
 	private List<List<GuiIndexButton>> pageButtons = new ArrayList<>();
+	
+	private GuiButton bookmarkButton;
+	private List<GuiBookmarkButton> bookmarks = new ArrayList<>();
 	
 	private final static int buttonNextIndexPage = -1;
 	private final static int buttonPrevIndexPage = -2;
@@ -82,6 +89,19 @@ public class GuiTropicalBook extends GuiScreen {
 
 	@Override
 	protected void actionPerformed(@Nonnull GuiButton guibutton) {
+        showingBookmarks = false;
+
+	    if (guibutton == bookmarkButton) {
+	        showingBookmarks = true;
+	        contentPage = 0;
+            selectedPage = null;
+	        return;
+	    }
+	    
+	    if (guibutton instanceof GuiBookmarkButton) {
+	        this.indexPage = ((GuiBookmarkButton)guibutton).getTarget();
+	        return;
+	    }
 
 		switch (guibutton.id) {
 		case buttonBookCover:
@@ -104,29 +124,39 @@ public class GuiTropicalBook extends GuiScreen {
 			break;
 		default:
 			// Selected a page from the index list
-			selectedPage = ((GuiIndexButton)guibutton).getPage();
-			if (book.isPageVisible(selectedPage.getId()) && !book.hasPageBeenRead(selectedPage.getId())) {
-				book.markPageAsRead(selectedPage.getId());
-			}
-			contentPage = 0;
-			cachedRecipes = selectedPage.getRelevantRecipes();
-			recipeCycle = 0;
-		}
+            selectedPage = ((GuiIndexButton) guibutton).getPage();
+            if (selectedPage.hasContent()) {
+                if (book.isPageVisible(selectedPage.getId()) && !book.hasPageBeenRead(selectedPage.getId())) {
+                    book.markPageAsRead(selectedPage.getId());
+                    ((GuiClearButton)guibutton).color = 0x440000;
+                }
+                contentPage = 0;
+                cachedRecipes = selectedPage.getRelevantRecipes();
+                recipeCycle = 0;
+            } else {
+                selectedPage = null;
+            }
+        }
 	}
 	
 	private void updateButtons() {
 	    coverButton.visible = indexPage == -1;
 	    
-        nextContentPage.visible = selectedPage != null && cachedRecipes.size() > (contentPage * 6) + 3;
-        prevContentPage.visible = selectedPage != null && contentPage > 0;
+        nextContentPage.visible = !showingBookmarks && selectedPage != null && cachedRecipes.size() > (contentPage * 6) + 3;
+        prevContentPage.visible = !showingBookmarks && selectedPage != null && contentPage > 0;
         
-        nextPage.visible = indexPage >= 0 && selectedPage == null && indexPage < pageButtons.size() - 1;
-        prevPage.visible = indexPage > 0 && selectedPage == null;
+        nextPage.visible = !showingBookmarks && indexPage >= 0 && selectedPage == null && indexPage < pageButtons.size() - 1;
+        prevPage.visible = !showingBookmarks && indexPage > 0 && selectedPage == null;
         
         for (int i = 0; i < pageButtons.size(); i++) {
             for (GuiIndexButton btn : pageButtons.get(i)) {
-                btn.visible = selectedPage == null && i == indexPage;
+                btn.visible = !showingBookmarks && selectedPage == null && i == indexPage;
             }
+        }
+        
+        bookmarkButton.visible = !showingBookmarks && indexPage >= 0 && selectedPage == null;
+        for (GuiBookmarkButton btn : bookmarks) {
+            btn.visible = showingBookmarks;
         }
         
         recipeCycle = 0; // Reset cycling
@@ -141,22 +171,37 @@ public class GuiTropicalBook extends GuiScreen {
         // Add prev/next page for content //
         buttonList.add(prevContentPage = new GuiClearButton(buttonPrevContentPage, width / 2 - 164, height / 2 - 20 , 11, 22, "", 1, openTextureIndex, 0x440000));
         buttonList.add(nextContentPage = new GuiClearButton(buttonNextContentPage, width / 2 + 152, height / 2 - 20, 11, 22, "", 2, openTextureIndex, 0x440000));
+        
+        bookmarkButton = new GuiClearButton(-1000, (width / 2) + 130, (height / 2) - 119, 11, 17, "", 4, openTextureIndex, -1) {
+            
+            @Override
+            public void drawButton(Minecraft minecraft, int i, int j, float partialTicks) {
+                // TODO Auto-generated method stub
+                super.drawButton(minecraft, i, j, partialTicks);
+            }
+        };
+        buttonList.add(bookmarkButton);
 
 		// Add index buttons //
 		boolean left = true;
 		int y = 0;
 		int page = 0;
+		int bookmarkY = 0;
 		for (int entry = 0; entry < book.getPageCount(); entry++) {
 		    if (book.isPageVisible(entry)) {
-			    addIndexButton(entry, page, width / 2 + (left ? -150 : 14), height / 2 - 87 + y);
-			    y += 20;
-			    if (y > 175) {
+			    if (y > (book.getPage(entry).isBookmark() ? 155 : 175)) {
 			        if (!left) {
 			            page++;
 			        }
 			        left = !left;
-			        y = 0;
+			        y = left ? 0 : -20;
 			    }
+	            addIndexButton(entry, page, width / 2 + (left ? -150 : 14), height / 2 - 84 + y);
+	            if (book.getPage(entry).isBookmark()) {
+	                addBookmarkButton(entry, page, bookmarkY);
+	                bookmarkY += 10;
+	            }
+	            y += 20;
 		    }
 		}
 
@@ -195,6 +240,12 @@ public class GuiTropicalBook extends GuiScreen {
 	    }
 	    pageButtons.get(page).add(btn);
 	}
+	
+	private void addBookmarkButton(int entry, int page, int y) {
+	    GuiBookmarkButton btn = new GuiBookmarkButton(book.getPage(entry), page, ~entry, (width / 2) - 150, (height / 2) - 85 + y, 116, 10);
+	    buttonList.add(btn);
+	    bookmarks.add(btn);
+	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int mousebutton) {
@@ -208,13 +259,15 @@ public class GuiTropicalBook extends GuiScreen {
 				}
 			}
 		} else if (mousebutton == 1) {
-		    if (selectedPage != null) {
-                mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
+		    if (showingBookmarks) {
+		        showingBookmarks = false;
+		    } else if (selectedPage != null) {
                 selectedPage = null;
 		    } else if (indexPage >= 0) {
-                mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
                 indexPage = -1;
 		    }
+            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(TropicraftSounds.PAGE_FLIP, 1.0F));
+	        showingBookmarks = false;
 		}
 		updateButtons();
 	}
@@ -322,7 +375,8 @@ public class GuiTropicalBook extends GuiScreen {
                 TropicraftRenderUtils.bindTextureGui(openTextureIndex);
                 drawTexturedModalRect(w - 156, h - 102, 122, 214, 134, 8);
                 
-                fontRenderer.drawString("Table of Contents", w - 150, h - 110, 0x440000);
+                String title = Info.MODID + (showingBookmarks ? ".book.bookmarks.title" : ".book.toc.title");
+                fontRenderer.drawString(I18n.format(title), w - 150, h - 110, 0x440000);
                 fontRenderer.drawString("" + (1 + (indexPage * 2)), w - 157, h + 97, 0x440000);
                 String secondPageNum = "" + (2 + (indexPage * 2));
                 int sw = fontRenderer.getStringWidth(secondPageNum);
@@ -332,6 +386,9 @@ public class GuiTropicalBook extends GuiScreen {
 
 		super.drawScreen(i, j, elapsedPartialTicks);
 		
+		if (ttLines == null && bookmarkButton.visible && bookmarkButton.isMouseOver()) {
+		    ttLines = Arrays.asList(I18n.format(Info.MODID + ".book.bookmarks.tooltip"));
+		}
 		if (ttLines != null) {
 		    drawHoveringText(ttLines, i, j);
 		}
