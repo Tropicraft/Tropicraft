@@ -16,4 +16,8 @@ public class GuiBookmarkButton extends GuiClearButton {
     public int getTarget() {
         return targetPage;
     }
+
+    public Page getPage() {
+        return section;
+    }
 }

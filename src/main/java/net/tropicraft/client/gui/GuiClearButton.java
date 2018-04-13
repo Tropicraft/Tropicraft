@@ -76,7 +76,7 @@ public class GuiClearButton extends GuiButton {
 		if(!enabled) {
 			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, 0xffa0a0a0);
 		} else if(isMouseOver()) {
-			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, 0x990000);
+			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, GuiTropicalBook.COLOR_HIGHLIGHT);
 		} else {
 			fontrenderer.drawString(displayString, x,y + (height - 8) / 2, color);	            
 		}

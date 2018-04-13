@@ -34,6 +34,10 @@ import net.tropicraft.core.encyclopedia.TropicalBook;
 
 @SideOnly(Side.CLIENT)
 public class GuiTropicalBook extends GuiScreen {
+    
+    public static final int COLOR_NEW = 0x3333ff;
+    public static final int COLOR_READ = 0x440000;
+    public static final int COLOR_HIGHLIGHT = 0x990000;
 
 	private TropicalBook book;
 	private int indexPage = -1;
@@ -100,6 +104,17 @@ public class GuiTropicalBook extends GuiScreen {
 	    
 	    if (guibutton instanceof GuiBookmarkButton) {
 	        this.indexPage = ((GuiBookmarkButton)guibutton).getTarget();
+	        List<GuiIndexButton> btns = pageButtons.get(indexPage);
+	        for (GuiButton btn : buttonList) {
+	            if (btn instanceof GuiIndexButton) {
+	                ((GuiIndexButton) btn).color = COLOR_READ;
+	            }
+	        }
+	        for (GuiIndexButton btn : btns) {
+	            if (btn.getPage() == ((GuiBookmarkButton)guibutton).getPage()) {
+	                btn.color = COLOR_NEW;
+	            }
+	        }
 	        return;
 	    }
 
@@ -213,12 +228,12 @@ public class GuiTropicalBook extends GuiScreen {
 	
 	private void addIndexButton(int entry, int page, int x, int y) {
 	    String pageTitle = book.getPageTitleNotVisible();
-        int color = 0x440000;
+        int color = COLOR_READ;
         if (book.isPageVisible(entry)) {
             pageTitle = book.getPage(entry).getLocalizedTitle();
 
             if (!book.hasPageBeenRead(entry)) {
-                color = 0x3333ff;
+                color = COLOR_NEW;
             }
         }
         
