@@ -34,6 +34,8 @@ public class GuiIndexButton extends GuiClearButton {
 
             TropicraftRenderUtils.bindTextureGui("encyclopedia_tropica_inside");
             drawTexturedModalRect(x, y - 3, 3, 190, 18, 18);
+            GlStateManager.enableBlend();
+            drawRect(x + 1, y - 2, x + 17, y + 14, 0x88666666);
             GlStateManager.popMatrix();
 
             GlStateManager.enableLighting();

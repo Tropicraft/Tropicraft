@@ -17,7 +17,7 @@ public interface Page {
     String getId();
     
     @SideOnly(Side.CLIENT)
-    void drawHeader(int x, int y, float partialTick);
+    void drawHeader(int x, int y, float mouseX, float mouseY, float cycle);
     
     @SideOnly(Side.CLIENT)
     void drawIcon(int x, int y, float cycle);

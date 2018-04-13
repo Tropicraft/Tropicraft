@@ -5,15 +5,21 @@ import java.util.stream.IntStream;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.tropicraft.Info;
+import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.common.enums.TropicraftShells;
+import net.tropicraft.core.encyclopedia.EntityPage;
 import net.tropicraft.core.encyclopedia.ItemPage;
+import net.tropicraft.core.encyclopedia.KoaPage;
 import net.tropicraft.core.encyclopedia.MultiItemPage;
 import net.tropicraft.core.encyclopedia.SectionPage;
 import net.tropicraft.core.encyclopedia.TropicalBook;
@@ -32,7 +38,7 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
     public static void init() {
         TropicalBook enc = Tropicraft.encyclopedia;
         enc.addPage(new ItemPage("encyclopedia", new ItemStack(ItemRegistry.encyclopedia)));
-
+        
         // All Foods
         enc.addPage(new SectionPage("foods"));
         enc.addPage(new ItemPage("pineapple", new ItemStack(BlockRegistry.pineapple, 1, 0)));
@@ -69,6 +75,42 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
             enc.addPage(new ItemPage(sand.getSimpleName() + sand.getTypeName(), sand.makeStack(BlockRegistry.sands)));
         }
         
+        // Tribespeople
+        enc.addPage(new SectionPage("tribes"));
+        enc.addPage(new KoaPage(EntityKoaBase.Roles.FISHERMAN, new ItemStack(Items.FISHING_ROD)));
+        enc.addPage(new KoaPage(EntityKoaBase.Roles.HUNTER, new ItemStack(ItemRegistry.dagger)));
+        addEntityEggPage(enc, 9); // Ashen
+        enc.addPage(new MultiItemPage("ashenmask", Arrays.stream(AshenMasks.VALUES).map(v -> new ItemStack(ItemRegistry.maskMap.get(v))).toArray(ItemStack[]::new)));
+        
+        // Land Mobs
+        enc.addPage(new SectionPage("mobs.land"));
+        addEntityEggPage(enc, 0);   // iguana
+        addEntityEggPage(enc, 2);   // greenfrog
+        addEntityEggPage(enc, 3);   // redfrog
+        addEntityEggPage(enc, 4);   // yellowfrog
+        addEntityEggPage(enc, 5);   // bluefrog
+        addEntityEggPage(enc, 6);   // eih
+        addEntityEggPage(enc, 12);  // monkey
+        addEntityEggPage(enc, 14);  // tropicreeper
+        addEntityEggPage(enc, 15);  // tropiskelly
+        addEntityEggPage(enc, 17);  // failgull
+        addEntityEggPage(enc, 24);  // tropispider
+
+        // Land Mobs
+        enc.addPage(new SectionPage("mobs.water"));
+        addEntityEggPage(enc, 1);   // starfish
+        addEntityEggPage(enc, 7);   // marlin
+        addEntityEggPage(enc, 8);   // fish
+        addEntityEggPage(enc, 10);  // turtle
+        addEntityEggPage(enc, 11);  // mow
+        addEntityEggPage(enc, 16);  // eagleray
+        addEntityEggPage(enc, 18);  // seaurchin
+        addEntityEggPage(enc, 19);  // piranha
+        addEntityEggPage(enc, 20);  // sardine
+        addEntityEggPage(enc, 21);  // dolphin
+        addEntityEggPage(enc, 22);  // seahorse
+        addEntityEggPage(enc, 23);  // hammerhead
+        
         // Tools & Weapons
         enc.addPage(new SectionPage("tools"));
         enc.addPage(new ItemPage("dagger", new ItemStack(ItemRegistry.dagger)));
@@ -88,7 +130,6 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         
         // All Armors
         enc.addPage(new SectionPage("armor"));
-        enc.addPage(new MultiItemPage("ashenmask", Arrays.stream(AshenMasks.VALUES).map(v -> new ItemStack(ItemRegistry.maskMap.get(v))).toArray(ItemStack[]::new)));
         enc.addPage(new ItemPage("firehelm", new ItemStack(ItemRegistry.fireHelmet)));
         enc.addPage(new ItemPage("firechestplate", new ItemStack(ItemRegistry.fireChestplate)));
         enc.addPage(new ItemPage("fireleggings", new ItemStack(ItemRegistry.fireLeggings)));
@@ -222,5 +263,9 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         //enc.addPage(new ItemPage("zirconium", new ItemStack(TCItemRegistry.ore, 1, 3)));
         
         enc.dumpSections();
+    }
+    
+    private static void addEntityEggPage(TropicalBook book, int id) {
+        book.addPage(new EntityPage(Names.EGG_NAMES[id], new ItemStack(ItemRegistry.mobEgg, 1, id)));
     }
 }
