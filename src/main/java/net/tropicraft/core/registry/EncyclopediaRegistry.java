@@ -5,8 +5,6 @@ import java.util.stream.IntStream;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
@@ -20,6 +18,7 @@ import net.tropicraft.core.common.enums.TropicraftShells;
 import net.tropicraft.core.encyclopedia.EntityPage;
 import net.tropicraft.core.encyclopedia.ItemPage;
 import net.tropicraft.core.encyclopedia.KoaPage;
+import net.tropicraft.core.encyclopedia.LoveTropicsPage;
 import net.tropicraft.core.encyclopedia.MultiItemPage;
 import net.tropicraft.core.encyclopedia.SectionPage;
 import net.tropicraft.core.encyclopedia.TropicalBook;
@@ -261,7 +260,10 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
 
 
         //enc.addPage(new ItemPage("zirconium", new ItemStack(TCItemRegistry.ore, 1, 3)));
-        
+
+        enc.addPage(new SectionPage("lovetropics"));
+        enc.addPage(new LoveTropicsPage("lt17"));
+
         enc.dumpSections();
     }
     
