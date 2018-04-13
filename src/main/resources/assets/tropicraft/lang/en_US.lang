@@ -263,6 +263,10 @@ item.tropicraft.yellow_chestplate_gear.name=Yellow Scuba Harness
 item.tropicraft.pink_chestplate_gear.name=Pink Scuba Harness
 item.tropicraft.trimix.name=Trimix Gas Mixture
 
+item.tropicraft.seaweed.name=Seaweed
+item.tropicraft.nori_raw.name=Raw Nori
+item.tropicraft.nori_toasted.name=Toasted Nori
+
 # Cocktail localizations
 tropicraft.drink.lemonade.name=Lemonade
 tropicraft.drink.limeade.name=Limeade

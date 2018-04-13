@@ -20,6 +20,7 @@ public class SmeltingRegistry extends TropicraftRegistry {
         GameRegistry.addSmelting(BlockRegistry.sands, new ItemStack(Blocks.GLASS), 4);
         GameRegistry.addSmelting(ItemRegistry.freshMarlin, new ItemStack(ItemRegistry.searedMarlin), 6);
         GameRegistry.addSmelting(BlockRegistry.logs, new ItemStack(Items.COAL, 1, 1), 3); // metadata 1 = charcoal
+        GameRegistry.addSmelting(ItemRegistry.rawNori, new ItemStack(ItemRegistry.toastedNori), 2);
         
         // Silk touched ore smelting
         Block ore = BlockRegistry.ore;

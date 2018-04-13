@@ -12,7 +12,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemDye;
@@ -47,6 +46,7 @@ import net.tropicraft.core.common.item.ItemLoveTropicsShell;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
+import net.tropicraft.core.common.item.ItemSeaweed;
 import net.tropicraft.core.common.item.ItemShell;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
@@ -91,6 +91,9 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item coconutChunk;
     public static Item pineappleCubes;
     public static Item coffeeBeans;
+    public static Item rawNori;
+    public static Item toastedNori;
+    public static Item rawSeaweed;
 
     // Tool materials
     public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 2, 200, 4.5F, 1.0F, 14);
@@ -381,6 +384,10 @@ public class ItemRegistry extends TropicraftRegistry {
 
         fishingRod = registerItem(registry, new ItemFishingRod(), "fishing_rod");
         ltShell = registerMultiItem(registry, new ItemLoveTropicsShell(), "ltshell", Names.LOVE_TROPICS_NAMES.length);
+
+        rawSeaweed = registerItem(registry, new ItemSeaweed(), "seaweed");
+        rawNori = registerItem(registry, new ItemTropicraft(), "nori_raw");
+        toastedNori = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "nori_toasted");
     }
 
     public static void init() {
