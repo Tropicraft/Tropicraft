@@ -6,6 +6,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -29,9 +31,19 @@ public class EntityPage extends ItemPage {
         this.entityId = entityId;
     }
     
+    protected ResourceLocation getEntityId() {
+        return entityId;
+    }
+    
     protected EntityLivingBase makeEntity() {
         EntityEntry entry = ForgeRegistries.ENTITIES.getValue(entityId);
-        return (EntityLivingBase) entry.newInstance(Minecraft.getMinecraft().world);
+        EntityLivingBase ret = (EntityLivingBase) entry.newInstance(Minecraft.getMinecraft().world);
+        // Hack some extra width in for bipeds
+        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        if (rendermanager.getEntityRenderObject(ret) instanceof RenderBiped) {
+            ret.width += 0.35;
+        }
+        return ret;
     }
     
     @Nullable
@@ -50,7 +62,7 @@ public class EntityPage extends ItemPage {
         GlStateManager.color(1, 1, 1);
         x += 67;
         y -= 2;
-        GuiInventory.drawEntityOnScreen(x, y, 30, x - mouseX, y - mouseY - 50, entity);
+        GuiInventory.drawEntityOnScreen(x, y, 30, x - mouseX, y - mouseY - 50, getEntity());
     }
     
     @Override

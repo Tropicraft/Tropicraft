@@ -145,7 +145,18 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}
 		
 		// Client Side
-		if (world.isRemote) {
+        if (world.isRemote) {
+            if (!isInWater() && !isInGui) {
+                outOfWaterTime++;
+                if (outOfWaterTime > 90) {
+                    outOfWaterTime = 90;
+                }
+            } else {
+                if (outOfWaterTime > 0) {
+                    outOfWaterTime--;
+                }
+            }
+
 			if(!(this instanceof IAmphibian)) {
 				this.rotationPitch = -this.swimPitch;
 				this.rotationYaw = -this.swimYaw;

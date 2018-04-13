@@ -18,7 +18,7 @@ public class RenderEagleRay extends RenderTropicraftWaterMob {
 			float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
-		GlStateManager.translate(4, 0f, 4f);
+		GlStateManager.translate(4, -0.25f, 4f);
 		String n = entity.getCustomNameTag();
 		entity.setCustomNameTag("");
 		entity.outOfWaterTime = 0;

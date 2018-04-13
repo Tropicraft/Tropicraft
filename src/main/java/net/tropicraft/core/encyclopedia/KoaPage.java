@@ -22,7 +22,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase.Genders;
 import net.tropicraft.core.registry.ItemRegistry;
 
 @ParametersAreNonnullByDefault
-public class KoaPage extends EntityPage {
+public class KoaPage extends MultiEntityPage {
     
     private final EntityKoaBase.Roles role;
     private final ItemStack inHand;
@@ -46,21 +46,21 @@ public class KoaPage extends EntityPage {
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
     }
-    
+
     @Override
-    public void drawHeader(int x, int y, float mouseX, float mouseY, float cycle) {
+    protected EntityLivingBase[] makeVariants() {
         Genders[] genders = Genders.values();
-        float mid = (genders.length - 1) / 2f;
+        EntityLivingBase[] ret = new EntityLivingBase[genders.length];
         for (int i = 0; i < genders.length; i++) {
-            EntityLivingBase entity = getEntity();
-            if (entity != null) {
-                ((EntityKoaBase)entity).setGender(genders[i]);
-                entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, inHand);
+            ret[i] = makeEntity();
+            if (ret[i] != null) {
+                ((EntityKoaBase)ret[i]).setGender(genders[i]);
+                ret[i].setItemStackToSlot(EntityEquipmentSlot.MAINHAND, inHand);
             }
-            super.drawHeader((int) (x + ((i - mid) * 40)), y, mouseX, mouseY, cycle);
         }
+        return ret;
     }
-    
+
     @Override
     public boolean discover(World world, EntityPlayer player) {
         Vec3d pos = player.getPositionVector();

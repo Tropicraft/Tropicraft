@@ -32,18 +32,6 @@ public abstract class RenderTropicraftWaterMob extends RenderLiving<EntityTropic
 		GlStateManager.pushMatrix();
 
 		GlStateManager.disableCull();
-
-		if(!entityliving.isInWater() && !entityliving.isInGui) {
-			entityliving.outOfWaterTime++;
-			if(entityliving.outOfWaterTime > 90) {
-				entityliving.outOfWaterTime = 90;
-			}
-		}else {
-			if(entityliving.outOfWaterTime > 0) {
-				entityliving.outOfWaterTime--;
-			}
-		}
-
 		GlStateManager.translate(posX, posY, posZ);
 
 		if (entityliving.hurtTime > 0) {

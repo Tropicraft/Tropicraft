@@ -3,13 +3,18 @@ package net.tropicraft.core.registry;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
+import net.tropicraft.core.common.entity.hostile.EntityTreeFrog;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.entity.underdasea.EntitySeaTurtle;
 import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.enums.TropicraftFlowers;
@@ -19,6 +24,7 @@ import net.tropicraft.core.encyclopedia.EntityPage;
 import net.tropicraft.core.encyclopedia.ItemPage;
 import net.tropicraft.core.encyclopedia.KoaPage;
 import net.tropicraft.core.encyclopedia.LoveTropicsPage;
+import net.tropicraft.core.encyclopedia.MultiEntityPage;
 import net.tropicraft.core.encyclopedia.MultiItemPage;
 import net.tropicraft.core.encyclopedia.SectionPage;
 import net.tropicraft.core.encyclopedia.TropicalBook;
@@ -84,10 +90,18 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
         // Land Mobs
         enc.addPage(new SectionPage("mobs.land"));
         addEntityEggPage(enc, 0);   // iguana
-        addEntityEggPage(enc, 2);   // greenfrog
-        addEntityEggPage(enc, 3);   // redfrog
-        addEntityEggPage(enc, 4);   // yellowfrog
-        addEntityEggPage(enc, 5);   // bluefrog
+        enc.addPage(new MultiEntityPage("treefrog", IntStream.range(2, 6).mapToObj(d -> new ItemStack(ItemRegistry.mobEgg, 1, d)).toArray(ItemStack[]::new)) {
+            
+            @Override
+            protected @Nonnull EntityLivingBase[] makeVariants() {
+                EntityTreeFrog[] ret = new EntityTreeFrog[4];
+                for (int i = 0; i < ret.length; i++) {
+                    ret[i] = (EntityTreeFrog) makeEntity();
+                    ret[i].setType(i);
+                }
+                return ret;
+            }
+        });
         addEntityEggPage(enc, 6);   // eih
         addEntityEggPage(enc, 12);  // monkey
         addEntityEggPage(enc, 14);  // tropicreeper
@@ -100,7 +114,16 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
         addEntityEggPage(enc, 1);   // starfish
         addEntityEggPage(enc, 7);   // marlin
         addEntityEggPage(enc, 8);   // fish
-        addEntityEggPage(enc, 10);  // turtle
+        enc.addPage(new EntityPage("turtle", new ItemStack(ItemRegistry.mobEgg, 1, 10)) {  // turtle
+            
+            @Override
+            protected EntityLivingBase makeEntity() {
+                EntitySeaTurtle ret = (EntitySeaTurtle) super.makeEntity();
+                // All grown up
+                ret.setMature();
+                return ret;
+            };
+        });
         addEntityEggPage(enc, 11);  // mow
         addEntityEggPage(enc, 16);  // eagleray
         addEntityEggPage(enc, 18);  // seaurchin

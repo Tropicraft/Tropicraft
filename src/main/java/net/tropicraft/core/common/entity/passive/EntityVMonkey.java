@@ -66,6 +66,7 @@ public class EntityVMonkey extends EntityLandTameable implements IEntityFollower
 	public EntityVMonkey(World world) {
 		super(world);
 		followingEntity = null;
+		setSize(0, 0); // reset ageWidth
 		setSize(0.8F, 0.8F);
 		this.experienceValue = 4;
 	}
