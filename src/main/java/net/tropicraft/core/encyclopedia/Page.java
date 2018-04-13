@@ -30,7 +30,7 @@ public interface Page {
     
     @SideOnly(Side.CLIENT)
     default String getLocalizedTitle() {
-        return "  " + I18n.format(getTitle());
+        return I18n.format(getTitle());
     }
     
     default String getDescription() {
@@ -39,7 +39,7 @@ public interface Page {
     
     @SideOnly(Side.CLIENT)
     default String getLocalizedDescription() {
-        return I18n.format(getDescription());
+        return "  " + I18n.format(getDescription());
     }
     
     default boolean isBookmark() {

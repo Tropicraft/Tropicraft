@@ -343,7 +343,7 @@ public class GuiTropicalBook extends GuiScreen {
                         if (toolong) {
                             fontRenderer.setUnicodeFlag(true);
                         }
-                        fontRenderer.drawString(pageTitle, width / 2 - 160, height / 2 - 110, 0x440000);
+                        fontRenderer.drawString(pageTitle, width / 2 - 150, height / 2 - 110, 0x440000);
                         if (toolong) {
                             fontRenderer.setUnicodeFlag(false);
                         }
