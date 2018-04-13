@@ -372,6 +372,11 @@ entity.tropicraft.koa.trade.not_enough_time=You still need %s more minutes of di
 entity.tropicraft.koa.trade.cooldown=Someone already got trimix gas from me recently
 entity.tropicraft.koa.trade.space=Your inventory is full!
 
+entity.tropicraft.koa.male.hunter.name=Male Koa Hunter
+entity.tropicraft.koa.female.hunter.name=Female Koa Hunter
+entity.tropicraft.koa.male.fisherman.name=Male Koa Fisherman
+entity.tropicraft.koa.female.fisherman.name=Female Koa Fisherman
+
 # Misc chat notifications
 tropicraft.chat.teleport.unable=You should drink a piña colada before teleporting!
 
