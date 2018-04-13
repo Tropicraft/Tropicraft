@@ -339,18 +339,41 @@ public class GuiTropicalBook extends GuiScreen {
                     
                     // Render item title and description
                     if (contentPage == 0) {
-                        boolean toolong = fontRenderer.getStringWidth(pageTitle) > 100 && !fontRenderer.getUnicodeFlag();
+                        boolean toolong = fontRenderer.getStringWidth(pageTitle) > 110 && !fontRenderer.getUnicodeFlag();
                         if (toolong) {
                             fontRenderer.setUnicodeFlag(true);
                         }
-                        fontRenderer.drawString(pageTitle, width / 2 - 150, height / 2 - 110, 0x440000);
+                        fontRenderer.drawString(pageTitle, width / 2 - 160, height / 2 - 110, 0x440000);
                         if (toolong) {
                             fontRenderer.setUnicodeFlag(false);
                         }
                         
                         selectedPage.drawHeader(width / 2 - 150, height / 2 - 80, i, j, recipeCycle);
-                        fontRenderer.drawSplitString("  " + (book.isPageVisible(selectedPage.getId()) ? selectedPage.getLocalizedDescription() : "???"), width / 2 - 150, height / 2 - 80 + selectedPage.getHeaderHeight(), 135, 0x440000);
                     }
+                    final int baseY = height / 2 - 80;
+                    int y = selectedPage.getHeaderHeight();
+                    List<String> pageStrings = new ArrayList<>();
+                    List<String> allStrings = fontRenderer.listFormattedStringToWidth(selectedPage.getLocalizedDescription(), 135);
+                    int page = 0;
+                    for (String s : allStrings) {
+                        if (y > (page == 0 ? 170 : 205)) {
+                            page++;
+                            y = 0;
+                        }
+                        if (pageStrings.size() <= page) {
+                            pageStrings.add("");
+                        }
+                        pageStrings.set(page, pageStrings.get(page) + "\n" + s);
+                        y += fontRenderer.FONT_HEIGHT;
+                    }
+                    if (pageStrings.size() > contentPage * 2) {
+                        fontRenderer.drawSplitString(pageStrings.get(contentPage * 2), width / 2 - 150, baseY + (contentPage == 0 ? selectedPage.getHeaderHeight() : -33), 135, COLOR_READ);
+                    }
+                    if (pageStrings.size() > (contentPage * 2) + 1) {
+                        fontRenderer.drawSplitString(pageStrings.get((contentPage * 2) + 1), width / 2 + 20, baseY - 33, 135, COLOR_READ);
+                    }
+                    nextContentPage.visible = ((contentPage + 1) * 2) < pageStrings.size();
+
                     if (cachedRecipes.size() > 0) {
                         fontRenderer.drawString("Crafting", width / 2 + 110, height / 2 - 110, 0x440000);
                         if (contentPage > 0) {

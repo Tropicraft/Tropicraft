@@ -2,6 +2,8 @@ package net.tropicraft.core.encyclopedia;
 
 import java.util.Arrays;
 
+import com.google.common.collect.Comparators;
+
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -25,7 +27,7 @@ public class LoveTropicsPage extends SimplePage {
         StringBuilder sb = new StringBuilder();
 
         String[] names = Arrays.copyOf(Names.LOVE_TROPICS_NAMES, Names.LOVE_TROPICS_NAMES.length);
-        Arrays.sort(names);
+        Arrays.sort(names, String::compareToIgnoreCase);
 
         for (String name : names) {
             sb.append(name + "\n");
