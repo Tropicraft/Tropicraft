@@ -6,6 +6,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityEagleRay extends EntityTropicraftWaterBase {
 
@@ -41,6 +42,7 @@ public class EntityEagleRay extends EntityTropicraftWaterBase {
         this.setSize(1f, 0.25f);
         this.setSwimSpeeds(0.1f, 0.1f, 0.1f);
         this.setMaxHealth(5);
+        this.setDropStack(ItemRegistry.rawRay, 1);
     }
 
     @Override

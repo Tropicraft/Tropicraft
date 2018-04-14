@@ -2,6 +2,7 @@ package net.tropicraft.core.common.entity.underdasea.atlantoku;
 
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.EntityLand;
 import net.tropicraft.core.common.entity.egg.EntityEchinodermEgg;
@@ -15,7 +16,7 @@ public class EntityPiranha extends EntitySchoolableFish implements IAtlasFish, I
 		this.setSwimSpeeds(0.8f, 3f, 4f, 2f, 5f);
 		this.setSize(0.3F, 0.4F);
 		this.setExpRate(5);
-		this.setDropStack(ItemRegistry.fertilizer, 3);
+		this.setDropStack(new ItemStack(ItemRegistry.rawRiverFish, 1, 1), 1);
 		this.setMaxHealth(4);
 	}
 

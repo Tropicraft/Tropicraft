@@ -27,7 +27,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 	public boolean hasBeenPlaced;
 	public boolean isCatchable;
 	
-	public static final String[] names = { "Clownfish", "Queen Angelfish", "Yellow Tang", "Butterflyfish",
+	public static final String[] NAMES = { "Clownfish", "Queen Angelfish", "Yellow Tang", "Butterflyfish",
 			"Geophagus Surinamensis", "Betta Fish", "Regal Tang", "Royal Gamma" };
 
 	private static final DataParameter<Integer> TEXTURE_COLOR = EntityDataManager
@@ -38,7 +38,8 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		targetHook = false;
 		leader = null;
 		setSize(.3F, .4F);
-		setColor(world.rand.nextInt(names.length));
+		int color = world.rand.nextInt(NAMES.length);
+		setColor(color);
 		this.setExpRate(3);
 		setIsLeader(true);
 		this.setSchoolSizeRange(12, 24);
@@ -46,6 +47,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		this.setSwimSpeeds(1f, 1.5f, 4f);
 		this.setMaxHealth(2);
 		this.setFleesPlayers(true, 5D);
+		this.setDropStack(new ItemStack(ItemRegistry.rawTropicalFish, 1, color), 1);
 	}
 	
 	
@@ -61,7 +63,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 	@Override
 	public void entityInit() {
 		super.entityInit();
-		int color = this.world.rand.nextInt(names.length);
+		int color = this.world.rand.nextInt(NAMES.length);
 		this.getDataManager().register(TEXTURE_COLOR, Integer.valueOf(color));
 	}
 

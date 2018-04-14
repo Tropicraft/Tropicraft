@@ -59,6 +59,8 @@ public class EncyclopediaRegistry extends TropicraftRegistry {
         enc.addPage(new ItemPage("marlinmeat", new ItemStack(ItemRegistry.freshMarlin)));
         enc.addPage(new ItemPage("marlincooked", new ItemStack(ItemRegistry.searedMarlin)));
         enc.addPage(new ItemPage("seaurchinroe", new ItemStack(ItemRegistry.seaUrchinRoe)));
+        enc.addPage(new ItemPage("rayraw", new ItemStack(ItemRegistry.rawRay)));
+        enc.addPage(new ItemPage("raycooked", new ItemStack(ItemRegistry.cookedRay)));
 
         // Drinks
         enc.addPage(new SectionPage("drinks"));
