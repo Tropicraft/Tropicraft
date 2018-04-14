@@ -347,7 +347,8 @@ public class EntityKoaBase extends EntityVillager {
             }
         });
 
-        this.tasks.addTask(curPri++, new EntityAITemptHelmet(this, 1.0D, false, TEMPTATION_ITEMS));
+        //TODO: replace TEMPTATION_ITEMS entry with future nigel moustache item
+        //this.tasks.addTask(curPri++, new EntityAITemptHelmet(this, 1.0D, false, TEMPTATION_ITEMS));
 
         this.tasks.addTask(curPri++, new EntityAIMoveTowardsRestriction(this, 1D));
         this.tasks.addTask(curPri++, new EntityAIKoaMate(this));
