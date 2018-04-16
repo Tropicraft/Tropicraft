@@ -56,7 +56,7 @@ public class BlockSeaweed extends BlockTropicraft {
         }
 
 	    public void recalculateBB() {
-	        rand.setSeed(MathHelper.getPositionRandom(getPos()));
+	        rand.setSeed(MathHelper.getCoordinateRandom(getPos().getX(), getPos().getY(), getPos().getZ()));
 	        height = 0;
 	        while (height <= maxHeight && getWorld().getBlockState(getPos().up(height + 1)).getMaterial().isLiquid()) {
 	            height++;
