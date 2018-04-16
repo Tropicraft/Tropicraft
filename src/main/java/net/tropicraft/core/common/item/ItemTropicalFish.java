@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -45,22 +44,10 @@ public class ItemTropicalFish extends ItemColoredFood {
             return (FISH_COLORS[stack.getItemDamage()] & 0xfefefe) >> 1;
         }
     }
-    
+
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
-        return I18n.format(Info.MODID + "." + this.cookedStatus) + 
-                " " +
-                EntityTropicalFish.NAMES[itemstack.getItemDamage()];
-    }
-
-    @Override
-    public String getUnlocalizedNameInefficiently(ItemStack stack) {
-        return this.getUnlocalizedName(stack);
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.format(this.getUnlocalizedNameInefficiently(stack)).trim();
+        return String.format("item.%s.%s.%d.%s", Info.MODID, this.itemName, itemstack.getItemDamage(), cookedStatus);
     }
 
 }

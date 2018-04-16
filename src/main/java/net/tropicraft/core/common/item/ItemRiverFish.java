@@ -7,7 +7,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Info;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 
 public class ItemRiverFish extends ItemColoredFood {
 
@@ -47,19 +46,7 @@ public class ItemRiverFish extends ItemColoredFood {
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
         final String fish = itemstack.getItemDamage() == 0 ? "sardine" : "piranha";
-        return I18n.format(Info.MODID + "." + this.cookedStatus) + 
-                " " +
-                I18n.format("entity." + Info.MODID + "." + fish + ".name");
-    }
-
-    @Override
-    public String getUnlocalizedNameInefficiently(ItemStack stack) {
-        return this.getUnlocalizedName(stack);
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.format(this.getUnlocalizedNameInefficiently(stack)).trim();
+        return String.format("item.%s.%s.%s.%s", Info.MODID, this.itemName, fish, cookedStatus);
     }
 
 }

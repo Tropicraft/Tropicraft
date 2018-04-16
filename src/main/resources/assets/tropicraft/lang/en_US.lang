@@ -267,6 +267,29 @@ item.tropicraft.nori_raw.name=Raw Nori
 item.tropicraft.nori_toasted.name=Toasted Nori
 item.tropicraft.ray_raw.name=Raw Spotted Eagle Ray
 item.tropicraft.ray_cooked.name=Cooked Spotted Eagle Ray
+# Feesh
+item.tropicraft.tropicalfish.0.raw.name=Raw Clownfish
+item.tropicraft.tropicalfish.1.raw.name=Raw Queen Angelfish
+item.tropicraft.tropicalfish.2.raw.name=Raw Yellow Tang
+item.tropicraft.tropicalfish.3.raw.name=Raw Butterflyfish
+item.tropicraft.tropicalfish.4.raw.name=Raw Geophagus Surinamensis
+item.tropicraft.tropicalfish.5.raw.name=Raw Betta Fish
+item.tropicraft.tropicalfish.6.raw.name=Raw Regal Tang
+item.tropicraft.tropicalfish.7.raw.name=Raw Royal Gamma
+
+item.tropicraft.tropicalfish.0.cooked.name=Cooked Clownfish
+item.tropicraft.tropicalfish.1.cooked.name=Cooked Queen Angelfish
+item.tropicraft.tropicalfish.2.cooked.name=Cooked Yellow Tang
+item.tropicraft.tropicalfish.3.cooked.name=Cooked Butterflyfish
+item.tropicraft.tropicalfish.4.cooked.name=Cooked Geophagus Surinamensis
+item.tropicraft.tropicalfish.5.cooked.name=Cooked Betta Fish
+item.tropicraft.tropicalfish.6.cooked.name=Cooked Regal Tang
+item.tropicraft.tropicalfish.7.cooked.name=Cooked Royal Gamma
+
+item.tropicraft.riverfish.piranha.raw.name=Raw Piranha
+item.tropicraft.riverfish.sardine.raw.name=Raw Sardine
+item.tropicraft.riverfish.piranha.cooked.name=Cooked Piranha
+item.tropicraft.riverfish.sardine.cooked.name=Cooked Sardine
 
 # Word localizations
 tropicraft.raw=Raw
@@ -338,6 +361,14 @@ entity.tropicraft.starfish.name=Starfish
 entity.tropicraft.eagleray.name=Spotted Eagle Ray
 entity.tropicraft.turtle.name=Sea Turtle
 entity.tropicraft.koa.name=Koa
+entity.tropicraft.tropicalfish.0.name=Clownfish
+entity.tropicraft.tropicalfish.1.name=Queen Angelfish
+entity.tropicraft.tropicalfish.2.name=Yellow Tang
+entity.tropicraft.tropicalfish.3.name=Butterflyfish
+entity.tropicraft.tropicalfish.4.name=Geophagus Surinamensis
+entity.tropicraft.tropicalfish.5.name=Betta Fish
+entity.tropicraft.tropicalfish.6.name=Regal Tang
+entity.tropicraft.tropicalfish.7.name=Royal Gamma
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=If you like pina coladas...

@@ -486,15 +486,16 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	
 	public void setDropStack(Item item, int max) {
-		this.dropStack = new ItemStack(item);
+		this.setDropStack(new ItemStack(item), max);
 	}
 	
 	public void setDropStack(ItemStack stack, int max) {
-	    this.dropStack = new ItemStack(stack.getItem(), 1, stack.getItemDamage());
+	    this.dropStack = stack.copy();
+	    this.dropMaxAmt = max;
 	}
 	
 	public void setDropStack(Block item, int max) {
-		this.dropStack = new ItemStack(item);
+	    this.setDropStack(new ItemStack(item), max);
 	}
 	
 	public void setSwimSpeeds(float regular, float panic, float turnSpeed) {

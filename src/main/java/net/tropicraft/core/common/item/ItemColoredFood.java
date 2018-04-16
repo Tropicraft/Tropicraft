@@ -18,7 +18,7 @@ import net.tropicraft.core.registry.CreativeTabRegistry;
 public abstract class ItemColoredFood extends ItemFood implements IColoredItem {
 
     /** Item name used to determine name via itemstack damage */
-    private String itemName;
+    protected String itemName;
 
     public ItemColoredFood(int healAmount, float saturation, String itemName) {
         super(healAmount, saturation, false);

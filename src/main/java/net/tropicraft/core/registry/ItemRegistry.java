@@ -401,10 +401,10 @@ public class ItemRegistry extends TropicraftRegistry {
         toastedNori = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "nori_toasted");
         rawRay = registerItem(registry, new ItemTropicraft(), "ray_raw");
         cookedRay = registerItem(registry, new ItemTropicraftFood(5, 0.5F), "ray_cooked");
-        rawTropicalFish = registerMultiItem(registry, new ItemTropicalFish(2, 0.2F, "smolfish", "raw"), "raw_fish", EntityTropicalFish.NAMES.length);
-        cookedTropicalFish = registerMultiItem(registry, new ItemTropicalFish(4, 0.4F, "smolfish", "cooked"), "cooked_fish", EntityTropicalFish.NAMES.length);
-        rawRiverFish = registerMultiItem(registry, new ItemRiverFish(2, 0.2F, "smolfish", "raw"), "raw_river_fish", 2);
-        cookedRiverFish = registerMultiItem(registry, new ItemRiverFish(4, 0.4F, "smolfish", "cooked"), "cooked_river_fish", 2);
+        rawTropicalFish = registerMultiItem(registry, new ItemTropicalFish(2, 0.2F, "tropicalfish", "raw"), "raw_fish", EntityTropicalFish.NAMES.length);
+        cookedTropicalFish = registerMultiItem(registry, new ItemTropicalFish(4, 0.4F, "tropicalfish", "cooked"), "cooked_fish", EntityTropicalFish.NAMES.length);
+        rawRiverFish = registerMultiItem(registry, new ItemRiverFish(2, 0.2F, "riverfish", "raw"), "raw_river_fish", 2);
+        cookedRiverFish = registerMultiItem(registry, new ItemRiverFish(4, 0.4F, "riverfish", "cooked"), "cooked_river_fish", 2);
     }
 
     public static void init() {

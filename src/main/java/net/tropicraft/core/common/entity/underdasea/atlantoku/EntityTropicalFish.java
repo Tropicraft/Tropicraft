@@ -47,10 +47,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		this.setSwimSpeeds(1f, 1.5f, 4f);
 		this.setMaxHealth(2);
 		this.setFleesPlayers(true, 5D);
-		this.setDropStack(new ItemStack(ItemRegistry.rawTropicalFish, 1, color), 1);
 	}
-	
-	
 
 	@Override
 	public EntitySchoolableFish setSchoolLeader(EntityTropicraftWaterBase leader) {
@@ -65,6 +62,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		super.entityInit();
 		int color = this.world.rand.nextInt(NAMES.length);
 		this.getDataManager().register(TEXTURE_COLOR, Integer.valueOf(color));
+        this.setDropStack(new ItemStack(ItemRegistry.rawTropicalFish, 1, color), 1);
 	}
 
 	@Override
