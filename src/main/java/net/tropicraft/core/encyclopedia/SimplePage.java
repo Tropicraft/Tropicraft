@@ -23,10 +23,10 @@ public class SimplePage implements Page {
     }
 
     @Override
-    public void drawHeader(int x, int y, float partialTick) {}
+    public void drawHeader(int x, int y, float mouseX, float mouseY, float cycle) {}
     
     @Override
-    public void drawIcon(int x, int y, float partialTick) {}
+    public void drawIcon(int x, int y, float cycle) {}
 
     @Override
     public int getHeaderHeight() {
@@ -41,5 +41,10 @@ public class SimplePage implements Page {
     @Override
     public boolean discover(World world, EntityPlayer player) {
         return false;
+    }
+    
+    @Override
+    public String toString() {
+        return id;
     }
 }

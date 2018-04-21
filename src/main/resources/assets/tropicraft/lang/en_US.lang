@@ -262,6 +262,38 @@ item.tropicraft.dive_computer.name=Dive Computer
 item.tropicraft.yellow_chestplate_gear.name=Yellow Scuba Harness
 item.tropicraft.pink_chestplate_gear.name=Pink Scuba Harness
 item.tropicraft.trimix.name=Trimix Gas Mixture
+item.tropicraft.seaweed.name=Seaweed
+item.tropicraft.nori_raw.name=Raw Nori
+item.tropicraft.nori_toasted.name=Toasted Nori
+item.tropicraft.ray_raw.name=Raw Spotted Eagle Ray
+item.tropicraft.ray_cooked.name=Cooked Spotted Eagle Ray
+# Feesh
+item.tropicraft.tropicalfish.0.raw.name=Raw Clownfish
+item.tropicraft.tropicalfish.1.raw.name=Raw Queen Angelfish
+item.tropicraft.tropicalfish.2.raw.name=Raw Yellow Tang
+item.tropicraft.tropicalfish.3.raw.name=Raw Butterflyfish
+item.tropicraft.tropicalfish.4.raw.name=Raw Geophagus Surinamensis
+item.tropicraft.tropicalfish.5.raw.name=Raw Betta Fish
+item.tropicraft.tropicalfish.6.raw.name=Raw Regal Tang
+item.tropicraft.tropicalfish.7.raw.name=Raw Royal Gamma
+
+item.tropicraft.tropicalfish.0.cooked.name=Cooked Clownfish
+item.tropicraft.tropicalfish.1.cooked.name=Cooked Queen Angelfish
+item.tropicraft.tropicalfish.2.cooked.name=Cooked Yellow Tang
+item.tropicraft.tropicalfish.3.cooked.name=Cooked Butterflyfish
+item.tropicraft.tropicalfish.4.cooked.name=Cooked Geophagus Surinamensis
+item.tropicraft.tropicalfish.5.cooked.name=Cooked Betta Fish
+item.tropicraft.tropicalfish.6.cooked.name=Cooked Regal Tang
+item.tropicraft.tropicalfish.7.cooked.name=Cooked Royal Gamma
+
+item.tropicraft.riverfish.piranha.raw.name=Raw Piranha
+item.tropicraft.riverfish.sardine.raw.name=Raw Sardine
+item.tropicraft.riverfish.piranha.cooked.name=Cooked Piranha
+item.tropicraft.riverfish.sardine.cooked.name=Cooked Sardine
+
+# Word localizations
+tropicraft.raw=Raw
+tropicraft.cooked=Cooked
 
 # Cocktail localizations
 tropicraft.drink.lemonade.name=Lemonade
@@ -329,6 +361,14 @@ entity.tropicraft.starfish.name=Starfish
 entity.tropicraft.eagleray.name=Spotted Eagle Ray
 entity.tropicraft.turtle.name=Sea Turtle
 entity.tropicraft.koa.name=Koa
+entity.tropicraft.tropicalfish.0.name=Clownfish
+entity.tropicraft.tropicalfish.1.name=Queen Angelfish
+entity.tropicraft.tropicalfish.2.name=Yellow Tang
+entity.tropicraft.tropicalfish.3.name=Butterflyfish
+entity.tropicraft.tropicalfish.4.name=Geophagus Surinamensis
+entity.tropicraft.tropicalfish.5.name=Betta Fish
+entity.tropicraft.tropicalfish.6.name=Regal Tang
+entity.tropicraft.tropicalfish.7.name=Royal Gamma
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=If you like pina coladas...
@@ -401,19 +441,43 @@ tropicraft.tooltip.air_compressor=Place one or two empty scuba tanks in the comp
 tropicraft.tooltip.drink_mixer=Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!
 tropicraft.tooltip.sifter=Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?
 
+# Book text
+tropicraft.book.toc.title=Table of Contents
+tropicraft.book.bookmarks.title=Bookmarks
+tropicraft.book.bookmarks.tooltip=View Bookmarks
+
+# Encyclopedia Sections
+tropicraft.encyclopedia.section.foods.title=Tropical Food
+tropicraft.encyclopedia.section.drinks.title=Tropical Drinks
+tropicraft.encyclopedia.section.world.title=Tropics World
+tropicraft.encyclopedia.section.tools.title=Tropical Tools
+tropicraft.encyclopedia.section.armor.title=Armors
+tropicraft.encyclopedia.section.scuba.title=Scuba Gear
+tropicraft.encyclopedia.section.beach_accessories.title=Beach Accessories
+tropicraft.encyclopedia.section.nature.title=Tropical Flora
+tropicraft.encyclopedia.section.decor.title=Decorative
+tropicraft.encyclopedia.section.flowers.title=Tropics Flowers
+tropicraft.encyclopedia.section.shells.title=Shells
+tropicraft.encyclopedia.section.music.title=Tropical Music
+
+tropicraft.encyclopedia.section.misc.title=Miscellaneous
+tropicraft.encyclopedia.section.lovetropics.title=Love Tropics
+
+tropicraft.encyclopedia.lt17.title=Love Tropics 2017
+
 # Encyclopedia Entries
 
-tropicraft.encyclopedia.acaivine.title=Acai Vine
-tropicraft.encyclopedia.acaivine.desc=Rotten branches that are growing from the ground that used to grow the acai fruit.
+tropicraft.encyclopedia.acai_vine.title=Acai Vine
+tropicraft.encyclopedia.acai_vine.desc=Rotten branches that are growing from the ground that used to grow the acai fruit.
 
 tropicraft.encyclopedia.anemone.title=Anemone
 tropicraft.encyclopedia.anemone.desc=This bleach white flower adds a nice innocent, calm color to the realm.
 
-tropicraft.encyclopedia.tropicraft.encyclopedia.anthuriumo.title=Anthurium, Orange
-tropicraft.encyclopedia.anthuriumo.desc=This strong orange colored flower has an red counterpart.
+tropicraft.encyclopedia.orange_anthurium.title=Anthurium, Orange
+tropicraft.encyclopedia.orange_anthurium.desc=This strong orange colored flower has an red counterpart.
 
-tropicraft.encyclopedia.anthuriumr.title=Anthurium, Red
-tropicraft.encyclopedia.anthuriumr.desc=This strong red colored flower has an orange counterpart.
+tropicraft.encyclopedia.red_anthurium.title=Anthurium, Red
+tropicraft.encyclopedia.red_anthurium.desc=This strong red colored flower has an orange counterpart.
 
 tropicraft.encyclopedia.ashenmask.title=Ashen Mask
 tropicraft.encyclopedia.ashenmask.desc=These masks are the source of an Ashen's identity. Without a mask, an Ashen is naked, fearful, and cowardly, while with one, they are perhaps the most agressive hunters in the Tropics. By wearing a mask, you are considered an Ashen. Masks can also be hung on walls for decoration. Be wary though, as a maskless Ashen will take the closest mask.
@@ -460,8 +524,8 @@ tropicraft.encyclopedia.beachfloat.desc=These relaxing floats allow the gentle c
 tropicraft.encyclopedia.blackcoffee.title=Black Coffee
 tropicraft.encyclopedia.blackcoffee.desc=Who doesn't like coffee? Brew yourself a nice cup o' joe and watch the sunrise from your bungalow.
 
-tropicraft.encyclopedia.blacksand.title=Volcanic Sands
-blacksand.dec = Tread lightly on this sand...or don't at all. If you aren't wearing any scale or fire armor, you better be ready to run reaaaaaaaaally fast.
+tropicraft.encyclopedia.volcanicsand.title=Volcanic Sands
+tropicraft.encyclopedia.volcanicsand.desc = Tread lightly on this sand...or don't at all. If you aren't wearing any scale or fire armor, you better be ready to run reaaaaaaaaally fast.
 
 #tropicraft.encyclopedia.blowgun.title=Blow Gun
 #tropicraft.encyclopedia.blowgun.desc=This tube of bamboo is used to shoot neurotoxin-laced darts at your pray. You will be surprised how a far and fast you can shoot a dart with a hefty blow.
@@ -496,8 +560,8 @@ tropicraft.encyclopedia.coconutbomb.desc=This explosive coconut is great for tak
 tropicraft.encyclopedia.coffeebean.title=Coffee Bean
 tropicraft.encyclopedia.coffeebean.desc=The pit inside the red or purple fruit often referred to as a cherry. This is the seed for the coffee plants found throughout the tropics.
 
-tropicraft.encyclopedia.commelina.title=Co. Diffusa
-tropicraft.encyclopedia.commelina.desc=Commelina Diffusa adds a pleasant blue to the landscape of the Tropics. 
+tropicraft.encyclopedia.commelina_diffusa.title=Co. Diffusa
+tropicraft.encyclopedia.commelina_diffusa.desc=Commelina Diffusa adds a pleasant blue to the landscape of the Tropics. 
 
 tropicraft.encyclopedia.coral.title=Coral
 tropicraft.encyclopedia.coral.desc=While these bioluminescent lifeforms are at home in the ocean, they are well suited for lighting up an aquarium.
@@ -529,7 +593,7 @@ tropicraft.encyclopedia.dracaena.desc=This interesting peach and green colored p
 tropicraft.encyclopedia.easternisles.title=Eastern Isles
 tropicraft.encyclopedia.easternisles.desc=This awesome drum and bass track was produced by Frox. Kick back and enjoy.
 
-tropicraft.encyclopedia.encyclopedia.title=Enc. Tropica
+tropicraft.encyclopedia.encyclopedia.title=About Encyclopedia
 tropicraft.encyclopedia.encyclopedia.desc=The Encyclopedia Tropica is the source for information about the Tropics many items. Having been printed with magical ink, the book writes itself as you acquire the item. New Entries will be blue, and you can navigate the pages using the tabs on the sides of the book. Items that are craftable will have an anvil tab.
 
 tropicraft.encyclopedia.eudialyte.title=Eudialyte
@@ -562,6 +626,9 @@ tropicraft.encyclopedia.fishingnet.desc=This sturdy net is great for picking up 
 tropicraft.encyclopedia.flowerpot.title=Flower Pot
 tropicraft.encyclopedia.flowerpot.desc=This flower pot can be used to beautify any garden by holding any tropical flower, plant, or sapling
 
+tropicraft.encyclopedia.foliage.title=Foliage
+tropicraft.encyclopedia.foliage.desc=Common greenery found in the tropics.
+
 tropicraft.encyclopedia.froglegs.title=Frog Legs
 tropicraft.encyclopedia.froglegs.desc=The legs of the passive tree frogs are actually edible, however, they need to be cooked first.
 
@@ -580,8 +647,8 @@ tropicraft.encyclopedia.grapefruit.desc=Tasty grapefruit citrus fruit that drops
 tropicraft.encyclopedia.grapefruitsapling.title=Grapefruit Sapling
 tropicraft.encyclopedia.grapefruitsapling.desc=Grows into a grapefruit tree, where you can get yummy grapefruits from!
 
-tropicraft.encyclopedia.greensand.title=Green Sands
-tropicraft.encyclopedia.greensand.desc=This rare sand is rumored to have formed long ago when the Tropics were first emerging from the depths of the ocean and is most commonly found below patches of seaweed.
+tropicraft.encyclopedia.foamysand.title=Green Sands
+tropicraft.encyclopedia.foamysand.desc=This rare sand is rumored to have formed long ago when the Tropics were first emerging from the depths of the ocean and is most commonly found below patches of seaweed.
 
 tropicraft.encyclopedia.iggyscale.title=Iguana Scale
 tropicraft.encyclopedia.iggyscale.desc=The adorable iguanas that inhabit the tropics drop scales. What is unique about these scales is that they are fire retardant. Wearing armor made of scales will allow you venture into some pretty hot places.
@@ -625,8 +692,8 @@ tropicraft.encyclopedia.limesapling.desc=Grows into a lime tree. Pucker your lip
 tropicraft.encyclopedia.lowtide.title=Low Tide
 tropicraft.encyclopedia.lowtide.desc=Produced by Punchaface, this chilled electronica track has a heavy bassline-driving melody and is sure to brighten any day in the tropics.
 
-tropicraft.encyclopedia.magicmushroom.title=Magic Mushroom
-tropicraft.encyclopedia.magicmushroom.desc=Found only in the rainforest, these mushrooms are mysterious, need to explore more.
+tropicraft.encyclopedia.magic_mushroom.title=Magic Mushroom
+tropicraft.encyclopedia.magic_mushroom.desc=Found only in the rainforest, these mushrooms are mysterious, need to explore more.
 
 tropicraft.encyclopedia.mahogany.title=Mahogany Logs
 tropicraft.encyclopedia.mahogany.desc=This beautifully colored wood comprises all Tropicraft rainforest trees and make for a beautiful addition to any tropical paradise.
@@ -813,3 +880,9 @@ tropicraft.encyclopedia.ponybottle.desc=Always bring along a pony bottle on your
 
 tropicraft.encyclopedia.bamboo_ladder.title=Bamboo Ladder
 tropicraft.encyclopedia.bamboo_ladder.desc=Clunk. Clunk. Clunk. Hear that? That's you, climbing up a ladder made out of bamboo.
+
+tropicraft.encyclopedia.rayraw.title=Raw Spotted Eagle Ray
+tropicraft.encyclopedia.rayraw.desc=Spotted eagle rays are a rare sight in the tropics, but their smooth motions are as majestic as they are mesmerizing. You can kill one to get this raw fish, but...they're beautiful creatures, why would you??
+
+tropicraft.encyclopedia.raycooked.title=Cooked Spotted Eagle Ray
+tropicraft.encyclopedia.raycooked.desc=A delicacy in some cultures, this light fish meat is what you get when you cook Raw Ray.

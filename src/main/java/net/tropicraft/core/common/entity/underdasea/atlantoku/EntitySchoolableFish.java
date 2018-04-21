@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.ai.EntityAISwimSchoolFollowLeader;
 
@@ -125,6 +126,7 @@ public class EntitySchoolableFish extends EntityTropicraftWaterBase {
 				EntitySchoolableFish fish = (EntitySchoolableFish) EntityList.createEntityByIDFromName(new ResourceLocation(this.getEntityString()), world);
 				if(fish != null) {
 					fish.setSchoolLeader(this);
+					fish.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(fish)), null);
 					world.spawnEntity(fish);
 				}
 			}

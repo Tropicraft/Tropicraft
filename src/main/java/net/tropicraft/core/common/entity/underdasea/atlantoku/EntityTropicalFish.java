@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,9 +17,12 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.item.ItemFishBucket;
 import net.tropicraft.core.registry.ItemRegistry;
+
+import javax.annotation.Nullable;
 
 public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFish {
 
@@ -27,7 +31,7 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 	public boolean hasBeenPlaced;
 	public boolean isCatchable;
 	
-	public static final String[] names = { "Clownfish", "Queen Angelfish", "Yellow Tang", "Butterflyfish",
+	public static final String[] NAMES = { "Clownfish", "Queen Angelfish", "Yellow Tang", "Butterflyfish",
 			"Geophagus Surinamensis", "Betta Fish", "Regal Tang", "Royal Gamma" };
 
 	private static final DataParameter<Integer> TEXTURE_COLOR = EntityDataManager
@@ -38,7 +42,6 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		targetHook = false;
 		leader = null;
 		setSize(.3F, .4F);
-		setColor(world.rand.nextInt(names.length));
 		this.setExpRate(3);
 		setIsLeader(true);
 		this.setSchoolSizeRange(12, 24);
@@ -47,8 +50,6 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		this.setMaxHealth(2);
 		this.setFleesPlayers(true, 5D);
 	}
-	
-	
 
 	@Override
 	public EntitySchoolableFish setSchoolLeader(EntityTropicraftWaterBase leader) {
@@ -61,8 +62,19 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 	@Override
 	public void entityInit() {
 		super.entityInit();
-		int color = this.world.rand.nextInt(names.length);
-		this.getDataManager().register(TEXTURE_COLOR, Integer.valueOf(color));
+		this.getDataManager().register(TEXTURE_COLOR, 0);
+
+	}
+
+	@Nullable
+	@Override
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+
+		int color = world.rand.nextInt(NAMES.length);
+		setColor(color);
+		this.setDropStack(new ItemStack(ItemRegistry.rawTropicalFish, 1, color), 1);
+
+		return super.onInitialSpawn(difficulty, livingdata);
 	}
 
 	@Override
@@ -141,6 +153,8 @@ public class EntityTropicalFish extends EntitySchoolableFish implements IAtlasFi
 		}
 
 		setColor(Integer.valueOf(nbttagcompound.getInteger("Color")));
+		this.setDropStack(new ItemStack(ItemRegistry.rawTropicalFish, 1, getColor()), 1);
+
 		super.readEntityFromNBT(nbttagcompound);
 	}
 

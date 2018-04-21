@@ -58,7 +58,7 @@ public class GuiClearButton extends GuiButton {
 			return;
 		}
 
-		boolean flag = i >= x && j >= y && i < x + width && j < y + height;
+		this.hovered = i >= x && j >= y && i < x + width && j < y + height;
 
 		FontRenderer fontrenderer = minecraft.fontRenderer;
 
@@ -68,15 +68,15 @@ public class GuiClearButton extends GuiButton {
 		GlStateManager.pushMatrix();
 		TropicraftRenderUtils.bindTextureGui(buttonImageLoc);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		int k = getHoverState(flag);	        	   
-		drawTexturedModalRect(x, y, type * 22 + 168 + (k - 1) * 11 , 236, 11, 20);
+		int k = getHoverState(isMouseOver());	        	   
+		drawTexturedModalRect(x, y, type * 22 + 125 + (k - 1) * 11 , 236, 11, 20);
 		GlStateManager.popMatrix();
 		mouseDragged(minecraft, i, j);
 
 		if(!enabled) {
 			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, 0xffa0a0a0);
-		} else if(flag) {
-			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, 0x990000);
+		} else if(isMouseOver()) {
+			fontrenderer.drawString(displayString, x , y + (height - 8) / 2, GuiTropicalBook.COLOR_HIGHLIGHT);
 		} else {
 			fontrenderer.drawString(displayString, x,y + (height - 8) / 2, color);	            
 		}

@@ -17,7 +17,7 @@ public interface Page {
     String getId();
     
     @SideOnly(Side.CLIENT)
-    void drawHeader(int x, int y, float partialTick);
+    void drawHeader(int x, int y, float mouseX, float mouseY, float cycle);
     
     @SideOnly(Side.CLIENT)
     void drawIcon(int x, int y, float cycle);
@@ -39,7 +39,19 @@ public interface Page {
     
     @SideOnly(Side.CLIENT)
     default String getLocalizedDescription() {
-        return I18n.format(getDescription());
+        return "  " + I18n.format(getDescription());
+    }
+    
+    default boolean isBookmark() {
+        return false;
+    }
+    
+    default boolean hasContent() {
+        return !isBookmark();
+    }
+    
+    default boolean hasIcon() {
+        return !isBookmark();
     }
     
     List<RecipeEntry> getRelevantRecipes();

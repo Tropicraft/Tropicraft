@@ -58,7 +58,7 @@ public class ItemFishBucket extends ItemBucket {
 		TObjectIntMap<String> fishCounts = new TObjectIntHashMap<>();
 		for (int i = 0; i < fishList.tagCount(); i++) {
 			// TODO this is awful
-			String color = EntityTropicalFish.names[fishList.getCompoundTagAt(i).getInteger("Color")];
+			String color = EntityTropicalFish.NAMES[fishList.getCompoundTagAt(i).getInteger("Color")];
 			fishCounts.adjustOrPutValue(color, 1, 1);
 		}
 		for (String s : fishCounts.keySet()) {

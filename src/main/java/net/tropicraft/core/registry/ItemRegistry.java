@@ -12,7 +12,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemDye;
@@ -29,6 +28,7 @@ import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.placeable.EntityBambooItemFrame;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.common.enums.ITropicraftVariant;
 import net.tropicraft.core.common.enums.TropicraftShells;
@@ -47,7 +47,10 @@ import net.tropicraft.core.common.item.ItemLoveTropicsShell;
 import net.tropicraft.core.common.item.ItemMobEgg;
 import net.tropicraft.core.common.item.ItemMusicDisc;
 import net.tropicraft.core.common.item.ItemPortalEnchanter;
+import net.tropicraft.core.common.item.ItemRiverFish;
+import net.tropicraft.core.common.item.ItemSeaweed;
 import net.tropicraft.core.common.item.ItemShell;
+import net.tropicraft.core.common.item.ItemTropicalFish;
 import net.tropicraft.core.common.item.ItemTropicraft;
 import net.tropicraft.core.common.item.ItemTropicraftAxe;
 import net.tropicraft.core.common.item.ItemTropicraftBlockSpecial;
@@ -91,6 +94,17 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item coconutChunk;
     public static Item pineappleCubes;
     public static Item coffeeBeans;
+    public static Item rawNori;
+    public static Item toastedNori;
+    public static Item rawSeaweed;
+    public static ItemTropicalFish rawTropicalFish;
+    public static ItemTropicalFish cookedTropicalFish;
+    public static ItemRiverFish rawRiverFish;
+    public static ItemRiverFish cookedRiverFish;
+
+    // Fishstuffs
+    public static Item rawRay;
+    public static Item cookedRay;
 
     // Tool materials
     public static ToolMaterial materialZirconTools = EnumHelper.addToolMaterial("zircon", 2, 200, 4.5F, 1.0F, 14);
@@ -381,6 +395,16 @@ public class ItemRegistry extends TropicraftRegistry {
 
         fishingRod = registerItem(registry, new ItemFishingRod(), "fishing_rod");
         ltShell = registerMultiItem(registry, new ItemLoveTropicsShell(), "ltshell", Names.LOVE_TROPICS_NAMES.length);
+
+        rawSeaweed = registerItem(registry, new ItemSeaweed(), "seaweed");
+        rawNori = registerItem(registry, new ItemTropicraft(), "nori_raw");
+        toastedNori = registerItem(registry, new ItemTropicraftFood(2, 0.2F), "nori_toasted");
+        rawRay = registerItem(registry, new ItemTropicraft(), "ray_raw");
+        cookedRay = registerItem(registry, new ItemTropicraftFood(5, 0.5F), "ray_cooked");
+        rawTropicalFish = registerMultiItem(registry, new ItemTropicalFish(2, 0.2F, "tropicalfish", "raw"), "raw_fish", EntityTropicalFish.NAMES.length);
+        cookedTropicalFish = registerMultiItem(registry, new ItemTropicalFish(4, 0.4F, "tropicalfish", "cooked"), "cooked_fish", EntityTropicalFish.NAMES.length);
+        rawRiverFish = registerMultiItem(registry, new ItemRiverFish(2, 0.2F, "riverfish", "raw"), "raw_river_fish", 2);
+        cookedRiverFish = registerMultiItem(registry, new ItemRiverFish(4, 0.4F, "riverfish", "cooked"), "cooked_river_fish", 2);
     }
 
     public static void init() {
@@ -393,6 +417,10 @@ public class ItemRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerColoredItem(cocktail);
         Tropicraft.proxy.registerColoredItem(beach_float);
         Tropicraft.proxy.registerColoredItem(ltShell);
+        Tropicraft.proxy.registerColoredItem(rawTropicalFish);
+        Tropicraft.proxy.registerColoredItem(cookedTropicalFish);
+        Tropicraft.proxy.registerColoredItem(rawRiverFish);
+        Tropicraft.proxy.registerColoredItem(cookedRiverFish);
     }
     
     public static void addBlockItem(Block block, IBlockItemRegistrar item) {

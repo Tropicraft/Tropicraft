@@ -145,7 +145,18 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 		}
 		
 		// Client Side
-		if (world.isRemote) {
+        if (world.isRemote) {
+            if (!isInWater() && !isInGui) {
+                outOfWaterTime++;
+                if (outOfWaterTime > 90) {
+                    outOfWaterTime = 90;
+                }
+            } else {
+                if (outOfWaterTime > 0) {
+                    outOfWaterTime--;
+                }
+            }
+
 			if(!(this instanceof IAmphibian)) {
 				this.rotationPitch = -this.swimPitch;
 				this.rotationYaw = -this.swimYaw;
@@ -475,11 +486,16 @@ public abstract class EntityTropicraftWaterBase extends EntityWaterMob {
 	
 	
 	public void setDropStack(Item item, int max) {
-		this.dropStack = new ItemStack(item);
+		this.setDropStack(new ItemStack(item), max);
+	}
+	
+	public void setDropStack(ItemStack stack, int max) {
+	    this.dropStack = stack.copy();
+	    this.dropMaxAmt = max;
 	}
 	
 	public void setDropStack(Block item, int max) {
-		this.dropStack = new ItemStack(item);
+	    this.setDropStack(new ItemStack(item), max);
 	}
 	
 	public void setSwimSpeeds(float regular, float panic, float turnSpeed) {

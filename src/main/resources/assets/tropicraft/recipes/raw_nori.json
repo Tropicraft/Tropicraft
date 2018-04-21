@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "tropicraft:nori_raw"
+  },
+  "pattern": [
+    "  S",
+    " S ",
+    "S  "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "tropicraft:seaweed"
+    }
+  }
+}

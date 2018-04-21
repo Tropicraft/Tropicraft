@@ -35,7 +35,7 @@ public class EntityTreeFrog extends EntityLand implements IMob, IRangedAttackMob
 
 	public EntityTreeFrog(World world) {
 		super(world);
-		setSize(0.8F, 0.8F);
+		setSize(0.6F, 0.4F);
 		this.entityCollisionReduction = 0.8F;
 		this.experienceValue = 5;
 	}
