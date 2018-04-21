@@ -1155,8 +1155,6 @@ public class EntityKoaBase extends EntityVillager {
     @Override
     public void onLivingUpdate() {
 
-        debug = true;
-
         this.updateArmSwingProgress();
         super.onLivingUpdate();
 
