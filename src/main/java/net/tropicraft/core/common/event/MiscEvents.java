@@ -88,7 +88,7 @@ public class MiscEvents {
         //}
 
         if (!lookupDimIDToRegisteredListener.contains(event.world.provider.getDimension())) {
-            System.out.println("adding world listener for dim " + event.world.provider.getDimension());
+            //System.out.println("adding world listener for dim " + event.world.provider.getDimension());
             event.world.addEventListener(new WorldEventListener());
             lookupDimIDToRegisteredListener.add(event.world.provider.getDimension());
         }

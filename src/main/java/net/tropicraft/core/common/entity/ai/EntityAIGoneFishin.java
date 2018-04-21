@@ -8,11 +8,14 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
+import net.tropicraft.core.common.item.ItemRiverFish;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAIGoneFishin extends EntityAIBase {
@@ -53,7 +56,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
     public long timeBetweenFishing = 20*60*1;
     public long timeBetweenFishingRandom = 30;
 
-    public List<Item> listFishables = new ArrayList<>();
+    public List<ItemStack> listFishables = new ArrayList<>();
 
     public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;
@@ -63,9 +66,16 @@ public class EntityAIGoneFishin extends EntityAIBase {
         walkingTimeout = walkingTimeoutMax;
         fishingTimeout = fishingTimeoutMax;
 
-        listFishables.add(Items.FISH);
-        listFishables.add(ItemRegistry.freshMarlin);
-        listFishables.add(ItemRegistry.fertilizer);
+        listFishables.add(new ItemStack(Items.FISH));
+        listFishables.add(new ItemStack(ItemRegistry.freshMarlin));
+        listFishables.add(new ItemStack(ItemRegistry.fertilizer));
+        listFishables.add(new ItemStack(ItemRegistry.rawRay));
+        for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
+            listFishables.add(new ItemStack(ItemRegistry.rawTropicalFish, 1, i));
+        }
+        for (int i = 0; i < ItemRiverFish.FISH_COLORS.length; i++) {
+            listFishables.add(new ItemStack(ItemRegistry.rawRiverFish, 1, i));
+        }
     }
 
     @Override
@@ -246,7 +256,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
                 retractLine();
                 fishCaught++;
                 //entity.inventory.addItem(new ItemStack(Items.FISH));
-                entity.inventory.addItem(new ItemStack(listFishables.get(rand.nextInt(listFishables.size()))));
+                entity.inventory.addItem(listFishables.get(rand.nextInt(listFishables.size())));
 
                 debug("caught a fish");
 
@@ -398,6 +408,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
         //System.out.println("cast line");
         fishingTimeout = fishingTimeoutMax;
         retractLine();
+        entity.swingArm(EnumHand.MAIN_HAND);
         EntityFishHook lure = new EntityFishHook(entity.world, entity);
         entity.world.spawnEntity(lure);
     }

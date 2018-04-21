@@ -65,6 +65,8 @@ import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
+import net.tropicraft.core.common.item.ItemRiverFish;
 import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
 import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
@@ -269,6 +271,13 @@ public class EntityKoaBase extends EntityVillager {
             addTradeForCurrencies(list, new ItemStack(ItemRegistry.fishingRod, 1));
             addTradeForCurrencies(list, new ItemStack(ItemRegistry.freshMarlin, 3));
             addTradeForCurrencies(list, new ItemStack(ItemRegistry.fertilizer, 5));
+
+            for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
+                addTradeForCurrencies(list, new ItemStack(ItemRegistry.rawTropicalFish, 1, i));
+            }
+            for (int i = 0; i < ItemRiverFish.FISH_COLORS.length; i++) {
+                addTradeForCurrencies(list, new ItemStack(ItemRegistry.rawRiverFish, 1, i));
+            }
 
         } else if (getRole() == Roles.HUNTER) {
 
