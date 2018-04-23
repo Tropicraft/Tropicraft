@@ -104,6 +104,11 @@ public class WorldGenSunkenShip extends TCDirectionalGen {
 		} 
 
 		switch (picker) {
+		case 6:
+			if (rand.nextInt(250) == 0) {
+				return new ItemStack(ItemRegistry.nigelStache);
+			}
+			return new ItemStack(ItemRegistry.whitePearl, 2);
 		case 7:
 			return new ItemStack(ItemRegistry.scaleHelmet, 1);
 		case 8:

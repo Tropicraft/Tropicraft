@@ -189,6 +189,11 @@
                         }
                     ],
                     "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "tropicraft:nigel_stache",
+                    "weight": 1
                 }
             ]
         }

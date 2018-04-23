@@ -61,6 +61,7 @@ import net.tropicraft.core.common.item.ItemUmbrella;
 import net.tropicraft.core.common.item.ItemWaterWand;
 import net.tropicraft.core.common.item.armor.ItemAshenMask;
 import net.tropicraft.core.common.item.armor.ItemFireArmor;
+import net.tropicraft.core.common.item.armor.ItemNigelStache;
 import net.tropicraft.core.common.item.armor.ItemScaleArmor;
 import net.tropicraft.core.common.item.scuba.ItemBCD;
 import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
@@ -242,6 +243,9 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item mask4;
     public static Item mask5;
     
+    public static final ArmorMaterial materialNigelStache = EnumHelper.addArmorMaterial("nigel", "nigel", 10, new int[]{0, 0, 0, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
+    public static Item nigelStache;
+
     public static ItemLoveTropicsShell ltShell;
 
     public static final Map<AshenMasks, Item> maskMap = new HashMap<>();
@@ -405,6 +409,8 @@ public class ItemRegistry extends TropicraftRegistry {
         cookedTropicalFish = registerMultiItem(registry, new ItemTropicalFish(4, 0.4F, "tropicalfish", "cooked"), "cooked_fish", EntityTropicalFish.NAMES.length);
         rawRiverFish = registerMultiItem(registry, new ItemRiverFish(2, 0.2F, "riverfish", "raw"), "raw_river_fish", 2);
         cookedRiverFish = registerMultiItem(registry, new ItemRiverFish(4, 0.4F, "riverfish", "cooked"), "cooked_river_fish", 2);
+
+        nigelStache = registerItem(registry, new ItemNigelStache(materialNigelStache, 0, EntityEquipmentSlot.HEAD), "nigel_stache");
     }
 
     public static void init() {

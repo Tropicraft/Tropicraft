@@ -16,7 +16,6 @@ public interface IScubaTank extends INBTSerializable<NBTTagCompound> {
     
     @Override
     default NBTTagCompound serializeNBT() {
-    	System.out.println("SERIALIZE");
         NBTTagCompound ret = new NBTTagCompound();
         ret.setFloat("pressure", getPressure());
         ret.setString("airType", getAirType().getID());
@@ -25,7 +24,6 @@ public interface IScubaTank extends INBTSerializable<NBTTagCompound> {
     
     @Override
     default void deserializeNBT(NBTTagCompound nbt) {
-    	System.out.println("DESERIALIZE");
         this.setPressure(nbt.getInteger("pressure"));
         this.setAirType(AirTypeRegistry.INSTANCE.getType(nbt.getString("airType")));
     }
