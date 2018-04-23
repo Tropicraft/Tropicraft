@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.tropicraft.Info;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
 import net.tropicraft.core.common.enums.TropicraftOres;
 
 @Mod.EventBusSubscriber(modid = Info.MODID)
@@ -22,9 +23,12 @@ public class SmeltingRegistry extends TropicraftRegistry {
         GameRegistry.addSmelting(BlockRegistry.logs, new ItemStack(Items.COAL, 1, 1), 3); // metadata 1 = charcoal
         GameRegistry.addSmelting(ItemRegistry.rawNori, new ItemStack(ItemRegistry.toastedNori), 2);
         GameRegistry.addSmelting(ItemRegistry.rawRay, new ItemStack(ItemRegistry.cookedRay), 4);
-        GameRegistry.addSmelting(ItemRegistry.rawTropicalFish, new ItemStack(ItemRegistry.cookedTropicalFish), 4);
-        GameRegistry.addSmelting(ItemRegistry.rawRiverFish, new ItemStack(ItemRegistry.cookedRiverFish), 3.5F);
-        
+        for (int meta = 0; meta < EntityTropicalFish.NAMES.length; meta++) {
+            GameRegistry.addSmelting(new ItemStack(ItemRegistry.rawTropicalFish, 1, meta), new ItemStack(ItemRegistry.cookedTropicalFish, 1, meta), 4);
+        }
+        GameRegistry.addSmelting(new ItemStack(ItemRegistry.rawRiverFish, 1, 0), new ItemStack(ItemRegistry.cookedRiverFish, 1, 0), 3.5F);
+        GameRegistry.addSmelting(new ItemStack(ItemRegistry.rawRiverFish, 1, 1), new ItemStack(ItemRegistry.cookedRiverFish, 1, 1), 3.5F);
+
         // Silk touched ore smelting
         Block ore = BlockRegistry.ore;
         GameRegistry.addSmelting(TropicraftOres.AZURITE.makeStack(ore), new ItemStack(ItemRegistry.azurite), 0.7F);
