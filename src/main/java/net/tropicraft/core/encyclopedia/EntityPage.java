@@ -62,7 +62,7 @@ public class EntityPage extends ItemPage {
         GlStateManager.color(1, 1, 1);
         x += 67;
         y -= 2;
-        GuiInventory.drawEntityOnScreen(x + getHeaderHeight(), y, 30, x - mouseX, y - mouseY - 50, getEntity());
+        GuiInventory.drawEntityOnScreen(x, y + getHeaderHeight(), 30, x - mouseX, y - mouseY + 10, getEntity());
     }
     
     @Override
