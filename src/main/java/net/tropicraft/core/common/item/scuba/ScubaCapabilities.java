@@ -45,11 +45,14 @@ public class ScubaCapabilities {
 
             @Override
             public NBTBase writeNBT(Capability<IScubaTank> capability, IScubaTank instance, EnumFacing side) {
+            	System.out.println("Writing to scuba tank nbt");
                 return instance.serializeNBT();
             }
 
             @Override
             public void readNBT(Capability<IScubaTank> capability, IScubaTank instance, EnumFacing side, NBTBase nbt) {
+            	System.out.println("Reading from scuba tank nbt");
+            	
                 instance.deserializeNBT((NBTTagCompound) nbt);
             }
             

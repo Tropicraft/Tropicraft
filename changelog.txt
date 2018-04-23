@@ -3,7 +3,7 @@ Fixes
 - Fix broken forge dependency, and update it to the correct version
 - Add missing oredict names that caused a few recipes (tiki torches) to be broken
 - Fix drink mixers not creating drinks correctly with out of order ingredients
-- #253 Fix tropics leaves not dropping sapplings
+- #253 Fix tropics leaves not dropping saplings
 - #254 Fix error loading encyclopedia data when client connects to server
 
 7.1.2 for 1.12.2:
