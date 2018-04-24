@@ -51,6 +51,7 @@ public class ItemSeaweed extends ItemTropicraft {
                 SoundType soundtype = SoundType.SAND;
                 worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
                 itemstack.shrink(1);
+                state.getBlock().onBlockPlacedBy(worldIn, pos, state, player, itemstack);
                 return EnumActionResult.SUCCESS;
             }
         }
