@@ -122,7 +122,7 @@ public class EntityKoaBase extends EntityVillager {
 
     public int druggedTime = 0;
 
-    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(Items.DIAMOND_HELMET);
+    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(ItemRegistry.nigelStache);
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> (input instanceof EntityMob && !(input instanceof EntityCreeper)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -356,8 +356,7 @@ public class EntityKoaBase extends EntityVillager {
             }
         });
 
-        //TODO: replace TEMPTATION_ITEMS entry with future nigel moustache item
-        //this.tasks.addTask(curPri++, new EntityAITemptHelmet(this, 1.0D, false, TEMPTATION_ITEMS));
+        this.tasks.addTask(curPri++, new EntityAITemptHelmet(this, 1.0D, false, TEMPTATION_ITEMS));
 
         this.tasks.addTask(curPri++, new EntityAIMoveTowardsRestriction(this, 1D));
         this.tasks.addTask(curPri++, new EntityAIKoaMate(this));
