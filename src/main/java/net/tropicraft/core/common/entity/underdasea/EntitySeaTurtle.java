@@ -56,6 +56,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 		png = new PathNavigateGround(this, par1World);
 		this.stepHeight = 1f;
 		this.setMaxHealth(10);
+		this.experienceValue = 6;
 	}
 
 	/** Constructor for baby */

@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.block.BlockTropicraftLeaves;
 import net.tropicraft.core.common.block.BlockTropicraftLog;
+import net.tropicraft.core.common.enums.AshenMasks;
 import net.tropicraft.core.common.enums.TropicraftLeaves;
 import net.tropicraft.core.common.enums.TropicraftLogs;
 import net.tropicraft.core.registry.BlockRegistry;
@@ -425,6 +426,9 @@ public class WorldGenHomeTree extends TCGenBase {
 		{
 			return new ItemStack(BlockRegistry.bambooShoot, rand.nextInt(20) + 1);
 		}
+		else if (picker < 7) {
+			return new ItemStack(ItemRegistry.nigelStache);
+		}
 //		else if(picker < 8)
 //		{
 //			return new ItemStack(ItemRegistry.coconutBomb, rand.nextInt(3) + 1);
@@ -437,10 +441,11 @@ public class WorldGenHomeTree extends TCGenBase {
 		{
 			return new ItemStack(ItemRegistry.cookedFrogLeg, rand.nextInt(4) + 1);
 		}
-		/*		else if(picker == 14)
+		else if(picker == 14)
 		{
-			return new ItemStack(TCItemRegistry.ashenMasks, 1, rand.nextInt(7));
-		}*/
+			int m = rand.nextInt(AshenMasks.VALUES.length);
+			return new ItemStack(ItemRegistry.maskMap.get(AshenMasks.VALUES[m]));
+		}
 		else if(picker <= 15)
 		{
 			return new ItemStack(ItemRegistry.recordTradeWinds, 1);
