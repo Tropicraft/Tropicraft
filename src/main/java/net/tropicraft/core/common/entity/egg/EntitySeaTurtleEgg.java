@@ -42,7 +42,7 @@ public class EntitySeaTurtleEgg extends EntityEgg {
 
 	@Override
 	public String getEggTexture() {
-		return "turtle/eggText";
+		return "turtle/egg_text";
 	}
 
 	@Override
