@@ -8,6 +8,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -17,11 +20,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.tropicraft.core.common.enums.TropicraftSands;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
+import javax.annotation.Nullable;
+
 public class BlockSeaweed extends BlockTropicraft {
+
+	public static int GROWTH_CHANCE = 10;
 
     public static class TileSeaweed extends TileEntity {
 
@@ -40,27 +48,35 @@ public class BlockSeaweed extends BlockTropicraft {
         private int maxHeight;
 
         public TileSeaweed() {
-            this.maxHeight = rand.nextInt(10) + 5;
+            initRandomHeights();
         }
 
-        public TileSeaweed(int startingHeight) {
-            this.maxHeight = startingHeight;
-        }
+        public void initRandomHeights() {
+			this.setHeight(rand.nextInt(5) + 1);
+			this.setMaxHeight(rand.nextInt(10) + 5);
+
+			/*this.setHeight(2);
+			this.setMaxHeight(15);*/
+		}
 
         /**
          * Called when this is first added to the world (by {@link World#addTileEntity(TileEntity)}).
          * Override instead of adding {@code if (firstTick)} stuff in update.
          */
+        @Override
         public void onLoad() {
-            recalculateBB();
+			revalidateHeight();
+			recalculateClientBB();
         }
 
-	    public void recalculateBB() {
+        public void syncTileEntity() {
+			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
+					.sendPacketToAllPlayersInDimension(getUpdatePacket(), world.provider.getDimension());
+		}
+
+	    public void recalculateClientBB() {
 	        rand.setSeed(MathHelper.getCoordinateRandom(getPos().getX(), getPos().getY(), getPos().getZ()));
-	        height = 0;
-	        while (height <= maxHeight && getWorld().getBlockState(getPos().up(height + 1)).getMaterial().isLiquid()) {
-	            height++;
-	        }
+
 	        cachedBB = new AxisAlignedBB(getPos()).grow(1.1, height / 2f, 1.1).offset(0, height / 2f, 0);
 
 	        offset = new Vec3d((rand.nextFloat() - 0.5f) * 0.25f, 0, (rand.nextFloat() - 0.5f) * 0.25f);
@@ -75,10 +91,28 @@ public class BlockSeaweed extends BlockTropicraft {
 	        swayDelay *= 20;
 	    }
 
+		/**
+		 * Adjust for dynamic changes like water removed, blocks placed, etc
+		 */
+		public void revalidateHeight() {
+			int testHeight = 0;
+			while (testHeight < height && canGrowTo(testHeight + 1)) {
+				testHeight++;
+			}
+			if (testHeight != getHeight()) {
+				setHeight(testHeight);
+				syncTileEntity();
+			}
+		}
+
+		public boolean canGrowTo(int height) {
+			return getWorld().getBlockState(getPos().up(height)).getMaterial().isLiquid();
+		}
+
 		@Override
 		public AxisAlignedBB getRenderBoundingBox() {
-			if (height < 0 || cachedBB == null) {
-				recalculateBB();
+			if (/*height < 0 || */cachedBB == null) {
+				recalculateClientBB();
 			}
 			return cachedBB;
 		}
@@ -94,6 +128,10 @@ public class BlockSeaweed extends BlockTropicraft {
 		public boolean hasFastRenderer() {
 			return true;
 		}
+
+		public int getMaxHeight() {
+        	return this.maxHeight;
+		}
 		
 		public void setMaxHeight(int newMax) {
 		    this.maxHeight = newMax;
@@ -101,6 +139,10 @@ public class BlockSeaweed extends BlockTropicraft {
 
 		public int getHeight() {
 			return height;
+		}
+
+		public void setHeight(int height) {
+        	this.height = height;
 		}
 		
 		public Vec3d getOffset() {
@@ -116,6 +158,47 @@ public class BlockSeaweed extends BlockTropicraft {
 		public double getSwayDelay() {
 			return swayDelay;
 		}
+
+		@Override
+		public void readFromNBT(NBTTagCompound compound) {
+			super.readFromNBT(compound);
+
+			setHeight(compound.getInteger("height"));
+			setMaxHeight(compound.getInteger("maxHeight"));
+
+			//prevent seaweed breaking when updating old world
+			if (this.getMaxHeight() == 0) {
+				initRandomHeights();
+			}
+
+		}
+
+		@Override
+		public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+
+			compound.setInteger("height", getHeight());
+			compound.setInteger("maxHeight", getMaxHeight());
+
+			return super.writeToNBT(compound);
+		}
+
+		@Override
+		public NBTTagCompound getUpdateTag() {
+			return this.writeToNBT(new NBTTagCompound());
+		}
+
+		@Nullable
+		@Override
+		public SPacketUpdateTileEntity getUpdatePacket() {
+			return new SPacketUpdateTileEntity(this.pos, 1, getUpdateTag());
+		}
+
+		@Override
+		public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+			super.onDataPacket(net, pkt);
+			this.readFromNBT(pkt.getNbtCompound());
+			recalculateClientBB();
+		}
 	}
 
 	public BlockSeaweed() {
@@ -125,21 +208,35 @@ public class BlockSeaweed extends BlockTropicraft {
 		this.setHarvestLevel("shovel", 0);
 		this.setTickRandomly(true);
 	}
-	
-    /**
+
+	//use for debugging
+	/*@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		worldIn.scheduleBlockUpdate(pos, this, 40, 1);
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		super.updateTick(worldIn, pos, state, rand);
+		grow(worldIn, pos);
+		worldIn.scheduleBlockUpdate(pos, this, 40, 1);
+	}*/
+
+	/**
      * Called randomly when setTickRandomly is set to true (used by e.g. crops to grow, etc.)
      */
 	@Override
     public void randomTick(World world, BlockPos pos, IBlockState state, Random random) {
-        grow(world, pos);
+        tryGrow(world, pos);
     }
 	
-	private void grow(IBlockAccess world, BlockPos pos) {
+	private void tryGrow(World world, BlockPos pos) {
+		if (world.rand.nextInt(GROWTH_CHANCE) != 0) return;
 	    TileSeaweed tileEnt = (TileSeaweed)world.getTileEntity(pos);
-	    int trueMax = TileSeaweed.rand.nextInt(10) + 5;
-	    if (tileEnt.getHeight() < trueMax) {
-	        tileEnt.setMaxHeight(tileEnt.getHeight() + 1);
-	        tileEnt.recalculateBB();
+	    if (tileEnt.getHeight() < tileEnt.getMaxHeight() && tileEnt.canGrowTo(tileEnt.getHeight() + 1)) {
+	        tileEnt.setHeight(tileEnt.getHeight() + 1);
+	        tileEnt.syncTileEntity();
 	    }
 	}
 	
@@ -150,7 +247,7 @@ public class BlockSeaweed extends BlockTropicraft {
 	
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileSeaweed(0);
+		return new TileSeaweed();
 	}
 	
 	@Override
