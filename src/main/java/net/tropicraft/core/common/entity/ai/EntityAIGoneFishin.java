@@ -1,14 +1,22 @@
 package net.tropicraft.core.common.entity.ai;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
+import net.tropicraft.core.common.item.ItemRiverFish;
+import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAIGoneFishin extends EntityAIBase {
 
@@ -48,6 +56,8 @@ public class EntityAIGoneFishin extends EntityAIBase {
     public long timeBetweenFishing = 20*60*1;
     public long timeBetweenFishingRandom = 30;
 
+    public List<ItemStack> listFishables = new ArrayList<>();
+
     public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;
         setMutexBits(3);
@@ -55,6 +65,17 @@ public class EntityAIGoneFishin extends EntityAIBase {
 
         walkingTimeout = walkingTimeoutMax;
         fishingTimeout = fishingTimeoutMax;
+
+        listFishables.add(new ItemStack(Items.FISH));
+        listFishables.add(new ItemStack(ItemRegistry.freshMarlin));
+        listFishables.add(new ItemStack(ItemRegistry.fertilizer));
+        listFishables.add(new ItemStack(ItemRegistry.rawRay));
+        for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
+            listFishables.add(new ItemStack(ItemRegistry.rawTropicalFish, 1, i));
+        }
+        for (int i = 0; i < ItemRiverFish.FISH_COLORS.length; i++) {
+            listFishables.add(new ItemStack(ItemRegistry.rawRiverFish, 1, i));
+        }
     }
 
     @Override
@@ -183,6 +204,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
             if (entity.getDistance(posLastWaterFound.getX(), posLastWaterFound.getY(), posLastWaterFound.getZ()) < 8D || entity.isInWater()) {
                 entity.getNavigator().clearPath();
                 setState(FISHING_STATE.FISHING);
+                faceCoord(posLastWaterFound, 180, 180);
                 castLine();
             }
 
@@ -212,6 +234,10 @@ public class EntityAIGoneFishin extends EntityAIBase {
                 }
             }
 
+            if (entity.getLure() != null && (entity.getLure().onGround || entity.getLure().caughtEntity != null)) {
+                resetTask();
+            }
+
             //if fish detected, and out of water for 10 ticks
             //- catch
 
@@ -229,7 +255,9 @@ public class EntityAIGoneFishin extends EntityAIBase {
             if (ifCaughtFish()) {
                 retractLine();
                 fishCaught++;
-                entity.inventory.addItem(new ItemStack(Items.FISH));
+                //entity.inventory.addItem(new ItemStack(Items.FISH));
+                entity.inventory.addItem(listFishables.get(rand.nextInt(listFishables.size())));
+
                 debug("caught a fish");
 
                 if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
@@ -244,6 +272,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
                         setState(FISHING_STATE.IDLE);
                     } else {
                         //cast line
+                        faceCoord(posLastWaterFound, 180, 180);
                         castLine();
                     }
                 }
@@ -277,7 +306,7 @@ public class EntityAIGoneFishin extends EntityAIBase {
                 posLastLandFound = new BlockPos(entity.getPosition());
                 entity.getNavigator().clearPath();
                 setState(FISHING_STATE.FISHING);
-                //TODO: cast line here too
+                faceCoord(posLastWaterFound, 180, 180);
                 castLine();
                 return;
             }
@@ -379,11 +408,46 @@ public class EntityAIGoneFishin extends EntityAIBase {
         //System.out.println("cast line");
         fishingTimeout = fishingTimeoutMax;
         retractLine();
+        entity.swingArm(EnumHand.MAIN_HAND);
         EntityFishHook lure = new EntityFishHook(entity.world, entity);
         entity.world.spawnEntity(lure);
     }
 
     private void retractLine() {
         if (entity.getLure() != null) entity.getLure().setDead();
+    }
+
+    public void faceCoord(BlockPos coord, float maxDeltaYaw, float maxDeltaPitch) {
+        faceCoord(coord.getX(), coord.getY(), coord.getZ(), maxDeltaYaw, maxDeltaPitch);
+    }
+
+    public void faceCoord(int x, int y, int z, float maxDeltaYaw, float maxDeltaPitch)
+    {
+        double d = x+0.5F - entity.posX;
+        double d2 = z+0.5F - entity.posZ;
+        double d1;
+        d1 = y+0.5F - (entity.posY + (double)entity.getEyeHeight());
+
+        double d3 = MathHelper.sqrt(d * d + d2 * d2);
+        float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
+        float f3 = (float)(-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
+        entity.rotationPitch = -updateRotation(entity.rotationPitch, f3, maxDeltaPitch);
+        entity.rotationYaw = updateRotation(entity.rotationYaw, f2, maxDeltaYaw);
+    }
+
+    public float updateRotation(float curRotation, float targetRotation, float maxDeltaRotation)
+    {
+        float f3;
+        for(f3 = targetRotation - curRotation; f3 < -180F; f3 += 360F) { }
+        for(; f3 >= 180F; f3 -= 360F) { }
+        if(f3 > maxDeltaRotation)
+        {
+            f3 = maxDeltaRotation;
+        }
+        if(f3 < -maxDeltaRotation)
+        {
+            f3 = -maxDeltaRotation;
+        }
+        return curRotation + f3;
     }
 }

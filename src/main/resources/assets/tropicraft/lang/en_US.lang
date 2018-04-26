@@ -412,6 +412,11 @@ entity.tropicraft.koa.trade.not_enough_time=You still need %s more minutes of di
 entity.tropicraft.koa.trade.cooldown=Someone already got trimix gas from me recently
 entity.tropicraft.koa.trade.space=Your inventory is full!
 
+entity.tropicraft.koa.male.hunter.name=Male Koa Hunter
+entity.tropicraft.koa.female.hunter.name=Female Koa Hunter
+entity.tropicraft.koa.male.fisherman.name=Male Koa Fisherman
+entity.tropicraft.koa.female.fisherman.name=Female Koa Fisherman
+
 # Misc chat notifications
 tropicraft.chat.teleport.unable=You should drink a piña colada before teleporting!
 
@@ -881,3 +886,9 @@ tropicraft.encyclopedia.rayraw.desc=Spotted eagle rays are a rare sight in the t
 
 tropicraft.encyclopedia.raycooked.title=Cooked Spotted Eagle Ray
 tropicraft.encyclopedia.raycooked.desc=A delicacy in some cultures, this light fish meat is what you get when you cook Raw Ray.
+
+tropicraft.encyclopedia.koa.fisherman.title=Koa Fisherman
+tropicraft.encyclopedia.koa.fisherman.desc=A friendly Koa, prefers to fish anything available in the sea, will take pearls for various fish meats. Right click with dive computer to try to receive trimix.
+
+tropicraft.encyclopedia.koa.hunter.title=Koa Hunter
+tropicraft.encyclopedia.koa.hunter.desc=A Koa always looking for their next great hunt on land, will take pearls for various land meats and materials. Right click with dive computer to try to receive trimix.

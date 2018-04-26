@@ -119,6 +119,7 @@ public class Util {
     }
 
     public static boolean isDeepWater(World world, BlockPos pos) {
+        boolean clearAbove = world.isAirBlock(pos.up(1)) && world.isAirBlock(pos.up(2)) && world.isAirBlock(pos.up(3));
         boolean deep = world.getBlockState(pos).getMaterial().isLiquid() && world.getBlockState(pos.down()).getMaterial().isLiquid();
         boolean notUnderground = false;
         if (deep) {
@@ -126,7 +127,7 @@ public class Util {
             notUnderground = height == pos.getY();
         }
 
-        return deep && notUnderground;
+        return deep && notUnderground && clearAbove;
     }
 
     public static boolean isLand(World world, BlockPos pos) {

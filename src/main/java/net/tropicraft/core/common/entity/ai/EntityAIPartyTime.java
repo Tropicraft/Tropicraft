@@ -54,13 +54,13 @@ public class EntityAIPartyTime extends EntityAIBase
     public boolean shouldExecute()
     {
 
-        if (!entityObj.getWantsToParty()) {
+        if ((!entityObj.getWantsToParty() && this.entityObj.druggedTime <= 0) || entityObj.listPosDrums.size() == 0) {
             return false;
         }
 
         BlockPos blockpos = new BlockPos(this.entityObj);
 
-        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether()) {
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether()) {
             if (!isTooClose()) {
                 if (entityObj.world.rand.nextInt(20) == 0) {
                     return true;
@@ -85,7 +85,7 @@ public class EntityAIPartyTime extends EntityAIBase
     {
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();
-        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether())
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether())
         {
             if (!isTooClose()) {
                 return true;
@@ -217,7 +217,7 @@ public class EntityAIPartyTime extends EntityAIBase
                             TropicraftBongos bongo = ((BlockBongoDrum) state.getBlock()).getVariant(state);
                             float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
                             entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
-                                    bongo.getSoundEvent(), SoundCategory.BLOCKS, 6.0F, pitch);
+                                    bongo.getSoundEvent(), SoundCategory.BLOCKS, 2.5F, pitch);
                             entityObj.swingArm(EnumHand.MAIN_HAND);
                         } else if (state.getBlock() instanceof BlockNote) {
                             TileEntity tEnt = entityObj.world.getTileEntity(blockposGoal);

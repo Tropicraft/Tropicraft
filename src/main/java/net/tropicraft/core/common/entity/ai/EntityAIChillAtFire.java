@@ -37,7 +37,7 @@ public class EntityAIChillAtFire extends EntityAIBase
     public boolean shouldExecute()
     {
 
-        if (entityObj.getWantsToParty()) {
+        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && entityObj.listPosDrums.size() > 0) {
             return false;
         }
 
@@ -66,6 +66,11 @@ public class EntityAIChillAtFire extends EntityAIBase
     @Override
     public boolean shouldContinueExecuting()
     {
+
+        if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && entityObj.listPosDrums.size() > 0) {
+            return false;
+        }
+
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();
         if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether())

@@ -10,7 +10,7 @@ import net.tropicraft.Info;
 
 public class ItemRiverFish extends ItemColoredFood {
 
-    private static final int[] FISH_COLORS = {
+    public static final int[] FISH_COLORS = {
             0xb5e1e7, 0x3e375f
     };
 

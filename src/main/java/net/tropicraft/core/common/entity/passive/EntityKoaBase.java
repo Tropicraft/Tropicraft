@@ -1,44 +1,33 @@
 package net.tropicraft.core.common.entity.passive;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 
+import com.google.common.collect.Sets;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIHarvestFarmland;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIPlay;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -60,6 +49,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.village.MerchantRecipe;
+import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -70,17 +61,12 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.config.TropicsConfigs;
-import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
-import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
-import net.tropicraft.core.common.entity.ai.EntityAIEatToHeal;
-import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
-import net.tropicraft.core.common.entity.ai.EntityAIKoaMate;
-import net.tropicraft.core.common.entity.ai.EntityAIPartyTime;
-import net.tropicraft.core.common.entity.ai.EntityAIPlayKoa;
-import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
+import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.entity.hostile.EntityAshen;
 import net.tropicraft.core.common.entity.hostile.EntityIguana;
 import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
+import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
+import net.tropicraft.core.common.item.ItemRiverFish;
 import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
 import net.tropicraft.core.common.town.ISimulationTickable;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
@@ -133,6 +119,10 @@ public class EntityKoaBase extends EntityVillager {
     private static int DIVE_TIME_NEEDED = 60*60;
 
     public boolean debug = false;
+
+    public int druggedTime = 0;
+
+    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(ItemRegistry.nigelStache);
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             input -> (input instanceof EntityMob && !(input instanceof EntityCreeper)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen;
@@ -265,6 +255,61 @@ public class EntityKoaBase extends EntityVillager {
 
     }
 
+    public void initTrades() {
+        MerchantRecipeList list = new MerchantRecipeList();
+
+        //stack count given is the base amount that will be multiplied based on value of currency traded for
+
+        //item worth notes:
+        //cooked marlin restores double that of cooked fish
+        //1 leather drops, 4+ scales drop per mob
+
+        if (getRole() == Roles.FISHERMAN) {
+
+            addTradeForCurrencies(list, new ItemStack(Items.FISH, 5));
+            addTradeForCurrencies(list, new ItemStack(ItemRegistry.fishingNet, 1));
+            addTradeForCurrencies(list, new ItemStack(ItemRegistry.fishingRod, 1));
+            addTradeForCurrencies(list, new ItemStack(ItemRegistry.freshMarlin, 3));
+            addTradeForCurrencies(list, new ItemStack(ItemRegistry.fertilizer, 5));
+
+            for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
+                addTradeForCurrencies(list, new ItemStack(ItemRegistry.rawTropicalFish, 1, i));
+            }
+            for (int i = 0; i < ItemRiverFish.FISH_COLORS.length; i++) {
+                addTradeForCurrencies(list, new ItemStack(ItemRegistry.rawRiverFish, 1, i));
+            }
+
+        } else if (getRole() == Roles.HUNTER) {
+
+            addTradeForCurrencies(list, new ItemStack(ItemRegistry.frogLeg, 5));
+            addTradeForCurrencies(list, new ItemStack(ItemRegistry.iguanaLeather, 2));
+            addTradeForCurrencies(list, new ItemStack(ItemRegistry.scale, 5));
+
+        }
+
+        try {
+            _buyingList.set(this, list);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void addTradeForCurrencies(MerchantRecipeList list, ItemStack sell) {
+        double pearlWhiteWorth = 1;
+        double pearlBlackWorth = 1.5D;
+
+        List<Double> listTradeCosts = new ArrayList<>();
+
+        ItemStack stack1 = sell.copy();
+        stack1.setCount((int)Math.round(sell.getCount() * pearlWhiteWorth));
+        list.add(new MerchantRecipe(new ItemStack(ItemRegistry.whitePearl), stack1));
+
+        ItemStack stack2 = sell.copy();
+        stack2.setCount((int)Math.round(sell.getCount() * pearlBlackWorth));
+        list.add(new MerchantRecipe(new ItemStack(ItemRegistry.blackPearl), stack2));
+
+    }
+
     public void updateUniqueEntityAI() {
         Set<EntityAITasks.EntityAITaskEntry> executingTaskEntries = ReflectionHelper.getPrivateValue(EntityAITasks.class, this.tasks, "field_75780_b", "executingTaskEntries");
         if (executingTaskEntries != null) {
@@ -285,14 +330,18 @@ public class EntityKoaBase extends EntityVillager {
         this.tasks.taskEntries.clear();
         this.targetTasks.taskEntries.clear();
 
-        this.tasks.addTask(0, new EntityAISwimming(this));
+        int curPri = 0;
 
-        this.tasks.addTask(1, new EntityAIAvoidEntityOnLowHealth(this, EntityLivingBase.class, ENEMY_PREDICATE,
+        this.tasks.addTask(curPri++, new EntityAISwimming(this));
+
+        this.tasks.addTask(curPri++, new EntityAIAvoidEntityOnLowHealth(this, EntityLivingBase.class, ENEMY_PREDICATE,
                 12.0F, 1.4D, 1.4D, 15F));
 
-        this.tasks.addTask(2, new EntityAIEatToHeal(this));
+        this.tasks.addTask(curPri++, new EntityAIEatToHeal(this));
 
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1F, true) {
+        this.tasks.addTask(curPri++, new EntityAITradePlayer(this));
+
+        this.tasks.addTask(curPri++, new EntityAIAttackMelee(this, 1F, true) {
             @Override
             public void startExecuting() {
                 super.startExecuting();
@@ -306,22 +355,25 @@ public class EntityKoaBase extends EntityVillager {
                 return (double)(this.attacker.width * 2.5F * this.attacker.width * 2.5F + attackTarget.width);
             }
         });
-        this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1D));
-        this.tasks.addTask(5, new EntityAIKoaMate(this));
-        this.tasks.addTask(6, new EntityAIChillAtFire(this));
-        this.tasks.addTask(7, new EntityAIPartyTime(this));
+
+        this.tasks.addTask(curPri++, new EntityAITemptHelmet(this, 1.0D, false, TEMPTATION_ITEMS));
+
+        this.tasks.addTask(curPri++, new EntityAIMoveTowardsRestriction(this, 1D));
+        this.tasks.addTask(curPri++, new EntityAIKoaMate(this));
+        this.tasks.addTask(curPri++, new EntityAIChillAtFire(this));
+        this.tasks.addTask(curPri++, new EntityAIPartyTime(this));
 
         if (canFish()) {
-            this.tasks.addTask(8, taskFishing);
+            this.tasks.addTask(curPri++, taskFishing);
         }
 
         if (isChild()) {
-            this.tasks.addTask(9, new EntityAIPlayKoa(this, 1.2D));
+            this.tasks.addTask(curPri++, new EntityAIPlayKoa(this, 1.2D));
         }
 
-        this.tasks.addTask(10, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(10, new EntityAIWanderNotLazy(this, 1D, 40));
-        this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.tasks.addTask(curPri, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+        this.tasks.addTask(curPri++, new EntityAIWanderNotLazy(this, 1D, 40));
+        this.tasks.addTask(curPri++, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
         //i dont think this one works, change to predicate
@@ -462,6 +514,7 @@ public class EntityKoaBase extends EntityVillager {
     }
     
     private static final Field _buyingPlayer = ReflectionHelper.findField(EntityVillager.class, "field_70962_h", "buyingPlayer");
+    private static final Field _buyingList = ReflectionHelper.findField(EntityVillager.class, "field_70963_i", "buyingList");
     
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
@@ -470,20 +523,29 @@ public class EntityKoaBase extends EntityVillager {
 
     	boolean ret = false;
     	try {
-            boolean doTrade = false;
+            boolean doTrade = true;
             if (!this.world.isRemote) {
 
                 ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
                 if (!stack.isEmpty() && stack.getItem() == ItemRegistry.poisonFrogSkin) {
 
+                    doTrade = false;
+
                     //drug the koa and make him forget everything
                     dbg("koa drugged, zapping memory");
-                    stack.shrink(1);
+                    if (!player.isCreative()) {
+                        stack.shrink(1);
+                    }
                     zapMemory();
-                    addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 30));
 
-                } else {
+                    druggedTime += 20*60*2;
+                    addPotionEffect(new PotionEffect(MobEffects.NAUSEA, druggedTime));
+                    findAndSetDrums(true);
+
+                } else if (!stack.isEmpty() && stack.getItem() == ItemRegistry.diveComputer) {
                     long diveTime = 0;
+
+                    doTrade = false;
 
                     //scan hotbar
                     for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
@@ -517,12 +579,11 @@ public class EntityKoaBase extends EntityVillager {
                     }
                 }
 
-
                 if (doTrade) {
                     // Make the super method think this villager is already trading, to block the GUI from opening
-                    _buyingPlayer.set(this, player);
+                    //_buyingPlayer.set(this, player);
                     ret = super.processInteract(player, hand);
-                    _buyingPlayer.set(this, null);
+                    //_buyingPlayer.set(this, null);
                 }
             }
     	} catch (Exception e) {
@@ -567,6 +628,8 @@ public class EntityKoaBase extends EntityVillager {
 
         /*VillagerRegistry.VillagerProfession koaProfession = new VillagerRegistry.VillagerProfession("koa_profession", "");
         this.setProfession(koaProfession);*/
+
+        initTrades();
 
         return data;
     }
@@ -727,7 +790,7 @@ public class EntityKoaBase extends EntityVillager {
         if ((world.getTotalWorldTime()+this.getEntityId()) % (20*5) != 0) return;
 
         if (getVillage() == null) {
-            TownKoaVillage village = getVillageWithinRange(128);
+            TownKoaVillage village = getVillageWithinRange(64);
             if (village != null) {
                 dbg("Koa found a village to join: " + village.locationID);
                 this.setVillageAndDimID(village.locationID, village.dimID);
@@ -1090,6 +1153,7 @@ public class EntityKoaBase extends EntityVillager {
 
     @Override
     public void onLivingUpdate() {
+
         this.updateArmSwingProgress();
         super.onLivingUpdate();
 
@@ -1114,11 +1178,19 @@ public class EntityKoaBase extends EntityVillager {
         }
 
         if (isInWater()) {
-            if (this.motionY < -0.2F) {
-                this.motionY += 0.15F;
+            //children have different hitbox size, use different values to keep them from getting stuck under docks and drowning
+            //changing this doesnt derp up their pathing like it does for adults
+            if (isChild()) {
+                if (this.motionY < -0.1F) {
+                    this.motionY += 0.25F;
+                }
             } else {
-                //koa drowning more in 1.12 for some reason...
-                //this.motionY += 0.02F;
+                if (this.motionY < -0.2F) {
+                    this.motionY += 0.15F;
+                } else {
+                    //koa drowning more in 1.12 for some reason...
+                    //this.motionY += 0.02F;
+                }
             }
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
         } else {
@@ -1140,6 +1212,10 @@ public class EntityKoaBase extends EntityVillager {
             //if (world.getTotalWorldTime() % (20*5) == 0) {
                 //this.heal(5);
             //}
+
+            if (druggedTime > 0) {
+                druggedTime--;
+            }
         }
 
         if (world.isRemote) {
@@ -1357,10 +1433,10 @@ public class EntityKoaBase extends EntityVillager {
 
     @Override
     public ITextComponent getDisplayName() {
-        String gender = getGender().toString().substring(0, 1) + getGender().toString().substring(1).toLowerCase();
-        String role = getRole().toString().substring(0, 1) + getRole().toString().substring(1).toLowerCase();
-        return new TextComponentString(gender + " Koa " + role);
-        //return super.getDisplayName();
+        return new TextComponentTranslation("entity.tropicraft.koa." +
+                getGender().toString().toLowerCase(Locale.ROOT) + "." +
+                getRole().toString().toLowerCase(Locale.ROOT) + ".name"
+        );
     }
 
     @Override
@@ -1381,6 +1457,17 @@ public class EntityKoaBase extends EntityVillager {
         if (debug) {
             System.out.println(msg);
         }
+    }
+
+    @Override
+    public void playSound(SoundEvent soundIn, float volume, float pitch) {
+
+        //cancel villager trade sounds
+        if (soundIn == SoundEvents.ENTITY_VILLAGER_YES || soundIn == SoundEvents.ENTITY_VILLAGER_NO) {
+            return;
+        }
+
+        super.playSound(soundIn, volume, pitch);
     }
 
 }
