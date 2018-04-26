@@ -48,7 +48,7 @@ public class BlockSeaweed extends BlockTropicraft {
         private int maxHeight;
 
         public TileSeaweed() {
-			initRandomHeights();
+            initRandomHeights();
         }
 
         public void initRandomHeights() {

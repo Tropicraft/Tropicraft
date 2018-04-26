@@ -17,7 +17,6 @@ import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityShark;
 import net.tropicraft.core.common.enums.TropicraftCorals;
 import net.tropicraft.core.common.worldgen.perlin.generator.RidgedMulti;
 import net.tropicraft.core.registry.BlockRegistry;
-import net.tropicraft.core.registry.ItemRegistry;
 
 public class MapGenUndergroundWaterCove {
 
