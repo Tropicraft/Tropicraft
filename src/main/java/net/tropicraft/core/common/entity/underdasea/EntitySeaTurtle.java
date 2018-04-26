@@ -76,7 +76,7 @@ public class EntitySeaTurtle extends EntityTropicraftWaterBase implements IAmphi
 
 	@Override
 	public String[] getTexturePool() {
-		return new String[] { "seaTurtle", "sea_turtle2", "sea_turtle3", "sea_turtle4", "sea_turtle5", "sea_turtle6" };
+		return new String[] { "sea_turtle", "sea_turtle2", "sea_turtle3", "sea_turtle4", "sea_turtle5", "sea_turtle6" };
 	}
 
 	@Override
