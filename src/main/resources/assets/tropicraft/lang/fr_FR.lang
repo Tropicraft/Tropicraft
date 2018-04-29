@@ -1,0 +1,454 @@
+# BLOCS
+tile.tropicraft.chunk.name=Tronçon
+tile.tropicraft.chunk_stairs.name=Escaliers en tronçon
+tile.tropicraft.ore.eudialyte.name=Minerai d'eudialyte
+tile.tropicraft.ore.zircon.name=Minerai de zircon
+tile.tropicraft.ore.azurite.name=Minerai d'azurite
+tile.tropicraft.ore.manganese.name=Minerai de manganèse
+tile.tropicraft.ore.shaka.name=Pierre de Shaka
+tile.tropicraft.oreblock.azurite.name=Bloc d'azurite
+tile.tropicraft.oreblock.eudialyte.name=Bloc d'eudialyte
+tile.tropicraft.oreblock.zircon.name=Bloc de zircon
+tile.tropicraft.flower.commelina_diffusa.name=Commelina Diffusa
+tile.tropicraft.flower.crocosmia.name=Crocosmia
+tile.tropicraft.flower.orchid.name=Orchidée
+tile.tropicraft.flower.canna.name=Canna
+tile.tropicraft.flower.anemone.name=Anémone
+tile.tropicraft.flower.orange_anthurium.name=Anthurium orange
+tile.tropicraft.flower.red_anthurium.name=Anthurium rouge
+tile.tropicraft.flower.magic_mushroom.name=Champignon magique
+tile.tropicraft.flower.pathos.name=Pathos
+tile.tropicraft.flower.acai_vine.name=Lianes d'acai
+tile.tropicraft.flower.croton.name=Croton
+tile.tropicraft.flower.dracaena.name=Dracaena
+tile.tropicraft.flower.fern.name=Fougère
+tile.tropicraft.flower.foliage.name=Feuillage
+tile.tropicraft.flower.bromeliad.name=Broméliacée
+tile.tropicraft.log.mahogany.name=Bûche d'acajou brun
+tile.tropicraft.log.palm.name=Bûche de palmier
+tile.tropicraft.coral.pink.name=Corail rose
+tile.tropicraft.coral.tealy.name=Corail tealy
+tile.tropicraft.coral.brain.name=Corail cerveau
+tile.tropicraft.coral.fire.name=Corail de feu
+tile.tropicraft.coral.green.name=Corail vert
+tile.tropicraft.coral.spiral.name=Corail en spirale
+tile.tropicraft.coral.hotpink.name=Corail rose chaud
+tile.tropicraft.bundle.thatch.name=Ballot de chaume
+tile.tropicraft.bundle.bamboo.name=Ballot de bambou
+tile.tropicraft.plank.mahogany.name=Planches d'acajou brun
+tile.tropicraft.plank.palm.name=Planches de palmier
+tile.tropicraft.bamboo_shoot.name=Pousse de bambou
+tile.tropicraft.thatch_stairs.name=Escaliers de chaume
+tile.tropicraft.bamboo_stairs.name=Escaliers en bambou
+tile.tropicraft.thatch_stairs_fuzzy.name=Toit de chaume
+tile.tropicraft.leaves.mahogany.name=Feuilles d'acajou brun
+tile.tropicraft.leaves.palm.name=Feuilles de palmier
+tile.tropicraft.leaves.kapok.name=Feuilles de kapokier
+tile.tropicraft.leaves.fruit.name=Feuilles de fruitier
+tile.tropicraft.bamboo_chest.name=Coffre en bambou
+tile.tropicraft.fruitleaves.grapefruit.name=Feuilles de pamplemoussier
+tile.tropicraft.fruitleaves.lemon.name=Feuilles de citronnier
+tile.tropicraft.fruitleaves.lime.name=Feuilles de limettier
+tile.tropicraft.fruitleaves.orange.name=Feuilles d'oranger
+tile.tropicraft.sapling.palm.name=Pousse de palmier
+tile.tropicraft.sapling.mahogany.name=Pousse d'acajou brun
+tile.tropicraft.sapling.grapefruit.name=Pousse de pamplemoussier
+tile.tropicraft.sapling.lemon.name=Pousse de citronnier
+tile.tropicraft.sapling.lime.name=Pousse de limettier
+tile.tropicraft.sapling.orange.name=Pousse d'oranger
+tile.tropicraft.coconut.name=Noix de coco
+tile.tropicraft.sand.purified.name=Sable purifié
+tile.tropicraft.sand.foamy.name=Sables mousseux
+tile.tropicraft.sand.volcanic.name=Sables volcaniques
+tile.tropicraft.sand.mineral.name=Sables minéraux
+tile.tropicraft.sand.coral.name=Sables coralliens
+tile.tropicraft.iris.name=Iris
+tile.tropicraft.pineapple.name=Ananas
+tile.tropicraft.tiki_torch.name=Torche tiki
+tile.tropicraft.drink_mixer.name=Mixeur de boissons
+tile.tropicraft.sifter.name=Tamis
+tile.tropicraft.air_compressor.name=Compresseur d'air
+tile.tropicraft.flower_pot.name=Pot de fleurs
+tile.tropicraft.palm_stairs.name=Escaliers en palmier
+tile.tropicraft.mahogany_stairs.name=Escaliers en acajou brun
+tile.tropicraft.slab.bamboo.name=Dalle en bambou
+tile.tropicraft.slab.chunk.name=Dalle en tronçon
+tile.tropicraft.slab.palm.name=Dalle en palmier
+tile.tropicraft.slab.mahogany.name=Dalle en acajou brun
+tile.tropicraft.slab.thatch.name=Dalle de chaume
+tile.tropicraft.bongo.small.name=Petit tambour bongo
+tile.tropicraft.bongo.medium.name=Tambour bongo moyen
+tile.tropicraft.bongo.large.name=Grand tambour bongo
+tile.tropicraft.bamboo_fence.name=Barrière en bambou
+tile.tropicraft.bamboo_fence_gate.name=Portillon en bambou
+tile.tropicraft.chunk_fence.name=Barrière en tronçon
+tile.tropicraft.chunk_fence_gate.name=Portillon en tronçon
+tile.tropicraft.mahogany_fence.name=Barrière en acajou brun
+tile.tropicraft.mahogany_fence_gate.name=Portillon en acajou brun
+tile.tropicraft.palm_fence.name=Barrière en palmier
+tile.tropicraft.palm_fence_gate.name=Portillon en palmier
+tile.tropicraft.thatch_fence.name=Barrière de chaume
+tile.tropicraft.thatch_fence_gate.name=Portillon de chaume
+tile.tropicraft.portal_wall.name=Muret de portail des tropiques
+tile.tropicraft.bamboo_ladder.name=Échelle en bambou
+tile.tropicraft.packed_purified_sand.name=Sable purifié tassé
+
+# OBJETS
+item.tropicraft.eudialyte.name=Tesson d'eudialyte
+item.tropicraft.zircon.name=Cristal de zircon
+item.tropicraft.azurite.name=Cristal d'azurite
+item.tropicraft.grapefruit.name=Pamplemousse
+item.tropicraft.lemon.name=Citron
+item.tropicraft.lime.name=Citron vert
+item.tropicraft.orange.name=Orange
+item.tropicraft.axe_eudialyte.name=Hache en eudialyte
+item.tropicraft.hoe_eudialyte.name=Houe en eudialyte
+item.tropicraft.pickaxe_eudialyte.name=Pioche en eudialyte
+item.tropicraft.shovel_eudialyte.name=Pelle en eudialyte
+item.tropicraft.sword_eudialyte.name=Épée en eudialyte
+item.tropicraft.axe_zircon.name=Hache en zircon
+item.tropicraft.hoe_zircon.name=Houe en zircon
+item.tropicraft.pickaxe_zircon.name=Pioche en zircon
+item.tropicraft.shovel_zircon.name=Pelle en zircon
+item.tropicraft.sword_zircon.name=Lance en zircon
+item.tropicraft.fishing_net.name=Filet de pêche
+item.tropicraft.bamboo_shoots.name=Pousse de bambou
+item.tropicraft.fresh_marlin.name=Marlin frais
+item.tropicraft.seared_marlin.name=Marlin poêlé
+item.tropicraft.bamboo_stick.name=Bambou
+item.tropicraft.bamboo_mug.name=Tasse en bambou
+item.tropicraft.tropics_water_bucket.name=Seau d'eau tropicale
+item.tropicraft.fish_bucket.name=Seau à poisson
+item.tropicraft.coconut_chunk.name=Morceau de noix de coco
+item.tropicraft.frog_leg.name=Cuisse de grenouille
+item.tropicraft.cooked_frog_leg.name=Cuisse de grenouille cuite
+item.tropicraft.poison_frog_skin.name=Peau de grenouille vénéneuse
+item.tropicraft.scale.name=Écaille d'iguane
+item.tropicraft.scale_boots.name=Bottes en écailles
+item.tropicraft.scale_chestplate.name=Plastron en écailles
+item.tropicraft.scale_helmet.name=Casque en écailles
+item.tropicraft.scale_leggings.name=Jambières en écailles
+item.tropicraft.chair.black.name=Chaise de plage noire
+item.tropicraft.chair.red.name=Chaise de plage rouge
+item.tropicraft.chair.green.name=Chaise de plage verte
+item.tropicraft.chair.brown.name=Chaise de plage marron
+item.tropicraft.chair.blue.name=Chaise de plage bleue
+item.tropicraft.chair.purple.name=Chaise de plage violette
+item.tropicraft.chair.cyan.name=Chaise de plage cyan
+item.tropicraft.chair.silver.name=Chaise de plage gris clair
+item.tropicraft.chair.gray.name=Chaise de plage grise
+item.tropicraft.chair.pink.name=Chaise de plage rose
+item.tropicraft.chair.lime.name=Chaise de plage vert clair
+item.tropicraft.chair.yellow.name=Chaise de plage jaune
+item.tropicraft.chair.lightBlue.name=Chaise de plage bleu clair
+item.tropicraft.chair.magenta.name=Chaise de plage magenta
+item.tropicraft.chair.orange.name=Chaise de plage orange
+item.tropicraft.chair.white.name=Chaise de plage blanche
+item.tropicraft.umbrella.black.name=Parasol noir
+item.tropicraft.umbrella.red.name=Parasol rouge
+item.tropicraft.umbrella.green.name=Parasol vert
+item.tropicraft.umbrella.brown.name=Parasol marron
+item.tropicraft.umbrella.blue.name=Parasol bleu
+item.tropicraft.umbrella.purple.name=Parasol violet
+item.tropicraft.umbrella.cyan.name=Parasol cyan
+item.tropicraft.umbrella.silver.name=Parasol gris clair
+item.tropicraft.umbrella.gray.name=Parasol gris
+item.tropicraft.umbrella.pink.name=Parasol rose
+item.tropicraft.umbrella.lime.name=Parasol vert clair
+item.tropicraft.umbrella.yellow.name=Parasol jaune
+item.tropicraft.umbrella.lightBlue.name=Parasol bleu clair
+item.tropicraft.umbrella.magenta.name=Parasol magenta
+item.tropicraft.umbrella.orange.name=Parasol orange
+item.tropicraft.umbrella.white.name=Parasol blanc
+item.tropicraft.float.black.name=Flotteur de plage noir
+item.tropicraft.float.red.name=Flotteur de plage rouge
+item.tropicraft.float.green.name=Flotteur de plage vert
+item.tropicraft.float.brown.name=Flotteur de plage marron
+item.tropicraft.float.blue.name=Flotteur de plage bleu
+item.tropicraft.float.purple.name=Flotteur de plage violet
+item.tropicraft.float.cyan.name=Flotteur de plage cyan
+item.tropicraft.float.silver.name=Flotteur de plage gris clair
+item.tropicraft.float.gray.name=Flotteur de plage gris
+item.tropicraft.float.pink.name=Flotteur de plage rose
+item.tropicraft.float.lime.name=Flotteur de plage vert clair
+item.tropicraft.float.yellow.name=Flotteur de plage jaune
+item.tropicraft.float.lightBlue.name=Flotteur de plage bleu clair
+item.tropicraft.float.magenta.name=Flotteur de plage magenta
+item.tropicraft.float.orange.name=Flotteur de plage orange
+item.tropicraft.float.white.name=Flotteur de plage blanc
+item.tropicraft.portal_enchanter.name=Baguette enchantée du portail des tropiques
+item.tropicraft.shell.name=Coquillage
+item.tropicraft.shell.solo.name=Coquillage Solonox
+item.tropicraft.shell.frox.name=Conque Frox
+item.tropicraft.shell.pab.name=Coquillage Pab
+item.tropicraft.shell.rube.name=Nautile de Rube
+item.tropicraft.shell.starfish.name=Coquille d'étoile de mer
+item.tropicraft.shell.turtle.name=Carapace de tortue
+item.tropicraft.shell.owned.normal.name=Coquillage de %s
+item.tropicraft.shell.owned.with_s.name=Coquillage de %s
+item.tropicraft.cocktail.name=Cocktail tropical
+item.tropicraft.pineapple_cubes.name=Cubes d'ananas
+item.tropicraft.white_pearl.name=Perle solo
+item.tropicraft.black_pearl.name=Perle de Razzle
+item.tropicraft.fertilizer.name=Engrais
+item.tropicraft.encyclopedia_tropica.name=Encyclopédie de Tropica
+item.tropicraft.bamboo_spear.name=Lance en bambou
+item.tropicraft.dagger.name=Poignard
+item.tropicraft.coconut_bomb.name=Noix de coco explosive
+item.tropicraft.flower_pot.name=Pot de fleurs
+item.tropicraft.bamboo_door.name=Porte en bambou
+item.tropicraft.bamboo_item_frame.name=Cadre en bambou
+item.tropicraft.water_wand.name=Baguette aquatique
+item.tropicraft.spawn_egg.iguana.name=Oeuf d'iguane
+item.tropicraft.spawn_egg.starfish.name=Oeuf d'étoile de mer
+item.tropicraft.spawn_egg.greenfrog.name=Oeuf de grenouille verte
+item.tropicraft.spawn_egg.redfrog.name=Oeuf de grenouille rouge vénéneuse
+item.tropicraft.spawn_egg.bluefrog.name=Oeuf de grenouille bleue vénéneuse
+item.tropicraft.spawn_egg.yellowfrog.name=Oeuf de grenouille jaune vénéneuse
+item.tropicraft.spawn_egg.eih.name=Oeuf de tête de l'île de Pâques
+item.tropicraft.spawn_egg.marlin.name=Oeuf de marlin
+item.tropicraft.spawn_egg.fish.name=Oeuf de poissons tropicaux
+item.tropicraft.spawn_egg.ashen.name=Cendre de guerrier
+item.tropicraft.spawn_egg.turtle.name=Oeuf de tortue de mer
+item.tropicraft.spawn_egg.mow.name=Oeuf d'homme de la guerre
+item.tropicraft.spawn_egg.monkey.name=Patte de singe
+item.tropicraft.spawn_egg.koa.name=Bandeau Koa
+item.tropicraft.spawn_egg.tropicreeper.name=Chapeau de Creeper tropical
+item.tropicraft.spawn_egg.tropiskelly.name=Jupe de squelette tropical
+item.tropicraft.spawn_egg.eagleray.name=Oeuf de raie léopard
+item.tropicraft.spawn_egg.failgull.name=Oeuf de mouette affaiblie
+item.tropicraft.spawn_egg.seaurchin.name=Oeuf d'oursin
+item.tropicraft.spawn_egg.dolphin.name=Oeuf de dauphin
+item.tropicraft.spawn_egg.seahorse.name=Oeuf d'hippocampe
+item.tropicraft.spawn_egg.hammerhead.name=Oeuf de requin-marteau
+item.tropicraft.spawn_egg.piranha.name=Oeuf de piranhas
+item.tropicraft.spawn_egg.sardine.name=Oeuf de sardines des rivières
+item.tropicraft.spawn_egg.tropispider.name=Oeuf d'araignée tropicale
+
+item.tropicraft.sea_urchin_roe.name=Oeuf d'oursin
+item.tropicraft.fishing_rod.name=Canne à pêche en bambou
+
+item.tropicraft.fire_boots.name=Bottes de feu
+item.tropicraft.fire_chestplate.name=Plastron de feu
+item.tropicraft.fire_helmet.name=Casque de feu
+item.tropicraft.fire_leggings.name=Jambières de feu
+item.tropicraft.iguana_leather.name=Cuir d'iguane
+
+item.tropicraft.spawn_egg.name=Oeuf de créature tropicale
+item.tropicraft.coffee.bean.raw.name=Grains de café
+item.tropicraft.coffee.bean.roasted.name=Grains de café torréfiés
+item.tropicraft.coffee.berry.name=Baie de café
+
+item.tropicraft.pink_weight_belt.name=Ceinture de poids rose
+item.tropicraft.yellow_weight_belt.name=Ceinture de poids jaune
+item.tropicraft.pink_pony_bottle.name=Bouteille poney rose
+item.tropicraft.yellow_pony_bottle.name=Bouteille poney jaune
+item.tropicraft.pink_flippers.name=Palmes roses
+item.tropicraft.yellow_flippers.name=Palmes jaunes
+item.tropicraft.pink_bcd.name=Gilet de stabilisation rose
+item.tropicraft.yellow_bcd.name=Gilet de stabilisation jaune
+item.tropicraft.pink_regulator.name=Régulateur rose
+item.tropicraft.yellow_regulator.name=Régulateur jaune
+item.tropicraft.yellow_scuba_tank.name=Bouteille de plongée jaune
+item.tropicraft.pink_scuba_tank.name=Bouteille de plongée rose
+item.tropicraft.pink_scuba_goggles.name=Lunettes de plongée roses
+item.tropicraft.yellow_scuba_goggles.name=Lunettes de plongée jaunes
+item.tropicraft.dive_computer.name=Ordinateur de plongée
+item.tropicraft.yellow_chestplate_gear.name=Harnais de plongée jaune
+item.tropicraft.pink_chestplate_gear.name=Harnais de plongée rose
+item.tropicraft.trimix.name=Mélange de gaz Trimix
+item.tropicraft.seaweed.name=Algue
+item.tropicraft.nori_raw.name=Nori cru
+item.tropicraft.nori_toasted.name=Nori grillé
+item.tropicraft.ray_raw.name=Raie léopard crue
+item.tropicraft.ray_cooked.name=Raie léopard cuite
+
+# POISSONS
+item.tropicraft.tropicalfish.0.raw.name=Poisson-clown cru
+item.tropicraft.tropicalfish.1.raw.name=Poisson-ange reine cru
+item.tropicraft.tropicalfish.2.raw.name=Poisson-chirurgien jaune cru
+item.tropicraft.tropicalfish.3.raw.name=Poisson-papillon cru
+item.tropicraft.tropicalfish.4.raw.name=Perle du Suriname crue
+item.tropicraft.tropicalfish.5.raw.name=Poisson Betta cru
+item.tropicraft.tropicalfish.6.raw.name=Poisson-chirurgien royal cru
+item.tropicraft.tropicalfish.7.raw.name=Gamma royal cru
+
+item.tropicraft.tropicalfish.0.cooked.name=Poisson-clown cuit
+item.tropicraft.tropicalfish.1.cooked.name=Poisson-ange reine cuit
+item.tropicraft.tropicalfish.2.cooked.name=Poisson-chirurgien jaune cuit
+item.tropicraft.tropicalfish.3.cooked.name=Poisson-papillon cuit
+item.tropicraft.tropicalfish.4.cooked.name=Perle du Suriname cuite
+item.tropicraft.tropicalfish.5.cooked.name=Poisson Betta cuit
+item.tropicraft.tropicalfish.6.cooked.name=Poisson-chirurgien royal cuit
+item.tropicraft.tropicalfish.7.cooked.name=Gamma royal cuit
+
+item.tropicraft.riverfish.piranha.raw.name=Piranha cru
+item.tropicraft.riverfish.sardine.raw.name=Sardine crue
+item.tropicraft.riverfish.piranha.cooked.name=Piranha cuit
+item.tropicraft.riverfish.sardine.cooked.name=Sardine cuite
+
+# MOTS
+tropicraft.raw=Cru
+tropicraft.cooked=Cuit
+
+# COCKTAILS
+tropicraft.drink.lemonade.name=Citronnade
+tropicraft.drink.limeade.name=Limonade
+tropicraft.drink.orangeade.name=Orangeade
+tropicraft.drink.caipirinha.name=Caipirinha
+tropicraft.drink.coconut_water.name=Eau de noix de coco
+tropicraft.drink.pina_colada.name=Piña Colada
+tropicraft.drink.black_coffee.name=Café noir
+tropicraft.drink.mai_tai.name=Mai Tai
+
+# MASQUES
+item.tropicraft.mask_square_zord.name=Zord carré
+item.tropicraft.mask_horn_monkey.name=Singe corné
+item.tropicraft.mask_oblongatron.name=Oblongatron
+item.tropicraft.mask_headinator.name=Têtinator
+item.tropicraft.mask_square_horn.name=Corne carrée
+item.tropicraft.mask_screw_attack.name=Attaque viscérale
+item.tropicraft.mask_the_brain.name=Le cerveau
+item.tropicraft.mask_bat_boy.name=Garçon chauve-souris
+item.tropicraft.mask_ashen_mask1.name=Masque de cendres
+item.tropicraft.mask_ashen_mask2.name=Masque de cendres
+item.tropicraft.mask_ashen_mask3.name=Masque de cendres
+item.tropicraft.mask_ashen_mask4.name=Masque de cendres
+item.tropicraft.mask_ashen_mask5.name=Masque de cendres
+
+# MENU
+itemGroup.tropicraft=Tropicraft
+
+# CONFIGURATION
+tropicraft.config.title=Configuration de Tropicraft
+tropicraft.config.generation.title=Paramètres de génération
+tropicraft.config.misc.title=Paramètres divers
+tropicraft.config.entity.title=Paramètres d'entité
+
+# ENTITES
+entity.tropicraft.iguana.name=Iguane
+entity.tropicraft.tropiskelly.name=Squelette tropical
+entity.tropicraft.eih.name=Tête de l'île de Pâques
+entity.tropicraft.greenfrog.name=Grenouille verte
+entity.tropicraft.redfrog.name=Grenouille rouge vénéneuse
+entity.tropicraft.bluefrog.name=Grenouille bleue vénéneuse
+entity.tropicraft.yellowfrog.name=Grenouille jaune vénéneuse
+entity.tropicraft.tropicreeper.name=Creeper tropical
+entity.tropicraft.monkey.name=Singe vervet
+entity.tropicraft.PoisonBlot.name=Tâche vénéneuse
+entity.tropicraft.marlin.name=Marlin
+entity.tropicraft.ashen.name=Guerrier des cendres
+entity.tropicraft.piranha.name=Piranha
+entity.tropicraft.sardine.name=Sardine de rivière
+entity.tropicraft.dolphin.name=Dauphin
+entity.tropicraft.hammerhead.name=Requin-marteau
+entity.tropicraft.tropispider.name=Araignée tropicale
+entity.tropicraft.seahorse.name=Hippocampe
+entity.tropicraft.seaurchin.name=Oursin
+entity.tropicraft.starfish.name=Étoile de mer
+entity.tropicraft.eagleray.name=Raie léopard
+entity.tropicraft.turtle.name=Tortue de mer
+entity.tropicraft.koa.name=Koa
+entity.tropicraft.tropicalfish.0.name=Poisson-clown
+entity.tropicraft.tropicalfish.1.name=Poisson-ange reine
+entity.tropicraft.tropicalfish.2.name=Poisson-chirurgien jaune
+entity.tropicraft.tropicalfish.3.name=Poisson-papillon
+entity.tropicraft.tropicalfish.4.name=Perle du Suriname
+entity.tropicraft.tropicalfish.5.name=Poisson Betta
+entity.tropicraft.tropicalfish.6.name=Poisson-chirurgien royal
+entity.tropicraft.tropicalfish.7.name=Gamma royal
+
+# SUCCES
+achievement.tc_craft_pina_colada=Si vous aimez les piña coladas...
+achievement.tc_craft_pina_colada.desc=(Qui n'aime pas ?)
+achievement.tc_drink_pina_colada=Pris sous la pluie
+achievement.tc_drink_pina_colada.desc=(Avez-vous oublié votre parapluie ?)
+
+# INTERFACES GRAPHIQUES
+tropicraft.gui.air.type=Type d'air : %s
+tropicraft.gui.air.regular=Régulier
+tropicraft.gui.air.trimix=Trimix
+tropicraft.gui.air.capacity=Capacité d'air maximum : %s psi
+tropicraft.gui.air.remaining=Air restant : %s psi
+tropicraft.gui.air.efficiency=Efficacité utilisée : %s psi/sec
+tropicraft.gui.suit.type=Type de combinaison : %s
+tropicraft.gui.suit.yellow=Jaune
+tropicraft.gui.suit.pink=Rose
+tropicraft.gui.gear.tank.left.none=Pas de bouteille gauche
+tropicraft.gui.gear.tank.left.info=Bouteille gauche :
+tropicraft.gui.gear.tank.right.none=Pas de bouteille droite
+tropicraft.gui.gear.tank.right.info=Bouteille droite :
+tropicraft.gui.gear.tank.tank.click=Clic droit + Maj pour placer les bouteilles dedans !
+gui.tropicraft.temperature=Température
+gui.tropicraft.currentDepth=Profondeur
+gui.tropicraft.maxDepth=Maximum
+gui.tropicraft.timeRemaining=Temps de gaz
+gui.tropicraft.amtRefined=Pourcentage pur
+
+# FLUIDES
+fluid.tropicraft.water=Eau tropicale
+fluid.tropicraft.portal=Portail des tropiques
+
+# DIVERS
+tropicraft.coconutBombWarning=Vous n'avez pas la permission d'utiliser les noix de coco explosives :) Vérifiez la liste blanche des noix de coco explosives dans le fichier de configuration Tropicraft !
+portalenchanter.type_0=Mode : Construction du portail
+portalenchanter.type_1=Mode : Téléportation instantanée
+
+# COMMERCE KOA
+entity.tropicraft.koa.trade.give=Ayez un peu de gaz trimix !
+entity.tropicraft.koa.trade.not_enough_time=Vous avez encore besoin de %s minutes de plus de temps de plongée ! Pas de gaz trimix pour vous !
+entity.tropicraft.koa.trade.cooldown=J'ai déjà donné du gaz trimix à quelqu'un récemment
+entity.tropicraft.koa.trade.space=Votre inventaire est plein !
+
+entity.tropicraft.koa.male.hunter.name=Chasseur Koa
+entity.tropicraft.koa.female.hunter.name=Chasseuse Koa
+entity.tropicraft.koa.male.fisherman.name=Pêcheur Koa
+entity.tropicraft.koa.female.fisherman.name=Pêcheuse Koa
+
+# NOTIFICATION DE TCHAT
+tropicraft.chat.teleport.unable=Vous devriez boire une piña colada avant de vous téléporter !
+
+# ECRAN DE CHARGEMENT
+tropicraft.loading.title.greeting=À la dérive dans les tropiques...
+tropicraft.loading.title.farewell=J'espèrais votre venue...
+
+tropicraft.loading.knowledge.pre=Le saviez-vous ?
+tropicraft.loading.knowledge.1=%s Les tropiques abritent des tribus Koa
+tropicraft.loading.knowledge.2=%s Les tortues peuvent pondre des œufs sur les plages la nuit
+tropicraft.loading.knowledge.3=%s Des coquillages peuvent être trouvés en tamisant du sable
+
+tropicraft.loading.hint.pre=Conseil :
+tropicraft.loading.hint.1=%s Les tortues mûres peuvent être montées dans l'eau
+tropicraft.loading.hint.2=%s Les iguanes sont rancuniers, essayez donc d'éviter de les frapper
+
+tropicraft.loading.misc.1=N'oubliez pas de retenir votre respiration !
+tropicraft.loading.misc.2=Préparez-vous à faire sensation
+
+# INFOBULLES
+tropicraft.tooltip.air_compressor=Placez une ou deux bouteilles de plongée vides dans le compresseur pour les remplir d'air !
+tropicraft.tooltip.drink_mixer=Placez deux ingrédients de boissons dans le mixeur, puis placez une tasse vide sur la base, puis ???, et enfin profitez !
+tropicraft.tooltip.sifter=Placez n'importe quel type de sable tropical ou régulier dans le tamis. Quels trésors sont cachés à l'intérieur ?
+
+# TEXTE DU LIVRE
+tropicraft.book.toc.title=Table des matières
+tropicraft.book.bookmarks.title=Marque-pages
+tropicraft.book.bookmarks.tooltip=Voir les marque-pages
+
+# SECTIONS DE L'ENCYCLOPEDIE
+tropicraft.encyclopedia.section.foods.title=Nourriture tropicale
+tropicraft.encyclopedia.section.drinks.title=Boissons tropicales
+tropicraft.encyclopedia.section.world.title=Monde des tropiques
+tropicraft.encyclopedia.section.tools.title=Outils tropicaux
+tropicraft.encyclopedia.section.armor.title=Armures
+tropicraft.encyclopedia.section.scuba.title=Équipement de plongée
+tropicraft.encyclopedia.section.beach_accessories.title=Accessoires de plage
+tropicraft.encyclopedia.section.nature.title=Flore tropicale
+tropicraft.encyclopedia.section.decor.title=Décoration
+tropicraft.encyclopedia.section.flowers.title=Fleurs tropicales
+tropicraft.encyclopedia.section.shells.title=Coquillages
+tropicraft.encyclopedia.section.music.title=Musique tropicale
+
+tropicraft.encyclopedia.section.misc.title=Divers
+tropicraft.encyclopedia.section.lovetropics.title=Love Tropics
+
+tropicraft.encyclopedia.lt17.title=Love Tropics 2017
