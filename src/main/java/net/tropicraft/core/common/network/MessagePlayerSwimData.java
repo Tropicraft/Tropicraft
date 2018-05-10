@@ -53,9 +53,6 @@ public class MessagePlayerSwimData implements IMessage{
 
 		data.currentSwimSpeed = buf.readFloat();
 		data.targetSwimSpeed = buf.readFloat();
-		
-		data.currentHeight = buf.readFloat();
-		data.targetHeight = buf.readFloat();
 	}
 
 	@Override
@@ -85,9 +82,6 @@ public class MessagePlayerSwimData implements IMessage{
 
 		buf.writeFloat(data.currentSwimSpeed);
 		buf.writeFloat(data.targetSwimSpeed);
-
-		buf.writeFloat(data.currentHeight);
-		buf.writeFloat(data.targetHeight);
 
 	}
 
@@ -120,9 +114,6 @@ public class MessagePlayerSwimData implements IMessage{
 
 		public float currentSwimSpeed = 0f;
 		public float targetSwimSpeed = 0f;
-		
-		public float currentHeight = 1.8f;
-		public float targetHeight = 1.8f;
 	}
 	
 	
