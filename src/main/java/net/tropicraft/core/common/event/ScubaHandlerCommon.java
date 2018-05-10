@@ -11,6 +11,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -35,7 +36,11 @@ public class ScubaHandlerCommon {
 		}
 	}
 	
-	@SubscribeEvent
+	/**
+	 * The event priority ensures it gets called
+	 * after hitbox-altering mods like Morph and Metamorph
+	 */
+	@SubscribeEvent(priority=EventPriority.LOW)
 	public void onTickPlayer(PlayerTickEvent event) {
 		if (!event.type.equals(TickEvent.Type.PLAYER))
 			return;
