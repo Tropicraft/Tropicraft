@@ -9,7 +9,7 @@ public class BiomeTropics extends BiomeTropicraft {
 	public BiomeTropics(BiomeProperties props) {
 		super(props);
 		this.decorator = new BiomeDecoratorTropics();
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrog.class, 25, 2, 5));
+		this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrog.class, 15, 2, 5));
 	}
 
 }
