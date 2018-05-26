@@ -2,6 +2,7 @@
 New
 - Add love tropics page to encyclopedia
 - Encyclopedia now has entries for entities
+- Monkeys now pick up and drink pina coladas from the ground
 - Add nigel stache
 - Add fish drops, raw and cookable.
 - Add raw seaweed, raw nori, and toasted nori. Make seaweed plantable
