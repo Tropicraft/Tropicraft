@@ -14,13 +14,11 @@ New
 - Koa fishers fish for and trade for the added sea drops, hunters have land based trades
 - Drugged Koa now attracted to nigel imposters
 - Koa now support noteblocks
-
 Changes
 - Seaweed now starts small and grows over time
 - Made Koa require dive computer in hand to get trimix to workaround new trading.
 - Updated localization files
 - Made more tropicraft blocks flammable, including leaves
-
 Fixes
 - Fixed spawning issues in leaf heavy biomes
 - Rebalenced frog, spider, and EIH spawn rates
