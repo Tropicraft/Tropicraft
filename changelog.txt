@@ -1,3 +1,36 @@
+7.1.4 for 1.12.2:
+New
+- Add love tropics page to encyclopedia
+- Encyclopedia now has entries for entities
+- Add nigel stache
+- Add fish drops, raw and cookable.
+- Add raw seaweed, raw nori, and toasted nori. Make seaweed plantable
+- Add new sea drops to trades and catchables
+- Add configuration for overworld tropics mob spawning, tropics flowers gen
+- Make bamboo and pineapple gen rates configurable
+- Stranded Koa can now make their own villages provided they have a chest and no previous village nearby, works in any dimension
+- Koa now love poison frog skin
+- Koa fishers fish for and trade for the added sea drops, hunters have land based trades
+- Drugged Koa now attracted to nigel imposters
+- Koa now support noteblocks
+
+Changes
+- Seaweed now starts small and grows over time
+- Made Koa require dive computer in hand to get trimix to workaround new trading.
+- Updated localization files
+- Made more tropicraft blocks flammable, including leaves
+
+Fixes
+- Fixed spawning issues in leaf heavy biomes
+- Rebalenced frog, spider, and EIH spawn rates
+- Fix EIH building up near you over time if you dont move much
+- Fix texture path error with sea turtle egg
+- Koa no longer try to stubbornly fish on land
+- Fix bamboo chest render BB
+- Koa dont show vanilla villager roles anymore
+- Remove bamboo sticks from ore dictionary for now due to overriding bamboo ladder recipe
+- Fix tropiskelly attack damage, render angle of weapon, and exp drops
+
 7.1.3 for 1.12.2:
 Fixes
 - Fix broken forge dependency, and update it to the correct version
