@@ -109,6 +109,7 @@ public class Tropicraft {
 		BiomeTropicraft.registerBiomes();
 		GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
 		TropicraftWorldUtils.initializeDimension();
+		BlockRegistry.init();
 	}
 
 	@EventHandler
