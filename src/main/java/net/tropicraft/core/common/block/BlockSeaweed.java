@@ -70,6 +70,7 @@ public class BlockSeaweed extends BlockTropicraft {
         }
 
         public void syncTileEntity() {
+        	if (getWorld() == null || getWorld().isRemote) return;
 			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList()
 					.sendPacketToAllPlayersInDimension(getUpdatePacket(), world.provider.getDimension());
 		}
