@@ -5,14 +5,14 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.Iterator;
 
-public class JsonDeserializerDonation implements JsonDeserializer<JsonDataDonation>  {
+public class JsonDeserializerDonation implements JsonDeserializer<JsonDataDonationOld>  {
 
     @Override
-    public JsonDataDonation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public JsonDataDonationOld deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = json.getAsJsonObject();
         JsonElement eleArr = obj.get("new_donations");
 
-        JsonDataDonation jsonReturn = new JsonDataDonation();
+        JsonDataDonationOld jsonReturn = new JsonDataDonationOld();
 
         JsonArray arr = eleArr.getAsJsonArray();
         Iterator<JsonElement> arrIt = arr.iterator();
@@ -23,7 +23,7 @@ public class JsonDeserializerDonation implements JsonDeserializer<JsonDataDonati
             String name = objTemplate.get("name").getAsString();
             String amount = objTemplate.get("amount").getAsString();
 
-            JsonDataDonationEntry entry = new JsonDataDonationEntry();
+            JsonDataDonationEntryOld entry = new JsonDataDonationEntryOld();
             entry.name = name;
             entry.amount = amount;
 

@@ -1,17 +1,12 @@
 package net.tropicraft.core.common.event;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -27,15 +22,10 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
-import net.tropicraft.core.common.donations.JsonDataDonation;
-import net.tropicraft.core.common.donations.JsonDataDonationEntry;
-import net.tropicraft.core.common.donations.JsonDeserializerDonation;
+import net.tropicraft.core.common.donations.TickerDonation;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.worldgen.village.WorldEventListener;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
 import java.util.HashSet;
 
 public class MiscEvents {
@@ -46,7 +36,7 @@ public class MiscEvents {
     //public HashMap<Integer, Boolean> lookupDimIDToRegisteredListener = new HashMap<>();
     public HashSet<Integer> lookupDimIDToRegisteredListener = new HashSet<>();
 
-    private static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(JsonDataDonation.class, new JsonDeserializerDonation()).create();
+
 
     @SubscribeEvent
     public void tickServer(ServerTickEvent event) {
@@ -89,32 +79,7 @@ public class MiscEvents {
         }
 
         if (world != null && event.phase == TickEvent.Phase.END) {
-            long time = world.getTotalWorldTime();
-
-            if (time % (20 * 5) == 0) {
-                //check for new data
-                String name = "";
-                int amount = 0;
-
-                try {
-                    String contents = FileUtils.readFileToString(new File("/mnt/ntfs_data/dev/windows/donation_check.json"), Charsets.UTF_8);
-
-                    JsonDataDonation json = GSON.fromJson(contents, JsonDataDonation.class);
-
-                    System.out.println(json);
-
-                    for (JsonDataDonationEntry entry : json.new_donations) {
-                        for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers()) {
-                            player.sendMessage(new TextComponentString(TextFormatting.GREEN.toString() + entry.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + entry.amount + "!!!"));
-                        }
-                        //FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessageToTeamOrAllPlayers(null, new TextComponentString(entry.name + " donated " + entry.amount));
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-
-            }
+            TickerDonation.tick(world);
         }
     }
 

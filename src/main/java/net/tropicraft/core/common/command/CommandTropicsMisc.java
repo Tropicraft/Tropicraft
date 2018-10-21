@@ -1,5 +1,9 @@
 package net.tropicraft.core.common.command;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -261,6 +265,37 @@ public class CommandTropicsMisc extends CommandBase {
             for (int i = 0; i < Tropicraft.encyclopedia.getPageCount(); i++) {
                 Tropicraft.encyclopedia.hidePage(i);
             }
+        }),
+
+        DONATION((player, args) -> {
+            try {
+                //URL url = new URL("https://tiltify.com/api/v3/campaigns/love-tropics");
+                URL url = new URL("https://tiltify.com/api/v3/campaigns/10218/donations?count=100");
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                //con.setRequestProperty("Content-Type", "application/json");
+                con.setRequestProperty("Authorization", "Bearer f921e5eccf25c37404de5c096b4b097e0a57b5b8a82f525b8de8973174d37d32");
+
+                int status = con.getResponseCode();
+
+                System.out.println("response code: " + status);
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer content = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+
+                con.disconnect();
+
+                System.out.println(content.toString());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
         }),
             
         ;
