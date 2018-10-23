@@ -6,4 +6,8 @@ public class JsonDataDonationEntryOld {
     public String amount;
     public int id;
 
+    public int getId() {
+        return id;
+    }
+
 }

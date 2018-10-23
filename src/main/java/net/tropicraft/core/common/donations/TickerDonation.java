@@ -11,10 +11,11 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 public class TickerDonation {
 
-    public static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(JsonDataDonationOld.class, new JsonDeserializerDonation()).create();
+    public static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(JsonDataDonation.class, new JsonDeserializerDonation()).create();
 
     public static void tick(World world) {
 
@@ -51,7 +52,7 @@ public class TickerDonation {
 
     }
 
-    public static void callbackDonations(JsonDataDonationOld data) {
+    public static void callbackDonations(JsonDataDonation data) {
         //make sure server instance didnt end while running thread work
         if (FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
             FMLCommonHandler.instance().getMinecraftServerInstance()
@@ -62,7 +63,7 @@ public class TickerDonation {
     }
 
     /** called once thread checked for new data, and made sure server is still running **/
-    public static void processDonationsServer(JsonDataDonationOld data) {
+    public static void processDonationsServer(JsonDataDonation data) {
 
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         World world = DimensionManager.getWorld(0);
@@ -80,8 +81,10 @@ public class TickerDonation {
 
 
         DonationData finalDonationData = donationData;
+
+        //System.out.println("max pre: " + finalDonationData.lastDateReported);
         data.new_donations.stream()
-                .filter(entry -> entry.id > finalDonationData.lastIDReported)
+                .filter(entry -> entry.getDate() > finalDonationData.lastDateReported)
                 .map(donation -> TextFormatting.GREEN.toString() + donation.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + donation.amount + "!!!")
                 .map(TextComponentString::new)
                 .forEach(msg -> server.getPlayerList().getPlayers().stream()
@@ -95,16 +98,23 @@ public class TickerDonation {
 
         //);
 
-        //highestID = data.new_donations.stream().max(Comparator.comparingInt(JsonDataDonationEntry::getId));
+        //Optional<JsonDataDonationEntryOld> max = data.new_donations.stream().max(Comparator.comparingInt(JsonDataDonationEntryOld::getId));
+        Optional<JsonDataDonationEntry> max = data.new_donations.stream().max(Comparator.comparingLong(JsonDataDonationEntry::getDate));
+
+        System.out.println("max: " + max.get().getDate());
+
+        donationData.lastDateReported = max.get().getDate();
+
+        //donationData.lastDateReported = -1;
 
         world.setData("donationData", donationData);
 
-        for (JsonDataDonationEntryOld entry : data.new_donations) {
+        /*for (JsonDataDonationEntryOld entry : data.new_donations) {
             for (EntityPlayerMP player : server.getPlayerList().getPlayers()) {
                 //player.sendMessage(new TextComponentString(TextFormatting.GREEN.toString() + entry.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + entry.amount + "!!!"));
             }
             //FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessageToTeamOrAllPlayers(null, new TextComponentString(entry.name + " donated " + entry.amount));
-        }
+        }*/
     }
 
 }

@@ -27,12 +27,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.DimensionManager;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.world.Build;
 import net.tropicraft.core.common.build.world.BuildJob;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
+import net.tropicraft.core.common.donations.DonationData;
+import net.tropicraft.core.common.donations.ThreadWorkerDonations;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
 
@@ -269,34 +272,31 @@ public class CommandTropicsMisc extends CommandBase {
 
         DONATION((player, args) -> {
             try {
-                //URL url = new URL("https://tiltify.com/api/v3/campaigns/love-tropics");
-                URL url = new URL("https://tiltify.com/api/v3/campaigns/10218/donations?count=100");
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                //con.setRequestProperty("Content-Type", "application/json");
-                con.setRequestProperty("Authorization", "Bearer f921e5eccf25c37404de5c096b4b097e0a57b5b8a82f525b8de8973174d37d32");
+                String content = ThreadWorkerDonations.getData_Real();
 
-                int status = con.getResponseCode();
-
-                System.out.println("response code: " + status);
-
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuffer content = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    content.append(inputLine);
-                }
-                in.close();
-
-                con.disconnect();
-
-                System.out.println(content.toString());
+                System.out.println(content);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
         }),
+
+        //reset the date, will reprocess all donations
+        DONATION_RESET((player, args) -> {
+            DonationData donationData = (DonationData)player.world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
+            if (donationData != null) {
+                donationData.resetData();
+            }
+        }),
+
+        DONATION_SETDATE((player, args) -> {
+            DonationData donationData = (DonationData)player.world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
+            if (donationData != null) {
+                long time = Long.valueOf(args[1]);
+                donationData.lastDateReported = time;
+                player.sendMessage(new TextComponentString("set last donation time to " + time));
+            }
+        })
             
         ;
         

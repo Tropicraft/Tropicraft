@@ -5,6 +5,8 @@ import java.util.List;
 
 public class JsonDataDonation {
 
-    public List<JsonDataDonationEntryOld> new_donations = new ArrayList<>();
+    public JsonDataDonationMeta meta = new JsonDataDonationMeta();
+
+    public List<JsonDataDonationEntry> new_donations = new ArrayList<>();
 
 }
