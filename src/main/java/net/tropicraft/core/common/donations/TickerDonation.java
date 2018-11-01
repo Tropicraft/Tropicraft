@@ -9,6 +9,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.tropicraft.core.common.block.tileentity.TileEntityDonation;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -97,6 +98,11 @@ public class TickerDonation {
                         } )*/
 
         //);
+
+        world.tickableTileEntities.stream()
+                .filter(entry -> entry instanceof TileEntityDonation)
+                .map(tile -> (TileEntityDonation)tile)
+                .forEach(tile -> tile.triggerDonation());
 
         //Optional<JsonDataDonationEntryOld> max = data.new_donations.stream().max(Comparator.comparingInt(JsonDataDonationEntryOld::getId));
         Optional<JsonDataDonationEntry> max = data.new_donations.stream().max(Comparator.comparingLong(JsonDataDonationEntry::getDate));

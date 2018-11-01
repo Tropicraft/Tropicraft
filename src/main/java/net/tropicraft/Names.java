@@ -38,6 +38,7 @@ public final class Names {
     public static final String MAHOGANY_FENCE_GATE = "mahogany_fence_gate";
     public static final String BAMBOO_LADDER = "bamboo_ladder";
     public static final String PACKED_PURIFIED_SAND = "packed_purified_sand";
+	public static final String DONATION = "donation";
 
 	// Item names
 	public static final String[] EGG_NAMES = {"iguana", "starfish", "greenfrog", "redfrog", "yellowfrog", "bluefrog",
