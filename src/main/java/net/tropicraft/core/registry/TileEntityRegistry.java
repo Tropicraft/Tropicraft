@@ -6,6 +6,7 @@ import net.tropicraft.Names;
 import net.tropicraft.core.common.block.BlockSeaweed.TileSeaweed;
 import net.tropicraft.core.common.block.tileentity.TileEntityAirCompressor;
 import net.tropicraft.core.common.block.tileentity.TileEntityBambooChest;
+import net.tropicraft.core.common.block.tileentity.TileEntityDonation;
 import net.tropicraft.core.common.block.tileentity.TileEntityDrinkMixer;
 import net.tropicraft.core.common.block.tileentity.TileEntitySifter;
 import net.tropicraft.core.common.block.tileentity.TileEntityTropicraftFlowerPot;
@@ -21,6 +22,7 @@ public class TileEntityRegistry {
 		registerTE(TileEntityTropicraftFlowerPot.class, Names.TE_FLOWER_POT);
 		registerTE(TileSeaweed.class, "seaweed");
 		registerTE(TileEntityAirCompressor.class, Names.AIR_COMPRESSOR);
+		registerTE(TileEntityDonation.class, Names.DONATION);
 	}
 	
 	private static void registerTE(Class<? extends TileEntity> clazz, String name) {

@@ -47,9 +47,14 @@ public class EntityBambooItemFrame extends EntityItemFrame {
 		super.entityInit();
 	}
 	
+	@Override
+	protected void updateFacingWithBoundingBox(EnumFacing facingDirectionIn) {
+	    this.dataManager.set(FACING, facingDirectionIn);
+	    this.facingDirection = getFacing();
+	    super.updateFacingWithBoundingBox(facingDirectionIn);
+	}
+	
 	public void setFacing(EnumFacing facing) {
-		this.dataManager.set(FACING, facing);
-		this.facingDirection = getFacing();
 		this.updateFacingWithBoundingBox(facing);
 	}
 
