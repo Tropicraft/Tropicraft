@@ -2,6 +2,7 @@ package net.tropicraft;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -29,6 +30,7 @@ import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
 import net.tropicraft.core.common.capability.ExtendedWorldStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
+import net.tropicraft.core.common.command.CommandTropicsMiscClient;
 import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.donations.ThreadWorkerDonations;
@@ -119,6 +121,10 @@ public class Tropicraft {
 	public void postInit(FMLPostInitializationEvent event) {
 		FluidRegistry.postInit();
 		LootRegistry.postInit();
+		
+		if (event.getSide().isClient()) {
+		    ClientCommandHandler.instance.registerCommand(new CommandTropicsMiscClient());
+		}
 	}
 
 	/**

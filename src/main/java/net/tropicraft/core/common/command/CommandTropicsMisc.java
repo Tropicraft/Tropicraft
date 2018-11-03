@@ -257,18 +257,6 @@ public class CommandTropicsMisc extends CommandBase {
                 }
             }
         }),
-        
-        ENC_UNLOCK((player, args) -> {
-            for (int i = 0; i < Tropicraft.encyclopedia.getPageCount(); i++) {
-                Tropicraft.encyclopedia.markPageAsNewlyVisible(i);
-            }
-        }),
-        
-        ENC_RESET((player, args) -> {
-            for (int i = 0; i < Tropicraft.encyclopedia.getPageCount(); i++) {
-                Tropicraft.encyclopedia.hidePage(i);
-            }
-        }),
 
         DONATION((player, args) -> {
             try {
@@ -300,8 +288,8 @@ public class CommandTropicsMisc extends CommandBase {
                 }
                 player.sendMessage(new TextComponentString("Reset last seen donation ID to " + id));
             }
-        })
-            
+        }),
+        
         ;
         
         private final BiConsumer<EntityPlayer, String[]> function;
