@@ -1,8 +1,9 @@
 package net.tropicraft.core.common.donations;
 
+import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Objects;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -88,8 +89,7 @@ public class TickerDonation {
         //System.out.println("max pre: " + finalDonationData.lastDateReported);
         data.new_donations.stream()
                 .sorted(Comparator.comparingLong(JsonDataDonationEntry::getDate))
-                .map(donation -> TextFormatting.GREEN.toString() + donation.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + donation.amount + "!!!")
-                .map(TextComponentString::new)
+                .map(donation -> new TextComponentTranslation("tropicraft.donations.donation", TextFormatting.AQUA + donation.name + TextFormatting.RESET.toString(), TextFormatting.GREEN.toString() + NumberFormat.getCurrencyInstance(Locale.US).format(donation.amount) + TextFormatting.RESET))
                 .forEach(msg -> {
                     server.getPlayerList().getPlayers().stream()
                             .forEach(p -> p.sendMessage(msg));
