@@ -13,9 +13,9 @@ public class ThreadWorkerDonations implements Runnable {
     private static ThreadWorkerDonations instance;
     private static Thread thread;
 
-    public boolean running = false;
-    
-    private int lastSeenId;
+    public volatile boolean running = false;
+
+    private DonationData donationData;
 
     public static ThreadWorkerDonations getInstance() {
         if (instance == null) {
@@ -24,7 +24,8 @@ public class ThreadWorkerDonations implements Runnable {
         return instance;
     }
 
-    public void startThread() {
+    public void startThread(DonationData donationData) {
+        this.donationData = donationData;
         running = true;
 
         if (thread == null || thread.getState() == Thread.State.TERMINATED) {
@@ -58,8 +59,6 @@ public class ThreadWorkerDonations implements Runnable {
 
             JsonDataDonation json = TickerDonation.GSON.fromJson(contents, JsonDataDonation.class);
             
-            lastSeenId = Math.max(lastSeenId, json.new_donations.stream().mapToInt(data -> data.id).max().orElse(0));
-
             TickerDonation.callbackDonations(json);
 
         } catch (Exception ex) {
@@ -73,7 +72,10 @@ public class ThreadWorkerDonations implements Runnable {
         //TODO: get URL from a master json file we can change
         try {
             //URL url = new URL("https://tiltify.com/api/v3/campaigns/love-tropics");
-            URL url = new URL("https://tiltify.com/api/v3/campaigns/" + TropicsConfigs.tiltifyCampaign + "/donations?count=100" + (lastSeenId == 0 ? "" : "&after=" + lastSeenId));
+            URL url;
+            synchronized (donationData) {
+                url = new URL("https://tiltify.com/api/v3/campaigns/" + TropicsConfigs.tiltifyCampaign + "/donations?count=100" + (donationData.getLastSeenId() == 0 ? "" : "&after=" + donationData.getLastSeenId()));
+            }
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             //con.setRequestProperty("Content-Type", "application/json");

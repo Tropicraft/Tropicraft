@@ -6,7 +6,7 @@ import net.minecraft.world.storage.WorldSavedData;
 public class DonationData extends WorldSavedData {
 
     //public int lastIDReported = -1;
-    public long lastDateReported = -1;
+    private int lastSeenId = 0;
 
     public DonationData(String name) {
         super(name);
@@ -14,16 +14,25 @@ public class DonationData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        lastDateReported = nbt.getLong("lastDateReported");
+        lastSeenId = nbt.getInteger("lastSeenId");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setLong("lastDateReported", lastDateReported);
+        compound.setInteger("lastSeenId", lastSeenId);
         return compound;
+    }
+    
+    public int getLastSeenId() {
+        return lastSeenId;
+    }
+    
+    public void setLastSeenId(int id) {
+        this.lastSeenId = id;
+        markDirty();
     }
 
     public void resetData() {
-        lastDateReported = -1;
+        lastSeenId = 0;
     }
 }

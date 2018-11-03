@@ -1,9 +1,5 @@
 package net.tropicraft.core.common.command;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.util.text.TextFormatting;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.world.Build;
@@ -216,6 +212,10 @@ public class CommandTropicsMisc extends CommandBase {
 
             float clDist = 99999;
             Entity clEntity = null;
+            if (args.length < 2) {
+                player.sendMessage(new TextComponentString(TextFormatting.RED + "/tc_misc mount <entity id or player name> [reverse]"));
+                return;
+            }
             String name = args[1];
             boolean reverse = false;
             boolean playerMode = false;
@@ -285,16 +285,20 @@ public class CommandTropicsMisc extends CommandBase {
         DONATION_RESET((player, args) -> {
             DonationData donationData = (DonationData)player.world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
             if (donationData != null) {
-                donationData.resetData();
+                synchronized(donationData) {
+                    donationData.resetData();
+                }
             }
         }),
 
-        DONATION_SETDATE((player, args) -> {
+        DONATION_SETID((player, args) -> {
             DonationData donationData = (DonationData)player.world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
             if (donationData != null) {
-                long time = Long.valueOf(args[1]);
-                donationData.lastDateReported = time;
-                player.sendMessage(new TextComponentString("set last donation time to " + time));
+                int id = Integer.valueOf(args[1]);
+                synchronized (donationData) {
+                    donationData.setLastSeenId(id);
+                }
+                player.sendMessage(new TextComponentString("Reset last seen donation ID to " + id));
             }
         })
             

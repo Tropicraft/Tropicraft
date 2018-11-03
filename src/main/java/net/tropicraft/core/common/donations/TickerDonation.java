@@ -26,11 +26,14 @@ public class TickerDonation {
     public static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(JsonDataDonation.class, new JsonDeserializerDonation()).create();
     
     private static final Set<TileEntityDonation> callbacks = new HashSet<>();
+    
+    private static DonationData donationData;
 
     public static void tick(World world) {
 
         if (!ThreadWorkerDonations.getInstance().running && !TropicsConfigs.tiltifyAppToken.isEmpty() && TropicsConfigs.tiltifyCampaign != 0 && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getCurrentPlayerCount() > 0) {
-            ThreadWorkerDonations.getInstance().startThread();
+            donationData = getSavedData(world);
+            ThreadWorkerDonations.getInstance().startThread(donationData);
         }
 
         /*long time = world.getTotalWorldTime();
@@ -72,6 +75,10 @@ public class TickerDonation {
             callbacks.clear();
         }
     }
+    
+    private static DonationData getSavedData(World world) {
+        return ObjectUtils.firstNonNull((DonationData)world.getMapStorage().getOrLoadData(DonationData.class, "donationData"), new DonationData("donationData"));
+    }
 
     /** called once thread checked for new data, and made sure server is still running **/
     public static void processDonationsServer(JsonDataDonation data) {
@@ -80,11 +87,11 @@ public class TickerDonation {
         World world = DimensionManager.getWorld(0);
 
         if (world == null) return;
+        
+        final DonationData donationData = getSavedData(world);
 
         //sort and filter list
-        final DonationData donationData = 
-                ObjectUtils.firstNonNull((DonationData)world.getMapStorage().getOrLoadData(DonationData.class, "donationData"), new DonationData("donationData"));
-        //int lastIDReported = donationData.lastIDReported;
+       //int lastIDReported = donationData.lastIDReported;
 
         //System.out.println("max pre: " + finalDonationData.lastDateReported);
         data.new_donations.stream()
@@ -107,14 +114,14 @@ public class TickerDonation {
         //);
 
         //Optional<JsonDataDonationEntryOld> max = data.new_donations.stream().max(Comparator.comparingInt(JsonDataDonationEntryOld::getId));
-        Optional<JsonDataDonationEntry> max = data.new_donations.stream().max(Comparator.comparingLong(JsonDataDonationEntry::getDate));
-        max.ifPresent(m -> {
-            System.out.println("max: " + m.getDate());
-            donationData.lastDateReported = m.getDate();
-        });
-        //donationData.lastDateReported = -1;
-
-        world.setData("donationData", donationData);
+        int lastSeenId = data.new_donations.stream()
+                .mapToInt(d -> d.id)
+                .max()
+                .orElse(0);
+        
+        synchronized (donationData) {
+            donationData.setLastSeenId(Math.max(donationData.getLastSeenId(), lastSeenId));
+        }
 
         /*for (JsonDataDonationEntryOld entry : data.new_donations) {
             for (EntityPlayerMP player : server.getPlayerList().getPlayers()) {

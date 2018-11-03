@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -29,6 +31,7 @@ import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
+import net.tropicraft.core.common.donations.ThreadWorkerDonations;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
@@ -125,6 +128,11 @@ public class Tropicraft {
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		CommandRegistry.init(event);
+	}
+	
+	@EventHandler
+	public void serverStopped(FMLServerStoppingEvent event) {
+	    ThreadWorkerDonations.getInstance().stopThread();
 	}
 	
     @EventHandler
