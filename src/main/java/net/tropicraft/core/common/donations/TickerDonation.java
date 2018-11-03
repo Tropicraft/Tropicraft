@@ -1,8 +1,16 @@
 package net.tropicraft.core.common.donations;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang3.ObjectUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.entity.player.EntityPlayerMP;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -10,17 +18,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.tropicraft.core.common.block.tileentity.TileEntityDonation;
-
-import java.util.Comparator;
-import java.util.Optional;
+import net.tropicraft.core.common.config.TropicsConfigs;
 
 public class TickerDonation {
 
     public static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(JsonDataDonation.class, new JsonDeserializerDonation()).create();
+    
+    private static final Set<TileEntityDonation> callbacks = new HashSet<>();
 
     public static void tick(World world) {
 
-        if (!ThreadWorkerDonations.getInstance().running) {
+        if (!ThreadWorkerDonations.getInstance().running && !TropicsConfigs.tiltifyAppToken.isEmpty() && TropicsConfigs.tiltifyCampaign != 0 && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getCurrentPlayerCount() > 0) {
             ThreadWorkerDonations.getInstance().startThread();
         }
 
@@ -60,6 +68,7 @@ public class TickerDonation {
                     .addScheduledTask(() -> processDonationsServer(data));
         } else {
             ThreadWorkerDonations.getInstance().stopThread();
+            callbacks.clear();
         }
     }
 
@@ -72,24 +81,22 @@ public class TickerDonation {
         if (world == null) return;
 
         //sort and filter list
-        DonationData donationData = (DonationData)world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
-        if (donationData == null) {
-            donationData = new DonationData("donationData");
-        }
+        final DonationData donationData = 
+                ObjectUtils.firstNonNull((DonationData)world.getMapStorage().getOrLoadData(DonationData.class, "donationData"), new DonationData("donationData"));
         //int lastIDReported = donationData.lastIDReported;
-
-        int highestID = -1;
-
-
-        DonationData finalDonationData = donationData;
 
         //System.out.println("max pre: " + finalDonationData.lastDateReported);
         data.new_donations.stream()
-                .filter(entry -> entry.getDate() > finalDonationData.lastDateReported)
+                .sorted(Comparator.comparingLong(JsonDataDonationEntry::getDate))
                 .map(donation -> TextFormatting.GREEN.toString() + donation.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + donation.amount + "!!!")
                 .map(TextComponentString::new)
-                .forEach(msg -> server.getPlayerList().getPlayers().stream()
-                .forEach(p -> p.sendMessage(msg)));
+                .forEach(msg -> {
+                    server.getPlayerList().getPlayers().stream()
+                            .forEach(p -> p.sendMessage(msg));
+
+                    callbacks.forEach(TileEntityDonation::triggerDonation); 
+                });
+
                 /*.forEach(entryDonation -> server.getPlayerList().getPlayers().stream()
                         .forEach(player -> { player.sendMessage(
                                 new TextComponentString(TextFormatting.GREEN.toString() + entryDonation.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + entryDonation.amount + "!!!")
@@ -99,18 +106,12 @@ public class TickerDonation {
 
         //);
 
-        world.tickableTileEntities.stream()
-                .filter(entry -> entry instanceof TileEntityDonation)
-                .map(tile -> (TileEntityDonation)tile)
-                .forEach(tile -> tile.triggerDonation());
-
         //Optional<JsonDataDonationEntryOld> max = data.new_donations.stream().max(Comparator.comparingInt(JsonDataDonationEntryOld::getId));
         Optional<JsonDataDonationEntry> max = data.new_donations.stream().max(Comparator.comparingLong(JsonDataDonationEntry::getDate));
-
-        System.out.println("max: " + max.get().getDate());
-
-        donationData.lastDateReported = max.get().getDate();
-
+        max.ifPresent(m -> {
+            System.out.println("max: " + m.getDate());
+            donationData.lastDateReported = m.getDate();
+        });
         //donationData.lastDateReported = -1;
 
         world.setData("donationData", donationData);
@@ -121,6 +122,14 @@ public class TickerDonation {
             }
             //FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessageToTeamOrAllPlayers(null, new TextComponentString(entry.name + " donated " + entry.amount));
         }*/
+    }
+
+    public static void addCallback(TileEntityDonation tile) {
+        callbacks.add(tile);
+    }
+    
+    public static void removeCallback(TileEntityDonation tile) {
+        callbacks.remove(tile);
     }
 
 }

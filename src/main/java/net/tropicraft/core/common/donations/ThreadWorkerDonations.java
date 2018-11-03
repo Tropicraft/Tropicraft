@@ -1,22 +1,21 @@
 package net.tropicraft.core.common.donations;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
+
+import net.tropicraft.core.common.config.TropicsConfigs;
 
 public class ThreadWorkerDonations implements Runnable {
 
     private static ThreadWorkerDonations instance;
     private static Thread thread;
 
-    public int donationCheckRateInMilliseconds = 5000;
     public boolean running = false;
+    
+    private int lastSeenId;
 
     public static ThreadWorkerDonations getInstance() {
         if (instance == null) {
@@ -44,7 +43,7 @@ public class ThreadWorkerDonations implements Runnable {
         try {
             while (running) {
                 checkDonations();
-                Thread.sleep(donationCheckRateInMilliseconds);
+                Thread.sleep(TimeUnit.SECONDS.toMillis(TropicsConfigs.donationTrackerRefreshRate));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -55,9 +54,11 @@ public class ThreadWorkerDonations implements Runnable {
     public void checkDonations() {
         //http code
         try {
-            String contents = getData_Test();
+            String contents = getData_Real();
 
             JsonDataDonation json = TickerDonation.GSON.fromJson(contents, JsonDataDonation.class);
+            
+            lastSeenId = Math.max(lastSeenId, json.new_donations.stream().mapToInt(data -> data.id).max().orElse(0));
 
             TickerDonation.callbackDonations(json);
 
@@ -68,15 +69,15 @@ public class ThreadWorkerDonations implements Runnable {
 
     }
 
-    public static String getData_Real() {
+    public String getData_Real() {
         //TODO: get URL from a master json file we can change
         try {
             //URL url = new URL("https://tiltify.com/api/v3/campaigns/love-tropics");
-            URL url = new URL("https://tiltify.com/api/v3/campaigns/10218/donations?count=100");
+            URL url = new URL("https://tiltify.com/api/v3/campaigns/" + TropicsConfigs.tiltifyCampaign + "/donations?count=100" + (lastSeenId == 0 ? "" : "&after=" + lastSeenId));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             //con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Authorization", "Bearer f921e5eccf25c37404de5c096b4b097e0a57b5b8a82f525b8de8973174d37d32");
+            con.setRequestProperty("Authorization", "Bearer " + TropicsConfigs.tiltifyAppToken);
 
             int status = con.getResponseCode();
 
@@ -94,21 +95,6 @@ public class ThreadWorkerDonations implements Runnable {
             con.disconnect();
 
             return content.toString();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return "ERROR";
-    }
-
-    public static String getData_Test() {
-        try {
-            URL url = new URL("http://share.coros.us/files/donation_check_new.json");
-            InputStream is = url.openStream();
-
-            StringWriter writer = new StringWriter();
-            IOUtils.copy(is, writer, StandardCharsets.UTF_8);
-            return writer.toString();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

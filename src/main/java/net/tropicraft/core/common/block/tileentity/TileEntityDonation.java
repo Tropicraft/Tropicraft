@@ -1,67 +1,52 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.tropicraft.core.common.config.TropicsConfigs;
-import net.tropicraft.core.common.entity.EntityLavaBall;
-import net.tropicraft.core.common.volcano.VolcanoState;
-import net.tropicraft.core.common.worldgen.mapgen.MapGenVolcano;
-import net.tropicraft.core.registry.BlockRegistry;
-
-import javax.annotation.Nullable;
+import net.tropicraft.core.common.donations.FireworkUtil;
+import net.tropicraft.core.common.donations.TickerDonation;
 
 public class TileEntityDonation extends TileEntity implements ITickable {
 
-
-
-	public TileEntityDonation() {
-
-	}
-
+    private boolean registered;
+    
+    private int queued = 0;
+    
 	@Override
 	public void update() {
-
+	    if (!getWorld().isRemote) {
+	        if (!registered) {
+	            TickerDonation.addCallback(this);
+	        }
+	        if (queued > 0 && getWorld().getTotalWorldTime() % 20 == 0) {
+	            FireworkUtil.spawnFirework(getPos().up(), getWorld().provider.getDimension());
+	            queued--;
+	            markDirty();
+	        }
+	    }
 	}
+	
+	@Override
+	public void invalidate() {
+	    super.invalidate();
+	    TickerDonation.removeCallback(this);
+	}
+	
+    public void triggerDonation() {
+        queued++;
+        markDirty();
+    }
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
+		this.queued = nbt.getInteger("queuedDonations");
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-
+		nbt.setInteger("queuedDonations", queued);
 		return nbt;
-	}
-
-	public void triggerDonation() {
-		System.out.println("tile trigger");
-	}
-
-	@Override
-	@Nullable
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 1, this.getUpdateTag());
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public boolean receiveClientEvent(int id, int type) {
-		return super.receiveClientEvent(id, type);
 	}
 }

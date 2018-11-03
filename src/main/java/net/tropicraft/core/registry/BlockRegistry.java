@@ -322,7 +322,7 @@ public class BlockRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortalTeleporter, Names.TROPICS_PORTAL_TELEPORTER);
         portalWall = registerBlockNoItem(registry, new BlockPortalWall(), Names.PORTAL_WALL);
 
-		donation = registerBlock(registry, new BlockDonation(), Names.DONATION, (IBlockItemRegistrar) null);
+		donation = registerBlock(registry, new BlockDonation(), Names.DONATION);
     }
 
 	public static void init() {

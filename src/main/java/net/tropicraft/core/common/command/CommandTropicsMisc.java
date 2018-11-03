@@ -272,7 +272,7 @@ public class CommandTropicsMisc extends CommandBase {
 
         DONATION((player, args) -> {
             try {
-                String content = ThreadWorkerDonations.getData_Real();
+                String content = ThreadWorkerDonations.getInstance().getData_Real();
 
                 System.out.println(content);
             } catch (Exception ex) {
