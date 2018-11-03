@@ -1,3 +1,15 @@
+7.1.5 for 1.12.2:
+New
+- Some super special donation tracking for this year's <a href="http://lovetropics.com">LoveTropics</a>!
+Changes
+- Move /tc_misc enc_unlock and enc_reset to /tc_misc_client so that they work on dedicated servers
+Fixes
+- Fix wooden tropical blocks not being flammable
+- Fix clientside errors loading seaweed data
+- Fix koas trying to fish in lava (and any other fluid besides water)
+- Improved fence waterlogging logic, fixes some edge cases
+- Fix bamboo item frames losing their rotation after world save/load
+
 7.1.4 for 1.12.2:
 New
 - Add love tropics page to encyclopedia
