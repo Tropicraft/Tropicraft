@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.block;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -86,17 +88,18 @@ public class BlockTropicraftFence extends BlockFence {
     }
 
     protected final IBlockState getWaterState(IBlockState state, World world, BlockPos pos) {
-        WaterState water = WaterState.UNDER;
+        WaterState water = WaterState.NONE;
         IBlockState up = world.getBlockState(pos.up());
-        if (up.getBlock() != BlockRegistry.tropicsWater && (up.getBlock() != this || up.getValue(WATER) == WaterState.NONE)) {
-            for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-                IBlockState neighbor = world.getBlockState(pos.offset(dir));
-                if ((neighbor.getBlock() != BlockRegistry.tropicsWater || neighbor.getValue(BlockFluidBase.LEVEL) != 0)
-                        && neighbor.getBlock() != this) {
-                    water = WaterState.NONE;
-                    break;
-                }
-            }
+        Set<IBlockState> neighbors = new HashSet<>();
+        for (EnumFacing dir : EnumFacing.HORIZONTALS) {
+            neighbors.add(world.getBlockState(pos.offset(dir)));
+        }
+        if (neighbors.stream().anyMatch(s -> (s.getBlock() == this && s.getValue(WATER) != WaterState.NONE) || (s.getBlock() == BlockRegistry.tropicsWater && s.getValue(BlockFluidBase.LEVEL) == 0))) {
+            water = WaterState.UNDER;
+        }
+        // Don't allow "chained" waterlogging
+        if (neighbors.stream().allMatch(s -> s.getBlock() != BlockRegistry.tropicsWater || s.getValue(BlockFluidBase.LEVEL) != 0)) {
+            water = WaterState.NONE;
         }
         if (water == WaterState.UNDER && up.getBlock() != BlockRegistry.tropicsWater && (up.getBlock() != this || up.getValue(WATER) == WaterState.NONE)) {
             water = WaterState.SURFACE;
