@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.tropicraft.core.common.donations.FireworkUtil;
 import net.tropicraft.core.common.donations.TickerDonation;
 
@@ -19,7 +20,11 @@ public class TileEntityDonation extends TileEntity implements ITickable {
 	            TickerDonation.addCallback(this);
 	        }
 	        if (queued > 0 && getWorld().getTotalWorldTime() % 20 == 0) {
-	            FireworkUtil.spawnFirework(getPos().up(), getWorld().provider.getDimension());
+	            BlockPos pos = getPos().up();
+	            while (!getWorld().isAirBlock(pos) && pos.getY() < getPos().getY() + 10) {
+	                pos = pos.up();
+	            }
+	            FireworkUtil.spawnFirework(pos, getWorld().provider.getDimension());
 	            queued--;
 	            markDirty();
 	        }

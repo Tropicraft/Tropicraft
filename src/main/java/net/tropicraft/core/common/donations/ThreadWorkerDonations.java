@@ -73,7 +73,7 @@ public class ThreadWorkerDonations implements Runnable {
         //TODO: get URL from a master json file we can change
         try {
             //URL url = new URL("https://tiltify.com/api/v3/campaigns/love-tropics");
-            URL url = new URL("https://tiltify.com/api/v3/campaigns/" + TropicsConfigs.tiltifyCampaign + "/donations?count=100" + (lastSeenId == 0 ? "" : "&after=" + lastSeenId));
+            URL url = new URL("https://tiltify.com/api/v3/campaigns/" + TropicsConfigs.tiltifyCampaign + "/donations?count=100" + (lastSeenId != 0 ? "" : "&after=" + lastSeenId));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             //con.setRequestProperty("Content-Type", "application/json");

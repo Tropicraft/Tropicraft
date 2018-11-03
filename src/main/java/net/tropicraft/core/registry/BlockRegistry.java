@@ -211,6 +211,8 @@ public class BlockRegistry extends TropicraftRegistry {
 	 */
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        FluidRegistry.preInit();
+        
         IForgeRegistry<Block> registry = event.getRegistry();
 		chunk = registerBlock(registry, new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
 		ore = registerBlock(registry, new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES)

@@ -76,7 +76,7 @@ public class Tropicraft {
 
 		ColorHelper.init();
 		SoundRegistry.init();
-		FluidRegistry.preInit();
+		//FluidRegistry.preInit();
 		//BlockRegistry.preInit();
 	    proxy.preInit();
 		TileEntityRegistry.init();
