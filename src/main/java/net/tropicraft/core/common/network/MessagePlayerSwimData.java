@@ -63,14 +63,15 @@ public class MessagePlayerSwimData implements IMessage{
 		
 		buf.writeInt(data.playerUUID.toString().getBytes().length);
 		buf.writeBytes(data.playerUUID.toString().getBytes());
+		
 		buf.writeFloat(data.rotationYawHead);
 		buf.writeFloat(data.prevRotationYawHead);
 		buf.writeFloat(data.rotationYaw);
-		buf.writeFloat(data.prevRotationYawHead);
+		buf.writeFloat(data.prevRotationYaw);
 		buf.writeFloat(data.renderYawOffset);
 		buf.writeFloat(data.prevRenderYawOffset);
 		buf.writeFloat(data.rotationPitch);
-		buf.writeFloat(data.prevRotationYawHead);
+		buf.writeFloat(data.prevRotationPitch);
 
 		buf.writeFloat(data.targetRotationPitch);
 		buf.writeFloat(data.targetRotationYaw);
