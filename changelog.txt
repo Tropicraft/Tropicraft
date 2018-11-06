@@ -1,3 +1,12 @@
+7.1.6 HOTFIX for 1.12.2:
+Fixes
+- Fix a rare crash when a Koa tries to fish
+- #298 Fix crash when shift clicking invalid items into the scuba harness
+- #297 Clean up bamboo chest code, fix a crash when inserting into a double bamboo chest via automation
+- #294 Fix networking error in the swim animation packet
+- #287 Fix crash when a non-player (explosion) destroys a coconut
+- #296 Fix other players' swim animation data being sent over the network incorrectly
+
 7.1.5 for 1.12.2:
 New
 - Some super special donation tracking for this year's <a href="http://lovetropics.com">LoveTropics</a>!
