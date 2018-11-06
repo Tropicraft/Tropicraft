@@ -1,21 +1,22 @@
 package net.tropicraft.core.common.block;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
+
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.tropicraft.core.common.block.tileentity.TileEntityBambooChest;
 import net.tropicraft.core.common.block.tileentity.TileEntityFactory;
 
@@ -31,22 +32,6 @@ public class BlockBambooChest extends BlockChest {
 		this.setHardness(2.5F);
 		this.disableStats();
 	}
-	
-    /**
-     * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
-     * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
-     * block, etc.
-     */
-	@Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-
-        if (tileentity instanceof TileEntityBambooChest)
-        {
-            tileentity.updateContainingBlockInfo();
-        }
-    }
 	
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
@@ -67,88 +52,33 @@ public class BlockBambooChest extends BlockChest {
         return super.getPlayerRelativeBlockHardness(state, player, world, pos);
     }
     
-    /**
-     * Gets the chest inventory at the given location, returning null if there is no chest at that location or
-     * optionally if the chest is blocked. Handles large chests.
-     *  
-     * @param worldIn The world
-     * @param pos The position to check
-     * @param allowBlocking If false, then if the chest is blocked then <code>null</code> will be returned. If true,
-     * ignores blocking for the chest at the given position (but, due to <a href="https://bugs.mojang.com/browse/MC-
-     * 99321">a bug</a>, still checks if the neighbor is blocked).
-     */
-    @Nullable
+    private static final MethodHandle _upperChest, _lowerChest;
+    static {
+        MethodHandle uc = null, lc = null;
+        try {
+            Lookup lookup = MethodHandles.lookup();
+            uc = lookup.unreflectGetter(ReflectionHelper.findField(InventoryLargeChest.class, "field_70478_c", "lowerChest"));
+            lc = lookup.unreflectGetter(ReflectionHelper.findField(InventoryLargeChest.class, "field_70477_b", "upperChest"));
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        _upperChest = uc;
+        _lowerChest = lc;
+    }
+    
     @Override
-    public ILockableContainer getContainer(World worldIn, BlockPos pos, boolean allowBlocking)
-    {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-
-        if (!(tileentity instanceof TileEntityBambooChest))
-        {
-            return null;
-        }
-        else
-        {
-            ILockableContainer ilockablecontainer = (TileEntityBambooChest)tileentity;
-
-            if (!allowBlocking && this.isBlocked(worldIn, pos))
-            {
-                return null;
-            }
-            else
-            {
-                for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
-                {
-                    BlockPos blockpos = pos.offset(enumfacing);
-                    Block block = worldIn.getBlockState(blockpos).getBlock();
-
-                    if (block == this)
-                    {
-                        if (this.isBlocked(worldIn, blockpos))
-                        {
-                            return null;
-                        }
-
-                        TileEntity tileentity1 = worldIn.getTileEntity(blockpos);
-
-                        if (tileentity1 instanceof TileEntityBambooChest)
-                        {
-                            if (enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH)
-                            {
-                                ilockablecontainer = new InventoryLargeChest("container.chestDouble", ilockablecontainer, (TileEntityBambooChest)tileentity1);
-                            }
-                            else
-                            {
-                                ilockablecontainer = new InventoryLargeChest("container.chestDouble", (TileEntityBambooChest)tileentity1, ilockablecontainer);
-                            }
-                        }
-                    }
-                }
-
-                return ilockablecontainer;
+    @Nullable
+    public ILockableContainer getContainer(World worldIn, BlockPos pos, boolean allowBlocking) {
+        ILockableContainer ret = super.getContainer(worldIn, pos, allowBlocking);
+        if (_upperChest != null && _lowerChest != null && ret instanceof InventoryLargeChest) {
+            InventoryLargeChest invLC = (InventoryLargeChest) ret;
+            try {
+                // Replace the name of the large inventory with our own, without copying all the code from super :D
+                return new InventoryLargeChest("tile.tropicraft.bamboo_chest_large.name", (ILockableContainer) _upperChest.invokeExact(invLC), (ILockableContainer) _lowerChest.invokeExact(invLC));
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
         }
-    }
-    
-    private boolean isBlocked(World worldIn, BlockPos pos) {
-        return this.isBelowSolidBlock(worldIn, pos) || this.isOcelotSittingOnChest(worldIn, pos);
-    }
-    
-    private boolean isBelowSolidBlock(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN);
-    }
-
-    private boolean isOcelotSittingOnChest(World worldIn, BlockPos pos) {
-        for (Entity entity : worldIn.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB((double)pos.getX(), (double)(pos.getY() + 1), (double)pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 2), (double)(pos.getZ() + 1))))
-        {
-            EntityOcelot entityocelot = (EntityOcelot)entity;
-
-            if (entityocelot.isSitting())
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return ret;
     }
 }
