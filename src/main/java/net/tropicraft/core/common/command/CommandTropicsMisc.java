@@ -297,6 +297,10 @@ public class CommandTropicsMisc extends CommandBase {
             player.sendMessage(new TextComponentString("Simulating donation for name " + name + " and amount " + amount));
             TickerDonation.simulateDonation(name, amount);
         }),
+
+        DONATION_SIM_FIREWORKS((player, args) -> {
+            TickerDonation.simulateDonation("", 0);
+        }),
         
         ;
         

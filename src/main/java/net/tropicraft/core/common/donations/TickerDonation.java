@@ -143,8 +143,10 @@ public class TickerDonation {
 
         if (world == null) return;
 
-        server.getPlayerList().getPlayers().stream()
-                .forEach(p -> p.sendMessage(new TextComponentTranslation("tropicraft.donations.donation", TextFormatting.AQUA + name + TextFormatting.RESET.toString(), TextFormatting.GREEN.toString() + NumberFormat.getCurrencyInstance(Locale.US).format(amount) + TextFormatting.RESET)));
+        if (!name.equals("")) {
+            server.getPlayerList().getPlayers().stream()
+                    .forEach(p -> p.sendMessage(new TextComponentTranslation("tropicraft.donations.donation", TextFormatting.AQUA + name + TextFormatting.RESET.toString(), TextFormatting.GREEN.toString() + NumberFormat.getCurrencyInstance(Locale.US).format(amount) + TextFormatting.RESET)));
+        }
 
         callbacks.forEach(TileEntityDonation::triggerDonation);
     }
