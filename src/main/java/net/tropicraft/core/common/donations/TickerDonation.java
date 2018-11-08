@@ -136,6 +136,19 @@ public class TickerDonation {
         }*/
     }
 
+    public static void simulateDonation(String name, int amount) {
+
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        World world = DimensionManager.getWorld(0);
+
+        if (world == null) return;
+
+        server.getPlayerList().getPlayers().stream()
+                .forEach(p -> p.sendMessage(new TextComponentTranslation("tropicraft.donations.donation", TextFormatting.AQUA + name + TextFormatting.RESET.toString(), TextFormatting.GREEN.toString() + NumberFormat.getCurrencyInstance(Locale.US).format(amount) + TextFormatting.RESET)));
+
+        callbacks.forEach(TileEntityDonation::triggerDonation);
+    }
+
     public static void addCallback(TileEntityDonation tile) {
         callbacks.add(tile);
     }

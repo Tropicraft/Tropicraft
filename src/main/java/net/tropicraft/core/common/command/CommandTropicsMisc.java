@@ -32,6 +32,7 @@ import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.donations.DonationData;
 import net.tropicraft.core.common.donations.ThreadWorkerDonations;
+import net.tropicraft.core.common.donations.TickerDonation;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
 
@@ -288,6 +289,13 @@ public class CommandTropicsMisc extends CommandBase {
                 }
                 player.sendMessage(new TextComponentString("Reset last seen donation ID to " + id));
             }
+        }),
+
+        DONATION_SIM((player, args) -> {
+            String name = String.valueOf(args[1]);
+            int amount = Integer.valueOf(args[2]);
+            player.sendMessage(new TextComponentString("Simulating donation for name " + name + " and amount " + amount));
+            TickerDonation.simulateDonation(name, amount);
         }),
         
         ;
