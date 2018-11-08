@@ -55,14 +55,12 @@ public class BlockSeaweed extends BlockTropicraft {
 			this.setMaxHeight(15);*/
 		}
 
-        /**
-         * Called when this is first added to the world (by {@link World#addTileEntity(TileEntity)}).
-         * Override instead of adding {@code if (firstTick)} stuff in update.
-         */
         @Override
-        public void onLoad() {
-			revalidateHeight();
-			recalculateClientBB();
+        protected void setWorldCreate(World worldIn) {
+            super.setWorldCreate(worldIn);
+            if (!worldIn.isRemote) {
+                worldIn.scheduleUpdate(getPos(), BlockRegistry.seaweed, 5);
+            }
         }
 
         public void syncTileEntity() {
@@ -98,6 +96,7 @@ public class BlockSeaweed extends BlockTropicraft {
 			}
 			if (testHeight != getHeight()) {
 				setHeight(testHeight);
+				markDirty();
 				syncTileEntity();
 			}
 		}
@@ -207,6 +206,16 @@ public class BlockSeaweed extends BlockTropicraft {
 		this.setHardness(0.5f);
 		this.setHarvestLevel("shovel", 0);
 		this.setTickRandomly(true);
+	}
+	
+	// Used to send initial height update
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	    super.updateTick(worldIn, pos, state, rand);
+	    TileEntity te = worldIn.getTileEntity(pos);
+	    if (te instanceof TileSeaweed) {
+	        ((TileSeaweed)te).revalidateHeight();
+	    }
 	}
 
 	//use for debugging
