@@ -31,7 +31,9 @@ public class TickerDonation {
 
     public static void tick(World world) {
 
-        if (!ThreadWorkerDonations.getInstance().running && !TropicsConfigs.tiltifyAppToken.isEmpty() && TropicsConfigs.tiltifyCampaign != 0 && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getCurrentPlayerCount() > 0) {
+        if (!ThreadWorkerDonations.getInstance().running 
+                && !TropicsConfigs.tiltifyAppToken.isEmpty() && TropicsConfigs.tiltifyCampaign != 0 
+                && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getCurrentPlayerCount() > 0) {
             donationData = getSavedData(world);
             ThreadWorkerDonations.getInstance().startThread(donationData);
         }
@@ -77,7 +79,12 @@ public class TickerDonation {
     }
     
     private static DonationData getSavedData(World world) {
-        return ObjectUtils.firstNonNull((DonationData)world.getMapStorage().getOrLoadData(DonationData.class, "donationData"), new DonationData("donationData"));
+        DonationData data = (DonationData) world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
+        if (data == null) {
+            data = new DonationData("donationData");
+            world.getMapStorage().setData("donationData", data);
+        }
+        return data;
     }
 
     /** called once thread checked for new data, and made sure server is still running **/
@@ -87,8 +94,6 @@ public class TickerDonation {
         World world = DimensionManager.getWorld(0);
 
         if (world == null) return;
-        
-        final DonationData donationData = getSavedData(world);
 
         //sort and filter list
        //int lastIDReported = donationData.lastIDReported;
