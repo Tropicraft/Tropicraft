@@ -47,10 +47,6 @@ public class BlockSeaweed extends BlockTropicraft {
         private double swayDelay;
         private int maxHeight;
 
-        public TileSeaweed() {
-            initRandomHeights();
-        }
-
         public void initRandomHeights() {
 			this.setHeight(rand.nextInt(5) + 1);
 			this.setMaxHeight(rand.nextInt(10) + 5);
@@ -144,6 +140,9 @@ public class BlockSeaweed extends BlockTropicraft {
 
 		public void setHeight(int height) {
         	this.height = height;
+        	if (getWorld() != null && getWorld().isRemote) {
+        	    recalculateClientBB();
+        	}
 		}
 		
 		public Vec3d getOffset() {
