@@ -96,6 +96,8 @@ public class BlockSeaweed extends BlockTropicraft {
 			}
 			if (testHeight != getHeight()) {
 				setHeight(testHeight);
+				// FIXME somehow this isn't enough and sometimes seaweed, when it's first generated
+				// will stick up out of the water. After a reload, it's fine. No idea.
 				markDirty();
 				syncTileEntity();
 			}
