@@ -11,9 +11,8 @@ public class BlockDonation extends Block implements ITileEntityProvider {
 
 	public BlockDonation() {
 		super(Material.ROCK);
-		this.setHardness(20);
-		this.setResistance(20);
 		this.setCreativeTab(null);
+		this.setBlockUnbreakable();
 	}
 
 	@Override
