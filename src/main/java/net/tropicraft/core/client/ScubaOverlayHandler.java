@@ -1,5 +1,9 @@
 package net.tropicraft.core.client;
 
+import java.time.Duration;
+
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -78,12 +82,9 @@ public class ScubaOverlayHandler extends Gui {
         drawString(fr, (airTemp * 50) + " F", 6, 150, 0xffffffff);
 
         if (gear != null) {
-            // TODO localize
-            String timeUnits = timeRemaining <= 60 ? "secs" : "mins";
-            timeRemaining = timeRemaining <= 60 ? timeRemaining : timeRemaining / 60;
-
-            drawString(fr, TropicraftRenderUtils.translateGUI("timeRemaining"), 30, 34, 0xffffff);
-            drawString(fr, String.format("%.0f %s", timeRemaining, timeUnits), 33, 45, 0xF6EB12);   
+            String time = DurationFormatUtils.formatDuration(((long) (timeRemaining * 1000) / 60) * 60, "H' hr 'm' mins'");
+            drawString(fr, TropicraftRenderUtils.translateGUI("timeRemaining"), 6, 34, 0xffffff);
+            drawString(fr, time, 6, 45, 0xF6EB12);   
         }
 
         GlStateManager.depthMask(true);
