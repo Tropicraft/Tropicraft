@@ -95,6 +95,8 @@ tile.tropicraft.thatch_fence_gate.name=Thatch Fence Gate
 tile.tropicraft.portal_wall.name=Tropics Portal Wall
 tile.tropicraft.bamboo_ladder.name=Bamboo Ladder
 tile.tropicraft.packed_purified_sand.name=Packed Purified Sand
+tile.tropicraft.donation.name=Donation Alert Spawner
+tile.tropicraft.donation.tooltip=Spawns fireworks when a donation is received!
 
 # Item localizations
 item.tropicraft.eudialyte.name=Eudialyte Shard
