@@ -68,7 +68,7 @@ public class TropicsConfigs {
     private static final String C_GENERATION = "generation";
     private static final String C_ENTITY = "entity";
     private static final String C_MISC = "misc";
-    private static final String C_DONATIONS = "donations";
+    public static final String C_DONATIONS = "donations";
 
     private static Configuration config;
 

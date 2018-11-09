@@ -29,6 +29,7 @@ import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.world.Build;
 import net.tropicraft.core.common.build.world.BuildJob;
 import net.tropicraft.core.common.capability.WorldDataInstance;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
 import net.tropicraft.core.common.donations.DonationData;
 import net.tropicraft.core.common.donations.ThreadWorkerDonations;
@@ -277,6 +278,7 @@ public class CommandTropicsMisc extends CommandBase {
                 synchronized(donationData) {
                     donationData.resetData();
                 }
+                player.sendMessage(new TextComponentString("Resetting donation data"));
             }
         }),
 
@@ -300,6 +302,25 @@ public class CommandTropicsMisc extends CommandBase {
 
         DONATION_SIM_FIREWORKS((player, args) -> {
             TickerDonation.simulateDonation("", 0);
+        }),
+
+        DONATION_SETUP((player, args) -> {
+            int id = Integer.valueOf(args[1]);
+            String token = String.valueOf(args[2]);
+            player.sendMessage(new TextComponentString("Setting campaign id and token"));
+            TropicsConfigs.tiltifyCampaign = id;
+            TropicsConfigs.tiltifyAppToken = token;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "tiltifyCampaign", TropicsConfigs.tiltifyCampaign).set(id);
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "tiltifyAppToken", TropicsConfigs.tiltifyAppToken).set(token);
+            TropicsConfigs.getConfig().save();
+        }),
+
+        DONATION_RATE((player, args) -> {
+            int rate = Integer.valueOf(args[1]);
+            player.sendMessage(new TextComponentString("Setting campaign query rate"));
+            TropicsConfigs.donationTrackerRefreshRate = rate;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "donationTrackerRefreshRate", TropicsConfigs.donationTrackerRefreshRate).set(rate);
+            TropicsConfigs.getConfig().save();
         }),
         
         ;

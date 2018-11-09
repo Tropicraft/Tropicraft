@@ -55,6 +55,13 @@ public class ThreadWorkerDonations implements Runnable {
     public void checkDonations() {
         //http code
         try {
+
+            //check if we decided to shut off donation querying after it started
+            if (TropicsConfigs.tiltifyAppToken.isEmpty() || TropicsConfigs.tiltifyCampaign == 0) {
+                stopThread();
+                return;
+            }
+
             String contents = getData_Real();
 
             JsonDataDonation json = TickerDonation.GSON.fromJson(contents, JsonDataDonation.class);
