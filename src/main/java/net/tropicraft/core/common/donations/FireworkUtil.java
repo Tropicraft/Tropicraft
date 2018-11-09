@@ -59,7 +59,8 @@ public class FireworkUtil {
         expl.setBoolean("Trail", true);
 
         int[] colors = new int[rand.nextInt(8) + 1];
-        int[] PR_COLORS = new int[] {11743532, 15790320, 2437522};
+        //rgb, yellow, green, turq
+        int[] PR_COLORS = new int[] {11743532, 15790320, 2437522, 0x6ac944, 0xf5c140, 0x0F9684};
         for (int i = 0; i < colors.length; i++) {
             colors[i] = PR_COLORS[rand.nextInt(PR_COLORS.length)];
         }
