@@ -322,6 +322,20 @@ public class CommandTropicsMisc extends CommandBase {
             TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "donationTrackerRefreshRate", TropicsConfigs.donationTrackerRefreshRate).set(rate);
             TropicsConfigs.getConfig().save();
         }),
+
+        DONATION_COMMAND((player, args) -> {
+            String cmd = "";
+            for (int i = 1; i < args.length; i++) {
+                cmd += String.valueOf(args[i]);
+                if (i != args.length-1) {
+                    cmd += " ";
+                }
+            }
+            player.sendMessage(new TextComponentString("Setting campaign donation command to: " + cmd));
+            TropicsConfigs.tiltifyCommandRun = cmd;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "tiltifyCommandRun", TropicsConfigs.tiltifyCommandRun).set(cmd);
+            TropicsConfigs.getConfig().save();
+        }),
         
         ;
         
@@ -358,7 +372,7 @@ public class CommandTropicsMisc extends CommandBase {
                 SubCommand cmd = SubCommand.valueOf(subcmd);
                 cmd.function.accept(player, args);
             } catch (IllegalArgumentException e) {
-                throw new CommandException("Invalid subcommand");
+                throw new CommandException("Invalid subcommand " + e.toString());
             }
         }
     }

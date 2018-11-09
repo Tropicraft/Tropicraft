@@ -118,6 +118,12 @@ public class TickerDonation {
 
         //);
 
+        if (data.new_donations.size() > 0) {
+            if (!TropicsConfigs.tiltifyCommandRun.equals("")) {
+                server.getCommandManager().executeCommand(new CommandUser(world), TropicsConfigs.tiltifyCommandRun);
+            }
+        }
+
         //Optional<JsonDataDonationEntryOld> max = data.new_donations.stream().max(Comparator.comparingInt(JsonDataDonationEntryOld::getId));
         int lastSeenId = data.new_donations.stream()
                 .mapToInt(d -> d.id)
@@ -149,6 +155,9 @@ public class TickerDonation {
         }
 
         callbacks.forEach(TileEntityDonation::triggerDonation);
+
+        if (!TropicsConfigs.tiltifyCommandRun.equals("")) server.getCommandManager().executeCommand(new CommandUser(world), TropicsConfigs.tiltifyCommandRun);
+        //server.getCommandManager().executeCommand(new CommandUser(world), "scoreboard players set @r mTrack 1");
     }
 
     public static void addCallback(TileEntityDonation tile) {

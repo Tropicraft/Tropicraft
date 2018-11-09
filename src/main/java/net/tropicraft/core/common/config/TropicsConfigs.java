@@ -64,6 +64,7 @@ public class TropicsConfigs {
     public static String tiltifyAppToken = "";
     public static int tiltifyCampaign = 0;
     public static int donationTrackerRefreshRate = 10;
+    public static String tiltifyCommandRun = "function internaluseonly:addmonument";
 
     private static final String C_GENERATION = "generation";
     private static final String C_ENTITY = "entity";
@@ -119,6 +120,7 @@ public class TropicsConfigs {
         tiltifyAppToken = config.get(C_DONATIONS, "tiltifyAppToken", tiltifyAppToken, "Add a token here to enable donation tracking, leave blank to disable").getString();
         tiltifyCampaign = config.get(C_DONATIONS, "tiltifyCampaign", tiltifyCampaign, "The tiltify campaign to track donations from").getInt();
         donationTrackerRefreshRate = config.get(C_DONATIONS, "donationTrackerRefreshRate", donationTrackerRefreshRate, "How often the tracker checks for new donations, in seconds").getInt();
+        tiltifyCommandRun = config.get(C_DONATIONS, "tiltifyCommandRun", tiltifyCommandRun, "Command run when donation comes in").getString();
         
         config.save();
     }

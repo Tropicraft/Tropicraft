@@ -76,7 +76,6 @@ public class ThreadWorkerDonations implements Runnable {
     }
 
     public String getData_Real() {
-        //TODO: get URL from a master json file we can change
         try {
             //URL url = new URL("https://tiltify.com/api/v3/campaigns/love-tropics");
             URL url;
