@@ -29,3 +29,19 @@ There are numerous ways to contact the team:
 
 **Can I use Tropicraft in my public/private mod pack?**   
 Probably! Find Cojo on Discord or IRC to receive permission and find out what is required from you.
+<br><br><br><br><br>
+
+
+<p align="center">
+  <a href="https://lovetropics.com/">
+  <img src="https://lt.tropicraft.net/logo2.png">
+  </a>
+</p>
+
+Love Tropics
+===
+Love Tropics is a weekend-long charity livestream ran by the Tropicraft Dev Team and the Tropibros, focused on raising funds to help rebuild Puerto Rico.
+
+In 2017 we raised $10,155 for Direct Relief to help with medical supplies and aid. This year we have have partnered up with Team Rubicon, who are working with local contractors to repair and replace roofs of damaged housing. This will not only give families a place to take shelter from the elements, but will also give them a better chance with future storms.
+
+Click on the logo above to learn more about the event.
