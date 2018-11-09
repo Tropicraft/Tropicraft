@@ -1,4 +1,17 @@
-7.1.6 HOTFIX for 1.12.2:
+7.1.7 for 1.12.2:
+Changes
+- Donation block now has a texture, localization, and is unbreakable
+- Scuba mask overlay now uses a nicer representation for time remaining
+- Added a command to simulate donations
+- Added a command to configure tiltify info without restarting
+Fixes
+- #296 Fix clientside memory leak in packet handling
+- Fix last seen donation not saving properly
+- Fix seaweed disappearing when base block is not in view
+- Fix seaweed spamming "Received invalid update packet for null tile entity"
+- Fix scuba gear using air too quickly
+
+7.1.6 for 1.12.2:
 Fixes
 - Fix a rare crash when a Koa tries to fish
 - #298 Fix crash when shift clicking invalid items into the scuba harness
