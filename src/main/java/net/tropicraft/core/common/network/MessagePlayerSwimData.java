@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.network;
 
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 import io.netty.buffer.ByteBuf;
@@ -26,8 +25,7 @@ public class MessagePlayerSwimData implements IMessage{
 	
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		int len = buf.readInt();
-		UUID uuid = UUID.fromString(new String(buf.readBytes(len).toString(Charset.defaultCharset())));
+		UUID uuid = new UUID(buf.readLong(), buf.readLong());
 		if(data == null) {
 			data = new PlayerSwimData(uuid);
 		}
@@ -60,9 +58,8 @@ public class MessagePlayerSwimData implements IMessage{
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		
-		buf.writeInt(data.playerUUID.toString().getBytes().length);
-		buf.writeBytes(data.playerUUID.toString().getBytes());
+		buf.writeLong(data.playerUUID.getMostSignificantBits());
+		buf.writeLong(data.playerUUID.getLeastSignificantBits());
 		
 		buf.writeFloat(data.rotationYawHead);
 		buf.writeFloat(data.prevRotationYawHead);
@@ -89,7 +86,6 @@ public class MessagePlayerSwimData implements IMessage{
 
 		buf.writeFloat(data.currentHeight);
 		buf.writeFloat(data.targetHeight);
-
 	}
 
 	public static class PlayerSwimData {

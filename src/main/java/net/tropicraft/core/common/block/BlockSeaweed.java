@@ -47,10 +47,6 @@ public class BlockSeaweed extends BlockTropicraft {
         private double swayDelay;
         private int maxHeight;
 
-        public TileSeaweed() {
-            initRandomHeights();
-        }
-
         public void initRandomHeights() {
 			this.setHeight(rand.nextInt(5) + 1);
 			this.setMaxHeight(rand.nextInt(10) + 5);
@@ -59,14 +55,12 @@ public class BlockSeaweed extends BlockTropicraft {
 			this.setMaxHeight(15);*/
 		}
 
-        /**
-         * Called when this is first added to the world (by {@link World#addTileEntity(TileEntity)}).
-         * Override instead of adding {@code if (firstTick)} stuff in update.
-         */
         @Override
-        public void onLoad() {
-			revalidateHeight();
-			recalculateClientBB();
+        protected void setWorldCreate(World worldIn) {
+            super.setWorldCreate(worldIn);
+            if (!worldIn.isRemote) {
+                worldIn.scheduleUpdate(getPos(), BlockRegistry.seaweed, 5);
+            }
         }
 
         public void syncTileEntity() {
@@ -102,6 +96,9 @@ public class BlockSeaweed extends BlockTropicraft {
 			}
 			if (testHeight != getHeight()) {
 				setHeight(testHeight);
+				// FIXME somehow this isn't enough and sometimes seaweed, when it's first generated
+				// will stick up out of the water. After a reload, it's fine. No idea.
+				markDirty();
 				syncTileEntity();
 			}
 		}
@@ -144,6 +141,9 @@ public class BlockSeaweed extends BlockTropicraft {
 
 		public void setHeight(int height) {
         	this.height = height;
+        	if (getWorld() != null && getWorld().isRemote) {
+        	    recalculateClientBB();
+        	}
 		}
 		
 		public Vec3d getOffset() {
@@ -208,6 +208,16 @@ public class BlockSeaweed extends BlockTropicraft {
 		this.setHardness(0.5f);
 		this.setHarvestLevel("shovel", 0);
 		this.setTickRandomly(true);
+	}
+	
+	// Used to send initial height update
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	    super.updateTick(worldIn, pos, state, rand);
+	    TileEntity te = worldIn.getTileEntity(pos);
+	    if (te instanceof TileSeaweed) {
+	        ((TileSeaweed)te).revalidateHeight();
+	    }
 	}
 
 	//use for debugging

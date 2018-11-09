@@ -24,6 +24,7 @@ import net.tropicraft.core.common.config.TropicsConfigs;
 public class TickerDonation {
 
     public static final Gson GSON = (new GsonBuilder()).registerTypeAdapter(JsonDataDonation.class, new JsonDeserializerDonation()).create();
+    public static final Gson GSON_TOTAL = (new GsonBuilder()).registerTypeAdapter(JsonDataDonation.class, new JsonDeserializerDonationTotal()).create();
     
     private static final Set<TileEntityDonation> callbacks = new HashSet<>();
     
@@ -31,37 +32,12 @@ public class TickerDonation {
 
     public static void tick(World world) {
 
-        if (!ThreadWorkerDonations.getInstance().running && !TropicsConfigs.tiltifyAppToken.isEmpty() && TropicsConfigs.tiltifyCampaign != 0 && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getCurrentPlayerCount() > 0) {
+        if (!ThreadWorkerDonations.getInstance().running 
+                && !TropicsConfigs.tiltifyAppToken.isEmpty() && TropicsConfigs.tiltifyCampaign != 0 
+                && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getCurrentPlayerCount() > 0) {
             donationData = getSavedData(world);
             ThreadWorkerDonations.getInstance().startThread(donationData);
         }
-
-        /*long time = world.getTotalWorldTime();
-
-        if (time % (20 * 5) == 0) {
-            //check for new data
-            String name = "";
-            int amount = 0;
-
-            try {
-                String contents = FileUtils.readFileToString(new File("/mnt/ntfs_data/dev/windows/donation_check.json"), StandardCharsets.UTF_8);
-
-                JsonDataDonationOld json = GSON.fromJson(contents, JsonDataDonationOld.class);
-
-                System.out.println(json);
-
-                for (JsonDataDonationEntryOld entry : json.new_donations) {
-                    for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers()) {
-                        player.sendMessage(new TextComponentString(TextFormatting.GREEN.toString() + entry.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + entry.amount + "!!!"));
-                    }
-                    //FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessageToTeamOrAllPlayers(null, new TextComponentString(entry.name + " donated " + entry.amount));
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-
-        }*/
 
     }
 
@@ -77,7 +53,12 @@ public class TickerDonation {
     }
     
     private static DonationData getSavedData(World world) {
-        return ObjectUtils.firstNonNull((DonationData)world.getMapStorage().getOrLoadData(DonationData.class, "donationData"), new DonationData("donationData"));
+        DonationData data = (DonationData) world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
+        if (data == null) {
+            data = new DonationData("donationData");
+            world.getMapStorage().setData("donationData", data);
+        }
+        return data;
     }
 
     /** called once thread checked for new data, and made sure server is still running **/
@@ -87,13 +68,7 @@ public class TickerDonation {
         World world = DimensionManager.getWorld(0);
 
         if (world == null) return;
-        
-        final DonationData donationData = getSavedData(world);
 
-        //sort and filter list
-       //int lastIDReported = donationData.lastIDReported;
-
-        //System.out.println("max pre: " + finalDonationData.lastDateReported);
         data.new_donations.stream()
                 .sorted(Comparator.comparingLong(JsonDataDonationEntry::getDate))
                 .map(donation -> new TextComponentTranslation("tropicraft.donations.donation", TextFormatting.AQUA + donation.name + TextFormatting.RESET.toString(), TextFormatting.GREEN.toString() + NumberFormat.getCurrencyInstance(Locale.US).format(donation.amount) + TextFormatting.RESET))
@@ -104,16 +79,6 @@ public class TickerDonation {
                     callbacks.forEach(TileEntityDonation::triggerDonation); 
                 });
 
-                /*.forEach(entryDonation -> server.getPlayerList().getPlayers().stream()
-                        .forEach(player -> { player.sendMessage(
-                                new TextComponentString(TextFormatting.GREEN.toString() + entryDonation.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + entryDonation.amount + "!!!")
-                        );
-                        //if (entryDonation.id > highestID) { highestID = entryDonation.id; }
-                        } )*/
-
-        //);
-
-        //Optional<JsonDataDonationEntryOld> max = data.new_donations.stream().max(Comparator.comparingInt(JsonDataDonationEntryOld::getId));
         int lastSeenId = data.new_donations.stream()
                 .mapToInt(d -> d.id)
                 .max()
@@ -121,14 +86,30 @@ public class TickerDonation {
         
         synchronized (donationData) {
             donationData.setLastSeenId(Math.max(donationData.getLastSeenId(), lastSeenId));
+
+            int amountPerMonument = TropicsConfigs.donationAmountPerMonument;
+            if (amountPerMonument > 0) {
+                while (donationData.getMonumentsPlaced() < data.totalDonated / amountPerMonument) {
+                    donationData.setMonumentsPlaced(donationData.getMonumentsPlaced() + 1);
+                    server.getCommandManager().executeCommand(new CommandUser(world), TropicsConfigs.tiltifyCommandRun);
+                }
+            }
+        }
+    }
+
+    public static void simulateDonation(String name, int amount) {
+
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        World world = DimensionManager.getWorld(0);
+
+        if (world == null) return;
+
+        if (!name.equals("")) {
+            server.getPlayerList().getPlayers().stream()
+                    .forEach(p -> p.sendMessage(new TextComponentTranslation("tropicraft.donations.donation", TextFormatting.AQUA + name + TextFormatting.RESET.toString(), TextFormatting.GREEN.toString() + NumberFormat.getCurrencyInstance(Locale.US).format(amount) + TextFormatting.RESET)));
         }
 
-        /*for (JsonDataDonationEntryOld entry : data.new_donations) {
-            for (EntityPlayerMP player : server.getPlayerList().getPlayers()) {
-                //player.sendMessage(new TextComponentString(TextFormatting.GREEN.toString() + entry.name + TextFormatting.RESET.toString() + " donated " + TextFormatting.RED.toString() + entry.amount + "!!!"));
-            }
-            //FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessageToTeamOrAllPlayers(null, new TextComponentString(entry.name + " donated " + entry.amount));
-        }*/
+        callbacks.forEach(TileEntityDonation::triggerDonation);
     }
 
     public static void addCallback(TileEntityDonation tile) {
