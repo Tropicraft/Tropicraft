@@ -51,6 +51,35 @@ public class FireworkUtil {
         return e;
     }
 
+    public static @Nonnull EntityFireworkRocket getRandomPRFirework(@Nonnull World world, @Nonnull BlockPos pos) {
+        ItemStack firework = new ItemStack(Items.FIREWORKS);
+        firework.setTagCompound(new NBTTagCompound());
+        NBTTagCompound expl = new NBTTagCompound();
+        expl.setBoolean("Flicker", true);
+        expl.setBoolean("Trail", true);
+
+        int[] colors = new int[rand.nextInt(8) + 1];
+        int[] PR_COLORS = new int[] {11743532, 15790320, 2437522};
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = PR_COLORS[rand.nextInt(PR_COLORS.length)];
+        }
+        expl.setIntArray("Colors", colors);
+        byte type = (byte) (rand.nextInt(3) + 1);
+        type = type == 3 ? 4 : type;
+        expl.setByte("Type", type);
+
+        NBTTagList explosions = new NBTTagList();
+        explosions.appendTag(expl);
+
+        NBTTagCompound fireworkTag = new NBTTagCompound();
+        fireworkTag.setTag("Explosions", explosions);
+        fireworkTag.setByte("Flight", (byte) 1);
+        firework.setTagInfo("Fireworks", fireworkTag);
+
+        EntityFireworkRocket e = new EntityFireworkRocket(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, firework);
+        return e;
+    }
+
     public static void spawnFirework(@Nonnull BlockPos block, int dimID) {
         spawnFirework(block, dimID, 0);
     }
@@ -73,7 +102,7 @@ public class FireworkUtil {
             }
         }
 
-        world.spawnEntity(getRandomFirework(world, spawnPos));
+        world.spawnEntity(getRandomPRFirework(world, spawnPos));
     }
 
     private static double moveRandomly(double base, double range) {
