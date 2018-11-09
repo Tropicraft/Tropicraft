@@ -336,6 +336,14 @@ public class CommandTropicsMisc extends CommandBase {
             TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "tiltifyCommandRun", TropicsConfigs.tiltifyCommandRun).set(cmd);
             TropicsConfigs.getConfig().save();
         }),
+
+        DONATION_MONUMENT_RATE((player, args) -> {
+            int rate = Integer.valueOf(args[1]);
+            player.sendMessage(new TextComponentString("Setting amount donated per monument addition to " + rate));
+            TropicsConfigs.donationAmountPerMonument = rate;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "donationAmountPerMonument", TropicsConfigs.donationAmountPerMonument).set(rate);
+            TropicsConfigs.getConfig().save();
+        }),
         
         ;
         

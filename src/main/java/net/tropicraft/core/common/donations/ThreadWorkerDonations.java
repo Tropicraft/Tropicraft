@@ -64,7 +64,15 @@ public class ThreadWorkerDonations implements Runnable {
 
             String contents = getData_Real();
 
+            String contentsTotal = getData_TotalDonations();
+
             JsonDataDonation json = TickerDonation.GSON.fromJson(contents, JsonDataDonation.class);
+
+            //store into temp object to scrap later once we take the total from it
+            JsonDataDonation jsonTotal = TickerDonation.GSON_TOTAL.fromJson(contentsTotal, JsonDataDonation.class);
+
+            //dont judge me
+            json.totalDonated = jsonTotal.totalDonated;
             
             TickerDonation.callbackDonations(json);
 
@@ -90,6 +98,37 @@ public class ThreadWorkerDonations implements Runnable {
             int status = con.getResponseCode();
 
             //System.out.println("response code: " + status);
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+
+            con.disconnect();
+
+            return content.toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return "ERROR";
+    }
+
+    public String getData_TotalDonations() {
+        try {
+            URL url;
+            synchronized (donationData) {
+                url = new URL("https://tiltify.com/api/v3/campaigns/" + TropicsConfigs.tiltifyCampaign);
+            }
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", "Bearer " + TropicsConfigs.tiltifyAppToken);
+
+            int status = con.getResponseCode();
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));

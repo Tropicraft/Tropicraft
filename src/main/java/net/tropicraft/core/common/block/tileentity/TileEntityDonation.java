@@ -18,6 +18,7 @@ public class TileEntityDonation extends TileEntity implements ITickable {
 	    if (!getWorld().isRemote) {
 	        if (!registered) {
 	            TickerDonation.addCallback(this);
+	            registered = true;
 	        }
 	        if (queued > 0 && getWorld().getTotalWorldTime() % 20 == 0) {
 	            BlockPos pos = getPos().up();
