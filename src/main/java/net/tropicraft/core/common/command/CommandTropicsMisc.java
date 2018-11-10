@@ -287,7 +287,7 @@ public class CommandTropicsMisc extends CommandBase {
             if (donationData != null) {
                 int id = Integer.valueOf(args[1]);
                 synchronized (donationData) {
-                    donationData.setLastSeenId(id);
+                    donationData.setLastSeenDate(id);
                 }
                 player.sendMessage(new TextComponentString("Reset last seen donation ID to " + id));
             }

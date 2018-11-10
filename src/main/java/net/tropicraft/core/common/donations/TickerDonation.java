@@ -4,10 +4,7 @@ import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -71,6 +68,7 @@ public class TickerDonation {
 
         data.new_donations.stream()
                 .sorted(Comparator.comparingLong(JsonDataDonationEntry::getDate))
+                .filter(entry -> entry.getDate() > donationData.getLastSeenDate())
                 .map(donation -> new TextComponentTranslation("tropicraft.donations.donation", TextFormatting.AQUA + donation.name + TextFormatting.RESET.toString(), TextFormatting.GREEN.toString() + NumberFormat.getCurrencyInstance(Locale.US).format(donation.amount) + TextFormatting.RESET))
                 .forEach(msg -> {
                     server.getPlayerList().getPlayers().stream()
@@ -79,12 +77,27 @@ public class TickerDonation {
                     callbacks.forEach(TileEntityDonation::triggerDonation); 
                 });
 
+        long lastSeenDate = data.new_donations.stream()
+                .mapToLong(d -> d.getDate())
+                .max()
+                .orElse(0);
+
         int lastSeenId = data.new_donations.stream()
                 .mapToInt(d -> d.id)
                 .max()
                 .orElse(0);
         
         synchronized (donationData) {
+
+            if (data.new_donations.size() > 0) {
+                System.out.println("last date from GET: " + lastSeenDate);
+                System.out.println("about to replace saved date: " + donationData.getLastSeenDate());
+
+                System.out.println("last id from GET: " + lastSeenId);
+                System.out.println("about to replace saved id: " + donationData.getLastSeenId());
+            }
+
+            donationData.setLastSeenDate(Math.max(donationData.getLastSeenDate(), lastSeenDate));
             donationData.setLastSeenId(Math.max(donationData.getLastSeenId(), lastSeenId));
 
             int amountPerMonument = TropicsConfigs.donationAmountPerMonument;
