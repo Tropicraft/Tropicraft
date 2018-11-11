@@ -26,17 +26,25 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
     protected ModelBase modelFloat;
     FloatBuffer color;
     float red = 0.0F, green = 0.0F, blue = 0.0F, alpha = 1.0F;
+	float[] colourCache;
+	ResourceLocation float_layer;
+	ResourceLocation float_color_layer;
 
     public RenderBeachFloat() {
         super(Minecraft.getMinecraft().getRenderManager());
         shadowSize = .5F;
         modelFloat = new ModelBeachFloat();
         MinecraftForge.EVENT_BUS.register(this);
+		color = BufferUtils.createFloatBuffer(4);
+		colourCache = new float[] { 1,1,1,1 };
+		float_layer = TropicraftRenderUtils.getTextureEntity("float_layer");
+		float_color_layer = TropicraftRenderUtils.getTextureEntity("float_color_layer");
+		// caching is best for performance, even if the JVM GC is super OP
+		// might break on a texture reload though, I havnt implemented a callback for that...?
     }
 
     @Override
     public void doRender(EntityBeachFloat entity, double x, double y, double z, float yaw, float partialTicks) {
-        this.modelFloat = new ModelBeachFloat();
         GL11.glPushMatrix();
 
         red = ColorHelper.getRed(entity.getColor());
@@ -47,7 +55,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
         GL11.glRotatef(yaw + (180 - yaw) * 2, 0.0F, 1.0F, 0.0F);
 
         // Draw arms of chair
-        Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftRenderUtils.getTextureEntity("float_layer"));
+        Minecraft.getMinecraft().renderEngine.bindTexture(float_layer);
         GL11.glScalef(-1F, -1F, 1.0F);
         modelFloat.render(entity, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
 
@@ -57,11 +65,12 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Change the color mode to blending
         GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_BLEND);
-        color = BufferUtils.createFloatBuffer(4).put(new float[] { red, green, blue, alpha });
+		colourCache[0] = red; colourCache[1] = green; colourCache[2] = blue; colourCache[3] = alpha; 
+        color.put(colourCache);
         color.position(0);
         // Color it
         GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, color);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TropicraftRenderUtils.getTextureEntity("float_color_layer"));
+        Minecraft.getMinecraft().renderEngine.bindTexture(float_color_layer);
         modelFloat.render(entity, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glDisable(GL11.GL_BLEND);
         // Change the color mode back to modulation
