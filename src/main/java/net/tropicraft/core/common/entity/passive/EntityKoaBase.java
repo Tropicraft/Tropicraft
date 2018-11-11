@@ -706,6 +706,8 @@ public class EntityKoaBase extends EntityVillager {
             compound.setInteger("drum_" + i + "_Y", listPosDrums.get(i).getY());
             compound.setInteger("drum_" + i + "_Z", listPosDrums.get(i).getZ());
         }
+
+        compound.setInteger("druggedTime", druggedTime);
     }
 
     @Override
@@ -758,6 +760,8 @@ public class EntityKoaBase extends EntityVillager {
                         compound.getInteger("drum_" + i + "_Z")));
             }
         }
+
+        druggedTime = compound.getInteger("druggedTime");
 
         updateUniqueEntityAI();
     }
