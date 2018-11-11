@@ -23,20 +23,18 @@ import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 
 public class RenderBeachFloat extends Render<EntityBeachFloat> {
 
-    protected ModelBase modelFloat;
+    protected final ModelBase modelFloat = new ModelBeachFloat();
     FloatBuffer color;
     float red = 0.0F, green = 0.0F, blue = 0.0F, alpha = 1.0F;
 
     public RenderBeachFloat() {
         super(Minecraft.getMinecraft().getRenderManager());
         shadowSize = .5F;
-        modelFloat = new ModelBeachFloat();
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
     public void doRender(EntityBeachFloat entity, double x, double y, double z, float yaw, float partialTicks) {
-        this.modelFloat = new ModelBeachFloat();
         GL11.glPushMatrix();
 
         red = ColorHelper.getRed(entity.getColor());
