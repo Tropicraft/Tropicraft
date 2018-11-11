@@ -23,24 +23,21 @@ import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 
 public class RenderBeachFloat extends Render<EntityBeachFloat> {
 
-    protected ModelBase modelFloat;
-    FloatBuffer color;
+    protected ModelBase modelFloat = new ModelBeachFloat();
+
+    FloatBuffer color = BufferUtils.createFloatBuffer(4);
+
     float red = 0.0F, green = 0.0F, blue = 0.0F, alpha = 1.0F;
-	float[] colourCache;
-	ResourceLocation float_layer;
-	ResourceLocation float_color_layer;
+	float[] colourCache = new float[] { 1,1,1,1 };
+
+	ResourceLocation float_layer = TropicraftRenderUtils.getTextureEntity("float_layer");
+	ResourceLocation float_color_layer = TropicraftRenderUtils.getTextureEntity("float_color_layer");
+
 
     public RenderBeachFloat() {
         super(Minecraft.getMinecraft().getRenderManager());
         shadowSize = .5F;
-        modelFloat = new ModelBeachFloat();
         MinecraftForge.EVENT_BUS.register(this);
-		color = BufferUtils.createFloatBuffer(4);
-		colourCache = new float[] { 1,1,1,1 };
-		float_layer = TropicraftRenderUtils.getTextureEntity("float_layer");
-		float_color_layer = TropicraftRenderUtils.getTextureEntity("float_color_layer");
-		// caching is best for performance, even if the JVM GC is super OP
-		// might break on a texture reload though, I havnt implemented a callback for that...?
     }
 
     @Override
