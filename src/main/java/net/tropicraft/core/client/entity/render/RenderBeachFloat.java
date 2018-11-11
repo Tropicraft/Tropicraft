@@ -28,10 +28,10 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
     FloatBuffer color = BufferUtils.createFloatBuffer(4);
 
     float red = 0.0F, green = 0.0F, blue = 0.0F, alpha = 1.0F;
-	float[] colourCache = new float[] { 1,1,1,1 };
+    float[] colourCache = new float[] { 1,1,1,1 };
 
-	ResourceLocation float_layer = TropicraftRenderUtils.getTextureEntity("float_layer");
-	ResourceLocation float_color_layer = TropicraftRenderUtils.getTextureEntity("float_color_layer");
+    ResourceLocation float_layer = TropicraftRenderUtils.getTextureEntity("float_layer");
+    ResourceLocation float_color_layer = TropicraftRenderUtils.getTextureEntity("float_color_layer");
 
 
     public RenderBeachFloat() {
@@ -62,7 +62,7 @@ public class RenderBeachFloat extends Render<EntityBeachFloat> {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         // Change the color mode to blending
         GL11.glTexEnvf(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_BLEND);
-		colourCache[0] = red; colourCache[1] = green; colourCache[2] = blue; colourCache[3] = alpha; 
+        colourCache[0] = red; colourCache[1] = green; colourCache[2] = blue; colourCache[3] = alpha; 
         color.put(colourCache);
         color.position(0);
         // Color it
