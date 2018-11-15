@@ -260,7 +260,7 @@ item.tropicraft.yellow_scuba_tank.name=黄色潜水氧气瓶
 item.tropicraft.pink_scuba_tank.name=粉色潜水氧气瓶
 item.tropicraft.pink_scuba_goggles.name=粉色潜水镜
 item.tropicraft.yellow_scuba_goggles.name=黄色潜水镜
-item.tropicraft.dive_computer.name=潜水计算机
+item.tropicraft.dive_computer.name=潜水电脑
 item.tropicraft.yellow_chestplate_gear.name=黄色潜水袋
 item.tropicraft.pink_chestplate_gear.name=粉色潜水袋
 item.tropicraft.trimix.name=混合气体
@@ -874,10 +874,10 @@ tropicraft.encyclopedia.regulator.title=潜水调节器
 tropicraft.encyclopedia.regulator.desc=这个装置调节呼吸气体和潜水员之间的压力。换句话说，这个东西可以帮助你不爆炸。
 
 tropicraft.encyclopedia.scubagoggles.title=潜水镜
-tropicraft.encyclopedia.scubagoggles.desc=这款潜水服不仅能让你从潜水计算机中看到数值，还能让你呼吸你戴着的潜水氧气瓶的空气。
+tropicraft.encyclopedia.scubagoggles.desc=这款潜水服不仅能让你从潜水电脑中看到数值，还能让你呼吸你戴着的潜水氧气瓶的空气。
 
-tropicraft.encyclopedia.divecomputer.title=潜水计算机
-tropicraft.encyclopedia.divecomputer.desc=这是一种罕见的热带科技，潜水计算机记录了你在水下的各种价值。在你游了一个小时后，把你的潜水计算机交给原始人，让它给你一个惊喜！
+tropicraft.encyclopedia.divecomputer.title=潜水电脑
+tropicraft.encyclopedia.divecomputer.desc=这是一种罕见的热带科技，潜水电脑记录了你在水下的各种信息。在你游了一个小时后，把你的潜水电脑交给原始人，让它给你一个惊喜！
 
 tropicraft.encyclopedia.ponybottle.title=小马瓶
 tropicraft.encyclopedia.ponybottle.desc=在你长时间水肺潜水时，一定要带着一只小马瓶。当你没有空气时，小马瓶会暂时补充你的空气，让你安全游到水面。
@@ -892,7 +892,7 @@ tropicraft.encyclopedia.raycooked.title=熟斑点鹰魟
 tropicraft.encyclopedia.raycooked.desc=在某些文化中，当你烹饪生魟的时候，这种清淡的鱼肉是一种美味。
 
 tropicraft.encyclopedia.koa.fisherman.title=原始人渔夫
-tropicraft.encyclopedia.koa.fisherman.desc=一位友好的原始人，喜欢在海里钓任何可用的东西，会花费珍珠做各种鱼肉。右击潜水计算机，以尝试接受混合气。
+tropicraft.encyclopedia.koa.fisherman.desc=一位友好的原始人，喜欢在海里钓任何可用的东西，会花费珍珠做各种鱼肉。右击潜水电脑，以尝试接受混合气。
 
 tropicraft.encyclopedia.koa.hunter.title=原始人猎人
-tropicraft.encyclopedia.koa.hunter.desc=原始人总是在寻找陆地上的下一个大型猎物，会花费珍珠做各种陆地肉类和材料。右击潜水计算机，以尝试接受混合气。
+tropicraft.encyclopedia.koa.hunter.desc=原始人总是在寻找陆地上的下一个大型猎物，会花费珍珠做各种陆地肉类和材料。右击潜水电脑，以尝试接受混合气。
