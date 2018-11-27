@@ -4,7 +4,9 @@ import java.io.File;
 
 import com.google.common.base.Preconditions;
 
+import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -84,6 +86,17 @@ public class TropicsConfigs {
     }
 
     public static void sync() {
+
+        // previous rTA was broken, so if present we get the broken version, copy the value in and strip it out of the config
+        if(config.hasCategory("rainforestThicknessAmount"))
+        {
+            ConfigCategory rTABrokeCat = config.getCategory("rainforestThicknessAmount");
+            Property rTAProp = rTABrokeCat.get("generation");
+            if(rTAProp != null)
+                rainforestThicknessAmount = rTAProp.getInt();
+            config.removeCategory(rTABrokeCat);
+        }
+
         genOverworld = config.get(C_GENERATION, "genTropicraftInOverworld", genOverworld, "If false, no Tropicraft generation will occur at all in the overworld.").getBoolean();
 
         genOverworldPalms = config.get(C_GENERATION, "genPalmsInOverworld", genOverworldPalms).getBoolean();
@@ -110,7 +123,7 @@ public class TropicsConfigs {
 
         tropicsDimensionID = config.get(C_MISC, "tropicsDimensionID", tropicsDimensionID).getInt();
 
-        rainforestThicknessAmount = config.getInt(C_GENERATION, "rainforestThicknessAmount", rainforestThicknessAmount, 0, 3, "How thick should the trees in rainforest biomes be?");
+        rainforestThicknessAmount = config.getInt("rainforestThicknessAmount", C_GENERATION, rainforestThicknessAmount, 0, 3, "How thick should the trees in rainforest biomes be?");
 
         spawnPassiveTropicsOceanMobsOverworld = config.get(C_ENTITY, "spawnPassiveTropicsOceanMobsOverworld", spawnPassiveTropicsOceanMobsOverworld, "Should Tropicraft's passive water mobs spawn in the overworld?").getBoolean();
         spawnHostileTropicsOceanMobsOverworld = config.get(C_ENTITY, "spawnHostileTropicsOceanMobsOverworld", spawnHostileTropicsOceanMobsOverworld, "Should Tropicraft's hostile water mobs spawn in the overworld?").getBoolean();
