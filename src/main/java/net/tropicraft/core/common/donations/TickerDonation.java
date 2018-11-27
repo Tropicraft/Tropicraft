@@ -89,14 +89,6 @@ public class TickerDonation {
         
         synchronized (donationData) {
 
-            if (data.new_donations.size() > 0) {
-                System.out.println("last date from GET: " + lastSeenDate);
-                System.out.println("about to replace saved date: " + donationData.getLastSeenDate());
-
-                System.out.println("last id from GET: " + lastSeenId);
-                System.out.println("about to replace saved id: " + donationData.getLastSeenId());
-            }
-
             donationData.setLastSeenDate(Math.max(donationData.getLastSeenDate(), lastSeenDate));
             donationData.setLastSeenId(Math.max(donationData.getLastSeenId(), lastSeenId));
 
