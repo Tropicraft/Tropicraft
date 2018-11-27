@@ -67,10 +67,17 @@ public class TropicsConfigs {
     public static int donationAmountPerMonument = 500;
     public static String tiltifyCommandRun = "function internaluseonly:addmonument";
 
+    /* == Client-side Configs == */
+
+    public static boolean disableSwimAnim = false;
+    public static boolean disableSwimAnimFirstPerson = false;
+
+
     private static final String C_GENERATION = "generation";
     private static final String C_ENTITY = "entity";
     private static final String C_MISC = "misc";
     public static final String C_DONATIONS = "donations";
+    public static final String C_CLIENTSIDE = "client";
 
     private static Configuration config;
 
@@ -124,6 +131,12 @@ public class TropicsConfigs {
         tiltifyCommandRun = config.get(C_DONATIONS, "tiltifyCommandRun", tiltifyCommandRun, "Command run when donation comes in").getString();
         donationAmountPerMonument = config.get(C_DONATIONS, "donationAmountPerMonument", donationAmountPerMonument, "Amount of $ required per monument command run").getInt();
         
+
+        /* == Client-side Configs == */
+
+        disableSwimAnim = config.get(C_CLIENTSIDE, "disableSwimAnim", disableSwimAnim, "Set to true if swimming causes issues, such as with camera and model mods.").getBoolean();
+        disableSwimAnimFirstPerson = config.get(C_CLIENTSIDE, "disableSwimAnimFirstPerson", disableSwimAnimFirstPerson, "Same as above, but only when in first-person and to yourself.").getBoolean();
+
         config.save();
     }
 

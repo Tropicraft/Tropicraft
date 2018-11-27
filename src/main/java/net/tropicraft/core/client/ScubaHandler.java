@@ -18,6 +18,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
@@ -161,12 +162,19 @@ public class ScubaHandler {
 
 	@SubscribeEvent
 	public void onRenderPlayer(RenderPlayerEvent.Pre event) {
-		if (inGUI) {
+		if (inGUI || TropicsConfigs.disableSwimAnim) {
 			return;
 		}
 
 		EntityPlayer p = event.getEntityPlayer();
 		PlayerSwimData d = getData(p);
+
+		if(TropicsConfigs.disableSwimAnimFirstPerson)
+		{
+			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 &&
+					d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID()))
+				return;
+		}
 
 		if (p.isElytraFlying() || p.getRidingEntity() instanceof EntityBeachFloat) {
 			return;
@@ -216,7 +224,7 @@ public class ScubaHandler {
 
 	@SubscribeEvent
 	public void onRenderPlayer(RenderPlayerEvent.Post event) {
-		if (inGUI) {
+		if (inGUI || TropicsConfigs.disableSwimAnim) {
 			return;
 		}
 		if (event.getEntityPlayer().isElytraFlying() || event.getEntityPlayer().getRidingEntity() instanceof EntityBeachFloat) {
@@ -224,12 +232,20 @@ public class ScubaHandler {
 		}
 
 		EntityPlayer p = event.getEntityPlayer();
+		PlayerSwimData d = getData(p);
+
+		if(TropicsConfigs.disableSwimAnimFirstPerson)
+		{
+			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 &&
+					d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID()))
+				return;
+		}
 
 		boolean inLiquid = isInWater(p) && isInWater(p, 0, 0.4D, 0);
 
 		if (!inLiquid) {
-			if (getData(p).currentRotationPitch == 0f
-					&& getData(p).currentRotationRoll == 0f) {
+			if (d.currentRotationPitch == 0f
+					&& d.currentRotationRoll == 0f) {
 				return;
 			}
 		}
