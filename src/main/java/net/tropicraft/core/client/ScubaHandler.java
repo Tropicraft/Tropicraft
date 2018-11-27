@@ -167,7 +167,7 @@ public class ScubaHandler {
 
 		EntityPlayer p = event.getEntityPlayer();
 		PlayerSwimData d = getData(p);
-				
+
 		if(TropicsConfigs.disableSwimAnimFirstPerson)
 		{
 			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 &&
@@ -239,7 +239,7 @@ public class ScubaHandler {
 					d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID()))
 				return;
 		}
-		
+
 		boolean inLiquid = isInWater(p) && isInWater(p, 0, 0.4D, 0);
 
 		if (!inLiquid) {
