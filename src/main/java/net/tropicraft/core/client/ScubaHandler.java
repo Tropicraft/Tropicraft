@@ -232,7 +232,7 @@ public class ScubaHandler {
 
 		EntityPlayer p = event.getEntityPlayer();
 		PlayerSwimData d = getData(p);
-		
+
 		if(TropicsConfigs.disableSwimAnimFirstPerson)
 		{
 			if(Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 &&
