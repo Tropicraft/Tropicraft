@@ -39,7 +39,7 @@ public interface Page {
     
     @SideOnly(Side.CLIENT)
     default String getLocalizedDescription() {
-        return "  " + I18n.format(getDescription());
+        return I18n.hasKey(getDescription()) ? "  " + I18n.format(getDescription()) : "???";
     }
     
     default boolean isBookmark() {

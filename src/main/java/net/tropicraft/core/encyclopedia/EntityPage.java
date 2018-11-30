@@ -9,6 +9,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +35,17 @@ public class EntityPage extends ItemPage {
         this.entityId = entityId;
     }
     
+    @Override
+    public String getLocalizedTitle() {
+        if (entity == null) {
+            entity = makeEntity();
+        }
+        if (I18n.hasKey(getTitle())) {
+            return super.getLocalizedTitle();
+        }
+        return entity.getDisplayName().getFormattedText();
+    }
+    
     protected ResourceLocation getEntityId() {
         return entityId;
     }
@@ -52,6 +64,13 @@ public class EntityPage extends ItemPage {
     @Nullable
     protected EntityLivingBase getEntity() {
         return entity;
+    }
+    
+    protected void drawEntity(int x, int y, float mouseX, float mouseY) {
+        GlStateManager.color(1, 1, 1);
+        x += 67;
+        y -= 2;
+        GuiInventory.drawEntityOnScreen(x, y + getHeaderHeight(), 30, x - mouseX, y - mouseY + 10, getEntity());
     }
 
     @Override
@@ -72,14 +91,11 @@ public class EntityPage extends ItemPage {
         Gui.drawScaledCustomSizeModalRect(bgX, bgY, 0, 0, bgWidth, bgHeight, bgWidth, bgHeight, 16, 16);
         Gui.drawRect(bgX, bgY, bgX + bgWidth, bgY + bgHeight, 0x55444444);
         
-        GlStateManager.color(1, 1, 1);
-        x += 67;
-        y -= 2;
-        GuiInventory.drawEntityOnScreen(x, y + getHeaderHeight() + 5, 30, x - mouseX, y - mouseY + 10, getEntity());
+        drawEntity(x, y, mouseX, mouseY);
     }
     
     @Override
     public int getHeaderHeight() {
-        return (int) (entity == null ? 0 : entity.height * 33);
+        return (int) (entity == null ? 0 : entity.height * 33) + 12;
     }
 }

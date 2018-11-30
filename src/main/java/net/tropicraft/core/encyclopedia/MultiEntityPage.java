@@ -6,8 +6,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 @ParametersAreNonnullByDefault
 public abstract class MultiEntityPage extends EntityPage {
@@ -42,14 +40,14 @@ public abstract class MultiEntityPage extends EntityPage {
     }
     
     @Override
-    public void drawHeader(int x, int y, float mouseX, float mouseY, float cycle) {
+    protected void drawEntity(int x, int y, float mouseX, float mouseY) {
         if (variants == null) {
             variants = makeVariants();
         }
         float mid = (variants.length - 1) / 2f;
         for (int i = 0; i < variants.length; i++) {
             currentIndex = i;
-            super.drawHeader((int) (x + ((i - mid) * variants[i].width * 40)), y, mouseX, mouseY, cycle);
+            super.drawEntity((int) (x + ((i - mid) * variants[i].width * 40)), y, mouseX, mouseY);
         }
     }
 }
