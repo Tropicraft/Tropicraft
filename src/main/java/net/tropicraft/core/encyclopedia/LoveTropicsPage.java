@@ -2,7 +2,7 @@ package net.tropicraft.core.encyclopedia;
 
 import java.util.Arrays;
 
-import com.google.common.collect.Comparators;
+import javax.annotation.Nonnull;
 
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,28 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.tropicraft.Names;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 
 public class LoveTropicsPage extends SimplePage {
 
-    public LoveTropicsPage(String id) {
+    public LoveTropicsPage(@Nonnull String id) {
         super(id);
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    public String getLocalizedDescription() {
-        StringBuilder sb = new StringBuilder();
-
-        String[] names = Arrays.copyOf(Names.LOVE_TROPICS_NAMES, Names.LOVE_TROPICS_NAMES.length);
-        Arrays.sort(names, String::compareToIgnoreCase);
-
-        for (String name : names) {
-            sb.append(name + "\n");
-        }
-
-        return sb.toString();
     }
 
     @Override
@@ -77,5 +61,27 @@ public class LoveTropicsPage extends SimplePage {
     public boolean discover(World world, EntityPlayer player) {
         // Always be known
         return true;
+    }
+    
+    public static class Names extends LoveTropicsPage {
+        
+        private final String[] names;
+
+        public Names(@Nonnull String id, String[] names) {
+            super(id);
+            this.names = Arrays.copyOf(names, names.length);
+            Arrays.sort(this.names, String::compareToIgnoreCase);
+        }
+
+        @SideOnly(Side.CLIENT)
+        public String getLocalizedDescription() {
+            StringBuilder sb = new StringBuilder();
+
+            for (String name : names) {
+                sb.append(name + "\n");
+            }
+
+            return sb.toString();
+        }
     }
 }

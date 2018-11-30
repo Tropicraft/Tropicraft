@@ -466,7 +466,10 @@ tropicraft.encyclopedia.section.music.title=Tropical Music
 tropicraft.encyclopedia.section.misc.title=Miscellaneous
 tropicraft.encyclopedia.section.lovetropics.title=Love Tropics
 
+tropicraft.encyclopedia.ltinfo.title=What is Love Tropics?
+tropicraft.encyclopedia.ltinfo.desc=Love Tropics is a yearly charity stream organized by Team Tropicraft to support tropical areas affected by natural disasters. Last year (2018), we raised over $35,000 for Team Rubicon!\n\nEach year, we put the name of everyone who donated in this book to be immortalized for their generosity. Join us next year for a great time with your favorite Mojangstas, streamers, YouTubers, and mod developers!\n\nGo to lovetropics.com for more info.
 tropicraft.encyclopedia.lt17.title=Love Tropics 2017
+tropicraft.encyclopedia.lt18.title=Love Tropics 2018
 
 tropicraft.donations.donation=%s donated %s!
 

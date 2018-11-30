@@ -339,7 +339,7 @@ public class GuiTropicalBook extends GuiScreen {
                     
                     // Render item title and description
                     if (contentPage == 0) {
-                        boolean toolong = fontRenderer.getStringWidth(pageTitle) > 110 && !fontRenderer.getUnicodeFlag();
+                        boolean toolong = fontRenderer.getStringWidth(pageTitle) > 105 && !fontRenderer.getUnicodeFlag();
                         if (toolong) {
                             fontRenderer.setUnicodeFlag(true);
                         }

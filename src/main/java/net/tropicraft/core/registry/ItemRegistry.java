@@ -398,7 +398,7 @@ public class ItemRegistry extends TropicraftRegistry {
         mask5 = registerItem(registry, new ItemAshenMask(materialMaskArmor, 0, EntityEquipmentSlot.HEAD, AshenMasks.ASHEN_MASK5), "mask_ashen_mask5");
 
         fishingRod = registerItem(registry, new ItemFishingRod(), "fishing_rod");
-        ltShell = registerMultiItem(registry, new ItemLoveTropicsShell(), "ltshell", Names.LOVE_TROPICS_NAMES.length);
+        ltShell = registerMultiItem(registry, new ItemLoveTropicsShell(), "ltshell", Names.LT17_NAMES.length);
 
         rawSeaweed = registerItem(registry, new ItemSeaweed(), "seaweed");
         rawNori = registerItem(registry, new ItemTropicraft(), "nori_raw");
