@@ -24,7 +24,7 @@ public class ItemLoveTropicsShell extends ItemShell implements IColoredItem {
         this.setMaxDamage(0);
         this.setCreativeTab(CreativeTabRegistry.tropicraftTab);
         Random rand = new Random();
-        names = Arrays.asList(Names.LOVE_TROPICS_NAMES);
+        names = Arrays.asList(Names.LT17_NAMES);
         for (String name : names) {
             rand.setSeed(name.hashCode());
             colors.add(Color.HSBtoRGB(rand.nextFloat(), (rand.nextFloat() * 0.2f) + 0.7f, 1));

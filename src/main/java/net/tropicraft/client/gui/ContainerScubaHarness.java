@@ -1,5 +1,6 @@
 package net.tropicraft.client.gui;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,10 +70,9 @@ public class ContainerScubaHarness extends Container {
      * Take a stack from the specified inventory slot.
      */
     @Override
-    @Nullable
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
+    public @Nonnull ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
     {
-        ItemStack itemstack = null;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack())
@@ -84,26 +84,26 @@ public class ContainerScubaHarness extends Container {
             {
                 if (!this.mergeItemStack(itemstack1, 2, this.inventorySlots.size(), true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (this.getSlot(1).isItemValid(itemstack1) && !this.getSlot(1).getHasStack())
             {
                 if (!this.mergeItemStack(itemstack1, 1, 2, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (this.getSlot(0).isItemValid(itemstack1))
             {
                 if (!this.mergeItemStack(itemstack1, 0, 1, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (2 <= 2 || !this.mergeItemStack(itemstack1, 2, 2, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty())

@@ -63,10 +63,7 @@ public class BlockEvents {
 		int z = event.getPos().getZ();
 		EntityPlayer player = event.getHarvester();
 
-		if (world.isRemote)
-			return;
-
-		if (block != BlockRegistry.coconut)
+		if (world.isRemote || block != BlockRegistry.coconut || player == null)
 			return;
 
 		ItemStack handItemStack = player.getHeldItemMainhand();

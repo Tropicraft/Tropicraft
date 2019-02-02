@@ -2,6 +2,7 @@ package net.tropicraft;
 
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -17,6 +18,8 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -27,8 +30,10 @@ import net.tropicraft.core.common.capability.ExtendedPlayerStorage;
 import net.tropicraft.core.common.capability.ExtendedWorldStorage;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
+import net.tropicraft.core.common.command.CommandTropicsMiscClient;
 import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
+import net.tropicraft.core.common.donations.ThreadWorkerDonations;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.event.AchievementEvents;
 import net.tropicraft.core.common.event.BlockEvents;
@@ -76,7 +81,7 @@ public class Tropicraft {
 
 		ColorHelper.init();
 		SoundRegistry.init();
-		FluidRegistry.preInit();
+		//FluidRegistry.preInit();
 		//BlockRegistry.preInit();
 	    proxy.preInit();
 		TileEntityRegistry.init();
@@ -109,12 +114,17 @@ public class Tropicraft {
 		BiomeTropicraft.registerBiomes();
 		GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
 		TropicraftWorldUtils.initializeDimension();
+		BlockRegistry.init();
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		FluidRegistry.postInit();
 		LootRegistry.postInit();
+		
+		if (event.getSide().isClient()) {
+		    ClientCommandHandler.instance.registerCommand(new CommandTropicsMiscClient());
+		}
 	}
 
 	/**
@@ -124,6 +134,11 @@ public class Tropicraft {
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		CommandRegistry.init(event);
+	}
+	
+	@EventHandler
+	public void serverStopped(FMLServerStoppingEvent event) {
+	    ThreadWorkerDonations.getInstance().stopThread();
 	}
 	
     @EventHandler

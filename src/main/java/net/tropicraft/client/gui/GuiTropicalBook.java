@@ -339,7 +339,7 @@ public class GuiTropicalBook extends GuiScreen {
                     
                     // Render item title and description
                     if (contentPage == 0) {
-                        boolean toolong = fontRenderer.getStringWidth(pageTitle) > 110 && !fontRenderer.getUnicodeFlag();
+                        boolean toolong = fontRenderer.getStringWidth(pageTitle) > 105 && !fontRenderer.getUnicodeFlag();
                         if (toolong) {
                             fontRenderer.setUnicodeFlag(true);
                         }
@@ -356,6 +356,9 @@ public class GuiTropicalBook extends GuiScreen {
                     List<String> allStrings = fontRenderer.listFormattedStringToWidth(selectedPage.getLocalizedDescription(), 135);
                     int page = 0;
                     for (String s : allStrings) {
+                        if (s.trim().isEmpty()) {
+                            continue;
+                        }
                         if (y > (page == 0 ? 170 : 205)) {
                             page++;
                             y = 0;
@@ -367,7 +370,7 @@ public class GuiTropicalBook extends GuiScreen {
                         y += fontRenderer.FONT_HEIGHT;
                     }
                     if (pageStrings.size() > contentPage * 2) {
-                        fontRenderer.drawSplitString(pageStrings.get(contentPage * 2), width / 2 - 150, baseY + (contentPage == 0 ? selectedPage.getHeaderHeight() : -33), 135, COLOR_READ);
+                        fontRenderer.drawSplitString(pageStrings.get(contentPage * 2), width / 2 - 150, baseY + (contentPage == 0 ? selectedPage.getHeaderHeight() + fontRenderer.FONT_HEIGHT : -33), 135, COLOR_READ);
                     }
                     if (pageStrings.size() > (contentPage * 2) + 1) {
                         fontRenderer.drawSplitString(pageStrings.get((contentPage * 2) + 1), width / 2 + 20, baseY - 33, 135, COLOR_READ);

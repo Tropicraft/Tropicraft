@@ -287,7 +287,9 @@ firestaff.desc = A mystical weapon usually wielded by a Koa Shaman which allows 
         //enc.addPage(new ItemPage("zirconium", new ItemStack(TCItemRegistry.ore, 1, 3)));
 
         enc.addPage(new SectionPage("lovetropics"));
-        enc.addPage(new LoveTropicsPage("lt17"));
+        enc.addPage(new LoveTropicsPage("ltinfo"));
+        enc.addPage(new LoveTropicsPage.Names("lt17", Names.LT17_NAMES));
+        enc.addPage(new LoveTropicsPage.Names("lt18", Names.LT18_NAMES));
 
         enc.dumpSections();
     }

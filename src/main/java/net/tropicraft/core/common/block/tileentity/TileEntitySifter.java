@@ -95,7 +95,7 @@ public class TileEntitySifter extends TileEntity implements ITickable {
 			if (rand.nextInt(10) == 0) {
 				stack = getRareItem();
 			} else if (rand.nextInt(10) < 3) {
-				int damage = rand.nextInt(Names.LOVE_TROPICS_NAMES.length);
+				int damage = rand.nextInt(Names.LT17_NAMES.length);
 				stack = new ItemStack(ItemRegistry.ltShell, 1, damage);
 			} else {
 				stack = getCommonItem();

@@ -102,7 +102,8 @@ public class BlockTropicraftSands extends BlockFalling implements ITropicraftBlo
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
 	    IBlockState ret = super.getActualState(state, worldIn, pos);
-	    if (pos.getY() < 64 && worldIn.getBlockState(pos.up()).getBlock() == BlockRegistry.tropicsWater) {
+	    IBlockState above = worldIn.getBlockState(pos.up());
+	    if (pos.getY() < 64 && (above.getBlock() == BlockRegistry.tropicsWater || above.getBlock() == BlockRegistry.coral || (above.getBlock() instanceof BlockTropicraftFence && above.getValue(BlockTropicraftFence.WATER) != BlockTropicraftFence.WaterState.NONE))) {
 	        ret = ret.withProperty(UNDERWATER, true);
 	    }
 	    return ret;

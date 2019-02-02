@@ -22,7 +22,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.capability.PlayerDataInstance;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
-import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
+import net.tropicraft.core.common.donations.TickerDonation;
 import net.tropicraft.core.common.entity.placeable.EntityChair;
 import net.tropicraft.core.common.worldgen.village.WorldEventListener;
 
@@ -35,6 +35,8 @@ public class MiscEvents {
 
     //public HashMap<Integer, Boolean> lookupDimIDToRegisteredListener = new HashMap<>();
     public HashSet<Integer> lookupDimIDToRegisteredListener = new HashSet<>();
+
+
 
     @SubscribeEvent
     public void tickServer(ServerTickEvent event) {
@@ -74,6 +76,10 @@ public class MiscEvents {
 //                    }
 //                }
             }
+        }
+
+        if (world != null && event.phase == TickEvent.Phase.END) {
+            TickerDonation.tick(world);
         }
     }
 

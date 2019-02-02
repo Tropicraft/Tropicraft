@@ -23,7 +23,7 @@ public class PlayerSwimDataClientHandler implements IMessageHandler<MessagePlaye
 			}
 			PlayerSwimData localData = ScubaHandler.rotationMap.get(d.playerUUID);
 			
-			if(d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID())) {
+			if(Minecraft.getMinecraft().player == null || d.playerUUID.equals(Minecraft.getMinecraft().player.getUniqueID())) {
 				// We don't want to imprint our own movements from the server onto ourselves
 				return null;
 			}

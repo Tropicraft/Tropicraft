@@ -40,6 +40,10 @@ public class TileEntityFactory {
         return new TileEntityVolcano();
     }
 
+    public static TileEntity getDonationTE() {
+        return new TileEntityDonation();
+    }
+
     public static TileEntity getDrinkMixerTE() {
         return new TileEntityDrinkMixer();
     }

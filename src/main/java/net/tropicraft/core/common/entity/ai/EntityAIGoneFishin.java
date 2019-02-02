@@ -272,8 +272,13 @@ public class EntityAIGoneFishin extends EntityAIBase {
                         setState(FISHING_STATE.IDLE);
                     } else {
                         //cast line
-                        faceCoord(posLastWaterFound, 180, 180);
-                        castLine();
+                        //TODO: there is a state where posLastWaterFound can be null and cause crash, unsure why, patching for now
+                        if (posLastWaterFound == null) {
+                            setState(FISHING_STATE.IDLE);
+                        } else {
+                            faceCoord(posLastWaterFound, 180, 180);
+                            castLine();
+                        }
                     }
                 }
             } else {

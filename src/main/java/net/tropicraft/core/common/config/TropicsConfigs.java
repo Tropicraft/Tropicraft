@@ -59,10 +59,18 @@ public class TropicsConfigs {
     public static boolean spawnHostileTropicsOceanMobsOverworld = false;
     public static boolean spawnPassiveTropicsLandMobsOverworld = false;
     public static boolean spawnHostileTropicsLandMobsOverworld = false;
+    
+    /* == Donations == */
+    public static String tiltifyAppToken = "";
+    public static int tiltifyCampaign = 0;
+    public static int donationTrackerRefreshRate = 10;
+    public static int donationAmountPerMonument = 500;
+    public static String tiltifyCommandRun = "function internaluseonly:addmonument";
 
     private static final String C_GENERATION = "generation";
     private static final String C_ENTITY = "entity";
     private static final String C_MISC = "misc";
+    public static final String C_DONATIONS = "donations";
 
     private static Configuration config;
 
@@ -109,6 +117,13 @@ public class TropicsConfigs {
 
         spawnPassiveTropicsLandMobsOverworld = config.get(C_ENTITY, "spawnPassiveTropicsLandMobsOverworld", spawnPassiveTropicsLandMobsOverworld, "Should Tropicraft's passive land mobs spawn in the overworld?").getBoolean();
         spawnHostileTropicsLandMobsOverworld = config.get(C_ENTITY, "spawnHostileTropicsLandMobsOverworld", spawnHostileTropicsLandMobsOverworld, "Should Tropicraft's hostile land mobs spawn in the overworld?").getBoolean();
+        
+        tiltifyAppToken = config.get(C_DONATIONS, "tiltifyAppToken", tiltifyAppToken, "Add a token here to enable donation tracking, leave blank to disable").getString();
+        tiltifyCampaign = config.get(C_DONATIONS, "tiltifyCampaign", tiltifyCampaign, "The tiltify campaign to track donations from").getInt();
+        donationTrackerRefreshRate = config.get(C_DONATIONS, "donationTrackerRefreshRate", donationTrackerRefreshRate, "How often the tracker checks for new donations, in seconds").getInt();
+        tiltifyCommandRun = config.get(C_DONATIONS, "tiltifyCommandRun", tiltifyCommandRun, "Command run when donation comes in").getString();
+        donationAmountPerMonument = config.get(C_DONATIONS, "donationAmountPerMonument", donationAmountPerMonument, "Amount of $ required per monument command run").getInt();
+        
         config.save();
     }
 

@@ -25,42 +25,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.tropicraft.Info;
 import net.tropicraft.Names;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.block.BlockBambooChest;
-import net.tropicraft.core.common.block.BlockBambooDoor;
-import net.tropicraft.core.common.block.BlockBambooShoot;
-import net.tropicraft.core.common.block.BlockBongoDrum;
-import net.tropicraft.core.common.block.BlockBundle;
-import net.tropicraft.core.common.block.BlockChunkOHead;
-import net.tropicraft.core.common.block.BlockCoconut;
-import net.tropicraft.core.common.block.BlockCoffeeBush;
-import net.tropicraft.core.common.block.BlockCoral;
-import net.tropicraft.core.common.block.BlockDrinkMixer;
-import net.tropicraft.core.common.block.BlockFruitLeaves;
-import net.tropicraft.core.common.block.BlockIris;
-import net.tropicraft.core.common.block.BlockPackedPurifiedSand;
-import net.tropicraft.core.common.block.BlockPineapple;
-import net.tropicraft.core.common.block.BlockPortalWall;
-import net.tropicraft.core.common.block.BlockSeaweed;
-import net.tropicraft.core.common.block.BlockSifter;
-import net.tropicraft.core.common.block.BlockTikiTorch;
-import net.tropicraft.core.common.block.BlockTropicraftEnumVariants;
-import net.tropicraft.core.common.block.BlockTropicraftFence;
-import net.tropicraft.core.common.block.BlockTropicraftFlowerPot;
-import net.tropicraft.core.common.block.BlockTropicraftLadder;
-import net.tropicraft.core.common.block.BlockTropicraftLeaves;
-import net.tropicraft.core.common.block.BlockTropicraftLog;
-import net.tropicraft.core.common.block.BlockTropicraftOre;
-import net.tropicraft.core.common.block.BlockTropicraftOreBlock;
-import net.tropicraft.core.common.block.BlockTropicraftPlank;
-import net.tropicraft.core.common.block.BlockTropicraftSands;
-import net.tropicraft.core.common.block.BlockTropicraftSlab;
-import net.tropicraft.core.common.block.BlockTropicraftStairs;
-import net.tropicraft.core.common.block.BlockTropicraftStairsFuzzy;
-import net.tropicraft.core.common.block.BlockTropicsFlowers;
-import net.tropicraft.core.common.block.BlockTropicsPortal;
-import net.tropicraft.core.common.block.BlockTropicsSapling;
-import net.tropicraft.core.common.block.BlockTropicsWater;
-import net.tropicraft.core.common.block.BlockVolcano;
+import net.tropicraft.core.common.block.*;
 import net.tropicraft.core.common.block.scuba.BlockAirCompressor;
 import net.tropicraft.core.common.enums.BlockHardnessValues;
 import net.tropicraft.core.common.enums.ITropicraftVariant;
@@ -239,11 +204,15 @@ public class BlockRegistry extends TropicraftRegistry {
 
 	public static Block packedPurifiedSand;
 
+	public static Block donation;
+
 	/**
 	 * Register blocks in preInit
 	 */
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        FluidRegistry.preInit();
+        
         IForgeRegistry<Block> registry = event.getRegistry();
 		chunk = registerBlock(registry, new BlockChunkOHead(), Names.BLOCK_CHUNK_O_HEAD);
 		ore = registerBlock(registry, new BlockTropicraftOre(), "ore", new MultiBlockItemCreator(TropicraftOres.VALUES)
@@ -354,6 +323,8 @@ public class BlockRegistry extends TropicraftRegistry {
         Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortal, Names.TROPICS_PORTAL);
         Tropicraft.proxy.registerFluidBlockRendering(BlockRegistry.tropicsPortalTeleporter, Names.TROPICS_PORTAL_TELEPORTER);
         portalWall = registerBlockNoItem(registry, new BlockPortalWall(), Names.PORTAL_WALL);
+
+        donation = registerBlock(registry, new BlockDonation(), Names.DONATION, new SimpleItemCreator(Names.DONATION, true));
     }
 
 	public static void init() {

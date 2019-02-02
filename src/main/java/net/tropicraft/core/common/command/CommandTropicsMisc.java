@@ -23,12 +23,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.build.BuildServerTicks;
 import net.tropicraft.core.common.build.world.Build;
 import net.tropicraft.core.common.build.world.BuildJob;
 import net.tropicraft.core.common.capability.WorldDataInstance;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.dimension.WorldProviderTropicraft;
+import net.tropicraft.core.common.donations.DonationData;
+import net.tropicraft.core.common.donations.ThreadWorkerDonations;
+import net.tropicraft.core.common.donations.TickerDonation;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.common.worldgen.village.TownKoaVillageGenHelper;
 
@@ -209,6 +214,10 @@ public class CommandTropicsMisc extends CommandBase {
 
             float clDist = 99999;
             Entity clEntity = null;
+            if (args.length < 2) {
+                player.sendMessage(new TextComponentString(TextFormatting.RED + "/tc_misc mount <entity id or player name> [reverse]"));
+                return;
+            }
             String name = args[1];
             boolean reverse = false;
             boolean playerMode = false;
@@ -250,19 +259,92 @@ public class CommandTropicsMisc extends CommandBase {
                 }
             }
         }),
-        
-        ENC_UNLOCK((player, args) -> {
-            for (int i = 0; i < Tropicraft.encyclopedia.getPageCount(); i++) {
-                Tropicraft.encyclopedia.markPageAsNewlyVisible(i);
+
+        DONATION((player, args) -> {
+            try {
+                String content = ThreadWorkerDonations.getInstance().getData_Real();
+
+                System.out.println(content);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }),
+
+        //reset the date, will reprocess all donations
+        DONATION_RESET((player, args) -> {
+            DonationData donationData = (DonationData)player.world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
+            if (donationData != null) {
+                synchronized(donationData) {
+                    donationData.resetData();
+                }
+                player.sendMessage(new TextComponentString("Resetting donation data"));
             }
         }),
-        
-        ENC_RESET((player, args) -> {
-            for (int i = 0; i < Tropicraft.encyclopedia.getPageCount(); i++) {
-                Tropicraft.encyclopedia.hidePage(i);
+
+        DONATION_SETID((player, args) -> {
+            DonationData donationData = (DonationData)player.world.getMapStorage().getOrLoadData(DonationData.class, "donationData");
+            if (donationData != null) {
+                int id = Integer.valueOf(args[1]);
+                synchronized (donationData) {
+                    donationData.setLastSeenDate(id);
+                }
+                player.sendMessage(new TextComponentString("Reset last seen donation ID to " + id));
             }
         }),
-            
+
+        DONATION_SIM((player, args) -> {
+            String name = String.valueOf(args[1]);
+            int amount = Integer.valueOf(args[2]);
+            player.sendMessage(new TextComponentString("Simulating donation for name " + name + " and amount " + amount));
+            TickerDonation.simulateDonation(name, amount);
+        }),
+
+        DONATION_SIM_FIREWORKS((player, args) -> {
+            TickerDonation.simulateDonation("", 0);
+        }),
+
+        DONATION_SETUP((player, args) -> {
+            int id = Integer.valueOf(args[1]);
+            String token = String.valueOf(args[2]);
+            player.sendMessage(new TextComponentString("Setting campaign id and token"));
+            TropicsConfigs.tiltifyCampaign = id;
+            TropicsConfigs.tiltifyAppToken = token;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "tiltifyCampaign", TropicsConfigs.tiltifyCampaign).set(id);
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "tiltifyAppToken", TropicsConfigs.tiltifyAppToken).set(token);
+            TropicsConfigs.getConfig().save();
+        }),
+
+        DONATION_RATE((player, args) -> {
+            int rate = Integer.valueOf(args[1]);
+            player.sendMessage(new TextComponentString("Setting campaign query rate"));
+            TropicsConfigs.donationTrackerRefreshRate = rate;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "donationTrackerRefreshRate", TropicsConfigs.donationTrackerRefreshRate).set(rate);
+            TropicsConfigs.getConfig().save();
+        }),
+
+        DONATION_COMMAND((player, args) -> {
+            String cmd = "";
+            for (int i = 1; i < args.length; i++) {
+                cmd += String.valueOf(args[i]);
+                if (i != args.length-1) {
+                    cmd += " ";
+                }
+            }
+            player.sendMessage(new TextComponentString("Setting campaign donation command to: " + cmd));
+            TropicsConfigs.tiltifyCommandRun = cmd;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "tiltifyCommandRun", TropicsConfigs.tiltifyCommandRun).set(cmd);
+            TropicsConfigs.getConfig().save();
+        }),
+
+        DONATION_MONUMENT_RATE((player, args) -> {
+            int rate = Integer.valueOf(args[1]);
+            player.sendMessage(new TextComponentString("Setting amount donated per monument addition to " + rate));
+            TropicsConfigs.donationAmountPerMonument = rate;
+            TropicsConfigs.getConfig().get(TropicsConfigs.C_DONATIONS, "donationAmountPerMonument", TropicsConfigs.donationAmountPerMonument).set(rate);
+            TropicsConfigs.getConfig().save();
+        }),
+        
         ;
         
         private final BiConsumer<EntityPlayer, String[]> function;
@@ -298,7 +380,7 @@ public class CommandTropicsMisc extends CommandBase {
                 SubCommand cmd = SubCommand.valueOf(subcmd);
                 cmd.function.accept(player, args);
             } catch (IllegalArgumentException e) {
-                throw new CommandException("Invalid subcommand");
+                throw new CommandException("Invalid subcommand " + e.toString());
             }
         }
     }
