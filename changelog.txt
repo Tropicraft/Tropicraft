@@ -1,0 +1,173 @@
+Build: 1.13.2-25.0.42 - Tue Feb 19 18:24:34 GMT 2019
+	tterrag1098:
+		Fix double tall plants not being shearable, add IShearable to seagrass
+		Closes #5524
+
+=========
+Build:  - Tue Feb 19 17:46:50 GMT 2019
+	bonzoweb:
+		Add back missing ItemColors patch (#5474)
+
+=========
+Build: 1.13.2-25.0.40 - Tue Feb 19 17:35:41 GMT 2019
+	tterrag1098:
+		Fix MinecraftForge.initialize not being called.
+		Fixes UsernameCache and harvest tools Closes #5529
+
+	mariaum:
+		Fix entities being killed in one hit. Closes #5511
+		Fix unloc pattern for tps output
+
+	tterrag1098:
+		Make BannerPattern extensible (#5464)
+
+=========
+Build: 1.13.2-25.0.37 - Tue Feb 19 07:16:37 GMT 2019
+	bs2609:
+		Remove EnumFacing internal ID maps from AT file (#5526)
+
+=========
+Build: 1.13.2-25.0.36 - Tue Feb 19 04:29:29 GMT 2019
+	vrtl:
+		Fix GuiEnchantment using wrong value to index enchantClue array (#5452)
+
+=========
+Build: 1.13.2-25.0.35 - Tue Feb 19 04:21:12 GMT 2019
+	bs2609:
+		Fix some minor patch regressions (#5490)
+
+=========
+Build: 1.13.2-25.0.34 - Mon Feb 18 22:20:23 GMT 2019
+	kat.swales:
+		Altered EntityType registry to use a Forge based registry (#5493)
+
+=========
+Build: 1.13.2-25.0.33 - Mon Feb 18 22:12:15 GMT 2019
+	37298044+Cadiboo:
+		Fix bug with ObfuscationReflectionHelper (#5509)
+
+=========
+Build: 1.13.2-25.0.32 - Mon Feb 18 21:01:08 GMT 2019
+	cpw:
+		Move unsafehacks to separate JAR built separately..
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.31 - Mon Feb 18 20:52:52 GMT 2019
+	tterrag1098:
+		Clean up Entity patches, remove extra method. Closes #5494
+
+=========
+Build: 1.13.2-25.0.30 - Mon Feb 18 20:18:55 GMT 2019
+	tterrag1098:
+		Remove now defunct eclipse files from MDK
+
+=========
+Build: 1.13.2-25.0.29 - Mon Feb 18 20:09:31 GMT 2019
+	cpw:
+		Add a simple network API..
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.28 - Mon Feb 18 19:39:14 GMT 2019
+	contact:
+		 Refactor forge and example run configs based on
+		MinecraftForge/ForgeGradle#546
+		- Updated run config formats based on the refactored setup
+		- Removed old 'runclient' and 'runserver' JavaExec tasks, replacing them
+		by creating the run configs using the refactored setup.
+		- Set 'assetIndex' environment variable from FG
+		- Updated MDK for new run config setup
+
+=========
+Build: 1.13.2-25.0.27 - Mon Feb 18 17:03:56 GMT 2019
+	tterrag1098:
+		Make SpawnPlacementType extensible, remove from ArmorMaterial
+
+=========
+Build: 1.13.2-25.0.26 - Sun Feb 17 21:08:06 GMT 2019
+	vincent.lee:
+		Change openGui to take a Consumer<PacketBuffer>
+
+	cpw:
+		Fix TPS string
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+	cpw:
+		Fix connection to vanilla servers. Generate a default mod server config
+		for mods connecting to servers.
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.23 - Sun Feb 17 19:09:02 GMT 2019
+	noreply:
+		Attempt to get full commit message instead of just the title.
+
+	cpw:
+		Fix author and other strings in the mdk mods toml file, update coremods
+		to 0.3.+
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.22 - Sun Feb 17 09:38:51 GMT 2019
+	contact:
+		Fix World crashing on load Fixes #5499 (#5503)
+
+=========
+Build: 1.13.2-25.0.21 - Sat Feb 16 22:38:47 GMT 2019
+	cpw:
+		Actually dispatch handleWorldDataSave. Closes #5492
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.20 - Sat Feb 16 22:25:46 GMT 2019
+	bonzoweb:
+		Add back missing patch for Item.BLOCK_TO_ITEM
+
+	cpw:
+		Fix assetIndexes for 1.13.1
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.17 - Sat Feb 16 22:01:07 GMT 2019
+	gegy1000:
+		Fix lazy ModContainer evaluation skipping thrown loadingExceptions
+		Fix formatting
+
+	cpw:
+		Fix travis build for 1.13.x branch
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.14 - Sat Feb 16 21:49:32 GMT 2019
+	cpw:
+		Fixes #5446 Listening for the same registry event in two different mods
+		fails
+		Tell the mod event bus not to track phasing for events.
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.13 - Sat Feb 16 02:57:34 GMT 2019
+	cpw:
+		Fix the MDK..
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.12 - Sat Feb 16 02:45:43 GMT 2019
+	cpw:
+		Fix network syncing of SERVER config. Enable COMMON Config. Fix network
+		login handling.
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.11 - Sat Feb 16 01:01:01 GMT 2019
+	cpw:
+		Fix serverlang loading issue, by frontloading MC and Forge langs, so
+		error messaging works.
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>
+
+=========
+Build: 1.13.2-25.0.10 - Fri Feb 15 06:11:58 GMT 2019
+	cpw:
+		Use MC VERSION in the dependencies string for the extra jar
+		Signed-off-by: cpw <cpw+github@weeksfamily.ca>

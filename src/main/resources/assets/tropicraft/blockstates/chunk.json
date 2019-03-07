@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "all": "tropicraft:block/chunk"
+    },
+    "model": "cube_all",
+    "uvlock": true
+  },
+  "variants": {
+    "": [
+      { "model": "tropicraft:chunk" },
+      { "model": "tropicraft:chunk", "y": 90 },
+      { "model": "tropicraft:chunk", "y": 180 },
+      { "model": "tropicraft:chunk", "y": 270 }
+    ]
+  }
+}
