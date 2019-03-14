@@ -1,25 +1,20 @@
 package net.tropicraft;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Constants.MODID)
@@ -27,6 +22,13 @@ public class Tropicraft
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public static final ItemGroup TROPICRAFT_ITEM_GROUP = (new ItemGroup(ItemGroup.getGroupCountSafe(), "tropicraft") {
+        @OnlyIn(Dist.CLIENT)
+        public ItemStack createIcon() {
+            return new ItemStack(TropicraftBlocks.RED_ANTHURIUM);
+        }
+    });
 
     public Tropicraft() {
         // Register the setup method for modloading

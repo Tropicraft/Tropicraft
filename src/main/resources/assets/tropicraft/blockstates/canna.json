@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "tropicraft:block/canna" },
+      { "model": "tropicraft:block/canna", "y": 90 },
+      { "model": "tropicraft:block/canna", "y": 180 },
+      { "model": "tropicraft:block/canna", "y": 270 }
+    ]
+  }
+}

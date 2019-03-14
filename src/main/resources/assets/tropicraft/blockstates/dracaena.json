@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "tropicraft:block/dracaena" },
+      { "model": "tropicraft:block/dracaena", "y": 90 },
+      { "model": "tropicraft:block/dracaena", "y": 180 },
+      { "model": "tropicraft:block/dracaena", "y": 270 }
+    ]
+  }
+}

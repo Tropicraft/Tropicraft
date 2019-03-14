@@ -1,0 +1,19 @@
+{
+    "ctm": {
+        "ctm_version": 1,
+        "type": "edges",
+		"layer": "CUTOUT",
+        "textures": [
+            "tropicraft:blocks/sand_mineral_ctm",
+            "tropicraft:blocks/sand_mineral"
+        ],
+        "extra": {
+            "connect_to": [{ 
+                "block": "tropicraft:sand",
+                "predicate": {
+                    "variant": "purified"
+                } 
+            }]
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "tropicraft:block/foliage" },
+      { "model": "tropicraft:block/foliage", "y": 90 },
+      { "model": "tropicraft:block/foliage", "y": 180 },
+      { "model": "tropicraft:block/foliage", "y": 270 }
+    ]
+  }
+}

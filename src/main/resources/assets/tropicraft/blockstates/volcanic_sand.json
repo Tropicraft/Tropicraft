@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "all": "tropicraft:block/volcanic_sand"
+    },
+    "model": "cube_all",
+    "uvlock": true
+  },
+  "variants": {
+    "": [
+      { "model": "tropicraft:volcanic_sand" },
+      { "model": "tropicraft:volcanic_sand", "y": 90 },
+      { "model": "tropicraft:volcanic_sand", "y": 180 },
+      { "model": "tropicraft:volcanic_sand", "y": 270 }
+    ]
+  }
+}

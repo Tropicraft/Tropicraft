@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "tropicraft:block/anemone" },
+      { "model": "tropicraft:block/anemone", "y": 90 },
+      { "model": "tropicraft:block/anemone", "y": 180 },
+      { "model": "tropicraft:block/anemone", "y": 270 }
+    ]
+  }
+}

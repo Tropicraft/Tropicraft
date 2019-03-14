@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "tropicraft:block/acai_vine" },
+      { "model": "tropicraft:block/acai_vine", "y": 90 },
+      { "model": "tropicraft:block/acai_vine", "y": 180 },
+      { "model": "tropicraft:block/acai_vine", "y": 270 }
+    ]
+  }
+}

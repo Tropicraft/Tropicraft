@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "all": "tropicraft:block/mineral_sand"
+    },
+    "model": "cube_all",
+    "uvlock": true
+  },
+  "variants": {
+    "": [
+      { "model": "tropicraft:mineral_sand" },
+      { "model": "tropicraft:mineral_sand", "y": 90 },
+      { "model": "tropicraft:mineral_sand", "y": 180 },
+      { "model": "tropicraft:mineral_sand", "y": 270 }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "tropicraft:block/pathos" },
+      { "model": "tropicraft:block/pathos", "y": 90 },
+      { "model": "tropicraft:block/pathos", "y": 180 },
+      { "model": "tropicraft:block/pathos", "y": 270 }
+    ]
+  }
+}

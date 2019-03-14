@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "tropicraft:block/crocosmia" },
+      { "model": "tropicraft:block/crocosmia", "y": 90 },
+      { "model": "tropicraft:block/crocosmia", "y": 180 },
+      { "model": "tropicraft:block/crocosmia", "y": 270 }
+    ]
+  }
+}
