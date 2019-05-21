@@ -1,7 +1,9 @@
 package net.tropicraft.core.common.item.scuba.api;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.resources.I18n;
 
+@MethodsReturnNonnullByDefault
 public interface IAirType {
     
     float getMaxCapacity();

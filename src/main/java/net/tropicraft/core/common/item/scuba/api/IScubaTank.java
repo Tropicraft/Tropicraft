@@ -1,9 +1,20 @@
 package net.tropicraft.core.common.item.scuba.api;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import org.apache.logging.log4j.LogManager;
+
+import com.google.common.base.Preconditions;
+
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.tropicraft.core.common.item.scuba.api.IAirType.AirType;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public interface IScubaTank extends INBTSerializable<NBTTagCompound> {
     
     float getPressure();
@@ -23,15 +34,21 @@ public interface IScubaTank extends INBTSerializable<NBTTagCompound> {
     }
     
     @Override
-    default void deserializeNBT(NBTTagCompound nbt) {
+    default void deserializeNBT(@Nullable NBTTagCompound nbt) {
+        if (nbt == null) return;
         this.setPressure(nbt.getFloat("pressure"));
-        this.setAirType(AirTypeRegistry.INSTANCE.getType(nbt.getString("airType")));
+        IAirType type = AirTypeRegistry.INSTANCE.getType(nbt.getString("airType"));
+        if (type == null) {
+            LogManager.getLogger().error("Found invalid air type reading scuba tank NBT: {}", nbt.getString("airType"));
+            type = AirType.REGULAR;
+        }
+        this.setAirType(type);
     }
     
     public static class ScubaTank implements IScubaTank {
         
         private float pressure;
-        private IAirType type = AirType.REGULAR;
+        private @Nonnull IAirType type = AirType.REGULAR;
         
         @Override
         public float getPressure() {
@@ -50,6 +67,7 @@ public interface IScubaTank extends INBTSerializable<NBTTagCompound> {
         
         @Override
         public void setAirType(IAirType type) {
+            Preconditions.checkNotNull(type);
             this.type = type;
         }
     }
