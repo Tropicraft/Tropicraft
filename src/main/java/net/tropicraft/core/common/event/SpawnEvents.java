@@ -18,7 +18,7 @@ public class SpawnEvents {
 
     @SubscribeEvent
     public void canSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.getWorld().provider instanceof WorldProviderTropicraft) {
+        if (event.getWorld().provider instanceof WorldProviderTropicraft && !event.isSpawner()) {
             event.setResult(Event.Result.DENY);
         }
     }
