@@ -71,7 +71,7 @@ public class TropicsConfigs {
     private static final String C_GENERATION = "generation";
     private static final String C_ENTITY = "entity";
     private static final String C_MISC = "misc";
-    public static final String C_DONATIONS = "donations";
+    public static final String C_DONATIONS = "~lovetropics";
 
     private static Configuration config;
 
@@ -112,7 +112,7 @@ public class TropicsConfigs {
 
         tropicsDimensionID = config.get(C_MISC, "tropicsDimensionID", tropicsDimensionID).getInt();
 
-        rainforestThicknessAmount = config.getInt(C_GENERATION, "rainforestThicknessAmount", rainforestThicknessAmount, 0, 3, "How thick should the trees in rainforest biomes be?");
+        rainforestThicknessAmount = config.getInt("rainforestThicknessAmount", C_GENERATION, rainforestThicknessAmount, 0, 3, "How thick should the trees in rainforest biomes be?");
 
         spawnPassiveTropicsOceanMobsOverworld = config.get(C_ENTITY, "spawnPassiveTropicsOceanMobsOverworld", spawnPassiveTropicsOceanMobsOverworld, "Should Tropicraft's passive water mobs spawn in the overworld?").getBoolean();
         spawnHostileTropicsOceanMobsOverworld = config.get(C_ENTITY, "spawnHostileTropicsOceanMobsOverworld", spawnHostileTropicsOceanMobsOverworld, "Should Tropicraft's hostile water mobs spawn in the overworld?").getBoolean();
@@ -120,6 +120,7 @@ public class TropicsConfigs {
         spawnPassiveTropicsLandMobsOverworld = config.get(C_ENTITY, "spawnPassiveTropicsLandMobsOverworld", spawnPassiveTropicsLandMobsOverworld, "Should Tropicraft's passive land mobs spawn in the overworld?").getBoolean();
         spawnHostileTropicsLandMobsOverworld = config.get(C_ENTITY, "spawnHostileTropicsLandMobsOverworld", spawnHostileTropicsLandMobsOverworld, "Should Tropicraft's hostile land mobs spawn in the overworld?").getBoolean();
         
+        config.setCategoryComment(C_DONATIONS, "Used for the LoveTropics charity drive.");
         tiltifyAppToken = config.get(C_DONATIONS, "tiltifyAppToken", tiltifyAppToken, "Add a token here to enable donation tracking, leave blank to disable").getString();
         tiltifyCampaign = config.get(C_DONATIONS, "tiltifyCampaign", tiltifyCampaign, "The tiltify campaign to track donations from").getInt();
         donationTrackerRefreshRate = config.get(C_DONATIONS, "donationTrackerRefreshRate", donationTrackerRefreshRate, "How often the tracker checks for new donations, in seconds").getInt();
