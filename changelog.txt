@@ -1,3 +1,17 @@
+7.1.9 for 1.12.2:
+New
+- Added config option to disable swim animation (tterrag)
+Changes
+- Added pages to encyclopedia for LT18 (tterrag)
+- Cleaned up config options, moved stray config to the right category, moved donations section to the bottom, with a comment (tterrag)
+- Improved encylopedia entity page renders (tterrag)
+Fixes
+- Fixed memory leak from rendering beach floats (Paul17041993)
+- Fixed koa druggedTime not being serialized (Coro)
+- Fixed sand not using underwater variants when underneath coral or tropicraft fences (tterrag)
+- Fix encyclopedia entity page names/categories (tterrag)
+- #311 Better null checks when loading scuba tank air types (tterrag)
+
 7.1.8 for 1.12.2:
 Changes
 - Adjusted donation fireworks colors to be more appropriate
