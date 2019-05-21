@@ -18,6 +18,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.entity.placeable.EntityBeachFloat;
 import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicraftWaterBase;
 import net.tropicraft.core.common.network.MessagePlayerSwimData;
@@ -42,6 +43,8 @@ public class ScubaHandler {
 
 	@SubscribeEvent
 	public void onRenderViewTick(EntityViewRenderEvent.CameraSetup event) {
+	    if (!TropicsConfigs.enableSwimAnimation)
+	        return;
 		if (event.getEntity().equals(Minecraft.getMinecraft().player)) {
 			if (Minecraft.getMinecraft().player != null && !Minecraft.getMinecraft().player.isDead) {
 				EntityPlayer p = Minecraft.getMinecraft().player;
@@ -53,6 +56,8 @@ public class ScubaHandler {
 
 	@SubscribeEvent
 	public void onRenderTick(RenderWorldLastEvent event) {
+	    if (!TropicsConfigs.enableSwimAnimation)
+            return;
 		EntityPlayer p = Minecraft.getMinecraft().player;
 		if (p != null && !p.isDead) {
 			if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0
@@ -67,6 +72,8 @@ public class ScubaHandler {
 
 	@SubscribeEvent
 	public void onTickPlayer(PlayerTickEvent event) {
+	    if (!TropicsConfigs.enableSwimAnimation)
+            return;
 		if (!event.type.equals(TickEvent.Type.PLAYER))
 			return;
 		if (event.player != Minecraft.getMinecraft().player) {
@@ -161,6 +168,8 @@ public class ScubaHandler {
 
 	@SubscribeEvent
 	public void onRenderPlayer(RenderPlayerEvent.Pre event) {
+	    if (!TropicsConfigs.enableSwimAnimation)
+            return;
 		if (inGUI) {
 			return;
 		}
@@ -216,6 +225,8 @@ public class ScubaHandler {
 
 	@SubscribeEvent
 	public void onRenderPlayer(RenderPlayerEvent.Post event) {
+	    if (!TropicsConfigs.enableSwimAnimation)
+            return;
 		if (inGUI) {
 			return;
 		}

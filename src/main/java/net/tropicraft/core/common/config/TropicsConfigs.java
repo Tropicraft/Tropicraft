@@ -53,6 +53,7 @@ public class TropicsConfigs {
     /* == Misc Configs == */
 
     public static String[] coconutBombWhitelist = {};
+    public static boolean enableSwimAnimation = true;
     
     /* == Entity Configs == */
     public static boolean spawnPassiveTropicsOceanMobsOverworld = false;
@@ -105,6 +106,7 @@ public class TropicsConfigs {
         onlyGenFlowersInTropicalBiomes = config.get(C_GENERATION, "onlyGenFlowersInTropicalBiomesOverworld", onlyGenFlowersInTropicalBiomes, "Should Tropicraft flowers only generate in tropical biomes in the overworld?").getBoolean();
         
         coconutBombWhitelist = config.get(C_MISC, "coconutBombWhitelist", coconutBombWhitelist).getStringList();
+        enableSwimAnimation = config.get(C_MISC, "enableSwimAnimation", enableSwimAnimation).getBoolean();
 
         allowVolcanoEruption = config.get(C_MISC, "allowVolcanoEruption", allowVolcanoEruption).getBoolean();
 

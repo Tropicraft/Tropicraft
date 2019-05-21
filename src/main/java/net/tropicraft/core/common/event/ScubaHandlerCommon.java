@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.network.MessagePlayerSwimData.PlayerSwimData;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -27,6 +28,8 @@ public class ScubaHandlerCommon {
 
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event) {
+	    if (!TropicsConfigs.enableSwimAnimation)
+	        return;
 		if(event.getEntity() instanceof EntityPlayer) {
 			if(isInWater((EntityPlayer)event.getEntity()))
 			if(event.getSource().equals(DamageSource.IN_WALL)) {
@@ -37,6 +40,8 @@ public class ScubaHandlerCommon {
 	
 	@SubscribeEvent
 	public void onTickPlayer(PlayerTickEvent event) {
+	    if (!TropicsConfigs.enableSwimAnimation)
+	        return;
 		if (!event.type.equals(TickEvent.Type.PLAYER))
 			return;
 		EntityPlayer p = event.player;
