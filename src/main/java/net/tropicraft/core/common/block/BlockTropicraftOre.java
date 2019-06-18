@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 
 public class BlockTropicraftOre extends Block {
     public BlockTropicraftOre(final Properties properties) {
@@ -9,7 +9,7 @@ public class BlockTropicraftOre extends Block {
     }
 
     @Override
-    public int getHarvestLevel(final IBlockState blockState) {
+    public int getHarvestLevel(final BlockState blockState) {
         return 2;
     }
 }

@@ -4,8 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -123,7 +123,7 @@ public class TropicraftBlocks {
         }
 
         private static Item registerItemDefault(final RegistryEvent.Register<Item> event, final Block block, final ItemGroup itemGroup) {
-            final Item itemBlock = new ItemBlock(block, new Item.Properties().group(itemGroup)).setRegistryName(block.getRegistryName());
+            final Item itemBlock = new BlockItem(block, new Item.Properties().group(itemGroup)).setRegistryName(block.getRegistryName());
             event.getRegistry().register(itemBlock);
             return itemBlock;
         }
