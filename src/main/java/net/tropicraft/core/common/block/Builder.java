@@ -6,10 +6,11 @@ import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.potion.Effects;
 
 public class Builder {
     public static Block flower() {
-        return new FlowerBlock(prop(Material.PLANTS).sound(SoundType.PLANT).);
+        return new FlowerBlock(Effects.field_76428_l, 0, prop(Material.PLANTS).sound(SoundType.PLANT));
     }
 
     public static Block sand(final MaterialColor color) {
