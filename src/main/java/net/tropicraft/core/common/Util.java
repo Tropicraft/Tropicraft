@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 public class Util {
 
-    public static boolean removeTask(CreatureEntity ent, Class taskToReplace) {
+    /*public static boolean removeTask(CreatureEntity ent, Class taskToReplace) {
         for (Goal entry : ent.goalSelector..taskEntries) {
             if (taskToReplace.isAssignableFrom(entry.action.getClass())) {
                 ent.tasks.removeTask(entry.action);
@@ -16,7 +16,7 @@ public class Util {
         }
 
         return false;
-    }
+    }*/
 
     public static Field findField(Class<?> clazz, String... fieldNames)
     {

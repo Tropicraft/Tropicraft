@@ -7,16 +7,21 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.merchant.villager.VillagerData;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -25,8 +30,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Items;
@@ -35,10 +39,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityNote;
-import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -51,10 +52,10 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.capability.WorldDataInstance;
 import net.tropicraft.core.common.config.TropicsConfigs;
@@ -254,10 +255,115 @@ public class EntityKoaBase extends VillagerEntity {
     @Override
     protected void registerGoals()
     {
-
+        //TODO: old 1.12 style tasks go here
     }
 
-    public void initTrades() {
+    static class KoaTradeForPearls implements VillagerTrades.ITrade {
+        private final Item item;
+        private final int count;
+        private final int maxUses;
+        private final int givenXP;
+        private final float priceMultiplier;
+
+        public KoaTradeForPearls(IItemProvider item, int count, int maxUses, int givenXP) {
+            this.item = item.asItem();
+            this.count = count;
+            this.maxUses = maxUses;
+            this.givenXP = givenXP;
+            this.priceMultiplier = 0.05F;
+        }
+
+        @Override
+        public MerchantOffer func_221182_a(Entity p_221182_1_, Random p_221182_2_) {
+            ItemStack itemstack = new ItemStack(this.item, this.count);
+            return new MerchantOffer(itemstack, new ItemStack(ItemRegistry.whitePearl), this.maxUses, this.givenXP, this.priceMultiplier);
+        }
+    }
+
+    public Int2ObjectMap<VillagerTrades.ITrade[]> getOfferMap() {
+
+        //TODO: 1.14 fix missing tropical and river fish entries from tropicrafts fix
+        //- consider adding vanillas ones too now
+
+        if (getRole() == Roles.FISHERMAN) {
+            func_221238_a(ImmutableMap.of(1,
+                    new VillagerTrades.ITrade[]{
+                            new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
+                            new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
+                            new KoaTradeForPearls(ItemRegistry.fishingRod, 1, 8, 2),
+                            new KoaTradeForPearls(ItemRegistry.freshMarlin, 3, 8, 2),
+                            new KoaTradeForPearls(ItemRegistry.fertilizer, 5, 8, 2)
+                    }));
+        } else if (getRole() == Roles.HUNTER) {
+            func_221238_a(ImmutableMap.of(1,
+                    new VillagerTrades.ITrade[]{
+                            new KoaTradeForPearls(ItemRegistry.frogLeg, 5, 8, 2),
+                            new KoaTradeForPearls(ItemRegistry.iguanaLeather, 2, 8, 2),
+                            new KoaTradeForPearls(ItemRegistry.scale, 5, 8, 2)
+                    }));
+        }
+
+        /*func_221238_a(ImmutableMap.of(1,
+                new VillagerTrades.ITrade[]{
+                        new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
+                        new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
+                        new KoaTradeForPearls(ItemRegistry.fishingRod, 1, 8, 2),
+                        new KoaTradeForPearls(ItemRegistry.freshMarlin, 3, 8, 2),
+                        new KoaTradeForPearls(ItemRegistry.fertilizer, 5, 8, 2),
+                        new VillagerTrades.EmeraldForItemsTrade(Items.POTATO, 26, 8, 2),
+                        new VillagerTrades.EmeraldForItemsTrade(Items.CARROT, 22, 8, 2),
+                        new VillagerTrades.EmeraldForItemsTrade(Items.BEETROOT, 15, 8, 2),
+                        new VillagerTrades.ItemsForEmeraldsTrade(Items.BREAD, 1, 6, 8, 1)
+                }, 2,
+                new VillagerTrades.ITrade[]{
+                        new VillagerTrades.EmeraldForItemsTrade(Blocks.PUMPKIN, 6, 6, 10),
+                        new VillagerTrades.ItemsForEmeraldsTrade(Items.PUMPKIN_PIE, 1, 4, 5),
+                        new VillagerTrades.ItemsForEmeraldsTrade(Items.APPLE, 1, 4, 8, 5)
+                }, 3, new VillagerTrades.ITrade[]{
+                        new VillagerTrades.ItemsForEmeraldsTrade(Items.COOKIE, 3, 18, 10),
+                        new VillagerTrades.EmeraldForItemsTrade(Blocks.MELON, 4, 6, 20)
+                }, 4, new VillagerTrades.ITrade[]{
+                        new VillagerTrades.ItemsForEmeraldsTrade(Blocks.CAKE, 1, 1, 6, 15),
+                        new VillagerTrades.SuspiciousStewForEmeraldTrade(Effects.SPEED, 160, 15),
+                        new VillagerTrades.SuspiciousStewForEmeraldTrade(Effects.JUMP_BOOST, 160, 15),
+                        new VillagerTrades.SuspiciousStewForEmeraldTrade(Effects.WEAKNESS, 140, 15),
+                        new VillagerTrades.SuspiciousStewForEmeraldTrade(Effects.BLINDNESS, 120, 15),
+                        new VillagerTrades.SuspiciousStewForEmeraldTrade(Effects.POISON, 280, 15),
+                        new VillagerTrades.SuspiciousStewForEmeraldTrade(Effects.SATURATION, 7, 15)
+                }, 5, new VillagerTrades.ITrade[]{
+                        new VillagerTrades.ItemsForEmeraldsTrade(Items.GOLDEN_CARROT, 3, 3, 30),
+                        new VillagerTrades.ItemsForEmeraldsTrade(Items.GLISTERING_MELON_SLICE, 4, 3, 30)}));*/
+    }
+
+    private static Int2ObjectMap<VillagerTrades.ITrade[]> func_221238_a(ImmutableMap<Integer, VillagerTrades.ITrade[]> p_221238_0_) {
+        return new Int2ObjectOpenHashMap<>(p_221238_0_);
+    }
+
+    /**
+     * New main override for villager "trades" aka offers
+     * @return
+     */
+    @Override
+    protected void func_213712_ef() {
+        VillagerData villagerdata = this.getVillagerData();
+        Int2ObjectMap<VillagerTrades.ITrade[]> int2objectmap = getOfferMap();
+        if (int2objectmap != null && !int2objectmap.isEmpty()) {
+            VillagerTrades.ITrade[] avillagertrades$itrade = int2objectmap.get(villagerdata.getLevel());
+            if (avillagertrades$itrade != null) {
+                MerchantOffers merchantoffers = this.getOffers();
+                this.func_213717_a(merchantoffers, avillagertrades$itrade, 2);
+            }
+        }
+    }
+
+    /*public void initTrades() {
+
+        this.offers = new MerchantOffers();
+
+
+
+
+
         MerchantRecipeList list = new MerchantRecipeList();
 
         //stack count given is the base amount that will be multiplied based on value of currency traded for
@@ -275,12 +381,12 @@ public class EntityKoaBase extends VillagerEntity {
             addTradeForCurrencies(list, new ItemStack(ItemRegistry.fertilizer, 5));
 
             //TODO: 1.14 fix
-            /*for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
+            for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
                 addTradeForCurrencies(list, new ItemStack(ItemRegistry.rawTropicalFish, 1, i));
             }
             for (int i = 0; i < ItemRiverFish.FISH_COLORS.length; i++) {
                 addTradeForCurrencies(list, new ItemStack(ItemRegistry.rawRiverFish, 1, i));
-            }*/
+            }
 
         } else if (getRole() == Roles.HUNTER) {
 
@@ -295,9 +401,9 @@ public class EntityKoaBase extends VillagerEntity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
+    }*/
 
-    public void addTradeForCurrencies(MerchantRecipeList list, ItemStack sell) {
+    /*public void addTradeForCurrencies(MerchantRecipeList list, ItemStack sell) {
         double pearlWhiteWorth = 1;
         double pearlBlackWorth = 1.5D;
 
@@ -311,7 +417,7 @@ public class EntityKoaBase extends VillagerEntity {
         stack2.setCount((int)Math.round(sell.getCount() * pearlBlackWorth));
         list.add(new MerchantRecipe(new ItemStack(ItemRegistry.blackPearl), stack2));
 
-    }
+    }*/
 
     public void updateUniqueEntityAI() {
         //TODO: 1.14 maybe not needed, since villagers use diff system
@@ -565,12 +671,13 @@ public class EntityKoaBase extends VillagerEntity {
                     //scan hotbar
                     for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                         ItemStack stackScan = player.inventory.getStackInSlot(i);
-                        if (!Util.isEmpty(stackScan) && stackScan.getItem() == ItemRegistry.diveComputer) {
+                        if (!stackScan.isEmpty() && stackScan.getItem() == ItemRegistry.diveComputer) {
 
                             //for testing
                             //((ItemDiveComputer)stackScan.getItem()).setDiveTime(stackScan, 60 * 59);
 
-                            diveTime = ((ItemDiveComputer)stackScan.getItem()).getDiveTime(stackScan);
+                            //TODO: 1.14 uncomment
+                            //diveTime = ((ItemDiveComputer)stackScan.getItem()).getDiveTime(stackScan);
                             break;
                         }
                     }
@@ -644,7 +751,8 @@ public class EntityKoaBase extends VillagerEntity {
         /*VillagerRegistry.VillagerProfession koaProfession = new VillagerRegistry.VillagerProfession("koa_profession", "");
         this.setProfession(koaProfession);*/
 
-        initTrades();
+        //TODO: 1.14 make sure not needed, overwritten with getOfferMap now
+        //initTrades();
 
         return data;
     }
@@ -700,12 +808,12 @@ public class EntityKoaBase extends VillagerEntity {
             {
                 CompoundNBT nbttagcompound = new CompoundNBT();
                 nbttagcompound.putByte("Slot", (byte)i);
-                itemstack.save(nbttagcompound);
-                nbttaglist.appendTag(nbttagcompound);
+                itemstack.write(nbttagcompound);
+                nbttaglist.add(nbttagcompound);
             }
         }
 
-        compound.setTag("koa_inventory", nbttaglist);
+        compound.put("koa_inventory", nbttaglist);
 
         compound.putInt("role_id", this.getDataManager().get(ROLE));
         compound.putInt("gender_id", this.getDataManager().get(GENDER));
@@ -742,11 +850,11 @@ public class EntityKoaBase extends VillagerEntity {
             ListNBT nbttaglist = compound.getList("koa_inventory", 10);
             //this.initHorseChest();
 
-            for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-                CompoundNBT nbttagcompound = nbttaglist.save(i);
+            for (int i = 0; i < nbttaglist.size(); ++i) {
+                CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
                 int j = nbttagcompound.getByte("Slot") & 255;
 
-                this.inventory.setInventorySlotContents(j, new ItemStack(nbttagcompound));
+                this.inventory.setInventorySlotContents(j, ItemStack.read(nbttagcompound));
             }
         }
 
@@ -794,7 +902,7 @@ public class EntityKoaBase extends VillagerEntity {
             //if (villageID != -1) {
 
                 //if not in home dimension, full reset
-                if (this.world.provider.getDimension() != villageDimID) {
+                if (this.world.getDimension().getType().getId() != villageDimID) {
                     dbg("koa detected different dimension, zapping memory");
                     zapMemory();
                     addPotionEffect(new EffectInstance(Effects.SLOWNESS, 5));
@@ -990,13 +1098,8 @@ public class EntityKoaBase extends VillagerEntity {
 
     public boolean isInstrument(BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        if (state.getBlock() == BlockRegistry.bongo) {
+        if (state.getBlock() == BlockRegistry.bongo || state.getBlock() == Blocks.NOTE_BLOCK) {
             return true;
-        } else {
-            TileEntity tEnt = world.getTileEntity(pos);
-            if (tEnt instanceof TileEntityNote) {
-                return true;
-            }
         }
 
         return false;
@@ -1477,14 +1580,14 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public void play(SoundEvent soundIn, float volume, float pitch) {
+    public void playSound(SoundEvent soundIn, float volume, float pitch) {
 
         //cancel villager trade sounds
         if (soundIn == SoundEvents.ENTITY_VILLAGER_YES || soundIn == SoundEvents.ENTITY_VILLAGER_NO) {
             return;
         }
 
-        super.play(soundIn, volume, pitch);
+        super.playSound(soundIn, volume, pitch);
     }
 
 }
