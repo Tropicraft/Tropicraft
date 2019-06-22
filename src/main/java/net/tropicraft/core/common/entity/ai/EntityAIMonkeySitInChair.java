@@ -18,7 +18,7 @@ public class EntityAIMonkeySitInChair extends Goal {
     }
 
     private boolean isEmptyChairNear() {
-        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getEntityBoundingBox().grow(32D));
+        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getBoundingBox().grow(32D));
         boolean emptyChairFound = false;
 
         if (!list.isEmpty()) {
@@ -47,7 +47,7 @@ public class EntityAIMonkeySitInChair extends Goal {
 
     @Override
     public void resetTask() {
-        this.entity.dismountRidingEntity();
+        this.entity.stopRiding();
         this.entity.setSitting(false);
         this.aiSit.setSitting(false);
         this.entity.resetRideCooldown();
@@ -72,7 +72,7 @@ public class EntityAIMonkeySitInChair extends Goal {
      */
     @Override
     public void startExecuting() {
-        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getEntityBoundingBox().grow(32D));
+        List<EntityChair> list = this.entity.world.<EntityChair>getEntitiesWithinAABB(EntityChair.class, this.entity.getBoundingBox().grow(32D));
 
         if (!list.isEmpty()) {
             for (EntityChair chair : list) {
@@ -88,3 +88,5 @@ public class EntityAIMonkeySitInChair extends Goal {
         }
     }
 }
+
+

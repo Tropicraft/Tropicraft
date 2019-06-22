@@ -59,8 +59,8 @@ public class EntityAIEatToHeal extends Goal
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
 
         if (hasFoodSource(entityObj.inventory)) {
             consumeOneStackSizeOfFood(entityObj.inventory);
@@ -140,7 +140,7 @@ public class EntityAIEatToHeal extends Goal
     {
         super.startExecuting();
         //this.insidePosX = -1;
-        //reset any previous path so updateTask can start with a fresh path
+        //reset any previous path so tick can start with a fresh path
         this.entityObj.getNavigator().clearPath();
     }
 
@@ -246,3 +246,4 @@ public class EntityAIEatToHeal extends Goal
         return null;
     }
 }
+

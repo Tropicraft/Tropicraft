@@ -97,3 +97,5 @@ public class EntityAIWanderNotLazy extends Goal {
         this.executionChance = newchance;
     }
 }
+
+

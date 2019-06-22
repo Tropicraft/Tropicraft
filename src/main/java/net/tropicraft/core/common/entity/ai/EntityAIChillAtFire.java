@@ -91,8 +91,8 @@ public class EntityAIChillAtFire extends Goal
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
 
         boolean isClose = false;
 
@@ -101,7 +101,7 @@ public class EntityAIChillAtFire extends Goal
             //path to base of fire
             blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getHomePosition();
+            blockposGoal = this.entityObj.func_213384_dI();
         }
 
         if (blockposGoal == null) {
@@ -138,7 +138,7 @@ public class EntityAIChillAtFire extends Goal
                 entityObj.heal(1);
 
             }
-            this.entityObj.getLookHelper().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+            this.entityObj.getLookController().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                     8F, 8F);
         } else {
             entityObj.setSitting(false);
@@ -197,7 +197,7 @@ public class EntityAIChillAtFire extends Goal
     {
         super.startExecuting();
         //this.insidePosX = -1;
-        //reset any previous path so updateTask can start with a fresh path
+        //reset any previous path so tick can start with a fresh path
         this.entityObj.getNavigator().clearPath();
     }
 
@@ -236,3 +236,4 @@ public class EntityAIChillAtFire extends Goal
         return false;
     }
 }
+

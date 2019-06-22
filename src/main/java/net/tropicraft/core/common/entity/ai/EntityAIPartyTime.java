@@ -103,8 +103,8 @@ public class EntityAIPartyTime extends Goal
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
 
         boolean isClose = false;
 
@@ -113,7 +113,7 @@ public class EntityAIPartyTime extends Goal
             blockposGoal = entityObj.listPosDrums.get(assignedDrumIndex);
         }
 
-        if (entityObj.world.getTotalWorldTime() % 200 == 0){
+        if (entityObj.world.getGameTime() % 200 == 0){
             if (this.entityObj.listPosDrums.size() > 0) {
                 assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
             }
@@ -138,7 +138,7 @@ public class EntityAIPartyTime extends Goal
             if (!bangDrum) {
                 //entityObj.setSitting(true);
                 entityObj.setDancing(true);
-                this.entityObj.getJumpHelper().setJumping();
+                this.entityObj.getJumpController().setJumping();
                 this.entityObj.rotationYaw = entityObj.world.rand.nextInt(360);
             } else {
                 entityObj.setDancing(false);
@@ -167,7 +167,7 @@ public class EntityAIPartyTime extends Goal
                     int phases = 4;
                     int phaseSplit = (nightEnd - nightStart) / phases;
 
-                    int timeOfDay = (int)(entityObj.world.getWorldTime() % 24000);
+                    int timeOfDay = (int)(entityObj.world.getDayTime() % 24000);
                     int nightTime = (timeOfDay - nightStart);
 
                     if (nightTime > phaseSplit * 3) {
@@ -204,22 +204,22 @@ public class EntityAIPartyTime extends Goal
                             hit = true;
                         }
                     } else {
-                        hit = entityObj.world.getTotalWorldTime() % (amp * rate) == 0;
+                        hit = entityObj.world.getGameTime() % (amp * rate) == 0;
                     }
-                    //System.out.println(entityObj.world.getTotalWorldTime());
+                    //System.out.println(entityObj.world.getGameTime());
 
                     if (hit) {
                         //System.out.println("stage: " + entityObj.hitIndex + " - " + entityObj.hitIndex2);
                         entityObj.hitIndex2++;
                         BlockState state = entityObj.world.getBlockState(blockposGoal);
-                        if (state.getBlock() instanceof BlockBongoDrum) {
-                            //((BlockBongoDrum) state.getBlock()).playBongoSound(entityObj.world, null, blockposGoal, state);
-                            TropicraftBongos bongo = ((BlockBongoDrum) state.getBlock()).getVariant(state);
+                        if (state.getOwner() instanceof BlockBongoDrum) {
+                            //((BlockBongoDrum) state.getOwner()).playBongoSound(entityObj.world, null, blockposGoal, state);
+                            TropicraftBongos bongo = ((BlockBongoDrum) state.getOwner()).getVariant(state);
                             float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
                             entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
                                     bongo.getSoundEvent(), SoundCategory.BLOCKS, 2.5F, pitch);
                             entityObj.swingArm(Hand.MAIN_HAND);
-                        } else if (state.getBlock() instanceof NoteBlock) {
+                        } else if (state.getOwner() instanceof NoteBlock) {
                             TileEntity tEnt = entityObj.world.getTileEntity(blockposGoal);
                             if (tEnt instanceof TileEntityNote) {
                                 TileEntityNote note = (TileEntityNote) tEnt;
@@ -239,7 +239,7 @@ public class EntityAIPartyTime extends Goal
 
                 }
 
-                this.entityObj.getLookHelper().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+                this.entityObj.getLookController().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                         8F, 8F);
             }
 
@@ -302,7 +302,7 @@ public class EntityAIPartyTime extends Goal
     {
         super.startExecuting();
         //this.insidePosX = -1;
-        //reset any previous path so updateTask can start with a fresh path
+        //reset any previous path so tick can start with a fresh path
         this.entityObj.getNavigator().clearPath();
         if (this.entityObj.listPosDrums.size() > 0) {
             assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
@@ -347,3 +347,4 @@ public class EntityAIPartyTime extends Goal
         return false;
     }
 }
+

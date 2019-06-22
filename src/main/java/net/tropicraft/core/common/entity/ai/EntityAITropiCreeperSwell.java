@@ -50,7 +50,7 @@ public class EntityAITropiCreeperSwell extends Goal
      * Updates the task
      */
     @Override
-    public void updateTask()
+    public void tick()
     {
         if (this.creeperAttackTarget == null)
         {
@@ -70,3 +70,4 @@ public class EntityAITropiCreeperSwell extends Goal
         }
     }
 }
+

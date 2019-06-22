@@ -57,7 +57,7 @@ public class EntityAISitAndDrink extends Goal {
      * Keep ticking a continuous task that has already been started
      */
     @Override
-    public void updateTask() {
+    public void tick() {
         waitCounter--;
 
         if (waitCounter <= 0) {
@@ -71,3 +71,5 @@ public class EntityAISitAndDrink extends Goal {
         }
     }
 }
+
+

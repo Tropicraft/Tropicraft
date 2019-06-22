@@ -37,7 +37,7 @@ public class EntityAIPlayKoa extends Goal
         }
         else
         {
-            List<VillagerEntity> list = this.villagerObj.world.<VillagerEntity>getEntitiesWithinAABB(VillagerEntity.class, this.villagerObj.getEntityBoundingBox().grow(6.0D, 3.0D, 6.0D));
+            List<VillagerEntity> list = this.villagerObj.world.<VillagerEntity>getEntitiesWithinAABB(VillagerEntity.class, this.villagerObj.getBoundingBox().grow(6.0D, 3.0D, 6.0D));
             double d0 = Double.MAX_VALUE;
 
             for (VillagerEntity entityvillager : list)
@@ -105,12 +105,12 @@ public class EntityAIPlayKoa extends Goal
      * Updates the task
      */
     @Override
-    public void updateTask()
+    public void tick()
     {
         --this.playTime;
 
         if (villagerObj.onGround && villagerObj.world.rand.nextInt(30) == 0) {
-            this.villagerObj.getJumpHelper().setJumping();
+            this.villagerObj.getJumpController().setJumping();
         }
 
         if (this.targetVillager != null)
@@ -133,3 +133,4 @@ public class EntityAIPlayKoa extends Goal
         }
     }
 }
+

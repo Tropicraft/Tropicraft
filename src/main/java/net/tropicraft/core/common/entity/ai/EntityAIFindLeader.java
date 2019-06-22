@@ -20,7 +20,7 @@ public class EntityAIFindLeader extends Goal {
 	 */
 	@Override
 	public boolean shouldContinueExecuting() {
-		if (!this.fish.isEntityAlive()) {
+		if (!this.fish.isAlive()) {
 			return false;
 		}
 
@@ -52,7 +52,7 @@ public class EntityAIFindLeader extends Goal {
 	 * Updates the task
 	 */
 	@Override
-	public void updateTask() {
+	public void tick() {
 		if (--this.delayCounter <= 0) {
 			this.delayCounter = 10;
 			this.checkForLeader();
@@ -60,7 +60,7 @@ public class EntityAIFindLeader extends Goal {
 	}
 
 	public void checkForLeader(){
-		List<EntityTropicalFish> list = fish.world.getEntitiesWithinAABB(EntityTropicalFish.class, fish.getEntityBoundingBox().grow(10D, 10D, 10D));
+		List<EntityTropicalFish> list = fish.world.getEntitiesWithinAABB(EntityTropicalFish.class, fish.getBoundingBox().grow(10D, 10D, 10D));
 		for (EntityTropicalFish ent : list){
 			System.out.println("Checking for leader");
 			if (ent.getColor() == fish.getColor()) {
@@ -79,3 +79,5 @@ public class EntityAIFindLeader extends Goal {
 		}
 	}
 }
+
+

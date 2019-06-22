@@ -69,7 +69,7 @@ public class EntityAIStealDrink extends Goal {
      * Keep ticking a continuous task that has already been started
      */
     @Override
-    public void updateTask() {
+    public void tick() {
         if (this.entity.getDistanceSq(this.entity.getFollowingEntity()) < 4.0F) {
             System.out.println("Stealing");
             // if main hand
@@ -83,3 +83,5 @@ public class EntityAIStealDrink extends Goal {
         }
     }
 }
+
+

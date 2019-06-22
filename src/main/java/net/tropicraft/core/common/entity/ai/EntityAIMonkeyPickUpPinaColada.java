@@ -77,7 +77,7 @@ public class EntityAIMonkeyPickUpPinaColada extends Goal {
     private boolean hasNearbyDrink(Drink drink) {
     	ItemStack stack = MixerRecipes.getItemStack(drink);
 
-        List<ItemEntity> list = this.entity.world.<ItemEntity>getEntitiesWithinAABB(ItemEntity.class, this.entity.getEntityBoundingBox().grow(10.0D));
+        List<ItemEntity> list = this.entity.world.<ItemEntity>getEntitiesWithinAABB(ItemEntity.class, this.entity.getBoundingBox().grow(10.0D));
 
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {
@@ -96,9 +96,9 @@ public class EntityAIMonkeyPickUpPinaColada extends Goal {
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void updateTask() {
+    public void tick() {
         if (this.drinkEntity != null && !this.entity.getLeashed()) {
-            this.entity.getLookHelper().setLookPositionWithEntity(this.drinkEntity, 10.0F, (float)this.entity.getVerticalFaceSpeed());
+            this.entity.getLookController().setLookPositionWithEntity(this.drinkEntity, 10.0F, (float)this.entity.getVerticalFaceSpeed());
 
             if (this.entity.getDistanceSq(this.drinkEntity) > (double)(this.stopDistance * this.stopDistance)) {
                 if (--this.timeToRecalcPath <= 0) {
@@ -122,9 +122,11 @@ public class EntityAIMonkeyPickUpPinaColada extends Goal {
                 }
             } else {
             	this.entity.setHeldItem(Hand.MAIN_HAND, this.drinkEntity.getItem());
-            	this.drinkEntity.setDead();
+            	this.drinkEntity.remove();
             }
         }
     }
 
 }
+
+

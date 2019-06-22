@@ -46,7 +46,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
             @Override
             public boolean apply(@Nullable Entity p_apply_1_)
             {
-                return p_apply_1_.isEntityAlive() && EntityAIAvoidEntityOnLowHealth.this.theEntity.getEntitySenses().canSee(p_apply_1_);
+                return p_apply_1_.isAlive() && EntityAIAvoidEntityOnLowHealth.this.theEntity.getEntitySenses().canSee(p_apply_1_);
             }
         };
         this.theEntity = theEntityIn;
@@ -70,7 +70,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
         if (this.theEntity.getHealth() > healthToAvoid) return false;
 
         List<T> list = this.theEntity.world.<T>getEntitiesWithinAABB(this.classToAvoid,
-                this.theEntity.getEntityBoundingBox().expand((double)this.avoidDistance, 3.0D, (double)this.avoidDistance),
+                this.theEntity.getBoundingBox().expand((double)this.avoidDistance, 3.0D, (double)this.avoidDistance),
                 Predicates.and(new Predicate[] {EntityPredicates.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector}));
 
         if (list.isEmpty())
@@ -129,7 +129,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
      * Updates the task
      */
     @Override
-    public void updateTask()
+    public void tick()
     {
         if (this.theEntity.getDistanceSq(this.closestLivingEntity) < 49.0D)
         {
@@ -141,3 +141,4 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
         }
     }
 }
+

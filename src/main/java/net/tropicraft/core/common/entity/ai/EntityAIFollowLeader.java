@@ -28,7 +28,7 @@ public class EntityAIFollowLeader extends Goal {
 	 */
 	@Override
 	public boolean shouldContinueExecuting() {
-		if (!this.follower.isEntityAlive() || (this.follower.leader != null && !this.follower.leader.isEntityAlive())) {
+		if (!this.follower.isAlive() || (this.follower.leader != null && !this.follower.leader.isAlive())) {
 			return false;
 		} else {
 			double d0 = this.follower.getDistanceSq(this.follower.leader);
@@ -56,7 +56,7 @@ public class EntityAIFollowLeader extends Goal {
 	 * Updates the task
 	 */
 	@Override
-	public void updateTask() {
+	public void tick() {
 		if (--this.delayCounter <= 0) {
 			this.delayCounter = 4;
 			
@@ -67,3 +67,4 @@ public class EntityAIFollowLeader extends Goal {
 		}
 	}
 }
+

@@ -97,7 +97,7 @@ public class EntityAIGoneFishin extends Goal {
         }
 
         boolean result = false;//state != FISHING_STATE.IDLE || (entity.ticksExisted % 100 == 0 && findWater() != null);
-        if (entity.lastTimeFished < entity.world.getTotalWorldTime() && entity.world.rand.nextInt(3) == 0) {
+        if (entity.lastTimeFished < entity.world.getGameTime() && entity.world.rand.nextInt(3) == 0) {
             BlockPos posWater = findWater();
 
             //find close if failed
@@ -109,7 +109,7 @@ public class EntityAIGoneFishin extends Goal {
                 if (Util.tryMoveToXYZLongDist(entity, posWater, moveSpeedAmp)) {
                     posLastWaterFound = posWater;
                     result = true;
-                    entity.lastTimeFished = entity.world.getTotalWorldTime() + timeBetweenFishing + timeBetweenFishingRandom;
+                    entity.lastTimeFished = entity.world.getGameTime() + timeBetweenFishing + timeBetweenFishingRandom;
                     setState(FISHING_STATE.WALKING_TO_WATER);
                     debug("found water, start executing");
                 } else {
@@ -130,8 +130,8 @@ public class EntityAIGoneFishin extends Goal {
     }
 
     @Override
-    public void updateTask() {
-        super.updateTask();
+    public void tick() {
+        super.tick();
 
         if (repathPenalty > 0) {
             repathPenalty--;
@@ -296,7 +296,7 @@ public class EntityAIGoneFishin extends Goal {
                 resetTask();
             }
 
-            if (walkingTimeout <= 0 || (entity.getNavigator().noPath() && entity.world.getTotalWorldTime() % 20 == 0)) {
+            if (walkingTimeout <= 0 || (entity.getNavigator().noPath() && entity.world.getGameTime() % 20 == 0)) {
                 if (!retryPathOrAbort(entity.getHomePosition())) return;
             }
 
@@ -414,11 +414,11 @@ public class EntityAIGoneFishin extends Goal {
         retractLine();
         entity.swingArm(Hand.MAIN_HAND);
         EntityFishHook lure = new EntityFishHook(entity.world, entity);
-        entity.world.spawnEntity(lure);
+        entity.world.addEntity0(lure);
     }
 
     private void retractLine() {
-        if (entity.getLure() != null) entity.getLure().setDead();
+        if (entity.getLure() != null) entity.getLure().remove();
     }
 
     public void faceCoord(BlockPos coord, float maxDeltaYaw, float maxDeltaPitch) {
@@ -455,3 +455,5 @@ public class EntityAIGoneFishin extends Goal {
         return curRotation + f3;
     }
 }
+
+

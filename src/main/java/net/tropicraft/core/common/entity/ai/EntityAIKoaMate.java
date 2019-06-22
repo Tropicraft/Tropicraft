@@ -49,7 +49,7 @@ public class EntityAIKoaMate extends Goal
         else
         {
             if (this.canTownHandleMoreVillagers() && this.villagerObj.getIsWillingToMate(true)) {
-                List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getEntityBoundingBox().grow(8.0D, 3.0D, 8.0D));
+                List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getBoundingBox().grow(8.0D, 3.0D, 8.0D));
                 EntityKoaBase clEnt = null;
                 double clDist = 9999;
                 for (EntityKoaBase ent : listEntities) {
@@ -112,10 +112,10 @@ public class EntityAIKoaMate extends Goal
      * Updates the task
      */
     @Override
-    public void updateTask()
+    public void tick()
     {
         --this.matingTimeout;
-        this.villagerObj.getLookHelper().setLookPositionWithEntity(this.mate, 10.0F, 30.0F);
+        this.villagerObj.getLookController().setLookPositionWithEntity(this.mate, 10.0F, 30.0F);
 
         if (this.villagerObj.getDistanceSq(this.mate) > 2.25D)
         {
@@ -184,7 +184,8 @@ public class EntityAIKoaMate extends Goal
 
 
 
-        this.world.spawnEntity(entityvillager);
+        this.world.addEntity0(entityvillager);
         this.world.setEntityState(entityvillager, (byte)12);
     }
 }
+

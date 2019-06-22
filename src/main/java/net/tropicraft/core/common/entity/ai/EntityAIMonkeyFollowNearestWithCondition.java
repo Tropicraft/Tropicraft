@@ -50,7 +50,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends Goal
         if (this.entity.isTamed()) return false;
         if (this.entity.selfHoldingDrink(Drink.pinaColada)) return false;
 
-        List<PlayerEntity> list = this.entity.world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, this.entity.getEntityBoundingBox().grow((double)this.areaSize), this.followPredicate);
+        List<PlayerEntity> list = this.entity.world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, this.entity.getBoundingBox().grow((double)this.areaSize), this.followPredicate);
 
         if (!list.isEmpty()) {
             for (PlayerEntity entityliving : list) {
@@ -97,7 +97,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends Goal
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void updateTask() {
+    public void tick() {
         if (this.entity.getFollowingEntity() != null && !this.entity.getLeashed()) {
             followCounter++;
 
@@ -106,7 +106,7 @@ public class EntityAIMonkeyFollowNearestWithCondition extends Goal
                 this.entity.setAttackTarget(this.entity.getFollowingEntity());
             }
 
-            this.entity.getLookHelper().setLookPositionWithEntity(this.entity.getFollowingEntity(), 10.0F, (float)this.entity.getVerticalFaceSpeed());
+            this.entity.getLookController().setLookPositionWithEntity(this.entity.getFollowingEntity(), 10.0F, (float)this.entity.getVerticalFaceSpeed());
 
             if (this.entity.getDistanceSq(this.entity.getFollowingEntity()) > (double)(this.stopDistance * this.stopDistance)) {
                 if (--this.timeToRecalcPath <= 0) {
@@ -132,3 +132,4 @@ public class EntityAIMonkeyFollowNearestWithCondition extends Goal
         }
     }
 }
+

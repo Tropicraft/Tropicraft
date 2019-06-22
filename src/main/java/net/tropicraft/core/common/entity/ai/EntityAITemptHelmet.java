@@ -151,9 +151,9 @@ public class EntityAITemptHelmet extends Goal
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void updateTask()
+    public void tick()
     {
-        this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, (float)(this.temptedEntity.getHorizontalFaceSpeed() + 20), (float)this.temptedEntity.getVerticalFaceSpeed());
+        this.temptedEntity.getLookController().setLookPositionWithEntity(this.temptingPlayer, (float)(this.temptedEntity.getHorizontalFaceSpeed() + 20), (float)this.temptedEntity.getVerticalFaceSpeed());
 
         if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D)
         {
@@ -173,3 +173,4 @@ public class EntityAITemptHelmet extends Goal
         return this.isRunning;
     }
 }
+
