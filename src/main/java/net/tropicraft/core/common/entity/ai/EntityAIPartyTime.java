@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class EntityAIPartyTime extends Goal
     public EntityAIPartyTime(EntityKoaBase entityObjIn)
     {
         this.entityObj = entityObjIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**

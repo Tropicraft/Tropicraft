@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
+import java.util.EnumSet;
 import java.util.List;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -18,7 +19,7 @@ public class EntityAIPlayKoa extends Goal
     {
         this.villagerObj = villagerObjIn;
         this.speed = speedIn;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**

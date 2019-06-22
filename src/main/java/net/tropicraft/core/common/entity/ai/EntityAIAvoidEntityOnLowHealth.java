@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -56,8 +57,8 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
         this.farSpeed = farSpeedIn;
         this.nearSpeed = nearSpeedIn;
         this.entityPathNavigate = theEntityIn.getNavigator();
-        this.setMutexBits(1);
         this.healthToAvoid = healthToAvoid;
+        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**

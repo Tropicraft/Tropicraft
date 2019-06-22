@@ -10,6 +10,8 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.registry.ItemRegistry;
 
+import java.util.EnumSet;
+
 public class EntityAIChillAtFire extends Goal
 {
     private final EntityKoaBase entityObj;
@@ -27,7 +29,7 @@ public class EntityAIChillAtFire extends Goal
     public EntityAIChillAtFire(EntityKoaBase entityObjIn)
     {
         this.entityObj = entityObjIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**

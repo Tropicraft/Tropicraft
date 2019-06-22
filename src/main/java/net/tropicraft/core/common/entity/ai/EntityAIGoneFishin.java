@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
@@ -59,7 +60,7 @@ public class EntityAIGoneFishin extends Goal {
 
     public EntityAIGoneFishin(EntityKoaBase entity) {
         this.entity = entity;
-        setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         rand = new Random();
 
         walkingTimeout = walkingTimeoutMax;

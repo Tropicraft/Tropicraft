@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.entity.AgeableEntity;
@@ -28,7 +29,7 @@ public class EntityAIKoaMate extends Goal
     {
         this.villagerObj = villagerIn;
         this.world = villagerIn.world;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**

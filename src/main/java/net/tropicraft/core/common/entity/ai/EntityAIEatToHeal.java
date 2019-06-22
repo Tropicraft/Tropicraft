@@ -14,6 +14,8 @@ import net.minecraft.util.math.Vec3d;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
+import java.util.EnumSet;
+
 public class EntityAIEatToHeal extends Goal
 {
     private final EntityKoaBase entityObj;
@@ -33,7 +35,7 @@ public class EntityAIEatToHeal extends Goal
     public EntityAIEatToHeal(EntityKoaBase entityObjIn)
     {
         this.entityObj = entityObjIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**

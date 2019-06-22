@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.entity.ai;
 
 import com.google.common.collect.Sets;
+
+import java.util.EnumSet;
 import java.util.Set;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -49,7 +51,7 @@ public class EntityAITemptHelmet extends Goal
         this.speed = speedIn;
         this.temptItem = temptItemIn;
         this.scaredByPlayerMovement = scaredByPlayerMovementIn;
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 
         if (!(temptedEntityIn.getNavigator() instanceof GroundPathNavigator))
         {
