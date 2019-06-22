@@ -30,7 +30,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
     private final PathNavigator entityPathNavigate;
     /** Class of entity this behavior seeks to avoid */
     private final Class<T> classToAvoid;
-    private final Predicate <Entity> avoidTargetSelector;
+    private final Predicate<Entity> avoidTargetSelector;
     private float healthToAvoid = 0F;
 
     public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)

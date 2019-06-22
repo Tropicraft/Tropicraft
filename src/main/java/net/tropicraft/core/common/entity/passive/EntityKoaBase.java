@@ -24,6 +24,7 @@ import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
@@ -88,7 +89,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     private int villageDimID = INVALID_DIM;
 
-    //private EntityFishHook lure;
+    private FishingBobberEntity lure;
 
     private boolean wasInWater = false;
     private boolean wasNightLastTick = false;
@@ -1390,7 +1391,8 @@ public class EntityKoaBase extends VillagerEntity {
         this.villageDimID = villageDimID;
     }*/
 
-    public TownKoaVillage getVillage() {
+    //TODO: 1.14 readd
+    /*public TownKoaVillage getVillage() {
         if (this.villageDimID == INVALID_DIM || this.villageID == -1) return null;
 
         World world = DimensionManager.getWorld(villageDimID);
@@ -1439,35 +1441,38 @@ public class EntityKoaBase extends VillagerEntity {
         }
 
         return closestVillage;
-    }
+    }*/
 
     @Override
     public void remove() {
         super.remove();
         if (!world.isRemote) {
             //System.out.println("hook dead " + this);
-            TownKoaVillage village = getVillage();
+            //TODO: 1.14 readd
+            /*TownKoaVillage village = getVillage();
             if (village != null) {
                 village.hookEntityDied(this);
-            }
+            }*/
         }
     }
 
+    //TODO: 1.14 readd listener for unload
     public void hookUnloaded() {
         if (!world.isRemote) {
             //System.out.println("hook unloaded " + this);
-            TownKoaVillage village = getVillage();
+            //TODO: 1.14 readd
+            /*TownKoaVillage village = getVillage();
             if (village != null) {
                 village.hookEntityDestroyed(this);
-            }
+            }*/
         }
     }
 
-    public EntityFishHook getLure() {
+    public FishingBobberEntity getLure() {
         return lure;
     }
 
-    public void setLure(EntityFishHook lure) {
+    public void setLure(FishingBobberEntity lure) {
         this.lure = lure;
         if (!this.world.isRemote) {
             if (lure != null) {
@@ -1491,7 +1496,8 @@ public class EntityKoaBase extends VillagerEntity {
         return result;
     }
 
-    public void postSpawnGenderFix() {
+    //TODO: 1.14 readd
+    /*public void postSpawnGenderFix() {
         TownKoaVillage village = getVillage();
         if (village != null) {
             //gender balencing, not factoring in orientation
@@ -1515,7 +1521,7 @@ public class EntityKoaBase extends VillagerEntity {
 
             //System.out.println("population size: " + village.getPopulationSize() + ", males: " + maleCount + ", females: " + femaleCount);
         }
-    }
+    }*/
 
     //do not constantly use throughout night, as the night doesnt happen all on the same day
     //use asap and store value

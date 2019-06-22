@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.entity.passive.EntityFishHook;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
-import net.tropicraft.core.common.item.ItemRiverFish;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAIGoneFishin extends Goal {
@@ -66,16 +65,16 @@ public class EntityAIGoneFishin extends Goal {
         walkingTimeout = walkingTimeoutMax;
         fishingTimeout = fishingTimeoutMax;
 
-        listFishables.add(new ItemStack(Items.FISH));
+        listFishables.add(new ItemStack(Items.TROPICAL_FISH));
         listFishables.add(new ItemStack(ItemRegistry.freshMarlin));
         listFishables.add(new ItemStack(ItemRegistry.fertilizer));
         listFishables.add(new ItemStack(ItemRegistry.rawRay));
-        for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
+        /*for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
             listFishables.add(new ItemStack(ItemRegistry.rawTropicalFish, 1, i));
         }
         for (int i = 0; i < ItemRiverFish.FISH_COLORS.length; i++) {
             listFishables.add(new ItemStack(ItemRegistry.rawRiverFish, 1, i));
-        }
+        }*/
     }
 
     @Override
@@ -93,7 +92,7 @@ public class EntityAIGoneFishin extends Goal {
 
         BlockPos blockpos = new BlockPos(this.entity);
 
-        if ((!this.entity.world.isDaytime() || this.entity.world.isRaining() && this.entity.world.getBiome(blockpos).canRain())) {
+        if ((!this.entity.world.isDaytime() || this.entity.world.isRaining() && this.entity.world.getBiome(blockpos).getPrecipitation() == Biome.RainType.RAIN)) {
             return false;
         }
 
@@ -201,7 +200,7 @@ public class EntityAIGoneFishin extends Goal {
             }
 
             //orig code had || isinWater, is contradicting to above code, hrm, then again find water code doesnt find it near shore...
-            if (entity.getDistance(posLastWaterFound.getX(), posLastWaterFound.getY(), posLastWaterFound.getZ()) < 8D || entity.isInWater()) {
+            if (Util.getDistance(entity, posLastWaterFound.getX(), posLastWaterFound.getY(), posLastWaterFound.getZ()) < 8D || entity.isInWater()) {
                 entity.getNavigator().clearPath();
                 setState(FISHING_STATE.FISHING);
                 faceCoord(posLastWaterFound, 180, 180);
@@ -289,7 +288,7 @@ public class EntityAIGoneFishin extends Goal {
             //entity.func_213384_dI()
 
             //debug(entity.func_213384_dI());
-            if (entity.getDistance(entity.func_213384_dI().getX(), entity.func_213384_dI().getY(), entity.func_213384_dI().getZ()) < 3D) {
+            if (Util.getDistance(entity, entity.func_213384_dI().getX(), entity.func_213384_dI().getY(), entity.func_213384_dI().getZ()) < 3D) {
                 debug("dropping off fish, reset");
                 fishCaught = 0;
                 entity.tryDumpInventoryIntoHomeChest();
@@ -307,7 +306,7 @@ public class EntityAIGoneFishin extends Goal {
             }
         } else if (state == FISHING_STATE.WALKING_TO_LAND) {
 
-            if (entity.getDistance(posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround) {
+            if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround) {
                 posLastLandFound = new BlockPos(entity.getPosition());
                 entity.getNavigator().clearPath();
                 setState(FISHING_STATE.FISHING);
@@ -322,7 +321,7 @@ public class EntityAIGoneFishin extends Goal {
                 } else if (entity.getNavigator().noPath()) {
                     debug("pathing having no path, pf find failed?");
                 }
-                if (entity.getDistance(posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 64D) {
+                if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 64D) {
                     if (!retryPathOrAbort(posLastLandFound)) return;
                 } else {
                     if (!retryPathOrAbort(posLastWaterFound)) return;
@@ -414,8 +413,8 @@ public class EntityAIGoneFishin extends Goal {
         fishingTimeout = fishingTimeoutMax;
         retractLine();
         entity.swingArm(Hand.MAIN_HAND);
-        EntityFishHook lure = new EntityFishHook(entity.world, entity);
-        entity.world.addEntity0(lure);
+        FishingBobberEntity lure = new FishingBobberEntity(entity.world, entity, 0, 0);
+        entity.world.addEntity(lure);
     }
 
     private void retractLine() {

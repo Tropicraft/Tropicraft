@@ -45,7 +45,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = new BlockPos(this.entityObj);
 
-        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether()) {
+        if (!this.entityObj.world.isDaytime()) {
             if (!isTooClose()) {
                 if (entityObj.world.rand.nextInt(20) == 0) {
                     return true;
@@ -75,7 +75,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();
-        if ((!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether())
+        if (!this.entityObj.world.isDaytime())
         {
             if (!isTooClose()) {
                 return true;
@@ -155,7 +155,7 @@ public class EntityAIChillAtFire extends Goal
 
                 boolean success = false;
 
-                if (this.entityObj.getDistanceSq(blockposGoal) > 256.0D) {
+                if (this.entityObj.getDistanceSq(new Vec3d(blockposGoal)) > 256.0D) {
                     Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                     if (vec3d != null) {

@@ -5,13 +5,11 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
@@ -98,7 +96,7 @@ public class EntityAIEatToHeal extends Goal
 
                     boolean success = false;
 
-                    if (this.entityObj.getDistanceSq(blockposGoal) > 256.0D) {
+                    if (this.entityObj.getDistanceSq(new Vec3d(blockposGoal)) > 256.0D) {
                         Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                         if (vec3d != null) {
@@ -204,10 +202,8 @@ public class EntityAIEatToHeal extends Goal
     public boolean hasFoodSource(IInventory inv) {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (!Util.isEmpty(stack) && stack.getCount() > 0) {
-                if (stack.getItem() instanceof ItemFood) {
-                    return true;
-                }
+            if (!stack.isEmpty() && stack.getItem().isFood()) {
+                return true;
             }
         }
         return false;
@@ -223,7 +219,7 @@ public class EntityAIEatToHeal extends Goal
                 return consumeOneStackSizeOfFood(chest);
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -235,17 +231,21 @@ public class EntityAIEatToHeal extends Goal
     public ItemStack consumeOneStackSizeOfFood(IInventory inv) {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (!Util.isEmpty(stack) && stack.getCount() > 0) {
-                if (stack.getItem() instanceof ItemFood) {
+            if (!stack.isEmpty()) {
+                if (stack.getItem().isFood()) {
                     stack.shrink(1);
                     if (stack.getCount() <= 0) {
                         inv.setInventorySlotContents(i, ItemStack.EMPTY);
                     }
-                    return new ItemStack(stack.getItem(), 1, stack.getMetadata());
+
+                    //returning the state of the single ate item, though this return value doesnt seem to be used anywhere atm
+                    ItemStack newStack = stack.copy();
+                    newStack.setCount(1);
+                    return newStack;
                 }
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 }
 

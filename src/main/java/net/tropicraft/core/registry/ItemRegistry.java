@@ -22,5 +22,9 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item scale = Items.TROPICAL_FISH;
     public static Item whitePearl = Items.TROPICAL_FISH;
     public static Item blackPearl = Items.TROPICAL_FISH;
-    public static IItemProvider dagger;
+    public static Item dagger = Items.TROPICAL_FISH;
+    public static Item bambooMug = Items.TROPICAL_FISH;
+    public static Item cookedFrogLeg = Items.TROPICAL_FISH;
+    public static Item orange = Items.TROPICAL_FISH;
+    public static Item rawRay = Items.TROPICAL_FISH;
 }
