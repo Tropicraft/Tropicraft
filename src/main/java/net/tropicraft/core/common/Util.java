@@ -218,6 +218,14 @@ public class Util {
         return deep && notUnderground && clearAbove;
     }
 
+    public static boolean isLand(World world, BlockPos pos) {
+        return world.getBlockState(pos).getMaterial().isSolid();
+    }
+
+    public static boolean isFire(World world, BlockPos pos) {
+        return world.getBlockState(pos).getMaterial() == Material.FIRE;
+    }
+
     public static double getDistance(Entity ent, double x, double y, double z)
     {
         double d0 = ent.posX - x;

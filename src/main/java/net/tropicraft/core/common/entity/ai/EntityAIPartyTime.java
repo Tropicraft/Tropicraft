@@ -18,6 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.BlockBongoDrum;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
@@ -86,7 +87,7 @@ public class EntityAIPartyTime extends Goal
     {
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether())
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN))
         {
             if (!isTooClose()) {
                 return true;

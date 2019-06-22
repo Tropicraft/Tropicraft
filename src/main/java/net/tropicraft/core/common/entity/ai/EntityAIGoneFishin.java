@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -15,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAIGoneFishin extends Goal {
@@ -413,7 +413,7 @@ public class EntityAIGoneFishin extends Goal {
         fishingTimeout = fishingTimeoutMax;
         retractLine();
         entity.swingArm(Hand.MAIN_HAND);
-        FishingBobberEntity lure = new FishingBobberEntity(entity.world, entity, 0, 0);
+        FishingBobberEntity lure = new FishingBobberEntity(entity, entity.world, 0, 0);
         entity.world.addEntity(lure);
     }
 

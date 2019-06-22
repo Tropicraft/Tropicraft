@@ -24,7 +24,6 @@ import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
@@ -114,6 +113,8 @@ public class EntityKoaBase extends VillagerEntity {
     public static Predicate<Entity> ENEMY_PREDICATE =
             //TODO: 1.14 fix
             input -> (input instanceof MonsterEntity/* && !(input instanceof CreeperEntity)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen*/);
+
+
 
     public enum Genders {
         MALE,
@@ -1350,12 +1351,25 @@ public class EntityKoaBase extends VillagerEntity {
         super.heal(healAmount);
     }
 
-    @Override
+    //TODO: vanilla villager mating is using brain/memory/blackboard system now, we dont need all that for now at least, just stick with normal boolean state
+
+    public void setMating(boolean b) {
+
+    }
+
+    public boolean isMating() {
+
+    }
+
+    /*@Override*/
     public boolean getIsWillingToMate(boolean updateFirst) {
         //vanilla did food check here but hunters dont have any
         //our population limits work well enough to leave this to always true
         this.setIsWillingToMate(true);
         return true;
+    }
+
+    private void setIsWillingToMate(boolean b) {
     }
 
     public boolean willBone(EntityKoaBase bonie) {

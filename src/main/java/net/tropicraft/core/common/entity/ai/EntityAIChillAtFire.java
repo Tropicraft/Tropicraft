@@ -6,6 +6,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.registry.ItemRegistry;
@@ -45,7 +46,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = new BlockPos(this.entityObj);
 
-        if (!this.entityObj.world.isDaytime()) {
+        if (!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN) {
             if (!isTooClose()) {
                 if (entityObj.world.rand.nextInt(20) == 0) {
                     return true;
@@ -75,7 +76,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = new BlockPos(this.entityObj);
         //return !this.entityObj.getNavigator().noPath();
-        if (!this.entityObj.world.isDaytime())
+        if (!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN)
         {
             if (!isTooClose()) {
                 return true;

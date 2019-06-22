@@ -170,7 +170,7 @@ public class EntityAIKoaMate extends Goal
         entityvillager.setLocationAndAngles(this.villagerObj.posX, this.villagerObj.posY, this.villagerObj.posZ, 0.0F, 0.0F);
         if (entityvillager instanceof EntityKoaBase) {
             ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimID());
-            entityvillager.setHomePosAndDistance(villagerObj.func_213384_dI(), EntityKoaBase.MAX_HOME_DISTANCE);
+            entityvillager.func_213390_a(villagerObj.func_213384_dI(), EntityKoaBase.MAX_HOME_DISTANCE);
             TownKoaVillage village = villagerObj.getVillage();
             if (village != null) {
                 ((EntityKoaBase) entityvillager).postSpawnGenderFix();
