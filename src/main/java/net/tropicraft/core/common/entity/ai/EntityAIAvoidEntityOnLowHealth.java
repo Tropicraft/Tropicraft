@@ -3,13 +3,11 @@ package net.tropicraft.core.common.entity.ai;
 import java.util.EnumSet;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 import com.google.common.base.Predicates;
-
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.Path;
@@ -32,24 +30,17 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
     private final PathNavigator entityPathNavigate;
     /** Class of entity this behavior seeks to avoid */
     private final Class<T> classToAvoid;
-    private final Predicate <? super T > avoidTargetSelector;
+    private final Predicate <Entity> avoidTargetSelector;
     private float healthToAvoid = 0F;
 
     public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
     {
-        this(theEntityIn, classToAvoidIn, Predicates.<T>alwaysTrue(), avoidDistanceIn, farSpeedIn, nearSpeedIn, healthToAvoid);
+        this(theEntityIn, classToAvoidIn, (p_203782_0_) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn, healthToAvoid);
     }
 
-    public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, Predicate <? super T > avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
+    public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, Predicate<Entity> avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
     {
-        this.canBeSeenSelector = new Predicate<Entity>()
-        {
-            @Override
-            public boolean apply(@Nullable Entity p_apply_1_)
-            {
-                return p_apply_1_.isAlive() && EntityAIAvoidEntityOnLowHealth.this.theEntity.getEntitySenses().canSee(p_apply_1_);
-            }
-        };
+        this.canBeSeenSelector = entity -> entity.isAlive() && theEntity.getEntitySenses().canSee(entity);
         this.theEntity = theEntityIn;
         this.classToAvoid = classToAvoidIn;
         this.avoidTargetSelector = avoidTargetSelectorIn;
@@ -70,9 +61,10 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
 
         if (this.theEntity.getHealth() > healthToAvoid) return false;
 
-        List<T> list = this.theEntity.world.<T>getEntitiesWithinAABB(this.classToAvoid,
+        List<T> list = this.theEntity.world.getEntitiesWithinAABB(this.classToAvoid,
                 this.theEntity.getBoundingBox().expand((double)this.avoidDistance, 3.0D, (double)this.avoidDistance),
-                Predicates.and(new Predicate[] {EntityPredicates.CAN_AI_TARGET, this.canBeSeenSelector, this.avoidTargetSelector}));
+                EntityPredicates.CAN_AI_TARGET.and(this.canBeSeenSelector).and(this.avoidTargetSelector)
+        );
 
         if (list.isEmpty())
         {
