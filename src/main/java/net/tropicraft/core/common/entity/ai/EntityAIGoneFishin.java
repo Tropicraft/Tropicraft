@@ -260,7 +260,7 @@ public class EntityAIGoneFishin extends Goal {
                 debug("caught a fish");
 
                 if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
-                    if (Util.tryMoveToXYZLongDist(entity, entity.getHomePosition(), moveSpeedAmp)) {
+                    if (Util.tryMoveToXYZLongDist(entity, entity.func_213384_dI(), moveSpeedAmp)) {
                         setState(FISHING_STATE.RETURN_TO_BASE);
                     } else {
                         resetTask();
@@ -285,10 +285,10 @@ public class EntityAIGoneFishin extends Goal {
             }
 
         } else if (state == FISHING_STATE.RETURN_TO_BASE) {
-            //entity.getHomePosition()
+            //entity.func_213384_dI()
 
-            //debug(entity.getHomePosition());
-            if (entity.getDistance(entity.getHomePosition().getX(), entity.getHomePosition().getY(), entity.getHomePosition().getZ()) < 3D) {
+            //debug(entity.func_213384_dI());
+            if (entity.getDistance(entity.func_213384_dI().getX(), entity.func_213384_dI().getY(), entity.func_213384_dI().getZ()) < 3D) {
                 debug("dropping off fish, reset");
                 fishCaught = 0;
                 entity.tryDumpInventoryIntoHomeChest();
@@ -297,7 +297,7 @@ public class EntityAIGoneFishin extends Goal {
             }
 
             if (walkingTimeout <= 0 || (entity.getNavigator().noPath() && entity.world.getGameTime() % 20 == 0)) {
-                if (!retryPathOrAbort(entity.getHomePosition())) return;
+                if (!retryPathOrAbort(entity.func_213384_dI())) return;
             }
 
             if (walkingTimeout > 0) {
@@ -455,5 +455,6 @@ public class EntityAIGoneFishin extends Goal {
         return curRotation + f3;
     }
 }
+
 
 

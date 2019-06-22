@@ -332,7 +332,7 @@ public class EntityAIPartyTime extends Goal
             //path to base of fire
             blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getHomePosition();
+            blockposGoal = this.entityObj.func_213384_dI();
         }
 
         if (blockposGoal == null) {
@@ -347,4 +347,5 @@ public class EntityAIPartyTime extends Goal
         return false;
     }
 }
+
 
