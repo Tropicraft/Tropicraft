@@ -45,30 +45,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.village.MerchantRecipe;
-import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.capability.WorldDataInstance;
-import net.tropicraft.core.common.config.TropicsConfigs;
 import net.tropicraft.core.common.entity.ai.*;
-import net.tropicraft.core.common.entity.hostile.EntityAshen;
-import net.tropicraft.core.common.entity.hostile.EntityIguana;
-import net.tropicraft.core.common.entity.hostile.EntityTropiSkeleton;
-import net.tropicraft.core.common.entity.underdasea.atlantoku.EntityTropicalFish;
-import net.tropicraft.core.common.item.ItemRiverFish;
-import net.tropicraft.core.common.item.scuba.ItemDiveComputer;
-import net.tropicraft.core.common.town.ISimulationTickable;
-import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 import net.tropicraft.core.registry.BlockRegistry;
+import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityKoaBase extends VillagerEntity {
@@ -100,7 +88,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     private int villageDimID = INVALID_DIM;
 
-    private EntityFishHook lure;
+    //private EntityFishHook lure;
 
     private boolean wasInWater = false;
     private boolean wasNightLastTick = false;
@@ -285,8 +273,10 @@ public class EntityKoaBase extends VillagerEntity {
         //TODO: 1.14 fix missing tropical and river fish entries from tropicrafts fix
         //- consider adding vanillas ones too now
 
+        Int2ObjectMap<VillagerTrades.ITrade[]> offers = null;
+
         if (getRole() == Roles.FISHERMAN) {
-            func_221238_a(ImmutableMap.of(1,
+            offers = func_221238_a(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
                             new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
@@ -295,13 +285,15 @@ public class EntityKoaBase extends VillagerEntity {
                             new KoaTradeForPearls(ItemRegistry.fertilizer, 5, 8, 2)
                     }));
         } else if (getRole() == Roles.HUNTER) {
-            func_221238_a(ImmutableMap.of(1,
+            offers = func_221238_a(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
                             new KoaTradeForPearls(ItemRegistry.frogLeg, 5, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.iguanaLeather, 2, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.scale, 5, 8, 2)
                     }));
         }
+
+        return offers;
 
         /*func_221238_a(ImmutableMap.of(1,
                 new VillagerTrades.ITrade[]{
@@ -486,11 +478,11 @@ public class EntityKoaBase extends VillagerEntity {
             this.goalSelector.addGoal(curPri++, new EntityAIPlayKoa(this, 1.2D));
         }
 
-        this.goalSelector.addGoal(curPri, new EntityAIWatchClosest2(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(curPri, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(curPri++, new EntityAIWanderNotLazy(this, 1D, 40));
         this.goalSelector.addGoal(curPri++, new LookAtGoal(this, MobEntity.class, 8.0F));
 
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, true));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         //i dont think this one works, change to predicate
         if (canHunt()) {
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, LivingEntity.class, 10, true, false, ENEMY_PREDICATE));
@@ -502,7 +494,7 @@ public class EntityKoaBase extends VillagerEntity {
     @Override
     public VillagerEntity createChild(AgeableEntity ageable) {
         //EntityVillager ent = super.createChild(ageable);
-        EntityKoaHunter entityvillager = new EntityKoaHunter(this.world);
+        EntityKoaHunter entityvillager = new EntityKoaHunter(EntityRegistry.KOA_VILLAGER, this.world);
         entityvillager.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(entityvillager)), SpawnReason.BREEDING, null, null);
 
         return entityvillager;
@@ -910,10 +902,12 @@ public class EntityKoaBase extends VillagerEntity {
             //}
         }
 
-        findOrCreateNewVillage();
+        //TODO: 1.14 re-add
+        //findOrCreateNewVillage();
     }
 
-    public void findOrCreateNewVillage() {
+    //TODO: 1.14 re-add
+    /*public void findOrCreateNewVillage() {
         if ((world.getGameTime()+this.getEntityId()) % (20*5) != 0) return;
 
         if (getVillage() == null) {
@@ -937,9 +931,10 @@ public class EntityKoaBase extends VillagerEntity {
                 }
             }
         }
-    }
+    }*/
 
-    public TownKoaVillage createNewVillage(BlockPos pos) {
+    //TODO: 1.14 re-add
+    /*public TownKoaVillage createNewVillage(BlockPos pos) {
         WorldDataInstance storage = world.getCapability(Tropicraft.WORLD_DATA_INSTANCE, null);
 
         if (storage != null) {
@@ -967,7 +962,7 @@ public class EntityKoaBase extends VillagerEntity {
             return village;
         }
         return null;
-    }
+    }*/
 
     public void findAndSetHomeToCloseChest(boolean force) {
 

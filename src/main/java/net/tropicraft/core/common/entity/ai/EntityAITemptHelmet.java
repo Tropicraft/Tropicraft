@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.ai;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
-
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
-import net.tropicraft.core.registry.ItemRegistry;
 
 public class EntityAITemptHelmet extends Goal
 {
