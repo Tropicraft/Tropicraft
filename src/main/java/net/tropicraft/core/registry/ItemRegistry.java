@@ -316,8 +316,7 @@ public class ItemRegistry extends TropicraftRegistry {
         fishingNet = registerItem(registry, new ItemTropicraft(), "fishing_net");
 
         bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
-        // Note: Commented out because bamboo ladder recipe would make wooden ladders
-        // OreDictionary.registerOre("stickWood", bambooStick);
+        OreDictionary.registerOre("bamboo", bambooStick);
         bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
         freshMarlin = registerItem(registry, new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
@@ -327,7 +326,9 @@ public class ItemRegistry extends TropicraftRegistry {
         fishBucket = registerItem(registry, new ItemFishBucket(), "fish_bucket");
 
         coconutChunk = registerItem(registry, new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
+        OreDictionary.registerOre("cropCoconut", coconutChunk);
         pineappleCubes = registerItem(registry, new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
+        OreDictionary.registerOre("cropPineapple", pineappleCubes);
 
         coffeeBeans = registerMultiItem(registry, new ItemCoffeeBean(Names.COFFEE_NAMES, BlockRegistry.coffeePlant), "coffee_beans", Names.COFFEE_NAMES);
 
