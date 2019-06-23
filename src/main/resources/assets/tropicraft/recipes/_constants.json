@@ -82,5 +82,12 @@
       "ore": "bamboo"
     },
     "name": "BAMBOO"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "cropCoconut"
+    },
+    "name": "CROPCOCONUT"
   }
 ]
