@@ -75,5 +75,26 @@
   	  "ore": "itemCharcoal"
   	},
   	"name": "ITEMCHARCOAL"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "bamboo"
+    },
+    "name": "BAMBOO"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "cropCoconut"
+    },
+    "name": "CROPCOCONUT"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "cropPineapple"
+    },
+    "name": "CROPPINEAPPLE"
   }
 ]

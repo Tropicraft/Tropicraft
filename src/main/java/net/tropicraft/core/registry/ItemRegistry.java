@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBucket;
@@ -153,7 +154,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
     public static Item scale;
 
-    // Armor    
+    // Armor
     public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0.5F);
     public static Item scaleBoots;
     public static Item scaleLeggings;
@@ -316,8 +317,7 @@ public class ItemRegistry extends TropicraftRegistry {
         fishingNet = registerItem(registry, new ItemTropicraft(), "fishing_net");
 
         bambooStick = registerItem(registry, new ItemTropicraft(), "bamboo_stick");
-        // Note: Commented out because bamboo ladder recipe would make wooden ladders
-        // OreDictionary.registerOre("stickWood", bambooStick);
+        OreDictionary.registerOre("bamboo", bambooStick);
         bambooMug = registerItem(registry, new ItemTropicraft().setMaxStackSize(16), "bamboo_mug");
 
         freshMarlin = registerItem(registry, new ItemTropicraftFood(2, 0.3F), "fresh_marlin");
@@ -327,9 +327,13 @@ public class ItemRegistry extends TropicraftRegistry {
         fishBucket = registerItem(registry, new ItemFishBucket(), "fish_bucket");
 
         coconutChunk = registerItem(registry, new ItemTropicraftFood(1, 0.1F), "coconut_chunk");
+        OreDictionary.registerOre("cropCoconut", coconutChunk);
         pineappleCubes = registerItem(registry, new ItemTropicraftFood(1, 0.1F), "pineapple_cubes");
+        OreDictionary.registerOre("cropPineapple", pineappleCubes);
 
         coffeeBeans = registerMultiItem(registry, new ItemCoffeeBean(Names.COFFEE_NAMES, BlockRegistry.coffeePlant), "coffee_beans", Names.COFFEE_NAMES);
+        OreDictionary.registerOre("seedCoffee", new ItemStack(coffeeBeans, 1, 0));
+        OreDictionary.registerOre("cropCoffee", new ItemStack(coffeeBeans, 1, 1));
 
         frogLeg = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "frog_leg");
         cookedFrogLeg = registerItem(registry, new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");

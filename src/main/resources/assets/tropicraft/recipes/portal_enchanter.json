@@ -10,7 +10,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "@": {
-      "item": "tropicraft:bamboo_stick"
+      "item": "#BAMBOO"
     },
     "#": {
       "item": "tropicraft:azurite"

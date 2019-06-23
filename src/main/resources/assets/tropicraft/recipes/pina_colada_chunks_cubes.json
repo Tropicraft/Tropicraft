@@ -7,10 +7,10 @@
   },
   "ingredients": [
     {
-      "item": "tropicraft:coconut_chunk"
+      "item": "#CROPCOCONUT"
     },
     {
-      "item": "tropicraft:pineapple_cubes"
+      "item": "#CROPPINEAPPLE"
     },
     {
       "item": "tropicraft:bamboo_mug"
