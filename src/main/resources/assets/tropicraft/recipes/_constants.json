@@ -89,5 +89,12 @@
       "ore": "cropCoconut"
     },
     "name": "CROPCOCONUT"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "cropPineapple"
+    },
+    "name": "CROPPINEAPPLE"
   }
 ]
