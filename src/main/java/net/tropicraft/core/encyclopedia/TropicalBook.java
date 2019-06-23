@@ -116,7 +116,7 @@ public class TropicalBook {
                     }
                 }
             }
-        } catch (IOException ex) {
+        } catch (IllegalStateException | IOException ex) {
             LogManager.getLogger().error("Error reading encyclopedia data.", ex);
         }
     }
@@ -150,7 +150,7 @@ public class TropicalBook {
                     CompressedStreamTools.writeCompressed(data, dataOutput);
                 }
             }
-        } catch (IOException ex) {
+        } catch (IllegalStateException | IOException ex) {
             LogManager.getLogger().error("Error writing encyclopedia data.", ex);
         }
     }
