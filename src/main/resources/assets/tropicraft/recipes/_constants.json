@@ -75,5 +75,12 @@
   	  "ore": "itemCharcoal"
   	},
   	"name": "ITEMCHARCOAL"
+  },
+  {
+    "ingredient": {
+      "type": "forge:ore_dict",
+      "ore": "bamboo"
+    },
+    "name": "BAMBOO"
   }
 ]
