@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemBucket;
@@ -331,8 +332,8 @@ public class ItemRegistry extends TropicraftRegistry {
         OreDictionary.registerOre("cropPineapple", pineappleCubes);
 
         coffeeBeans = registerMultiItem(registry, new ItemCoffeeBean(Names.COFFEE_NAMES, BlockRegistry.coffeePlant), "coffee_beans", Names.COFFEE_NAMES);
-        OreDictionary.registerItem("seedCoffee", new ItemStack(coffeeBeans, 1, 0));
-        OreDictionary.registerItem("cropCoffee", new ItemStack(coffeeBeans, 1, 1));
+        OreDictionary.registerOre("seedCoffee", new ItemStack(coffeeBeans, 1, 0));
+        OreDictionary.registerOre("cropCoffee", new ItemStack(coffeeBeans, 1, 1));
 
         frogLeg = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "frog_leg");
         cookedFrogLeg = registerItem(registry, new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
