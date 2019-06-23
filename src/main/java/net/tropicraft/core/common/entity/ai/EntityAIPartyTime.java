@@ -3,9 +3,11 @@ package net.tropicraft.core.common.entity.ai;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import com.google.common.collect.Lists;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.block.NoteBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.goal.Goal;
@@ -13,21 +15,19 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityNote;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.block.BlockBongoDrum;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
-import net.tropicraft.core.common.enums.TropicraftBongos;
-import net.tropicraft.core.registry.SoundRegistry;
 
 public class EntityAIPartyTime extends Goal
 {
-    private final EntityKoaBase entityObj;
+    private EntityKoaBase entityObj;
 
     private int walkingTimeoutMax = 20*10;
 
@@ -62,7 +62,7 @@ public class EntityAIPartyTime extends Goal
 
         BlockPos blockpos = new BlockPos(this.entityObj);
 
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && !this.entityObj.world.getBiome(blockpos).canRain()) && !this.entityObj.world.provider.isNether()) {
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN)) {
             if (!isTooClose()) {
                 if (entityObj.world.rand.nextInt(20) == 0) {
                     return true;
@@ -214,26 +214,29 @@ public class EntityAIPartyTime extends Goal
                         //System.out.println("stage: " + entityObj.hitIndex + " - " + entityObj.hitIndex2);
                         entityObj.hitIndex2++;
                         BlockState state = entityObj.world.getBlockState(blockposGoal);
-                        if (state.getOwner() instanceof BlockBongoDrum) {
+                        //TODO: 1.14 readd
+                        /*if (state.getBlock() instanceof BlockBongoDrum) {
                             //((BlockBongoDrum) state.getOwner()).playBongoSound(entityObj.world, null, blockposGoal, state);
                             TropicraftBongos bongo = ((BlockBongoDrum) state.getOwner()).getVariant(state);
                             float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
                             entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
                                     bongo.getSoundEvent(), SoundCategory.BLOCKS, 2.5F, pitch);
                             entityObj.swingArm(Hand.MAIN_HAND);
-                        } else if (state.getOwner() instanceof NoteBlock) {
-                            TileEntity tEnt = entityObj.world.getTileEntity(blockposGoal);
-                            if (tEnt instanceof TileEntityNote) {
-                                TileEntityNote note = (TileEntityNote) tEnt;
-                                if (entityObj.world.rand.nextInt(10) == 0) {
-                                    for (int i = 0; i < 1 + entityObj.world.rand.nextInt(4); i++) {
-                                        note.changePitch();
-                                    }
-                                } else {
-                                    note.triggerNote(entityObj.world, blockposGoal);
+                        } else */
+                        if (state.getBlock() instanceof NoteBlock) {
+                            if (entityObj.world.rand.nextInt(10) == 0) {
+                                for (int i = 0; i < 1 + entityObj.world.rand.nextInt(4); i++) {
+                                    //note.changePitch();
+                                    state.cycle(NoteBlock.NOTE).get(NoteBlock.NOTE);
                                 }
-                                entityObj.swingArm(Hand.MAIN_HAND);
+                            } else {
+                                //note.triggerNote(entityObj.world, blockposGoal);
+                                state.getBlock().onBlockClicked(state, entityObj.world, blockposGoal,
+                                        FakePlayerFactory.get((ServerWorld) entityObj.world,
+                                                new GameProfile(UUID.fromString(" e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
                             }
+                            entityObj.swingArm(Hand.MAIN_HAND);
+
                         }
                     }
 
@@ -244,6 +247,7 @@ public class EntityAIPartyTime extends Goal
                 this.entityObj.getLookController().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                         8F, 8F);
             }
+
 
         } else {
             wasClose = false;
@@ -260,7 +264,7 @@ public class EntityAIPartyTime extends Goal
 
                 boolean success = false;
 
-                if (this.entityObj.getDistanceSq(blockposGoal) > 256.0D) {
+                if (this.entityObj.getDistanceSq(new Vec3d(blockposGoal)) > 256.0D) {
                     Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                     if (vec3d != null) {

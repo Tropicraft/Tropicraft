@@ -5,17 +5,17 @@ import java.util.List;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.util.math.Vec3d;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class EntityAIPlayKoa extends Goal
 {
-    private final VillagerEntity villagerObj;
+    private final EntityKoaBase villagerObj;
     private LivingEntity targetVillager;
     private final double speed;
     private int playTime;
 
-    public EntityAIPlayKoa(VillagerEntity villagerObjIn, double speedIn)
+    public EntityAIPlayKoa(EntityKoaBase villagerObjIn, double speedIn)
     {
         this.villagerObj = villagerObjIn;
         this.speed = speedIn;
@@ -38,10 +38,10 @@ public class EntityAIPlayKoa extends Goal
         }
         else
         {
-            List<VillagerEntity> list = this.villagerObj.world.<VillagerEntity>getEntitiesWithinAABB(VillagerEntity.class, this.villagerObj.getBoundingBox().grow(6.0D, 3.0D, 6.0D));
+            List<EntityKoaBase> list = this.villagerObj.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getBoundingBox().grow(6.0D, 3.0D, 6.0D));
             double d0 = Double.MAX_VALUE;
 
-            for (VillagerEntity entityvillager : list)
+            for (EntityKoaBase entityvillager : list)
             {
                 if (entityvillager != this.villagerObj && !entityvillager.isPlaying() && entityvillager.getGrowingAge() < 0)
                 {

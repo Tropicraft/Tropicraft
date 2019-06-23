@@ -110,6 +110,9 @@ public class EntityKoaBase extends VillagerEntity {
 
     private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(ItemRegistry.nigelStache);
 
+    private boolean isMating;
+    private boolean isPlaying;
+
     public static Predicate<Entity> ENEMY_PREDICATE =
             //TODO: 1.14 fix
             input -> (input instanceof MonsterEntity/* && !(input instanceof CreeperEntity)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen*/);
@@ -1353,12 +1356,12 @@ public class EntityKoaBase extends VillagerEntity {
 
     //TODO: vanilla villager mating is using brain/memory/blackboard system now, we dont need all that for now at least, just stick with normal boolean state
 
-    public void setMating(boolean b) {
-
+    public void setMating(boolean mating) {
+        this.isMating = mating;
     }
 
     public boolean isMating() {
-
+        return this.isMating;
     }
 
     /*@Override*/
@@ -1369,7 +1372,8 @@ public class EntityKoaBase extends VillagerEntity {
         return true;
     }
 
-    private void setIsWillingToMate(boolean b) {
+    public void setIsWillingToMate(boolean b) {
+        //NO-OP
     }
 
     public boolean willBone(EntityKoaBase bonie) {
@@ -1603,6 +1607,16 @@ public class EntityKoaBase extends VillagerEntity {
         }
 
         super.playSound(soundIn, volume, pitch);
+    }
+
+    public void setPlaying(boolean playing)
+    {
+        this.isPlaying = playing;
+    }
+
+    public boolean isPlaying()
+    {
+        return this.isPlaying;
     }
 
 }

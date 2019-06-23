@@ -9,7 +9,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
-import net.tropicraft.core.common.worldgen.village.TownKoaVillage;
 
 public class EntityAIKoaMate extends Goal
 {
@@ -137,7 +136,15 @@ public class EntityAIKoaMate extends Goal
         }
     }
 
-    private boolean canTownHandleMoreVillagers()
+    //TODO: for now just checks if villagers in general area, prone it overpopulation due to half chunks loaded
+    //fix in 1.14 by readding village object
+    private boolean canTownHandleMoreVillagers() {
+        List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getBoundingBox().grow(50.0D, 50.0D, 50.0D));
+
+        return listEntities.size() < 20;
+    }
+
+    /*private boolean canTownHandleMoreVillagers112()
     {
         TownKoaVillage village = villagerObj.getVillage();
 
@@ -153,8 +160,9 @@ public class EntityAIKoaMate extends Goal
         }
 
         return village.getPopulationSize() < village.getMaxPopulationSize();
-    }
+    }*/
 
+    //TODO: 1.14 readd
     private void giveBirth()
     {
         AgeableEntity entityvillager = this.villagerObj.createChild(this.mate);
@@ -171,12 +179,14 @@ public class EntityAIKoaMate extends Goal
         if (entityvillager instanceof EntityKoaBase) {
             ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimID());
             entityvillager.func_213390_a(villagerObj.func_213384_dI(), EntityKoaBase.MAX_HOME_DISTANCE);
-            TownKoaVillage village = villagerObj.getVillage();
+
+            //TODO: 1.14 readd
+            /*TownKoaVillage village = villagerObj.getVillage();
             if (village != null) {
                 ((EntityKoaBase) entityvillager).postSpawnGenderFix();
 
                 village.addEntity(entityvillager);
-            }
+            }*/
 
             ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
 
@@ -185,7 +195,7 @@ public class EntityAIKoaMate extends Goal
 
 
 
-        this.world.addEntity0(entityvillager);
+        this.world.addEntity(entityvillager);
         this.world.setEntityState(entityvillager, (byte)12);
     }
 }
