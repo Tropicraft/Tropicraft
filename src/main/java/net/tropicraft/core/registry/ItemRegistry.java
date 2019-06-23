@@ -153,7 +153,7 @@ public class ItemRegistry extends TropicraftRegistry {
 
     public static Item scale;
 
-    // Armor    
+    // Armor
     public static final ArmorMaterial materialScaleArmor = EnumHelper.addArmorMaterial("scale", "scale", 18, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0.5F);
     public static Item scaleBoots;
     public static Item scaleLeggings;
@@ -331,6 +331,8 @@ public class ItemRegistry extends TropicraftRegistry {
         OreDictionary.registerOre("cropPineapple", pineappleCubes);
 
         coffeeBeans = registerMultiItem(registry, new ItemCoffeeBean(Names.COFFEE_NAMES, BlockRegistry.coffeePlant), "coffee_beans", Names.COFFEE_NAMES);
+        OreDictionary.registerItem("seedCoffee", new ItemStack(coffeeBeans, 1, 0));
+        OreDictionary.registerItem("cropCoffee", new ItemStack(coffeeBeans, 1, 1));
 
         frogLeg = registerItem(registry, new ItemTropicraft().setMaxStackSize(64), "frog_leg");
         cookedFrogLeg = registerItem(registry, new ItemTropicraftFood(2, 0.15F), "cooked_frog_leg");
