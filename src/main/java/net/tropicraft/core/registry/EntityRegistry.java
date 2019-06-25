@@ -27,6 +27,7 @@ public class EntityRegistry {
                 .size(0.6F, 1.95F)
                 .setTrackingRange(64)
                 .setUpdateInterval(3)
+                .immuneToFire()
                 .setShouldReceiveVelocityUpdates(true)
                 .build("koa_villager"))
                 .setRegistryName("koa_villager"));

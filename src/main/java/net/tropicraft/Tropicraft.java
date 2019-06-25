@@ -7,12 +7,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.proxy.ClientProxy;
+import net.tropicraft.core.proxy.CommonProxy;
+import net.tropicraft.core.proxy.ServerProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,6 +34,8 @@ public class Tropicraft
         }
     });
 
+    public static CommonProxy PROXY;
+
     public Tropicraft() {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -42,6 +48,8 @@ public class Tropicraft
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

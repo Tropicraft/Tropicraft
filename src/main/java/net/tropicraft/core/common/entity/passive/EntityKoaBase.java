@@ -49,9 +49,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.api.distmarker.Dist;
-import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.ai.*;
@@ -104,7 +102,7 @@ public class EntityKoaBase extends VillagerEntity {
     private static int TRADE_COOLDOWN = 24000*3;
     private static int DIVE_TIME_NEEDED = 60*60;
 
-    public boolean debug = false;
+    public boolean debug = true;
 
     public int druggedTime = 0;
 
@@ -631,8 +629,8 @@ public class EntityKoaBase extends VillagerEntity {
         return flag;
     }
     
-    private static final Field _buyingPlayer = Util.findField(VillagerEntity.class, "field_70962_h", "buyingPlayer");
-    private static final Field _buyingList = Util.findField(VillagerEntity.class, "field_70963_i", "buyingList");
+    /*private static final Field _buyingPlayer = Util.findField(VillagerEntity.class, "field_70962_h", "buyingPlayer");
+    private static final Field _buyingList = Util.findField(VillagerEntity.class, "field_70963_i", "buyingList");*/
     
     @Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
@@ -1041,7 +1039,7 @@ public class EntityKoaBase extends VillagerEntity {
             tryFind = true;
         } else if (posLastFireplaceFound != null) {
             BlockState state = world.getBlockState(posLastFireplaceFound);
-            if (state.getMaterial() != Material.FIRE) {
+            if (state.getBlock() == Blocks.CAMPFIRE) {
                 //System.out.println("removing invalid fire spot");
                 posLastFireplaceFound = null;
                 tryFind = true;
@@ -1055,7 +1053,7 @@ public class EntityKoaBase extends VillagerEntity {
                     for (int z = -range; z <= range; z++) {
                         BlockPos pos = this.getPosition().add(x, y, z);
                         BlockState state = world.getBlockState(pos);
-                        if (state.getMaterial() == Material.FIRE) {
+                        if (state.getBlock() == Blocks.CAMPFIRE) {
                             dbg("found fire place spot to chill");
                             setFirelacePos(pos);
                             return;
@@ -1069,7 +1067,7 @@ public class EntityKoaBase extends VillagerEntity {
             for (EntityKoaBase ent : listEnts) {
                 if (ent.posLastFireplaceFound != null) {
                     BlockState state = world.getBlockState(ent.posLastFireplaceFound);
-                    if (state.getMaterial() == Material.FIRE) {
+                    if (state.getBlock() == Blocks.CAMPFIRE) {
                         posLastFireplaceFound = new BlockPos(ent.posLastFireplaceFound);
                         dbg("found fire place spot to chill from entity");
                         return;
