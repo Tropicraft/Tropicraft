@@ -42,6 +42,7 @@ public class WorldGenBamboo extends TCGenBase {
 
 		int amount = rand.nextInt(maxBamboo - minBamboo) + minBamboo;
 		int spread = rand.nextInt(3) - 1 + (int)(Math.sqrt(amount) / 2);
+		spread = spread > 0 ? spread : 1;
 
 		for(int l = 0; l < amount; l++) {
 		    boolean genStalk = true;
