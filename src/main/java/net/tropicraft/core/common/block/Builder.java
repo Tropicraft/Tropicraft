@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BushBlock;
 import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,6 +14,10 @@ public class Builder {
 
     public static Block sand(final MaterialColor color) {
         return new BlockTropicraftSand(prop(Material.SAND, color).hardnessAndResistance(0.5f));
+    }
+
+    public static Block bundle(final Block.Properties properties) {
+        return new BlockBundle(properties);
     }
 
     private static Block.Properties prop(final Material material) {

@@ -48,6 +48,9 @@ public class TropicraftBlocks {
     public static final Block VOLCANIC_SAND = Builder.sand(MaterialColor.BLACK);
     public static final Block MINERAL_SAND = Builder.sand(MaterialColor.SAND);
 
+    public static final Block BAMBOO_BUNDLE = Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT));
+    public static final Block THATCH_BUNDLE = Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT));
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -83,6 +86,8 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "foamy_sand", FOAMY_SAND);
             registerBlockDefault(event, "volcanic_sand", VOLCANIC_SAND);
             registerBlockDefault(event, "mineral_sand", MINERAL_SAND);
+            registerBlockDefault(event, "bamboo_bundle", BAMBOO_BUNDLE);
+            registerBlockDefault(event, "thatch_bundle", THATCH_BUNDLE);
         }
 
         @SubscribeEvent
@@ -116,6 +121,8 @@ public class TropicraftBlocks {
             registerItemDefault(event, FOAMY_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
             registerItemDefault(event, VOLCANIC_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
             registerItemDefault(event, MINERAL_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
+            registerItemDefault(event, BAMBOO_BUNDLE, Tropicraft.TROPICRAFT_ITEM_GROUP);
+            registerItemDefault(event, THATCH_BUNDLE, Tropicraft.TROPICRAFT_ITEM_GROUP);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "tropicraft:block/bamboo_bundle"
+    },
+    "axis=z": {
+      "model": "tropicraft:block/bamboo_bundle",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "tropicraft:block/bamboo_bundle",
+      "x": 90,
+      "y": 90
+    }
+  }
+}
