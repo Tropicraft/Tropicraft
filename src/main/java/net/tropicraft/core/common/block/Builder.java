@@ -2,6 +2,7 @@ package net.tropicraft.core.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowerBlock;
+import net.minecraft.block.LogBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -18,6 +19,14 @@ public class Builder {
 
     public static Block bundle(final Block.Properties properties) {
         return new BlockBundle(properties);
+    }
+
+    public static Block plank(final MaterialColor color) {
+        return new Block(prop(Material.WOOD, color).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD));
+    }
+
+    public static Block log(final MaterialColor topColor, final MaterialColor sideColor) {
+        return new LogBlock(topColor, prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
 
     private static Block.Properties prop(final Material material) {

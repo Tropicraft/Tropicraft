@@ -51,6 +51,11 @@ public class TropicraftBlocks {
     public static final Block BAMBOO_BUNDLE = Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT));
     public static final Block THATCH_BUNDLE = Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT));
 
+    public static final Block MAHOGANY_PLANKS = Builder.plank(MaterialColor.BROWN);
+    public static final Block PALM_PLANKS = Builder.plank(MaterialColor.WOOD);
+    public static final Block MAHOGANY_LOG = Builder.log(MaterialColor.WOOD, MaterialColor.BROWN);
+    public static final Block PALM_LOG = Builder.log(MaterialColor.WOOD, MaterialColor.BROWN);
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -88,48 +93,60 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "mineral_sand", MINERAL_SAND);
             registerBlockDefault(event, "bamboo_bundle", BAMBOO_BUNDLE);
             registerBlockDefault(event, "thatch_bundle", THATCH_BUNDLE);
+            registerBlockDefault(event, "mahogany_planks", MAHOGANY_PLANKS);
+            registerBlockDefault(event, "palm_planks", PALM_PLANKS);
+            registerBlockDefault(event, "mahogany_log", MAHOGANY_LOG);
+            registerBlockDefault(event, "palm_log", PALM_LOG);
         }
 
         @SubscribeEvent
         public static void onItemRegistry(final RegistryEvent.Register<Item> event) {
-            registerItemDefault(event, CHUNK, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, AZURITE_ORE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, EUDIALYTE_ORE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, ZIRCON_ORE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, MANGANESE_ORE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, SHAKA_ORE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, AZURITE_BLOCK, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, EUDIALYTE_BLOCK, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, ZIRCON_BLOCK, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, ACAI_VINE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, ANEMONE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, BROMELIAD, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, CANNA, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, COMMELINA_DIFFUSA, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, CROCOSMIA, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, CROTON, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, DRACAENA, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, FERN, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, FOLIAGE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, MAGIC_MUSHROOM, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, ORANGE_ANTHURIUM, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, ORCHID, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, PATHOS, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, RED_ANTHURIUM, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, PURIFIED_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, CORAL_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, FOAMY_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, VOLCANIC_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, MINERAL_SAND, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, BAMBOO_BUNDLE, Tropicraft.TROPICRAFT_ITEM_GROUP);
-            registerItemDefault(event, THATCH_BUNDLE, Tropicraft.TROPICRAFT_ITEM_GROUP);
+            registerItemDefault(event, CHUNK);
+            registerItemDefault(event, AZURITE_ORE);
+            registerItemDefault(event, EUDIALYTE_ORE);
+            registerItemDefault(event, ZIRCON_ORE);
+            registerItemDefault(event, MANGANESE_ORE);
+            registerItemDefault(event, SHAKA_ORE);
+            registerItemDefault(event, AZURITE_BLOCK);
+            registerItemDefault(event, EUDIALYTE_BLOCK);
+            registerItemDefault(event, ZIRCON_BLOCK);
+            registerItemDefault(event, ACAI_VINE);
+            registerItemDefault(event, ANEMONE);
+            registerItemDefault(event, BROMELIAD);
+            registerItemDefault(event, CANNA);
+            registerItemDefault(event, COMMELINA_DIFFUSA);
+            registerItemDefault(event, CROCOSMIA);
+            registerItemDefault(event, CROTON);
+            registerItemDefault(event, DRACAENA);
+            registerItemDefault(event, FERN);
+            registerItemDefault(event, FOLIAGE);
+            registerItemDefault(event, MAGIC_MUSHROOM);
+            registerItemDefault(event, ORANGE_ANTHURIUM);
+            registerItemDefault(event, ORCHID);
+            registerItemDefault(event, PATHOS);
+            registerItemDefault(event, RED_ANTHURIUM);
+            registerItemDefault(event, PURIFIED_SAND);
+            registerItemDefault(event, CORAL_SAND);
+            registerItemDefault(event, FOAMY_SAND);
+            registerItemDefault(event, VOLCANIC_SAND);
+            registerItemDefault(event, MINERAL_SAND);
+            registerItemDefault(event, BAMBOO_BUNDLE);
+            registerItemDefault(event, THATCH_BUNDLE);
+            registerItemDefault(event, MAHOGANY_PLANKS);
+            registerItemDefault(event, PALM_PLANKS);
+            registerItemDefault(event, MAHOGANY_LOG);
+            registerItemDefault(event, PALM_LOG);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {
             event.getRegistry().register(block.setRegistryName(new ResourceLocation(Constants.MODID, name)));
         }
 
-        private static Item registerItemDefault(final RegistryEvent.Register<Item> event, final Block block, final ItemGroup itemGroup) {
+        private static Item registerItemDefault(final RegistryEvent.Register<Item> event, final Block block) {
+            return registerItem(event, block, Tropicraft.TROPICRAFT_ITEM_GROUP);
+        }
+
+        private static Item registerItem(final RegistryEvent.Register<Item> event, final Block block, final ItemGroup itemGroup) {
             final Item itemBlock = new BlockItem(block, new Item.Properties().group(itemGroup)).setRegistryName(block.getRegistryName());
             event.getRegistry().register(itemBlock);
             return itemBlock;
