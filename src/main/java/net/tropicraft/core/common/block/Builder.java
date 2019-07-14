@@ -1,9 +1,6 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.LogBlock;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.potion.Effects;
@@ -27,6 +24,11 @@ public class Builder {
 
     public static Block log(final MaterialColor topColor, final MaterialColor sideColor) {
         return new LogBlock(topColor, prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    }
+
+    public static Block stairs(final BlockState baseState, final Material material, final MaterialColor color) {
+        // Need weird brackets here to override protected behavior
+        return new StairsBlock(baseState, prop(material, color)) {};
     }
 
     private static Block.Properties prop(final Material material) {
