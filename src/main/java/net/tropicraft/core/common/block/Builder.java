@@ -4,6 +4,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.BlockRenderLayer;
 
 public class Builder {
     public static Block flower() {
@@ -26,9 +27,14 @@ public class Builder {
         return new LogBlock(topColor, prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
 
-    public static Block stairs(final BlockState baseState, final Material material, final MaterialColor color) {
+    public static Block stairs(final BlockState baseState, final Material material, final MaterialColor color, final BlockRenderLayer renderLayer) {
         // Need weird brackets here to override protected behavior
-        return new StairsBlock(baseState, prop(material, color)) {};
+        return new StairsBlock(baseState, prop(material, color)) {
+            @Override
+            public BlockRenderLayer getRenderLayer() {
+                return renderLayer;
+            }
+        };
     }
 
     private static Block.Properties prop(final Material material) {

@@ -7,6 +7,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -56,12 +57,14 @@ public class TropicraftBlocks {
     public static final Block MAHOGANY_LOG = Builder.log(MaterialColor.WOOD, MaterialColor.BROWN);
     public static final Block PALM_LOG = Builder.log(MaterialColor.WOOD, MaterialColor.BROWN);
 
-    public static final Block PALM_STAIRS = Builder.stairs(PALM_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN);
-    public static final Block MAHOGANY_STAIRS = Builder.stairs(MAHOGANY_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN);
-    public static final Block THATCH_STAIRS = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW);
-    public static final Block THATCH_STAIRS_FUZZY = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW);
-    public static final Block BAMBOO_STAIRS = Builder.stairs(BAMBOO_BUNDLE.getDefaultState(), Material.BAMBOO, MaterialColor.YELLOW);
-    public static final Block CHUNK_STAIRS = Builder.stairs(CHUNK.getDefaultState(), Material.ROCK, MaterialColor.BLACK);
+    public static final Block PALM_STAIRS = Builder.stairs(PALM_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN, BlockRenderLayer.SOLID);
+    public static final Block MAHOGANY_STAIRS = Builder.stairs(MAHOGANY_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN, BlockRenderLayer.SOLID);
+    public static final Block THATCH_STAIRS = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW, BlockRenderLayer.SOLID);
+    public static final Block THATCH_STAIRS_FUZZY = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW, BlockRenderLayer.CUTOUT_MIPPED);
+    public static final Block BAMBOO_STAIRS = Builder.stairs(BAMBOO_BUNDLE.getDefaultState(), Material.BAMBOO, MaterialColor.YELLOW, BlockRenderLayer.SOLID);
+    public static final Block CHUNK_STAIRS = Builder.stairs(CHUNK.getDefaultState(), Material.ROCK, MaterialColor.BLACK, BlockRenderLayer.SOLID);
+
+    public static final Block COCONUT = new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f));
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -110,6 +113,7 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "thatch_stairs_fuzzy", THATCH_STAIRS_FUZZY);
             registerBlockDefault(event, "bamboo_stairs", BAMBOO_STAIRS);
             registerBlockDefault(event, "chunk_stairs", CHUNK_STAIRS);
+            registerBlockDefault(event, "coconut", COCONUT);
         }
 
         @SubscribeEvent
@@ -155,6 +159,7 @@ public class TropicraftBlocks {
             registerItemDefault(event, THATCH_STAIRS_FUZZY);
             registerItemDefault(event, BAMBOO_STAIRS);
             registerItemDefault(event, CHUNK_STAIRS);
+            registerItemDefault(event, COCONUT);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {

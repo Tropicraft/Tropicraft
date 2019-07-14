@@ -4,6 +4,6 @@
         "bottom": "tropicraft:block/thatch_end",
         "top": "tropicraft:block/thatch_end",
         "side": "tropicraft:block/thatch_side",
-        "cross": "tropicraft:block/thatchgrass"
+        "cross": "tropicraft:block/thatch_grass"
     }
 }
