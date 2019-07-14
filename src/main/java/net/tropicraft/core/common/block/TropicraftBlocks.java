@@ -44,6 +44,7 @@ public class TropicraftBlocks {
     public static final Block RED_ANTHURIUM = Builder.flower();
 
     public static final Block PURIFIED_SAND = Builder.sand(MaterialColor.SAND);
+    public static final Block PACKED_PURIFIED_SAND = Builder.sand(MaterialColor.SAND, 2, 30);
     public static final Block CORAL_SAND = Builder.sand(MaterialColor.PINK);
     public static final Block FOAMY_SAND = Builder.sand(MaterialColor.GREEN);
     public static final Block VOLCANIC_SAND = Builder.sand(MaterialColor.BLACK);
@@ -114,6 +115,7 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "bamboo_stairs", BAMBOO_STAIRS);
             registerBlockDefault(event, "chunk_stairs", CHUNK_STAIRS);
             registerBlockDefault(event, "coconut", COCONUT);
+            registerBlockDefault(event, "packed_purified_sand", PACKED_PURIFIED_SAND);
         }
 
         @SubscribeEvent
@@ -160,6 +162,7 @@ public class TropicraftBlocks {
             registerItemDefault(event, BAMBOO_STAIRS);
             registerItemDefault(event, CHUNK_STAIRS);
             registerItemDefault(event, COCONUT);
+            registerItemDefault(event, PACKED_PURIFIED_SAND);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {

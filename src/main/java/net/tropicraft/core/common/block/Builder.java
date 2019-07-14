@@ -12,7 +12,11 @@ public class Builder {
     }
 
     public static Block sand(final MaterialColor color) {
-        return new BlockTropicraftSand(prop(Material.SAND, color).hardnessAndResistance(0.5f));
+        return sand(color, 0.5f, 0.5f);
+    }
+
+    public static Block sand(final MaterialColor color, final float hardness, final float resistance) {
+        return new BlockTropicraftSand(prop(Material.SAND, color).sound(SoundType.SAND).hardnessAndResistance(hardness, resistance));
     }
 
     public static Block bundle(final Block.Properties properties) {
