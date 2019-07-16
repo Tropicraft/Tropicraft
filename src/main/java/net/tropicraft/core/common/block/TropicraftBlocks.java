@@ -14,6 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
+import net.tropicraft.core.BlockHardnessValues;
 
 public class TropicraftBlocks {
     public static final Block CHUNK = new Block(Block.Properties.create(Material.ROCK, MaterialColor.BLACK).hardnessAndResistance(2, 30));
@@ -67,6 +68,12 @@ public class TropicraftBlocks {
 
     public static final Block COCONUT = new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f));
 
+    public static final Block BAMBOO_SLAB = Builder.slab(Block.Properties.create(Material.BAMBOO, MaterialColor.GREEN).sound(SoundType.BAMBOO).hardnessAndResistance(BlockHardnessValues.BAMBOO.hardness, BlockHardnessValues.BAMBOO.resistance));
+    public static final Block THATCH_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.YELLOW).sound(SoundType.BAMBOO).hardnessAndResistance(BlockHardnessValues.THATCH.hardness, BlockHardnessValues.THATCH.resistance));
+    public static final Block CHUNK_SLAB = Builder.slab(Block.Properties.create(Material.ROCK, MaterialColor.BLACK).sound(SoundType.STONE).hardnessAndResistance(BlockHardnessValues.CHUNK.hardness, BlockHardnessValues.CHUNK.resistance));
+    public static final Block PALM_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(BlockHardnessValues.PALM.hardness, BlockHardnessValues.PALM.resistance));
+    public static final Block MAHOGANY_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(BlockHardnessValues.MAHOGANY.hardness, BlockHardnessValues.MAHOGANY.resistance));
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -116,6 +123,11 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "chunk_stairs", CHUNK_STAIRS);
             registerBlockDefault(event, "coconut", COCONUT);
             registerBlockDefault(event, "packed_purified_sand", PACKED_PURIFIED_SAND);
+            registerBlockDefault(event, "bamboo_slab", BAMBOO_SLAB);
+            registerBlockDefault(event, "thatch_slab", THATCH_SLAB);
+            registerBlockDefault(event, "chunk_slab", CHUNK_SLAB);
+            registerBlockDefault(event, "palm_slab", PALM_SLAB);
+            registerBlockDefault(event, "mahogany_slab", MAHOGANY_SLAB);
         }
 
         @SubscribeEvent
@@ -163,6 +175,11 @@ public class TropicraftBlocks {
             registerItemDefault(event, CHUNK_STAIRS);
             registerItemDefault(event, COCONUT);
             registerItemDefault(event, PACKED_PURIFIED_SAND);
+            registerItemDefault(event, BAMBOO_SLAB);
+            registerItemDefault(event, THATCH_SLAB);
+            registerItemDefault(event, CHUNK_SLAB);
+            registerItemDefault(event, PALM_SLAB);
+            registerItemDefault(event, MAHOGANY_SLAB);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {

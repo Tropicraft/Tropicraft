@@ -41,6 +41,10 @@ public class Builder {
         };
     }
 
+    public static Block slab(final Block.Properties properties) {
+        return new SlabBlock(properties);
+    }
+
     private static Block.Properties prop(final Material material) {
         return Block.Properties.create(material);
     }

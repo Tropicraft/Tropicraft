@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "tropicraft:block/palm_slab" },
+    "type=top": { "model": "tropicraft:block/palm_slab_top" },
+    "type=double": { "model": "tropicraft:block/palm_planks" }
+  }
+}

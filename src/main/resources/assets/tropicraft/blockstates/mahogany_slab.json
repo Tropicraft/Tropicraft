@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "tropicraft:block/mahogany_slab" },
+    "type=top": { "model": "tropicraft:block/mahogany_slab_top" },
+    "type=double": { "model": "tropicraft:block/mahogany_planks" }
+  }
+}
