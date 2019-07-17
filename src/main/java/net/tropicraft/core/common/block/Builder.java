@@ -46,7 +46,15 @@ public class Builder {
     }
 
     public static Block leaves() {
-        return new LeavesBlock(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT));
+        return new LeavesBlock(prop(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT));
+    }
+
+    public static Block fence(final Material material, final MaterialColor color) {
+        return new FenceBlock(prop(material, color));
+    }
+
+    public static Block fenceGate(final Material material, final MaterialColor color) {
+        return new FenceGateBlock(prop(material, color));
     }
 
     private static Block.Properties prop(final Material material) {

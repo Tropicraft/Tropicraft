@@ -83,6 +83,18 @@ public class TropicraftBlocks {
     public static final Block LIME_LEAVES = Builder.leaves();
     public static final Block ORANGE_LEAVES = Builder.leaves();
 
+    public static final Block BAMBOO_FENCE = Builder.fence(Material.BAMBOO, MaterialColor.GREEN);
+    public static final Block THATCH_FENCE = Builder.fence(Material.PLANTS, MaterialColor.YELLOW);
+    public static final Block CHUNK_FENCE = Builder.fence(Material.ROCK, MaterialColor.BLACK);
+    public static final Block PALM_FENCE = Builder.fence(Material.WOOD, MaterialColor.BROWN);
+    public static final Block MAHOGANY_FENCE = Builder.fence(Material.WOOD, MaterialColor.BROWN);
+
+    public static final Block BAMBOO_FENCE_GATE = Builder.fenceGate(Material.BAMBOO, MaterialColor.GREEN);
+    public static final Block THATCH_FENCE_GATE = Builder.fenceGate(Material.PLANTS, MaterialColor.YELLOW);
+    public static final Block CHUNK_FENCE_GATE = Builder.fenceGate(Material.ROCK, MaterialColor.BLACK);
+    public static final Block PALM_FENCE_GATE = Builder.fenceGate(Material.WOOD, MaterialColor.BROWN);
+    public static final Block MAHOGANY_FENCE_GATE = Builder.fenceGate(Material.WOOD, MaterialColor.BROWN);
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -145,6 +157,17 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "lemon_leaves", LEMON_LEAVES);
             registerBlockDefault(event, "lime_leaves", LIME_LEAVES);
             registerBlockDefault(event, "orange_leaves", ORANGE_LEAVES);
+            // TODO fences don't work...figure out how BlockTags work and fix em
+            registerBlockDefault(event, "bamboo_fence", BAMBOO_FENCE);
+            registerBlockDefault(event, "thatch_fence", THATCH_FENCE);
+            registerBlockDefault(event, "chunk_fence", CHUNK_FENCE);
+            registerBlockDefault(event, "palm_fence", PALM_FENCE);
+            registerBlockDefault(event, "mahogany_fence", MAHOGANY_FENCE);
+            registerBlockDefault(event, "bamboo_fence_gate", BAMBOO_FENCE_GATE);
+            registerBlockDefault(event, "thatch_fence_gate", THATCH_FENCE_GATE);
+            registerBlockDefault(event, "chunk_fence_gate", CHUNK_FENCE_GATE);
+            registerBlockDefault(event, "palm_fence_gate", PALM_FENCE_GATE);
+            registerBlockDefault(event, "mahogany_fence_gate", MAHOGANY_FENCE_GATE);
         }
 
         @SubscribeEvent
@@ -205,6 +228,16 @@ public class TropicraftBlocks {
             registerItemDefault(event, LEMON_LEAVES);
             registerItemDefault(event, LIME_LEAVES);
             registerItemDefault(event, ORANGE_LEAVES);
+            registerItemDefault(event, BAMBOO_FENCE);
+            registerItemDefault(event, THATCH_FENCE);
+            registerItemDefault(event, CHUNK_FENCE);
+            registerItemDefault(event, PALM_FENCE);
+            registerItemDefault(event, MAHOGANY_FENCE);
+            registerItemDefault(event, BAMBOO_FENCE_GATE);
+            registerItemDefault(event, THATCH_FENCE_GATE);
+            registerItemDefault(event, CHUNK_FENCE_GATE);
+            registerItemDefault(event, PALM_FENCE_GATE);
+            registerItemDefault(event, MAHOGANY_FENCE_GATE);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {
