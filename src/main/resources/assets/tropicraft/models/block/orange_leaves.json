@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "tropicraft:block/orange_leaves"
+  }
+}

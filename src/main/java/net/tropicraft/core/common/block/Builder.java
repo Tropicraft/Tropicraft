@@ -45,6 +45,10 @@ public class Builder {
         return new SlabBlock(properties);
     }
 
+    public static Block leaves() {
+        return new LeavesBlock(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT));
+    }
+
     private static Block.Properties prop(final Material material) {
         return Block.Properties.create(material);
     }

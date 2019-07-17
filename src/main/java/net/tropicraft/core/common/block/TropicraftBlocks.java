@@ -74,6 +74,15 @@ public class TropicraftBlocks {
     public static final Block PALM_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(BlockHardnessValues.PALM.hardness, BlockHardnessValues.PALM.resistance));
     public static final Block MAHOGANY_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(BlockHardnessValues.MAHOGANY.hardness, BlockHardnessValues.MAHOGANY.resistance));
 
+    public static final Block MAHOGANY_LEAVES = Builder.leaves();
+    public static final Block PALM_LEAVES = Builder.leaves();
+    public static final Block KAPOK_LEAVES = Builder.leaves();
+    public static final Block FRUIT_LEAVES = Builder.leaves();
+    public static final Block GRAPEFRUIT_LEAVES = Builder.leaves();
+    public static final Block LEMON_LEAVES = Builder.leaves();
+    public static final Block LIME_LEAVES = Builder.leaves();
+    public static final Block ORANGE_LEAVES = Builder.leaves();
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -128,6 +137,14 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "chunk_slab", CHUNK_SLAB);
             registerBlockDefault(event, "palm_slab", PALM_SLAB);
             registerBlockDefault(event, "mahogany_slab", MAHOGANY_SLAB);
+            registerBlockDefault(event, "mahogany_leaves", MAHOGANY_LEAVES);
+            registerBlockDefault(event, "palm_leaves", PALM_LEAVES);
+            registerBlockDefault(event, "kapok_leaves", KAPOK_LEAVES);
+            registerBlockDefault(event, "fruit_leaves", FRUIT_LEAVES);
+            registerBlockDefault(event, "grapefruit_leaves", GRAPEFRUIT_LEAVES);
+            registerBlockDefault(event, "lemon_leaves", LEMON_LEAVES);
+            registerBlockDefault(event, "lime_leaves", LIME_LEAVES);
+            registerBlockDefault(event, "orange_leaves", ORANGE_LEAVES);
         }
 
         @SubscribeEvent
@@ -180,6 +197,14 @@ public class TropicraftBlocks {
             registerItemDefault(event, CHUNK_SLAB);
             registerItemDefault(event, PALM_SLAB);
             registerItemDefault(event, MAHOGANY_SLAB);
+            registerItemDefault(event, MAHOGANY_LEAVES);
+            registerItemDefault(event, PALM_LEAVES);
+            registerItemDefault(event, KAPOK_LEAVES);
+            registerItemDefault(event, FRUIT_LEAVES);
+            registerItemDefault(event, GRAPEFRUIT_LEAVES);
+            registerItemDefault(event, LEMON_LEAVES);
+            registerItemDefault(event, LIME_LEAVES);
+            registerItemDefault(event, ORANGE_LEAVES);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {
