@@ -14,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.sound.Sounds;
 import net.tropicraft.core.proxy.ClientProxy;
 import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.proxy.ServerProxy;
@@ -56,6 +57,7 @@ public class Tropicraft
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        Sounds.init();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

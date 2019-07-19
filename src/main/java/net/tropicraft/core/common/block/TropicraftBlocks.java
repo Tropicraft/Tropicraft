@@ -99,6 +99,10 @@ public class TropicraftBlocks {
     public static final Block IRIS = new TallFlowerBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT));
     public static final Block PINEAPPLE = new PineappleBlock(Block.Properties.create(Material.TALL_PLANTS).tickRandomly().doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT));
 
+    public static final Block SMALL_BONGO_DRUM = Builder.bongo(BongoDrumBlock.Size.SMALL);
+    public static final Block MEDIUM_BONGO_DRUM = Builder.bongo(BongoDrumBlock.Size.MEDIUM);
+    public static final Block LARGE_BONGO_DRUM = Builder.bongo(BongoDrumBlock.Size.LARGE);
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -174,6 +178,9 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "mahogany_fence_gate", MAHOGANY_FENCE_GATE);
             registerBlockDefault(event, "iris", IRIS);
             registerBlockDefault(event, "pineapple", PINEAPPLE);
+            registerBlockDefault(event, "small_bongo_drum", SMALL_BONGO_DRUM);
+            registerBlockDefault(event, "medium_bongo_drum", MEDIUM_BONGO_DRUM);
+            registerBlockDefault(event, "large_bongo_drum", LARGE_BONGO_DRUM);
         }
 
         @SubscribeEvent
@@ -246,6 +253,9 @@ public class TropicraftBlocks {
             registerItemDefault(event, MAHOGANY_FENCE_GATE);
             registerItemDefault(event, IRIS);
             registerItemDefault(event, PINEAPPLE);
+            registerItemDefault(event, SMALL_BONGO_DRUM);
+            registerItemDefault(event, MEDIUM_BONGO_DRUM);
+            registerItemDefault(event, LARGE_BONGO_DRUM);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {
@@ -254,6 +264,12 @@ public class TropicraftBlocks {
 
         private static Item registerItemDefault(final RegistryEvent.Register<Item> event, final Block block) {
             return registerItem(event, block, Tropicraft.TROPICRAFT_ITEM_GROUP);
+        }
+
+        private static Item registerItem(final RegistryEvent.Register<Item> event, final Block block, Item blockItem) {
+            blockItem = blockItem.setRegistryName(block.getRegistryName());
+            event.getRegistry().register(blockItem);
+            return blockItem;
         }
 
         private static Item registerItem(final RegistryEvent.Register<Item> event, final Block block, final ItemGroup itemGroup) {

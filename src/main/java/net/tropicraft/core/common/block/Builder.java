@@ -57,6 +57,10 @@ public class Builder {
         return new FenceGateBlock(prop(material, color));
     }
 
+    public static Block bongo(final BongoDrumBlock.Size bongoSize) {
+        return new BongoDrumBlock(bongoSize, prop(Material.WOOD, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    }
+
     private static Block.Properties prop(final Material material) {
         return Block.Properties.create(material);
     }
