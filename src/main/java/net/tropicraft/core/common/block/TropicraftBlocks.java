@@ -2,6 +2,7 @@ package net.tropicraft.core.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -95,6 +96,9 @@ public class TropicraftBlocks {
     public static final Block PALM_FENCE_GATE = Builder.fenceGate(Material.WOOD, MaterialColor.BROWN);
     public static final Block MAHOGANY_FENCE_GATE = Builder.fenceGate(Material.WOOD, MaterialColor.BROWN);
 
+    public static final Block IRIS = new TallFlowerBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT));
+    public static final Block PINEAPPLE = new PineappleBlock(Block.Properties.create(Material.TALL_PLANTS).tickRandomly().doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT));
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -168,6 +172,8 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "chunk_fence_gate", CHUNK_FENCE_GATE);
             registerBlockDefault(event, "palm_fence_gate", PALM_FENCE_GATE);
             registerBlockDefault(event, "mahogany_fence_gate", MAHOGANY_FENCE_GATE);
+            registerBlockDefault(event, "iris", IRIS);
+            registerBlockDefault(event, "pineapple", PINEAPPLE);
         }
 
         @SubscribeEvent
@@ -238,6 +244,8 @@ public class TropicraftBlocks {
             registerItemDefault(event, CHUNK_FENCE_GATE);
             registerItemDefault(event, PALM_FENCE_GATE);
             registerItemDefault(event, MAHOGANY_FENCE_GATE);
+            registerItemDefault(event, IRIS);
+            registerItemDefault(event, PINEAPPLE);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {
