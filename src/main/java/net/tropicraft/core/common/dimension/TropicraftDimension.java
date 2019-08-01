@@ -8,19 +8,21 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.provider.BiomeProviderType;
-import net.minecraft.world.biome.provider.SingleBiomeProvider;
-import net.minecraft.world.biome.provider.SingleBiomeProviderSettings;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.ChunkGeneratorType;
+import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.OverworldGenSettings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProviderTypes;
+import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorType;
+import net.tropicraft.core.common.dimension.config.TropicraftBiomeProviderSettings;
+import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 
 import javax.annotation.Nullable;
 
@@ -30,17 +32,12 @@ public class TropicraftDimension extends Dimension {
     }
 
     @Override
-    public ChunkGenerator<?> createChunkGenerator() {
-        BiomeProviderType<SingleBiomeProviderSettings, SingleBiomeProvider> biomeType = BiomeProviderType.FIXED;
-        ChunkGeneratorType chunkType = ChunkGeneratorType.SURFACE;
-
-        OverworldGenSettings settings = (OverworldGenSettings) chunkType.createSettings();
-
-        SingleBiomeProvider biomeProvider = biomeType.create(biomeType.createSettings().setBiome(Biomes.BADLANDS));
-
-        ChunkGenerator gen = chunkType.create(this.world, biomeProvider, settings);
-
-        return gen;
+    public ChunkGenerator<? extends GenerationSettings> createChunkGenerator() {
+        BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS;
+        ChunkGeneratorType chunkType = TropicraftChunkGeneratorType.TROPICS;
+        TropicraftGeneratorSettings genSettings = (TropicraftGeneratorSettings) chunkType.createSettings();
+        TropicraftBiomeProviderSettings settings2 = biomeType.createSettings().setWorldInfo(world.getWorldInfo()).setGeneratorSettings(genSettings);
+        return chunkType.create(this.world, biomeType.create(settings2), genSettings);
     }
 
     /** Copied from OverworldDimension */
