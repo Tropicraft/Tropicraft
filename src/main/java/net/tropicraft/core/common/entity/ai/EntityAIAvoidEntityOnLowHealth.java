@@ -1,22 +1,19 @@
 package net.tropicraft.core.common.entity.ai;
 
-import java.util.EnumSet;
-import java.util.List;
-
-import java.util.function.Predicate;
-import com.google.common.base.Predicates;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
-{
+import java.util.EnumSet;
+import java.util.List;
+import java.util.function.Predicate;
+
+public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     private final Predicate<Entity> canBeSeenSelector;
     /** The entity we are attached to */
     protected CreatureEntity theEntity;
@@ -85,7 +82,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal
             }
             else
             {
-                this.entityPathEntity = this.entityPathNavigate.getPathToXYZ(vec3d.x, vec3d.y, vec3d.z);
+                this.entityPathEntity = this.entityPathNavigate.func_225466_a(vec3d.x, vec3d.y, vec3d.z, 0);
                 return this.entityPathEntity != null;
             }
         }

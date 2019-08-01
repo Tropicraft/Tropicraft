@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.Model;
-import net.minecraft.entity.Entity;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class ModelKoaMan extends BipedModel<EntityKoaBase> {
@@ -48,13 +47,13 @@ public class ModelKoaMan extends BipedModel<EntityKoaBase> {
         
         //textureWidth = 64;
         //textureHeight = 32;
-        
-        field_78116_c = new RendererModel(this, 0, 2);
-        field_78116_c.addBox(-4F, -8F, -4F, 8, 8, 8);
-        field_78116_c.setRotationPoint(0F, 0F, 0F);
-        field_78116_c.setTextureSize(64, 32);
-        field_78116_c.mirror = true;
-        setRotation(field_78116_c, 0F, 0F, 0F);
+
+        bipedHead = new RendererModel(this, 0, 2);
+        bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
+        bipedHead.setRotationPoint(0F, 0F, 0F);
+        bipedHead.setTextureSize(64, 32);
+        bipedHead.mirror = true;
+        setRotation(bipedHead, 0F, 0F, 0F);
         /*field_78115_e = new RendererModel(this, 16, 16);
         field_78115_e.addBox(-4F, 0F, -2F, 8, 12, 4);
         field_78115_e.setRotationPoint(0F, 0F, 0F);
@@ -90,7 +89,7 @@ public class ModelKoaMan extends BipedModel<EntityKoaBase> {
         headband.setRotationPoint(0F, -7F, 0F);		//0,-7,0 before
         headband.setTextureSize(64, 32);
         headband.mirror = true;
-        field_78116_c.addChild(headband);
+        bipedHead.addChild(headband);
         setRotation(headband, 0F, 0F, 0F);
         armbandR = new RendererModel(this, 35, 6);
         armbandR.addBox(2.5F, -2F, -2.5F, 5, 1, 5);	//offset, dimensions
@@ -189,20 +188,20 @@ public class ModelKoaMan extends BipedModel<EntityKoaBase> {
             //float f = 2.0F;
             GlStateManager.scalef(0.75F, 0.75F, 0.75F);
             GlStateManager.translatef(0.0F, 16.0F * f5, 0.0F);
-            this.field_78116_c.render(f5);
+            this.bipedHead.render(f5);
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             GlStateManager.scalef(0.5F, 0.5F, 0.5F);
             GlStateManager.translatef(0.0F, 24.0F * f5, 0.0F);
-            this.field_78115_e.render(f5);
+            this.bipedBody.render(f5);
             this.bipedRightArm.render(f5);
             this.bipedLeftArm.render(f5);
             this.bipedRightLeg.render(f5);
             this.bipedLeftLeg.render(f5);
         }
         else {
-            field_78116_c.render(f5);
-            field_78115_e.render(f5);
+            bipedHead.render(f5);
+            bipedBody.render(f5);
             bipedRightArm.render(f5);
             bipedLeftArm.render(f5);
             bipedRightLeg.render(f5);
@@ -234,21 +233,21 @@ public class ModelKoaMan extends BipedModel<EntityKoaBase> {
         float ticks = (entityIn.ticksExisted + Minecraft.getInstance().getRenderPartialTicks()) % 360;
 
         if (isDancing) {
-            this.field_78116_c.offsetY = 0.01F + (float)Math.sin(Math.toRadians(ticks * 35F)) * 0.02F;
-            this.field_78116_c.offsetX = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.02F;
-            this.field_78116_c.offsetZ = 0;
-            this.field_78116_c.rotateAngleZ = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.05F;
+            this.bipedHead.offsetY = 0.01F + (float)Math.sin(Math.toRadians(ticks * 35F)) * 0.02F;
+            this.bipedHead.offsetX = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.02F;
+            this.bipedHead.offsetZ = 0;
+            this.bipedHead.rotateAngleZ = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.05F;
         } else {
-            this.field_78116_c.offsetY = 0;
-            this.field_78116_c.offsetX = 0;
-            this.field_78116_c.offsetZ = 0;
-            this.field_78116_c.rotateAngleZ = 0;
+            this.bipedHead.offsetY = 0;
+            this.bipedHead.offsetX = 0;
+            this.bipedHead.offsetZ = 0;
+            this.bipedHead.rotateAngleZ = 0;
         }
 
         super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
         if (isDancing) {
-            this.field_78116_c.rotateAngleX += (float) Math.sin(Math.toRadians((entityIn.world.getGameTime() % 360) * 35F)) * 0.05F;
+            this.bipedHead.rotateAngleX += (float) Math.sin(Math.toRadians((entityIn.world.getGameTime() % 360) * 35F)) * 0.05F;
 
             float amp = 0.5F;
 

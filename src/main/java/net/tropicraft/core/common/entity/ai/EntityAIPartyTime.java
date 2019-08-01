@@ -1,29 +1,26 @@
 package net.tropicraft.core.common.entity.ai;
 
+import com.google.common.collect.Lists;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.NoteBlock;
+import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import com.google.common.collect.Lists;
-
-import com.mojang.authlib.GameProfile;
-import net.minecraft.block.NoteBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.ServerWorld;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class EntityAIPartyTime extends Goal
 {
@@ -338,10 +335,10 @@ public class EntityAIPartyTime extends Goal
             //path to base of fire
             blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.func_213384_dI();
+            blockposGoal = this.entityObj.getHomePosition();
         }
 
-        if (blockposGoal == null) {
+        if (blockposGoal == null || blockposGoal == BlockPos.ZERO) {
             return false;
         }
 

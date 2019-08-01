@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.entity.passive;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,16 +18,13 @@ import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
 
 public class FishingBobberEntity extends Entity {
    private static final DataParameter<Integer> DATA_HOOKED_ENTITY = EntityDataManager.createKey(FishingBobberEntity.class, DataSerializers.VARINT);
@@ -81,7 +76,7 @@ public class FishingBobberEntity extends Entity {
       vec3d = vec3d.mul(0.6D / d3 + 0.5D + this.rand.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.rand.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.rand.nextGaussian() * 0.0045D);
       this.setMotion(vec3d);
       this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (double)(180F / (float)Math.PI));
-      this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, (double)MathHelper.sqrt(getSqrtPlaneDistance(vec3d))) * (double)(180F / (float)Math.PI));
+      this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, (double)MathHelper.sqrt(getDistanceSq(vec3d))) * (double)(180F / (float)Math.PI));
       this.prevRotationYaw = this.rotationYaw;
       this.prevRotationPitch = this.rotationPitch;
    }
@@ -227,7 +222,7 @@ public class FishingBobberEntity extends Entity {
 
    private void updateRotation() {
       Vec3d vec3d = this.getMotion();
-      float f = MathHelper.sqrt(getSqrtPlaneDistance(vec3d));
+      float f = MathHelper.sqrt(getDistanceSq(vec3d));
       this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (double)(180F / (float)Math.PI));
 
       for(this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, (double)f) * (double)(180F / (float)Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
@@ -277,7 +272,7 @@ public class FishingBobberEntity extends Entity {
          ++i;
       }
 
-      if (this.rand.nextFloat() < 0.5F && !this.world.func_217337_f(blockpos)) {
+      if (this.rand.nextFloat() < 0.5F && !this.world.canBlockSeeSky(blockpos)) {
          --i;
       }
 

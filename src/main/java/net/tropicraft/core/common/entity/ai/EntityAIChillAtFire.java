@@ -104,7 +104,7 @@ public class EntityAIChillAtFire extends Goal
             //path to base of fire
             blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.func_213384_dI();
+            blockposGoal = this.entityObj.getHomePosition();
         }
 
         if (blockposGoal == null) {
@@ -224,7 +224,7 @@ public class EntityAIChillAtFire extends Goal
             //path to base of fire
             blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.func_213384_dI();
+            blockposGoal = this.entityObj.getHomePosition();
         }
 
         if (blockposGoal == null) {

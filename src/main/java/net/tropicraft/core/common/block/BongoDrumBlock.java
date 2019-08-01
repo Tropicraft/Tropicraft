@@ -3,6 +3,7 @@ package net.tropicraft.core.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -18,6 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.sound.Sounds;
 
 @Mod.EventBusSubscriber
@@ -87,8 +89,17 @@ public class BongoDrumBlock extends Block {
         return true;
     }
 
+    @Deprecated
+    public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+
+    }
+
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
+        System.out.println(TropicraftWorldUtils.TROPICS_DIMENSION);
+        if (event.getEntityPlayer() instanceof ServerPlayerEntity) {
+            TropicraftWorldUtils.teleportPlayer((ServerPlayerEntity) event.getEntityPlayer());
+        }
         final World world = event.getWorld();
         final BlockState state = world.getBlockState(event.getPos());
         final Block block = state.getBlock();

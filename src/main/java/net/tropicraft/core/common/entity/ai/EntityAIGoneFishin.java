@@ -1,13 +1,8 @@
 package net.tropicraft.core.common.entity.ai;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,6 +11,11 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
 import net.tropicraft.core.registry.ItemRegistry;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
 
 public class EntityAIGoneFishin extends Goal {
 
@@ -213,124 +213,127 @@ public class EntityAIGoneFishin extends Goal {
                 walkingTimeout--;
                 //debug("walkingTimeout: " + walkingTimeout--);
             }
-        } else if (state == FISHING_STATE.FISHING) {
-            //temp visual to replace casting line
-            //entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 40));
-            if (!entity.isInWater()) {
-                //force null path so they stay still
-                //aim at fishing coord and wait
-            } else {
-                //we fell in water accidentally, get to shore
-                BlockPos posLand = findLand();
-                if (posLand != null) {
-                    posLastLandFound = posLand;
-                    if (Util.tryMoveToXYZLongDist(entity, posLand, moveSpeedAmp)) {
-                        setState(FISHING_STATE.WALKING_TO_LAND);
-                    } else {
-                        resetTask();
-                        return;
-                    }
-                }
-            }
-
-            if (entity.getLure() != null && (entity.getLure().onGround || entity.getLure().caughtEntity != null)) {
-                resetTask();
-            }
-
-            //if fish detected, and out of water for 10 ticks
-            //- catch
-
-            //if fishingTimeout done
-            //- if maxed
-            //-- go home
-            //- else
-            //-- if rand bool
-            //--- reset to idle
-            //-- else
-            //--- recast
-            //else
-            //- fishingTimeout--
-
-            if (ifCaughtFish()) {
-                retractLine();
-                fishCaught++;
-                //entity.inventory.addItem(new ItemStack(Items.FISH));
-                entity.inventory.addItem(listFishables.get(rand.nextInt(listFishables.size())));
-
-                debug("caught a fish");
-
-                if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
-                    if (Util.tryMoveToXYZLongDist(entity, entity.func_213384_dI(), moveSpeedAmp)) {
-                        setState(FISHING_STATE.RETURN_TO_BASE);
-                    } else {
-                        resetTask();
-                        return;
-                    }
+        } else {
+            final BlockPos homePosition = entity.getHomePosition();
+            if (state == FISHING_STATE.FISHING) {
+                //temp visual to replace casting line
+                //entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 40));
+                if (!entity.isInWater()) {
+                    //force null path so they stay still
+                    //aim at fishing coord and wait
                 } else {
-                    if (rand.nextInt(2) == 0) {
-                        setState(FISHING_STATE.IDLE);
-                    } else {
-                        //cast line
-                        //TODO: there is a state where posLastWaterFound can be null and cause crash, unsure why, patching for now
-                        if (posLastWaterFound == null) {
-                            setState(FISHING_STATE.IDLE);
+                    //we fell in water accidentally, get to shore
+                    BlockPos posLand = findLand();
+                    if (posLand != null) {
+                        posLastLandFound = posLand;
+                        if (Util.tryMoveToXYZLongDist(entity, posLand, moveSpeedAmp)) {
+                            setState(FISHING_STATE.WALKING_TO_LAND);
                         } else {
-                            faceCoord(posLastWaterFound, 180, 180);
-                            castLine();
+                            resetTask();
+                            return;
                         }
                     }
                 }
-            } else {
-                fishingTimeout--;
-            }
 
-        } else if (state == FISHING_STATE.RETURN_TO_BASE) {
-            //entity.func_213384_dI()
-
-            //debug(entity.func_213384_dI());
-            if (Util.getDistance(entity, entity.func_213384_dI().getX(), entity.func_213384_dI().getY(), entity.func_213384_dI().getZ()) < 3D) {
-                debug("dropping off fish, reset");
-                fishCaught = 0;
-                entity.tryDumpInventoryIntoHomeChest();
-                //setState(FISHING_STATE.IDLE);
-                resetTask();
-            }
-
-            if (walkingTimeout <= 0 || (entity.getNavigator().noPath() && entity.world.getGameTime() % 20 == 0)) {
-                if (!retryPathOrAbort(entity.func_213384_dI())) return;
-            }
-
-            if (walkingTimeout > 0) {
-                walkingTimeout--;
-                //debug("walkingTimeout: " + walkingTimeout--);
-            }
-        } else if (state == FISHING_STATE.WALKING_TO_LAND) {
-
-            if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround) {
-                posLastLandFound = new BlockPos(entity.getPosition());
-                entity.getNavigator().clearPath();
-                setState(FISHING_STATE.FISHING);
-                faceCoord(posLastWaterFound, 180, 180);
-                castLine();
-                return;
-            }
-
-            if (walkingTimeout <= 0 || entity.getNavigator().noPath()) {
-                if (walkingTimeout <= 0) {
-                    debug("pathing taking too long");
-                } else if (entity.getNavigator().noPath()) {
-                    debug("pathing having no path, pf find failed?");
+                if (entity.getLure() != null && (entity.getLure().onGround || entity.getLure().caughtEntity != null)) {
+                    resetTask();
                 }
-                if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 64D) {
-                    if (!retryPathOrAbort(posLastLandFound)) return;
+
+                //if fish detected, and out of water for 10 ticks
+                //- catch
+
+                //if fishingTimeout done
+                //- if maxed
+                //-- go home
+                //- else
+                //-- if rand bool
+                //--- reset to idle
+                //-- else
+                //--- recast
+                //else
+                //- fishingTimeout--
+
+                if (ifCaughtFish()) {
+                    retractLine();
+                    fishCaught++;
+                    //entity.inventory.addItem(new ItemStack(Items.FISH));
+                    entity.inventory.addItem(listFishables.get(rand.nextInt(listFishables.size())));
+
+                    debug("caught a fish");
+
+                    if (getFishCount() > 4 || (rand.nextInt(1) == 0 && getFishCount() >= 2)) {
+                        if (Util.tryMoveToXYZLongDist(entity, homePosition, moveSpeedAmp)) {
+                            setState(FISHING_STATE.RETURN_TO_BASE);
+                        } else {
+                            resetTask();
+                            return;
+                        }
+                    } else {
+                        if (rand.nextInt(2) == 0) {
+                            setState(FISHING_STATE.IDLE);
+                        } else {
+                            //cast line
+                            //TODO: there is a state where posLastWaterFound can be null and cause crash, unsure why, patching for now
+                            if (posLastWaterFound == null) {
+                                setState(FISHING_STATE.IDLE);
+                            } else {
+                                faceCoord(posLastWaterFound, 180, 180);
+                                castLine();
+                            }
+                        }
+                    }
                 } else {
-                    if (!retryPathOrAbort(posLastWaterFound)) return;
+                    fishingTimeout--;
                 }
-            }
 
-            if (walkingTimeout > 0) {
-                walkingTimeout--;
-                //debug("walkingTimeout: " + walkingTimeout--);
+            } else if (state == FISHING_STATE.RETURN_TO_BASE) {
+                //entity.func_213384_dI()
+
+                //debug(entity.func_213384_dI());
+                if (Util.getDistance(entity, homePosition.getX(), homePosition.getY(), homePosition.getZ()) < 3D) {
+                    debug("dropping off fish, reset");
+                    fishCaught = 0;
+                    entity.tryDumpInventoryIntoHomeChest();
+                    //setState(FISHING_STATE.IDLE);
+                    resetTask();
+                }
+
+                if (walkingTimeout <= 0 || (entity.getNavigator().noPath() && entity.world.getGameTime() % 20 == 0)) {
+                    if (!retryPathOrAbort(homePosition)) return;
+                }
+
+                if (walkingTimeout > 0) {
+                    walkingTimeout--;
+                    //debug("walkingTimeout: " + walkingTimeout--);
+                }
+            } else if (state == FISHING_STATE.WALKING_TO_LAND) {
+
+                if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround) {
+                    posLastLandFound = new BlockPos(entity.getPosition());
+                    entity.getNavigator().clearPath();
+                    setState(FISHING_STATE.FISHING);
+                    faceCoord(posLastWaterFound, 180, 180);
+                    castLine();
+                    return;
+                }
+
+                if (walkingTimeout <= 0 || entity.getNavigator().noPath()) {
+                    if (walkingTimeout <= 0) {
+                        debug("pathing taking too long");
+                    } else if (entity.getNavigator().noPath()) {
+                        debug("pathing having no path, pf find failed?");
+                    }
+                    if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 64D) {
+                        if (!retryPathOrAbort(posLastLandFound)) return;
+                    } else {
+                        if (!retryPathOrAbort(posLastWaterFound)) return;
+                    }
+                }
+
+                if (walkingTimeout > 0) {
+                    walkingTimeout--;
+                    //debug("walkingTimeout: " + walkingTimeout--);
+                }
             }
         }
     }

@@ -1,19 +1,12 @@
 package net.tropicraft.core.common.entity.passive;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
-import javax.annotation.Nullable;
-
 import com.google.common.base.Predicate;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -25,21 +18,19 @@ import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.util.*;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.Items;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -48,14 +39,16 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicsConfigs;
-import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
+
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class EntityKoaBase extends VillagerEntity {
 
@@ -265,7 +258,7 @@ public class EntityKoaBase extends VillagerEntity {
         }
 
         @Override
-        public MerchantOffer func_221182_a(Entity p_221182_1_, Random p_221182_2_) {
+        public MerchantOffer getOffer(Entity entity, Random random) {
             ItemStack itemstack = new ItemStack(this.item, this.count);
             return new MerchantOffer(itemstack, new ItemStack(ItemRegistry.whitePearl), this.maxUses, this.givenXP, this.priceMultiplier);
         }
@@ -339,14 +332,14 @@ public class EntityKoaBase extends VillagerEntity {
      * @return
      */
     @Override
-    protected void func_213712_ef() {
+    protected void populateTradeData() {
         VillagerData villagerdata = this.getVillagerData();
         Int2ObjectMap<VillagerTrades.ITrade[]> int2objectmap = getOfferMap();
         if (int2objectmap != null && !int2objectmap.isEmpty()) {
             VillagerTrades.ITrade[] avillagertrades$itrade = int2objectmap.get(villagerdata.getLevel());
             if (avillagertrades$itrade != null) {
                 MerchantOffers merchantoffers = this.getOffers();
-                this.func_213717_a(merchantoffers, avillagertrades$itrade, 2);
+                this.addTrades(merchantoffers, avillagertrades$itrade, 2);
             }
         }
     }
@@ -455,14 +448,14 @@ public class EntityKoaBase extends VillagerEntity {
             @Override
             public void startExecuting() {
                 super.startExecuting();
-                if (this.field_75441_b instanceof EntityKoaBase) {
-                    ((EntityKoaBase) this.field_75441_b).setFightingItem();
+                if (this.attacker instanceof EntityKoaBase) {
+                    ((EntityKoaBase) this.attacker).setFightingItem();
                 }
             }
 
             @Override
             protected double getAttackReachSqr(LivingEntity attackTarget) {
-                return (double)(this.field_75441_b.getType().getSize().width * 2.5F * this.field_75441_b.getType().getSize().width * 2.5F + attackTarget.getType().getSize().width);
+                return (double)(this.attacker.getType().getSize().width * 2.5F * this.attacker.getType().getSize().width * 2.5F + attackTarget.getType().getSize().width);
             }
         });
 
@@ -727,7 +720,7 @@ public class EntityKoaBase extends VillagerEntity {
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.func_213390_a(this.getPosition(), MAX_HOME_DISTANCE);
+        this.setHomePosAndDistance(this.getPosition(), MAX_HOME_DISTANCE);
 
         rollDiceChild();
 
@@ -781,9 +774,9 @@ public class EntityKoaBase extends VillagerEntity {
     @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
-        compound.putInt("home_X", func_213384_dI().getX());
-        compound.putInt("home_Y", func_213384_dI().getY());
-        compound.putInt("home_Z", func_213384_dI().getZ());
+        compound.putInt("home_X", getHomePosition().getX());
+        compound.putInt("home_Y", getHomePosition().getY());
+        compound.putInt("home_Z", getHomePosition().getZ());
 
         if (posLastFireplaceFound != null) {
             compound.putInt("fireplace_X", posLastFireplaceFound.getX());
@@ -832,7 +825,7 @@ public class EntityKoaBase extends VillagerEntity {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         if (compound.contains("home_X")) {
-            this.func_213390_a(new BlockPos(compound.getInt("home_X"), compound.getInt("home_Y"), compound.getInt("home_Z")), MAX_HOME_DISTANCE);
+            this.setHomePosAndDistance(new BlockPos(compound.getInt("home_X"), compound.getInt("home_Y"), compound.getInt("home_Z")), MAX_HOME_DISTANCE);
         }
 
         if (compound.contains("fireplace_X")) {
@@ -973,10 +966,10 @@ public class EntityKoaBase extends VillagerEntity {
 
         //validate home position
         boolean tryFind = false;
-        if (func_213384_dI() == null) {
+        if (getHomePosition() == null) {
             tryFind = true;
         } else {
-            TileEntity tile = world.getTileEntity(func_213384_dI());
+            TileEntity tile = world.getTileEntity(getHomePosition());
             if (!(tile instanceof ChestTileEntity)) {
                 //home position isnt a chest, keep current position but find better one
                 tryFind = true;
@@ -993,7 +986,7 @@ public class EntityKoaBase extends VillagerEntity {
                         if (tile instanceof ChestTileEntity) {
                             //System.out.println("found chest, updating home position to " + pos);
                             dbg("found chest, updating home position to " + pos);
-                            func_213390_a(pos, MAX_HOME_DISTANCE);
+                            setHomePosAndDistance(pos, MAX_HOME_DISTANCE);
                             return;
                         }
                     }
@@ -1203,7 +1196,7 @@ public class EntityKoaBase extends VillagerEntity {
     }*/
 
     public boolean tryDumpInventoryIntoHomeChest() {
-        TileEntity tile = world.getTileEntity(this.func_213384_dI());
+        TileEntity tile = world.getTileEntity(getHomePosition());
         if (tile instanceof ChestTileEntity) {
             ChestTileEntity chest = (ChestTileEntity)tile;
 
@@ -1583,7 +1576,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public void zapMemory() {
         listPosDrums.clear();
-        func_213390_a(BlockPos.ZERO, -1);
+        setHomePosAndDistance(BlockPos.ZERO, -1);
         setFirelacePos(null);
 
         villageDimID = INVALID_DIM;

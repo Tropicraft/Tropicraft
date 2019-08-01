@@ -71,7 +71,7 @@ public class EntityAIEatToHeal extends Goal
 
         if (hasFoodAtHome()) {
             boolean isClose = false;
-            BlockPos blockposGoal = this.entityObj.func_213384_dI();
+            BlockPos blockposGoal = this.entityObj.getHomePosition();
 
             if (blockposGoal == null) {
                 resetTask();
@@ -164,7 +164,7 @@ public class EntityAIEatToHeal extends Goal
             //path to base of fire
             blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.func_213384_dI();
+            blockposGoal = this.entityObj.getHomePosition();
         }
 
         if (blockposGoal == null) {
@@ -187,7 +187,7 @@ public class EntityAIEatToHeal extends Goal
     }
 
     public boolean hasFoodAtHome() {
-        BlockPos blockposGoal = this.entityObj.func_213384_dI();
+        BlockPos blockposGoal = this.entityObj.getHomePosition();
         if (blockposGoal != null) {
             TileEntity tile = entityObj.world.getTileEntity(blockposGoal);
             if (tile instanceof ChestTileEntity) {
@@ -210,7 +210,7 @@ public class EntityAIEatToHeal extends Goal
     }
 
     public ItemStack consumeOneStackSizeOfFoodAtHome() {
-        BlockPos blockposGoal = this.entityObj.func_213384_dI();
+        BlockPos blockposGoal = this.entityObj.getHomePosition();
         if (blockposGoal != null) {
             TileEntity tile = entityObj.world.getTileEntity(blockposGoal);
             if (tile instanceof ChestTileEntity) {

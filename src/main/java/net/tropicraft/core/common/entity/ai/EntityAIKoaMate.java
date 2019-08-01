@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.entity.ai;
 
-import java.util.EnumSet;
-import java.util.List;
-
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+
+import java.util.EnumSet;
+import java.util.List;
 
 public class EntityAIKoaMate extends Goal
 {
@@ -178,7 +178,7 @@ public class EntityAIKoaMate extends Goal
         entityvillager.setLocationAndAngles(this.villagerObj.posX, this.villagerObj.posY, this.villagerObj.posZ, 0.0F, 0.0F);
         if (entityvillager instanceof EntityKoaBase) {
             ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimID());
-            entityvillager.func_213390_a(villagerObj.func_213384_dI(), EntityKoaBase.MAX_HOME_DISTANCE);
+            entityvillager.setHomePosAndDistance(villagerObj.getHomePosition(), EntityKoaBase.MAX_HOME_DISTANCE);
 
             //TODO: 1.14 readd
             /*TownKoaVillage village = villagerObj.getVillage();
