@@ -9,10 +9,10 @@
   },
   "variants": {
     "": [
-      { "model": "tropicraft:chunk" },
-      { "model": "tropicraft:chunk", "y": 90 },
-      { "model": "tropicraft:chunk", "y": 180 },
-      { "model": "tropicraft:chunk", "y": 270 }
+      { "model": "tropicraft:block/chunk" },
+      { "model": "tropicraft:block/chunk", "y": 90 },
+      { "model": "tropicraft:block/chunk", "y": 180 },
+      { "model": "tropicraft:block/chunk", "y": 270 }
     ]
   }
 }

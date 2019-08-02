@@ -9,10 +9,10 @@
   },
   "variants": {
     "": [
-      { "model": "tropicraft:shaka_ore" },
-      { "model": "tropicraft:shaka_ore", "y": 90 },
-      { "model": "tropicraft:shaka_ore", "y": 180 },
-      { "model": "tropicraft:shaka_ore", "y": 270 }
+      { "model": "tropicraft:block/shaka_ore" },
+      { "model": "tropicraft:block/shaka_ore", "y": 90 },
+      { "model": "tropicraft:block/shaka_ore", "y": 180 },
+      { "model": "tropicraft:block/shaka_ore", "y": 270 }
     ]
   }
 }

@@ -9,10 +9,10 @@
   },
   "variants": {
     "": [
-      { "model": "tropicraft:azurite_block" },
-      { "model": "tropicraft:azurite_block", "y": 90 },
-      { "model": "tropicraft:azurite_block", "y": 180 },
-      { "model": "tropicraft:azurite_block", "y": 270 }
+      { "model": "tropicraft:block/azurite_block" },
+      { "model": "tropicraft:block/azurite_block", "y": 90 },
+      { "model": "tropicraft:block/azurite_block", "y": 180 },
+      { "model": "tropicraft:block/azurite_block", "y": 270 }
     ]
   }
 }

@@ -9,10 +9,10 @@
   },
   "variants": {
     "": [
-      { "model": "tropicraft:coral_sand" },
-      { "model": "tropicraft:coral_sand", "y": 90 },
-      { "model": "tropicraft:coral_sand", "y": 180 },
-      { "model": "tropicraft:coral_sand", "y": 270 }
+      { "model": "tropicraft:block/coral_sand" },
+      { "model": "tropicraft:block/coral_sand", "y": 90 },
+      { "model": "tropicraft:block/coral_sand", "y": 180 },
+      { "model": "tropicraft:block/coral_sand", "y": 270 }
     ]
   }
 }

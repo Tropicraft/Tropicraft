@@ -9,10 +9,10 @@
   },
   "variants": {
     "": [
-      { "model": "tropicraft:zircon_block" },
-      { "model": "tropicraft:zircon_block", "y": 90 },
-      { "model": "tropicraft:zircon_block", "y": 180 },
-      { "model": "tropicraft:zircon_block", "y": 270 }
+      { "model": "tropicraft:block/zircon_block" },
+      { "model": "tropicraft:block/zircon_block", "y": 90 },
+      { "model": "tropicraft:block/zircon_block", "y": 180 },
+      { "model": "tropicraft:block/zircon_block", "y": 270 }
     ]
   }
 }

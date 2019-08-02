@@ -5,7 +5,7 @@ import net.minecraft.world.gen.layer.traits.IC1Transformer;
 
 public enum TropicraftAddSubBiomesLayer implements IC1Transformer {
     // TODO add kelp forest here to sub biomes list
-    OCEANS(TropicraftLayerUtil.OCEAN_ID, new int[]{TropicraftLayerUtil.OCEAN_ID})
+    RAINFOREST(TropicraftLayerUtil.RAINFOREST_PLAINS_ID, TropicraftLayerUtil.RAINFOREST_IDS)
     ;
 
     final int baseID;
