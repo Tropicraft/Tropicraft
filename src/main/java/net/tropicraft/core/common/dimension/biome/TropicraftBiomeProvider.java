@@ -26,7 +26,8 @@ public class TropicraftBiomeProvider extends BiomeProvider {
 
     private final Biome[] possibleBiomes = {
             TropicraftBiomes.TROPICS,
-            TropicraftBiomes.TROPICS_OCEAN
+            TropicraftBiomes.TROPICS_OCEAN,
+            TropicraftBiomes.TROPICS_RIVER
     };
 
     public TropicraftBiomeProvider(final TropicraftBiomeProviderSettings settings) {
