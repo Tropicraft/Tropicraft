@@ -31,12 +31,12 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     // spawn height
     @Override
     public int getGroundHeight() {
-        return 128;
+        return 64;
     }
 
     @Override
     public int getSeaLevel() {
-        return 127;
+        return 63;
     }
 
     // get depth / scale

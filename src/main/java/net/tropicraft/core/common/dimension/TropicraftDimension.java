@@ -14,7 +14,6 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.ChunkGeneratorType;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,7 +31,7 @@ public class TropicraftDimension extends Dimension {
     }
 
     @Override
-    public ChunkGenerator<? extends GenerationSettings> createChunkGenerator() {
+    public ChunkGenerator<?> createChunkGenerator() {
         BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS;
         ChunkGeneratorType chunkType = TropicraftChunkGeneratorType.TROPICS;
         TropicraftGeneratorSettings genSettings = (TropicraftGeneratorSettings) chunkType.createSettings();

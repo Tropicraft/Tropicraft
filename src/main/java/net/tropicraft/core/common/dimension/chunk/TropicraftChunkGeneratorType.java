@@ -14,10 +14,11 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftChunkGeneratorType extends ChunkGeneratorType {
 
-    public static final ChunkGeneratorType<TropicraftGeneratorSettings, TropicraftChunkGenerator> TROPICS = new ChunkGeneratorType<>(TropicraftChunkGenerator::new, true, TropicraftGeneratorSettings::new);
+    public static final ChunkGeneratorType<TropicraftGeneratorSettings, TropicraftChunkGenerator> TROPICS =
+            new ChunkGeneratorType<>(TropicraftChunkGenerator::new, true, TropicraftGeneratorSettings::new);
 
-    public TropicraftChunkGeneratorType(IChunkGeneratorFactory factory, boolean isPublic, Supplier settingsSupplier) {
-        super(factory, isPublic, settingsSupplier);
+    public TropicraftChunkGeneratorType(IChunkGeneratorFactory factory, boolean isBuffetOption, Supplier settingsSupplier) {
+        super(factory, isBuffetOption, settingsSupplier);
     }
 
     @SubscribeEvent
