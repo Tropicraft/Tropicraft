@@ -22,7 +22,8 @@ public enum TropicraftAddIslandLayer implements IBishopTransformer {
     @Override
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
         if (!isLand(nw) && !isLand(sw) && !isLand(ne) && !isLand(se) && !isLand(center) && random.random(chance) == 0) {
-            return landID;
+            return TropicraftLayerUtil.LAND_ID;
+            // TODO - maybe this is correct, but in old tropicode we actually didn't return the variable, it was unused return landID;
         }
 
         return center;

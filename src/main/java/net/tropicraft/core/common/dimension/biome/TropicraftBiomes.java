@@ -19,7 +19,7 @@ public class TropicraftBiomes {
     public static final Biome RAINFOREST_ISLAND_MOUNTAINS = new TropicraftRainforestBiome(0.1F, 2.5F);
     public static final Biome TROPICS_RIVER = new TropicsRiverBiome();
     public static final Biome TROPICS_BEACH = new TropicsBeachBiome();
-    public static final Biome TROPICS_LAKE = new TropicsLakeBiome();
+   // public static final Biome TROPICS_LAKE = new TropicsLakeBiome();
 
     @SubscribeEvent
     public static void onBiomeRegistry(final RegistryEvent.Register<Biome> event) {
@@ -32,7 +32,7 @@ public class TropicraftBiomes {
         register(event, RAINFOREST_HILLS, "rainforest_hills");
         register(event, RAINFOREST_MOUNTAINS, "rainforest_mountains");
         register(event, RAINFOREST_ISLAND_MOUNTAINS, "rainforest_island_mountains");
-        register(event, TROPICS_LAKE, "tropics_lake");
+     //   register(event, TROPICS_LAKE, "tropics_lake");
     }
 
     private static final void register(final RegistryEvent.Register<Biome> event, final Biome biome, final String name) {

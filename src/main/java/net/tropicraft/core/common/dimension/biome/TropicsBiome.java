@@ -3,12 +3,12 @@ package net.tropicraft.core.common.dimension.biome;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
 
 public class TropicsBiome extends TropicraftBiome {
     protected TropicsBiome() {
         super(new Biome.Builder()
-                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG)
+                // TODO NO SAND - purified sand
+                .surfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG)
                 .precipitation(RainType.RAIN)
                 .category(Category.BEACH)
                 .depth(-1.5F)

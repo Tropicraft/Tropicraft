@@ -11,9 +11,8 @@ import java.util.List;
 
 public enum TropicraftAddWeightedSubBiomesLayer implements IC1Transformer {
     // TODO add kelp forest here to sub biomes list
-    OCEANS(TropicraftLayerUtil.OCEAN_ID, new int[]{TropicraftLayerUtil.OCEAN_ID})
+    OCEANS(TropicraftLayerUtil.OCEAN_ID, new int[]{TropicraftLayerUtil.OCEAN_ID}, new WeightedRandom.Item(20))
     ;
-
     private List<WeightedRandom.Item> biomeWeights;
     private int totalWeight;
     final int baseID;

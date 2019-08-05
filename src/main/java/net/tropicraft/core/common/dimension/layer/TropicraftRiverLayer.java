@@ -8,21 +8,10 @@ public enum TropicraftRiverLayer implements ICastleTransformer {
 
     @Override
     public int apply(INoiseRandom random, int north, int east, int south, int west, int center) {
-        final int middle = riverFilter(center);
-        if (middle == riverFilter(west)
-                && middle == riverFilter(north)
-                && middle == riverFilter(east)
-                && middle == riverFilter(south)
-                ) {
-            return -1;
+        if (center != north || center != east || center != south || center != west) {
+            return TropicraftLayerUtil.RIVER_ID;
         }
-        return TropicraftLayerUtil.RIVER_ID;
-    }
 
-    private static int riverFilter(final int value) {
-        if (value >= 2) {
-            return 2 + (value & 1);
-        }
-        return value;
+        return -1;
     }
 }

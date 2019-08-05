@@ -8,6 +8,7 @@ public enum TropicraftRiverInitLayer implements IC0Transformer {
 
     @Override
     public int apply(INoiseRandom iNoiseRandom, int center) {
-        return iNoiseRandom.random(4) + 1;
+        //return iNoiseRandom.random(4) + 1;
+        return /*isOcean(center) ? center : */iNoiseRandom.random(4) + 1;
     }
 }

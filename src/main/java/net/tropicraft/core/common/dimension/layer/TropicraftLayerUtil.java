@@ -10,11 +10,10 @@ import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.SmoothLayer;
-import net.minecraft.world.gen.layer.VoroniZoomLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
-import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
+import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 
 import java.util.function.LongFunction;
 
@@ -46,15 +45,16 @@ public class TropicraftLayerUtil {
 
     private static <T extends IArea, C extends IExtendedNoiseRandom<T>> ImmutableList<IAreaFactory<T>> buildTropicsProcedure(final WorldType type, final TropicraftGeneratorSettings settings, final LongFunction<C> context) {
         IAreaFactory<T> islandLayer = TropicsIslandLayer.INSTANCE.apply(context.apply(1));
-        islandLayer = ZoomLayer.FUZZY.apply(context.apply(2000), islandLayer);
-        IAreaFactory<T> expandLayer = TropicraftExpandIslandLayer.INSTANCE.apply(context.apply(2), islandLayer);
+        IAreaFactory<T> fuzzyZoomLayer = ZoomLayer.FUZZY.apply(context.apply(2000), islandLayer);
+        IAreaFactory<T> expandLayer = TropicraftExpandIslandLayer.INSTANCE.apply(context.apply(2), fuzzyZoomLayer);
         IAreaFactory<T> addIslandLayer = TropicraftAddIslandLayer.BASIC_3.apply(context.apply(3), expandLayer);
         IAreaFactory<T> zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2000), addIslandLayer);
         expandLayer = TropicraftExpandIslandLayer.INSTANCE.apply(context.apply(55), zoomLayer);
         // TODO - maybe add a similar RemoveTooMuchOceanLayer here?
 
-        IAreaFactory<T> lakeLayer = TropicraftAddInlandLayer.INSTANCE.apply(context.apply(9), expandLayer);
-        addIslandLayer = TropicraftAddIslandLayer.RAINFOREST_13.apply(context.apply(6), lakeLayer);
+        IAreaFactory<T> oceanLayer = TropicraftAddInlandLayer.INSTANCE.apply(context.apply(9), expandLayer);
+        //oceanLayer = magnify(1005, ZoomLayer.NORMAL, oceanLayer, 6, context); // new
+        addIslandLayer = TropicraftAddIslandLayer.RAINFOREST_13.apply(context.apply(6), oceanLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2001), addIslandLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2004), zoomLayer);
         expandLayer = TropicraftExpandIslandLayer.INSTANCE.apply(context.apply(7), zoomLayer);
@@ -72,7 +72,7 @@ public class TropicraftLayerUtil {
         }
 
         IAreaFactory<T> riverLayer = TropicraftRiverInitLayer.INSTANCE.apply(context.apply(12), expandLayer);
-        riverLayer = magnify(1000, ZoomLayer.NORMAL, riverLayer, 5, context);
+        riverLayer = magnify(2007, ZoomLayer.NORMAL, riverLayer, 5, context);
         riverLayer = TropicraftRiverLayer.INSTANCE.apply(context.apply(13), riverLayer);
         IAreaFactory<T> riverSmoothLayer = SmoothLayer.INSTANCE.apply(context.apply(2008L), riverLayer);
 
@@ -81,9 +81,9 @@ public class TropicraftLayerUtil {
         IAreaFactory<T> smoothingBiomesLayer = SmoothLayer.INSTANCE.apply(context.apply(17L), beachlayer);
         IAreaFactory<T> riverMixLayer = TropicraftRiverMixLayer.INSTANCE.apply(context.apply(5), smoothingBiomesLayer, riverSmoothLayer);
 
-        final IAreaFactory<T> blockLayer = VoroniZoomLayer.INSTANCE.apply(context.apply(10), riverMixLayer);
+        final IAreaFactory<T> blockLayer = TropicraftVoronoiZoomLayer.INSTANCE.apply(context.apply(10), riverMixLayer);
 
-        return ImmutableList.of(riverMixLayer, blockLayer, riverMixLayer);
+        return ImmutableList.of(riverMixLayer, blockLayer, blockLayer);
     }
 
     private static <T extends IArea, C extends IExtendedNoiseRandom<T>> IAreaFactory<T> magnify(final long seed, final IAreaTransformer1 zoomLayer, final IAreaFactory<T> layer, final int count, final LongFunction<C> context) {
