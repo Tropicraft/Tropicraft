@@ -96,10 +96,6 @@ public class BongoDrumBlock extends Block {
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
-        System.out.println(TropicraftWorldUtils.TROPICS_DIMENSION);
-        if (event.getEntityPlayer() instanceof ServerPlayerEntity) {
-            TropicraftWorldUtils.teleportPlayer((ServerPlayerEntity) event.getEntityPlayer());
-        }
         final World world = event.getWorld();
         final BlockState state = world.getBlockState(event.getPos());
         final Block block = state.getBlock();
