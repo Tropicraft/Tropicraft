@@ -35,6 +35,7 @@ public class TropicraftBiomes {
      //   register(event, TROPICS_LAKE, "tropics_lake");
     }
 
+
     private static final void register(final RegistryEvent.Register<Biome> event, final Biome biome, final String name) {
         event.getRegistry().register(biome.setRegistryName(new ResourceLocation(Constants.MODID, name)));
     }

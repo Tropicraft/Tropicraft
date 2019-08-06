@@ -27,7 +27,13 @@ public class TropicraftBiomeProvider extends BiomeProvider {
     private final Biome[] possibleBiomes = {
             TropicraftBiomes.TROPICS,
             TropicraftBiomes.TROPICS_OCEAN,
-            TropicraftBiomes.TROPICS_RIVER
+            TropicraftBiomes.TROPICS_RIVER,
+            TropicraftBiomes.TROPICS_BEACH,
+            TropicraftBiomes.RAINFOREST_HILLS,
+            TropicraftBiomes.RAINFOREST_PLAINS,
+            TropicraftBiomes.RAINFOREST_MOUNTAINS,
+            TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS,
+            TropicraftBiomes.KELP_FOREST
     };
 
     public TropicraftBiomeProvider(final TropicraftBiomeProviderSettings settings) {

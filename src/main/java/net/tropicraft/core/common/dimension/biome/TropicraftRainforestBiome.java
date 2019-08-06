@@ -9,7 +9,7 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
         super(new Biome.Builder()
                 .surfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
                 .precipitation(RainType.RAIN)
-                .category(Category.NONE)
+                .category(Category.JUNGLE)
                 .depth(depth)
                 .scale(scale)
                 .temperature(1.5F)

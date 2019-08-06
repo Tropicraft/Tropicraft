@@ -39,8 +39,7 @@ public class TropicraftLayerUtil {
         final ImmutableList<IAreaFactory<LazyArea>> immutablelist = buildTropicsProcedure(type, settings, procedure -> new LazyAreaLayerContext(25, seed, procedure));
         final Layer noiseLayer = new Layer(immutablelist.get(0));
         final Layer blockLayer = new Layer(immutablelist.get(1));
-        final Layer extraLayer = new Layer(immutablelist.get(2));
-        return new Layer[]{noiseLayer, blockLayer, extraLayer};
+        return new Layer[]{noiseLayer, blockLayer};
     }
 
     private static <T extends IArea, C extends IExtendedNoiseRandom<T>> ImmutableList<IAreaFactory<T>> buildTropicsProcedure(final WorldType type, final TropicraftGeneratorSettings settings, final LongFunction<C> context) {
@@ -53,7 +52,6 @@ public class TropicraftLayerUtil {
         // TODO - maybe add a similar RemoveTooMuchOceanLayer here?
 
         IAreaFactory<T> oceanLayer = TropicraftAddInlandLayer.INSTANCE.apply(context.apply(9), expandLayer);
-        //oceanLayer = magnify(1005, ZoomLayer.NORMAL, oceanLayer, 6, context); // new
         addIslandLayer = TropicraftAddIslandLayer.RAINFOREST_13.apply(context.apply(6), oceanLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2001), addIslandLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2004), zoomLayer);
@@ -67,7 +65,7 @@ public class TropicraftLayerUtil {
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2002), hillsLayerGen);
         expandLayer = TropicraftExpandIslandLayer.INSTANCE.apply(context.apply(10), zoomLayer);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < settings.getBiomeSize(); i++) {
             expandLayer = TropicraftExpandIslandLayer.INSTANCE.apply(context.apply(10), expandLayer);
         }
 
@@ -83,7 +81,7 @@ public class TropicraftLayerUtil {
 
         final IAreaFactory<T> blockLayer = TropicraftVoronoiZoomLayer.INSTANCE.apply(context.apply(10), riverMixLayer);
 
-        return ImmutableList.of(riverMixLayer, blockLayer, blockLayer);
+        return ImmutableList.of(riverMixLayer, blockLayer);
     }
 
     private static <T extends IArea, C extends IExtendedNoiseRandom<T>> IAreaFactory<T> magnify(final long seed, final IAreaTransformer1 zoomLayer, final IAreaFactory<T> layer, final int count, final LongFunction<C> context) {

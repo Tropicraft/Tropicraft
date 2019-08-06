@@ -23,7 +23,7 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     private final OctavesNoiseGenerator depthNoise;
 
     public TropicraftChunkGenerator(IWorld world, BiomeProvider biomeProvider, TropicraftGeneratorSettings settings) {
-        super(world, biomeProvider, 4, 8, 256, settings, true);
+        super(world, biomeProvider, 4, 8, 256, settings, false);
         randomSeed.skip(2620);
         depthNoise = new OctavesNoiseGenerator(this.randomSeed, 16);
     }

@@ -8,7 +8,7 @@ public enum TropicsIslandLayer implements IAreaTransformer0 {
 
     @Override
     public int apply(INoiseRandom iNoiseRandom, int x, int y) {
-        // if (0, 0) is located here, place an island
+//         if (0, 0) is located here, place an island
         if (x == 0 && y == 0) {
             return TropicraftLayerUtil.LAND_ID;
         }

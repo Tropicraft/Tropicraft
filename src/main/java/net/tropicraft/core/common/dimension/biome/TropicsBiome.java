@@ -10,11 +10,11 @@ public class TropicsBiome extends TropicraftBiome {
                 // TODO NO SAND - purified sand
                 .surfaceBuilder(SurfaceBuilder.DEFAULT, SurfaceBuilder.GRASS_DIRT_SAND_CONFIG)
                 .precipitation(RainType.RAIN)
-                .category(Category.BEACH)
-                .depth(-1.5F)
-                .scale(0.3F)
+                .category(Category.PLAINS)
+                .depth(0.15F)
+                .scale(0.15F)
                 .temperature(2.0F)
-                .downfall(1.25F)
+                .downfall(1.5F)
                 .parent(null));
 
         DefaultBiomeFeatures.addCarvers(this);
