@@ -8,6 +8,7 @@ import static net.tropicraft.core.common.dimension.layer.TropicraftLayerUtil.isL
 public enum TropicraftAddIslandLayer implements IBishopTransformer {
     BASIC_2(2, TropicraftLayerUtil.LAND_ID),
     BASIC_3(3, TropicraftLayerUtil.LAND_ID),
+    BASIC_8(8, TropicraftLayerUtil.LAND_ID),
     RAINFOREST_13(13, TropicraftLayerUtil.ISLAND_MOUNTAINS_ID)
     ;
 
@@ -22,8 +23,8 @@ public enum TropicraftAddIslandLayer implements IBishopTransformer {
     @Override
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
         if (!isLand(nw) && !isLand(sw) && !isLand(ne) && !isLand(se) && !isLand(center) && random.random(chance) == 0) {
-            return TropicraftLayerUtil.LAND_ID;
-            // TODO - maybe this is correct, but in old tropicode we actually didn't return the variable, it was unused return landID;
+            return landID;
+            // TODO - maybe this is incorrect, but in old tropicode we actually didn't return the variable, it was unused return landID;
         }
 
         return center;

@@ -16,7 +16,7 @@ public class TropicraftBiomes {
     public static final Biome RAINFOREST_PLAINS = new TropicraftRainforestBiome(0.25F, 0.1F);
     public static final Biome RAINFOREST_HILLS = new TropicraftRainforestBiome(0.45F, 0.425F);
     public static final Biome RAINFOREST_MOUNTAINS = new TropicraftRainforestBiome(1.0F, 1.2F);
-    public static final Biome RAINFOREST_ISLAND_MOUNTAINS = new TropicraftRainforestBiome(0.1F, 2.5F);
+    public static final Biome RAINFOREST_ISLAND_MOUNTAINS = new TropicraftRainforestBiome(0.1F, 2F);
     public static final Biome TROPICS_RIVER = new TropicsRiverBiome();
     public static final Biome TROPICS_BEACH = new TropicsBeachBiome();
    // public static final Biome TROPICS_LAKE = new TropicsLakeBiome();

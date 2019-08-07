@@ -13,13 +13,13 @@ public enum TropicraftRiverMixLayer implements IAreaTransformer2, IDimOffset0Tra
         final int biome = parent1.getValue(this.func_215721_a(x), this.func_215722_b(y));
         final int river = parent2.getValue(this.func_215721_a(x), this.func_215722_b(y));
 
-        if (TropicraftLayerUtil.isOcean(biome)) {
-            return biome;
+        // ordering problems?
+        if (TropicraftLayerUtil.isRiver(river)) {
+            return river;
         }
 
-        if (TropicraftLayerUtil.isRiver(river)) {
-            // & 0xff needed?
-            return river;
+        if (TropicraftLayerUtil.isOcean(biome)) {
+            return biome;
         }
 
         return biome;

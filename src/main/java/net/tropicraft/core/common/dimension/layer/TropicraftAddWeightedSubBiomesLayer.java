@@ -5,11 +5,11 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.IC1Transformer;
+import net.minecraft.world.gen.layer.traits.IC0Transformer;
 
 import java.util.List;
 
-public enum TropicraftAddWeightedSubBiomesLayer implements IC1Transformer {
+public enum TropicraftAddWeightedSubBiomesLayer implements IC0Transformer {
     // TODO add kelp forest here to sub biomes list
     OCEANS(TropicraftLayerUtil.OCEAN_ID, new int[]{TropicraftLayerUtil.OCEAN_ID}, new WeightedRandom.Item(20))
     ;
