@@ -28,9 +28,6 @@ public class TropicraftWorldUtils {
 		public static void onDimensionRegistry(final RegistryEvent.Register<ModDimension> event) {
 			TROPICRAFT_MOD_DIMENSION = dimFactory();
 			event.getRegistry().register(TROPICRAFT_MOD_DIMENSION.setRegistryName(new ResourceLocation(Constants.MODID, "tropics")));
-			TROPICS_DIMENSION = DimensionManager.registerDimension(new ResourceLocation(Constants.MODID, "tropics"), TROPICRAFT_MOD_DIMENSION, new PacketBuffer(Unpooled.buffer()), true);
-			//TROPICS_DIMENSION.setRegistryName(new ResourceLocation(Constants.MODID, "tropics"));
-			DimensionManager.keepLoaded(TROPICS_DIMENSION, false);
 		}
 
 		static ModDimension dimFactory() {
@@ -47,9 +44,14 @@ public class TropicraftWorldUtils {
 	public static class EventDimensionType {
 		@SubscribeEvent
 		public static void onModDimensionRegister(final RegisterDimensionsEvent event) {
-//			if (event.getMissingNames().contains(new ResourceLocation(Constants.MODID, "tropics"))) {
-
-//			}
+			ResourceLocation id = new ResourceLocation(Constants.MODID, "tropics");
+			if (DimensionType.byName(id) == null) {
+				TROPICS_DIMENSION = DimensionManager.registerDimension(id, TROPICRAFT_MOD_DIMENSION, new PacketBuffer(Unpooled.buffer()), true);
+				//TROPICS_DIMENSION.setRegistryName(new ResourceLocation(Constants.MODID, "tropics"));
+				DimensionManager.keepLoaded(TROPICS_DIMENSION, false);
+			} else {
+				TROPICS_DIMENSION = DimensionType.byName(id);
+			}
 		}
 	}
 
