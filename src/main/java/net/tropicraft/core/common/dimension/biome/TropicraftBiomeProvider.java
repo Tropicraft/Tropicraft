@@ -57,7 +57,7 @@ public class TropicraftBiomeProvider extends BiomeProvider {
 
     @Override
     public Biome[] getBiomes(int x, int z, int width, int length, boolean cacheFlag) {
-        return noiseLayer.generateBiomes(x, z, width, length);
+        return blockLayer.generateBiomes(x, z, width, length);
     }
 
     @Override
