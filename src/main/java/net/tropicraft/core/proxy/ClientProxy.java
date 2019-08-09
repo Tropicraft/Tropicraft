@@ -8,10 +8,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.entity.render.RenderKoaMan;
-import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
-
-import java.util.Random;
+import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -23,6 +22,7 @@ public class ClientProxy extends CommonProxy {
     
     private void clientSetup(FMLClientSetupEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(EntityKoaHunter.class, RenderKoaMan::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropiCreeperEntity.class, TropiCreeperRenderer::new);
     }
    
     @Override

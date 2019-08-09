@@ -45,6 +45,11 @@ public class TropicraftBlocks {
     public static final Block PATHOS = Builder.flower();
     public static final Block RED_ANTHURIUM = Builder.flower();
 
+    public static final Block[] SMALL_FLOWERS = new Block[]{
+        ACAI_VINE, ANEMONE, BROMELIAD, CANNA, COMMELINA_DIFFUSA, CROCOSMIA, CROTON, DRACAENA, FERN,
+            FOLIAGE, MAGIC_MUSHROOM, ORANGE_ANTHURIUM, ORCHID, PATHOS, RED_ANTHURIUM
+    };
+
     public static final Block PURIFIED_SAND = Builder.sand(MaterialColor.SAND);
     public static final Block PACKED_PURIFIED_SAND = Builder.sand(MaterialColor.SAND, 2, 30);
     public static final Block CORAL_SAND = Builder.sand(MaterialColor.PINK);

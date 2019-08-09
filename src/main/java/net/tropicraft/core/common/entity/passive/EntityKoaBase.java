@@ -42,9 +42,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicsConfigs;
+import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.registry.BlockRegistry;
-import net.tropicraft.core.registry.EntityRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import javax.annotation.Nullable;
@@ -490,7 +490,7 @@ public class EntityKoaBase extends VillagerEntity {
     @Override
     public VillagerEntity createChild(AgeableEntity ageable) {
         //EntityVillager ent = super.createChild(ageable);
-        EntityKoaHunter entityvillager = new EntityKoaHunter(EntityRegistry.KOA_VILLAGER, this.world);
+        EntityKoaHunter entityvillager = new EntityKoaHunter(TropicraftEntities.KOA_HUNTER, this.world);
         entityvillager.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(entityvillager)), SpawnReason.BREEDING, null, null);
 
         return entityvillager;
