@@ -1,11 +1,11 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.renderer.entity.model.CreeperModel;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
-public class TropiCreeperModel extends CreeperModel<TropiCreeperEntity> {
+public class TropiCreeperModel extends EntityModel<TropiCreeperEntity> {
     private final RendererModel head;
     private final RendererModel body;
     private final RendererModel leg3;

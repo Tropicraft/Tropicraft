@@ -7,6 +7,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Info;
+import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
@@ -14,17 +15,28 @@ import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 public class TropicraftEntities {
     public static EntityType<EntityKoaHunter> KOA_HUNTER;
     public static EntityType<TropiCreeperEntity> TROPI_CREEPER;
+    public static EntityType<IguanaEntity> IGUANA;
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
         KOA_HUNTER = register(event, "koa", koaHunter());
         TROPI_CREEPER = register(event, "tropicreeper", tropicreeper());
+        IGUANA = register(event, "iguana", iguana());
     }
 
     private static <T extends Entity> EntityType<T> register(final RegistryEvent.Register<EntityType<?>> event, final String name, final EntityType.Builder<T> entityType) {
         final EntityType<T> entityTypeCreated = entityType.build(name);
         event.getRegistry().register(entityTypeCreated.setRegistryName(name));
         return entityTypeCreated;
+    }
+
+    private static EntityType.Builder<IguanaEntity> iguana() {
+        return EntityType.Builder.create(IguanaEntity::new, EntityClassification.CREATURE)
+                .size(1.0F, 0.4F)
+                .setTrackingRange(80)
+                .setUpdateInterval(3)
+                .immuneToFire()
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<EntityKoaHunter> koaHunter() {
