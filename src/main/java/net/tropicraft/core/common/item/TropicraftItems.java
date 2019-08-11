@@ -1,11 +1,13 @@
 package net.tropicraft.core.common.item;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.SwordItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.ColorHelper;
 
 public class TropicraftItems {
@@ -27,6 +29,8 @@ public class TropicraftItems {
     public static UmbrellaItem RED_UMBRELLA = Builder.umbrella(ColorHelper.Color.RED);
     public static UmbrellaItem BLACK_UMBRELLA = Builder.umbrella(ColorHelper.Color.BLACK);
 
+    public static Item BAMBOO_SPEAR = new SwordItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -47,6 +51,8 @@ public class TropicraftItems {
             register(event, "green_umbrella", GREEN_UMBRELLA);
             register(event, "red_umbrella", RED_UMBRELLA);
             register(event, "black_umbrella", BLACK_UMBRELLA);
+
+            register(event, "bamboo_spear", BAMBOO_SPEAR);
         }
 
         private static void register(final RegistryEvent.Register<Item> event, final String name, final Item item) {
