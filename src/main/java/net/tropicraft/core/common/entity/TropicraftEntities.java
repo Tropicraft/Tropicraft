@@ -10,24 +10,35 @@ import net.tropicraft.Info;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 
 @Mod.EventBusSubscriber(modid = Info.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
     public static EntityType<EntityKoaHunter> KOA_HUNTER;
     public static EntityType<TropiCreeperEntity> TROPI_CREEPER;
     public static EntityType<IguanaEntity> IGUANA;
+    public static EntityType<UmbrellaEntity> UMBRELLA;
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
         KOA_HUNTER = register(event, "koa", koaHunter());
         TROPI_CREEPER = register(event, "tropicreeper", tropicreeper());
         IGUANA = register(event, "iguana", iguana());
+        UMBRELLA = register(event, "umbrella", umbrella());
     }
 
     private static <T extends Entity> EntityType<T> register(final RegistryEvent.Register<EntityType<?>> event, final String name, final EntityType.Builder<T> entityType) {
         final EntityType<T> entityTypeCreated = entityType.build(name);
         event.getRegistry().register(entityTypeCreated.setRegistryName(name));
         return entityTypeCreated;
+    }
+
+    private static EntityType.Builder<UmbrellaEntity> umbrella() {
+        return EntityType.Builder.create(UmbrellaEntity::new, EntityClassification.MISC)
+                .size(1.0F, 4.0F)
+                .setTrackingRange(120)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(false);
     }
 
     private static EntityType.Builder<IguanaEntity> iguana() {
