@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.BlockHardnessValues;
+import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
 public class TropicraftBlocks {
     public static final Block CHUNK = new Block(Block.Properties.create(Material.ROCK, MaterialColor.BLACK).hardnessAndResistance(2, 30));
@@ -88,6 +89,12 @@ public class TropicraftBlocks {
     public static final Block LEMON_LEAVES = Builder.leaves();
     public static final Block LIME_LEAVES = Builder.leaves();
     public static final Block ORANGE_LEAVES = Builder.leaves();
+    
+    //public static final Block MAHOGANY_SAPLING = Builder.sapling(() -> TropicraftFeatures.MAHOGANY_TREE);
+    public static final Block GRAPEFRUIT_SAPLING = Builder.sapling(() -> TropicraftFeatures.GRAPEFRUIT_TREE);
+    public static final Block LEMON_SAPLING = Builder.sapling(() -> TropicraftFeatures.LEMON_TREE);
+    public static final Block LIME_SAPLING = Builder.sapling(() -> TropicraftFeatures.LIME_TREE);
+    public static final Block ORANGE_SAPLING = Builder.sapling(() -> TropicraftFeatures.ORANGE_TREE);
 
     public static final Block BAMBOO_FENCE = Builder.fence(Material.BAMBOO, MaterialColor.GREEN);
     public static final Block THATCH_FENCE = Builder.fence(Material.PLANTS, MaterialColor.YELLOW);
@@ -170,6 +177,10 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "lemon_leaves", LEMON_LEAVES);
             registerBlockDefault(event, "lime_leaves", LIME_LEAVES);
             registerBlockDefault(event, "orange_leaves", ORANGE_LEAVES);
+            registerBlockDefault(event, "grapefruit_sapling", GRAPEFRUIT_SAPLING);
+            registerBlockDefault(event, "lemon_sapling", LEMON_SAPLING);
+            registerBlockDefault(event, "lime_sapling", LIME_SAPLING);
+            registerBlockDefault(event, "orange_sapling", ORANGE_SAPLING);
             registerBlockDefault(event, "bamboo_fence", BAMBOO_FENCE);
             registerBlockDefault(event, "thatch_fence", THATCH_FENCE);
             registerBlockDefault(event, "chunk_fence", CHUNK_FENCE);
@@ -245,6 +256,10 @@ public class TropicraftBlocks {
             registerItemDefault(event, LEMON_LEAVES);
             registerItemDefault(event, LIME_LEAVES);
             registerItemDefault(event, ORANGE_LEAVES);
+            registerItemDefault(event, GRAPEFRUIT_SAPLING);
+            registerItemDefault(event, LEMON_SAPLING);
+            registerItemDefault(event, LIME_SAPLING);
+            registerItemDefault(event, ORANGE_SAPLING);
             registerItemDefault(event, BAMBOO_FENCE);
             registerItemDefault(event, THATCH_FENCE);
             registerItemDefault(event, CHUNK_FENCE);

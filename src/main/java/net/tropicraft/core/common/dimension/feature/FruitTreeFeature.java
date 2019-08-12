@@ -10,10 +10,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
@@ -28,63 +28,57 @@ public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 	}
 
 	@Override
-	protected boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader worldObj, Random rand, BlockPos pos, MutableBoundingBox p_208519_5_) {
-		int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
+	protected boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader worldObj, Random rand, BlockPos pos, MutableBoundingBox bb) {
+		pos = pos.toImmutable();
 		int height = rand.nextInt(3) + 4;
-		boolean canGenerate = true;
 
-		if (j < 1 || j + height + 1 > worldObj.getMaxHeight()) {
+		if (pos.getY() < 1 || pos.getY() + height + 1 > worldObj.getMaxHeight()) {
 			return false;
 		}
 
-		for (int y = j; y <= j + 1 + height; y++) {
+		for (int y = 0; y <= 1 + height; y++) {
+			BlockPos checkPos = pos.up(y);
 			int size = 1;
-			if (y == j) {
+			if (checkPos.getY() < 0 || checkPos.getY() >= worldObj.getMaxHeight()) {
+				return false;
+			}
+			
+			if (y == 0) {
 				size = 0;
 			}
 
-			if (y >= (j + 1 + height) - 2) {
+			if (y >= (1 + height) - 2) {
 				size = 2;
 			}
-
-			for (int x = i - size; x <= i + size && canGenerate; x++) {
-				for (int z = k - size; z <= k + size && canGenerate; z++) {
-					if (y >= 0 && y < worldObj.getMaxHeight()) {
-						if (!isAirOrLeaves(worldObj, new BlockPos(x, y, z))) {
-							canGenerate = false;
-						}
-					} else {
-						canGenerate = false;
-					}
-				}
+			
+			if (BlockPos.getAllInBox(checkPos.add(-size, 0, -size), checkPos.add(size, 0, size))
+						.filter(p -> !isAirOrLeaves(worldObj, p))
+						.count() > 0) {
+				return false;
 			}
 		}
 
-		if (!canGenerate) {
+		if (!isSoil(worldObj, pos.down(), getSapling())) {
 			return false;
 		}
 
-		if (!isSoil(worldObj, new BlockPos(i, j - 1, k), getSapling())) {
-			return false;
-		}
+		setLogState(changedBlocks, worldObj, pos.down(), Blocks.DIRT.getDefaultState(), bb);
 
-		worldObj.setBlockState(new BlockPos(i, j - 1, k), Blocks.DIRT.getDefaultState(), Constants.BlockFlags.DEFAULT);
-
-		for (int y = (j - 3) + height; y <= j + height; y++) {
-			int presizeMod = y - (j + height);
+		for (int y = (pos.getY() - 3) + height; y <= pos.getY() + height; y++) {
+			int presizeMod = y - (pos.getY() + height);
 			int size = 1 - presizeMod / 2;
-			for (int x = i - size; x <= i + size; x++) {
-				int localX = x - i;
-				for (int z = k - size; z <= k + size; z++) {
-					int localZ = z - k;
+			for (int x = pos.getX() - size; x <= pos.getX() + size; x++) {
+				int localX = x - pos.getX();
+				for (int z = pos.getZ() - size; z <= pos.getZ() + size; z++) {
+					int localZ = z - pos.getZ();
 					if ((Math.abs(localX) != size || Math.abs(localZ) != size || rand.nextInt(2) != 0 && presizeMod != 0) && isAirOrLeaves(worldObj, new BlockPos(x, y, z))) {
 						BlockPos leafPos = new BlockPos(x, y, z);
 						if (rand.nextBoolean()) {
 							// Set fruit-bearing leaves here
-							worldObj.setBlockState(leafPos, FRUIT_LEAF_BLOCK, Constants.BlockFlags.DEFAULT);
+							setLogState(changedBlocks, worldObj, leafPos, FRUIT_LEAF_BLOCK, bb);
 						} else {
 							// Set plain fruit tree leaves here
-						    worldObj.setBlockState(leafPos, REGULAR_LEAF_BLOCK, Constants.BlockFlags.DEFAULT);
+						    setLogState(changedBlocks, worldObj, leafPos, REGULAR_LEAF_BLOCK, bb);
 						}
 					}
 				}
@@ -93,8 +87,9 @@ public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 
 		// Tree stem
 		for (int y = 0; y < height; y++) {
-			if (isAirOrLeaves(worldObj, new BlockPos(i, j + y, k))) {
-				worldObj.setBlockState(new BlockPos(i, j + y, k), WOOD_BLOCK, Constants.BlockFlags.DEFAULT);
+			BlockPos logPos = pos.up(y);
+			if (isAirOrLeaves(worldObj, logPos) || func_214576_j(worldObj, logPos)) {
+				setLogState(changedBlocks, worldObj, logPos, WOOD_BLOCK, bb);
 			}
 		}
 
