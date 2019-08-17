@@ -31,12 +31,12 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     // spawn height
     @Override
     public int getGroundHeight() {
-        return 64;
+        return 128;
     }
 
     @Override
     public int getSeaLevel() {
-        return 63;
+        return getGroundHeight() - 1;
     }
 
     // get depth / scale
@@ -97,7 +97,9 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     // yoffset
     @Override
     protected double func_222545_a(double depth, double scale, int yy) {
-        double yOffsets = ((double)yy - (8.5D + depth * 8.5D / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / scale;
+        // The higher this value is, the higher the terrain is!
+        final double baseSize = 17D;
+        double yOffsets = ((double)yy - (baseSize + depth * baseSize / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / scale;
         if (yOffsets < 0.0D) {
             yOffsets *= 4.0D;
         }
@@ -113,6 +115,11 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         double xzOtherScale = 8.555149841308594D;
         double yOtherScale = 4.277574920654297D;
 
-        func_222546_a(doubles, x, z, xzScale, yScale, xzOtherScale, yOtherScale, 3, -10);
+        // Don't make this too high or you'll end up with aether islands!
+        final int topSlideMax = 0;
+        final int topSlideScale = 3;
+
+        func_222546_a(doubles, x, z, xzScale, yScale, xzOtherScale, yOtherScale, topSlideScale, topSlideMax);
     }
+
 }

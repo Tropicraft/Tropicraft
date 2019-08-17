@@ -11,7 +11,7 @@ public class TropicsOceanBiome extends TropicraftBiome {
                 .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG)
                 .precipitation(RainType.RAIN)
                 .category(Category.OCEAN)
-                .depth(-1.0F)
+                .depth(-1.6F)
                 .scale(0.4F)
                 .temperature(1.5F)
                 .downfall(1.25F)
