@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -13,6 +14,7 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -58,6 +60,37 @@ public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatur
 
     protected boolean genCircle(IWorldGenerationReader world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
         return genCircle(world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
+    }
+
+    protected boolean genVines(final IWorldGenerationReader world, final Random rand, int i, int j, int k) {
+        int m = 2;
+
+        do {
+            if (m > 5) {
+                return false;
+            }
+
+            final BlockPos pos = new BlockPos(i, j, k);
+            if (isAir(world, pos)) {
+                setBlockStateInternally(world, pos, Blocks.VINE.getDefaultState());
+                break;
+            }
+
+            m++;
+        } while (true);
+
+        int length = rand.nextInt(4) + 4;
+
+        for (int y = j - 1; y > j - length; y--) {
+            final BlockPos vinePos = new BlockPos(i, y, k);
+            if (isAir(world, vinePos)) {
+                setBlockStateInternally(world, vinePos, Blocks.VINE.getDefaultState());
+            } else {
+                return true;
+            }
+        }
+
+        return true;
     }
 
     /**

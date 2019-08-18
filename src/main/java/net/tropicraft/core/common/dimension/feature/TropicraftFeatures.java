@@ -21,6 +21,7 @@ public class TropicraftFeatures {
 	public static final RainforestTreeFeature UP_TREE = new UpTreeFeature(NoFeatureConfig::deserialize, true);
 	public static final RainforestTreeFeature SMALL_TUALUNG = new TualungFeature(NoFeatureConfig::deserialize, true, 16, 9);
 	public static final RainforestTreeFeature LARGE_TUALUNG = new TualungFeature(NoFeatureConfig::deserialize, true, 25, 11);
+	public static final RainforestTreeFeature TALL_TREE = new TallRainforestTreeFeature(NoFeatureConfig::deserialize, true);
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -36,6 +37,7 @@ public class TropicraftFeatures {
 			register(event, UP_TREE, "up_tree");
 			register(event, SMALL_TUALUNG, "small_tualung");
 			register(event, LARGE_TUALUNG, "large_tualung");
+			register(event, TALL_TREE, "tall_tree");
         }
 
         private static void register(final RegistryEvent.Register<Feature<?>> event, final Feature<?> feature, final String name) {
