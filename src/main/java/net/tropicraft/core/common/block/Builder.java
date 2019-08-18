@@ -1,20 +1,6 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.LogBlock;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.StairsBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
@@ -22,6 +8,10 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+
+import java.util.Random;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Builder {
     public static Block flower() {
@@ -63,7 +53,7 @@ public class Builder {
     }
 
     public static Block leaves() {
-        return new LeavesBlock(prop(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT));
+        return new TropicraftLeavesBlock(prop(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT));
     }
     
     public static Block sapling(Supplier<? extends AbstractTreeFeature<NoFeatureConfig>> feature) {

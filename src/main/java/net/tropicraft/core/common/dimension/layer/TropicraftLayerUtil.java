@@ -68,6 +68,7 @@ public class TropicraftLayerUtil {
 
         IAreaFactory<T> magnifyLayer = magnify(2007L, ZoomLayer.NORMAL, zoomLayer, 3, context);
         IAreaFactory<T> biomeLayer = TropicraftBeachLayer.INSTANCE.apply(context.apply(20), magnifyLayer);
+        biomeLayer = magnify(20, ZoomLayer.NORMAL, biomeLayer, 2, context);
 
         biomeLayer = SmoothLayer.INSTANCE.apply(context.apply(17L), biomeLayer);
         biomeLayer = TropicraftRiverMixLayer.INSTANCE.apply(context.apply(17), biomeLayer, riverLayer);

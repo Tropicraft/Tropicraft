@@ -1,20 +1,21 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
-
 import com.mojang.datafixers.Dynamic;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
+
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
 public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 
@@ -32,30 +33,12 @@ public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 		pos = pos.toImmutable();
 		int height = rand.nextInt(3) + 4;
 
-		if (pos.getY() < 1 || pos.getY() + height + 1 > worldObj.getMaxHeight()) {
+		if (goesBeyondWorldSize(worldObj, pos.getY(), height)) {
 			return false;
 		}
 
-		for (int y = 0; y <= 1 + height; y++) {
-			BlockPos checkPos = pos.up(y);
-			int size = 1;
-			if (checkPos.getY() < 0 || checkPos.getY() >= worldObj.getMaxHeight()) {
-				return false;
-			}
-			
-			if (y == 0) {
-				size = 0;
-			}
-
-			if (y >= (1 + height) - 2) {
-				size = 2;
-			}
-			
-			if (BlockPos.getAllInBox(checkPos.add(-size, 0, -size), checkPos.add(size, 0, size))
-						.filter(p -> !isAirOrLeaves(worldObj, p))
-						.count() > 0) {
-				return false;
-			}
+		if (!isBBAvailable(worldObj, pos, height)) {
+			return false;
 		}
 
 		if (!isSoil(worldObj, pos.down(), getSapling())) {
