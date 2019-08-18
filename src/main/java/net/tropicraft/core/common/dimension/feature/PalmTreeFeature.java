@@ -39,7 +39,6 @@ public abstract class PalmTreeFeature extends AbstractTreeFeature<NoFeatureConfi
         } else {
             world.setBlockState(pos, state, 18);
         }
-
     }
 
     // TODO use palm sapling, should fix them from spawning on grass

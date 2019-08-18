@@ -18,6 +18,9 @@ public class TropicraftFeatures {
 	public static final PalmTreeFeature NORMAL_PALM_TREE = new NormalPalmTreeFeature(NoFeatureConfig::deserialize, true);
 	public static final PalmTreeFeature CURVED_PALM_TREE = new CurvedPalmTreeFeature(NoFeatureConfig::deserialize, true);
 	public static final PalmTreeFeature LARGE_PALM_TREE = new LargePalmTreeFeature(NoFeatureConfig::deserialize, true);
+	public static final RainforestTreeFeature UP_TREE = new UpTreeFeature(NoFeatureConfig::deserialize, true);
+	public static final RainforestTreeFeature SMALL_TUALUNG = new TualungFeature(NoFeatureConfig::deserialize, true, 16, 9);
+	public static final RainforestTreeFeature LARGE_TUALUNG = new TualungFeature(NoFeatureConfig::deserialize, true, 25, 11);
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -30,6 +33,9 @@ public class TropicraftFeatures {
         	register(event, NORMAL_PALM_TREE, "normal_palm_tree");
 			register(event, CURVED_PALM_TREE, "curved_palm_tree");
 			register(event, LARGE_PALM_TREE, "large_palm_tree");
+			register(event, UP_TREE, "up_tree");
+			register(event, SMALL_TUALUNG, "small_tualung");
+			register(event, LARGE_TUALUNG, "large_tualung");
         }
 
         private static void register(final RegistryEvent.Register<Feature<?>> event, final Feature<?> feature, final String name) {
