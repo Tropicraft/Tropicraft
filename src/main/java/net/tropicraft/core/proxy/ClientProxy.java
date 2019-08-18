@@ -12,6 +12,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
+import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
@@ -33,6 +34,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(IguanaEntity.class, IguanaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(UmbrellaEntity.class, UmbrellaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiSkellyEntity.class, TropiSkellyRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
 
         for (final UmbrellaItem item : UmbrellaItem.getAllItems()) {
             registerColoredItem(item);

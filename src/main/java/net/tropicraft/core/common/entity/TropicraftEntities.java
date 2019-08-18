@@ -8,6 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
+import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
@@ -20,6 +21,7 @@ public class TropicraftEntities {
     public static EntityType<IguanaEntity> IGUANA;
     public static EntityType<UmbrellaEntity> UMBRELLA;
     public static EntityType<TropiSkellyEntity> TROPI_SKELLY;
+    public static EntityType<EIHEntity> EIH;
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
@@ -28,12 +30,21 @@ public class TropicraftEntities {
         IGUANA = register(event, "iguana", iguana());
         UMBRELLA = register(event, "umbrella", umbrella());
         TROPI_SKELLY = register(event, "tropiskelly", tropiskelly());
+        EIH = register(event, "eih", eih());
     }
 
     private static <T extends Entity> EntityType<T> register(final RegistryEvent.Register<EntityType<?>> event, final String name, final EntityType.Builder<T> entityType) {
         final EntityType<T> entityTypeCreated = entityType.build(name);
         event.getRegistry().register(entityTypeCreated.setRegistryName(name));
         return entityTypeCreated;
+    }
+
+    private static EntityType.Builder<EIHEntity> eih() {
+        return EntityType.Builder.create(EIHEntity::new, EntityClassification.CREATURE)
+                .size(1.2F, 3.25F)
+                .setTrackingRange(80)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<TropiSkellyEntity> tropiskelly() {
