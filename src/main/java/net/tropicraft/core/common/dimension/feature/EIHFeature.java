@@ -220,9 +220,11 @@ public class EIHFeature extends TropicraftFeature {
         final int eyeTwoY = j + 5;
         final int eyeTwoZ = k + 1;
 
+        final int eyeRand = world.getRandom().nextInt(9);
+
         // Place eyes
-        placeEye(world, eyeOneX, eyeOneY, eyeOneZ);
-        placeEye(world, eyeTwoX, eyeTwoY, eyeTwoZ);
+        placeEye(world, eyeOneX, eyeOneY, eyeOneZ, eyeRand);
+        placeEye(world, eyeTwoX, eyeTwoY, eyeTwoZ, eyeRand);
 
         return true;
     }
@@ -233,8 +235,11 @@ public class EIHFeature extends TropicraftFeature {
      * @param y yCoord
      * @param z zCoord
      */
-    private void placeEye(IWorld world, int x, int y, int z) {
-        final int eyeRand = world.getRandom().nextInt(9);
+    private void placeEye(IWorld world, int x, int y, int z, int eyeRand) {
+        if (world.getRandom().nextInt(1000) == 0) {
+            eyeRand = world.getRandom().nextInt(9);
+        }
+
         BlockState blockState;
         switch (eyeRand) {
             case 0:

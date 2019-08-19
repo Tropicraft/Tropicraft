@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -23,6 +24,8 @@ public class TropicraftFeatures {
 	public static final RainforestTreeFeature LARGE_TUALUNG = new TualungFeature(NoFeatureConfig::deserialize, true, 25, 11);
 	public static final RainforestTreeFeature TALL_TREE = new TallRainforestTreeFeature(NoFeatureConfig::deserialize, true);
 	public static final EIHFeature EIH = new EIHFeature(NoFeatureConfig::deserialize);
+	public static final TropicsFlowersFeature TROPICS_FLOWERS = new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftBlocks.TROPICS_FLOWERS);
+	public static final TropicsFlowersFeature RAINFOREST_FLOWERS = new TropicsFlowersFeature(NoFeatureConfig::deserialize, new Block[]{TropicraftBlocks.MAGIC_MUSHROOM});
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -40,6 +43,8 @@ public class TropicraftFeatures {
 			register(event, LARGE_TUALUNG, "large_tualung");
 			register(event, TALL_TREE, "tall_tree");
 			register(event, EIH, "eih");
+			register(event, TROPICS_FLOWERS, "tropics_flowers");
+			register(event, RAINFOREST_FLOWERS, "rainforest_flowers");
         }
 
         private static void register(final RegistryEvent.Register<Feature<?>> event, final Feature<?> feature, final String name) {
