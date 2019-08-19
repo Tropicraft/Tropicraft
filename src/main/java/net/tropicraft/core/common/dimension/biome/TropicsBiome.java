@@ -17,8 +17,8 @@ public class TropicsBiome extends TropicraftBiome {
                 .surfaceBuilder(TropicraftSurfaceBuilders.TROPICS, TropicsBuilderConfigs.TROPICS_CONFIG)
                 .precipitation(RainType.RAIN)
                 .category(Category.PLAINS)
-                .depth(0.15F)
-                .scale(0.15F)
+                .depth(0.1F)
+                .scale(0.1F)
                 .temperature(2.0F)
                 .downfall(1.5F)
                 .parent(null));
@@ -32,5 +32,7 @@ public class TropicsBiome extends TropicraftBiome {
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.NORMAL_PALM_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.2F, 1)));
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.CURVED_PALM_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.2F, 1)));
         this.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.LARGE_PALM_TREE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.2F, 1)));
+
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.EIH, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.05F, 1)));
     }
 }
