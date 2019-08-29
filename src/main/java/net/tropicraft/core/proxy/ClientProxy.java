@@ -5,12 +5,15 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.entity.render.*;
+import net.tropicraft.core.client.tileentity.BambooChestRenderer;
+import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
@@ -35,6 +38,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(UmbrellaEntity.class, UmbrellaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiSkellyEntity.class, TropiSkellyRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
+
+        ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
 
         for (final UmbrellaItem item : UmbrellaItem.getAllItems()) {
             registerColoredItem(item);

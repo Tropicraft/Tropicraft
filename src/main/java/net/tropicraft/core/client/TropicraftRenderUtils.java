@@ -27,7 +27,7 @@ public class TropicraftRenderUtils {
     }
 
     public static ResourceLocation getTextureBlock(String path) {
-        return getTexture(String.format("textures/blocks/%s.png", path));
+        return getTexture(String.format("textures/block/%s.png", path));
     }
 
     public static ResourceLocation getTextureEntity(String path) {
@@ -39,7 +39,7 @@ public class TropicraftRenderUtils {
     }
 
     public static ResourceLocation getTextureTE(String path) {
-        return getTexture(String.format("textures/blocks/te/%s.png", path));
+        return getTexture(String.format("textures/block/te/%s.png", path));
     }
 
     public static ResourceLocation bindTextureArmor(String path) {
