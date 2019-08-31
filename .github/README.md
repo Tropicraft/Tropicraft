@@ -34,7 +34,7 @@ Probably! Find Cojo on Discord or IRC to receive permission and find out what is
 
 <p align="center">
   <a href="https://lovetropics.com/">
-  <img src="https://lt.tropicraft.net/logo2.png">
+  <img src="https://cdn.tropicraft.net/LoveTropics.png">
   </a>
 </p>
 
