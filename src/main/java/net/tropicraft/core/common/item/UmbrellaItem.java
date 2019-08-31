@@ -50,19 +50,19 @@ public class UmbrellaItem extends Item implements IColoredItem {
         ItemStack heldItem = placer.getHeldItem(hand);
         RayTraceResult rayTraceResult = rayTrace(world, placer, RayTraceContext.FluidMode.ANY);
         if (rayTraceResult.getType() == net.minecraft.util.math.RayTraceResult.Type.MISS) {
-            return new ActionResult(ActionResultType.PASS, heldItem);
+            return new ActionResult<>(ActionResultType.PASS, heldItem);
         } else {
             Vec3d lookvec = placer.getLook(1.0F);
             List<Entity> nearbyEntities = world.getEntitiesInAABBexcluding(placer, placer.getBoundingBox().expand(lookvec.scale(5.0D)).grow(1.0D), EntityPredicates.NOT_SPECTATING);
             if (!nearbyEntities.isEmpty()) {
                 Vec3d eyePosition = placer.getEyePosition(1.0F);
-                Iterator nearbyEntityIterator = nearbyEntities.iterator();
+                Iterator<Entity> nearbyEntityIterator = nearbyEntities.iterator();
 
                 while (nearbyEntityIterator.hasNext()) {
-                    Entity nearbyEnt = (Entity)nearbyEntityIterator.next();
+                    Entity nearbyEnt = nearbyEntityIterator.next();
                     AxisAlignedBB nearbyBB = nearbyEnt.getBoundingBox().grow((double)nearbyEnt.getCollisionBorderSize());
                     if (nearbyBB.contains(eyePosition)) {
-                        return new ActionResult(ActionResultType.PASS, heldItem);
+                        return new ActionResult<>(ActionResultType.PASS, heldItem);
                     }
                 }
             }
@@ -81,7 +81,7 @@ public class UmbrellaItem extends Item implements IColoredItem {
                 umbrella.setColor(getColor(heldItem, 1));
 
                 if (!world.isCollisionBoxesEmpty(umbrella, umbrella.getBoundingBox().grow(-0.1D))) {
-                    return new ActionResult(ActionResultType.FAIL, heldItem);
+                    return new ActionResult<>(ActionResultType.FAIL, heldItem);
                 } else {
                     if (!world.isRemote) {
                         world.addEntity(umbrella);
@@ -92,10 +92,10 @@ public class UmbrellaItem extends Item implements IColoredItem {
                     }
 
                     placer.addStat(Stats.ITEM_USED.get(this));
-                    return new ActionResult(ActionResultType.SUCCESS, heldItem);
+                    return new ActionResult<>(ActionResultType.SUCCESS, heldItem);
                 }
             } else {
-                return new ActionResult(ActionResultType.PASS, heldItem);
+                return new ActionResult<>(ActionResultType.PASS, heldItem);
             }
         }
     }

@@ -18,7 +18,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.tropicraft.core.common.ColorHelper;
+import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.UmbrellaItem;
 
 import javax.annotation.Nullable;
@@ -46,9 +48,14 @@ public class UmbrellaEntity extends Entity {
         this.preventEntitySpawning = true;
         this.entityCollisionReduction = .95F;
     }
+    
+    public UmbrellaEntity(World world) {
+    	this(TropicraftEntities.UMBRELLA, world);
+    }
 
+    @Override
     public IPacket<?> createSpawnPacket() {
-        return new SSpawnObjectPacket(this);
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override

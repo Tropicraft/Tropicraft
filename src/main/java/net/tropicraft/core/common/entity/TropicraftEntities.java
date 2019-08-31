@@ -56,11 +56,12 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<UmbrellaEntity> umbrella() {
-        return EntityType.Builder.create(UmbrellaEntity::new, EntityClassification.MISC)
+        return EntityType.Builder.<UmbrellaEntity>create(UmbrellaEntity::new, EntityClassification.MISC)
                 .size(1.0F, 4.0F)
                 .setTrackingRange(120)
                 .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(false);
+                .setShouldReceiveVelocityUpdates(false)
+                .setCustomClientFactory(($, world) -> new UmbrellaEntity(world));
     }
 
     private static EntityType.Builder<IguanaEntity> iguana() {
