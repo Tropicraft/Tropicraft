@@ -30,6 +30,17 @@ public class TropicraftItems {
     public static UmbrellaItem BLACK_UMBRELLA = Builder.umbrella(ColorHelper.Color.BLACK);
 
     public static Item BAMBOO_SPEAR = new SwordItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+    public static Item SOLONOX_SHELL = Builder.shell();
+    public static Item FROX_CONCH = Builder.shell();
+    public static Item PAB_SHELL = Builder.shell();
+    public static Item RUBE_NAUTILUS = Builder.shell();
+    public static Item STARFISH = Builder.shell();
+    public static Item TURTLE_SHELL = Builder.shell();
+    public static final Item[] SHELLS = new Item[] {
+            SOLONOX_SHELL, FROX_CONCH, PAB_SHELL, RUBE_NAUTILUS, STARFISH, TURTLE_SHELL
+    };
+
+    public static LoveTropicsShellItem LOVE_TROPICS_SHELL = new LoveTropicsShellItem(new Item.Properties());
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -53,6 +64,13 @@ public class TropicraftItems {
             register(event, "black_umbrella", BLACK_UMBRELLA);
 
             register(event, "bamboo_spear", BAMBOO_SPEAR);
+            register(event, "love_tropics_shell", LOVE_TROPICS_SHELL);
+            register(event, "solonox_shell", SOLONOX_SHELL);
+            register(event, "frox_conch", FROX_CONCH);
+            register(event, "pab_shell", PAB_SHELL);
+            register(event, "rube_nautilus", RUBE_NAUTILUS);
+            register(event, "starfish", STARFISH);
+            register(event, "turtle_shell", TURTLE_SHELL);
         }
 
         private static void register(final RegistryEvent.Register<Item> event, final String name, final Item item) {

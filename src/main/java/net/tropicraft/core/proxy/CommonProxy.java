@@ -1,6 +1,7 @@
 package net.tropicraft.core.proxy;
 
 import net.minecraft.item.Item;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -27,5 +28,9 @@ public class CommonProxy {
     
     protected void postInit(InterModProcessEvent event) {
 
+    }
+
+    public World getClientWorld() {
+        return null;
     }
 }

@@ -16,6 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.command.TropicraftCommands;
+import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.proxy.ClientProxy;
 import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.proxy.ServerProxy;
@@ -60,6 +61,8 @@ public class Tropicraft
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        TropicraftPackets.init();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

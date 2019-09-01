@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.LadderBlock;
 import net.minecraft.block.SoundType;
@@ -10,7 +9,6 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -19,7 +17,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.BlockHardnessValues;
-import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
 public class TropicraftBlocks {
@@ -127,15 +124,10 @@ public class TropicraftBlocks {
     public static final Block BAMBOO_LADDER = new LadderBlock(Block.Properties.create(Material.BAMBOO)) {};
 
     public static final Block BAMBOO_CHEST = new BambooChestBlock(Block.Properties.create(Material.BAMBOO));
-    public static final TileEntityType<BambooChestTileEntity> TILE_ENTITY_BAMBOO_CHEST = new TileEntityType<BambooChestTileEntity>(BambooChestTileEntity::new, Sets.newHashSet(BAMBOO_CHEST), null);
+    public static final Block SIFTER = new SifterBlock(Block.Properties.create(Material.WOOD));
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
-        @SubscribeEvent
-        public static void onTERegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
-            event.getRegistry().register(TILE_ENTITY_BAMBOO_CHEST.setRegistryName(new ResourceLocation(Constants.MODID, "tile_entity_bamboo_chest")));
-        }
-
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
             registerBlockDefault(event, "chunk", CHUNK);
@@ -217,6 +209,7 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "large_bongo_drum", LARGE_BONGO_DRUM);
             registerBlockDefault(event, "bamboo_ladder", BAMBOO_LADDER);
             registerBlockDefault(event, "bamboo_chest", BAMBOO_CHEST);
+            registerBlockDefault(event, "sifter", SIFTER);
         }
 
         @SubscribeEvent
@@ -298,6 +291,7 @@ public class TropicraftBlocks {
             registerItemDefault(event, LARGE_BONGO_DRUM);
             registerItemDefault(event, BAMBOO_LADDER);
             registerItemDefault(event, BAMBOO_CHEST);
+            registerItemDefault(event, SIFTER);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {

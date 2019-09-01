@@ -4,7 +4,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class BambooChestTileEntity extends ChestTileEntity {
 
@@ -12,7 +11,7 @@ public class BambooChestTileEntity extends ChestTileEntity {
     private boolean unbreakable = false;
 
     public BambooChestTileEntity() {
-        super(TropicraftBlocks.TILE_ENTITY_BAMBOO_CHEST);
+        super(TropicraftTileEntityTypes.BAMBOO_CHEST);
     }
 
     @Override

@@ -3,6 +3,7 @@ package net.tropicraft.core.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -13,7 +14,9 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
+import net.tropicraft.core.client.tileentity.SifterRenderer;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
+import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
@@ -21,6 +24,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.item.IColoredItem;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.UmbrellaItem;
 
 @OnlyIn(Dist.CLIENT)
@@ -29,6 +33,11 @@ public class ClientProxy extends CommonProxy {
     public ClientProxy() {
         super();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+    }
+
+    @Override
+    public World getClientWorld() {
+        return Minecraft.getInstance().world;
     }
     
     private void clientSetup(FMLClientSetupEvent event) {
@@ -40,10 +49,13 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
 
         for (final UmbrellaItem item : UmbrellaItem.getAllItems()) {
             registerColoredItem(item);
         }
+
+        registerColoredItem(TropicraftItems.LOVE_TROPICS_SHELL);
     }
 
     @Override
