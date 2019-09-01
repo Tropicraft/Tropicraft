@@ -1,6 +1,13 @@
 package net.tropicraft.core.client.entity.render;
 
+import java.nio.FloatBuffer;
+
+import javax.annotation.Nullable;
+
+import org.lwjgl.opengl.GL11;
+
 import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -9,11 +16,6 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
-import java.nio.FloatBuffer;
 
 public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
 
@@ -31,7 +33,6 @@ public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
         GlStateManager.rotatef(180F - yaw, 0.0F, 1.0F, 0.0F);
         float f2 = (float) entityUmbrella.getTimeSinceHit() - partialTicks;
         float f3 = entityUmbrella.getDamage();
-        System.out.println(yaw + "  " + f2 + "  " + f3);
         if (f3 < 0.0F) {
             f3 = 0.0F;
         }
