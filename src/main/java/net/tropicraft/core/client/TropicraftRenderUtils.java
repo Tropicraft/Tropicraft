@@ -1,7 +1,12 @@
 package net.tropicraft.core.client;
 
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.SkullItem;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Constants;
 
@@ -65,5 +70,26 @@ public class TropicraftRenderUtils {
     public static ResourceLocation bindTexture(ResourceLocation resource) {
         Minecraft.getInstance().getTextureManager().bindTexture(resource);
         return resource;
+    }
+
+    public static void renderItem(final ItemStack stack, final float scale) {
+        if (!stack.isEmpty()) {
+            GlStateManager.pushMatrix();
+            GlStateManager.disableLighting();
+            GlStateManager.scalef(scale, scale, scale);
+
+            if (!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || stack.getItem() instanceof SkullItem) {
+                GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+            }
+
+            GlStateManager.pushLightingAttributes();
+            RenderHelper.enableStandardItemLighting();
+            Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.popAttributes();
+
+            GlStateManager.enableLighting();
+            GlStateManager.popMatrix();
+        }
     }
 }

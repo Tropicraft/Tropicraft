@@ -11,6 +11,6 @@ public class Builder {
     }
 
     public static Item shell() {
-        return new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+        return new ShellItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
     }
 }
