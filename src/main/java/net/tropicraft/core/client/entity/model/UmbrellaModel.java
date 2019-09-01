@@ -47,7 +47,7 @@ public class UmbrellaModel extends EntityModel<UmbrellaEntity> {
 
         shape32 = new RendererModel(this, 0, 28);
         shape32.addBox(-4.5F, -1F, -1F, 9, 1, 3, 0F);
-        shape32.setRotationPoint(0F, -12.75F, -8.5F);
+        shape32.setRotationPoint(0F, -12.75F, -8.45F);
 
         shape32.rotateAngleX = -0.2443461F;
         shape32.rotateAngleY = 3.141593F;

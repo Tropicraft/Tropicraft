@@ -29,8 +29,9 @@ public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
         GlStateManager.pushMatrix();
         GlStateManager.translated(x, y, z);
         GlStateManager.rotatef(180F - yaw, 0.0F, 1.0F, 0.0F);
-        float f2 = (float) entityUmbrella.getTimeSinceHit() - yaw;
-        float f3 = entityUmbrella.getDamage() - yaw;
+        float f2 = (float) entityUmbrella.getTimeSinceHit() - partialTicks;
+        float f3 = entityUmbrella.getDamage();
+        System.out.println(yaw + "  " + f2 + "  " + f3);
         if (f3 < 0.0F) {
             f3 = 0.0F;
         }
@@ -47,6 +48,7 @@ public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
         green = ColorHelper.getGreen(umbrellaColor);
         blue = ColorHelper.getBlue(umbrellaColor);
 
+        UmbrellaModel model = new UmbrellaModel();
         // Draw arms of umbrella
         bindTexture(TropicraftRenderUtils.getTextureEntity("umbrella_layer"));
         GlStateManager.scalef(-1F, -1F, 1.0F);
@@ -54,15 +56,7 @@ public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
 
         // Draw the colored part of the umbrella
         GlStateManager.pushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        // Change the color mode to blending
-        // TODO - replace all GL11 references
-        GlStateManager.texEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_BLEND);
-        color = BufferUtils.createFloatBuffer(4).put(new float[]{red, green, blue, alpha});
-        color.position(0);
-        // Color it
-        GlStateManager.texEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, color);
+        GlStateManager.color3f(red, green, blue);
         bindTexture(TropicraftRenderUtils.getTextureEntity("umbrella_color_layer"));
         model.render(entityUmbrella, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.25F);
         GlStateManager.disableBlend();
