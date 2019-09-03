@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -9,6 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.util.EnumSet;
@@ -131,11 +132,11 @@ public class EntityAIChillAtFire extends Goal
                 randZPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
 
                 if (entityObj.getEntityId() % 3 == 0) {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemRegistry.bambooMug));
+                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG));
                 } else if (entityObj.getEntityId() % 5 == 0) {
                     entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemRegistry.cookedFrogLeg));
                 } else {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemRegistry.orange));
+                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.ORANGE));
                 }
 
                 entityObj.heal(1);

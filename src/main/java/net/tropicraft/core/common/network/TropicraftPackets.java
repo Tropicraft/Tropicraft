@@ -6,6 +6,8 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.network.message.MessageMixerInventory;
+import net.tropicraft.core.common.network.message.MessageMixerStart;
 import net.tropicraft.core.common.network.message.MessageSifterInventory;
 import net.tropicraft.core.common.network.message.MessageSifterStart;
 
@@ -27,6 +29,8 @@ public class TropicraftPackets {
     public static void init() {
         INSTANCE.registerMessage(getUniqueId(), MessageSifterInventory.class, MessageSifterInventory::encode, MessageSifterInventory::decode, MessageSifterInventory::handle);
         INSTANCE.registerMessage(getUniqueId(), MessageSifterStart.class, MessageSifterStart::encode, MessageSifterStart::decode, MessageSifterStart::handle);
+        INSTANCE.registerMessage(getUniqueId(), MessageMixerInventory.class, MessageMixerInventory::encode, MessageMixerInventory::decode, MessageMixerInventory::handle);
+        INSTANCE.registerMessage(getUniqueId(), MessageMixerStart.class, MessageMixerStart::encode, MessageMixerStart::decode, MessageMixerStart::handle);
     }
 
     public static void sendToDimension(final TropicraftMessage msg, final DimensionType dimType) {

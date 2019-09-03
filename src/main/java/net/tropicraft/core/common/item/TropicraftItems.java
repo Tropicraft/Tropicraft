@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.ColorHelper;
+import net.tropicraft.core.common.Foods;
+import net.tropicraft.core.common.drinks.Drink;
 
 public class TropicraftItems {
 
@@ -41,6 +43,30 @@ public class TropicraftItems {
     };
 
     public static LoveTropicsShellItem LOVE_TROPICS_SHELL = new LoveTropicsShellItem(new Item.Properties());
+    public static Item LEMON = Builder.food(Foods.LEMON);
+    public static Item LIME = Builder.food(Foods.LIME);
+    public static Item GRAPEFRUIT = Builder.food(Foods.GRAPEFRUIT);
+    public static Item ORANGE = Builder.food(Foods.ORANGE);
+    public static Item PINEAPPLE_CUBES = Builder.food(Foods.PINEAPPLE_CUBES);
+    public static Item COCONUT_CHUNK = Builder.food(Foods.COCONUT_CHUNK);
+    public static Item RAW_COFFEE_BEAN = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+    public static Item ROASTED_COFFEE_BEAN = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+    public static Item COFFEE_BERRY = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+    public static Item BAMBOO_MUG = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+
+    // Cocktails
+    public static Item LEMONADE = Builder.cocktail(Drink.LEMONADE);
+    public static Item LIMEADE = Builder.cocktail(Drink.LIMEADE);
+    public static Item ORANGEADE = Builder.cocktail(Drink.ORANGEADE);
+    public static Item CAIPIRINHA = Builder.cocktail(Drink.CAIPIRINHA);
+    public static Item PINA_COLADA = Builder.cocktail(Drink.PINA_COLADA);
+    public static Item COCONUT_WATER = Builder.cocktail(Drink.COCONUT_WATER);
+    public static Item MAI_TAI = Builder.cocktail(Drink.MAI_TAI);
+    public static Item BLACK_COFFEE = Builder.cocktail(Drink.BLACK_COFFEE);
+    // TODO replace with ItemTags
+    public static Item[] COCKTAILS = new Item[] {
+        LEMONADE, LIMEADE, ORANGEADE, CAIPIRINHA, PINA_COLADA, COCONUT_WATER, MAI_TAI, BLACK_COFFEE
+    };
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -71,6 +97,24 @@ public class TropicraftItems {
             register(event, "rube_nautilus", RUBE_NAUTILUS);
             register(event, "starfish", STARFISH);
             register(event, "turtle_shell", TURTLE_SHELL);
+            register(event, "lemon", LEMON);
+            register(event, "lime", LIME);
+            register(event, "grapefruit", GRAPEFRUIT);
+            register(event, "orange", ORANGE);
+            register(event, "pineapple_cubes", PINEAPPLE_CUBES);
+            register(event, "coconut_chunk", COCONUT_CHUNK);
+            register(event, "raw_coffee_bean", RAW_COFFEE_BEAN);
+            register(event, "roasted_coffee_bean", ROASTED_COFFEE_BEAN);
+            register(event, "coffee_berry", COFFEE_BERRY);
+            register(event, "bamboo_mug", BAMBOO_MUG);
+            register(event, Drink.LEMONADE.name, LEMONADE);
+            register(event, Drink.LIMEADE.name, LIMEADE);
+            register(event, Drink.ORANGEADE.name, ORANGEADE);
+            register(event, Drink.CAIPIRINHA.name, CAIPIRINHA);
+            register(event, Drink.PINA_COLADA.name, PINA_COLADA);
+            register(event, Drink.COCONUT_WATER.name, COCONUT_WATER);
+            register(event, Drink.MAI_TAI.name, MAI_TAI);
+            register(event, Drink.BLACK_COFFEE.name, BLACK_COFFEE);
         }
 
         private static void register(final RegistryEvent.Register<Item> event, final String name, final Item item) {

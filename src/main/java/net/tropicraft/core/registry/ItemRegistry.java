@@ -2,7 +2,6 @@ package net.tropicraft.core.registry;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.util.IItemProvider;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber
@@ -23,8 +22,6 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item whitePearl = Items.TROPICAL_FISH;
     public static Item blackPearl = Items.TROPICAL_FISH;
     public static Item dagger = Items.TROPICAL_FISH;
-    public static Item bambooMug = Items.TROPICAL_FISH;
     public static Item cookedFrogLeg = Items.TROPICAL_FISH;
-    public static Item orange = Items.TROPICAL_FISH;
     public static Item rawRay = Items.TROPICAL_FISH;
 }
