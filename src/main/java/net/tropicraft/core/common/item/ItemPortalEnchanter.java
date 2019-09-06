@@ -101,7 +101,7 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 					if (canGen(world, pos)) {
 						found = true;
 						entityplayer.swingArm(EnumHand.MAIN_HAND);
-						if(FMLCommonHandler.instance().getMinecraftServerInstance())
+						if(FMLCommonHandler.instance().getMinecraftServerInstance() != null)
 							(new TeleporterTropics(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(entityplayer.dimension))).buildTeleporterAt(x + searchX, y, z + searchZ, entityplayer);
 						//ModLoader.getMinecraftInstance().effectRenderer.addEffect(new EntitySplashFX(ModLoader.getMinecraftInstance().world, playerX, playerY, playerZ, 0D, 0D, 0D));
 						itemstack.damageItem(1, entityplayer);
