@@ -74,7 +74,7 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
 
         for (int j1 = 0; j1 < height + 2; j1++) {
             BlockPos logPos = pos.up(j1);
-            if (isAirOrLeaves(world, logPos) || func_214576_j(world, logPos)) {
+            if (isAirOrLeaves(world, logPos) || isTallPlants(world, logPos)) {
                 setState(changedBlocks, world, logPos, LOG_STATE, bb);
             }
             BlockPos pos3 = new BlockPos(i, (j + j1) - 2, k);

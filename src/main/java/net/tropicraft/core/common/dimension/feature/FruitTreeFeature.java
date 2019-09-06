@@ -71,7 +71,7 @@ public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 		// Tree stem
 		for (int y = 0; y < height; y++) {
 			BlockPos logPos = pos.up(y);
-			if (isAirOrLeaves(worldObj, logPos) || func_214576_j(worldObj, logPos)) {
+			if (isAirOrLeaves(worldObj, logPos) || isTallPlants(worldObj, logPos)) {
 				setLogState(changedBlocks, worldObj, logPos, WOOD_BLOCK, bb);
 			}
 		}
