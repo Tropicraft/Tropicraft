@@ -43,13 +43,13 @@ public class TCWorldGenerator implements IWorldGenerator {
      * @param chunkZ chunkZ
      */
     public void generateSurface(World world, Random random, int chunkX, int chunkZ) {
+        // Convert to block coords rather than chunk coords
+        chunkX *= 16;
+        chunkZ *= 16;
+        
     	Biome biome = world.getBiome(new BlockPos(chunkX, 0, chunkZ));
 
         if (TropicsConfigs.genOverworld) {
-            // Convert to block coords rather than chunk coords
-            chunkX *= 16;
-            chunkZ *= 16;
-
             if (world.provider.getDimension() == 0 && world.getWorldType() != WorldType.FLAT) {
                 int k = chunkX + random.nextInt(16) + 8;
                 int l = random.nextInt(62) + 64;
