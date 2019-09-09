@@ -53,25 +53,26 @@ public final class MixerRecipes {
 	}
 
 	public static boolean isValidRecipe(NonNullList<ItemStack> ingredientStacks) {
-		Set<Ingredient> ingredients = new HashSet<>();
-
-		for (ItemStack stack : ingredientStacks) {
-			Ingredient ingredient = Ingredient.findMatchingIngredient(stack);
-			if (ingredient == null) {
-				return false;
-			}
-
-			ingredients.add(ingredient);
-
-			for (MixerRecipe recipe : Drinks.getRecipes()) {
-				Set<Ingredient> recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
-				if (ingredients.equals(recipeIngredientSet)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
+		return true;
+//		Set<Ingredient> ingredients = new HashSet<>();
+//
+//		for (ItemStack stack : ingredientStacks) {
+//			Ingredient ingredient = Ingredient.findMatchingIngredient(stack);
+//			if (ingredient == null) {
+//				return false;
+//			}
+//
+//			ingredients.add(ingredient);
+//
+//			for (MixerRecipe recipe : Drinks.getRecipes()) {
+//				Set<Ingredient> recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
+//				if (ingredients.equals(recipeIngredientSet)) {
+//					return true;
+//				}
+//			}
+//		}
+//
+//		return false;
 	}
 
 	public static Drink getDrink(NonNullList<ItemStack> ingredientStacks) {

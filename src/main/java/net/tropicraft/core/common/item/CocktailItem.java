@@ -115,9 +115,9 @@ public class CocktailItem extends Item implements IColoredItem {
 
 	public static @Nonnull ItemStack makeCocktail(final NonNullList<ItemStack> itemStacks) {
 		// TODO fixme this is so ugly ugh
-		final ItemStack stack = MixerRecipes.getItemStack(MixerRecipes.getDrink(itemStacks));
+		final ItemStack stack = new ItemStack(TropicraftItems.COCKTAIL);
 		CompoundNBT nbt = new CompoundNBT();
-		nbt.putByte("DrinkID", (byte) 0);
+		nbt.putByte("DrinkID", (byte) Drink.COCKTAIL.drinkId);
 		ListNBT tagList = new ListNBT();
 
 		List<Ingredient> ingredients = new ArrayList<>();

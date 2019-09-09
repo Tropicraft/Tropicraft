@@ -1,9 +1,10 @@
 package net.tropicraft.core.common.block;
 
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -19,58 +20,37 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.sound.Sounds;
 
 @Mod.EventBusSubscriber
 public class BongoDrumBlock extends Block {
 
     public enum Size {
-        SMALL(Sounds.BONGO_HIGH), MEDIUM(Sounds.BONGO_MED), LARGE(Sounds.BONGO_LOW);
+        SMALL(0.5, () -> Sounds.BONGO_HIGH),
+        MEDIUM(0.6, () -> Sounds.BONGO_MED),
+        LARGE(0.7, () -> Sounds.BONGO_LOW);
 
-        private final SoundEvent soundEvent;
-        public static final Size VALUES[] = values();
-
-        Size(final SoundEvent soundEvent) {
+        final VoxelShape shape;
+        final Supplier<SoundEvent> soundEvent;
+        
+        Size(double size, final Supplier<SoundEvent> soundEvent) {
+            size *= 16;
+            double offset = (16 - size) / 2;
+            this.shape = makeCuboidShape(offset, 0, offset, 16 - offset, 16, 16 - offset);
             this.soundEvent = soundEvent;
-        }
-
-        public SoundEvent getSoundEvent() {
-            return this.soundEvent;
         }
     }
 
-    public static final float SMALL_DRUM_SIZE = 0.5f;
-    public static final float MEDIUM_DRUM_SIZE = 0.6f;
-    public static final float BIG_DRUM_SIZE = 0.7f;
-
-    public static final float SMALL_DRUM_OFFSET = (1.0f - SMALL_DRUM_SIZE)/2.0f;
-    public static final float MEDIUM_DRUM_OFFSET = (1.0f - MEDIUM_DRUM_SIZE)/2.0f;
-    public static final float BIG_DRUM_OFFSET = (1.0f - BIG_DRUM_SIZE)/2.0f;
-    public static final float DRUM_HEIGHT = 1.0f;
-
-    protected final VoxelShape BONGO_SMALL_AABB = Block.makeCuboidShape(SMALL_DRUM_OFFSET, 0.0f, SMALL_DRUM_OFFSET, 1 - SMALL_DRUM_OFFSET, DRUM_HEIGHT, 1 - SMALL_DRUM_OFFSET);
-    protected final VoxelShape BONGO_MEDIUM_AABB = Block.makeCuboidShape(MEDIUM_DRUM_OFFSET, 0.0f, MEDIUM_DRUM_OFFSET, 1 - MEDIUM_DRUM_OFFSET, DRUM_HEIGHT, 1 - MEDIUM_DRUM_OFFSET);
-    protected final VoxelShape BONGO_LARGE_AABB = Block.makeCuboidShape(BIG_DRUM_OFFSET, 0.0f, BIG_DRUM_OFFSET, 1-BIG_DRUM_OFFSET, DRUM_HEIGHT, 1-BIG_DRUM_OFFSET);
-
-    private Size BONGO_SIZE;
+    private final Size size;
 
     public BongoDrumBlock(final Size size, final Properties properties) {
         super(properties);
-        this.BONGO_SIZE = size;
+        this.size = size;
     }
 
     @Override
     public VoxelShape getShape(final BlockState state, final IBlockReader worldIn, final BlockPos pos, final ISelectionContext context) {
-        switch (BONGO_SIZE) {
-            default:
-            case SMALL:
-                return BONGO_SMALL_AABB;
-            case MEDIUM:
-                return BONGO_MEDIUM_AABB;
-            case LARGE:
-                return BONGO_LARGE_AABB;
-        }
+        return size.shape;
     }
 
     @Override
@@ -109,7 +89,7 @@ public class BongoDrumBlock extends Block {
      * Play the bongo sound in game. Sound played determined by the size
      */
     public void playBongoSound(World world, PlayerEntity entity, BlockPos pos, BlockState state) {
-        world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), BONGO_SIZE.getSoundEvent(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+        world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), size.soundEvent.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 
     @Override

@@ -63,6 +63,8 @@ public class TropicraftItems {
     public static Item COCONUT_WATER = Builder.cocktail(Drink.COCONUT_WATER);
     public static Item MAI_TAI = Builder.cocktail(Drink.MAI_TAI);
     public static Item BLACK_COFFEE = Builder.cocktail(Drink.BLACK_COFFEE);
+    // wildcard
+    public static Item COCKTAIL = Builder.cocktail(Drink.COCKTAIL);
     // TODO replace with ItemTags
     public static Item[] COCKTAILS = new Item[] {
         LEMONADE, LIMEADE, ORANGEADE, CAIPIRINHA, PINA_COLADA, COCONUT_WATER, MAI_TAI, BLACK_COFFEE
@@ -115,6 +117,7 @@ public class TropicraftItems {
             register(event, Drink.COCONUT_WATER.name, COCONUT_WATER);
             register(event, Drink.MAI_TAI.name, MAI_TAI);
             register(event, Drink.BLACK_COFFEE.name, BLACK_COFFEE);
+            register(event, Drink.COCKTAIL.name, COCKTAIL);
         }
 
         private static void register(final RegistryEvent.Register<Item> event, final String name, final Item item) {

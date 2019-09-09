@@ -1,11 +1,9 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.TallFlowerBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -17,7 +15,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.BlockHardnessValues;
+import net.tropicraft.core.client.tileentity.DrinkMixerItemstackRenderer;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 public class TropicraftBlocks {
     public static final Block CHUNK = new Block(Block.Properties.create(Material.ROCK, MaterialColor.BLACK).hardnessAndResistance(2, 30));
@@ -126,6 +128,8 @@ public class TropicraftBlocks {
     public static final Block BAMBOO_CHEST = new BambooChestBlock(Block.Properties.create(Material.BAMBOO));
     public static final Block SIFTER = new SifterBlock(Block.Properties.create(Material.WOOD));
     public static final Block DRINK_MIXER = new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30));
+    
+    public static final Block TIKI_TORCH = new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0));
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -212,6 +216,7 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "bamboo_chest", BAMBOO_CHEST);
             registerBlockDefault(event, "sifter", SIFTER);
             registerBlockDefault(event, "drink_mixer", DRINK_MIXER);
+            registerBlockDefault(event, "tiki_torch", TIKI_TORCH);
         }
 
         @SubscribeEvent
@@ -294,7 +299,8 @@ public class TropicraftBlocks {
             registerItemDefault(event, BAMBOO_LADDER);
             registerItemDefault(event, BAMBOO_CHEST);
             registerItemDefault(event, SIFTER);
-            registerItemDefault(event, DRINK_MIXER);
+            registerItem(event, DRINK_MIXER, () -> DrinkMixerItemstackRenderer::new);
+            registerItemDefault(event, TIKI_TORCH);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {
@@ -309,6 +315,13 @@ public class TropicraftBlocks {
             blockItem = blockItem.setRegistryName(block.getRegistryName());
             event.getRegistry().register(blockItem);
             return blockItem;
+        }
+
+        private static Item registerItem(final RegistryEvent.Register<Item> event, final Block block, final Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
+            final Item.Properties props = new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).setTEISR(renderMethod);
+            final Item itemBlock = new BlockItem(block, props);
+            event.getRegistry().register(itemBlock.setRegistryName(block.getRegistryName()));
+            return itemBlock;
         }
 
         private static Item registerItem(final RegistryEvent.Register<Item> event, final Block block, final ItemGroup itemGroup) {
