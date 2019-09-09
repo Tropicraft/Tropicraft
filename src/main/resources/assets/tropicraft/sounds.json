@@ -1,0 +1,61 @@
+{
+	"headlaughing": { "category": "entity", "sounds": [ "tropicraft:headlaughing", "tropicraft:headlaughing2" ] },
+	"headattack": { "category": "entity", "sounds": [ "tropicraft:headattack" ] },
+	"headshort": { "category": "entity", "sounds": [ "tropicraft:headshort" ] },
+	"headmed": { "category": "entity", "sounds": [ "tropicraft:headmed" ] },
+	"headpain": { "category": "entity", "sounds": [ "tropicraft:headpain" ] },
+	"headdeath": { "category": "entity", "sounds": [ "tropicraft:headdeath" ] },
+	"iggyattack": { "category": "entity", "sounds": [ "tropicraft:iggyattack" ] },
+	"iggydeath": { "category": "entity", "sounds": [ "tropicraft:iggydeath" ] },
+	"iggyliving": { "category": "entity", "sounds": [ "tropicraft:iggyliving" ] },
+	"ashen_laugh": { "category": "entity", "sounds": [ "tropicraft:ashen_laugh" ] },
+	"bongo.low": { "category": "block", "sounds": [ "tropicraft:bongolow" ] },
+	"bongo.medium": { "category": "block", "sounds": [ "tropicraft:bongomedium" ] },
+	"bongo.high": { "category": "block", "sounds": [ "tropicraft:bongohigh" ] },
+	"dolphin": { "category": "entity", "sounds": [ "tropicraft:dolphin" ] },
+
+
+	"summering": { "category": "record", "sounds": [
+			{
+				"name": "tropicraft:music/summering",
+				"stream": true
+			}
+		]
+	},
+	"low_tide": { "category": "record", "sounds": [
+			{
+				"name": "tropicraft:music/low_tide",
+				"stream": true
+			}
+		]
+	},
+	"eastern_isles": { "category": "record", "sounds": [
+			{
+				"name": "tropicraft:music/eastern_isles",
+				"stream": true
+			}
+		]
+	},
+	"buried_treasure": { "category": "record", "sounds": [
+			{
+				"name": "tropicraft:music/buried_treasure",
+				"stream": true
+			}
+		]
+	},
+	"the_tribe": { "category": "record", "sounds": [
+			{
+				"name": "tropicraft:music/the_tribe",
+				"stream": true
+			}
+		]
+	},
+	"trade_winds": { "category": "record", "sounds": [
+			{
+				"name": "tropicraft:music/trade_winds",
+				"stream": true
+			}
+		]
+	},
+	"page_flip": { "category": "master", "sounds": [ "tropicraft:page_flip" ] }
+}

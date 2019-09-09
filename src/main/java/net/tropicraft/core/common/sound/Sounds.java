@@ -1,10 +1,13 @@
 package net.tropicraft.core.common.sound;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 
 import java.lang.annotation.ElementType;
@@ -101,12 +104,12 @@ public class Sounds {
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
-        @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<SoundEvent> event) {
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
             for (Field f : Sounds.class.getDeclaredFields()) {
                 if (f.isAnnotationPresent(SoundName.class)) {
                     try {
-                        f.set(null, register(event, f.getAnnotation(SoundName.class).value()));
+                        f.set(null, register(f.getAnnotation(SoundName.class).value()));
                     } catch (IllegalArgumentException | IllegalAccessException e) {
                         e.printStackTrace();
                     }
@@ -115,10 +118,10 @@ public class Sounds {
         }
     }
 
-    private static SoundEvent register(final RegistryEvent.Register<SoundEvent> event, String soundPath) {
+    private static SoundEvent register(String soundPath) {
         ResourceLocation resLoc = new ResourceLocation(Constants.MODID, soundPath);
         SoundEvent soundEvent = new SoundEvent(resLoc);
-        event.getRegistry().register(soundEvent.setRegistryName(resLoc));
+        ForgeRegistries.SOUND_EVENTS.register(soundEvent.setRegistryName(resLoc));
         if (registeredSounds.contains(soundPath)) {
             System.out.println("TCWARNING: duplicate sound registration for " + soundPath);
         }
