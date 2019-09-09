@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.LadderBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.TallFlowerBlock;
@@ -125,6 +126,8 @@ public class TropicraftBlocks {
 
     public static final Block BAMBOO_CHEST = new BambooChestBlock(Block.Properties.create(Material.BAMBOO));
     public static final Block SIFTER = new SifterBlock(Block.Properties.create(Material.WOOD));
+    
+    public static final Block TIKI_TORCH = new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0));
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -210,6 +213,7 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "bamboo_ladder", BAMBOO_LADDER);
             registerBlockDefault(event, "bamboo_chest", BAMBOO_CHEST);
             registerBlockDefault(event, "sifter", SIFTER);
+            registerBlockDefault(event, "tiki_torch", TIKI_TORCH);
         }
 
         @SubscribeEvent
@@ -292,6 +296,7 @@ public class TropicraftBlocks {
             registerItemDefault(event, BAMBOO_LADDER);
             registerItemDefault(event, BAMBOO_CHEST);
             registerItemDefault(event, SIFTER);
+            registerItemDefault(event, TIKI_TORCH);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {
