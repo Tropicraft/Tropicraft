@@ -44,6 +44,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.*;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
@@ -260,7 +261,7 @@ public class EntityKoaBase extends VillagerEntity {
         @Override
         public MerchantOffer getOffer(Entity entity, Random random) {
             ItemStack itemstack = new ItemStack(this.item, this.count);
-            return new MerchantOffer(itemstack, new ItemStack(ItemRegistry.whitePearl), this.maxUses, this.givenXP, this.priceMultiplier);
+            return new MerchantOffer(itemstack, new ItemStack(TropicraftItems.WHITE_PEARL), this.maxUses, this.givenXP, this.priceMultiplier);
         }
     }
 

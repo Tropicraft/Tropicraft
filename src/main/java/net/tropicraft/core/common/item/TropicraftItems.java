@@ -49,10 +49,10 @@ public class TropicraftItems {
     public static Item ORANGE = Builder.food(Foods.ORANGE);
     public static Item PINEAPPLE_CUBES = Builder.food(Foods.PINEAPPLE_CUBES);
     public static Item COCONUT_CHUNK = Builder.food(Foods.COCONUT_CHUNK);
-    public static Item RAW_COFFEE_BEAN = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
-    public static Item ROASTED_COFFEE_BEAN = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
-    public static Item COFFEE_BERRY = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
-    public static Item BAMBOO_MUG = new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+    public static Item RAW_COFFEE_BEAN = Builder.item();
+    public static Item ROASTED_COFFEE_BEAN = Builder.item();
+    public static Item COFFEE_BERRY = Builder.item();
+    public static Item BAMBOO_MUG = Builder.item();
 
     // Cocktails
     public static Item LEMONADE = Builder.cocktail(Drink.LEMONADE);
@@ -69,6 +69,10 @@ public class TropicraftItems {
     public static Item[] COCKTAILS = new Item[] {
         LEMONADE, LIMEADE, ORANGEADE, CAIPIRINHA, PINA_COLADA, COCONUT_WATER, MAI_TAI, BLACK_COFFEE
     };
+
+    public static Item WHITE_PEARL = Builder.item();
+    public static Item BLACK_PEARL = Builder.item();
+    public static Item SCALE = Builder.item();
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -118,6 +122,9 @@ public class TropicraftItems {
             register(event, Drink.MAI_TAI.name, MAI_TAI);
             register(event, Drink.BLACK_COFFEE.name, BLACK_COFFEE);
             register(event, Drink.COCKTAIL.name, COCKTAIL);
+            register(event, "white_pearl", WHITE_PEARL);
+            register(event, "black_pearl", BLACK_PEARL);
+            register(event, "scale", SCALE);
         }
 
         private static void register(final RegistryEvent.Register<Item> event, final String name, final Item item) {

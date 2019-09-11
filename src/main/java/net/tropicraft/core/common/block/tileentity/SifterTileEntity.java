@@ -16,7 +16,6 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.network.message.MessageSifterInventory;
 import net.tropicraft.core.common.network.message.MessageSifterStart;
-import net.tropicraft.core.registry.ItemRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -137,9 +136,9 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
             case 4:
                 return new ItemStack(Items.GLASS_BOTTLE, 1);
             case 5:
-                return new ItemStack(ItemRegistry.whitePearl, 1);
+                return new ItemStack(TropicraftItems.WHITE_PEARL, 1);
             case 6:
-                return new ItemStack(ItemRegistry.blackPearl, 1);
+                return new ItemStack(TropicraftItems.BLACK_PEARL, 1);
             case 7:
                 return new ItemStack(Items.STONE_SHOVEL, 1);
             case 0:
