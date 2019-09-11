@@ -73,6 +73,25 @@ public class TropicraftItems {
     public static Item WHITE_PEARL = Builder.item();
     public static Item BLACK_PEARL = Builder.item();
     public static Item SCALE = Builder.item();
+    public static Item NIGEL_STACHE = new NigelStacheItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
+    public static Item maskSquareZord = Builder.mask(0);
+    public static Item maskHornMonkey = Builder.mask(1);
+    public static Item maskOblongatron = Builder.mask(2);
+    public static Item maskHeadinator = Builder.mask(3);
+    public static Item maskSquareHorn = Builder.mask(4);
+    public static Item maskScrewAttack = Builder.mask(5);
+    public static Item maskTheBrain = Builder.mask(6);
+    public static Item maskBatBoy = Builder.mask(7);
+    public static Item mask1 = Builder.mask(8);
+    public static Item mask2 = Builder.mask(9);
+    public static Item mask3 = Builder.mask(10);
+    public static Item mask4 = Builder.mask(11);
+    public static Item mask5 = Builder.mask(12);
+
+    public static Item[] ASHEN_MASKS = new Item[] {
+            maskSquareZord, maskHornMonkey, maskOblongatron, maskHeadinator, maskSquareHorn, maskScrewAttack,
+            maskTheBrain, maskBatBoy, mask1, mask2, mask3, mask4, mask5
+    };
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {

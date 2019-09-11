@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item;
 
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.tropicraft.Tropicraft;
@@ -26,6 +27,10 @@ public class Builder {
 
     public static Item item() {
         return new Item(getDefaultProperties());
+    }
+
+    public static Item mask(final int maskIndex) {
+        return new AshenMaskItem(ArmorMaterials.ASHEN_MASK, maskIndex, getDefaultProperties());
     }
 
     private static Item.Properties getDefaultProperties() {
