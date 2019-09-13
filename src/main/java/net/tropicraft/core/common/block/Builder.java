@@ -38,9 +38,9 @@ public class Builder {
         return new LogBlock(topColor, prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
 
-    public static Block stairs(final BlockState baseState, final Material material, final MaterialColor color, final BlockRenderLayer renderLayer) {
+    public static Block stairs(final BlockState baseState, final Material material, final MaterialColor color, final BlockRenderLayer renderLayer, final SoundType soundType) {
         // Need weird brackets here to override protected behavior
-        return new StairsBlock(baseState, prop(material, color)) {
+        return new StairsBlock(baseState, prop(material, color).sound(soundType)) {
             @Override
             public BlockRenderLayer getRenderLayer() {
                 return renderLayer;
@@ -81,6 +81,14 @@ public class Builder {
 
     public static Block bongo(final BongoDrumBlock.Size bongoSize) {
         return new BongoDrumBlock(bongoSize, prop(Material.WOOD, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    }
+
+    public static Block tropicraftPot(final Block block) {
+        return new BambooFlowerPotBlock(block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
+    }
+
+    public static Block vanillaPot(final Block block) {
+        return new FlowerPotBlock(block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0));
     }
 
     private static Block.Properties prop(final Material material) {

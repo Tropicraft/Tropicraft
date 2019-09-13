@@ -66,7 +66,7 @@ public class TropicraftBlocks {
     public static final Block VOLCANIC_SAND = Builder.sand(MaterialColor.BLACK);
     public static final Block MINERAL_SAND = Builder.sand(MaterialColor.SAND);
 
-    public static final Block BAMBOO_BUNDLE = Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT));
+    public static final Block BAMBOO_BUNDLE = Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.BAMBOO));
     public static final Block THATCH_BUNDLE = Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT));
 
     public static final Block MAHOGANY_PLANKS = Builder.plank(MaterialColor.BROWN);
@@ -74,17 +74,17 @@ public class TropicraftBlocks {
     public static final Block MAHOGANY_LOG = Builder.log(MaterialColor.WOOD, MaterialColor.BROWN);
     public static final Block PALM_LOG = Builder.log(MaterialColor.WOOD, MaterialColor.BROWN);
 
-    public static final Block PALM_STAIRS = Builder.stairs(PALM_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN, BlockRenderLayer.SOLID);
-    public static final Block MAHOGANY_STAIRS = Builder.stairs(MAHOGANY_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN, BlockRenderLayer.SOLID);
-    public static final Block THATCH_STAIRS = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW, BlockRenderLayer.SOLID);
-    public static final Block THATCH_STAIRS_FUZZY = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW, BlockRenderLayer.CUTOUT_MIPPED);
-    public static final Block BAMBOO_STAIRS = Builder.stairs(BAMBOO_BUNDLE.getDefaultState(), Material.BAMBOO, MaterialColor.YELLOW, BlockRenderLayer.SOLID);
-    public static final Block CHUNK_STAIRS = Builder.stairs(CHUNK.getDefaultState(), Material.ROCK, MaterialColor.BLACK, BlockRenderLayer.SOLID);
+    public static final Block PALM_STAIRS = Builder.stairs(PALM_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN, BlockRenderLayer.SOLID, SoundType.WOOD);
+    public static final Block MAHOGANY_STAIRS = Builder.stairs(MAHOGANY_PLANKS.getDefaultState(), Material.WOOD, MaterialColor.BROWN, BlockRenderLayer.SOLID, SoundType.WOOD);
+    public static final Block THATCH_STAIRS = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW, BlockRenderLayer.SOLID, SoundType.PLANT);
+    public static final Block THATCH_STAIRS_FUZZY = Builder.stairs(THATCH_BUNDLE.getDefaultState(), Material.WOOD, MaterialColor.YELLOW, BlockRenderLayer.CUTOUT_MIPPED, SoundType.PLANT);
+    public static final Block BAMBOO_STAIRS = Builder.stairs(BAMBOO_BUNDLE.getDefaultState(), Material.BAMBOO, MaterialColor.YELLOW, BlockRenderLayer.SOLID, SoundType.BAMBOO);
+    public static final Block CHUNK_STAIRS = Builder.stairs(CHUNK.getDefaultState(), Material.ROCK, MaterialColor.BLACK, BlockRenderLayer.SOLID, SoundType.STONE);
 
-    public static final Block COCONUT = new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f));
+    public static final Block COCONUT = new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f).sound(SoundType.STONE));
 
     public static final Block BAMBOO_SLAB = Builder.slab(Block.Properties.create(Material.BAMBOO, MaterialColor.GREEN).sound(SoundType.BAMBOO).hardnessAndResistance(BlockHardnessValues.BAMBOO.hardness, BlockHardnessValues.BAMBOO.resistance));
-    public static final Block THATCH_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.YELLOW).sound(SoundType.BAMBOO).hardnessAndResistance(BlockHardnessValues.THATCH.hardness, BlockHardnessValues.THATCH.resistance));
+    public static final Block THATCH_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.YELLOW).sound(SoundType.PLANT).hardnessAndResistance(BlockHardnessValues.THATCH.hardness, BlockHardnessValues.THATCH.resistance));
     public static final Block CHUNK_SLAB = Builder.slab(Block.Properties.create(Material.ROCK, MaterialColor.BLACK).sound(SoundType.STONE).hardnessAndResistance(BlockHardnessValues.CHUNK.hardness, BlockHardnessValues.CHUNK.resistance));
     public static final Block PALM_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(BlockHardnessValues.PALM.hardness, BlockHardnessValues.PALM.resistance));
     public static final Block MAHOGANY_SLAB = Builder.slab(Block.Properties.create(Material.WOOD, MaterialColor.BROWN).sound(SoundType.WOOD).hardnessAndResistance(BlockHardnessValues.MAHOGANY.hardness, BlockHardnessValues.MAHOGANY.resistance));
@@ -123,13 +123,83 @@ public class TropicraftBlocks {
     public static final Block MEDIUM_BONGO_DRUM = Builder.bongo(BongoDrumBlock.Size.MEDIUM);
     public static final Block LARGE_BONGO_DRUM = Builder.bongo(BongoDrumBlock.Size.LARGE);
 
-    public static final Block BAMBOO_LADDER = new LadderBlock(Block.Properties.create(Material.BAMBOO)) {};
+    public static final Block BAMBOO_LADDER = new LadderBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)) {};
 
-    public static final Block BAMBOO_CHEST = new BambooChestBlock(Block.Properties.create(Material.BAMBOO));
+    public static final Block BAMBOO_CHEST = new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO));
     public static final Block SIFTER = new SifterBlock(Block.Properties.create(Material.WOOD));
     public static final Block DRINK_MIXER = new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30));
     
     public static final Block TIKI_TORCH = new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0));
+    public static final Block BAMBOO_DOOR = new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {};
+
+    public static final Block BAMBOO_FLOWER_POT = Builder.tropicraftPot(Blocks.AIR);
+    //public static final Block BAMBOO_POTTED_PALM_SAPLING = Builder.pot(PALM_SAPLING);
+    //public static final Block BAMBOO_POTTED_MAHOGANY_SAPLING = Builder.pot(MAHOGANY_SAPLING);
+    //public static final Block BAMBOO_POTTED_GRAPEFRUIT_SAPLING = Builder.pot(GRAPEFRUIT_SAPLING);
+    //public static final Block BAMBOO_POTTED_LEMON_SAPLING = Builder.pot(LEMON_SAPLING);
+    //public static final Block BAMBOO_POTTED_LIME_SAPLING = Builder.pot(LIME_SAPLING);
+    //public static final Block BAMBOO_POTTED_ORANGE_SAPLING = Builder.pot(ORANGE_SAPLING);
+    public static final Block BAMBOO_POTTED_COMMELINA_DIFFUSA = Builder.tropicraftPot(COMMELINA_DIFFUSA);
+    public static final Block BAMBOO_POTTED_CROCOSMIA = Builder.tropicraftPot(CROCOSMIA);
+    public static final Block BAMBOO_POTTED_ORCHID = Builder.tropicraftPot(ORCHID);
+    public static final Block BAMBOO_POTTED_CANNA = Builder.tropicraftPot(CANNA);
+    public static final Block BAMBOO_POTTED_ANEMONE = Builder.tropicraftPot(ANEMONE);
+    public static final Block BAMBOO_POTTED_ORANGE_ANTHURIUM = Builder.tropicraftPot(ORANGE_ANTHURIUM);
+    public static final Block BAMBOO_POTTED_RED_ANTHURIUM = Builder.tropicraftPot(RED_ANTHURIUM);
+    public static final Block BAMBOO_POTTED_MAGIC_MUSHROOM = Builder.tropicraftPot(MAGIC_MUSHROOM);
+    public static final Block BAMBOO_POTTED_PATHOS = Builder.tropicraftPot(PATHOS);
+    public static final Block BAMBOO_POTTED_ACAI_VINE = Builder.tropicraftPot(ACAI_VINE);
+    public static final Block BAMBOO_POTTED_CROTON = Builder.tropicraftPot(CROTON);
+    public static final Block BAMBOO_POTTED_DRACAENA = Builder.tropicraftPot(DRACAENA);
+    public static final Block BAMBOO_POTTED_TROPICRAFT_FERN = Builder.tropicraftPot(FERN);
+    public static final Block BAMBOO_POTTED_FOLIAGE = Builder.tropicraftPot(FOLIAGE);
+    public static final Block BAMBOO_POTTED_BROMELIAD = Builder.tropicraftPot(BROMELIAD);
+
+    public static final Block POTTED_COMMELINA_DIFFUSA = Builder.vanillaPot(COMMELINA_DIFFUSA);
+    public static final Block POTTED_CROCOSMIA = Builder.vanillaPot(CROCOSMIA);
+    public static final Block POTTED_ORCHID = Builder.vanillaPot(ORCHID);
+    public static final Block POTTED_CANNA = Builder.vanillaPot(CANNA);
+    public static final Block POTTED_ANEMONE = Builder.vanillaPot(ANEMONE);
+    public static final Block POTTED_ORANGE_ANTHURIUM = Builder.vanillaPot(ORANGE_ANTHURIUM);
+    public static final Block POTTED_RED_ANTHURIUM = Builder.vanillaPot(RED_ANTHURIUM);
+    public static final Block POTTED_MAGIC_MUSHROOM = Builder.vanillaPot(MAGIC_MUSHROOM);
+    public static final Block POTTED_PATHOS = Builder.vanillaPot(PATHOS);
+    public static final Block POTTED_ACAI_VINE = Builder.vanillaPot(ACAI_VINE);
+    public static final Block POTTED_CROTON = Builder.vanillaPot(CROTON);
+    public static final Block POTTED_DRACAENA = Builder.vanillaPot(DRACAENA);
+    public static final Block POTTED_FERN = Builder.vanillaPot(FERN);
+    public static final Block POTTED_FOLIAGE = Builder.vanillaPot(FOLIAGE);
+    public static final Block POTTED_BROMELIAD = Builder.vanillaPot(BROMELIAD);
+//    public static final Block POTTED_PALM_SAPLING = Builder.vanillaPot(PALM_SAPLING);
+//    public static final Block POTTED_MAHOGANY_SAPLING = Builder.vanillaPot(MAHOGANY_SAPLING);
+//    public static final Block POTTED_GRAPEFRUIT_SAPLING = Builder.vanillaPot(GRAPEFRUIT_SAPLING);
+//    public static final Block POTTED_LEMON_SAPLING = Builder.vanillaPot(LEMON_SAPLING);
+//    public static final Block POTTED_LIME_SAPLING = Builder.vanillaPot(LIME_SAPLING);
+//    public static final Block POTTED_ORANGE_SAPLING = Builder.vanillaPot(ORANGE_SAPLING);
+    public static final Block BAMBOO_POTTED_OAK_SAPLING = Builder.tropicraftPot(Blocks.OAK_SAPLING);
+    public static final Block BAMBOO_POTTED_SPRUCE_SAPLING = Builder.tropicraftPot(Blocks.SPRUCE_SAPLING);
+    public static final Block BAMBOO_POTTED_BIRCH_SAPLING = Builder.tropicraftPot(Blocks.BIRCH_SAPLING);
+    public static final Block BAMBOO_POTTED_JUNGLE_SAPLING = Builder.tropicraftPot(Blocks.JUNGLE_SAPLING);
+    public static final Block BAMBOO_POTTED_ACACIA_SAPLING = Builder.tropicraftPot(Blocks.ACACIA_SAPLING);
+    public static final Block BAMBOO_POTTED_DARK_OAK_SAPLING = Builder.tropicraftPot(Blocks.DARK_OAK_SAPLING);
+    public static final Block BAMBOO_POTTED_FERN = Builder.tropicraftPot(Blocks.FERN);
+    public static final Block BAMBOO_POTTED_DANDELION = Builder.tropicraftPot(Blocks.DANDELION);
+    public static final Block BAMBOO_POTTED_POPPY = Builder.tropicraftPot(Blocks.POPPY);
+    public static final Block BAMBOO_POTTED_BLUE_ORCHID = Builder.tropicraftPot(Blocks.BLUE_ORCHID);
+    public static final Block BAMBOO_POTTED_ALLIUM = Builder.tropicraftPot(Blocks.ALLIUM);
+    public static final Block BAMBOO_POTTED_AZURE_BLUET = Builder.tropicraftPot(Blocks.AZURE_BLUET);
+    public static final Block BAMBOO_POTTED_RED_TULIP = Builder.tropicraftPot(Blocks.RED_TULIP);
+    public static final Block BAMBOO_POTTED_ORANGE_TULIP = Builder.tropicraftPot(Blocks.ORANGE_TULIP);
+    public static final Block BAMBOO_POTTED_WHITE_TULIP = Builder.tropicraftPot(Blocks.WHITE_TULIP);
+    public static final Block BAMBOO_POTTED_PINK_TULIP = Builder.tropicraftPot(Blocks.PINK_TULIP);
+    public static final Block BAMBOO_POTTED_OXEYE_DAISY = Builder.tropicraftPot(Blocks.OXEYE_DAISY);
+    public static final Block BAMBOO_POTTED_CORNFLOWER = Builder.tropicraftPot(Blocks.CORNFLOWER);
+    public static final Block BAMBOO_POTTED_LILY_OF_THE_VALLEY = Builder.tropicraftPot(Blocks.LILY_OF_THE_VALLEY);
+    public static final Block BAMBOO_POTTED_WITHER_ROSE = Builder.tropicraftPot(Blocks.WITHER_ROSE);
+    public static final Block BAMBOO_POTTED_RED_MUSHROOM = Builder.tropicraftPot(Blocks.RED_MUSHROOM);
+    public static final Block BAMBOO_POTTED_BROWN_MUSHROOM = Builder.tropicraftPot(Blocks.BROWN_MUSHROOM);
+    public static final Block BAMBOO_POTTED_DEAD_BUSH = Builder.tropicraftPot(Blocks.DEAD_BUSH);
+    public static final Block BAMBOO_POTTED_CACTUS = Builder.tropicraftPot(Blocks.CACTUS);
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -217,6 +287,74 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "sifter", SIFTER);
             registerBlockDefault(event, "drink_mixer", DRINK_MIXER);
             registerBlockDefault(event, "tiki_torch", TIKI_TORCH);
+            registerBlockDefault(event, "bamboo_door", BAMBOO_DOOR);
+            registerBlockDefault(event, "bamboo_flower_pot", BAMBOO_FLOWER_POT);
+            registerBlockDefault(event, "bamboo_potted_commelina_diffusa", BAMBOO_POTTED_COMMELINA_DIFFUSA);
+            registerBlockDefault(event, "bamboo_potted_crocosmia", BAMBOO_POTTED_CROCOSMIA);
+            registerBlockDefault(event, "bamboo_potted_orchid", BAMBOO_POTTED_ORCHID);
+            registerBlockDefault(event, "bamboo_potted_canna", BAMBOO_POTTED_CANNA);
+            registerBlockDefault(event, "bamboo_potted_anemone", BAMBOO_POTTED_ANEMONE);
+            registerBlockDefault(event, "bamboo_potted_orange_anthurium", BAMBOO_POTTED_ORANGE_ANTHURIUM);
+            registerBlockDefault(event, "bamboo_potted_red_anthurium", BAMBOO_POTTED_RED_ANTHURIUM);
+            registerBlockDefault(event, "bamboo_potted_magic_mushroom", BAMBOO_POTTED_MAGIC_MUSHROOM);
+            registerBlockDefault(event, "bamboo_potted_pathos", BAMBOO_POTTED_PATHOS);
+            registerBlockDefault(event, "bamboo_potted_acai_vine", BAMBOO_POTTED_ACAI_VINE);
+            registerBlockDefault(event, "bamboo_potted_croton", BAMBOO_POTTED_CROTON);
+            registerBlockDefault(event, "bamboo_potted_dracaena", BAMBOO_POTTED_DRACAENA);
+            registerBlockDefault(event, "bamboo_potted_tropicraft_fern", BAMBOO_POTTED_TROPICRAFT_FERN);
+            registerBlockDefault(event, "bamboo_potted_foliage", BAMBOO_POTTED_FOLIAGE);
+            registerBlockDefault(event, "bamboo_potted_bromeliad", BAMBOO_POTTED_BROMELIAD);
+//            registerBlockDefault(event, "bamboo_potted_palm_sapling", BAMBOO_POTTED_PALM_SAPLING);
+//            registerBlockDefault(event, "bamboo_potted_mahogany_sapling", BAMBOO_POTTED_MAHOGANY_SAPLING);
+//            registerBlockDefault(event, "bamboo_potted_grapefruit_sapling", BAMBOO_POTTED_GRAPEFRUIT_SAPLING);
+//            registerBlockDefault(event, "bamboo_potted_lemon_sapling", BAMBOO_POTTED_LEMON_SAPLING);
+//            registerBlockDefault(event, "bamboo_potted_lime_sapling", BAMBOO_POTTED_LIME_SAPLING);
+//            registerBlockDefault(event, "bamboo_potted_orange_sapling", BAMBOO_POTTED_ORANGE_SAPLING);
+            registerBlockDefault(event, "potted_commelina_diffusa", POTTED_COMMELINA_DIFFUSA);
+            registerBlockDefault(event, "potted_crocosmia", POTTED_CROCOSMIA);
+            registerBlockDefault(event, "potted_orchid", POTTED_ORCHID);
+            registerBlockDefault(event, "potted_canna", POTTED_CANNA);
+            registerBlockDefault(event, "potted_anemone", POTTED_ANEMONE);
+            registerBlockDefault(event, "potted_orange_anthurium", POTTED_ORANGE_ANTHURIUM);
+            registerBlockDefault(event, "potted_red_anthurium", POTTED_RED_ANTHURIUM);
+            registerBlockDefault(event, "potted_magic_mushroom", POTTED_MAGIC_MUSHROOM);
+            registerBlockDefault(event, "potted_pathos", POTTED_PATHOS);
+            registerBlockDefault(event, "potted_acai_vine", POTTED_ACAI_VINE);
+            registerBlockDefault(event, "potted_croton", POTTED_CROTON);
+            registerBlockDefault(event, "potted_dracaena", POTTED_DRACAENA);
+            registerBlockDefault(event, "potted_fern", POTTED_FERN);
+            registerBlockDefault(event, "potted_foliage", POTTED_FOLIAGE);
+            registerBlockDefault(event, "potted_bromeliad", POTTED_BROMELIAD);
+//            registerBlockDefault(event, "potted_palm_sapling", POTTED_PALM_SAPLING);
+//            registerBlockDefault(event, "potted_mahogany_sapling", POTTED_MAHOGANY_SAPLING);
+//            registerBlockDefault(event, "potted_grapefruit_sapling", POTTED_GRAPEFRUIT_SAPLING);
+//            registerBlockDefault(event, "potted_lemon_sapling", POTTED_LEMON_SAPLING);
+//            registerBlockDefault(event, "potted_lime_sapling", POTTED_LIME_SAPLING);
+//            registerBlockDefault(event, "potted_orange_sapling", POTTED_ORANGE_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_oak_sapling", BAMBOO_POTTED_OAK_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_spruce_sapling", BAMBOO_POTTED_SPRUCE_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_birch_sapling", BAMBOO_POTTED_BIRCH_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_jungle_sapling", BAMBOO_POTTED_JUNGLE_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_acacia_sapling", BAMBOO_POTTED_ACACIA_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_dark_oak_sapling", BAMBOO_POTTED_DARK_OAK_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_fern", BAMBOO_POTTED_FERN);
+            registerBlockDefault(event, "bamboo_potted_dandelion", BAMBOO_POTTED_DANDELION);
+            registerBlockDefault(event, "bamboo_potted_poppy", BAMBOO_POTTED_POPPY);
+            registerBlockDefault(event, "bamboo_potted_blue_orchid", BAMBOO_POTTED_BLUE_ORCHID);
+            registerBlockDefault(event, "bamboo_potted_allium", BAMBOO_POTTED_ALLIUM);
+            registerBlockDefault(event, "bamboo_potted_azure_bluet", BAMBOO_POTTED_AZURE_BLUET);
+            registerBlockDefault(event, "bamboo_potted_red_tulip", BAMBOO_POTTED_RED_TULIP);
+            registerBlockDefault(event, "bamboo_potted_orange_tulip", BAMBOO_POTTED_ORANGE_TULIP);
+            registerBlockDefault(event, "bamboo_potted_white_tulip", BAMBOO_POTTED_WHITE_TULIP);
+            registerBlockDefault(event, "bamboo_potted_pink_tulip", BAMBOO_POTTED_PINK_TULIP);
+            registerBlockDefault(event, "bamboo_potted_oxeye_daisy", BAMBOO_POTTED_OXEYE_DAISY);
+            registerBlockDefault(event, "bamboo_potted_cornflower", BAMBOO_POTTED_CORNFLOWER);
+            registerBlockDefault(event, "bamboo_potted_lily_of_the_valley", BAMBOO_POTTED_LILY_OF_THE_VALLEY);
+            registerBlockDefault(event, "bamboo_potted_wither_rose", BAMBOO_POTTED_WITHER_ROSE);
+            registerBlockDefault(event, "bamboo_potted_red_mushroom", BAMBOO_POTTED_RED_MUSHROOM);
+            registerBlockDefault(event, "bamboo_potted_brown_mushroom", BAMBOO_POTTED_BROWN_MUSHROOM);
+            registerBlockDefault(event, "bamboo_potted_dead_bush", BAMBOO_POTTED_DEAD_BUSH);
+            registerBlockDefault(event, "bamboo_potted_cactus", BAMBOO_POTTED_CACTUS);
         }
 
         @SubscribeEvent
@@ -301,6 +439,14 @@ public class TropicraftBlocks {
             registerItemDefault(event, SIFTER);
             registerItem(event, DRINK_MIXER, () -> DrinkMixerItemstackRenderer::new);
             registerItemDefault(event, TIKI_TORCH);
+            registerItemDefault(event, BAMBOO_DOOR);
+            registerItemDefault(event, BAMBOO_FLOWER_POT);
+//            registerItemDefault(event, POTTED_PALM_SAPLING);
+//            registerItemDefault(event, POTTED_MAHOGANY_SAPLING);
+//            registerItemDefault(event, POTTED_GRAPEFRUIT_SAPLING);
+//            registerItemDefault(event, POTTED_LEMON_SAPLING);
+//            registerItemDefault(event, POTTED_LIME_SAPLING);
+//            registerItemDefault(event, POTTED_ORANGE_SAPLING);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {

@@ -1,0 +1,6 @@
+{
+    "parent": "tropicraft:block/bamboo_flower_pot_cross",
+    "textures": {
+        "plant": "tropicraft:block/flower/dracaena"
+    }
+}
