@@ -115,7 +115,7 @@ public class TropicraftDimension extends Dimension {
      */
     @Override
     public boolean isSurfaceWorld() {
-        return false;
+        return true;
     }
 
     /**
