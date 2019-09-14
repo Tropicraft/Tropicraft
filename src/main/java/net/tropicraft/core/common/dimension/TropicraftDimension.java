@@ -118,6 +118,12 @@ public class TropicraftDimension extends Dimension {
         return true;
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public float getCloudHeight() {
+        return 192;
+    }
+
     /**
      * Return Vec3D with biome specific fog color
      * Copies overworld fog code
@@ -133,7 +139,7 @@ public class TropicraftDimension extends Dimension {
         f1 = f1 * (f * 0.94F + 0.06F);
         f2 = f2 * (f * 0.94F + 0.06F);
         f3 = f3 * (f * 0.91F + 0.09F);
-        return new Vec3d((double)f1, (double)f2, (double)f3);
+        return new Vec3d(f1, f2, f3);
     }
 
     @Override
