@@ -6,12 +6,10 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 
-import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.Arrays;
 
 public class Builder {
     public static Block flower() {
@@ -55,20 +53,18 @@ public class Builder {
     public static Block leaves() {
         return new TropicraftLeavesBlock(prop(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT));
     }
-    
-    public static Block sapling(Supplier<? extends AbstractTreeFeature<NoFeatureConfig>> feature) {
-    	return sapling($ -> feature.get());
-    }
-    
-    public static Block sapling(Function<Random, ? extends AbstractTreeFeature<NoFeatureConfig>> feature) {
-    	return new SaplingBlock(new Tree() {
 
-			@Override
-			protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
-				return feature.apply(random);
-			}
-    		
-    	}, prop(Material.PLANTS).hardnessAndResistance(0).tickRandomly().sound(SoundType.PLANT)) {}; // protected access hack, pending forge patch(?)
+    public static Block sapling(final Tree tree, final Block...validPlantBlocks) {
+    	return new SaplingBlock(tree, prop(Material.PLANTS).hardnessAndResistance(0).tickRandomly().sound(SoundType.PLANT)) {
+            protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+                final Block block = state.getBlock();
+                if (validPlantBlocks == null || validPlantBlocks.length == 0) {
+                    return block == Blocks.GRASS_BLOCK || block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.PODZOL || block == Blocks.FARMLAND;
+                } else {
+                    return Arrays.asList(validPlantBlocks).contains(block);
+                }
+            }
+        };
     }
 
     public static Block fence(final Material material, final MaterialColor color) {

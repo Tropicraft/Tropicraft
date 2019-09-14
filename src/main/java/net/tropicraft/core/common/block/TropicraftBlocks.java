@@ -16,7 +16,6 @@ import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.BlockHardnessValues;
 import net.tropicraft.core.client.tileentity.DrinkMixerItemstackRenderer;
-import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
@@ -97,12 +96,13 @@ public class TropicraftBlocks {
     public static final Block LEMON_LEAVES = Builder.leaves();
     public static final Block LIME_LEAVES = Builder.leaves();
     public static final Block ORANGE_LEAVES = Builder.leaves();
-    
-    //public static final Block MAHOGANY_SAPLING = Builder.sapling(() -> TropicraftFeatures.MAHOGANY_TREE);
-    public static final Block GRAPEFRUIT_SAPLING = Builder.sapling(() -> TropicraftFeatures.GRAPEFRUIT_TREE);
-    public static final Block LEMON_SAPLING = Builder.sapling(() -> TropicraftFeatures.LEMON_TREE);
-    public static final Block LIME_SAPLING = Builder.sapling(() -> TropicraftFeatures.LIME_TREE);
-    public static final Block ORANGE_SAPLING = Builder.sapling(() -> TropicraftFeatures.ORANGE_TREE);
+
+    public static final Block GRAPEFRUIT_SAPLING = Builder.sapling(TropicraftTrees.GRAPEFRUIT);
+    public static final Block LEMON_SAPLING = Builder.sapling(TropicraftTrees.LEMON);
+    public static final Block LIME_SAPLING = Builder.sapling(TropicraftTrees.LIME);
+    public static final Block ORANGE_SAPLING = Builder.sapling(TropicraftTrees.ORANGE);
+    public static final Block MAHOGANY_SAPLING = Builder.sapling(TropicraftTrees.RAINFOREST);
+    public static final Block PALM_SAPLING = Builder.sapling(TropicraftTrees.PALM, Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND);
 
     public static final Block BAMBOO_FENCE = Builder.fence(Material.BAMBOO, MaterialColor.GREEN);
     public static final Block THATCH_FENCE = Builder.fence(Material.PLANTS, MaterialColor.YELLOW);
@@ -133,12 +133,12 @@ public class TropicraftBlocks {
     public static final Block BAMBOO_DOOR = new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {};
 
     public static final Block BAMBOO_FLOWER_POT = Builder.tropicraftPot(Blocks.AIR);
-    //public static final Block BAMBOO_POTTED_PALM_SAPLING = Builder.pot(PALM_SAPLING);
-    //public static final Block BAMBOO_POTTED_MAHOGANY_SAPLING = Builder.pot(MAHOGANY_SAPLING);
-    //public static final Block BAMBOO_POTTED_GRAPEFRUIT_SAPLING = Builder.pot(GRAPEFRUIT_SAPLING);
-    //public static final Block BAMBOO_POTTED_LEMON_SAPLING = Builder.pot(LEMON_SAPLING);
-    //public static final Block BAMBOO_POTTED_LIME_SAPLING = Builder.pot(LIME_SAPLING);
-    //public static final Block BAMBOO_POTTED_ORANGE_SAPLING = Builder.pot(ORANGE_SAPLING);
+    public static final Block BAMBOO_POTTED_PALM_SAPLING = Builder.tropicraftPot(PALM_SAPLING);
+    public static final Block BAMBOO_POTTED_MAHOGANY_SAPLING = Builder.tropicraftPot(MAHOGANY_SAPLING);
+    public static final Block BAMBOO_POTTED_GRAPEFRUIT_SAPLING = Builder.tropicraftPot(GRAPEFRUIT_SAPLING);
+    public static final Block BAMBOO_POTTED_LEMON_SAPLING = Builder.tropicraftPot(LEMON_SAPLING);
+    public static final Block BAMBOO_POTTED_LIME_SAPLING = Builder.tropicraftPot(LIME_SAPLING);
+    public static final Block BAMBOO_POTTED_ORANGE_SAPLING = Builder.tropicraftPot(ORANGE_SAPLING);
     public static final Block BAMBOO_POTTED_COMMELINA_DIFFUSA = Builder.tropicraftPot(COMMELINA_DIFFUSA);
     public static final Block BAMBOO_POTTED_CROCOSMIA = Builder.tropicraftPot(CROCOSMIA);
     public static final Block BAMBOO_POTTED_ORCHID = Builder.tropicraftPot(ORCHID);
@@ -170,12 +170,12 @@ public class TropicraftBlocks {
     public static final Block POTTED_FERN = Builder.vanillaPot(FERN);
     public static final Block POTTED_FOLIAGE = Builder.vanillaPot(FOLIAGE);
     public static final Block POTTED_BROMELIAD = Builder.vanillaPot(BROMELIAD);
-//    public static final Block POTTED_PALM_SAPLING = Builder.vanillaPot(PALM_SAPLING);
-//    public static final Block POTTED_MAHOGANY_SAPLING = Builder.vanillaPot(MAHOGANY_SAPLING);
-//    public static final Block POTTED_GRAPEFRUIT_SAPLING = Builder.vanillaPot(GRAPEFRUIT_SAPLING);
-//    public static final Block POTTED_LEMON_SAPLING = Builder.vanillaPot(LEMON_SAPLING);
-//    public static final Block POTTED_LIME_SAPLING = Builder.vanillaPot(LIME_SAPLING);
-//    public static final Block POTTED_ORANGE_SAPLING = Builder.vanillaPot(ORANGE_SAPLING);
+    public static final Block POTTED_PALM_SAPLING = Builder.vanillaPot(PALM_SAPLING);
+    public static final Block POTTED_MAHOGANY_SAPLING = Builder.vanillaPot(MAHOGANY_SAPLING);
+    public static final Block POTTED_GRAPEFRUIT_SAPLING = Builder.vanillaPot(GRAPEFRUIT_SAPLING);
+    public static final Block POTTED_LEMON_SAPLING = Builder.vanillaPot(LEMON_SAPLING);
+    public static final Block POTTED_LIME_SAPLING = Builder.vanillaPot(LIME_SAPLING);
+    public static final Block POTTED_ORANGE_SAPLING = Builder.vanillaPot(ORANGE_SAPLING);
     public static final Block BAMBOO_POTTED_OAK_SAPLING = Builder.tropicraftPot(Blocks.OAK_SAPLING);
     public static final Block BAMBOO_POTTED_SPRUCE_SAPLING = Builder.tropicraftPot(Blocks.SPRUCE_SAPLING);
     public static final Block BAMBOO_POTTED_BIRCH_SAPLING = Builder.tropicraftPot(Blocks.BIRCH_SAPLING);
@@ -267,6 +267,8 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "lemon_sapling", LEMON_SAPLING);
             registerBlockDefault(event, "lime_sapling", LIME_SAPLING);
             registerBlockDefault(event, "orange_sapling", ORANGE_SAPLING);
+            registerBlockDefault(event, "palm_sapling", PALM_SAPLING);
+            registerBlockDefault(event, "mahogany_sapling", MAHOGANY_SAPLING);
             registerBlockDefault(event, "bamboo_fence", BAMBOO_FENCE);
             registerBlockDefault(event, "thatch_fence", THATCH_FENCE);
             registerBlockDefault(event, "chunk_fence", CHUNK_FENCE);
@@ -304,12 +306,12 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "bamboo_potted_tropicraft_fern", BAMBOO_POTTED_TROPICRAFT_FERN);
             registerBlockDefault(event, "bamboo_potted_foliage", BAMBOO_POTTED_FOLIAGE);
             registerBlockDefault(event, "bamboo_potted_bromeliad", BAMBOO_POTTED_BROMELIAD);
-//            registerBlockDefault(event, "bamboo_potted_palm_sapling", BAMBOO_POTTED_PALM_SAPLING);
-//            registerBlockDefault(event, "bamboo_potted_mahogany_sapling", BAMBOO_POTTED_MAHOGANY_SAPLING);
-//            registerBlockDefault(event, "bamboo_potted_grapefruit_sapling", BAMBOO_POTTED_GRAPEFRUIT_SAPLING);
-//            registerBlockDefault(event, "bamboo_potted_lemon_sapling", BAMBOO_POTTED_LEMON_SAPLING);
-//            registerBlockDefault(event, "bamboo_potted_lime_sapling", BAMBOO_POTTED_LIME_SAPLING);
-//            registerBlockDefault(event, "bamboo_potted_orange_sapling", BAMBOO_POTTED_ORANGE_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_palm_sapling", BAMBOO_POTTED_PALM_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_mahogany_sapling", BAMBOO_POTTED_MAHOGANY_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_grapefruit_sapling", BAMBOO_POTTED_GRAPEFRUIT_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_lemon_sapling", BAMBOO_POTTED_LEMON_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_lime_sapling", BAMBOO_POTTED_LIME_SAPLING);
+            registerBlockDefault(event, "bamboo_potted_orange_sapling", BAMBOO_POTTED_ORANGE_SAPLING);
             registerBlockDefault(event, "potted_commelina_diffusa", POTTED_COMMELINA_DIFFUSA);
             registerBlockDefault(event, "potted_crocosmia", POTTED_CROCOSMIA);
             registerBlockDefault(event, "potted_orchid", POTTED_ORCHID);
@@ -325,12 +327,12 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "potted_fern", POTTED_FERN);
             registerBlockDefault(event, "potted_foliage", POTTED_FOLIAGE);
             registerBlockDefault(event, "potted_bromeliad", POTTED_BROMELIAD);
-//            registerBlockDefault(event, "potted_palm_sapling", POTTED_PALM_SAPLING);
-//            registerBlockDefault(event, "potted_mahogany_sapling", POTTED_MAHOGANY_SAPLING);
-//            registerBlockDefault(event, "potted_grapefruit_sapling", POTTED_GRAPEFRUIT_SAPLING);
-//            registerBlockDefault(event, "potted_lemon_sapling", POTTED_LEMON_SAPLING);
-//            registerBlockDefault(event, "potted_lime_sapling", POTTED_LIME_SAPLING);
-//            registerBlockDefault(event, "potted_orange_sapling", POTTED_ORANGE_SAPLING);
+            registerBlockDefault(event, "potted_palm_sapling", POTTED_PALM_SAPLING);
+            registerBlockDefault(event, "potted_mahogany_sapling", POTTED_MAHOGANY_SAPLING);
+            registerBlockDefault(event, "potted_grapefruit_sapling", POTTED_GRAPEFRUIT_SAPLING);
+            registerBlockDefault(event, "potted_lemon_sapling", POTTED_LEMON_SAPLING);
+            registerBlockDefault(event, "potted_lime_sapling", POTTED_LIME_SAPLING);
+            registerBlockDefault(event, "potted_orange_sapling", POTTED_ORANGE_SAPLING);
             registerBlockDefault(event, "bamboo_potted_oak_sapling", BAMBOO_POTTED_OAK_SAPLING);
             registerBlockDefault(event, "bamboo_potted_spruce_sapling", BAMBOO_POTTED_SPRUCE_SAPLING);
             registerBlockDefault(event, "bamboo_potted_birch_sapling", BAMBOO_POTTED_BIRCH_SAPLING);
@@ -419,6 +421,8 @@ public class TropicraftBlocks {
             registerItemDefault(event, LEMON_SAPLING);
             registerItemDefault(event, LIME_SAPLING);
             registerItemDefault(event, ORANGE_SAPLING);
+            registerItemDefault(event, PALM_SAPLING);
+            registerItemDefault(event, MAHOGANY_SAPLING);
             registerItemDefault(event, BAMBOO_FENCE);
             registerItemDefault(event, THATCH_FENCE);
             registerItemDefault(event, CHUNK_FENCE);
@@ -441,12 +445,6 @@ public class TropicraftBlocks {
             registerItemDefault(event, TIKI_TORCH);
             registerItemDefault(event, BAMBOO_DOOR);
             registerItemDefault(event, BAMBOO_FLOWER_POT);
-//            registerItemDefault(event, POTTED_PALM_SAPLING);
-//            registerItemDefault(event, POTTED_MAHOGANY_SAPLING);
-//            registerItemDefault(event, POTTED_GRAPEFRUIT_SAPLING);
-//            registerItemDefault(event, POTTED_LEMON_SAPLING);
-//            registerItemDefault(event, POTTED_LIME_SAPLING);
-//            registerItemDefault(event, POTTED_ORANGE_SAPLING);
         }
 
         private static void registerBlockDefault(final RegistryEvent.Register<Block> event, final String name, final Block block) {

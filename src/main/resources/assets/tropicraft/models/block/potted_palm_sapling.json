@@ -1,6 +1,6 @@
 {
     "parent": "block/flower_pot_cross",
     "textures": {
-        "plant": "tropicraft:block/flower/palm_sapling"
+        "plant": "tropicraft:block/palm_sapling"
     }
 }

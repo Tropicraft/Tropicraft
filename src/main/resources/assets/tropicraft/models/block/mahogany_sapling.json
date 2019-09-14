@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "tropicraft:block/mahogany_sapling"
+    }
+}

@@ -55,6 +55,7 @@ public class TropicraftItems {
     public static Item BAMBOO_MUG = Builder.item();
 
     // Cocktails
+    // TODO - add item jsons
     public static Item LEMONADE = Builder.cocktail(Drink.LEMONADE);
     public static Item LIMEADE = Builder.cocktail(Drink.LIMEADE);
     public static Item ORANGEADE = Builder.cocktail(Drink.ORANGEADE);
