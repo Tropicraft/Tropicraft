@@ -105,6 +105,8 @@ public class TropicraftItems {
     public static Item RAW_FISH = Builder.food(Foods.RAW_FISH);
     public static Item COOKED_FISH = Builder.food(Foods.COOKED_FISH);
     public static Item POISON_FROG_SKIN = Builder.item();
+
+    public static Item BAMBOO_ITEM_FRAME = new BambooItemFrameItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP));
     
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -168,6 +170,7 @@ public class TropicraftItems {
             register(event, "raw_fish", RAW_FISH);
             register(event, "cooked_fish", COOKED_FISH);
             register(event, "poison_frog_skin", POISON_FROG_SKIN);
+            register(event, "bamboo_item_frame", BAMBOO_ITEM_FRAME);
         }
 
         private static void register(final RegistryEvent.Register<Item> event, final String name, final Item item) {

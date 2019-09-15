@@ -24,6 +24,7 @@ public class TropicraftEntities {
     public static EntityType<TropiSkellyEntity> TROPI_SKELLY;
     public static EntityType<EIHEntity> EIH;
     public static EntityType<WallItemEntity> WALL_ITEM;
+    public static EntityType<BambooItemFrame> BAMBOO_ITEM_FRAME;
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
@@ -34,12 +35,22 @@ public class TropicraftEntities {
         TROPI_SKELLY = register(event, "tropiskelly", tropiskelly());
         EIH = register(event, "eih", eih());
         WALL_ITEM = register(event, "wall_item", wallItem());
+        BAMBOO_ITEM_FRAME = register(event, "bamboo_item_frame", bambooItemFrame());
     }
 
     private static <T extends Entity> EntityType<T> register(final RegistryEvent.Register<EntityType<?>> event, final String name, final EntityType.Builder<T> entityType) {
         final EntityType<T> entityTypeCreated = entityType.build(name);
         event.getRegistry().register(entityTypeCreated.setRegistryName(name));
         return entityTypeCreated;
+    }
+
+    private static EntityType.Builder<BambooItemFrame> bambooItemFrame() {
+        return EntityType.Builder.<BambooItemFrame>create(BambooItemFrame::new, EntityClassification.MISC)
+                .size(0.5F, 0.5F)
+                .setTrackingRange(64)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(false)
+                .setCustomClientFactory(($, world) -> new BambooItemFrame(world));
     }
 
     private static EntityType.Builder<WallItemEntity> wallItem() {
