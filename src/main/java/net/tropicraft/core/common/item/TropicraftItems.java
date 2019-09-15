@@ -94,6 +94,18 @@ public class TropicraftItems {
             maskTheBrain, maskBatBoy, mask1, mask2, mask3, mask4, mask5
     };
 
+    public static Item FRESH_MARLIN = Builder.food(Foods.FRESH_MARLIN);
+    public static Item SEARED_MARLIN = Builder.food(Foods.SEARED_MARLIN);
+    public static Item RAW_RAY = Builder.item();
+    public static Item COOKED_RAY = Builder.food(Foods.COOKED_RAY);
+    public static Item FROG_LEG = Builder.item();
+    public static Item COOKED_FROG_LEG = Builder.food(Foods.COOKED_FROG_LEG);
+    public static Item SEA_URCHIN_ROE = Builder.food(Foods.SEA_URCHIN_ROE);
+    public static Item TOASTED_NORI = Builder.food(Foods.TOASTED_NORI);
+    public static Item RAW_FISH = Builder.food(Foods.RAW_FISH);
+    public static Item COOKED_FISH = Builder.food(Foods.COOKED_FISH);
+    public static Item POISON_FROG_SKIN = Builder.item();
+    
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
@@ -145,6 +157,17 @@ public class TropicraftItems {
             register(event, "white_pearl", WHITE_PEARL);
             register(event, "black_pearl", BLACK_PEARL);
             register(event, "scale", SCALE);
+            register(event, "fresh_marlin", FRESH_MARLIN);
+            register(event, "seared_marlin", SEARED_MARLIN);
+            register(event, "raw_ray", RAW_RAY);
+            register(event, "cooked_ray", COOKED_RAY);
+            register(event, "frog_leg", FROG_LEG);
+            register(event, "cooked_frog_leg", COOKED_FROG_LEG);
+            register(event, "sea_urchin_roe", SEA_URCHIN_ROE);
+            register(event, "toasted_nori", TOASTED_NORI);
+            register(event, "raw_fish", RAW_FISH);
+            register(event, "cooked_fish", COOKED_FISH);
+            register(event, "poison_frog_skin", POISON_FROG_SKIN);
         }
 
         private static void register(final RegistryEvent.Register<Item> event, final String name, final Item item) {
