@@ -80,7 +80,7 @@ public class Builder {
     }
 
     public static Block tropicraftPot(final Block block) {
-        return new BambooFlowerPotBlock(block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
+        return BambooFlowerPotBlock.create(block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
     }
 
     public static Block vanillaPot(final Block block) {

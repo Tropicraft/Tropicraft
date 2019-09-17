@@ -19,8 +19,16 @@ import java.util.Map;
 
 public class BambooFlowerPotBlock extends FlowerPotBlock {
     private static final Map<Block, Block> flowers = Maps.newHashMap();
+    
+    public static BambooFlowerPotBlock create(final Block block, final Properties properties) {
+        // Special factory to not corrupt vanilla data since they mutate static data in the constructor -_-
+        Block prev = field_196451_b.get(block);
+        BambooFlowerPotBlock ret = new BambooFlowerPotBlock(block, properties);
+        field_196451_b.put(block, prev);
+        return ret;
+    }
 
-    public BambooFlowerPotBlock(final Block block, final Properties properties) {
+    private BambooFlowerPotBlock(final Block block, final Properties properties) {
         super(block, properties);
         flowers.put(block, this);
     }
