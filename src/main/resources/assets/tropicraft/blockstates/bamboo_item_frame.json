@@ -1,6 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "tropicraft:block/bamboo_item_frame" },
-        "map":    { "model": "tropicraft:block/bamboo_item_frame_map" }
+        "map=false": { "model": "tropicraft:block/bamboo_item_frame" },
+        "map=true":    { "model": "tropicraft:block/bamboo_item_frame_map" }
     }
 }

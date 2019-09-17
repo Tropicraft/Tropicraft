@@ -1,6 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
+import javax.annotation.Nullable;
+
 import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -19,12 +22,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.MapData;
 import net.tropicraft.core.common.entity.BambooItemFrame;
 
-import javax.annotation.Nullable;
-
 public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     private static final ResourceLocation MAP_BACKGROUND_TEXTURES = new ResourceLocation("textures/map/map_background.png");
-    private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation("tropicraft:item/bamboo_item_frame", "map=false");
-    private static final ModelResourceLocation LOCATION_MODEL_MAP = new ModelResourceLocation("tropicraft:item/bamboo_item_frame", "map=true");
+    public static final ResourceLocation LOCATION_BLOCK = new ResourceLocation("tropicraft", "bamboo_item_frame");
+    private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation(LOCATION_BLOCK, "map=false");
+    private static final ModelResourceLocation LOCATION_MODEL_MAP = new ModelResourceLocation(LOCATION_BLOCK, "map=true");
     private final Minecraft mc = Minecraft.getInstance();
     private final ItemRenderer itemRenderer;
 

@@ -1,8 +1,14 @@
 package net.tropicraft;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -13,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.command.TropicraftCommands;
@@ -22,6 +29,8 @@ import net.tropicraft.core.proxy.CommonProxy;
 import net.tropicraft.core.proxy.ServerProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.ImmutableMap;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Constants.MODID)
@@ -55,6 +64,16 @@ public class Tropicraft
         MinecraftForge.EVENT_BUS.register(this);
 
         PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+        
+        // Hack in our item frame models the way vanilla does
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            StateContainer<Block, BlockState> frameState = new StateContainer.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(BlockState::new);
+    
+            ModelBakery.STATE_CONTAINER_OVERRIDES = ImmutableMap.<ResourceLocation, StateContainer<Block, BlockState>>builder()
+                    .putAll(ModelBakery.STATE_CONTAINER_OVERRIDES)
+                    .put(BambooItemFrameRenderer.LOCATION_BLOCK, frameState)
+                    .build();
+        });
     }
 
     private void setup(final FMLCommonSetupEvent event) {

@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.entity.placeable;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.HangingEntity;
@@ -18,9 +20,6 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.tropicraft.core.common.entity.TropicraftEntities;
-
-import javax.annotation.Nullable;
 
 public class WallItemEntity extends HangingEntity implements IEntityAdditionalSpawnData {
 
@@ -28,10 +27,6 @@ public class WallItemEntity extends HangingEntity implements IEntityAdditionalSp
 
     public WallItemEntity(EntityType<? extends HangingEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    public WallItemEntity(World world) {
-        this(TropicraftEntities.WALL_ITEM, world);
     }
 
     @Override

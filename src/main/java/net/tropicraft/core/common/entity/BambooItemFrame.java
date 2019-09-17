@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RedstoneDiodeBlock;
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemFrameEntity;
@@ -20,8 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
-
-import javax.annotation.Nullable;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditionalSpawnData {
 
@@ -29,9 +28,11 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
         super(type, world);
     }
 
-    public BambooItemFrame(World world) {
-        this(TropicraftEntities.BAMBOO_ITEM_FRAME, world);
-    }
+    public BambooItemFrame(World worldIn, BlockPos pos, Direction direction) {
+        super(TropicraftEntities.BAMBOO_ITEM_FRAME, worldIn);
+        this.hangingPosition = pos;
+        this.updateFacingWithBoundingBox(direction);
+     }
 
     public void setHangingPosition(final BlockPos pos) {
         hangingPosition = pos;
@@ -44,13 +45,8 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
 
     @Override
     public boolean onValidSurface() {
-        if (!this.world.areCollisionShapesEmpty(this)) {
-            return false;
-        } else {
-            BlockState blockstate = this.world.getBlockState(this.hangingPosition.offset(this.facingDirection.getOpposite()));
-            return blockstate.getMaterial().isSolid() || this.facingDirection.getAxis().isHorizontal() && RedstoneDiodeBlock.isDiode(blockstate) ? this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox(), IS_HANGING_ENTITY).isEmpty() : false;
-        }
-    }
+        return super.onValidSurface();
+     }
 
     @Override
     public void onBroken(@Nullable final Entity brokenEntity) {
@@ -92,7 +88,7 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
             }
 
             if (p_146065_2_) {
-                this.entityDropItem(Items.ITEM_FRAME);
+                this.entityDropItem(TropicraftItems.BAMBOO_ITEM_FRAME);
             }
 
             if (!itemstack.isEmpty()) {
@@ -122,11 +118,13 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        buffer.writeByte(facingDirection.getHorizontalIndex());
+        buffer.writeBlockPos(this.hangingPosition);
+        buffer.writeByte(facingDirection.getIndex());
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        updateFacingWithBoundingBox(Direction.byHorizontalIndex(additionalData.readByte()));
+        this.hangingPosition = additionalData.readBlockPos();
+        updateFacingWithBoundingBox(Direction.byIndex(additionalData.readByte()));
     }
 }

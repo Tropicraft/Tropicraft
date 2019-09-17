@@ -50,7 +50,7 @@ public class TropicraftEntities {
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new BambooItemFrame(world));
+                .setCustomClientFactory(($, world) -> new BambooItemFrame(BAMBOO_ITEM_FRAME, world));
     }
 
     private static EntityType.Builder<WallItemEntity> wallItem() {
@@ -59,7 +59,7 @@ public class TropicraftEntities {
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new WallItemEntity(world));
+                .setCustomClientFactory(($, world) -> new WallItemEntity(WALL_ITEM, world));
     }
 
     private static EntityType.Builder<EIHEntity> eih() {
