@@ -4,9 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
@@ -27,8 +29,10 @@ public class TropicraftFeatures {
 	public static final TropicsFlowersFeature TROPICS_FLOWERS = new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftBlocks.TROPICS_FLOWERS);
 	public static final TropicsFlowersFeature RAINFOREST_FLOWERS = new TropicsFlowersFeature(NoFeatureConfig::deserialize, new Block[]{TropicraftBlocks.MAGIC_MUSHROOM});
 	public static final UndergrowthFeature UNDERGROWTH = new UndergrowthFeature(NoFeatureConfig::deserialize);
+	
+	public static final Structure<NoFeatureConfig> VILLAGE = new KoaVillageStructure(NoFeatureConfig::deserialize);
 
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
         public static void onFeaturesRegistry(final RegistryEvent.Register<Feature<?>> event) {
@@ -47,6 +51,8 @@ public class TropicraftFeatures {
 			register(event, TROPICS_FLOWERS, "tropics_flowers");
 			register(event, RAINFOREST_FLOWERS, "rainforest_flowers");
 			register(event, UNDERGROWTH, "undergrowth");
+			
+			register(event, VILLAGE, "koa_village");
         }
 
         private static void register(final RegistryEvent.Register<Feature<?>> event, final Feature<?> feature, final String name) {
