@@ -132,7 +132,7 @@ public class TropicraftBlocks {
     public static final Block TIKI_TORCH = new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0));
     public static final Block BAMBOO_DOOR = new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {};
 
-    public static final Block BAMBOO_FLOWER_POT = Builder.tropicraftPot(Blocks.AIR);
+    public static final FlowerPotBlock BAMBOO_FLOWER_POT = Builder.tropicraftPot(Blocks.AIR);
     public static final Block BAMBOO_POTTED_PALM_SAPLING = Builder.tropicraftPot(PALM_SAPLING);
     public static final Block BAMBOO_POTTED_MAHOGANY_SAPLING = Builder.tropicraftPot(MAHOGANY_SAPLING);
     public static final Block BAMBOO_POTTED_GRAPEFRUIT_SAPLING = Builder.tropicraftPot(GRAPEFRUIT_SAPLING);
