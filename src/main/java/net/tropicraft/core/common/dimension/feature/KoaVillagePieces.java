@@ -13,6 +13,9 @@ import net.tropicraft.Info;
 public class KoaVillagePieces {
 
     public static void init() {
+    }
+    
+    static {
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/town_centers"), 
                 new ResourceLocation("empty"), 
                 ImmutableList.of(new Pair<>(
@@ -23,13 +26,12 @@ public class KoaVillagePieces {
                 new ResourceLocation(Info.MODID, "koa_village/terminators"), 
                 ImmutableList.of(new Pair<>(
                         new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_01"),
-                        1)), PlacementBehaviour.RIGID));
+                        1)), PlacementBehaviour.TERRAIN_MATCHING));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/terminators"), 
                 new ResourceLocation("empty"), 
                 ImmutableList.of(new Pair<>(
                         new SingleJigsawPiece(Info.MODID + ":koa_village/terminators/terminator_01"),
-                        1)), PlacementBehaviour.RIGID));
+                        1)), PlacementBehaviour.TERRAIN_MATCHING));
     }
-
 }
