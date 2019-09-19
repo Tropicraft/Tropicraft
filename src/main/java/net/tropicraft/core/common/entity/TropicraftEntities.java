@@ -14,6 +14,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 
 @Mod.EventBusSubscriber(modid = Info.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
@@ -24,6 +25,7 @@ public class TropicraftEntities {
     public static EntityType<TropiSkellyEntity> TROPI_SKELLY;
     public static EntityType<EIHEntity> EIH;
     public static EntityType<WallItemEntity> WALL_ITEM;
+    public static EntityType<LavaBallEntity> LAVA_BALL;
 
     @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
@@ -34,12 +36,22 @@ public class TropicraftEntities {
         TROPI_SKELLY = register(event, "tropiskelly", tropiskelly());
         EIH = register(event, "eih", eih());
         WALL_ITEM = register(event, "wall_item", wallItem());
+        LAVA_BALL = register(event, "lava_ball", lavaBall());
     }
 
     private static <T extends Entity> EntityType<T> register(final RegistryEvent.Register<EntityType<?>> event, final String name, final EntityType.Builder<T> entityType) {
         final EntityType<T> entityTypeCreated = entityType.build(name);
         event.getRegistry().register(entityTypeCreated.setRegistryName(name));
         return entityTypeCreated;
+    }
+
+    private static EntityType.Builder<LavaBallEntity> lavaBall() {
+        return EntityType.Builder.<LavaBallEntity>create(LavaBallEntity::new, EntityClassification.MISC)
+                .size(1.0F, 1.0F)
+                .setTrackingRange(64)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(true)
+                .setCustomClientFactory(($, world) -> new LavaBallEntity(world));
     }
 
     private static EntityType.Builder<WallItemEntity> wallItem() {

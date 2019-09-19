@@ -27,6 +27,7 @@ public class TropicraftFeatures {
 	public static final TropicsFlowersFeature TROPICS_FLOWERS = new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftBlocks.TROPICS_FLOWERS);
 	public static final TropicsFlowersFeature RAINFOREST_FLOWERS = new TropicsFlowersFeature(NoFeatureConfig::deserialize, new Block[]{TropicraftBlocks.MAGIC_MUSHROOM});
 	public static final UndergrowthFeature UNDERGROWTH = new UndergrowthFeature(NoFeatureConfig::deserialize);
+	public static final VolcanoFeature VOLCANO = new VolcanoFeature(NoFeatureConfig::deserialize);
 
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
@@ -47,6 +48,7 @@ public class TropicraftFeatures {
 			register(event, TROPICS_FLOWERS, "tropics_flowers");
 			register(event, RAINFOREST_FLOWERS, "rainforest_flowers");
 			register(event, UNDERGROWTH, "undergrowth");
+			register(event, VOLCANO, "volcano");
         }
 
         private static void register(final RegistryEvent.Register<Feature<?>> event, final Feature<?> feature, final String name) {

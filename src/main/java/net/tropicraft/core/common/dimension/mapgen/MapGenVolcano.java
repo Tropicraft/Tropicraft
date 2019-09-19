@@ -58,7 +58,7 @@ public class MapGenVolcano {
 	}
 
 	public ChunkPrimer generate(int i, int k, ChunkPrimer primer) {
-		BlockPos volcanoCoords = this.getVolcanoNear(this.world, i, k);
+		BlockPos volcanoCoords = MapGenVolcano.getVolcanoNear(this.world, i, k);
 
 		if (volcanoCoords == null) {
 			return primer;
@@ -176,7 +176,7 @@ public class MapGenVolcano {
 	 * Rarity is determined by the numChunks/offsetChunks vars (smaller numbers
 	 * mean more spawning)
 	 */
-	protected int canGenVolcanoAtCoords(IWorld world, int i, int j) {
+	protected static int canGenVolcanoAtCoords(IWorld world, int i, int j) {
 		byte numChunks = 32; // was 32
 		byte offsetChunks = 6; // was 8
 		int oldi = i;
@@ -200,10 +200,10 @@ public class MapGenVolcano {
 		randZ += rand.nextInt(numChunks - offsetChunks);
 
 		if (oldi == randX && oldj == randZ) {
-			if(this.hasAllBiomes(oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesLand)) {
+			if(hasAllBiomes(world, oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesLand)) {
 				return 1;
 			}
-			if(this.hasAllBiomes(oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesOcean)) {
+			if(hasAllBiomes(world, oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesOcean)) {
 				return 2;
 			}
 
@@ -218,12 +218,12 @@ public class MapGenVolcano {
 	 * this chunk, otherwise returns null.
 	 * The posY of the returned object should be used as the volcano radius
 	 */
-	public BlockPos getVolcanoNear(IWorld world, int i, int j) {
+	public static BlockPos getVolcanoNear(IWorld world, int i, int j) {
 		//Check 4 chunks in each direction (volcanoes are never more than 4 chunks wide)
 		int range = 4;
 		for (int x = i - range; x <= i + range; x++) {
 			for (int z = j - range; z <= j + range; z++) {
-				int biome = this.canGenVolcanoAtCoords(world, x, z);
+				int biome = canGenVolcanoAtCoords(world, x, z);
 				if (biome != 0) {
 					BlockPos pos = new BlockPos(x * 16 + 8, biome, z * 16 + 8);
 
@@ -236,8 +236,8 @@ public class MapGenVolcano {
 		return null;
 	}
 
-	private boolean hasAllBiomes(int centerX, int centerY, List<Biome> allowedBiomes) {
-		BiomeProvider biomeProvider = this.world.getChunkProvider().getChunkGenerator().getBiomeProvider();
+	private static boolean hasAllBiomes(IWorld world, int centerX, int centerY, List<Biome> allowedBiomes) {
+		BiomeProvider biomeProvider = world.getChunkProvider().getChunkGenerator().getBiomeProvider();
 		for (Biome biome : biomeProvider.getBiomesInSquare(centerX, centerY, 0)) {
 			if (!allowedBiomes.contains(biome)) {
 				return false;

@@ -30,10 +30,7 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     });
 
     private final OctavesNoiseGenerator depthNoise;
-
     private MapGenVolcano volcanoGen;
-
-    private final Set<BlockPos> volcanoCache = new HashSet<>();
 
     public TropicraftChunkGenerator(IWorld world, BiomeProvider biomeProvider, TropicraftGeneratorSettings settings) {
         super(world, biomeProvider, 4, 8, 256, settings, false);
@@ -144,8 +141,6 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         ChunkPos chunkPos = chunkIn.getPos();
         int j = chunkPos.x;
         int k = chunkPos.z;
-        int x = j << 4;
-        int z = k << 4;
 
         ChunkPrimer chunkPrimer = (ChunkPrimer)chunkIn;
 

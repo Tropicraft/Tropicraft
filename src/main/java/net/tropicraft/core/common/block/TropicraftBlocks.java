@@ -127,6 +127,7 @@ public class TropicraftBlocks {
 
     public static final Block BAMBOO_CHEST = new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO));
     public static final Block SIFTER = new SifterBlock(Block.Properties.create(Material.WOOD));
+    public static final Block VOLCANO = new VolcanoBlock();
     public static final Block DRINK_MIXER = new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30));
     
     public static final Block TIKI_TORCH = new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0));
@@ -287,6 +288,7 @@ public class TropicraftBlocks {
             registerBlockDefault(event, "bamboo_ladder", BAMBOO_LADDER);
             registerBlockDefault(event, "bamboo_chest", BAMBOO_CHEST);
             registerBlockDefault(event, "sifter", SIFTER);
+            registerBlockDefault(event, "volcano", VOLCANO);
             registerBlockDefault(event, "drink_mixer", DRINK_MIXER);
             registerBlockDefault(event, "tiki_torch", TIKI_TORCH);
             registerBlockDefault(event, "bamboo_door", BAMBOO_DOOR);
@@ -441,6 +443,7 @@ public class TropicraftBlocks {
             registerItemDefault(event, BAMBOO_LADDER);
             registerItemDefault(event, BAMBOO_CHEST);
             registerItemDefault(event, SIFTER);
+            registerItemDefault(event, VOLCANO);
             registerItem(event, DRINK_MIXER, () -> DrinkMixerItemstackRenderer::new);
             registerItemDefault(event, TIKI_TORCH);
             registerItemDefault(event, BAMBOO_DOOR);
