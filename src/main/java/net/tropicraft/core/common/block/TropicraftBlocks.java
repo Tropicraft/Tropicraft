@@ -443,7 +443,7 @@ public class TropicraftBlocks {
             registerItemDefault(event, BAMBOO_LADDER);
             registerItemDefault(event, BAMBOO_CHEST);
             registerItemDefault(event, SIFTER);
-            registerItemDefault(event, VOLCANO);
+            registerItemNoGroup(event, VOLCANO);
             registerItem(event, DRINK_MIXER, () -> DrinkMixerItemstackRenderer::new);
             registerItemDefault(event, TIKI_TORCH);
             registerItemDefault(event, BAMBOO_DOOR);
@@ -469,6 +469,10 @@ public class TropicraftBlocks {
             final Item itemBlock = new BlockItem(block, props);
             event.getRegistry().register(itemBlock.setRegistryName(block.getRegistryName()));
             return itemBlock;
+        }
+
+        private static Item registerItemNoGroup(final RegistryEvent.Register<Item> event, final Block block) {
+            return registerItem(event, block, (ItemGroup)null);
         }
 
         private static Item registerItem(final RegistryEvent.Register<Item> event, final Block block, final ItemGroup itemGroup) {
