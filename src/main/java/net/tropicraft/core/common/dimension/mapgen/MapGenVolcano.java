@@ -178,8 +178,8 @@ public class MapGenVolcano {
 	 * mean more spawning)
 	 */
 	protected static int canGenVolcanoAtCoords(IWorld world, int i, int j) {
-		byte numChunks = 32; // was 32
-		byte offsetChunks = 6; // was 8
+		byte numChunks = 64; // was 32
+		byte offsetChunks = 16; // was 8
 		int oldi = i;
 		int oldj = j;
 
@@ -228,7 +228,6 @@ public class MapGenVolcano {
 				if (biome != 0) {
 					BlockPos pos = new BlockPos(x * 16 + 8, biome, z * 16 + 8);
 
-					System.out.println("volcano at this! " + pos.toString());
 					return pos;
 				}
 			}
