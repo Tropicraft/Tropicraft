@@ -36,7 +36,7 @@ public class TropicraftEntities {
         TROPI_SKELLY = register(event, "tropiskelly", tropiskelly());
         EIH = register(event, "eih", eih());
         WALL_ITEM = register(event, "wall_item", wallItem());
-        LAVA_BALL = register(event, "lava_ball", lavaBall());
+        // TODO: Register again when volcano eruption is finished: LAVA_BALL = register(event, "lava_ball", lavaBall());
     }
 
     private static <T extends Entity> EntityType<T> register(final RegistryEvent.Register<EntityType<?>> event, final String name, final EntityType.Builder<T> entityType) {
