@@ -12,7 +12,6 @@ apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 
-mod_version = '8.0.0-alpha'
 group = 'net.tropicraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Tropicraft'
 
