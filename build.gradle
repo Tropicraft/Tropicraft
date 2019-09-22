@@ -12,9 +12,13 @@ apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 
-version = '0.0.1'
+mod_version = '8.0.0-alpha'
 group = 'net.tropicraft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'Tropicraft'
+
+ext.buildnumber = 0
+project.buildnumber = System.getenv('BUILD_NUMBER') ?: 'custom'
+version = "${mod_version}+${buildnumber}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
