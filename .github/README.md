@@ -34,7 +34,7 @@ Probably! Find Cojo on Discord or IRC to receive permission and find out what is
 
 <p align="center">
   <a href="https://lovetropics.com/">
-  <img src="https://cdn.tropicraft.net/LoveTropics.png">
+  <img src="https://tropicraft.net/LoveTropics.png">
   </a>
 </p>
 
@@ -42,6 +42,6 @@ Love Tropics
 ===
 Love Tropics is a weekend-long charity livestream ran by the Tropicraft Dev Team and the Tropibros, focused on raising funds to help rebuild Puerto Rico.
 
-In 2017 we raised $10,155 for Direct Relief to help with medical supplies and aid. This year we have have partnered up with Team Rubicon, who are working with local contractors to repair and replace roofs of damaged housing. This will not only give families a place to take shelter from the elements, but will also give them a better chance with future storms.
+In 2017 we raised $10,155USD for Direct Relief to help with medical supplies and aid, and in 2018 we raised $35,255.46USD for Team Rubicon to help put roofs back onto houses. This year we have bigger and better things planned, so keep your eyes peeled!
 
 Click on the logo above to learn more about the event.
