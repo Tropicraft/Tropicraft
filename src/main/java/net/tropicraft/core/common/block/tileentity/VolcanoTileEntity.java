@@ -44,6 +44,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	private int radius = -1;
 
 	private VolcanoState state = VolcanoState.DORMANT;
+	private int heightOffset = Integer.MIN_VALUE;
 
 	public VolcanoTileEntity() {
 		super(TropicraftTileEntityTypes.VOLCANO);
@@ -54,6 +55,10 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 		if (!TropicsConfigs.allowVolcanoEruption)
 		{
 			return;
+		}
+
+		if (this.heightOffset == Integer.MIN_VALUE) {
+			this.heightOffset = MapGenVolcano.getHeightOffsetForBiome(this.getPos().getY());
 		}
 
 		if (!getWorld().isRemote) {
@@ -84,14 +89,14 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
 				if (getWorld().rand.nextInt(15) == 0)
 				{
-					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL : 0.75));
+					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + this.heightOffset : 0.75));
 				}
 				//	}
 
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
 				if (getWorld().rand.nextInt(15) == 0)
 				{
-					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL ? 1 : 0.75));
+					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + this.heightOffset ? 1 : 0.75));
 				}
 				//	}
 			}
@@ -107,7 +112,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 			}
 
 			if (ticksUntilEruption % 20 == 0) {
-				if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION) {
+				if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
 					raiseLavaLevels();	
 				} else {
 					ticksUntilEruption = 0;
@@ -141,7 +146,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 
 		for (int x = xPos - (radius * 2); x < xPos + (radius * 2); x++) {
 			for (int z = zPos - (radius * 2); z < zPos + (radius * 2); z++) {
-				for (int y = LAVA_BASE_LEVEL; y < 140; y++) {
+				for (int y = LAVA_BASE_LEVEL + this.heightOffset; y < 140; y++) {
 					BlockPos outBlockPos = new BlockPos(x, y, z);
 					if (getWorld().getBlockState(outBlockPos).getBlock() == Blocks.LAVA) {
 						getWorld().setBlockState(outBlockPos, Blocks.AIR.getDefaultState());
@@ -171,14 +176,14 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	private void raiseLavaLevels() {
-		if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION) {
+		if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
 			lavaLevel++;
 			setBlocksOnLavaLevel(Blocks.LAVA.getDefaultState(), 3);	
 		}
 	}
 
 	private void lowerLavaLevels() {
-		if (lavaLevel > LAVA_BASE_LEVEL) {
+		if (lavaLevel > LAVA_BASE_LEVEL + this.heightOffset) {
 			setBlocksOnLavaLevel(Blocks.AIR.getDefaultState(), 3);
 			lavaLevel--;
 		}
@@ -195,7 +200,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 					if (getWorld().getBlockState(botPos).getBlock() == Blocks.LAVA) {
 						BlockPos pos2 = new BlockPos(x, lavaLevel, z);
 
-						if (lavaLevel >= MAX_LAVA_LEVEL_DURING_RISE && lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION) {
+						if (lavaLevel >= MAX_LAVA_LEVEL_DURING_RISE + this.heightOffset && lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
 							if (getWorld().getBlockState(pos2).getBlock() != TropicraftBlocks.CHUNK) {
 								getWorld().setBlockState(pos2, state, updateFlag);
 							}
@@ -286,7 +291,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	private void setLavaLevel() {
-		for(int y = LAVA_BASE_LEVEL; y < MapGenVolcano.CHUNK_SIZE_Y; y++) {
+		for(int y = LAVA_BASE_LEVEL + this.heightOffset; y < MapGenVolcano.CHUNK_SIZE_Y; y++) {
 			BlockPos pos2 = new BlockPos(this.pos.getX(), y, this.pos.getZ());
 			//if(getWorld().getBlockState(pos).getBlock() != Blocks.LAVA && getWorld().getBlockId(xPos, y, zPos) != TropicraftMod.tempLavaMoving.blockID) {\
 			if (getWorld().getBlockState(pos2).getMaterial() != Material.LAVA) {

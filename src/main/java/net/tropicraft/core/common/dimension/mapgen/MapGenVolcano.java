@@ -37,13 +37,15 @@ public class MapGenVolcano {
 
 	private final static int MAX_RADIUS = 65;
 	private final static int MIN_RADIUS = 45;
-	private final static int LAND_STEEPNESS_MOD = 2; //usually 4
-	private final static int OCEAN_STEEPNESS_MOD = 8;
 	private final static int CALDERA_CUTOFF = 194; //The Y level where if the height of the volcano would pass becomes the caldera
 	public final static int VOLCANO_TOP = CALDERA_CUTOFF - 7; //The Y level cut off of the sides of the volcano
 	public final static int VOLCANO_CRUST = VOLCANO_TOP - 3; //The Y level where the crust of the volcano generates
 	public final static int LAVA_LEVEL = 149; //The Y level where the top of the lava column is
 	private final static int CRUST_HOLE_CHANCE = 15; //1 / x chance a certain block of the crust will be missing
+	private final static int OCEAN_HEIGHT_OFFSET = -50;
+
+	public final static int SURFACE_BIOME = 1;
+	public final static int OCEAN_BIOME = 2;
 
 	public final static int CHUNK_SIZE_X = 16;
 	public final static int CHUNK_SIZE_Z = 16;
@@ -65,6 +67,12 @@ public class MapGenVolcano {
 			return primer;
 		}
 
+		int HEIGHT_OFFSET = MapGenVolcano.getHeightOffsetForBiome(volcanoCoords.getY());
+		int calderaCutoff = CALDERA_CUTOFF + HEIGHT_OFFSET;
+		int lavaLevel = LAVA_LEVEL + HEIGHT_OFFSET;
+		int volcanoTop = VOLCANO_TOP + HEIGHT_OFFSET;
+		int volcanoCrust = VOLCANO_CRUST + HEIGHT_OFFSET;
+
 		int[] heightmap = new int[256];
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
@@ -72,7 +80,7 @@ public class MapGenVolcano {
 		{
 			for (int z = 0; z < 16; z++)
 			{
-				for (int y = 0; y < CALDERA_CUTOFF; y++)
+				for (int y = 0; y < calderaCutoff; y++)
 				{
 					pos.setPos(x, y, z);
 					Block blockID = primer.getBlockState(pos).getBlock();
@@ -80,7 +88,7 @@ public class MapGenVolcano {
 						heightmap[pos.getX() * 16 + pos.getZ()] = pos.getY();
 						break;
 					}
-					if(pos.getY() > LAVA_LEVEL - 4) {
+					if(pos.getY() > lavaLevel - 4) {
 						heightmap[pos.getX() * 16 + pos.getZ()] = pos.getY();
 						break;
 					}
@@ -93,7 +101,6 @@ public class MapGenVolcano {
 
 		int volcCenterX = volcanoCoords.getX();
 		int volcCenterZ = volcanoCoords.getZ();
-		int steepnessMod = volcanoCoords.getY() == 1 ? LAND_STEEPNESS_MOD : OCEAN_STEEPNESS_MOD;
 
 		long seed = (long)volcCenterX * 341873128712L + (long)volcCenterZ * 132897987541L + world.getWorldInfo().getSeed() + (long)4291726;
 		Random rand = new Random(seed);
@@ -120,13 +127,12 @@ public class MapGenVolcano {
 
 				int groundHeight = heightmap[x * 16 + z];
 
-
 				if (distanceSquared < 1) {
 					for (int y = CHUNK_SIZE_Y; y > 0; y--) {
 						pos.setPos(x, y, z);
 
-						if (volcanoHeight + groundHeight < CALDERA_CUTOFF) {
-							if (volcanoHeight + groundHeight <= VOLCANO_TOP) {
+						if (volcanoHeight + groundHeight < calderaCutoff) {
+							if (volcanoHeight + groundHeight <= volcanoTop) {
 								if (y <= volcanoHeight + groundHeight) {
 									if (y >= groundHeight) {
 										this.placeBlock(pos, VOLCANO_BLOCK, primer);
@@ -139,18 +145,18 @@ public class MapGenVolcano {
 										}
 									}
 								}
-							} else if (y == VOLCANO_CRUST - 1) {
+							} else if (y == volcanoCrust - 1) {
 								if (this.world.getRandom().nextInt(3) != 0) {
 									this.placeBlock(pos, VOLCANO_BLOCK, primer);
 								}
-							} else if(y <= VOLCANO_TOP) {
+							} else if(y <= volcanoTop) {
 								this.placeBlock(pos, VOLCANO_BLOCK, primer);
 							}
 						} else {
 							// Flat area on top of the volcano
-							if (y == VOLCANO_CRUST  && rand.nextInt(CRUST_HOLE_CHANCE) != 0) {
+							if (y == volcanoCrust  && rand.nextInt(CRUST_HOLE_CHANCE) != 0) {
 								this.placeBlock(pos, VOLCANO_BLOCK, primer);
-							} else if (y <= LAVA_LEVEL) {
+							} else if (y <= lavaLevel) {
 								this.placeBlock(pos, LAVA_BLOCK, primer);
 							} else {
 								this.placeBlock(pos, Blocks.AIR.getDefaultState(), primer);
@@ -178,8 +184,8 @@ public class MapGenVolcano {
 	 * mean more spawning)
 	 */
 	protected static int canGenVolcanoAtCoords(IWorld world, int i, int j) {
-		byte numChunks = 64; // was 32
-		byte offsetChunks = 16; // was 8
+		byte numChunks = 32; // was 32
+		byte offsetChunks = 6; // was 8
 		int oldi = i;
 		int oldj = j;
 
@@ -202,13 +208,13 @@ public class MapGenVolcano {
 
 		if (oldi == randX && oldj == randZ) {
 			if(hasAllBiomes(world, oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesLand)) {
-				return 1;
+				return SURFACE_BIOME;
 			}
 			if(hasAllBiomes(world, oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesOcean)) {
-				return 2;
+				return OCEAN_BIOME;
 			}
 
-			return 1;
+			return SURFACE_BIOME;
 		}
 
 		return 0;
@@ -234,6 +240,10 @@ public class MapGenVolcano {
 		}
 
 		return null;
+	}
+
+	public static int getHeightOffsetForBiome(int biome) {
+		return biome == SURFACE_BIOME ? 0: OCEAN_HEIGHT_OFFSET;
 	}
 
 	private static boolean hasAllBiomes(IWorld world, int centerX, int centerY, List<Biome> allowedBiomes) {
