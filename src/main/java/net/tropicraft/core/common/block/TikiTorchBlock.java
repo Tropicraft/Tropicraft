@@ -2,17 +2,22 @@ package net.tropicraft.core.common.block;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
@@ -42,13 +47,6 @@ public class TikiTorchBlock extends Block {
             return this.getName();
         }
     };
-    
-    private enum PlaceMode {
-        FULL,
-        TOP_ONLY,
-        BLOCKED,
-        ;
-    }
 
     public static final EnumProperty<TorchSection> SECTION = EnumProperty.create("section", TorchSection.class);
 
@@ -68,7 +66,7 @@ public class TikiTorchBlock extends Block {
     
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        TorchSection section = (TorchSection)state.get(SECTION);
+        TorchSection section = state.get(SECTION);
 
         if (section == TorchSection.UPPER) {
             return TOP_SHAPE;
@@ -78,38 +76,34 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
+    @Deprecated
     public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-        if (!super.isValidPosition(state, world, pos)) {
-            return false;
-        }
-        PlaceMode mode = canPlaceTikiTorchOn(state, world, pos);
-        if (mode == PlaceMode.FULL) {
-            return world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2));
-        } else if (mode == PlaceMode.TOP_ONLY) {
-            return true;
-        }
-        return false;
-    }
-
-    private PlaceMode canPlaceTikiTorchOn(BlockState state, IWorldReader world, BlockPos pos) {
-        if (Blocks.TORCH.getDefaultState().isValidPosition(world, pos)) {
-            if (state.getBlock() instanceof FenceBlock || state.getBlock() instanceof WallBlock) {
-                return PlaceMode.TOP_ONLY;
-            }
-            return PlaceMode.FULL;
-        }
-        return state.get(SECTION) == TorchSection.LOWER ? PlaceMode.BLOCKED : PlaceMode.TOP_ONLY;
+        if (state.get(SECTION) == TorchSection.LOWER) {
+            return super.isValidPosition(state, world, pos);
+         } else {
+            BlockState blockstate = world.getBlockState(pos.down());
+            if (state.getBlock() != this) return super.isValidPosition(state, world, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+            return blockstate.getBlock() == this && blockstate.get(SECTION) == TorchSection.LOWER;
+         }
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(SECTION, TorchSection.LOWER);
+        BlockPos blockpos = context.getPos();
+        BlockState ret = getDefaultState().with(SECTION, TorchSection.LOWER);
+        return blockpos.getY() < context.getWorld().getDimension().getHeight() - 1 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) ? ret : null;
     }
     
     @Override
+    @Deprecated
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        return facing == Direction.DOWN && !this.isValidPosition(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
+        TorchSection section = stateIn.get(SECTION);
+        if (facing.getAxis() != Direction.Axis.Y || section == TorchSection.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.get(SECTION) != section) {
+           return section == TorchSection.LOWER && facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        } else {
+           return Blocks.AIR.getDefaultState();
+        }
+     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
@@ -119,8 +113,7 @@ public class TikiTorchBlock extends Block {
 
         // Only place top block if it's on a fence
         BlockState stateBelow = worldIn.getBlockState(pos.down());
-        if (stateBelow.getBlock() instanceof FenceBlock ||
-                stateBelow.getBlock() instanceof WallBlock) {
+        if (stateBelow.getBlock().isIn(BlockTags.FENCES) || stateBelow.getBlock().isIn(BlockTags.WALLS)) {
             worldIn.setBlockState(pos, this.getDefaultState().with(SECTION, TorchSection.UPPER), Constants.BlockFlags.DEFAULT);
         } else {
             worldIn.setBlockState(pos.up(), this.getDefaultState().with(SECTION, TorchSection.MIDDLE), Constants.BlockFlags.DEFAULT);
@@ -129,46 +122,34 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
-    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        super.onReplaced(state, world, pos, newState, isMoving);
-        if (!world.isRemote) {
-            TorchSection section = state.get(SECTION);
-            if (section == TorchSection.LOWER) {
-                if (world.getBlockState(pos.up()).getBlock() == this) {
-                    world.destroyBlock(pos.up(), false);
-                }
-
-                if (world.getBlockState(pos.up(2)).getBlock() == this) {
-                    world.destroyBlock(pos.up(2), false);
-                }
-            } else if (section == TorchSection.MIDDLE){
-                if (world.getBlockState(pos.down()).getBlock() == this) {
-                    world.destroyBlock(pos.down(), false);
-                }
-
-                if (world.getBlockState(pos.up()).getBlock() == this) {
-                    world.destroyBlock(pos.up(), false);
-                }
-            } else {
-
-                if (world.getBlockState(pos.down()).getBlock() == this) {
-                    world.destroyBlock(pos.down(), false);
-                }
-
-                if (world.getBlockState(pos.down(2)).getBlock() == this) {
-                    world.destroyBlock(pos.down(2), false);
-                }
-            }
-        }
+    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+        super.harvestBlock(worldIn, player, pos, Blocks.AIR.getDefaultState(), te, stack);
     }
 
     @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        TorchSection section = state.get(SECTION);
+        BlockPos blockpos = section == TorchSection.LOWER ? pos.up() : pos.down();
+        BlockState blockstate = worldIn.getBlockState(blockpos);
+        if (blockstate.getBlock() == this && blockstate.get(SECTION) != section) {
+           worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_NEIGHBOR_DROPS);
+           worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
+           if (!worldIn.isRemote && !player.isCreative()) {
+              spawnDrops(state, worldIn, pos, (TileEntity)null, player, player.getHeldItemMainhand());
+              spawnDrops(blockstate, worldIn, blockpos, (TileEntity)null, player, player.getHeldItemMainhand());
+           }
+        }
+
+        super.onBlockHarvested(worldIn, pos, state, player);
+     }
+
+    @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-        boolean isTop = (TorchSection)state.get(SECTION) == TorchSection.UPPER;
+        boolean isTop = state.get(SECTION) == TorchSection.UPPER;
         if (isTop) {
-            double d = (float) pos.getX() + 0.5F;
-            double d1 = (float) pos.getY() + 0.7F;
-            double d2 = (float) pos.getZ() + 0.5F;
+            double d = pos.getX() + 0.5F;
+            double d1 = pos.getY() + 0.7F;
+            double d2 = pos.getZ() + 0.5F;
 
             world.addParticle(ParticleTypes.SMOKE, d, d1, d2, 0.0D, 0.0D, 0.0D);
             world.addParticle(ParticleTypes.FLAME, d, d1, d2, 0.0D, 0.0D, 0.0D);
@@ -176,6 +157,7 @@ public class TikiTorchBlock extends Block {
     }
     
     @Override
+    @Deprecated
     public int getLightValue(BlockState state) {
         if (state.get(SECTION) == TorchSection.UPPER) {
             return 15;

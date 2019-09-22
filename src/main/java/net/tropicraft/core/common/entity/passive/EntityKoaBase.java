@@ -100,7 +100,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public int druggedTime = 0;
 
-    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(ItemRegistry.nigelStache);
+    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(TropicraftItems.NIGEL_STACHE);
 
     private boolean isMating;
     private boolean isPlaying;
@@ -278,15 +278,15 @@ public class EntityKoaBase extends VillagerEntity {
                             new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fishingRod, 1, 8, 2),
-                            new KoaTradeForPearls(ItemRegistry.freshMarlin, 3, 8, 2),
+                            new KoaTradeForPearls(TropicraftItems.FRESH_MARLIN, 3, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fertilizer, 5, 8, 2)
                     }));
         } else if (getRole() == Roles.HUNTER) {
             offers = func_221238_a(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
-                            new KoaTradeForPearls(ItemRegistry.frogLeg, 5, 8, 2),
+                            new KoaTradeForPearls(TropicraftItems.FROG_LEG, 5, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.iguanaLeather, 2, 8, 2),
-                            new KoaTradeForPearls(ItemRegistry.scale, 5, 8, 2)
+                            new KoaTradeForPearls(TropicraftItems.SCALE, 5, 8, 2)
                     }));
         }
 
@@ -637,8 +637,7 @@ public class EntityKoaBase extends VillagerEntity {
             if (!this.world.isRemote) {
 
                 ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
-                if (!stack.isEmpty() && stack.getItem() == ItemRegistry.poisonFrogSkin) {
-
+                if (!stack.isEmpty() && stack.getItem() == TropicraftItems.POISON_FROG_SKIN) {
                     doTrade = false;
 
                     //drug the koa and make him forget everything

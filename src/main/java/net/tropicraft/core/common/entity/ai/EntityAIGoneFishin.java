@@ -10,6 +10,7 @@ import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import java.util.ArrayList;
@@ -66,9 +67,9 @@ public class EntityAIGoneFishin extends Goal {
         fishingTimeout = fishingTimeoutMax;
 
         listFishables.add(new ItemStack(Items.TROPICAL_FISH));
-        listFishables.add(new ItemStack(ItemRegistry.freshMarlin));
+        listFishables.add(new ItemStack(TropicraftItems.FRESH_MARLIN));
         listFishables.add(new ItemStack(ItemRegistry.fertilizer));
-        listFishables.add(new ItemStack(ItemRegistry.rawRay));
+        listFishables.add(new ItemStack(TropicraftItems.RAW_RAY));
         /*for (int i = 0; i < EntityTropicalFish.NAMES.length; i++) {
             listFishables.add(new ItemStack(ItemRegistry.rawTropicalFish, 1, i));
         }

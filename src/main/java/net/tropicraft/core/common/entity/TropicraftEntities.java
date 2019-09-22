@@ -25,6 +25,7 @@ public class TropicraftEntities {
     public static EntityType<TropiSkellyEntity> TROPI_SKELLY;
     public static EntityType<EIHEntity> EIH;
     public static EntityType<WallItemEntity> WALL_ITEM;
+    public static EntityType<BambooItemFrame> BAMBOO_ITEM_FRAME;
     public static EntityType<LavaBallEntity> LAVA_BALL;
 
     @SubscribeEvent
@@ -36,6 +37,7 @@ public class TropicraftEntities {
         TROPI_SKELLY = register(event, "tropiskelly", tropiskelly());
         EIH = register(event, "eih", eih());
         WALL_ITEM = register(event, "wall_item", wallItem());
+        BAMBOO_ITEM_FRAME = register(event, "bamboo_item_frame", bambooItemFrame());
         // TODO: Register again when volcano eruption is finished: LAVA_BALL = register(event, "lava_ball", lavaBall());
     }
 
@@ -43,6 +45,15 @@ public class TropicraftEntities {
         final EntityType<T> entityTypeCreated = entityType.build(name);
         event.getRegistry().register(entityTypeCreated.setRegistryName(name));
         return entityTypeCreated;
+    }
+
+    private static EntityType.Builder<BambooItemFrame> bambooItemFrame() {
+        return EntityType.Builder.<BambooItemFrame>create(BambooItemFrame::new, EntityClassification.MISC)
+                .size(0.5F, 0.5F)
+                .setTrackingRange(64)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(false)
+                .setCustomClientFactory(($, world) -> new BambooItemFrame(BAMBOO_ITEM_FRAME, world));
     }
 
     private static EntityType.Builder<LavaBallEntity> lavaBall() {
@@ -60,7 +71,7 @@ public class TropicraftEntities {
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new WallItemEntity(world));
+                .setCustomClientFactory(($, world) -> new WallItemEntity(WALL_ITEM, world));
     }
 
     private static EntityType.Builder<EIHEntity> eih() {

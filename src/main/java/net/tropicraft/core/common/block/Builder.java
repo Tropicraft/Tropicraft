@@ -79,8 +79,8 @@ public class Builder {
         return new BongoDrumBlock(bongoSize, prop(Material.WOOD, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
 
-    public static Block tropicraftPot(final Block block) {
-        return new BambooFlowerPotBlock(block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
+    public static FlowerPotBlock tropicraftPot(final Block block) {
+        return new FlowerPotBlock(TropicraftBlocks.BAMBOO_FLOWER_POT, block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
     }
 
     public static Block vanillaPot(final Block block) {

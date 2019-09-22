@@ -10,7 +10,6 @@ import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.registry.ItemRegistry;
 
 import java.util.EnumSet;
 
@@ -134,7 +133,7 @@ public class EntityAIChillAtFire extends Goal
                 if (entityObj.getEntityId() % 3 == 0) {
                     entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG));
                 } else if (entityObj.getEntityId() % 5 == 0) {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemRegistry.cookedFrogLeg));
+                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.COOKED_FROG_LEG));
                 } else {
                     entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.ORANGE));
                 }
