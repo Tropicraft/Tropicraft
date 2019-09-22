@@ -39,10 +39,10 @@ public class MapGenVolcano {
 	private final static int MIN_RADIUS = 45;
 	private final static int LAND_STEEPNESS_MOD = 2; //usually 4
 	private final static int OCEAN_STEEPNESS_MOD = 8;
-	private final static int CALDERA_CUTOFF = 204; //The Y level where if the height of the volcano would pass becomes the caldera
+	private final static int CALDERA_CUTOFF = 194; //The Y level where if the height of the volcano would pass becomes the caldera
 	public final static int VOLCANO_TOP = CALDERA_CUTOFF - 7; //The Y level cut off of the sides of the volcano
 	public final static int VOLCANO_CRUST = VOLCANO_TOP - 3; //The Y level where the crust of the volcano generates
-	public final static int LAVA_LEVEL = 159; //The Y level where the top of the lava column is
+	public final static int LAVA_LEVEL = 149; //The Y level where the top of the lava column is
 	private final static int CRUST_HOLE_CHANCE = 15; //1 / x chance a certain block of the crust will be missing
 
 	public final static int CHUNK_SIZE_X = 16;
