@@ -29,6 +29,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	private static final int MAX_LAVA_LEVEL_DURING_RISE = MapGenVolcano.VOLCANO_CRUST - 1;
 	private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = MapGenVolcano.VOLCANO_CRUST + 1;
 	private static final int LAVA_BASE_LEVEL = MapGenVolcano.LAVA_LEVEL;
+	private static final int LAVA_ERUPT_LEVEL = MapGenVolcano.LAVA_LEVEL + 11;
 
 	private int ticksUntilEruption = VolcanoState.getTimeBefore(VolcanoState.ERUPTING);
 	private int ticksUntilSmoking = VolcanoState.getTimeBefore(VolcanoState.SMOKING);
@@ -83,14 +84,14 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
 				if (getWorld().rand.nextInt(15) == 0)
 				{
-					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > 90 ? 1 : 0.75));
+					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL : 0.75));
 				}
 				//	}
 
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
 				if (getWorld().rand.nextInt(15) == 0)
 				{
-					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > 90 ? 1 : 0.75));
+					throwLavaFromCaldera(0.05 + Math.abs(getWorld().rand.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL ? 1 : 0.75));
 				}
 				//	}
 			}
@@ -285,7 +286,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	private void setLavaLevel() {
-		for(int y = LAVA_BASE_LEVEL; y < 256; y++) {
+		for(int y = LAVA_BASE_LEVEL; y < MapGenVolcano.CHUNK_SIZE_Y; y++) {
 			BlockPos pos2 = new BlockPos(this.pos.getX(), y, this.pos.getZ());
 			//if(getWorld().getBlockState(pos).getBlock() != Blocks.LAVA && getWorld().getBlockId(xPos, y, zPos) != TropicraftMod.tempLavaMoving.blockID) {\
 			if (getWorld().getBlockState(pos2).getMaterial() != Material.LAVA) {
