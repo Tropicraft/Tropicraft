@@ -1,15 +1,21 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.template.GravityStructureProcessor;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.tropicraft.Constants;
+import net.tropicraft.Info;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class TropicraftFeatures {
@@ -31,6 +37,8 @@ public class TropicraftFeatures {
 	public static final UndergrowthFeature UNDERGROWTH = new UndergrowthFeature(NoFeatureConfig::deserialize);
 	
 	public static final Structure<NoFeatureConfig> VILLAGE = new KoaVillageStructure(NoFeatureConfig::deserialize);
+	
+    public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Info.MODID + ":koa_path", ImmutableList.of(new GravityStructureProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor()));
 
     @EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {

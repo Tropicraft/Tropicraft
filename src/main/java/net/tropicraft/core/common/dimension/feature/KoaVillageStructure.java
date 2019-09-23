@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
@@ -57,12 +58,19 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
     public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkPosX, int chunkPosZ) {
         ChunkPos chunkpos = this.getStartPositionForPosition(chunkGen, rand, chunkPosX, chunkPosZ, 0, 0);
         if (chunkPosX == chunkpos.x && chunkPosZ == chunkpos.z) {
-           Biome biome = chunkGen.getBiomeProvider().getBiome(new BlockPos((chunkPosX << 4) + 9, 0, (chunkPosZ << 4) + 9));
-           System.out.println(biome.getRegistryName());
-           return chunkGen.hasStructure(biome, TropicraftFeatures.VILLAGE);
+           BlockPos pos = new BlockPos((chunkPosX << 4) + 8, 0, (chunkPosZ << 4) + 8);
+           return isValid(chunkGen, pos.add(-4, 0, -4)) &&
+                  isValid(chunkGen, pos.add(-4, 0, 4)) &&
+                  isValid(chunkGen, pos.add(4, 0, 4)) &&
+                  isValid(chunkGen, pos.add(4, 0, -4));
         } else {
            return false;
         }
+    }
+
+    private boolean isValid(ChunkGenerator<?> chunkGen, BlockPos pos) {
+        return chunkGen.hasStructure(chunkGen.getBiomeProvider().getBiome(pos), TropicraftFeatures.VILLAGE)
+                && chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) == chunkGen.getSeaLevel();
     }
     
     @Override
@@ -104,7 +112,7 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
 
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
             BlockPos pos = new BlockPos(chunkX * 16, 0, chunkZ * 16);
-            KoaVillagePieces.init();
+            KoaVillagePools.init();
             JigsawManager.func_214889_a(new ResourceLocation(Info.MODID, "koa_village/town_centers"), 6, KoaVillage::new, generator, templateManagerIn, pos, this.components, this.rand);
             this.recalculateStructureSize();
         }
