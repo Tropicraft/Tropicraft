@@ -4,8 +4,6 @@ import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
@@ -16,12 +14,11 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-public class SinkInGroundProcessor extends StructureProcessor {
+public class SinkInGroundProcessor extends CheatyStructureProcessor {
 
     static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Info.MODID + ":sink_in_ground", SinkInGroundProcessor::new);
 
@@ -35,6 +32,7 @@ public class SinkInGroundProcessor extends StructureProcessor {
     public BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn) {
         pos = blockInfo.pos;
 
+        // y == 0, we're under the path, so extend fences downwards if in water, or delete them if not
         if (p_215194_3_.pos.getY() == 0) {
             if (!isAirOrWater(worldReaderIn, pos)) {
                 return null;
@@ -48,7 +46,9 @@ public class SinkInGroundProcessor extends StructureProcessor {
             }
             return blockInfo;
         }
+        // Get height of the ground at this spot
         BlockPos groundCheck = worldReaderIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos);
+        // y == 2, we're above the path, remove fence blocks that are above sea level or next to some other block
         if (p_215194_3_.pos.getY() == 2 && p_215194_3_.state.getBlock() == TropicraftBlocks.BAMBOO_FENCE) {
             if (groundCheck.getY() > 127 || !isAirOrWater(worldReaderIn, pos.down(2))) {
                 return null;
@@ -60,21 +60,20 @@ public class SinkInGroundProcessor extends StructureProcessor {
             }
         }
         
+        // Convert slabs to bundles over land
         if (!isAirOrWater(worldReaderIn, pos.down()) && p_215194_3_.state.getBlock() == TropicraftBlocks.THATCH_SLAB) {
             blockInfo = new BlockInfo(pos, TropicraftBlocks.THATCH_BUNDLE.getDefaultState(), null);
         }
         
+        // If above sea level, sink into the ground by one block
         if (groundCheck.getY() > 127) {
+            // Only sink solid blocks, or blocks that are above air/water -- delete all others
             if (Block.isOpaque(blockInfo.state.getShape(worldReaderIn, pos.down())) || isAirOrWater(worldReaderIn, pos.down())) {
                 return new BlockInfo(pos.down(), blockInfo.state, blockInfo.nbt);
             }
             return null;
         }
         return blockInfo;
-    }
-    
-    private boolean isAirOrWater(IWorldReader worldReaderIn, BlockPos pos) {
-        return worldReaderIn.isAirBlock(pos) || worldReaderIn.getBlockState(pos).getBlock() == Blocks.WATER;
     }
 
     @Override

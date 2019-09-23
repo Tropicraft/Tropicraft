@@ -84,7 +84,7 @@ public class Builder {
     }
 
     public static Block vanillaPot(final Block block) {
-        return new FlowerPotBlock(block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0));
+        return new FlowerPotBlock((FlowerPotBlock) Blocks.FLOWER_POT, block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0));
     }
 
     private static Block.Properties prop(final Material material) {

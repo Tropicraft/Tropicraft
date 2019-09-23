@@ -67,7 +67,8 @@ public class KoaVillagePools {
                                 2),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/crossroad_03"),
-                                1)),
+                                1)
+                        ),
                 TropicraftFeatures.KOA_PATH));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/terminators"), 
