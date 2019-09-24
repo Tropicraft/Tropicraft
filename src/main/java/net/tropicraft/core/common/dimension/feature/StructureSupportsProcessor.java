@@ -28,12 +28,18 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
     @Override
     public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
         BlockPos pos = blockInfo.pos;
-        if (p_215194_3_.pos.getY() == 0 && blockInfo.state.getBlock().isIn(BlockTags.FENCES)) {
-            BlockPos fencePos = pos.down();
-            // Extend fences at the bottom of a structure down to the ground
-            while (isAirOrWater(worldReaderIn, fencePos)) {
-                setBlockState(worldReaderIn, fencePos, blockInfo.state.with(FenceBlock.WATERLOGGED, worldReaderIn.getBlockState(fencePos).getBlock() == Blocks.WATER));
-                fencePos = fencePos.down();
+        if (p_215194_3_.pos.getY() <= 1 && blockInfo.state.getBlock().isIn(BlockTags.FENCES)) {
+            if (!isAirOrWater(worldReaderIn, pos)) {
+                // Delete fences that would generate inside land
+                return null;
+            }
+            if (p_215194_3_.pos.getY() == 0) {
+                BlockPos fencePos = pos.down();
+                // Extend fences at the bottom of a structure down to the ground
+                while (isAirOrWater(worldReaderIn, fencePos)) {
+                    setBlockState(worldReaderIn, fencePos, blockInfo.state.with(FenceBlock.WATERLOGGED, worldReaderIn.getBlockState(fencePos).getBlock() == Blocks.WATER));
+                    fencePos = fencePos.down();
+                }
             }
         }
         return blockInfo;
