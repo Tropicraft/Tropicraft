@@ -42,13 +42,16 @@ public class KoaVillagePools {
                 ImmutableList.of(
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_01"),
-                                10),
+                                8),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_02"),
                                 5),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_03"),
                                 3),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_04"),
+                                2),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/corner_01"),
                                 5),
