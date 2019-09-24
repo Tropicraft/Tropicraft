@@ -24,7 +24,7 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
 
     @Override
     public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
-        if (seedPos.getY() < 127) {
+        if (seedPos.getY() < 126) {
             return new BlockInfo(blockInfo.pos.up(), blockInfo.state, blockInfo.nbt);
         }
         return blockInfo;
