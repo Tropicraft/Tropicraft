@@ -38,7 +38,12 @@ public class TropicraftFeatures {
 	
 	public static final Structure<NoFeatureConfig> VILLAGE = new KoaVillageStructure(NoFeatureConfig::deserialize);
 	
-    public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Info.MODID + ":koa_path", ImmutableList.of(new GravityStructureProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor()));
+    public static final PlacementBehaviour KOA_TOWN_CENTER = PlacementBehaviour.create("KOA_TOWN_CENTER", Info.MODID + ":koa_town_center",
+            ImmutableList.of(new StructureSupportsProcessor(), new StructureVoidProcessor()));
+    public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Info.MODID + ":koa_path",
+            ImmutableList.of(new GravityStructureProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor()));
+    public static final PlacementBehaviour KOA_BUILDING = PlacementBehaviour.create("KOA_BUILDING", Info.MODID + ":koa_building",
+            ImmutableList.of(new AdjustBuildingHeightProcessor(), new StructureSupportsProcessor(), new StructureVoidProcessor()));
 
     @EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {

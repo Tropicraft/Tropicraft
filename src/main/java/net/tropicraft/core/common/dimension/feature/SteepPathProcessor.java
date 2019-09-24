@@ -51,20 +51,24 @@ public class SteepPathProcessor extends CheatyStructureProcessor {
         }
 
         Direction.Axis axis = getPathDirection(seedPos, p_215194_3_, placementSettingsIn, template);
+        if (axis == null) {
+            return blockInfo;
+        }
+        
         // If this is true, we are "bridging" upwards past an air gap, handles overhangs
-        boolean bridgeAir = false;
+        int bridgeTo = -1;
         
         BlockState ladder = null;
         for (AxisDirection axisDir : AxisDirection.values()) {
             Direction dir = Direction.getFacingFromAxis(axisDir, axis);
-            ladder = canPlaceLadderAt(worldReaderIn, pos.up(), dir);
-            if (ladder == null) {
-                // Detect an overhang by checking if the heightmap between spots differs by >2
-                BlockPos nextHeight = worldReaderIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.offset(dir));
-                if (nextHeight.getY() - 2 > pos.getY()) {
-                    ladder = getLadderState(dir);
-                    bridgeAir = true;
-                }
+            // Detect an overhang by checking if the heightmap between spots differs by >2
+            BlockPos nextHeight = worldReaderIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.offset(dir)).down();
+            if (nextHeight.getY() > pos.getY()) {
+                ladder = getLadderState(dir);
+                bridgeTo = nextHeight.getY();
+            }
+            if (ladder != null) {
+                break;
             }
         }
         if (ladder == null) {
@@ -73,14 +77,13 @@ public class SteepPathProcessor extends CheatyStructureProcessor {
         // The facing the ladder stores is opposite to the direction it's placed (i.e. it faces "outward")
         Direction dir = ladder.get(LadderBlock.FACING).getOpposite();
         pos = pos.up();
-        if (!bridgeAir && canPlaceLadderAt(worldReaderIn, pos.up(), dir) == null) {
+        if (bridgeTo == pos.getY() && canPlaceLadderAt(worldReaderIn, pos.up(), dir) == null) {
             // If the next spot up can't support a ladder, this is a one block step, so place a stair block
             setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.getDefaultState().with(StairsBlock.FACING, dir));
         } else {
             // Otherwise, place ladders upwards until we find air (bridging over an initial gap if required)
-            while (bridgeAir || canPlaceLadderAt(worldReaderIn, pos, dir) != null) {
+            while (bridgeTo >= pos.getY() || canPlaceLadderAt(worldReaderIn, pos, dir) != null) {
                 setBlockState(worldReaderIn, pos, ladder);
-                bridgeAir = bridgeAir && worldReaderIn.isAirBlock(pos.offset(dir)); // As soon as we see non-air, stop "bridging"
                 setBlockState(worldReaderIn, pos.offset(dir), TropicraftBlocks.THATCH_BUNDLE.getDefaultState());
                 pos = pos.up();
             }

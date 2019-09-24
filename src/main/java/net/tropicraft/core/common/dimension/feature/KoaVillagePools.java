@@ -4,14 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
-import net.minecraft.world.gen.feature.template.GravityStructureProcessor;
 import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import net.tropicraft.Info;
 
+@SuppressWarnings("deprecation")
 public class KoaVillagePools {
 
     public static void init() {
@@ -22,7 +21,7 @@ public class KoaVillagePools {
                 new ResourceLocation("empty"), 
                 ImmutableList.of(new Pair<>(
                         new SingleJigsawPiece(Info.MODID + ":koa_village/town_centers/firepit_01"),
-                        1)), PlacementBehaviour.RIGID));
+                        1)), TropicraftFeatures.KOA_TOWN_CENTER));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/huts"), 
                 new ResourceLocation("empty"),
@@ -36,7 +35,7 @@ public class KoaVillagePools {
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/huts/trade_hut_01"),
                                 2)),
-                PlacementBehaviour.RIGID));
+                TropicraftFeatures.KOA_BUILDING));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/streets"), 
                 new ResourceLocation(Info.MODID, "koa_village/terminators"), 
