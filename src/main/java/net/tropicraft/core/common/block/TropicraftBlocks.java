@@ -189,8 +189,8 @@ public class TropicraftBlocks {
                 RED_ANTHURIUM, MAGIC_MUSHROOM, PATHOS, ACAI_VINE, CROTON, DRACAENA, FERN, FOLIAGE, BROMELIAD)
         .forEach(block -> {
             String name = block.getName().replace(Info.MODID + ":", "");
-            register("bamboo_potted_" + name, Builder.tropicraftPot(block));
-            register("potted_" + name, Builder.vanillaPot(block));
+            registerNoItem("bamboo_potted_" + name, Builder.tropicraftPot(block));
+            registerNoItem("potted_" + name, Builder.vanillaPot(block));
         });
 
         Stream.of(Blocks.OAK_SAPLING, Blocks.SPRUCE_SAPLING, Blocks.BIRCH_SAPLING, Blocks.JUNGLE_SAPLING,
@@ -198,7 +198,7 @@ public class TropicraftBlocks {
                 Blocks.BLUE_ORCHID, Blocks.ALLIUM, Blocks.AZURE_BLUET, Blocks.RED_TULIP, Blocks.ORANGE_TULIP,
                 Blocks.WHITE_TULIP, Blocks.PINK_TULIP, Blocks.OXEYE_DAISY, Blocks.CORNFLOWER, Blocks.LILY_OF_THE_VALLEY,
                 Blocks.WITHER_ROSE, Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM, Blocks.DEAD_BUSH, Blocks.CACTUS)
-        .forEach(block -> register("bamboo_potted_" + block.getRegistryName().getPath(), Builder.tropicraftPot(() -> block)));
+        .forEach(block -> registerNoItem("bamboo_potted_" + block.getRegistryName().getPath(), Builder.tropicraftPot(() -> block)));
     }
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> sup) {
