@@ -16,10 +16,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-public class EIHFeature extends TropicraftFeature {
+public class EIHFeature extends Feature<NoFeatureConfig> {
 
     private static final Supplier<BlockState> EIH_STATE = () -> TropicraftBlocks.CHUNK.get().getDefaultState();
     private static final BlockState LAVA_STATE = Blocks.LAVA.getDefaultState();
@@ -43,7 +44,7 @@ public class EIHFeature extends TropicraftFeature {
             return false;
         }
 
-        if (!isSoil(world, pos.down()) && world.getBlockState(pos.down()).getMaterial() != Material.SAND) {
+        if (!TropicraftFeatureUtil.isSoil(world, pos.down()) && world.getBlockState(pos.down()).getMaterial() != Material.SAND) {
             return false;
         }
 
@@ -229,6 +230,10 @@ public class EIHFeature extends TropicraftFeature {
         placeEye(world, eyeTwoX, eyeTwoY, eyeTwoZ, eyeRand);
 
         return true;
+    }
+    
+    private void setBlock(IWorld world, int i, int i1, int i2, final BlockState state) {
+        world.setBlockState(new BlockPos(i, i1, i2), state, 3);
     }
 
     /**

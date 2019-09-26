@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature;
 import net.minecraft.block.BlockState;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.gen.IWorldGenerationBaseReader;
 import net.minecraft.world.gen.IWorldGenerationReader;
@@ -48,6 +49,10 @@ public class TropicraftFeatureUtil {
                 return p_214581_0_.isAir() || p_214581_0_.isIn(BlockTags.LEAVES);
             });
         else return worldIn.hasBlockState(pos, state -> state.canBeReplacedByLeaves((net.minecraft.world.IWorldReader)worldIn, pos));
+    }
+    
+    protected static boolean isSoil(final IWorld world, final BlockPos pos) {
+        return world.getBlockState(pos).isIn(BlockTags.DIRT_LIKE);
     }
 
     public static void spawnCoconuts(IWorldWriter world, BlockPos pos, Random random, int chance, final BlockState LEAF_STATE) {
