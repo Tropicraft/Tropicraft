@@ -6,17 +6,25 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.SwordItem;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.Foods;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
 
+@EventBusSubscriber(modid = Info.MODID, bus = Bus.MOD)
 public class TropicraftItems {
     
     public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Info.MODID);
@@ -114,5 +122,23 @@ public class TropicraftItems {
  
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);
+    }
+    
+    @SubscribeEvent
+    public static void onItemRegister(RegistryEvent.Register<Item> event) {
+        ForgeRegistries.BLOCKS.getValues().stream()
+            .filter(b -> b instanceof FlowerPotBlock)
+            .map(b -> (FlowerPotBlock) b)
+            .forEach(b -> {
+                if (b.getEmptyPot().getRegistryName().equals(TropicraftBlocks.BAMBOO_FLOWER_POT.getId()) && b.getEmptyPot() != b) {
+                    addPlant(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), b);
+                } else if (b.func_220276_d().getRegistryName().getNamespace().equals(Info.MODID)) {
+                    addPlant((FlowerPotBlock) Blocks.FLOWER_POT, b);
+                }
+            });
+    }
+    
+    private static void addPlant(FlowerPotBlock empty, FlowerPotBlock full) {
+        empty.addPlant(full.func_220276_d().getRegistryName(), full.delegate);
     }
 }

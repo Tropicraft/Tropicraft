@@ -99,7 +99,7 @@ public class Builder {
     }
 
     public static Supplier<FlowerPotBlock> tropicraftPot() {
-        return () -> new FlowerPotBlock(TropicraftBlocks.BAMBOO_FLOWER_POT, () -> Blocks.AIR, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
+        return () -> new FlowerPotBlock(null, () -> Blocks.AIR, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
     }
 
     public static Supplier<FlowerPotBlock> tropicraftPot(final Supplier<? extends Block> block) {
