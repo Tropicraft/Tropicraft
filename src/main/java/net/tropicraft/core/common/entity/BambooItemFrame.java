@@ -29,7 +29,7 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
     }
 
     public BambooItemFrame(World worldIn, BlockPos pos, Direction direction) {
-        super(TropicraftEntities.BAMBOO_ITEM_FRAME, worldIn);
+        super(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), worldIn);
         this.hangingPosition = pos;
         this.updateFacingWithBoundingBox(direction);
      }
@@ -88,7 +88,7 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
             }
 
             if (p_146065_2_) {
-                this.entityDropItem(TropicraftItems.BAMBOO_ITEM_FRAME);
+                this.entityDropItem(TropicraftItems.BAMBOO_ITEM_FRAME.get());
             }
 
             if (!itemstack.isEmpty()) {

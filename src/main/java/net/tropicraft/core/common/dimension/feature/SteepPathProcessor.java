@@ -46,7 +46,7 @@ public class SteepPathProcessor extends CheatyStructureProcessor {
     public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
         BlockPos pos = blockInfo.pos;
 
-        if (p_215194_3_.pos.getY() != 1 || p_215194_3_.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS) {
+        if (p_215194_3_.pos.getY() != 1 || p_215194_3_.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get()) {
             return blockInfo;
         }
 
@@ -79,12 +79,12 @@ public class SteepPathProcessor extends CheatyStructureProcessor {
         pos = pos.up();
         if (bridgeTo == pos.getY() && canPlaceLadderAt(worldReaderIn, pos.up(), dir) == null) {
             // If the next spot up can't support a ladder, this is a one block step, so place a stair block
-            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.getDefaultState().with(StairsBlock.FACING, dir));
+            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().getDefaultState().with(StairsBlock.FACING, dir));
         } else {
             // Otherwise, place ladders upwards until we find air (bridging over an initial gap if required)
             while (bridgeTo >= pos.getY() || canPlaceLadderAt(worldReaderIn, pos, dir) != null) {
                 setBlockState(worldReaderIn, pos, ladder);
-                setBlockState(worldReaderIn, pos.offset(dir), TropicraftBlocks.THATCH_BUNDLE.getDefaultState());
+                setBlockState(worldReaderIn, pos.offset(dir), TropicraftBlocks.THATCH_BUNDLE.get().getDefaultState());
                 pos = pos.up();
             }
         }
@@ -157,7 +157,7 @@ public class SteepPathProcessor extends CheatyStructureProcessor {
     }
     
     private BlockState getLadderState(Direction dir) {
-        return TropicraftBlocks.BAMBOO_LADDER.getDefaultState().with(LadderBlock.FACING, dir.getOpposite());
+        return TropicraftBlocks.BAMBOO_LADDER.get().getDefaultState().with(LadderBlock.FACING, dir.getOpposite());
     }
     
     @Override

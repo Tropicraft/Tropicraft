@@ -4,11 +4,10 @@ import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
-import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 
 public class DrinkMixerItemstackRenderer extends ItemStackTileEntityRenderer {
 
-    private static final DrinkMixerTileEntity mixer = TropicraftTileEntityTypes.DRINK_MIXER.create();
+    private final DrinkMixerTileEntity mixer = new DrinkMixerTileEntity();
 
     @Override
     public void renderByItem(final ItemStack itemstack) {

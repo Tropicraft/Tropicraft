@@ -1,17 +1,18 @@
 package net.tropicraft.core.common.drinks;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.text.TextFormatting;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Drink {
-	public static final Drink[] drinkList = new Drink[10];
+	public static final Int2ObjectMap<Drink> DRINKS = new Int2ObjectOpenHashMap<>();
 	public static final Drink LEMONADE = new Drink(1, 0xfadb41, "lemonade", TextFormatting.YELLOW).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
 	public static final Drink LIMEADE = new Drink(2, 0x84e88a, "limeade", TextFormatting.GREEN).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
 	public static final Drink ORANGEADE = new Drink(3, 0xf3be36, "orangeade", TextFormatting.GOLD).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
@@ -31,7 +32,7 @@ public class Drink {
 	public List<DrinkAction> actions = new ArrayList<>();
 
 	public Drink(int id, int color, String name, TextFormatting textFormatting) {
-		drinkList[id] = this;
+		DRINKS.put(id, this);
 		this.drinkId = id;
 		this.color = color;
 		this.name = name;
@@ -61,6 +62,6 @@ public class Drink {
 	}
 
 	public static boolean isDrink(final Item item) {
-	    return Arrays.asList(TropicraftItems.COCKTAILS).contains(item);
+        return TropicraftItems.COCKTAILS.values().stream().anyMatch(ri -> ri.get() == item);
     }
 }

@@ -1,27 +1,22 @@
 package net.tropicraft.core.common.block.tileentity;
 
 import com.google.common.collect.Sets;
+
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.tropicraft.Constants;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.tropicraft.Info;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class TropicraftTileEntityTypes {
+    
+    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, Info.MODID);
 
-    public static final TileEntityType<BambooChestTileEntity> BAMBOO_CHEST = new TileEntityType<>(BambooChestTileEntity::new, Sets.newHashSet(TropicraftBlocks.BAMBOO_CHEST), null);
-    public static final TileEntityType<SifterTileEntity> SIFTER = new TileEntityType<>(SifterTileEntity::new, Sets.newHashSet(TropicraftBlocks.SIFTER), null);
-    public static final TileEntityType<DrinkMixerTileEntity> DRINK_MIXER = new TileEntityType<>(DrinkMixerTileEntity::new, Sets.newHashSet(TropicraftBlocks.DRINK_MIXER), null);
-
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
-        @SubscribeEvent
-        public static void onTERegistry(final RegistryEvent.Register<TileEntityType<?>> event) {
-            event.getRegistry().register(BAMBOO_CHEST.setRegistryName(new ResourceLocation(Constants.MODID, "tile_entity_bamboo_chest")));
-            event.getRegistry().register(SIFTER.setRegistryName(new ResourceLocation(Constants.MODID, "tile_entity_sifter")));
-            event.getRegistry().register(DRINK_MIXER.setRegistryName(new ResourceLocation(Constants.MODID, "tile_entity_drink_mixer")));
-        }
-    }
+    public static final RegistryObject<TileEntityType<BambooChestTileEntity>> BAMBOO_CHEST = TILE_ENTITIES.register(
+            "bamboo_chest", () -> new TileEntityType<>(BambooChestTileEntity::new, Sets.newHashSet(TropicraftBlocks.BAMBOO_CHEST.get()), null));
+    public static final RegistryObject<TileEntityType<SifterTileEntity>> SIFTER = TILE_ENTITIES.register(
+            "sifter", () -> new TileEntityType<>(SifterTileEntity::new, Sets.newHashSet(TropicraftBlocks.SIFTER.get()), null));
+    public static final RegistryObject<TileEntityType<DrinkMixerTileEntity>> DRINK_MIXER = TILE_ENTITIES.register(
+            "drink_mixer", () -> new TileEntityType<>(DrinkMixerTileEntity::new, Sets.newHashSet(TropicraftBlocks.DRINK_MIXER.get()), null));
 }

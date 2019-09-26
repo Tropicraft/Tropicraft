@@ -68,10 +68,10 @@ public class TualungFeature extends RainforestTreeFeature {
             int bx = rand.nextInt(15) - 8 + i;
             int bz = rand.nextInt(15) - 8 + k;
 
-            placeBlockLine(changedBlocks, world, bb, new int[] { i + sign((bx - i) / 2), height, k + sign((bz - k) / 2) }, new int[] { bx, branchHeight, bz }, LOG_STATE);
+            placeBlockLine(changedBlocks, world, bb, new int[] { i + sign((bx - i) / 2), height, k + sign((bz - k) / 2) }, new int[] { bx, branchHeight, bz }, getLog());
 
-            genCircle(world, bx, branchHeight, bz, 2, 1, LEAF_STATE, false);
-            genCircle(world, bx, branchHeight + 1, bz, 3, 2, LEAF_STATE, false);
+            genCircle(world, bx, branchHeight, bz, 2, 1, getLeaf(), false);
+            genCircle(world, bx, branchHeight + 1, bz, 3, 2, getLeaf(), false);
         }
 
         return true;

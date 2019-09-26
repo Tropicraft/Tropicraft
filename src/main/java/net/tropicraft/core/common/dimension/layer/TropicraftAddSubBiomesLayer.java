@@ -8,18 +8,18 @@ public enum TropicraftAddSubBiomesLayer implements IC0Transformer {
     RAINFOREST(TropicraftLayerUtil.RAINFOREST_PLAINS_ID, TropicraftLayerUtil.RAINFOREST_IDS)
     ;
 
-    final int baseID;
-    final int[] subBiomeIDs;
+    final LazyInt baseID;
+    final LazyInt[] subBiomeIDs;
 
-    TropicraftAddSubBiomesLayer(final int baseID, final int[] subBiomeIDs) {
+    TropicraftAddSubBiomesLayer(final LazyInt baseID, final LazyInt[] subBiomeIDs) {
         this.baseID = baseID;
         this.subBiomeIDs = subBiomeIDs;
     }
 
     @Override
     public int apply(INoiseRandom random, int center) {
-        if (center == baseID) {
-            return subBiomeIDs[random.random(subBiomeIDs.length)];
+        if (center == baseID.getAsInt()) {
+            return subBiomeIDs[random.random(subBiomeIDs.length)].getAsInt();
         } else {
             return center;
         }

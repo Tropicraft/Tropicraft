@@ -1,11 +1,14 @@
 package net.tropicraft.core.common.network.message;
 
 import com.google.common.reflect.TypeToken;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.tropicraft.Tropicraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.tropicraft.core.common.network.TropicraftMessage;
 
 /**
@@ -28,11 +31,11 @@ public abstract class MessageTileEntity<T extends TileEntity> implements Tropicr
 		pos = tile.getPos().toLong();
 	}
 
-	protected static void encode(final MessageTileEntity message, PacketBuffer buf) {
+	protected static void encode(final MessageTileEntity<?> message, PacketBuffer buf) {
 		buf.writeLong(message.pos);
 	}
 
-	protected static void decode(final MessageTileEntity message, PacketBuffer buf) {
+	protected static void decode(final MessageTileEntity<?> message, PacketBuffer buf) {
 		message.pos = buf.readLong();
 		BlockPos bp = message.getPos();
 		message.x = bp.getX();
@@ -45,7 +48,7 @@ public abstract class MessageTileEntity<T extends TileEntity> implements Tropicr
 	}
 
 	protected T getClientTileEntity() {
-		return getTileEntity(Tropicraft.PROXY.getClientWorld());
+		return getTileEntity(DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().world));
 	}
 
 	@SuppressWarnings("unchecked")

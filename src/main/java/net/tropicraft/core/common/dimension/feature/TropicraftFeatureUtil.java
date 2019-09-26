@@ -51,7 +51,7 @@ public class TropicraftFeatureUtil {
     }
 
     public static void spawnCoconuts(IWorldWriter world, BlockPos pos, Random random, int chance, final BlockState LEAF_STATE) {
-        final BlockState coconut = TropicraftBlocks.COCONUT.getDefaultState();
+        final BlockState coconut = TropicraftBlocks.COCONUT.get().getDefaultState();
 
         if (random.nextInt(chance) == 0) {
             world.setBlockState(pos.east(), coconut, 3);

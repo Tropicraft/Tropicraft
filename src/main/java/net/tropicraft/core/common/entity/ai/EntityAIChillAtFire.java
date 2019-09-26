@@ -131,11 +131,11 @@ public class EntityAIChillAtFire extends Goal
                 randZPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
 
                 if (entityObj.getEntityId() % 3 == 0) {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG));
+                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
                 } else if (entityObj.getEntityId() % 5 == 0) {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.COOKED_FROG_LEG));
+                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.COOKED_FROG_LEG.get()));
                 } else {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.ORANGE));
+                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.ORANGE.get()));
                 }
 
                 entityObj.heal(1);

@@ -75,8 +75,8 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
                 int nx = rand.nextInt(3) - 1 + i;
                 int nz = rand.nextInt(3) - 1 + k;
 
-                genCircle(world, new BlockPos(nx, y + 1, nz), 1, 0, LEAF_STATE, false);
-                genCircle(world, nx, y, nz, 2, 1, LEAF_STATE, false);
+                genCircle(world, new BlockPos(nx, y + 1, nz), 1, 0, getLeaf(), false);
+                genCircle(world, nx, y, nz, 2, 1, getLeaf(), false);
 
                 for (int x = nx - 3; x <= nx + 3; x++) {
                     for (int z = nz - 3; z <= nz + 3; z++) {
@@ -94,11 +94,11 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
 
                 int leafSize = rand.nextInt(3) + 5;
 
-                genCircle(world, nx, y + 3, nz, leafSize - 2, 0, LEAF_STATE, false);
-                genCircle(world, nx, y + 2, nz, leafSize - 1, leafSize - 3, LEAF_STATE, false);
-                genCircle(world, nx, y + 1, nz, leafSize, leafSize - 1, LEAF_STATE, false);
+                genCircle(world, nx, y + 3, nz, leafSize - 2, 0, getLeaf(), false);
+                genCircle(world, nx, y + 2, nz, leafSize - 1, leafSize - 3, getLeaf(), false);
+                genCircle(world, nx, y + 1, nz, leafSize, leafSize - 1, getLeaf(), false);
 
-                placeBlockLine(changedBlocks, world, bb, new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, LOG_STATE);
+                placeBlockLine(changedBlocks, world, bb, new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, getLog());
                 for (int x = nx - leafSize; x <= nx + leafSize; x++) {
                     for (int z = nz - leafSize; z <= nz + leafSize; z++) {
                         for (int y1 = y - 6; y1 <= y; y1++) {
@@ -113,9 +113,9 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
 
         int leafSize = rand.nextInt(5) + 9;
 
-        genCircle(world, i, j + height, k, leafSize - 2, 0, LEAF_STATE, false);
-        genCircle(world, i, j + height - 1, k, leafSize - 1, leafSize - 4, LEAF_STATE, false);
-        genCircle(world, i, j + height - 2, k, leafSize, leafSize - 1, LEAF_STATE, false);
+        genCircle(world, i, j + height, k, leafSize - 2, 0, getLeaf(), false);
+        genCircle(world, i, j + height - 1, k, leafSize - 1, leafSize - 4, getLeaf(), false);
+        genCircle(world, i, j + height - 2, k, leafSize, leafSize - 1, getLeaf(), false);
 
         for (int x = i - leafSize; x <= i + leafSize; x++) {
             for (int z = k - leafSize; z <= k + leafSize; z++) {

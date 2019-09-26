@@ -34,7 +34,6 @@ public class TeleporterTropics extends Teleporter {
     private static Block PORTAL_WALL_BLOCK;
     private static Block PORTAL_BLOCK;
     private static Block TELEPORTER_BLOCK;
-    private BlockState thatchBlock = TropicraftBlocks.THATCH_BUNDLE.getDefaultState();
 
     private final ServerWorld world;
     private final Random random;
@@ -336,9 +335,10 @@ public class TeleporterTropics extends Teleporter {
                         foundLand = true;
                         BlockPos buildpos = new BlockPos(worldSpawnX, worldSpawnY + 1, worldSpawnZ).offset(dir, 3);
                         while (!buildpos.equals(pos.up())) {
-                            world.setBlockState(buildpos, thatchBlock);
-                            world.setBlockState(buildpos.offset(dir.rotateY()), thatchBlock);
-                            world.setBlockState(buildpos.offset(dir.rotateYCCW()), thatchBlock);
+                            BlockState thatch = TropicraftBlocks.THATCH_BUNDLE.get().getDefaultState();
+                            world.setBlockState(buildpos, thatch);
+                            world.setBlockState(buildpos.offset(dir.rotateY()), thatch);
+                            world.setBlockState(buildpos.offset(dir.rotateYCCW()), thatch);
                             buildpos = buildpos.offset(dir);
                         }
 
@@ -367,7 +367,7 @@ public class TeleporterTropics extends Teleporter {
             BlockPos stairPosMid = pos;
             BlockPos stairPosRight = pos.add(0, 0, 1);
 
-            BlockState thatchStairState = TropicraftBlocks.THATCH_STAIRS.getDefaultState().with(StairsBlock.FACING, dir);
+            BlockState thatchStairState = TropicraftBlocks.THATCH_STAIRS.get().getDefaultState().with(StairsBlock.FACING, dir);
 
             world.setBlockState(stairPosLeft, thatchStairState);
             world.setBlockState(stairPosMid, thatchStairState);
@@ -377,7 +377,7 @@ public class TeleporterTropics extends Teleporter {
             BlockPos stairPosMid = pos;
             BlockPos stairPosRight = pos.add(1, 0, 0);
 
-            BlockState thatchStairState = TropicraftBlocks.THATCH_STAIRS.getDefaultState().with(StairsBlock.FACING, dir);
+            BlockState thatchStairState = TropicraftBlocks.THATCH_STAIRS.get().getDefaultState().with(StairsBlock.FACING, dir);
 
             world.setBlockState(stairPosLeft, thatchStairState);
             world.setBlockState(stairPosMid, thatchStairState);
@@ -391,7 +391,7 @@ public class TeleporterTropics extends Teleporter {
                 boolean isWall = xOffset < -2 || xOffset > 2 || zOffset < -2 || zOffset > 2;
                 if (isWall) {
                     BlockPos thatchPos = new BlockPos(x + xOffset, y, z + zOffset);
-                    world.setBlockState(thatchPos, TropicraftBlocks.THATCH_BUNDLE.getDefaultState());
+                    world.setBlockState(thatchPos, TropicraftBlocks.THATCH_BUNDLE.get().getDefaultState());
                 }
             }
         }
@@ -530,6 +530,6 @@ public class TeleporterTropics extends Teleporter {
                 Blocks.SAND.getDefaultState(),
                 Blocks.GRASS.getDefaultState(),
                 Blocks.DIRT.getDefaultState(),
-                TropicraftBlocks.PURIFIED_SAND.getDefaultState());
+                TropicraftBlocks.PURIFIED_SAND.get().getDefaultState());
     }
 }

@@ -11,28 +11,28 @@ public class TropicraftTrees {
     public static final Tree GRAPEFRUIT = new Tree() {
         @Override
         protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
-            return TropicraftFeatures.GRAPEFRUIT_TREE;
+            return TropicraftFeatures.GRAPEFRUIT_TREE.get();
         }
     };
 
     public static final Tree LEMON = new Tree() {
         @Override
         protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
-            return TropicraftFeatures.LEMON_TREE;
+            return TropicraftFeatures.LEMON_TREE.get();
         }
     };
 
     public static final Tree LIME = new Tree() {
         @Override
         protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
-            return TropicraftFeatures.LIME_TREE;
+            return TropicraftFeatures.LIME_TREE.get();
         }
     };
 
     public static final Tree ORANGE = new Tree() {
         @Override
         protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
-            return TropicraftFeatures.ORANGE_TREE;
+            return TropicraftFeatures.ORANGE_TREE.get();
         }
     };
 
@@ -41,13 +41,13 @@ public class TropicraftTrees {
         protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
             final int treeType = random.nextInt(4);
             if (treeType == 0) {
-                return TropicraftFeatures.TALL_TREE;
+                return TropicraftFeatures.TALL_TREE.get();
             } else if (treeType == 1) {
-                return TropicraftFeatures.SMALL_TUALUNG;
+                return TropicraftFeatures.SMALL_TUALUNG.get();
             } else if (treeType == 2) {
-                return TropicraftFeatures.UP_TREE;
+                return TropicraftFeatures.UP_TREE.get();
             } else {
-                return TropicraftFeatures.LARGE_TUALUNG;
+                return TropicraftFeatures.LARGE_TUALUNG.get();
             }
         }
     };
@@ -57,11 +57,11 @@ public class TropicraftTrees {
         protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
             final int palmType = random.nextInt(3);
             if (palmType == 0) {
-                return TropicraftFeatures.NORMAL_PALM_TREE;
+                return TropicraftFeatures.NORMAL_PALM_TREE.get();
             } else if (palmType == 1) {
-                return TropicraftFeatures.CURVED_PALM_TREE;
+                return TropicraftFeatures.CURVED_PALM_TREE.get();
             } else {
-                return TropicraftFeatures.LARGE_PALM_TREE;
+                return TropicraftFeatures.LARGE_PALM_TREE.get();
             }
         }
     };

@@ -42,7 +42,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         // Get height of the ground at this spot
         BlockPos groundCheck = worldReaderIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos);
         // y == 2, we're above the path, remove fence blocks that are above sea level or next to some other block
-        if (p_215194_3_.pos.getY() == 2 && p_215194_3_.state.getBlock() == TropicraftBlocks.BAMBOO_FENCE) {
+        if (p_215194_3_.pos.getY() == 2 && p_215194_3_.state.getBlock() == TropicraftBlocks.BAMBOO_FENCE.get()) {
             if (groundCheck.getY() > 127 || !isAirOrWater(worldReaderIn, pos.down(2))) {
                 return null;
             }
@@ -56,8 +56,8 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         // If above sea level, sink into the ground by one block
         if (groundCheck.getY() > 127) {
             // Convert slabs to bundles when they are over land
-            if (!isAirOrWater(worldReaderIn, pos.down()) && p_215194_3_.state.getBlock() == TropicraftBlocks.THATCH_SLAB) {
-                blockInfo = new BlockInfo(pos, TropicraftBlocks.THATCH_BUNDLE.getDefaultState(), null);
+            if (!isAirOrWater(worldReaderIn, pos.down()) && p_215194_3_.state.getBlock() == TropicraftBlocks.THATCH_SLAB.get()) {
+                blockInfo = new BlockInfo(pos, TropicraftBlocks.THATCH_BUNDLE.get().getDefaultState(), null);
             }
             
             // Only sink solid blocks, or blocks that are above air/water -- delete all others

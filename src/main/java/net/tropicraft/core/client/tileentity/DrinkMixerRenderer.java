@@ -23,7 +23,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     private ItemEntity dummyEntityItem;
 
     public DrinkMixerRenderer() {
-        super(TropicraftBlocks.DRINK_MIXER, new DrinkMixerModel());
+        super(TropicraftBlocks.DRINK_MIXER.get(), new DrinkMixerModel());
         this.renderItem = Minecraft.getInstance().getItemRenderer();
     }
 

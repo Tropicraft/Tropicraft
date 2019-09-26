@@ -69,7 +69,7 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
     }
 
     private boolean isValid(ChunkGenerator<?> chunkGen, BlockPos pos) {
-        return chunkGen.hasStructure(chunkGen.getBiomeProvider().getBiome(pos), TropicraftFeatures.VILLAGE)
+        return chunkGen.hasStructure(chunkGen.getBiomeProvider().getBiome(pos), TropicraftFeatures.VILLAGE.get())
                 && chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) == chunkGen.getSeaLevel();
     }
     
@@ -96,7 +96,7 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
 
     @Override
     public String getStructureName() {
-        return TropicraftFeatures.VILLAGE.getRegistryName().toString();
+        return TropicraftFeatures.VILLAGE.getId().toString();
     }
 
     @Override

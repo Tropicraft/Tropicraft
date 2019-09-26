@@ -1,5 +1,9 @@
 package net.tropicraft.core.common.block;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
@@ -26,9 +30,6 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class DrinkMixerBlock extends Block implements ITileEntityProvider {
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -83,7 +84,7 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
 			player.inventory.decrStackSize(player.inventory.currentItem, 1);
 		}
 
-		if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG && mixer.canMix()) {
+		if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && mixer.canMix()) {
 			mixer.startMixing();
 			player.inventory.decrStackSize(player.inventory.currentItem, 1);
 

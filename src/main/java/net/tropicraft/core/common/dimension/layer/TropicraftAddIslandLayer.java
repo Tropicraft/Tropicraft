@@ -13,9 +13,9 @@ public enum TropicraftAddIslandLayer implements IBishopTransformer {
     ;
 
     private int chance;
-    private int landID;
+    private LazyInt landID;
 
-    TropicraftAddIslandLayer(int chance, int landID) {
+    TropicraftAddIslandLayer(int chance, LazyInt landID) {
         this.chance = chance;
         this.landID = landID;
     }
@@ -23,7 +23,7 @@ public enum TropicraftAddIslandLayer implements IBishopTransformer {
     @Override
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
         if (!isLand(nw) && !isLand(sw) && !isLand(ne) && !isLand(se) && !isLand(center) && random.random(chance) == 0) {
-            return landID;
+            return landID.getAsInt();
             // TODO - maybe this is incorrect, but in old tropicode we actually didn't return the variable, it was unused return landID;
         }
 

@@ -1,6 +1,13 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.client.renderer.color.IItemColor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,7 +16,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -17,15 +29,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Info;
-import net.tropicraft.core.client.CocktailColorHandler;
-import net.tropicraft.core.common.drinks.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import net.tropicraft.core.common.drinks.ColorMixer;
+import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.Ingredient;
+import net.tropicraft.core.common.drinks.MixerRecipe;
+import net.tropicraft.core.common.drinks.MixerRecipes;
 
 public class CocktailItem extends Item implements IColoredItem {
 
@@ -115,7 +123,7 @@ public class CocktailItem extends Item implements IColoredItem {
 
 	public static @Nonnull ItemStack makeCocktail(final NonNullList<ItemStack> itemStacks) {
 		// TODO fixme this is so ugly ugh
-		final ItemStack stack = new ItemStack(TropicraftItems.COCKTAIL);
+		final ItemStack stack = new ItemStack(TropicraftItems.COCKTAILS.get(Drink.COCKTAIL).get());
 		CompoundNBT nbt = new CompoundNBT();
 		nbt.putByte("DrinkID", (byte) Drink.COCKTAIL.drinkId);
 		ListNBT tagList = new ListNBT();
@@ -178,7 +186,7 @@ public class CocktailItem extends Item implements IColoredItem {
 		if (!Drink.isDrink(stack.getItem()) || !stack.hasTag()) {
 			return null;
 		}
-		return Drink.drinkList[stack.getTag().getByte("DrinkID")];
+		return Drink.DRINKS.get(stack.getTag().getByte("DrinkID"));
 	}
 
 	@Override
@@ -204,7 +212,7 @@ public class CocktailItem extends Item implements IColoredItem {
 			drink.onDrink(player);
 		}
 
-		return new ItemStack(TropicraftItems.BAMBOO_MUG);
+		return new ItemStack(TropicraftItems.BAMBOO_MUG.get());
 	}
 
 	/**
@@ -224,7 +232,7 @@ public class CocktailItem extends Item implements IColoredItem {
 			}
 		}
 
-		return new ItemStack(TropicraftItems.BAMBOO_MUG);
+		return new ItemStack(TropicraftItems.BAMBOO_MUG.get());
 	}
 
 	@Override
@@ -246,13 +254,7 @@ public class CocktailItem extends Item implements IColoredItem {
 		Drink drink = getDrink(itemstack);
 		return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
 	}
-	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public IItemColor getColorHandler() {
-	    return new CocktailColorHandler();
-	}
-	
+
 	@Override
 	public String getTranslationKey(ItemStack itemStack) {
 		String name = getTranslationKey();

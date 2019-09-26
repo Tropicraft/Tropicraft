@@ -1,25 +1,26 @@
 package net.tropicraft.core.common.dimension.layer;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC0Transformer;
 
-import java.util.List;
-
 public enum TropicraftAddWeightedSubBiomesLayer implements IC0Transformer {
     // TODO add kelp forest here to sub biomes list
-    OCEANS(TropicraftLayerUtil.OCEAN_ID, new int[]{TropicraftLayerUtil.OCEAN_ID}, new WeightedRandom.Item(20))
+    OCEANS(TropicraftLayerUtil.OCEAN_ID, new LazyInt[]{TropicraftLayerUtil.OCEAN_ID}, new WeightedRandom.Item(20))
     ;
     private List<WeightedRandom.Item> biomeWeights;
     private int totalWeight;
-    final int baseID;
-    final int[] subBiomeIDs;
-    private Object2IntMap<WeightedRandom.Item> biomeLookup = new Object2IntOpenHashMap<>();
+    final LazyInt baseID;
+    final LazyInt[] subBiomeIDs;
+    private Map<WeightedRandom.Item, LazyInt> biomeLookup = new HashMap<>();
 
-    TropicraftAddWeightedSubBiomesLayer(final int baseID, final int[] subBiomeIDs, WeightedRandom.Item... weights) {
+    TropicraftAddWeightedSubBiomesLayer(final LazyInt baseID, final LazyInt[] subBiomeIDs, WeightedRandom.Item... weights) {
         if (weights.length > 0) {
             biomeWeights = Lists.newArrayList(weights);
             totalWeight = WeightedRandom.getTotalWeight(biomeWeights);
@@ -33,11 +34,11 @@ public enum TropicraftAddWeightedSubBiomesLayer implements IC0Transformer {
 
     @Override
     public int apply(INoiseRandom random, int center) {
-        if (center == baseID) {
+        if (center == baseID.getAsInt()) {
             if (biomeLookup.size() > 0) {
-                return biomeLookup.get(WeightedRandom.getRandomItem(biomeWeights, random.random(totalWeight)));
+                return biomeLookup.get(WeightedRandom.getRandomItem(biomeWeights, random.random(totalWeight))).getAsInt();
             }
-            return subBiomeIDs[random.random(subBiomeIDs.length)];
+            return subBiomeIDs[random.random(subBiomeIDs.length)].getAsInt();
         } else {
             return center;
         }

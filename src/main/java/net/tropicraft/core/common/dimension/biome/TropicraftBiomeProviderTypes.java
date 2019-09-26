@@ -1,24 +1,22 @@
 package net.tropicraft.core.common.dimension.biome;
 
-import net.minecraft.util.ResourceLocation;
+import java.util.function.Supplier;
+
 import net.minecraft.world.biome.provider.BiomeProviderType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.tropicraft.Constants;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.tropicraft.Info;
 import net.tropicraft.core.common.dimension.config.TropicraftBiomeProviderSettings;
 
-@Mod.EventBusSubscriber(modid = Constants.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftBiomeProviderTypes {
+    
+    public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDER_TYPES = new DeferredRegister<>(ForgeRegistries.BIOME_PROVIDER_TYPES, Info.MODID);
 
-    public static final BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> TROPICS = new BiomeProviderType<>(TropicraftBiomeProvider::new, TropicraftBiomeProviderSettings::new);
+    public static final RegistryObject<BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider>> TROPICS = register(
+            "tropicraft_biome_provider_type", () -> new BiomeProviderType<>(TropicraftBiomeProvider::new, TropicraftBiomeProviderSettings::new));
 
-    @SubscribeEvent
-    public static void onBiomeProviderTypeRegistry(final RegistryEvent.Register<BiomeProviderType<?, ?>> event) {
-        register(event, TROPICS, "tropicraft_biome_provider_type");
-    }
-
-    private static final void register(final RegistryEvent.Register<BiomeProviderType<?, ?>> event, final BiomeProviderType<?,?> type, final String name) {
-        event.getRegistry().register(type.setRegistryName(new ResourceLocation(Constants.MODID, name)));
+    private static <T extends BiomeProviderType<?, ?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+        return BIOME_PROVIDER_TYPES.register(name, sup);
     }
 }

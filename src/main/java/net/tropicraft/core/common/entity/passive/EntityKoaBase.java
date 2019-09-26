@@ -100,7 +100,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public int druggedTime = 0;
 
-    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(TropicraftItems.NIGEL_STACHE);
+    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(/* TODO TropicraftItems.NIGEL_STACHE.get() */);
 
     private boolean isMating;
     private boolean isPlaying;
@@ -261,7 +261,7 @@ public class EntityKoaBase extends VillagerEntity {
         @Override
         public MerchantOffer getOffer(Entity entity, Random random) {
             ItemStack itemstack = new ItemStack(this.item, this.count);
-            return new MerchantOffer(itemstack, new ItemStack(TropicraftItems.WHITE_PEARL), this.maxUses, this.givenXP, this.priceMultiplier);
+            return new MerchantOffer(itemstack, new ItemStack(TropicraftItems.WHITE_PEARL.get()), this.maxUses, this.givenXP, this.priceMultiplier);
         }
     }
 
@@ -278,15 +278,15 @@ public class EntityKoaBase extends VillagerEntity {
                             new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fishingRod, 1, 8, 2),
-                            new KoaTradeForPearls(TropicraftItems.FRESH_MARLIN, 3, 8, 2),
+                            new KoaTradeForPearls(TropicraftItems.FRESH_MARLIN.get(), 3, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fertilizer, 5, 8, 2)
                     }));
         } else if (getRole() == Roles.HUNTER) {
             offers = func_221238_a(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
-                            new KoaTradeForPearls(TropicraftItems.FROG_LEG, 5, 8, 2),
+                            new KoaTradeForPearls(TropicraftItems.FROG_LEG.get(), 5, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.iguanaLeather, 2, 8, 2),
-                            new KoaTradeForPearls(TropicraftItems.SCALE, 5, 8, 2)
+                            new KoaTradeForPearls(TropicraftItems.SCALE.get(), 5, 8, 2)
                     }));
         }
 
@@ -491,7 +491,7 @@ public class EntityKoaBase extends VillagerEntity {
     @Override
     public VillagerEntity createChild(AgeableEntity ageable) {
         //EntityVillager ent = super.createChild(ageable);
-        EntityKoaHunter entityvillager = new EntityKoaHunter(TropicraftEntities.KOA_HUNTER, this.world);
+        EntityKoaHunter entityvillager = new EntityKoaHunter(TropicraftEntities.KOA_HUNTER.get(), this.world);
         entityvillager.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(entityvillager)), SpawnReason.BREEDING, null, null);
 
         return entityvillager;
@@ -637,7 +637,7 @@ public class EntityKoaBase extends VillagerEntity {
             if (!this.world.isRemote) {
 
                 ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
-                if (!stack.isEmpty() && stack.getItem() == TropicraftItems.POISON_FROG_SKIN) {
+                if (!stack.isEmpty() && stack.getItem() == TropicraftItems.POISON_FROG_SKIN.get()) {
                     doTrade = false;
 
                     //drug the koa and make him forget everything

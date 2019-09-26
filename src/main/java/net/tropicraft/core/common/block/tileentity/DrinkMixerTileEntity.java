@@ -41,7 +41,7 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 	public ItemStack result = ItemStack.EMPTY;
 
 	public DrinkMixerTileEntity() {
-		super(TropicraftTileEntityTypes.DRINK_MIXER);
+		super(TropicraftTileEntityTypes.DRINK_MIXER.get());
 		mixing = false;
 		ingredients = NonNullList.withSize(MAX_NUM_INGREDIENTS, ItemStack.EMPTY);
 	}

@@ -16,8 +16,10 @@ public abstract class TropicraftBiome extends Biome {
         super(builder
             .waterColor(TROPICS_WATER_COLOR)
             .waterFogColor(TROPICS_WATER_FOG_COLOR));
-        
+    }
+    
+    public void addFeatures() {
         DefaultBiomeFeatures.addStructures(this);
-        addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(TropicraftFeatures.VILLAGE, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+        addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(TropicraftFeatures.VILLAGE.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
     }
 }

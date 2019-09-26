@@ -17,7 +17,7 @@ import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
 public class TropicsOceanBiome extends TropicraftBiome {
     public TropicsOceanBiome() {
         super(new Biome.Builder()
-                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG)
+                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
                 .precipitation(RainType.RAIN)
                 .category(Category.OCEAN)
                 .depth(-1.6F)
@@ -26,7 +26,11 @@ public class TropicsOceanBiome extends TropicraftBiome {
                 .downfall(1.25F)
                 .parent(null)
         );
+    }
 
+    @Override
+    public void addFeatures() {
+        super.addFeatures();
         // Vanilla warm ocean gen
         DefaultBiomeFeatures.addOceanCarvers(this);
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SIMPLE_RANDOM_SELECTOR, new SingleRandomFeature(new Feature[]{Feature.CORAL_TREE, Feature.CORAL_CLAW, Feature.CORAL_MUSHROOM}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}), Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED, new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG)));

@@ -10,9 +10,9 @@ public enum TropicsIslandLayer implements IAreaTransformer0 {
     public int apply(INoiseRandom iNoiseRandom, int x, int y) {
         // if (0, 0) is located here, place an island
         if (x == 0 && y == 0) {
-            return TropicraftLayerUtil.LAND_ID;
+            return TropicraftLayerUtil.LAND_ID.getAsInt();
         }
 
-        return iNoiseRandom.random(3) == 0 ? TropicraftLayerUtil.LAND_ID : TropicraftLayerUtil.OCEAN_ID;
+        return iNoiseRandom.random(3) == 0 ? TropicraftLayerUtil.LAND_ID.getAsInt() : TropicraftLayerUtil.OCEAN_ID.getAsInt();
     }
 }
