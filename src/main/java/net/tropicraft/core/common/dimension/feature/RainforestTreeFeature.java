@@ -19,8 +19,6 @@ import java.util.Set;
 import java.util.function.Function;
 
 public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
-    protected static final BlockState LOG_STATE = TropicraftBlocks.MAHOGANY_LOG.getDefaultState();
-    protected static final BlockState LEAF_STATE = TropicraftBlocks.KAPOK_LEAVES.getDefaultState();
 
     /**Used in placeBlockLine*/
     protected static final byte otherCoordPairs[] = {2, 0, 0, 1, 2, 1};
@@ -50,12 +48,20 @@ public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatur
         return sapling;
     }
 
+    protected final BlockState getLeaf() {
+        return TropicraftBlocks.KAPOK_LEAVES.get().getDefaultState();
+    }
+    
+    protected final BlockState getLog() {
+        return TropicraftBlocks.MAHOGANY_LOG.get().getDefaultState();
+    }
+
     protected void placeLeaf(final Set<BlockPos> changedBlocks, final IWorldGenerationReader world, final MutableBoundingBox bb, int x, int y, int z) {
-        setState(changedBlocks, world, new BlockPos(x, y, z), LEAF_STATE, bb);
+        setState(changedBlocks, world, new BlockPos(x, y, z), getLeaf(), bb);
     }
 
     protected void placeLog(final Set<BlockPos> changedBlocks, final IWorldGenerationReader world, final MutableBoundingBox bb, int x, int y, int z) {
-        setState(changedBlocks, world, new BlockPos(x, y, z), LOG_STATE, bb);
+        setState(changedBlocks, world, new BlockPos(x, y, z), getLog(), bb);
     }
 
     protected boolean genCircle(IWorldGenerationReader world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {

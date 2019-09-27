@@ -27,7 +27,7 @@ public class ShellItem extends Item {
 
             // Must set the world coordinates here, or onValidSurface will be false.
             final World world = context.getWorld();
-            final WallItemEntity hangingEntity = new WallItemEntity(TropicraftEntities.WALL_ITEM, world);
+            final WallItemEntity hangingEntity = new WallItemEntity(TropicraftEntities.WALL_ITEM.get(), world);
             hangingEntity.setHangingPosition(pos);
             hangingEntity.updateFacingWithBoundingBox(facing);
             hangingEntity.setDisplayedItem(stack);

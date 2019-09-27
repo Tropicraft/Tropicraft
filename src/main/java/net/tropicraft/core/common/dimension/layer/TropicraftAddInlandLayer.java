@@ -9,9 +9,9 @@ public enum TropicraftAddInlandLayer implements IBishopTransformer {
     INSTANCE(20, TropicraftLayerUtil.LAND_ID);
 
     private int chance;
-    private int landID;
+    private LazyInt landID;
 
-    TropicraftAddInlandLayer(int chance, int landID) {
+    TropicraftAddInlandLayer(int chance, LazyInt landID) {
         this.chance = chance;
         this.landID = landID;
     }
@@ -19,7 +19,7 @@ public enum TropicraftAddInlandLayer implements IBishopTransformer {
     @Override
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
         if (isLand(nw) && isLand(sw) && isLand(ne) && isLand(se) && isLand(center) && random.random(chance) == 0) {
-            return landID;
+            return landID.getAsInt();
         }
 
         return center;

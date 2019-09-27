@@ -20,9 +20,9 @@ public class TropicsSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> 
     public void buildSurface(Random random, IChunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
         // Modify this to change the amount of sand in the tropics biomes
         if (noise > 0.1) {
-            SurfaceBuilder.DEFAULT.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG);
+            SurfaceBuilder.DEFAULT.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get());
         } else {
-            SurfaceBuilder.DEFAULT.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TropicsBuilderConfigs.TROPICS_CONFIG);
+            SurfaceBuilder.DEFAULT.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, TropicsBuilderConfigs.TROPICS_CONFIG.get());
         }
     }
 }

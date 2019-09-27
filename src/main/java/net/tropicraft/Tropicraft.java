@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,60 +13,84 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
+import net.tropicraft.core.client.entity.render.EIHRenderer;
+import net.tropicraft.core.client.entity.render.IguanaRenderer;
+import net.tropicraft.core.client.entity.render.RenderKoaMan;
+import net.tropicraft.core.client.entity.render.RenderWallItemEntity;
+import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
+import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
+import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
+import net.tropicraft.core.client.tileentity.BambooChestRenderer;
+import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
+import net.tropicraft.core.client.tileentity.SifterRenderer;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
+import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
+import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
-import net.tropicraft.core.common.command.TropicraftCommands;
+import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProviderTypes;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
+import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
+import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.entity.BambooItemFrame;
+import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
+import net.tropicraft.core.common.entity.neutral.EIHEntity;
+import net.tropicraft.core.common.entity.neutral.IguanaEntity;
+import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
+import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.item.UmbrellaItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
-import net.tropicraft.core.proxy.ClientProxy;
-import net.tropicraft.core.proxy.CommonProxy;
-import net.tropicraft.core.proxy.ServerProxy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.ImmutableMap;
-
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(Constants.MODID)
 public class Tropicraft
 {
-    // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    public static final ItemGroup TROPICRAFT_ITEM_GROUP = (new ItemGroup(ItemGroup.getGroupCountSafe(), "tropicraft") {
+    public static final ItemGroup TROPICRAFT_ITEM_GROUP = (new ItemGroup("tropicraft") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
-            return new ItemStack(TropicraftBlocks.RED_ANTHURIUM);
+            return new ItemStack(TropicraftBlocks.RED_ANTHURIUM.get());
         }
     });
 
-    public static CommonProxy PROXY;
-
-    private TropicraftCommands commands;
-
     public Tropicraft() {
-        // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Register the enqueueIMC method for modloading
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-//        // Register the processIMC method for modloading
-//        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
-
-        PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         
+        // General mod setup
+        modBus.addListener(this::setup);
+        modBus.addListener(this::setupClient);
+        modBus.addListener(this::registerItemColors);
+        
+        MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
+
+        // Registry objects
+        TropicraftBlocks.BLOCKS.register(modBus);
+        TropicraftItems.ITEMS.register(modBus);
+        TropicraftTileEntityTypes.TILE_ENTITIES.register(modBus);
+        TropicraftEntities.ENTITIES.register(modBus);
+        TropicraftBiomes.BIOMES.register(modBus);
+        TropicraftBiomeProviderTypes.BIOME_PROVIDER_TYPES.register(modBus);
+        TropicraftWorldUtils.DIMENSIONS.register(modBus);
+        TropicraftFeatures.FEATURES.register(modBus);
+        TropicraftChunkGeneratorTypes.CHUNK_GENERATOR_TYPES.register(modBus);
+
         // Hack in our item frame models the way vanilla does
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             StateContainer<Block, BlockState> frameState = new StateContainer.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(BlockState::new);
@@ -75,37 +101,36 @@ public class Tropicraft
                     .build();
         });
     }
+    
+    private void setupClient(final FMLClientSetupEvent event) {
+        RenderingRegistry.registerEntityRenderingHandler(EntityKoaHunter.class, RenderKoaMan::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropiCreeperEntity.class, TropiCreeperRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(IguanaEntity.class, IguanaRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(UmbrellaEntity.class, UmbrellaRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropiSkellyEntity.class, TropiSkellyRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(WallItemEntity.class, RenderWallItemEntity::new);
+        RenderingRegistry.registerEntityRenderingHandler(BambooItemFrame.class, BambooItemFrameRenderer::new);
 
+        ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(DrinkMixerTileEntity.class, new DrinkMixerRenderer());
+    }
+    
+    private void registerItemColors(ColorHandlerEvent.Item evt) {
+        for (final UmbrellaItem item : UmbrellaItem.getAllItems()) {
+            evt.getItemColors().register(new BasicColorHandler(), item);
+        }
+
+        evt.getItemColors().register(new BasicColorHandler(), TropicraftItems.LOVE_TROPICS_SHELL::get);
+    }
+    
     private void setup(final FMLCommonSetupEvent event) {
-        // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
-
         TropicraftPackets.init();
+        TropicraftBiomes.addFeatures();
     }
-
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        // do something that can only be done on the client
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
-    }
-//
-//    private void enqueueIMC(final InterModEnqueueEvent event) {
-//        // some example code to dispatch IMC to another mod
-//        InterModComms.sendTo(Constants.MODID, "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
-//    }
-//
-//    private void processIMC(final InterModProcessEvent event) {
-//        // some example code to receive and process InterModComms from other mods
-//        LOGGER.info("Got IMC {}", event.getIMCStream().
-//                map(m->m.getMessageSupplier().get()).
-//                collect(Collectors.toList()));
-//    }
-
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(final FMLServerStartingEvent event) {
-        // do something when the server starts
-        LOGGER.info("HELLO from server starting");
+    
+    private void onServerStarting(final FMLServerStartingEvent event) {
         CommandTropicsTeleport.register(event.getServer().getCommandManager().getDispatcher());
     }
 }

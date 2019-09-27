@@ -9,6 +9,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +48,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	private int heightOffset = Integer.MIN_VALUE;
 
 	public VolcanoTileEntity() {
-		super(TropicraftTileEntityTypes.VOLCANO);
+		super(TropicraftTileEntityTypes.VOLCANO.get());
 	}
 
 	@Override
@@ -171,7 +172,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 
 	public void throwLava(double i, double j, double k, double xMot, double yMot, double zMot) {
 		if (!getWorld().isRemote) {
-			getWorld().addEntity(new LavaBallEntity(TropicraftEntities.LAVA_BALL, getWorld(), i, j, k, xMot, yMot, zMot));
+			getWorld().addEntity(new LavaBallEntity(TropicraftEntities.LAVA_BALL.get(), getWorld(), i, j, k, xMot, yMot, zMot));
 		}
 	}
 
@@ -201,7 +202,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 						BlockPos pos2 = new BlockPos(x, lavaLevel, z);
 
 						if (lavaLevel >= MAX_LAVA_LEVEL_DURING_RISE + this.heightOffset && lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
-							if (getWorld().getBlockState(pos2).getBlock() != TropicraftBlocks.CHUNK) {
+							if (getWorld().getBlockState(pos2).getBlock() != TropicraftBlocks.CHUNK.get()) {
 								getWorld().setBlockState(pos2, state, updateFlag);
 							}
 						} else {

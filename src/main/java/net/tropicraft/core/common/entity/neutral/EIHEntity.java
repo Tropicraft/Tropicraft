@@ -139,7 +139,7 @@ public class EIHEntity extends CreatureEntity {
                             final ItemStack itemstack = player.inventory.getCurrentItem();
 
                             if (!itemstack.isEmpty()) {
-                                if (isAware() && itemstack.getItem() == TropicraftBlocks.CHUNK.asItem()) {
+                                if (isAware() && itemstack.getItem() == TropicraftBlocks.CHUNK.get().asItem()) {
                                     setAngry(true);
                                     setImmobile(false);
                                 }

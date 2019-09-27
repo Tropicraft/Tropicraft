@@ -50,7 +50,7 @@ public class UmbrellaEntity extends Entity {
     }
     
     public UmbrellaEntity(World world) {
-    	this(TropicraftEntities.UMBRELLA, world);
+    	this(TropicraftEntities.UMBRELLA.get(), world);
     }
 
     @Override

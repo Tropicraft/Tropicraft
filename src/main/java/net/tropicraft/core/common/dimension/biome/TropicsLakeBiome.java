@@ -7,7 +7,7 @@ import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
 public class TropicsLakeBiome extends TropicraftBiome {
     protected TropicsLakeBiome() {
         super(new Biome.Builder()
-                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG)
+                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
                 .precipitation(RainType.RAIN)
                 .category(Category.NONE)
                 .depth(-0.6F)

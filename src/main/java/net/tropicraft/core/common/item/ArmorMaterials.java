@@ -33,7 +33,7 @@ public class ArmorMaterials {
 
         @Override
         public Ingredient getRepairMaterial() {
-            return Ingredient.fromItems(TropicraftItems.ASHEN_MASKS);
+            return Ingredient.EMPTY;//TODO Ingredient.fromItems(TropicraftItems.ASHEN_MASKS);
         }
 
         @Override
@@ -71,7 +71,7 @@ public class ArmorMaterials {
 
         @Override
         public Ingredient getRepairMaterial() {
-            return Ingredient.fromItems(TropicraftItems.NIGEL_STACHE);
+            return Ingredient.EMPTY; // TODO Ingredient.fromItems(TropicraftItems.NIGEL_STACHE);
         }
 
         @Override

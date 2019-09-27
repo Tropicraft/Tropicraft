@@ -1,23 +1,26 @@
 package net.tropicraft.core.common.dimension.surfacebuilders;
 
-import net.minecraft.util.ResourceLocation;
+import java.util.function.Supplier;
+
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
+import net.tropicraft.Info;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftSurfaceBuilders {
-    public static final TropicsSurfaceBuilder TROPICS = new TropicsSurfaceBuilder(SurfaceBuilderConfig::deserialize);
 
-    @SubscribeEvent
-    public static void onChunkGeneratorTypeRegistry(final RegistryEvent.Register<SurfaceBuilder<?>> event) {
-        register(event, TROPICS, "tropics");
-    }
+    public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = new DeferredRegister<>(ForgeRegistries.SURFACE_BUILDERS, Info.MODID);
 
-    private static final void register(final RegistryEvent.Register<SurfaceBuilder<?>> event, final SurfaceBuilder<?> type, final String name) {
-        event.getRegistry().register(type.setRegistryName(new ResourceLocation(Constants.MODID, name)));
+    public static final TropicsSurfaceBuilder _TROPICS = new TropicsSurfaceBuilder(SurfaceBuilderConfig::deserialize);
+    public static final RegistryObject<TropicsSurfaceBuilder> TROPICS = register(
+            "tropics", () -> _TROPICS);
+
+    private static <T extends SurfaceBuilder<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+        return SURFACE_BUILDERS.register(name, sup);
     }
 }

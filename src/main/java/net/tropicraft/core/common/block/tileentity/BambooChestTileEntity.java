@@ -11,7 +11,7 @@ public class BambooChestTileEntity extends ChestTileEntity {
     private boolean unbreakable = false;
 
     public BambooChestTileEntity() {
-        super(TropicraftTileEntityTypes.BAMBOO_CHEST);
+        super(TropicraftTileEntityTypes.BAMBOO_CHEST.get());
     }
 
     @Override

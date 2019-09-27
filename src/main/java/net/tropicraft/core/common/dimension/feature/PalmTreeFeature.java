@@ -18,8 +18,6 @@ import java.util.Set;
 import java.util.function.Function;
 
 public abstract class PalmTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
-    protected static final BlockState LOG_STATE = TropicraftBlocks.PALM_LOG.getDefaultState();
-    protected static final BlockState LEAF_STATE = TropicraftBlocks.PALM_LEAVES.getDefaultState();
 
     public PalmTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49920_1_, boolean p_i49920_2_) {
         super(p_i49920_1_, p_i49920_2_);
@@ -45,13 +43,21 @@ public abstract class PalmTreeFeature extends AbstractTreeFeature<NoFeatureConfi
     protected net.minecraftforge.common.IPlantable getSapling() {
         return sapling;
     }
+    
+    protected final BlockState getLeaf() {
+        return TropicraftBlocks.PALM_LEAVES.get().getDefaultState();
+    }
+    
+    protected final BlockState getLog() {
+        return TropicraftBlocks.PALM_LOG.get().getDefaultState();
+    }
 
     protected void placeLeaf(final Set<BlockPos> changedBlocks, final IWorldGenerationReader world, final MutableBoundingBox bb, int x, int y, int z) {
-        setState(changedBlocks, world, new BlockPos(x, y, z), LEAF_STATE, bb);
+        setState(changedBlocks, world, new BlockPos(x, y, z), getLeaf(), bb);
     }
 
     protected void placeLog(final Set<BlockPos> changedBlocks, final IWorldGenerationReader world, final MutableBoundingBox bb, int x, int y, int z) {
-        setState(changedBlocks, world, new BlockPos(x, y, z), LOG_STATE, bb);
+        setState(changedBlocks, world, new BlockPos(x, y, z), getLog(), bb);
     }
 
 

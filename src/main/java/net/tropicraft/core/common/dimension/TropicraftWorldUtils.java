@@ -1,5 +1,8 @@
 package net.tropicraft.core.common.dimension;
 
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -9,35 +12,34 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
-
-import java.util.function.BiFunction;
+import net.tropicraft.Info;
 
 public class TropicraftWorldUtils {
+    
+    public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Info.MODID);
 
 	public static DimensionType TROPICS_DIMENSION;
-	public static ModDimension TROPICRAFT_MOD_DIMENSION;
+	public static final RegistryObject<ModDimension> TROPICRAFT_MOD_DIMENSION = register(
+	        "tropics", TropicraftWorldUtils::dimFactory); 
 
-	@Mod.EventBusSubscriber(modid = Constants.MODID, bus= Mod.EventBusSubscriber.Bus.MOD)
-	public static class EventModDimension {
-		@SubscribeEvent
-		public static void onDimensionRegistry(final RegistryEvent.Register<ModDimension> event) {
-			TROPICRAFT_MOD_DIMENSION = dimFactory();
-			event.getRegistry().register(TROPICRAFT_MOD_DIMENSION.setRegistryName(new ResourceLocation(Constants.MODID, "tropics")));
-		}
-
-		static ModDimension dimFactory() {
-			return new ModDimension() {
-				@Override
-				public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-					return TropicraftDimension::new;
-				}
-			};
-		}
+	private static ModDimension dimFactory() {
+		return new ModDimension() {
+			@Override
+			public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+				return TropicraftDimension::new;
+			}
+		};
+	}
+	
+	private static RegistryObject<ModDimension> register(final String name, final Supplier<ModDimension> sup) {
+	    return DIMENSIONS.register(name, sup);
 	}
 
 	@Mod.EventBusSubscriber(modid = Constants.MODID)
@@ -46,7 +48,7 @@ public class TropicraftWorldUtils {
 		public static void onModDimensionRegister(final RegisterDimensionsEvent event) {
 			ResourceLocation id = new ResourceLocation(Constants.MODID, "tropics");
 			if (DimensionType.byName(id) == null) {
-				TROPICS_DIMENSION = DimensionManager.registerDimension(id, TROPICRAFT_MOD_DIMENSION, new PacketBuffer(Unpooled.buffer()), true);
+				TROPICS_DIMENSION = DimensionManager.registerDimension(id, TROPICRAFT_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
 				//TROPICS_DIMENSION.setRegistryName(new ResourceLocation(Constants.MODID, "tropics"));
 				DimensionManager.keepLoaded(TROPICS_DIMENSION, false);
 			} else {

@@ -30,7 +30,7 @@ public class LavaBallEntity extends Entity
 	public double accelerationZ;
 
 	public LavaBallEntity(World world) {
-		this(TropicraftEntities.LAVA_BALL, world);
+		this(TropicraftEntities.LAVA_BALL.get(), world);
 	}
 
 	public LavaBallEntity(EntityType<? extends LavaBallEntity> type, World world) {

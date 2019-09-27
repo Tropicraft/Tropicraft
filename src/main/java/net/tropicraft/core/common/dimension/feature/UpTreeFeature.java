@@ -58,9 +58,9 @@ public class UpTreeFeature extends RainforestTreeFeature {
 
         final int radius = rand.nextInt(2) + 3;
 
-        genCircle(world, i, j + height, k, radius, 0, LEAF_STATE, false);
-        genCircle(world, i, j + height + 1, k, radius + 2, radius, LEAF_STATE, false);
-        genCircle(world, i, j + height + 2, k, radius + 3, radius + 2, LEAF_STATE, false);
+        genCircle(world, i, j + height, k, radius, 0, getLeaf(), false);
+        genCircle(world, i, j + height + 1, k, radius + 2, radius, getLeaf(), false);
+        genCircle(world, i, j + height + 2, k, radius + 3, radius + 2, getLeaf(), false);
 
         return true;
     }

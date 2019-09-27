@@ -50,7 +50,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.getDefaultState(), bb);
+        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.get().getDefaultState(), bb);
 
         final int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 
@@ -81,10 +81,10 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
         // generate curved trunk
         for (int xx = 0, yy = 0; yy < height; yy++) {
-            placeBlockWithDir(world, xx, yy+ y, 0, LOG_STATE);
+            placeBlockWithDir(world, xx, yy+ y, 0, getLog());
             if (yy == 0 || yy == 1 || yy == 3) {
                 xx++;
-                placeBlockWithDir(world, xx, yy + y, 0, LOG_STATE);
+                placeBlockWithDir(world, xx, yy + y, 0, getLog());
             }
         }
 
@@ -94,9 +94,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         // inner leaf placement
         for (int yy = 1; yy < 5; yy++) {
             if (yy == 4) {
-                this.placeBlockWithDir(world, 1, yy + y + height - 1, 0, LEAF_STATE);
+                this.placeBlockWithDir(world, 1, yy + y + height - 1, 0, getLeaf());
             } else {
-                this.placeBlockWithDir(world, 0, yy + y + height - 1, 0, LEAF_STATE);
+                this.placeBlockWithDir(world, 0, yy + y + height - 1, 0, getLeaf());
             }
         }
 
@@ -106,20 +106,20 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
             int yy = height - 1;
 
-            placeBlockWithDir(world, 1, yy - 1 + y, 1, LEAF_STATE);
-            placeBlockWithDir(world, 2, yy - 2 + y, 1, LEAF_STATE);
-            placeBlockWithDir(world, 1, yy - 2 + y, 2, LEAF_STATE);
-            placeBlockWithDir(world, 2, yy - 3 + y, 2, LEAF_STATE);
-            placeBlockWithDir(world, 1, yy + 1 + y, 1, LEAF_STATE);
-            placeBlockWithDir(world, 2, yy + 2 + y, 1, LEAF_STATE);
-            placeBlockWithDir(world, 1, yy + 2 + y, 2, LEAF_STATE);
-            placeBlockWithDir(world, 2, yy + 3 + y, 2, LEAF_STATE);
+            placeBlockWithDir(world, 1, yy - 1 + y, 1, getLeaf());
+            placeBlockWithDir(world, 2, yy - 2 + y, 1, getLeaf());
+            placeBlockWithDir(world, 1, yy - 2 + y, 2, getLeaf());
+            placeBlockWithDir(world, 2, yy - 3 + y, 2, getLeaf());
+            placeBlockWithDir(world, 1, yy + 1 + y, 1, getLeaf());
+            placeBlockWithDir(world, 2, yy + 2 + y, 1, getLeaf());
+            placeBlockWithDir(world, 1, yy + 2 + y, 2, getLeaf());
+            placeBlockWithDir(world, 2, yy + 3 + y, 2, getLeaf());
 
             for (int xx = 1; xx < 5; xx++) {
                 if (xx == 4) {
                     yy--;
                 }
-                placeBlockWithDir(world, xx, yy + y, 0, LEAF_STATE);
+                placeBlockWithDir(world, xx, yy + y, 0, getLeaf());
             }
         }
 

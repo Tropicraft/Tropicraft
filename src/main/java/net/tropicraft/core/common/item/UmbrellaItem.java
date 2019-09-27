@@ -74,7 +74,7 @@ public class UmbrellaItem extends Item implements IColoredItem {
                     System.out.println("place");
                 }
 
-                final UmbrellaEntity umbrella = TropicraftEntities.UMBRELLA.create(world);
+                final UmbrellaEntity umbrella = TropicraftEntities.UMBRELLA.get().create(world);
                 umbrella.moveToBlockPosAndAngles(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
                 umbrella.setMotion(Vec3d.ZERO);
                 umbrella.rotationYaw = placer.rotationYaw;

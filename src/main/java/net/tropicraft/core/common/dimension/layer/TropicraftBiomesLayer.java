@@ -11,7 +11,7 @@ public enum TropicraftBiomesLayer implements IC0Transformer {
     @Override
     public int apply(INoiseRandom iNoiseRandom, int center) {
         if (isLand(center)) {
-            return TropicraftLayerUtil.TROPICS_LAND_IDS[iNoiseRandom.random(TropicraftLayerUtil.TROPICS_LAND_IDS.length)];
+            return TropicraftLayerUtil.TROPICS_LAND_IDS[iNoiseRandom.random(TropicraftLayerUtil.TROPICS_LAND_IDS.length)].getAsInt();
         }
 
         // TODO add kelp forest and other ocean biomes random check here

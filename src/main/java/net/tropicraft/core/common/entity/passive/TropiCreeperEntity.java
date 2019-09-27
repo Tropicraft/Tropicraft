@@ -202,8 +202,8 @@ public class TropiCreeperEntity extends CreatureEntity {
                         attempt = attempt.down();
                     }
                     attempt = attempt.up();
-                    BlockState state = TropicraftBlocks.SMALL_FLOWERS[rand.nextInt(TropicraftBlocks.SMALL_FLOWERS.length)].getDefaultState();
-                    if (TropicraftBlocks.CROCOSMIA.isValidPosition(state, world, attempt)) {
+                    BlockState state = TropicraftBlocks.SMALL_FLOWERS[rand.nextInt(TropicraftBlocks.SMALL_FLOWERS.length)].get().getDefaultState();
+                    if (state.isValidPosition(world, attempt)) {
                         world.setBlockState(attempt, state);
                     }
                 }

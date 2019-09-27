@@ -1,8 +1,14 @@
 package net.tropicraft.core.common.dimension.layer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.LongFunction;
+
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.LazyAreaLayerContext;
 import net.minecraft.world.gen.area.IArea;
@@ -12,28 +18,40 @@ import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.lifecycle.FMLModIdMappingEvent;
+import net.tropicraft.Info;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 
-import java.util.function.LongFunction;
-
+@EventBusSubscriber(modid = Info.MODID)
+@SuppressWarnings("deprecation")
 public class TropicraftLayerUtil {
 
-    protected static final int OCEAN_ID = Registry.BIOME.getId(TropicraftBiomes.TROPICS_OCEAN);
-    protected static final int LAND_ID = Registry.BIOME.getId(TropicraftBiomes.TROPICS);
-    protected static final int RIVER_ID = Registry.BIOME.getId(TropicraftBiomes.TROPICS_RIVER);
-    protected static final int BEACH_ID = Registry.BIOME.getId(TropicraftBiomes.TROPICS_BEACH);
-    protected static final int ISLAND_MOUNTAINS_ID = Registry.BIOME.getId(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS);
-    protected static final int RAINFOREST_PLAINS_ID = Registry.BIOME.getId(TropicraftBiomes.RAINFOREST_PLAINS);
-    protected static final int RAINFOREST_HILLS_ID = Registry.BIOME.getId(TropicraftBiomes.RAINFOREST_HILLS);
-    protected static final int RAINFOREST_MOUNTAINS_ID = Registry.BIOME.getId(TropicraftBiomes.RAINFOREST_MOUNTAINS);
-    protected static final int[] TROPICS_LAND_IDS = new int[]{LAND_ID, RAINFOREST_PLAINS_ID};
-    protected static final int[] RAINFOREST_IDS = new int[] {
+    private static final List<LazyInt> CACHES = new ArrayList<>();
+
+    protected static final LazyInt OCEAN_ID = lazyId(TropicraftBiomes.TROPICS_OCEAN);
+    protected static final LazyInt LAND_ID = lazyId(TropicraftBiomes.TROPICS);
+    protected static final LazyInt RIVER_ID = lazyId(TropicraftBiomes.TROPICS_RIVER);
+    protected static final LazyInt BEACH_ID = lazyId(TropicraftBiomes.TROPICS_BEACH);
+    protected static final LazyInt ISLAND_MOUNTAINS_ID = lazyId(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS);
+    protected static final LazyInt RAINFOREST_PLAINS_ID = lazyId(TropicraftBiomes.RAINFOREST_PLAINS);
+    protected static final LazyInt RAINFOREST_HILLS_ID = lazyId(TropicraftBiomes.RAINFOREST_HILLS);
+    protected static final LazyInt RAINFOREST_MOUNTAINS_ID = lazyId(TropicraftBiomes.RAINFOREST_MOUNTAINS);
+    protected static final LazyInt[] TROPICS_LAND_IDS = new LazyInt[]{LAND_ID, RAINFOREST_PLAINS_ID};
+    protected static final LazyInt[] RAINFOREST_IDS = new LazyInt[] {
       //      RAINFOREST_PLAINS_ID,
             RAINFOREST_HILLS_ID,
             RAINFOREST_MOUNTAINS_ID,
             //RAINFOREST_ISLAND_MOUNTAINS_ID
     };
+    private static LazyInt lazyId(RegistryObject<Biome> biome) {
+        LazyInt ret = new LazyInt(() -> Registry.BIOME.getId(biome.get()));
+        CACHES.add(ret);
+        return ret;
+    }
 
     public static Layer[] buildTropicsProcedure(long seed, WorldType type, TropicraftGeneratorSettings settings) {
         final ImmutableList<IAreaFactory<LazyArea>> immutablelist = buildTropicsProcedure(type, settings, procedure -> new LazyAreaLayerContext(25, seed, procedure));
@@ -87,14 +105,19 @@ public class TropicraftLayerUtil {
     }
 
     public static boolean isOcean(final int biome) {
-        return biome == OCEAN_ID;
+        return biome == OCEAN_ID.getAsInt();
     }
 
     public static boolean isRiver(final int biome) {
-        return biome == RIVER_ID;
+        return biome == RIVER_ID.getAsInt();
     }
 
     public static boolean isLand(final int biome) {
-        return biome == LAND_ID;
+        return biome == LAND_ID.getAsInt();
+    }
+    
+    @SubscribeEvent
+    public static void onRegistryRemap(FMLModIdMappingEvent event) {
+        CACHES.forEach(LazyInt::invalidate);
     }
 }

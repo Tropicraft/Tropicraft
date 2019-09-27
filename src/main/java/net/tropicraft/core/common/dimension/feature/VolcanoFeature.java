@@ -45,8 +45,8 @@ public class VolcanoFeature extends Feature<NoFeatureConfig> {
                 return false;
             }
 
-            if (worldIn.getBlockState(posVolcanoTE).getBlock() != TropicraftBlocks.VOLCANO) {
-                worldIn.setBlockState(posVolcanoTE, TropicraftBlocks.VOLCANO.getDefaultState(), 3);
+            if (worldIn.getBlockState(posVolcanoTE).getBlock() != TropicraftBlocks.VOLCANO.get()) {
+                worldIn.setBlockState(posVolcanoTE, TropicraftBlocks.VOLCANO.get().getDefaultState(), 3);
                 return true;
             }
         }

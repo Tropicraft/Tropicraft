@@ -41,7 +41,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
     private ItemStack siftItem = ItemStack.EMPTY;
 
     public SifterTileEntity() {
-        super(TropicraftTileEntityTypes.SIFTER);
+        super(TropicraftTileEntityTypes.SIFTER.get());
         rand = new Random();
         currentSiftTime = SIFT_TIME;
     }
@@ -95,7 +95,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
                 }
                 final CompoundNBT nameTag = new CompoundNBT();
                 nameTag.putString("Name", name);
-                stack = new ItemStack(TropicraftItems.LOVE_TROPICS_SHELL);
+                stack = new ItemStack(TropicraftItems.LOVE_TROPICS_SHELL.get());
                 stack.setTag(nameTag);
             } else {
                 stack = getCommonItem();
@@ -120,7 +120,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
         if (shellIndex < 0) {
             return getRareItem();
         }
-        return new ItemStack(TropicraftItems.SHELLS[shellIndex]);
+        return new ItemStack(TropicraftItems.SHELLS[shellIndex].get());
     }
 
     private ItemStack getRareItem() {
@@ -136,14 +136,14 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
             case 4:
                 return new ItemStack(Items.GLASS_BOTTLE, 1);
             case 5:
-                return new ItemStack(TropicraftItems.WHITE_PEARL, 1);
+                return new ItemStack(TropicraftItems.WHITE_PEARL.get(), 1);
             case 6:
-                return new ItemStack(TropicraftItems.BLACK_PEARL, 1);
+                return new ItemStack(TropicraftItems.BLACK_PEARL.get(), 1);
             case 7:
                 return new ItemStack(Items.STONE_SHOVEL, 1);
             case 0:
             default:
-                return new ItemStack(TropicraftItems.RUBE_NAUTILUS);
+                return new ItemStack(TropicraftItems.RUBE_NAUTILUS.get());
         }
     }
 

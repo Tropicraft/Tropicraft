@@ -1,6 +1,16 @@
 package net.tropicraft.core.common.dimension.biome;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
@@ -12,19 +22,13 @@ import net.tropicraft.core.common.dimension.config.TropicraftBiomeProviderSettin
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 import net.tropicraft.core.common.dimension.layer.TropicraftLayerUtil;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
 public class TropicraftBiomeProvider extends BiomeProvider {
     private final Layer noiseLayer;
     private final Layer blockLayer;
 
     protected final Set<BlockState> surfaceBlocks = Sets.newHashSet();
 
-    private final Biome[] possibleBiomes = {
+    private final ImmutableList<Supplier<Biome>> possibleBiomes = ImmutableList.of(
             TropicraftBiomes.TROPICS,
             TropicraftBiomes.TROPICS_OCEAN,
             TropicraftBiomes.TROPICS_RIVER,
@@ -34,7 +38,7 @@ public class TropicraftBiomeProvider extends BiomeProvider {
             TropicraftBiomes.RAINFOREST_MOUNTAINS,
             TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS,
             TropicraftBiomes.KELP_FOREST
-    };
+    );
 
     public TropicraftBiomeProvider(final TropicraftBiomeProviderSettings settings) {
         final WorldInfo info = settings.getWorldInfo();
@@ -108,8 +112,8 @@ public class TropicraftBiomeProvider extends BiomeProvider {
     @Override
     public boolean hasStructure(Structure<?> structure) {
         return this.hasStructureCache.computeIfAbsent(structure, (structure1) -> {
-            for (final Biome biome : possibleBiomes) {
-                if (biome.hasStructure(structure1)) {
+            for (final Supplier<Biome> biome : possibleBiomes) {
+                if (biome.get().hasStructure(structure1)) {
                     return true;
                 }
             }
@@ -121,8 +125,8 @@ public class TropicraftBiomeProvider extends BiomeProvider {
     @Override
     public Set<BlockState> getSurfaceBlocks() {
         if (surfaceBlocks.isEmpty()) {
-            for (final Biome biome : possibleBiomes) {
-                surfaceBlocks.add(biome.getSurfaceBuilderConfig().getTop());
+            for (final Supplier<Biome> biome : possibleBiomes) {
+                surfaceBlocks.add(biome.get().getSurfaceBuilderConfig().getTop());
             }
         }
         return surfaceBlocks;

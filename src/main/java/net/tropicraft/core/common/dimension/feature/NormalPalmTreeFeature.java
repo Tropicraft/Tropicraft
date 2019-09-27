@@ -38,7 +38,7 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.getDefaultState(), bb);
+        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.get().getDefaultState(), bb);
 
         int i = pos.getX(), j = pos.getY(), k = pos.getZ();
 
@@ -75,12 +75,12 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
         for (int j1 = 0; j1 < height + 2; j1++) {
             BlockPos logPos = pos.up(j1);
             if (isAirOrLeaves(world, logPos) || isTallPlants(world, logPos)) {
-                setState(changedBlocks, world, logPos, LOG_STATE, bb);
+                setState(changedBlocks, world, logPos, getLog(), bb);
             }
             BlockPos pos3 = new BlockPos(i, (j + j1) - 2, k);
             if (isAir(world, pos3) && (isLeaves(world, pos3.up()) || isLeaves(world, pos3.up(2)))) {
                 // TODO not sure if this is working at all
-                TropicraftFeatureUtil.spawnCoconuts(world, pos3, rand, 2, LEAF_STATE);
+                TropicraftFeatureUtil.spawnCoconuts(world, pos3, rand, 2, getLeaf());
             }
         }
 

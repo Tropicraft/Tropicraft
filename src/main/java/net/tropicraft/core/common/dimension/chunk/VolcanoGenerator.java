@@ -3,11 +3,13 @@ package net.tropicraft.core.common.dimension.chunk;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
@@ -20,12 +22,12 @@ import net.tropicraft.core.common.dimension.noise.generator.Billowed;
 
 public class VolcanoGenerator {
 
-	public static List<Biome> volcanoSpawnBiomesLand = Arrays.asList(new Biome[] {
-			TropicraftBiomes.TROPICS, TropicraftBiomes.RAINFOREST_PLAINS
-	});
-	public static List<Biome> volcanoSpawnBiomesOcean = Arrays.asList(new Biome[] {
-			TropicraftBiomes.TROPICS_OCEAN
-	});
+	public static List<ResourceLocation> volcanoSpawnBiomesLand = Arrays.asList(
+			TropicraftBiomes.TROPICS.getId(), TropicraftBiomes.RAINFOREST_PLAINS.getId()
+	);
+	public static List<ResourceLocation> volcanoSpawnBiomesOcean = Arrays.asList(
+			TropicraftBiomes.TROPICS_OCEAN.getId()
+	);
 
 	private IWorld world;
 
@@ -45,9 +47,9 @@ public class VolcanoGenerator {
 	public final static int CHUNK_SIZE_Z = 16;
 	public final static int CHUNK_SIZE_Y = 256;
 
-	private final static BlockState VOLCANO_BLOCK = TropicraftBlocks.CHUNK.getDefaultState();
-	private final static BlockState LAVA_BLOCK = Blocks.LAVA.getDefaultState();
-	private final static BlockState SAND_BLOCK = TropicraftBlocks.VOLCANIC_SAND.getDefaultState();
+	private final static Supplier<BlockState> VOLCANO_BLOCK = TropicraftBlocks.CHUNK.lazyMap(Block::getDefaultState);
+	private final static Supplier<BlockState> LAVA_BLOCK = () -> Blocks.LAVA.getDefaultState();
+	private final static Supplier<BlockState> SAND_BLOCK = TropicraftBlocks.VOLCANIC_SAND.lazyMap(Block::getDefaultState);
 
 	public VolcanoGenerator(IWorld worldObj) {
 		this.world = worldObj;
@@ -152,7 +154,7 @@ public class VolcanoGenerator {
 							} else if (y <= lavaLevel) {
 								this.placeBlock(pos, LAVA_BLOCK, primer);
 							} else {
-								this.placeBlock(pos, Blocks.AIR.getDefaultState(), primer);
+								this.placeBlock(pos, () -> Blocks.AIR.getDefaultState(), primer);
 							}
 						}
 					}
@@ -163,8 +165,8 @@ public class VolcanoGenerator {
 		return primer;
 	}
 
-	public void placeBlock(BlockPos pos, BlockState blockState, ChunkPrimer primer) {
-		primer.setBlockState(pos, blockState, false);
+	public void placeBlock(BlockPos pos, Supplier<BlockState> blockState, ChunkPrimer primer) {
+		primer.setBlockState(pos, blockState.get(), false);
 	}
 
 	public BlockState getBlockState(BlockPos pos, ChunkPrimer primer) {
@@ -239,10 +241,10 @@ public class VolcanoGenerator {
 		return biome == SURFACE_BIOME ? 0: OCEAN_HEIGHT_OFFSET;
 	}
 
-	private static boolean hasAllBiomes(IWorld world, int centerX, int centerY, List<Biome> allowedBiomes) {
+	private static boolean hasAllBiomes(IWorld world, int centerX, int centerY, List<ResourceLocation> allowedBiomes) {
 		BiomeProvider biomeProvider = world.getChunkProvider().getChunkGenerator().getBiomeProvider();
 		for (Biome biome : biomeProvider.getBiomesInSquare(centerX, centerY, 0)) {
-			if (!allowedBiomes.contains(biome)) {
+			if (!allowedBiomes.contains(biome.getRegistryName())) {
 				return false;
 			}
 		}

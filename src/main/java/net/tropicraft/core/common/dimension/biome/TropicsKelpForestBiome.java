@@ -8,7 +8,7 @@ public class TropicsKelpForestBiome extends TropicraftBiome {
 
     protected TropicsKelpForestBiome() {
         super(new Biome.Builder()
-                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG)
+                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
                 .precipitation(RainType.RAIN)
                 .category(Category.OCEAN)
                 .depth(-1.5F)

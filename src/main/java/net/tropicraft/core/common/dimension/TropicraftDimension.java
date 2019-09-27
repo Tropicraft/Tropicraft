@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.dimension;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
@@ -19,11 +21,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProviderTypes;
-import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorType;
+import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.config.TropicraftBiomeProviderSettings;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
-
-import javax.annotation.Nullable;
 
 public class TropicraftDimension extends Dimension {
     public TropicraftDimension(final World worldIn, final DimensionType typeIn) {
@@ -32,8 +32,8 @@ public class TropicraftDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS;
-        ChunkGeneratorType chunkType = TropicraftChunkGeneratorType.TROPICS;
+        BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS.get();
+        ChunkGeneratorType chunkType = TropicraftChunkGeneratorTypes.TROPICS.get();
         TropicraftGeneratorSettings genSettings = (TropicraftGeneratorSettings) chunkType.createSettings();
         TropicraftBiomeProviderSettings settings2 = biomeType.createSettings().setWorldInfo(world.getWorldInfo()).setGeneratorSettings(genSettings);
         return chunkType.create(this.world, biomeType.create(settings2), genSettings);

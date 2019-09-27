@@ -15,7 +15,7 @@ public enum TropicraftExpandIslandLayer implements IBishopTransformer {
             final boolean isNorthWestOcean = TropicraftLayerUtil.isOcean(nw);
             if (!isNorthWestOcean || !isSouthWestOcean || !isNorthEastOcean || !isSouthEastOcean) {
                 int chance = 1;
-                int result = TropicraftLayerUtil.LAND_ID;
+                int result = TropicraftLayerUtil.LAND_ID.getAsInt();
 
                 if (!isNorthWestOcean && random.random(chance++) == 0) {
                     result = nw;
@@ -37,7 +37,7 @@ public enum TropicraftExpandIslandLayer implements IBishopTransformer {
                     return result;
                 }
 
-                return TropicraftLayerUtil.OCEAN_ID;
+                return TropicraftLayerUtil.OCEAN_ID.getAsInt();
             }
         }
 

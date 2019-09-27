@@ -12,11 +12,11 @@ public enum TropicraftBeachLayer implements IBishopTransformer {
     @Override
     public int apply(INoiseRandom iNoiseRandom, int ne, int se, int sw, int nw, int center) {
         if (isOcean(center) && (!isOcean(ne) || !isOcean(se) || !isOcean(sw) || !isOcean(nw))) {
-            return TropicraftLayerUtil.BEACH_ID;
+            return TropicraftLayerUtil.BEACH_ID.getAsInt();
         }
 
         if (isRiver(center) && (!isRiver(ne) || !isRiver(se) || !isRiver(sw) || !isRiver(nw))) {
-            return TropicraftLayerUtil.BEACH_ID;
+            return TropicraftLayerUtil.BEACH_ID.getAsInt();
         }
 
         return center;

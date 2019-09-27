@@ -1,11 +1,14 @@
 package net.tropicraft.core.common.entity;
 
+import java.util.function.Supplier;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
@@ -18,33 +21,22 @@ import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 
 @Mod.EventBusSubscriber(modid = Info.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
-    public static EntityType<EntityKoaHunter> KOA_HUNTER;
-    public static EntityType<TropiCreeperEntity> TROPI_CREEPER;
-    public static EntityType<IguanaEntity> IGUANA;
-    public static EntityType<UmbrellaEntity> UMBRELLA;
-    public static EntityType<TropiSkellyEntity> TROPI_SKELLY;
-    public static EntityType<EIHEntity> EIH;
-    public static EntityType<WallItemEntity> WALL_ITEM;
-    public static EntityType<BambooItemFrame> BAMBOO_ITEM_FRAME;
-    public static EntityType<LavaBallEntity> LAVA_BALL;
 
-    @SubscribeEvent
-    public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
-        KOA_HUNTER = register(event, "koa", koaHunter());
-        TROPI_CREEPER = register(event, "tropicreeper", tropicreeper());
-        IGUANA = register(event, "iguana", iguana());
-        UMBRELLA = register(event, "umbrella", umbrella());
-        TROPI_SKELLY = register(event, "tropiskelly", tropiskelly());
-        EIH = register(event, "eih", eih());
-        WALL_ITEM = register(event, "wall_item", wallItem());
-        BAMBOO_ITEM_FRAME = register(event, "bamboo_item_frame", bambooItemFrame());
-        // TODO: Register again when volcano eruption is finished: LAVA_BALL = register(event, "lava_ball", lavaBall());
-    }
+    public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, Info.MODID);
 
-    private static <T extends Entity> EntityType<T> register(final RegistryEvent.Register<EntityType<?>> event, final String name, final EntityType.Builder<T> entityType) {
-        final EntityType<T> entityTypeCreated = entityType.build(name);
-        event.getRegistry().register(entityTypeCreated.setRegistryName(name));
-        return entityTypeCreated;
+    public static final RegistryObject<EntityType<EntityKoaHunter>> KOA_HUNTER = register("koa", TropicraftEntities::koaHunter);
+    public static final RegistryObject<EntityType<TropiCreeperEntity>> TROPI_CREEPER = register("tropicreeper", TropicraftEntities::tropicreeper);
+    public static final RegistryObject<EntityType<IguanaEntity>> IGUANA = register("iguana", TropicraftEntities::iguana);
+    public static final RegistryObject<EntityType<UmbrellaEntity>> UMBRELLA = register("umbrella", TropicraftEntities::umbrella);
+    public static final RegistryObject<EntityType<TropiSkellyEntity>> TROPI_SKELLY = register("tropiskelly", TropicraftEntities::tropiskelly);
+    public static final RegistryObject<EntityType<EIHEntity>> EIH = register("eih", TropicraftEntities::eih);
+    public static final RegistryObject<EntityType<WallItemEntity>> WALL_ITEM = register("wall_item", TropicraftEntities::wallItem);
+    public static final RegistryObject<EntityType<BambooItemFrame>> BAMBOO_ITEM_FRAME = register("bamboo_item_frame", TropicraftEntities::bambooItemFrame);
+    // TODO: Register again when volcano eruption is finished
+    public static final RegistryObject<EntityType<LavaBallEntity>> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
+
+    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
+        return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
     private static EntityType.Builder<BambooItemFrame> bambooItemFrame() {
@@ -53,7 +45,7 @@ public class TropicraftEntities {
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new BambooItemFrame(BAMBOO_ITEM_FRAME, world));
+                .setCustomClientFactory(($, world) -> new BambooItemFrame(BAMBOO_ITEM_FRAME.get(), world));
     }
 
     private static EntityType.Builder<LavaBallEntity> lavaBall() {
@@ -71,7 +63,7 @@ public class TropicraftEntities {
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new WallItemEntity(WALL_ITEM, world));
+                .setCustomClientFactory(($, world) -> new WallItemEntity(WALL_ITEM.get(), world));
     }
 
     private static EntityType.Builder<EIHEntity> eih() {

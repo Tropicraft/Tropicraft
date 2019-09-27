@@ -41,7 +41,7 @@ public class AshenMaskItem extends ArmorItem {
             return ActionResultType.FAIL;
         } else {
             World world = context.getWorld();
-            WallItemEntity wallItem = new WallItemEntity(TropicraftEntities.WALL_ITEM, world);
+            WallItemEntity wallItem = new WallItemEntity(TropicraftEntities.WALL_ITEM.get(), world);
             wallItem.setHangingPosition(offsetPos);
             wallItem.updateFacingWithBoundingBox(direction);
             wallItem.setDisplayedItem(itemStack);

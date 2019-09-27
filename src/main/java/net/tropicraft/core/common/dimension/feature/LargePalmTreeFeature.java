@@ -37,11 +37,11 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.getDefaultState(), bb);
+        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.get().getDefaultState(), bb);
 
         // Place trunk
         for (int y = 0; y <= height; y++) {
-            setState(changedBlocks, world, pos.up(y), LOG_STATE, bb);
+            setState(changedBlocks, world, pos.up(y), getLog(), bb);
         }
         
         final int i = pos.getX(), j = pos.getY(), k = pos.getZ();
@@ -175,7 +175,7 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
         placeLeaf(changedBlocks, world, bb, i + 0, j + height + 3, k + 5);
 
         for (int y = height - 4; y < height - 1; y++) {
-            TropicraftFeatureUtil.spawnCoconuts(world,  new BlockPos(i, j + y, k), rand, 2, LEAF_STATE);
+            TropicraftFeatureUtil.spawnCoconuts(world,  new BlockPos(i, j + y, k), rand, 2, getLeaf());
         }
 
         return true;

@@ -9,7 +9,7 @@ public enum TropicraftRiverLayer implements ICastleTransformer {
     @Override
     public int apply(INoiseRandom random, int north, int east, int south, int west, int center) {
         if (center != north || center != east || center != south || center != west) {
-            return TropicraftLayerUtil.RIVER_ID;
+            return TropicraftLayerUtil.RIVER_ID.getAsInt();
         }
 
         return -1;

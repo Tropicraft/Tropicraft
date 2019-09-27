@@ -19,7 +19,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class BambooItemFrameItem extends HangingEntityItem {
     public BambooItemFrameItem(Item.Properties builder) {
-        super(TropicraftEntities.BAMBOO_ITEM_FRAME, builder);
+        super(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), builder);
     }
     
     @Override
