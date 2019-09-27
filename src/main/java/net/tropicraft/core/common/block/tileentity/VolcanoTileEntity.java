@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.dimension.mapgen.MapGenVolcano;
+import net.tropicraft.core.common.dimension.chunk.VolcanoGenerator;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.volcano.VolcanoState;
@@ -26,10 +26,10 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 {
 
 	private static final int RAND_DORMANT_DURATION = 4000;
-	private static final int MAX_LAVA_LEVEL_DURING_RISE = MapGenVolcano.VOLCANO_CRUST - 1;
-	private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = MapGenVolcano.VOLCANO_CRUST + 1;
-	private static final int LAVA_BASE_LEVEL = MapGenVolcano.LAVA_LEVEL;
-	private static final int LAVA_ERUPT_LEVEL = MapGenVolcano.LAVA_LEVEL + 11;
+	private static final int MAX_LAVA_LEVEL_DURING_RISE = VolcanoGenerator.VOLCANO_CRUST - 1;
+	private static final int MAX_LAVA_LEVEL_DURING_ERUPTION = VolcanoGenerator.VOLCANO_CRUST + 1;
+	private static final int LAVA_BASE_LEVEL = VolcanoGenerator.LAVA_LEVEL;
+	private static final int LAVA_ERUPT_LEVEL = VolcanoGenerator.LAVA_LEVEL + 11;
 
 	private int ticksUntilEruption = VolcanoState.getTimeBefore(VolcanoState.ERUPTING);
 	private int ticksUntilSmoking = VolcanoState.getTimeBefore(VolcanoState.SMOKING);
@@ -58,7 +58,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 		}
 
 		if (this.heightOffset == Integer.MIN_VALUE) {
-			this.heightOffset = MapGenVolcano.getHeightOffsetForBiome(this.getPos().getY());
+			this.heightOffset = VolcanoGenerator.getHeightOffsetForBiome(this.getPos().getY());
 		}
 
 		if (!getWorld().isRemote) {
@@ -291,7 +291,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	private void setLavaLevel() {
-		for(int y = LAVA_BASE_LEVEL + this.heightOffset; y < MapGenVolcano.CHUNK_SIZE_Y; y++) {
+		for(int y = LAVA_BASE_LEVEL + this.heightOffset; y < VolcanoGenerator.CHUNK_SIZE_Y; y++) {
 			BlockPos pos2 = new BlockPos(this.pos.getX(), y, this.pos.getZ());
 			//if(getWorld().getBlockState(pos).getBlock() != Blocks.LAVA && getWorld().getBlockId(xPos, y, zPos) != TropicraftMod.tempLavaMoving.blockID) {\
 			if (getWorld().getBlockState(pos2).getMaterial() != Material.LAVA) {

@@ -1,4 +1,8 @@
-package net.tropicraft.core.common.dimension.mapgen;
+package net.tropicraft.core.common.dimension.chunk;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -6,7 +10,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -15,14 +18,7 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.noise.NoiseModule;
 import net.tropicraft.core.common.dimension.noise.generator.Billowed;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-public class MapGenVolcano {
-
-	protected HashMap coordMap = new HashMap();
+public class VolcanoGenerator {
 
 	public static List<Biome> volcanoSpawnBiomesLand = Arrays.asList(new Biome[] {
 			TropicraftBiomes.TROPICS, TropicraftBiomes.RAINFOREST_PLAINS
@@ -32,8 +28,6 @@ public class MapGenVolcano {
 	});
 
 	private IWorld world;
-
-	private boolean useArrays;
 
 	private final static int MAX_RADIUS = 65;
 	private final static int MIN_RADIUS = 45;
@@ -55,19 +49,18 @@ public class MapGenVolcano {
 	private final static BlockState LAVA_BLOCK = Blocks.LAVA.getDefaultState();
 	private final static BlockState SAND_BLOCK = TropicraftBlocks.VOLCANIC_SAND.getDefaultState();
 
-	public MapGenVolcano(IWorld worldObj, boolean useArrays) {
+	public VolcanoGenerator(IWorld worldObj) {
 		this.world = worldObj;
-		this.useArrays = useArrays;
 	}
 
 	public ChunkPrimer generate(int i, int k, ChunkPrimer primer) {
-		BlockPos volcanoCoords = MapGenVolcano.getVolcanoNear(this.world, i, k);
+		BlockPos volcanoCoords = VolcanoGenerator.getVolcanoNear(this.world, i, k);
 
 		if (volcanoCoords == null) {
 			return primer;
 		}
 
-		int HEIGHT_OFFSET = MapGenVolcano.getHeightOffsetForBiome(volcanoCoords.getY());
+		int HEIGHT_OFFSET = VolcanoGenerator.getHeightOffsetForBiome(volcanoCoords.getY());
 		int calderaCutoff = CALDERA_CUTOFF + HEIGHT_OFFSET;
 		int lavaLevel = LAVA_LEVEL + HEIGHT_OFFSET;
 		int volcanoTop = VOLCANO_TOP + HEIGHT_OFFSET;

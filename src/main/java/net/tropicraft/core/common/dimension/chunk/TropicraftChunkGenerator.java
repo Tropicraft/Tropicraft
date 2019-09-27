@@ -1,22 +1,16 @@
 package net.tropicraft.core.common.dimension.chunk;
 
 import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
-import net.tropicraft.core.common.dimension.mapgen.MapGenVolcano;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGeneratorSettings> {
     private static final float[] BIOME_WEIGHTS = (float[]) Util.make(new float[25], (weights) -> {
@@ -30,14 +24,14 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     });
 
     private final OctavesNoiseGenerator depthNoise;
-    private MapGenVolcano volcanoGen;
+    private VolcanoGenerator volcanoGen;
 
     public TropicraftChunkGenerator(IWorld world, BiomeProvider biomeProvider, TropicraftGeneratorSettings settings) {
         super(world, biomeProvider, 4, 8, 256, settings, false);
         this.randomSeed.skip(2620);
         this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 16);
 
-        this.volcanoGen = new MapGenVolcano(world, true);
+        this.volcanoGen = new VolcanoGenerator(world);
     }
 
     // spawn height

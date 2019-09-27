@@ -8,7 +8,7 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.dimension.mapgen.MapGenVolcano;
+import net.tropicraft.core.common.dimension.chunk.VolcanoGenerator;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -31,7 +31,7 @@ public class VolcanoFeature extends Feature<NoFeatureConfig> {
         int chunkX = pos.getX() >> 4;
         int chunkY = pos.getZ() >> 4;
 
-        BlockPos volcanoCoords = MapGenVolcano.getVolcanoNear(worldIn, chunkX, chunkY);
+        BlockPos volcanoCoords = VolcanoGenerator.getVolcanoNear(worldIn, chunkX, chunkY);
 
         if (volcanoCoords != null) {
             BlockPos posVolcanoTE = new BlockPos(volcanoCoords.getX(), 1, volcanoCoords.getZ());

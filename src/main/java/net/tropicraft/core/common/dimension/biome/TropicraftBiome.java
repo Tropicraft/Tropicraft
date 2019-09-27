@@ -16,9 +16,7 @@ public abstract class TropicraftBiome extends Biome {
             .waterColor(TROPICS_WATER_COLOR)
             .waterFogColor(TROPICS_WATER_FOG_COLOR));
 
-        /**
-         * Volcano feature to add tile entity to the volcano generation. Checks in each chunk if a volcano is nearby.
-         */
+        // Volcano feature to add tile entity to the volcano generation. Checks in each chunk if a volcano is nearby.
         this.addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, createDecoratedFeature(TropicraftFeatures.VOLCANO, IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
     }
 }
