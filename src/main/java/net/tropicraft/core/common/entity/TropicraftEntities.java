@@ -17,6 +17,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 
 @Mod.EventBusSubscriber(modid = Info.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
@@ -31,6 +32,8 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<EIHEntity>> EIH = register("eih", TropicraftEntities::eih);
     public static final RegistryObject<EntityType<WallItemEntity>> WALL_ITEM = register("wall_item", TropicraftEntities::wallItem);
     public static final RegistryObject<EntityType<BambooItemFrame>> BAMBOO_ITEM_FRAME = register("bamboo_item_frame", TropicraftEntities::bambooItemFrame);
+    // TODO: Register again when volcano eruption is finished
+    public static final RegistryObject<EntityType<LavaBallEntity>> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
@@ -43,6 +46,15 @@ public class TropicraftEntities {
                 .setUpdateInterval(10)
                 .setShouldReceiveVelocityUpdates(false)
                 .setCustomClientFactory(($, world) -> new BambooItemFrame(BAMBOO_ITEM_FRAME.get(), world));
+    }
+
+    private static EntityType.Builder<LavaBallEntity> lavaBall() {
+        return EntityType.Builder.<LavaBallEntity>create(LavaBallEntity::new, EntityClassification.MISC)
+                .size(1.0F, 1.0F)
+                .setTrackingRange(64)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(true)
+                .setCustomClientFactory(($, world) -> new LavaBallEntity(world));
     }
 
     private static EntityType.Builder<WallItemEntity> wallItem() {

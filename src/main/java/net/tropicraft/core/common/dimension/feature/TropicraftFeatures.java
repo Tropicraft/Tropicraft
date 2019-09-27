@@ -53,6 +53,8 @@ public class TropicraftFeatures {
 	
 	public static final RegistryObject<Structure<NoFeatureConfig>> VILLAGE = register(
 	        "koa_village", () -> new KoaVillageStructure(NoFeatureConfig::deserialize));
+	public static final RegistryObject<VolcanoFeature> VOLCANO = register(
+	        "volcano", () -> new VolcanoFeature(NoFeatureConfig::deserialize));
 	
     public static final PlacementBehaviour KOA_TOWN_CENTER = PlacementBehaviour.create("KOA_TOWN_CENTER", Info.MODID + ":koa_town_center",
             ImmutableList.of(new StructureSupportsProcessor(), new StructureVoidProcessor()));

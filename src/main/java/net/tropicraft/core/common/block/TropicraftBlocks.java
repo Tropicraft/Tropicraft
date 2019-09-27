@@ -174,6 +174,8 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> DRINK_MIXER = register(
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
             () -> () -> new DrinkMixerItemstackRenderer());
+    public static final RegistryObject<Block> VOLCANO = register(
+            "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK)));
     
     public static final RegistryObject<Block> TIKI_TORCH = register(
             "tiki_torch", () -> new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0)));

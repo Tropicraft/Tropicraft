@@ -1,10 +1,13 @@
 package net.tropicraft.core.common.dimension.chunk;
 
 import net.minecraft.util.Util;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
@@ -21,11 +24,14 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     });
 
     private final OctavesNoiseGenerator depthNoise;
+    private VolcanoGenerator volcanoGen;
 
     public TropicraftChunkGenerator(IWorld world, BiomeProvider biomeProvider, TropicraftGeneratorSettings settings) {
         super(world, biomeProvider, 4, 8, 256, settings, false);
-        randomSeed.skip(2620);
-        depthNoise = new OctavesNoiseGenerator(this.randomSeed, 16);
+        this.randomSeed.skip(2620);
+        this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 16);
+
+        this.volcanoGen = new VolcanoGenerator(world);
     }
 
     // spawn height
@@ -120,6 +126,19 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         final int topSlideScale = 3;
 
         func_222546_a(doubles, x, z, xzScale, yScale, xzOtherScale, yOtherScale, topSlideScale, topSlideMax);
+    }
+
+    @Override
+    public void makeBase(IWorld worldIn, IChunk chunkIn) {
+        super.makeBase(worldIn, chunkIn);
+
+        ChunkPos chunkPos = chunkIn.getPos();
+        int j = chunkPos.x;
+        int k = chunkPos.z;
+
+        ChunkPrimer chunkPrimer = (ChunkPrimer)chunkIn;
+
+        this.volcanoGen.generate(j, k, chunkPrimer);
     }
 
 }

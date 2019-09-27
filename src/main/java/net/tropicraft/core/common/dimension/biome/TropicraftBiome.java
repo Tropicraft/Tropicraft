@@ -15,11 +15,13 @@ public abstract class TropicraftBiome extends Biome {
     protected TropicraftBiome(final Builder builder) {
         super(builder
             .waterColor(TROPICS_WATER_COLOR)
-            .waterFogColor(TROPICS_WATER_FOG_COLOR));
-    }
+            .waterFogColor(TROPICS_WATER_FOG_COLOR));    }
     
     public void addFeatures() {
         DefaultBiomeFeatures.addStructures(this);
         addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(TropicraftFeatures.VILLAGE.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+        
+        // Volcano feature to add tile entity to the volcano generation. Checks in each chunk if a volcano is nearby.
+        addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, createDecoratedFeature(TropicraftFeatures.VOLCANO.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
     }
 }

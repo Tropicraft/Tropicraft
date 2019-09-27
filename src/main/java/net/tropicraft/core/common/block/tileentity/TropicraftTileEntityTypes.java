@@ -19,4 +19,6 @@ public class TropicraftTileEntityTypes {
             "sifter", () -> new TileEntityType<>(SifterTileEntity::new, Sets.newHashSet(TropicraftBlocks.SIFTER.get()), null));
     public static final RegistryObject<TileEntityType<DrinkMixerTileEntity>> DRINK_MIXER = TILE_ENTITIES.register(
             "drink_mixer", () -> new TileEntityType<>(DrinkMixerTileEntity::new, Sets.newHashSet(TropicraftBlocks.DRINK_MIXER.get()), null));
+    public static final RegistryObject<TileEntityType<VolcanoTileEntity>> VOLCANO = TILE_ENTITIES.register(
+            "tile_entity_volcano", () -> new TileEntityType<>(VolcanoTileEntity::new, Sets.newHashSet(TropicraftBlocks.VOLCANO.get()), null));
 }
