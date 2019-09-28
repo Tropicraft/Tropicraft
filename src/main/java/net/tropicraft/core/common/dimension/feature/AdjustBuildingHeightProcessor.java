@@ -10,6 +10,7 @@ import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
+import net.minecraft.world.gen.feature.template.Template.EntityInfo;
 import net.tropicraft.Info;
 
 public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
@@ -32,6 +33,14 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
             return new BlockInfo(blockInfo.pos.up(), blockInfo.state, blockInfo.nbt);
         }
         return blockInfo;
+    }
+    
+    @Override
+    public EntityInfo processEntity(IWorldReader world, BlockPos seedPos, EntityInfo rawEntityInfo, EntityInfo entityInfo, PlacementSettings placementSettings, Template template) {
+        if (seedPos.getY() < base) {
+            return new EntityInfo(entityInfo.pos.add(0, 1, 0), entityInfo.blockPos.up(), entityInfo.nbt);
+        }
+        return entityInfo;
     }
 
     @Override

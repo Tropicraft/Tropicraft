@@ -58,9 +58,12 @@ minecraft {
     }
 }
 
+repositories {
+	mavenLocal()
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
 }
 
 jar {
