@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -34,7 +35,13 @@ import net.minecraftforge.common.util.Constants;
 public class TikiTorchBlock extends Block {
 
     public enum TorchSection implements IStringSerializable {
-        UPPER, MIDDLE, LOWER;
+        UPPER(2), MIDDLE(1), LOWER(0);
+        
+        final int height;
+        
+        private TorchSection(int height) {
+            this.height = height;
+        }
 
         @Override
         public String getName() {
@@ -76,12 +83,11 @@ public class TikiTorchBlock extends Block {
     @Override
     @Deprecated
     public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-        if (state.get(SECTION) == TorchSection.LOWER) {
-            return super.isValidPosition(state, world, pos);
-         } else {
+        if (func_220055_a(world, pos.down(), Direction.UP)) { // can block underneath support torch
+            return true;
+         } else { // if not, is the block underneath a lower 2/3 tiki torch segment?
             BlockState blockstate = world.getBlockState(pos.down());
-            if (state.getBlock() != this) return super.isValidPosition(state, world, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
-            return blockstate.getBlock() == this && blockstate.get(SECTION) == TorchSection.LOWER;
+            return blockstate.getBlock() == this && blockstate.get(SECTION) != TorchSection.UPPER ? super.isValidPosition(state, world, pos) : false;
          }
     }
 
@@ -95,12 +101,7 @@ public class TikiTorchBlock extends Block {
     @Override
     @Deprecated
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        TorchSection section = stateIn.get(SECTION);
-        if (facing.getAxis() != Direction.Axis.Y || section == TorchSection.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.get(SECTION) != section) {
-           return section == TorchSection.LOWER && facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-        } else {
-           return Blocks.AIR.getDefaultState();
-        }
+        return facing.getAxis() == Axis.Y && !this.isValidPosition(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
      }
 
     @Override
@@ -127,15 +128,14 @@ public class TikiTorchBlock extends Block {
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         TorchSection section = state.get(SECTION);
-        BlockPos blockpos = section == TorchSection.LOWER ? pos.up() : pos.down();
-        BlockState blockstate = worldIn.getBlockState(blockpos);
-        if (blockstate.getBlock() == this && blockstate.get(SECTION) != section) {
-           worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_NEIGHBOR_DROPS);
-           worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
-           if (!worldIn.isRemote && !player.isCreative()) {
-              spawnDrops(state, worldIn, pos, (TileEntity)null, player, player.getHeldItemMainhand());
-              spawnDrops(blockstate, worldIn, blockpos, (TileEntity)null, player, player.getHeldItemMainhand());
-           }
+        // Clean up other pieces
+        for (int i = 0; i < 2; i++) {
+            int offset = i - section.height;
+            BlockPos pos2 = pos.up(offset >= 0 ? offset + 1 : offset);
+            BlockState state2 = worldIn.getBlockState(pos2);
+            if (state2.getBlock() == this && state2.get(SECTION) != section) {
+                worldIn.destroyBlock(pos2, false);
+            }
         }
 
         super.onBlockHarvested(worldIn, pos, state, player);
