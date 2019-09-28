@@ -21,6 +21,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.RegistryObject;
@@ -77,7 +78,16 @@ public class Builder {
     }
 
     public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source) {
-        return block(p -> new StairsBlock(source.lazyMap(Block::getDefaultState), p) {}, lazyProp(source));
+        return stairs(source, BlockRenderLayer.SOLID);
+    }
+    
+    public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source, BlockRenderLayer layer) {
+        return block(p -> new StairsBlock(source.lazyMap(Block::getDefaultState), p) {
+            @Override
+            public BlockRenderLayer getRenderLayer() {
+                return layer;
+            }
+        }, lazyProp(source));
     }
 
     public static Supplier<SlabBlock> slab(final Supplier<? extends Block> source) {

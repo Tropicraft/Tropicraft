@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -104,7 +105,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> THATCH_STAIRS = register(
             "thatch_stairs", Builder.stairs(THATCH_BUNDLE));
     public static final RegistryObject<Block> THATCH_STAIRS_FUZZY = register(
-            "thatch_stairs_fuzzy", Builder.stairs(THATCH_BUNDLE));
+            "thatch_stairs_fuzzy", Builder.stairs(THATCH_BUNDLE, BlockRenderLayer.CUTOUT_MIPPED));
     public static final RegistryObject<Block> BAMBOO_STAIRS = register(
             "bamboo_stairs", Builder.stairs(BAMBOO_BUNDLE));
     public static final RegistryObject<Block> CHUNK_STAIRS = register(
