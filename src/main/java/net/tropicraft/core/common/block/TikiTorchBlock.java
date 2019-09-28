@@ -85,10 +85,10 @@ public class TikiTorchBlock extends Block {
     public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
         if (func_220055_a(world, pos.down(), Direction.UP)) { // can block underneath support torch
             return true;
-         } else { // if not, is the block underneath a lower 2/3 tiki torch segment?
+        } else { // if not, is the block underneath a lower 2/3 tiki torch segment?
             BlockState blockstate = world.getBlockState(pos.down());
             return blockstate.getBlock() == this && blockstate.get(SECTION) != TorchSection.UPPER ? super.isValidPosition(state, world, pos) : false;
-         }
+        }
     }
 
     @Override
