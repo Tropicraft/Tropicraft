@@ -39,17 +39,8 @@ public class KoaVillagePools {
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_04"),
                                 4),
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_02"),
-                                10),
-                        new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_03"),
-                                10),
-                        new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_04"),
-                                10),
-                        new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_05"),
-                                4),
+                                1),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/huts/bongo_hut_01"),
                                 1),
