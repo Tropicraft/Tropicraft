@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.item.Food;
@@ -9,29 +10,45 @@ import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.drinks.Drink;
 
 public class Builder {
+    
+    public static Supplier<Item> item() {
+        return item(getDefaultProperties());
+    }
+    
+    public static Supplier<Item> item(Item.Properties properties) {
+        return item(Item::new, properties);
+    }
+    
+    private static <T> Supplier<T> item(Function<Item.Properties, T> ctor) {
+        return item(ctor, getDefaultProperties());
+    }
+    
+    private static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Item.Properties properties) {
+        return item(ctor, () -> properties);
+    }
+    
+    private static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Supplier<Item.Properties> properties) {
+        return () -> ctor.apply(properties.get());
+    }
 
     public static Supplier<UmbrellaItem> umbrella(final ColorHelper.Color color) {
-        return () -> new UmbrellaItem(getDefaultProperties(), color);
+        return item(p -> new UmbrellaItem(p, color));
     }
 
     public static Supplier<Item> shell() {
-        return () -> new ShellItem(getDefaultProperties());
+        return item(ShellItem::new);
     }
 
     public static Supplier<Item> food(final Food food) {
-        return () -> new Item(getDefaultProperties().food(food));
+        return item(getDefaultProperties().food(food));
     }
 
     public static Supplier<Item> cocktail(final Drink drink) {
-        return () -> new CocktailItem(new Item.Properties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
-    }
-
-    public static Supplier<Item> item() {
-        return () -> new Item(getDefaultProperties());
+        return item(CocktailItem::new, () -> getDefaultProperties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
     }
 
     public static Supplier<Item> mask(final int maskIndex) {
-        return () -> new AshenMaskItem(ArmorMaterials.ASHEN_MASK, maskIndex, getDefaultProperties());
+        return item(p -> new AshenMaskItem(ArmorMaterials.ASHEN_MASK, maskIndex, p));
     }
 
     private static Item.Properties getDefaultProperties() {

@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.block;
 
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
@@ -19,62 +21,76 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.RegistryObject;
 
+@SuppressWarnings("unused")
 public class Builder {
-    
+
     public static Supplier<Block> block(final Block.Properties properties) {
-        return () -> new Block(properties);
+        return block(() -> properties);
     }
     
-    public static Supplier<Block> flower() {
-        return () -> new FlowerBlock(Effects.REGENERATION, 0, prop(Material.PLANTS).sound(SoundType.PLANT));
+    public static Supplier<Block> block(final Supplier<Block.Properties> properties) {
+        return block(Block::new, properties);
+    }
+    
+    public static <T extends Block> Supplier<T> block(final Function<Block.Properties, T> ctor, final Block.Properties properties) {
+        return block(ctor, () -> properties);
+    }
+    
+    public static <T extends Block> Supplier<T> block(final Function<Block.Properties, T> ctor, final Supplier<Block.Properties> properties) {
+        return () -> ctor.apply(properties.get());
+    }
+    
+    public static Supplier<BlockTropicraftOre> ore(MaterialColor color) {
+        return block(BlockTropicraftOre::new, prop(Material.ROCK, color).hardnessAndResistance(3.0F, 3.0F));
+    }
+    
+    public static Supplier<BlockTropicraftOreBlock> oreBlock(MaterialColor color) {
+        return block(BlockTropicraftOreBlock::new, prop(Material.IRON, color).sound(SoundType.METAL).hardnessAndResistance(5.0F, 6.0F));
+    }
+    
+    public static Supplier<FlowerBlock> flower() {
+        return block(p -> new FlowerBlock(Effects.REGENERATION, 0, p), lazyProp(Blocks.POPPY.delegate));
     }
 
-    public static Supplier<Block> sand(final MaterialColor color) {
+    public static Supplier<BlockTropicraftSand> sand(final MaterialColor color) {
         return sand(color, 0.5f, 0.5f);
     }
 
-    public static Supplier<Block> sand(final MaterialColor color, final float hardness, final float resistance) {
-        return () -> new BlockTropicraftSand(prop(Material.SAND, color).sound(SoundType.SAND).hardnessAndResistance(hardness, resistance));
+    public static Supplier<BlockTropicraftSand> sand(final MaterialColor color, final float hardness, final float resistance) {
+        return block(BlockTropicraftSand::new, prop(Material.SAND, color).sound(SoundType.SAND).hardnessAndResistance(hardness, resistance));
     }
 
-    public static Supplier<Block> bundle(final Block.Properties properties) {
-        return () -> new BlockBundle(properties);
+    public static Supplier<BlockBundle> bundle(final Block.Properties properties) {
+        return block(BlockBundle::new, properties);
     }
 
     public static Supplier<Block> plank(final MaterialColor color) {
-        return () -> new Block(prop(Material.WOOD, color).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD));
+        return block(prop(Material.WOOD, color).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD));
     }
 
-    public static Supplier<Block> log(final MaterialColor topColor, final MaterialColor sideColor) {
-        return () -> new LogBlock(topColor, prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    public static Supplier<LogBlock> log(final MaterialColor topColor, final MaterialColor sideColor) {
+        return block(p -> new LogBlock(topColor, p), prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
 
-    public static Supplier<Block> stairs(final RegistryObject<Block> source, final Material material, final MaterialColor color, final BlockRenderLayer renderLayer, final SoundType soundType) {
-        // Need weird brackets here to override protected behavior
-        return () -> new StairsBlock(() -> source.get().getDefaultState(), prop(material, color).sound(soundType)) {
-            @Override
-            public BlockRenderLayer getRenderLayer() {
-                return renderLayer;
-            }
-        };
+    public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source) {
+        return block(p -> new StairsBlock(source.lazyMap(Block::getDefaultState), p) {}, lazyProp(source));
     }
 
-    public static Supplier<Block> slab(final Block.Properties properties) {
-        return () -> new SlabBlock(properties);
+    public static Supplier<SlabBlock> slab(final Supplier<? extends Block> source) {
+        return block(SlabBlock::new, lazyProp(source));
     }
 
-    public static Supplier<Block> leaves() {
-        return () -> new TropicraftLeavesBlock(prop(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().sound(SoundType.PLANT));
+    public static Supplier<TropicraftLeavesBlock> leaves() {
+        return block(TropicraftLeavesBlock::new, lazyProp(Blocks.OAK_LEAVES.delegate));
     }
 
     @SafeVarargs
-    public static Supplier<Block> sapling(final Tree tree, final Supplier<? extends Block>... validPlantBlocks) {
-    	return () -> new SaplingBlock(tree, prop(Material.PLANTS).hardnessAndResistance(0).tickRandomly().sound(SoundType.PLANT)) {
+    public static Supplier<SaplingBlock> sapling(final Tree tree, final Supplier<? extends Block>... validPlantBlocks) {
+    	return block(p -> new SaplingBlock(tree, p) {
             protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
                 final Block block = state.getBlock();
                 if (validPlantBlocks == null || validPlantBlocks.length == 0) {
@@ -83,31 +99,35 @@ public class Builder {
                     return Arrays.stream(validPlantBlocks).map(Supplier::get).anyMatch(b -> b == block);
                 }
             }
-        };
+        }, lazyProp(Blocks.OAK_SAPLING.delegate));
     }
 
-    public static Supplier<Block> fence(final Material material, final MaterialColor color) {
-        return () -> new FenceBlock(prop(material, color));
+    public static Supplier<FenceBlock> fence(final Supplier<? extends Block> source) {
+        return block(FenceBlock::new, lazyProp(source));
     }
 
-    public static Supplier<Block> fenceGate(final Material material, final MaterialColor color) {
-        return () -> new FenceGateBlock(prop(material, color));
+    public static Supplier<FenceGateBlock> fenceGate(final Supplier<? extends Block> source) {
+        return block(FenceGateBlock::new, lazyProp(source));
     }
 
-    public static Supplier<Block> bongo(final BongoDrumBlock.Size bongoSize) {
-        return () -> new BongoDrumBlock(bongoSize, prop(Material.WOOD, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    public static Supplier<BongoDrumBlock> bongo(final BongoDrumBlock.Size bongoSize) {
+        return block(p -> new BongoDrumBlock(bongoSize, p), prop(Material.WOOD, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    }
+    
+    public static Supplier<FlowerPotBlock> pot(final Supplier<FlowerPotBlock> emptyPot, final Supplier<? extends Block> flower, final Supplier<Block.Properties> properties) {
+        return block(p -> new FlowerPotBlock(emptyPot, flower, p), properties);
     }
 
     public static Supplier<FlowerPotBlock> tropicraftPot() {
-        return () -> new FlowerPotBlock(null, () -> Blocks.AIR, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
+        return pot(null, Blocks.AIR.delegate, lazyProp(Material.MISCELLANEOUS).then(p -> p.hardnessAndResistance(0).sound(SoundType.BAMBOO)));
     }
 
     public static Supplier<FlowerPotBlock> tropicraftPot(final Supplier<? extends Block> block) {
-        return () -> new FlowerPotBlock(TropicraftBlocks.BAMBOO_FLOWER_POT, block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0).sound(SoundType.BAMBOO));
+        return pot(TropicraftBlocks.BAMBOO_FLOWER_POT, block, lazyProp(Material.MISCELLANEOUS).then(p -> p.hardnessAndResistance(0).sound(SoundType.BAMBOO)));
     }
 
     public static Supplier<FlowerPotBlock> vanillaPot(final Supplier<? extends Block> block) {
-        return () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, block, Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0));
+        return pot(() -> (FlowerPotBlock) Blocks.FLOWER_POT.delegate.get(), block, lazyProp(Blocks.FLOWER_POT.delegate));
     }
 
     private static Block.Properties prop(final Material material) {
@@ -116,5 +136,27 @@ public class Builder {
 
     private static Block.Properties prop(final Material material, final MaterialColor color) {
         return Block.Properties.create(material, color);
+    }
+    
+    interface ComposableSupplier<T> extends Supplier<T> {
+        
+        default <R> ComposableSupplier<R> then(Function<T, R> func) {
+            return () -> func.apply(get());
+        }
+    }
+
+    private static ComposableSupplier<Block.Properties> lazyProp(final Material material) {
+        return () -> prop(material);
+    }
+
+    private static ComposableSupplier<Block.Properties> lazyProp(final Material material, final MaterialColor color) {
+        return () -> prop(material, color);
+    }
+    
+    private static ComposableSupplier<Block.Properties> lazyProp(final Supplier<? extends Block> source) {
+        return () -> {
+            Objects.requireNonNull(source.get(), "Must register source block before using it");
+            return Block.Properties.from(source.get());
+        };
     }
 }
