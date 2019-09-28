@@ -39,6 +39,18 @@ public class KoaVillagePools {
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_04"),
                                 4),
                         new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_02"),
+                                10),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_03"),
+                                10),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_04"),
+                                10),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_05"),
+                                4),
+                        new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/huts/bongo_hut_01"),
                                 1),
                         new Pair<>(
@@ -92,6 +104,12 @@ public class KoaVillagePools {
                 new ResourceLocation("empty"), 
                 ImmutableList.of(new Pair<>(
                         new SingleJigsawPiece(Info.MODID + ":koa_village/villagers/unemployed"),
+                        1)), PlacementBehaviour.RIGID));
+
+        JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/fish"),
+                new ResourceLocation("empty"),
+                ImmutableList.of(new Pair<>(
+                        new SingleJigsawPiece(Info.MODID + ":koa_village/fish/fish_01"),
                         1)), PlacementBehaviour.RIGID));
     }
 }
