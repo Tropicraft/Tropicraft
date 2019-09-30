@@ -19,6 +19,8 @@ public abstract class TropicraftBiome extends Biome {
     
     public void addFeatures() {
         DefaultBiomeFeatures.addStructures(this);
+        DefaultBiomeFeatures.addStoneVariants(this);
+        DefaultBiomeFeatures.addOres(this);
         addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(TropicraftFeatures.VILLAGE.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
         
         // Add dummy volcano structure for /locate, this only adds a structure start that places nothing

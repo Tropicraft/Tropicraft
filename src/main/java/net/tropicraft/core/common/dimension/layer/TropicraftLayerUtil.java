@@ -33,6 +33,7 @@ public class TropicraftLayerUtil {
     private static final List<LazyInt> CACHES = new ArrayList<>();
 
     protected static final LazyInt OCEAN_ID = lazyId(TropicraftBiomes.TROPICS_OCEAN);
+    protected static final LazyInt KELP_FOREST_ID = lazyId(TropicraftBiomes.KELP_FOREST);
     protected static final LazyInt LAND_ID = lazyId(TropicraftBiomes.TROPICS);
     protected static final LazyInt RIVER_ID = lazyId(TropicraftBiomes.TROPICS_RIVER);
     protected static final LazyInt BEACH_ID = lazyId(TropicraftBiomes.TROPICS_BEACH);
@@ -105,7 +106,7 @@ public class TropicraftLayerUtil {
     }
 
     public static boolean isOcean(final int biome) {
-        return biome == OCEAN_ID.getAsInt();
+        return biome == OCEAN_ID.getAsInt() || biome == KELP_FOREST_ID.getAsInt();
     }
 
     public static boolean isRiver(final int biome) {

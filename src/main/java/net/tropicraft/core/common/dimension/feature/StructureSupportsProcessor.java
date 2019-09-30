@@ -56,6 +56,6 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
 
     @Override
     protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return null;
+        return new Dynamic<>(ops);
     }
 }

@@ -37,7 +37,7 @@ public enum TropicraftExpandIslandLayer implements IBishopTransformer {
                     return result;
                 }
 
-                return TropicraftLayerUtil.OCEAN_ID.getAsInt();
+                return center;
             }
         }
 

@@ -31,11 +31,17 @@ public class TropicsOceanBiome extends TropicraftBiome {
     @Override
     public void addFeatures() {
         super.addFeatures();
-        // Vanilla warm ocean gen
-        DefaultBiomeFeatures.addOceanCarvers(this);
+        DefaultTropicsFeatures.addUnderwaterCarvers(this);
+        // Various coral features
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SIMPLE_RANDOM_SELECTOR, new SingleRandomFeature(new Feature[]{Feature.CORAL_TREE, Feature.CORAL_CLAW, Feature.CORAL_MUSHROOM}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}), Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED, new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG)));
+        // Sea floor seagrass
         DefaultBiomeFeatures.func_222309_aj(this);
+        // Seagrass underground
+        DefaultTropicsFeatures.addUndergroundSeagrass(this);
+        // Ocean floor sea pickles
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SEA_PICKLE, new CountConfig(20), Placement.CHANCE_TOP_SOLID_HEIGHTMAP, new ChanceConfig(16)));
+        // Cave pickles
+        DefaultTropicsFeatures.addUndergroundPickles(this);
 
 //        this.addSpawn(new SpawnListEntry(EntitySeahorse.class, 6, 6, 12));
 //        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityMarlin.class, 10, 1, 4));
@@ -49,4 +55,5 @@ public class TropicsOceanBiome extends TropicraftBiome {
 //        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 2, 4));
 //        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityShark.class, 3, 1, 3));
     }
+
 }

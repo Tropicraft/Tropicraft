@@ -34,7 +34,7 @@ public class UndergrowthFeature extends AbstractTreeFeature<NoFeatureConfig> {
             return false;
         }
 
-        if (!isSoil(world, pos.down(), sapling)) {
+        if (!isSoil(world, pos.down(), getSapling())) {
             return false;
         }
 

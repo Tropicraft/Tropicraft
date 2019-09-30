@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 
@@ -103,7 +104,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
 
     @Override
     protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return null;
+        return new Dynamic<>(ops);
     }
 
 }
