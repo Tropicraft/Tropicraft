@@ -57,7 +57,7 @@ public class TropicraftFeatures {
 	        "volcano", () -> new VolcanoFeature(NoFeatureConfig::deserialize));
 
 	public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Info.MODID + ":koa_path",
-            ImmutableList.of(new GravityStructureProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor()));
+            ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor()));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return FEATURES.register(name, sup);
