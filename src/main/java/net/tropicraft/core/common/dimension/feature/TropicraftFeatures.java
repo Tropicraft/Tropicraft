@@ -4,12 +4,12 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
 import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.template.GravityStructureProcessor;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,13 +21,13 @@ public class TropicraftFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, Info.MODID);
 
 	public static final RegistryObject<FruitTreeFeature> GRAPEFRUIT_TREE = register(
-	        "grapefruit_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, () -> TropicraftBlocks.GRAPEFRUIT_LEAVES.get().getDefaultState()));
+	        "grapefruit_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES.lazyMap(Block::getDefaultState)));
 	public static final RegistryObject<FruitTreeFeature> ORANGE_TREE = register(
-	        "orange_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, () -> TropicraftBlocks.ORANGE_LEAVES.get().getDefaultState()));
+	        "orange_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.ORANGE_SAPLING, () -> TropicraftBlocks.ORANGE_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<FruitTreeFeature> LEMON_TREE = register(
-	        "lemon_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, () -> TropicraftBlocks.LEMON_LEAVES.get().getDefaultState()));
+	        "lemon_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.LEMON_SAPLING, () -> TropicraftBlocks.LEMON_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<FruitTreeFeature> LIME_TREE = register(
-	        "lime_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, () -> TropicraftBlocks.LIME_LEAVES.get().getDefaultState()));
+	        "lime_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.LIME_SAPLING, () -> TropicraftBlocks.LIME_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<PalmTreeFeature> NORMAL_PALM_TREE = register(
 	        "normal_palm_tree", () -> new NormalPalmTreeFeature(NoFeatureConfig::deserialize, true));
 	public static final RegistryObject<PalmTreeFeature> CURVED_PALM_TREE = register(

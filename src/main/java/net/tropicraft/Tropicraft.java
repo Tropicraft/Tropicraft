@@ -45,6 +45,7 @@ import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProviderTypes;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
+import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.entity.BambooItemFrame;
@@ -88,6 +89,7 @@ public class Tropicraft
         TropicraftBiomes.BIOMES.register(modBus);
         TropicraftBiomeProviderTypes.BIOME_PROVIDER_TYPES.register(modBus);
         TropicraftWorldUtils.DIMENSIONS.register(modBus);
+        TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFeatures.FEATURES.register(modBus);
         TropicraftChunkGeneratorTypes.CHUNK_GENERATOR_TYPES.register(modBus);
 

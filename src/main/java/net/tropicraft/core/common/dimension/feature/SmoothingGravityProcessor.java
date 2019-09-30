@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 
@@ -58,6 +59,6 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
 
     @Override
     protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return null;
+        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("heightmap"), ops.createString(this.heightmap.getId()), ops.createString("offset"), ops.createInt(this.offset))));
     }
 }

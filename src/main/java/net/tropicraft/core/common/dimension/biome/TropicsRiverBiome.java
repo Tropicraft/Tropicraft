@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.dimension.biome;
 
+import static net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs.PURIFIED_SAND_CONFIG;
+
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-
-import static net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs.PURIFIED_SAND_CONFIG;
 
 public class TropicsRiverBiome extends TropicraftBiome {
     protected TropicsRiverBiome() {
@@ -19,5 +19,11 @@ public class TropicsRiverBiome extends TropicraftBiome {
 
         //        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityPiranha.class, 20, 1, 12));
         //        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityRiverSardine.class, 20, 1, 15));
+    }
+    
+    @Override
+    public void addFeatures() {
+        super.addFeatures();
+        DefaultTropicsFeatures.addCarvers(this);
     }
 }

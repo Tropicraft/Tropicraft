@@ -16,4 +16,10 @@ public class TropicsLakeBiome extends TropicraftBiome {
                 .downfall(1.5F)
                 .parent(null));
     }
+    
+    @Override
+    public void addFeatures() {
+        super.addFeatures();
+        DefaultTropicsFeatures.addCarvers(this);
+    }
 }

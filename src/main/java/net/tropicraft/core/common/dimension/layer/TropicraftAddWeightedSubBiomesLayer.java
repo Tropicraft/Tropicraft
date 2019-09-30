@@ -11,8 +11,7 @@ import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC0Transformer;
 
 public enum TropicraftAddWeightedSubBiomesLayer implements IC0Transformer {
-    // TODO add kelp forest here to sub biomes list
-    OCEANS(TropicraftLayerUtil.OCEAN_ID, new LazyInt[]{TropicraftLayerUtil.OCEAN_ID}, new WeightedRandom.Item(20))
+    OCEANS(TropicraftLayerUtil.OCEAN_ID, new LazyInt[]{TropicraftLayerUtil.OCEAN_ID, TropicraftLayerUtil.KELP_FOREST_ID}, new WeightedRandom.Item(20), new WeightedRandom.Item(4))
     ;
     private List<WeightedRandom.Item> biomeWeights;
     private int totalWeight;
@@ -36,7 +35,8 @@ public enum TropicraftAddWeightedSubBiomesLayer implements IC0Transformer {
     public int apply(INoiseRandom random, int center) {
         if (center == baseID.getAsInt()) {
             if (biomeLookup.size() > 0) {
-                return biomeLookup.get(WeightedRandom.getRandomItem(biomeWeights, random.random(totalWeight))).getAsInt();
+                int res = biomeLookup.get(WeightedRandom.getRandomItem(biomeWeights, random.random(totalWeight))).getAsInt();
+                return res;
             }
             return subBiomeIDs[random.random(subBiomeIDs.length)].getAsInt();
         } else {

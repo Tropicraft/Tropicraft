@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 
@@ -50,6 +51,6 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
 
     @Override
     protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return null;
+        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("base"), ops.createInt(this.base))));
     }
 }

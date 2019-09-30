@@ -41,7 +41,7 @@ public abstract class PalmTreeFeature extends AbstractTreeFeature<NoFeatureConfi
 
     // TODO use palm sapling, should fix them from spawning on grass
     protected net.minecraftforge.common.IPlantable getSapling() {
-        return sapling;
+        return TropicraftBlocks.PALM_SAPLING.get();
     }
     
     protected final BlockState getLeaf() {
