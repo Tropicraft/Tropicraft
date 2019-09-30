@@ -50,7 +50,8 @@ public class TropicraftFeatures {
 	        "rainforest_flowers", () -> new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftBlocks.MAGIC_MUSHROOM));
 	public static final RegistryObject<UndergrowthFeature> UNDERGROWTH = register(
 	        "undergrowth", () -> new UndergrowthFeature(NoFeatureConfig::deserialize));
-	
+	public static final RegistryObject<RainforestVinesFeature> VINES = register(
+	        "rainforest_vines", () -> new RainforestVinesFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<Structure<NoFeatureConfig>> VILLAGE = register(
 	        "koa_village", () -> new KoaVillageStructure(NoFeatureConfig::deserialize));
 	public static final RegistryObject<VolcanoFeature> VOLCANO = register(

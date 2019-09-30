@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.biome;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -37,5 +38,8 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.RAINFOREST_FLOWERS.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(4)));
 
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.UNDERGROWTH.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(100)));
+        
+        DefaultBiomeFeatures.addJungleGrass(this);
+        DefaultTropicsFeatures.addRainforestPlants(this);
     }
 }
