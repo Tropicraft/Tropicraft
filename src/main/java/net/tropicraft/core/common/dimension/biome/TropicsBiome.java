@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.biome;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.DoublePlantConfig;
 import net.minecraft.world.gen.feature.Feature;
@@ -47,5 +48,8 @@ public class TropicsBiome extends TropicraftBiome {
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.TROPICS_FLOWERS.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(12)));
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.DOUBLE_PLANT, new DoublePlantConfig(TropicraftBlocks.IRIS.get().getDefaultState()), Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.DOUBLE_PLANT, new DoublePlantConfig(TropicraftBlocks.PINEAPPLE.get().getDefaultState()), Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
+        
+        DefaultBiomeFeatures.addGrass(this);
+        DefaultBiomeFeatures.func_222283_Y(this); // Double tall grass
     }
 }
