@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
+import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import net.tropicraft.Info;
 
@@ -17,37 +18,40 @@ public class KoaVillagePools {
     }
         
     static {
+        ImmutableList<StructureProcessor> townCenterProcessors = ImmutableList.of(new StructureSupportsProcessor(), new StructureVoidProcessor());
+        ImmutableList<StructureProcessor> buildingProcessors = ImmutableList.of(new AdjustBuildingHeightProcessor(126), new StructureSupportsProcessor(), new StructureVoidProcessor());
+
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/town_centers"), 
                 new ResourceLocation("empty"), 
                 ImmutableList.of(new Pair<>(
-                        new SingleJigsawPiece(Info.MODID + ":koa_village/town_centers/firepit_01"),
-                        1)), TropicraftFeatures.KOA_TOWN_CENTER));
+                        new SingleJigsawPiece(Info.MODID + ":koa_village/town_centers/firepit_01", townCenterProcessors),
+                        1)), PlacementBehaviour.RIGID));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/huts"), 
                 new ResourceLocation("empty"),
                 ImmutableList.of(
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_01"),
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_01", buildingProcessors),
                                 5),
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_02"),
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_02", buildingProcessors),
                                 2),
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_03"),
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_03", buildingProcessors),
                                 3),
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_04"),
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_04", buildingProcessors),
                                 4),
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_05"),
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/hut_05", buildingProcessors),
                                 10),
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/bongo_hut_01"),
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/bongo_hut_01", buildingProcessors),
                                 2),
                         new Pair<>(
-                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/trade_hut_01"),
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/huts/trade_hut_01", buildingProcessors),
                                 2)),
-                TropicraftFeatures.KOA_BUILDING));
+                PlacementBehaviour.RIGID));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/streets"), 
                 new ResourceLocation(Info.MODID, "koa_village/terminators"), 
@@ -86,21 +90,21 @@ public class KoaVillagePools {
                 TropicraftFeatures.KOA_PATH));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/terminators"), 
-                new ResourceLocation("empty"), 
+                new ResourceLocation("empty"),
                 ImmutableList.of(new Pair<>(
                         new SingleJigsawPiece(Info.MODID + ":koa_village/terminators/terminator_01"),
                         1)), TropicraftFeatures.KOA_PATH));
         
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/villagers"), 
-                new ResourceLocation("empty"), 
+                new ResourceLocation("empty"),
                 ImmutableList.of(new Pair<>(
                         new SingleJigsawPiece(Info.MODID + ":koa_village/villagers/unemployed"),
-                        1)), TropicraftFeatures.KOA_ENTITY));
+                        1)), PlacementBehaviour.RIGID));
 
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Info.MODID, "koa_village/fish"),
                 new ResourceLocation("empty"),
                 ImmutableList.of(new Pair<>(
                         new SingleJigsawPiece(Info.MODID + ":koa_village/fish/fish_01"),
-                        1)), TropicraftFeatures.KOA_ENTITY));
+                        1)), PlacementBehaviour.RIGID));
     }
 }

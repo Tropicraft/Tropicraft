@@ -55,15 +55,9 @@ public class TropicraftFeatures {
 	        "koa_village", () -> new KoaVillageStructure(NoFeatureConfig::deserialize));
 	public static final RegistryObject<VolcanoFeature> VOLCANO = register(
 	        "volcano", () -> new VolcanoFeature(NoFeatureConfig::deserialize));
-	
-    public static final PlacementBehaviour KOA_TOWN_CENTER = PlacementBehaviour.create("KOA_TOWN_CENTER", Info.MODID + ":koa_town_center",
-            ImmutableList.of(new StructureSupportsProcessor(), new StructureVoidProcessor()));
-    public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Info.MODID + ":koa_path",
+
+	public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Info.MODID + ":koa_path",
             ImmutableList.of(new GravityStructureProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor()));
-    public static final PlacementBehaviour KOA_BUILDING = PlacementBehaviour.create("KOA_BUILDING", Info.MODID + ":koa_building",
-            ImmutableList.of(new AdjustBuildingHeightProcessor(126), new StructureSupportsProcessor(), new StructureVoidProcessor()));
-    public static final PlacementBehaviour KOA_ENTITY = PlacementBehaviour.create("KOA_ENTITY", Info.MODID + ":koa_entity",
-            ImmutableList.of(new AdjustBuildingHeightProcessor(128), new StructureVoidProcessor()));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return FEATURES.register(name, sup);
