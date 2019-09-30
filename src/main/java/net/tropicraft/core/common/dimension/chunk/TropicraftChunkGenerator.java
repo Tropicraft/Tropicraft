@@ -6,8 +6,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
@@ -31,7 +31,7 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         this.randomSeed.skip(2620);
         this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 16);
 
-        this.volcanoGen = new VolcanoGenerator(world);
+        this.volcanoGen = new VolcanoGenerator(this);
     }
 
     // spawn height
@@ -136,9 +136,15 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         int j = chunkPos.x;
         int k = chunkPos.z;
 
-        ChunkPrimer chunkPrimer = (ChunkPrimer)chunkIn;
-
-        this.volcanoGen.generate(j, k, chunkPrimer);
+        this.volcanoGen.generate(j, k, chunkIn, this.randomSeed);
     }
 
+    @Override
+    public int func_222529_a(int p_222529_1_, int p_222529_2_, Type heightmapType) {
+        int height = super.func_222529_a(p_222529_1_, p_222529_2_, heightmapType);
+        if (heightmapType != Type.OCEAN_FLOOR && heightmapType != Type.OCEAN_FLOOR_WG) {
+            return Math.max(height, this.volcanoGen.getVolcanoHeight(height, p_222529_1_, p_222529_2_));
+        }
+        return height;
+    }
 }
