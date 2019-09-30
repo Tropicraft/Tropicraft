@@ -10,24 +10,37 @@ import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
+import net.minecraft.world.gen.feature.template.Template.EntityInfo;
 import net.tropicraft.Info;
 
 public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
 
     static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Info.MODID + ":adjust_building_height", AdjustBuildingHeightProcessor::new);
+    
+    private final int base;
 
-    public AdjustBuildingHeightProcessor() {}
+    public AdjustBuildingHeightProcessor(int base) {
+        this.base = base;
+    }
 
     public AdjustBuildingHeightProcessor(Dynamic<?> p_i51337_1_) {
-        this();
+        this(126); // FIXME
     }
 
     @Override
     public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
-        if (seedPos.getY() < 126) {
+        if (seedPos.getY() < base) {
             return new BlockInfo(blockInfo.pos.up(), blockInfo.state, blockInfo.nbt);
         }
         return blockInfo;
+    }
+    
+    @Override
+    public EntityInfo processEntity(IWorldReader world, BlockPos seedPos, EntityInfo rawEntityInfo, EntityInfo entityInfo, PlacementSettings placementSettings, Template template) {
+        if (seedPos.getY() < base) {
+            return new EntityInfo(entityInfo.pos.add(0, 1, 0), entityInfo.blockPos.up(), entityInfo.nbt);
+        }
+        return entityInfo;
     }
 
     @Override

@@ -858,9 +858,9 @@ public class EntityKoaBase extends VillagerEntity {
 
 
 
-        this.getDataManager().set(ROLE, compound.getInt("role_id"));
-        this.getDataManager().set(GENDER, compound.getInt("gender_id"));
-        this.getDataManager().set(ORIENTATION, compound.getInt("orientation_id"));
+        if (compound.contains("role_id")) this.getDataManager().set(ROLE, compound.getInt("role_id"));
+        if (compound.contains("gender_id")) this.getDataManager().set(GENDER, compound.getInt("gender_id"));
+        if (compound.contains("orientation_id")) this.getDataManager().set(ORIENTATION, compound.getInt("orientation_id"));
 
         this.lastTradeTime = compound.getLong("lastTradeTime");
 
