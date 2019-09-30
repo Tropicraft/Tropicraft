@@ -21,6 +21,8 @@ public abstract class TropicraftBiome extends Biome {
         DefaultBiomeFeatures.addStructures(this);
         addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(TropicraftFeatures.VILLAGE.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
         
+        // Add dummy volcano structure for /locate, this only adds a structure start that places nothing
+        addStructure(TropicraftFeatures.VOLCANO.get(), IFeatureConfig.NO_FEATURE_CONFIG);
         // Volcano feature to add tile entity to the volcano generation. Checks in each chunk if a volcano is nearby.
         addFeature(GenerationStage.Decoration.TOP_LAYER_MODIFICATION, createDecoratedFeature(TropicraftFeatures.VOLCANO.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
     }
