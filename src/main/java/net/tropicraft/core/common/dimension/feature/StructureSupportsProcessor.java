@@ -34,6 +34,10 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
                 return null;
             }
             if (p_215194_3_.pos.getY() == 0) {
+                // Don't generate fences underneath solid land
+                if (!isAirOrWater(worldReaderIn, pos.up())) {
+                    return null;
+                }
                 BlockPos fencePos = pos.down();
                 // Extend fences at the bottom of a structure down to the ground
                 while (isAirOrWater(worldReaderIn, fencePos)) {
