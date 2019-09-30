@@ -58,34 +58,46 @@ public class KoaVillagePools {
                 ImmutableList.of(
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_01"),
-                                4),
+                                3),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_02"),
                                 4),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_03"),
-                                7),
+                                10),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_04"),
+                                2),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_05"),
+                                3),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/streets/straight_06"),
                                 2),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/corner_01"),
                                 2),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/corner_02"),
-                                2),
+                                4),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/corner_03"),
-                                4),
+                                6),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/streets/corner_04"),
+                                2),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/crossroad_01"),
-                                4),
+                                5),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/crossroad_02"),
                                 2),
                         new Pair<>(
                                 new SingleJigsawPiece(Info.MODID + ":koa_village/streets/crossroad_03"),
-                                1)
+                                1),
+                        new Pair<>(
+                                new SingleJigsawPiece(Info.MODID + ":koa_village/streets/crossroad_04"),
+                                2)
                         ),
                 TropicraftFeatures.KOA_PATH));
         
