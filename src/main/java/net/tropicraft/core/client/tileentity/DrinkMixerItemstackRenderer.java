@@ -3,8 +3,11 @@ package net.tropicraft.core.client.tileentity;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 
+@OnlyIn(Dist.CLIENT)
 public class DrinkMixerItemstackRenderer extends ItemStackTileEntityRenderer {
 
     private final DrinkMixerTileEntity mixer = new DrinkMixerTileEntity();

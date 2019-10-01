@@ -76,8 +76,12 @@ public class Tropicraft
         
         // General mod setup
         modBus.addListener(this::setup);
-        modBus.addListener(this::setupClient);
-        modBus.addListener(this::registerItemColors);
+        
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            // Client setup
+            modBus.addListener(this::setupClient);
+            modBus.addListener(this::registerItemColors);
+        });
         
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
 
@@ -104,6 +108,7 @@ public class Tropicraft
         });
     }
     
+    @OnlyIn(Dist.CLIENT)
     private void setupClient(final FMLClientSetupEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(EntityKoaHunter.class, RenderKoaMan::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiCreeperEntity.class, TropiCreeperRenderer::new);
@@ -119,6 +124,7 @@ public class Tropicraft
         ClientRegistry.bindTileEntitySpecialRenderer(DrinkMixerTileEntity.class, new DrinkMixerRenderer());
     }
     
+    @OnlyIn(Dist.CLIENT)
     private void registerItemColors(ColorHandlerEvent.Item evt) {
         for (final UmbrellaItem item : UmbrellaItem.getAllItems()) {
             evt.getItemColors().register(new BasicColorHandler(), item);
