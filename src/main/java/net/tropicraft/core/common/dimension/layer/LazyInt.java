@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.layer;
 
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class LazyInt implements IntSupplier {
     
@@ -10,6 +11,10 @@ public class LazyInt implements IntSupplier {
     
     public LazyInt(IntSupplier generator) {
         this.generator = generator;
+    }
+    
+    public LazyInt(Supplier<Integer> generator) {
+        this((IntSupplier) generator::get);
     }
 
     @Override
