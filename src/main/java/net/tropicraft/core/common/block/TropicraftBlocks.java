@@ -20,6 +20,8 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -173,7 +175,7 @@ public class TropicraftBlocks {
             "sifter", () -> new SifterBlock(Block.Properties.create(Material.WOOD)));
     public static final RegistryObject<Block> DRINK_MIXER = register(
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
-            () -> () -> new DrinkMixerItemstackRenderer());
+            () -> drinkMixerRenderer());
     public static final RegistryObject<Block> VOLCANO = register(
             "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK)));
     
@@ -235,5 +237,10 @@ public class TropicraftBlocks {
 
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final ItemGroup itemGroup) {
         return () -> new BlockItem(block.get(), new Item.Properties().group(itemGroup));
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    private static Callable<ItemStackTileEntityRenderer> drinkMixerRenderer() {
+        return DrinkMixerItemstackRenderer::new;
     }
 }
