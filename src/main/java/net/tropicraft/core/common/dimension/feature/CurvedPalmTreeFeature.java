@@ -1,20 +1,20 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
+
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
+
 import com.mojang.datafixers.Dynamic;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.tropicraft.core.common.block.TropicraftBlocks;
-
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
-
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
 public class CurvedPalmTreeFeature extends PalmTreeFeature {
 
@@ -46,11 +46,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!isSand(world, pos.down(), getSapling())) {
+        if (!isSoil(world, pos.down(), getSapling())) {
             return false;
         }
-
-        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.get().getDefaultState(), bb);
 
         final int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 

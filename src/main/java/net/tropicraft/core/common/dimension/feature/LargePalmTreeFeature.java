@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.mojang.datafixers.Dynamic;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.tropicraft.core.common.block.TropicraftBlocks;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
+import com.mojang.datafixers.Dynamic;
+
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.IWorldGenerationReader;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 public class LargePalmTreeFeature extends PalmTreeFeature {
     public LargePalmTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func, boolean doesNotifyOnPlace) {
@@ -33,15 +33,13 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!isSand(world, pos.down(), getSapling())) {
+        if (!isSoil(world, pos.down(), getSapling())) {
             return false;
         }
 
-        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.get().getDefaultState(), bb);
-
         // Place trunk
         for (int y = 0; y <= height; y++) {
-            setState(changedBlocks, world, pos.up(y), getLog(), bb);
+            placeLog(changedBlocks, world, bb, pos.getX(), pos.getY() + y, pos.getZ());
         }
         
         final int i = pos.getX(), j = pos.getY(), k = pos.getZ();

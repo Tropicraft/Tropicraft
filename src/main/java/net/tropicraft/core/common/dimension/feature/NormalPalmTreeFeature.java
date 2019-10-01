@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.mojang.datafixers.Dynamic;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.tropicraft.core.common.block.TropicraftBlocks;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
+import com.mojang.datafixers.Dynamic;
+
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.IWorldGenerationReader;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 public class NormalPalmTreeFeature extends PalmTreeFeature {
 
@@ -34,11 +34,9 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!isSand(world, pos.down(), getSapling())) {
+        if (!isSoil(world, pos.down(), getSapling())) {
             return false;
         }
-
-        setState(changedBlocks, world, pos.down(), TropicraftBlocks.PURIFIED_SAND.get().getDefaultState(), bb);
 
         int i = pos.getX(), j = pos.getY(), k = pos.getZ();
 
@@ -75,7 +73,7 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
         for (int j1 = 0; j1 < height + 2; j1++) {
             BlockPos logPos = pos.up(j1);
             if (isAirOrLeaves(world, logPos) || isTallPlants(world, logPos)) {
-                setState(changedBlocks, world, logPos, getLog(), bb);
+                placeLog(changedBlocks, world, bb, logPos.getX(), logPos.getY(), logPos.getZ());
             }
             BlockPos pos3 = new BlockPos(i, (j + j1) - 2, k);
             if (isAir(world, pos3) && (isLeaves(world, pos3.up()) || isLeaves(world, pos3.up(2)))) {
