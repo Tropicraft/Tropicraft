@@ -84,6 +84,9 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
                 xx++;
                 placeBlockWithDir(world, xx, yy + y, 0, getLog());
             }
+            if (yy == height - 2) {
+                spawnCoconuts(world, getPosWithDir(xx, yy + y, 0), rand, 2, getLeaf());
+            }
         }
 
         // reset origin

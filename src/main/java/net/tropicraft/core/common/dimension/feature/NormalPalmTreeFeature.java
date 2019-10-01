@@ -75,11 +75,9 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
             if (isAirOrLeaves(world, logPos) || isTallPlants(world, logPos)) {
                 placeLog(changedBlocks, world, bb, logPos.getX(), logPos.getY(), logPos.getZ());
             }
-            BlockPos pos3 = new BlockPos(i, (j + j1) - 2, k);
-            if (isAir(world, pos3) && (isLeaves(world, pos3.up()) || isLeaves(world, pos3.up(2)))) {
-                TropicraftFeatureUtil.spawnCoconuts(world, pos3, rand, 2, getLeaf());
-            }
         }
+        
+        spawnCoconuts(world, new BlockPos(i, j + height, k), rand, 2, getLeaf());
 
         return true;
     }
