@@ -77,16 +77,6 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
 
                 genCircle(world, new BlockPos(nx, y + 1, nz), 1, 0, getLeaf(), false);
                 genCircle(world, nx, y, nz, 2, 1, getLeaf(), false);
-
-                for (int x = nx - 3; x <= nx + 3; x++) {
-                    for (int z = nz - 3; z <= nz + 3; z++) {
-                        for (int y1 = y - 6; y1 <= y; y1++) {
-                            if (rand.nextInt(VINE_CHANCE) == 0) {
-                                // TODO genVines(world, rand, x, y1, z);
-                            }
-                        }
-                    }
-                }
             }
             if (y - j > height - (height / 4) && y - j < height - 3 && rand.nextInt(SECOND_CANOPY_CHANCE) == 0) {
                 int nx = i + rand.nextInt(9) - 4;
@@ -99,15 +89,6 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
                 genCircle(world, nx, y + 1, nz, leafSize, leafSize - 1, getLeaf(), false);
 
                 placeBlockLine(changedBlocks, world, bb, new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, getLog());
-                for (int x = nx - leafSize; x <= nx + leafSize; x++) {
-                    for (int z = nz - leafSize; z <= nz + leafSize; z++) {
-                        for (int y1 = y - 6; y1 <= y; y1++) {
-                            if (rand.nextInt(VINE_CHANCE) == 0) {
-                                // TODO genVines(world, rand, x, y1, z);
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -116,16 +97,6 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
         genCircle(world, i, j + height, k, leafSize - 2, 0, getLeaf(), false);
         genCircle(world, i, j + height - 1, k, leafSize - 1, leafSize - 4, getLeaf(), false);
         genCircle(world, i, j + height - 2, k, leafSize, leafSize - 1, getLeaf(), false);
-
-        for (int x = i - leafSize; x <= i + leafSize; x++) {
-            for (int z = k - leafSize; z <= k + leafSize; z++) {
-                for (int y1 = j + height - 3; y1 <= j + height; y1++) {
-                    if (rand.nextInt(VINE_CHANCE) == 0) {
-                        // TODO genVines(world, rand, x, y1, z);
-                    }
-                }
-            }
-        }
 
         return true;
     }
