@@ -43,9 +43,8 @@ public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatur
         }
     }
 
-    // TODO use rainforest sapling, if applicable
     protected net.minecraftforge.common.IPlantable getSapling() {
-        return sapling;
+        return TropicraftBlocks.MAHOGANY_SAPLING.get();
     }
 
     protected final BlockState getLeaf() {
