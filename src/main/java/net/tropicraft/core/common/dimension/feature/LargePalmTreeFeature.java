@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import com.mojang.datafixers.Dynamic;
 
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.IWorldGenerationReader;
@@ -172,8 +173,8 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
         placeLeaf(changedBlocks, world, bb, i + 4, j + height + 3, k + 4);
         placeLeaf(changedBlocks, world, bb, i + 0, j + height + 3, k + 5);
 
-        for (int y = height - 4; y < height - 1; y++) {
-            TropicraftFeatureUtil.spawnCoconuts(world,  new BlockPos(i, j + y, k), rand, 2, getLeaf());
+        for (int c = 0; c < 4; c++) {
+            spawnCoconuts(world, new BlockPos(i, j + height + 1, k).offset(Direction.byHorizontalIndex(i)), rand, 2, getLeaf());
         }
 
         return true;
