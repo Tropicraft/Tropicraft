@@ -48,8 +48,9 @@ public class TropicraftLayerUtil {
             RAINFOREST_MOUNTAINS_ID,
             //RAINFOREST_ISLAND_MOUNTAINS_ID
     };
-    private static LazyInt lazyId(RegistryObject<Biome> biome) {
-        LazyInt ret = new LazyInt(() -> Registry.BIOME.getId(biome.get()));
+
+    private static LazyInt lazyId(RegistryObject<Biome> biome) {
+        LazyInt ret = new LazyInt(biome.lazyMap(Registry.BIOME::getId));
         CACHES.add(ret);
         return ret;
     }
