@@ -4,7 +4,6 @@ import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC0Transformer;
 
 public enum TropicraftAddSubBiomesLayer implements IC0Transformer {
-    // TODO add kelp forest here to sub biomes list
     RAINFOREST(TropicraftLayerUtil.RAINFOREST_PLAINS_ID, TropicraftLayerUtil.RAINFOREST_IDS)
     ;
 

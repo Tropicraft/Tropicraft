@@ -14,7 +14,6 @@ public enum TropicraftBiomesLayer implements IC0Transformer {
             return TropicraftLayerUtil.TROPICS_LAND_IDS[iNoiseRandom.random(TropicraftLayerUtil.TROPICS_LAND_IDS.length)].getAsInt();
         }
 
-        // TODO add kelp forest and other ocean biomes random check here
         return center;
     }
 }

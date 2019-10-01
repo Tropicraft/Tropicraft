@@ -17,7 +17,6 @@ import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBui
 public class TropicsBiome extends TropicraftBiome {
     protected TropicsBiome() {
         super(new Biome.Builder()
-                // TODO NO SAND - purified sand
                 .surfaceBuilder(TropicraftSurfaceBuilders._TROPICS, TropicsBuilderConfigs.TROPICS_CONFIG.get())
                 .precipitation(RainType.RAIN)
                 .category(Category.PLAINS)
