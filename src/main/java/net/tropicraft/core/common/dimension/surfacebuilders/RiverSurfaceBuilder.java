@@ -12,15 +12,15 @@ import net.minecraft.world.gen.surfacebuilders.DefaultSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
 
-public class TropicsSurfaceBuilder extends DefaultSurfaceBuilder {
-    public TropicsSurfaceBuilder(Function<Dynamic<?>, ? extends SurfaceBuilderConfig> function) {
+public class RiverSurfaceBuilder extends DefaultSurfaceBuilder {
+    public RiverSurfaceBuilder(Function<Dynamic<?>, ? extends SurfaceBuilderConfig> function) {
         super(function);
     }
 
     @Override
     public void buildSurface(Random random, IChunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
-        if (noise > 0.2) {
-            config = TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get();
+        if (startHeight > seaLevel + 5) {
+            config = TropicsBuilderConfigs.TROPICS_CONFIG.get();
         }
         super.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
     }

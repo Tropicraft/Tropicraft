@@ -19,6 +19,10 @@ public class TropicraftSurfaceBuilders {
     public static final TropicsSurfaceBuilder _TROPICS = new TropicsSurfaceBuilder(SurfaceBuilderConfig::deserialize);
     public static final RegistryObject<TropicsSurfaceBuilder> TROPICS = register(
             "tropics", () -> _TROPICS);
+    
+    public static final RiverSurfaceBuilder _RIVER = new RiverSurfaceBuilder(SurfaceBuilderConfig::deserialize);
+    public static final RegistryObject<RiverSurfaceBuilder> RIVER = register(
+            "river", () -> _RIVER);
 
     private static <T extends SurfaceBuilder<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return SURFACE_BUILDERS.register(name, sup);
