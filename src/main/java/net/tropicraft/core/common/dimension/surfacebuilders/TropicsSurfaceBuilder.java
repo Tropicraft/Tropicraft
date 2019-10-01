@@ -19,7 +19,7 @@ public class TropicsSurfaceBuilder extends DefaultSurfaceBuilder {
 
     @Override
     public void buildSurface(Random random, IChunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
-        if (noise > 0.2) {
+        if (noise > 1.5) {
             config = TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get();
         }
         super.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, config);
