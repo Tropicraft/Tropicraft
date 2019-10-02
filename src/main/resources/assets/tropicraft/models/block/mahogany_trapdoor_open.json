@@ -1,5 +1,5 @@
 {
-    "parent": "block/template_trapdoor_open",
+    "parent": "block/template_orientable_trapdoor_open",
     "textures": {
         "texture": "tropicraft:block/mahogany_trapdoor"
     }
