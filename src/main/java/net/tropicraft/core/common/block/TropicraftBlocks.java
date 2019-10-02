@@ -13,6 +13,7 @@ import net.minecraft.block.LadderBlock;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.TallFlowerBlock;
+import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
@@ -157,6 +158,20 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> PALM_FENCE_GATE = register("palm_fence_gate", Builder.fenceGate(PALM_PLANKS));
     public static final RegistryObject<Block> MAHOGANY_FENCE_GATE = register("mahogany_fence_gate", Builder.fenceGate(MAHOGANY_PLANKS));
 
+    public static final RegistryObject<Block> BAMBOO_DOOR = register(
+            "bamboo_door", () -> new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {});
+    public static final RegistryObject<Block> MAHOGANY_DOOR = register(
+            "mahogany_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
+    public static final RegistryObject<Block> THATCH_DOOR = register(
+            "thatch_door", () -> new DoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
+    
+    public static final RegistryObject<Block> BAMBOO_TRAPDOOR = register(
+            "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(BAMBOO_DOOR.get())) {});
+    public static final RegistryObject<Block> MAHOGANY_TRAPDOOR = register(
+            "mahogany_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(Blocks.OAK_TRAPDOOR)) {});
+    public static final RegistryObject<Block> THATCH_TRAPDOOR = register(
+            "thatch_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
+
     public static final RegistryObject<Block> IRIS = register(
             "iris", () -> new TallFlowerBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> PINEAPPLE = register(
@@ -181,9 +196,7 @@ public class TropicraftBlocks {
     
     public static final RegistryObject<Block> TIKI_TORCH = register(
             "tiki_torch", () -> new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0)));
-    public static final RegistryObject<Block> BAMBOO_DOOR = register(
-            "bamboo_door", () -> new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {});
-
+    
     public static final RegistryObject<FlowerPotBlock> BAMBOO_FLOWER_POT = register(
             "bamboo_flower_pot", Builder.tropicraftPot());
     

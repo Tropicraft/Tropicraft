@@ -1,0 +1,6 @@
+{
+    "parent": "block/template_trapdoor_top",
+    "textures": {
+        "texture": "tropicraft:block/mahogany_trapdoor"
+    }
+}
