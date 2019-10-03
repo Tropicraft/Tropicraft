@@ -55,7 +55,30 @@ minecraft {
                 }
             }
         }
+        
+        data {
+        	taskName 'tropicraft_data'
+        
+            workingDirectory project.file('run')
+            
+            environment 'target', 'fmluserdevdata'
+
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                tropicraft {
+                    source sourceSets.main
+                }
+            }
+            
+			args '--mod', 'tropicraft', '--all', '--output', rootProject.file('src/generated/resources/')
+        }
     }
+}
+
+sourceSets.main.resources {
+	srcDir 'src/generated/resources'
 }
 
 repositories {
