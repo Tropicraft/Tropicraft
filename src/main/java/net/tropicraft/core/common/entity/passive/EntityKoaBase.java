@@ -26,6 +26,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.ChestTileEntity;
@@ -555,7 +556,7 @@ public class EntityKoaBase extends VillagerEntity {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16D);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32D);
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
         this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
@@ -1273,8 +1274,7 @@ public class EntityKoaBase extends VillagerEntity {
         if (wasInWater) {
             if (!isInWater()) {
                 if (collidedHorizontally) {
-                    this.getMotion().add(0, 0.4F, 0);
-                    //this.motionY += 0.4F;
+                    this.setMotion(getMotion().add(0, 0.4F, 0));
                     jumpingOutOfWater = true;
                 }
             }
@@ -1304,8 +1304,12 @@ public class EntityKoaBase extends VillagerEntity {
                 }
             }
             this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
+
+            this.setPathPriority(PathNodeType.WATER, 30);
         } else {
             this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+
+            this.setPathPriority(PathNodeType.WATER, 30);
         }
 
         wasInWater = isInWater();
