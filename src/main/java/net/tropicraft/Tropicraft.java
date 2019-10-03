@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.model.ModelBakery;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.BasicColorHandler;
@@ -42,6 +44,9 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
+import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
+import net.tropicraft.core.common.data.TropicraftItemTagsProvider;
+import net.tropicraft.core.common.data.TropicraftRecipeProvider;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProviderTypes;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
@@ -76,7 +81,8 @@ public class Tropicraft
         
         // General mod setup
         modBus.addListener(this::setup);
-        
+        modBus.addListener(this::gatherData);
+
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             // Client setup
             modBus.addListener(this::setupClient);
@@ -140,5 +146,15 @@ public class Tropicraft
     
     private void onServerStarting(final FMLServerStartingEvent event) {
         CommandTropicsTeleport.register(event.getServer().getCommandManager().getDispatcher());
+    }
+
+    private void gatherData(GatherDataEvent event) {
+        DataGenerator gen = event.getGenerator();
+
+        if (event.includeServer()) {
+            gen.addProvider(new TropicraftBlockTagsProvider(gen));
+            gen.addProvider(new TropicraftItemTagsProvider(gen));
+            gen.addProvider(new TropicraftRecipeProvider(gen));
+        }
     }
 }

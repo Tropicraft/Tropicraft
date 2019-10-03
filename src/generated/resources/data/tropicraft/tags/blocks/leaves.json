@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:mahogany_leaves",
+    "tropicraft:palm_leaves",
+    "tropicraft:kapok_leaves",
+    "tropicraft:fruit_leaves",
+    "tropicraft:grapefruit_leaves",
+    "tropicraft:lemon_leaves",
+    "tropicraft:lime_leaves",
+    "tropicraft:orange_leaves"
+  ]
+}

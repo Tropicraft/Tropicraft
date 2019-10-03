@@ -29,6 +29,7 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
     public void addFeatures() {
         super.addFeatures();
         DefaultTropicsFeatures.addCarvers(this);
+        DefaultTropicsFeatures.addTropicsGems(this);
 
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.UP_TREE.get(), NoFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.2F, 1)));
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.SMALL_TUALUNG.get(), NoFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.3F, 1)));
