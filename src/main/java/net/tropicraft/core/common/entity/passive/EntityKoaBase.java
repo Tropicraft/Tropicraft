@@ -725,8 +725,8 @@ public class EntityKoaBase extends VillagerEntity {
 
         rollDiceChild();
 
-        rollDiceRoleAndGender();
-
+        rollDiceRole();
+        rollDiceGender();
         rollDiceOrientation();
 
         updateUniqueEntityAI();
@@ -753,13 +753,16 @@ public class EntityKoaBase extends VillagerEntity {
         }
     }
 
-    public void rollDiceRoleAndGender() {
+    public void rollDiceRole() {
         int randValRole = this.world.rand.nextInt(Roles.values().length);
         if (randValRole == Roles.FISHERMAN.ordinal()) {
             this.setFisher();
         } else if (randValRole == Roles.HUNTER.ordinal()) {
             this.setHunter();
         }
+    }
+
+    public void rollDiceGender() {
         int randValGender = this.world.rand.nextInt(Genders.values().length);
         this.getDataManager().set(GENDER, Integer.valueOf(randValGender));
     }
@@ -856,12 +859,21 @@ public class EntityKoaBase extends VillagerEntity {
             this.villageDimID = compound.getInt("village_dim_id");
         }
 
-
-
-
-        if (compound.contains("role_id")) this.getDataManager().set(ROLE, compound.getInt("role_id"));
-        if (compound.contains("gender_id")) this.getDataManager().set(GENDER, compound.getInt("gender_id"));
-        if (compound.contains("orientation_id")) this.getDataManager().set(ORIENTATION, compound.getInt("orientation_id"));
+        if (compound.contains("role_id")) {
+            this.getDataManager().set(ROLE, compound.getInt("role_id"));
+        } else {
+            rollDiceRole();
+        }
+        if (compound.contains("gender_id")) {
+            this.getDataManager().set(GENDER, compound.getInt("gender_id"));
+        } else {
+            rollDiceGender();
+        }
+        if (compound.contains("orientation_id")) {
+            this.getDataManager().set(ORIENTATION, compound.getInt("orientation_id"));
+        } else {
+            rollDiceOrientation();
+        }
 
         this.lastTradeTime = compound.getLong("lastTradeTime");
 
