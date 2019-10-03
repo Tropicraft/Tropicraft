@@ -28,6 +28,12 @@ import net.tropicraft.core.common.drinks.Drink;
 public class TropicraftItems {
     
     public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Info.MODID);
+    
+    public static final RegistryObject<Item> AZURITE = register("azurite_gem", Builder.item());
+    public static final RegistryObject<Item> EUDIALYTE = register("eudialyte_gem", Builder.item());
+    public static final RegistryObject<Item> ZIRCON = register("zircon_gem", Builder.item());
+    public static final RegistryObject<Item> SHAKA = register("shaka_ingot", Builder.item());
+    public static final RegistryObject<Item> MANGANESE = register("manganese_ingot", Builder.item());
 
     public static final RegistryObject<UmbrellaItem> WHITE_UMBRELLA = register("white_umbrella", Builder.umbrella(ColorHelper.Color.WHITE));
     public static final RegistryObject<UmbrellaItem> ORANGE_UMBRELLA = register("orange_umbrella", Builder.umbrella(ColorHelper.Color.ORANGE));

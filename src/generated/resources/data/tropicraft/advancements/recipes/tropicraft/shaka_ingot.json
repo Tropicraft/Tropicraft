@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:shaka_ingot"
+    ]
+  },
+  "criteria": {
+    "has_ores_shaka": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ores/shaka"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:shaka_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ores_shaka",
+      "has_the_recipe"
+    ]
+  ]
+}
