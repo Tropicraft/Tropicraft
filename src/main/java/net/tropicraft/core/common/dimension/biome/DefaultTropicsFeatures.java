@@ -8,10 +8,13 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.BlockWithContextConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 import net.minecraft.world.gen.placement.CaveEdgeConfig;
+import net.minecraft.world.gen.placement.CountRangeConfig;
 import net.minecraft.world.gen.placement.FrequencyConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
@@ -51,5 +54,16 @@ public class DefaultTropicsFeatures {
     public static void addRainforestPlants(Biome biome) {
         biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.MELON, IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_DOUBLE, new FrequencyConfig(2)));
         biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.VINES.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHT_64, new FrequencyConfig(50)));
+    }
+    
+    public static void addTropicsGems(Biome biome) {
+        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, TropicraftBlocks.AZURITE_ORE.get().getDefaultState(), 8), Placement.COUNT_RANGE, new CountRangeConfig(3, 100, 0, 128)));
+        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, TropicraftBlocks.EUDIALYTE_ORE.get().getDefaultState(), 12), Placement.COUNT_RANGE, new CountRangeConfig(10, 100, 0, 128)));
+        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, TropicraftBlocks.ZIRCON_ORE.get().getDefaultState(), 14), Placement.COUNT_RANGE, new CountRangeConfig(15, 100, 0, 128)));
+    }
+    
+    public static void addTropicsMetals(Biome biome) {
+        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, TropicraftBlocks.MANGANESE_ORE.get().getDefaultState(), 10), Placement.COUNT_RANGE, new CountRangeConfig(8, 32, 0, 32)));
+        biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Biome.createDecoratedFeature(Feature.ORE, new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, TropicraftBlocks.SHAKA_ORE.get().getDefaultState(), 8), Placement.COUNT_RANGE, new CountRangeConfig(6, 0, 0, 32)));
     }
 }

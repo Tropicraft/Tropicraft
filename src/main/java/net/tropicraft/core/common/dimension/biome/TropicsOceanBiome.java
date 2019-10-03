@@ -31,6 +31,7 @@ public class TropicsOceanBiome extends TropicraftBiome {
     @Override
     public void addFeatures() {
         super.addFeatures();
+        DefaultTropicsFeatures.addTropicsMetals(this);
         DefaultTropicsFeatures.addUnderwaterCarvers(this);
         // Various coral features
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SIMPLE_RANDOM_SELECTOR, new SingleRandomFeature(new Feature[]{Feature.CORAL_TREE, Feature.CORAL_CLAW, Feature.CORAL_MUSHROOM}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}), Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED, new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG)));
