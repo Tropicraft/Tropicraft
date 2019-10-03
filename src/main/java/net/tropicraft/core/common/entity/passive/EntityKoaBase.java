@@ -1033,7 +1033,7 @@ public class EntityKoaBase extends VillagerEntity {
             tryFind = true;
         } else if (posLastFireplaceFound != null) {
             BlockState state = world.getBlockState(posLastFireplaceFound);
-            if (state.getBlock() == Blocks.CAMPFIRE) {
+            if (state.getBlock() != Blocks.CAMPFIRE) {
                 //System.out.println("removing invalid fire spot");
                 posLastFireplaceFound = null;
                 tryFind = true;
@@ -1305,11 +1305,11 @@ public class EntityKoaBase extends VillagerEntity {
             }
             this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
 
-            this.setPathPriority(PathNodeType.WATER, 30);
+            this.setPathPriority(PathNodeType.WATER, 8);
         } else {
             this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 
-            this.setPathPriority(PathNodeType.WATER, 30);
+            this.setPathPriority(PathNodeType.WATER, -1);
         }
 
         wasInWater = isInWater();

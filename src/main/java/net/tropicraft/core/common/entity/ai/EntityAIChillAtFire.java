@@ -163,7 +163,6 @@ public class EntityAIChillAtFire extends Goal
                         success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 1.0D);
                     } else {
                         success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
-                        //System.out.println("success? " + success);
                     }
                 } else {
                     success = this.entityObj.getNavigator().tryMoveToXYZ((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
