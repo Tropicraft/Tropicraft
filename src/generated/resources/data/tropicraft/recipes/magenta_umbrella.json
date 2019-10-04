@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    " B ",
+    " B "
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:magenta_wool"
+    },
+    "B": {
+      "item": "minecraft:bamboo"
+    }
+  },
+  "result": {
+    "item": "tropicraft:magenta_umbrella"
+  }
+}

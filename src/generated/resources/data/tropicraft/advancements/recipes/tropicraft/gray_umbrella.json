@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:gray_umbrella"
+    ]
+  },
+  "criteria": {
+    "has_gray_wool": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:gray_wool"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:gray_umbrella"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gray_wool",
+      "has_the_recipe"
+    ]
+  ]
+}
