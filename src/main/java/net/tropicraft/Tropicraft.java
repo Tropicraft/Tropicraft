@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import java.util.function.Supplier;
+
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
@@ -132,8 +134,8 @@ public class Tropicraft
     
     @OnlyIn(Dist.CLIENT)
     private void registerItemColors(ColorHandlerEvent.Item evt) {
-        for (final UmbrellaItem item : UmbrellaItem.getAllItems()) {
-            evt.getItemColors().register(new BasicColorHandler(), item);
+        for (final Supplier<UmbrellaItem> item : TropicraftItems.UMBRELLAS.values()) {
+            evt.getItemColors().register(new BasicColorHandler(), item.get());
         }
 
         evt.getItemColors().register(new BasicColorHandler(), TropicraftItems.LOVE_TROPICS_SHELL::get);

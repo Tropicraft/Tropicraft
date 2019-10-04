@@ -1,8 +1,11 @@
 package net.tropicraft.core.common.item;
 
-import com.google.common.collect.Maps;
+import java.util.Iterator;
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
@@ -10,39 +13,27 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 public class UmbrellaItem extends Item implements IColoredItem {
 
-    private static final Map<ColorHelper.Color, UmbrellaItem> COLOR_UMBRELLA_ITEM_MAP = Maps.newEnumMap(ColorHelper.Color.class);
-    private ColorHelper.Color color;
+    private final DyeColor color;
 
-    public UmbrellaItem(final Properties properties, final ColorHelper.Color color) {
+    public UmbrellaItem(final Properties properties, final DyeColor color) {
         super(properties);
         this.color = color;
-        COLOR_UMBRELLA_ITEM_MAP.put(color, this);
     }
 
     @Override
     public int getColor(ItemStack stack, int pass) {
-        return (pass == 0 ? 16777215 : color.getColor());
-    }
-
-    public static Collection<UmbrellaItem> getAllItems() {
-        return COLOR_UMBRELLA_ITEM_MAP.values();
-    }
-
-    public static ItemStack getItemFromColor(final ColorHelper.Color color) {
-        return new ItemStack(COLOR_UMBRELLA_ITEM_MAP.get(color));
+        return (pass == 0 ? 16777215 : color.getColorValue());
     }
 
     @Override
@@ -78,7 +69,7 @@ public class UmbrellaItem extends Item implements IColoredItem {
                 umbrella.moveToBlockPosAndAngles(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
                 umbrella.setMotion(Vec3d.ZERO);
                 umbrella.rotationYaw = placer.rotationYaw;
-                umbrella.setColor(getColor(heldItem, 1));
+                umbrella.setColor(this.color);
 
                 if (!world.isCollisionBoxesEmpty(umbrella, umbrella.getBoundingBox().grow(-0.1D))) {
                     return new ActionResult<>(ActionResultType.FAIL, heldItem);
