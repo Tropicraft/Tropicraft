@@ -1,15 +1,19 @@
 package net.tropicraft.core.common.entity.placeable;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -19,12 +23,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.item.UmbrellaItem;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 public class UmbrellaEntity extends Entity {
 
@@ -162,7 +162,7 @@ public class UmbrellaEntity extends Entity {
     }
 
     private ItemStack getItemStack() {
-        return UmbrellaItem.getItemFromColor(ColorHelper.getColorObject(getColor()));
+        return new ItemStack(TropicraftItems.UMBRELLAS.get(getColor()).get());
     }
 
     @Override
@@ -203,24 +203,20 @@ public class UmbrellaEntity extends Entity {
 
     @Override
     protected void readAdditional(CompoundNBT nbt) {
-        setColor(nbt.getInt("Color"));
+        setColor(DyeColor.byId(nbt.getInt("Color")));
     }
 
     @Override
     protected void writeAdditional(CompoundNBT nbt) {
-        nbt.putInt("Color", getColor());
+        nbt.putInt("Color", getColor().ordinal());
     }
 
-    public void setColor(int color) {
-        dataManager.set(COLOR, color);
+    public void setColor(DyeColor color) {
+        dataManager.set(COLOR, color.ordinal());
     }
 
-    public void setColor(float red, float green, float blue) {
-        dataManager.set(COLOR, ColorHelper.getColor(red, green, blue));
-    }
-
-    public int getColor() {
-        return dataManager.get(COLOR);
+    public DyeColor getColor() {
+        return DyeColor.byId(dataManager.get(COLOR));
     }
 
     /**

@@ -3,10 +3,10 @@ package net.tropicraft.core.common.item;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.drinks.Drink;
 
 public class Builder {
@@ -31,7 +31,7 @@ public class Builder {
         return () -> ctor.apply(properties.get());
     }
 
-    public static Supplier<UmbrellaItem> umbrella(final ColorHelper.Color color) {
+    public static Supplier<UmbrellaItem> umbrella(final DyeColor color) {
         return item(p -> new UmbrellaItem(p, color));
     }
 

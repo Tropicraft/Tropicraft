@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.item;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -8,6 +10,7 @@ import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.SwordItem;
 import net.minecraftforge.event.RegistryEvent;
@@ -19,7 +22,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
@@ -34,23 +36,9 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ZIRCON = register("zircon_gem", Builder.item());
     public static final RegistryObject<Item> SHAKA = register("shaka_ingot", Builder.item());
     public static final RegistryObject<Item> MANGANESE = register("manganese_ingot", Builder.item());
-
-    public static final RegistryObject<UmbrellaItem> WHITE_UMBRELLA = register("white_umbrella", Builder.umbrella(ColorHelper.Color.WHITE));
-    public static final RegistryObject<UmbrellaItem> ORANGE_UMBRELLA = register("orange_umbrella", Builder.umbrella(ColorHelper.Color.ORANGE));
-    public static final RegistryObject<UmbrellaItem> MAGENTA_UMBRELLA = register("magenta_umbrella", Builder.umbrella(ColorHelper.Color.MAGENTA));
-    public static final RegistryObject<UmbrellaItem> LIGHT_BLUE_UMBRELLA = register("light_blue_umbrella", Builder.umbrella(ColorHelper.Color.LIGHT_BLUE));
-    public static final RegistryObject<UmbrellaItem> YELLOW_UMBRELLA = register("yellow_umbrella", Builder.umbrella(ColorHelper.Color.YELLOW));
-    public static final RegistryObject<UmbrellaItem> LIME_UMBRELLA = register("lime_umbrella", Builder.umbrella(ColorHelper.Color.LIME));
-    public static final RegistryObject<UmbrellaItem> PINK_UMBRELLA = register("pink_umbrella", Builder.umbrella(ColorHelper.Color.PINK));
-    public static final RegistryObject<UmbrellaItem> GRAY_UMBRELLA = register("gray_umbrella", Builder.umbrella(ColorHelper.Color.GRAY));
-    public static final RegistryObject<UmbrellaItem> LIGHT_GRAY_UMBRELLA = register("light_gray_umbrella", Builder.umbrella(ColorHelper.Color.LIGHT_GRAY));
-    public static final RegistryObject<UmbrellaItem> CYAN_UMBRELLA = register("cyan_umbrella", Builder.umbrella(ColorHelper.Color.CYAN));
-    public static final RegistryObject<UmbrellaItem> PURPLE_UMBRELLA = register("purple_umbrella", Builder.umbrella(ColorHelper.Color.PURPLE));
-    public static final RegistryObject<UmbrellaItem> BLUE_UMBRELLA = register("blue_umbrella", Builder.umbrella(ColorHelper.Color.BLUE));
-    public static final RegistryObject<UmbrellaItem> BROWN_UMBRELLA = register("brown_umbrella", Builder.umbrella(ColorHelper.Color.BROWN));
-    public static final RegistryObject<UmbrellaItem> GREEN_UMBRELLA = register("green_umbrella", Builder.umbrella(ColorHelper.Color.GREEN));
-    public static final RegistryObject<UmbrellaItem> RED_UMBRELLA = register("red_umbrella", Builder.umbrella(ColorHelper.Color.RED));
-    public static final RegistryObject<UmbrellaItem> BLACK_UMBRELLA = register("black_umbrella", Builder.umbrella(ColorHelper.Color.BLACK));
+    
+    public static final Map<DyeColor, RegistryObject<UmbrellaItem>> UMBRELLAS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
+            .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c)))));
 
     public static final RegistryObject<Item> BAMBOO_SPEAR = register(
             "bamboo_spear", () -> new SwordItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));

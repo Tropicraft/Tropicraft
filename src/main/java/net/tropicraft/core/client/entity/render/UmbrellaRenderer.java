@@ -44,7 +44,7 @@ public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
         GlStateManager.scalef(f4, f4, f4);
         GlStateManager.scalef(1.0F / f4, 1.0F / f4, 1.0F / f4);
 
-        int umbrellaColor = entityUmbrella.getColor();
+        int umbrellaColor = entityUmbrella.getColor().getColorValue();
         red = ColorHelper.getRed(umbrellaColor);
         green = ColorHelper.getGreen(umbrellaColor);
         blue = ColorHelper.getBlue(umbrellaColor);
