@@ -1,5 +1,15 @@
 package net.tropicraft.core.common.data;
 
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_BUNDLE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_BUNDLE;
+import static net.tropicraft.core.common.item.TropicraftItems.AZURITE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE;
+import static net.tropicraft.core.common.item.TropicraftItems.MANGANESE;
+import static net.tropicraft.core.common.item.TropicraftItems.SHAKA;
+import static net.tropicraft.core.common.item.TropicraftItems.UMBRELLAS;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON;
+
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -8,16 +18,20 @@ import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
+import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.ShapelessRecipeBuilder;
+import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.core.common.TropicraftTags;
-import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.item.UmbrellaItem;
 
 public class TropicraftRecipeProvider extends RecipeProvider {
 
@@ -27,14 +41,26 @@ public class TropicraftRecipeProvider extends RecipeProvider {
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        ore(TropicraftTags.Items.AZURITE_ORE, TropicraftItems.AZURITE, 0.3F, consumer);
-        ore(TropicraftTags.Items.EUDIALYTE_ORE, TropicraftItems.EUDIALYTE, 0.5F, consumer);
-        ore(TropicraftTags.Items.ZIRCON_ORE, TropicraftItems.ZIRCON, 0.5F, consumer);
-        ore(TropicraftTags.Items.MANGANESE_ORE, TropicraftItems.MANGANESE, 0.5F, consumer);
-        ore(TropicraftTags.Items.SHAKA_ORE, TropicraftItems.SHAKA, 0.7F, consumer);
+        ore(TropicraftTags.Items.AZURITE_ORE, AZURITE, 0.3F, consumer);
+        ore(TropicraftTags.Items.EUDIALYTE_ORE, EUDIALYTE, 0.5F, consumer);
+        ore(TropicraftTags.Items.ZIRCON_ORE, ZIRCON, 0.5F, consumer);
+        ore(TropicraftTags.Items.MANGANESE_ORE, MANGANESE, 0.5F, consumer);
+        ore(TropicraftTags.Items.SHAKA_ORE, SHAKA, 0.7F, consumer);
+        
+        for (DyeColor color : DyeColor.values()) {
+            IItemProvider wool = SheepEntity.WOOL_BY_COLOR.get(color);
+            ShapedRecipeBuilder.shapedRecipe(UMBRELLAS.get(color).get())
+                .patternLine("WWW").patternLine(" B ").patternLine(" B ")
+                .key('W', wool)
+                .key('B', Items.BAMBOO)
+                .addCriterion("has_" + color.getName() + "_wool", this.hasItem(wool))
+                .build(consumer);
+            
+            // TODO other colored items
+        }
 
-        bundle(Blocks.BAMBOO.delegate, TropicraftBlocks.BAMBOO_BUNDLE, consumer);
-        bundle(Blocks.SUGAR_CANE.delegate, TropicraftBlocks.THATCH_BUNDLE, consumer);
+        bundle(Blocks.BAMBOO.delegate, BAMBOO_BUNDLE, consumer);
+        bundle(Blocks.SUGAR_CANE.delegate, THATCH_BUNDLE, consumer);
     }
     
     private ResourceLocation safeId(ResourceLocation id) {

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:pink_umbrella"
+    ]
+  },
+  "criteria": {
+    "has_pink_wool": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:pink_wool"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:pink_umbrella"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_pink_wool",
+      "has_the_recipe"
+    ]
+  ]
+}

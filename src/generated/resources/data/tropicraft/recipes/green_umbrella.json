@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    " B ",
+    " B "
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:green_wool"
+    },
+    "B": {
+      "item": "minecraft:bamboo"
+    }
+  },
+  "result": {
+    "item": "tropicraft:green_umbrella"
+  }
+}
