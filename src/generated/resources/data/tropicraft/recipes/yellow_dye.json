@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tropicraft:canna"
+    }
+  ],
+  "result": {
+    "item": "minecraft:yellow_dye",
+    "count": 2
+  }
+}

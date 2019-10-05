@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:seared_marlin_from_smoking"
+    ]
+  },
+  "criteria": {
+    "has_fresh_marlin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:fresh_marlin"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:seared_marlin_from_smoking"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fresh_marlin",
+      "has_the_recipe"
+    ]
+  ]
+}
