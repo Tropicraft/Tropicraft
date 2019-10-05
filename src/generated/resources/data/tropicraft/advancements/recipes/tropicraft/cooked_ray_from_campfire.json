@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:cooked_ray_from_campfire"
+    ]
+  },
+  "criteria": {
+    "has_raw_ray": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:raw_ray"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:cooked_ray_from_campfire"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_ray",
+      "has_the_recipe"
+    ]
+  ]
+}
