@@ -39,6 +39,8 @@ public class TropicraftItems {
     
     public static final Map<DyeColor, RegistryObject<UmbrellaItem>> UMBRELLAS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
             .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c)))));
+    
+    public static final RegistryObject<Item> BAMBOO_STICK = register("bamboo_stick", Builder.item());
 
     public static final RegistryObject<Item> BAMBOO_SPEAR = register(
             "bamboo_spear", () -> new SwordItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));

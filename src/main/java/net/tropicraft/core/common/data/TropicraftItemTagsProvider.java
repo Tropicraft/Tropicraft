@@ -7,6 +7,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.Item;
 import net.minecraft.tags.Tag;
+import net.minecraftforge.common.Tags;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -23,11 +24,13 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         addItemsToTag(TropicraftTags.Items.ZIRCON_ORE, TropicraftItems.ZIRCON);
         addItemsToTag(TropicraftTags.Items.MANGANESE_ORE, TropicraftItems.MANGANESE);
         addItemsToTag(TropicraftTags.Items.SHAKA_ORE, TropicraftItems.SHAKA);
+        
+        addItemsToTag(Tags.Items.RODS_WOODEN, TropicraftItems.BAMBOO_STICK);
     }
 
     @SafeVarargs
-    private final void addItemsToTag(Tag<Item> tag, Supplier<? extends Item>... blocks) {
-        getBuilder(tag).add(Arrays.stream(blocks).map(Supplier::get).toArray(Item[]::new));
+    private final void addItemsToTag(Tag<Item> tag, Supplier<? extends Item>... items) {
+        getBuilder(tag).add(Arrays.stream(items).map(Supplier::get).toArray(Item[]::new));
     }
     
     @SafeVarargs

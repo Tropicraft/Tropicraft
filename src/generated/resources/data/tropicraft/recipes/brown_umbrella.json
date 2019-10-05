@@ -10,7 +10,7 @@
       "item": "minecraft:brown_wool"
     },
     "B": {
-      "item": "minecraft:bamboo"
+      "tag": "forge:rods/wooden"
     }
   },
   "result": {
