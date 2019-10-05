@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "tropicraft:raw_coffee_bean"
+  },
+  "result": "tropicraft:roasted_coffee_bean",
+  "experience": 0.1,
+  "cookingtime": 100
+}

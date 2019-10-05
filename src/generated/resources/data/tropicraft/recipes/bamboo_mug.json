@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    "X X",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:bamboo"
+    }
+  },
+  "result": {
+    "item": "tropicraft:bamboo_mug"
+  }
+}
