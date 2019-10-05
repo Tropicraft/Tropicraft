@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:bamboo_stairs"
+    ]
+  },
+  "criteria": {
+    "has_bamboo_bundle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:bamboo_bundle"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:bamboo_stairs"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bamboo_bundle",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -6,6 +6,9 @@ import static net.tropicraft.core.common.item.TropicraftItems.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
@@ -13,10 +16,10 @@ import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.ShapelessRecipeBuilder;
+import net.minecraft.data.SingleItemRecipeBuilder;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
@@ -95,7 +98,32 @@ public class TropicraftRecipeProvider extends RecipeProvider {
 
         // Bundles
         singleItem(Blocks.BAMBOO.delegate, BAMBOO_BUNDLE, 9, 1, consumer);
-        singleItem(Blocks.SUGAR_CANE.delegate, THATCH_BUNDLE, 9, 1, consumer);        
+        singleItem(Blocks.SUGAR_CANE.delegate, THATCH_BUNDLE, 9, 1, consumer);
+        
+        // Planks
+        planks(MAHOGANY_LOG, MAHOGANY_PLANKS, consumer);
+        planks(PALM_LOG, PALM_PLANKS, consumer);
+        
+        // Stairs
+        stairs(PALM_PLANKS, PALM_STAIRS, "wooden_stairs", false, consumer);
+        stairs(MAHOGANY_PLANKS, MAHOGANY_STAIRS, "wooden_stairs", false, consumer);
+        stairs(THATCH_BUNDLE, THATCH_STAIRS, null, false, consumer);
+        stairs(BAMBOO_BUNDLE, BAMBOO_STAIRS, null, false, consumer);
+        stairs(CHUNK, CHUNK_STAIRS, null, true, consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(THATCH_STAIRS_FUZZY.get(), 4)
+            .patternLine("C  ").patternLine("XC ").patternLine("XXC")
+            .key('X', THATCH_BUNDLE.get())
+            .key('C', Items.SUGAR_CANE)
+            .addCriterion("has_thatch_bundle", this.hasItem(THATCH_BUNDLE.get()))
+            .build(consumer);
+        
+        // Slabs
+        slab(PALM_PLANKS, PALM_SLAB, "wooden_slab", false, consumer);
+        slab(MAHOGANY_PLANKS, MAHOGANY_SLAB, "wooden_slab", false, consumer);
+        slab(THATCH_BUNDLE, THATCH_SLAB, null, false, consumer);
+        slab(BAMBOO_BUNDLE, BAMBOO_SLAB, null, false, consumer);
+        slab(CHUNK, CHUNK_SLAB, null, true, consumer);
     }
     
     private ResourceLocation safeId(ResourceLocation id) {
@@ -135,18 +163,52 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .build(consumer, safeId(result.get()) + "_from_campfire");
     }
 
+    @CheckReturnValue
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> ShapelessRecipeBuilder singleItemUnfinished(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount) {
+        return ShapelessRecipeBuilder.shapelessRecipe(result.get(), amount)
+            .addIngredient(source.get(), required)
+            .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()));
+    }
+
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void dye(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<IFinishedRecipe> consumer) {
-        singleItem(source, result, required, amount, consumer, new ResourceLocation(Info.MODID, result.get().getRegistryName().getPath()));
+        singleItemUnfinished(source, result, required, amount).build(consumer, new ResourceLocation(Info.MODID, result.get().getRegistryName().getPath()));
     }
     
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void singleItem(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<IFinishedRecipe> consumer) {
-        singleItem(source, result, required, amount, consumer, result.get().getRegistryName());
+        singleItemUnfinished(source, result, required, amount).build(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void singleItem(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<IFinishedRecipe> consumer, ResourceLocation id) {
-        ShapelessRecipeBuilder.shapelessRecipe(result.get(), amount)
-            .addIngredient(source.get(), required)
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void planks(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+        singleItemUnfinished(source, result, 1, 4)
+            .setGroup("planks")
+            .build(consumer);
+    }
+    
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void stairs(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, boolean stone, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 4)
+            .patternLine("X  ").patternLine("XX ").patternLine("XXX")
+            .key('X', source.get())
+            .setGroup(group)
             .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
-            .build(consumer, id);
+            .build(consumer);
+        if (stone) {
+            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(source.get()), result.get())
+                .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+                .build(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
+        }
+    }
+    
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void slab(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, boolean stone, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 6)
+            .patternLine("XXX")
+            .key('X', source.get())
+            .setGroup(group)
+            .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+            .build(consumer);
+        if (stone) {
+            SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(source.get()), result.get(), 2)
+                .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+                .build(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
+        }
     }
 }
