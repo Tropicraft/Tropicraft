@@ -138,7 +138,7 @@ public class FishingBobberEntity extends Entity {
          BlockPos blockpos = new BlockPos(this);
          IFluidState ifluidstate = this.world.getFluidState(blockpos);
          if (ifluidstate.isTagged(FluidTags.WATER)) {
-            f = ifluidstate.func_215679_a(this.world, blockpos);
+            f = ifluidstate.getActualHeight(this.world, blockpos);
          }
 
          if (this.currentState == FishingBobberEntity.State.FLYING) {

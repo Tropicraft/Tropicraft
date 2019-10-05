@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "tropicraft:palm_log"
+    }
+  ],
+  "result": {
+    "item": "tropicraft:palm_planks",
+    "count": 4
+  }
+}

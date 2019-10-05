@@ -43,7 +43,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
                     // Expand 16 blocks in front of the vector
                     .expand(new Vec3d(dir.getDirectionVec()).scale(16))
                     // Add 1 block to each side
-                    .expand(ortho).expand(ortho.func_216371_e())
+                    .expand(ortho).expand(ortho.inverse())
                     // Cover a good amount of vertical space
                     .grow(0, 3, 0));
         }
