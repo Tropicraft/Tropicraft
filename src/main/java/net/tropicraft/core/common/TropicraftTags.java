@@ -16,6 +16,7 @@ public class TropicraftTags {
 
         public static final Tag<Block> FENCES = modTag("fences");
         public static final Tag<Block> LEAVES = modTag("leaves");
+        public static final Tag<Block> WALLS = modTag("walls");
 
         static Tag<Block> tag(String modid, String name) {
             return tag(BlockTags.Wrapper::new, modid, name);

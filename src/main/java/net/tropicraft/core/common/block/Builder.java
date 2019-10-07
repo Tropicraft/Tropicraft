@@ -17,6 +17,7 @@ import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
@@ -118,6 +119,10 @@ public class Builder {
 
     public static Supplier<FenceGateBlock> fenceGate(final Supplier<? extends Block> source) {
         return block(FenceGateBlock::new, lazyProp(source));
+    }
+
+    public static Supplier<WallBlock> wall(final Supplier<? extends Block> source) {
+        return block(WallBlock::new, lazyProp(source));
     }
 
     public static Supplier<BongoDrumBlock> bongo(final BongoDrumBlock.Size bongoSize) {

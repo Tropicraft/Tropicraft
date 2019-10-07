@@ -1,18 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#W#",
-    "#W#"
+    "XXX",
+    "XXX"
   ],
   "key": {
-    "W": {
+    "X": {
       "item": "tropicraft:chunk"
-    },
-    "#": {
-      "tag": "forge:rods/wooden"
     }
   },
   "result": {
-    "item": "tropicraft:chunk_fence_gate"
+    "item": "tropicraft:chunk_wall",
+    "count": 6
   }
 }

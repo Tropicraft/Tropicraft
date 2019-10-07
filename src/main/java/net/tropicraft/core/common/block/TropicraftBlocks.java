@@ -158,6 +158,8 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> PALM_FENCE_GATE = register("palm_fence_gate", Builder.fenceGate(PALM_PLANKS));
     public static final RegistryObject<Block> MAHOGANY_FENCE_GATE = register("mahogany_fence_gate", Builder.fenceGate(MAHOGANY_PLANKS));
 
+    public static final RegistryObject<Block> CHUNK_WALL = register("chunk_wall", Builder.wall(CHUNK));
+    
     public static final RegistryObject<Block> BAMBOO_DOOR = register(
             "bamboo_door", () -> new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {});
     public static final RegistryObject<Block> MAHOGANY_DOOR = register(
