@@ -160,6 +160,20 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 1, SMALL_BONGO_DRUM, consumer);
         bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 2, MEDIUM_BONGO_DRUM, consumer);
         bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 3, LARGE_BONGO_DRUM, consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(BAMBOO_LADDER.get(), 4)
+            .patternLine("S S").patternLine("BSB").patternLine("S S")
+            .key('S', BAMBOO_STICK.get())
+            .key('B', Items.BAMBOO)
+            .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
+            .build(consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(BAMBOO_CHEST.get())
+            .patternLine("BBB").patternLine("B B").patternLine("BBB")
+            .key('B', Items.BAMBOO)
+            .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
+            .build(consumer);
+
     }
     
     private ResourceLocation safeId(ResourceLocation id) {
