@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "Y": {
+      "item": "tropicraft:bamboo_mug"
+    }
+  },
+  "result": {
+    "item": "tropicraft:drink_mixer"
+  }
+}
