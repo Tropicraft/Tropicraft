@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "tropicraft:bongos",
+  "pattern": [
+    "TTT",
+    "BBB",
+    "BBB"
+  ],
+  "key": {
+    "T": {
+      "item": "tropicraft:iguana_leather"
+    },
+    "B": {
+      "item": "tropicraft:mahogany_planks"
+    }
+  },
+  "result": {
+    "item": "tropicraft:large_bongo_drum"
+  }
+}

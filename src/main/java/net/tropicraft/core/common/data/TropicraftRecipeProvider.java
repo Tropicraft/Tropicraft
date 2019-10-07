@@ -9,6 +9,8 @@ import java.util.function.Supplier;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
@@ -153,6 +155,11 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         trapDoor(MAHOGANY_PLANKS, MAHOGANY_TRAPDOOR, "wooden_trapdoor", consumer);
         trapDoor(THATCH_BUNDLE, THATCH_TRAPDOOR, null, consumer);
         trapDoor(BAMBOO_BUNDLE, BAMBOO_TRAPDOOR, null, consumer);
+        
+        // Bongos
+        bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 1, SMALL_BONGO_DRUM, consumer);
+        bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 2, MEDIUM_BONGO_DRUM, consumer);
+        bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 3, LARGE_BONGO_DRUM, consumer);
     }
     
     private ResourceLocation safeId(ResourceLocation id) {
@@ -287,6 +294,18 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .key('X', source.get())
             .setGroup(group)
             .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+            .build(consumer);
+    }
+    
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void bongo(Supplier<? extends T> top, Supplier<? extends T> bottom, int size, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get())
+            .patternLine(StringUtils.repeat('T', size))
+            .patternLine(StringUtils.repeat('B', size))
+            .patternLine(StringUtils.repeat('B', size))
+            .key('T', top.get())
+            .key('B', bottom.get())
+            .setGroup("tropicraft:bongos")
+            .addCriterion("has_" + safeName(top.get()), this.hasItem(top.get()))
             .build(consumer);
     }
 }
