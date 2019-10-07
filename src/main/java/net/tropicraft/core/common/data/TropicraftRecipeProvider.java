@@ -25,6 +25,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
@@ -173,7 +174,42 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .key('B', Items.BAMBOO)
             .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
             .build(consumer);
-
+        
+        ShapedRecipeBuilder.shapedRecipe(SIFTER.get())
+            .patternLine("XXX").patternLine("XIX").patternLine("XXX")
+            .key('X', ItemTags.PLANKS)
+            .key('I', Tags.Items.GLASS)
+            .setGroup("tropicraft:sifter")
+            .addCriterion("has_glass", this.hasItem(Tags.Items.GLASS))
+            .build(consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(SIFTER.get())
+            .patternLine("XXX").patternLine("XIX").patternLine("XXX")
+            .key('X', ItemTags.PLANKS)
+            .key('I', Tags.Items.GLASS_PANES)
+            .setGroup("tropicraft:sifter")
+            .addCriterion("has_glass_pane", this.hasItem(Tags.Items.GLASS_PANES))
+            .build(consumer, new ResourceLocation(Info.MODID, "sifter_with_glass_pane"));
+        
+        ShapedRecipeBuilder.shapedRecipe(DRINK_MIXER.get())
+            .patternLine("XXX").patternLine("XYX").patternLine("XXX")
+            .key('X', CHUNK.get())
+            .key('Y', BAMBOO_MUG.get())
+            .addCriterion("has_bamboo_mug", this.hasItem(BAMBOO_MUG.get()))
+            .build(consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(TIKI_TORCH.get())
+            .patternLine("Y").patternLine("X").patternLine("X")
+            .key('X', BAMBOO_STICK.get())
+            .key('Y', ItemTags.COALS)
+            .addCriterion("has_bamboo_stick", this.hasItem(BAMBOO_STICK.get()))
+            .build(consumer);
+        
+        ShapedRecipeBuilder.shapedRecipe(BAMBOO_FLOWER_POT.get())
+            .patternLine("# #").patternLine(" # ")
+            .key('#', Items.BAMBOO)
+            .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
+            .build(consumer);
     }
     
     private ResourceLocation safeId(ResourceLocation id) {
