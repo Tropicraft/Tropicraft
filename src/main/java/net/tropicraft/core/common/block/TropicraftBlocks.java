@@ -1,13 +1,19 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.LadderBlock;
 import net.minecraft.block.SaplingBlock;
@@ -56,34 +62,10 @@ public class TropicraftBlocks {
             "eudialyte_block", Builder.oreBlock(MaterialColor.GRAY));
     public static final RegistryObject<Block> ZIRCON_BLOCK = register(
             "zircon_block", Builder.oreBlock(MaterialColor.GRAY));
-
-    public static final RegistryObject<Block> ACAI_VINE = register("acai_vine", Builder.flower());
-    public static final RegistryObject<Block> ANEMONE = register("anemone", Builder.flower());
-    public static final RegistryObject<Block> BROMELIAD = register("bromeliad", Builder.flower());
-    public static final RegistryObject<Block> CANNA = register("canna", Builder.flower());
-    public static final RegistryObject<Block> COMMELINA_DIFFUSA = register("commelina_diffusa", Builder.flower());
-    public static final RegistryObject<Block> CROCOSMIA = register("crocosmia", Builder.flower());
-    public static final RegistryObject<Block> CROTON = register("croton", Builder.flower());
-    public static final RegistryObject<Block> DRACAENA = register("dracaena", Builder.flower());
-    public static final RegistryObject<Block> FERN = register("tropical_fern", Builder.flower());
-    public static final RegistryObject<Block> FOLIAGE = register("foliage", Builder.flower());
-    public static final RegistryObject<Block> MAGIC_MUSHROOM = register("magic_mushroom", Builder.flower());
-    public static final RegistryObject<Block> ORANGE_ANTHURIUM = register("orange_anthurium", Builder.flower());
-    public static final RegistryObject<Block> ORCHID = register("orchid", Builder.flower());
-    public static final RegistryObject<Block> PATHOS = register("pathos", Builder.flower());
-    public static final RegistryObject<Block> RED_ANTHURIUM = register("red_anthurium", Builder.flower());
-
-    @SuppressWarnings("unchecked")
-    public static final RegistryObject<Block>[] SMALL_FLOWERS = new RegistryObject[]{
-        ACAI_VINE, ANEMONE, BROMELIAD, CANNA, COMMELINA_DIFFUSA, CROCOSMIA, CROTON, DRACAENA, FERN,
-            FOLIAGE, MAGIC_MUSHROOM, ORANGE_ANTHURIUM, ORCHID, PATHOS, RED_ANTHURIUM
-    };
-
-    @SuppressWarnings("unchecked")
-    public static final RegistryObject<Block>[] TROPICS_FLOWERS = new RegistryObject[]{
-        ACAI_VINE, ANEMONE, BROMELIAD, CANNA, COMMELINA_DIFFUSA, CROCOSMIA, CROTON, DRACAENA, FERN,
-            FOLIAGE, ORANGE_ANTHURIUM, ORCHID, PATHOS, RED_ANTHURIUM
-    };
+    
+    public static final Map<TropicraftFlower, RegistryObject<FlowerBlock>> FLOWERS = Arrays.<TropicraftFlower>stream(TropicraftFlower.values())
+            .collect(Collectors.toMap(Function.identity(), f -> register(f.name().toLowerCase(Locale.ROOT), Builder.flower(f)),
+                    (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TropicraftFlower.class)));
 
     public static final RegistryObject<Block> PURIFIED_SAND = register("purified_sand", Builder.sand(MaterialColor.SAND));
     public static final RegistryObject<Block> PACKED_PURIFIED_SAND = register("packed_purified_sand", Builder.sand(MaterialColor.SAND, 2, 30));
@@ -207,9 +189,9 @@ public class TropicraftBlocks {
             "bamboo_flower_pot", Builder.tropicraftPot());
     
     static {
-        Stream.of(PALM_SAPLING, MAHOGANY_SAPLING, GRAPEFRUIT_SAPLING, LEMON_SAPLING, LIME_SAPLING,
-                ORANGE_SAPLING, COMMELINA_DIFFUSA, CROCOSMIA, ORCHID, CANNA, ANEMONE, ORANGE_ANTHURIUM,
-                RED_ANTHURIUM, MAGIC_MUSHROOM, PATHOS, ACAI_VINE, CROTON, DRACAENA, FERN, FOLIAGE, BROMELIAD)
+        Stream.concat(
+                Stream.of(PALM_SAPLING, MAHOGANY_SAPLING, GRAPEFRUIT_SAPLING, LEMON_SAPLING, LIME_SAPLING, ORANGE_SAPLING),
+                FLOWERS.values().stream())
         .forEach(block -> {
             String name = block.getId().getPath();
             registerNoItem("bamboo_potted_" + name, Builder.tropicraftPot(block));

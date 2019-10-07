@@ -15,6 +15,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftFlower;
 
 public class TropicraftFeatures {
 
@@ -45,9 +46,9 @@ public class TropicraftFeatures {
 	public static final RegistryObject<EIHFeature> EIH = register(
 	        "eih", () -> new EIHFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<TropicsFlowersFeature> TROPICS_FLOWERS = register(
-	        "tropics_flowers", () -> new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftBlocks.TROPICS_FLOWERS));
+	        "tropics_flowers", () -> new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftFlower.TROPICS_FLOWERS));
 	public static final RegistryObject<TropicsFlowersFeature> RAINFOREST_FLOWERS = register(
-	        "rainforest_flowers", () -> new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftBlocks.MAGIC_MUSHROOM));
+	        "rainforest_flowers", () -> new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftFlower.MAGIC_MUSHROOM));
 	public static final RegistryObject<UndergrowthFeature> UNDERGROWTH = register(
 	        "undergrowth", () -> new UndergrowthFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<RainforestVinesFeature> VINES = register(

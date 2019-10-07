@@ -54,8 +54,8 @@ public class Builder {
         return block(BlockTropicraftOreBlock::new, prop(Material.IRON, color).sound(SoundType.METAL).hardnessAndResistance(5.0F, 6.0F));
     }
     
-    public static Supplier<FlowerBlock> flower() {
-        return block(p -> new FlowerBlock(Effects.REGENERATION, 0, p), lazyProp(Blocks.POPPY.delegate));
+    public static Supplier<TropicsFlowerBlock> flower(TropicraftFlower type) {
+        return block(p -> new TropicsFlowerBlock(type.getEffect(), type.getEffectDuration(), type.getShape(), p), lazyProp(Blocks.POPPY.delegate));
     }
 
     public static Supplier<BlockTropicraftSand> sand(final MaterialColor color) {
