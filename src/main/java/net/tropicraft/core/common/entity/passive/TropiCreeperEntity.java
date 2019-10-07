@@ -25,6 +25,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.entity.ai.TropiCreeperSwellGoal;
 
 import java.util.Collection;
@@ -202,7 +203,7 @@ public class TropiCreeperEntity extends CreatureEntity {
                         attempt = attempt.down();
                     }
                     attempt = attempt.up();
-                    BlockState state = TropicraftBlocks.SMALL_FLOWERS[rand.nextInt(TropicraftBlocks.SMALL_FLOWERS.length)].get().getDefaultState();
+                    BlockState state = TropicraftFlower.SMALL_FLOWERS[rand.nextInt(TropicraftFlower.SMALL_FLOWERS.length)].get().getDefaultState();
                     if (state.isValidPosition(world, attempt)) {
                         world.setBlockState(attempt, state);
                     }

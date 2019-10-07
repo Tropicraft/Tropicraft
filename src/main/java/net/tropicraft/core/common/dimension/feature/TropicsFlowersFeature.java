@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature;
 
 import java.util.Random;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import com.mojang.datafixers.Dynamic;
 
@@ -12,20 +13,19 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.FlowersFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraftforge.fml.RegistryObject;
 
 public class TropicsFlowersFeature extends FlowersFeature {
-    private final RegistryObject<Block>[] FLOWERS;
+    private final Supplier<Block>[] flowers;
 
     @SafeVarargs
-    public TropicsFlowersFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func, final RegistryObject<Block>... flowers) {
+    public TropicsFlowersFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func, final Supplier<Block>... flowers) {
         super(func);
-        FLOWERS = flowers;
+        this.flowers = flowers;
     }
 
     @Override
     public BlockState getRandomFlower(Random rand, BlockPos pos) {
         final double noise = MathHelper.clamp((1.0D + Biome.INFO_NOISE.getValue((double)pos.getX() / 48.0D, (double)pos.getZ() / 48.0D)) / 2.0D, 0.0D, 0.9999D);
-        return FLOWERS[(int) (noise * (double) FLOWERS.length)].get().getDefaultState();
+        return flowers[(int) (noise * (double) flowers.length)].get().getDefaultState();
     }
 }
