@@ -25,19 +25,6 @@ public enum TropicraftFlower implements Supplier<Block> {
     PATHOS(Effects.REGENERATION.delegate, 0, 15, 12),
     RED_ANTHURIUM(Effects.REGENERATION.delegate, 0, 11);
 
-    public static final TropicraftFlower VALUES[] = values();
-    public static final TropicraftFlower SMALL_FLOWERS[] = new TropicraftFlower[] { 
-            ACAI_VINE, ANEMONE, BROMELIAD, CANNA, COMMELINA_DIFFUSA, CROCOSMIA, CROTON, DRACAENA, TROPICAL_FERN, FOLIAGE, MAGIC_MUSHROOM,
-            ORANGE_ANTHURIUM, ORCHID, PATHOS, RED_ANTHURIUM
-    };
-    public static final TropicraftFlower TROPICS_FLOWERS[] = new TropicraftFlower[] {
-            ACAI_VINE, ANEMONE, BROMELIAD, CANNA, COMMELINA_DIFFUSA, CROCOSMIA, CROTON, DRACAENA, TROPICAL_FERN, FOLIAGE,
-            ORANGE_ANTHURIUM, ORCHID, PATHOS, RED_ANTHURIUM
-    };
-    public static final TropicraftFlower OVERWORLD_FLOWERS[] = new TropicraftFlower[] {
-            ORCHID, PATHOS, RED_ANTHURIUM, COMMELINA_DIFFUSA, ANEMONE, ORANGE_ANTHURIUM
-    };
-
     private final Supplier<Effect> effect;
     private final int effectDuration;
     private final VoxelShape shape;

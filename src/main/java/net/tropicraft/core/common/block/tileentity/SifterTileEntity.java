@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.network.message.MessageSifterInventory;
@@ -116,11 +117,11 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
 
     private ItemStack getCommonItem() {
         // Random from -1 to size-1
-        final int shellIndex = rand.nextInt(TropicraftItems.SHELLS.length + 1) - 1;
+        final int shellIndex = rand.nextInt(TropicraftTags.Items.SHELLS.getAllElements().size() + 1) - 1;
         if (shellIndex < 0) {
             return getRareItem();
         }
-        return new ItemStack(TropicraftItems.SHELLS[shellIndex].get());
+        return new ItemStack(TropicraftTags.Items.SHELLS.getRandomElement(rand));
     }
 
     private ItemStack getRareItem() {
