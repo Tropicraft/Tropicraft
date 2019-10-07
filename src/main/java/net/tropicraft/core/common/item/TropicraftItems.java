@@ -50,10 +50,6 @@ public class TropicraftItems {
     public static final RegistryObject<Item> RUBE_NAUTILUS = register("rube_nautilus", Builder.shell());
     public static final RegistryObject<Item> STARFISH = register("starfish", Builder.shell());
     public static final RegistryObject<Item> TURTLE_SHELL = register("turtle_shell", Builder.shell());
-    @SuppressWarnings("unchecked")
-    public static final RegistryObject<Item>[] SHELLS = new RegistryObject[] {
-            SOLONOX_SHELL, FROX_CONCH, PAB_SHELL, RUBE_NAUTILUS, STARFISH, TURTLE_SHELL
-    };
 
     public static final RegistryObject<LoveTropicsShellItem> LOVE_TROPICS_SHELL = register(
             "love_tropics_shell", () -> new LoveTropicsShellItem(new Item.Properties()));
@@ -70,8 +66,6 @@ public class TropicraftItems {
 
     // Cocktails
     // TODO - add item jsons
-
-    // TODO replace with ItemTags
     public static final ImmutableMap<Drink, RegistryObject<Item>> COCKTAILS = ImmutableMap.copyOf(
             Drink.DRINKS.values().stream()
                 .collect(Collectors.toMap(Function.identity(), d -> register(d.name, Builder.cocktail(d)))));

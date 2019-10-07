@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.data;
 
 import static net.tropicraft.core.common.block.TropicraftBlocks.*;
+import static net.tropicraft.core.common.block.TropicraftFlower.*;
 import static net.tropicraft.core.common.item.TropicraftItems.*;
 
 import java.util.function.Consumer;

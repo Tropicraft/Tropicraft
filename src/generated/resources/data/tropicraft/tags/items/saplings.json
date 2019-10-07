@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:palm_sapling",
+    "tropicraft:mahogany_sapling",
+    "tropicraft:grapefruit_sapling",
+    "tropicraft:lemon_sapling",
+    "tropicraft:lime_sapling",
+    "tropicraft:orange_sapling"
+  ]
+}

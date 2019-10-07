@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "#tropicraft:wooden_slabs",
+    "tropicraft:bamboo_slab",
+    "tropicraft:chunk_slab",
+    "tropicraft:thatch_slab"
+  ]
+}
