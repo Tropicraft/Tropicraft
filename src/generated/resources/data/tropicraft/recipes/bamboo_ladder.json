@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "BSB",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "B": {
+      "item": "minecraft:bamboo"
+    }
+  },
+  "result": {
+    "item": "tropicraft:bamboo_ladder",
+    "count": 4
+  }
+}
