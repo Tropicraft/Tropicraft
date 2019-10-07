@@ -124,6 +124,18 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         slab(THATCH_BUNDLE, THATCH_SLAB, null, false, consumer);
         slab(BAMBOO_BUNDLE, BAMBOO_SLAB, null, false, consumer);
         slab(CHUNK, CHUNK_SLAB, null, true, consumer);
+        
+        fence(PALM_PLANKS, PALM_FENCE, "wooden_fence", consumer);
+        fence(MAHOGANY_PLANKS, MAHOGANY_FENCE, "wooden_fence", consumer);
+        fence(THATCH_BUNDLE, THATCH_FENCE, null, consumer);
+        fence(BAMBOO_BUNDLE, BAMBOO_FENCE, null, consumer);
+        fence(CHUNK, CHUNK_FENCE, null, consumer);
+        
+        fenceGate(PALM_PLANKS, PALM_FENCE_GATE, "wooden_fence_gate", consumer);
+        fenceGate(MAHOGANY_PLANKS, MAHOGANY_FENCE_GATE, "wooden_fence_gate", consumer);
+        fenceGate(THATCH_BUNDLE, THATCH_FENCE_GATE, null, consumer);
+        fenceGate(BAMBOO_BUNDLE, BAMBOO_FENCE_GATE, null, consumer);
+        fenceGate(CHUNK, CHUNK_FENCE_GATE, null, consumer);
     }
     
     private ResourceLocation safeId(ResourceLocation id) {
@@ -210,5 +222,25 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
                 .build(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
         }
+    }
+    
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void fence(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
+            .patternLine("W#W").patternLine("W#W")
+            .key('W', source.get())
+            .key('#', Tags.Items.RODS_WOODEN)
+            .setGroup(group)
+            .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+            .build(consumer);
+    }
+    
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void fenceGate(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
+            .patternLine("#W#").patternLine("#W#")
+            .key('W', source.get())
+            .key('#', Tags.Items.RODS_WOODEN)
+            .setGroup(group)
+            .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+            .build(consumer);
     }
 }
