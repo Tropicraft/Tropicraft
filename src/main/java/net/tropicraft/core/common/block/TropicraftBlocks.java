@@ -162,6 +162,8 @@ public class TropicraftBlocks {
     
     public static final RegistryObject<Block> BAMBOO_DOOR = register(
             "bamboo_door", () -> new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {});
+    public static final RegistryObject<Block> PALM_DOOR = register(
+            "palm_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
     public static final RegistryObject<Block> MAHOGANY_DOOR = register(
             "mahogany_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
     public static final RegistryObject<Block> THATCH_DOOR = register(
@@ -169,8 +171,10 @@ public class TropicraftBlocks {
     
     public static final RegistryObject<Block> BAMBOO_TRAPDOOR = register(
             "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(BAMBOO_DOOR.get())) {});
+    public static final RegistryObject<Block> PALM_TRAPDOOR = register(
+            "palm_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(PALM_DOOR.get())) {});
     public static final RegistryObject<Block> MAHOGANY_TRAPDOOR = register(
-            "mahogany_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(Blocks.OAK_TRAPDOOR)) {});
+            "mahogany_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(MAHOGANY_DOOR.get())) {});
     public static final RegistryObject<Block> THATCH_TRAPDOOR = register(
             "thatch_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
 

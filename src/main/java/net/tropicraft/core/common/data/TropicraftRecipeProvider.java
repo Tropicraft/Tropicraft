@@ -141,6 +141,18 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         
         // Walls
         wall(CHUNK, CHUNK_WALL, consumer);
+        
+        // Doors
+        door(PALM_PLANKS, PALM_DOOR, "wooden_door", consumer);
+        door(MAHOGANY_PLANKS, MAHOGANY_DOOR, "wooden_door", consumer);
+        door(THATCH_BUNDLE, THATCH_DOOR, null, consumer);
+        door(BAMBOO_BUNDLE, BAMBOO_DOOR, null, consumer);
+        
+        // Trap doors
+        trapDoor(PALM_PLANKS, PALM_TRAPDOOR, "wooden_trapdoor", consumer);
+        trapDoor(MAHOGANY_PLANKS, MAHOGANY_TRAPDOOR, "wooden_trapdoor", consumer);
+        trapDoor(THATCH_BUNDLE, THATCH_TRAPDOOR, null, consumer);
+        trapDoor(BAMBOO_BUNDLE, BAMBOO_TRAPDOOR, null, consumer);
     }
     
     private ResourceLocation safeId(ResourceLocation id) {
@@ -258,5 +270,23 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(source.get()), result.get())
             .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
             .build(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
+    }
+    
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void door(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
+            .patternLine("XX").patternLine("XX").patternLine("XX")
+            .key('X', source.get())
+            .setGroup(group)
+            .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+            .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void trapDoor(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 2)
+            .patternLine("XXX").patternLine("XXX")
+            .key('X', source.get())
+            .setGroup(group)
+            .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
+            .build(consumer);
     }
 }
