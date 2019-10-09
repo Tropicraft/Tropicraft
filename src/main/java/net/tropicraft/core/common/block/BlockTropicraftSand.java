@@ -1,8 +1,9 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.FallingBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
@@ -12,8 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IPlantable;
 
 public class BlockTropicraftSand extends FallingBlock {
     public static final BooleanProperty UNDERWATER = BooleanProperty.create("underwater");
@@ -26,6 +30,11 @@ public class BlockTropicraftSand extends FallingBlock {
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(UNDERWATER);
+    }
+    
+    @Override
+    public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
+        return Blocks.SAND.canSustainPlant(state, world, pos, facing, plantable);
     }
 
     @Override
