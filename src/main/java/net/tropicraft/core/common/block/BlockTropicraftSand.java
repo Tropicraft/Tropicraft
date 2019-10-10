@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -46,13 +47,13 @@ public class BlockTropicraftSand extends FallingBlock {
             return;
         }
 
-        if (entity instanceof PlayerEntity) {
-            final PlayerEntity player = (PlayerEntity)entity;
-            final ItemStack stack = player.getItemStackFromSlot(EquipmentSlotType.FEET);
+        if (entity instanceof LivingEntity) {
+            final LivingEntity living = (LivingEntity)entity;
+            final ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.FEET);
 
-            // If player isn't wearing anything on their feetsies
+            // If entity isn't wearing anything on their feetsies
             if (stack.isEmpty()) {
-                player.attackEntityFrom(DamageSource.LAVA, 0.5F);
+                living.attackEntityFrom(DamageSource.LAVA, 0.5F);
             }
         } else {
             entity.attackEntityFrom(DamageSource.LAVA, 0.5F);
