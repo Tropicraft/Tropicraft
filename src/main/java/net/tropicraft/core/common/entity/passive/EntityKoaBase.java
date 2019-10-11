@@ -97,7 +97,7 @@ public class EntityKoaBase extends VillagerEntity {
     private static int TRADE_COOLDOWN = 24000*3;
     private static int DIVE_TIME_NEEDED = 60*60;
 
-    public boolean debug = true;
+    public boolean debug = false;
 
     public int druggedTime = 0;
 

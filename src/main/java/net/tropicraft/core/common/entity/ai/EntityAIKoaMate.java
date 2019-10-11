@@ -22,7 +22,14 @@ public class EntityAIKoaMate extends Goal
     private final EntityKoaBase villagerObj;
     private EntityKoaBase mate;
     private final World world;
+
+    //counts down from 300 when mating starts, on 0 mate completes
     private int matingTimeout;
+
+    private final long TIME_BETWEEN_POPULATION_CHECKS = 20*10;
+    private final int MAX_TOWN_POPULATION = 10;
+    private long lastTimeCheckedVillagePopulation = -1;
+    private int cachedVillagePopulation = 0;
 
     public EntityAIKoaMate(EntityKoaBase villagerIn)
     {
@@ -136,12 +143,27 @@ public class EntityAIKoaMate extends Goal
         }
     }
 
-    //TODO: for now just checks if villagers in general area, prone it overpopulation due to half chunks loaded
-    //fix in 1.14 by readding village object
+    //TODO: for now just checks if villagers in general area, potentially prone to overpopulation due to half chunks loaded
+    // fix in 1.14 by readding village object, or migrating to new vanilla villager system
+    /**
+     * Calculates if town can handle more villagers
+     * result is cached due to active ticking of mating constantly querying this method
+     * @return
+     */
     private boolean canTownHandleMoreVillagers() {
-        List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getBoundingBox().grow(50.0D, 50.0D, 50.0D));
+        double range = 100;
+        if (lastTimeCheckedVillagePopulation + TIME_BETWEEN_POPULATION_CHECKS < world.getGameTime()) {
+            lastTimeCheckedVillagePopulation = world.getGameTime();
+            List<EntityKoaBase> listEntities = this.world.getEntitiesWithinAABB(EntityKoaBase.class, this.villagerObj.getBoundingBox().grow(range, range, range));
+            cachedVillagePopulation = listEntities.size();
+            //System.out.println("update cached koa population to: " + cachedVillagePopulation);
+            return listEntities.size() < MAX_TOWN_POPULATION;
+        } else {
+            //System.out.println("return cached koa population: " + cachedVillagePopulation);
+            return cachedVillagePopulation < MAX_TOWN_POPULATION;
+        }
 
-        return listEntities.size() < 20;
+
     }
 
     /*private boolean canTownHandleMoreVillagers112()
