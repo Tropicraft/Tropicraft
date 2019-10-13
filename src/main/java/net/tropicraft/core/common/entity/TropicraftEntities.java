@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.entity;
 
-import java.util.function.Supplier;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -19,6 +17,8 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 
+import java.util.function.Supplier;
+
 @Mod.EventBusSubscriber(modid = Info.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
 
@@ -34,9 +34,18 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<BambooItemFrame>> BAMBOO_ITEM_FRAME = register("bamboo_item_frame", TropicraftEntities::bambooItemFrame);
     // TODO: Register again when volcano eruption is finished
     public static final RegistryObject<EntityType<LavaBallEntity>> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
+    public static final RegistryObject<EntityType<SeaTurtleEntity>> SEA_TURTLE = register("turtle", TropicraftEntities::turtle);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<SeaTurtleEntity> turtle() {
+        return EntityType.Builder.create(SeaTurtleEntity::new, EntityClassification.CREATURE)
+                .size(0.9F, 0.4F)
+                .setTrackingRange(80)
+                .setUpdateInterval(1)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<BambooItemFrame> bambooItemFrame() {
