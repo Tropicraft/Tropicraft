@@ -1,9 +1,6 @@
 package net.tropicraft;
 
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -29,14 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.BasicColorHandler;
-import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
-import net.tropicraft.core.client.entity.render.EIHRenderer;
-import net.tropicraft.core.client.entity.render.IguanaRenderer;
-import net.tropicraft.core.client.entity.render.RenderKoaMan;
-import net.tropicraft.core.client.entity.render.RenderWallItemEntity;
-import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
-import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
-import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
+import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
 import net.tropicraft.core.client.tileentity.SifterRenderer;
@@ -69,13 +59,21 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.UmbrellaItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 
+import java.util.function.Supplier;
+
 @Mod(Constants.MODID)
-public class Tropicraft
-{
+public class Tropicraft {
     public static final ItemGroup TROPICRAFT_ITEM_GROUP = (new ItemGroup("tropicraft") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
             return new ItemStack(TropicraftFlower.RED_ANTHURIUM.get());
+        }
+    });
+
+    public static final ItemGroup LOVE_TROPICS_ITEM_GROUP = (new ItemGroup("love_tropics") {
+        @OnlyIn(Dist.CLIENT)
+        public ItemStack createIcon() {
+            return new ItemStack(TropicraftBlocks.SMALL_BONGO_DRUM.get());
         }
     });
 

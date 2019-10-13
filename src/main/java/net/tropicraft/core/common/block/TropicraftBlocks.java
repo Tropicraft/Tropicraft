@@ -1,30 +1,8 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.TallFlowerBlock;
-import net.minecraft.block.TrapDoorBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
@@ -41,6 +19,13 @@ import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.DrinkMixerItemstackRenderer;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TropicraftBlocks {
     
@@ -215,6 +200,9 @@ public class TropicraftBlocks {
                 Blocks.WITHER_ROSE, Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM, Blocks.DEAD_BUSH, Blocks.CACTUS)
             .map(b -> registerNoItem("bamboo_potted_" + b.getRegistryName().getPath(), Builder.tropicraftPot(() -> b)))
             .collect(Collectors.toList()));
+
+    private static final RegistryObject<Block> WATER_BARRIER = register(
+            "water_barrier", () -> new WaterBarrierBlock(Block.Properties.from(Blocks.BARRIER)), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);
