@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.biome;
 import java.util.function.Supplier;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.Category;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -31,6 +32,8 @@ public class TropicraftBiomes {
         for (Biome b : ForgeRegistries.BIOMES.getValues()) {
             if (b instanceof TropicraftBiome) {
                 ((TropicraftBiome) b).addFeatures();
+            } else if (b.getCategory() == Category.BEACH) {
+                DefaultTropicsFeatures.addPalmTrees(b);
             }
         }
     }
