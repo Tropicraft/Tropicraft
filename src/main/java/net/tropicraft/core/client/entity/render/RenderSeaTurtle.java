@@ -4,16 +4,13 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 
 import javax.annotation.Nullable;
 
-@OnlyIn(Dist.CLIENT)
-public class RenderSeaTurtle extends MobRenderer<SeaTurtleEntity, SeaTurtleModel<SeaTurtleEntity>> {
+public class RenderSeaTurtle extends MobRenderer<SeaTurtleEntity, SeaTurtleModel> {
 
     public RenderSeaTurtle(EntityRendererManager renderManager) {
         super(renderManager, new SeaTurtleModel(), 0.7F);
