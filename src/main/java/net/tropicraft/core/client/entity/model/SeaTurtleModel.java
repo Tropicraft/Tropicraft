@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 
-public class SeaTurtleModel<T extends SeaTurtleEntity> extends EntityModel<T> {
+public class SeaTurtleModel extends EntityModel<SeaTurtleEntity> {
     public RendererModel body;
     public RendererModel frFlipper;
     public RendererModel flFlipper;
@@ -64,7 +64,7 @@ public class SeaTurtleModel<T extends SeaTurtleEntity> extends EntityModel<T> {
     }
 
     @Override
-    public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
+    public void render(SeaTurtleEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(entity, f, f1, f2, f3, f4, f5);
 

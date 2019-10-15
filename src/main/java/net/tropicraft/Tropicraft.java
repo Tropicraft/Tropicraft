@@ -47,6 +47,7 @@ import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.entity.BambooItemFrame;
+import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
@@ -55,6 +56,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.UmbrellaItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
@@ -125,6 +127,8 @@ public class Tropicraft {
         RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(WallItemEntity.class, RenderWallItemEntity::new);
         RenderingRegistry.registerEntityRenderingHandler(BambooItemFrame.class, BambooItemFrameRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(SeaTurtleEntity.class, RenderSeaTurtle::new);
+        RenderingRegistry.registerEntityRenderingHandler(MarlinEntity.class, MarlinRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());

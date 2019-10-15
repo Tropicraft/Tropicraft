@@ -16,6 +16,7 @@ import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
+import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 
 import java.util.function.Supplier;
 
@@ -35,13 +36,22 @@ public class TropicraftEntities {
     // TODO: Register again when volcano eruption is finished
     public static final RegistryObject<EntityType<LavaBallEntity>> LAVA_BALL = null;//register("lava_ball", TropicraftEntities::lavaBall);
     public static final RegistryObject<EntityType<SeaTurtleEntity>> SEA_TURTLE = register("turtle", TropicraftEntities::turtle);
+    public static final RegistryObject<EntityType<MarlinEntity>> MARLIN = register("marlin", TropicraftEntities::marlin);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
+    private static EntityType.Builder<MarlinEntity> marlin() {
+        return EntityType.Builder.create(MarlinEntity::new, EntityClassification.WATER_CREATURE)
+                .size(1.4F, 0.95F)
+                .setTrackingRange(80)
+                .setUpdateInterval(1)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
     private static EntityType.Builder<SeaTurtleEntity> turtle() {
-        return EntityType.Builder.create(SeaTurtleEntity::new, EntityClassification.CREATURE)
+        return EntityType.Builder.create(SeaTurtleEntity::new, EntityClassification.WATER_CREATURE)
                 .size(0.9F, 0.4F)
                 .setTrackingRange(80)
                 .setUpdateInterval(1)
