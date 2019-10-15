@@ -1,13 +1,6 @@
 package net.tropicraft.core.client.entity.render;
 
-import java.nio.FloatBuffer;
-
-import javax.annotation.Nullable;
-
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.blaze3d.platform.GlStateManager;
-
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +9,10 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nullable;
+import java.nio.FloatBuffer;
 
 public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
 
@@ -49,7 +46,6 @@ public class UmbrellaRenderer extends EntityRenderer<UmbrellaEntity> {
         green = ColorHelper.getGreen(umbrellaColor);
         blue = ColorHelper.getBlue(umbrellaColor);
 
-        UmbrellaModel model = new UmbrellaModel();
         // Draw arms of umbrella
         bindTexture(TropicraftRenderUtils.getTextureEntity("umbrella_layer"));
         GlStateManager.scalef(-1F, -1F, 1.0F);
