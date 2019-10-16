@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.dimension.biome;
 
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
@@ -39,7 +41,14 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.RAINFOREST_FLOWERS.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(4)));
 
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.UNDERGROWTH.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(100)));
-        
+
+
+        addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.OCELOT, 10, 1, 1));
+        addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.PARROT, 10, 1, 2));
+//
+//        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrog.class, 25, 2, 5));
+//        this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiSpider.class, 30, 1, 1));
+
         DefaultBiomeFeatures.addJungleGrass(this);
         DefaultTropicsFeatures.addRainforestPlants(this);
     }
