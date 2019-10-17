@@ -3,8 +3,10 @@ package net.tropicraft.core.common;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -259,6 +261,10 @@ public class Util {
         {
             super(e);
         }
+    }
+
+    public static int randFlip(final Random rand, final int i) {
+        return rand.nextBoolean() ? rand.nextInt(i) : -(rand.nextInt(i));
     }
 
 }

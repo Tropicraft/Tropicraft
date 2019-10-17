@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 public class MarlinEntity extends AbstractFishEntity {
 
-    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.createKey(MarlinEntity.class, DataSerializers.STRING);;
+    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.createKey(MarlinEntity.class, DataSerializers.STRING);
 
     public MarlinEntity(EntityType<? extends AbstractFishEntity> type, World world) {
         super(type, world);
@@ -38,6 +38,7 @@ public class MarlinEntity extends AbstractFishEntity {
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
     }
 
+    @Override
     @Nullable
     public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
         setTexture(rand.nextInt(50) == 0 ? "purple_marlin" : "marlin");
