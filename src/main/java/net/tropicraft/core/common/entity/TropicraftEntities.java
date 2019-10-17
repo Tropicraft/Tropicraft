@@ -18,6 +18,7 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
+import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 
 import java.util.function.Supplier;
 
@@ -39,9 +40,18 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<SeaTurtleEntity>> SEA_TURTLE = register("turtle", TropicraftEntities::turtle);
     public static final RegistryObject<EntityType<MarlinEntity>> MARLIN = register("marlin", TropicraftEntities::marlin);
     public static final RegistryObject<EntityType<FailgullEntity>> FAILGULL = register("failgull", TropicraftEntities::failgull);
+    public static final RegistryObject<EntityType<TropicraftDolphinEntity>> DOLPHIN = register("dolphin", TropicraftEntities::dolphin);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<TropicraftDolphinEntity> dolphin() {
+        return EntityType.Builder.create(TropicraftDolphinEntity::new, EntityClassification.WATER_CREATURE)
+                .size(1.4F, 0.5F)
+                .setTrackingRange(80)
+                .setUpdateInterval(1)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<FailgullEntity> failgull() {
