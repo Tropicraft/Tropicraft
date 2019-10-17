@@ -14,8 +14,7 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class MarlinRenderer extends MobRenderer<MarlinEntity, MarlinModel> {
     public MarlinRenderer(EntityRendererManager renderManager) {
-        super(renderManager, new MarlinModel(), 0.7F);
-        shadowSize = 0.5f;
+        super(renderManager, new MarlinModel(), 0.5F);
 		shadowOpaque = 0.5f;
     }
 

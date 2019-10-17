@@ -58,6 +58,7 @@ import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
+import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.UmbrellaItem;
@@ -133,6 +134,7 @@ public class Tropicraft {
         RenderingRegistry.registerEntityRenderingHandler(MarlinEntity.class, MarlinRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(FailgullEntity.class, FailgullRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftDolphinEntity.class, TropicraftDolphinRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(SeahorseEntity.class, SeahorseRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
