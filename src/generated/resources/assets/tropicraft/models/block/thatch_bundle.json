@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "side": "tropicraft:block/thatch_side",
+    "top": "tropicraft:block/thatch_end"
+  }
+}
