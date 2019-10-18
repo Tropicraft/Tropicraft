@@ -72,7 +72,9 @@ minecraft {
                 }
             }
             
-			args '--mod', 'tropicraft', '--all', '--output', rootProject.file('src/generated/resources/')
+			args '--mod', 'tropicraft', '--all', '--output', rootProject.file('src/generated/resources/'),
+				 '--existing', sourceSets.main.resources.srcDirs[0] 
+			
         }
     }
 }

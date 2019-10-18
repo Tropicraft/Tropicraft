@@ -54,7 +54,7 @@ public class TropicraftBlocks {
             "zircon_block", Builder.oreBlock(MaterialColor.GRAY));
     
     public static final Map<TropicraftFlower, RegistryObject<FlowerBlock>> FLOWERS = Arrays.<TropicraftFlower>stream(TropicraftFlower.values())
-            .collect(Collectors.toMap(Function.identity(), f -> register(f.name().toLowerCase(Locale.ROOT), Builder.flower(f)),
+            .collect(Collectors.toMap(Function.identity(), f -> register(f.getId(), Builder.flower(f)),
                     (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TropicraftFlower.class)));
 
     public static final RegistryObject<Block> PURIFIED_SAND = register("purified_sand", Builder.sand(MaterialColor.SAND));
@@ -118,11 +118,11 @@ public class TropicraftBlocks {
     public static final RegistryObject<SaplingBlock> PALM_SAPLING = register(
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
 
-    public static final RegistryObject<Block> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
-    public static final RegistryObject<Block> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
-    public static final RegistryObject<Block> CHUNK_FENCE = register("chunk_fence", Builder.fence(CHUNK));
-    public static final RegistryObject<Block> PALM_FENCE = register("palm_fence", Builder.fence(PALM_PLANKS));
-    public static final RegistryObject<Block> MAHOGANY_FENCE = register("mahogany_fence", Builder.fence(MAHOGANY_PLANKS));
+    public static final RegistryObject<FenceBlock> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
+    public static final RegistryObject<FenceBlock> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
+    public static final RegistryObject<FenceBlock> CHUNK_FENCE = register("chunk_fence", Builder.fence(CHUNK));
+    public static final RegistryObject<FenceBlock> PALM_FENCE = register("palm_fence", Builder.fence(PALM_PLANKS));
+    public static final RegistryObject<FenceBlock> MAHOGANY_FENCE = register("mahogany_fence", Builder.fence(MAHOGANY_PLANKS));
 
     public static final RegistryObject<Block> BAMBOO_FENCE_GATE = register("bamboo_fence_gate", Builder.fenceGate(BAMBOO_BUNDLE));
     public static final RegistryObject<Block> THATCH_FENCE_GATE = register("thatch_fence_gate", Builder.fenceGate(THATCH_BUNDLE));
@@ -201,7 +201,7 @@ public class TropicraftBlocks {
             .map(b -> registerNoItem("bamboo_potted_" + b.getRegistryName().getPath(), Builder.tropicraftPot(() -> b)))
             .collect(Collectors.toList()));
 
-    private static final RegistryObject<Block> WATER_BARRIER = register(
+    public static final RegistryObject<Block> WATER_BARRIER = register(
             "water_barrier", () -> new WaterBarrierBlock(Block.Properties.from(Blocks.BARRIER)), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {

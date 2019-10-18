@@ -26,6 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.BasicColorHandler;
+import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
@@ -162,6 +163,9 @@ public class Tropicraft {
     private void gatherData(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
 
+        if (event.includeClient()) {
+            gen.addProvider(new TropicraftBlockstateProvider(gen, event.getExistingFileHelper()));
+        }
         if (event.includeServer()) {
             gen.addProvider(new TropicraftBlockTagsProvider(gen));
             gen.addProvider(new TropicraftItemTagsProvider(gen));
