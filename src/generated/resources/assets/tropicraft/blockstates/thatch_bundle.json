@@ -1,5 +1,9 @@
 {
   "variants": {
+    "axis=z": {
+      "model": "tropicraft:block/thatch_bundle",
+      "x": 90
+    },
     "axis=x": {
       "model": "tropicraft:block/thatch_bundle",
       "x": 90,
@@ -7,10 +11,6 @@
     },
     "axis=y": {
       "model": "tropicraft:block/thatch_bundle"
-    },
-    "axis=z": {
-      "model": "tropicraft:block/thatch_bundle",
-      "x": 90
     }
   }
 }
