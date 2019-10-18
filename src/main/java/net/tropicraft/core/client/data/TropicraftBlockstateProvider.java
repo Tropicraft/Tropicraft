@@ -70,8 +70,16 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
         simple(TropicraftBlocks.MINERAL_SAND, applyRotations());
         
         // Bundles
-        axis(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo_side", "bamboo_end");
-        axis(TropicraftBlocks.THATCH_BUNDLE, "thatch_side", "thatch_end");
+        axis(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo");
+        axis(TropicraftBlocks.THATCH_BUNDLE, "thatch");
+        
+        // Planks
+        simple(TropicraftBlocks.MAHOGANY_PLANKS);
+        simple(TropicraftBlocks.PALM_PLANKS);
+        
+        // Logs
+        axis(TropicraftBlocks.MAHOGANY_LOG);
+        axis(TropicraftBlocks.PALM_LOG);
 
         fence(TropicraftBlocks.BAMBOO_FENCE, "bamboo", "bamboo_side");
         fence(TropicraftBlocks.THATCH_FENCE, "thatch", "thatch_side");
@@ -110,6 +118,20 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
                 .texture("top", "block/" + topName);
     }
     
+    private BlockModelBuilder cubeColumn(Supplier<? extends Block> block, String variantName) {
+        return cubeColumn(variantName, name(block), variantName);
+    }
+    
+    private BlockModelBuilder cubeColumn(Supplier<? extends Block> block, String sideName, String topName) {
+        return cubeColumn(name(block), sideName, topName);
+    }
+    
+    private BlockModelBuilder cubeColumn(String name, String sideName, String topName) {
+        return withExistingParent(name, "block/cube_column")
+                .texture("side", "block/" + sideName)
+                .texture("end", "block/" + topName);
+    }
+    
     private void simple(Supplier<? extends Block> block) {
         simple(block, cubeAll(block));
     }
@@ -127,8 +149,16 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
             .partialState().setModels(models);
     }
     
+    private void axis(Supplier<? extends RotatedPillarBlock> block) {
+        axis(block, name(block));
+    }
+
+    private void axis(Supplier<? extends RotatedPillarBlock> block, String baseName) {
+        axis(block, baseName + "_side", baseName + "_end");
+    }
+
     private void axis(Supplier<? extends RotatedPillarBlock> block, String side, String top) {
-        ModelFile model = cubeTop(block, side, top);
+        ModelFile model = cubeColumn(block, side, top);
         getVariantBuilder(block.get())
             .partialState().with(RotatedPillarBlock.AXIS, Axis.Y)
                 .modelForState().modelFile(model).addModel()
