@@ -1,8 +1,8 @@
 package net.tropicraft.core.client.data;
 
-import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
-import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
+import static net.minecraftforge.client.model.generators.ConfiguredModel.*;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
@@ -26,7 +26,7 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
 
     @Override
     protected void registerStatesAndModels() {        
-        simple(TropicraftBlocks.CHUNK, allRotations(cubeAll("chunk", "block/chunk"), false));
+        simple(TropicraftBlocks.CHUNK, applyRotations());
         
         simple(TropicraftBlocks.AZURITE_ORE);
         simple(TropicraftBlocks.EUDIALYTE_ORE);
@@ -58,12 +58,27 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
                 .addModels(allYRotations(dune1, 0, false, 10))
                 .addModels(allYRotations(dune2, 0, false, 10))
                 .addModels(allYRotations(starfish, 0, false));
-            
+        
+        // Other sands
+        simple(TropicraftBlocks.PACKED_PURIFIED_SAND, applyRotations());
+        simple(TropicraftBlocks.CORAL_SAND, applyRotations());
+        simple(TropicraftBlocks.FOAMY_SAND, applyRotations());
+        simple(TropicraftBlocks.VOLCANIC_SAND, applyRotations());
+        simple(TropicraftBlocks.MINERAL_SAND, applyRotations());
+
         fence(TropicraftBlocks.BAMBOO_FENCE, "bamboo", "bamboo_side");
         fence(TropicraftBlocks.THATCH_FENCE, "thatch", "thatch_side");
         fence(TropicraftBlocks.CHUNK_FENCE, "chunk", "chunk");
         fence(TropicraftBlocks.PALM_FENCE, "palm", "palm_planks");
         fence(TropicraftBlocks.MAHOGANY_FENCE, "mahogany", "mahogany_planks");
+    }
+    
+    private static Function<ModelFile, ConfiguredModel[]> applyRotations() {
+        return f -> allRotations(f, false);
+    }
+    
+    private static Function<ModelFile, ConfiguredModel[]> applyYRotations(int x) {
+        return f -> allYRotations(f, x, false);
     }
     
     private BlockModelBuilder cubeAll(Supplier<? extends Block> block) {
@@ -79,6 +94,10 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
     
     private void simple(Supplier<? extends Block> block) {
         simple(block, cubeAll(block));
+    }
+    
+    private void simple(Supplier<? extends Block> block, Function<ModelFile, ConfiguredModel[]> expander) {
+        simple(block, expander.apply(cubeAll(block)));
     }
     
     private void simple(Supplier<? extends Block> block, ModelFile model) {
