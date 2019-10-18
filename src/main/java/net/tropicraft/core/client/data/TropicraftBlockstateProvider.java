@@ -1,8 +1,9 @@
 package net.tropicraft.core.client.data;
 
-import java.util.Arrays;
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
+
 import java.util.function.Supplier;
-import java.util.stream.IntStream;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
@@ -14,6 +15,7 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.tropicraft.Info;
+import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class TropicraftBlockstateProvider extends BlockstateProvider {
@@ -39,7 +41,24 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
         TropicraftBlocks.FLOWERS.entrySet().forEach(e ->
             simple(e.getValue(), withExistingParent(e.getKey().getId(), "block/cross")
                     .texture("cross", "tropicraft:block/flower/" + e.getKey().getId())));
+        
+        // Purified sand
+        ModelFile normal = cubeAll(TropicraftBlocks.PURIFIED_SAND);
+        ModelFile calcified = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_calcified");
+        ModelFile dune1 = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_dune1");
+        ModelFile dune2 = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_dune2");
+        ModelFile starfish = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_starfish");
 
+        getVariantBuilder(TropicraftBlocks.PURIFIED_SAND.get())
+            .partialState().with(BlockTropicraftSand.UNDERWATER, false)
+                .addModels(allRotations(normal, false, 50))
+                .addModels(allYRotations(calcified, 0, false, 5))
+            .partialState().with(BlockTropicraftSand.UNDERWATER, true)
+                .addModels(allRotations(normal, false, 50))
+                .addModels(allYRotations(dune1, 0, false, 10))
+                .addModels(allYRotations(dune2, 0, false, 10))
+                .addModels(allYRotations(starfish, 0, false));
+            
         fence(TropicraftBlocks.BAMBOO_FENCE, "bamboo", "bamboo_side");
         fence(TropicraftBlocks.THATCH_FENCE, "thatch", "thatch_side");
         fence(TropicraftBlocks.CHUNK_FENCE, "chunk", "chunk");
@@ -47,34 +66,19 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
         fence(TropicraftBlocks.MAHOGANY_FENCE, "mahogany", "mahogany_planks");
     }
     
-    private IntStream validRotations() {
-        return IntStream.range(0, 4).map(i -> i * 90);
-    }
-
-    private ConfiguredModel[] allRotationsWithX(ModelFile model, int x, boolean uvlock) {
-        return validRotations()
-                .mapToObj(y -> new ConfiguredModel(model, x, y, uvlock))
-                .toArray(ConfiguredModel[]::new);
+    private BlockModelBuilder cubeAll(Supplier<? extends Block> block) {
+        String name = block.get().getRegistryName().getPath();
+        return cubeAll(name, "block/" + name);
     }
     
-    private ConfiguredModel[] allRotations(ModelFile model, boolean uvlock) {
-        return validRotations()
-                .mapToObj(x -> allRotationsWithX(model, x, uvlock))
-                .flatMap(Arrays::stream)
-                .toArray(ConfiguredModel[]::new);
-    }
-    
-    private BlockModelBuilder withExistingParent(String name, String parent) {
-        return getBuilder(name).parent(getExistingFile(parent));
-    }
-    
-    private BlockModelBuilder cubeAll(String name, String texture) {
-        return withExistingParent(name, "block/cube_all").texture("all", new ResourceLocation(Info.MODID, texture));
+    private BlockModelBuilder cubeTop(Supplier<? extends Block> block, String variantName) {
+        return withExistingParent(variantName, "block/cube_top")
+                .texture("side", "block/" + block.get().getRegistryName().getPath())
+                .texture("top", "block/" + variantName);
     }
     
     private void simple(Supplier<? extends Block> block) {
-        String name = block.get().getRegistryName().getPath();
-        simple(block, cubeAll(name, "block/" + name));
+        simple(block, cubeAll(block));
     }
     
     private void simple(Supplier<? extends Block> block, ModelFile model) {
@@ -83,15 +87,15 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
     
     private void simple(Supplier<? extends Block> block, ConfiguredModel... models) {
         getVariantBuilder(block.get())
-            .partialState().setModel(models);
+            .partialState().setModels(models);
     }
     
     private void fence(Supplier<? extends FenceBlock> block, String name, String textureName) {
         ModelFile post = withExistingParent(name + "_fence_post", "block/fence_post")
-                .texture("texture", new ResourceLocation(Info.MODID, "block/" + textureName));
+                .texture("texture", new ResourceLocation(this.modid, "block/" + textureName));
         
         ModelFile side = withExistingParent(name + "_fence_side", "block/fence_side")
-                .texture("texture", new ResourceLocation(Info.MODID, "block/" + textureName));
+                .texture("texture", new ResourceLocation(this.modid, "block/" + textureName));
         
         getMultipartBuilder(block.get())
                 .part().modelFile(post).addModel().build()
