@@ -1,13 +1,16 @@
 package net.tropicraft.core.client.data;
 
-import static net.minecraftforge.client.model.generators.ConfiguredModel.*;
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockstateProvider;
@@ -65,6 +68,10 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
         simple(TropicraftBlocks.FOAMY_SAND, applyRotations());
         simple(TropicraftBlocks.VOLCANIC_SAND, applyRotations());
         simple(TropicraftBlocks.MINERAL_SAND, applyRotations());
+        
+        // Bundles
+        axis(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo_side", "bamboo_end");
+        axis(TropicraftBlocks.THATCH_BUNDLE, "thatch_side", "thatch_end");
 
         fence(TropicraftBlocks.BAMBOO_FENCE, "bamboo", "bamboo_side");
         fence(TropicraftBlocks.THATCH_FENCE, "thatch", "thatch_side");
@@ -81,15 +88,26 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
         return f -> allYRotations(f, x, false);
     }
     
+    private String name(Supplier<? extends Block> block) {
+        return block.get().getRegistryName().getPath();
+    }
+    
     private BlockModelBuilder cubeAll(Supplier<? extends Block> block) {
-        String name = block.get().getRegistryName().getPath();
-        return cubeAll(name, "block/" + name);
+        return cubeAll(name(block), "block/" + name(block));
     }
     
     private BlockModelBuilder cubeTop(Supplier<? extends Block> block, String variantName) {
-        return withExistingParent(variantName, "block/cube_top")
-                .texture("side", "block/" + block.get().getRegistryName().getPath())
-                .texture("top", "block/" + variantName);
+        return cubeTop(variantName, name(block), variantName);
+    }
+    
+    private BlockModelBuilder cubeTop(Supplier<? extends Block> block, String sideName, String topName) {
+        return cubeTop(name(block), sideName, topName);
+    }
+    
+    private BlockModelBuilder cubeTop(String name, String sideName, String topName) {
+        return withExistingParent(name, "block/cube_top")
+                .texture("side", "block/" + sideName)
+                .texture("top", "block/" + topName);
     }
     
     private void simple(Supplier<? extends Block> block) {
@@ -107,6 +125,17 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
     private void simple(Supplier<? extends Block> block, ConfiguredModel... models) {
         getVariantBuilder(block.get())
             .partialState().setModels(models);
+    }
+    
+    private void axis(Supplier<? extends RotatedPillarBlock> block, String side, String top) {
+        ModelFile model = cubeTop(block, side, top);
+        getVariantBuilder(block.get())
+            .partialState().with(RotatedPillarBlock.AXIS, Axis.Y)
+                .modelForState().modelFile(model).addModel()
+            .partialState().with(RotatedPillarBlock.AXIS, Axis.Z)
+                .modelForState().modelFile(model).rotationX(90).addModel()
+            .partialState().with(RotatedPillarBlock.AXIS, Axis.X)
+                .modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
     }
     
     private void fence(Supplier<? extends FenceBlock> block, String name, String textureName) {

@@ -79,9 +79,9 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> VOLCANIC_SAND = register("volcanic_sand", Builder.sand(MaterialColor.BLACK));
     public static final RegistryObject<Block> MINERAL_SAND = register("mineral_sand", Builder.sand(MaterialColor.SAND));
 
-    public static final RegistryObject<Block> BAMBOO_BUNDLE = register(
+    public static final RegistryObject<RotatedPillarBlock> BAMBOO_BUNDLE = register(
             "bamboo_bundle", Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.BAMBOO).hardnessAndResistance(0.2F, 5.0F)));
-    public static final RegistryObject<Block> THATCH_BUNDLE = register(
+    public static final RegistryObject<RotatedPillarBlock> THATCH_BUNDLE = register(
             "thatch_bundle", Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT).hardnessAndResistance(0.2F, 5.0F)));
 
     public static final RegistryObject<Block> MAHOGANY_PLANKS = register("mahogany_planks", Builder.plank(MaterialColor.BROWN));
