@@ -37,6 +37,8 @@ import net.tropicraft.core.client.entity.render.RenderWallItemEntity;
 import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
 import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
 import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
+import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
+import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
 import net.tropicraft.core.client.tileentity.SifterRenderer;
@@ -164,6 +166,9 @@ public class Tropicraft
     private void gatherData(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
 
+        if (event.includeClient()) {
+            gen.addProvider(new TropicraftBlockstateProvider(gen, event.getExistingFileHelper()));
+        }
         if (event.includeServer()) {
             gen.addProvider(new TropicraftBlockTagsProvider(gen));
             gen.addProvider(new TropicraftItemTagsProvider(gen));
