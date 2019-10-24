@@ -1,16 +1,16 @@
 {
   "variants": {
-    "axis=z": {
-      "model": "tropicraft:block/mahogany_log",
-      "x": 90
-    },
-    "axis=y": {
-      "model": "tropicraft:block/mahogany_log"
-    },
     "axis=x": {
       "model": "tropicraft:block/mahogany_log",
       "x": 90,
       "y": 90
+    },
+    "axis=y": {
+      "model": "tropicraft:block/mahogany_log"
+    },
+    "axis=z": {
+      "model": "tropicraft:block/mahogany_log",
+      "x": 90
     }
   }
 }

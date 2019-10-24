@@ -9,11 +9,10 @@ import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockstateProvider;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -21,7 +20,7 @@ import net.tropicraft.Info;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-public class TropicraftBlockstateProvider extends BlockstateProvider {
+public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     public TropicraftBlockstateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
         super(gen, Info.MODID, exFileHelper);
@@ -29,28 +28,30 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
 
     @Override
     protected void registerStatesAndModels() {        
-        simple(TropicraftBlocks.CHUNK, applyRotations());
+        simpleBlock(TropicraftBlocks.CHUNK, applyRotations());
         
-        simple(TropicraftBlocks.AZURITE_ORE);
-        simple(TropicraftBlocks.EUDIALYTE_ORE);
-        simple(TropicraftBlocks.MANGANESE_ORE);
-        simple(TropicraftBlocks.SHAKA_ORE);
-        simple(TropicraftBlocks.ZIRCON_ORE);
+        // Ores and storage blocks
+        simpleBlock(TropicraftBlocks.AZURITE_ORE);
+        simpleBlock(TropicraftBlocks.EUDIALYTE_ORE);
+        simpleBlock(TropicraftBlocks.MANGANESE_ORE);
+        simpleBlock(TropicraftBlocks.SHAKA_ORE);
+        simpleBlock(TropicraftBlocks.ZIRCON_ORE);
         
-        simple(TropicraftBlocks.AZURITE_BLOCK);
-        simple(TropicraftBlocks.EUDIALYTE_BLOCK);
-        simple(TropicraftBlocks.ZIRCON_BLOCK);
+        simpleBlock(TropicraftBlocks.AZURITE_BLOCK);
+        simpleBlock(TropicraftBlocks.EUDIALYTE_BLOCK);
+        simpleBlock(TropicraftBlocks.ZIRCON_BLOCK);
         
+        // All flowers
         TropicraftBlocks.FLOWERS.entrySet().forEach(e ->
-            simple(e.getValue(), withExistingParent(e.getKey().getId(), "block/cross")
+            simpleBlock(e.getValue(), withExistingParent(e.getKey().getId(), "block/cross")
                     .texture("cross", "tropicraft:block/flower/" + e.getKey().getId())));
         
         // Purified sand
         ModelFile normal = cubeAll(TropicraftBlocks.PURIFIED_SAND);
-        ModelFile calcified = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_calcified");
-        ModelFile dune1 = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_dune1");
-        ModelFile dune2 = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_dune2");
-        ModelFile starfish = cubeTop(TropicraftBlocks.PURIFIED_SAND, "purified_sand_starfish");
+        ModelFile calcified = cubeTop(TropicraftBlocks.PURIFIED_SAND, "calcified");
+        ModelFile dune1 = cubeTop(TropicraftBlocks.PURIFIED_SAND, "dune1");
+        ModelFile dune2 = cubeTop(TropicraftBlocks.PURIFIED_SAND, "dune2");
+        ModelFile starfish = cubeTop(TropicraftBlocks.PURIFIED_SAND, "starfish");
 
         getVariantBuilder(TropicraftBlocks.PURIFIED_SAND.get())
             .partialState().with(BlockTropicraftSand.UNDERWATER, false)
@@ -63,31 +64,43 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
                 .addModels(allYRotations(starfish, 0, false));
         
         // Other sands
-        simple(TropicraftBlocks.PACKED_PURIFIED_SAND, applyRotations());
-        simple(TropicraftBlocks.CORAL_SAND, applyRotations());
-        simple(TropicraftBlocks.FOAMY_SAND, applyRotations());
-        simple(TropicraftBlocks.VOLCANIC_SAND, applyRotations());
-        simple(TropicraftBlocks.MINERAL_SAND, applyRotations());
+        simpleBlock(TropicraftBlocks.PACKED_PURIFIED_SAND, applyRotations());
+        simpleBlock(TropicraftBlocks.CORAL_SAND, applyRotations());
+        simpleBlock(TropicraftBlocks.FOAMY_SAND, applyRotations());
+        simpleBlock(TropicraftBlocks.VOLCANIC_SAND, applyRotations());
+        simpleBlock(TropicraftBlocks.MINERAL_SAND, applyRotations());
         
         // Bundles
-        axis(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo");
-        axis(TropicraftBlocks.THATCH_BUNDLE, "thatch");
+        axisBlock(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo");
+        axisBlock(TropicraftBlocks.THATCH_BUNDLE, "thatch");
         
         // Planks
-        simple(TropicraftBlocks.MAHOGANY_PLANKS);
-        simple(TropicraftBlocks.PALM_PLANKS);
+        simpleBlock(TropicraftBlocks.MAHOGANY_PLANKS);
+        simpleBlock(TropicraftBlocks.PALM_PLANKS);
         
         // Logs
-        axis(TropicraftBlocks.MAHOGANY_LOG);
-        axis(TropicraftBlocks.PALM_LOG);
+        logBlock(TropicraftBlocks.MAHOGANY_LOG.get());
+        logBlock(TropicraftBlocks.PALM_LOG.get());
+        
+        // Stairs
+        stairsBlock(TropicraftBlocks.BAMBOO_STAIRS, "bamboo_side", "bamboo_end");
+        stairsBlock(TropicraftBlocks.THATCH_STAIRS, "thatch_side", "thatch_end");
+        stairsBlock(TropicraftBlocks.CHUNK_STAIRS, "chunk");
+        stairsBlock(TropicraftBlocks.PALM_STAIRS, "palm_planks");
+        stairsBlock(TropicraftBlocks.MAHOGANY_STAIRS, "mahogany_planks");
 
-        fence(TropicraftBlocks.BAMBOO_FENCE, "bamboo", "bamboo_side");
-        fence(TropicraftBlocks.THATCH_FENCE, "thatch", "thatch_side");
-        fence(TropicraftBlocks.CHUNK_FENCE, "chunk", "chunk");
-        fence(TropicraftBlocks.PALM_FENCE, "palm", "palm_planks");
-        fence(TropicraftBlocks.MAHOGANY_FENCE, "mahogany", "mahogany_planks");
+        ModelFile fuzzyThatch = fuzzyStairs("thatch_stairs_fuzzy", "thatch_side", "thatch_end", "thatch_grass");
+        ModelFile fuzzyThatchOuter = fuzzyStairsOuter("thatch_stairs_fuzzy_outer", "thatch_side", "thatch_end", "thatch_grass");
+        stairsBlock(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), fuzzyThatch, getExistingFile(modLoc("thatch_stairs_inner")), fuzzyThatchOuter);
+        
+        // Fences
+        fenceBlock(TropicraftBlocks.BAMBOO_FENCE, "bamboo_side");
+        fenceBlock(TropicraftBlocks.THATCH_FENCE, "thatch_side");
+        fenceBlock(TropicraftBlocks.CHUNK_FENCE, "chunk");
+        fenceBlock(TropicraftBlocks.PALM_FENCE, "palm_planks");
+        fenceBlock(TropicraftBlocks.MAHOGANY_FENCE, "mahogany_planks");
     }
-    
+
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {
         return f -> allRotations(f, false);
     }
@@ -100,90 +113,64 @@ public class TropicraftBlockstateProvider extends BlockstateProvider {
         return block.get().getRegistryName().getPath();
     }
     
-    private BlockModelBuilder cubeAll(Supplier<? extends Block> block) {
-        return cubeAll(name(block), "block/" + name(block));
+    private ResourceLocation blockTexture(Supplier<? extends Block> block) {
+        ResourceLocation base = block.get().getRegistryName();
+        return new ResourceLocation(base.getNamespace(), folder + "/" + base.getPath());
     }
     
-    private BlockModelBuilder cubeTop(Supplier<? extends Block> block, String variantName) {
-        return cubeTop(variantName, name(block), variantName);
+    private ResourceLocation modBlockLoc(String texture) {
+        return modLoc("block/" + texture);
     }
     
-    private BlockModelBuilder cubeTop(Supplier<? extends Block> block, String sideName, String topName) {
-        return cubeTop(name(block), sideName, topName);
+    private ModelFile cubeAll(Supplier<? extends Block> block) {
+        return cubeAll(block.get());
     }
     
-    private BlockModelBuilder cubeTop(String name, String sideName, String topName) {
-        return withExistingParent(name, "block/cube_top")
-                .texture("side", "block/" + sideName)
-                .texture("top", "block/" + topName);
+    private ModelFile cubeTop(Supplier<? extends Block> block, String suffix) {
+        return cubeTop(name(block) + "_" + suffix, blockTexture(block), modBlockLoc(name(block) + "_" + suffix));
     }
     
-    private BlockModelBuilder cubeColumn(Supplier<? extends Block> block, String variantName) {
-        return cubeColumn(variantName, name(block), variantName);
+    private void simpleBlock(Supplier<? extends Block> block) {
+        simpleBlock(block.get());
     }
     
-    private BlockModelBuilder cubeColumn(Supplier<? extends Block> block, String sideName, String topName) {
-        return cubeColumn(name(block), sideName, topName);
+    private void simpleBlock(Supplier<? extends Block> block, ModelFile model) {
+        simpleBlock(block.get(), model);
     }
     
-    private BlockModelBuilder cubeColumn(String name, String sideName, String topName) {
-        return withExistingParent(name, "block/cube_column")
-                .texture("side", "block/" + sideName)
-                .texture("end", "block/" + topName);
+    private void simpleBlock(Supplier<? extends Block> block, Function<ModelFile, ConfiguredModel[]> expander) {
+        simpleBlock(block.get(), expander);
     }
     
-    private void simple(Supplier<? extends Block> block) {
-        simple(block, cubeAll(block));
+    private void axisBlock(Supplier<? extends RotatedPillarBlock> block, String texture) {
+        axisBlock(block.get(), modBlockLoc(texture));
     }
     
-    private void simple(Supplier<? extends Block> block, Function<ModelFile, ConfiguredModel[]> expander) {
-        simple(block, expander.apply(cubeAll(block)));
+    private void fenceBlock(Supplier<? extends FenceBlock> block, String texture) {
+        fenceBlock(block.get(), modBlockLoc(texture));
     }
     
-    private void simple(Supplier<? extends Block> block, ModelFile model) {
-        simple(block, new ConfiguredModel(model));
+    private void stairsBlock(Supplier<? extends StairsBlock> block, String name) {
+        stairsBlock(block, name, name);
     }
     
-    private void simple(Supplier<? extends Block> block, ConfiguredModel... models) {
-        getVariantBuilder(block.get())
-            .partialState().setModels(models);
+    private void stairsBlock(Supplier<? extends StairsBlock> block, String side, String topBottom) {
+        stairsBlock(block.get(), modBlockLoc(side), modBlockLoc(topBottom), modBlockLoc(topBottom));
     }
     
-    private void axis(Supplier<? extends RotatedPillarBlock> block) {
-        axis(block, name(block));
-    }
-
-    private void axis(Supplier<? extends RotatedPillarBlock> block, String baseName) {
-        axis(block, baseName + "_side", baseName + "_end");
-    }
-
-    private void axis(Supplier<? extends RotatedPillarBlock> block, String side, String top) {
-        ModelFile model = cubeColumn(block, side, top);
-        getVariantBuilder(block.get())
-            .partialState().with(RotatedPillarBlock.AXIS, Axis.Y)
-                .modelForState().modelFile(model).addModel()
-            .partialState().with(RotatedPillarBlock.AXIS, Axis.Z)
-                .modelForState().modelFile(model).rotationX(90).addModel()
-            .partialState().with(RotatedPillarBlock.AXIS, Axis.X)
-                .modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
+    private ModelFile fuzzyStairs(String name, String parent, String side, String end, String cross) {
+        return withExistingParent(name, modLoc(parent))
+                .texture("side", modBlockLoc(side))
+                .texture("bottom", modBlockLoc(end))
+                .texture("top", modBlockLoc(end))
+                .texture("cross", modBlockLoc(cross));
     }
     
-    private void fence(Supplier<? extends FenceBlock> block, String name, String textureName) {
-        ModelFile post = withExistingParent(name + "_fence_post", "block/fence_post")
-                .texture("texture", new ResourceLocation(this.modid, "block/" + textureName));
-        
-        ModelFile side = withExistingParent(name + "_fence_side", "block/fence_side")
-                .texture("texture", new ResourceLocation(this.modid, "block/" + textureName));
-        
-        getMultipartBuilder(block.get())
-                .part().modelFile(post).addModel().build()
-                .part().modelFile(side).uvLock(true).addModel()
-                    .condition(FenceBlock.NORTH, true).build()
-                .part().modelFile(side).rotationY(90).uvLock(true).addModel()
-                    .condition(FenceBlock.EAST, true).build()
-                .part().modelFile(side).rotationY(180).uvLock(true).addModel()
-                    .condition(FenceBlock.SOUTH, true).build()
-                .part().modelFile(side).rotationY(270).uvLock(true).addModel()
-                    .condition(FenceBlock.WEST, true).build();
+    private ModelFile fuzzyStairs(String name, String side, String end, String cross) {
+        return fuzzyStairs(name, "stairs_fuzzy", side, end, cross);
+    }
+    
+    private ModelFile fuzzyStairsOuter(String name, String side, String end, String cross) {
+        return fuzzyStairs(name, "stairs_fuzzy_outer", side, end, cross);
     }
 }

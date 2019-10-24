@@ -1,0 +1,8 @@
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "side": "tropicraft:block/mahogany_planks",
+    "bottom": "tropicraft:block/mahogany_planks",
+    "top": "tropicraft:block/mahogany_planks"
+  }
+}

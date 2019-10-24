@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "tropicraft:block/flower/fern"
+        "layer0": "tropicraft:block/flower/tropical_fern"
     },
     "display": {
         "thirdperson": {

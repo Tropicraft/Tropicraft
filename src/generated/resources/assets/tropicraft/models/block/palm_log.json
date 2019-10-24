@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "block/cube_column",
   "textures": {
-    "side": "tropicraft:block/palm_log_side",
-    "end": "tropicraft:block/palm_log_end"
+    "side": "tropicraft:block/palm_log",
+    "end": "tropicraft:block/palm_log_top"
   }
 }
