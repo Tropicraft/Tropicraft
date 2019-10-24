@@ -1,7 +1,7 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "block/cube_column",
   "textures": {
-    "side": "tropicraft:block/mahogany_log_side",
-    "end": "tropicraft:block/mahogany_log_end"
+    "side": "tropicraft:block/mahogany_log",
+    "end": "tropicraft:block/mahogany_log_top"
   }
 }

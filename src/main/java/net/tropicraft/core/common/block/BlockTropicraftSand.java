@@ -7,6 +7,7 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItemUseContext;
@@ -19,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.Constants;
 
 public class BlockTropicraftSand extends FallingBlock {
     public static final BooleanProperty UNDERWATER = BooleanProperty.create("underwater");
@@ -71,11 +73,13 @@ public class BlockTropicraftSand extends FallingBlock {
     }
 
     @Override
-    public void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos pos2, boolean neighborChanged) {
+    @Deprecated
+    public void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos pos2, boolean isMoving) {
         final IFluidState upState = world.getFluidState(pos.up());
-        if (!upState.isEmpty()) {
-            world.setBlockState(pos, state.with(UNDERWATER, true), 2);
+        boolean underwater = upState.getFluid().isEquivalentTo(Fluids.WATER);
+        if (underwater != state.get(UNDERWATER)) {
+            world.setBlockState(pos, state.with(UNDERWATER, underwater), Constants.BlockFlags.BLOCK_UPDATE);
         }
-        super.neighborChanged(state, world, pos, block, pos2, neighborChanged);
+        super.neighborChanged(state, world, pos, block, pos2, isMoving);
     }
 }

@@ -1,8 +1,0 @@
-{
-    "parent": "block/inner_stairs",
-    "textures": {
-        "bottom": "tropicraft:block/bamboo_end",
-        "top": "tropicraft:block/bamboo_end",
-        "side": "tropicraft:block/bamboo_side"
-    }
-}

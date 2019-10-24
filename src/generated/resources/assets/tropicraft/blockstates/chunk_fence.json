@@ -10,16 +10,7 @@
         "north": "true"
       },
       "apply": {
-        "model": "tropicraft:block/chunk_fence_side"
-      }
-    },
-    {
-      "when": {
-        "east": "true"
-      },
-      "apply": {
         "model": "tropicraft:block/chunk_fence_side",
-        "y": 90,
         "uvlock": true
       }
     },
@@ -40,6 +31,16 @@
       "apply": {
         "model": "tropicraft:block/chunk_fence_side",
         "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "tropicraft:block/chunk_fence_side",
+        "y": 90,
         "uvlock": true
       }
     }
