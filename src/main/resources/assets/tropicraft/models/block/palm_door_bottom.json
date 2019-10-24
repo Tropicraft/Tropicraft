@@ -1,7 +1,0 @@
-{
-    "parent": "block/door_bottom",
-    "textures": {
-        "bottom": "tropicraft:block/palm_door_bottom",
-        "top": "tropicraft:block/palm_door_top"
-    }
-}
