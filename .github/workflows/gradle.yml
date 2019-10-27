@@ -42,10 +42,10 @@ jobs:
         echo "##[set-output name=pwd;]$(pwd)"
         sed -i "/mod_version/s/\$/+${GITHUB_SHA:0:8}/" gradle.properties
         cat gradle.properties
+    - name: Set up OpenJDK 1.8
+      run: sudo apt-get -y install openjdk-8-jdk openjdk-8-jre-headless
     - name: Build with Gradle
-      uses: MrRamych/gradle-actions/openjdk-8@3.0
-      with:
-        args: build
+      run: ./gradlew build
     - name: Prepare jarfile
       run: |
         rm ./build/libs/*sources*.jar
