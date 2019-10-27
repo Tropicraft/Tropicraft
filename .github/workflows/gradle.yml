@@ -27,10 +27,10 @@ jobs:
     - name: Prepare artifacts
       run: |
         rm ./build/libs/*sources*.jar
-        mv ./build/libs/*.jar ./Tropicraft.jar
+        mv ./build/libs/*.jar ./Tropicraft-${GITHUB_SHA:0:8}.jar
     
     - name: Upload client artifact
       uses: actions/upload-artifact@v1
       with:
-        name: Tropicraft-${{ steps.init.outputs.sha8 }}.jar
-        path: ${{ steps.init.outputs.pwd }}/Tropicraft.jar
+        name: Tropicraft-${{ steps.init.outputs.sha8 }}
+        path: ${{ steps.init.outputs.pwd }}/Tropicraft-${{ steps.init.outputs.sha8 }}.jar
