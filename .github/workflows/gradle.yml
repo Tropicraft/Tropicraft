@@ -15,7 +15,8 @@ jobs:
       run: |
         echo "##[set-output name=sha8;]$(echo ${GITHUB_SHA:0:8})"
         echo "##[set-output name=pwd;]$(pwd)"
-        sed '/mod_version/s/$/ +${GITHUB_SHA:0:8}/' gradle.properties
+        sed -i "/mod_version/s/\$/+${GITHUB_SHA:0:8}/" gradle.properties
+        cat gradle.properties
       
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
