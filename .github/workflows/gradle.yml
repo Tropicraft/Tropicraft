@@ -7,14 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    - name: Pull repository
+      uses: actions/checkout@v1
+
     - name: Setup build environment
       id: init
       run: |
         echo "##[set-output name=sha8;]$(echo ${GITHUB_SHA:0:8})"
         echo "##[set-output name=pwd;]$(pwd)"
-
-    - name: Pull repository
-      uses: actions/checkout@v1
+        sed '/mod_version/s/$/ +${GITHUB_SHA:0:8}/' gradle.properties
       
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
@@ -24,12 +25,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     
-    - name: Prepare artifacts
+    - name: Prepare jarfile
       run: |
         rm ./build/libs/*sources*.jar
         mv ./build/libs/*.jar ./Tropicraft-${GITHUB_SHA:0:8}.jar
     
-    - name: Upload client artifact
+    - name: Upload jarfile
       uses: actions/upload-artifact@v1
       with:
         name: Tropicraft-${{ steps.init.outputs.sha8 }}
