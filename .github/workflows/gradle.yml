@@ -3,11 +3,16 @@ name: Java CI
 on: [push]
 
 jobs:
-  build:
-
+  oracleJDK:
     runs-on: ubuntu-latest
-
     steps:
+
+    - name: Setup build environment
+      id: init
+      run: |
+        echo "##[set-output name=sha8;]$(echo ${GITHUB_SHA:0:8})"
+        echo "##[set-output name=pwd;]$(pwd)"
+
     - name: Pull repository
       uses: actions/checkout@v1
       
@@ -19,5 +24,13 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     
-    - name: List outputs
-      run: find ./build/libs/ -type f
+    - name: Prepare artifacts
+      run: |
+        rm ./build/libs/*sources*.jar
+        mv ./build/libs/*.jar ./Tropicraft.jar
+    
+    - name: Upload client artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: Tropicraft-${{ steps.init.outputs.sha8 }}.jar
+        path: ${{ steps.init.outputs.pwd }}/Tropicraft.jar
