@@ -1,0 +1,8 @@
+{
+  "parent": "block/potted_azure_bluet",
+  "textures": {
+    "flowerpot": "tropicraft:block/bamboo_flower_pot",
+    "dirt": "block/dirt",
+    "particle": "tropicraft:block/bamboo_side"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/template_torch",
+  "textures": {
+    "torch": "tropicraft:block/tiki_torch_lower"
+  }
+}

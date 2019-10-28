@@ -17,7 +17,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.client.tileentity.DrinkMixerItemstackRenderer;
+import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
+import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.*;
@@ -163,7 +165,8 @@ public class TropicraftBlocks {
             "bamboo_ladder", () -> new LadderBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)) {});
 
     public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
-            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)));
+            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)),
+            () -> chestRenderer());
     public static final RegistryObject<SifterBlock> SIFTER = register(
             "sifter", () -> new SifterBlock(Block.Properties.create(Material.WOOD)));
     public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
@@ -239,7 +242,12 @@ public class TropicraftBlocks {
     }
     
     @OnlyIn(Dist.CLIENT)
+    private static Callable<ItemStackTileEntityRenderer> chestRenderer() {
+        return () -> new SimpleItemStackRenderer<>(new BambooChestTileEntity());
+    }
+    
+    @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> drinkMixerRenderer() {
-        return DrinkMixerItemstackRenderer::new;
+        return () -> new SimpleItemStackRenderer<>(new DrinkMixerTileEntity());
     }
 }
