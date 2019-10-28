@@ -17,7 +17,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Info;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.client.tileentity.DrinkMixerItemstackRenderer;
+import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
+import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
+import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.*;
@@ -54,7 +56,7 @@ public class TropicraftBlocks {
             "zircon_block", Builder.oreBlock(MaterialColor.GRAY));
     
     public static final Map<TropicraftFlower, RegistryObject<FlowerBlock>> FLOWERS = Arrays.<TropicraftFlower>stream(TropicraftFlower.values())
-            .collect(Collectors.toMap(Function.identity(), f -> register(f.name().toLowerCase(Locale.ROOT), Builder.flower(f)),
+            .collect(Collectors.toMap(Function.identity(), f -> register(f.getId(), Builder.flower(f)),
                     (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TropicraftFlower.class)));
 
     public static final RegistryObject<Block> PURIFIED_SAND = register("purified_sand", Builder.sand(MaterialColor.SAND));
@@ -64,51 +66,51 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> VOLCANIC_SAND = register("volcanic_sand", Builder.sand(MaterialColor.BLACK));
     public static final RegistryObject<Block> MINERAL_SAND = register("mineral_sand", Builder.sand(MaterialColor.SAND));
 
-    public static final RegistryObject<Block> BAMBOO_BUNDLE = register(
+    public static final RegistryObject<RotatedPillarBlock> BAMBOO_BUNDLE = register(
             "bamboo_bundle", Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.BAMBOO).hardnessAndResistance(0.2F, 5.0F)));
-    public static final RegistryObject<Block> THATCH_BUNDLE = register(
+    public static final RegistryObject<RotatedPillarBlock> THATCH_BUNDLE = register(
             "thatch_bundle", Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT).hardnessAndResistance(0.2F, 5.0F)));
 
     public static final RegistryObject<Block> MAHOGANY_PLANKS = register("mahogany_planks", Builder.plank(MaterialColor.BROWN));
     public static final RegistryObject<Block> PALM_PLANKS = register("palm_planks", Builder.plank(MaterialColor.WOOD));
-    public static final RegistryObject<Block> MAHOGANY_LOG = register("mahogany_log", Builder.log(MaterialColor.WOOD, MaterialColor.BROWN));
-    public static final RegistryObject<Block> PALM_LOG = register("palm_log", Builder.log(MaterialColor.WOOD, MaterialColor.BROWN));
+    public static final RegistryObject<LogBlock> MAHOGANY_LOG = register("mahogany_log", Builder.log(MaterialColor.WOOD, MaterialColor.BROWN));
+    public static final RegistryObject<LogBlock> PALM_LOG = register("palm_log", Builder.log(MaterialColor.WOOD, MaterialColor.BROWN));
 
-    public static final RegistryObject<Block> PALM_STAIRS = register(
+    public static final RegistryObject<StairsBlock> PALM_STAIRS = register(
             "palm_stairs", Builder.stairs(PALM_PLANKS));
-    public static final RegistryObject<Block> MAHOGANY_STAIRS = register(
+    public static final RegistryObject<StairsBlock> MAHOGANY_STAIRS = register(
             "mahogany_stairs", Builder.stairs(MAHOGANY_PLANKS));
-    public static final RegistryObject<Block> THATCH_STAIRS = register(
+    public static final RegistryObject<StairsBlock> THATCH_STAIRS = register(
             "thatch_stairs", Builder.stairs(THATCH_BUNDLE));
-    public static final RegistryObject<Block> THATCH_STAIRS_FUZZY = register(
+    public static final RegistryObject<StairsBlock> THATCH_STAIRS_FUZZY = register(
             "thatch_stairs_fuzzy", Builder.stairs(THATCH_BUNDLE, BlockRenderLayer.CUTOUT_MIPPED));
-    public static final RegistryObject<Block> BAMBOO_STAIRS = register(
+    public static final RegistryObject<StairsBlock> BAMBOO_STAIRS = register(
             "bamboo_stairs", Builder.stairs(BAMBOO_BUNDLE));
-    public static final RegistryObject<Block> CHUNK_STAIRS = register(
+    public static final RegistryObject<StairsBlock> CHUNK_STAIRS = register(
             "chunk_stairs", Builder.stairs(CHUNK));
 
     public static final RegistryObject<Block> COCONUT = register(
             "coconut", () -> new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f).sound(SoundType.STONE)));
 
-    public static final RegistryObject<Block> BAMBOO_SLAB = register(
+    public static final RegistryObject<SlabBlock> BAMBOO_SLAB = register(
             "bamboo_slab", Builder.slab(BAMBOO_BUNDLE));
-    public static final RegistryObject<Block> THATCH_SLAB = register(
+    public static final RegistryObject<SlabBlock> THATCH_SLAB = register(
             "thatch_slab", Builder.slab(THATCH_BUNDLE));
-    public static final RegistryObject<Block> CHUNK_SLAB = register(
+    public static final RegistryObject<SlabBlock> CHUNK_SLAB = register(
             "chunk_slab", Builder.slab(CHUNK));
-    public static final RegistryObject<Block> PALM_SLAB = register(
+    public static final RegistryObject<SlabBlock> PALM_SLAB = register(
             "palm_slab", Builder.slab(PALM_PLANKS));
-    public static final RegistryObject<Block> MAHOGANY_SLAB = register(
+    public static final RegistryObject<SlabBlock> MAHOGANY_SLAB = register(
             "mahogany_slab", Builder.slab(MAHOGANY_PLANKS));
 
-    public static final RegistryObject<Block> MAHOGANY_LEAVES = register("mahogany_leaves", Builder.leaves());
-    public static final RegistryObject<Block> PALM_LEAVES = register("palm_leaves", Builder.leaves());
-    public static final RegistryObject<Block> KAPOK_LEAVES = register("kapok_leaves", Builder.leaves());
-    public static final RegistryObject<Block> FRUIT_LEAVES = register("fruit_leaves", Builder.leaves());
-    public static final RegistryObject<Block> GRAPEFRUIT_LEAVES = register("grapefruit_leaves", Builder.leaves());
-    public static final RegistryObject<Block> LEMON_LEAVES = register("lemon_leaves", Builder.leaves());
-    public static final RegistryObject<Block> LIME_LEAVES = register("lime_leaves", Builder.leaves());
-    public static final RegistryObject<Block> ORANGE_LEAVES = register("orange_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> MAHOGANY_LEAVES = register("mahogany_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> PALM_LEAVES = register("palm_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> KAPOK_LEAVES = register("kapok_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> FRUIT_LEAVES = register("fruit_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> GRAPEFRUIT_LEAVES = register("grapefruit_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> LEMON_LEAVES = register("lemon_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> LIME_LEAVES = register("lime_leaves", Builder.leaves());
+    public static final RegistryObject<TropicraftLeavesBlock> ORANGE_LEAVES = register("orange_leaves", Builder.leaves());
 
     public static final RegistryObject<SaplingBlock> GRAPEFRUIT_SAPLING = register("grapefruit_sapling", Builder.sapling(TropicraftTrees.GRAPEFRUIT));
     public static final RegistryObject<SaplingBlock> LEMON_SAPLING = register("lemon_sapling", Builder.sapling(TropicraftTrees.LEMON));
@@ -118,61 +120,62 @@ public class TropicraftBlocks {
     public static final RegistryObject<SaplingBlock> PALM_SAPLING = register(
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
 
-    public static final RegistryObject<Block> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
-    public static final RegistryObject<Block> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
-    public static final RegistryObject<Block> CHUNK_FENCE = register("chunk_fence", Builder.fence(CHUNK));
-    public static final RegistryObject<Block> PALM_FENCE = register("palm_fence", Builder.fence(PALM_PLANKS));
-    public static final RegistryObject<Block> MAHOGANY_FENCE = register("mahogany_fence", Builder.fence(MAHOGANY_PLANKS));
+    public static final RegistryObject<FenceBlock> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
+    public static final RegistryObject<FenceBlock> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
+    public static final RegistryObject<FenceBlock> CHUNK_FENCE = register("chunk_fence", Builder.fence(CHUNK));
+    public static final RegistryObject<FenceBlock> PALM_FENCE = register("palm_fence", Builder.fence(PALM_PLANKS));
+    public static final RegistryObject<FenceBlock> MAHOGANY_FENCE = register("mahogany_fence", Builder.fence(MAHOGANY_PLANKS));
 
-    public static final RegistryObject<Block> BAMBOO_FENCE_GATE = register("bamboo_fence_gate", Builder.fenceGate(BAMBOO_BUNDLE));
-    public static final RegistryObject<Block> THATCH_FENCE_GATE = register("thatch_fence_gate", Builder.fenceGate(THATCH_BUNDLE));
-    public static final RegistryObject<Block> CHUNK_FENCE_GATE = register("chunk_fence_gate", Builder.fenceGate(CHUNK));
-    public static final RegistryObject<Block> PALM_FENCE_GATE = register("palm_fence_gate", Builder.fenceGate(PALM_PLANKS));
-    public static final RegistryObject<Block> MAHOGANY_FENCE_GATE = register("mahogany_fence_gate", Builder.fenceGate(MAHOGANY_PLANKS));
+    public static final RegistryObject<FenceGateBlock> BAMBOO_FENCE_GATE = register("bamboo_fence_gate", Builder.fenceGate(BAMBOO_BUNDLE));
+    public static final RegistryObject<FenceGateBlock> THATCH_FENCE_GATE = register("thatch_fence_gate", Builder.fenceGate(THATCH_BUNDLE));
+    public static final RegistryObject<FenceGateBlock> CHUNK_FENCE_GATE = register("chunk_fence_gate", Builder.fenceGate(CHUNK));
+    public static final RegistryObject<FenceGateBlock> PALM_FENCE_GATE = register("palm_fence_gate", Builder.fenceGate(PALM_PLANKS));
+    public static final RegistryObject<FenceGateBlock> MAHOGANY_FENCE_GATE = register("mahogany_fence_gate", Builder.fenceGate(MAHOGANY_PLANKS));
 
-    public static final RegistryObject<Block> CHUNK_WALL = register("chunk_wall", Builder.wall(CHUNK));
+    public static final RegistryObject<WallBlock> CHUNK_WALL = register("chunk_wall", Builder.wall(CHUNK));
     
-    public static final RegistryObject<Block> BAMBOO_DOOR = register(
+    public static final RegistryObject<DoorBlock> BAMBOO_DOOR = register(
             "bamboo_door", () -> new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {});
-    public static final RegistryObject<Block> PALM_DOOR = register(
+    public static final RegistryObject<DoorBlock> PALM_DOOR = register(
             "palm_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
-    public static final RegistryObject<Block> MAHOGANY_DOOR = register(
+    public static final RegistryObject<DoorBlock> MAHOGANY_DOOR = register(
             "mahogany_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
-    public static final RegistryObject<Block> THATCH_DOOR = register(
+    public static final RegistryObject<DoorBlock> THATCH_DOOR = register(
             "thatch_door", () -> new DoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
     
-    public static final RegistryObject<Block> BAMBOO_TRAPDOOR = register(
+    public static final RegistryObject<TrapDoorBlock> BAMBOO_TRAPDOOR = register(
             "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(BAMBOO_DOOR.get())) {});
-    public static final RegistryObject<Block> PALM_TRAPDOOR = register(
+    public static final RegistryObject<TrapDoorBlock> PALM_TRAPDOOR = register(
             "palm_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(PALM_DOOR.get())) {});
-    public static final RegistryObject<Block> MAHOGANY_TRAPDOOR = register(
+    public static final RegistryObject<TrapDoorBlock> MAHOGANY_TRAPDOOR = register(
             "mahogany_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(MAHOGANY_DOOR.get())) {});
-    public static final RegistryObject<Block> THATCH_TRAPDOOR = register(
+    public static final RegistryObject<TrapDoorBlock> THATCH_TRAPDOOR = register(
             "thatch_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
 
-    public static final RegistryObject<Block> IRIS = register(
+    public static final RegistryObject<TallFlowerBlock> IRIS = register(
             "iris", () -> new TallFlowerBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT)));
-    public static final RegistryObject<Block> PINEAPPLE = register(
+    public static final RegistryObject<PineappleBlock> PINEAPPLE = register(
             "pineapple", () -> new PineappleBlock(Block.Properties.create(Material.TALL_PLANTS).tickRandomly().doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT)));
 
-    public static final RegistryObject<Block> SMALL_BONGO_DRUM = register("small_bongo_drum", Builder.bongo(BongoDrumBlock.Size.SMALL));
-    public static final RegistryObject<Block> MEDIUM_BONGO_DRUM = register("medium_bongo_drum", Builder.bongo(BongoDrumBlock.Size.MEDIUM));
-    public static final RegistryObject<Block> LARGE_BONGO_DRUM = register("large_bongo_drum", Builder.bongo(BongoDrumBlock.Size.LARGE));
+    public static final RegistryObject<BongoDrumBlock> SMALL_BONGO_DRUM = register("small_bongo_drum", Builder.bongo(BongoDrumBlock.Size.SMALL));
+    public static final RegistryObject<BongoDrumBlock> MEDIUM_BONGO_DRUM = register("medium_bongo_drum", Builder.bongo(BongoDrumBlock.Size.MEDIUM));
+    public static final RegistryObject<BongoDrumBlock> LARGE_BONGO_DRUM = register("large_bongo_drum", Builder.bongo(BongoDrumBlock.Size.LARGE));
 
-    public static final RegistryObject<Block> BAMBOO_LADDER = register(
+    public static final RegistryObject<LadderBlock> BAMBOO_LADDER = register(
             "bamboo_ladder", () -> new LadderBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)) {});
 
-    public static final RegistryObject<Block> BAMBOO_CHEST = register(
-            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)));
-    public static final RegistryObject<Block> SIFTER = register(
+    public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
+            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)),
+            () -> chestRenderer());
+    public static final RegistryObject<SifterBlock> SIFTER = register(
             "sifter", () -> new SifterBlock(Block.Properties.create(Material.WOOD)));
-    public static final RegistryObject<Block> DRINK_MIXER = register(
+    public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
             () -> drinkMixerRenderer());
-    public static final RegistryObject<Block> VOLCANO = register(
+    public static final RegistryObject<VolcanoBlock> VOLCANO = register(
             "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK)));
     
-    public static final RegistryObject<Block> TIKI_TORCH = register(
+    public static final RegistryObject<TikiTorchBlock> TIKI_TORCH = register(
             "tiki_torch", () -> new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0)));
     
     public static final RegistryObject<FlowerPotBlock> BAMBOO_FLOWER_POT = register(
@@ -201,7 +204,7 @@ public class TropicraftBlocks {
             .map(b -> registerNoItem("bamboo_potted_" + b.getRegistryName().getPath(), Builder.tropicraftPot(() -> b)))
             .collect(Collectors.toList()));
 
-    private static final RegistryObject<Block> WATER_BARRIER = register(
+    public static final RegistryObject<Block> WATER_BARRIER = register(
             "water_barrier", () -> new WaterBarrierBlock(Block.Properties.from(Blocks.BARRIER)), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
@@ -239,7 +242,12 @@ public class TropicraftBlocks {
     }
     
     @OnlyIn(Dist.CLIENT)
+    private static Callable<ItemStackTileEntityRenderer> chestRenderer() {
+        return () -> new SimpleItemStackRenderer<>(new BambooChestTileEntity());
+    }
+    
+    @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> drinkMixerRenderer() {
-        return DrinkMixerItemstackRenderer::new;
+        return () -> new SimpleItemStackRenderer<>(new DrinkMixerTileEntity());
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.LogBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
@@ -66,8 +67,8 @@ public class Builder {
         return block(BlockTropicraftSand::new, prop(Material.SAND, color).sound(SoundType.SAND).hardnessAndResistance(hardness, resistance));
     }
 
-    public static Supplier<BlockBundle> bundle(final Block.Properties properties) {
-        return block(BlockBundle::new, properties);
+    public static Supplier<RotatedPillarBlock> bundle(final Block.Properties properties) {
+        return block(RotatedPillarBlock::new, properties);
     }
 
     public static Supplier<Block> plank(final MaterialColor color) {

@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "type=bottom": { "model": "tropicraft:block/bamboo_slab" },
-    "type=top": { "model": "tropicraft:block/bamboo_slab_top" },
-    "type=double": { "model": "tropicraft:block/bamboo_bundle" }
-  }
-}

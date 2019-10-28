@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
@@ -54,6 +55,10 @@ public enum TropicraftFlower implements Supplier<Block> {
 
     public VoxelShape getShape() {
         return shape;
+    }
+    
+    public String getId() {
+        return name().toLowerCase(Locale.ROOT);
     }
 
     @Override

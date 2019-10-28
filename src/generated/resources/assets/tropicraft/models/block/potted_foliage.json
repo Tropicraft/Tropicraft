@@ -1,0 +1,9 @@
+{
+  "parent": "block/flower_pot_cross",
+  "textures": {
+    "flowerpot": "block/flower_pot",
+    "dirt": "block/dirt",
+    "particle": "tropicraft:block/bamboo_side",
+    "plant": "tropicraft:block/flower/foliage"
+  }
+}
