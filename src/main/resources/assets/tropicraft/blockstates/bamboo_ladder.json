@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "tropicraft:block/bamboo_ladder" },
-    "facing=east":  { "model": "tropicraft:block/bamboo_ladder", "y": 90 },
-    "facing=south": { "model": "tropicraft:block/bamboo_ladder", "y": 180 },
-    "facing=west":  { "model": "tropicraft:block/bamboo_ladder", "y": 270 }
-  }
-}

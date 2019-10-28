@@ -210,6 +210,16 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         for (RegistryObject<FlowerPotBlock> block : TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS) {
             flowerPot(block, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
         }
+        
+        simpleBlock(TropicraftBlocks.WATER_BARRIER, getBuilder(name(TropicraftBlocks.WATER_BARRIER)).texture("particle", mcLoc("item/barrier")));
+        
+        withExistingParent("bamboo_item_frame", "item_frame")
+            .texture("particle", modBlockLoc("bamboo_side"))
+            .texture("wood", modBlockLoc("bamboo_side"));
+        
+        withExistingParent("bamboo_item_frame_map", "item_frame_map")
+            .texture("particle", modBlockLoc("bamboo_side"))
+            .texture("wood", modBlockLoc("bamboo_side"));
     }
 
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {
@@ -307,6 +317,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     private void fenceBlock(Supplier<? extends FenceBlock> block, String texture) {
         fenceBlock(block.get(), modBlockLoc(texture));
+        fenceInventory(name(block) + "_inventory", modBlockLoc(texture));
     }
     
     private void fenceGateBlock(Supplier<? extends FenceGateBlock> block, String texture) {
@@ -315,6 +326,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     
     private void wallBlock(Supplier<? extends WallBlock> block, String texture) {
         wallBlock(block.get(), modBlockLoc(texture));
+        wallInventory(name(block) + "_inventory", modBlockLoc(texture));
     }
     
     private void doorBlock(Supplier<? extends DoorBlock> block) {
