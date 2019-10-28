@@ -1,6 +1,14 @@
 {
-  "parent": "item/handheld",
+  "parent": "tropicraft:item/spear",
   "textures": {
     "layer0": "tropicraft:item/bamboo_spear"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "throwing": 1.0
+      },
+      "model": "tropicraft:item/bamboo_spear_throwing"
+    }
+  ]
 }

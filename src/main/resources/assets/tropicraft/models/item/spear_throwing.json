@@ -1,0 +1,25 @@
+{
+    "parent": "tropicraft:item/spear",
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 180, -90, 45 ],
+            "translation": [ 0, -2.5, 1.75 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 180, 90, -45 ],
+            "translation": [ 0, -2.5, 1.75 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, -90, 60 ],
+            "translation": [ 4, 0, -4 ],
+            "scale": [ 0.68, 0.68, 0.68 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 90, -60 ],
+            "translation": [ 4, 0, -4 ],
+            "scale": [ 0.68, 0.68, 0.68 ]
+        }
+    }
+}

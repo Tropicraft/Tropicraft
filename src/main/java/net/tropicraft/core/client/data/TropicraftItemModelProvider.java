@@ -175,7 +175,13 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         // Bamboo Items
         generated(TropicraftItems.BAMBOO_STICK);
-        handheld(TropicraftItems.BAMBOO_SPEAR);
+        ModelFile bambooSpearThrowing = withExistingParent("bamboo_spear_throwing", modLoc("spear_throwing"))
+                .texture("layer0", itemTexture(TropicraftItems.BAMBOO_SPEAR));
+        withExistingParent(name(TropicraftItems.BAMBOO_SPEAR), modLoc("spear"))
+                .texture("layer0", itemTexture(TropicraftItems.BAMBOO_SPEAR))
+                .override()
+                    .predicate(mcLoc("throwing"), 1)
+                    .model(bambooSpearThrowing);
         
         // Shells
         generated(TropicraftItems.SOLONOX_SHELL);
