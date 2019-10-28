@@ -7,29 +7,39 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.DoublePlantBlock;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.FlowerPotBlock;
+import net.minecraft.block.LadderBlock;
 import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.BongoDrumBlock;
+import net.tropicraft.core.common.block.TikiTorchBlock;
+import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicsFlowerBlock;
 
 public class TropicraftBlockstateProvider extends BlockStateProvider {
 
@@ -122,7 +132,15 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.LEMON_LEAVES);
         simpleBlock(TropicraftBlocks.LIME_LEAVES);
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
-
+        
+        // Saplings
+        sapling(TropicraftBlocks.MAHOGANY_SAPLING);
+        sapling(TropicraftBlocks.PALM_SAPLING);
+        sapling(TropicraftBlocks.GRAPEFRUIT_SAPLING);
+        sapling(TropicraftBlocks.LEMON_SAPLING);
+        sapling(TropicraftBlocks.LIME_SAPLING);
+        sapling(TropicraftBlocks.ORANGE_SAPLING);
+        
         // Fences, Gates, and Walls
         fenceBlock(TropicraftBlocks.BAMBOO_FENCE, "bamboo_side");
         fenceBlock(TropicraftBlocks.THATCH_FENCE, "thatch_side");
@@ -156,6 +174,42 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         bongo(TropicraftBlocks.SMALL_BONGO_DRUM);
         bongo(TropicraftBlocks.MEDIUM_BONGO_DRUM);
         bongo(TropicraftBlocks.LARGE_BONGO_DRUM);
+        
+        ModelFile bambooLadder = withExistingParent(name(TropicraftBlocks.BAMBOO_LADDER), "ladder")
+                .texture("particle", blockTexture(TropicraftBlocks.BAMBOO_LADDER))
+                .texture("texture", blockTexture(TropicraftBlocks.BAMBOO_LADDER));
+        getVariantBuilder(TropicraftBlocks.BAMBOO_LADDER.get()) // TODO make horizontalBlock etc support this case
+            .forAllStatesExcept(state -> ConfiguredModel.builder()
+                    .modelFile(bambooLadder)
+                    .rotationY((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle())
+                    .build(),
+                LadderBlock.WATERLOGGED);
+        
+        noModelBlock(TropicraftBlocks.BAMBOO_CHEST, modBlockLoc("bamboo_side"));
+        simpleBlock(TropicraftBlocks.SIFTER);
+        noModelBlock(TropicraftBlocks.DRINK_MIXER, blockTexture(TropicraftBlocks.CHUNK));
+        
+        simpleBlock(TropicraftBlocks.VOLCANO, getExistingFile(mcLoc("block/bedrock")));
+        
+        ModelFile tikiLower = torch("tiki_torch_lower", modBlockLoc("tiki_torch_lower"));
+        ModelFile tikiUpper = torch("tiki_torch_upper", modBlockLoc("tiki_torch_upper"));
+        getVariantBuilder(TropicraftBlocks.TIKI_TORCH.get())
+            .forAllStates(state -> ConfiguredModel.builder()
+                    .modelFile(state.get(TikiTorchBlock.SECTION) == TorchSection.UPPER ? tikiUpper : tikiLower).build());
+        
+        simpleBlock(TropicraftBlocks.COCONUT, cross("coconut", modBlockLoc("coconut")));
+        
+        flowerPot(TropicraftBlocks.BAMBOO_FLOWER_POT, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
+        
+        for (RegistryObject<FlowerPotBlock> block : TropicraftBlocks.BAMBOO_POTTED_TROPICS_PLANTS) {
+            flowerPot(block, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
+        }
+        for (RegistryObject<FlowerPotBlock> block : TropicraftBlocks.VANILLA_POTTED_TROPICS_PLANTS) {
+            flowerPot(block, Blocks.FLOWER_POT.delegate);
+        }
+        for (RegistryObject<FlowerPotBlock> block : TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS) {
+            flowerPot(block, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
+        }
     }
 
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {
@@ -199,6 +253,14 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(block.get(), expander);
     }
     
+    private void noModelBlock(Supplier<? extends Block> block) {
+        noModelBlock(block, blockTexture(block));
+    }
+    
+    private void noModelBlock(Supplier<? extends Block> block, ResourceLocation particle) {
+        simpleBlock(block, getBuilder(name(block)).texture("particle", particle));
+    }
+    
     private void axisBlock(Supplier<? extends RotatedPillarBlock> block, String texture) {
         axisBlock(block.get(), modBlockLoc(texture));
     }
@@ -238,7 +300,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     private void slabBlock(Supplier<? extends SlabBlock> block, Supplier<? extends Block> doubleslab, String side, String end) {
         slabBlock(block.get(), doubleslab.get().getRegistryName(), modBlockLoc(side), modBlockLoc(end), modBlockLoc(end));
     }
-    
+
+    private void sapling(Supplier<? extends SaplingBlock> block) {
+        simpleBlock(block, cross(name(block), blockTexture(block)));
+    }
+
     private void fenceBlock(Supplier<? extends FenceBlock> block, String texture) {
         fenceBlock(block.get(), modBlockLoc(texture));
     }
@@ -278,5 +344,23 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
                             .texture(dir.getAxis().isHorizontal() ? "#side" : dir == Direction.DOWN ? "#bottom": "#top")
                             .cullface(dir.getAxis().isVertical() ? dir : null))
                     .end());
+    }
+    
+    private void flowerPot(Supplier<? extends FlowerPotBlock> full, Supplier<? extends Block> empty) {
+        flowerPot(full, empty, blockTexture(empty));
+    }
+
+    private void flowerPot(Supplier<? extends FlowerPotBlock> full, Supplier<? extends Block> empty, ResourceLocation particle) {
+        Block flower = full.get().func_220276_d();
+        boolean isVanilla = flower.getRegistryName().getNamespace().equals("minecraft");
+        String parent = flower == Blocks.AIR ? "flower_pot" : !isVanilla ? "flower_pot_cross" : folder + "/potted_" + name(flower.delegate);
+        BlockModelBuilder model = withExistingParent(name(full), parent)
+                .texture("flowerpot", blockTexture(empty))
+                .texture("dirt", mcLoc("block/dirt"))
+                .texture("particle", modBlockLoc("bamboo_side"));
+        if (!isVanilla) {
+            model.texture("plant", flower instanceof TropicsFlowerBlock ? modLoc(folder + "/flower/" + name(flower.delegate)) : blockTexture(flower));
+        }
+        simpleBlock(full, model);
     }
 }

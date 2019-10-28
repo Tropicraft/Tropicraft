@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "tropicraft:block/lime_sapling"
+  }
+}
