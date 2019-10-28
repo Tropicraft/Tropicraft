@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -33,8 +33,6 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     		 dummyEntityItem = new ItemEntity(Minecraft.getInstance().world, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
     	}
         final NonNullList<ItemStack> ingredients = te.getIngredients();
-
-        RenderHelper.disableStandardItemLighting();
 
         if (!te.isDoneMixing()) {
             if (!ingredients.get(0).isEmpty()) {
@@ -68,8 +66,6 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
                 GlStateManager.popMatrix();
             }
         }
-
-        RenderHelper.enableStandardItemLighting();
 
         if (te.isMixing() || !te.result.isEmpty()) {
             GlStateManager.pushMatrix();
