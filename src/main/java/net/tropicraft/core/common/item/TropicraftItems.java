@@ -13,7 +13,6 @@ import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.MusicDiscItem;
-import net.minecraft.item.SwordItem;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -45,7 +44,7 @@ public class TropicraftItems {
     public static final RegistryObject<Item> BAMBOO_STICK = register("bamboo_stick", Builder.item());
 
     public static final RegistryObject<Item> BAMBOO_SPEAR = register(
-            "bamboo_spear", () -> new SwordItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
+            "bamboo_spear", () -> new SpearItem(TropicraftToolTiers.BAMBOO, 3, -2.4F, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
     public static final RegistryObject<Item> SOLONOX_SHELL = register("solonox_shell", Builder.shell());
     public static final RegistryObject<Item> FROX_CONCH = register("frox_conch", Builder.shell());
     public static final RegistryObject<Item> PAB_SHELL = register("pab_shell", Builder.shell());
