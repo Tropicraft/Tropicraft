@@ -50,6 +50,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     public ExistingFileHelper getExistingHelper() {
         return existingFileHelper;
     }
+    
+    @Override
+    public String getName() {
+        return "Tropicraft Blockstates/Block Models";
+    }
 
     @Override
     protected void registerStatesAndModels() {        

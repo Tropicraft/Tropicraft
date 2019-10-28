@@ -45,8 +45,8 @@ public class Builder {
         return item(getDefaultProperties().food(food));
     }
 
-    public static Supplier<Item> cocktail(final Drink drink) {
-        return item(CocktailItem::new, () -> getDefaultProperties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
+    public static Supplier<CocktailItem> cocktail(final Drink drink) {
+        return item(p -> new CocktailItem(drink, p), () -> getDefaultProperties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
     }
 
     public static Supplier<Item> mask(final int maskIndex) {

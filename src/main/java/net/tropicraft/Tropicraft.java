@@ -27,6 +27,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
+import net.tropicraft.core.client.data.TropicraftItemModelProvider;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
@@ -61,6 +62,7 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.UmbrellaItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
@@ -147,6 +149,9 @@ public class Tropicraft {
         for (final Supplier<UmbrellaItem> item : TropicraftItems.UMBRELLAS.values()) {
             evt.getItemColors().register(new BasicColorHandler(), item.get());
         }
+        for (final Supplier<CocktailItem> item : TropicraftItems.COCKTAILS.values()) {
+            evt.getItemColors().register(new BasicColorHandler(), item.get());
+        }
 
         evt.getItemColors().register(new BasicColorHandler(), TropicraftItems.LOVE_TROPICS_SHELL::get);
     }
@@ -164,7 +169,9 @@ public class Tropicraft {
         DataGenerator gen = event.getGenerator();
 
         if (event.includeClient()) {
-            gen.addProvider(new TropicraftBlockstateProvider(gen, event.getExistingFileHelper()));
+            TropicraftBlockstateProvider blockstates = new TropicraftBlockstateProvider(gen, event.getExistingFileHelper());
+            gen.addProvider(blockstates);
+            gen.addProvider(new TropicraftItemModelProvider(gen, blockstates.getExistingHelper()));
         }
         if (event.includeServer()) {
             gen.addProvider(new TropicraftBlockTagsProvider(gen));
