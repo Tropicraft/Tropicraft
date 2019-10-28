@@ -67,8 +67,7 @@ public class TropicraftItems {
     public static final RegistryObject<Item> BAMBOO_MUG = register("bamboo_mug", Builder.item());
 
     // Cocktails
-    // TODO - add item jsons
-    public static final ImmutableMap<Drink, RegistryObject<Item>> COCKTAILS = ImmutableMap.copyOf(
+    public static final ImmutableMap<Drink, RegistryObject<CocktailItem>> COCKTAILS = ImmutableMap.copyOf(
             Drink.DRINKS.values().stream()
                 .collect(Collectors.toMap(Function.identity(), d -> register(d.name, Builder.cocktail(d)))));
 
