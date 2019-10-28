@@ -8,27 +8,37 @@ import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.block.DoublePlantBlock;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
+import net.tropicraft.core.common.block.BongoDrumBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     public TropicraftBlockstateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
         super(gen, Info.MODID, exFileHelper);
+    }
+    
+    public ExistingFileHelper getExistingHelper() {
+        return existingFileHelper;
     }
 
     @Override
@@ -138,6 +148,14 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         trapdoorBlock(TropicraftBlocks.THATCH_TRAPDOOR);
         trapdoorBlock(TropicraftBlocks.PALM_TRAPDOOR);
         trapdoorBlock(TropicraftBlocks.MAHOGANY_TRAPDOOR);
+        
+        // Misc remaining blocks
+        doublePlant(TropicraftBlocks.IRIS);
+        doublePlant(TropicraftBlocks.PINEAPPLE);
+        
+        bongo(TropicraftBlocks.SMALL_BONGO_DRUM);
+        bongo(TropicraftBlocks.MEDIUM_BONGO_DRUM);
+        bongo(TropicraftBlocks.LARGE_BONGO_DRUM);
     }
 
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {
@@ -239,5 +257,26 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     
     private void trapdoorBlock(Supplier<? extends TrapDoorBlock> block) {
         trapdoorBlock(block.get(), blockTexture(block), true);
+    }
+    
+    private void doublePlant(Supplier<? extends DoublePlantBlock> block) {
+        String name = name(block);
+        getVariantBuilder(block.get())
+            .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.LOWER).addModels(new ConfiguredModel(cross(name + "_bottom", modBlockLoc(name + "_bottom"))))
+            .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.UPPER).addModels(new ConfiguredModel(cross(name + "_top", modBlockLoc(name + "_top"))));
+    }
+    
+    private void bongo(Supplier<? extends BongoDrumBlock> block) {
+        BongoDrumBlock.Size size = block.get().getSize();
+        AxisAlignedBB bb = size.shape.getBoundingBox();
+        simpleBlock(block.get(), 
+            cubeBottomTop(name(block), modBlockLoc("bongo_side"), modBlockLoc("bongo_bottom"), modBlockLoc("bongo_top"))
+                .element()
+                    .from((float) bb.minX * 16, (float) bb.minY * 16, (float) bb.minZ * 16)
+                    .to((float) bb.maxX * 16, (float) bb.maxY * 16, (float) bb.maxZ * 16)
+                    .allFaces((dir, face) -> face
+                            .texture(dir.getAxis().isHorizontal() ? "#side" : dir == Direction.DOWN ? "#bottom": "#top")
+                            .cullface(dir.getAxis().isVertical() ? dir : null))
+                    .end());
     }
 }

@@ -165,29 +165,29 @@ public class TropicraftBlocks {
     public static final RegistryObject<TrapDoorBlock> THATCH_TRAPDOOR = register(
             "thatch_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
 
-    public static final RegistryObject<Block> IRIS = register(
+    public static final RegistryObject<TallFlowerBlock> IRIS = register(
             "iris", () -> new TallFlowerBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT)));
-    public static final RegistryObject<Block> PINEAPPLE = register(
+    public static final RegistryObject<PineappleBlock> PINEAPPLE = register(
             "pineapple", () -> new PineappleBlock(Block.Properties.create(Material.TALL_PLANTS).tickRandomly().doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT)));
 
-    public static final RegistryObject<Block> SMALL_BONGO_DRUM = register("small_bongo_drum", Builder.bongo(BongoDrumBlock.Size.SMALL));
-    public static final RegistryObject<Block> MEDIUM_BONGO_DRUM = register("medium_bongo_drum", Builder.bongo(BongoDrumBlock.Size.MEDIUM));
-    public static final RegistryObject<Block> LARGE_BONGO_DRUM = register("large_bongo_drum", Builder.bongo(BongoDrumBlock.Size.LARGE));
+    public static final RegistryObject<BongoDrumBlock> SMALL_BONGO_DRUM = register("small_bongo_drum", Builder.bongo(BongoDrumBlock.Size.SMALL));
+    public static final RegistryObject<BongoDrumBlock> MEDIUM_BONGO_DRUM = register("medium_bongo_drum", Builder.bongo(BongoDrumBlock.Size.MEDIUM));
+    public static final RegistryObject<BongoDrumBlock> LARGE_BONGO_DRUM = register("large_bongo_drum", Builder.bongo(BongoDrumBlock.Size.LARGE));
 
-    public static final RegistryObject<Block> BAMBOO_LADDER = register(
+    public static final RegistryObject<LadderBlock> BAMBOO_LADDER = register(
             "bamboo_ladder", () -> new LadderBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)) {});
 
-    public static final RegistryObject<Block> BAMBOO_CHEST = register(
+    public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
             "bamboo_chest", () -> new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)));
-    public static final RegistryObject<Block> SIFTER = register(
+    public static final RegistryObject<SifterBlock> SIFTER = register(
             "sifter", () -> new SifterBlock(Block.Properties.create(Material.WOOD)));
-    public static final RegistryObject<Block> DRINK_MIXER = register(
+    public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
             () -> drinkMixerRenderer());
-    public static final RegistryObject<Block> VOLCANO = register(
+    public static final RegistryObject<VolcanoBlock> VOLCANO = register(
             "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK)));
     
-    public static final RegistryObject<Block> TIKI_TORCH = register(
+    public static final RegistryObject<TikiTorchBlock> TIKI_TORCH = register(
             "tiki_torch", () -> new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0)));
     
     public static final RegistryObject<FlowerPotBlock> BAMBOO_FLOWER_POT = register(
