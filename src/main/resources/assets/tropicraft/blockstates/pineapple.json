@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "half=lower": { "model": "tropicraft:block/pineapple_bottom" },
-    "half=upper": { "model": "tropicraft:block/pineapple_top" }
-  }
-}
