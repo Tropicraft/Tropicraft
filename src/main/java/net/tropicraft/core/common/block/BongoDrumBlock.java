@@ -15,8 +15,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,15 +24,14 @@ import net.tropicraft.core.common.sound.Sounds;
 public class BongoDrumBlock extends Block {
 
     public enum Size {
-        SMALL(0.5, () -> Sounds.BONGO_HIGH),
-        MEDIUM(0.6, () -> Sounds.BONGO_MED),
-        LARGE(0.7, () -> Sounds.BONGO_LOW);
+        SMALL(8, () -> Sounds.BONGO_HIGH),
+        MEDIUM(10, () -> Sounds.BONGO_MED),
+        LARGE(12, () -> Sounds.BONGO_LOW);
 
-        final VoxelShape shape;
+        public final VoxelShape shape;
         final Supplier<SoundEvent> soundEvent;
         
-        Size(double size, final Supplier<SoundEvent> soundEvent) {
-            size *= 16;
+        Size(int size, final Supplier<SoundEvent> soundEvent) {
             double offset = (16 - size) / 2;
             this.shape = makeCuboidShape(offset, 0, offset, 16 - offset, 16, 16 - offset);
             this.soundEvent = soundEvent;
@@ -46,6 +43,10 @@ public class BongoDrumBlock extends Block {
     public BongoDrumBlock(final Size size, final Properties properties) {
         super(properties);
         this.size = size;
+    }
+    
+    public Size getSize() {
+        return size;
     }
 
     @Override
@@ -69,19 +70,13 @@ public class BongoDrumBlock extends Block {
         return true;
     }
 
-    @Deprecated
-    public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
-
-    }
-
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
         final World world = event.getWorld();
         final BlockState state = world.getBlockState(event.getPos());
         final Block block = state.getBlock();
-        // TODO blocktag
         if (state.getBlock() instanceof BongoDrumBlock && event.getFace() == Direction.UP) {
-            ((BongoDrumBlock)block).playBongoSound(world, event.getEntityPlayer(), event.getPos(), state);
+            ((BongoDrumBlock)block).playBongoSound(world, event.getPlayer(), event.getPos(), state);
         }
     }
 
@@ -89,16 +84,6 @@ public class BongoDrumBlock extends Block {
      * Play the bongo sound in game. Sound played determined by the size
      */
     public void playBongoSound(World world, PlayerEntity entity, BlockPos pos, BlockState state) {
-        world.playSound(entity, pos.getX(), pos.getY() + 0.5D, pos.getZ(), size.soundEvent.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean isSideInvisible(BlockState stateBefore, BlockState state2, Direction direction) {
-        if (direction == Direction.DOWN) {
-            return true;
-        }
-
-        return super.isSideInvisible(stateBefore, state2, direction);
+        world.playSound(entity, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, size.soundEvent.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
     }
 }
