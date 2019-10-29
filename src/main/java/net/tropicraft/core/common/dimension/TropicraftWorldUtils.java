@@ -27,7 +27,6 @@ import net.tropicraft.Constants;
 import net.tropicraft.Info;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.minigames.dimensions.HungerGamesDimension;
-import net.tropicraft.core.common.minigames.dimensions.SignatureRunDimension;
 
 public class TropicraftWorldUtils {
     
@@ -46,7 +45,7 @@ public class TropicraftWorldUtils {
 	public static final RegistryObject<ModDimension> HUNGER_GAMES_MOD_DIMENSION = register(
 			HUNGER_GAMES_ID.getPath(), TropicraftWorldUtils::hungerGamesDimFactory);
 	public static final RegistryObject<ModDimension> SIGNATURE_RUN_MOD_DIMENSION = register(
-			SIGNATURE_RUN_ID.getPath(), TropicraftWorldUtils::signatureRunDimFactory);
+			SIGNATURE_RUN_ID.getPath(), TropicraftWorldUtils::tropicsDimFactory);
 
 	private static ModDimension tropicsDimFactory() {
 		return new ModDimension() {
@@ -62,15 +61,6 @@ public class TropicraftWorldUtils {
 			@Override
 			public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
 				return HungerGamesDimension::new;
-			}
-		};
-	}
-
-	private static ModDimension signatureRunDimFactory() {
-		return new ModDimension() {
-			@Override
-			public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-				return SignatureRunDimension::new;
 			}
 		};
 	}
@@ -125,6 +115,14 @@ public class TropicraftWorldUtils {
 		System.out.printf("It took %f seconds to teleport\n", (time2 - time) / 1000.0F);
 	}
 
+	/**
+	 * Finds the top Y position relative to the dimension the player is teleporting to and places
+	 * the entity at that position. Avoids portal generation by using player.teleport() instead of
+	 * player.changeDimension()
+	 *
+	 * @param player The player that will be teleported
+	 * @param destination The target dimension to teleport to
+	 */
 	public static void teleportPlayerNoPortal(ServerPlayerEntity player, DimensionType destination) {
 		if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(player, destination)) return;
 
