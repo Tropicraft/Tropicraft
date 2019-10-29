@@ -17,11 +17,11 @@ import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public class SmoothingGravityProcessor extends PathStructureProcessor {
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Info.MODID + ":smooth_gravity", SteepPathProcessor::new);
+    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":smooth_gravity", SteepPathProcessor::new);
 
     private final Heightmap.Type heightmap;
     private final int offset;

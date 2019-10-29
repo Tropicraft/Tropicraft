@@ -6,12 +6,12 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class TropicraftTileEntityTypes {
     
-    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, Info.MODID);
+    public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, Constants.MODID);
 
     public static final RegistryObject<TileEntityType<BambooChestTileEntity>> BAMBOO_CHEST = TILE_ENTITIES.register(
             "bamboo_chest", () -> new TileEntityType<>(BambooChestTileEntity::new, Sets.newHashSet(TropicraftBlocks.BAMBOO_CHEST.get()), null));

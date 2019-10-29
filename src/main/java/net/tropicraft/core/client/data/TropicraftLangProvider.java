@@ -12,7 +12,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -38,8 +38,8 @@ public class TropicraftLangProvider extends LanguageProvider {
     private final AccessibleLanguageProvider upsideDown;
 
     public TropicraftLangProvider(DataGenerator gen) {
-        super(gen, Info.MODID, "en_us");
-        this.upsideDown = new AccessibleLanguageProvider(gen, Info.MODID, "en_ud");
+        super(gen, Constants.MODID, "en_us");
+        this.upsideDown = new AccessibleLanguageProvider(gen, Constants.MODID, "en_ud");
     }
 
     /**
@@ -161,8 +161,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.BAMBOO_LADDER);
 
         addBlock(TropicraftBlocks.BAMBOO_CHEST);
-        add(Info.MODID + ".container.bambooChest", "Bamboo Chest");
-        add(Info.MODID + ".container.bambooChestDouble", "Large Bamboo Chest");
+        add(Constants.MODID + ".container.bambooChest", "Bamboo Chest");
+        add(Constants.MODID + ".container.bambooChestDouble", "Large Bamboo Chest");
         addBlockWithTooltip(TropicraftBlocks.SIFTER, "Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?");
         addBlockWithTooltip(TropicraftBlocks.DRINK_MIXER, "Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!");
 

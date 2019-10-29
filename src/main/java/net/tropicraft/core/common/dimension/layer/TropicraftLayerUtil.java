@@ -22,11 +22,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLModIdMappingEvent;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 
-@EventBusSubscriber(modid = Info.MODID)
+@EventBusSubscriber(modid = Constants.MODID)
 @SuppressWarnings("deprecation")
 public class TropicraftLayerUtil {
 

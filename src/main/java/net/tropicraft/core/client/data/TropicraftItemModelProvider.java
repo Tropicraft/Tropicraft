@@ -12,7 +12,7 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.fml.RegistryObject;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -21,7 +21,7 @@ import net.tropicraft.core.common.item.UmbrellaItem;
 public class TropicraftItemModelProvider extends ItemModelProvider {
 
     public TropicraftItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Info.MODID, existingFileHelper);
+        super(generator, Constants.MODID, existingFileHelper);
     }
 
     @Override

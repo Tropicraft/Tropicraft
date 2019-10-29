@@ -12,11 +12,11 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public class StructureVoidProcessor extends StructureProcessor {
     
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Info.MODID + ":structure_void", StructureVoidProcessor::new);
+    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":structure_void", StructureVoidProcessor::new);
 
     public StructureVoidProcessor() {}
 

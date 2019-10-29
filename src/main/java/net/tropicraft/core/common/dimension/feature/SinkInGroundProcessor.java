@@ -15,12 +15,12 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class SinkInGroundProcessor extends CheatyStructureProcessor {
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Info.MODID + ":sink_in_ground", SinkInGroundProcessor::new);
+    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":sink_in_ground", SinkInGroundProcessor::new);
 
     public SinkInGroundProcessor() {}
 

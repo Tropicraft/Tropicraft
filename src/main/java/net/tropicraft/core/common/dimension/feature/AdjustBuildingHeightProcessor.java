@@ -12,11 +12,11 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.minecraft.world.gen.feature.template.Template.EntityInfo;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Info.MODID + ":adjust_building_height", AdjustBuildingHeightProcessor::new);
+    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":adjust_building_height", AdjustBuildingHeightProcessor::new);
     
     private final int base;
 

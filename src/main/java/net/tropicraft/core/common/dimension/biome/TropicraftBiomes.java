@@ -7,11 +7,11 @@ import net.minecraft.world.biome.Biome.Category;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public class TropicraftBiomes {
     
-    public static final DeferredRegister<Biome> BIOMES = new DeferredRegister<>(ForgeRegistries.BIOMES, Info.MODID);
+    public static final DeferredRegister<Biome> BIOMES = new DeferredRegister<>(ForgeRegistries.BIOMES, Constants.MODID);
 
     public static final RegistryObject<Biome> TROPICS_OCEAN = register("tropics_ocean", TropicsOceanBiome::new);
     public static final RegistryObject<Biome> TROPICS = register("tropics", TropicsBiome::new);

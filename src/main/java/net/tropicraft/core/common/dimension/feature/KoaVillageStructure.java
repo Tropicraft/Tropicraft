@@ -28,7 +28,7 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.MarginedStructureStart;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public class KoaVillageStructure extends Structure<NoFeatureConfig> {
 
@@ -113,7 +113,7 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
             BlockPos pos = new BlockPos(chunkX * 16, 0, chunkZ * 16);
             KoaVillagePools.init();
-            JigsawManager.func_214889_a(new ResourceLocation(Info.MODID, "koa_village/town_centers"), 6, KoaVillage::new, generator, templateManagerIn, pos, this.components, this.rand);
+            JigsawManager.func_214889_a(new ResourceLocation(Constants.MODID, "koa_village/town_centers"), 6, KoaVillage::new, generator, templateManagerIn, pos, this.components, this.rand);
             this.recalculateStructureSize();
         }
     }
