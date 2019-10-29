@@ -33,7 +33,7 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.fml.RegistryObject;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.BongoDrumBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock;
@@ -44,7 +44,7 @@ import net.tropicraft.core.common.block.TropicsFlowerBlock;
 public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     public TropicraftBlockstateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, Info.MODID, exFileHelper);
+        super(gen, Constants.MODID, exFileHelper);
     }
     
     public ExistingFileHelper getExistingHelper() {

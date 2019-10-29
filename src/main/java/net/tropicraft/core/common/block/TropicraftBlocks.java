@@ -37,7 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
@@ -46,7 +46,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropicraftBlocks {
     
-    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, Info.MODID);
+    public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, Constants.MODID);
     public static final DeferredRegister<Item> ITEMS = TropicraftItems.ITEMS;
 
     public static final RegistryObject<Block> CHUNK = register(

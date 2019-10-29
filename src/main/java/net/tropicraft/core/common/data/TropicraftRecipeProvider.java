@@ -32,7 +32,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 
 public class TropicraftRecipeProvider extends RecipeProvider {
@@ -190,7 +190,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .key('I', Tags.Items.GLASS_PANES)
             .setGroup("tropicraft:sifter")
             .addCriterion("has_glass_pane", this.hasItem(Tags.Items.GLASS_PANES))
-            .build(consumer, new ResourceLocation(Info.MODID, "sifter_with_glass_pane"));
+            .build(consumer, new ResourceLocation(Constants.MODID, "sifter_with_glass_pane"));
         
         ShapedRecipeBuilder.shapedRecipe(DRINK_MIXER.get())
             .patternLine("XXX").patternLine("XYX").patternLine("XXX")
@@ -258,7 +258,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     }
 
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void dye(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<IFinishedRecipe> consumer) {
-        singleItemUnfinished(source, result, required, amount).build(consumer, new ResourceLocation(Info.MODID, result.get().getRegistryName().getPath()));
+        singleItemUnfinished(source, result, required, amount).build(consumer, new ResourceLocation(Constants.MODID, result.get().getRegistryName().getPath()));
     }
     
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void singleItem(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<IFinishedRecipe> consumer) {

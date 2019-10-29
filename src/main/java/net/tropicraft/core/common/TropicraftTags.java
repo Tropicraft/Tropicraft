@@ -8,7 +8,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public class TropicraftTags {
 
@@ -47,7 +47,7 @@ public class TropicraftTags {
         }
 
         static Tag<Block> modTag(String name) {
-            return tag(Info.MODID, name);
+            return tag(Constants.MODID, name);
         }
 
         static Tag<Block> compatTag(String name) {
@@ -95,7 +95,7 @@ public class TropicraftTags {
         }
 
         static Tag<Item> modTag(String name) {
-            return tag(Info.MODID, name);
+            return tag(Constants.MODID, name);
         }
 
         static Tag<Item> compatTag(String name) {
@@ -108,7 +108,7 @@ public class TropicraftTags {
     }
 
     static <T extends Tag<?>> T modTag(Function<ResourceLocation, T> creator, String name) {
-        return tag(creator, Info.MODID, name);
+        return tag(creator, Constants.MODID, name);
     }
 
     static <T extends Tag<?>> T compatTag(Function<ResourceLocation, T> creator, String name) {

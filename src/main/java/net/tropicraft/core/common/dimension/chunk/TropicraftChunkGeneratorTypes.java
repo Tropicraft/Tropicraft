@@ -8,13 +8,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus=Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftChunkGeneratorTypes {
 
-    public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATOR_TYPES = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, Info.MODID);
+    public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATOR_TYPES = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, Constants.MODID);
 
     public static final RegistryObject<ChunkGeneratorType<TropicraftGeneratorSettings, TropicraftChunkGenerator>> TROPICS = register(
             "tropicraft_chunk_generator_type", () -> new ChunkGeneratorType<>(TropicraftChunkGenerator::new, true, TropicraftGeneratorSettings::new));

@@ -15,7 +15,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 
 public class BambooChestBlock extends ChestBlock {
@@ -34,7 +34,7 @@ public class BambooChestBlock extends ChestBlock {
                     if (p_212855_1_.hasCustomName()) {
                         return p_212855_1_.getDisplayName();
                     } else {
-                        return (ITextComponent) (p_212855_2_.hasCustomName() ? p_212855_2_.getDisplayName() : new TranslationTextComponent(Info.MODID + ".container.bambooChestDouble"));
+                        return (ITextComponent) (p_212855_2_.hasCustomName() ? p_212855_2_.getDisplayName() : new TranslationTextComponent(Constants.MODID + ".container.bambooChestDouble"));
                     }
                 }
             };

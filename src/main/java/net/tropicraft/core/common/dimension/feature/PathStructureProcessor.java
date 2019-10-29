@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public abstract class PathStructureProcessor extends CheatyStructureProcessor {
 
@@ -71,7 +71,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
          */
         return VECTOR_CACHE.computeIfAbsent(settings, s -> 
                 template.func_215381_a(seedPos, settings, Blocks.JIGSAW).stream() // Find all jigsaw blocks
-                        .filter(b -> b.nbt.getString("attachement_type").equals(Info.MODID + ":path_center")) // Filter for vector markers
+                        .filter(b -> b.nbt.getString("attachement_type").equals(Constants.MODID + ":path_center")) // Filter for vector markers
                         .map(bi -> new PathVector(bi.pos.subtract(seedPos), bi.state.get(JigsawBlock.FACING))) // Convert pos to structure local, extract facing
                         .collect(Collectors.toList()))
                 .stream()

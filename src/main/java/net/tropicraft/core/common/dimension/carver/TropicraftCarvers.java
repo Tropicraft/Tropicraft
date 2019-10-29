@@ -5,11 +5,11 @@ import net.minecraft.world.gen.feature.ProbabilityConfig;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 
 public class TropicraftCarvers {
 
-    public static final DeferredRegister<WorldCarver<?>> CARVERS = new DeferredRegister<>(ForgeRegistries.WORLD_CARVERS, Info.MODID);
+    public static final DeferredRegister<WorldCarver<?>> CARVERS = new DeferredRegister<>(ForgeRegistries.WORLD_CARVERS, Constants.MODID);
 
     public static final RegistryObject<TropicsCaveCarver> CAVE = CARVERS.register("cave", () -> new TropicsCaveCarver(ProbabilityConfig::deserialize));
     public static final RegistryObject<TropicsCanyonCarver> CANYON = CARVERS.register("canyon", () -> new TropicsCanyonCarver(ProbabilityConfig::deserialize));

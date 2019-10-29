@@ -20,16 +20,16 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.tropicraft.Info;
+import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
 
-@EventBusSubscriber(modid = Info.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
 public class TropicraftItems {
     
-    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Info.MODID);
+    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Constants.MODID);
     
     public static final RegistryObject<Item> AZURITE = register("azurite_gem", Builder.item());
     public static final RegistryObject<Item> EUDIALYTE = register("eudialyte_gem", Builder.item());
@@ -126,7 +126,7 @@ public class TropicraftItems {
             .forEach(b -> {
                 if (b.getEmptyPot().getRegistryName().equals(TropicraftBlocks.BAMBOO_FLOWER_POT.getId()) && b.getEmptyPot() != b) {
                     addPlant(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), b);
-                } else if (b.func_220276_d().getRegistryName().getNamespace().equals(Info.MODID)) {
+                } else if (b.func_220276_d().getRegistryName().getNamespace().equals(Constants.MODID)) {
                     addPlant((FlowerPotBlock) Blocks.FLOWER_POT, b);
                 }
             });

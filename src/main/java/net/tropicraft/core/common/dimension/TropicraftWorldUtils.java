@@ -19,11 +19,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
-import net.tropicraft.Info;
 
 public class TropicraftWorldUtils {
     
-    public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Info.MODID);
+    public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Constants.MODID);
 
 	public static DimensionType TROPICS_DIMENSION;
 	public static final RegistryObject<ModDimension> TROPICRAFT_MOD_DIMENSION = register(
