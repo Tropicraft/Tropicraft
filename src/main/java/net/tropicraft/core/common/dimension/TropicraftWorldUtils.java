@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension;
 
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import io.netty.buffer.Unpooled;
@@ -23,20 +24,42 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.minigames.dimensions.HungerGamesDimension;
 
 public class TropicraftWorldUtils {
     
     public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Constants.MODID);
 
 	public static DimensionType TROPICS_DIMENSION;
-	public static final RegistryObject<ModDimension> TROPICRAFT_MOD_DIMENSION = register(
-	        "tropics", TropicraftWorldUtils::dimFactory); 
+	public static DimensionType HUNGER_GAMES_DIMENSION;
+	public static DimensionType SIGNATURE_RUN_DIMENSION;
 
-	private static ModDimension dimFactory() {
+	public static ResourceLocation TROPICS_ID = Util.resource("tropics");
+	public static ResourceLocation HUNGER_GAMES_ID = Util.resource("hunger_games");
+	public static ResourceLocation SIGNATURE_RUN_ID = Util.resource("signature_run");
+
+	public static final RegistryObject<ModDimension> TROPICRAFT_MOD_DIMENSION = register(
+			TROPICS_ID.getPath(), TropicraftWorldUtils::tropicsDimFactory);
+	public static final RegistryObject<ModDimension> HUNGER_GAMES_MOD_DIMENSION = register(
+			HUNGER_GAMES_ID.getPath(), TropicraftWorldUtils::hungerGamesDimFactory);
+	public static final RegistryObject<ModDimension> SIGNATURE_RUN_MOD_DIMENSION = register(
+			SIGNATURE_RUN_ID.getPath(), TropicraftWorldUtils::tropicsDimFactory);
+
+	private static ModDimension tropicsDimFactory() {
 		return new ModDimension() {
 			@Override
 			public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
 				return TropicraftDimension::new;
+			}
+		};
+	}
+
+	private static ModDimension hungerGamesDimFactory() {
+		return new ModDimension() {
+			@Override
+			public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
+				return HungerGamesDimension::new;
 			}
 		};
 	}
@@ -49,13 +72,17 @@ public class TropicraftWorldUtils {
 	public static class EventDimensionType {
 		@SubscribeEvent
 		public static void onModDimensionRegister(final RegisterDimensionsEvent event) {
-			ResourceLocation id = new ResourceLocation(Constants.MODID, "tropics");
+			postRegister(TROPICS_ID, dimensionType -> TROPICS_DIMENSION = dimensionType, () -> TROPICS_DIMENSION, TROPICRAFT_MOD_DIMENSION);
+			postRegister(HUNGER_GAMES_ID, dimensionType -> HUNGER_GAMES_DIMENSION = dimensionType, () -> HUNGER_GAMES_DIMENSION, HUNGER_GAMES_MOD_DIMENSION);
+			postRegister(SIGNATURE_RUN_ID, dimensionType -> SIGNATURE_RUN_DIMENSION = dimensionType, () -> SIGNATURE_RUN_DIMENSION, SIGNATURE_RUN_MOD_DIMENSION);
+		}
+
+		public static void postRegister(ResourceLocation id, Consumer<DimensionType> dimSetter, Supplier<DimensionType> dimGetter, RegistryObject<ModDimension> modDimRegistry) {
 			if (DimensionType.byName(id) == null) {
-				TROPICS_DIMENSION = DimensionManager.registerDimension(id, TROPICRAFT_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-				//TROPICS_DIMENSION.setRegistryName(new ResourceLocation(Constants.MODID, "tropics"));
-				DimensionManager.keepLoaded(TROPICS_DIMENSION, false);
+				dimSetter.accept(DimensionManager.registerDimension(id, modDimRegistry.get(), new PacketBuffer(Unpooled.buffer()), true));
+				DimensionManager.keepLoaded(dimGetter.get(), false);
 			} else {
-				TROPICS_DIMENSION = DimensionType.byName(id);
+				dimSetter.accept(DimensionType.byName(id));
 			}
 		}
 	}
@@ -74,13 +101,13 @@ public class TropicraftWorldUtils {
 //		//TODO FMLInterModComms.sendMessage(ForgeModContainer.getInstance().getModId(), "loaderFarewellSkip", n);
 //	}
 
-    public static void teleportPlayer(ServerPlayerEntity player, DimensionType dimensionType) {
-        long time = System.currentTimeMillis();
-        if (player.dimension == dimensionType) {
-            teleportPlayerNoPortal(player, DimensionType.OVERWORLD);
-        } else {
-            teleportPlayerNoPortal(player, dimensionType);
-        }
+	public static void teleportPlayer(ServerPlayerEntity player, DimensionType dimensionType) {
+		long time = System.currentTimeMillis();
+		if (player.dimension == dimensionType) {
+			teleportPlayerNoPortal(player, DimensionType.OVERWORLD);
+		} else {
+			teleportPlayerNoPortal(player, dimensionType);
+		}
 
         long time2 = System.currentTimeMillis();
 
