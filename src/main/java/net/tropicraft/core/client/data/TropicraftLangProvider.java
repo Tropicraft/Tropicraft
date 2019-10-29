@@ -173,9 +173,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.COCONUT);
 
         addBlock(TropicraftBlocks.BAMBOO_FLOWER_POT);
-        TropicraftBlocks.BAMBOO_POTTED_TROPICS_PLANTS.forEach(this::addBlock);
-        TropicraftBlocks.VANILLA_POTTED_TROPICS_PLANTS.forEach(this::addBlock);
-        TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS.forEach(this::addBlock);
+        TropicraftBlocks.ALL_POTTED_PLANTS.forEach(this::addBlock);
 
         addBlock(TropicraftBlocks.WATER_BARRIER);
         

@@ -173,7 +173,7 @@ public class TropicraftBlocks {
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
             () -> drinkMixerRenderer());
     public static final RegistryObject<VolcanoBlock> VOLCANO = register(
-            "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK)));
+            "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK).noDrops()));
     
     public static final RegistryObject<TikiTorchBlock> TIKI_TORCH = register(
             "tiki_torch", () -> new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).lightValue(0)));
@@ -203,9 +203,15 @@ public class TropicraftBlocks {
                 Blocks.WITHER_ROSE, Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM, Blocks.DEAD_BUSH, Blocks.CACTUS)
             .map(b -> registerNoItem("bamboo_potted_" + b.getRegistryName().getPath(), Builder.tropicraftPot(() -> b)))
             .collect(Collectors.toList()));
+    
+    public static final List<RegistryObject<FlowerPotBlock>> ALL_POTTED_PLANTS = ImmutableList.<RegistryObject<FlowerPotBlock>>builder()
+            .addAll(BAMBOO_POTTED_TROPICS_PLANTS)
+            .addAll(VANILLA_POTTED_TROPICS_PLANTS)
+            .addAll(BAMBOO_POTTED_VANILLA_PLANTS)
+            .build();
 
     public static final RegistryObject<Block> WATER_BARRIER = register(
-            "water_barrier", () -> new WaterBarrierBlock(Block.Properties.from(Blocks.BARRIER)), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
+            "water_barrier", () -> new WaterBarrierBlock(Block.Properties.from(Blocks.BARRIER).noDrops()), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);

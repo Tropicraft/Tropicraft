@@ -42,6 +42,7 @@ import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
 import net.tropicraft.core.common.data.TropicraftItemTagsProvider;
+import net.tropicraft.core.common.data.TropicraftLootTableProvider;
 import net.tropicraft.core.common.data.TropicraftRecipeProvider;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProviderTypes;
@@ -179,6 +180,7 @@ public class Tropicraft {
             gen.addProvider(new TropicraftBlockTagsProvider(gen));
             gen.addProvider(new TropicraftItemTagsProvider(gen));
             gen.addProvider(new TropicraftRecipeProvider(gen));
+            gen.addProvider(new TropicraftLootTableProvider(gen));
         }
     }
 }
