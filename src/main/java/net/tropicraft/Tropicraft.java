@@ -39,6 +39,7 @@ import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
 import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
 import net.tropicraft.core.client.data.TropicraftItemModelProvider;
+import net.tropicraft.core.client.data.TropicraftLangProvider;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
@@ -175,6 +176,7 @@ public class Tropicraft
             TropicraftBlockstateProvider blockstates = new TropicraftBlockstateProvider(gen, event.getExistingFileHelper());
             gen.addProvider(blockstates);
             gen.addProvider(new TropicraftItemModelProvider(gen, blockstates.getExistingHelper()));
+            gen.addProvider(new TropicraftLangProvider(gen));
         }
         if (event.includeServer()) {
             gen.addProvider(new TropicraftBlockTagsProvider(gen));

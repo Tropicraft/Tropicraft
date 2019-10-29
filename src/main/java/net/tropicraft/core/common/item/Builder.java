@@ -6,8 +6,7 @@ import java.util.function.Supplier;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
-import net.minecraft.item.MusicDiscItem;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.item.Rarity;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 
@@ -53,8 +52,8 @@ public class Builder {
         return item(p -> new AshenMaskItem(ArmorMaterials.ASHEN_MASK, maskIndex, p));
     }
     
-    public static Supplier<MusicDiscItem> musicDisc(Supplier<SoundEvent> sound) {
-        return item(p -> new MusicDiscItem(13, sound.get(), p) {});
+    public static Supplier<TropicalMusicDiscItem> musicDisc(RecordMusic type) {
+        return item(p -> new TropicalMusicDiscItem(type, p) {}, () -> getDefaultProperties().rarity(Rarity.RARE));
     }
 
     private static Item.Properties getDefaultProperties() {

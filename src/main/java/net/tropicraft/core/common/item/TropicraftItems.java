@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.item;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -12,7 +13,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.MusicDiscItem;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -25,7 +25,6 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.sound.Sounds;
 
 @EventBusSubscriber(modid = Info.MODID, bus = Bus.MOD)
 public class TropicraftItems {
@@ -112,12 +111,8 @@ public class TropicraftItems {
     public static final RegistryObject<Item> BAMBOO_ITEM_FRAME = register(
             "bamboo_item_frame", () -> new BambooItemFrameItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
     
-    public static final RegistryObject<MusicDiscItem> BURIED_TREASURE_DISC = register("music_disc_buried_treasure", Builder.musicDisc(() -> Sounds.BURIED_TREASURE));
-    public static final RegistryObject<MusicDiscItem> EASTERN_ISLES_DISC = register("music_disc_eastern_isles", Builder.musicDisc(() -> Sounds.EASTERN_ISLES));
-    public static final RegistryObject<MusicDiscItem> SUMMERING_DISC = register("music_disc_summering", Builder.musicDisc(() -> Sounds.SUMMERING));
-    public static final RegistryObject<MusicDiscItem> THE_TRIBE_DISC = register("music_disc_the_tribe", Builder.musicDisc(() -> Sounds.THE_TRIBE));
-    public static final RegistryObject<MusicDiscItem> LOW_TIDE_DISC = register("music_disc_low_tide", Builder.musicDisc(() -> Sounds.LOW_TIDE));
-    public static final RegistryObject<MusicDiscItem> TRADE_WINDS_DISC = register("music_disc_trade_winds", Builder.musicDisc(() -> Sounds.TRADE_WINDS));
+    public static final ImmutableMap<RecordMusic, RegistryObject<TropicalMusicDiscItem>> MUSIC_DISCS = ImmutableMap.copyOf(Arrays.stream(RecordMusic.values())
+            .collect(Collectors.toMap(Function.identity(), type -> register("music_disc_" + type.name().toLowerCase(Locale.ROOT), Builder.musicDisc(type)))));
  
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);
