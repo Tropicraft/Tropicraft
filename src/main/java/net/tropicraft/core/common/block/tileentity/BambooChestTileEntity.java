@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.tropicraft.Info;
 
 public class BambooChestTileEntity extends ChestTileEntity {
 
@@ -16,7 +17,7 @@ public class BambooChestTileEntity extends ChestTileEntity {
 
     @Override
     public ITextComponent getName() {
-        return new TranslationTextComponent("tile.tropicraft.bamboo_chest.name");
+        return new TranslationTextComponent(Info.MODID + ".container.bambooChest");
     }
 
     @Override

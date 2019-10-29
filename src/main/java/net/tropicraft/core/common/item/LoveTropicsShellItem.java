@@ -33,7 +33,7 @@ public class LoveTropicsShellItem extends ShellItem implements IColoredItem {
     @Override
     public int getColor(ItemStack itemstack, int pass) {
         final CompoundNBT tag = itemstack.getTag();
-        if (!tag.isEmpty() && tag.contains("Name")) {
+        if (tag != null && !tag.isEmpty() && tag.contains("Name")) {
             return pass == 0 ? 0xFFFFFFFF : LTUtil.colors.get(tag.getString("Name"));
         }
         return pass == 0 ? 0xFFFFFFFF : LTUtil.colors.get(Constants.LT17_NAMES[0]);

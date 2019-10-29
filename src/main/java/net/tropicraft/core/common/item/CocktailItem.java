@@ -38,6 +38,8 @@ import net.tropicraft.core.common.drinks.MixerRecipes;
 public class CocktailItem extends Item implements IColoredItem {
 
 	private static final int DEFAULT_COLOR = 0xf3be36;
+	
+	private final Drink drink;
 
 	// nbt layout:
 	// - byte DrinkID: 0 if no known drink, else the Drink.drinkList index
@@ -46,32 +48,28 @@ public class CocktailItem extends Item implements IColoredItem {
 	//   - byte IngredientID: Ingredient.ingredientList index
 	//   - short Count: count of this ingredient in the mixture, typically 1
 
-	public CocktailItem(final Properties properties) {
+	public CocktailItem(final Drink drink, final Properties properties) {
 		super(properties);
+		this.drink = drink;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-		if (stack.getTag() == null || stack.getTag().isEmpty()) {
-			return;
-		}
-		
 		Drink drink = getDrink(stack);
-		if (drink != null) {
-			tooltip.add(new TranslationTextComponent(stack.getDisplayName() + ".name").applyTextStyle(TextFormatting.ITALIC));
-		}
 
-		final ListNBT ingredients = stack.getTag().getList("Ingredients", 10);
-
-		for (int i = 0; i < ingredients.size(); ++i) {
-			CompoundNBT ingredient = ingredients.getCompound(i);
-			int id = ingredient.getByte("IngredientID");
-			ITextComponent ingredientName = Ingredient.ingredientsList[id].getIngredient().getDisplayName();
-			int ingredientColor = Ingredient.ingredientsList[id].getColor();
-			//String lvl = StatCollector.translateToLocal("enchantment.level." + count);
-			//par3List.add(ingredientName + " " + lvl);
-			tooltip.add(ingredientName);
+		if (drink == Drink.COCKTAIL && stack.hasTag() && stack.getTag().contains("Ingredients")) {
+    		final ListNBT ingredients = stack.getTag().getList("Ingredients", 10);
+    
+    		for (int i = 0; i < ingredients.size(); ++i) {
+    			CompoundNBT ingredient = ingredients.getCompound(i);
+    			int id = ingredient.getByte("IngredientID");
+    			ITextComponent ingredientName = Ingredient.ingredientsList[id].getIngredient().getDisplayName();
+    			int ingredientColor = Ingredient.ingredientsList[id].getColor();
+    			//String lvl = StatCollector.translateToLocal("enchantment.level." + count);
+    			//par3List.add(ingredientName + " " + lvl);
+    			tooltip.add(ingredientName);
+    		}
 		}
 	}
 
@@ -183,10 +181,10 @@ public class CocktailItem extends Item implements IColoredItem {
 
 	@Nullable
 	public static Drink getDrink(ItemStack stack) {
-		if (!Drink.isDrink(stack.getItem()) || !stack.hasTag()) {
+		if (!Drink.isDrink(stack.getItem())) {
 			return null;
 		}
-		return Drink.DRINKS.get(stack.getTag().getByte("DrinkID"));
+		return ((CocktailItem)stack.getItem()).drink;
 	}
 
 	@Override
@@ -253,17 +251,6 @@ public class CocktailItem extends Item implements IColoredItem {
 	public int getColor(ItemStack itemstack, int tintIndex) {
 		Drink drink = getDrink(itemstack);
 		return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
-	}
-
-	@Override
-	public String getTranslationKey(ItemStack itemStack) {
-		String name = getTranslationKey();
-		Drink drink = getDrink(itemStack);
-		if (drink != null) {
-			name = Info.MODID + ".drink." + drink.name;
-		}
-
-		return name;
 	}
 	
 	@Override

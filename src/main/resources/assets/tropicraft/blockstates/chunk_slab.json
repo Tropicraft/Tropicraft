@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "type=bottom": { "model": "tropicraft:block/chunk_slab" },
-    "type=top": { "model": "tropicraft:block/chunk_slab_top" },
-    "type=double": { "model": "tropicraft:block/chunk" }
-  }
-}

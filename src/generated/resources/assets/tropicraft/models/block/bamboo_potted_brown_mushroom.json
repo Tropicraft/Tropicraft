@@ -1,0 +1,8 @@
+{
+  "parent": "block/potted_brown_mushroom",
+  "textures": {
+    "flowerpot": "tropicraft:block/bamboo_flower_pot",
+    "dirt": "block/dirt",
+    "particle": "tropicraft:block/bamboo_side"
+  }
+}

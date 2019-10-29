@@ -1,0 +1,44 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "side": "tropicraft:block/bongo_side",
+    "bottom": "tropicraft:block/bongo_bottom",
+    "top": "tropicraft:block/bongo_top"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        16,
+        14
+      ],
+      "faces": {
+        "down": {
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#top",
+          "cullface": "up"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        }
+      }
+    }
+  ]
+}

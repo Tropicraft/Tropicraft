@@ -1,0 +1,7 @@
+{
+  "parent": "block/door_bottom",
+  "textures": {
+    "bottom": "tropicraft:block/thatch_door_bottom",
+    "top": "tropicraft:block/thatch_door_top"
+  }
+}
