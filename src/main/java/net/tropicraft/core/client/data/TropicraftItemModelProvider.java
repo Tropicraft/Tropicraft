@@ -235,12 +235,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.IGUANA_LEATHER);
         
         // Discs
-        generated(TropicraftItems.BURIED_TREASURE_DISC);
-        generated(TropicraftItems.EASTERN_ISLES_DISC);
-        generated(TropicraftItems.SUMMERING_DISC);
-        generated(TropicraftItems.THE_TRIBE_DISC);
-        generated(TropicraftItems.LOW_TIDE_DISC);
-        generated(TropicraftItems.TRADE_WINDS_DISC);
+        TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {

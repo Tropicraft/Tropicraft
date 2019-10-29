@@ -252,17 +252,6 @@ public class CocktailItem extends Item implements IColoredItem {
 		Drink drink = getDrink(itemstack);
 		return (tintIndex == 0 || drink == null ? 16777215 : drink.color);
 	}
-
-	@Override
-	public String getTranslationKey(ItemStack itemStack) {
-		String name = getTranslationKey();
-		Drink drink = getDrink(itemStack);
-		if (drink != null) {
-			name = Info.MODID + ".drink." + drink.name;
-		}
-
-		return name;
-	}
 	
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {

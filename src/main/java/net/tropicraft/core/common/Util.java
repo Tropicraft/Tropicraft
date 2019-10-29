@@ -13,8 +13,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.Random;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class Util {
 
@@ -267,4 +272,9 @@ public class Util {
         return rand.nextBoolean() ? rand.nextInt(i) : -(rand.nextInt(i));
     }
 
+    public static final String toEnglishName(String internalName) {
+        return Arrays.stream(internalName.toLowerCase(Locale.ROOT).split("_"))
+                .map(StringUtils::capitalize)
+                .collect(Collectors.joining(" "));
+    }
 }
