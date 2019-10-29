@@ -7,10 +7,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
+import net.tropicraft.Constants;
 
 import java.lang.reflect.Field;
 import java.util.Random;
@@ -265,6 +267,10 @@ public class Util {
 
     public static int randFlip(final Random rand, final int i) {
         return rand.nextBoolean() ? rand.nextInt(i) : -(rand.nextInt(i));
+    }
+
+    public static ResourceLocation resource(String location) {
+        return new ResourceLocation(Constants.MODID, location);
     }
 
 }
