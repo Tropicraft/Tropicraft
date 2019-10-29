@@ -186,7 +186,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         getVariantBuilder(TropicraftBlocks.BAMBOO_LADDER.get()) // TODO make horizontalBlock etc support this case
             .forAllStatesExcept(state -> ConfiguredModel.builder()
                     .modelFile(bambooLadder)
-                    .rotationY((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle())
+                    .rotationY(((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) % 360)
                     .build(),
                 LadderBlock.WATERLOGGED);
         

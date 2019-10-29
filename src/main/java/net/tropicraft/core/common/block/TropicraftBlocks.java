@@ -34,6 +34,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -82,9 +83,9 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> MINERAL_SAND = register("mineral_sand", Builder.sand(MaterialColor.SAND));
 
     public static final RegistryObject<RotatedPillarBlock> BAMBOO_BUNDLE = register(
-            "bamboo_bundle", Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.BAMBOO).hardnessAndResistance(0.2F, 5.0F)));
+            "bamboo_bundle", Builder.bundle(Block.Properties.from(Blocks.BAMBOO).hardnessAndResistance(0.2F, 5.0F)));
     public static final RegistryObject<RotatedPillarBlock> THATCH_BUNDLE = register(
-            "thatch_bundle", Builder.bundle(Block.Properties.create(Material.WOOD).sound(SoundType.PLANT).hardnessAndResistance(0.2F, 5.0F)));
+            "thatch_bundle", Builder.bundle(Block.Properties.create(Material.ORGANIC, MaterialColor.WOOD).sound(SoundType.PLANT).hardnessAndResistance(0.2F, 5.0F)));
 
     public static final RegistryObject<Block> MAHOGANY_PLANKS = register("mahogany_planks", Builder.plank(MaterialColor.BROWN));
     public static final RegistryObject<Block> PALM_PLANKS = register("palm_planks", Builder.plank(MaterialColor.WOOD));
@@ -105,7 +106,7 @@ public class TropicraftBlocks {
             "chunk_stairs", Builder.stairs(CHUNK));
 
     public static final RegistryObject<Block> COCONUT = register(
-            "coconut", () -> new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f).sound(SoundType.STONE)));
+            "coconut", () -> new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f).harvestTool(ToolType.AXE).sound(SoundType.STONE)));
 
     public static final RegistryObject<SlabBlock> BAMBOO_SLAB = register(
             "bamboo_slab", Builder.slab(BAMBOO_BUNDLE));
@@ -150,7 +151,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<WallBlock> CHUNK_WALL = register("chunk_wall", Builder.wall(CHUNK));
     
     public static final RegistryObject<DoorBlock> BAMBOO_DOOR = register(
-            "bamboo_door", () -> new DoorBlock(Block.Properties.create(Material.BAMBOO).hardnessAndResistance(1.0F).sound(SoundType.BAMBOO)) {});
+            "bamboo_door", () -> new DoorBlock(Block.Properties.from(BAMBOO_BUNDLE.get()).hardnessAndResistance(1.0F)) {});
     public static final RegistryObject<DoorBlock> PALM_DOOR = register(
             "palm_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
     public static final RegistryObject<DoorBlock> MAHOGANY_DOOR = register(
@@ -177,13 +178,13 @@ public class TropicraftBlocks {
     public static final RegistryObject<BongoDrumBlock> LARGE_BONGO_DRUM = register("large_bongo_drum", Builder.bongo(BongoDrumBlock.Size.LARGE));
 
     public static final RegistryObject<LadderBlock> BAMBOO_LADDER = register(
-            "bamboo_ladder", () -> new LadderBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)) {});
+            "bamboo_ladder", () -> new LadderBlock(Block.Properties.from(Blocks.BAMBOO)) {});
 
     public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
-            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.create(Material.BAMBOO).sound(SoundType.BAMBOO)),
+            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.from(BAMBOO_BUNDLE.get()).hardnessAndResistance(1)),
             () -> chestRenderer());
     public static final RegistryObject<SifterBlock> SIFTER = register(
-            "sifter", () -> new SifterBlock(Block.Properties.create(Material.WOOD)));
+            "sifter", () -> new SifterBlock(Block.Properties.from(Blocks.OAK_PLANKS)));
     public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
             () -> drinkMixerRenderer());
