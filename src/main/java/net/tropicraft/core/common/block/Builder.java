@@ -26,6 +26,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 
 @SuppressWarnings("unused")
@@ -64,7 +65,7 @@ public class Builder {
     }
 
     public static Supplier<BlockTropicraftSand> sand(final MaterialColor color, final float hardness, final float resistance) {
-        return block(BlockTropicraftSand::new, prop(Material.SAND, color).sound(SoundType.SAND).hardnessAndResistance(hardness, resistance));
+        return block(BlockTropicraftSand::new, prop(Material.SAND, color).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).hardnessAndResistance(hardness, resistance));
     }
 
     public static Supplier<RotatedPillarBlock> bundle(final Block.Properties properties) {
