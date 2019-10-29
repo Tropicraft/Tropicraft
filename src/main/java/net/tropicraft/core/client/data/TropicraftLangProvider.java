@@ -309,8 +309,20 @@ public class TropicraftLangProvider extends LanguageProvider {
 
     private String toUpsideDown(String normal) {
         char[] ud = new char[normal.length()];
-        for (int i = normal.length() - 1; i >= 0; i--) {
+        for (int i = 0; i < normal.length(); i++) {
             char c = normal.charAt(i);
+            if (c == '%') {
+                String fmtArg = "";
+                while (Character.isDigit(c) || c == '%' || c == '$' || c == 's' || c == 'd') { // TODO this is a bit lazy
+                    fmtArg += c;
+                    c = normal.charAt(++i);
+                }
+                i--;
+                for (int j = 0; j < fmtArg.length(); j++) {
+                    ud[normal.length() - 1 - i + j] = fmtArg.charAt(j);
+                }
+                continue;
+            }
             int lookup = NORMAL_CHARS.indexOf(c);
             if (lookup >= 0) {
                 c = UPSIDE_DOWN_CHARS.charAt(lookup);
