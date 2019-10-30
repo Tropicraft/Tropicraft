@@ -14,6 +14,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.common.Tags;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropicraftItemTagsProvider extends ItemTagsProvider {
@@ -25,13 +26,22 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
     @Override
     protected void registerTags() {
         // Add forge tags for our ores
-        addItemsToTag(AZURITE_ORE, TropicraftItems.AZURITE);
-        addItemsToTag(EUDIALYTE_ORE, TropicraftItems.EUDIALYTE);
-        addItemsToTag(ZIRCON_ORE, TropicraftItems.ZIRCON);
-        addItemsToTag(MANGANESE_ORE, TropicraftItems.MANGANESE);
-        addItemsToTag(SHAKA_ORE, TropicraftItems.SHAKA);
+        addItemsToTag(AZURITE_ORE, TropicraftBlocks.AZURITE_ORE);
+        addItemsToTag(EUDIALYTE_ORE, TropicraftBlocks.EUDIALYTE_ORE);
+        addItemsToTag(ZIRCON_ORE, TropicraftBlocks.ZIRCON_ORE);
+        addItemsToTag(MANGANESE_ORE, TropicraftBlocks.MANGANESE_ORE);
+        addItemsToTag(SHAKA_ORE, TropicraftBlocks.SHAKA_ORE);
         appendToTag(Tags.Items.ORES, AZURITE_ORE, EUDIALYTE_ORE, ZIRCON_ORE, MANGANESE_ORE, SHAKA_ORE);
         
+        // Add forge tags for our gems/ingots
+        addItemsToTag(AZURITE_GEM, TropicraftItems.AZURITE);
+        addItemsToTag(EUDIALYTE_GEM, TropicraftItems.EUDIALYTE);
+        addItemsToTag(ZIRCON_GEM, TropicraftItems.ZIRCON);
+        addItemsToTag(MANGANESE_INGOT, TropicraftItems.MANGANESE);
+        addItemsToTag(SHAKA_INGOT, TropicraftItems.SHAKA);
+        appendToTag(Tags.Items.GEMS, AZURITE_GEM, EUDIALYTE_GEM, ZIRCON_GEM);
+        appendToTag(Tags.Items.INGOTS, MANGANESE_INGOT, SHAKA_INGOT);
+
         // Add bamboo sticks to forge ore tag
         addItemsToTag(Tags.Items.RODS_WOODEN, TropicraftItems.BAMBOO_STICK);
         

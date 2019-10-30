@@ -62,7 +62,13 @@ public class TropicraftTags {
         public static final Tag<Item> MANGANESE_ORE = compatTag("ores/manganese");
         public static final Tag<Item> SHAKA_ORE = compatTag("ores/shaka");
         public static final Tag<Item> ZIRCON_ORE = compatTag("ores/zircon");
-
+        
+        public static final Tag<Item> AZURITE_GEM = compatTag("gems/azurite");
+        public static final Tag<Item> EUDIALYTE_GEM = compatTag("gems/eudialyte");
+        public static final Tag<Item> MANGANESE_INGOT = compatTag("ingots/manganese");
+        public static final Tag<Item> SHAKA_INGOT = compatTag("ingots/shaka");
+        public static final Tag<Item> ZIRCON_GEM = compatTag("gems/zircon");
+        
         public static final Tag<Item> SWORDS = compatTag("swords");
 
         public static final Tag<Item> SAND = modTag("sand");

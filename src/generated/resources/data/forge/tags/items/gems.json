@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:gems/azurite",
+    "#forge:gems/eudialyte",
+    "#forge:gems/zircon"
+  ]
+}
