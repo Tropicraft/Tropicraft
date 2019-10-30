@@ -16,6 +16,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropicraftLangProvider extends LanguageProvider {
@@ -220,7 +221,14 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         // Cocktails
         addItem(TropicraftItems.BAMBOO_MUG);
-        TropicraftItems.COCKTAILS.values().forEach(this::addItem);
+        // Override pina colada with proper spelling
+        TropicraftItems.COCKTAILS.forEach((d, c) -> {
+            if (d == Drink.PINA_COLADA) {
+                addItem(c, "Pi\u00F1a Colada");
+            } else {
+                addItem(c);
+            }
+        });
         
         // Trade items
         addItem(TropicraftItems.WHITE_PEARL);
@@ -291,12 +299,12 @@ public class TropicraftLangProvider extends LanguageProvider {
     // Automatic en_ud generation
 
     private static final String NORMAL_CHARS = 
-            /* lowercase */ "abcdefghijklmnopqrstuvwxyz" +
+            /* lowercase */ "abcdefghijklmn\u00F1opqrstuvwxyz" +
             /* uppercase */ "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
             /*  numbers  */ "0123456789" +
             /*  special  */ "_,;.?!/\\'";
     private static final String UPSIDE_DOWN_CHARS = 
-            /* lowercase */ "\u0250q\u0254p\u01DD\u025Fb\u0265\u0131\u0638\u029E\u05DF\u026Fuodb\u0279s\u0287n\u028C\u028Dx\u028Ez" +
+            /* lowercase */ "\u0250q\u0254p\u01DD\u025Fb\u0265\u0131\u0638\u029E\u05DF\u026Fuuodb\u0279s\u0287n\u028C\u028Dx\u028Ez" +
             /* uppercase */ "\u2C6F\u15FA\u0186\u15E1\u018E\u2132\u2141HI\u017F\u029E\uA780WNO\u0500\u1F49\u1D1AS\u27D8\u2229\u039BMX\u028EZ" +
             /*  numbers  */ "0\u0196\u1105\u0190\u3123\u03DB9\u312586" +
             /*  special  */ "\u203E'\u061B\u02D9\u00BF\u00A1/\\,";
