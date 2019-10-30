@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "tropicraft:chairs",
+  "pattern": [
+    "BWB",
+    "BWB",
+    "BWB"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:brown_wool"
+    },
+    "B": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  },
+  "result": {
+    "item": "tropicraft:brown_chair"
+  }
+}

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "tropicraft:umbrellas",
   "pattern": [
     "WWW",
     " B ",
@@ -10,7 +11,7 @@
       "item": "minecraft:brown_wool"
     },
     "B": {
-      "tag": "forge:rods/wooden"
+      "item": "tropicraft:bamboo_stick"
     }
   },
   "result": {

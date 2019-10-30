@@ -53,8 +53,17 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             IItemProvider wool = SheepEntity.WOOL_BY_COLOR.get(color);
             ShapedRecipeBuilder.shapedRecipe(UMBRELLAS.get(color).get())
                 .patternLine("WWW").patternLine(" B ").patternLine(" B ")
+                .setGroup(Constants.MODID + ":umbrellas")
                 .key('W', wool)
-                .key('B', Tags.Items.RODS_WOODEN)
+                .key('B', BAMBOO_STICK.get())
+                .addCriterion("has_" + color.getName() + "_wool", this.hasItem(wool))
+                .build(consumer);
+            
+            ShapedRecipeBuilder.shapedRecipe(CHAIRS.get(color).get())
+                .patternLine("BWB").patternLine("BWB").patternLine("BWB")
+                .setGroup(Constants.MODID + ":chairs")
+                .key('W', wool)
+                .key('B', BAMBOO_STICK.get())
                 .addCriterion("has_" + color.getName() + "_wool", this.hasItem(wool))
                 .build(consumer);
             
