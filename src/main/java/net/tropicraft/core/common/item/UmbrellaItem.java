@@ -20,7 +20,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 
 public class UmbrellaItem extends Item implements IColoredItem {
 
@@ -65,7 +65,7 @@ public class UmbrellaItem extends Item implements IColoredItem {
                     System.out.println("place");
                 }
 
-                final UmbrellaEntity umbrella = TropicraftEntities.UMBRELLA.get().create(world);
+                final FurnitureEntity umbrella = TropicraftEntities.UMBRELLA.get().create(world);
                 umbrella.moveToBlockPosAndAngles(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
                 umbrella.setMotion(Vec3d.ZERO);
                 umbrella.rotationYaw = placer.rotationYaw;

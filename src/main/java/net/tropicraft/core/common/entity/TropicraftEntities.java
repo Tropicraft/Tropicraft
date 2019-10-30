@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.entity;
 
+import java.util.function.Supplier;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -21,8 +23,6 @@ import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
-
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
@@ -95,8 +95,7 @@ public class TropicraftEntities {
                 .size(0.5F, 0.5F)
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new BambooItemFrame(BAMBOO_ITEM_FRAME.get(), world));
+                .setShouldReceiveVelocityUpdates(false);
     }
 
     private static EntityType.Builder<LavaBallEntity> lavaBall() {
@@ -104,8 +103,7 @@ public class TropicraftEntities {
                 .size(1.0F, 1.0F)
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(true)
-                .setCustomClientFactory(($, world) -> new LavaBallEntity(world));
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<WallItemEntity> wallItem() {
@@ -113,8 +111,7 @@ public class TropicraftEntities {
                 .size(0.5F, 0.5F)
                 .setTrackingRange(64)
                 .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new WallItemEntity(WALL_ITEM.get(), world));
+                .setShouldReceiveVelocityUpdates(false);
     }
 
     private static EntityType.Builder<EIHEntity> eih() {
@@ -138,17 +135,15 @@ public class TropicraftEntities {
                 .size(1.0F, 4.0F)
                 .setTrackingRange(120)
                 .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new UmbrellaEntity(world));
+                .setShouldReceiveVelocityUpdates(false);
     }
 
     private static EntityType.Builder<ChairEntity> chair() {
         return EntityType.Builder.<ChairEntity>create(ChairEntity::new, EntityClassification.MISC)
-                .size(1.0F, 4.0F)
+                .size(1.5F, 0.5F)
                 .setTrackingRange(120)
                 .setUpdateInterval(10)
-                .setShouldReceiveVelocityUpdates(false)
-                .setCustomClientFactory(($, world) -> new ChairEntity(world));
+                .setShouldReceiveVelocityUpdates(false);
     }
     
     private static EntityType.Builder<IguanaEntity> iguana() {

@@ -12,79 +12,34 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
-import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public class ChairEntity extends Entity {
+public class ChairEntity extends FurnitureEntity {
     // TODO add drips after being wet
     // TODO make it so monkies can sit in the chair ouo
-    
-    private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(ChairEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(ChairEntity.class, DataSerializers.FLOAT);
     private static final DataParameter<Byte> COMESAILAWAY = EntityDataManager.createKey(ChairEntity.class, DataSerializers.BYTE);
-    private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.createKey(ChairEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(ChairEntity.class, DataSerializers.VARINT);
-
+    
     /** Is any entity sitting in the chair? */
-    public boolean isChairEmpty;
-
-    private int chairPosRotationIncrements;
-    private double chairX;
-    private double chairY;
-    private double chairZ;
-    private double chairPitch;
-    private double chairYaw;
+    public boolean isChairEmpty = true;
 
     /** Acceleration */
-    private double speedMultiplier;
+    private double speedMultiplier = 0.1;
 
     public ChairEntity(EntityType<ChairEntity> type, World world) {
-        super(type, world);
-        this.ignoreFrustumCheck = true;
-        this.isChairEmpty = true;
-        this.speedMultiplier = 0.10D;
-        this.preventEntitySpawning = true;
-        this.entityCollisionReduction = .95F;
+        super(type, world, TropicraftItems.CHAIRS);
     }
 
-    public ChairEntity(World world) {
-        this(TropicraftEntities.CHAIR.get(), world);
-    }
-    
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
-    
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
-     */
-    @Override
-    @Nullable
-    public AxisAlignedBB getCollisionBox(Entity entityIn) {
-        return entityIn.getBoundingBox();
-    }
-
-    /**
-     * Returns the collision bounding box for this entity
-     */
     @Nullable
     @Override
     public AxisAlignedBB getCollisionBoundingBox() {
@@ -97,22 +52,10 @@ public class ChairEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-
-        if (this.getTimeSinceHit() > 0) {
-            this.setTimeSinceHit(this.getTimeSinceHit() - 1);
-        }
-
-        if (this.getDamage() > 0.0F) {
-            this.setDamage(this.getDamage() - 1.0F);
-        }
-
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
         byte b0 = 5;
         double d0 = 0.0D;
 
-        if (this.getComeSailAway())
+        if (this.getComeSailAway()) {
             for (int i = 0; i < b0; ++i) {
                 double d1 = this.getBoundingBox().minY + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double)(i + 0) / (double)b0 - 0.125D;
                 double d3 = this.getBoundingBox().minY + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double)(i + 1) / (double)b0 - 0.125D;
@@ -122,6 +65,7 @@ public class ChairEntity extends Entity {
                     d0 += 1.0D / (double)b0;
                 }
             }
+        }
 
         double d10 = Math.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
         double d2;
@@ -154,30 +98,7 @@ public class ChairEntity extends Entity {
         double d11;
         double d12;
 
-        if (this.world.isRemote && this.isChairEmpty) {
-            if (this.chairPosRotationIncrements > 0) {
-                d2 = this.posX + (this.chairX - this.posX) / (double)this.chairPosRotationIncrements;
-                d4 = this.posY + (this.chairY - this.posY) / (double)this.chairPosRotationIncrements;
-                d11 = this.posZ + (this.chairZ - this.posZ) / (double)this.chairPosRotationIncrements;
-                d12 = MathHelper.wrapDegrees(this.chairYaw - (double)this.rotationYaw);
-                this.rotationYaw = (float)((double)this.rotationYaw + d12 / (double)this.chairPosRotationIncrements);
-                this.rotationPitch = (float)((double)this.rotationPitch + (this.chairPitch - (double)this.rotationPitch) / (double)this.chairPosRotationIncrements);
-                --this.chairPosRotationIncrements;
-                this.setPosition(d2, d4, d11);
-                this.setRotation(this.rotationYaw, this.rotationPitch);
-            } else {
-                d2 = this.posX + getMotion().x;
-                d4 = this.posY + getMotion().y;
-                d11 = this.posZ + getMotion().z;
-                this.setPosition(d2, d4, d11);
-
-                if (this.onGround) {
-                    setMotion(getMotion().mul(0.5, 0.5, 0.5));
-                }
-
-                setMotion(getMotion().mul(0.9900000095367432D, 0.949999988079071D, 0.9900000095367432D));
-            }
-        } else {
+        if (!this.world.isRemote || this.getComeSailAway()) {
             if (d0 < 1.0D) {
                 d2 = d0 * 2.0D - 1.0D;
                 setMotion(getMotion().add(0, 0.03999999910593033D * d2, 0));
@@ -294,69 +215,34 @@ public class ChairEntity extends Entity {
                     this.removePassengers();
                 }
             }
+        } else {
+            this.move(MoverType.SELF, getMotion());
         }
+    }
+    
+    @Override
+    protected boolean preventMotion() {
+        return !getComeSailAway();
     }
 
     @Override
     protected void registerData() {
-        this.getDataManager().register(COLOR, DyeColor.WHITE.ordinal());
-        this.getDataManager().register(DAMAGE, new Float(0));
+        super.registerData();
         this.getDataManager().register(COMESAILAWAY, new Byte((byte)0));
-        this.getDataManager().register(FORWARD_DIRECTION, new Integer(1));
-        this.getDataManager().register(TIME_SINCE_HIT, new Integer(0));
     }
 
     @Override
     protected void readAdditional(CompoundNBT nbt) {
-        this.setColor(DyeColor.byId(nbt.getInt("COLOR")));
+        super.readAdditional(nbt);
         this.setComeSailAway(Boolean.valueOf(nbt.getBoolean("COME_SAIL_AWAY")));
     }
 
     @Override
     protected void writeAdditional(CompoundNBT nbt) {
-        nbt.putInt("COLOR", this.getColor().ordinal());
+        super.writeAdditional(nbt);
         nbt.putBoolean("COME_SAIL_AWAY", Boolean.valueOf(this.getComeSailAway()));
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
-    @Override
-    public boolean attackEntityFrom(DamageSource damageSource, float par2) {
-        if (this.isInvulnerableTo(damageSource)) {
-            return false;
-        }
-        else if (!this.world.isRemote && this.isAlive()) {
-            this.setForwardDirection(-this.getForwardDirection());
-            this.setTimeSinceHit(10);
-            this.setDamage(this.getDamage() + par2 * 10.0F);
-            this.markVelocityChanged();
-            boolean flag = damageSource.getTrueSource() instanceof PlayerEntity && ((PlayerEntity)damageSource.getTrueSource()).abilities.isCreativeMode;
-
-            if (flag || this.getDamage() > 40.0F) {
-                if (!flag) {
-                    this.entityDropItem(new ItemStack(TropicraftItems.CHAIRS.get(getColor()).get()), 0.0F);
-                }
-
-                this.remove();
-            }
-
-            return true;
-        } else {
-            return true;
-        }
-    }
-
-    /**
-     * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
-     */
-    @Override
-    public void performHurtAnimation() {
-        this.setForwardDirection(-this.getForwardDirection());
-        this.setTimeSinceHit(10);
-        this.setDamage(this.getDamage() * 11.0F);
-    }
-    
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
         if (!this.world.isRemote && !player.isSneaking()) {
@@ -368,43 +254,6 @@ public class ChairEntity extends Entity {
     }
 
     /**
-     * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
-     * posY, posZ, yaw, pitch
-     */
-//  @SideOnly(Side.CLIENT)
-//  @Override
-//  public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9)
-//  {
-//      if (this.isChairEmpty)
-//      {
-//          this.chairPosRotationIncrements = par9 + 5;
-//      }
-//      else
-//      {
-//          double d3 = par1 - this.posX;
-//          double d4 = par3 - this.posY;
-//          double d5 = par5 - this.posZ;
-//          double d6 = d3 * d3 + d4 * d4 + d5 * d5;
-//
-//          if (d6 <= 1.0D)
-//          {
-//              return;
-//          }
-//
-//          this.chairPosRotationIncrements = 3;
-//      }
-//
-//      this.chairX = par1;
-//      this.chairY = par3;
-//      this.chairZ = par5;
-//      this.chairYaw = (double)par7;
-//      this.chairPitch = (double)par8;
-//      this.motionX = this.velocityX;
-//      this.motionY = this.velocityY;
-//      this.motionZ = this.velocityZ;
-//  }
-
-    /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
     @Override
@@ -412,10 +261,6 @@ public class ChairEntity extends Entity {
         return isAlive();
     }
     
-    /**
-     * For vehicles, the first passenger is generally considered the controller and "drives" the vehicle. For example,
-     * Pigs, Horses, and Boats are generally "steered" by the controlling passenger.
-     */
     @Override
     @Nullable
     public Entity getControllingPassenger() {
@@ -423,21 +268,6 @@ public class ChairEntity extends Entity {
         return list.isEmpty() ? null : (Entity)list.get(0);
     }
 
-    /**
-     * Update rider position with x, y, and z offsets
-     */
-//  @Override
-//  public void updateRiderPosition() {
-//      if (this.getControllingPassenger() != null) {
-//          double xOffset = Math.cos((double)this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-//          double zOffset = Math.sin((double)this.rotationYaw * Math.PI / 180.0D) * 0.4D;
-//          this.getControllingPassenger().setPosition(this.posX + xOffset, this.posY + this.getMountedYOffset() + this..getControllingPassenger().getYOffset(), this.posZ + zOffset);
-//      }
-//  }
-
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
     @Override
     public double getMountedYOffset() {
         return 0.11;
@@ -451,124 +281,11 @@ public class ChairEntity extends Entity {
         }
     }
 
-    /**
-     * Given a player, get the angle that the chair should be at to face the player
-     * @param player
-     * @return The angle the chair should be at to face the players
-     */
-    private float getAngleToPlayer(PlayerEntity player) {
-        float angle = MathHelper.wrapDegrees(player.rotationYaw);
-        return angle;
-    }
-
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
-    @Override
-    public boolean canBePushed() {
-        return false;
-    }
-
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    @Override
-    protected boolean canTriggerWalking() {
-        return false;
-    }
-
-    /**
-     * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
-     * and deal fall damage if landing on the ground.  Args: distanceFallenThisTick, onGround
-     */
-//  @Override
-//  protected void updateFallState(double distanceFallenThisTick, boolean onGround) {
-//      int i = MathHelper.floor(this.posX);
-//      int j = MathHelper.floor(this.posY);
-//      int k = MathHelper.floor(this.posZ);
-//
-//      if (onGround) {
-//          if (this.fallDistance > 3.0F) {
-//              this.fall(this.fallDistance);
-//
-//              if (!this.world.isRemote && !this.isDead) {
-//                  this.setDead();
-//                  int l;
-//
-//                  for (l = 0; l < 3; ++l) {
-//                      this.entityDropItem(new ItemStack(Item.getItemFromBlock(Blocks.wool), 1, getDamageFromColor()), 0.0F);
-//                  }
-//
-//                  for (l = 0; l < rand.nextInt(5) + 1; ++l) {
-//                      this.dropItem(TCItemRegistry.bambooStick, 1);
-//                  }
-//              }
-//
-//              this.fallDistance = 0.0F;
-//          }
-//      }
-//      else if (this.world.getBlock(i, j - 1, k).getMaterial() != Material.water && distanceFallenThisTick < 0.0D)
-//      {
-//          this.fallDistance = (float)((double)this.fallDistance - distanceFallenThisTick);
-//      }
-//  }
-
-    public void setColor(DyeColor color) {
-        this.dataManager.set(COLOR, color.ordinal());
-    }
-
-    public DyeColor getColor() {
-        return DyeColor.byId(this.dataManager.get(COLOR));
-    }
-
     public void setComeSailAway(boolean sail) {
         this.dataManager.set(COMESAILAWAY, sail ? Byte.valueOf((byte)1) : Byte.valueOf((byte)0));
     }
 
     public boolean getComeSailAway() {
         return this.dataManager.get(COMESAILAWAY) == (byte)1;
-    }
-
-    /**
-     * Sets the forward direction of the entity.
-     */
-    public void setForwardDirection(int dir) {
-        this.dataManager.set(FORWARD_DIRECTION, Integer.valueOf(dir));
-    }
-
-    /**
-     * Gets the forward direction of the entity.
-     */
-    public int getForwardDirection() {
-        return ((Integer)this.dataManager.get(FORWARD_DIRECTION)).intValue();
-    }
-
-    /**
-     * Sets the damage taken from the last hit.
-     */
-    public void setDamage(float damageTaken) {
-        this.dataManager.set(DAMAGE, Float.valueOf(damageTaken));
-    }
-
-    /**
-     * Gets the damage taken from the last hit.
-     */
-    public float getDamage() {
-        return ((Float)this.dataManager.get(DAMAGE)).floatValue();
-    }
-
-    /**
-     * Sets the time to count down from since the last time entity was hit.
-     */
-    public void setTimeSinceHit(int timeSinceHit) {
-        this.dataManager.set(TIME_SINCE_HIT, Integer.valueOf(timeSinceHit));
-    }
-
-    /**
-     * Gets the time since the last hit.
-     */
-    public int getTimeSinceHit() {
-        return ((Integer)this.dataManager.get(TIME_SINCE_HIT)).intValue();
     }
 }
