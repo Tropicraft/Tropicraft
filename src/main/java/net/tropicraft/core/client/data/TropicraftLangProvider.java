@@ -43,17 +43,6 @@ public class TropicraftLangProvider extends LanguageProvider {
         this.upsideDown = new AccessibleLanguageProvider(gen, Constants.MODID, "en_ud");
     }
 
-    /**
-     * {
-  "block.tropicraft.chunk": "Chunk O' Head",
-  "block.tropicraft.azurite_ore": "Azurite Ore",
-  "block.tropicraft.acai_vine": "Acai Vine",
-  "block.tropicraft.bamboo_bundle": "Bamboo Bundle",
-  "block.tropicraft.thatch_bundle": "Thatch Bundle",
-  "item.tropicraft.shell.owned.normal": "\s's Shell",
-  "item.tropicraft.shell.owned.with_s": "\s' Shell"
-}
-     */
     @Override
     protected void addTranslations() {
         // BLOCKS
