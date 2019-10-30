@@ -69,6 +69,8 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         
         simpleBlock(TropicraftBlocks.AZURITE_BLOCK);
         simpleBlock(TropicraftBlocks.EUDIALYTE_BLOCK);
+        simpleBlock(TropicraftBlocks.MANGANESE_BLOCK);
+        simpleBlock(TropicraftBlocks.SHAKA_BLOCK);
         simpleBlock(TropicraftBlocks.ZIRCON_BLOCK);
         
         // All flowers

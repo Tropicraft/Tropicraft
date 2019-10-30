@@ -68,11 +68,15 @@ public class TropicraftBlocks {
             "zircon_ore", Builder.ore(MaterialColor.GRAY));
 
     public static final RegistryObject<Block> AZURITE_BLOCK = register(
-            "azurite_block", Builder.oreBlock(MaterialColor.GRAY));
+            "azurite_block", Builder.oreBlock(MaterialColor.LIGHT_BLUE));
     public static final RegistryObject<Block> EUDIALYTE_BLOCK = register(
-            "eudialyte_block", Builder.oreBlock(MaterialColor.GRAY));
+            "eudialyte_block", Builder.oreBlock(MaterialColor.PINK));
+    public static final RegistryObject<Block> MANGANESE_BLOCK = register(
+            "manganese_block", Builder.oreBlock(MaterialColor.PURPLE));
+    public static final RegistryObject<Block> SHAKA_BLOCK = register(
+            "shaka_block", Builder.oreBlock(MaterialColor.BLUE));
     public static final RegistryObject<Block> ZIRCON_BLOCK = register(
-            "zircon_block", Builder.oreBlock(MaterialColor.GRAY));
+            "zircon_block", Builder.oreBlock(MaterialColor.RED));
     
     public static final Map<TropicraftFlower, RegistryObject<FlowerBlock>> FLOWERS = Arrays.<TropicraftFlower>stream(TropicraftFlower.values())
             .collect(Collectors.toMap(Function.identity(), f -> register(f.getId(), Builder.flower(f)),
