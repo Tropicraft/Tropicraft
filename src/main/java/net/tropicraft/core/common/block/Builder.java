@@ -48,12 +48,12 @@ public class Builder {
         return () -> ctor.apply(properties.get());
     }
     
-    public static Supplier<BlockTropicraftOre> ore(MaterialColor color) {
-        return block(BlockTropicraftOre::new, prop(Material.ROCK, color).hardnessAndResistance(3.0F, 3.0F));
+    public static Supplier<Block> ore(MaterialColor color) {
+        return block(prop(Material.ROCK, color).hardnessAndResistance(3.0F, 3.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2));
     }
     
-    public static Supplier<BlockTropicraftOreBlock> oreBlock(MaterialColor color) {
-        return block(BlockTropicraftOreBlock::new, prop(Material.IRON, color).sound(SoundType.METAL).hardnessAndResistance(5.0F, 6.0F));
+    public static Supplier<Block> oreBlock(MaterialColor color) {
+        return block(prop(Material.IRON, color).sound(SoundType.METAL).hardnessAndResistance(5.0F, 6.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2));
     }
     
     public static Supplier<TropicsFlowerBlock> flower(TropicraftFlower type) {
