@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
+import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
@@ -50,6 +51,12 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         ore(TropicraftTags.Items.MANGANESE_ORE, MANGANESE, 0.5F, consumer);
         ore(TropicraftTags.Items.SHAKA_ORE, SHAKA, 0.7F, consumer);
         
+        storage(AZURITE, AZURITE_BLOCK, consumer);
+        storage(EUDIALYTE, EUDIALYTE_BLOCK, consumer);
+        storage(ZIRCON, ZIRCON_BLOCK, consumer);
+        storage(MANGANESE, MANGANESE_BLOCK, consumer);
+        storage(SHAKA, SHAKA_BLOCK, consumer);
+
         for (DyeColor color : DyeColor.values()) {
             IItemProvider wool = SheepEntity.WOOL_BY_COLOR.get(color);
             ShapedRecipeBuilder.shapedRecipe(UMBRELLAS.get(color).get())
@@ -265,6 +272,19 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(source.get()), result.get(), xp, 100, IRecipeSerializer.CAMPFIRE_COOKING)
             .addCriterion("has_" + safeName(source.get().getRegistryName()), this.hasItem(source.get()))
             .build(consumer, safeId(result.get()) + "_from_campfire");
+    }
+    
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void storage(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+            .patternLine("XXX").patternLine("XXX").patternLine("XXX")
+            .key('X', input.get())
+            .addCriterion("has_at_least_9_" + safeName(input.get()), this.hasItem(MinMaxBounds.IntBound.atLeast(9), input.get()))
+            .build(consumer);
+        
+        ShapelessRecipeBuilder.shapelessRecipe(input.get(), 9)
+            .addIngredient(output.get())
+            .addCriterion("has_" + safeName(output.get()), this.hasItem(output.get()))
+            .build(consumer, safeId(input.get()) + "_from_" + safeName(output.get()));
     }
 
     @CheckReturnValue
