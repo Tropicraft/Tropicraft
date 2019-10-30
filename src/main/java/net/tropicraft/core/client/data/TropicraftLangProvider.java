@@ -58,6 +58,8 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.AZURITE_BLOCK);
         addBlock(TropicraftBlocks.EUDIALYTE_BLOCK);
+        addBlock(TropicraftBlocks.MANGANESE_BLOCK);
+        addBlock(TropicraftBlocks.SHAKA_BLOCK);
         addBlock(TropicraftBlocks.ZIRCON_BLOCK);
 
         // All flowers
