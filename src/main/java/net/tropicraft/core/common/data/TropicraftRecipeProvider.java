@@ -34,6 +34,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.drinks.Drink;
 
 public class TropicraftRecipeProvider extends RecipeProvider {
 
@@ -219,6 +220,13 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .patternLine("# #").patternLine(" # ")
             .key('#', Items.BAMBOO)
             .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
+            .build(consumer);
+        
+        ShapelessRecipeBuilder.shapelessRecipe(COCKTAILS.get(Drink.PINA_COLADA).get())
+            .addIngredient(BAMBOO_MUG.get())
+            .addIngredient(COCONUT_CHUNK.get())
+            .addIngredient(PINEAPPLE_CUBES.get())
+            .addCriterion("has_bamboo_mug", this.hasItem(BAMBOO_MUG.get()))
             .build(consumer);
     }
     
