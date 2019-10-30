@@ -46,6 +46,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         blockItem(TropicraftBlocks.AZURITE_BLOCK);
         blockItem(TropicraftBlocks.EUDIALYTE_BLOCK);
+        blockItem(TropicraftBlocks.MANGANESE_BLOCK);
+        blockItem(TropicraftBlocks.SHAKA_BLOCK);
         blockItem(TropicraftBlocks.ZIRCON_BLOCK);
         
         // All flowers
