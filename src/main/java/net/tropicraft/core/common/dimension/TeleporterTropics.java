@@ -10,12 +10,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.pattern.BlockPattern.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ColumnPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.server.ServerWorld;
@@ -39,8 +41,8 @@ public class TeleporterTropics extends Teleporter {
     private final Random random;
 
     /** Stores successful portal placement locations for rapid lookup. */
-    private final Long2ObjectMap<PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap(4096);
-    private final Object2LongMap<ColumnPos> columnPosCache = new Object2LongOpenHashMap();
+    private final Long2ObjectMap<PortalPosition> destinationCoordinateCache = new Long2ObjectOpenHashMap<>(4096);
+    private final Object2LongMap<ColumnPos> columnPosCache = new Object2LongOpenHashMap<>();
 
     static class PortalPosition {
         final BlockPos pos;
@@ -56,30 +58,30 @@ public class TeleporterTropics extends Teleporter {
      * A list of valid keys for the destinationCoordainteCache. These are based on the X & Z of the players initial
      * location.
      */
-    private final List destinationCoordinateKeys = new ArrayList();
+    private final List<?> destinationCoordinateKeys = new ArrayList<>();
 
     public TeleporterTropics(ServerWorld world) {
         super(world);
         PORTAL_BLOCK = Blocks.WATER; // todo tropics portal
-        TELEPORTER_BLOCK = Blocks.WATER; // todo tropics portal teleporter block
+        TELEPORTER_BLOCK = TropicraftBlocks.PORTAL_WATER.get();
         PORTAL_WALL_BLOCK = Blocks.SANDSTONE; // todo tropics portal wall
         this.world = world;
         this.random = new Random(world.getSeed());
     }
 
-    public boolean moveEntityToPortal(Entity entity, float yaw) {
-        long startTime = System.currentTimeMillis();
-        if (!placeInExistingPortal(entity, yaw)) {
-            makePortal(entity);
-            placeInExistingPortal(entity, yaw);
-        }
-
-        long finishTime = System.currentTimeMillis();
-
-        System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0F);
-
-        return true;
-    }
+//    public boolean moveEntityToPortal(Entity entity, float yaw) {
+//        long startTime = System.currentTimeMillis();
+//        if (!placeInExistingPortal(entity, yaw)) {
+//            makePortal(entity);
+//            placeInExistingPortal(entity, yaw);
+//        }
+//
+//        long finishTime = System.currentTimeMillis();
+//
+//        System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0F);
+//
+//        return true;
+//    }
 
     // TODO uh, yeah. need this later at some point.
 //    @Override
@@ -88,15 +90,21 @@ public class TeleporterTropics extends Teleporter {
 //
 //    }
 
-    // moveEntityToPortal in Teleporter
-    public boolean placeInExistingPortal(final Entity entity, final float yaw) {
+    @Override
+    public boolean placeInPortal(Entity p_222268_1_, float p_222268_2_) {
+        // TODO Auto-generated method stub
+        return super.placeInPortal(p_222268_1_, p_222268_2_);
+    }
+    
+    @Override
+    public PortalInfo placeInExistingPortal(BlockPos p_222272_1_, Vec3d p_222272_2_, Direction directionIn, double posX, double posZ, boolean isPlayer) {
         int searchArea = 148;
         double closestPortal = -1D;
         int foundX = 0;
         int foundY = 0;
         int foundZ = 0;
-        int entityX = MathHelper.floor(entity.posX);
-        int entityZ = MathHelper.floor(entity.posZ);
+        int entityX = MathHelper.floor(posX);
+        int entityZ = MathHelper.floor(posZ);
         BlockPos blockpos = BlockPos.ZERO;
         boolean notInCache = true;
 
@@ -112,11 +120,11 @@ public class TeleporterTropics extends Teleporter {
         } else {
             for (int x = entityX - searchArea; x <= entityX + searchArea; x ++)
             {
-                double distX = x + 0.5D - entity.posX;
+                double distX = x + 0.5D - posX;
 
                 for (int z = entityZ - searchArea; z <= entityZ + searchArea; z ++)
                 {
-                    double distZ = z + 0.5D - entity.posZ;
+                    double distZ = z + 0.5D - posZ;
 
                     for (int y = world.getActualHeight() - 1; y >= 0; y--)
                     {
@@ -130,7 +138,7 @@ public class TeleporterTropics extends Teleporter {
                                 pos = pos.down();
                             }
 
-                            double distY = y + 0.5D - entity.posY;
+                            double distY = y + 0.5D - p_222272_1_.getY();
                             double distance = distX * distX + distY * distY + distZ * distZ;
                             if (closestPortal < 0.0D || distance < closestPortal)
                             {
@@ -178,12 +186,12 @@ public class TeleporterTropics extends Teleporter {
             {
                 newLocZ += 0.5D;
             }
-            entity.setLocationAndAngles(newLocX, newLocY + 2, newLocZ, entity.rotationYaw, 0.0F);
-            int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-            int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
-            int worldSpawnY = foundY + 5; // Move to top of portal
-
-            entity.setMotion(0, 0, 0);
+//            entity.setLocationAndAngles();
+//            int worldSpawnX = MathHelper.floor(newLocX);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+//            int worldSpawnZ = MathHelper.floor(newLocZ);//TODO + ((new Random()).nextBoolean() ? 3 : -3);
+//            int worldSpawnY = foundY + 5; // Move to top of portal
+//
+//            entity.setMotion(0, 0, 0);
 
             // If the player is entering the tropics, spawn an Encyclopedia Tropica
             // in the spawn portal chest (if they don't already have one AND one isn't
@@ -239,9 +247,9 @@ public class TeleporterTropics extends Teleporter {
  //               }
   //          }
 
-            return true;
+            return new PortalInfo(new Vec3d(newLocX, newLocY + 2, newLocZ), p_222272_2_, directionIn.getHorizontalIndex());
         } else {
-            return false;
+            return null;
         }
     }
 

@@ -34,6 +34,9 @@ public class TropicraftBlocks {
     
     public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, Constants.MODID);
     public static final DeferredRegister<Item> ITEMS = TropicraftItems.ITEMS;
+    
+    public static final RegistryObject<PortalWaterBlock> PORTAL_WATER = registerNoItem(
+            "portal_water", () -> new PortalWaterBlock(Block.Properties.create(Material.WATER).noDrops()));
 
     public static final RegistryObject<Block> CHUNK = register(
             "chunk", Builder.block(Block.Properties.create(Material.ROCK, MaterialColor.BLACK).hardnessAndResistance(6.0F, 30F)));

@@ -14,6 +14,7 @@ import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
@@ -32,6 +33,7 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<TropiCreeperEntity>> TROPI_CREEPER = register("tropicreeper", TropicraftEntities::tropicreeper);
     public static final RegistryObject<EntityType<IguanaEntity>> IGUANA = register("iguana", TropicraftEntities::iguana);
     public static final RegistryObject<EntityType<UmbrellaEntity>> UMBRELLA = register("umbrella", TropicraftEntities::umbrella);
+    public static final RegistryObject<EntityType<ChairEntity>> CHAIR = register("chair", TropicraftEntities::chair);
     public static final RegistryObject<EntityType<TropiSkellyEntity>> TROPI_SKELLY = register("tropiskelly", TropicraftEntities::tropiskelly);
     public static final RegistryObject<EntityType<EIHEntity>> EIH = register("eih", TropicraftEntities::eih);
     public static final RegistryObject<EntityType<WallItemEntity>> WALL_ITEM = register("wall_item", TropicraftEntities::wallItem);
@@ -140,6 +142,15 @@ public class TropicraftEntities {
                 .setCustomClientFactory(($, world) -> new UmbrellaEntity(world));
     }
 
+    private static EntityType.Builder<ChairEntity> chair() {
+        return EntityType.Builder.<ChairEntity>create(ChairEntity::new, EntityClassification.MISC)
+                .size(1.0F, 4.0F)
+                .setTrackingRange(120)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(false)
+                .setCustomClientFactory(($, world) -> new ChairEntity(world));
+    }
+    
     private static EntityType.Builder<IguanaEntity> iguana() {
         return EntityType.Builder.create(IguanaEntity::new, EntityClassification.CREATURE)
                 .size(1.0F, 0.4F)

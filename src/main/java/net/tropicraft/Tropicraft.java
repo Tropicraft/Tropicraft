@@ -1,6 +1,9 @@
 package net.tropicraft;
 
+import java.util.function.Supplier;
+
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -29,7 +32,20 @@ import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
 import net.tropicraft.core.client.data.TropicraftItemModelProvider;
 import net.tropicraft.core.client.data.TropicraftLangProvider;
-import net.tropicraft.core.client.entity.render.*;
+import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
+import net.tropicraft.core.client.entity.render.ChairRenderer;
+import net.tropicraft.core.client.entity.render.EIHRenderer;
+import net.tropicraft.core.client.entity.render.FailgullRenderer;
+import net.tropicraft.core.client.entity.render.IguanaRenderer;
+import net.tropicraft.core.client.entity.render.MarlinRenderer;
+import net.tropicraft.core.client.entity.render.RenderKoaMan;
+import net.tropicraft.core.client.entity.render.RenderSeaTurtle;
+import net.tropicraft.core.client.entity.render.RenderWallItemEntity;
+import net.tropicraft.core.client.entity.render.SeahorseRenderer;
+import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
+import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
+import net.tropicraft.core.client.entity.render.TropicraftDolphinRenderer;
+import net.tropicraft.core.client.entity.render.UmbrellaRenderer;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
 import net.tropicraft.core.client.tileentity.SifterRenderer;
@@ -59,17 +75,17 @@ import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.item.ChairItem;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.UmbrellaItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
-
-import java.util.function.Supplier;
 
 @Mod(Constants.MODID)
 public class Tropicraft {
@@ -131,6 +147,7 @@ public class Tropicraft {
         RenderingRegistry.registerEntityRenderingHandler(TropiCreeperEntity.class, TropiCreeperRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(IguanaEntity.class, IguanaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(UmbrellaEntity.class, UmbrellaRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ChairEntity.class, ChairRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiSkellyEntity.class, TropiSkellyRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(WallItemEntity.class, RenderWallItemEntity::new);
@@ -149,6 +166,9 @@ public class Tropicraft {
     @OnlyIn(Dist.CLIENT)
     private void registerItemColors(ColorHandlerEvent.Item evt) {
         for (final Supplier<UmbrellaItem> item : TropicraftItems.UMBRELLAS.values()) {
+            evt.getItemColors().register(new BasicColorHandler(), item.get());
+        }
+        for (final Supplier<ChairItem> item : TropicraftItems.CHAIRS.values()) {
             evt.getItemColors().register(new BasicColorHandler(), item.get());
         }
         for (final Supplier<CocktailItem> item : TropicraftItems.COCKTAILS.values()) {

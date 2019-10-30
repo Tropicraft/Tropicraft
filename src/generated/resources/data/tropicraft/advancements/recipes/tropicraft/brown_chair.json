@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:brown_chair"
+    ]
+  },
+  "criteria": {
+    "has_brown_wool": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:brown_wool"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:brown_chair"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brown_wool",
+      "has_the_recipe"
+    ]
+  ]
+}

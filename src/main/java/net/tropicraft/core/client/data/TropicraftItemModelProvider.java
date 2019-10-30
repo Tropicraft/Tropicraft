@@ -14,6 +14,7 @@ import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.item.ChairItem;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.UmbrellaItem;
@@ -165,12 +166,20 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.SHAKA);
         generated(TropicraftItems.MANGANESE);
         
+        // TODO dedupe
         // All Umbrellas
         ModelFile umbrella = getBuilder("umbrella").parent(new UncheckedModelFile("item/generated"))
             .texture("layer0", modLoc(folder + "/umbrella"))
             .texture("layer1", modLoc(folder + "/umbrella_inverted"));
         for (RegistryObject<UmbrellaItem> umbrellaItem : TropicraftItems.UMBRELLAS.values()) {
             getBuilder(name(umbrellaItem)).parent(umbrella);
+        }
+        // All chairs
+        ModelFile chair = getBuilder("chair").parent(new UncheckedModelFile("item/generated"))
+            .texture("layer0", modLoc(folder + "/chair"))
+            .texture("layer1", modLoc(folder + "/chair_inverted"));
+        for (RegistryObject<ChairItem> chairItem : TropicraftItems.CHAIRS.values()) {
+            getBuilder(name(chairItem)).parent(chair);
         }
         
         // Bamboo Items
