@@ -153,7 +153,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         generated(TropicraftBlocks.BAMBOO_FLOWER_POT);
         
-        generated(TropicraftBlocks.WATER_BARRIER, mcLoc("item/barrier"));
+        generated(TropicraftBlocks.WATER_BARRIER, mcLoc("block/water_still"), mcLoc("item/barrier"));
         
         generated(TropicraftItems.BAMBOO_ITEM_FRAME);
         
@@ -279,8 +279,12 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         return generated(item, itemTexture(item));
     }
 
-    private ItemModelBuilder generated(Supplier<? extends IItemProvider> item, ResourceLocation texture) {
-        return getBuilder(name(item)).parent(new UncheckedModelFile("item/generated")).texture("layer0", texture);
+    private ItemModelBuilder generated(Supplier<? extends IItemProvider> item, ResourceLocation... layers) {
+        ItemModelBuilder ret = getBuilder(name(item)).parent(new UncheckedModelFile("item/generated"));
+        for (int i = 0; i < layers.length; i++) {
+            ret = ret.texture("layer" + i, layers[i]);
+        }
+        return ret;
     }
     
     private ItemModelBuilder handheld(Supplier<? extends IItemProvider> item) {

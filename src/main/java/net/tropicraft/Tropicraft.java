@@ -7,8 +7,10 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -176,6 +178,7 @@ public class Tropicraft {
         }
 
         evt.getItemColors().register(new BasicColorHandler(), TropicraftItems.LOVE_TROPICS_SHELL::get);
+        evt.getItemColors().register((stack, index) -> index == 0 ? Fluids.WATER.getAttributes().getColor() : -1, TropicraftBlocks.WATER_BARRIER.get());
     }
     
     private void setup(final FMLCommonSetupEvent event) {
