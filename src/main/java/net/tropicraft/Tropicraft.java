@@ -8,6 +8,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -173,6 +174,7 @@ public class Tropicraft {
                 evt.getItemColors().register(basic, item);
             }
         }
+        evt.getItemColors().register((stack, index) -> index == 0 ? Fluids.WATER.getAttributes().getColor() : -1, TropicraftBlocks.WATER_BARRIER.get());
     }
     
     private void setup(final FMLCommonSetupEvent event) {
