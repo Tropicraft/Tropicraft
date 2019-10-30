@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tropicraft:eudialyte_block"
+    }
+  ],
+  "result": {
+    "item": "tropicraft:eudialyte_gem",
+    "count": 9
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:eudialyte_gem"
+    }
+  },
+  "result": {
+    "item": "tropicraft:eudialyte_block"
+  }
+}
