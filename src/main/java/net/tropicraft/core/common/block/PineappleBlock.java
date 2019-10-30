@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.Random;
 
@@ -63,7 +64,6 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
 
     @Override
     public void tick(final BlockState state, final World world, final BlockPos pos, final Random random) {
-        checkFlowerChange(world, pos, state);
         if (pos.getY() > world.getHeight() - 2) {
             return;
         }
@@ -75,45 +75,15 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
             if (growth >= TOTAL_GROW_TICKS - 1) {
                 // Set current state
                 BlockState growthState = state.with(STAGE, TOTAL_GROW_TICKS);
-                world.setBlockState(pos, growthState, 4);
+                world.setBlockState(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
 
                 // Place actual pineapple plant above stem
-                BlockState fullGrowth = state.with(HALF, DoubleBlockHalf.UPPER);
-                world.setBlockState(pos.up(), fullGrowth, 3);
+                BlockState fullGrowth = growthState.with(HALF, DoubleBlockHalf.UPPER);
+                world.setBlockState(pos.up(), fullGrowth, Constants.BlockFlags.DEFAULT);
             } else {
                 BlockState growthState = state.with(STAGE, growth + 1);
-                world.setBlockState(pos, growthState, 4);
+                world.setBlockState(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
             }
-        }
-    }
-
-    private boolean isFullyGrown(BlockState state) {
-        return state.get(STAGE) == TOTAL_GROW_TICKS || state.get(HALF) == DoubleBlockHalf.UPPER;
-    }
-
-    @Deprecated
-    public void neighborChanged(BlockState state, World world, BlockPos pos1, Block block, BlockPos pos2, boolean b) {
-        super.neighborChanged(state, world, pos1, block, pos2, b);
-
-        checkForDrop(world, pos1, state);
-    }
-
-    protected final boolean checkForDrop(World world, BlockPos pos, BlockState state) {
-        if (canBlockStay(world, pos, state)) {
-            return true;
-        } else {
-            spawnDrops(state, world, pos);
-            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
-            return false;
-        }
-    }
-
-    protected void checkFlowerChange(World world, BlockPos pos, BlockState state) {
-        if (!world.isRemote && !canBlockStay(world, pos, state)) {
-            if (isFullyGrown(state)) {
-                spawnDrops(state, world, pos);
-            }
-            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
         }
     }
 
