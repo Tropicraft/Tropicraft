@@ -63,6 +63,8 @@ public class TropicraftTags {
         public static final Tag<Item> SHAKA_ORE = compatTag("ores/shaka");
         public static final Tag<Item> ZIRCON_ORE = compatTag("ores/zircon");
 
+        public static final Tag<Item> SWORDS = compatTag("swords");
+
         public static final Tag<Item> SAND = modTag("sand");
 
         public static final Tag<Item> SAPLINGS = modTag("saplings");

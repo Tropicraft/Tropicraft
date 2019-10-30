@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.DoublePlantBlock;
@@ -31,11 +32,15 @@ import net.minecraft.world.storage.loot.LootParameterSet;
 import net.minecraft.world.storage.loot.LootParameterSets;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTable.Builder;
 import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.ValidationResults;
-import net.minecraft.world.storage.loot.LootTable.Builder;
+import net.minecraft.world.storage.loot.conditions.BlockStateProperty;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.world.storage.loot.conditions.MatchTool;
 import net.minecraft.world.storage.loot.conditions.TableBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -161,7 +166,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             
             // Misc remaining blocks
             doubleBlock(TropicraftBlocks.IRIS);
-            registerLootTable(TropicraftBlocks.PINEAPPLE.get(), b -> droppingWhen(b, DoublePlantBlock.HALF, DoubleBlockHalf.UPPER));
+            registerLootTable(TropicraftBlocks.PINEAPPLE.get(), b -> droppingChunks(b, TropicraftItems.PINEAPPLE_CUBES,
+                    BlockStateProperty.builder(b).with(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)));
             
             dropsSelf(TropicraftBlocks.SMALL_BONGO_DRUM);
             dropsSelf(TropicraftBlocks.MEDIUM_BONGO_DRUM);
@@ -175,7 +181,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                         
             registerLootTable(TropicraftBlocks.TIKI_TORCH.get(), b -> droppingWhen(b, TikiTorchBlock.SECTION, TikiTorchBlock.TorchSection.UPPER));
             
-            dropsSelf(TropicraftBlocks.COCONUT);
+            registerLootTable(TropicraftBlocks.COCONUT.get(), b -> droppingChunks(b, TropicraftItems.COCONUT_CHUNK));
             
             dropsSelf(TropicraftBlocks.BAMBOO_FLOWER_POT);
             TropicraftBlocks.ALL_POTTED_PLANTS.forEach(ro -> registerLootTable(ro.get(), b -> droppingFlowerPotAndFlower((FlowerPotBlock) b)));
@@ -237,6 +243,21 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                     .addLootPool(withSurvivesExplosion(fullPot.func_220276_d(), LootPool.builder()
                             .rolls(ConstantRange.of(1))
                             .addEntry(ItemLootEntry.builder(fullPot.func_220276_d()))));
+        }
+        
+        private static LootPool.Builder droppingChunksPool(Block block, Supplier<? extends IItemProvider> chunk) {
+            return LootPool.builder().addEntry(ItemLootEntry.builder(chunk.get())
+                    .acceptCondition(MatchTool.builder(ItemPredicate.Builder.create().tag(TropicraftTags.Items.SWORDS)))
+                    .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 4.0F)))
+                    .alternatively(withSurvivesExplosion(block, ItemLootEntry.builder(block))));
+        }
+        
+        protected static LootTable.Builder droppingChunks(Block block, Supplier<? extends IItemProvider> chunk) {
+            return LootTable.builder().addLootPool(droppingChunksPool(block, chunk));
+        }
+        
+        protected static LootTable.Builder droppingChunks(Block block, Supplier<? extends IItemProvider> chunk, ILootCondition.IBuilder condition) {
+            return LootTable.builder().addLootPool(droppingChunksPool(block, chunk).acceptCondition(condition));
         }
         
         @Override
