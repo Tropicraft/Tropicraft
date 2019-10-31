@@ -1,0 +1,57 @@
+name: Tropicraft Build
+on: [push]
+jobs:
+  oracleJDK:
+    name: Oracle JDK 1.8
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pull repository
+      uses: actions/checkout@v1
+    - name: Setup build environment
+      id: init
+      run: |
+        echo "##[set-output name=sha8;]$(echo ${GITHUB_SHA:0:8})"
+        echo "##[set-output name=pwd;]$(pwd)"
+        sed -i "/mod_version/s/\$/+${GITHUB_SHA:0:8}/" gradle.properties
+        cat gradle.properties
+    - name: Set up Oracle JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: Prepare jarfile
+      run: |
+        rm ./build/libs/*sources*.jar
+        mv ./build/libs/*.jar ./Tropicraft-${GITHUB_SHA:0:8}.jar
+    - name: Upload jarfile
+      uses: actions/upload-artifact@v1
+      with:
+        name: Tropicraft-${{ steps.init.outputs.sha8 }}
+        path: ${{ steps.init.outputs.pwd }}/Tropicraft-${{ steps.init.outputs.sha8 }}.jar
+  openJDK:
+    name: OpenJDK 1.8
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pull repository
+      uses: actions/checkout@v1
+    - name: Setup build environment
+      id: init
+      run: |
+        echo "##[set-output name=sha8;]$(echo ${GITHUB_SHA:0:8})"
+        echo "##[set-output name=pwd;]$(pwd)"
+        sed -i "/mod_version/s/\$/+${GITHUB_SHA:0:8}/" gradle.properties
+        cat gradle.properties
+    - name: Set up OpenJDK 1.8
+      run: sudo apt-get -y install openjdk-8-jdk openjdk-8-jre-headless
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: Prepare jarfile
+      run: |
+        rm ./build/libs/*sources*.jar
+        mv ./build/libs/*.jar ./Tropicraft-${GITHUB_SHA:0:8}.jar
+    - name: Upload jarfile
+      uses: actions/upload-artifact@v1
+      with:
+        name: Tropicraft-${{ steps.init.outputs.sha8 }}
+        path: ${{ steps.init.outputs.pwd }}/Tropicraft-${{ steps.init.outputs.sha8 }}.jar
