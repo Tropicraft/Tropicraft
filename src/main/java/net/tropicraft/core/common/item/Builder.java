@@ -3,12 +3,18 @@ package net.tropicraft.core.common.item;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
+import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 
 public class Builder {
     
@@ -31,17 +37,21 @@ public class Builder {
     private static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Supplier<Item.Properties> properties) {
         return () -> ctor.apply(properties.get());
     }
+    
+    private static <T extends FurnitureEntity> Supplier<FurnitureItem<T>> furniture(Supplier<EntityType<T>> type, DyeColor color) {
+        return item(p -> new FurnitureItem<>(p, type, color));
+    }
 
-    public static Supplier<UmbrellaItem> umbrella(final DyeColor color) {
-        return item(p -> new UmbrellaItem(p, color));
+    public static Supplier<FurnitureItem<UmbrellaEntity>> umbrella(final DyeColor color) {
+        return furniture(TropicraftEntities.UMBRELLA, color);
     }
     
-    public static Supplier<ChairItem> chair(final DyeColor color) {
-        return item(p -> new ChairItem(p, color));
+    public static Supplier<FurnitureItem<ChairEntity>> chair(final DyeColor color) {
+        return furniture(TropicraftEntities.CHAIR, color);
     }
     
-    public static Supplier<BeachFloatItem> beachFloat(final DyeColor color) {
-        return item(p -> new BeachFloatItem(p, color));
+    public static Supplier<FurnitureItem<BeachFloatEntity>> beachFloat(final DyeColor color) {
+        return furniture(TropicraftEntities.BEACH_FLOAT, color);
     }
 
     public static Supplier<Item> shell() {

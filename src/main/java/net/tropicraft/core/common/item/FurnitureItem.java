@@ -2,8 +2,10 @@ package net.tropicraft.core.common.item;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
@@ -19,15 +21,16 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 
-public class BeachFloatItem extends Item implements IColoredItem {
+public class FurnitureItem<T extends FurnitureEntity> extends Item implements IColoredItem {
 
+    private final Supplier<? extends EntityType<T>> entityType;
     private final DyeColor color;
 
-    public BeachFloatItem(final Properties properties, final DyeColor color) {
+    public FurnitureItem(final Properties properties, final Supplier<? extends EntityType<T>> entityType, final DyeColor color) {
         super(properties);
+        this.entityType = entityType;
         this.color = color;
     }
 
@@ -61,17 +64,17 @@ public class BeachFloatItem extends Item implements IColoredItem {
             if (rayTraceResult.getType() == net.minecraft.util.math.RayTraceResult.Type.BLOCK) {
                 Vec3d hitVec = rayTraceResult.getHitVec();
 
-                final BeachFloatEntity beachFloat = TropicraftEntities.BEACH_FLOAT.get().create(world);
-                beachFloat.moveToBlockPosAndAngles(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
-                beachFloat.setMotion(Vec3d.ZERO);
-                beachFloat.setRotation(placer.rotationYaw + 180);
-                beachFloat.setColor(this.color);
+                final T entity = this.entityType.get().create(world);
+                entity.moveToBlockPosAndAngles(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
+                entity.setMotion(Vec3d.ZERO);
+                entity.setRotation(placer.rotationYaw + 180);
+                entity.setColor(this.color);
 
-                if (!world.isCollisionBoxesEmpty(beachFloat, beachFloat.getBoundingBox().grow(-0.1D))) {
+                if (!world.isCollisionBoxesEmpty(entity, entity.getBoundingBox().grow(-0.1D))) {
                     return new ActionResult<>(ActionResultType.FAIL, heldItem);
                 } else {
                     if (!world.isRemote) {
-                        world.addEntity(beachFloat);
+                        world.addEntity(entity);
                     }
 
                     if (!placer.abilities.isCreativeMode) {

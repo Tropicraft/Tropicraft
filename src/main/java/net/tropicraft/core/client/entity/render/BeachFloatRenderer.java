@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.tropicraft.core.client.entity.model.BeachFloatModel;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 
 public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
 
@@ -23,6 +24,11 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
     @Override
     protected double getYOffset() {
         return super.getYOffset() + 1.2;
+    }
+    
+    @Override
+    protected void setupTransforms() {
+        GlStateManager.rotatef(-180f, 0, 1, 0);
     }
     
     @Override
@@ -39,7 +45,7 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
         PlayerEntity p = event.getPlayer();
         Entity riding = p.getRidingEntity();
         if (riding instanceof BeachFloatEntity) {
-            BeachFloatEntity floaty = (BeachFloatEntity) riding;
+            FurnitureEntity floaty = (FurnitureEntity) riding;
             GlStateManager.pushMatrix();
             GlStateManager.translated(event.getX(), event.getY(), event.getZ());
 

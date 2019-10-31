@@ -40,13 +40,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     /* Is any entity laying on the float? */
     public boolean isEmpty;
 
-    /* Interpolation values */
-    private int lerpSteps;
-    private double lerpX;
-    private double lerpY;
-    private double lerpZ;
-    private double lerpYaw;
-
     /* Acceleration */
     public float rotationSpeed;
 
@@ -62,10 +55,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         setEntityId(this.getEntityId());
     }
     
-    public void setRotation(float yaw) {
-        this.lerpYaw = this.rotationYaw = yaw;
-    }
-
     @Override
     public void setEntityId(int id) {
         super.setEntityId(id);
@@ -121,7 +110,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         }
         
         super.tick();
-        tickLerp();
 
         rotationYaw += rotationSpeed;
         move(MoverType.PLAYER, getMotion());
@@ -188,37 +176,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         }
 
         return !player.isRidingSameEntity(this);
-    }
-
-    /* Following two methods mostly copied from EntityBoat interpolation code */
-    @Override
-    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-        if (teleport) {
-            super.setPositionAndRotationDirect(x, y, z, yaw, pitch, posRotationIncrements, teleport);
-        } else {
-            this.lerpX = x;
-            this.lerpY = y;
-            this.lerpZ = z;
-            // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
-            if (yaw != rotationYaw) {
-                this.lerpYaw = (double) yaw;
-            }
-            this.lerpSteps = 10;
-            this.rotationPitch = pitch;
-        }
-    }
-
-    private void tickLerp() {
-        if (this.lerpSteps > 0 && !this.canPassengerSteer()) {
-            double d0 = this.posX + (this.lerpX - this.posX) / (double) this.lerpSteps;
-            double d1 = this.posY + (this.lerpY - this.posY) / (double) this.lerpSteps;
-            double d2 = this.posZ + (this.lerpZ - this.posZ) / (double) this.lerpSteps;
-            double d3 = MathHelper.wrapDegrees(this.lerpYaw - (double) this.rotationYaw);
-            this.rotationYaw = (float) ((double) this.rotationYaw + d3 / (double) this.lerpSteps);
-            --this.lerpSteps;
-            this.setPosition(d0, d1, d2);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-        }
     }
 
     /* Following three methods copied from EntityBoat for passenger updates */

@@ -25,6 +25,9 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
 public class TropicraftItems {
@@ -37,11 +40,11 @@ public class TropicraftItems {
     public static final RegistryObject<Item> SHAKA = register("shaka_ingot", Builder.item());
     public static final RegistryObject<Item> MANGANESE = register("manganese_ingot", Builder.item());
     
-    public static final Map<DyeColor, RegistryObject<UmbrellaItem>> UMBRELLAS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
+    public static final Map<DyeColor, RegistryObject<FurnitureItem<UmbrellaEntity>>> UMBRELLAS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
             .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c)))));
-    public static final Map<DyeColor, RegistryObject<ChairItem>> CHAIRS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
+    public static final Map<DyeColor, RegistryObject<FurnitureItem<ChairEntity>>> CHAIRS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
             .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_chair", Builder.chair(c)))));
-    public static final Map<DyeColor, RegistryObject<BeachFloatItem>> BEACH_FLOATS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
+    public static final Map<DyeColor, RegistryObject<FurnitureItem<BeachFloatEntity>>> BEACH_FLOATS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
             .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_beach_float", Builder.beachFloat(c)))));
     
     public static final RegistryObject<Item> BAMBOO_STICK = register("bamboo_stick", Builder.item());

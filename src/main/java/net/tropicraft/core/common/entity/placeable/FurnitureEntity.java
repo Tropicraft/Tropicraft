@@ -35,12 +35,12 @@ public abstract class FurnitureEntity extends Entity {
     
     private final Function<DyeColor, Item> itemLookup;
     
-    private int lerpSteps;
-    private double lerpX;
-    private double lerpY;
-    private double lerpZ;
-    private double lerpYaw;
-    private double lerpPitch;
+    protected int lerpSteps;
+    protected double lerpX;
+    protected double lerpY;
+    protected double lerpZ;
+    protected double lerpYaw;
+    protected double lerpPitch;
     
     protected FurnitureEntity(EntityType<?> entityTypeIn, World worldIn, Map<DyeColor, ? extends RegistryObject<? extends Item>> items) {
         this(entityTypeIn, worldIn, c -> items.get(c).get());        
@@ -52,6 +52,10 @@ public abstract class FurnitureEntity extends Entity {
         this.ignoreFrustumCheck = true;
         this.preventEntitySpawning = true;
         this.entityCollisionReduction = .95F;
+    }
+    
+    public void setRotation(float yaw) {
+        this.lerpYaw = this.rotationYaw = yaw;
     }
 
     @Override
@@ -106,6 +110,24 @@ public abstract class FurnitureEntity extends Entity {
     
     protected boolean preventMotion() {
         return true;
+    }
+    
+    /* Following two methods mostly copied from EntityBoat interpolation code */
+    @Override
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+        if (teleport) {
+            super.setPositionAndRotationDirect(x, y, z, yaw, pitch, posRotationIncrements, teleport);
+        } else {
+            this.lerpX = x;
+            this.lerpY = y;
+            this.lerpZ = z;
+            // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
+            if (yaw != rotationYaw) {
+                this.lerpYaw = (double) yaw;
+            }
+            this.lerpSteps = 10;
+            this.rotationPitch = pitch;
+        }
     }
 
     private void tickLerp() {
@@ -246,5 +268,4 @@ public abstract class FurnitureEntity extends Entity {
     public int getTimeSinceHit() {
         return dataManager.get(TIME_SINCE_HIT);
     }
-
 }
