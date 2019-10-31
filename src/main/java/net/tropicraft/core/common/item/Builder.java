@@ -39,6 +39,10 @@ public class Builder {
     public static Supplier<ChairItem> chair(final DyeColor color) {
         return item(p -> new ChairItem(p, color));
     }
+    
+    public static Supplier<BeachFloatItem> beachFloat(final DyeColor color) {
+        return item(p -> new BeachFloatItem(p, color));
+    }
 
     public static Supplier<Item> shell() {
         return item(ShellItem::new);

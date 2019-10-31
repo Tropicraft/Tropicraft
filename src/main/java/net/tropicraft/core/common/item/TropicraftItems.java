@@ -41,6 +41,8 @@ public class TropicraftItems {
             .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c)))));
     public static final Map<DyeColor, RegistryObject<ChairItem>> CHAIRS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
             .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_chair", Builder.chair(c)))));
+    public static final Map<DyeColor, RegistryObject<BeachFloatItem>> BEACH_FLOATS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
+            .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_beach_float", Builder.beachFloat(c)))));
     
     public static final RegistryObject<Item> BAMBOO_STICK = register("bamboo_stick", Builder.item());
 

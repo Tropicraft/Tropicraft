@@ -75,6 +75,14 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .addCriterion("has_" + color.getName() + "_wool", this.hasItem(wool))
                 .build(consumer);
             
+            ShapedRecipeBuilder.shapedRecipe(BEACH_FLOATS.get(color).get())
+                .patternLine("WWW").patternLine("BBB")
+                .setGroup(Constants.MODID + ":beach_floats")
+                .key('W', wool)
+                .key('B', Blocks.BAMBOO)
+                .addCriterion("has_" + color.getName() + "_wool", this.hasItem(wool))
+                .build(consumer);
+        
             // TODO other colored items
         }
         

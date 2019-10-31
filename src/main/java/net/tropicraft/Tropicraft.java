@@ -7,7 +7,6 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.fluid.Fluids;
@@ -35,6 +34,7 @@ import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
 import net.tropicraft.core.client.data.TropicraftItemModelProvider;
 import net.tropicraft.core.client.data.TropicraftLangProvider;
 import net.tropicraft.core.client.entity.render.BambooItemFrameRenderer;
+import net.tropicraft.core.client.entity.render.BeachFloatRenderer;
 import net.tropicraft.core.client.entity.render.ChairRenderer;
 import net.tropicraft.core.client.entity.render.EIHRenderer;
 import net.tropicraft.core.client.entity.render.FailgullRenderer;
@@ -77,12 +77,14 @@ import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.item.BeachFloatItem;
 import net.tropicraft.core.common.item.ChairItem;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -150,6 +152,7 @@ public class Tropicraft {
         RenderingRegistry.registerEntityRenderingHandler(IguanaEntity.class, IguanaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(UmbrellaEntity.class, UmbrellaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ChairEntity.class, ChairRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(BeachFloatEntity.class, BeachFloatRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiSkellyEntity.class, TropiSkellyRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(WallItemEntity.class, RenderWallItemEntity::new);
@@ -171,6 +174,9 @@ public class Tropicraft {
             evt.getItemColors().register(new BasicColorHandler(), item.get());
         }
         for (final Supplier<ChairItem> item : TropicraftItems.CHAIRS.values()) {
+            evt.getItemColors().register(new BasicColorHandler(), item.get());
+        }
+        for (final Supplier<BeachFloatItem> item : TropicraftItems.BEACH_FLOATS.values()) {
             evt.getItemColors().register(new BasicColorHandler(), item.get());
         }
         for (final Supplier<CocktailItem> item : TropicraftItems.COCKTAILS.values()) {
