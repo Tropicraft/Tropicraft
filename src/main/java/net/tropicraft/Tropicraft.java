@@ -1,7 +1,5 @@
 package net.tropicraft;
 
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
@@ -10,6 +8,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -21,6 +20,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -84,11 +84,8 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
-import net.tropicraft.core.common.item.BeachFloatItem;
-import net.tropicraft.core.common.item.ChairItem;
-import net.tropicraft.core.common.item.CocktailItem;
+import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.common.item.UmbrellaItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 
 @Mod(Constants.MODID)
@@ -170,20 +167,13 @@ public class Tropicraft {
     
     @OnlyIn(Dist.CLIENT)
     private void registerItemColors(ColorHandlerEvent.Item evt) {
-        for (final Supplier<UmbrellaItem> item : TropicraftItems.UMBRELLAS.values()) {
-            evt.getItemColors().register(new BasicColorHandler(), item.get());
+        BasicColorHandler basic = new BasicColorHandler();
+        for (RegistryObject<Item> ro : TropicraftItems.ITEMS.getEntries()) {
+            Item item = ro.get();
+            if (item instanceof IColoredItem) {
+                evt.getItemColors().register(basic, item);
+            }
         }
-        for (final Supplier<ChairItem> item : TropicraftItems.CHAIRS.values()) {
-            evt.getItemColors().register(new BasicColorHandler(), item.get());
-        }
-        for (final Supplier<BeachFloatItem> item : TropicraftItems.BEACH_FLOATS.values()) {
-            evt.getItemColors().register(new BasicColorHandler(), item.get());
-        }
-        for (final Supplier<CocktailItem> item : TropicraftItems.COCKTAILS.values()) {
-            evt.getItemColors().register(new BasicColorHandler(), item.get());
-        }
-
-        evt.getItemColors().register(new BasicColorHandler(), TropicraftItems.LOVE_TROPICS_SHELL::get);
         evt.getItemColors().register((stack, index) -> index == 0 ? Fluids.WATER.getAttributes().getColor() : -1, TropicraftBlocks.WATER_BARRIER.get());
     }
     
