@@ -14,11 +14,12 @@ import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.item.BeachFloatItem;
-import net.tropicraft.core.common.item.ChairItem;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.item.CocktailItem;
+import net.tropicraft.core.common.item.FurnitureItem;
 import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.common.item.UmbrellaItem;
 
 public class TropicraftItemModelProvider extends ItemModelProvider {
 
@@ -174,21 +175,21 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         ModelFile umbrella = getBuilder("umbrella").parent(new UncheckedModelFile("item/generated"))
             .texture("layer0", modLoc(folder + "/umbrella"))
             .texture("layer1", modLoc(folder + "/umbrella_inverted"));
-        for (RegistryObject<UmbrellaItem> umbrellaItem : TropicraftItems.UMBRELLAS.values()) {
+        for (RegistryObject<FurnitureItem<UmbrellaEntity>> umbrellaItem : TropicraftItems.UMBRELLAS.values()) {
             getBuilder(name(umbrellaItem)).parent(umbrella);
         }
         // All chairs
         ModelFile chair = getBuilder("chair").parent(new UncheckedModelFile("item/generated"))
             .texture("layer0", modLoc(folder + "/chair"))
             .texture("layer1", modLoc(folder + "/chair_inverted"));
-        for (RegistryObject<ChairItem> chairItem : TropicraftItems.CHAIRS.values()) {
+        for (RegistryObject<FurnitureItem<ChairEntity>> chairItem : TropicraftItems.CHAIRS.values()) {
             getBuilder(name(chairItem)).parent(chair);
         }
         // All beach floats
         ModelFile beachFloat = getBuilder("beach_float").parent(new UncheckedModelFile("item/generated"))
             .texture("layer0", modLoc(folder + "/beach_float"))
             .texture("layer1", modLoc(folder + "/beach_float_inverted"));
-        for (RegistryObject<BeachFloatItem> beachFloatItem : TropicraftItems.BEACH_FLOATS.values()) {
+        for (RegistryObject<FurnitureItem<BeachFloatEntity>> beachFloatItem : TropicraftItems.BEACH_FLOATS.values()) {
             getBuilder(name(beachFloatItem)).parent(beachFloat);
         }
         

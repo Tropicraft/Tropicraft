@@ -37,6 +37,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         double yOffset = getYOffset();
         GlStateManager.translated(x, y + yOffset, z);
         GlStateManager.rotatef(180F - yaw, 0.0F, 1.0F, 0.0F);
+        setupTransforms();
         
         float rockingAngle = getRockingAngle(entity, partialTicks);
         if (rockingAngle != 0F) {
