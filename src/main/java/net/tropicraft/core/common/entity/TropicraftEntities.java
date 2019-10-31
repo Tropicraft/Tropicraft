@@ -16,6 +16,7 @@ import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
@@ -34,6 +35,7 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<IguanaEntity>> IGUANA = register("iguana", TropicraftEntities::iguana);
     public static final RegistryObject<EntityType<UmbrellaEntity>> UMBRELLA = register("umbrella", TropicraftEntities::umbrella);
     public static final RegistryObject<EntityType<ChairEntity>> CHAIR = register("chair", TropicraftEntities::chair);
+    public static final RegistryObject<EntityType<BeachFloatEntity>> BEACH_FLOAT = register("beach_float", TropicraftEntities::beachFloat);
     public static final RegistryObject<EntityType<TropiSkellyEntity>> TROPI_SKELLY = register("tropiskelly", TropicraftEntities::tropiskelly);
     public static final RegistryObject<EntityType<EIHEntity>> EIH = register("eih", TropicraftEntities::eih);
     public static final RegistryObject<EntityType<WallItemEntity>> WALL_ITEM = register("wall_item", TropicraftEntities::wallItem);
@@ -143,6 +145,14 @@ public class TropicraftEntities {
                 .size(1.5F, 0.5F)
                 .setTrackingRange(120)
                 .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(false);
+    }
+
+    private static EntityType.Builder<BeachFloatEntity> beachFloat() {
+        return EntityType.Builder.<BeachFloatEntity>create(BeachFloatEntity::new, EntityClassification.MISC)
+                .size(2F, 0.175F)
+                .setTrackingRange(80)
+                .setUpdateInterval(3)
                 .setShouldReceiveVelocityUpdates(false);
     }
     

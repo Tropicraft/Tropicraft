@@ -182,7 +182,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         TropicraftItems.UMBRELLAS.values().forEach(this::addItem);
         // All Chairs
         TropicraftItems.CHAIRS.values().forEach(this::addItem);
-
+        // All Beach Floats
+        TropicraftItems.BEACH_FLOATS.values().forEach(this::addItem);
+        
         // Bamboo Items
         addItem(TropicraftItems.BAMBOO_STICK);
         addItem(TropicraftItems.BAMBOO_SPEAR);

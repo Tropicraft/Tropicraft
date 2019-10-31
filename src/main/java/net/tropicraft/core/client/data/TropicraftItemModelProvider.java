@@ -14,6 +14,7 @@ import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.item.BeachFloatItem;
 import net.tropicraft.core.common.item.ChairItem;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -182,6 +183,13 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
             .texture("layer1", modLoc(folder + "/chair_inverted"));
         for (RegistryObject<ChairItem> chairItem : TropicraftItems.CHAIRS.values()) {
             getBuilder(name(chairItem)).parent(chair);
+        }
+        // All beach floats
+        ModelFile beachFloat = getBuilder("beach_float").parent(new UncheckedModelFile("item/generated"))
+            .texture("layer0", modLoc(folder + "/beach_float"))
+            .texture("layer1", modLoc(folder + "/beach_float_inverted"));
+        for (RegistryObject<BeachFloatItem> beachFloatItem : TropicraftItems.BEACH_FLOATS.values()) {
+            getBuilder(name(beachFloatItem)).parent(beachFloat);
         }
         
         // Bamboo Items

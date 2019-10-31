@@ -50,7 +50,7 @@ public class ChairRenderer extends EntityRenderer<ChairEntity> {
         // Draw uncolored layer
         bindTexture(TropicraftRenderUtils.getTextureEntity("chair_layer"));
         GlStateManager.scalef(-1F, -1F, 1.0F);
-        new ChairModel().render(entity, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
+        model.render(entity, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, 0.0625F);
 
         // Draw the colored part
         GlStateManager.pushMatrix();
