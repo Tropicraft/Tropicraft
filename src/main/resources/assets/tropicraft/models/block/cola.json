@@ -1,0 +1,73 @@
+{
+	"credit": "Made with Blockbench",
+    "parent": "block/block",
+	"textures": {
+		"0": "tropicraft:block/trash",
+        "particle": "block/glass"
+	},
+	"elements": [
+		{
+			"name": "Cola",
+			"from": [6, 0, 4.5],
+			"to": [10, 5, 11.5],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 3, 8]},
+			"faces": {
+				"north": {"uv": [10.125, 2.625, 9.625, 2], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [9, 2.625, 9.625, 3.5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [10.625, 2, 10.125, 2.625], "texture": "#0"},
+				"west": {"uv": [10.125, 2.625, 10.75, 3.5], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [10.75, 2.625, 11.25, 3.5], "texture": "#0"},
+				"down": {"uv": [9.625, 2.625, 10.125, 3.5], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Cola2",
+			"from": [5.5, 0.5, 4.55],
+			"to": [10.5, 4.5, 11.55],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 3, 8]},
+			"faces": {
+				"north": {"uv": [10.125, 4.125, 9.625, 3.5], "rotation": 270, "texture": "#0"},
+				"east": {"uv": [9.625, 4.125, 10.125, 5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [10.625, 3.5, 10.125, 4.125], "rotation": 270, "texture": "#0"},
+				"west": {"uv": [10.75, 4.125, 11.25, 5], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [9, 4.125, 9.625, 5], "texture": "#0"},
+				"down": {"uv": [10.125, 4.125, 10.75, 5], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Cola3",
+			"from": [6, 0, 10.95],
+			"to": [10, 4, 11.95],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 3, 8]},
+			"faces": {
+				"north": {"uv": [12.25, 2.625, 11.75, 2.125], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [11.25, 2.625, 11.75, 2.75], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [12.75, 2.125, 12.25, 2.625], "texture": "#0"},
+				"west": {"uv": [12.25, 2.625, 12.75, 2.75], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [12.75, 2.625, 13.25, 2.75], "texture": "#0"},
+				"down": {"uv": [11.75, 2.625, 12.25, 2.75], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Cola4",
+			"from": [7.5, 0, 4.3743],
+			"to": [8.5, 2, 4.3743],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 3, 8]},
+			"faces": {
+				"north": {"uv": [11.75, 3.125, 11.625, 2.875], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [11.375, 3.125, 11.625, 3.125], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [11.875, 2.875, 11.75, 3.125], "texture": "#0"},
+				"west": {"uv": [11.75, 3.125, 12, 3.125], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [12, 3.125, 12.125, 3.125], "texture": "#0"},
+				"down": {"uv": [11.625, 3.125, 11.75, 3.125], "rotation": 180, "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Cola",
+			"origin": [21, 4, 7],
+			"children": [0, 1, 2, 3]
+		}
+	]
+}

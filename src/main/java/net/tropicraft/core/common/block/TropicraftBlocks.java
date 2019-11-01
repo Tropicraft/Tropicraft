@@ -242,6 +242,10 @@ public class TropicraftBlocks {
             .addAll(BAMBOO_POTTED_VANILLA_PLANTS)
             .build();
     
+    public static final Map<TrashType, RegistryObject<CustomShapeBlock>> TRASH = Arrays.<TrashType>stream(TrashType.values())
+            .collect(Collectors.toMap(Function.identity(), t -> register(t.getId(), Builder.trash(t), Tropicraft.LOVE_TROPICS_ITEM_GROUP),
+                    (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TrashType.class)));
+    
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }

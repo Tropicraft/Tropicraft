@@ -1,0 +1,31 @@
+{
+	"credit": "Made with Blockbench",
+    "parent": "block/block",
+	"textures": {
+		"0": "tropicraft:block/trash",
+        "particle": "block/glass"
+	},
+	"elements": [
+		{
+			"name": "chip bag",
+			"from": [4, 0, 1.5],
+			"to": [13, 1, 14.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [9.75, 7.5, 10.875, 7.625], "texture": "#0"},
+				"east": {"uv": [8.125, 7.5, 9.75, 7.625], "texture": "#0"},
+				"south": {"uv": [12.5, 7.5, 13.625, 7.625], "texture": "#0"},
+				"west": {"uv": [10.875, 7.5, 12.5, 7.625], "texture": "#0"},
+				"up": {"uv": [10.875, 7.5, 9.75, 5.875], "texture": "#0"},
+				"down": {"uv": [12, 5.875, 10.875, 7.5], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "chip bag",
+			"origin": [-20, 0.5, -5],
+			"children": [0]
+		}
+	]
+}

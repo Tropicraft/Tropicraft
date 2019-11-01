@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.data;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
@@ -10,10 +11,13 @@ import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.block.TrashType;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
@@ -53,8 +57,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.ZIRCON_BLOCK);
         
         // All flowers
-        TropicraftBlocks.FLOWERS.entrySet().forEach(e ->
-            blockSprite(e.getValue(), modLoc("block/flower/" + e.getKey().getId())));
+        Arrays.stream(TropicraftFlower.values()).forEach(f ->
+            blockSprite(f, modLoc("block/flower/" + f.getId())));
         
         // Sands
         blockItem(TropicraftBlocks.PURIFIED_SAND);
@@ -156,6 +160,32 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftBlocks.BAMBOO_FLOWER_POT);
         
         generated(TropicraftBlocks.WATER_BARRIER, mcLoc("block/water_still"), mcLoc("item/barrier"));
+        // All trash
+        Arrays.stream(TrashType.values()).forEach(f -> blockItem(f).transforms()
+                .transform(Perspective.GUI)
+                    .rotation(30, 225, 0)
+                    .translation(0, f.getModelYOffset(), 0)
+                    .scale(f.getModelScale(0.625f))
+                    .end()
+                .transform(Perspective.GROUND)
+                    .translation(0, f.getModelYOffset(), 0)
+                    .scale(f.getModelScale(0.5f))
+                    .end()
+                .transform(Perspective.FIRSTPERSON_RIGHT)
+                    .rotation(0, 45, 0)
+                    .translation(0, f.getModelYOffset(), 0)
+                    .scale(f.getModelScale(0.4f))
+                    .end()
+                .transform(Perspective.FIRSTPERSON_LEFT)
+                    .rotation(0, 255, 0)
+                    .translation(0, f.getModelYOffset(), 0)
+                    .scale(f.getModelScale(0.4f))
+                    .end()
+                .transform(Perspective.THIRDPERSON_RIGHT)
+                    .rotation(75, 45, 0)
+                    .translation(0, 2.5f, f.getModelYOffset())
+                    .scale(f.getModelScale(0.375f))
+                    .end());
         
         generated(TropicraftItems.BAMBOO_ITEM_FRAME);
         

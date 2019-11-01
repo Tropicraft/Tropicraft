@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.data;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -15,6 +16,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.block.TrashType;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -166,6 +168,9 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.BAMBOO_FLOWER_POT);
         TropicraftBlocks.ALL_POTTED_PLANTS.forEach(this::addBlock);
+
+        addBlock(TropicraftBlocks.WATER_BARRIER);
+        Arrays.stream(TrashType.values()).forEach(this::addBlock);
         
         // ITEMS
         

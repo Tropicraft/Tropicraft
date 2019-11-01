@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "tropicraft:block/cola",
+      "y": 360
+    },
+    "facing=south": {
+      "model": "tropicraft:block/cola",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tropicraft:block/cola",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "tropicraft:block/cola",
+      "y": 450
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "tropicraft:block/chip_bag",
+      "y": 360
+    },
+    "facing=south": {
+      "model": "tropicraft:block/chip_bag",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tropicraft:block/chip_bag",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "tropicraft:block/chip_bag",
+      "y": 450
+    }
+  }
+}

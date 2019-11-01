@@ -3,6 +3,7 @@ package net.tropicraft.core.client.data;
 import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
 import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
 
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -38,7 +39,9 @@ import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.BongoDrumBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
+import net.tropicraft.core.common.block.TrashType;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.TropicsFlowerBlock;
 
 public class TropicraftBlockstateProvider extends BlockStateProvider {
@@ -74,9 +77,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.ZIRCON_BLOCK);
         
         // All flowers
-        TropicraftBlocks.FLOWERS.entrySet().forEach(e ->
-            simpleBlock(e.getValue(), withExistingParent(e.getKey().getId(), "block/cross")
-                    .texture("cross", "tropicraft:block/flower/" + e.getKey().getId())));
+        Arrays.stream(TropicraftFlower.values()).forEach(f ->
+            simpleBlock(f, withExistingParent(f.getId(), "block/cross")
+                    .texture("cross", "tropicraft:block/flower/" + f.getId())));
         
         // Purified sand
         ModelFile normal = cubeAll(TropicraftBlocks.PURIFIED_SAND);
@@ -217,7 +220,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         for (RegistryObject<FlowerPotBlock> block : TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS) {
             flowerPot(block, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
         }
-
+        
+        simpleBlock(TropicraftBlocks.WATER_BARRIER, getBuilder(name(TropicraftBlocks.WATER_BARRIER)).texture("particle", mcLoc("item/barrier")));
+        // All trash
+        Arrays.stream(TrashType.values()).forEach(f -> horizontalBlock(f.get(), getExistingFile(modLoc("block/" + f.getId()))));
+        
         withExistingParent("bamboo_item_frame", "item_frame")
             .texture("particle", modBlockLoc("bamboo_side"))
             .texture("wood", modBlockLoc("bamboo_side"));

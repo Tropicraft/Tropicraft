@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.data;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -42,6 +43,7 @@ import net.minecraft.world.storage.loot.conditions.TableBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock;
+import net.tropicraft.core.common.block.TrashType;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -187,6 +189,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             
             dropsSelf(TropicraftBlocks.BAMBOO_FLOWER_POT);
             TropicraftBlocks.ALL_POTTED_PLANTS.forEach(ro -> registerLootTable(ro.get(), b -> droppingFlowerPotAndFlower((FlowerPotBlock) b)));
+            
+            Arrays.stream(TrashType.values()).forEach(this::dropsSelf);
         }
         
         private void dropsSelf(Supplier<? extends Block> block) {

@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "tropicraft:block/plastic_bottle",
+      "y": 360
+    },
+    "facing=south": {
+      "model": "tropicraft:block/plastic_bottle",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tropicraft:block/plastic_bottle",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "tropicraft:block/plastic_bottle",
+      "y": 450
+    }
+  }
+}

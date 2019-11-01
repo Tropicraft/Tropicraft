@@ -10,7 +10,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.RotatedPillarBlock;
@@ -22,7 +21,6 @@ import net.minecraft.block.WallBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -145,6 +143,10 @@ public class Builder {
 
     public static Supplier<FlowerPotBlock> vanillaPot(final Supplier<? extends Block> block) {
         return pot(() -> (FlowerPotBlock) Blocks.FLOWER_POT.delegate.get(), block, lazyProp(Blocks.FLOWER_POT.delegate));
+    }
+    
+    public static Supplier<CustomShapeBlock> trash(TrashType type) {
+        return block(p -> new TrashBlock(type.getShape(), p), prop(Material.PLANTS).doesNotBlockMovement());
     }
 
     private static Block.Properties prop(final Material material) {
