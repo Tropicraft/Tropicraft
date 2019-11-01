@@ -223,7 +223,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         
         simpleBlock(TropicraftBlocks.WATER_BARRIER, getBuilder(name(TropicraftBlocks.WATER_BARRIER)).texture("particle", mcLoc("item/barrier")));
         // All trash
-        Arrays.stream(TrashType.values()).forEach(f -> horizontalBlock(f.get(), getExistingFile(modLoc("block/" + f.getId()))));
+        Arrays.stream(TrashType.values()).forEach(f ->
+                getVariantBuilder(f.get()) // TODO make horizontalBlock etc support this case
+                .forAllStatesExcept(state -> ConfiguredModel.builder()
+                        .modelFile(getExistingFile(modLoc("block/" + f.getId())))
+                        .rotationY(((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) % 360)
+                        .build(),
+            LadderBlock.WATERLOGGED));
         
         withExistingParent("bamboo_item_frame", "item_frame")
             .texture("particle", modBlockLoc("bamboo_side"))

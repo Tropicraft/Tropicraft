@@ -1,8 +1,7 @@
 {
   "variants": {
     "facing=north": {
-      "model": "tropicraft:block/can",
-      "y": 360
+      "model": "tropicraft:block/can"
     },
     "facing=south": {
       "model": "tropicraft:block/can",
@@ -14,7 +13,7 @@
     },
     "facing=east": {
       "model": "tropicraft:block/can",
-      "y": 450
+      "y": 90
     }
   }
 }

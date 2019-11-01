@@ -1,8 +1,7 @@
 {
   "variants": {
     "facing=north": {
-      "model": "tropicraft:block/plastic_bag",
-      "y": 360
+      "model": "tropicraft:block/plastic_bag"
     },
     "facing=south": {
       "model": "tropicraft:block/plastic_bag",
@@ -14,7 +13,7 @@
     },
     "facing=east": {
       "model": "tropicraft:block/plastic_bag",
-      "y": 450
+      "y": 90
     }
   }
 }

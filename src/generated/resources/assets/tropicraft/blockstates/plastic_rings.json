@@ -1,8 +1,7 @@
 {
   "variants": {
     "facing=north": {
-      "model": "tropicraft:block/plastic_rings",
-      "y": 360
+      "model": "tropicraft:block/plastic_rings"
     },
     "facing=south": {
       "model": "tropicraft:block/plastic_rings",
@@ -14,7 +13,7 @@
     },
     "facing=east": {
       "model": "tropicraft:block/plastic_rings",
-      "y": 450
+      "y": 90
     }
   }
 }
