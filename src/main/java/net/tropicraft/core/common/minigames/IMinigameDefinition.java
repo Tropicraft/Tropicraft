@@ -123,7 +123,7 @@ public interface IMinigameDefinition
 
     /**
      * For when a minigame finishes. Useful for cleanup related to this
-     * minigame defintion.
+     * minigame definition.
      */
     void onFinish();
 
