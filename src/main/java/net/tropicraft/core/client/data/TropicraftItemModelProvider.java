@@ -1,7 +1,5 @@
 package net.tropicraft.core.client.data;
 
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.IItemProvider;
@@ -9,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.fml.RegistryObject;
@@ -20,6 +19,9 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.FurnitureItem;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.Arrays;
+import java.util.function.Supplier;
 
 public class TropicraftItemModelProvider extends ItemModelProvider {
 
@@ -254,6 +256,18 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);
+
+        // Spawn Eggs
+        generated(TropicraftItems.KOA_SPAWN_EGG);
+        generated(TropicraftItems.TROPICREEPER_SPAWN_EGG);
+        generated(TropicraftItems.IGUANA_SPAWN_EGG);
+        generated(TropicraftItems.TROPISKELLY_SPAWN_EGG);
+        generated(TropicraftItems.EIH_SPAWN_EGG);
+        generated(TropicraftItems.SEA_TURTLE_SPAWN_EGG);
+        generated(TropicraftItems.MARLIN_SPAWN_EGG);
+        generated(TropicraftItems.FAILGULL_SPAWN_EGG);
+        generated(TropicraftItems.DOLPHIN_SPAWN_EGG);
+        generated(TropicraftItems.SEAHORSE_SPAWN_EGG);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {

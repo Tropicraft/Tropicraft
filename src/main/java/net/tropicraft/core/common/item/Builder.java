@@ -1,13 +1,12 @@
 package net.tropicraft.core.common.item;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
+import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -15,6 +14,9 @@ import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Builder {
     
@@ -72,6 +74,10 @@ public class Builder {
     
     public static Supplier<TropicalMusicDiscItem> musicDisc(RecordMusic type) {
         return item(p -> new TropicalMusicDiscItem(type, p) {}, () -> getDefaultProperties().rarity(Rarity.RARE));
+    }
+
+    public static <T extends Entity> Supplier<Item> spawnEgg(final RegistryObject<EntityType<T>> type) {
+        return item(p -> new TropicraftSpawnEgg(type, p), Builder::getDefaultProperties);
     }
 
     private static Item.Properties getDefaultProperties() {

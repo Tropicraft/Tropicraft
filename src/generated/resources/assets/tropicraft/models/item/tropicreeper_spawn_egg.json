@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tropicraft:item/tropicreeper_spawn_egg"
+  }
+}
