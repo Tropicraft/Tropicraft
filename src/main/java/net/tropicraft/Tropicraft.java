@@ -28,6 +28,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
@@ -58,6 +59,7 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
+import net.tropicraft.core.common.command.minigames.*;
 import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
 import net.tropicraft.core.common.data.TropicraftItemTagsProvider;
 import net.tropicraft.core.common.data.TropicraftLootTableProvider;
@@ -86,6 +88,7 @@ import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.minigames.MinigameManager;
 import net.tropicraft.core.common.network.TropicraftPackets;
 
 @Mod(Constants.MODID)
@@ -118,6 +121,7 @@ public class Tropicraft {
         });
         
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
+        MinecraftForge.EVENT_BUS.addListener(this::onServerStopping);
 
         // Registry objects
         TropicraftBlocks.BLOCKS.register(modBus);
@@ -183,7 +187,21 @@ public class Tropicraft {
     }
     
     private void onServerStarting(final FMLServerStartingEvent event) {
+        MinigameManager.init(event.getServer());
+
         CommandTropicsTeleport.register(event.getServer().getCommandManager().getDispatcher());
+        CommandPollMinigame.register(event.getServer().getCommandManager().getDispatcher());
+        CommandRegisterMinigame.register(event.getServer().getCommandManager().getDispatcher());
+        CommandStartMinigame.register(event.getServer().getCommandManager().getDispatcher());
+        CommandStopMinigame.register(event.getServer().getCommandManager().getDispatcher());
+        CommandUnregisterMinigame.register(event.getServer().getCommandManager().getDispatcher());
+        CommandStopPollingMinigame.register(event.getServer().getCommandManager().getDispatcher());
+    }
+
+    private void onServerStopping(final FMLServerStoppingEvent event) {
+        if (MinigameManager.getInstance().getCurrentMinigame() != null) {
+            MinigameManager.getInstance().finishCurrentMinigame();
+        }
     }
 
     private void gatherData(GatherDataEvent event) {

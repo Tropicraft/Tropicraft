@@ -1,5 +1,6 @@
 package net.tropicraft.core.common;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -15,9 +16,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.tropicraft.Constants;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
@@ -282,5 +281,32 @@ public class Util {
 
     public static ResourceLocation resource(String location) {
         return new ResourceLocation(Constants.MODID, location);
+    }
+
+    /**
+     * Removes random unique elements from provided list and returns a new list with
+     * extracted elements.
+     *
+     * @param rand The random used for the randomization of element selection.
+     * @param list The list to extract from.
+     * @param amount The amount of elements to randomly extract.
+     * @param <T>
+     * @return A list of random elements extracted from the provided list.
+     */
+    public static <T> List<T> extractRandomElements(Random rand, List<T> list, int amount) {
+        if (amount > list.size()) {
+            throw new IllegalArgumentException("Amount of random elements can not be greater than size of provided list.");
+        }
+
+        List<T> randValues = Lists.newArrayList();
+
+        for (int i = 0; i < amount; i++) {
+            T obj = list.get(rand.nextInt(list.size()));
+
+            randValues.add(obj);
+            list.remove(obj);
+        }
+
+        return randValues;
     }
 }

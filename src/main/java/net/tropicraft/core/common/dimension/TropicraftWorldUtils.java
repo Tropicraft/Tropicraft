@@ -8,6 +8,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -25,24 +26,24 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.minigames.dimensions.HungerGamesDimension;
+import net.tropicraft.core.common.minigames.dimensions.IslandRoyaleDimension;
 
 public class TropicraftWorldUtils {
     
     public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Constants.MODID);
 
 	public static DimensionType TROPICS_DIMENSION;
-	public static DimensionType HUNGER_GAMES_DIMENSION;
+	public static DimensionType ISLAND_ROYALE_DIMENSION;
 	public static DimensionType SIGNATURE_RUN_DIMENSION;
 
 	public static ResourceLocation TROPICS_ID = Util.resource("tropics");
-	public static ResourceLocation HUNGER_GAMES_ID = Util.resource("hunger_games");
+	public static ResourceLocation ISLAND_ROYALE_ID = Util.resource("hunger_games");
 	public static ResourceLocation SIGNATURE_RUN_ID = Util.resource("signature_run");
 
 	public static final RegistryObject<ModDimension> TROPICRAFT_MOD_DIMENSION = register(
 			TROPICS_ID.getPath(), TropicraftWorldUtils::tropicsDimFactory);
 	public static final RegistryObject<ModDimension> HUNGER_GAMES_MOD_DIMENSION = register(
-			HUNGER_GAMES_ID.getPath(), TropicraftWorldUtils::hungerGamesDimFactory);
+			ISLAND_ROYALE_ID.getPath(), TropicraftWorldUtils::islandRoyaleDimFactory);
 	public static final RegistryObject<ModDimension> SIGNATURE_RUN_MOD_DIMENSION = register(
 			SIGNATURE_RUN_ID.getPath(), TropicraftWorldUtils::tropicsDimFactory);
 
@@ -55,11 +56,11 @@ public class TropicraftWorldUtils {
 		};
 	}
 
-	private static ModDimension hungerGamesDimFactory() {
+	private static ModDimension islandRoyaleDimFactory() {
 		return new ModDimension() {
 			@Override
 			public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-				return HungerGamesDimension::new;
+				return IslandRoyaleDimension::new;
 			}
 		};
 	}
@@ -73,7 +74,7 @@ public class TropicraftWorldUtils {
 		@SubscribeEvent
 		public static void onModDimensionRegister(final RegisterDimensionsEvent event) {
 			postRegister(TROPICS_ID, dimensionType -> TROPICS_DIMENSION = dimensionType, () -> TROPICS_DIMENSION, TROPICRAFT_MOD_DIMENSION);
-			postRegister(HUNGER_GAMES_ID, dimensionType -> HUNGER_GAMES_DIMENSION = dimensionType, () -> HUNGER_GAMES_DIMENSION, HUNGER_GAMES_MOD_DIMENSION);
+			postRegister(ISLAND_ROYALE_ID, dimensionType -> ISLAND_ROYALE_DIMENSION = dimensionType, () -> ISLAND_ROYALE_DIMENSION, HUNGER_GAMES_MOD_DIMENSION);
 			postRegister(SIGNATURE_RUN_ID, dimensionType -> SIGNATURE_RUN_DIMENSION = dimensionType, () -> SIGNATURE_RUN_DIMENSION, SIGNATURE_RUN_MOD_DIMENSION);
 		}
 
@@ -136,4 +137,13 @@ public class TropicraftWorldUtils {
 
         net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }
+
+    public static void teleportPlayerNoPortal(ServerPlayerEntity player, DimensionType destination, BlockPos pos) {
+		if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(player, destination)) return;
+
+		ServerWorld serverworld = player.server.getWorld(destination);
+		player.teleport(serverworld, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, player.rotationYaw, player.rotationPitch);
+
+		net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
+	}
 }

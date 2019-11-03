@@ -22,11 +22,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.dimension.biome.*;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
+import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
 
 import javax.annotation.Nullable;
 
-public class HungerGamesDimension extends Dimension {
-    public HungerGamesDimension(final World worldIn, final DimensionType typeIn) {
+public class IslandRoyaleDimension extends Dimension {
+    public IslandRoyaleDimension(final World worldIn, final DimensionType typeIn) {
         super(worldIn, typeIn);
     }
 
@@ -43,50 +44,14 @@ public class HungerGamesDimension extends Dimension {
     @Override
     @Nullable
     public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid) {
-        for(int i = chunkPosIn.getXStart(); i <= chunkPosIn.getXEnd(); ++i) {
-            for(int j = chunkPosIn.getZStart(); j <= chunkPosIn.getZEnd(); ++j) {
-                BlockPos blockpos = this.findSpawn(i, j, checkValid);
-                if (blockpos != null) {
-                    return blockpos;
-                }
-            }
-        }
-
-        return null;
+        return IslandRoyaleMinigameDefinition.RESPAWN_POS;
     }
 
     /** Copied from OverworldDimension */
     @Override
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid) {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(posX, 0, posZ);
-        Biome biome = this.world.getBiome(blockpos$mutableblockpos);
-        BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
-        if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN)) {
-            return null;
-        } else {
-            Chunk chunk = this.world.getChunk(posX >> 4, posZ >> 4);
-            int i = chunk.getTopBlockY(Heightmap.Type.MOTION_BLOCKING, posX & 15, posZ & 15);
-            if (i < 0) {
-                return null;
-            } else if (chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, posX & 15, posZ & 15) > chunk.getTopBlockY(Heightmap.Type.OCEAN_FLOOR, posX & 15, posZ & 15)) {
-                return null;
-            } else {
-                for(int j = i + 1; j >= 0; --j) {
-                    blockpos$mutableblockpos.setPos(posX, j, posZ);
-                    BlockState blockstate1 = this.world.getBlockState(blockpos$mutableblockpos);
-                    if (!blockstate1.getFluidState().isEmpty()) {
-                        break;
-                    }
-
-                    if (blockstate1.equals(blockstate)) {
-                        return blockpos$mutableblockpos.up().toImmutable();
-                    }
-                }
-
-                return null;
-            }
-        }
+        return IslandRoyaleMinigameDefinition.RESPAWN_POS;
     }
 
     /**
