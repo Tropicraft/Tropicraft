@@ -234,7 +234,7 @@ public class TropicraftBlocks {
             .collect(Collectors.toList()));
 
     public static final RegistryObject<Block> WATER_BARRIER = register(
-            "water_barrier", () -> new WaterBarrierBlock(Block.Properties.from(Blocks.BARRIER)), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
+            "water_barrier", () -> new WaterBarrierBlock(Block.Properties.from(Blocks.BARRIER).noDrops()), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
     
     public static final List<RegistryObject<FlowerPotBlock>> ALL_POTTED_PLANTS = ImmutableList.<RegistryObject<FlowerPotBlock>>builder()
             .addAll(BAMBOO_POTTED_TROPICS_PLANTS)

@@ -8,12 +8,14 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.dimension.biome.minigames.IslandRoyaleBiome;
 
 public class TropicraftBiomes {
     
     public static final DeferredRegister<Biome> BIOMES = new DeferredRegister<>(ForgeRegistries.BIOMES, Constants.MODID);
 
     public static final RegistryObject<Biome> TROPICS_OCEAN = register("tropics_ocean", TropicsOceanBiome::new);
+    public static final RegistryObject<Biome> ISLAND_ROYALE = register("island_royale", IslandRoyaleBiome::new);
     public static final RegistryObject<Biome> TROPICS = register("tropics", TropicsBiome::new);
     public static final RegistryObject<Biome> KELP_FOREST = register("kelp_forest", () -> new TropicsKelpForestBiome());
     public static final RegistryObject<Biome> RAINFOREST_PLAINS = register("rainforest_plains", () -> new TropicraftRainforestBiome(0.25F, 0.1F));
