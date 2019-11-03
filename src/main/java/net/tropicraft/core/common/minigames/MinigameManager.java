@@ -315,7 +315,7 @@ public class MinigameManager implements IMinigameManager
 
         this.registeredForMinigame.remove(player.getUniqueID());
 
-        if (this.registeredForMinigame.size() < this.polling.getMinimumParticipantCount()) {
+        if (this.registeredForMinigame.size() == this.polling.getMinimumParticipantCount() - 1) {
             for (ServerPlayerEntity p : this.server.getPlayerList().getPlayers()) {
                 p.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_NO_LONGER_ENOUGH_PLAYERS).applyTextStyle(TextFormatting.RED));
             }

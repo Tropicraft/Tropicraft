@@ -20,7 +20,7 @@ public class CommandTropicsTeleport {
 		);
 
 		dispatcher.register(
-				literal("hunger_games")
+				literal("island_royale")
 						.requires(s -> s.hasPermissionLevel(2))
 						.executes(c -> teleport(c.getSource(), TropicraftWorldUtils.ISLAND_ROYALE_DIMENSION))
 		);
