@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.data;
 
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.IItemProvider;
@@ -7,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.fml.RegistryObject;
@@ -19,9 +20,6 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.FurnitureItem;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.Arrays;
-import java.util.function.Supplier;
 
 public class TropicraftItemModelProvider extends ItemModelProvider {
 
@@ -156,8 +154,6 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockSprite(TropicraftBlocks.COCONUT);
         
         generated(TropicraftBlocks.BAMBOO_FLOWER_POT);
-        
-        generated(TropicraftBlocks.WATER_BARRIER, mcLoc("item/barrier"));
         
         generated(TropicraftItems.BAMBOO_ITEM_FRAME);
         

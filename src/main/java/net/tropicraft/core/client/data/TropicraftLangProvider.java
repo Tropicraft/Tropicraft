@@ -1,5 +1,9 @@
 package net.tropicraft.core.client.data;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -14,11 +18,6 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class TropicraftLangProvider extends LanguageProvider {
 
@@ -167,8 +166,6 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.BAMBOO_FLOWER_POT);
         TropicraftBlocks.ALL_POTTED_PLANTS.forEach(this::addBlock);
-
-        addBlock(TropicraftBlocks.WATER_BARRIER);
         
         // ITEMS
         
@@ -263,7 +260,6 @@ public class TropicraftLangProvider extends LanguageProvider {
         // MISC
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
-        add(Tropicraft.LOVE_TROPICS_ITEM_GROUP, "Love Tropics");
     }
     
     private String getAutomaticName(Supplier<? extends IForgeRegistryEntry<?>> sup) {

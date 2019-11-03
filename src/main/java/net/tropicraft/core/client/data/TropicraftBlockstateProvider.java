@@ -217,9 +217,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         for (RegistryObject<FlowerPotBlock> block : TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS) {
             flowerPot(block, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
         }
-        
-        simpleBlock(TropicraftBlocks.WATER_BARRIER, getBuilder(name(TropicraftBlocks.WATER_BARRIER)).texture("particle", mcLoc("item/barrier")));
-        
+
         withExistingParent("bamboo_item_frame", "item_frame")
             .texture("particle", modBlockLoc("bamboo_side"))
             .texture("wood", modBlockLoc("bamboo_side"));
