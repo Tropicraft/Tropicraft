@@ -119,7 +119,7 @@ public class EIHEntity extends CreatureEntity {
             final LivingEntity attackTarget = getAttackTarget();
             if (attackTarget == null) {
                 final PlayerEntity closestPlayer = world.getClosestPlayer(this, 10);
-                if (!closestPlayer.abilities.isCreativeMode && !closestPlayer.isSpectator()) {
+                if (closestPlayer != null && !closestPlayer.abilities.isCreativeMode && !closestPlayer.isSpectator()) {
                     setAttackTarget(closestPlayer);
                 }
             } else if (getDistance(attackTarget) > 16) {
