@@ -7,9 +7,13 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
@@ -70,17 +74,39 @@ public class TropicraftWorldUtils {
 //		//TODO FMLInterModComms.sendMessage(ForgeModContainer.getInstance().getModId(), "loaderFarewellSkip", n);
 //	}
 
-	public static void teleportPlayer(ServerPlayerEntity player) {
-		long time = System.currentTimeMillis();
-		if (player.dimension == TROPICS_DIMENSION) {
-			player.changeDimension(DimensionType.OVERWORLD);
-		} else {
-			player.changeDimension(TROPICS_DIMENSION);
-		}
+    public static void teleportPlayer(ServerPlayerEntity player, DimensionType dimensionType) {
+        long time = System.currentTimeMillis();
+        if (player.dimension == dimensionType) {
+            teleportPlayerNoPortal(player, DimensionType.OVERWORLD);
+        } else {
+            teleportPlayerNoPortal(player, dimensionType);
+        }
 
-		long time2 = System.currentTimeMillis();
+        long time2 = System.currentTimeMillis();
 
-		System.out.printf("It took %f seconds to teleport\n", (time2 - time) / 1000.0F);
-	}
+        System.out.printf("It took %f seconds to teleport\n", (time2 - time) / 1000.0F);
+    }
 
+    /**
+     * Finds the top Y position relative to the dimension the player is teleporting to and places
+     * the entity at that position. Avoids portal generation by using player.teleport() instead of
+     * player.changeDimension()
+     *
+     * @param player The player that will be teleported
+     * @param destination The target dimension to teleport to
+     */
+    public static void teleportPlayerNoPortal(ServerPlayerEntity player, DimensionType destination) {
+        if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(player, destination)) return;
+
+        ServerWorld serverworld = player.server.getWorld(destination);
+
+        int posX = MathHelper.floor(player.posX);
+        int posZ = MathHelper.floor(player.posZ);
+
+        Chunk chunk = serverworld.getChunk(posX >> 4, posZ >> 4);
+        int topY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, posX & 15, posZ & 15);
+        player.teleport(serverworld, posX + 0.5D, topY + 1.0D, posZ + 0.5D, player.rotationYaw, player.rotationPitch);
+
+        net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
+    }
 }
