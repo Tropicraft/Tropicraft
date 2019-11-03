@@ -74,7 +74,7 @@ public interface IMinigameDefinition
     BlockPos[] getParticipantPositions();
 
     /**
-     * Will not let you start the minigame with at least this amount of
+     * Will not let you start the minigame without at least this amount of
      * players registered for the polling minigame.
      *
      * @return The minimum amount of players required to start the minigame.
