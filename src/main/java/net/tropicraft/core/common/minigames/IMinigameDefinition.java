@@ -107,7 +107,7 @@ public interface IMinigameDefinition
      * by this minigame definition.
      *
      * @param player The player which died.
-     * @param instance THe instance of the currently running minigame.
+     * @param instance The instance of the currently running minigame.
      */
     void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance);
 
@@ -117,7 +117,7 @@ public interface IMinigameDefinition
      * by this minigame definition.
      *
      * @param player The player which died.
-     * @param instance THe instance of the currently running minigame.
+     * @param instance The instance of the currently running minigame.
      */
     void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance);
 
