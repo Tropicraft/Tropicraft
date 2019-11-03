@@ -27,7 +27,7 @@ import java.util.UUID;
 
 /**
  * Standard implementation of a minigame manager. Would prefer to do something other
- * than singleton-style implementation to allow for multiple pipelines to run multiple
+ * than singleton-style implementation to allow for multiple managers to run multiple
  * minigames at once.
  */
 public class MinigameManager implements IMinigameManager

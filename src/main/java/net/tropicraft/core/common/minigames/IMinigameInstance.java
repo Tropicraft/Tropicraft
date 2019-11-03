@@ -45,7 +45,7 @@ public interface IMinigameInstance
      * Adds the player to a list of spectators for tracking.
      * @param player The player you're add as a spectator to the instance.
      * @throws IllegalArgumentException Will throw an exception if you try to add
-     * a spectator that is already a particiapnt in the instance or is already a spectator.
+     * a spectator that is already a participant in the instance or is already a spectator.
      */
     void addSpectator(ServerPlayerEntity player) throws IllegalArgumentException;
 
