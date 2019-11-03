@@ -160,7 +160,6 @@
   "block.tropicraft.tropical_fern": "u\u0279\u01DD\u2132 \u05DF\u0250\u0254\u0131do\u0279\u27D8",
   "block.tropicraft.volcanic_sand": "pu\u0250S \u0254\u0131u\u0250\u0254\u05DFo\u039B",
   "block.tropicraft.volcano": "ou\u0250\u0254\u05DFo\u039B",
-  "block.tropicraft.water_barrier": "\u0279\u01DD\u0131\u0279\u0279\u0250\u15FA \u0279\u01DD\u0287\u0250M",
   "block.tropicraft.zircon_block": "\u029E\u0254o\u05DF\u15FA uo\u0254\u0279\u0131Z",
   "block.tropicraft.zircon_ore": "\u01DD\u0279O uo\u0254\u0279\u0131Z",
   "item.tropicraft.azurite_gem": "\u026F\u01DD\u2141 \u01DD\u0287\u0131\u0279nz\u2C6F",
@@ -290,7 +289,6 @@
   "item.tropicraft.yellow_chair": "\u0279\u0131\u0250\u0265\u0186 \u028Do\u05DF\u05DF\u01DD\u028E",
   "item.tropicraft.yellow_umbrella": "\u0250\u05DF\u05DF\u01DD\u0279q\u026F\u2229 \u028Do\u05DF\u05DF\u01DD\u028E",
   "item.tropicraft.zircon_gem": "\u026F\u01DD\u2141 uo\u0254\u0279\u0131Z",
-  "itemGroup.love_tropics": "s\u0254\u0131do\u0279\u27D8 \u01DD\u028Co\uA780",
   "itemGroup.tropicraft": "\u0287\u025F\u0250\u0279\u0254\u0131do\u0279\u27D8",
   "tropicraft.container.bambooChest": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA",
   "tropicraft.container.bambooChestDouble": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA \u01DDb\u0279\u0250\uA780"
