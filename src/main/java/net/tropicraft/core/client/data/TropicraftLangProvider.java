@@ -330,7 +330,8 @@ public class TropicraftLangProvider extends LanguageProvider {
                 String fmtArg = "";
                 while (Character.isDigit(c) || c == '%' || c == '$' || c == 's' || c == 'd') { // TODO this is a bit lazy
                     fmtArg += c;
-                    c = normal.charAt(++i);
+                    i++;
+                    c = i == normal.length() ? 0 : normal.charAt(i);
                 }
                 i--;
                 for (int j = 0; j < fmtArg.length(); j++) {
