@@ -47,7 +47,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     };
 
     private int maximumPlayerCount = 16;
-    private int minimumPlayerCount = 1;
+    private int minimumPlayerCount = 3;
 
     public IslandRoyaleMinigameDefinition() {
 
