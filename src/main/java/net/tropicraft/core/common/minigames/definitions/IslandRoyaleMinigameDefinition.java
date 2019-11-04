@@ -4,12 +4,17 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
+import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.common.DimensionManager;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.IMinigameInstance;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import weather2.util.WeatherUtil;
 
 /**
  * Definition implementation for the Island Royale minigame.
@@ -47,7 +52,11 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     };
 
     private int maximumPlayerCount = 16;
-    private int minimumPlayerCount = 3;
+    private int minimumPlayerCount = 1;
+
+    public static final Logger LOGGER = LogManager.getLogger();
+
+    public static boolean debugMode = true;
 
     public IslandRoyaleMinigameDefinition() {
 
@@ -95,7 +104,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public int getMinimumParticipantCount() {
-        return this.minimumPlayerCount;
+        return debugMode ? 1 : this.minimumPlayerCount;
     }
 
     @Override
@@ -105,6 +114,10 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public void worldUpdate(IMinigameInstance instance) {
+        World world = WeatherUtil.getWorld(getDimension());
+        if (world != null) {
+            LOGGER.info("world update + " + world.getGameTime());
+        }
 
     }
 

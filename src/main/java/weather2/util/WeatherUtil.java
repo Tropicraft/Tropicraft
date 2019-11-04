@@ -269,7 +269,11 @@ public class WeatherUtil {
     }
 
     public static ServerWorld getWorld(int dimID) {
-        return DimensionManager.getWorld(ServerLifecycleHooks.getCurrentServer(), DimensionType.getById(dimID), true, true);
+        return getWorld(DimensionType.getById(dimID));
+    }
+
+    public static ServerWorld getWorld(DimensionType dimensionType) {
+        return DimensionManager.getWorld(ServerLifecycleHooks.getCurrentServer(), dimensionType, true, true);
     }
 
     public static Iterable<ServerWorld> getWorlds() {
