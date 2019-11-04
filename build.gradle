@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
 group = 'net.tropicraft'
-archivesBaseName = 'Tropicraft'
+archivesBaseName = 'TropicraftLT'
 
 ext.buildnumber = 0
 project.buildnumber = System.getenv('BUILD_NUMBER') ?: 'custom'
