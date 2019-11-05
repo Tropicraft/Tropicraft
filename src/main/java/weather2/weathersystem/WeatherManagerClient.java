@@ -188,7 +188,8 @@ public class WeatherManagerClient extends WeatherManagerBase {
 	}
 	
 	public void addWeatheredParticle(Particle particle) {
-		listWeatherEffectedParticles.add(particle);
+		//TODO: 1.14 LT, dont use this at all
+		//listWeatherEffectedParticles.add(particle);
 
 		/*if (listWeatherEffectedParticles.size() > 5000) {
 			listWeatherEffectedParticles.clear();

@@ -108,8 +108,8 @@ public class EntityRotFX extends SpriteTexturedParticle implements IWindHandler,
 
     private boolean slantParticleToWind = false;
 
-    public Quaternion rotation;
-    public Quaternion rotationPrev;
+    /*public Quaternion rotation;
+    public Quaternion rotationPrev;*/
 
     //set to true for direct quaternion control, not EULER conversion helper
     public boolean quatControl = false;
@@ -138,7 +138,7 @@ public class EntityRotFX extends SpriteTexturedParticle implements IWindHandler,
         
         this.entityID = par1World.rand.nextInt(100000);
 
-        rotation = new Quaternion();
+        //rotation = new Quaternion();
 
         //TODO: 1.14 uncomment for shaders
         //brightnessCache = CoroUtilBlockLightCache.getBrightnessCached(world, (float)posX, (float)posY, (float)posZ);
@@ -325,11 +325,11 @@ public class EntityRotFX extends SpriteTexturedParticle implements IWindHandler,
             rotationPitch = (float)Math.atan2(motionY, motionXZ);
         }
 
-        if (!quatControl) {
+        /*if (!quatControl) {
             rotationPrev = new Quaternion(rotation);
             Entity ent = Minecraft.getInstance().getRenderViewEntity();
             updateQuaternion(ent);
-        }
+        }*/
     }
 
     public void startDeath() {
@@ -403,7 +403,7 @@ public class EntityRotFX extends SpriteTexturedParticle implements IWindHandler,
         return new Vector3f((float)posX, (float)posY, (float)posZ);
     }
 
-    @Override
+    /*@Override
     public Quaternion getQuaternion() {
         return this.rotation;
     }
@@ -411,7 +411,7 @@ public class EntityRotFX extends SpriteTexturedParticle implements IWindHandler,
     @Override
     public Quaternion getQuaternionPrev() {
         return this.rotationPrev;
-    }
+    }*/
 
     @Override
     public float getScale() {
@@ -688,7 +688,7 @@ public class EntityRotFX extends SpriteTexturedParticle implements IWindHandler,
         return super.getBrightnessForRender(p_189214_1_);//(int)((float)super.getBrightnessForRender(p_189214_1_))/* * this.world.getSunBrightness(1F))*/;
     }
 
-    public void updateQuaternion(Entity camera) {
+    /*public void updateQuaternion(Entity camera) {
 
         if (camera != null) {
             if (this.facePlayer) {
@@ -708,7 +708,7 @@ public class EntityRotFX extends SpriteTexturedParticle implements IWindHandler,
         } else {
             Quaternion.mul(qY, qX, this.rotation);
         }
-    }
+    }*/
 
     @Override
     public void setColor(float particleRedIn, float particleGreenIn, float particleBlueIn) {

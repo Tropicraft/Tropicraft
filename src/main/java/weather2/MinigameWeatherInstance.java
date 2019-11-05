@@ -119,7 +119,7 @@ public class MinigameWeatherInstance {
         acidRainTime = nbt.getLong("acidRainTime");
         heatwaveTime = nbt.getLong("heatwaveTime");
 
-        dbg("minigame weather deserialize(): " + nbt);
+        //dbg("minigame weather deserialize(): " + nbt);
     }
 
 }

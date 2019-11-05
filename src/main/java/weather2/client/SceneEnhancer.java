@@ -756,157 +756,6 @@ public class SceneEnhancer implements Runnable {
 
 
 
-				//TEST
-				if (testParticle != null/* && testParticle2 != null*/) {
-					//testParticle.setPosition(entP.posX, entP.posY + 1, entP.posZ + 3);
-
-					testParticle.rotationPitch = 0;//world.getGameTime() % 360;
-					//testParticle.rotationYaw = 45;//(world.getGameTime() % 360) * 6;
-
-					Quaternion q = testParticle.getQuaternion();
-					//Quaternion q2 = testParticle2.getQuaternion();
-
-					float amp1 = (float)Math.sin(Math.toRadians((world.getGameTime() * 1) % 360));
-					float amp2 = (float)Math.cos(Math.toRadians((world.getGameTime() * 3) % 360));
-
-					Quaternion qNewRot = new Quaternion();
-					qNewRot.setFromAxisAngle(new Vector4f(1, 0, 0, (float)Math.toRadians(5F)));
-					/*if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD1)) {
-						//Quaternion.mul(q, qNewRot, q);
-					}*/
-
-					qNewRot = new Quaternion();
-					qNewRot.setFromAxisAngle(new Vector4f(0, 1, 0, (float)Math.toRadians(5F)));
-					/*if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2)) {
-						//Quaternion.mul(q, qNewRot, q);
-					}*/
-
-					qNewRot = new Quaternion();
-					qNewRot.setFromAxisAngle(new Vector4f(0, 0, 1, (float)Math.toRadians(5F)));
-					/*if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD3)) {
-						//Quaternion.mul(q, qNewRot, q);
-					}*/
-
-					//System.out.println("q: " + q.x + ", " + q.y + ", " + q.z + ", " + q.w);
-
-					/*if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0)) {
-						q.setIdentity();
-					}*/
-
-					//testing
-					float scale = 3F;
-					float xAdj = q.x * scale;
-					float yAdj = q.y * scale;
-					float zAdj = q.z * scale;
-
-					//Matrix4fe matrix = new Matrix4fe();
-					//matrix.setIdentity();
-					//matrix.
-					//set to in players face
-					//matrix.translate(new Vector3f(0, 1.5F, 0));
-
-					//player rotations
-					//matrix.rotateY(-(float)Math.toRadians(entP.rotationYaw + 90));
-					//matrix.rotateZ(-(float)Math.toRadians(entP.rotationPitch));
-
-					/*if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD1)) {
-						vec.x += (float)Math.toRadians(5) * (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? -1F : 1F);
-						//matrix.rotateX((float)Math.toRadians(5) * (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? -1F : 1F));
-					}
-
-					if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2)) {
-						vec.y += (float)Math.toRadians(5) * (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? -1F : 1F);
-						//matrix.rotateY((float)Math.toRadians(5) * (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? -1F : 1F));
-					}
-
-					if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD3)) {
-						vec.z += (float)Math.toRadians(5) * (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? -1F : 1F);
-						//matrix.rotateZ((float)Math.toRadians(5) * (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) ? -1F : 1F));
-					}*/
-
-					vec.y += (float)Math.toRadians(30);
-
-
-
-					float ampz1 = (float)-Math.sin(Math.toRadians(((world.getGameTime() + 20) * 5) % 360)) * 0.3F;
-					float ampz2 = (float)Math.cos(Math.toRadians((world.getGameTime() * 3) % 360)) * 0.3F;
-
-					//ampz2 = (float)Math.sin(Math.toRadians((world.getGameTime() * 3) % 360)) * 1F;
-
-					ampz1 = (float)-Math.sin(Math.toRadians(0));
-					ampz2 = (float)Math.sin(Math.toRadians(30));
-
-					vec.x = ampz1;
-					vec.z = ampz2;
-
-					matrix.setIdentity();
-
-					//extra y test
-					matrix.rotateZ((float)Math.sin(Math.toRadians((world.getGameTime() * 3) % 360)) * 0.5F);
-					matrix.rotateX((float)Math.sin(Math.toRadians(((world.getGameTime() - 40) * 3) % 360)) * 0.5F);
-
-					//matrix.rotateX(vec.x);
-					//matrix.rotateZ(vec.z);
-					//y last
-					matrix.rotateY(vec.y);
-					matrix.translate(new Vector3f(2, 0, 0));
-					//matrix.translate(new Vector3f(0, 0, 2));
-
-					/*if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0)) {
-						vec = new Vector3f();
-						matrix.setIdentity();
-						//matrix.translate(new Vector3f(3, 0, 0));
-					}*/
-
-					/*if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD5)) {
-						//matrix.setIdentity();
-						matrix.m30 = 0;
-						matrix.m31 = 0;
-						matrix.m32 = 0;
-						matrix.translate(new Vector3f(3, 0, 0));
-					}*/
-
-					//push away from face in direction player is looking
-					//matrix.translate(new Vector3f(2, 0, 0));
-					//matrix.
-
-					//matrix.setIdentity();
-
-
-					Vector3f pos = matrix.getTranslation();
-					Vector3f pos2 = matrix2.getTranslation();
-
-					//matrix.translate(new Vector3f(-2, 0, 0));
-
-					//q.setFromMatrix(matrix.toLWJGLMathMatrix());
-					//q2.setFromMatrix(matrix2.toLWJGLMathMatrix());
-
-					xAdj = -pos.x;
-					yAdj = -pos.y;
-					zAdj = pos.z;
-
-					//testParticle.setPosition(entP.posX + 0, entP.posY + 0, entP.posZ + 4);
-
-					if (testParticle2 != null) testParticle2.setPosition(testParticle.posX + xAdj, testParticle.posY + yAdj, testParticle.posZ + zAdj);
-
-					//testParticle.getQuaternion().
-
-					//testParticle.rotationYaw++;
-
-					/*testParticle.posX = 15608.2F;
-					testParticle.posY = 70.5F;
-					testParticle.posZ = 235.8F;*/
-
-					testParticle.setAge(40);
-					if (testParticle2 != null) testParticle2.setAge(40000);
-				}
-
-				if (testParticle != null) {
-					testParticle.setAge(40);
-				}
-
-
-
 				//if (true) return;
 			}
 
@@ -1792,7 +1641,7 @@ public class SceneEnhancer implements Runnable {
 
 											var31.rotationYaw = rand.nextInt(360);
 											var31.rotationPitch = rand.nextInt(360);
-											var31.updateQuaternion(null);
+											//var31.updateQuaternion(null);
 
 											spawnQueue.add(var31);
 										}
@@ -1980,6 +1829,15 @@ public class SceneEnhancer implements Runnable {
         if (world.getGameTime() % 60 == 0) {
 			//System.out.println("weather particles: " + ClientTickHandler.weatherManager.listWeatherEffectedParticles.size());
 		}
+
+		for (int i = 0; i < ClientTickHandler.weatherManager.listWeatherEffectedParticles.size(); i++) {
+			Particle particle = ClientTickHandler.weatherManager.listWeatherEffectedParticles.get(i);
+
+			if (!particle.isAlive()) {
+				ClientTickHandler.weatherManager.listWeatherEffectedParticles.remove(i--);
+				continue;
+			}
+		}
         
         //Weather Effects
 		//TODO: 1.14 flip to false when we readd our particle renderer
@@ -1989,10 +1847,10 @@ public class SceneEnhancer implements Runnable {
 
 				Particle particle = ClientTickHandler.weatherManager.listWeatherEffectedParticles.get(i);
 
-				if (!particle.isAlive()) {
+				/*if (!particle.isAlive()) {
 					ClientTickHandler.weatherManager.listWeatherEffectedParticles.remove(i--);
 					continue;
-				}
+				}*/
 
 				if (ClientTickHandler.weatherManager.windMan.getWindSpeedForPriority() >= 0.10) {
 

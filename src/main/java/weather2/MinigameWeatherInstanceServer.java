@@ -28,11 +28,26 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                 if (minigameDefinition.getPhase() == IslandRoyaleMinigameDefinition.MinigamePhase.PHASE2 ||
                         minigameDefinition.getPhase() == IslandRoyaleMinigameDefinition.MinigamePhase.PHASE3) {
                     if (!specialWeatherActive()) {
-                        if (random.nextFloat() < heavyRainfallChance) {
+                        /*switch (random.nextInt(3)) {
+                            case 0:
+                                if (random.nextFloat() <= heavyRainfallChance) {
+                                    heavyRainfallStart();
+                                }
+                            case 1:
+                                if (random.nextFloat() <= acidRainChance) {
+                                    acidRainStart();
+                                }
+                            case 2:
+                                if (random.nextFloat() <= heatwaveChance) {
+                                    heatwaveStart();
+                                }
+                        }*/
+                        //favors first come first serve but if the rates are low enough its negligable probably
+                        if (random.nextFloat() <= heavyRainfallChance) {
                             heavyRainfallStart();
-                        } else if (random.nextFloat() < acidRainChance) {
+                        } else if (random.nextFloat() <= acidRainChance) {
                             acidRainStart();
-                        } else if (random.nextFloat() < heatwaveChance) {
+                        } else if (random.nextFloat() <= heatwaveChance) {
                             heatwaveStart();
                         }
                     }
@@ -43,22 +58,24 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                 tickSync(minigameDefinition);
             }
 
+            //heavyRainfallTime = 0;
+
             if (heavyRainfallTime > 0) {
                 heavyRainfallTime--;
 
-                if (heavyRainfallTime == 0) dbg("heavyRainfallTime ended");
+                //if (heavyRainfallTime == 0) dbg("heavyRainfallTime ended");
             }
 
             if (acidRainTime > 0) {
                 acidRainTime--;
 
-                if (acidRainTime == 0) dbg("acidRainTime ended");
+                //if (acidRainTime == 0) dbg("acidRainTime ended");
             }
 
             if (heatwaveTime > 0) {
                 heatwaveTime--;
 
-                if (heatwaveTime == 0) dbg("heatwaveTime ended");
+                //if (heatwaveTime == 0) dbg("heatwaveTime ended");
             }
         }
     }
@@ -75,16 +92,19 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
 
     public void heavyRainfallStart() {
         heavyRainfallTime = (20*60*2) + random.nextInt(20*60*2);
+        heavyRainfallTime = 50;
         dbg("heavyRainfallStart: " + heavyRainfallTime);
     }
 
     public void acidRainStart() {
         acidRainTime = (20*60*2) + random.nextInt(20*60*2);
+        acidRainTime = 50;
         dbg("acidRainStart: " + acidRainTime);
     }
 
     public void heatwaveStart() {
         heatwaveTime = (20*60*2) + random.nextInt(20*60*2);
+        heatwaveTime = 50;
         dbg("heatwaveStart: " + heatwaveTime);
     }
 

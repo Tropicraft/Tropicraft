@@ -68,10 +68,10 @@ public class ParticleTexExtraRender extends ParticleTexFX {
 			//rotationPitch *= 10F;
 		}
 
-		if (!quatControl) {
+		/*if (!quatControl) {
 			Entity ent = Minecraft.getInstance().getRenderViewEntity();
 			updateQuaternion(ent);
-		}
+		}*/
 	}
 
 	@Override
@@ -380,7 +380,7 @@ public class ParticleTexExtraRender extends ParticleTexFX {
 
 	}*/
 
-	@Override
+	/*@Override
 	public void updateQuaternion(Entity camera) {
 
 		if (camera != null) {
@@ -408,6 +408,6 @@ public class ParticleTexExtraRender extends ParticleTexFX {
 				Quaternion.mul(this.rotation, qY, this.rotation);
 			}
 		}
-	}
+	}*/
 
 }

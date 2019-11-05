@@ -61,7 +61,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     private MinigameWeatherInstanceServer minigameWeatherInstance;
 
-    private MinigamePhase phase;
+    private MinigamePhase phase = MinigamePhase.PHASE1;
 
     private long minigameTime = 0;
     private long phaseTime = 0;
@@ -180,6 +180,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     @Override
     public void onStart() {
         minigameTime = 0;
+        phase = MinigamePhase.PHASE1;
     }
 
     public MinigameWeatherInstance getMinigameWeatherInstance() {
