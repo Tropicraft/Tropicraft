@@ -14,6 +14,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
@@ -405,8 +406,10 @@ public class MinigameManager implements IMinigameManager
      */
     @SubscribeEvent
     public void onWorldTick(TickEvent.WorldTickEvent event) {
-        if (this.currentInstance != null) {
-            this.currentInstance.getDefinition().worldUpdate(this.currentInstance);
+        if (event.phase == TickEvent.Phase.END) {
+            if (this.currentInstance != null) {
+                this.currentInstance.getDefinition().worldUpdate(this.currentInstance);
+            }
         }
     }
 

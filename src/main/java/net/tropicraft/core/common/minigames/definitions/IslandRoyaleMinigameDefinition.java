@@ -135,26 +135,26 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     @Override
     public void worldUpdate(IMinigameInstance instance) {
         World world = WeatherUtil.getWorld(getDimension());
-        if (world != null) {
+        if (world != null && !world.isRemote) {
             //LOGGER.info("world update + " + world.getGameTime());
-        }
 
-        minigameTime++;
-        phaseTime++;
+            minigameTime++;
+            phaseTime++;
 
-        if (phase == MinigamePhase.PHASE1) {
-            if (phaseTime >= phase1Length) {
-                nextPhase();
+            if (phase == MinigamePhase.PHASE1) {
+                if (phaseTime >= phase1Length) {
+                    nextPhase();
+                }
+            } else if (phase == MinigamePhase.PHASE2) {
+                if (phaseTime >= phase2Length) {
+                    nextPhase();
+                }
+            } else if (phase == MinigamePhase.PHASE3) {
+                //???
             }
-        } else if (phase == MinigamePhase.PHASE2) {
-            if (phaseTime >= phase2Length) {
-                nextPhase();
-            }
-        } else if (phase == MinigamePhase.PHASE3) {
-            //???
-        }
 
-        minigameWeatherInstance.tick(this);
+            minigameWeatherInstance.tick(this);
+        }
     }
 
     @Override
