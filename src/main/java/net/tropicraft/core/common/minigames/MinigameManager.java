@@ -408,7 +408,7 @@ public class MinigameManager implements IMinigameManager
     public void onWorldTick(TickEvent.WorldTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             if (this.currentInstance != null) {
-                this.currentInstance.getDefinition().worldUpdate(this.currentInstance);
+                this.currentInstance.getDefinition().worldUpdate(event.world, this.currentInstance);
             }
         }
     }

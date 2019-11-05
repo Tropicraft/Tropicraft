@@ -6,7 +6,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.common.DimensionManager;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
@@ -58,7 +57,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public static boolean debugMode = true;
+    public static boolean debug = true;
 
     private MinigameWeatherInstanceServer minigameWeatherInstance;
 
@@ -124,7 +123,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public int getMinimumParticipantCount() {
-        return debugMode ? 1 : this.minimumPlayerCount;
+        return debug ? 1 : this.minimumPlayerCount;
     }
 
     @Override
@@ -133,9 +132,8 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     }
 
     @Override
-    public void worldUpdate(IMinigameInstance instance) {
-        World world = WeatherUtil.getWorld(getDimension());
-        if (world != null && !world.isRemote) {
+    public void worldUpdate(World world, IMinigameInstance instance) {
+        if (world.getDimension().getType() == getDimension()) {
             //LOGGER.info("world update + " + world.getGameTime());
 
             minigameTime++;
@@ -209,5 +207,27 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
             //no
         }
         phaseTime = 0;
+    }
+
+    public long getMinigameTime() {
+        return minigameTime;
+    }
+
+    public void setMinigameTime(long minigameTime) {
+        this.minigameTime = minigameTime;
+    }
+
+    public long getPhaseTime() {
+        return phaseTime;
+    }
+
+    public void setPhaseTime(long phaseTime) {
+        this.phaseTime = phaseTime;
+    }
+
+    public void dbg(String str) {
+        if (debug) {
+            LOGGER.info(str);
+        }
     }
 }

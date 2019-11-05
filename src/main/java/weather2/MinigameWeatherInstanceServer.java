@@ -38,7 +38,7 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                     }
                 }
 
-                dbg("" + minigameDefinition.getDimension());
+                //dbg("" + minigameDefinition.getDimension() + minigameDefinition.getPhaseTime());
 
                 tickSync(minigameDefinition);
             }

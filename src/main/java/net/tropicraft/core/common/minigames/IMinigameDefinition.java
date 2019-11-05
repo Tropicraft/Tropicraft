@@ -4,6 +4,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
+import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 /**
@@ -97,9 +98,10 @@ public interface IMinigameDefinition
      * running. Only called when a minigame using this definition is
      * actively running.
      *
+     * @param world The world to run this for, currently a worldUpdate call happens per each loaded world
      * @param instance The instance of the currently running minigame.
      */
-    void worldUpdate(IMinigameInstance instance);
+    void worldUpdate(World world, IMinigameInstance instance);
 
     /**
      * Helper method to catch when a player dies while inside an active
