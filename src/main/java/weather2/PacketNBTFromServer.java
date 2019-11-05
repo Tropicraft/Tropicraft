@@ -1,6 +1,5 @@
 package weather2;
 
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -61,6 +60,10 @@ public class PacketNBTFromServer {
                             ClientTickHandler.clientConfigData.read(nbt);
                             //ItemPocketSand.particulateFromServer(nbt.getString("playerName"));
                         }
+                    } else if (packetCommand.equals(WeatherNetworking.NBT_PACKET_COMMAND_MINIGAME)) {
+                        ClientTickHandler.checkClientWeather();
+
+                        ClientTickHandler.minigameWeatherInstance.deserialize(nbt.getCompound(WeatherNetworking.NBT_PACKET_DATA_MINIGAME));
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();

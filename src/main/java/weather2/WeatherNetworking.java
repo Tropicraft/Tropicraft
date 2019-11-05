@@ -17,6 +17,9 @@ public class WeatherNetworking {
     private static short lastID = 0;
     public static final ResourceLocation NETWORK_CHANNEL_ID_MAIN = new ResourceLocation(Weather.MODID, "main");
 
+    public static String NBT_PACKET_COMMAND_MINIGAME = "MinigameCommand";
+    public static String NBT_PACKET_DATA_MINIGAME = "MinigameData";
+
     public static final SimpleChannel HANDLER = NetworkRegistry.ChannelBuilder
             .named(NETWORK_CHANNEL_ID_MAIN)
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)

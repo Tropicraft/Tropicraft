@@ -27,6 +27,7 @@ public class ClientTickHandler
 	public static World lastWorld;
 	
 	public static WeatherManagerClient weatherManager;
+	public static MinigameWeatherInstance minigameWeatherInstance;
 	public static SceneEnhancer sceneEnhancer;
 	//TODO: 1.14 uncomment
 	//public static FoliageEnhancerShader foliageEnhancer;
@@ -249,6 +250,10 @@ public class ClientTickHandler
 			weatherManager.reset();
 			weatherManager = null;
 		}
+
+		if (minigameWeatherInstance != null) {
+			minigameWeatherInstance.reset();
+		}
 	}
 	
     public static void checkClientWeather() {
@@ -274,6 +279,7 @@ public class ClientTickHandler
 
     	lastWorld = world;
     	weatherManager = new WeatherManagerClient(world.getDimension().getType().getId());
+		minigameWeatherInstance = new MinigameWeatherInstance();
 
 		//request a full sync from server
 		CompoundNBT data = new CompoundNBT();
