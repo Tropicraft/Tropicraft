@@ -2,6 +2,7 @@ package weather2;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
 import weather2.util.CachedNBTTagCompound;
@@ -11,9 +12,9 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
 
     //rolls the dice once per second on each special weather event
     //0.1F = 10%
-    protected float heavyRainfallChance = 0.1F;
-    protected float acidRainChance = 0.1F;
-    protected float heatwaveChance = 0.1F;
+    protected float heavyRainfallChance = 0.01F;
+    protected float acidRainChance = 0.01F;
+    protected float heatwaveChance = 0.01F;
 
     public MinigameWeatherInstanceServer() {
         super();
@@ -25,6 +26,12 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
         if (world != null) {
             int tickRate = 20;
             if (world.getGameTime() % tickRate == 0) {
+
+                //test
+                heavyRainfallChance = 0.1F;
+                acidRainChance = 0.1F;
+                heatwaveChance = 0.1F;
+
                 if (minigameDefinition.getPhase() == IslandRoyaleMinigameDefinition.MinigamePhase.PHASE2 ||
                         minigameDefinition.getPhase() == IslandRoyaleMinigameDefinition.MinigamePhase.PHASE3) {
                     if (!specialWeatherActive()) {
@@ -48,7 +55,7 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                         } else if (random.nextFloat() <= acidRainChance) {
                             acidRainStart();
                         } else if (random.nextFloat() <= heatwaveChance) {
-                            heatwaveStart();
+                            //heatwaveStart();
                         }
                     }
                 }
@@ -58,7 +65,8 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                 tickSync(minigameDefinition);
             }
 
-            //heavyRainfallTime = 0;
+            /*heavyRainfallTime = 0;
+            acidRainTime = 0;*/
 
             if (heavyRainfallTime > 0) {
                 heavyRainfallTime--;
@@ -77,6 +85,18 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
 
                 //if (heatwaveTime == 0) dbg("heatwaveTime ended");
             }
+
+            //need to set for overworld due to vanilla bug
+            World overworld = WeatherUtil.getWorld(0);
+            if (overworld != null) {
+                if (specialWeatherActive() && !heatwaveActive()) {
+                    overworld.getWorldInfo().setRaining(true);
+                    overworld.getWorldInfo().setThundering(true);
+                } else {
+                    overworld.getWorldInfo().setRaining(false);
+                    overworld.getWorldInfo().setThundering(false);
+                }
+            }
         }
     }
 
@@ -92,19 +112,21 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
 
     public void heavyRainfallStart() {
         heavyRainfallTime = (20*60*2) + random.nextInt(20*60*2);
-        heavyRainfallTime = 50;
+        heavyRainfallTime = 300;
+        lastRainWasAcid = false;
         dbg("heavyRainfallStart: " + heavyRainfallTime);
     }
 
     public void acidRainStart() {
         acidRainTime = (20*60*2) + random.nextInt(20*60*2);
-        acidRainTime = 50;
+        acidRainTime = 300;
+        lastRainWasAcid = true;
         dbg("acidRainStart: " + acidRainTime);
     }
 
     public void heatwaveStart() {
         heatwaveTime = (20*60*2) + random.nextInt(20*60*2);
-        heatwaveTime = 50;
+        heatwaveTime = 150;
         dbg("heatwaveStart: " + heatwaveTime);
     }
 

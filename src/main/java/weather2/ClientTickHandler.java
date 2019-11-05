@@ -27,7 +27,7 @@ public class ClientTickHandler
 	public static World lastWorld;
 	
 	public static WeatherManagerClient weatherManager;
-	public static MinigameWeatherInstance minigameWeatherInstance;
+	public static MinigameWeatherInstanceClient minigameWeatherInstance;
 	public static SceneEnhancer sceneEnhancer;
 	//TODO: 1.14 uncomment
 	//public static FoliageEnhancerShader foliageEnhancer;
@@ -122,6 +122,7 @@ public class ClientTickHandler
 			checkClientWeather();
 
 			weatherManager.tick();
+			minigameWeatherInstance.tick(null);
 
 			if (!clientConfigData.Aesthetic_Only_Mode && ConfigMisc.Misc_ForceVanillaCloudsOff && world.getDimension().getType().getId() == 0) {
 				mc.gameSettings.cloudOption = CloudOption.OFF;
@@ -279,7 +280,7 @@ public class ClientTickHandler
 
     	lastWorld = world;
     	weatherManager = new WeatherManagerClient(world.getDimension().getType().getId());
-		minigameWeatherInstance = new MinigameWeatherInstance();
+		minigameWeatherInstance = new MinigameWeatherInstanceClient();
 
 		//request a full sync from server
 		CompoundNBT data = new CompoundNBT();

@@ -74,7 +74,9 @@ public class ParticleTexLeafColor extends ParticleTexFX {
 				}
 
 				//add just white that will get colormultiplied
-				colors = new int[] { 0xFFFFFF };
+				//TODO: adjusted for LT19
+				//colors = new int[] { 0xFFFFFF };
+				colors = new int[] { 0x00FF00 };
 		    }
 		    // Remove duplicate colors from end of array, this will skew the random choice later
 			if (colors.length > 1) {

@@ -15,7 +15,7 @@ import weather2.weathersystem.storm.StormObject;
 public class ConfigMisc implements IConfigCategory {
 	
 	//misc
-	public static boolean Misc_proxyRenderOverrideEnabled = false;
+	public static boolean Misc_proxyRenderOverrideEnabled = true;
 	//public static boolean Misc_takeControlOfGlobalRain = true;
 
 	//cutoff a bit extra, noticed lots of storms being insta killed on creation

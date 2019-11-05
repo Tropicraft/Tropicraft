@@ -6,7 +6,6 @@ import CoroUtil.forge.CULog;
 import CoroUtil.util.*;
 import com.mojang.blaze3d.platform.GlStateManager;
 import extendedrenderer.EventHandler;
-import extendedrenderer.ExtendedRenderer;
 import extendedrenderer.particle.ParticleRegistry;
 import extendedrenderer.particle.behavior.ParticleBehaviorFogGround;
 import extendedrenderer.particle.behavior.ParticleBehaviorMiniTornado;
@@ -16,8 +15,6 @@ import extendedrenderer.particle.entity.EntityRotFX;
 import extendedrenderer.particle.entity.ParticleTexExtraRender;
 import extendedrenderer.particle.entity.ParticleTexFX;
 import extendedrenderer.particle.entity.ParticleTexLeafColor;
-import extendedrenderer.placeholders.Quaternion;
-import extendedrenderer.placeholders.Vector4f;
 import extendedrenderer.render.RotatingParticleManager;
 import extendedrenderer.shader.Matrix4fe;
 import net.minecraft.block.Block;
@@ -26,7 +23,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.FlameParticle;
-import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.settings.ParticleStatus;
@@ -36,7 +32,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -555,7 +550,7 @@ public class SceneEnhancer implements Runnable {
 			if (windMan == null) return;
 
 
-			float curPrecipVal = 1;
+			float curPrecipVal = ClientTickHandler.minigameWeatherInstance.getParticleRainfallAmount();
 			if (ConfigLTOverrides.vanillaRainOverride) {
 				curPrecipVal = getRainStrengthAndControlVisuals(entP);
 			} else {
@@ -589,176 +584,6 @@ public class SceneEnhancer implements Runnable {
 				//ConfigCoroAI.optimizedCloudRendering = false;
 			}
 
-			boolean particleTest = false;
-
-			if (particleTest) {
-				if (testParticle == null || testParticle.isExpired) {
-					BlockPos pos = new BlockPos(entP);
-
-					//if (entP.getDistanceSq(pos) < 10D * 10D) continue;
-
-					//pos = world.getPrecipitationHeight(pos).add(0, 1, 0);
-
-					if (canPrecipitateAt(world, pos)/*world.isRainingAt(pos)*/) {
-						ParticleTexExtraRender rain = new ParticleTexExtraRender(entP.world,
-								pos.getX() + rand.nextFloat(),
-								pos.getY(),
-								pos.getZ() + rand.nextFloat(),
-								0D, 0D, 0D, ParticleRegistry.test_texture);
-						/*ParticleTexExtraRender rain = new ParticleTexExtraRender(entP.world,
-								15608.5F,
-								70.5F,
-								235.5F,
-								0D, 0D, 0D, ParticleRegistry.test_texture);*/
-						//rain.setCanCollide(true);
-						//rain.setKillOnCollide(true);
-						//rain.setKillWhenUnderTopmostBlock(true);
-						//rain.setTicksFadeOutMaxOnDeath(5);
-
-						//rain.particleTextureJitterX = 0;
-						//rain.particleTextureJitterY = 0;
-
-						//rain.setDontRenderUnderTopmostBlock(true);
-						//rain.setExtraParticlesBaseAmount(5);
-						//rain.setDontRenderUnderTopmostBlock(true);
-						rain.setSlantParticleToWind(false);
-						//rain.noExtraParticles = true;
-						rain.setExtraParticlesBaseAmount(1);
-						rain.setSeverityOfRainRate(0);
-						rain.setDontRenderUnderTopmostBlock(false);
-
-						boolean upward = rand.nextBoolean();
-
-						rain.windWeight = 999999F;
-						rain.setFacePlayer(false);
-
-						rain.setScale(90F + (rand.nextFloat() * 3F));
-
-
-						/**
-						 * 64x64 particle, 18 blocks high exactly when scale 90 used
-						 * 64x64 particle, 1 blocks high exactly when scale 5 used
-						 * particle texture file size doesnt matter,
-						 * scale 5 = 1 block size
-						 *
-						 */
-						rain.setScale(5F);
-						//rain.setScale(25F);
-						rain.setMaxAge(1600);
-						rain.setGravity(0.0F);
-						//opted to leave the popin for rain, its not as bad as snow, and using fade in causes less rain visual overall
-						rain.setTicksFadeInMax(20);
-						rain.setAlphaF(0);
-						rain.setTicksFadeOutMax(20);
-
-						rain.rotationYaw = 0;//rain.getWorld().rand.nextInt(360) - 180F;
-						rain.rotationPitch = 90;
-						rain.setMotionY(-0D);
-									/*rain.setMotionX(0);
-									rain.setMotionZ(0);*/
-						rain.setMotionX((rand.nextFloat() - 0.5F) * 0.01F);
-						rain.setMotionZ((rand.nextFloat() - 0.5F) * 0.01F);
-
-						//rain.setColor(1F, 1F, 1F);
-						rain.spawnAsWeatherEffect();
-						rain.weatherEffect = false;
-						//ClientTickHandler.weatherManager.addWeatheredParticle(rain);
-
-						rain.isTransparent = false;
-
-						rain.quatControl = true;
-
-						testParticle = rain;
-					}
-				}
-
-				if (false && (testParticle2 == null || testParticle2.isExpired)) {
-					BlockPos pos = new BlockPos(entP);
-
-					//if (entP.getDistanceSq(pos) < 10D * 10D) continue;
-
-					//pos = world.getPrecipitationHeight(pos).add(0, 1, 0);
-
-					if (canPrecipitateAt(world, pos)/*world.isRainingAt(pos)*/) {
-						ParticleTexExtraRender rain = new ParticleTexExtraRender(entP.world,
-								pos.getX() + rand.nextFloat(),
-								pos.getY(),
-								pos.getZ() + rand.nextFloat(),
-								0D, 0D, 0D, ParticleRegistry.test_texture);
-						/*ParticleTexExtraRender rain = new ParticleTexExtraRender(entP.world,
-								15608.5F,
-								70.5F,
-								235.5F,
-								0D, 0D, 0D, ParticleRegistry.test_texture);*/
-						//rain.setCanCollide(true);
-						//rain.setKillOnCollide(true);
-						//rain.setKillWhenUnderTopmostBlock(true);
-						//rain.setTicksFadeOutMaxOnDeath(5);
-
-						//rain.particleTextureJitterX = 0;
-						//rain.particleTextureJitterY = 0;
-
-						//rain.setDontRenderUnderTopmostBlock(true);
-						//rain.setExtraParticlesBaseAmount(5);
-						//rain.setDontRenderUnderTopmostBlock(true);
-						rain.setSlantParticleToWind(false);
-						//rain.noExtraParticles = true;
-						rain.setExtraParticlesBaseAmount(1);
-						rain.setSeverityOfRainRate(0);
-						rain.setDontRenderUnderTopmostBlock(false);
-
-						boolean upward = rand.nextBoolean();
-
-						rain.windWeight = 999999F;
-						rain.setFacePlayer(false);
-
-						rain.setScale(90F + (rand.nextFloat() * 3F));
-
-
-						/**
-						 * 64x64 particle, 18 blocks high exactly when scale 90 used
-						 * 64x64 particle, 1 blocks high exactly when scale 5 used
-						 * particle texture file size doesnt matter,
-						 * scale 5 = 1 block size
-						 *
-						 */
-						rain.setScale(5F);
-						//rain.setScale(25F);
-						rain.setMaxAge(1600);
-						rain.setGravity(0.0F);
-						//opted to leave the popin for rain, its not as bad as snow, and using fade in causes less rain visual overall
-						rain.setTicksFadeInMax(20);
-						rain.setAlphaF(0);
-						rain.setTicksFadeOutMax(20);
-
-						rain.rotationYaw = 0;//rain.getWorld().rand.nextInt(360) - 180F;
-						rain.rotationPitch = 90;
-						rain.setMotionY(-0D);
-									/*rain.setMotionX(0);
-									rain.setMotionZ(0);*/
-						rain.setMotionX((rand.nextFloat() - 0.5F) * 0.01F);
-						rain.setMotionZ((rand.nextFloat() - 0.5F) * 0.01F);
-
-						//rain.setColor(1F, 1F, 1F);
-						rain.spawnAsWeatherEffect();
-						rain.weatherEffect = false;
-						//ClientTickHandler.weatherManager.addWeatheredParticle(rain);
-
-						rain.isTransparent = false;
-
-						rain.quatControl = true;
-
-						//testParticle2 = rain;
-					}
-				}
-
-				//particleCount = 1;
-
-
-
-				//if (true) return;
-			}
-
 			//TODO: 1.14 uncomment
 			/*if (funnel == null) {
 				funnel = new TornadoFunnel();
@@ -766,88 +591,6 @@ public class SceneEnhancer implements Runnable {
 			}*/
 
 			//funnel.tickGame();
-
-			boolean testLeaf = false;
-			if (testLeaf) {
-				if (testParticle2 == null || testParticle2.isExpired) {
-					BlockPos pos = new BlockPos(entP);
-					EntityRotFX var31 = new ParticleTexLeafColor(world, pos.getX(), pos.getY(), pos.getZ(), 0D, 0D, 0D, ParticleRegistry.leaf);
-					var31.setPosition(pos.getX() + 1, pos.getY() + 1, pos.getZ());
-					var31.setPrevPosX(var31.posX);
-					var31.setPrevPosY(var31.posY);
-					var31.setPrevPosZ(var31.posZ);
-					var31.setMotionX(0);
-					var31.setMotionY(0);
-					var31.setMotionZ(0);
-					//ParticleBreakingTemp test = new ParticleBreakingTemp(worldRef, (double)xx, (double)yy - 0.5, (double)zz, ParticleRegistry.leaf);
-					var31.setGravity(0.05F);
-					var31.setCanCollide(true);
-					var31.setKillOnCollide(true);
-					var31.killWhenUnderCameraAtLeast = 20;
-					var31.killWhenFarFromCameraAtLeast = 20;
-					//var31.setSize(1, 1);
-					//var31.setKillWhenUnderTopmostBlock(true);
-
-					//System.out.println("add particle");
-					//Minecraft.getInstance().particles.addEffect(var31);
-					//ExtendedRenderer.rotEffRenderer.addEffect(test);
-					//ExtendedRenderer.rotEffRenderer.addEffect(var31);
-					//WeatherUtil.setParticleGravity((EntityFX)var31, 0.1F);
-
-					//worldRef.addParticle(EnumParticleTypes.FALLING_DUST, (double)xx, (double)yy, (double)zz, 0.0D, 0.0D, 0.0D, 0);
-
-												/*for (int ii = 0; ii < 10; ii++)
-												{
-													applyWindForce(var31);
-												}*/
-
-					var31.rotationYaw = rand.nextInt(360);
-					var31.rotationPitch = rand.nextInt(360);
-
-					testParticle2 = var31;
-
-					var31.spawnAsWeatherEffect();
-					ClientTickHandler.weatherManager.addWeatheredParticle(var31);
-				}
-			}
-
-			boolean doFish = false;
-
-			if (doFish) {
-				int spawnTryCur = 0;
-				int spawnTryMax = 200;
-				int range = 60;
-				for (; spawnTryCur < spawnTryMax; spawnTryCur++) {
-					BlockPos pos = new BlockPos(entP.getPosition().add(rand.nextInt(range) - rand.nextInt(range),
-							rand.nextInt(range) - rand.nextInt(range),
-							rand.nextInt(range) - rand.nextInt(range)));
-					BlockState state = world.getBlockState(pos);
-					if (state.getMaterial() == Material.WATER) {
-						ParticleFish fish = new ParticleFish(entP.world,
-								pos.getX() + 0.5F,
-								pos.getY() + 0.5F,
-								pos.getZ() + 0.5F,
-								0D, 0D, 0D, ParticleRegistry.listFish.get(rand.nextInt(8) + 1));
-						fish.setTicksFadeInMax(20);
-						fish.setAlphaF(0);
-						fish.setTicksFadeOutMax(20);
-						fish.setMaxAge(20 * 10);
-						fish.setScale(6F);
-						fish.setDontRenderUnderTopmostBlock(false);
-						fish.setGravity(0);
-						fish.isTransparent = false;
-						//fish.motionX = 0;
-						fish.motionY = 0;
-						//fish.motionZ = 0;
-						fish.rotationYaw = rand.nextInt(360);
-						fish.rotationPitch = rand.nextInt(45);
-						fish.setColor(0.6F, 0.6F, 1F);
-						//TODO: 1.14 uncomment
-						//ExtendedRenderer.rotEffRenderer.addEffect(fish);
-					}
-				}
-
-			}
 
 			//check rules same way vanilla texture precip does
             if (biomegenbase != null && (biomegenbase.getPrecipitation() != Biome.RainType.NONE))
@@ -946,6 +689,7 @@ public class SceneEnhancer implements Runnable {
 									rain.setAlphaF(0);
 									rain.rotationYaw = rain.getWorld().rand.nextInt(360) - 180F;
 									rain.setMotionY(-0.5D/*-5D - (entP.world.rand.nextInt(5) * -1D)*/);
+
 									rain.spawnAsWeatherEffect();
 									ClientTickHandler.weatherManager.addWeatheredParticle(rain);
 
@@ -958,6 +702,14 @@ public class SceneEnhancer implements Runnable {
 						}
 
 						//TODO: make ground splash and downfall use spawnNeed var style design
+
+						float acidRainRed = 0.7F;
+						float acidRainGreen = 1F;
+						float acidRainBlue = 0.7F;
+
+						float vanillaRainRed = 0.7F;
+						float vanillaRainGreen = 0.7F;
+						float vanillaRainBlue = 1F;
 
 						spawnAreaSize = 40;
 						//ground splash
@@ -1026,6 +778,17 @@ public class SceneEnhancer implements Runnable {
 									rain.setMotionZ(0);*/
 									rain.setMotionX((rand.nextFloat() - 0.5F) * 0.01F);
 									rain.setMotionZ((rand.nextFloat() - 0.5F) * 0.01F);
+
+									if (ClientTickHandler.minigameWeatherInstance.isLastRainWasAcid()) {
+										rain.particleRed = acidRainRed;
+										rain.particleGreen = acidRainGreen;
+										rain.particleBlue = acidRainBlue;
+									} else {
+										rain.particleRed = vanillaRainRed;
+										rain.particleGreen = vanillaRainGreen;
+										rain.particleBlue = vanillaRainBlue;
+									}
+
 									rain.spawnAsWeatherEffect();
 									ClientTickHandler.weatherManager.addWeatheredParticle(rain);
 								}
@@ -1107,6 +870,17 @@ public class SceneEnhancer implements Runnable {
 									rain.setMotionZ(0);*/
 									rain.setMotionX((rand.nextFloat() - 0.5F) * 0.01F);
 									rain.setMotionZ((rand.nextFloat() - 0.5F) * 0.01F);
+
+									if (ClientTickHandler.minigameWeatherInstance.isLastRainWasAcid()) {
+										rain.particleRed = acidRainRed;
+										rain.particleGreen = acidRainGreen;
+										rain.particleBlue = acidRainBlue;
+									} else {
+										rain.particleRed = vanillaRainRed;
+										rain.particleGreen = vanillaRainGreen;
+										rain.particleBlue = vanillaRainBlue;
+									}
+
 									rain.spawnAsWeatherEffect();
 									ClientTickHandler.weatherManager.addWeatheredParticle(rain);
 								}
@@ -2552,7 +2326,14 @@ public class SceneEnhancer implements Runnable {
 
 		if (ConfigMisc.Client_PotatoPC_Mode) return;
 
-		if (!ConfigLTOverrides.vanillaRainOverride) return;
+		if (!ConfigLTOverrides.vanillaRainOverride) {
+			Minecraft client = Minecraft.getInstance();
+			if (client.world != null && ClientTickHandler.minigameWeatherInstance != null) {
+				ClientTickHandler.checkClientWeather();
+				client.world.setRainStrength(ClientTickHandler.minigameWeatherInstance.getVanillaRainRenderAmount());
+			}
+			return;
+		}
 
 		if (event.phase == TickEvent.Phase.START) {
 			Minecraft client = Minecraft.getInstance();

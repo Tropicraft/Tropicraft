@@ -30,7 +30,7 @@ public class ConfigCoroUtil implements IConfigCategory {
 	public static boolean foliageShaders = false;
 
 	@ConfigComment("Used by weather2")
-	public static boolean particleShaders = true;
+	public static boolean particleShaders = false;
 
 	@ConfigComment("For seldom used but important things to print out in production")
 	public static boolean useLoggingLog = true;

@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import weather2.config.ConfigMisc;
 import weather2.util.WeatherUtil;
 import weather2.util.WeatherUtilConfig;
@@ -82,7 +83,7 @@ public class ServerTickHandler
         for (ServerWorld worldEntry : worlds) {
 			if (!lookupDimToWeatherMan.containsKey(worldEntry.getDimension().getType().getId())) {
 
-				if (WeatherUtilConfig.listDimensionsWeather.contains(worldEntry.getDimension().getType().getId())) {
+				if (worldEntry.getDimension().getType() == TropicraftWorldUtils.ISLAND_ROYALE_DIMENSION/*WeatherUtilConfig.listDimensionsWeather.contains(worldEntry.getDimension().getType().getId())*/) {
 					addWorldToWeather(worldEntry.getDimension().getType().getId());
 				}
 			}

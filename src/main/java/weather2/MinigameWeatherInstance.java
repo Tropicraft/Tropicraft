@@ -44,11 +44,13 @@ public class MinigameWeatherInstance {
      * acid rain:
      * - player damage over time
      * - degrade items and armor over time
+     * - use normal rain visual too, color changed
      *
      * extreme rain:
      * - fog closes in
      * - pump up weather2 effects
      * - splashing noise while walking
+     * - use normal rain visual too
      *
      * - consider design to factor in worn items to negate player effects
      */
@@ -57,6 +59,9 @@ public class MinigameWeatherInstance {
     protected long heavyRainfallTime = 0;
     protected long acidRainTime = 0;
     protected long heatwaveTime = 0;
+
+    //save last state the rain was set to, so that on the client side when rain is fading out, it doesnt switch to blue rain because acidRainTime == 0
+    protected boolean lastRainWasAcid = false;
 
     //operates independently of other weather events
     //TODO: just modify WindManager to do this?
@@ -110,6 +115,7 @@ public class MinigameWeatherInstance {
         nbt.putLong("heavyRainfallTime", heavyRainfallTime);
         nbt.putLong("acidRainTime", acidRainTime);
         nbt.putLong("heatwaveTime", heatwaveTime);
+        nbt.putBoolean("lastRainWasAcid", lastRainWasAcid);
 
         return nbt;
     }
@@ -118,8 +124,16 @@ public class MinigameWeatherInstance {
         heavyRainfallTime = nbt.getLong("heavyRainfallTime");
         acidRainTime = nbt.getLong("acidRainTime");
         heatwaveTime = nbt.getLong("heatwaveTime");
+        lastRainWasAcid = nbt.getBoolean("lastRainWasAcid");
 
         //dbg("minigame weather deserialize(): " + nbt);
     }
 
+    public boolean isLastRainWasAcid() {
+        return lastRainWasAcid;
+    }
+
+    public void setLastRainWasAcid(boolean lastRainWasAcid) {
+        this.lastRainWasAcid = lastRainWasAcid;
+    }
 }
