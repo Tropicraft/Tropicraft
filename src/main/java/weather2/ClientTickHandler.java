@@ -1,11 +1,12 @@
 package weather2;
 
-import extendedrenderer.ExtendedRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.settings.CloudOption;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -13,7 +14,6 @@ import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import weather2.client.SceneEnhancer;
 import weather2.config.ConfigFoliage;
 import weather2.config.ConfigMisc;
-import weather2.util.WeatherUtilConfig;
 import weather2.util.WindReader;
 import weather2.weathersystem.EntityRendererProxyWeather2Mini;
 import weather2.weathersystem.WeatherManagerClient;
@@ -96,6 +96,9 @@ public class ClientTickHandler
     
     public void onTickInGame()
     {
+
+    	tickCrawl();
+
 		if (ConfigMisc.Client_PotatoPC_Mode) return;
 
         Minecraft mc = Minecraft.getInstance();
@@ -299,4 +302,52 @@ public class ClientTickHandler
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.set(null, newValue);
     }
+
+	public static void tickCrawl() {
+		try {
+			PlayerEntity player = Minecraft.getInstance().player;
+
+			if (player != null) {
+				KeyBinding keySneak = Minecraft.getInstance().gameSettings.keyBindSneak;
+				KeyBinding keySprint = Minecraft.getInstance().gameSettings.keyBindSprint;
+
+				//tap sprint while sneaking to lock crawling on, requires actively holding down sneak
+				//letting go of sneak stops crawl
+
+				if (keySneak.isKeyDown()) {
+					if (keySprint.isKeyDown()) {
+						if (!isCurrentlyCrawling()) {
+							//System.out.println("set crawling true");
+							setCrawling(true);
+							sendCrawlPacketToServer(true);
+						}
+					}
+				} else {
+					//send packet only on client state change
+					if (isCurrentlyCrawling()) {
+						sendCrawlPacketToServer(false);
+					}
+					setCrawling(false);
+				}
+			}
+		} catch (Exception ex) {
+			//shhh
+		}
+	}
+
+	public static boolean isCurrentlyCrawling() {
+		return EventHandlerForge.playerCrawlingClient;
+	}
+
+	public static void setCrawling(boolean crawling) {
+		EventHandlerForge.playerCrawlingClient = crawling;
+	}
+
+	public static void sendCrawlPacketToServer(boolean isCrawling) {
+		//System.out.println("sendCrawlPacketToServer: " + isCrawling);
+		CompoundNBT data = new CompoundNBT();
+		data.putString("packetCommand", WeatherNetworking.NBT_PACKET_COMMAND_CRAWL);
+		data.putBoolean(WeatherNetworking.NBT_PACKET_DATA_CRAWL, isCrawling);
+		WeatherNetworking.HANDLER.sendToServer(new PacketNBTFromClient(data));
+	}
 }

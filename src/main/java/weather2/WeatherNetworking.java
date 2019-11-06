@@ -20,6 +20,9 @@ public class WeatherNetworking {
     public static String NBT_PACKET_COMMAND_MINIGAME = "MinigameCommand";
     public static String NBT_PACKET_DATA_MINIGAME = "MinigameData";
 
+    public static String NBT_PACKET_COMMAND_CRAWL = "CrawlCommand";
+    public static String NBT_PACKET_DATA_CRAWL = "CrawlData";
+
     public static final SimpleChannel HANDLER = NetworkRegistry.ChannelBuilder
             .named(NETWORK_CHANNEL_ID_MAIN)
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)

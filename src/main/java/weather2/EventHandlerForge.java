@@ -2,9 +2,10 @@ package weather2;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -18,16 +19,19 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent.Save;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import weather2.api.WeatherUtilData;
 import weather2.client.SceneEnhancer;
-import weather2.config.ConfigFoliage;
 import weather2.config.ConfigMisc;
 import weather2.weathersystem.storm.TornadoHelper;
 import weather2.weathersystem.wind.WindManager;
 
 import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = Weather.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EventHandlerForge {
@@ -276,5 +280,40 @@ public class EventHandlerForge {
 			}*/
 		}
 
+	}
+
+	public static HashMap<UUID, Boolean> lookupPlayerUUIDToCrawlActive_Server = new HashMap<>();
+	public static boolean playerCrawlingClient = false;
+
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public void playerTick(TickEvent.PlayerTickEvent event) {
+		try {
+			if (event.phase == TickEvent.Phase.END) {
+				if (!event.player.world.isRemote) {
+					//if (lookupPlayerUUIDToCrawlActive.containsKey(event.player.getUniqueID())) {
+					if (lookupPlayerUUIDToCrawlActive_Server.get(event.player.getUniqueID())) {
+						forcePlayerCrawling(event.player);
+					} else {
+						//dont need to do anything if its off
+					}
+				} else {
+					if (playerCrawlingClient) {
+						//System.out.println("player crawling");
+						forcePlayerCrawling(event.player);
+					}
+				}
+			}
+		} catch (Exception ex) {
+			//shh
+		}
+
+	}
+
+	public static void setPlayerCrawlStateServer(PlayerEntity player, boolean isCrawling) {
+		lookupPlayerUUIDToCrawlActive_Server.put(player.getUniqueID(), isCrawling);
+	}
+
+	public static void forcePlayerCrawling(PlayerEntity player) {
+		player.getDataManager().set(ObfuscationReflectionHelper.getPrivateValue(Entity.class, null, "field_213330_X"), Pose.SWIMMING);
 	}
 }

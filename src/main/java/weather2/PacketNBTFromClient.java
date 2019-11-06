@@ -69,6 +69,9 @@ public class PacketNBTFromClient {
                                 WeatherUtilConfig.nbtReceiveClientData(nbt.getCompound("guiData"));
                             }
                         }
+                    } else if (packetCommand.equals(WeatherNetworking.NBT_PACKET_COMMAND_CRAWL)) {
+                        boolean crawlState = nbt.getBoolean(WeatherNetworking.NBT_PACKET_DATA_CRAWL);
+                        EventHandlerForge.setPlayerCrawlStateServer(playerEntity, crawlState);
                     }
 
                 } catch (Exception ex) {
