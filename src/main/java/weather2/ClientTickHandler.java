@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import weather2.client.SceneEnhancer;
 import weather2.config.ConfigFoliage;
@@ -97,7 +98,9 @@ public class ClientTickHandler
     public void onTickInGame()
     {
 
-    	tickCrawl();
+    	if (ConfigLT.GENERAL.UseCrouch.get()) {
+			tickCrawl();
+		}
 
 		if (ConfigMisc.Client_PotatoPC_Mode) return;
 

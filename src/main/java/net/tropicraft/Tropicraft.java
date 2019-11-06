@@ -20,10 +20,12 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -58,8 +60,10 @@ import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.command.CommandReloadConfig;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.command.minigames.*;
+import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
 import net.tropicraft.core.common.data.TropicraftItemTagsProvider;
 import net.tropicraft.core.common.data.TropicraftLootTableProvider;
@@ -144,6 +148,8 @@ public class Tropicraft {
                     .put(BambooItemFrameRenderer.LOCATION_BLOCK, frameState)
                     .build();
         });
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigLT.CLIENT_CONFIG);
     }
     
     @OnlyIn(Dist.CLIENT)
@@ -196,6 +202,7 @@ public class Tropicraft {
         CommandStopMinigame.register(event.getServer().getCommandManager().getDispatcher());
         CommandUnregisterMinigame.register(event.getServer().getCommandManager().getDispatcher());
         CommandStopPollingMinigame.register(event.getServer().getCommandManager().getDispatcher());
+        CommandReloadConfig.register(event.getServer().getCommandManager().getDispatcher());
     }
 
     private void onServerStopping(final FMLServerStoppingEvent event) {

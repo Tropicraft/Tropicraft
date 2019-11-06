@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
@@ -23,6 +24,10 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.config.ConfigTracker;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.tropicraft.core.common.command.CommandReloadConfig;
 import weather2.api.WeatherUtilData;
 import weather2.client.SceneEnhancer;
 import weather2.config.ConfigMisc;
@@ -280,6 +285,16 @@ public class EventHandlerForge {
 			}*/
 		}
 
+	}
+
+	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	public void clientChat(ClientChatEvent event) {
+		String msg = event.getMessage();
+
+		if (msg.equals("/" + CommandReloadConfig.getCommandName() + " client")) {
+			ConfigTracker.INSTANCE.loadConfigs(ModConfig.Type.CLIENT, FMLPaths.CONFIGDIR.get());
+		}
 	}
 
 	public static HashMap<UUID, Boolean> lookupPlayerUUIDToCrawlActive_Server = new HashMap<>();
