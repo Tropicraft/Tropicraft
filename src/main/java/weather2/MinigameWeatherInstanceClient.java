@@ -39,7 +39,7 @@ public class MinigameWeatherInstanceClient extends MinigameWeatherInstance {
         }
 
         if (world.getGameTime() % 60 == 0) {
-            LOGGER.info(curOvercastStr);
+            //LOGGER.info(curOvercastStr);
         }
     }
 
