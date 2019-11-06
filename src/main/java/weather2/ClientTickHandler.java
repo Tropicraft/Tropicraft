@@ -303,6 +303,15 @@ public class ClientTickHandler
         field.set(null, newValue);
     }
 
+    /*public static void tickPlayerFromEvent(PlayerEntity player) {
+
+	}*/
+
+    public static boolean isMainClientPlayer(PlayerEntity player) {
+    	if (Minecraft.getInstance().player == null) return false;
+    	return player.getUniqueID() == Minecraft.getInstance().player.getUniqueID();
+	}
+
 	public static void tickCrawl() {
 		try {
 			PlayerEntity player = Minecraft.getInstance().player;

@@ -293,13 +293,19 @@ public class EventHandlerForge {
 					//if (lookupPlayerUUIDToCrawlActive.containsKey(event.player.getUniqueID())) {
 					if (lookupPlayerUUIDToCrawlActive_Server.get(event.player.getUniqueID())) {
 						forcePlayerCrawling(event.player);
+						//event.player.setSwimming(true);
 					} else {
 						//dont need to do anything if its off
 					}
 				} else {
+
 					if (playerCrawlingClient) {
 						//System.out.println("player crawling");
-						forcePlayerCrawling(event.player);
+						if (ClientTickHandler.isMainClientPlayer(event.player)) {
+							forcePlayerCrawling(event.player);
+							//event.player.setSwimming(true);
+						}
+
 					}
 				}
 			}
