@@ -204,7 +204,6 @@ public class SeaTurtleEntity extends TurtleEntity {
                 float forward = controllingEntity.moveForward;
                 float vertical = controllingEntity.moveVertical;
 
-                System.out.println(rotationPitch);
                 double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * (getMotion().length() + 0.1) * (forward >= 0 ? 1 : -1);
                 forward *= MathHelper.clamp(1 - (Math.abs(rotationPitch) / 90), 0.01f, 1);
 
