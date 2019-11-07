@@ -104,7 +104,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     
     @Override
     public double getMountedYOffset() {
-        return super.getMountedYOffset() - 0.4;
+        return super.getMountedYOffset() - 0.1;
     }
 
     @Override
@@ -131,9 +131,6 @@ public class SeaTurtleEntity extends TurtleEntity {
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (this.isPassenger(passenger)) {
-
-            passenger.setPosition(this.posX, this.posY + getMountedYOffset(), this.posZ);
-
             if(passenger instanceof PlayerEntity) {
                 PlayerEntity p = (PlayerEntity)passenger;
                 if(this.isInWater()) {

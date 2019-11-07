@@ -96,11 +96,13 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
                 yaw -= 360;
             yaw = turtle.prevRotationYawHead + (event.getPartialRenderTick() * yaw);
 
-            GlStateManager.translated(0, turtle.getHeight() + turtle.getMountedYOffset(), 0);
+            GlStateManager.translated(0, turtle.getMountedYOffset() - p.getYOffset(), 0);
             GlStateManager.rotatef(-yaw, 0, 1, 0);
+            GlStateManager.translated(0, -0.1, 0); // TODO figure out why this budging is needed
             GlStateManager.rotatef(pitch, 1, 0, 0);
+            GlStateManager.translated(0, 0.1, 0);
             GlStateManager.rotatef(yaw, 0, 1, 0);
-            GlStateManager.translated(0, -(turtle.getHeight() + turtle.getMountedYOffset()), 0);
+            GlStateManager.translated(0, -turtle.getMountedYOffset() + p.getYOffset(), 0);
             
             Vec3d passengerOffset = (new Vec3d(-0.25f, 0.0D, 0.0D))
                     .rotateYaw((float) (-Math.toRadians(yaw) - (Math.PI / 2)));
