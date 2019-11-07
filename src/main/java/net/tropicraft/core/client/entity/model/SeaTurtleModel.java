@@ -108,7 +108,7 @@ public class SeaTurtleModel extends EntityModel<SeaTurtleEntity> {
             rrFlipper.rotateAngleX = swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, (float) Math.PI / 4, 0);
             rrFlipper.rotateAngleY = -0.5f;
             rlFlipper.rotateAngleY = 0.5f;
-            rrFlipper.rotateAngleZ = -swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, 0, 0.5f);
+            rrFlipper.rotateAngleZ = swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, 0, 0.5f);
             rlFlipper.rotateAngleZ = swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, (float) Math.PI, -0.5f);;
         }
     }
