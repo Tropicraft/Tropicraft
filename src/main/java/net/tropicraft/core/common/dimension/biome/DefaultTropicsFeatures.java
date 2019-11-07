@@ -75,6 +75,11 @@ public class DefaultTropicsFeatures {
         biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.LARGE_PALM_TREE.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.2F, 1)));
     }
     
+    public static void addTropicsFlowers(Biome biome) {
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.TROPICS_FLOWERS.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(12)));
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.DOUBLE_PLANT, new DoublePlantConfig(TropicraftBlocks.IRIS.get().getDefaultState()), Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
+    }
+    
     public static void addPineapples(Biome biome) {
         biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.DOUBLE_PLANT, new DoublePlantConfig(TropicraftBlocks.PINEAPPLE.get().getDefaultState()), Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
     }

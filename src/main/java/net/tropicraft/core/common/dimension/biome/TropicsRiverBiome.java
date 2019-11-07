@@ -25,5 +25,6 @@ public class TropicsRiverBiome extends TropicraftBiome {
     public void addFeatures() {
         super.addFeatures();
         DefaultTropicsFeatures.addCarvers(this);
+        DefaultTropicsFeatures.addTropicsFlowers(this);
     }
 }
