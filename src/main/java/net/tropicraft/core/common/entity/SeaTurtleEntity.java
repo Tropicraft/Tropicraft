@@ -30,7 +30,6 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(2.0D);
     }
 
     public boolean isPushedByWater() {
@@ -87,7 +86,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     public void setTurtleType(final int type) {
-        getDataManager().set(TURTLE_TYPE, type);
+        getDataManager().set(TURTLE_TYPE, MathHelper.clamp(type, 1, 6));
     }
 
     @Override
