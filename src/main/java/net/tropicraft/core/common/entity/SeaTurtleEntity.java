@@ -101,6 +101,11 @@ public class SeaTurtleEntity extends TurtleEntity {
     public boolean canBeSteered() {
         return getControllingPassenger() instanceof LivingEntity;
     }
+    
+    @Override
+    public double getMountedYOffset() {
+        return super.getMountedYOffset() - 0.4;
+    }
 
     @Override
     @Nullable
@@ -126,26 +131,8 @@ public class SeaTurtleEntity extends TurtleEntity {
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (this.isPassenger(passenger)) {
-            float f = 0.0F;
-            float f1 = (float) ((!isAlive() ? 0.009999999776482582D : this.getMountedYOffset())
-                    + passenger.getYOffset());
-            f1+=0.1f;
-            f1+=-(this.rotationPitch * 0.00525f);
 
-            if (this.getPassengers().size() > 1) {
-                int i = this.getPassengers().indexOf(passenger);
-
-                if (i == 0) {
-                    f = 0.2F;
-                } else {
-                    f = -0.6F;
-                }
-            }
-            f = -0.25f-(this.rotationPitch*0.00525f);
-
-            Vec3d vec3d = (new Vec3d((double) f, 0.0D, 0.0D))
-                    .rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
-            passenger.setPosition(this.posX + vec3d.x, this.posY + (double) f1, this.posZ + vec3d.z);
+            passenger.setPosition(this.posX, this.posY + getMountedYOffset(), this.posZ);
 
             if(passenger instanceof PlayerEntity) {
                 PlayerEntity p = (PlayerEntity)passenger;
