@@ -28,15 +28,15 @@ public class Builder {
         return item(Item::new, properties);
     }
     
-    private static <T> Supplier<T> item(Function<Item.Properties, T> ctor) {
+    public static <T> Supplier<T> item(Function<Item.Properties, T> ctor) {
         return item(ctor, getDefaultProperties());
     }
     
-    private static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Item.Properties properties) {
+    public static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Item.Properties properties) {
         return item(ctor, () -> properties);
     }
     
-    private static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Supplier<Item.Properties> properties) {
+    public static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Supplier<Item.Properties> properties) {
         return () -> ctor.apply(properties.get());
     }
     

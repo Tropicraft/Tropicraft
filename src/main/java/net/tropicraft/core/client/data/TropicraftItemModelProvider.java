@@ -250,6 +250,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         // Mob drops
         generated(TropicraftItems.IGUANA_LEATHER);
         
+        // Misc
+        generated(TropicraftItems.TROPICAL_FERTILIZER);
+        
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);
 

@@ -242,6 +242,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         // Mob drops
         addItem(TropicraftItems.IGUANA_LEATHER);
         
+        // Misc
+        addItem(TropicraftItems.TROPICAL_FERTILIZER);
+        
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(item -> addItemWithTooltip(item, "Music Disc", item.get().getType().getTooltip()));
 
