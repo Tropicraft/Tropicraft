@@ -67,41 +67,44 @@ public class SeaTurtleModel extends EntityModel<SeaTurtleEntity> {
     public void render(SeaTurtleEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-
+        body.render(f5);
+    }
+    
+    @Override
+    public void setRotationAngles(SeaTurtleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         float defFront = 0.3927F;
         float defFront2 = 0.3F;
         float defRear = .5F;
 
-        f1 *=2f;
-        f *= 1.5f;
-
         if (!entity.isInWater()) {
-            body.rotateAngleX = -Math.abs(MathHelper.sin(f * 0.25F) * 1.25F * f1) - .10F;
-            frFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 + defFront;
+
+            limbSwingAmount *= 2f;
+            limbSwing *= 1.5f;
+
+            body.rotateAngleX = -Math.abs(MathHelper.sin(limbSwing * 0.25F) * 1.25F * limbSwingAmount) - .10F;
+            frFlipper.rotateAngleY = MathHelper.cos(limbSwing * 0.50F) * 2.5F * limbSwingAmount + defFront;
             frFlipper.rotateAngleX = -defFront2;
-            frFlipper.rotateAngleZ = MathHelper.cos(f * 0.50F) * 1.25F * f1 - defFront2;
-            flFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 - defFront;
-            flFlipper.rotateAngleZ = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defFront2;
+            frFlipper.rotateAngleZ = MathHelper.cos(limbSwing * 0.50F) * 1.25F * limbSwingAmount - defFront2;
+            flFlipper.rotateAngleY = MathHelper.cos(limbSwing * 0.50F) * 2.5F * limbSwingAmount - defFront;
+            flFlipper.rotateAngleZ = -MathHelper.cos(limbSwing * 0.50F) * 1.25F * limbSwingAmount + defFront2;
             frFlipper.rotateAngleX = defFront2;
-            rrFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 - defRear;
-            rlFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defRear;
+            rrFlipper.rotateAngleY = -MathHelper.cos(limbSwing * 0.50F) * 1.25F * limbSwingAmount - defRear;
+            rlFlipper.rotateAngleY = -MathHelper.cos(limbSwing * 0.50F) * 1.25F * limbSwingAmount + defRear;
             rrFlipper.rotateAngleZ = 0F;
             rlFlipper.rotateAngleZ = 0F;
         } else {
             body.rotateAngleX = 0F; // Y forward backward
-            frFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 + defFront;
+            frFlipper.rotateAngleY = MathHelper.cos(limbSwing * 0.25F) * 1.5F * limbSwingAmount + defFront;
             frFlipper.rotateAngleX = -defFront2;
-            frFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.75F * f1 - defFront2;
-            flFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 - defFront;
-            flFlipper.rotateAngleZ = MathHelper.cos(f * 1.25F) * 1.75F * f1 + defFront2;
+            frFlipper.rotateAngleZ = -MathHelper.cos(limbSwing * 1.25F) * 1.75F * limbSwingAmount - defFront2;
+            flFlipper.rotateAngleY = MathHelper.cos(limbSwing * 0.25F) * 1.5F * limbSwingAmount - defFront;
+            flFlipper.rotateAngleZ = MathHelper.cos(limbSwing * 1.25F) * 1.75F * limbSwingAmount + defFront2;
             frFlipper.rotateAngleX = defFront2;
-            rrFlipper.rotateAngleY = -MathHelper.cos(f * 0.25F) * .25F * f1 - defRear;
-            rlFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * .25F * f1 + defRear;
-            rrFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
-            rlFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
+            rrFlipper.rotateAngleY = -MathHelper.cos(limbSwing * 0.25F) * .25F * limbSwingAmount - defRear;
+            rlFlipper.rotateAngleY = MathHelper.cos(limbSwing * 0.25F) * .25F * limbSwingAmount + defRear;
+            rrFlipper.rotateAngleZ = -MathHelper.cos(limbSwing * 1.25F) * 1.25F * limbSwingAmount;
+            rlFlipper.rotateAngleZ = -MathHelper.cos(limbSwing * 1.25F) * 1.25F * limbSwingAmount;
         }
-
-        body.render(f5);
     }
 
     private void setRotation(RendererModel model, float x, float y, float z) {
