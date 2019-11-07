@@ -1,12 +1,15 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -30,7 +33,6 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(2.0D);
     }
 
     public boolean isPushedByWater() {
@@ -87,7 +89,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     public void setTurtleType(final int type) {
-        getDataManager().set(TURTLE_TYPE, type);
+        getDataManager().set(TURTLE_TYPE, MathHelper.clamp(type, 1, 6));
     }
 
     @Override
@@ -100,6 +102,11 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Override
     public boolean canBeSteered() {
         return getControllingPassenger() instanceof LivingEntity;
+    }
+    
+    @Override
+    public double getMountedYOffset() {
+        return super.getMountedYOffset() - 0.1;
     }
 
     @Override
@@ -126,27 +133,6 @@ public class SeaTurtleEntity extends TurtleEntity {
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (this.isPassenger(passenger)) {
-            float f = 0.0F;
-            float f1 = (float) ((!isAlive() ? 0.009999999776482582D : this.getMountedYOffset())
-                    + passenger.getYOffset());
-            f1+=0.1f;
-            f1+=-(this.rotationPitch * 0.00525f);
-
-            if (this.getPassengers().size() > 1) {
-                int i = this.getPassengers().indexOf(passenger);
-
-                if (i == 0) {
-                    f = 0.2F;
-                } else {
-                    f = -0.6F;
-                }
-            }
-            f = -0.25f-(this.rotationPitch*0.00525f);
-
-            Vec3d vec3d = (new Vec3d((double) f, 0.0D, 0.0D))
-                    .rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
-            passenger.setPosition(this.posX + vec3d.x, this.posY + (double) f1, this.posZ + vec3d.z);
-
             if(passenger instanceof PlayerEntity) {
                 PlayerEntity p = (PlayerEntity)passenger;
                 if(this.isInWater()) {
@@ -214,38 +200,25 @@ public class SeaTurtleEntity extends TurtleEntity {
                 this.stepHeight = 1.0F;
                 this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
 
-                float f = controllingEntity.moveStrafing * 0.5F;
-                float f1 = controllingEntity.moveForward;
-                float f4 = controllingEntity.moveVertical;
+                float strafe = controllingEntity.moveStrafing * 0.1F;
+                float forward = controllingEntity.moveForward;
+                float vertical = controllingEntity.moveVertical;
 
-                float speed = (float)this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
-
-                System.out.println(jumpMovementFactor);
-                float f2 = -MathHelper.sin((rotationPitch) * ((float)Math.PI / 180F)) * speed;
+                double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * (getMotion().length() + 0.1) * (forward >= 0 ? 1 : -1);
+                forward *= MathHelper.clamp(1 - (Math.abs(rotationPitch) / 90), 0.01f, 1);
 
                 if (!isInWater()) {
-                    // TODO fix hoppy motion out of water when turtle surfaces
-                    setMotion(getMotion().add(0, -0.11, 0));
-                    super.travel(new Vec3d(0, f2, f1));
-                    return;
+                    // Lower max speed when breaching, as a penalty to uncareful driving
+                    this.setMotion(this.getMotion().mul(0.9, 0.99, 0.9).add(0, -this.getAttribute(ENTITY_GRAVITY).getValue(), 0));
                 }
 
                 if (this.canPassengerSteer()) {
-                    float xxx = MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F));
-                    float yyy = MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F));
-
-                    final double motionXD = xxx * -0.1 * f1;
-                    final double motionZD = yyy * 0.1 * f1;
-
-                    if (isInWater()) {
-                        setMotion(getMotion().add(motionXD, f2 * 0.01, motionZD));
-                    } else {
-                        setMotion(getMotion().add(0, -0.01, 0));
-                    }
-
-                    this.setAIMoveSpeed(speed);
-                    // always unit vector of travel unless setMotion is called
-                    super.travel(new Vec3d(0, f2, f1));
+                    Vec3d travel = new Vec3d(strafe, verticalFromPitch + vertical, forward);
+                    // This value controls how fast speed builds up
+                    moveRelative(0.05F, travel);
+                    move(MoverType.SELF, getMotion());
+                    // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
+                    this.setMotion(this.getMotion().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
                 } else {
                     this.setMotion(Vec3d.ZERO);
                 }

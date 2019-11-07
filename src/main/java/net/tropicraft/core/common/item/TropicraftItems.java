@@ -114,6 +114,7 @@ public class TropicraftItems {
     public static final RegistryObject<Item> POISON_FROG_SKIN = register("poison_frog_skin", Builder.item());
     
     public static final RegistryObject<Item> IGUANA_LEATHER = register("iguana_leather", Builder.item());
+    public static final RegistryObject<Item> TROPICAL_FERTILIZER = register("tropical_fertilizer", Builder.item(TropicalFertilizerItem::new));
 
     public static final RegistryObject<Item> BAMBOO_ITEM_FRAME = register(
             "bamboo_item_frame", () -> new BambooItemFrameItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));

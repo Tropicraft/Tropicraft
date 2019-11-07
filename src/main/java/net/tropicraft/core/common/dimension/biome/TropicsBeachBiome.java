@@ -28,5 +28,6 @@ public class TropicsBeachBiome extends TropicraftBiome {
         DefaultTropicsFeatures.addUnderwaterCarvers(this);
         
         DefaultTropicsFeatures.addPalmTrees(this);
+        DefaultTropicsFeatures.addTropicsFlowers(this);
     }
 }
