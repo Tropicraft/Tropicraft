@@ -34,6 +34,8 @@ public class TropicraftBiomes {
                 ((TropicraftBiome) b).addFeatures();
             } else if (b.getCategory() == Category.BEACH) {
                 DefaultTropicsFeatures.addPalmTrees(b);
+            } else if (b.getCategory() == Category.JUNGLE) {
+                DefaultTropicsFeatures.addPineapples(b);
             }
         }
     }
