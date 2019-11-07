@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -202,11 +204,13 @@ public class SeaTurtleEntity extends TurtleEntity {
                 float forward = controllingEntity.moveForward;
                 float vertical = controllingEntity.moveVertical;
 
-                double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * (getMotion().length() + 0.1);
+                System.out.println(rotationPitch);
+                double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * (getMotion().length() + 0.1) * (forward >= 0 ? 1 : -1);
+                forward *= MathHelper.clamp(1 - (Math.abs(rotationPitch) / 90), 0.01f, 1);
 
                 if (!isInWater()) {
                     // Lower max speed when breaching, as a penalty to uncareful driving
-                    this.setMotion(this.getMotion().scale(0.9));
+                    this.setMotion(this.getMotion().mul(0.9, 0.99, 0.9).add(0, -this.getAttribute(ENTITY_GRAVITY).getValue(), 0));
                 }
 
                 if (this.canPassengerSteer()) {
@@ -215,7 +219,7 @@ public class SeaTurtleEntity extends TurtleEntity {
                     moveRelative(0.05F, travel);
                     move(MoverType.SELF, getMotion());
                     // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
-                    this.setMotion(this.getMotion().scale(0.975D));
+                    this.setMotion(this.getMotion().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
                 } else {
                     this.setMotion(Vec3d.ZERO);
                 }
