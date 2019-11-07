@@ -76,7 +76,7 @@ public class SeaTurtleModel extends EntityModel<SeaTurtleEntity> {
         float defFront2 = 0.3F;
         float defRear = .5F;
 
-        if (!entity.isInWater()) {
+        if (!entity.isInWater() && !entity.isBeingRidden()) {
 
             limbSwingAmount *= 3f;
             limbSwing *= 2f;
@@ -97,7 +97,7 @@ public class SeaTurtleModel extends EntityModel<SeaTurtleEntity> {
         } else {
             limbSwingAmount *= 0.75f;
             limbSwing *= 0.1f;
-            body.rotateAngleX = 0F; // Y forward backward
+            body.rotateAngleX = (float) Math.toRadians(headPitch);
             frFlipper.rotateAngleY = swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, 0, defFront);
             frFlipper.rotateAngleX = swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, (float) Math.PI / 4, defFront2 + 0.25f);
             frFlipper.rotateAngleZ = 0;

@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -213,38 +214,24 @@ public class SeaTurtleEntity extends TurtleEntity {
                 this.stepHeight = 1.0F;
                 this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
 
-                float f = controllingEntity.moveStrafing * 0.5F;
-                float f1 = controllingEntity.moveForward;
-                float f4 = controllingEntity.moveVertical;
+                float strafe = controllingEntity.moveStrafing * 0.1F;
+                float forward = controllingEntity.moveForward;
+                float vertical = controllingEntity.moveVertical;
 
-                float speed = (float)this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
-
-                System.out.println(jumpMovementFactor);
-                float f2 = -MathHelper.sin((rotationPitch) * ((float)Math.PI / 180F)) * speed;
+                double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * (getMotion().length() + 0.1);
 
                 if (!isInWater()) {
-                    // TODO fix hoppy motion out of water when turtle surfaces
-                    setMotion(getMotion().add(0, -0.11, 0));
-                    super.travel(new Vec3d(0, f2, f1));
-                    return;
+                    // Lower max speed when breaching, as a penalty to uncareful driving
+                    this.setMotion(this.getMotion().scale(0.9));
                 }
 
                 if (this.canPassengerSteer()) {
-                    float xxx = MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F));
-                    float yyy = MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F));
-
-                    final double motionXD = xxx * -0.1 * f1;
-                    final double motionZD = yyy * 0.1 * f1;
-
-                    if (isInWater()) {
-                        setMotion(getMotion().add(motionXD, f2 * 0.01, motionZD));
-                    } else {
-                        setMotion(getMotion().add(0, -0.01, 0));
-                    }
-
-                    this.setAIMoveSpeed(speed);
-                    // always unit vector of travel unless setMotion is called
-                    super.travel(new Vec3d(0, f2, f1));
+                    Vec3d travel = new Vec3d(strafe, verticalFromPitch + vertical, forward);
+                    // This value controls how fast speed builds up
+                    moveRelative(0.05F, travel);
+                    move(MoverType.SELF, getMotion());
+                    // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
+                    this.setMotion(this.getMotion().scale(0.975D));
                 } else {
                     this.setMotion(Vec3d.ZERO);
                 }
