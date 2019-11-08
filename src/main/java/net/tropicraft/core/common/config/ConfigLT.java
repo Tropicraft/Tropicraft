@@ -24,18 +24,30 @@ public class ConfigLT {
     public static final class CategoryIslandRoyale {
 
         public final IntValue minimumPlayerCount;
-
         public final IntValue maximumPlayerCount;
 
         public final ConfigValue<String> minigame_IslandRoyale_playerPositions;
-
         public final ConfigValue<String> minigame_IslandRoyale_respawnPosition;
-
         public final ConfigValue<String> minigame_IslandRoyale_spectatorPosition;
 
         public final IntValue phase1Length;
-
         public final IntValue phase2Length;
+
+        public final DoubleValue rainHeavyChance;
+        public final DoubleValue rainAcidChance;
+        public final DoubleValue heatwaveChance;
+
+        public final IntValue rainHeavyMinTime;
+        public final IntValue rainHeavyExtraRandTime;
+        public final IntValue rainAcidMinTime;
+        public final IntValue rainAcidExtraRandTime;
+        public final IntValue heatwaveMinTime;
+        public final IntValue heatwaveExtraRandTime;
+
+        public final DoubleValue heatwaveMovementMultiplier;
+
+        public final IntValue acidRainDamage;
+        public final IntValue acidRainDamageRate;
 
         private CategoryIslandRoyale() {
             COMMON_BUILDER.comment("Island Royale settings").push("island_royale");
@@ -46,16 +58,29 @@ public class ConfigLT {
                             "5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955");
 
             minigame_IslandRoyale_respawnPosition = COMMON_BUILDER.define("minigame_IslandRoyale_respawnPosition", "5780, 141, 6955");
-
             minigame_IslandRoyale_spectatorPosition = COMMON_BUILDER.define("minigame_IslandRoyale_spectatorPosition", "5780, 141, 6955");
 
             minimumPlayerCount = COMMON_BUILDER.defineInRange("minimumPlayerCount", 3, 1, 255);
-
             maximumPlayerCount = COMMON_BUILDER.defineInRange("maximumPlayerCount", 16, 2, 255);
 
             phase1Length = COMMON_BUILDER.comment("Time in ticks first game phase will last").defineInRange("phase1Length", 20*60*5, 1, Integer.MAX_VALUE);
-
             phase2Length = COMMON_BUILDER.comment("Time in ticks second game phase will last").defineInRange("phase2Length", 20*60*5, 1, Integer.MAX_VALUE);
+
+            rainHeavyChance = COMMON_BUILDER.comment("Tried every second, 0.01 = 1% chance, 1 = 100% chance").defineInRange("rainHeavyChance", 0.01, 0, 1D);
+            rainAcidChance = COMMON_BUILDER.comment("Tried every second, 0.01 = 1% chance, 1 = 100% chance").defineInRange("rainAcidChance", 0.01, 0, 1D);
+            heatwaveChance = COMMON_BUILDER.comment("Tried every second, 0.01 = 1% chance, 1 = 100% chance").defineInRange("heatwaveChance", 0.01, 0, 1D);
+
+            rainHeavyMinTime = COMMON_BUILDER.defineInRange("rainHeavyMinTime", 20*60*2, 1, Integer.MAX_VALUE);
+            rainHeavyExtraRandTime = COMMON_BUILDER.defineInRange("rainHeavyExtraRandTime", 20*60*2, 1, Integer.MAX_VALUE);
+            rainAcidMinTime = COMMON_BUILDER.defineInRange("rainAcidMinTime", 20*60*2, 1, Integer.MAX_VALUE);
+            rainAcidExtraRandTime = COMMON_BUILDER.defineInRange("rainAcidExtraRandTime", 20*60*2, 1, Integer.MAX_VALUE);
+            heatwaveMinTime = COMMON_BUILDER.defineInRange("heatwaveMinTime", 20*60*2, 1, Integer.MAX_VALUE);
+            heatwaveExtraRandTime = COMMON_BUILDER.defineInRange("heatwaveExtraRandTime", 20*60*2, 1, Integer.MAX_VALUE);
+
+            heatwaveMovementMultiplier = COMMON_BUILDER.defineInRange("heatwaveMovementMultiplier", 0.5, 0.01, 1D);
+
+            acidRainDamage = COMMON_BUILDER.defineInRange("acidRainDamage", 1, 1, Integer.MAX_VALUE);
+            acidRainDamageRate = COMMON_BUILDER.comment("Rate in ticks, 20 = 1 second").defineInRange("acidRainDamageRate", 60, 1, Integer.MAX_VALUE);
 
             COMMON_BUILDER.pop();
         }

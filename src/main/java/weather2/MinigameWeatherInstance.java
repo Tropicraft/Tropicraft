@@ -1,7 +1,9 @@
 package weather2;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,6 +65,8 @@ public class MinigameWeatherInstance {
     //save last state the rain was set to, so that on the client side when rain is fading out, it doesnt switch to blue rain because acidRainTime == 0
     protected boolean lastRainWasAcid = false;
 
+    protected double heatwaveMovementMultiplierClient = 0.5D;
+
     //operates independently of other weather events
     //TODO: just modify WindManager to do this?
     protected long highWindTime = 0;
@@ -78,6 +82,10 @@ public class MinigameWeatherInstance {
     }
 
     public void tick(IslandRoyaleMinigameDefinition minigameDefinition) {
+
+    }
+
+    public void tickPlayer(PlayerEntity player) {
 
     }
 
@@ -116,6 +124,7 @@ public class MinigameWeatherInstance {
         nbt.putLong("acidRainTime", acidRainTime);
         nbt.putLong("heatwaveTime", heatwaveTime);
         nbt.putBoolean("lastRainWasAcid", lastRainWasAcid);
+        nbt.putDouble("heatwaveMovementMultiplierClient", ConfigLT.MINIGAME_ISLAND_ROYALE.heatwaveMovementMultiplier.get());
 
         return nbt;
     }
@@ -125,6 +134,7 @@ public class MinigameWeatherInstance {
         acidRainTime = nbt.getLong("acidRainTime");
         heatwaveTime = nbt.getLong("heatwaveTime");
         lastRainWasAcid = nbt.getBoolean("lastRainWasAcid");
+        heatwaveMovementMultiplierClient = nbt.getDouble("heatwaveMovementMultiplierClient");
 
         //dbg("minigame weather deserialize(): " + nbt);
     }

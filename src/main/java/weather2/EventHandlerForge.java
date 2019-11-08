@@ -305,6 +305,9 @@ public class EventHandlerForge {
 		try {
 			if (event.phase == TickEvent.Phase.END) {
 				if (!event.player.world.isRemote) {
+
+
+
 					//if (lookupPlayerUUIDToCrawlActive.containsKey(event.player.getUniqueID())) {
 					if (lookupPlayerUUIDToCrawlActive_Server.get(event.player.getUniqueID())) {
 						forcePlayerCrawling(event.player);

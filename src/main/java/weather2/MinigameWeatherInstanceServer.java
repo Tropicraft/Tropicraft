@@ -1,20 +1,18 @@
 package weather2;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
 import weather2.util.CachedNBTTagCompound;
 import weather2.util.WeatherUtil;
 
 public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
-
-    //rolls the dice once per second on each special weather event
-    //0.1F = 10%
-    protected float heavyRainfallChance = 0.01F;
-    protected float acidRainChance = 0.01F;
-    protected float heatwaveChance = 0.01F;
 
     public MinigameWeatherInstanceServer() {
         super();
@@ -27,35 +25,17 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
             int tickRate = 20;
             if (world.getGameTime() % tickRate == 0) {
 
-                //test
-                heavyRainfallChance = 0.1F;
-                acidRainChance = 0.1F;
-                heatwaveChance = 0.1F;
-
                 if (minigameDefinition.getPhase() == IslandRoyaleMinigameDefinition.MinigamePhase.PHASE2 ||
                         minigameDefinition.getPhase() == IslandRoyaleMinigameDefinition.MinigamePhase.PHASE3) {
                     if (!specialWeatherActive()) {
-                        /*switch (random.nextInt(3)) {
-                            case 0:
-                                if (random.nextFloat() <= heavyRainfallChance) {
-                                    heavyRainfallStart();
-                                }
-                            case 1:
-                                if (random.nextFloat() <= acidRainChance) {
-                                    acidRainStart();
-                                }
-                            case 2:
-                                if (random.nextFloat() <= heatwaveChance) {
-                                    heatwaveStart();
-                                }
-                        }*/
+
                         //favors first come first serve but if the rates are low enough its negligable probably
-                        if (random.nextFloat() <= heavyRainfallChance) {
+                        if (random.nextFloat() <= ConfigLT.MINIGAME_ISLAND_ROYALE.rainHeavyChance.get()) {
                             heavyRainfallStart();
-                        } else if (random.nextFloat() <= acidRainChance) {
+                        } else if (random.nextFloat() <= ConfigLT.MINIGAME_ISLAND_ROYALE.rainAcidChance.get()) {
                             acidRainStart();
-                        } else if (random.nextFloat() <= heatwaveChance) {
-                            //heatwaveStart();
+                        } else if (random.nextFloat() <= ConfigLT.MINIGAME_ISLAND_ROYALE.heatwaveChance.get()) {
+                            heatwaveStart();
                         }
                     }
                 }
@@ -65,8 +45,10 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                 tickSync(minigameDefinition);
             }
 
-            /*heavyRainfallTime = 0;
-            acidRainTime = 0;*/
+            //heavyRainfallTime = 0;
+            //acidRainTime = 999;
+            //acidRainStart();
+            heatwaveStart();
 
             if (heavyRainfallTime > 0) {
                 heavyRainfallTime--;
@@ -98,12 +80,27 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                 }
             }
         }
+
+        world.getPlayers().forEach(player -> tickPlayer(player));
+    }
+
+    @Override
+    public void tickPlayer(PlayerEntity player) {
+        if (player.isCreative()) return;
+        if (acidRainActive()) {
+            if (player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition()).getY() <= player.getPosition().getY()) {
+                if (player.world.getGameTime() % ConfigLT.MINIGAME_ISLAND_ROYALE.acidRainDamageRate.get() == 0) {
+                    player.attackEntityFrom(DamageSource.GENERIC, ConfigLT.MINIGAME_ISLAND_ROYALE.acidRainDamage.get());
+                }
+            }
+        } else if (heatwaveActive()) {
+
+        }
     }
 
     public void tickSync(IslandRoyaleMinigameDefinition minigameDefinition) {
         CompoundNBT data = new CompoundNBT();
         data.putString("packetCommand", WeatherNetworking.NBT_PACKET_COMMAND_MINIGAME);
-        //data.putString("command", "syncStormNew");
 
         data.put(WeatherNetworking.NBT_PACKET_DATA_MINIGAME, serialize());
 
@@ -111,22 +108,19 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
     }
 
     public void heavyRainfallStart() {
-        heavyRainfallTime = (20*60*2) + random.nextInt(20*60*2);
-        heavyRainfallTime = 300;
+        heavyRainfallTime = ConfigLT.MINIGAME_ISLAND_ROYALE.rainHeavyMinTime.get() + random.nextInt(ConfigLT.MINIGAME_ISLAND_ROYALE.rainHeavyExtraRandTime.get());
         lastRainWasAcid = false;
         dbg("heavyRainfallStart: " + heavyRainfallTime);
     }
 
     public void acidRainStart() {
-        acidRainTime = (20*60*2) + random.nextInt(20*60*2);
-        acidRainTime = 300;
+        acidRainTime = ConfigLT.MINIGAME_ISLAND_ROYALE.rainAcidMinTime.get() + random.nextInt(ConfigLT.MINIGAME_ISLAND_ROYALE.rainAcidExtraRandTime.get());
         lastRainWasAcid = true;
         dbg("acidRainStart: " + acidRainTime);
     }
 
     public void heatwaveStart() {
-        heatwaveTime = (20*60*2) + random.nextInt(20*60*2);
-        heatwaveTime = 150;
+        heatwaveTime = ConfigLT.MINIGAME_ISLAND_ROYALE.heatwaveMinTime.get() + random.nextInt(ConfigLT.MINIGAME_ISLAND_ROYALE.heatwaveExtraRandTime.get());
         dbg("heatwaveStart: " + heatwaveTime);
     }
 

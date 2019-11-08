@@ -1,7 +1,10 @@
 package weather2;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.Heightmap;
 import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
 
 public class MinigameWeatherInstanceClient extends MinigameWeatherInstance {
@@ -40,6 +43,21 @@ public class MinigameWeatherInstanceClient extends MinigameWeatherInstance {
 
         if (world.getGameTime() % 60 == 0) {
             //LOGGER.info(curOvercastStr);
+        }
+
+        world.getPlayers().forEach(player -> tickPlayer(player));
+    }
+
+    @Override
+    public void tickPlayer(PlayerEntity player) {
+        if (player.isCreative()) return;
+        if (heatwaveActive()) {
+            if (player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition()).getY() <= player.getPosition().getY()) {
+                //System.out.println("slowing player");
+                //player.setMotionMultiplier(player.getBlockState(), new Vec3d(0.95D, 1D, 0.95D));
+                Vec3d v = player.getMotion();
+                player.setMotion(v.x * heatwaveMovementMultiplierClient, v.y, v.z * heatwaveMovementMultiplierClient);
+            }
         }
     }
 
