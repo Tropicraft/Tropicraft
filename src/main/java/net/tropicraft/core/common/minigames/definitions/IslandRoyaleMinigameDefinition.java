@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.IMinigameInstance;
@@ -15,45 +16,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import weather2.MinigameWeatherInstance;
 import weather2.MinigameWeatherInstanceServer;
-import weather2.util.WeatherUtil;
 
 /**
  * Definition implementation for the Island Royale minigame.
- * Has some hardcoded block positions for player positions and
- * respawn points for now.
  *
  * Will resolve minigame features and logic in worldUpdate() method
  * later on.
  */
 public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
-    public static BlockPos RESPAWN_POS = new BlockPos(5780, 141, 6955);
 
     private ResourceLocation id = Util.resource("island_royale");
     private String displayName = TropicraftLangKeys.MINIGAME_ISLAND_ROYALE;
-
-    private BlockPos spectatorPos = new BlockPos(5780, 141, 6955);
-
-    private BlockPos[] playerPositions = new BlockPos[] {
-            new BlockPos(5780, 141, 6955), // Player 1
-            new BlockPos(5780, 141, 6955), // Player 2
-            new BlockPos(5780, 141, 6955), // Player 3
-            new BlockPos(5780, 141, 6955), // Player 4
-            new BlockPos(5780, 141, 6955), // Player 5
-            new BlockPos(5780, 141, 6955), // Player 6
-            new BlockPos(5780, 141, 6955), // Player 7
-            new BlockPos(5780, 141, 6955), // Player 8
-            new BlockPos(5780, 141, 6955), // Player 9
-            new BlockPos(5780, 141, 6955), // Player 10
-            new BlockPos(5780, 141, 6955), // Player 11
-            new BlockPos(5780, 141, 6955), // Player 12
-            new BlockPos(5780, 141, 6955), // Player 13
-            new BlockPos(5780, 141, 6955), // Player 14
-            new BlockPos(5780, 141, 6955), // Player 15
-            new BlockPos(5780, 141, 6955), // Player 16
-    };
-
-    private int maximumPlayerCount = 16;
-    private int minimumPlayerCount = 1;
 
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -65,11 +38,6 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     private long minigameTime = 0;
     private long phaseTime = 0;
-
-    private long phase1Length = 20*10;
-    private long phase2Length = 20*10;
-    //shouldnt end until game ends afaik
-    private long phase3Length = 20*10;
 
     public enum MinigamePhase {
         PHASE1,
@@ -108,27 +76,27 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public BlockPos getSpectatorPosition() {
-        return this.spectatorPos;
+        return ConfigLT.minigame_IslandRoyale_spectatorPosition;
     }
 
     @Override
     public BlockPos getPlayerRespawnPosition(IMinigameInstance instance) {
-        return RESPAWN_POS;
+        return ConfigLT.minigame_IslandRoyale_respawnPosition;
     }
 
     @Override
     public BlockPos[] getParticipantPositions() {
-        return this.playerPositions;
+        return ConfigLT.minigame_IslandRoyale_playerPositions;
     }
 
     @Override
     public int getMinimumParticipantCount() {
-        return debug ? 1 : this.minimumPlayerCount;
+        return ConfigLT.MINIGAME_ISLAND_ROYALE.minimumPlayerCount.get();
     }
 
     @Override
     public int getMaximumParticipantCount() {
-        return this.maximumPlayerCount;
+        return ConfigLT.MINIGAME_ISLAND_ROYALE.maximumPlayerCount.get();
     }
 
     @Override
@@ -140,15 +108,16 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
             phaseTime++;
 
             if (phase == MinigamePhase.PHASE1) {
-                if (phaseTime >= phase1Length) {
+                if (phaseTime >= ConfigLT.MINIGAME_ISLAND_ROYALE.phase1Length.get()) {
                     nextPhase();
                 }
             } else if (phase == MinigamePhase.PHASE2) {
-                if (phaseTime >= phase2Length) {
+                if (phaseTime >= ConfigLT.MINIGAME_ISLAND_ROYALE.phase2Length.get()) {
                     nextPhase();
                 }
             } else if (phase == MinigamePhase.PHASE3) {
                 //???
+                //DOOOOOOOOOOOOOOM
             }
 
             minigameWeatherInstance.tick(this);

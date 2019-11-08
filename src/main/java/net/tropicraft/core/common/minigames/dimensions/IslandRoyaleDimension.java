@@ -14,6 +14,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.ChunkGeneratorType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.biome.*;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
@@ -39,14 +40,14 @@ public class IslandRoyaleDimension extends Dimension {
     @Override
     @Nullable
     public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid) {
-        return IslandRoyaleMinigameDefinition.RESPAWN_POS;
+        return ConfigLT.minigame_IslandRoyale_respawnPosition;
     }
 
     /** Copied from OverworldDimension */
     @Override
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid) {
-        return IslandRoyaleMinigameDefinition.RESPAWN_POS;
+        return ConfigLT.minigame_IslandRoyale_respawnPosition;
     }
 
     /**

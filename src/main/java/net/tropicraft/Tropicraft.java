@@ -127,6 +127,9 @@ public class Tropicraft {
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
         MinecraftForge.EVENT_BUS.addListener(this::onServerStopping);
 
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigLT::onLoad);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigLT::onFileChange);
+
         // Registry objects
         TropicraftBlocks.BLOCKS.register(modBus);
         TropicraftItems.ITEMS.register(modBus);
@@ -150,6 +153,7 @@ public class Tropicraft {
         });
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigLT.CLIENT_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigLT.SERVER_CONFIG);
     }
     
     @OnlyIn(Dist.CLIENT)
