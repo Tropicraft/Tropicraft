@@ -10,11 +10,10 @@ import static net.minecraft.command.Commands.literal;
 public class CommandStopMinigame {
 	public static void register(final CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher.register(
-			literal("minigame").then(literal("stop")
-			.requires(s -> s.hasPermissionLevel(2))
-			.requires(s -> s.getEntity() instanceof ServerPlayerEntity)
+			literal("minigame")
+			.then(literal("stop").requires(s -> s.hasPermissionLevel(2))
 			.executes(c -> CommandMinigame.executeMinigameAction(() ->
-				MinigameManager.getInstance().stop((ServerPlayerEntity) c.getSource().getEntity()), c.getSource())))
+				MinigameManager.getInstance().stop(), c.getSource())))
 		);
 	}
 }

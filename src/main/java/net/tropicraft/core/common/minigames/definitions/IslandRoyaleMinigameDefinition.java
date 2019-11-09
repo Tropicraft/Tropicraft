@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.minigames.definitions;
 
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -38,6 +39,8 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     private long minigameTime = 0;
     private long phaseTime = 0;
+
+    private CommandSource startingPlayer;
 
     public enum MinigamePhase {
         PHASE1,
@@ -140,14 +143,14 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(CommandSource commandSource) {
         minigameWeatherInstance.reset();
         phase = MinigamePhase.PHASE1;
         phaseTime = 0;
     }
 
     @Override
-    public void onStart() {
+    public void onStart(CommandSource commandSource) {
         minigameTime = 0;
         phase = MinigamePhase.PHASE1;
     }

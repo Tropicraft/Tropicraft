@@ -284,6 +284,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(TropicraftLangKeys.COMMAND_MINIGAME_STARTED, "You have started the minigame.");
         add(TropicraftLangKeys.MINIGAME_ISLAND_ROYALE, "Island Royale");
         add(TropicraftLangKeys.MINIGAME_SIGNATURE_RUN, "Signature Run");
+        add(TropicraftLangKeys.MINIGAME_UNDERWATER_TRASH_HUNT, "Underwater Trash Hunt");
         add(TropicraftLangKeys.COMMAND_NO_LONGER_ENOUGH_PLAYERS, "There are no longer enough players to start the minigame!");
         add(TropicraftLangKeys.COMMAND_ENOUGH_PLAYERS, "There are now enough players to start the minigame!");
         add(TropicraftLangKeys.COMMAND_NO_MINIGAME, "There is no currently running minigame to stop!");

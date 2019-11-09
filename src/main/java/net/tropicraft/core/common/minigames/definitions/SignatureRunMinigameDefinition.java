@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.minigames.definitions;
 
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -100,12 +101,12 @@ public class SignatureRunMinigameDefinition implements IMinigameDefinition {
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(CommandSource commandSource) {
 
     }
 
     @Override
-    public void onStart() {
+    public void onStart(CommandSource commandSource) {
 
     }
 }

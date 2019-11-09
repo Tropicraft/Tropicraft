@@ -1,7 +1,15 @@
 package net.tropicraft.core.common.minigames;
 
+import CoroUtil.util.Vec3;
 import com.google.common.collect.Sets;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Set;
 import java.util.UUID;
@@ -20,8 +28,13 @@ public class MinigameInstance implements IMinigameInstance
 
     private Set<UUID> spectators = Sets.newHashSet();
 
-    public MinigameInstance(IMinigameDefinition definition) {
+    private CommandSource commandSource;
+
+    private ServerWorld world;
+
+    public MinigameInstance(IMinigameDefinition definition, ServerWorld world) {
         this.definition = definition;
+        this.world = world;
     }
 
     @Override
@@ -87,5 +100,16 @@ public class MinigameInstance implements IMinigameInstance
     @Override
     public Set<UUID> getSpectators() {
         return this.spectators;
+    }
+
+    @Override
+    public CommandSource getCommandSource() {
+        if (this.commandSource == null) {
+            String s = this.getDefinition().getUnlocalizedName();
+            ITextComponent text = new StringTextComponent(s);
+            this.commandSource = new CommandSource(ICommandSource.field_213139_a_, Vec3d.ZERO, Vec2f.ZERO, this.world, 2, s, text, this.world.getServer(), null);
+        }
+
+        return this.commandSource;
     }
 }

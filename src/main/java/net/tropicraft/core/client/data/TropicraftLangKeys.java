@@ -29,6 +29,7 @@ public class TropicraftLangKeys
     public static String COMMAND_NO_LONGER_ENOUGH_PLAYERS = Constants.MODID + ".command.no_longer_enough_players";
     public static String MINIGAME_ISLAND_ROYALE = Constants.MODID + ".minigame.island_royale";
     public static String MINIGAME_SIGNATURE_RUN = Constants.MODID + ".minigame.signature_run";
+    public static String MINIGAME_UNDERWATER_TRASH_HUNT = Constants.MODID + ".minigame.underwater_trash_hunt";
     public static String COMMAND_NO_MINIGAME = Constants.MODID + ".minigame.no_minigame";
     public static String COMMAND_STOPPED_MINIGAME = Constants.MODID + ".minigame.stopped_minigame";
     public static String COMMAND_FINISHED_MINIGAME = Constants.MODID + ".minigame.finished_minigame";

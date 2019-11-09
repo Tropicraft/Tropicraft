@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.minigames;
 
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -126,11 +127,19 @@ public interface IMinigameDefinition
     /**
      * For when a minigame finishes. Useful for cleanup related to this
      * minigame definition.
+     *
+     * @param commandSource Command source for the minigame instance.
+     *                      Can be used to execute some commands for
+     *                      the minigame from a datapack.
      */
-    void onFinish();
+    void onFinish(CommandSource commandSource);
 
     /**
      * For when a minigame starts. Useful for preparing the minigame.
+     *
+     * @param commandSource Command source for the minigame instance.
+     *                      Can be used to execute some commands for
+     *                      the minigame from a datapack.
      */
-    void onStart();
+    void onStart(CommandSource commandSource);
 }
