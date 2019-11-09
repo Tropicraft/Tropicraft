@@ -324,5 +324,6 @@
   "tropicraft.minigame.minigame_stopped_polling": "An operator has stopped polling the minigame %s.",
   "tropicraft.minigame.no_minigame": "There is no currently running minigame to stop!",
   "tropicraft.minigame.signature_run": "Signature Run",
-  "tropicraft.minigame.stopped_minigame": "You have stopped the %s minigame."
+  "tropicraft.minigame.stopped_minigame": "You have stopped the %s minigame.",
+  "tropicraft.minigame.underwater_trash_hunt": "Underwater Trash Hunt"
 }

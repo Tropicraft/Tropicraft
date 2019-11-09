@@ -324,5 +324,6 @@
   "tropicraft.minigame.minigame_stopped_polling": "\u02D9%s \u01DD\u026F\u0250b\u0131u\u0131\u026F \u01DD\u0265\u0287 bu\u0131\u05DF\u05DFod p\u01DDddo\u0287s s\u0250\u0265 \u0279o\u0287\u0250\u0279\u01DDdo u\u2C6F",
   "tropicraft.minigame.no_minigame": "\u00A1do\u0287s o\u0287 \u01DD\u026F\u0250b\u0131u\u0131\u026F bu\u0131uun\u0279 \u028E\u05DF\u0287u\u01DD\u0279\u0279n\u0254 ou s\u0131 \u01DD\u0279\u01DD\u0265\u27D8",
   "tropicraft.minigame.signature_run": "un\u1D1A \u01DD\u0279n\u0287\u0250ub\u0131S",
-  "tropicraft.minigame.stopped_minigame": "\u02D9\u01DD\u026F\u0250b\u0131u\u0131\u026F %s \u01DD\u0265\u0287 p\u01DDddo\u0287s \u01DD\u028C\u0250\u0265 no\u028E"
+  "tropicraft.minigame.stopped_minigame": "\u02D9\u01DD\u026F\u0250b\u0131u\u0131\u026F %s \u01DD\u0265\u0287 p\u01DDddo\u0287s \u01DD\u028C\u0250\u0265 no\u028E",
+  "tropicraft.minigame.underwater_trash_hunt": "\u0287unH \u0265s\u0250\u0279\u27D8 \u0279\u01DD\u0287\u0250\u028D\u0279\u01DDpu\u2229"
 }
