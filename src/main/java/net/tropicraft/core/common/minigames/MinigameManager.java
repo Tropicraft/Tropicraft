@@ -159,7 +159,7 @@ public class MinigameManager implements IMinigameManager
         for (ServerPlayerEntity player : this.server.getPlayerList().getPlayers()) {
             player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_FINISHED_MINIGAME,
                     new TranslationTextComponent(def.getUnlocalizedName()).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.AQUA))
-                    .applyTextStyle(TextFormatting.GOLD), ChatType.SYSTEM);
+                    .applyTextStyle(TextFormatting.GOLD), ChatType.CHAT);
         }
 
         this.currentInstance = null;
@@ -189,7 +189,7 @@ public class MinigameManager implements IMinigameManager
             player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_POLLING,
                 new TranslationTextComponent(definition.getUnlocalizedName()).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.AQUA),
                 new StringTextComponent("/minigame register").applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.GRAY))
-                .applyTextStyle(TextFormatting.GOLD), ChatType.SYSTEM);
+                .applyTextStyle(TextFormatting.GOLD), ChatType.CHAT);
         }
 
         return new ActionResult<>(ActionResultType.SUCCESS, new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_POLLED));
@@ -211,7 +211,7 @@ public class MinigameManager implements IMinigameManager
         for (ServerPlayerEntity player : this.server.getPlayerList().getPlayers()) {
             player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_STOPPED_POLLING,
                     new TranslationTextComponent(minigameName).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.AQUA))
-                    .applyTextStyle(TextFormatting.RED), ChatType.SYSTEM);
+                    .applyTextStyle(TextFormatting.RED), ChatType.CHAT);
         }
 
         return new ActionResult<>(ActionResultType.SUCCESS,
@@ -406,7 +406,7 @@ public class MinigameManager implements IMinigameManager
             BlockPos respawn = def.getPlayerRespawnPosition(this.currentInstance);
 
             ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-            player.connection.setPlayerLocation(respawn.getX(), respawn.getY(), respawn.getY(), 0, 0);
+            player.connection.setPlayerLocation(respawn.getX(), respawn.getY(), respawn.getZ(), 0, 0);
         }
     }
 
