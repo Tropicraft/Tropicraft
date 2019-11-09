@@ -711,10 +711,17 @@ public class SceneEnhancer implements Runnable {
 						float vanillaRainGreen = 0.7F;
 						float vanillaRainBlue = 1F;
 
+						float adjustedRate = 1F;
+						if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.DECREASED) {
+							adjustedRate = 0.5F;
+						} else if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.MINIMAL) {
+							adjustedRate = 0.2F;
+						}
+
 						spawnAreaSize = 40;
 						//ground splash
 						if (groundSplash == true && curPrecipVal > 0.15) {
-							for (int i = 0; i < 30F * curPrecipVal * ConfigParticle.Precipitation_Particle_effect_rate * particleAmp * 4F; i++) {
+							for (int i = 0; i < 30F * curPrecipVal * ConfigParticle.Precipitation_Particle_effect_rate * particleAmp * 4F * adjustedRate; i++) {
 								BlockPos pos = new BlockPos(
 										entP.posX + rand.nextInt(spawnAreaSize) - (spawnAreaSize / 2),
 										entP.posY - 5 + rand.nextInt(15),
@@ -811,7 +818,7 @@ public class SceneEnhancer implements Runnable {
 								scanAheadRange = 10;
 							}
 
-							for (int i = 0; i < 2F * curPrecipVal * ConfigParticle.Precipitation_Particle_effect_rate; i++) {
+							for (int i = 0; i < 2F * curPrecipVal * ConfigParticle.Precipitation_Particle_effect_rate * adjustedRate; i++) {
 								BlockPos pos = new BlockPos(
 										entP.posX + rand.nextInt(spawnAreaSize) - (spawnAreaSize / 2),
 										entP.posY + 5 + rand.nextInt(15),
