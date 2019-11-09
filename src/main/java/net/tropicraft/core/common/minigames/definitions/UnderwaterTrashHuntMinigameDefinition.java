@@ -24,8 +24,6 @@ import java.util.Objects;
  * Definition implementation for Signature Run minigame.
  */
 public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinition {
-    public static BlockPos RESPAWN_POS = new BlockPos(200, 200, 200);
-
     private ResourceLocation id = Util.resource("underwater_trash_hunt");
     private String displayName = TropicraftLangKeys.MINIGAME_UNDERWATER_TRASH_HUNT;
 
@@ -91,7 +89,7 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
 
     @Override
     public BlockPos getPlayerRespawnPosition(IMinigameInstance instance) {
-        return RESPAWN_POS;
+        return this.spectatorPos;
     }
 
     @Override
