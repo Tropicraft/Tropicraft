@@ -35,6 +35,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.drinks.Drink;
 
 public class TropicraftRecipeProvider extends RecipeProvider {
@@ -242,6 +243,12 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .addIngredient(COCONUT_CHUNK.get())
             .addIngredient(PINEAPPLE_CUBES.get())
             .addCriterion("has_bamboo_mug", this.hasItem(BAMBOO_MUG.get()))
+            .build(consumer);
+        
+        ShapelessRecipeBuilder.shapelessRecipe(TROPICAL_FERTILIZER.get())
+            .addIngredient(TropicraftFlower.MAGIC_MUSHROOM.get())
+            .addIngredient(TropicraftFlower.CROTON.get())
+            .addCriterion("has_magic_mushroom", this.hasItem(TropicraftFlower.MAGIC_MUSHROOM.get()))
             .build(consumer);
     }
     

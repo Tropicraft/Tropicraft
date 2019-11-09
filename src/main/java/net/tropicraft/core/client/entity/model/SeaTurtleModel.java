@@ -67,41 +67,54 @@ public class SeaTurtleModel extends EntityModel<SeaTurtleEntity> {
     public void render(SeaTurtleEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-
+        body.render(f5);
+    }
+    
+    @Override
+    public void setRotationAngles(SeaTurtleEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         float defFront = 0.3927F;
         float defFront2 = 0.3F;
         float defRear = .5F;
 
-        f1 *=2f;
-        f *= 1.5f;
+        if (!entity.isInWater() && !entity.isBeingRidden()) {
 
-        if (!entity.isInWater()) {
-            body.rotateAngleX = -Math.abs(MathHelper.sin(f * 0.25F) * 1.25F * f1) - .10F;
-            frFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 + defFront;
-            frFlipper.rotateAngleX = -defFront2;
-            frFlipper.rotateAngleZ = MathHelper.cos(f * 0.50F) * 1.25F * f1 - defFront2;
-            flFlipper.rotateAngleY = MathHelper.cos(f * 0.50F) * 2.5F * f1 - defFront;
-            flFlipper.rotateAngleZ = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defFront2;
+            limbSwingAmount *= 3f;
+            limbSwing *= 2f;
+
+            body.rotateAngleX = -Math.abs(MathHelper.sin(limbSwing * 0.25F) * 1.25F * limbSwingAmount) - .10F;
             frFlipper.rotateAngleX = defFront2;
-            rrFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 - defRear;
-            rlFlipper.rotateAngleY = -MathHelper.cos(f * 0.50F) * 1.25F * f1 + defRear;
+            frFlipper.rotateAngleY = swimRotate(limbSwing, limbSwingAmount, 0.5F, 5F, 0, defFront);
+            frFlipper.rotateAngleZ = swimRotate(limbSwing, limbSwingAmount, 0.5f, 1.25f, 0, -defFront2);
+            flFlipper.rotateAngleX = defFront2;
+            flFlipper.rotateAngleY = swimRotate(limbSwing, limbSwingAmount, 0.5f, 5f, (float) Math.PI, -defFront2);
+            flFlipper.rotateAngleZ = -swimRotate(limbSwing, limbSwingAmount, 0.5f, 1.25f, 0, -defFront2);
+            rrFlipper.rotateAngleX = 0F;
+            rrFlipper.rotateAngleY = -swimRotate(limbSwing, limbSwingAmount, 3f, 2f, 0, defRear);
             rrFlipper.rotateAngleZ = 0F;
+            rlFlipper.rotateAngleX = 0F;
+            rlFlipper.rotateAngleY = -swimRotate(limbSwing, limbSwingAmount, 3f, 2f, 0, -defRear);
             rlFlipper.rotateAngleZ = 0F;
         } else {
-            body.rotateAngleX = 0F; // Y forward backward
-            frFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 + defFront;
-            frFlipper.rotateAngleX = -defFront2;
-            frFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.75F * f1 - defFront2;
-            flFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * 1.5F * f1 - defFront;
-            flFlipper.rotateAngleZ = MathHelper.cos(f * 1.25F) * 1.75F * f1 + defFront2;
-            frFlipper.rotateAngleX = defFront2;
-            rrFlipper.rotateAngleY = -MathHelper.cos(f * 0.25F) * .25F * f1 - defRear;
-            rlFlipper.rotateAngleY = MathHelper.cos(f * 0.25F) * .25F * f1 + defRear;
-            rrFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
-            rlFlipper.rotateAngleZ = -MathHelper.cos(f * 1.25F) * 1.25F * f1;
+            limbSwingAmount *= 0.75f;
+            limbSwing *= 0.1f;
+            body.rotateAngleX = (float) Math.toRadians(headPitch);
+            frFlipper.rotateAngleY = swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, 0, defFront);
+            frFlipper.rotateAngleX = swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, (float) Math.PI / 4, defFront2 + 0.25f);
+            frFlipper.rotateAngleZ = 0;
+            flFlipper.rotateAngleY = -swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, 0, defFront);
+            flFlipper.rotateAngleZ = 0;
+            flFlipper.rotateAngleX = swimRotate(limbSwing, limbSwingAmount, 1.25f, 1.5f, (float) Math.PI / 4, defFront2 + 0.25f);
+            rlFlipper.rotateAngleX = swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, (float) Math.PI / 4, 0);
+            rrFlipper.rotateAngleX = swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, (float) Math.PI / 4, 0);
+            rrFlipper.rotateAngleY = -0.5f;
+            rlFlipper.rotateAngleY = 0.5f;
+            rrFlipper.rotateAngleZ = swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, 0, 0.5f);
+            rlFlipper.rotateAngleZ = swimRotate(limbSwing, limbSwingAmount, 5f, 0.5f, (float) Math.PI, -0.5f);;
         }
-
-        body.render(f5);
+    }
+    
+    private float swimRotate(float swing, float amount, float rot, float intensity, float rotOffset, float offset) {
+        return MathHelper.cos(swing * rot + rotOffset) * amount * intensity + offset;
     }
 
     private void setRotation(RendererModel model, float x, float y, float z) {
