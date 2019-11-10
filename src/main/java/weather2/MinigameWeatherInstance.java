@@ -75,7 +75,7 @@ public class MinigameWeatherInstance {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public static boolean debug = true;
+    public static boolean debug = false;
 
     public MinigameWeatherInstance() {
 
