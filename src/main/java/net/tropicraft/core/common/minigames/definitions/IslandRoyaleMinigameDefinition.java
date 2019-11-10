@@ -1,15 +1,28 @@
 package net.tropicraft.core.common.minigames.definitions;
 
+import javax.annotation.Nonnull;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.BlockStatePaletteHashMap;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
@@ -17,8 +30,6 @@ import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.IMinigameInstance;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import weather2.MinigameWeatherInstance;
 import weather2.MinigameWeatherInstanceServer;
 
@@ -46,7 +57,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     private int waterLevel;
 
     private BlockPos waterLevelMin = new BlockPos(5555, 0, 7360);
-    private BlockPos waterLevelMax = waterLevelMin.add(1000, 0, 1000);
+    private BlockPos waterLevelMax = waterLevelMin.add(400, 0, 400);
 
     private MinecraftServer server;
 
@@ -138,23 +149,57 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
                 this.waterLevel++;
                 BlockPos min = this.waterLevelMin.add(0, this.waterLevel, 0);
                 BlockPos max = this.waterLevelMax.add(0, this.waterLevel, 0);
-
-                Iterable<BlockPos> positions = BlockPos.getAllInBoxMutable(min, max);
-
-                System.out.println(this.waterLevel);
-                for (BlockPos position : positions) {
-                    if (world.getBlockState(position).isAir(world, position)) {
-                        world.setBlockState(position, Blocks.WATER.getDefaultState(), 4);
+                ChunkPos minChunk = new ChunkPos(min);
+                ChunkPos maxChunk = new ChunkPos(max);
+                
+                long startTime = System.currentTimeMillis();
+                long updatedBlocks = 0;
+                
+                MutableBlockPos localStart = new MutableBlockPos();
+                MutableBlockPos localEnd = new MutableBlockPos();
+                MutableBlockPos realPos = new MutableBlockPos();
+                
+                for (int x = minChunk.x; x <= maxChunk.x; x++) {
+                    for (int z = minChunk.z; z <= maxChunk.z; z++) {
+                        ChunkPos chunkPos = new ChunkPos(x, z);
+                        BlockPos chunkStart = chunkPos.asBlockPos();
+                        // Extract current chunk section
+                        ChunkSection[] sectionArray = world.getChunk(x, z).getSections(); 
+                        ChunkSection section = sectionArray[this.waterLevel >> 4];
+                        int localY = this.waterLevel & 0xF;
+                        // Calculate start/end within the current section
+                        localStart.setPos(min.subtract(chunkStart));
+                        localStart.setPos(Math.max(0, localStart.getX()), localY, Math.max(0, localStart.getZ()));
+                        localEnd.setPos(max.subtract(chunkStart));
+                        localEnd.setPos(Math.min(15, localEnd.getX()), localY, Math.min(15, localEnd.getZ()));
+                        // If this section is empty, we must add a new one
+                        if (section == Chunk.EMPTY_SECTION) {
+                            // This constructor expects the "base y" which means the real Y-level floored to the nearest multiple of 16
+                            // This is accomplished by removing the last 4 bits of the coordinate
+                            section = new ChunkSection(this.waterLevel & ~0xF);
+                            sectionArray[this.waterLevel >> 4] = section;
+                        }
+                        for (BlockPos pos : BlockPos.getAllInBoxMutable(localStart, localEnd)) {
+                            BlockState existing = section.getBlockState(pos.getX(), pos.getY(), pos.getZ());
+                            realPos.setPos(chunkStart.getX() + pos.getX(), this.waterLevel, chunkStart.getZ() + pos.getZ());
+                            if (existing.isAir(world, pos) || !existing.getMaterial().blocksMovement()) {
+                                // If air or a replaceable block, just set to water
+                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), Blocks.WATER.getDefaultState());
+                            } else if (existing.getBlock() instanceof IWaterLoggable) {
+                                // If waterloggable, set the waterloggable property to true
+                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), existing.with(BlockStateProperties.WATERLOGGED, true));
+                            }
+                            // Tell the client about the change
+                            ((ServerChunkProvider)world.getChunkProvider()).markBlockChanged(realPos);
+                            updatedBlocks++;
+                            // FIXES LIGHTING AT THE COST OF PERFORMANCE - TODO ask fry?
+                            // world.getChunkProvider().getLightManager().checkBlock(realPos);
+                        }
                     }
                 }
-
-//                for (int x = min.getX() >> 4; x < max.getX() >> 4; x++) {
-//                    for (int z = min.getZ() >> 4; z < max.getZ() >> 4; z++) {
-//                        Chunk chunk = world.getChunk(x, z);
-//
-//                        chunk.markDirty();
-//                    }
-//                }
+                
+                long endTime = System.currentTimeMillis();
+                LogManager.getLogger().info("Updated {} blocks in {}ms", updatedBlocks, endTime - startTime);
             }
         }
     }
