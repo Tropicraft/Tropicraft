@@ -14,13 +14,11 @@ public class CommandPollMinigame {
 	public static void register(final CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher.register(
 			literal("minigame")
-			.then(literal("poll")
+			.then(literal("poll").requires(s -> s.hasPermissionLevel(2))
 			.then(argument("minigame_id", StringArgumentType.greedyString()).requires(s -> s.hasPermissionLevel(2))
-			.requires(s -> s.hasPermissionLevel(2))
-			.requires(s -> s.getEntity() instanceof ServerPlayerEntity)
 			.executes(c -> {
 				ResourceLocation id = new ResourceLocation(StringArgumentType.getString(c, "minigame_id"));
-				return CommandMinigame.executeMinigameAction(() -> MinigameManager.getInstance().startPolling(id, (ServerPlayerEntity) c.getSource().getEntity()), c.getSource());
+				return CommandMinigame.executeMinigameAction(() -> MinigameManager.getInstance().startPolling(id), c.getSource());
 		}))));
 	}
 }

@@ -2,12 +2,10 @@ package weather2;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
 import net.tropicraft.core.common.config.ConfigLT;
-import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
+import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import weather2.util.WeatherUtil;
 
 import java.util.Random;
 
@@ -75,13 +73,13 @@ public class MinigameWeatherInstance {
 
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public static boolean debug = true;
+    public static boolean debug = false;
 
     public MinigameWeatherInstance() {
 
     }
 
-    public void tick(IslandRoyaleMinigameDefinition minigameDefinition) {
+    public void tick(SurviveTheTideMinigameDefinition minigameDefinition) {
 
     }
 
@@ -124,7 +122,7 @@ public class MinigameWeatherInstance {
         nbt.putLong("acidRainTime", acidRainTime);
         nbt.putLong("heatwaveTime", heatwaveTime);
         nbt.putBoolean("lastRainWasAcid", lastRainWasAcid);
-        nbt.putDouble("heatwaveMovementMultiplierClient", ConfigLT.MINIGAME_ISLAND_ROYALE.heatwaveMovementMultiplier.get());
+        nbt.putDouble("heatwaveMovementMultiplierClient", ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveMovementMultiplier.get());
 
         return nbt;
     }

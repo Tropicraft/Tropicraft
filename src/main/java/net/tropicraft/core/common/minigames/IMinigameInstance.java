@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.minigames;
 
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 
 import java.util.Set;
@@ -66,4 +67,15 @@ public interface IMinigameInstance
      * @return The list of spectators that are observing the minigame instance.
      */
     Set<UUID> getSpectators();
+
+    /**
+     * @return The list of all players that are a part of this minigame instance.
+     */
+    Set<UUID> getAllPlayerUUIDs();
+
+    /**
+     * Used for executing commands of datapacks within the minigames.
+     * @return The command source for this minigame instance.
+     */
+    CommandSource getCommandSource();
 }

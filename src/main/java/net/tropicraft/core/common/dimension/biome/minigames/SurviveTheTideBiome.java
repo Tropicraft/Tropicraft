@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.biome.minigames;
 
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap;
@@ -19,11 +20,11 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiome;
 import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
-public class IslandRoyaleBiome extends TropicraftBiome {
+public class SurviveTheTideBiome extends TropicraftBiome {
     public static final int WATER_COLOR = 0x417251;
     public static final int WATER_FOG_COLOR = 0x0f331b;
 
-    public IslandRoyaleBiome() {
+    public SurviveTheTideBiome() {
         super(new Builder()
                 .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
                 .precipitation(RainType.RAIN)
@@ -32,6 +33,7 @@ public class IslandRoyaleBiome extends TropicraftBiome {
                 .scale(0.4F)
                 .temperature(1.5F)
                 .downfall(1.25F)
+                .temperature(2.0F)
                 .parent(null),
                 WATER_COLOR,
                 WATER_FOG_COLOR
@@ -72,5 +74,15 @@ public class IslandRoyaleBiome extends TropicraftBiome {
     @OnlyIn(Dist.CLIENT)
     public int getSkyColorByTemp(float currentTemperature) {
         return 0x0f331b;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getFoliageColor(BlockPos p_180625_1_) {
+        return 0x5e8c64;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getGrassColor(BlockPos p_180627_1_) {
+        return 0x498551;
     }
 }

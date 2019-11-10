@@ -1,11 +1,18 @@
 package net.tropicraft.core.common.minigames;
 
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+
+import java.awt.*;
 
 /**
  * Used as a discriminant for a registered minigame. Defines the logic of the
@@ -15,6 +22,10 @@ import net.minecraft.world.dimension.DimensionType;
  */
 public interface IMinigameDefinition
 {
+    default ActionResult<ITextComponent> canStartMinigame() {
+        return new ActionResult<ITextComponent>(ActionResultType.SUCCESS, new StringTextComponent(""));
+    }
+
     /**
      * The identifier for this minigame definition. Must be unique
      * compared to other registered minigames.
@@ -101,7 +112,7 @@ public interface IMinigameDefinition
      * @param world The world to run this for, currently a worldUpdate call happens per each loaded world
      * @param instance The instance of the currently running minigame.
      */
-    void worldUpdate(World world, IMinigameInstance instance);
+    default void worldUpdate(World world, IMinigameInstance instance) {}
 
     /**
      * Helper method to catch when a player dies while inside an active
@@ -111,7 +122,14 @@ public interface IMinigameDefinition
      * @param player The player which died.
      * @param instance The instance of the currently running minigame.
      */
-    void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance);
+    default void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {}
+
+    /**
+     * Helper method to create unique logic for when the player updates.
+     * @param player They player which is updating.
+     * @param instance The instance of the currently running minigame.
+     */
+    default void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {}
 
     /**
      * Helper method to catch when a player respawns while inside an active
@@ -121,16 +139,40 @@ public interface IMinigameDefinition
      * @param player The player which died.
      * @param instance The instance of the currently running minigame.
      */
-    void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance);
+    default void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance) {}
 
     /**
      * For when a minigame finishes. Useful for cleanup related to this
      * minigame definition.
+     *
+     * @param commandSource Command source for the minigame instance.
+     *                      Can be used to execute some commands for
+     *                      the minigame from a datapack.
+     * @param instance The current minigame instance.
      */
-    void onFinish();
+    default void onFinish(CommandSource commandSource, IMinigameInstance instance) {}
+
+    /**
+     * For when the minigame has finished and all players are teleported
+     * out of the dimension.
+     * @param commandSource Command source for the minigame instance.
+     *                      Can be used to execute some commands for
+     *                      the minigame from a datapack.
+     */
+     default void onPostFinish(CommandSource commandSource) {}
 
     /**
      * For when a minigame starts. Useful for preparing the minigame.
+     *
+     * @param commandSource Command source for the minigame instance.
+     *                      Can be used to execute some commands for
+     *                      the minigame from a datapack.
+     * @param instance The current minigame instance.
      */
-    void onStart();
+    default void onStart(CommandSource commandSource, IMinigameInstance instance) {}
+
+    /**
+     * For before a minigame starts. Useful for preparing the minigame.
+     */
+    default void onPreStart() {}
 }

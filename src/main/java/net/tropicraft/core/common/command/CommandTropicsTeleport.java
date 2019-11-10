@@ -20,9 +20,9 @@ public class CommandTropicsTeleport {
 		);
 
 		dispatcher.register(
-				literal("island_royale")
+				literal("survive_the_tide")
 						.requires(s -> s.hasPermissionLevel(2))
-						.executes(c -> teleport(c.getSource(), TropicraftWorldUtils.ISLAND_ROYALE_DIMENSION))
+						.executes(c -> teleport(c.getSource(), TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION))
 		);
 
 		dispatcher.register(

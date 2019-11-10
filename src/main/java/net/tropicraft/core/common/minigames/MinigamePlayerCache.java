@@ -3,6 +3,9 @@ package net.tropicraft.core.common.minigames;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
@@ -18,15 +21,28 @@ public class MinigamePlayerCache {
     private GameType gameType;
     private DimensionType dimensionType;
     private BlockPos blockPos;
-    private PlayerInventory inventory;
+    private CompoundNBT cachedPlayerData;
 
     public MinigamePlayerCache(ServerPlayerEntity player) {
         this.gameType = player.interactionManager.getGameType();
         this.dimensionType = player.dimension;
         this.blockPos = new BlockPos(player.posX, player.posY, player.posZ);
 
-        this.inventory = new PlayerInventory(player);
-        this.inventory.copyInventory(player.inventory);
+        this.cachedPlayerData = new CompoundNBT();
+        player.writeAdditional(this.cachedPlayerData);
+    }
+
+    public void resetPlayerStats(ServerPlayerEntity player) {
+        player.inventory.clear();
+        player.setHealth(player.getMaxHealth());
+
+        CompoundNBT foodTag = new CompoundNBT();
+        new FoodStats().write(foodTag);
+        player.getFoodStats().read(foodTag);
+
+        for (EffectInstance effect : player.getActivePotionEffects()) {
+            player.removeActivePotionEffect(effect.getPotion());
+        }
     }
 
     /**
@@ -35,7 +51,7 @@ public class MinigamePlayerCache {
      * @param player The player being reset.
      */
     public void teleportBack(ServerPlayerEntity player) {
-        player.inventory.copyInventory(this.inventory);
+        player.readAdditional(this.cachedPlayerData);
         player.setGameType(this.gameType);
         TropicraftWorldUtils.teleportPlayerNoPortal(player, this.dimensionType, this.blockPos);
     }

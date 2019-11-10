@@ -11,11 +11,9 @@ public class CommandStartMinigame {
 	public static void register(final CommandDispatcher<CommandSource> dispatcher) {
 		dispatcher.register(
 			literal("minigame")
-			.then(literal("start")
-			.requires(s -> s.hasPermissionLevel(2))
-			.requires(s -> s.getEntity() instanceof ServerPlayerEntity)
+			.then(literal("start").requires(s -> s.hasPermissionLevel(2))
 			.executes(c -> CommandMinigame.executeMinigameAction(() ->
-					MinigameManager.getInstance().start((ServerPlayerEntity) c.getSource().getEntity()), c.getSource())))
+					MinigameManager.getInstance().start(), c.getSource())))
 		);
 	}
 }

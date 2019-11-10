@@ -18,12 +18,11 @@ import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.biome.*;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
-import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
 
 import javax.annotation.Nullable;
 
-public class IslandRoyaleDimension extends Dimension {
-    public IslandRoyaleDimension(final World worldIn, final DimensionType typeIn) {
+public class SurviveTheTideDimension extends Dimension {
+    public SurviveTheTideDimension(final World worldIn, final DimensionType typeIn) {
         super(worldIn, typeIn);
     }
 
@@ -32,7 +31,7 @@ public class IslandRoyaleDimension extends Dimension {
         BiomeProviderType<SingleBiomeProviderSettings, SingleBiomeProvider> biomeType = BiomeProviderType.FIXED;
         ChunkGeneratorType chunkType = TropicraftChunkGeneratorTypes.TROPICS.get();
         TropicraftGeneratorSettings genSettings = (TropicraftGeneratorSettings) chunkType.createSettings();
-        SingleBiomeProviderSettings settings2 = biomeType.createSettings().setBiome(TropicraftBiomes.ISLAND_ROYALE.get());
+        SingleBiomeProviderSettings settings2 = biomeType.createSettings().setBiome(TropicraftBiomes.SURVIVE_THE_TIDE.get());
         return chunkType.create(this.world, biomeType.create(settings2), genSettings);
     }
 
@@ -40,14 +39,14 @@ public class IslandRoyaleDimension extends Dimension {
     @Override
     @Nullable
     public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid) {
-        return ConfigLT.minigame_IslandRoyale_respawnPosition;
+        return ConfigLT.minigame_SurviveTheTide_respawnPosition;
     }
 
     /** Copied from OverworldDimension */
     @Override
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid) {
-        return ConfigLT.minigame_IslandRoyale_respawnPosition;
+        return ConfigLT.minigame_SurviveTheTide_respawnPosition;
     }
 
     /**
@@ -111,5 +110,10 @@ public class IslandRoyaleDimension extends Dimension {
     @Override
     public boolean doesXZShowFog(int x, int z) {
         return false;
+    }
+
+    @Override
+    public int getSeaLevel() {
+        return 126;
     }
 }

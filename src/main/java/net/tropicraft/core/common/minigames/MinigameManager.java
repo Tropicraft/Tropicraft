@@ -9,17 +9,19 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.*;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
-import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
+import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
 import net.tropicraft.core.common.minigames.definitions.SignatureRunMinigameDefinition;
+import net.tropicraft.core.common.minigames.definitions.UnderwaterTrashHuntMinigameDefinition;
 
 import java.util.List;
 import java.util.Map;
@@ -86,8 +88,9 @@ public class MinigameManager implements IMinigameManager
         INSTANCE = new MinigameManager(server);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
 
-        INSTANCE.register(new IslandRoyaleMinigameDefinition());
+        INSTANCE.register(new SurviveTheTideMinigameDefinition(server));
         INSTANCE.register(new SignatureRunMinigameDefinition());
+        INSTANCE.register(new UnderwaterTrashHuntMinigameDefinition(server));
     }
 
     /**
@@ -131,18 +134,9 @@ public class MinigameManager implements IMinigameManager
         }
 
         IMinigameDefinition def = this.currentInstance.getDefinition();
-        def.onFinish();
+        def.onFinish(this.currentInstance.getCommandSource(), this.currentInstance);
 
-        for (UUID uuid : this.currentInstance.getParticipants()) {
-            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-            if (player != null) {
-                this.teleportBack(player);
-            }
-        }
-
-        // Spectators are separate from players
-        for (UUID uuid : this.currentInstance.getSpectators()) {
+        for (UUID uuid : this.currentInstance.getAllPlayerUUIDs()) {
             ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
 
             if (player != null) {
@@ -154,14 +148,16 @@ public class MinigameManager implements IMinigameManager
         for (ServerPlayerEntity player : this.server.getPlayerList().getPlayers()) {
             player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_FINISHED_MINIGAME,
                     new TranslationTextComponent(def.getUnlocalizedName()).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.AQUA))
-                    .applyTextStyle(TextFormatting.GOLD), ChatType.SYSTEM);
+                    .applyTextStyle(TextFormatting.GOLD), ChatType.CHAT);
         }
+
+        def.onPostFinish(this.currentInstance.getCommandSource());
 
         this.currentInstance = null;
     }
 
     @Override
-    public ActionResult<ITextComponent> startPolling(ResourceLocation minigameId, ServerPlayerEntity pollingPlayer) {
+    public ActionResult<ITextComponent> startPolling(ResourceLocation minigameId) {
         // Make sure minigame is registered with provided id
         if (!this.registeredMinigames.containsKey(minigameId)) {
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_ID_INVALID));
@@ -184,14 +180,14 @@ public class MinigameManager implements IMinigameManager
             player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_POLLING,
                 new TranslationTextComponent(definition.getUnlocalizedName()).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.AQUA),
                 new StringTextComponent("/minigame register").applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.GRAY))
-                .applyTextStyle(TextFormatting.GOLD), ChatType.SYSTEM);
+                .applyTextStyle(TextFormatting.GOLD), ChatType.CHAT);
         }
 
         return new ActionResult<>(ActionResultType.SUCCESS, new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_POLLED));
     }
 
     @Override
-    public ActionResult<ITextComponent> stopPolling(ServerPlayerEntity requestingPlayer) {
+    public ActionResult<ITextComponent> stopPolling() {
         // Check if a minigame is polling
         if (this.polling == null) {
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_NO_MINIGAME_POLLING));
@@ -206,7 +202,7 @@ public class MinigameManager implements IMinigameManager
         for (ServerPlayerEntity player : this.server.getPlayerList().getPlayers()) {
             player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_STOPPED_POLLING,
                     new TranslationTextComponent(minigameName).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.AQUA))
-                    .applyTextStyle(TextFormatting.RED), ChatType.SYSTEM);
+                    .applyTextStyle(TextFormatting.RED), ChatType.CHAT);
         }
 
         return new ActionResult<>(ActionResultType.SUCCESS,
@@ -215,7 +211,7 @@ public class MinigameManager implements IMinigameManager
     }
 
     @Override
-    public ActionResult<ITextComponent> start(ServerPlayerEntity startingPlayer) {
+    public ActionResult<ITextComponent> start() {
         // Check if any minigame is polling, can only start if so
         if (this.polling == null) {
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_NO_MINIGAME_POLLING));
@@ -226,7 +222,16 @@ public class MinigameManager implements IMinigameManager
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_NOT_ENOUGH_PLAYERS, this.polling.getMinimumParticipantCount()));
         }
 
-        this.currentInstance = new MinigameInstance(this.polling);
+        ActionResult<ITextComponent> canStart = this.polling.canStartMinigame();
+
+        if (canStart.getType() == ActionResultType.FAIL) {
+            return canStart;
+        }
+
+        this.polling.onPreStart();
+
+        ServerWorld world = this.server.getWorld(this.polling.getDimension());
+        this.currentInstance = new MinigameInstance(this.polling, world);
 
         int playersAvailable = Math.min(this.registeredForMinigame.size(), this.polling.getMaximumParticipantCount());
         List<UUID> chosenPlayers = Util.extractRandomElements(new Random(), this.registeredForMinigame, playersAvailable);
@@ -237,9 +242,11 @@ public class MinigameManager implements IMinigameManager
 
             if (player != null) {
                 this.currentInstance.addParticipant(player);
-                this.playerCache.put(player.getUniqueID(), new MinigamePlayerCache(player));
+                MinigamePlayerCache cache = new MinigamePlayerCache(player);
+                this.playerCache.put(player.getUniqueID(), cache);
 
-                player.inventory.clear();
+                cache.resetPlayerStats(player);
+
                 this.teleportPlayerIntoInstance(this.currentInstance, player, i);
             }
         }
@@ -249,7 +256,10 @@ public class MinigameManager implements IMinigameManager
 
             if (spectator != null) {
                 this.currentInstance.addSpectator(spectator);
-                this.playerCache.put(spectator.getUniqueID(), new MinigamePlayerCache(spectator));
+                MinigamePlayerCache cache = new MinigamePlayerCache(spectator);
+                this.playerCache.put(spectator.getUniqueID(), cache);
+
+                cache.resetPlayerStats(spectator);
 
                 spectator.inventory.clear();
                 this.teleportSpectatorIntoInstance(this.currentInstance, spectator);
@@ -259,21 +269,23 @@ public class MinigameManager implements IMinigameManager
         this.polling = null;
         this.registeredForMinigame.clear();
 
-        this.currentInstance.getDefinition().onStart();
+        this.currentInstance.getDefinition().onStart(this.currentInstance.getCommandSource(), this.currentInstance);
 
         return new ActionResult<>(ActionResultType.SUCCESS, new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_STARTED).applyTextStyle(TextFormatting.GREEN));
     }
 
     @Override
-    public ActionResult<ITextComponent> stop(ServerPlayerEntity stoppingPlayer) {
+    public ActionResult<ITextComponent> stop() {
         // Can't stop a current minigame if doesn't exist
         if (this.currentInstance == null) {
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_NO_MINIGAME));
         }
 
+        ITextComponent minigameName = new TranslationTextComponent(this.currentInstance.getDefinition().getUnlocalizedName()).applyTextStyle(TextFormatting.AQUA);
+
         this.finishCurrentMinigame();
 
-        return new ActionResult<>(ActionResultType.SUCCESS, new TranslationTextComponent(TropicraftLangKeys.COMMAND_STOPPED_MINIGAME).applyTextStyle(TextFormatting.GREEN));
+        return new ActionResult<>(ActionResultType.SUCCESS, new TranslationTextComponent(TropicraftLangKeys.COMMAND_STOPPED_MINIGAME, minigameName).applyTextStyle(TextFormatting.GREEN));
     }
 
     @Override
@@ -373,6 +385,12 @@ public class MinigameManager implements IMinigameManager
 
         this.playerCache.remove(player.getUniqueID());
     }
+    @SubscribeEvent
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (this.currentInstance != null && event.getEntity() instanceof ServerPlayerEntity) {
+            this.currentInstance.getDefinition().onPlayerUpdate((ServerPlayerEntity) event.getEntity(), this.currentInstance);
+        }
+    }
 
     /**
      * Funnel into minigame definition onPlayerDeath() for convenience
@@ -397,7 +415,8 @@ public class MinigameManager implements IMinigameManager
 
             BlockPos respawn = def.getPlayerRespawnPosition(this.currentInstance);
 
-            event.getPlayer().setPositionAndUpdate(respawn.getX(), respawn.getY(), respawn.getY());
+            ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+            player.connection.setPlayerLocation(respawn.getX(), respawn.getY(), respawn.getZ(), 0, 0);
         }
     }
 

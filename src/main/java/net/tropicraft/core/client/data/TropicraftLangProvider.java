@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
@@ -21,23 +20,7 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.TrashType;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.entity.BambooItemFrame;
-import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
-import net.tropicraft.core.common.entity.neutral.EIHEntity;
-import net.tropicraft.core.common.entity.neutral.IguanaEntity;
-import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
-import net.tropicraft.core.common.entity.passive.FailgullEntity;
-import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
-import net.tropicraft.core.common.entity.placeable.ChairEntity;
-import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.entity.placeable.WallItemEntity;
-import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
-import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropicraftLangProvider extends LanguageProvider {
@@ -324,14 +307,26 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(TropicraftLangKeys.COMMAND_MINIGAME_POLLED, "Minigame successfully polled!");
         add(TropicraftLangKeys.COMMAND_NOT_ENOUGH_PLAYERS, "There aren't enough players to start this minigame. It requires at least %s amount of players.");
         add(TropicraftLangKeys.COMMAND_MINIGAME_STARTED, "You have started the minigame.");
-        add(TropicraftLangKeys.MINIGAME_ISLAND_ROYALE, "Island Royale");
+        add(TropicraftLangKeys.MINIGAME_SURVIVE_THE_TIDE, "Survive The Tide");
         add(TropicraftLangKeys.MINIGAME_SIGNATURE_RUN, "Signature Run");
+        add(TropicraftLangKeys.MINIGAME_UNDERWATER_TRASH_HUNT, "Underwater Trash Hunt");
         add(TropicraftLangKeys.COMMAND_NO_LONGER_ENOUGH_PLAYERS, "There are no longer enough players to start the minigame!");
         add(TropicraftLangKeys.COMMAND_ENOUGH_PLAYERS, "There are now enough players to start the minigame!");
         add(TropicraftLangKeys.COMMAND_NO_MINIGAME, "There is no currently running minigame to stop!");
         add(TropicraftLangKeys.COMMAND_STOPPED_MINIGAME, "You have stopped the %s minigame.");
         add(TropicraftLangKeys.COMMAND_FINISHED_MINIGAME, "The minigame %s has finished. If you were inside the minigame, you have been teleported back to your original position.");
         add(TropicraftLangKeys.COMMAND_MINIGAME_STOPPED_POLLING, "An operator has stopped polling the minigame %s.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH, "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains. The lone survivor of the island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.");
+        add(TropicraftLangKeys.MINIGAME_FINISH, "The minigame will end in 10 seconds...");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_START, "The year is... 2050. Human caused climate change has gone unmitigated and the human population was forced to flee to higher ground. " +
+                "Fortunately for you, you live on an island with mountains nearby. The same cannot be said for the millions on the coastlines. Your task, should you choose to accept " +
+                "it, which you have to because of climate change, is to reach the last remaining high places and ride out the storm. Oh right, did I not mention the severe storms " +
+                "that happen sporadically and frequently these days because of the instability in the climate? Well, now you know. Work together or work against each other to reach the " +
+                "top, your true enemy is the rising sea currents. Just remember... Your resources are as limited as your time. Someone else may have the tool or food you need to survive. " +
+                "What kind of person will you be when the world is falling apart?\n\n" +
+                "Let's see!");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, "NOTE: PvP is disabled for %s minutes! Go fetch resources before time runs out.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED, "WARNING: PVP HAS BEEN ENABLED! Beware of other players...");
     }
     
     private String getAutomaticName(Supplier<? extends IForgeRegistryEntry<?>> sup) {

@@ -47,7 +47,6 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import weather2.ClientTickHandler;
 import weather2.SoundRegistry;
-import weather2.client.entity.particle.ParticleFish;
 import weather2.client.entity.particle.ParticleSandstorm;
 import weather2.config.ConfigLTOverrides;
 import weather2.config.ConfigMisc;
@@ -238,7 +237,7 @@ public class SceneEnhancer implements Runnable {
 			throwable.printStackTrace();
 		}*/
 
-		if (client.world != null && client.player != null && client.world.getDimension().getType() == TropicraftWorldUtils.ISLAND_ROYALE_DIMENSION) {
+		if (client.world != null && client.player != null && client.world.getDimension().getType() == TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION) {
 			profileSurroundings();
 			tryAmbientSounds();
 		}

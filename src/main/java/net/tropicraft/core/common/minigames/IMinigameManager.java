@@ -56,32 +56,28 @@ public interface IMinigameManager
     /**
      * Starts polling the minigame.
      * @param minigameId The unique ID of the minigame being polled.
-     * @param pollingPlayer The player that attempted to start polling this minigame.
      * @return The ActionResult of the polling attempt.
      */
-    ActionResult<ITextComponent> startPolling(ResourceLocation minigameId, ServerPlayerEntity pollingPlayer);
+    ActionResult<ITextComponent> startPolling(ResourceLocation minigameId);
 
     /**
      * Stops polling an actively polling minigame.
-     * @param requestingPlayer The player that attempted to stop polling the actively polling minigame.
      * @return The ActionResult of stopping the polling of an actively polling minigame.
      */
-    ActionResult<ITextComponent> stopPolling(ServerPlayerEntity requestingPlayer);
+    ActionResult<ITextComponent> stopPolling();
 
     /**
      * Starts an actively polling minigame if it has at least the minimum amount of
      * participants registered to the minigame, specified by the minigame definition.
-     * @param startingPlayer The player attempting to start the polling minigame.
      * @return The ActionResult of the start attempt.
      */
-    ActionResult<ITextComponent> start(ServerPlayerEntity startingPlayer);
+    ActionResult<ITextComponent> start();
 
     /**
      * Stops an actively running minigame.
-     * @param stoppingPlayer The player attempting to stop the actively running minigame.
      * @return The ActionResult of the stop attempt.
      */
-    ActionResult<ITextComponent> stop(ServerPlayerEntity stoppingPlayer);
+    ActionResult<ITextComponent> stop();
 
     /**
      * Registers a player for the currently polling minigame. Puts them in a queue

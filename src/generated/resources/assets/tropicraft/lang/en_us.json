@@ -335,10 +335,16 @@
   "tropicraft.command.unregistered_minigame": "You have unregistered for Minigame %s.",
   "tropicraft.container.bambooChest": "Bamboo Chest",
   "tropicraft.container.bambooChestDouble": "Large Bamboo Chest",
+  "tropicraft.minigame.finish": "The minigame will end in 10 seconds...",
   "tropicraft.minigame.finished_minigame": "The minigame %s has finished. If you were inside the minigame, you have been teleported back to your original position.",
-  "tropicraft.minigame.island_royale": "Island Royale",
   "tropicraft.minigame.minigame_stopped_polling": "An operator has stopped polling the minigame %s.",
   "tropicraft.minigame.no_minigame": "There is no currently running minigame to stop!",
   "tropicraft.minigame.signature_run": "Signature Run",
-  "tropicraft.minigame.stopped_minigame": "You have stopped the %s minigame."
+  "tropicraft.minigame.stopped_minigame": "You have stopped the %s minigame.",
+  "tropicraft.minigame.survive_the_tide": "Survive The Tide",
+  "tropicraft.minigame.survive_the_tide_finish": "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains. The lone survivor of the island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.",
+  "tropicraft.minigame.survive_the_tide_pvp_disabled": "NOTE: PvP is disabled for %s minutes! Go fetch resources before time runs out.",
+  "tropicraft.minigame.survive_the_tide_pvp_enabled": "WARNING: PVP HAS BEEN ENABLED! Beware of other players...",
+  "tropicraft.minigame.survive_the_tide_start": "The year is... 2050. Human caused climate change has gone unmitigated and the human population was forced to flee to higher ground. Fortunately for you, you live on an island with mountains nearby. The same cannot be said for the millions on the coastlines. Your task, should you choose to accept it, which you have to because of climate change, is to reach the last remaining high places and ride out the storm. Oh right, did I not mention the severe storms that happen sporadically and frequently these days because of the instability in the climate? Well, now you know. Work together or work against each other to reach the top, your true enemy is the rising sea currents. Just remember... Your resources are as limited as your time. Someone else may have the tool or food you need to survive. What kind of person will you be when the world is falling apart?\n\nLet's see!",
+  "tropicraft.minigame.underwater_trash_hunt": "Underwater Trash Hunt"
 }

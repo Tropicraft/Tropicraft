@@ -136,7 +136,7 @@ public class ClientTickHandler
 
 			//TODO: split logic up a bit better for this, if this is set to false mid sandstorm, fog is stuck on,
 			// with sandstorms and other things it might not represent the EZ config option
-			if (world.getDimension().getType() == TropicraftWorldUtils.ISLAND_ROYALE_DIMENSION) {
+			if (world.getDimension().getType() == TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION) {
 				//weatherManager.tick();
 
 				sceneEnhancer.tickClient();

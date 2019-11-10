@@ -83,7 +83,7 @@ public class ServerTickHandler
         for (ServerWorld worldEntry : worlds) {
 			if (!lookupDimToWeatherMan.containsKey(worldEntry.getDimension().getType().getId())) {
 
-				if (worldEntry.getDimension().getType() == TropicraftWorldUtils.ISLAND_ROYALE_DIMENSION/*WeatherUtilConfig.listDimensionsWeather.contains(worldEntry.getDimension().getType().getId())*/) {
+				if (worldEntry.getDimension().getType() == TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION/*WeatherUtilConfig.listDimensionsWeather.contains(worldEntry.getDimension().getType().getId())*/) {
 					addWorldToWeather(worldEntry.getDimension().getType().getId());
 				}
 			}
