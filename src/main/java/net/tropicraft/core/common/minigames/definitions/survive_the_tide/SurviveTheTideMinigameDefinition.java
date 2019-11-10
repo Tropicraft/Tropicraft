@@ -129,6 +129,11 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         ServerWorld world = DimensionManager.getWorld(this.server, this.getDimension(), false, false);
 
         if (world != null) {
+            if (world.getPlayers().size() <= 0) {
+                DimensionManager.unloadWorld(world);
+                return new ActionResult<>(ActionResultType.FAIL, new StringTextComponent("The Survive the Tide dimension was not unloaded. Begun unloading, please try again in a few seconds.").applyTextStyle(TextFormatting.RED));
+            }
+
             return new ActionResult<>(ActionResultType.FAIL, new StringTextComponent("Cannot start minigame as players are in Survive The Tide dimension. Make them teleport out first.").applyTextStyle(TextFormatting.RED));
         }
 
