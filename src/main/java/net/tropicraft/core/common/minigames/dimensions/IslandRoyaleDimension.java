@@ -112,4 +112,9 @@ public class IslandRoyaleDimension extends Dimension {
     public boolean doesXZShowFog(int x, int z) {
         return false;
     }
+
+    @Override
+    public int getSeaLevel() {
+        return 126;
+    }
 }

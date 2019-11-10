@@ -96,6 +96,11 @@ public class SignatureRunMinigameDefinition implements IMinigameDefinition {
     }
 
     @Override
+    public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
+
+    }
+
+    @Override
     public void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance) {
 
     }

@@ -1,10 +1,8 @@
 package net.tropicraft.core.common.minigames.definitions;
 
-import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.FunctionArgument;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
@@ -17,8 +15,6 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.IMinigameInstance;
-
-import java.util.Objects;
 
 /**
  * Definition implementation for Signature Run minigame.
@@ -114,12 +110,17 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
 
     @Override
     public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
-        if (!instance.getSpectators().contains(player)) {
+        if (!instance.getSpectators().contains(player.getUniqueID())) {
             instance.removeParticipant(player);
             instance.addSpectator(player);
 
             player.setGameType(GameType.SPECTATOR);
         }
+    }
+
+    @Override
+    public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
+
     }
 
     @Override

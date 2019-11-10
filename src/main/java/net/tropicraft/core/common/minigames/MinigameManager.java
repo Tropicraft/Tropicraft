@@ -2,7 +2,6 @@ package net.tropicraft.core.common.minigames;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResult;
@@ -14,17 +13,15 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
 import net.tropicraft.core.common.minigames.definitions.SignatureRunMinigameDefinition;
 import net.tropicraft.core.common.minigames.definitions.UnderwaterTrashHuntMinigameDefinition;
-import org.jline.builtins.Commands;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -90,7 +87,7 @@ public class MinigameManager implements IMinigameManager
         INSTANCE = new MinigameManager(server);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
 
-        INSTANCE.register(new IslandRoyaleMinigameDefinition());
+        INSTANCE.register(new IslandRoyaleMinigameDefinition(server));
         INSTANCE.register(new SignatureRunMinigameDefinition());
         INSTANCE.register(new UnderwaterTrashHuntMinigameDefinition(server));
     }
@@ -380,6 +377,12 @@ public class MinigameManager implements IMinigameManager
         cache.teleportBack(player);
 
         this.playerCache.remove(player.getUniqueID());
+    }
+    @SubscribeEvent
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (this.currentInstance != null && event.getEntity() instanceof ServerPlayerEntity) {
+            this.currentInstance.getDefinition().onPlayerUpdate((ServerPlayerEntity) event.getEntity(), this.currentInstance);
+        }
     }
 
     /**

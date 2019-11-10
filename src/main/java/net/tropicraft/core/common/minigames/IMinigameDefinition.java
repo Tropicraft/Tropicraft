@@ -115,6 +115,13 @@ public interface IMinigameDefinition
     void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance);
 
     /**
+     * Helper method to create unique logic for when the player updates.
+     * @param player They player which is updating.
+     * @param instance The instance of the currently running minigame.
+     */
+    void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance);
+
+    /**
      * Helper method to catch when a player respawns while inside an active
      * minigame using this definition. Useful for unique logic defined
      * by this minigame definition.
