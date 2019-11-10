@@ -267,6 +267,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public void onFinish(CommandSource commandSource, IMinigameInstance instance) {
+        this.minigameEnded = false;
+        this.minigameEndedTimer = 0;
+        this.winningPlayer = null;
         minigameWeatherInstance.reset();
         phase = MinigamePhase.PHASE1;
         phaseTime = 0;
