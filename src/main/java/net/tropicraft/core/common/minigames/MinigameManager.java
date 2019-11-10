@@ -159,6 +159,8 @@ public class MinigameManager implements IMinigameManager
                     .applyTextStyle(TextFormatting.GOLD), ChatType.CHAT);
         }
 
+        def.onPostFinish(this.currentInstance.getCommandSource());
+
         this.currentInstance = null;
     }
 
@@ -227,6 +229,8 @@ public class MinigameManager implements IMinigameManager
         if (this.registeredForMinigame.size() < this.polling.getMinimumParticipantCount()) {
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_NOT_ENOUGH_PLAYERS, this.polling.getMinimumParticipantCount()));
         }
+
+        this.polling.onPreStart();
 
         ServerWorld world = this.server.getWorld(this.polling.getDimension());
         this.currentInstance = new MinigameInstance(this.polling, world);

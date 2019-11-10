@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.minigames.definitions;
 
-import javax.annotation.Nonnull;
-
+import net.minecraftforge.common.DimensionManager;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +21,6 @@ import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStatePaletteHashMap;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.dimension.DimensionType;
@@ -34,11 +33,11 @@ import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.IMinigameInstance;
 import net.tropicraft.core.common.minigames.MinigameManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import weather2.MinigameWeatherInstance;
 import weather2.MinigameWeatherInstanceServer;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -157,7 +156,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
             minigameWeatherInstance.tick(this);
 
-            if (minigameTime % 200 == 0) {
+            if (phase == MinigamePhase.PHASE2 && minigameTime % 200 == 0) {
                 this.waterLevel++;
                 BlockPos min = this.waterLevelMin.add(0, this.waterLevel, 0);
                 BlockPos max = this.waterLevelMax.add(0, this.waterLevel, 0);
@@ -252,6 +251,17 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     }
 
     @Override
+    public void onPostFinish(CommandSource commandSource) {
+        ServerWorld world = this.server.getWorld(this.getDimension());
+        DimensionManager.unloadWorld(world);
+    }
+
+    @Override
+    public void onPreStart() {
+        this.fetchBaseMap();
+    }
+
+    @Override
     public void onStart(CommandSource commandSource) {
         minigameTime = 0;
         ServerWorld world = this.server.getWorld(this.getDimension());
@@ -339,6 +349,29 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
             if (this.minigameEndedTimer >= 200) {
                 MinigameManager.getInstance().finishCurrentMinigame();
             }
+        }
+    }
+
+    private void fetchBaseMap() {
+        File worldFile = this.server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory();
+
+        File baseMapsFile = new File(worldFile, "minigame_base_maps");
+
+        File islandRoyaleBase = new File(baseMapsFile, "hunger_games");
+        File islandRoyaleCurrent = new File(worldFile, "tropicraft/hunger_games");
+
+        try {
+            if (islandRoyaleBase.exists()) {
+                FileUtils.deleteDirectory(islandRoyaleCurrent);
+
+                if (islandRoyaleCurrent.mkdirs()) {
+                    FileUtils.copyDirectory(islandRoyaleBase, islandRoyaleCurrent);
+                }
+            } else {
+                LOGGER.info("Island royale base map doesn't exist in " + islandRoyaleBase.getPath() + ", add first before it can copy and replace each game start.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

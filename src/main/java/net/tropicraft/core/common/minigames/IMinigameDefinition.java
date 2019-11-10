@@ -102,7 +102,7 @@ public interface IMinigameDefinition
      * @param world The world to run this for, currently a worldUpdate call happens per each loaded world
      * @param instance The instance of the currently running minigame.
      */
-    void worldUpdate(World world, IMinigameInstance instance);
+    default void worldUpdate(World world, IMinigameInstance instance) {}
 
     /**
      * Helper method to catch when a player dies while inside an active
@@ -112,14 +112,14 @@ public interface IMinigameDefinition
      * @param player The player which died.
      * @param instance The instance of the currently running minigame.
      */
-    void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance);
+    default void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {}
 
     /**
      * Helper method to create unique logic for when the player updates.
      * @param player They player which is updating.
      * @param instance The instance of the currently running minigame.
      */
-    void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance);
+    default void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {}
 
     /**
      * Helper method to catch when a player respawns while inside an active
@@ -129,7 +129,7 @@ public interface IMinigameDefinition
      * @param player The player which died.
      * @param instance The instance of the currently running minigame.
      */
-    void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance);
+    default void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance) {}
 
     /**
      * For when a minigame finishes. Useful for cleanup related to this
@@ -139,7 +139,16 @@ public interface IMinigameDefinition
      *                      Can be used to execute some commands for
      *                      the minigame from a datapack.
      */
-    void onFinish(CommandSource commandSource);
+    default void onFinish(CommandSource commandSource) {}
+
+    /**
+     * For when the minigame has finished and all players are teleported
+     * out of the dimension.
+     * @param commandSource Command source for the minigame instance.
+     *                      Can be used to execute some commands for
+     *                      the minigame from a datapack.
+     */
+     default void onPostFinish(CommandSource commandSource) {}
 
     /**
      * For when a minigame starts. Useful for preparing the minigame.
@@ -148,5 +157,10 @@ public interface IMinigameDefinition
      *                      Can be used to execute some commands for
      *                      the minigame from a datapack.
      */
-    void onStart(CommandSource commandSource);
+    default void onStart(CommandSource commandSource) {}
+
+    /**
+     * For before a minigame starts. Useful for preparing the minigame.
+     */
+    default void onPreStart() {}
 }
