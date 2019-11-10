@@ -34,4 +34,6 @@ public class TropicraftLangKeys
     public static String COMMAND_STOPPED_MINIGAME = Constants.MODID + ".minigame.stopped_minigame";
     public static String COMMAND_FINISHED_MINIGAME = Constants.MODID + ".minigame.finished_minigame";
     public static String COMMAND_MINIGAME_STOPPED_POLLING = Constants.MODID + ".minigame.minigame_stopped_polling";
+    public static String ISLAND_ROYALE_FINISH = Constants.MODID + ".minigame.island_royale_finish";
+    public static String MINIGAME_FINISH = Constants.MODID + ".minigame.finish";
 }

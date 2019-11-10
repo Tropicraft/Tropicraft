@@ -4,8 +4,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -17,10 +20,13 @@ import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.IMinigameInstance;
+import net.tropicraft.core.common.minigames.MinigameManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import weather2.MinigameWeatherInstance;
 import weather2.MinigameWeatherInstanceServer;
+
+import java.util.UUID;
 
 /**
  * Definition implementation for the Island Royale minigame.
@@ -49,6 +55,10 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     private BlockPos waterLevelMax = waterLevelMin.add(1000, 0, 1000);
 
     private MinecraftServer server;
+
+    private boolean minigameEnded;
+    private int minigameEndedTimer;
+    private UUID winningPlayer;
 
     public enum MinigamePhase {
         PHASE1,
@@ -114,7 +124,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     @Override
     public void worldUpdate(World world, IMinigameInstance instance) {
         if (world.getDimension().getType() == getDimension()) {
-            //LOGGER.info("world update + " + world.getGameTime());
+            this.checkForGameEndCondition(instance);
 
             minigameTime++;
             phaseTime++;
@@ -167,11 +177,19 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
             player.setGameType(GameType.SPECTATOR);
         }
+
+        if (instance.getParticipants().size() == 1) {
+            this.minigameEnded = true;
+
+            this.winningPlayer = instance.getParticipants().iterator().next();
+        }
     }
 
     @Override
     public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
-
+        if (player.isInWater() && player.ticksExisted % 20 == 0) {
+            player.attackEntityFrom(DamageSource.DROWN, 2.0F);
+        }
     }
 
     @Override
@@ -240,6 +258,40 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     public void dbg(String str) {
         if (debug) {
             LOGGER.info(str);
+        }
+    }
+
+    private void checkForGameEndCondition(IMinigameInstance instance) {
+        if (this.minigameEnded) {
+            if (this.minigameEndedTimer == 0) {
+                ServerPlayerEntity winning = this.server.getPlayerList().getPlayerByUUID(this.winningPlayer);
+
+                if (winning != null) {
+                    for (UUID uuid : instance.getParticipants()) {
+                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+                        if (player != null) {
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_FINISH, winning.getDisplayName(), ChatType.CHAT));
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH), ChatType.CHAT);
+                        }
+                    }
+
+                    for (UUID uuid : instance.getSpectators()) {
+                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+                        if (player != null) {
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_FINISH, winning.getDisplayName(), ChatType.CHAT));
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH), ChatType.CHAT);
+                        }
+                    }
+                }
+            }
+
+            this.minigameEndedTimer++;
+
+            if (this.minigameEndedTimer >= 200) {
+                MinigameManager.getInstance().finishCurrentMinigame();
+            }
         }
     }
 }
