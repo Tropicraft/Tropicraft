@@ -19,16 +19,16 @@ public class ConfigLT {
 
     public static final CategoryGeneral GENERAL = new CategoryGeneral();
 
-    public static final CategoryIslandRoyale MINIGAME_ISLAND_ROYALE = new CategoryIslandRoyale();
+    public static final CategorySurviveTheTide MINIGAME_SURVIVE_THE_TIDE = new CategorySurviveTheTide();
 
-    public static final class CategoryIslandRoyale {
+    public static final class CategorySurviveTheTide {
 
         public final IntValue minimumPlayerCount;
         public final IntValue maximumPlayerCount;
 
-        public final ConfigValue<String> minigame_IslandRoyale_playerPositions;
-        public final ConfigValue<String> minigame_IslandRoyale_respawnPosition;
-        public final ConfigValue<String> minigame_IslandRoyale_spectatorPosition;
+        public final ConfigValue<String> minigame_SurviveTheTide_playerPositions;
+        public final ConfigValue<String> minigame_SurviveTheTide_respawnPosition;
+        public final ConfigValue<String> minigame_SurviveTheTide_spectatorPosition;
 
         public final IntValue phase1Length;
         public final IntValue phase2Length;
@@ -53,16 +53,16 @@ public class ConfigLT {
         public final IntValue acidRainDamage;
         public final IntValue acidRainDamageRate;
 
-        private CategoryIslandRoyale() {
-            COMMON_BUILDER.comment("Island Royale settings").push("island_royale");
+        private CategorySurviveTheTide() {
+            COMMON_BUILDER.comment("Survive The Tide settings").push("survive_the_tide");
 
-            minigame_IslandRoyale_playerPositions = COMMON_BUILDER.comment("List of spawn positions for players, number of entries must match maximumPlayerCount config value, separate each position by ; and each x y and z with , example: 5780, 141, 6955; 5780, 141, 6955")
-                    .define("minigame_IslandRoyale_playerPositions", "5780, 141, 6955; 5780, 141, 6955; " +
+            minigame_SurviveTheTide_playerPositions = COMMON_BUILDER.comment("List of spawn positions for players, number of entries must match maximumPlayerCount config value, separate each position by ; and each x y and z with , example: 5780, 141, 6955; 5780, 141, 6955")
+                    .define("minigame_SurviveTheTide_playerPositions", "5780, 141, 6955; 5780, 141, 6955; " +
                             "5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; " +
                             "5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955");
 
-            minigame_IslandRoyale_respawnPosition = COMMON_BUILDER.define("minigame_IslandRoyale_respawnPosition", "5780, 141, 6955");
-            minigame_IslandRoyale_spectatorPosition = COMMON_BUILDER.define("minigame_IslandRoyale_spectatorPosition", "5780, 141, 6955");
+            minigame_SurviveTheTide_respawnPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_respawnPosition", "5780, 141, 6955");
+            minigame_SurviveTheTide_spectatorPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_spectatorPosition", "5780, 141, 6955");
 
             minimumPlayerCount = COMMON_BUILDER.defineInRange("minimumPlayerCount", 3, 1, 255);
             maximumPlayerCount = COMMON_BUILDER.defineInRange("maximumPlayerCount", 16, 2, 255);
@@ -120,20 +120,20 @@ public class ConfigLT {
     /**
      * values used during runtime that require processing from disk
      */
-    public static BlockPos[] minigame_IslandRoyale_playerPositions = new BlockPos[] {
+    public static BlockPos[] minigame_SurviveTheTide_playerPositions = new BlockPos[] {
             new BlockPos(5780, 141, 6955) };
 
-    public static BlockPos minigame_IslandRoyale_respawnPosition = new BlockPos(5780, 141, 6955);
+    public static BlockPos minigame_SurviveTheTide_respawnPosition = new BlockPos(5780, 141, 6955);
 
-    public static BlockPos minigame_IslandRoyale_spectatorPosition = new BlockPos(5780, 141, 6955);
+    public static BlockPos minigame_SurviveTheTide_spectatorPosition = new BlockPos(5780, 141, 6955);
 
 
     public static void onLoad(final ModConfig.Loading configEvent) {
-        minigame_IslandRoyale_playerPositions = getAsBlockPosArray(ConfigLT.MINIGAME_ISLAND_ROYALE.minigame_IslandRoyale_playerPositions.get());
-        minigame_IslandRoyale_respawnPosition = stringToBlockPos(ConfigLT.MINIGAME_ISLAND_ROYALE.minigame_IslandRoyale_respawnPosition.get());
-        minigame_IslandRoyale_spectatorPosition = stringToBlockPos(ConfigLT.MINIGAME_ISLAND_ROYALE.minigame_IslandRoyale_spectatorPosition.get());
+        minigame_SurviveTheTide_playerPositions = getAsBlockPosArray(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_playerPositions.get());
+        minigame_SurviveTheTide_respawnPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_respawnPosition.get());
+        minigame_SurviveTheTide_spectatorPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_spectatorPosition.get());
 
-        for (BlockPos pos : minigame_IslandRoyale_playerPositions) System.out.println("RESULT: " + pos);
+        for (BlockPos pos : minigame_SurviveTheTide_playerPositions) System.out.println("RESULT: " + pos);
     }
 
     public static void onFileChange(final ModConfig.ConfigReloading configEvent) {

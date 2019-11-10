@@ -5,7 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
-import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
+import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
 
 public class MinigameWeatherInstanceClient extends MinigameWeatherInstance {
 
@@ -21,7 +21,7 @@ public class MinigameWeatherInstanceClient extends MinigameWeatherInstance {
     }
 
     @Override
-    public void tick(IslandRoyaleMinigameDefinition minigameDefinition) {
+    public void tick(SurviveTheTideMinigameDefinition minigameDefinition) {
         super.tick(minigameDefinition);
 
         World world = Minecraft.getInstance().world;

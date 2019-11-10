@@ -26,24 +26,24 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.Util;
-import net.tropicraft.core.common.minigames.dimensions.IslandRoyaleDimension;
+import net.tropicraft.core.common.minigames.dimensions.SurviveTheTideDimension;
 
 public class TropicraftWorldUtils {
     
     public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, Constants.MODID);
 
 	public static DimensionType TROPICS_DIMENSION;
-	public static DimensionType ISLAND_ROYALE_DIMENSION;
+	public static DimensionType SURVIVE_THE_TIDE_DIMENSION;
 	public static DimensionType SIGNATURE_RUN_DIMENSION;
 
 	public static ResourceLocation TROPICS_ID = Util.resource("tropics");
-	public static ResourceLocation ISLAND_ROYALE_ID = Util.resource("hunger_games");
+	public static ResourceLocation SURVIVE_THE_TIDE_ID = Util.resource("hunger_games");
 	public static ResourceLocation SIGNATURE_RUN_ID = Util.resource("signature_run");
 
 	public static final RegistryObject<ModDimension> TROPICRAFT_MOD_DIMENSION = register(
 			TROPICS_ID.getPath(), TropicraftWorldUtils::tropicsDimFactory);
-	public static final RegistryObject<ModDimension> HUNGER_GAMES_MOD_DIMENSION = register(
-			ISLAND_ROYALE_ID.getPath(), TropicraftWorldUtils::islandRoyaleDimFactory);
+	public static final RegistryObject<ModDimension> SURVIVE_THE_TIDE_MOD_DIMENSION = register(
+			SURVIVE_THE_TIDE_ID.getPath(), TropicraftWorldUtils::surviveTheTideDimFactory);
 	public static final RegistryObject<ModDimension> SIGNATURE_RUN_MOD_DIMENSION = register(
 			SIGNATURE_RUN_ID.getPath(), TropicraftWorldUtils::tropicsDimFactory);
 
@@ -56,11 +56,11 @@ public class TropicraftWorldUtils {
 		};
 	}
 
-	private static ModDimension islandRoyaleDimFactory() {
+	private static ModDimension surviveTheTideDimFactory() {
 		return new ModDimension() {
 			@Override
 			public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
-				return IslandRoyaleDimension::new;
+				return SurviveTheTideDimension::new;
 			}
 		};
 	}
@@ -74,7 +74,7 @@ public class TropicraftWorldUtils {
 		@SubscribeEvent
 		public static void onModDimensionRegister(final RegisterDimensionsEvent event) {
 			postRegister(TROPICS_ID, dimensionType -> TROPICS_DIMENSION = dimensionType, () -> TROPICS_DIMENSION, TROPICRAFT_MOD_DIMENSION);
-			postRegister(ISLAND_ROYALE_ID, dimensionType -> ISLAND_ROYALE_DIMENSION = dimensionType, () -> ISLAND_ROYALE_DIMENSION, HUNGER_GAMES_MOD_DIMENSION);
+			postRegister(SURVIVE_THE_TIDE_ID, dimensionType -> SURVIVE_THE_TIDE_DIMENSION = dimensionType, () -> SURVIVE_THE_TIDE_DIMENSION, SURVIVE_THE_TIDE_MOD_DIMENSION);
 			postRegister(SIGNATURE_RUN_ID, dimensionType -> SIGNATURE_RUN_DIMENSION = dimensionType, () -> SIGNATURE_RUN_DIMENSION, SIGNATURE_RUN_MOD_DIMENSION);
 		}
 

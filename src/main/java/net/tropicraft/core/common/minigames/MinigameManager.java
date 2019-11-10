@@ -19,9 +19,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
-import net.tropicraft.core.common.minigames.definitions.IslandRoyaleMinigameDefinition;
+import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
 import net.tropicraft.core.common.minigames.definitions.SignatureRunMinigameDefinition;
 import net.tropicraft.core.common.minigames.definitions.UnderwaterTrashHuntMinigameDefinition;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -87,7 +88,7 @@ public class MinigameManager implements IMinigameManager
         INSTANCE = new MinigameManager(server);
         MinecraftForge.EVENT_BUS.register(INSTANCE);
 
-        INSTANCE.register(new IslandRoyaleMinigameDefinition(server));
+        INSTANCE.register(new SurviveTheTideMinigameDefinition(server));
         INSTANCE.register(new SignatureRunMinigameDefinition());
         INSTANCE.register(new UnderwaterTrashHuntMinigameDefinition(server));
     }
@@ -235,9 +236,11 @@ public class MinigameManager implements IMinigameManager
 
             if (player != null) {
                 this.currentInstance.addParticipant(player);
-                this.playerCache.put(player.getUniqueID(), new MinigamePlayerCache(player));
+                MinigamePlayerCache cache = new MinigamePlayerCache(player);
+                this.playerCache.put(player.getUniqueID(), cache);
 
-                player.inventory.clear();
+                cache.resetPlayerStats(player);
+
                 this.teleportPlayerIntoInstance(this.currentInstance, player, i);
             }
         }
@@ -247,7 +250,10 @@ public class MinigameManager implements IMinigameManager
 
             if (spectator != null) {
                 this.currentInstance.addSpectator(spectator);
-                this.playerCache.put(spectator.getUniqueID(), new MinigamePlayerCache(spectator));
+                MinigamePlayerCache cache = new MinigamePlayerCache(spectator);
+                this.playerCache.put(spectator.getUniqueID(), cache);
+
+                cache.resetPlayerStats(spectator);
 
                 spectator.inventory.clear();
                 this.teleportSpectatorIntoInstance(this.currentInstance, spectator);

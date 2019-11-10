@@ -1,0 +1,364 @@
+{
+  "pools": [
+    {
+      "rolls": {
+        "min": 3,
+        "max": 9
+      },
+      "bonus_rolls": {
+        "min": 0,
+        "max": 10.1
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:iron_sword",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "minecraft:wooden_sword",
+          "weight": 15
+        },
+        {
+          "type": "item",
+          "name": "minecraft:stone_sword",
+          "weight": 12
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_sword",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_sword",
+          "weight": 4
+        },
+        {
+          "type": "item",
+          "name": "minecraft:",
+          "weight": 5
+        },
+        {
+          "type": "item",
+          "name": "minecraft:arrow",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 5,
+                "max": 30
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:tipped_arrow",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:long_slowness\"}"
+            },
+            {
+              "function": "set_count",
+              "count": {
+                "min": 5,
+                "max": 17
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:tipped_arrow",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:poison\"}"
+            },
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 10
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:shield",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:splash_potion",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:strong_healing\"}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:potion",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:strong_swiftness\"}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:potion",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:strength\"}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:potion",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:strong_healing\"}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:potion",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:invisibility\"}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:potion",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Potion:\"minecraft:strong_leaping\"}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:chainmail_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_chestplate",
+          "weight": 3
+        },
+        {
+          "type": "item",
+          "name": "minecraft:iron_chestplate",
+          "weight": 5
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_leggings",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:iron_leggings",
+          "weight": 5
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_leggings",
+          "weight": 3
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_helmet",
+          "weight": 3
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_helmet",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:iron_helmet",
+          "weight": 5
+        },
+        {
+          "type": "item",
+          "name": "minecraft:leather_boots",
+          "weight": 7
+        },
+        {
+          "type": "item",
+          "name": "minecraft:chainmail_boots",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_boots",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_boots",
+          "weight": 3
+        },
+        {
+          "type": "item",
+          "name": "minecraft:iron_boots",
+          "weight": 5
+        },
+        {
+          "type": "item",
+          "name": "minecraft:leather_helmet",
+          "weight": 7
+        },
+        {
+          "type": "item",
+          "name": "minecraft:leather_leggings",
+          "weight": 7
+        },
+        {
+          "type": "item",
+          "name": "minecraft:leather_chestplate",
+          "weight": 7
+        },
+        {
+          "type": "item",
+          "name": "minecraft:bow",
+          "weight": 5
+        },
+        {
+          "type": "item",
+          "name": "minecraft:",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:ender_pearl",
+          "weight": 1
+        },
+        {
+          "type": "item",
+          "name": "minecraft:melon",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 5,
+                "max": 20
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:cooked_beef",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 13
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:cooked_mutton",
+          "weight": 9,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 2,
+                "max": 13
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:pumpkin_pie",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 7
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:rotten_flesh",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 10,
+                "max": 19
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_apple",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_data",
+              "data": 0
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_apple",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_data",
+              "data": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

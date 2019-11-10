@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.minigames.definitions;
+package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.TextFormatting;
@@ -50,9 +50,9 @@ import java.util.UUID;
  * Will resolve minigame features and logic in worldUpdate() method
  * later on.
  */
-public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
-    public static ResourceLocation ID = Util.resource("island_royale");
-    private String displayName = TropicraftLangKeys.MINIGAME_ISLAND_ROYALE;
+public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
+    public static ResourceLocation ID = Util.resource("survive_the_tide");
+    private String displayName = TropicraftLangKeys.MINIGAME_SURVIVE_THE_TIDE;
 
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -70,6 +70,31 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     private BlockPos waterLevelMin = new BlockPos(5722, 0, 6782);
     private BlockPos waterLevelMax = new BlockPos(6102, 0, 7162);
 
+    private IcebergLine icebergLine1 = new IcebergLine(
+            new BlockPos(5847, 0, 6908),
+            new BlockPos(5902, 0, 6882),
+            10);
+
+    private IcebergLine icebergLine2 = new IcebergLine(
+            new BlockPos(5902, 0, 6882),
+            new BlockPos(5956, 0, 6881),
+            10);
+
+    private IcebergLine icebergLine3 = new IcebergLine(
+            new BlockPos(6012, 0, 6927),
+            new BlockPos(5999, 0, 7017),
+            10);
+
+    private IcebergLine icebergLine4 = new IcebergLine(
+            new BlockPos(5955, 0, 7054),
+            new BlockPos(5871, 0, 7065),
+            10);
+
+    private IcebergLine icebergLine5 = new IcebergLine(
+            new BlockPos(5830, 0, 7014),
+            new BlockPos(5808, 0, 6934),
+            10);
+
     private MinecraftServer server;
 
     private boolean minigameEnded;
@@ -77,14 +102,14 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     private UUID winningPlayer;
 
     private WaterLevelInfo phase2WaterLevelInfo = new WaterLevelInfo(
-            ConfigLT.MINIGAME_ISLAND_ROYALE.phase2TargetWaterLevel.get(),
+            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2TargetWaterLevel.get(),
             126,
-            ConfigLT.MINIGAME_ISLAND_ROYALE.phase2Length.get());
+            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2Length.get());
 
     private WaterLevelInfo phase3WaterLevelInfo = new WaterLevelInfo(
-            ConfigLT.MINIGAME_ISLAND_ROYALE.phase3TargetWaterLevel.get(),
-            ConfigLT.MINIGAME_ISLAND_ROYALE.phase2TargetWaterLevel.get(),
-            ConfigLT.MINIGAME_ISLAND_ROYALE.phase3Length.get()
+            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase3TargetWaterLevel.get(),
+            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2TargetWaterLevel.get(),
+            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase3Length.get()
     );
 
     public enum MinigamePhase {
@@ -94,7 +119,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
         PHASE4,
     }
 
-    public IslandRoyaleMinigameDefinition(MinecraftServer server) {
+    public SurviveTheTideMinigameDefinition(MinecraftServer server) {
         this.minigameWeatherInstance = new MinigameWeatherInstanceServer();
         this.server = server;
     }
@@ -111,7 +136,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public DimensionType getDimension() {
-        return TropicraftWorldUtils.ISLAND_ROYALE_DIMENSION;
+        return TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION;
     }
 
     @Override
@@ -126,27 +151,27 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public BlockPos getSpectatorPosition() {
-        return ConfigLT.minigame_IslandRoyale_spectatorPosition;
+        return ConfigLT.minigame_SurviveTheTide_spectatorPosition;
     }
 
     @Override
     public BlockPos getPlayerRespawnPosition(IMinigameInstance instance) {
-        return ConfigLT.minigame_IslandRoyale_respawnPosition;
+        return ConfigLT.minigame_SurviveTheTide_respawnPosition;
     }
 
     @Override
     public BlockPos[] getParticipantPositions() {
-        return ConfigLT.minigame_IslandRoyale_playerPositions;
+        return ConfigLT.minigame_SurviveTheTide_playerPositions;
     }
 
     @Override
     public int getMinimumParticipantCount() {
-        return ConfigLT.MINIGAME_ISLAND_ROYALE.minimumPlayerCount.get();
+        return ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minimumPlayerCount.get();
     }
 
     @Override
     public int getMaximumParticipantCount() {
-        return ConfigLT.MINIGAME_ISLAND_ROYALE.maximumPlayerCount.get();
+        return ConfigLT.MINIGAME_SURVIVE_THE_TIDE.maximumPlayerCount.get();
     }
 
     @Override
@@ -160,24 +185,28 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
             this.processWaterLevel(world);
 
             if (phase == MinigamePhase.PHASE1) {
-                if (phaseTime >= 500) {
+                if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
                     nextPhase();
 
                     for (UUID uuid : instance.getAllPlayerUUIDs()) {
                         ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
 
                         if (player != null) {
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_PVP_ENABLED).applyTextStyle(TextFormatting.RED), ChatType.CHAT);
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED).applyTextStyle(TextFormatting.RED), ChatType.CHAT);
                         }
                     }
                 }
             } else if (phase == MinigamePhase.PHASE2) {
-                if (phaseTime >= ConfigLT.MINIGAME_ISLAND_ROYALE.phase2Length.get()) {
+                if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2Length.get()) {
                     nextPhase();
                 }
             } else if (phase == MinigamePhase.PHASE3) {
-                if (phaseTime >= ConfigLT.MINIGAME_ISLAND_ROYALE.phase3Length.get()) {
+                if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase3Length.get()) {
                     nextPhase();
+                }
+            } else if (phase == MinigamePhase.PHASE4) {
+                if (this.minigameTime % 100 == 0) {
+                    this.growIcebergs(world);
                 }
             }
 
@@ -254,8 +283,8 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
             ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
 
             if (player != null) {
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_START).applyTextStyle(TextFormatting.DARK_PURPLE), ChatType.CHAT);
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_PVP_DISABLED).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
+                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_START).applyTextStyle(TextFormatting.DARK_PURPLE), ChatType.CHAT);
+                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
             }
         }
     }
@@ -319,7 +348,7 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
                         ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
 
                         if (player != null) {
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_FINISH, winning.getDisplayName(), ChatType.CHAT));
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH, winning.getDisplayName(), ChatType.CHAT));
                             player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH), ChatType.CHAT);
                         }
                     }
@@ -425,5 +454,13 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
                 LogManager.getLogger().info("Updated {} blocks in {}ms", updatedBlocks, endTime - startTime);
             }
         }
+    }
+
+    private void growIcebergs(World world) {
+        this.icebergLine1.generate(world, this.waterLevel);
+        this.icebergLine2.generate(world, this.waterLevel);
+        this.icebergLine3.generate(world, this.waterLevel);
+        this.icebergLine4.generate(world, this.waterLevel);
+        this.icebergLine5.generate(world, this.waterLevel);
     }
 }
