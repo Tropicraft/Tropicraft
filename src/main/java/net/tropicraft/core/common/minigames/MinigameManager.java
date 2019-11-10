@@ -222,6 +222,12 @@ public class MinigameManager implements IMinigameManager
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_NOT_ENOUGH_PLAYERS, this.polling.getMinimumParticipantCount()));
         }
 
+        ActionResult<ITextComponent> canStart = this.polling.canStartMinigame();
+
+        if (canStart.getType() == ActionResultType.FAIL) {
+            return canStart;
+        }
+
         this.polling.onPreStart();
 
         ServerWorld world = this.server.getWorld(this.polling.getDimension());

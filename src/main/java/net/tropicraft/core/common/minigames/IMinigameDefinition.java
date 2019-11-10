@@ -2,11 +2,17 @@ package net.tropicraft.core.common.minigames;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+
+import java.awt.*;
 
 /**
  * Used as a discriminant for a registered minigame. Defines the logic of the
@@ -16,6 +22,10 @@ import net.minecraft.world.dimension.DimensionType;
  */
 public interface IMinigameDefinition
 {
+    default ActionResult<ITextComponent> canStartMinigame() {
+        return new ActionResult<ITextComponent>(ActionResultType.SUCCESS, new StringTextComponent(""));
+    }
+
     /**
      * The identifier for this minigame definition. Must be unique
      * compared to other registered minigames.

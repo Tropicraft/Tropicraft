@@ -1,7 +1,9 @@
 package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.text.*;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,8 +23,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -122,6 +122,17 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     public SurviveTheTideMinigameDefinition(MinecraftServer server) {
         this.minigameWeatherInstance = new MinigameWeatherInstanceServer();
         this.server = server;
+    }
+
+    @Override
+    public ActionResult<ITextComponent> canStartMinigame() {
+        ServerWorld world = DimensionManager.getWorld(this.server, this.getDimension(), false, false);
+
+        if (world != null) {
+            return new ActionResult<>(ActionResultType.FAIL, new StringTextComponent("Cannot start minigame as players are in Survive The Tide dimension. Make them teleport out first.").applyTextStyle(TextFormatting.RED));
+        }
+
+        return new ActionResult<>(ActionResultType.SUCCESS, new StringTextComponent(""));
     }
 
     @Override
@@ -283,8 +294,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
             ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
 
             if (player != null) {
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_START).applyTextStyle(TextFormatting.DARK_PURPLE), ChatType.CHAT);
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
+                int minutes = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get() / 20 / 60;
+                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_START).applyTextStyle(TextFormatting.GRAY), ChatType.CHAT);
+                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
             }
         }
     }
