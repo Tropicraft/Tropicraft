@@ -51,7 +51,7 @@ public class MinigameWeatherInstanceClient extends MinigameWeatherInstance {
     @Override
     public void tickPlayer(PlayerEntity player) {
         if (player.isCreative()) return;
-        if (heatwaveActive()) {
+        if (heatwaveActive() && !player.isCreative() && !player.isSpectator()) {
             if (player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition()).getY() <= player.getPosition().getY()) {
                 //System.out.println("slowing player");
                 //player.setMotionMultiplier(player.getBlockState(), new Vec3d(0.95D, 1D, 0.95D));
