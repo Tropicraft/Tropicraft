@@ -69,6 +69,11 @@ public interface IMinigameInstance
     Set<UUID> getSpectators();
 
     /**
+     * @return The list of all players that are a part of this minigame instance.
+     */
+    Set<UUID> getAllPlayerUUIDs();
+
+    /**
      * Used for executing commands of datapacks within the minigames.
      * @return The command source for this minigame instance.
      */

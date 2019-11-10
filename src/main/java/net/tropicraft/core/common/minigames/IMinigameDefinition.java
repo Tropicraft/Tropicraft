@@ -138,8 +138,9 @@ public interface IMinigameDefinition
      * @param commandSource Command source for the minigame instance.
      *                      Can be used to execute some commands for
      *                      the minigame from a datapack.
+     * @param instance The current minigame instance.
      */
-    default void onFinish(CommandSource commandSource) {}
+    default void onFinish(CommandSource commandSource, IMinigameInstance instance) {}
 
     /**
      * For when the minigame has finished and all players are teleported
@@ -156,8 +157,9 @@ public interface IMinigameDefinition
      * @param commandSource Command source for the minigame instance.
      *                      Can be used to execute some commands for
      *                      the minigame from a datapack.
+     * @param instance The current minigame instance.
      */
-    default void onStart(CommandSource commandSource) {}
+    default void onStart(CommandSource commandSource, IMinigameInstance instance) {}
 
     /**
      * For before a minigame starts. Useful for preparing the minigame.

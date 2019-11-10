@@ -1,6 +1,10 @@
 package net.tropicraft.core.common.minigames.definitions;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,8 +67,8 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
 
     private int waterLevel;
 
-    private BlockPos waterLevelMin = new BlockPos(5555, 0, 7360);
-    private BlockPos waterLevelMax = waterLevelMin.add(400, 0, 400);
+    private BlockPos waterLevelMin = new BlockPos(5722, 0, 6782);
+    private BlockPos waterLevelMax = new BlockPos(6102, 0, 7162);
 
     private MinecraftServer server;
 
@@ -72,10 +76,22 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
     private int minigameEndedTimer;
     private UUID winningPlayer;
 
+    private WaterLevelInfo phase2WaterLevelInfo = new WaterLevelInfo(
+            ConfigLT.MINIGAME_ISLAND_ROYALE.phase2TargetWaterLevel.get(),
+            126,
+            ConfigLT.MINIGAME_ISLAND_ROYALE.phase2Length.get());
+
+    private WaterLevelInfo phase3WaterLevelInfo = new WaterLevelInfo(
+            ConfigLT.MINIGAME_ISLAND_ROYALE.phase3TargetWaterLevel.get(),
+            ConfigLT.MINIGAME_ISLAND_ROYALE.phase2TargetWaterLevel.get(),
+            ConfigLT.MINIGAME_ISLAND_ROYALE.phase3Length.get()
+    );
+
     public enum MinigamePhase {
         PHASE1,
         PHASE2,
-        PHASE3;
+        PHASE3,
+        PHASE4,
     }
 
     public IslandRoyaleMinigameDefinition(MinecraftServer server) {
@@ -141,22 +157,218 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
             minigameTime++;
             phaseTime++;
 
+            this.processWaterLevel(world);
+
             if (phase == MinigamePhase.PHASE1) {
-                if (phaseTime >= ConfigLT.MINIGAME_ISLAND_ROYALE.phase1Length.get()) {
+                if (phaseTime >= 500) {
                     nextPhase();
+
+                    for (UUID uuid : instance.getAllPlayerUUIDs()) {
+                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+                        if (player != null) {
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_PVP_ENABLED).applyTextStyle(TextFormatting.RED), ChatType.CHAT);
+                        }
+                    }
                 }
             } else if (phase == MinigamePhase.PHASE2) {
                 if (phaseTime >= ConfigLT.MINIGAME_ISLAND_ROYALE.phase2Length.get()) {
                     nextPhase();
                 }
             } else if (phase == MinigamePhase.PHASE3) {
-                //???
-                //DOOOOOOOOOOOOOOM
+                if (phaseTime >= ConfigLT.MINIGAME_ISLAND_ROYALE.phase3Length.get()) {
+                    nextPhase();
+                }
             }
 
             minigameWeatherInstance.tick(this);
+        }
+    }
 
-            if (phase == MinigamePhase.PHASE2 && minigameTime % 200 == 0) {
+    @Override
+    public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
+        if (!instance.getSpectators().contains(player.getUniqueID())) {
+            instance.removeParticipant(player);
+            instance.addSpectator(player);
+
+            player.setGameType(GameType.SPECTATOR);
+        }
+
+        if (instance.getParticipants().size() == 1) {
+            this.minigameEnded = true;
+
+            this.winningPlayer = instance.getParticipants().iterator().next();
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerHurt(LivingHurtEvent event) {
+        if (event.getEntityLiving() instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity)event.getEntityLiving();
+            boolean isInInstance = MinigameManager.getInstance().getCurrentMinigame().getParticipants().contains(player.getUniqueID());
+
+            if (isInInstance && event.getSource().getTrueSource() instanceof PlayerEntity && this.phase == MinigamePhase.PHASE1) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @Override
+    public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
+        if (player.isInWater() && player.ticksExisted % 20 == 0) {
+            player.attackEntityFrom(DamageSource.DROWN, 2.0F);
+        }
+    }
+
+    @Override
+    public void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance) {
+
+    }
+
+    @Override
+    public void onFinish(CommandSource commandSource, IMinigameInstance instance) {
+        minigameWeatherInstance.reset();
+        phase = MinigamePhase.PHASE1;
+        phaseTime = 0;
+    }
+
+    @Override
+    public void onPostFinish(CommandSource commandSource) {
+        ServerWorld world = this.server.getWorld(this.getDimension());
+        DimensionManager.unloadWorld(world);
+    }
+
+    @Override
+    public void onPreStart() {
+        this.fetchBaseMap();
+    }
+
+    @Override
+    public void onStart(CommandSource commandSource, IMinigameInstance instance) {
+        minigameTime = 0;
+        ServerWorld world = this.server.getWorld(this.getDimension());
+        waterLevel = world.getSeaLevel();
+        phase = MinigamePhase.PHASE1;
+
+        for (UUID uuid : instance.getAllPlayerUUIDs()) {
+            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+            if (player != null) {
+                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_START).applyTextStyle(TextFormatting.DARK_PURPLE), ChatType.CHAT);
+                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_PVP_DISABLED).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
+            }
+        }
+    }
+
+    public MinigameWeatherInstance getMinigameWeatherInstance() {
+        return minigameWeatherInstance;
+    }
+
+    public void setMinigameWeatherInstance(MinigameWeatherInstanceServer minigameWeatherInstance) {
+        this.minigameWeatherInstance = minigameWeatherInstance;
+    }
+
+    public MinigamePhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(MinigamePhase phase) {
+        this.phase = phase;
+    }
+
+    public void nextPhase() {
+        if (phase == MinigamePhase.PHASE1) {
+            phase = MinigamePhase.PHASE2;
+        } else if (phase == MinigamePhase.PHASE2) {
+            phase = MinigamePhase.PHASE3;
+        } else if (phase == MinigamePhase.PHASE3) {
+            phase = MinigamePhase.PHASE4;
+        }
+        phaseTime = 0;
+    }
+
+    public long getMinigameTime() {
+        return minigameTime;
+    }
+
+    public void setMinigameTime(long minigameTime) {
+        this.minigameTime = minigameTime;
+    }
+
+    public long getPhaseTime() {
+        return phaseTime;
+    }
+
+    public void setPhaseTime(long phaseTime) {
+        this.phaseTime = phaseTime;
+    }
+
+    public void dbg(String str) {
+        if (debug) {
+            LOGGER.info(str);
+        }
+    }
+
+    private void checkForGameEndCondition(IMinigameInstance instance) {
+        if (this.minigameEnded) {
+            if (this.minigameEndedTimer == 0) {
+                ServerPlayerEntity winning = this.server.getPlayerList().getPlayerByUUID(this.winningPlayer);
+
+                if (winning != null) {
+                    for (UUID uuid : instance.getAllPlayerUUIDs()) {
+                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+                        if (player != null) {
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_FINISH, winning.getDisplayName(), ChatType.CHAT));
+                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH), ChatType.CHAT);
+                        }
+                    }
+                }
+            }
+
+            this.minigameEndedTimer++;
+
+            if (this.minigameEndedTimer >= 200) {
+                MinigameManager.getInstance().finishCurrentMinigame();
+            }
+        }
+    }
+
+    private void fetchBaseMap() {
+        File worldFile = this.server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory();
+
+        File baseMapsFile = new File(worldFile, "minigame_base_maps");
+
+        File islandRoyaleBase = new File(baseMapsFile, "hunger_games");
+        File islandRoyaleCurrent = new File(worldFile, "tropicraft/hunger_games");
+
+        try {
+            if (islandRoyaleBase.exists()) {
+                FileUtils.deleteDirectory(islandRoyaleCurrent);
+
+                if (islandRoyaleCurrent.mkdirs()) {
+                    FileUtils.copyDirectory(islandRoyaleBase, islandRoyaleCurrent);
+                }
+            } else {
+                LOGGER.info("Island royale base map doesn't exist in " + islandRoyaleBase.getPath() + ", add first before it can copy and replace each game start.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void processWaterLevel(World world) {
+        if (phase == MinigamePhase.PHASE2 || phase == MinigamePhase.PHASE3) {
+            WaterLevelInfo waterLevelInfo;
+
+            if (phase == MinigamePhase.PHASE2) {
+                waterLevelInfo = this.phase2WaterLevelInfo;
+            }
+            else {
+                waterLevelInfo = this.phase3WaterLevelInfo;
+            }
+
+            if (minigameTime % waterLevelInfo.getInterval() == 0) {
                 this.waterLevel++;
                 BlockPos min = this.waterLevelMin.add(0, this.waterLevel, 0);
                 BlockPos max = this.waterLevelMax.add(0, this.waterLevel, 0);
@@ -212,166 +424,6 @@ public class IslandRoyaleMinigameDefinition implements IMinigameDefinition {
                 long endTime = System.currentTimeMillis();
                 LogManager.getLogger().info("Updated {} blocks in {}ms", updatedBlocks, endTime - startTime);
             }
-        }
-    }
-
-    @Override
-    public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
-        if (!instance.getSpectators().contains(player.getUniqueID())) {
-            instance.removeParticipant(player);
-            instance.addSpectator(player);
-
-            player.setGameType(GameType.SPECTATOR);
-        }
-
-        if (instance.getParticipants().size() == 1) {
-            this.minigameEnded = true;
-
-            this.winningPlayer = instance.getParticipants().iterator().next();
-        }
-    }
-
-    @Override
-    public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
-        if (player.isInWater() && player.ticksExisted % 20 == 0) {
-            player.attackEntityFrom(DamageSource.DROWN, 2.0F);
-        }
-    }
-
-    @Override
-    public void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance) {
-
-    }
-
-    @Override
-    public void onFinish(CommandSource commandSource) {
-        minigameWeatherInstance.reset();
-        phase = MinigamePhase.PHASE1;
-        phaseTime = 0;
-    }
-
-    @Override
-    public void onPostFinish(CommandSource commandSource) {
-        ServerWorld world = this.server.getWorld(this.getDimension());
-        DimensionManager.unloadWorld(world);
-    }
-
-    @Override
-    public void onPreStart() {
-        this.fetchBaseMap();
-    }
-
-    @Override
-    public void onStart(CommandSource commandSource) {
-        minigameTime = 0;
-        ServerWorld world = this.server.getWorld(this.getDimension());
-        waterLevel = world.getSeaLevel();
-        phase = MinigamePhase.PHASE1;
-    }
-
-    public MinigameWeatherInstance getMinigameWeatherInstance() {
-        return minigameWeatherInstance;
-    }
-
-    public void setMinigameWeatherInstance(MinigameWeatherInstanceServer minigameWeatherInstance) {
-        this.minigameWeatherInstance = minigameWeatherInstance;
-    }
-
-    public MinigamePhase getPhase() {
-        return phase;
-    }
-
-    public void setPhase(MinigamePhase phase) {
-        this.phase = phase;
-    }
-
-    public void nextPhase() {
-        if (phase == MinigamePhase.PHASE1) {
-            phase = MinigamePhase.PHASE2;
-        } else if (phase == MinigamePhase.PHASE2) {
-            phase = MinigamePhase.PHASE3;
-        } else if (phase == MinigamePhase.PHASE3) {
-            //no
-        }
-        phaseTime = 0;
-    }
-
-    public long getMinigameTime() {
-        return minigameTime;
-    }
-
-    public void setMinigameTime(long minigameTime) {
-        this.minigameTime = minigameTime;
-    }
-
-    public long getPhaseTime() {
-        return phaseTime;
-    }
-
-    public void setPhaseTime(long phaseTime) {
-        this.phaseTime = phaseTime;
-    }
-
-    public void dbg(String str) {
-        if (debug) {
-            LOGGER.info(str);
-        }
-    }
-
-    private void checkForGameEndCondition(IMinigameInstance instance) {
-        if (this.minigameEnded) {
-            if (this.minigameEndedTimer == 0) {
-                ServerPlayerEntity winning = this.server.getPlayerList().getPlayerByUUID(this.winningPlayer);
-
-                if (winning != null) {
-                    for (UUID uuid : instance.getParticipants()) {
-                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-                        if (player != null) {
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_FINISH, winning.getDisplayName(), ChatType.CHAT));
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH), ChatType.CHAT);
-                        }
-                    }
-
-                    for (UUID uuid : instance.getSpectators()) {
-                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-                        if (player != null) {
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.ISLAND_ROYALE_FINISH, winning.getDisplayName(), ChatType.CHAT));
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH), ChatType.CHAT);
-                        }
-                    }
-                }
-            }
-
-            this.minigameEndedTimer++;
-
-            if (this.minigameEndedTimer >= 200) {
-                MinigameManager.getInstance().finishCurrentMinigame();
-            }
-        }
-    }
-
-    private void fetchBaseMap() {
-        File worldFile = this.server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory();
-
-        File baseMapsFile = new File(worldFile, "minigame_base_maps");
-
-        File islandRoyaleBase = new File(baseMapsFile, "hunger_games");
-        File islandRoyaleCurrent = new File(worldFile, "tropicraft/hunger_games");
-
-        try {
-            if (islandRoyaleBase.exists()) {
-                FileUtils.deleteDirectory(islandRoyaleCurrent);
-
-                if (islandRoyaleCurrent.mkdirs()) {
-                    FileUtils.copyDirectory(islandRoyaleBase, islandRoyaleCurrent);
-                }
-            } else {
-                LOGGER.info("Island royale base map doesn't exist in " + islandRoyaleBase.getPath() + ", add first before it can copy and replace each game start.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

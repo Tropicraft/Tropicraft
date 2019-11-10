@@ -32,6 +32,7 @@ public class IslandRoyaleBiome extends TropicraftBiome {
                 .scale(0.4F)
                 .temperature(1.5F)
                 .downfall(1.25F)
+                .temperature(2.0F)
                 .parent(null),
                 WATER_COLOR,
                 WATER_FOG_COLOR

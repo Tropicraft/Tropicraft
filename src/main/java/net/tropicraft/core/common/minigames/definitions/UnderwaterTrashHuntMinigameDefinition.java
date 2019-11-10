@@ -104,11 +104,6 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
     }
 
     @Override
-    public void worldUpdate(World world, IMinigameInstance instance) {
-
-    }
-
-    @Override
     public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
         if (!instance.getSpectators().contains(player.getUniqueID())) {
             instance.removeParticipant(player);
@@ -119,17 +114,7 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
     }
 
     @Override
-    public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
-
-    }
-
-    @Override
-    public void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance) {
-
-    }
-
-    @Override
-    public void onFinish(CommandSource commandSource) {
+    public void onFinish(CommandSource commandSource, IMinigameInstance instance) {
         Commands commands = this.server.getCommandManager();
 
         try {
@@ -140,7 +125,7 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
     }
 
     @Override
-    public void onStart(CommandSource commandSource) {
+    public void onStart(CommandSource commandSource, IMinigameInstance instance) {
         Commands commands = this.server.getCommandManager();
 
         try {

@@ -28,6 +28,8 @@ public class MinigameInstance implements IMinigameInstance
 
     private Set<UUID> spectators = Sets.newHashSet();
 
+    private Set<UUID> allPlayers = Sets.newHashSet();
+
     private CommandSource commandSource;
 
     private ServerWorld world;
@@ -55,6 +57,7 @@ public class MinigameInstance implements IMinigameInstance
         }
 
         this.players.add(player.getUniqueID());
+        this.allPlayers.add(player.getUniqueID());
     }
 
     @Override
@@ -65,6 +68,7 @@ public class MinigameInstance implements IMinigameInstance
         }
 
         this.players.remove(player.getUniqueID());
+        this.allPlayers.remove(player.getUniqueID());
     }
 
     @Override
@@ -80,6 +84,7 @@ public class MinigameInstance implements IMinigameInstance
         }
 
         this.spectators.add(player.getUniqueID());
+        this.allPlayers.add(player.getUniqueID());
     }
 
     @Override
@@ -90,6 +95,7 @@ public class MinigameInstance implements IMinigameInstance
         }
 
         this.spectators.remove(player.getUniqueID());
+        this.allPlayers.remove(player.getUniqueID());
     }
 
     @Override
@@ -100,6 +106,11 @@ public class MinigameInstance implements IMinigameInstance
     @Override
     public Set<UUID> getSpectators() {
         return this.spectators;
+    }
+
+    @Override
+    public Set<UUID> getAllPlayerUUIDs() {
+        return this.allPlayers;
     }
 
     @Override

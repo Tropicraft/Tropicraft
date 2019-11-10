@@ -133,18 +133,9 @@ public class MinigameManager implements IMinigameManager
         }
 
         IMinigameDefinition def = this.currentInstance.getDefinition();
-        def.onFinish(this.currentInstance.getCommandSource());
+        def.onFinish(this.currentInstance.getCommandSource(), this.currentInstance);
 
-        for (UUID uuid : this.currentInstance.getParticipants()) {
-            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-            if (player != null) {
-                this.teleportBack(player);
-            }
-        }
-
-        // Spectators are separate from players
-        for (UUID uuid : this.currentInstance.getSpectators()) {
+        for (UUID uuid : this.currentInstance.getAllPlayerUUIDs()) {
             ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
 
             if (player != null) {
@@ -266,7 +257,7 @@ public class MinigameManager implements IMinigameManager
         this.polling = null;
         this.registeredForMinigame.clear();
 
-        this.currentInstance.getDefinition().onStart(this.currentInstance.getCommandSource());
+        this.currentInstance.getDefinition().onStart(this.currentInstance.getCommandSource(), this.currentInstance);
 
         return new ActionResult<>(ActionResultType.SUCCESS, new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_STARTED).applyTextStyle(TextFormatting.GREEN));
     }

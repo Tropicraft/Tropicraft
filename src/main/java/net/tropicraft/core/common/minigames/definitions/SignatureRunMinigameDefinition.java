@@ -1,11 +1,8 @@
 package net.tropicraft.core.common.minigames.definitions;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
-import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
@@ -83,35 +80,5 @@ public class SignatureRunMinigameDefinition implements IMinigameDefinition {
     @Override
     public int getMaximumParticipantCount() {
         return this.maximumPlayerCount;
-    }
-
-    @Override
-    public void worldUpdate(World world, IMinigameInstance instance) {
-
-    }
-
-    @Override
-    public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
-
-    }
-
-    @Override
-    public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
-
-    }
-
-    @Override
-    public void onPlayerRespawn(ServerPlayerEntity player, IMinigameInstance instance) {
-
-    }
-
-    @Override
-    public void onFinish(CommandSource commandSource) {
-
-    }
-
-    @Override
-    public void onStart(CommandSource commandSource) {
-
     }
 }

@@ -32,6 +32,10 @@ public class ConfigLT {
 
         public final IntValue phase1Length;
         public final IntValue phase2Length;
+        public final IntValue phase3Length;
+
+        public final IntValue phase2TargetWaterLevel;
+        public final IntValue phase3TargetWaterLevel;
 
         public final DoubleValue rainHeavyChance;
         public final DoubleValue rainAcidChance;
@@ -65,6 +69,10 @@ public class ConfigLT {
 
             phase1Length = COMMON_BUILDER.comment("Time in ticks first game phase will last").defineInRange("phase1Length", 20*60*5, 1, Integer.MAX_VALUE);
             phase2Length = COMMON_BUILDER.comment("Time in ticks second game phase will last").defineInRange("phase2Length", 20*60*5, 1, Integer.MAX_VALUE);
+            phase3Length = COMMON_BUILDER.comment("Time in ticks third game phase will last").defineInRange("phase3Length", 20*60*5, 1, Integer.MAX_VALUE);
+
+            phase2TargetWaterLevel = COMMON_BUILDER.comment("Target water level for second game phase").defineInRange("phase2TargetWaterLevel", 133, 1, Integer.MAX_VALUE);
+            phase3TargetWaterLevel = COMMON_BUILDER.comment("Target water level for third game phase").defineInRange("phase3TargetWaterLevel", 150, 1, Integer.MAX_VALUE);
 
             rainHeavyChance = COMMON_BUILDER.comment("Tried every second, 0.01 = 1% chance, 1 = 100% chance").defineInRange("rainHeavyChance", 0.01, 0, 1D);
             rainAcidChance = COMMON_BUILDER.comment("Tried every second, 0.01 = 1% chance, 1 = 100% chance").defineInRange("rainAcidChance", 0.01, 0, 1D);
