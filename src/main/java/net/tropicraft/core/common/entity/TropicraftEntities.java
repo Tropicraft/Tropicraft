@@ -86,7 +86,7 @@ public class TropicraftEntities {
 
     private static EntityType.Builder<SeaTurtleEntity> turtle() {
         return EntityType.Builder.create(SeaTurtleEntity::new, EntityClassification.WATER_CREATURE)
-                .size(0.9F, 0.4F)
+                .size(0.8F, 0.35F)
                 .setTrackingRange(80)
                 .setUpdateInterval(1)
                 .setShouldReceiveVelocityUpdates(true);

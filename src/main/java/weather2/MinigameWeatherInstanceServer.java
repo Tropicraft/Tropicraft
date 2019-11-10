@@ -48,7 +48,7 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
             //heavyRainfallTime = 0;
             //acidRainTime = 999;
             //acidRainStart();
-            heatwaveStart();
+            //heatwaveStart();
 
             if (heavyRainfallTime > 0) {
                 heavyRainfallTime--;
