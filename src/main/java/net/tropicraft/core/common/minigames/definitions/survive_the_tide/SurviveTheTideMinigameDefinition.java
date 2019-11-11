@@ -6,7 +6,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.text.*;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -246,15 +245,10 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         }
     }
 
-    @SubscribeEvent
-    public void onPlayerHurt(LivingHurtEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity)event.getEntityLiving();
-            boolean isInInstance = MinigameManager.getInstance().getCurrentMinigame().getParticipants().contains(player.getUniqueID());
-
-            if (isInInstance && event.getSource().getTrueSource() instanceof PlayerEntity && this.phase == MinigamePhase.PHASE1) {
-                event.setCanceled(true);
-            }
+    @Override
+    public void onPlayerHurt(LivingHurtEvent event, IMinigameInstance instance) {
+        if (event.getSource().getTrueSource() instanceof PlayerEntity && this.phase == MinigamePhase.PHASE1) {
+            event.setCanceled(true);
         }
     }
 
