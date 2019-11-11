@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.minigames;
 
+import java.util.Collection;
+
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ResourceLocation;
@@ -35,6 +37,12 @@ public interface IMinigameManager
      * has not been used by any registered minigames.
      */
     void unregister(ResourceLocation minigameID) throws IllegalArgumentException;
+    
+    /**
+     * Get all currently registered minigames.
+     * @return A collection of all known minigames.
+     */
+    Collection<IMinigameDefinition> getAllMinigames();
 
     /**
      * Holds metadata for which players

@@ -8,9 +8,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.tropicraft.core.common.config.ConfigLT;
+import net.tropicraft.core.common.minigames.MinigameManager;
+import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
 import weather2.Weather;
+import weather2.config.ConfigLTOverrides;
 import weather2.config.ConfigMisc;
 import weather2.config.ConfigWind;
+import weather2.util.WeatherUtil;
 import weather2.util.WeatherUtilEntity;
 import weather2.weathersystem.WeatherManagerBase;
 import weather2.weathersystem.WeatherManagerServer;
@@ -275,6 +280,12 @@ public class WindManager {
 				if (ConfigMisc.overcastMode && manager.getWorld().isRaining()) {
 					if (windSpeedGlobal < ConfigWind.windSpeedMinGlobalOvercastRaining) {
 						windSpeedGlobal = (float) ConfigWind.windSpeedMinGlobalOvercastRaining;
+					}
+				}
+
+				if (ConfigLTOverrides.windSpeedOverride) {
+					if (WeatherUtil.getWeatherMinigameInstance() != null) {
+                        windSpeedGlobal = WeatherUtil.getWeatherMinigameInstance().getWindSpeed();
 					}
 				}
 				

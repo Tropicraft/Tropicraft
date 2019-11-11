@@ -68,8 +68,8 @@ public class ConfigLT {
             maximumPlayerCount = COMMON_BUILDER.defineInRange("maximumPlayerCount", 16, 2, 255);
 
             phase1Length = COMMON_BUILDER.comment("Time in ticks first game phase will last").defineInRange("phase1Length", 20*60*2, 1, Integer.MAX_VALUE);
-            phase2Length = COMMON_BUILDER.comment("Time in ticks second game phase will last").defineInRange("phase2Length", 20*60*4, 1, Integer.MAX_VALUE);
-            phase3Length = COMMON_BUILDER.comment("Time in ticks third game phase will last").defineInRange("phase3Length", 20*60*2, 1, Integer.MAX_VALUE);
+            phase2Length = COMMON_BUILDER.comment("Time in ticks second game phase will last").defineInRange("phase2Length", 20*60*6, 1, Integer.MAX_VALUE);
+            phase3Length = COMMON_BUILDER.comment("Time in ticks third game phase will last").defineInRange("phase3Length", 20*60*4, 1, Integer.MAX_VALUE);
 
             phase2TargetWaterLevel = COMMON_BUILDER.comment("Target water level for second game phase").defineInRange("phase2TargetWaterLevel", 133, 1, Integer.MAX_VALUE);
             phase3TargetWaterLevel = COMMON_BUILDER.comment("Target water level for third game phase").defineInRange("phase3TargetWaterLevel", 150, 1, Integer.MAX_VALUE);
@@ -78,12 +78,12 @@ public class ConfigLT {
             rainAcidChance = COMMON_BUILDER.comment("Tried every second, 0.01 = 1% chance, 1 = 100% chance").defineInRange("rainAcidChance", 0.01, 0, 1D);
             heatwaveChance = COMMON_BUILDER.comment("Tried every second, 0.01 = 1% chance, 1 = 100% chance").defineInRange("heatwaveChance", 0.01, 0, 1D);
 
-            rainHeavyMinTime = COMMON_BUILDER.defineInRange("rainHeavyMinTime", 20*60*2, 1, Integer.MAX_VALUE);
-            rainHeavyExtraRandTime = COMMON_BUILDER.defineInRange("rainHeavyExtraRandTime", 20*60*2, 1, Integer.MAX_VALUE);
-            rainAcidMinTime = COMMON_BUILDER.defineInRange("rainAcidMinTime", 20*60*2, 1, Integer.MAX_VALUE);
-            rainAcidExtraRandTime = COMMON_BUILDER.defineInRange("rainAcidExtraRandTime", 20*60*2, 1, Integer.MAX_VALUE);
-            heatwaveMinTime = COMMON_BUILDER.defineInRange("heatwaveMinTime", 20*60*2, 1, Integer.MAX_VALUE);
-            heatwaveExtraRandTime = COMMON_BUILDER.defineInRange("heatwaveExtraRandTime", 20*60*2, 1, Integer.MAX_VALUE);
+            rainHeavyMinTime = COMMON_BUILDER.defineInRange("rainHeavyMinTime", 20*60*1, 1, Integer.MAX_VALUE);
+            rainHeavyExtraRandTime = COMMON_BUILDER.defineInRange("rainHeavyExtraRandTime", 20*60*1, 1, Integer.MAX_VALUE);
+            rainAcidMinTime = COMMON_BUILDER.defineInRange("rainAcidMinTime", 20*60*1, 1, Integer.MAX_VALUE);
+            rainAcidExtraRandTime = COMMON_BUILDER.defineInRange("rainAcidExtraRandTime", 20*60*1, 1, Integer.MAX_VALUE);
+            heatwaveMinTime = COMMON_BUILDER.defineInRange("heatwaveMinTime", 20*60*1, 1, Integer.MAX_VALUE);
+            heatwaveExtraRandTime = COMMON_BUILDER.defineInRange("heatwaveExtraRandTime", 20*60*1, 1, Integer.MAX_VALUE);
 
             heatwaveMovementMultiplier = COMMON_BUILDER.defineInRange("heatwaveMovementMultiplier", 0.5, 0.01, 1D);
 
@@ -133,7 +133,7 @@ public class ConfigLT {
         minigame_SurviveTheTide_respawnPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_respawnPosition.get());
         minigame_SurviveTheTide_spectatorPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_spectatorPosition.get());
 
-        for (BlockPos pos : minigame_SurviveTheTide_playerPositions) System.out.println("RESULT: " + pos);
+        //for (BlockPos pos : minigame_SurviveTheTide_playerPositions) System.out.println("RESULT: " + pos);
     }
 
     public static void onFileChange(final ModConfig.ConfigReloading configEvent) {

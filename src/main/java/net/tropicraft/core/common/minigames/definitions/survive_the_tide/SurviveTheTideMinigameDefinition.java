@@ -5,6 +5,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.text.*;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -27,6 +29,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
@@ -301,6 +305,8 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
                 player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
             }
         }
+
+        minigameWeatherInstance.setMinigameActive(true);
     }
 
     public MinigameWeatherInstance getMinigameWeatherInstance() {
@@ -327,6 +333,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         } else if (phase == MinigamePhase.PHASE3) {
             phase = MinigamePhase.PHASE4;
         }
+        LOGGER.info("Starting minigame phase " + phase);
         phaseTime = 0;
     }
 
@@ -430,7 +437,8 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
                         ChunkPos chunkPos = new ChunkPos(x, z);
                         BlockPos chunkStart = chunkPos.asBlockPos();
                         // Extract current chunk section
-                        ChunkSection[] sectionArray = world.getChunk(x, z).getSections();
+                        Chunk chunk = world.getChunk(x, z);
+                        ChunkSection[] sectionArray = chunk.getSections();
                         ChunkSection section = sectionArray[this.waterLevel >> 4];
                         int localY = this.waterLevel & 0xF;
                         // Calculate start/end within the current section
@@ -445,21 +453,43 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
                             section = new ChunkSection(this.waterLevel & ~0xF);
                             sectionArray[this.waterLevel >> 4] = section;
                         }
+                        Heightmap heightmapSurface = chunk.func_217303_b(Type.WORLD_SURFACE);
+                        Heightmap heightmapMotionBlocking = chunk.func_217303_b(Type.MOTION_BLOCKING);
+                        boolean anyChanged = false;
                         for (BlockPos pos : BlockPos.getAllInBoxMutable(localStart, localEnd)) {
                             BlockState existing = section.getBlockState(pos.getX(), pos.getY(), pos.getZ());
                             realPos.setPos(chunkStart.getX() + pos.getX(), this.waterLevel, chunkStart.getZ() + pos.getZ());
-                            if (existing.isAir(world, pos) || !existing.getMaterial().blocksMovement()) {
+                            BlockState toSet = null;
+                            if (existing.isAir(world, pos) || !existing.getMaterial().blocksMovement() || existing.getBlock() == Blocks.BAMBOO) {
                                 // If air or a replaceable block, just set to water
-                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), Blocks.WATER.getDefaultState());
+                                toSet = Blocks.WATER.getDefaultState();
                             } else if (existing.getBlock() instanceof IWaterLoggable) {
                                 // If waterloggable, set the waterloggable property to true
-                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), existing.with(BlockStateProperties.WATERLOGGED, true));
+                                toSet = existing.with(BlockStateProperties.WATERLOGGED, true);
+                                if (existing.getBlock() == Blocks.CAMPFIRE) {
+                                    toSet = toSet.with(CampfireBlock.LIT, false);
+                                }
                             }
-                            // Tell the client about the change
-                            ((ServerChunkProvider)world.getChunkProvider()).markBlockChanged(realPos);
-                            updatedBlocks++;
-                            // FIXES LIGHTING AT THE COST OF PERFORMANCE - TODO ask fry?
-                            // world.getChunkProvider().getLightManager().checkBlock(realPos);
+                            if (toSet != null) {
+                                anyChanged = true;
+                                if (existing.getBlock() == Blocks.BAMBOO) {
+                                    world.setBlockState(realPos, toSet, BlockFlags.NO_RERENDER | BlockFlags.BLOCK_UPDATE);
+                                } else {
+                                    section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), toSet);
+                                }
+                                // Tell the client about the change
+                                ((ServerChunkProvider)world.getChunkProvider()).markBlockChanged(realPos);
+                                // Update heightmap
+                                heightmapSurface.update(pos.getX(), realPos.getY(), pos.getZ(), toSet);
+                                heightmapMotionBlocking.update(pos.getX(), realPos.getY(), pos.getZ(), toSet);
+                                updatedBlocks++;
+                                // FIXES LIGHTING AT THE COST OF PERFORMANCE - TODO ask fry?
+                                // world.getChunkProvider().getLightManager().checkBlock(realPos);
+                            }
+                        }
+                        if (anyChanged) {
+                            // Make sure this chunk gets saved
+                            chunk.markDirty();
                         }
                     }
                 }
