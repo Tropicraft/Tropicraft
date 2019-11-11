@@ -24,7 +24,7 @@ public class CommandPollMinigame {
 		                          .map(net.minecraft.util.ResourceLocation::toString), sb))
 		              .requires(s -> s.hasPermissionLevel(2))
 			.executes(c -> {
-				ResourceLocation id = new ResourceLocation(StringArgumentType.getString(c, "minigame_id"));
+				ResourceLocation id = ResourceLocationArgument.getResourceLocation(c, "minigame_id");
 				return CommandMinigame.executeMinigameAction(() -> MinigameManager.getInstance().startPolling(id), c.getSource());
 		}))));
 	}
