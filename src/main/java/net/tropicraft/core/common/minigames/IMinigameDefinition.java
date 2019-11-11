@@ -11,8 +11,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-
-import java.awt.*;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 /**
  * Used as a discriminant for a registered minigame. Defines the logic of the
@@ -175,4 +174,11 @@ public interface IMinigameDefinition
      * For before a minigame starts. Useful for preparing the minigame.
      */
     default void onPreStart() {}
+
+    /**
+     * Event method for players that are hurt in the minigame instance.
+     * @param event The living hurt event.
+     * @param instance The minigame instance.
+     */
+    default void onPlayerHurt(LivingHurtEvent event, IMinigameInstance instance) {}
 }
