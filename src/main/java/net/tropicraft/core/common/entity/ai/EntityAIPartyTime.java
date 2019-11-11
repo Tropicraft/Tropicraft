@@ -9,12 +9,14 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.tropicraft.core.common.Util;
+import net.tropicraft.core.common.block.BongoDrumBlock;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
@@ -211,15 +213,10 @@ public class EntityAIPartyTime extends Goal
                         //System.out.println("stage: " + entityObj.hitIndex + " - " + entityObj.hitIndex2);
                         entityObj.hitIndex2++;
                         BlockState state = entityObj.world.getBlockState(blockposGoal);
-                        //TODO: 1.14 readd
-                        /*if (state.getBlock() instanceof BlockBongoDrum) {
-                            //((BlockBongoDrum) state.getOwner()).playBongoSound(entityObj.world, null, blockposGoal, state);
-                            TropicraftBongos bongo = ((BlockBongoDrum) state.getOwner()).getVariant(state);
-                            float pitch = (entityObj.world.rand.nextFloat() * 1F) + 0F;
-                            entityObj.world.playSound(null, blockposGoal.getX(), blockposGoal.getY() + 0.5D, blockposGoal.getZ(),
-                                    bongo.getSoundEvent(), SoundCategory.BLOCKS, 2.5F, pitch);
+                        if (state.getBlock() instanceof BongoDrumBlock) {
+                            ((BongoDrumBlock) state.getBlock()).playBongoSound(entityObj.world, blockposGoal, state);
                             entityObj.swingArm(Hand.MAIN_HAND);
-                        } else */
+                        } else
                         if (state.getBlock() instanceof NoteBlock) {
                             if (entityObj.world.rand.nextInt(10) == 0) {
                                 for (int i = 0; i < 1 + entityObj.world.rand.nextInt(4); i++) {
@@ -230,7 +227,7 @@ public class EntityAIPartyTime extends Goal
                                 //note.triggerNote(entityObj.world, blockposGoal);
                                 state.getBlock().onBlockClicked(state, entityObj.world, blockposGoal,
                                         FakePlayerFactory.get((ServerWorld) entityObj.world,
-                                                new GameProfile(UUID.fromString(" e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
+                                                new GameProfile(UUID.fromString("e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
                             }
                             entityObj.swingArm(Hand.MAIN_HAND);
 

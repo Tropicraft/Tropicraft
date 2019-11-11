@@ -43,6 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicsConfigs;
+import net.tropicraft.core.common.block.BongoDrumBlock;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -1102,7 +1103,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public boolean isInstrument(BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        if (state.getBlock() == BlockRegistry.bongo || state.getBlock() == Blocks.NOTE_BLOCK) {
+        if (state.getBlock() instanceof BongoDrumBlock || state.getBlock() == Blocks.NOTE_BLOCK) {
             return true;
         }
 
