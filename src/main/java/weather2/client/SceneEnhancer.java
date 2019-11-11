@@ -42,6 +42,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
@@ -237,7 +238,7 @@ public class SceneEnhancer implements Runnable {
 			throwable.printStackTrace();
 		}*/
 
-		if (client.world != null && client.player != null && client.world.getDimension().getType() == TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION) {
+		if (client.world != null && client.player != null && client.world.getDimension().getType() == DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).get()) {
 			profileSurroundings();
 			tryAmbientSounds();
 		}

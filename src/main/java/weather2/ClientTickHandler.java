@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import weather2.client.SceneEnhancer;
@@ -136,7 +137,7 @@ public class ClientTickHandler
 
 			//TODO: split logic up a bit better for this, if this is set to false mid sandstorm, fog is stuck on,
 			// with sandstorms and other things it might not represent the EZ config option
-			if (world.getDimension().getType() == TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION) {
+			if (world.getDimension().getType() == DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).get()) {
 				//weatherManager.tick();
 
 				sceneEnhancer.tickClient();
