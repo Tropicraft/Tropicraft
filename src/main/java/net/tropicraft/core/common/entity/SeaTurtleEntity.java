@@ -37,6 +37,8 @@ public class SeaTurtleEntity extends TurtleEntity {
     private static final DataParameter<Boolean> CAN_FLY = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
 
     private static final int NUM_TYPES = 6;
+    
+    private double lastPosY;
 
     public SeaTurtleEntity(EntityType<? extends TurtleEntity> type, World world) {
         super(type, world);
@@ -65,6 +67,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Nullable
     public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
         setRandomTurtleType();
+        this.lastPosY = posY;
         return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
     }
 
@@ -99,6 +102,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         }
         setNoBrakes(nbt.getBoolean("NoBrakesOnThisTrain"));
         setCanFly(nbt.getBoolean("LongsForTheSky"));
+        this.lastPosY = this.posY;
     }
 
     public boolean isMature() {
@@ -184,6 +188,12 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
     
     @Override
+    public void tick() {
+        super.tick();
+        lastPosY = posY;
+    }
+    
+    @Override
     public void livingTick() {
         super.livingTick();
         if (this.world.isRemote) {
@@ -264,6 +274,11 @@ public class SeaTurtleEntity extends TurtleEntity {
             }
         }
     }
+        
+    @Override
+    public void setPosition(double x, double y, double z) {
+        super.setPosition(x, y, z);
+    }
 
     @Override
     public void travel(Vec3d input) {
@@ -294,9 +309,13 @@ public class SeaTurtleEntity extends TurtleEntity {
                 forward *= MathHelper.clamp(1 - (Math.abs(rotationPitch) / 90), 0.01f, 1);
                 forward *= this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
 
-                if (!isInWater() && !getCanFly()) {
-                    // Lower max speed when breaching, as a penalty to uncareful driving
-                    this.setMotion(this.getMotion().mul(0.9, 0.99, 0.9).add(0, -this.getAttribute(ENTITY_GRAVITY).getValue(), 0));
+                if (!isInWater()) {
+                    if (getCanFly()) {
+                        this.setMotion(this.getMotion().add(0, -this.getAttribute(ENTITY_GRAVITY).getValue() * 0.05, 0));
+                    } else {
+                        // Lower max speed when breaching, as a penalty to uncareful driving
+                        this.setMotion(this.getMotion().mul(0.9, 0.99, 0.9).add(0, -this.getAttribute(ENTITY_GRAVITY).getValue(), 0));
+                    }
                 }
 
                 if (this.canPassengerSteer()) {
@@ -307,9 +326,9 @@ public class SeaTurtleEntity extends TurtleEntity {
                     // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
                     this.setMotion(this.getMotion().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
                 } else {
+                    this.fallDistance = (float) Math.max(0, (posY - lastPosY) * -8);
                     this.setMotion(Vec3d.ZERO);
                 }
-
                 this.prevLimbSwingAmount = this.limbSwingAmount;
                 double d1 = this.posX - this.prevPosX;
                 double d0 = this.posZ - this.prevPosZ;
