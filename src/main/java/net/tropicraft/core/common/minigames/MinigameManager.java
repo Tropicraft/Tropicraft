@@ -23,6 +23,8 @@ import net.tropicraft.core.common.minigames.definitions.survive_the_tide.Survive
 import net.tropicraft.core.common.minigames.definitions.SignatureRunMinigameDefinition;
 import net.tropicraft.core.common.minigames.definitions.UnderwaterTrashHuntMinigameDefinition;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -120,6 +122,11 @@ public class MinigameManager implements IMinigameManager
         }
 
         this.registeredMinigames.remove(minigameID);
+    }
+    
+    @Override
+    public Collection<IMinigameDefinition> getAllMinigames() {
+        return Collections.unmodifiableCollection(this.registeredMinigames.values());
     }
 
     @Override
