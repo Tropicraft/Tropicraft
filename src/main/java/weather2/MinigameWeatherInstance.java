@@ -63,6 +63,8 @@ public class MinigameWeatherInstance {
     //save last state the rain was set to, so that on the client side when rain is fading out, it doesnt switch to blue rain because acidRainTime == 0
     protected boolean lastRainWasAcid = false;
 
+    protected boolean minigameActive = false;
+
     protected double heatwaveMovementMultiplierClient = 0.5D;
 
     //operates independently of other weather events
@@ -91,6 +93,7 @@ public class MinigameWeatherInstance {
         heavyRainfallTime = 0;
         acidRainTime = 0;
         heatwaveTime = 0;
+        setMinigameActive(false);
     }
 
     public boolean heavyRainfallActive() {
@@ -123,6 +126,7 @@ public class MinigameWeatherInstance {
         nbt.putLong("heatwaveTime", heatwaveTime);
         nbt.putBoolean("lastRainWasAcid", lastRainWasAcid);
         nbt.putDouble("heatwaveMovementMultiplierClient", ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveMovementMultiplier.get());
+        nbt.putBoolean("minigameActive", minigameActive);
 
         return nbt;
     }
@@ -133,6 +137,7 @@ public class MinigameWeatherInstance {
         heatwaveTime = nbt.getLong("heatwaveTime");
         lastRainWasAcid = nbt.getBoolean("lastRainWasAcid");
         heatwaveMovementMultiplierClient = nbt.getDouble("heatwaveMovementMultiplierClient");
+        minigameActive = nbt.getBoolean("minigameActive");
 
         //dbg("minigame weather deserialize(): " + nbt);
     }
@@ -143,5 +148,13 @@ public class MinigameWeatherInstance {
 
     public void setLastRainWasAcid(boolean lastRainWasAcid) {
         this.lastRainWasAcid = lastRainWasAcid;
+    }
+
+    public boolean isMinigameActive() {
+        return minigameActive;
+    }
+
+    public void setMinigameActive(boolean minigameActive) {
+        this.minigameActive = minigameActive;
     }
 }

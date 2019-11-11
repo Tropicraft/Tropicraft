@@ -307,6 +307,8 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
                 player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
             }
         }
+
+        minigameWeatherInstance.setMinigameActive(true);
     }
 
     public MinigameWeatherInstance getMinigameWeatherInstance() {

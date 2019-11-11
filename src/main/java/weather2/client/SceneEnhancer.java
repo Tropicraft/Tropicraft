@@ -2344,7 +2344,7 @@ public class SceneEnhancer implements Runnable {
 
 		if (!ConfigLTOverrides.vanillaRainOverride) {
 			Minecraft client = Minecraft.getInstance();
-			if (client.world != null && ClientTickHandler.minigameWeatherInstance != null) {
+			if (client.world != null && ClientTickHandler.minigameWeatherInstance != null && ClientTickHandler.minigameWeatherInstance.isMinigameActive()) {
 				ClientTickHandler.checkClientWeather();
 				client.world.setRainStrength(ClientTickHandler.minigameWeatherInstance.getVanillaRainRenderAmount());
 			}
