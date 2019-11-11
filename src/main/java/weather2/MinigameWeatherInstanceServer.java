@@ -108,18 +108,18 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
     public void heavyRainfallStart() {
         heavyRainfallTime = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainHeavyMinTime.get() + random.nextInt(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainHeavyExtraRandTime.get());
         lastRainWasAcid = false;
-        dbg("heavyRainfallStart: " + heavyRainfallTime);
+        //dbg("heavyRainfallStart: " + heavyRainfallTime);
     }
 
     public void acidRainStart() {
         acidRainTime = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainAcidMinTime.get() + random.nextInt(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainAcidExtraRandTime.get());
         lastRainWasAcid = true;
-        dbg("acidRainStart: " + acidRainTime);
+        //dbg("acidRainStart: " + acidRainTime);
     }
 
     public void heatwaveStart() {
         heatwaveTime = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveMinTime.get() + random.nextInt(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveExtraRandTime.get());
-        dbg("heatwaveStart: " + heatwaveTime);
+        //dbg("heatwaveStart: " + heatwaveTime);
     }
 
 }

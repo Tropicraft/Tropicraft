@@ -22,8 +22,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.FlameParticle;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.settings.ParticleStatus;
 import net.minecraft.client.world.ClientWorld;
@@ -745,6 +744,12 @@ public class SceneEnhancer implements Runnable {
 
 								//block above topmost ground
 								if (canPrecipitateAt(world, pos.up())/*world.isRainingAt(pos)*/) {
+
+									//fix for splash spawning invisibly 1 block underwater
+									if (world.getBlockState(pos).getMaterial() == Material.WATER) {
+										pos = pos.add(0,1,0);
+									}
+
 									ParticleTexFX rain = new ParticleTexFX(entP.world,
 											pos.getX() + rand.nextFloat(),
 											pos.getY() + 0.01D + maxY,
@@ -1687,6 +1692,10 @@ public class SceneEnhancer implements Runnable {
 	                    	}
 	                    	//Weather.dbg("process: " + className);
 	                    }
+
+	                    if (particle instanceof UnderwaterParticle) {
+	                    	continue;
+						}
 	
 	                    if ((WeatherUtilBlock.getPrecipitationHeightSafe(world, new BlockPos(MathHelper.floor(CoroUtilEntOrParticle.getPosX(particle)), 0, MathHelper.floor(CoroUtilEntOrParticle.getPosZ(particle)))).getY() - 1 < (int)CoroUtilEntOrParticle.getPosY(particle) + 1) || (particle instanceof ParticleTexFX))
 	                    {
