@@ -481,6 +481,6 @@ public class MinigameManager implements IMinigameManager
     }
 
     private boolean isInInstance(Entity entity) {
-        return entity instanceof PlayerEntity && this.currentInstance != null && this.currentInstance.getAllPlayerUUIDs().contains(entity.getUniqueID());
+        return entity instanceof ServerPlayerEntity && this.currentInstance != null && this.currentInstance.getAllPlayerUUIDs().contains(entity.getUniqueID());
     }
 }
