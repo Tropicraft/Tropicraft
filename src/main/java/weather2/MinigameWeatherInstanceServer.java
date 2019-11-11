@@ -25,8 +25,7 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
 
                 SurviveTheTideMinigameDefinition.MinigamePhase phase = minigameDefinition.getPhase();
 
-                if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE2 ||
-                        phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE3) {
+                if (phase != SurviveTheTideMinigameDefinition.MinigamePhase.PHASE1) {
                     if (!specialWeatherActive()) {
 
                         //testing vals to maybe make configs

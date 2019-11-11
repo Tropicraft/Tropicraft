@@ -339,6 +339,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         } else if (phase == MinigamePhase.PHASE3) {
             phase = MinigamePhase.PHASE4;
         }
+        LOGGER.info("Starting minigame phase " + phase);
         phaseTime = 0;
     }
 
