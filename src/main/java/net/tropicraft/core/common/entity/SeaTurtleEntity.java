@@ -59,7 +59,7 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     @Nullable
     public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
-        setTurtleType(rand.nextInt(NUM_TYPES) + 1);
+        setRandomTurtleType();
         return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
     }
 
@@ -78,7 +78,11 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     public void readAdditional(CompoundNBT nbt) {
         super.readAdditional(nbt);
-        setTurtleType(nbt.getInt("TurtleType"));
+        if (nbt.contains("TurtleType")) {
+            setTurtleType(nbt.getInt("TurtleType"));
+        } else {
+            setRandomTurtleType();
+        }
         setIsMature(nbt.getBoolean("IsMature"));
     }
 
@@ -94,9 +98,13 @@ public class SeaTurtleEntity extends TurtleEntity {
     public int getTurtleType() {
         return getDataManager().get(TURTLE_TYPE);
     }
+    
+    public void setRandomTurtleType() {
+        setTurtleType(rand.nextInt(NUM_TYPES) + 1);
+    }
 
     public SeaTurtleEntity setTurtleType(final int type) {
-        getDataManager().set(TURTLE_TYPE, MathHelper.clamp(type, 1, 6));
+        getDataManager().set(TURTLE_TYPE, MathHelper.clamp(type, 1, NUM_TYPES));
         return this;
     }
 
@@ -121,7 +129,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Nullable
     public AgeableEntity createChild(AgeableEntity ent) {
         return TropicraftEntities.SEA_TURTLE.get().create(this.world)
-                .setTurtleType(getEntityWorld().getRandom().nextBoolean() && ent instanceof SeaTurtleEntity ? ((SeaTurtleEntity)ent).getTurtleType() : getTurtleType())
+                .setTurtleType(rand.nextBoolean() && ent instanceof SeaTurtleEntity ? ((SeaTurtleEntity)ent).getTurtleType() : getTurtleType())
                 .setIsMature(false);
     }
 
