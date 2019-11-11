@@ -1,24 +1,30 @@
 package net.tropicraft.core.common.entity;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.ai.controller.MovementController;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.MoverType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class SeaTurtleEntity extends TurtleEntity {
 
@@ -60,7 +66,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Override
     public void registerData() {
         super.registerData();
-        getDataManager().register(IS_MATURE, false);
+        getDataManager().register(IS_MATURE, true);
         getDataManager().register(TURTLE_TYPE, 1);
     }
 
@@ -80,16 +86,18 @@ public class SeaTurtleEntity extends TurtleEntity {
         return getDataManager().get(IS_MATURE);
     }
 
-    public void setIsMature(final boolean mature) {
+    public SeaTurtleEntity setIsMature(final boolean mature) {
         getDataManager().set(IS_MATURE, mature);
+        return this;
     }
 
     public int getTurtleType() {
         return getDataManager().get(TURTLE_TYPE);
     }
 
-    public void setTurtleType(final int type) {
+    public SeaTurtleEntity setTurtleType(final int type) {
         getDataManager().set(TURTLE_TYPE, MathHelper.clamp(type, 1, 6));
+        return this;
     }
 
     @Override
@@ -112,7 +120,9 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Override
     @Nullable
     public AgeableEntity createChild(AgeableEntity ent) {
-        return TropicraftEntities.SEA_TURTLE.get().create(this.world);
+        return TropicraftEntities.SEA_TURTLE.get().create(this.world)
+                .setTurtleType(getEntityWorld().getRandom().nextBoolean() && ent instanceof SeaTurtleEntity ? ((SeaTurtleEntity)ent).getTurtleType() : getTurtleType())
+                .setIsMature(false);
     }
 
     @Override
