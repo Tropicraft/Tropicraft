@@ -28,6 +28,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
@@ -201,7 +203,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
             this.processWaterLevel(world);
 
             if (phase == MinigamePhase.PHASE1) {
-                if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
+                if (true || phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
                     nextPhase();
 
                     for (UUID uuid : instance.getAllPlayerUUIDs()) {
@@ -438,7 +440,8 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
                         ChunkPos chunkPos = new ChunkPos(x, z);
                         BlockPos chunkStart = chunkPos.asBlockPos();
                         // Extract current chunk section
-                        ChunkSection[] sectionArray = world.getChunk(x, z).getSections();
+                        Chunk chunk = world.getChunk(x, z);
+                        ChunkSection[] sectionArray = chunk.getSections();
                         ChunkSection section = sectionArray[this.waterLevel >> 4];
                         int localY = this.waterLevel & 0xF;
                         // Calculate start/end within the current section
@@ -453,21 +456,36 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
                             section = new ChunkSection(this.waterLevel & ~0xF);
                             sectionArray[this.waterLevel >> 4] = section;
                         }
+                        Heightmap heightmapSurface = chunk.func_217303_b(Type.WORLD_SURFACE);
+                        Heightmap heightmapMotionBlocking = chunk.func_217303_b(Type.MOTION_BLOCKING);
+                        boolean anyChanged = false;
                         for (BlockPos pos : BlockPos.getAllInBoxMutable(localStart, localEnd)) {
                             BlockState existing = section.getBlockState(pos.getX(), pos.getY(), pos.getZ());
                             realPos.setPos(chunkStart.getX() + pos.getX(), this.waterLevel, chunkStart.getZ() + pos.getZ());
+                            BlockState toSet = null;
                             if (existing.isAir(world, pos) || !existing.getMaterial().blocksMovement()) {
                                 // If air or a replaceable block, just set to water
-                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), Blocks.WATER.getDefaultState());
+                                toSet = Blocks.WATER.getDefaultState();
                             } else if (existing.getBlock() instanceof IWaterLoggable) {
                                 // If waterloggable, set the waterloggable property to true
-                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), existing.with(BlockStateProperties.WATERLOGGED, true));
+                                toSet = existing.with(BlockStateProperties.WATERLOGGED, true);
                             }
-                            // Tell the client about the change
-                            ((ServerChunkProvider)world.getChunkProvider()).markBlockChanged(realPos);
-                            updatedBlocks++;
-                            // FIXES LIGHTING AT THE COST OF PERFORMANCE - TODO ask fry?
-                            // world.getChunkProvider().getLightManager().checkBlock(realPos);
+                            if (toSet != null) {
+                                anyChanged = true;
+                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), toSet);
+                                // Tell the client about the change
+                                ((ServerChunkProvider)world.getChunkProvider()).markBlockChanged(realPos);
+                                // Update heightmap
+                                heightmapSurface.update(pos.getX(), realPos.getY(), pos.getZ(), toSet);
+                                heightmapMotionBlocking.update(pos.getX(), realPos.getY(), pos.getZ(), toSet);
+                                updatedBlocks++;
+                                // FIXES LIGHTING AT THE COST OF PERFORMANCE - TODO ask fry?
+                                // world.getChunkProvider().getLightManager().checkBlock(realPos);
+                            }
+                        }
+                        if (anyChanged) {
+                            // Make sure this chunk gets saved
+                            chunk.markDirty();
                         }
                     }
                 }
