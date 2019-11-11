@@ -12,6 +12,7 @@ import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +20,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -30,6 +33,8 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     private static final DataParameter<Boolean> IS_MATURE = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> TURTLE_TYPE = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> NO_BRAKES = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> CAN_FLY = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
 
     private static final int NUM_TYPES = 6;
 
@@ -68,12 +73,16 @@ public class SeaTurtleEntity extends TurtleEntity {
         super.registerData();
         getDataManager().register(IS_MATURE, true);
         getDataManager().register(TURTLE_TYPE, 1);
+        getDataManager().register(NO_BRAKES, false);
+        getDataManager().register(CAN_FLY, false);
     }
 
     public void writeAdditional(CompoundNBT nbt) {
         super.writeAdditional(nbt);
         nbt.putInt("TurtleType", getTurtleType());
         nbt.putBoolean("IsMature", isMature());
+        nbt.putBoolean("NoBrakesOnThisTrain", getNoBrakes());
+        nbt.putBoolean("LongsForTheSky", getCanFly());
     }
 
     public void readAdditional(CompoundNBT nbt) {
@@ -83,7 +92,13 @@ public class SeaTurtleEntity extends TurtleEntity {
         } else {
             setRandomTurtleType();
         }
-        setIsMature(nbt.getBoolean("IsMature"));
+        if (nbt.contains("IsMature")) {
+            setIsMature(nbt.getBoolean("IsMature"));
+        } else {
+            setIsMature(true);
+        }
+        setNoBrakes(nbt.getBoolean("NoBrakesOnThisTrain"));
+        setCanFly(nbt.getBoolean("LongsForTheSky"));
     }
 
     public boolean isMature() {
@@ -107,7 +122,25 @@ public class SeaTurtleEntity extends TurtleEntity {
         getDataManager().set(TURTLE_TYPE, MathHelper.clamp(type, 1, NUM_TYPES));
         return this;
     }
+    
+    public boolean getNoBrakes() {
+        return getDataManager().get(NO_BRAKES);
+    }
+    
+    public SeaTurtleEntity setNoBrakes(final boolean noBrakes) {
+        getDataManager().set(NO_BRAKES, noBrakes);
+        return this;
+    }
 
+    public boolean getCanFly() {
+        return getDataManager().get(CAN_FLY);
+    }
+    
+    public SeaTurtleEntity setCanFly(final boolean canFly) {
+        getDataManager().set(CAN_FLY, canFly);
+        return this;
+    }
+    
     @Override
     @Nullable
     public Entity getControllingPassenger() {
@@ -135,10 +168,45 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     @Override
     public boolean processInteract(final PlayerEntity player, final Hand hand) {
-        if (!world.isRemote && !player.isSneaking() && canFitPassenger(player)/* && this.isMature() */&& isInWater()) {
+        if (!world.isRemote && !player.isSneaking() && canFitPassenger(player) && this.isMature() && (isInWater() || getCanFly())) {
             player.startRiding(this);
         }
         return super.processInteract(player, hand);
+    }
+    
+    @Override
+    public boolean isInRangeToRender3d(double x, double y, double z) {
+        Entity controller = getControllingPassenger();
+        if (controller != null) {
+            return controller.isInRangeToRender3d(x, y, z);
+        }
+        return super.isInRangeToRender3d(x, y, z);
+    }
+    
+    @Override
+    public void livingTick() {
+        super.livingTick();
+        if (this.world.isRemote) {
+            if (isBeingRidden() && canBeSteered()) {
+                if (isInWater() || getCanFly()) {
+                    Vec3d movement = new Vec3d(posX, posY, posZ).subtract(prevPosX, prevPosY, prevPosZ);
+                    double speed = movement.length();
+                    Vec3d particleOffset = movement.inverse().scale(2);
+                    if (speed > 0.05) {
+                        int maxParticles = MathHelper.ceil(speed * 5);
+                        int particlesToSpawn = rand.nextInt(1 + maxParticles);
+                        IParticleData particle = isInWater() ? ParticleTypes.BUBBLE : ParticleTypes.END_ROD;
+                        for (int i = 0; i < particlesToSpawn; i++) {
+                            Vec3d particleMotion = movement.scale(1);
+                            world.addParticle(particle, true,
+                                    particleOffset.getX() + posX - 0.25 + rand.nextDouble() * 0.5,
+                                    particleOffset.getY() + posY + 0.1 + rand.nextDouble() * 0.1,
+                                    particleOffset.getZ() + posZ - 0.25 + rand.nextDouble() * 0.5, particleMotion.x, particleMotion.y, particleMotion.z);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public float lerp(float x1, float x2, float t) {
@@ -219,13 +287,14 @@ public class SeaTurtleEntity extends TurtleEntity {
                 this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
 
                 float strafe = controllingEntity.moveStrafing * 0.1F;
-                float forward = controllingEntity.moveForward;
+                float forward = getNoBrakes() ? 1 : controllingEntity.moveForward;
                 float vertical = controllingEntity.moveVertical;
 
                 double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * (getMotion().length() + 0.1) * (forward >= 0 ? 1 : -1);
                 forward *= MathHelper.clamp(1 - (Math.abs(rotationPitch) / 90), 0.01f, 1);
+                forward *= this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
 
-                if (!isInWater()) {
+                if (!isInWater() && !getCanFly()) {
                     // Lower max speed when breaching, as a penalty to uncareful driving
                     this.setMotion(this.getMotion().mul(0.9, 0.99, 0.9).add(0, -this.getAttribute(ENTITY_GRAVITY).getValue(), 0));
                 }
