@@ -5,6 +5,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.text.*;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.io.FileUtils;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CampfireBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -203,7 +205,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
             this.processWaterLevel(world);
 
             if (phase == MinigamePhase.PHASE1) {
-                if (true || phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
+                if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
                     nextPhase();
 
                     for (UUID uuid : instance.getAllPlayerUUIDs()) {
@@ -463,16 +465,23 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
                             BlockState existing = section.getBlockState(pos.getX(), pos.getY(), pos.getZ());
                             realPos.setPos(chunkStart.getX() + pos.getX(), this.waterLevel, chunkStart.getZ() + pos.getZ());
                             BlockState toSet = null;
-                            if (existing.isAir(world, pos) || !existing.getMaterial().blocksMovement()) {
+                            if (existing.isAir(world, pos) || !existing.getMaterial().blocksMovement() || existing.getBlock() == Blocks.BAMBOO) {
                                 // If air or a replaceable block, just set to water
                                 toSet = Blocks.WATER.getDefaultState();
                             } else if (existing.getBlock() instanceof IWaterLoggable) {
                                 // If waterloggable, set the waterloggable property to true
                                 toSet = existing.with(BlockStateProperties.WATERLOGGED, true);
+                                if (existing.getBlock() == Blocks.CAMPFIRE) {
+                                    toSet = toSet.with(CampfireBlock.LIT, false);
+                                }
                             }
                             if (toSet != null) {
                                 anyChanged = true;
-                                section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), toSet);
+                                if (existing.getBlock() == Blocks.BAMBOO) {
+                                    world.setBlockState(realPos, toSet, BlockFlags.NO_RERENDER | BlockFlags.BLOCK_UPDATE);
+                                } else {
+                                    section.setBlockState(pos.getX(), pos.getY(), pos.getZ(), toSet);
+                                }
                                 // Tell the client about the change
                                 ((ServerChunkProvider)world.getChunkProvider()).markBlockChanged(realPos);
                                 // Update heightmap
