@@ -605,6 +605,12 @@ public class SceneEnhancer implements Runnable {
 
 				curPrecipVal *= 1F;
 
+				float adjustedRate = 1F;
+				if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.DECREASED) {
+					adjustedRate = 0.5F;
+				} else if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.MINIMAL) {
+					adjustedRate = 0.2F;
+				}
 
 				if (curPrecipVal > 0) {
 
@@ -709,13 +715,6 @@ public class SceneEnhancer implements Runnable {
 						float vanillaRainRed = 0.7F;
 						float vanillaRainGreen = 0.7F;
 						float vanillaRainBlue = 1F;
-
-						float adjustedRate = 1F;
-						if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.DECREASED) {
-							adjustedRate = 0.5F;
-						} else if (Minecraft.getInstance().gameSettings.particles == ParticleStatus.MINIMAL) {
-							adjustedRate = 0.2F;
-						}
 
 						spawnAreaSize = 40;
 						//ground splash
@@ -950,6 +949,47 @@ public class SceneEnhancer implements Runnable {
 							}
 						}
 
+					}
+				}
+
+				boolean groundFire = ClientTickHandler.minigameWeatherInstance.isMinigameActive() && ClientTickHandler.minigameWeatherInstance.heatwaveActive();
+				int spawnAreaSize = 40;
+
+				if (groundFire) {
+					for (int i = 0; i < 10F * ConfigParticle.Precipitation_Particle_effect_rate * particleAmp * 1F * adjustedRate; i++) {
+						BlockPos pos = new BlockPos(
+								entP.posX + rand.nextInt(spawnAreaSize) - (spawnAreaSize / 2),
+								entP.posY - 5 + rand.nextInt(15),
+								entP.posZ + rand.nextInt(spawnAreaSize) - (spawnAreaSize / 2));
+
+
+						//get the block on the topmost ground
+						pos = world.getHeight(Heightmap.Type.MOTION_BLOCKING, pos).down();
+
+						BlockState state = world.getBlockState(pos);
+						double maxY = 0;
+						double minY = 0;
+						VoxelShape shape = state.getShape(world, pos);
+						if (!shape.isEmpty()) {
+							minY = shape.getBoundingBox().minY;
+							maxY = shape.getBoundingBox().maxY;
+						}
+
+						if (pos.distanceSq(entP.getPosition()) > (spawnAreaSize / 2) * (spawnAreaSize / 2))
+							continue;
+
+						//block above topmost ground
+						if (canPrecipitateAt(world, pos.up())/*world.isRainingAt(pos)*/) {
+
+							//fix for splash spawning invisibly 1 block underwater
+									/*if (world.getBlockState(pos).getMaterial() == Material.WATER) {
+										pos = pos.add(0,1,0);
+									}*/
+
+							world.addParticle(ParticleTypes.SMOKE, pos.getX() + rand.nextFloat(), pos.getY() + 0.01D + maxY, pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
+							world.addParticle(ParticleTypes.FLAME, pos.getX() + rand.nextFloat(), pos.getY() + 0.01D + maxY, pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
+
+						}
 					}
 				}
             }
@@ -1946,6 +1986,15 @@ public class SceneEnhancer implements Runnable {
     	} else {
     		distToStorm = distToStormThreshold + 10;
     	}
+
+    	boolean ltOverride = false;
+    	ClientTickHandler.checkClientWeather();
+    	ltOverride = ClientTickHandler.minigameWeatherInstance.isMinigameActive() && ClientTickHandler.minigameWeatherInstance.heatwaveActive();
+		//ltOverride = true;
+    	if (ltOverride) {
+			scaleIntensityTarget = 0.7F;
+			distToStorm = 10;
+		}
     	
     	scaleIntensitySmooth = adjVal(scaleIntensitySmooth, scaleIntensityTarget, 0.01F);
     	
@@ -2044,8 +2093,8 @@ public class SceneEnhancer implements Runnable {
     			//System.out.println("getting fog state");
     			
     			try {
-    				Object fogState = ObfuscationReflectionHelper.getPrivateValue(GlStateManager.class, null, "field_179155_g");
-    				Class<?> innerClass = Class.forName("net.minecraft.client.renderer.GlStateManager$FogState");
+    				Object fogState = ObfuscationReflectionHelper.getPrivateValue(GlStateManager.class, null, "FOG");
+    				Class<?> innerClass = Class.forName("com.mojang.blaze3d.platform.GlStateManager$FogState");
     				Field fieldDensity = null;
     				Field fieldStart = null;
     				Field fieldEnd = null;
@@ -2093,9 +2142,20 @@ public class SceneEnhancer implements Runnable {
     		stormFogBlue = stormFogBlueOrig + (-(stormFogBlueOrig - (0.25F * sunBrightness)) * adjustAmountSmooth);
     		
     		stormFogDensity = stormFogDensityOrig + (-(stormFogDensityOrig - 0.02F) * adjustAmountSmooth);
-    		
-    		stormFogStart = stormFogStartOrig + (-(stormFogStartOrig - 0F) * adjustAmountSmooth);
-    		stormFogEnd = stormFogEndOrig + (-(stormFogEndOrig - 7F) * adjustAmountSmooth);
+
+    		float targetStart = 0F;
+			float targetEnd = 0F;
+
+			if (ltOverride) {
+				targetEnd = 150;
+				stormFogRed = stormFogRedOrig + (-(stormFogRedOrig - (0.7F * sunBrightness)) * adjustAmountSmooth);
+				stormFogGreen = stormFogGreenOrig + (-(stormFogGreenOrig - (0.3F * sunBrightness)) * adjustAmountSmooth);
+				stormFogBlue = stormFogBlueOrig + (-(stormFogBlueOrig - (0.15F * sunBrightness)) * adjustAmountSmooth);
+				//stormFogDensity = 0.9F;
+			}
+
+    		stormFogStart = stormFogStartOrig + (-(stormFogStartOrig - targetStart) * adjustAmountSmooth);
+    		stormFogEnd = stormFogEndOrig + (-(stormFogEndOrig - targetEnd) * adjustAmountSmooth);
     		stormFogStartClouds = stormFogStartCloudsOrig + (-(stormFogStartCloudsOrig - 0F) * adjustAmountSmooth);
     		stormFogEndClouds = stormFogEndCloudsOrig + (-(stormFogEndCloudsOrig - 20F) * adjustAmountSmooth);
     	} else {

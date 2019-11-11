@@ -23,19 +23,41 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
             int tickRate = 20;
             if (world.getGameTime() % tickRate == 0) {
 
-                if (minigameDefinition.getPhase() == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE2 ||
-                        minigameDefinition.getPhase() == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE3) {
+                SurviveTheTideMinigameDefinition.MinigamePhase phase = minigameDefinition.getPhase();
+
+                if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE2 ||
+                        phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE3) {
                     if (!specialWeatherActive()) {
 
+                        //testing vals to maybe make configs
+                        float rateAmp = 1F;
+                        if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE2) {
+                            rateAmp = 1.5F;
+                        } else if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE3) {
+                            rateAmp = 2.0F;
+                        } else if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE4) {
+                            rateAmp = 2.5F;
+                        }
+
                         //favors first come first serve but if the rates are low enough its negligable probably
-                        if (random.nextFloat() <= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainHeavyChance.get()) {
-                            heavyRainfallStart();
-                        } else if (random.nextFloat() <= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainAcidChance.get()) {
-                            acidRainStart();
-                        } else if (random.nextFloat() <= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveChance.get()) {
-                            heatwaveStart();
+                        if (random.nextFloat() <= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainHeavyChance.get() * rateAmp) {
+                            heavyRainfallStart(phase);
+                        } else if (random.nextFloat() <= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainAcidChance.get() * rateAmp) {
+                            acidRainStart(phase);
+                        } else if (random.nextFloat() <= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveChance.get() * rateAmp) {
+                            heatwaveStart(phase);
                         }
                     }
+                }
+
+                if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE1) {
+                    windSpeed = 0.1F;
+                } else if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE2) {
+                    windSpeed = 0.5F;
+                } else if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE3) {
+                    windSpeed = 1.0F;
+                } else if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE4) {
+                    windSpeed = 1.5F;
                 }
 
                 //dbg("" + minigameDefinition.getDimension() + minigameDefinition.getPhaseTime());
@@ -44,8 +66,9 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
             }
 
             //heavyRainfallTime = 0;
-            //acidRainTime = 999;
+            //acidRainTime = 0;
             //acidRainStart();
+            //heatwaveTime = 0;
             //heatwaveStart();
 
             if (heavyRainfallTime > 0) {
@@ -105,20 +128,29 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
         WeatherNetworking.HANDLER.send(PacketDistributor.DIMENSION.with(() -> minigameDefinition.getDimension()), new PacketNBTFromServer(data));
     }
 
-    public void heavyRainfallStart() {
+    public void heavyRainfallStart(SurviveTheTideMinigameDefinition.MinigamePhase phase) {
         heavyRainfallTime = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainHeavyMinTime.get() + random.nextInt(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainHeavyExtraRandTime.get());
+        if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE4) {
+            heavyRainfallTime /= 2;
+        }
         lastRainWasAcid = false;
         //dbg("heavyRainfallStart: " + heavyRainfallTime);
     }
 
-    public void acidRainStart() {
+    public void acidRainStart(SurviveTheTideMinigameDefinition.MinigamePhase phase) {
         acidRainTime = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainAcidMinTime.get() + random.nextInt(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.rainAcidExtraRandTime.get());
+        if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE4) {
+            acidRainTime /= 2;
+        }
         lastRainWasAcid = true;
         //dbg("acidRainStart: " + acidRainTime);
     }
 
-    public void heatwaveStart() {
+    public void heatwaveStart(SurviveTheTideMinigameDefinition.MinigamePhase phase) {
         heatwaveTime = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveMinTime.get() + random.nextInt(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.heatwaveExtraRandTime.get());
+        if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE4) {
+            heatwaveTime /= 2;
+        }
         //dbg("heatwaveStart: " + heatwaveTime);
     }
 

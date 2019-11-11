@@ -60,6 +60,8 @@ public class MinigameWeatherInstance {
     protected long acidRainTime = 0;
     protected long heatwaveTime = 0;
 
+    protected float windSpeed = 0;
+
     //save last state the rain was set to, so that on the client side when rain is fading out, it doesnt switch to blue rain because acidRainTime == 0
     protected boolean lastRainWasAcid = false;
 
@@ -93,6 +95,7 @@ public class MinigameWeatherInstance {
         heavyRainfallTime = 0;
         acidRainTime = 0;
         heatwaveTime = 0;
+        windSpeed = 0;
         setMinigameActive(false);
     }
 
@@ -156,5 +159,9 @@ public class MinigameWeatherInstance {
 
     public void setMinigameActive(boolean minigameActive) {
         this.minigameActive = minigameActive;
+    }
+
+    public float getWindSpeed() {
+        return windSpeed;
     }
 }

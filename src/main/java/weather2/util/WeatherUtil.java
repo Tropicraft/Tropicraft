@@ -14,6 +14,10 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.tropicraft.core.common.minigames.MinigameManager;
+import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
+import weather2.MinigameWeatherInstance;
+import weather2.MinigameWeatherInstanceServer;
 
 import javax.annotation.Nullable;
 import java.util.Calendar;
@@ -366,6 +370,22 @@ public class WeatherUtil {
                 return p_217300_2_.apply(p_217300_0_);
             }
         }
+    }
+
+    public static SurviveTheTideMinigameDefinition getSurviveTheTideGame() {
+        if (MinigameManager.getInstance().getCurrentMinigame() != null &&
+                MinigameManager.getInstance().getCurrentMinigame().getDefinition() instanceof SurviveTheTideMinigameDefinition) {
+            return ((SurviveTheTideMinigameDefinition) MinigameManager.getInstance().getCurrentMinigame().getDefinition());
+        }
+        return null;
+    }
+
+    public static MinigameWeatherInstance getWeatherMinigameInstance() {
+        if (MinigameManager.getInstance().getCurrentMinigame() != null &&
+                MinigameManager.getInstance().getCurrentMinigame().getDefinition() instanceof SurviveTheTideMinigameDefinition) {
+            return ((SurviveTheTideMinigameDefinition) MinigameManager.getInstance().getCurrentMinigame().getDefinition()).getMinigameWeatherInstance();
+        }
+        return null;
     }
     
     

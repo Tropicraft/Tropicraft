@@ -30,6 +30,7 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import net.tropicraft.core.common.command.CommandReloadConfig;
 import weather2.api.WeatherUtilData;
 import weather2.client.SceneEnhancer;
+import weather2.config.ConfigLTOverrides;
 import weather2.config.ConfigMisc;
 import weather2.weathersystem.storm.TornadoHelper;
 import weather2.weathersystem.wind.WindManager;
@@ -144,6 +145,13 @@ public class EventHandlerForge {
         	event.setCanceled(true);
         	event.setDensity(0F);
         }*/
+
+		/*boolean ltOverride = true;
+		if (ltOverride) {
+			GlStateManager.fogMode(GlStateManager.FogMode.LINEAR);
+			event.setDensity(1F);
+			event.setCanceled(true);
+		}*/
         
         //event.setCanceled(true);
         //event.setDensity(0.0F);
