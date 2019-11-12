@@ -190,6 +190,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.BAMBOO_FLOWER_POT);
             TropicraftBlocks.ALL_POTTED_PLANTS.forEach(ro -> registerLootTable(ro.get(), b -> droppingFlowerPotAndFlower((FlowerPotBlock) b)));
             
+            dropsSelf(TropicraftBlocks.BOUY);
+            
             Arrays.stream(TrashType.values()).forEach(this::dropsSelf);
         }
         

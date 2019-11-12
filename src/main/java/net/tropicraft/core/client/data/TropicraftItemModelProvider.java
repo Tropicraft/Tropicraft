@@ -161,6 +161,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         generated(TropicraftBlocks.WATER_BARRIER, mcLoc("block/water_still"), mcLoc("item/barrier"));
         blockItem(TropicraftBlocks.DONATION);
+        blockItem(TropicraftBlocks.BOUY);
         // All trash
         Arrays.stream(TrashType.values()).forEach(f -> blockItem(f).transforms()
                 .transform(Perspective.GUI)

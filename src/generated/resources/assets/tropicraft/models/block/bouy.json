@@ -1,0 +1,87 @@
+{
+  "parent": "block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "beacon": "block/beacon",
+    "base": "block/dark_prismarine",
+    "particle": "block/dark_prismarine"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        3,
+        14
+      ],
+      "faces": {
+        "down": {
+          "texture": "#base",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#base",
+          "cullface": "up"
+        },
+        "north": {
+          "texture": "#base",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#base",
+          "cullface": "south"
+        },
+        "west": {
+          "texture": "#base",
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#base",
+          "cullface": "east"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        3,
+        3
+      ],
+      "to": [
+        13,
+        14,
+        13
+      ],
+      "faces": {
+        "down": {
+          "texture": "#beacon",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#beacon",
+          "cullface": "up"
+        },
+        "north": {
+          "texture": "#beacon",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#beacon",
+          "cullface": "south"
+        },
+        "west": {
+          "texture": "#beacon",
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#beacon",
+          "cullface": "east"
+        }
+      }
+    }
+  ]
+}
