@@ -40,9 +40,7 @@ public class MinigamePlayerCache {
         new FoodStats().write(foodTag);
         player.getFoodStats().read(foodTag);
 
-        for (EffectInstance effect : player.getActivePotionEffects()) {
-            player.removeActivePotionEffect(effect.getPotion());
-        }
+        player.clearActivePotions();
     }
 
     /**
