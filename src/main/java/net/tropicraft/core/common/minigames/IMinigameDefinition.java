@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.minigames;
 
 import net.minecraft.command.CommandSource;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -124,8 +125,15 @@ public interface IMinigameDefinition
     default void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {}
 
     /**
+     * Helper method to create unique logic for when entities in the dimension update.
+     * @param entity The entity which is updating.
+     * @param instance The instance of the currently running minigame.
+     */
+    default void onLivingEntityUpdate(LivingEntity entity, IMinigameInstance instance) {}
+
+    /**
      * Helper method to create unique logic for when the player updates.
-     * @param player They player which is updating.
+     * @param player The player which is updating.
      * @param instance The instance of the currently running minigame.
      */
     default void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {}

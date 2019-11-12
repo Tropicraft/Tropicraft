@@ -67,7 +67,7 @@ public class MinigameWeatherInstance {
 
     protected boolean minigameActive = false;
 
-    protected double heatwaveMovementMultiplierClient = 0.5D;
+    protected double heatwaveMovementMultiplierClient = 0.75D;
 
     //operates independently of other weather events
     //TODO: just modify WindManager to do this?

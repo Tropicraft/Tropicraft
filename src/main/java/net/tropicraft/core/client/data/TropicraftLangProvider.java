@@ -294,7 +294,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
         add(Tropicraft.LOVE_TROPICS_ITEM_GROUP, "Love Tropics");
 
-        add(TropicraftLangKeys.COMMAND_MINIGAME_ALREADY_REGISTERED, "Minigame already registered with the following ID: %s");
+        add(TropicraftLangKeys.COMMAND_MINIGAME_ALREADY_REGISTERED, "You've already registered for the current minigame!");
         add(TropicraftLangKeys.COMMAND_MINIGAME_NOT_REGISTERED, "Minigame with that ID has not been registered: %s");
         add(TropicraftLangKeys.COMMAND_MINIGAME_ID_INVALID, "A minigame with that ID doesn't exist!");
         add(TropicraftLangKeys.COMMAND_MINIGAME_ALREADY_STARTED, "Another minigame is already in progress! Stop that one first before polling another.");

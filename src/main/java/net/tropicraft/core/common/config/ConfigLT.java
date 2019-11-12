@@ -3,6 +3,7 @@ package net.tropicraft.core.common.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
@@ -12,6 +13,7 @@ import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.config.ModConfig;
+import net.tropicraft.core.common.minigames.definitions.survive_the_tide.IcebergLine;
 
 @EventBusSubscriber
 public class ConfigLT {
@@ -36,6 +38,7 @@ public class ConfigLT {
         public final ConfigValue<String> minigame_SurviveTheTide_playerPositions;
         public final ConfigValue<String> minigame_SurviveTheTide_respawnPosition;
         public final ConfigValue<String> minigame_SurviveTheTide_spectatorPosition;
+        public final ConfigValue<String> icebergLines;
 
         public final IntValue phase1Length;
         public final IntValue phase2Length;
@@ -67,6 +70,11 @@ public class ConfigLT {
                     .define("minigame_SurviveTheTide_playerPositions", "5780, 141, 6955; 5780, 141, 6955; " +
                             "5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; " +
                             "5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955");
+
+            icebergLines = COMMON_BUILDER.comment("List of iceberg lines, tuples of block positions.")
+                    .define("icebergLines", "5964,164,6879;5826,167,6906]5807,167,6924;5840,167,7050]5865,167,7068;5983,169,7054]5968,173,6907;5859,170,7047]" +
+                            "5894,173,6995;5894,173,6965]5894,173,6965;5923,173,6960]5925,173,6962;5928,173,6991]5897,174,7000;5932,174,6997]5892,185,6963;5930,166,6999]" +
+                            "6011,168,7036;5987,168,6917]");
 
             minigame_SurviveTheTide_respawnPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_respawnPosition", "5780, 141, 6955");
             minigame_SurviveTheTide_spectatorPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_spectatorPosition", "5780, 141, 6955");
@@ -188,17 +196,26 @@ public class ConfigLT {
 
     public static BlockPos minigame_SurviveTheTide_spectatorPosition = new BlockPos(5780, 141, 6955);
 
+    public static List<IcebergLine> minigame_SurviveTheTide_icebergLines = Lists.newArrayList();
 
     public static void onLoad(final ModConfig.Loading configEvent) {
         minigame_SurviveTheTide_playerPositions = getAsBlockPosArray(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_playerPositions.get());
         minigame_SurviveTheTide_respawnPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_respawnPosition.get());
         minigame_SurviveTheTide_spectatorPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_spectatorPosition.get());
-
+        minigame_SurviveTheTide_icebergLines = getIcebergLinesFromString(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.icebergLines.get());
         //for (BlockPos pos : minigame_SurviveTheTide_playerPositions) System.out.println("RESULT: " + pos);
     }
 
     public static void onFileChange(final ModConfig.ConfigReloading configEvent) {
         //System.out.println("file changed!" + configEvent.toString());
+    }
+
+    public static String blockPosString(BlockPos pos) {
+        return pos.getX() + "," + pos.getY() + "," + pos.getZ();
+    }
+
+    public static String icebergLineString(BlockPos start, BlockPos end) {
+        return blockPosString(start) + ";" + blockPosString(end) + "]";
     }
 
     public static BlockPos stringToBlockPos(String posString) {
@@ -230,5 +247,23 @@ public class ConfigLT {
         }
 
         return listPos.stream().toArray(BlockPos[]::new);
+    }
+
+    public static List<IcebergLine> getIcebergLinesFromString(String string) {
+        String splitBlockArrays = "]";
+
+        String[] blockPosArrayStrings = string.split(splitBlockArrays);
+        List<IcebergLine> listArrays = Lists.newArrayList();
+
+        for (String arrayString : blockPosArrayStrings) {
+            try {
+                BlockPos[] array = getAsBlockPosArray(arrayString);
+                listArrays.add(new IcebergLine(array[0], array[1], 10));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return listArrays;
     }
 }

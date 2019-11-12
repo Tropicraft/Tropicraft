@@ -3,7 +3,6 @@ package net.tropicraft.core.common.minigames;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResult;
@@ -110,8 +109,7 @@ public class MinigameManager implements IMinigameManager
     @Override
     public void register(IMinigameDefinition minigame) {
         if (this.registeredMinigames.containsKey(minigame.getID())) {
-            TranslationTextComponent msg = new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_ALREADY_REGISTERED, minigame.getID());
-            throw new IllegalArgumentException(msg.getFormattedText());
+            throw new IllegalArgumentException("Minigame already registered with the following ID: " + minigame.getID());
         }
 
         this.registeredMinigames.put(minigame.getID(), minigame);
@@ -310,6 +308,10 @@ public class MinigameManager implements IMinigameManager
             return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_NO_MINIGAME_POLLING));
         }
 
+        if (this.registeredForMinigame.contains(player.getUniqueID())) {
+            return new ActionResult<>(ActionResultType.FAIL, new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_ALREADY_REGISTERED));
+        }
+
         this.registeredForMinigame.add(player.getUniqueID());
 
         if (this.registeredForMinigame.size() >= this.polling.getMinimumParticipantCount()) {
@@ -398,15 +400,19 @@ public class MinigameManager implements IMinigameManager
 
     @SubscribeEvent
     public void onPlayerHurt(LivingHurtEvent event) {
-        if (this.isInInstance(event.getEntity())) {
+        if (this.ifPlayerInInstance(event.getEntity())) {
             this.currentInstance.getDefinition().onPlayerHurt(event, this.currentInstance);
         }
     }
 
     @SubscribeEvent
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (this.isInInstance(event.getEntity())) {
+    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (this.ifPlayerInInstance(event.getEntity())) {
             this.currentInstance.getDefinition().onPlayerUpdate((ServerPlayerEntity) event.getEntity(), this.currentInstance);
+        }
+
+        if (this.ifEntityInDimension(event.getEntity())) {
+            this.currentInstance.getDefinition().onLivingEntityUpdate(event.getEntityLiving(), this.currentInstance);
         }
     }
 
@@ -415,7 +421,7 @@ public class MinigameManager implements IMinigameManager
      */
     @SubscribeEvent
     public void onPlayerDeath(LivingDeathEvent event) {
-        if (this.isInInstance(event.getEntity())) {
+        if (this.ifPlayerInInstance(event.getEntity())) {
             this.currentInstance.getDefinition().onPlayerDeath((ServerPlayerEntity) event.getEntity(), this.currentInstance);
         }
     }
@@ -427,7 +433,7 @@ public class MinigameManager implements IMinigameManager
      */
     @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (this.isInInstance(event.getPlayer())) {
+        if (this.ifPlayerInInstance(event.getPlayer())) {
             IMinigameDefinition def = this.currentInstance.getDefinition();
             def.onPlayerRespawn((ServerPlayerEntity) event.getPlayer(), this.currentInstance);
 
@@ -480,7 +486,11 @@ public class MinigameManager implements IMinigameManager
         }
     }
 
-    private boolean isInInstance(Entity entity) {
+    private boolean ifPlayerInInstance(Entity entity) {
         return entity instanceof ServerPlayerEntity && this.currentInstance != null && this.currentInstance.getAllPlayerUUIDs().contains(entity.getUniqueID());
+    }
+
+    private boolean ifEntityInDimension(Entity entity) {
+        return this.currentInstance != null && entity.dimension == this.currentInstance.getDefinition().getDimension();
     }
 }

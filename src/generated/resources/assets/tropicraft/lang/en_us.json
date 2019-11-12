@@ -325,7 +325,7 @@
   "tropicraft.command.donation.simulate": "Simulating donation for name %s and amount %s",
   "tropicraft.command.enough_players": "There are now enough players to start the minigame!",
   "tropicraft.command.entity_not_player": "Entity that attempted command is not player.",
-  "tropicraft.command.minigame_already_registered": "Minigame already registered with the following ID: %s",
+  "tropicraft.command.minigame_already_registered": "You've already registered for the current minigame!",
   "tropicraft.command.minigame_already_started": "Another minigame is already in progress! Stop that one first before polling another.",
   "tropicraft.command.minigame_id_invalid": "A minigame with that ID doesn't exist!",
   "tropicraft.command.minigame_not_registered": "Minigame with that ID has not been registered: %s",
