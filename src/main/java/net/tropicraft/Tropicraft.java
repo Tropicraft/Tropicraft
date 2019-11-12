@@ -60,6 +60,7 @@ import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.command.CommandDonation;
 import net.tropicraft.core.common.command.CommandReloadConfig;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.command.minigames.*;
@@ -207,6 +208,7 @@ public class Tropicraft {
         CommandUnregisterMinigame.register(event.getServer().getCommandManager().getDispatcher());
         CommandStopPollingMinigame.register(event.getServer().getCommandManager().getDispatcher());
         CommandReloadConfig.register(event.getServer().getCommandManager().getDispatcher());
+        CommandDonation.register(event.getServer().getCommandManager().getDispatcher());
     }
 
     private void onServerStopping(final FMLServerStoppingEvent event) {

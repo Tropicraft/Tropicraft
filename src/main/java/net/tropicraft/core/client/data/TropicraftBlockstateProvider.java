@@ -222,6 +222,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         }
         
         simpleBlock(TropicraftBlocks.WATER_BARRIER, getBuilder(name(TropicraftBlocks.WATER_BARRIER)).texture("particle", mcLoc("item/barrier")));
+        
+        simpleBlock(TropicraftBlocks.DONATION);
+        
         // All trash
         Arrays.stream(TrashType.values()).forEach(f ->
                 getVariantBuilder(f.get()) // TODO make horizontalBlock etc support this case

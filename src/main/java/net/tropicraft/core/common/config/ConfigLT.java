@@ -20,6 +20,8 @@ public class ConfigLT {
     public static final CategoryGeneral GENERAL = new CategoryGeneral();
 
     public static final CategorySurviveTheTide MINIGAME_SURVIVE_THE_TIDE = new CategorySurviveTheTide();
+    
+    public static final CategoryTiltify TILTIFY = new CategoryTiltify();
 
     public static final class CategorySurviveTheTide {
 
@@ -110,6 +112,37 @@ public class ConfigLT {
                     .define("UseCrawl", true);
 
             CLIENT_BUILDER.pop();
+        }
+    }
+    
+    public static final class CategoryTiltify {
+        
+        public final ConfigValue<String> appToken;
+        public final IntValue campaignId;
+        public final IntValue donationTrackerRefreshRate;
+        public final IntValue donationAmountPerMonument;
+        public final ConfigValue<String> tiltifyCommandRun;
+        
+        private CategoryTiltify() {
+            COMMON_BUILDER.comment("Used for the LoveTropics charity drive.").push("tiltify");
+            
+            appToken = COMMON_BUILDER
+                    .comment("Add a token here to enable donation tracking, leave blank to disable")
+                    .define("tiltifyAppToken", "");
+            campaignId = COMMON_BUILDER
+                    .comment("The tiltify campaign to track donations from")
+                    .defineInRange("tiltifyCampaign", 0, 0, 99999999);
+            donationTrackerRefreshRate = COMMON_BUILDER
+                    .comment("How often the tracker checks for new donations, in seconds")
+                    .defineInRange("donationTrackerRefreshRate", 10, 1, 1000);
+            donationAmountPerMonument = COMMON_BUILDER
+                    .comment("Amount of $ required per monument command run")
+                    .defineInRange("donationAmountPerMonument", 500, 1, 100000);
+            tiltifyCommandRun = COMMON_BUILDER
+                    .comment("Command run when donation comes in")
+                    .define("tiltifyCOmmandRun", "function internaluseonly:addmonument");
+            
+            COMMON_BUILDER.pop();
         }
     }
 

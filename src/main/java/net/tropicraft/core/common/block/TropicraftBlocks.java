@@ -246,6 +246,9 @@ public class TropicraftBlocks {
             .collect(Collectors.toMap(Function.identity(), t -> register(t.getId(), Builder.trash(t), Tropicraft.LOVE_TROPICS_ITEM_GROUP),
                     (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TrashType.class)));
     
+    public static final RegistryObject<DonationBlock> DONATION = register(
+            "donation", () -> new DonationBlock(Block.Properties.from(Blocks.BEDROCK).noDrops()));
+    
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
