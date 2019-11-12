@@ -38,6 +38,8 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -245,6 +247,15 @@ public class TropicraftBlocks {
     public static final Map<TrashType, RegistryObject<CustomShapeBlock>> TRASH = Arrays.<TrashType>stream(TrashType.values())
             .collect(Collectors.toMap(Function.identity(), t -> register(t.getId(), Builder.trash(t), Tropicraft.LOVE_TROPICS_ITEM_GROUP),
                     (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TrashType.class)));
+    
+    public static final RegistryObject<DonationBlock> DONATION = register(
+            "donation", () -> new DonationBlock(Block.Properties.from(Blocks.BEDROCK).noDrops()), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
+    public static final RegistryObject<Block> BOUY = register(
+            "bouy", () -> new CustomShapeBlock(
+                    VoxelShapes.or(
+                            Block.makeCuboidShape(2, 0, 2, 14, 3, 14),
+                            Block.makeCuboidShape(3, 3, 3, 13, 14, 13)),
+                    Block.Properties.from(Blocks.BEACON)), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);

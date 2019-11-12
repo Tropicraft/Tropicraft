@@ -1,14 +1,17 @@
 package net.tropicraft.core.common.config;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.config.ModConfig;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraftforge.common.ForgeConfigSpec.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.config.ModConfig;
 
 @EventBusSubscriber
 public class ConfigLT {
@@ -20,6 +23,10 @@ public class ConfigLT {
     public static final CategoryGeneral GENERAL = new CategoryGeneral();
 
     public static final CategorySurviveTheTide MINIGAME_SURVIVE_THE_TIDE = new CategorySurviveTheTide();
+    
+    public static final CategoryTiltify TILTIFY = new CategoryTiltify();
+    
+    public static final CategoryBiomes BIOMES = new CategoryBiomes();
 
     public static final class CategorySurviveTheTide {
 
@@ -109,6 +116,60 @@ public class ConfigLT {
             UseCrouch = CLIENT_BUILDER.comment("Enable crawling anywhere by pressing the sprint key while holding down the sneak key")
                     .define("UseCrawl", true);
 
+            CLIENT_BUILDER.pop();
+        }
+    }
+    
+    public static final class CategoryTiltify {
+        
+        public final ConfigValue<String> appToken;
+        public final IntValue campaignId;
+        public final IntValue donationTrackerRefreshRate;
+        public final IntValue donationAmountPerMonument;
+        public final ConfigValue<String> tiltifyCommandRun;
+        
+        private CategoryTiltify() {
+            COMMON_BUILDER.comment("Used for the LoveTropics charity drive.").push("tiltify");
+            
+            appToken = COMMON_BUILDER
+                    .comment("Add a token here to enable donation tracking, leave blank to disable")
+                    .define("tiltifyAppToken", "");
+            campaignId = COMMON_BUILDER
+                    .comment("The tiltify campaign to track donations from")
+                    .defineInRange("tiltifyCampaign", 0, 0, 99999999);
+            donationTrackerRefreshRate = COMMON_BUILDER
+                    .comment("How often the tracker checks for new donations, in seconds")
+                    .defineInRange("donationTrackerRefreshRate", 10, 1, 1000);
+            donationAmountPerMonument = COMMON_BUILDER
+                    .comment("Amount of $ required per monument command run")
+                    .defineInRange("donationAmountPerMonument", 500, 1, 100000);
+            tiltifyCommandRun = COMMON_BUILDER
+                    .comment("Command run when donation comes in")
+                    .define("tiltifyCOmmandRun", "function internaluseonly:addmonument");
+            
+            COMMON_BUILDER.pop();
+        }
+    }
+    
+    public static final class CategoryBiomes {
+        
+        public final IntValue surviveTheTideSkyColor;
+        public final IntValue surviveTheTideFoliageColor;
+        public final IntValue surviveTheTideGrassColor;
+        
+        private CategoryBiomes() {
+            CLIENT_BUILDER.comment("Biome color settings.").push("biomes");
+            
+            surviveTheTideSkyColor = CLIENT_BUILDER
+                    .comment("The color for the Survive The Tide biome's sky. Can be given in hex code in the format 0xRRGGBB.")
+                    .defineInRange("surviveTheTideSkyColor", 0x0f331b, 0, 0xFFFFFF);
+            surviveTheTideFoliageColor = CLIENT_BUILDER
+                    .comment("The color for the Survive The Tide biome's foliage. Can be given in hex code in the format 0xRRGGBB.")
+                    .defineInRange("surviveTheTideFoliageColor", 0x5e8c64, 0, 0xFFFFFF);
+            surviveTheTideGrassColor = CLIENT_BUILDER
+                    .comment("The color for the Survive The Tide biome's grass. Can be given in hex code in the format 0xRRGGBB.")
+                    .defineInRange("surviveTheTideGrassColor", 0x498551, 0, 0xFFFFFF);
+            
             CLIENT_BUILDER.pop();
         }
     }

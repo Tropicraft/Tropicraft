@@ -44,6 +44,12 @@ public class EntityAIKoaMate extends Goal
     @Override
     public boolean shouldExecute()
     {
+        //lets just not for LT
+        boolean ltOverride = true;
+        if (ltOverride) {
+            return false;
+        }
+
         //adult cooldown
         if (this.villagerObj.getGrowingAge() != 0)
         {

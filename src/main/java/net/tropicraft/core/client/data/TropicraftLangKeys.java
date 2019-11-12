@@ -34,6 +34,13 @@ public class TropicraftLangKeys
     public static String COMMAND_STOPPED_MINIGAME = Constants.MODID + ".minigame.stopped_minigame";
     public static String COMMAND_FINISHED_MINIGAME = Constants.MODID + ".minigame.finished_minigame";
     public static String COMMAND_MINIGAME_STOPPED_POLLING = Constants.MODID + ".minigame.minigame_stopped_polling";
+    
+    public static String COMMAND_RESET_DONATION = Constants.MODID + ".command.donation.reset";
+    public static String COMMAND_RESET_LAST_DONATION = Constants.MODID + ".command.donation.setid";
+    public static String COMMAND_SIMULATE_DONATION = Constants.MODID + ".command.donation.simulate";
+
+    public static String DONATION = Constants.MODID + ".donation.new";
+
     public static String SURVIVE_THE_TIDE_FINISH = Constants.MODID + ".minigame.survive_the_tide_finish";
     public static String SURVIVE_THE_TIDE_START = Constants.MODID + ".minigame.survive_the_tide_start";
     public static String SURVIVE_THE_TIDE_PVP_ENABLED = Constants.MODID + ".minigame.survive_the_tide_pvp_enabled";

@@ -172,6 +172,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         TropicraftBlocks.ALL_POTTED_PLANTS.forEach(this::addBlock);
 
         addBlock(TropicraftBlocks.WATER_BARRIER);
+        addBlockWithTooltip(TropicraftBlocks.DONATION, "Donation Alert Spawner", "Spawns fireworks when a donation is received!");
+        addBlock(TropicraftBlocks.BOUY);
         Arrays.stream(TrashType.values()).forEach(this::addBlock);
         
         // ITEMS
@@ -316,6 +318,13 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(TropicraftLangKeys.COMMAND_STOPPED_MINIGAME, "You have stopped the %s minigame.");
         add(TropicraftLangKeys.COMMAND_FINISHED_MINIGAME, "The minigame %s has finished. If you were inside the minigame, you have been teleported back to your original position.");
         add(TropicraftLangKeys.COMMAND_MINIGAME_STOPPED_POLLING, "An operator has stopped polling the minigame %s.");
+        
+        add(TropicraftLangKeys.COMMAND_RESET_DONATION, "Resetting donation data.");
+        add(TropicraftLangKeys.COMMAND_RESET_LAST_DONATION, "Reset last seen donation ID to %d.");
+        add(TropicraftLangKeys.COMMAND_SIMULATE_DONATION, "Simulating donation for name %s and amount %s");
+        
+        add(TropicraftLangKeys.DONATION, "%s donated %s!");
+
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH, "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains. The lone survivor of the island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.");
         add(TropicraftLangKeys.MINIGAME_FINISH, "The minigame will end in 10 seconds...");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_START, "The year is... 2050. Human caused climate change has gone unmitigated and the human population was forced to flee to higher ground. " +
@@ -339,6 +348,11 @@ public class TropicraftLangProvider extends LanguageProvider {
     
     private void addBlockWithTooltip(Supplier<? extends Block> block, String tooltip) {
         addBlock(block);
+        addTooltip(block, tooltip);
+    }
+    
+    private void addBlockWithTooltip(Supplier<? extends Block> block, String name, String tooltip) {
+        addBlock(block, name);
         addTooltip(block, tooltip);
     }
     

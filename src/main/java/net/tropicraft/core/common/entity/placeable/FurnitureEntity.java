@@ -39,7 +39,7 @@ public abstract class FurnitureEntity extends Entity {
     protected double lerpX;
     protected double lerpY;
     protected double lerpZ;
-    protected double lerpYaw;
+    protected double lerpYaw = Double.NaN; // Force first-time sync even if packet is incomplete
     protected double lerpPitch;
     
     protected FurnitureEntity(EntityType<?> entityTypeIn, World worldIn, Map<DyeColor, ? extends RegistryObject<? extends Item>> items) {
@@ -55,7 +55,7 @@ public abstract class FurnitureEntity extends Entity {
     }
     
     public void setRotation(float yaw) {
-        this.lerpYaw = this.rotationYaw = yaw;
+        this.lerpYaw = this.rotationYaw = MathHelper.wrapDegrees(yaw);
     }
 
     @Override
@@ -122,8 +122,8 @@ public abstract class FurnitureEntity extends Entity {
             this.lerpY = y;
             this.lerpZ = z;
             // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
-            if (yaw != rotationYaw) {
-                this.lerpYaw = (double) yaw;
+            if (yaw != rotationYaw || Double.isNaN(lerpYaw)) {
+                this.lerpYaw = MathHelper.wrapDegrees((double) yaw);
             }
             this.lerpSteps = 10;
             this.rotationPitch = pitch;

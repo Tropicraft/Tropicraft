@@ -222,6 +222,25 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         }
         
         simpleBlock(TropicraftBlocks.WATER_BARRIER, getBuilder(name(TropicraftBlocks.WATER_BARRIER)).texture("particle", mcLoc("item/barrier")));
+        
+        simpleBlock(TropicraftBlocks.DONATION);
+        
+        simpleBlock(TropicraftBlocks.BOUY, withExistingParent(name(TropicraftBlocks.BOUY), mcLoc("block/block"))
+                .ao(false)
+                .texture("beacon", mcLoc("block/beacon"))
+                .texture("base", mcLoc("block/dark_prismarine"))
+                .texture("particle", mcLoc("block/dark_prismarine"))
+                .element()
+                    .from(2, 0, 2)
+                    .to(14, 3, 14)
+                    .cube("#base")
+                    .end()
+                .element()
+                    .from(3, 3, 3)
+                    .to(13, 14, 13)
+                    .cube("#beacon")
+                    .end());
+        
         // All trash
         Arrays.stream(TrashType.values()).forEach(f ->
                 getVariantBuilder(f.get()) // TODO make horizontalBlock etc support this case
