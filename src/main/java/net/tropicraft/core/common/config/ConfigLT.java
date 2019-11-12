@@ -1,14 +1,17 @@
 package net.tropicraft.core.common.config;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.config.ModConfig;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraftforge.common.ForgeConfigSpec.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.config.ModConfig;
 
 @EventBusSubscriber
 public class ConfigLT {
@@ -22,6 +25,8 @@ public class ConfigLT {
     public static final CategorySurviveTheTide MINIGAME_SURVIVE_THE_TIDE = new CategorySurviveTheTide();
     
     public static final CategoryTiltify TILTIFY = new CategoryTiltify();
+    
+    public static final CategoryBiomes BIOMES = new CategoryBiomes();
 
     public static final class CategorySurviveTheTide {
 
@@ -143,6 +148,29 @@ public class ConfigLT {
                     .define("tiltifyCOmmandRun", "function internaluseonly:addmonument");
             
             COMMON_BUILDER.pop();
+        }
+    }
+    
+    public static final class CategoryBiomes {
+        
+        public final IntValue surviveTheTideSkyColor;
+        public final IntValue surviveTheTideFoliageColor;
+        public final IntValue surviveTheTideGrassColor;
+        
+        private CategoryBiomes() {
+            CLIENT_BUILDER.comment("Biome color settings.").push("biomes");
+            
+            surviveTheTideSkyColor = CLIENT_BUILDER
+                    .comment("The color for the Survive The Tide biome's sky. Can be given in hex code in the format 0xRRGGBB.")
+                    .defineInRange("surviveTheTideSkyColor", 0x0f331b, 0, 0xFFFFFF);
+            surviveTheTideFoliageColor = CLIENT_BUILDER
+                    .comment("The color for the Survive The Tide biome's foliage. Can be given in hex code in the format 0xRRGGBB.")
+                    .defineInRange("surviveTheTideFoliageColor", 0x5e8c64, 0, 0xFFFFFF);
+            surviveTheTideGrassColor = CLIENT_BUILDER
+                    .comment("The color for the Survive The Tide biome's grass. Can be given in hex code in the format 0xRRGGBB.")
+                    .defineInRange("surviveTheTideGrassColor", 0x498551, 0, 0xFFFFFF);
+            
+            CLIENT_BUILDER.pop();
         }
     }
 

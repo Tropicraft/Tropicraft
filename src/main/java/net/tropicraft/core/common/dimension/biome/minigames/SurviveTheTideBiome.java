@@ -15,9 +15,9 @@ import net.minecraft.world.gen.placement.TopSolidWithNoiseConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.tropicraft.core.common.config.ConfigLT;
 import net.tropicraft.core.common.dimension.biome.DefaultTropicsFeatures;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiome;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -74,16 +74,16 @@ public class SurviveTheTideBiome extends TropicraftBiome {
 
     @OnlyIn(Dist.CLIENT)
     public int getSkyColorByTemp(float currentTemperature) {
-        return 0x0f331b;
+        return ConfigLT.BIOMES.surviveTheTideSkyColor.get();
     }
 
     @OnlyIn(Dist.CLIENT)
     public int getFoliageColor(BlockPos p_180625_1_) {
-        return TropicraftBiomes.TROPICS.get().getFoliageColor(p_180625_1_);
+        return ConfigLT.BIOMES.surviveTheTideFoliageColor.get();
     }
 
     @OnlyIn(Dist.CLIENT)
     public int getGrassColor(BlockPos p_180627_1_) {
-        return 0x498551;
+        return ConfigLT.BIOMES.surviveTheTideGrassColor.get();
     }
 }
