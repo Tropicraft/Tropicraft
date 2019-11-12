@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -73,47 +74,11 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     private BlockPos waterLevelMin = new BlockPos(5722, 0, 6782);
     private BlockPos waterLevelMax = new BlockPos(6102, 0, 7162);
 
-    private IcebergLine icebergLine1 = new IcebergLine(
-            new BlockPos(5847, 0, 6908),
-            new BlockPos(5902, 0, 6882),
-            10);
-
-    private IcebergLine icebergLine2 = new IcebergLine(
-            new BlockPos(5902, 0, 6882),
-            new BlockPos(5956, 0, 6881),
-            10);
-
-    private IcebergLine icebergLine3 = new IcebergLine(
-            new BlockPos(6012, 0, 6927),
-            new BlockPos(5999, 0, 7017),
-            10);
-
-    private IcebergLine icebergLine4 = new IcebergLine(
-            new BlockPos(5955, 0, 7054),
-            new BlockPos(5871, 0, 7065),
-            10);
-
-    private IcebergLine icebergLine5 = new IcebergLine(
-            new BlockPos(5830, 0, 7014),
-            new BlockPos(5808, 0, 6934),
-            10);
-
     private MinecraftServer server;
 
     private boolean minigameEnded;
     private int minigameEndedTimer;
     private UUID winningPlayer;
-
-    private WaterLevelInfo phase2WaterLevelInfo = new WaterLevelInfo(
-            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2TargetWaterLevel.get(),
-            126,
-            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2Length.get());
-
-    private WaterLevelInfo phase3WaterLevelInfo = new WaterLevelInfo(
-            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase3TargetWaterLevel.get(),
-            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2TargetWaterLevel.get(),
-            ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase3Length.get()
-    );
 
     public enum MinigamePhase {
         PHASE1,
@@ -257,9 +222,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     }
 
     @Override
-    public void onPlayerUpdate(ServerPlayerEntity player, IMinigameInstance instance) {
-        if (player.isInWater() && player.ticksExisted % 20 == 0) {
-            player.attackEntityFrom(DamageSource.DROWN, 2.0F);
+    public void onLivingEntityUpdate(LivingEntity entity, IMinigameInstance instance) {
+        if (entity.posY <= this.waterLevel + 1 && entity.isInWater() && entity.ticksExisted % 20 == 0) {
+            entity.attackEntityFrom(DamageSource.DROWN, 2.0F);
         }
     }
 
@@ -409,16 +374,23 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
     private void processWaterLevel(World world) {
         if (phase == MinigamePhase.PHASE2 || phase == MinigamePhase.PHASE3) {
-            WaterLevelInfo waterLevelInfo;
+            int waterChangeInterval;
 
             if (phase == MinigamePhase.PHASE2) {
-                waterLevelInfo = this.phase2WaterLevelInfo;
+                waterChangeInterval = this.calculateWaterChangeInterval(
+                        ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2TargetWaterLevel.get(),
+                        126,
+                        ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2Length.get()
+                        );
             }
             else {
-                waterLevelInfo = this.phase3WaterLevelInfo;
+                waterChangeInterval = this.calculateWaterChangeInterval(
+                        ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase3TargetWaterLevel.get(),
+                        ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2TargetWaterLevel.get(),
+                        ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase3Length.get());
             }
 
-            if (minigameTime % waterLevelInfo.getInterval() == 0) {
+            if (minigameTime % waterChangeInterval == 0) {
                 this.waterLevel++;
                 BlockPos min = this.waterLevelMin.add(0, this.waterLevel, 0);
                 BlockPos max = this.waterLevelMax.add(0, this.waterLevel, 0);
@@ -501,10 +473,13 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     }
 
     private void growIcebergs(World world) {
-        this.icebergLine1.generate(world, this.waterLevel);
-        this.icebergLine2.generate(world, this.waterLevel);
-        this.icebergLine3.generate(world, this.waterLevel);
-        this.icebergLine4.generate(world, this.waterLevel);
-        this.icebergLine5.generate(world, this.waterLevel);
+        for (IcebergLine line : ConfigLT.minigame_SurviveTheTide_icebergLines) {
+            line.generate(world, this.waterLevel);
+        }
+    }
+
+    private int calculateWaterChangeInterval(int targetLevel, int prevLevel, int phaseLength) {
+        int waterLevelDiff = prevLevel - targetLevel;
+        return phaseLength / waterLevelDiff;
     }
 }

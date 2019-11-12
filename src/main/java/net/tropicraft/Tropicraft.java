@@ -209,6 +209,7 @@ public class Tropicraft {
         CommandStopPollingMinigame.register(event.getServer().getCommandManager().getDispatcher());
         CommandReloadConfig.register(event.getServer().getCommandManager().getDispatcher());
         CommandDonation.register(event.getServer().getCommandManager().getDispatcher());
+        CommandAddConfigIceberg.register(event.getServer().getCommandManager().getDispatcher());
     }
 
     private void onServerStopping(final FMLServerStoppingEvent event) {

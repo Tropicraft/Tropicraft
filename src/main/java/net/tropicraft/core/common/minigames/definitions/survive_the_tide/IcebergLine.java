@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -13,11 +14,13 @@ public class IcebergLine
     private final int count;
     private final int intervalX;
     private final int intervalZ;
+    private final int distBetweenEach;
 
     private Random rand;
 
     public IcebergLine(BlockPos start, BlockPos end, int distBetweenEach) {
         this.rand = new Random();
+        this.distBetweenEach = distBetweenEach;
 
         this.start = start;
         this.end = end;
@@ -25,27 +28,44 @@ public class IcebergLine
         int diffX = this.start.getX() - this.end.getX();
         int diffZ = this.start.getZ() - this.end.getZ();
 
-        this.count = Math.max(Math.abs(diffX), Math.abs(diffZ)) / distBetweenEach;
+        this.count = Math.max(1, Math.max(Math.abs(diffX), Math.abs(diffZ)) / distBetweenEach);
 
-        this.intervalX = diffX / (count + 1);
-        this.intervalZ = diffZ / (count + 1);
+        this.intervalX = Math.round((float)diffX / (float)count);
+        this.intervalZ = Math.round((float)diffZ / (float)count);
     }
 
     public void generate(World world, int waterLevel) {
         for (int i = 1; i <= count; i++) {
-            int offsetX = getRandOffset(4);
-            int offsetZ = getRandOffset(4);
+            int offsetX = getRandOffset(this.distBetweenEach);
+            int offsetZ = getRandOffset(this.distBetweenEach);
 
             BlockPos pos = new BlockPos(this.start.getX() - (i * intervalX) + offsetX, waterLevel, this.start.getZ() - (i * intervalZ) + offsetZ);
 
-            world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState(), 2);
+            setIceWithCheck(world, pos);
         }
 
-        world.setBlockState(this.start.add(getRandOffset(6), waterLevel, getRandOffset(6)), Blocks.ICE.getDefaultState(), 2);
-        world.setBlockState(this.end.add(getRandOffset(6), waterLevel, getRandOffset(6)), Blocks.ICE.getDefaultState(), 2);
+        BlockPos start = new BlockPos(
+                this.start.getX() + getRandOffset(this.distBetweenEach),
+                waterLevel,
+                this.start.getZ() + getRandOffset(this.distBetweenEach));
+
+
+        BlockPos end = new BlockPos(
+                this.start.getX() + getRandOffset(this.distBetweenEach),
+                waterLevel,
+                this.start.getZ() + getRandOffset(this.distBetweenEach));
+
+        setIceWithCheck(world, start);
+        setIceWithCheck(world, end);
     }
 
     private int getRandOffset(int radius) {
         return rand.nextInt(radius) * (rand.nextBoolean() ? -1 : 1);
+    }
+
+    private void setIceWithCheck(World world, BlockPos pos) {
+        if (world.getBlockState(pos).getMaterial() == Material.WATER) {
+            world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState(), 2);
+        }
     }
 }

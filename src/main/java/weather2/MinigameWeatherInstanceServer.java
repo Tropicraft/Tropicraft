@@ -2,6 +2,9 @@ package weather2;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
@@ -114,7 +117,9 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                 }
             }
         } else if (heatwaveActive()) {
-
+            if (player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition()).getY() <= player.getPosition().getY()) {
+                player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 5, 1, true, false, true));
+            }
         }
     }
 
