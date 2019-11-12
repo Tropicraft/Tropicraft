@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.dimension.biome.DefaultTropicsFeatures;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiome;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -78,7 +79,7 @@ public class SurviveTheTideBiome extends TropicraftBiome {
 
     @OnlyIn(Dist.CLIENT)
     public int getFoliageColor(BlockPos p_180625_1_) {
-        return 0x5e8c64;
+        return TropicraftBiomes.TROPICS.get().getFoliageColor(p_180625_1_);
     }
 
     @OnlyIn(Dist.CLIENT)
