@@ -344,6 +344,6 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        this.lerpYaw = additionalData.readDouble();
+        this.lerpYaw = MathHelper.wrapDegrees(additionalData.readDouble());
     }
 }
