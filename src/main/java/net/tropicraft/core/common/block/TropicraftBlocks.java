@@ -250,8 +250,8 @@ public class TropicraftBlocks {
     
     public static final RegistryObject<DonationBlock> DONATION = register(
             "donation", () -> new DonationBlock(Block.Properties.from(Blocks.BEDROCK).noDrops()), Tropicraft.LOVE_TROPICS_ITEM_GROUP);
-    public static final RegistryObject<Block> BOUY = register(
-            "bouy", () -> new CustomShapeBlock(
+    public static final RegistryObject<Block> BUOY = register(
+            "buoy", () -> new CustomShapeBlock(
                     VoxelShapes.or(
                             Block.makeCuboidShape(2, 0, 2, 14, 3, 14),
                             Block.makeCuboidShape(3, 3, 3, 13, 14, 13)),

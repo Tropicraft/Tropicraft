@@ -225,7 +225,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         
         simpleBlock(TropicraftBlocks.DONATION);
         
-        simpleBlock(TropicraftBlocks.BOUY, withExistingParent(name(TropicraftBlocks.BOUY), mcLoc("block/block"))
+        simpleBlock(TropicraftBlocks.BUOY, withExistingParent(name(TropicraftBlocks.BUOY), mcLoc("block/block"))
                 .ao(false)
                 .texture("beacon", mcLoc("block/beacon"))
                 .texture("base", mcLoc("block/dark_prismarine"))
@@ -233,12 +233,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
                 .element()
                     .from(2, 0, 2)
                     .to(14, 3, 14)
-                    .cube("#base")
+                    .textureAll("#base")
+                    .face(Direction.DOWN).cullface(Direction.DOWN).end()
                     .end()
                 .element()
                     .from(3, 3, 3)
                     .to(13, 14, 13)
-                    .cube("#beacon")
+                    .textureAll("beacon")
                     .end());
         
         // All trash

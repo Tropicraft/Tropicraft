@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tropicraft:block/bouy"
+      "model": "tropicraft:block/buoy"
     }
   }
 }
