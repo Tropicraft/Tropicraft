@@ -979,12 +979,7 @@ public class SceneEnhancer implements Runnable {
 							continue;
 
 						//block above topmost ground
-						if (canPrecipitateAt(world, pos.up())/*world.isRainingAt(pos)*/) {
-
-							//fix for splash spawning invisibly 1 block underwater
-									/*if (world.getBlockState(pos).getMaterial() == Material.WATER) {
-										pos = pos.add(0,1,0);
-									}*/
+						if (canPrecipitateAt(world, pos.up()) && world.getBlockState(pos).getMaterial() != Material.WATER) {
 
 							world.addParticle(ParticleTypes.SMOKE, pos.getX() + rand.nextFloat(), pos.getY() + 0.01D + maxY, pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 							world.addParticle(ParticleTypes.FLAME, pos.getX() + rand.nextFloat(), pos.getY() + 0.01D + maxY, pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);

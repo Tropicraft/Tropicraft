@@ -33,10 +33,14 @@ public class MinigameWeatherInstanceClient extends MinigameWeatherInstance {
             curOvercastStrTarget = 0F;
         }
 
-        float rateChange = 0.001F;
+        float rateChange = 0.005F;
 
         if (curOvercastStr > curOvercastStrTarget) {
-            curOvercastStr -= rateChange;
+            if (heatwaveActive()) {
+                curOvercastStr -= rateChange * 5F;
+            } else {
+                curOvercastStr -= rateChange * 2F;
+            }
         } else if (curOvercastStr < curOvercastStrTarget) {
             curOvercastStr += rateChange;
         }

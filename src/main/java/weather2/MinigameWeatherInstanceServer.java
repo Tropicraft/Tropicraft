@@ -23,10 +23,9 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
         super.tick(minigameDefinition);
         World world = WeatherUtil.getWorld(minigameDefinition.getDimension());
         if (world != null) {
+            SurviveTheTideMinigameDefinition.MinigamePhase phase = minigameDefinition.getPhase();
             int tickRate = 20;
             if (world.getGameTime() % tickRate == 0) {
-
-                SurviveTheTideMinigameDefinition.MinigamePhase phase = minigameDefinition.getPhase();
 
                 if (phase != SurviveTheTideMinigameDefinition.MinigamePhase.PHASE1) {
                     if (!specialWeatherActive()) {
@@ -69,9 +68,9 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
 
             //heavyRainfallTime = 0;
             //acidRainTime = 0;
-            //acidRainStart();
+            //acidRainStart(phase);
             //heatwaveTime = 0;
-            //heatwaveStart();
+            //heatwaveStart(phase);
 
             if (heavyRainfallTime > 0) {
                 heavyRainfallTime--;
