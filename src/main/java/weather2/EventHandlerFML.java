@@ -73,46 +73,40 @@ public class EventHandlerFML {
 	@SubscribeEvent
 	public void tickClient(TickEvent.ClientTickEvent event) {
 		if (event.phase == TickEvent.Phase.START) {
-			try {
-				ClientProxy.clientTickHandler.onTickInGame();
+			ClientProxy.clientTickHandler.onTickInGame();
 
-				if (extraGrassLast != ConfigFoliage.extraGrass) {
-					extraGrassLast = ConfigFoliage.extraGrass;
+			if (extraGrassLast != ConfigFoliage.extraGrass) {
+				extraGrassLast = ConfigFoliage.extraGrass;
 
-					//note: foliage shaders var tracking will handle the reload if foliageShaders val changes
-					//also extra grass doesnt actually replace a vanilla block, why do we invoke a reset
-					/*if (ConfigCoroUtil.foliageShaders) {
-						EventHandler.flagFoliageUpdate = true;
-					}*/
-					//clear the active grass etc
-					//FoliageEnhancerShader.shadersReset();
+				//note: foliage shaders var tracking will handle the reload if foliageShaders val changes
+				//also extra grass doesnt actually replace a vanilla block, why do we invoke a reset
+				/*if (ConfigCoroUtil.foliageShaders) {
+					EventHandler.flagFoliageUpdate = true;
+				}*/
+				//clear the active grass etc
+				//FoliageEnhancerShader.shadersReset();
 
-					/*for (FoliageReplacerBase replacer : FoliageEnhancerShader.listFoliageReplacers) {
-						replacer.markMeshesDirty();
-					}*/
-					/*for (Map.Entry<TextureAtlasSprite, List<Foliage>> entry : ExtendedRenderer.foliageRenderer.foliage.entrySet()) {
-						InstancedMeshFoliage mesh = MeshBufferManagerFoliage.getMesh(entry.getKey());
+				/*for (FoliageReplacerBase replacer : FoliageEnhancerShader.listFoliageReplacers) {
+					replacer.markMeshesDirty();
+				}*/
+				/*for (Map.Entry<TextureAtlasSprite, List<Foliage>> entry : ExtendedRenderer.foliageRenderer.foliage.entrySet()) {
+					InstancedMeshFoliage mesh = MeshBufferManagerFoliage.getMesh(entry.getKey());
 
-						mesh.dirtyVBO2Flag = true;
-					}*/
-
-					//repopulate the list with or without grass
-					//FoliageEnhancerShader.setupReplacers();
-				}
-
-				/*boolean hackyLiveReplace = false;
-
-				if (hackyLiveReplace && EventHandler.flagFoliageUpdate) {
-					CULog.dbg("CoroUtil detected a need to reload resource packs, initiating");
-					EventHandler.flagFoliageUpdate = false;
-					//Minecraft.getInstance().refreshResources();
-					FoliageEnhancerShader.liveReloadModels();
+					mesh.dirtyVBO2Flag = true;
 				}*/
 
-			} catch (Exception e) {
-				e.printStackTrace();
+				//repopulate the list with or without grass
+				//FoliageEnhancerShader.setupReplacers();
 			}
 
+			/*boolean hackyLiveReplace = false;
+
+			if (hackyLiveReplace && EventHandler.flagFoliageUpdate) {
+				CULog.dbg("CoroUtil detected a need to reload resource packs, initiating");
+				EventHandler.flagFoliageUpdate = false;
+				//Minecraft.getInstance().refreshResources();
+				FoliageEnhancerShader.liveReloadModels();
+			}*/
 		}
 	}
 

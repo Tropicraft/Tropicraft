@@ -237,7 +237,9 @@ public class SceneEnhancer implements Runnable {
 			throwable.printStackTrace();
 		}*/
 
-		if (client.world != null && client.player != null && client.world.getDimension().getType() == DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).get()) {
+		if (client.world != null && client.player != null &&
+		        // Make sure we're in STT, TODO make this more efficient
+		        DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).map(type -> client.world.getDimension().getType() == type).orElse(Boolean.FALSE)) {
 			profileSurroundings();
 			tryAmbientSounds();
 		}
