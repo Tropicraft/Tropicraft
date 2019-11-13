@@ -251,7 +251,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public void onPreStart() {
-        this.fetchBaseMap();
+        fetchBaseMap(this.server);
     }
 
     @Override
@@ -349,27 +349,41 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         }
     }
 
-    private void fetchBaseMap() {
-        File worldFile = this.server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory();
+    private static void saveMapTo(File from, File to) {
+        try {
+            if (from.exists()) {
+                FileUtils.deleteDirectory(to);
+
+                if (to.mkdirs()) {
+                    FileUtils.copyDirectory(from, to);
+                }
+            } else {
+                LOGGER.info("Island royale base map doesn't exist in " + to.getPath() + ", add first before it can copy and replace each game start.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void saveBaseMap(MinecraftServer server) {
+        File worldFile = server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory();
 
         File baseMapsFile = new File(worldFile, "minigame_base_maps");
 
         File islandRoyaleBase = new File(baseMapsFile, "hunger_games");
         File islandRoyaleCurrent = new File(worldFile, "tropicraft/hunger_games");
 
-        try {
-            if (islandRoyaleBase.exists()) {
-                FileUtils.deleteDirectory(islandRoyaleCurrent);
+        saveMapTo(islandRoyaleCurrent, islandRoyaleBase);
+    }
 
-                if (islandRoyaleCurrent.mkdirs()) {
-                    FileUtils.copyDirectory(islandRoyaleBase, islandRoyaleCurrent);
-                }
-            } else {
-                LOGGER.info("Island royale base map doesn't exist in " + islandRoyaleBase.getPath() + ", add first before it can copy and replace each game start.");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void fetchBaseMap(MinecraftServer server) {
+        File worldFile = server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getWorldDirectory();
+
+        File baseMapsFile = new File(worldFile, "minigame_base_maps");
+
+        File islandRoyaleBase = new File(baseMapsFile, "hunger_games");
+        File islandRoyaleCurrent = new File(worldFile, "tropicraft/hunger_games");
+
+        saveMapTo(islandRoyaleBase, islandRoyaleCurrent);
     }
 
     private void processWaterLevel(World world) {

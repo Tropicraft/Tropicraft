@@ -210,6 +210,8 @@ public class Tropicraft {
         CommandReloadConfig.register(event.getServer().getCommandManager().getDispatcher());
         CommandDonation.register(event.getServer().getCommandManager().getDispatcher());
         CommandAddConfigIceberg.register(event.getServer().getCommandManager().getDispatcher());
+        CommandResetIsland.register(event.getServer().getCommandManager().getDispatcher());
+        CommandSaveIsland.register(event.getServer().getCommandManager().getDispatcher());
     }
 
     private void onServerStopping(final FMLServerStoppingEvent event) {
