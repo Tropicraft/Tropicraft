@@ -45,7 +45,8 @@ public class BlockTropicraftSand extends FallingBlock {
         final BlockState state = world.getBlockState(pos);
 
         // If not black sands
-        if (state.getBlock() != TropicraftBlocks.VOLCANIC_SAND.get()) {
+        // TEMP DISABLED FOR LT
+        if (true || state.getBlock() != TropicraftBlocks.VOLCANIC_SAND.get()) {
             return;
         }
 
