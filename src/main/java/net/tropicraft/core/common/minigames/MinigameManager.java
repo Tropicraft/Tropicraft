@@ -16,6 +16,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.tropicraft.Constants;
@@ -400,6 +401,13 @@ public class MinigameManager implements IMinigameManager
     public void onPlayerHurt(LivingHurtEvent event) {
         if (this.ifPlayerInInstance(event.getEntity())) {
             this.currentInstance.getDefinition().onPlayerHurt(event, this.currentInstance);
+        }
+    }
+
+    @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent event) {
+        if (this.ifPlayerInInstance(event.getPlayer())) {
+            this.currentInstance.getDefinition().onPlayerAttackEntity(event, this.currentInstance);
         }
     }
 

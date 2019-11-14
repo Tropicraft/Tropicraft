@@ -13,6 +13,7 @@ import net.minecraft.util.text.*;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.tropicraft.core.common.donations.FireworkUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -271,6 +272,13 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     @Override
     public void onPlayerHurt(LivingHurtEvent event, IMinigameInstance instance) {
         if (event.getSource().getTrueSource() instanceof PlayerEntity && isSafePhase(this.phase)) {
+            event.setCanceled(true);
+        }
+    }
+
+    @Override
+    public void onPlayerAttackEntity(AttackEntityEvent event, IMinigameInstance instance) {
+        if (event.getTarget() instanceof PlayerEntity && isSafePhase(this.phase)) {
             event.setCanceled(true);
         }
     }

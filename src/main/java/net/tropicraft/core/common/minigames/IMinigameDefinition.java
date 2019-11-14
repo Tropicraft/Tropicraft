@@ -13,6 +13,7 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
 /**
  * Used as a discriminant for a registered minigame. Defines the logic of the
@@ -189,4 +190,11 @@ public interface IMinigameDefinition
      * @param instance The minigame instance.
      */
     default void onPlayerHurt(LivingHurtEvent event, IMinigameInstance instance) {}
+
+    /**
+     * Event method for when a player attacks an entity in the minigame instance.
+     * @param event The attack entity event.
+     * @param instance The minigame instance.
+     */
+    default void onPlayerAttackEntity(AttackEntityEvent event, IMinigameInstance instance) {}
 }
