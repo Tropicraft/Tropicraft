@@ -118,7 +118,6 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
         Commands commands = this.server.getCommandManager();
 
         try {
-            commands.getDispatcher().execute("function trash_cleanup:reset_game", commandSource);
             commands.getDispatcher().execute("function ocean_reset:reset", commandSource);
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
@@ -130,6 +129,7 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
         Commands commands = this.server.getCommandManager();
 
         try {
+            commands.getDispatcher().execute("function trash_cleanup:reset_game", commandSource);
             commands.getDispatcher().execute("function trash_cleanup:start_game", commandSource);
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
