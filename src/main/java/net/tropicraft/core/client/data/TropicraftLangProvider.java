@@ -327,13 +327,11 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH, "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains. The lone survivor of the island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.");
         add(TropicraftLangKeys.MINIGAME_FINISH, "The minigame will end in 10 seconds...");
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_START, "The year is... 2050. Human caused climate change has gone unmitigated and the human population was forced to flee to higher ground. " +
-                "Fortunately for you, you live on an island with mountains nearby. The same cannot be said for the millions on the coastlines. Your task, should you choose to accept " +
-                "it, which you have to because of climate change, is to reach the last remaining high places and ride out the storm. Oh right, did I not mention the severe storms " +
-                "that happen sporadically and frequently these days because of the instability in the climate? Well, now you know. Work together or work against each other to reach the " +
-                "top, your true enemy is the rising sea currents. Just remember... Your resources are as limited as your time. Someone else may have the tool or food you need to survive. " +
-                "What kind of person will you be when the world is falling apart?\n\n" +
-                "Let's see!");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO1, "The year...2050. Human-caused climate change has gone unmitigated and the human population has been forced to flee to higher ground.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO2, "\n\nYour task, should you choose to accept it, which you have to because of climate change, is to survive the rising tides, unpredictable weather, and other players.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO3, "\n\nBrave the conditions and defeat the others who are just trying to survive, like you. And remember...your resources are as limited as your time.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO4, "\n\nSomeone else may have the tool or food you need to survive. What kind of person will you be when the world is falling apart?");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO5, "\n\nLet's see!");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, "NOTE: PvP is disabled for %s minutes! Go fetch resources before time runs out.");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED, "WARNING: PVP HAS BEEN ENABLED! Beware of other players...");
     }

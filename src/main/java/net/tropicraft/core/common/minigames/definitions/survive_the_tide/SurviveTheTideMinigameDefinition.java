@@ -167,29 +167,37 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
             this.processWaterLevel(world);
 
             if (phase == MinigamePhase.PHASE0) {
+                if (phaseTime == 20 * 7) {
+                    this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO2).applyTextStyle(TextFormatting.GRAY));
+                } else if (phaseTime == 20 * 14) {
+                    this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO3).applyTextStyle(TextFormatting.GRAY));
+                } else if (phaseTime == 20 * 21) {
+                    this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO4).applyTextStyle(TextFormatting.GRAY));
+                } else if (phaseTime == 20 * 28) {
+                    this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO5).applyTextStyle(TextFormatting.GRAY));
+                }
+
                 if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase0Length.get()) {
                     nextPhase();
 
                     BlockPos spawnStart = ConfigLT.minigame_SurviveTheTide_spawnAreaP1;
                     BlockPos spawnEnd = ConfigLT.minigame_SurviveTheTide_spawnAreaP2;
 
+                    // Destroy all fences blocking players from getting out of spawn area for phase 0
                     for (BlockPos p : BlockPos.getAllInBoxMutable(spawnStart, spawnEnd)) {
                         if (world.getBlockState(p).getBlock() instanceof FenceBlock) {
                             world.setBlockState(p, Blocks.AIR.getDefaultState(), 2);
                         }
                     }
+
+                    int minutes = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get() / 20 / 60;
+                    this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW));
                 }
             } else if (phase == MinigamePhase.PHASE1) {
                 if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
                     nextPhase();
 
-                    for (UUID uuid : instance.getAllPlayerUUIDs()) {
-                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-                        if (player != null) {
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED).applyTextStyle(TextFormatting.RED), ChatType.CHAT);
-                        }
-                    }
+                    this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED).applyTextStyle(TextFormatting.RED));
                 }
             } else if (phase == MinigamePhase.PHASE2) {
                 if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2Length.get()) {
@@ -272,16 +280,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         waterLevel = 120;
         phase = MinigamePhase.PHASE0;
 
-        for (UUID uuid : instance.getAllPlayerUUIDs()) {
-            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-            if (player != null) {
-                int minutes = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get() / 20 / 60;
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_START).applyTextStyle(TextFormatting.GRAY), ChatType.CHAT);
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
-            }
-        }
-
+        this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO1).applyTextStyle(TextFormatting.GRAY));
         minigameWeatherInstance.setMinigameActive(true);
     }
 
@@ -334,6 +333,16 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     public void dbg(String str) {
         if (debug) {
             LOGGER.info(str);
+        }
+    }
+
+    private void sendToAllPlayers(IMinigameInstance instance, ITextComponent text) {
+        for (UUID uuid : instance.getAllPlayerUUIDs()) {
+            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+            if (player != null) {
+                player.sendMessage(text, ChatType.CHAT);
+            }
         }
     }
 

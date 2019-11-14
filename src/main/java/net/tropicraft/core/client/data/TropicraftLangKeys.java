@@ -42,7 +42,11 @@ public class TropicraftLangKeys
     public static String DONATION = Constants.MODID + ".donation.new";
 
     public static String SURVIVE_THE_TIDE_FINISH = Constants.MODID + ".minigame.survive_the_tide_finish";
-    public static String SURVIVE_THE_TIDE_START = Constants.MODID + ".minigame.survive_the_tide_start";
+    public static String SURVIVE_THE_TIDE_INTRO1 = Constants.MODID + ".minigame.survive_the_tide_intro1";
+    public static String SURVIVE_THE_TIDE_INTRO2 = Constants.MODID + ".minigame.survive_the_tide_intro2";
+    public static String SURVIVE_THE_TIDE_INTRO3 = Constants.MODID + ".minigame.survive_the_tide_intro3";
+    public static String SURVIVE_THE_TIDE_INTRO4 = Constants.MODID + ".minigame.survive_the_tide_intro4";
+    public static String SURVIVE_THE_TIDE_INTRO5 = Constants.MODID + ".minigame.survive_the_tide_intro5";
     public static String SURVIVE_THE_TIDE_PVP_ENABLED = Constants.MODID + ".minigame.survive_the_tide_pvp_enabled";
     public static String SURVIVE_THE_TIDE_PVP_DISABLED = Constants.MODID + ".minigame.survive_the_tide_pvp_disabled";
     public static String MINIGAME_FINISH = Constants.MODID + ".minigame.finish";
