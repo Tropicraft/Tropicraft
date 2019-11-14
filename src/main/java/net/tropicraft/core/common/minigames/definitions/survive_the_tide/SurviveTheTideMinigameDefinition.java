@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -12,10 +13,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.block.IWaterLoggable;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -64,7 +61,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
     private MinigameWeatherInstanceServer minigameWeatherInstance;
 
-    private MinigamePhase phase = MinigamePhase.PHASE1;
+    private MinigamePhase phase = MinigamePhase.PHASE0;
 
     private long minigameTime = 0;
     private long phaseTime = 0;
@@ -81,6 +78,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     private UUID winningPlayer;
 
     public enum MinigamePhase {
+        PHASE0,
         PHASE1,
         PHASE2,
         PHASE3,
@@ -168,7 +166,20 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
             this.processWaterLevel(world);
 
-            if (phase == MinigamePhase.PHASE1) {
+            if (phase == MinigamePhase.PHASE0) {
+                if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase0Length.get()) {
+                    nextPhase();
+
+                    BlockPos spawnStart = ConfigLT.minigame_SurviveTheTide_spawnAreaP1;
+                    BlockPos spawnEnd = ConfigLT.minigame_SurviveTheTide_spawnAreaP2;
+
+                    for (BlockPos p : BlockPos.getAllInBoxMutable(spawnStart, spawnEnd)) {
+                        if (world.getBlockState(p).getBlock() instanceof FenceBlock) {
+                            world.setBlockState(p, Blocks.AIR.getDefaultState(), 2);
+                        }
+                    }
+                }
+            } else if (phase == MinigamePhase.PHASE1) {
                 if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
                     nextPhase();
 
@@ -216,7 +227,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public void onPlayerHurt(LivingHurtEvent event, IMinigameInstance instance) {
-        if (event.getSource().getTrueSource() instanceof PlayerEntity && this.phase == MinigamePhase.PHASE1) {
+        if (event.getSource().getTrueSource() instanceof PlayerEntity && isSafePhase(this.phase)) {
             event.setCanceled(true);
         }
     }
@@ -239,7 +250,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         this.minigameEndedTimer = 0;
         this.winningPlayer = null;
         minigameWeatherInstance.reset();
-        phase = MinigamePhase.PHASE1;
+        phase = MinigamePhase.PHASE0;
         phaseTime = 0;
     }
 
@@ -258,8 +269,8 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     public void onStart(CommandSource commandSource, IMinigameInstance instance) {
         minigameTime = 0;
         ServerWorld world = this.server.getWorld(this.getDimension());
-        waterLevel = world.getSeaLevel();
-        phase = MinigamePhase.PHASE1;
+        waterLevel = 120;
+        phase = MinigamePhase.PHASE0;
 
         for (UUID uuid : instance.getAllPlayerUUIDs()) {
             ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
@@ -291,7 +302,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     }
 
     public void nextPhase() {
-        if (phase == MinigamePhase.PHASE1) {
+        if (phase == MinigamePhase.PHASE0) {
+            phase = MinigamePhase.PHASE1;
+        } else if (phase == MinigamePhase.PHASE1) {
             phase = MinigamePhase.PHASE2;
         } else if (phase == MinigamePhase.PHASE2) {
             phase = MinigamePhase.PHASE3;
@@ -322,6 +335,10 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         if (debug) {
             LOGGER.info(str);
         }
+    }
+
+    public static boolean isSafePhase(MinigamePhase phase) {
+        return phase == MinigamePhase.PHASE0 || phase == MinigamePhase.PHASE1;
     }
 
     private void checkForGameEndCondition(IMinigameInstance instance) {
