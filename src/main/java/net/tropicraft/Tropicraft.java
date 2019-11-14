@@ -213,6 +213,7 @@ public class Tropicraft {
         CommandResetIsland.register(event.getServer().getCommandManager().getDispatcher());
         CommandSaveIsland.register(event.getServer().getCommandManager().getDispatcher());
         CommandIslandSetStartPos.register(event.getServer().getCommandManager().getDispatcher());
+        CommandResetIslandChests.register(event.getServer().getCommandManager().getDispatcher());
     }
 
     private void onServerStopping(final FMLServerStoppingEvent event) {
