@@ -119,6 +119,7 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
 
         try {
             commands.getDispatcher().execute("function trash_cleanup:reset_game", commandSource);
+            commands.getDispatcher().execute("function ocean_reset:reset", commandSource);
         } catch (CommandSyntaxException e) {
             e.printStackTrace();
         }
