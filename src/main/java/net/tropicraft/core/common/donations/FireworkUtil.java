@@ -27,12 +27,16 @@ public class FireworkUtil {
     public enum Palette {
         
         FULL_RANDOM,
+
         PUERTO_RICO(new int[]{11743532, 15790320, 2437522, 0x6ac944, 0xf5c140, 0x0F9684}),
         COOL_EARTH(
                 new int[] {CE_YELLOW, CE_BLUE, CE_GREEN},
                 new int[] {CE_RED, CE_ORANGE, CE_PURPLE},
                 new int[] {CE_YELLOW, CE_BLUE, CE_PURPLE},
                 new int[] {CE_BLUE, CE_GREEN, CE_NAVY}
+        ),
+        ISLAND_ROYALE(
+                new int[] {0x000000}
         ),
         ;
         

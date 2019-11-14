@@ -326,15 +326,21 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         add(TropicraftLangKeys.DONATION, "%s donated %s!");
 
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH, "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains. The lone survivor of the island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH1, "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains: %s.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH2, "\nThose who have fallen have been swept away by the encroaching tides that engulf countless landmasses in this dire future.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH3, "\nThe lone survivor of this island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH4, "\nWhat would you do different next time? Together, we could stop this from becoming our future.");
+
         add(TropicraftLangKeys.MINIGAME_FINISH, "The minigame will end in 10 seconds...");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO1, "The year...2050. Human-caused climate change has gone unmitigated and the human population has been forced to flee to higher ground.");
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO2, "\n\nYour task, should you choose to accept it, which you have to because of climate change, is to survive the rising tides, unpredictable weather, and other players.");
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO3, "\n\nBrave the conditions and defeat the others who are just trying to survive, like you. And remember...your resources are as limited as your time.");
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO4, "\n\nSomeone else may have the tool or food you need to survive. What kind of person will you be when the world is falling apart?");
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO5, "\n\nLet's see!");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO2, "\nYour task, should you choose to accept it, which you have to because of climate change, is to survive the rising tides, unpredictable weather, and other players.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO3, "\nBrave the conditions and defeat the others who are just trying to survive, like you. And remember...your resources are as limited as your time.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO4, "\nSomeone else may have the tool or food you need to survive. What kind of person will you be when the world is falling apart?");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO5, "\nLet's see!");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, "NOTE: PvP is disabled for %s minutes! Go fetch resources before time runs out.");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED, "WARNING: PVP HAS BEEN ENABLED! Beware of other players...");
+
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_DOWN_TO_TWO, "IT'S DOWN TO TWO PLAYERS! %s and %s are now head to head - who will triumph through the rising tides?");
     }
     
     private String getAutomaticName(Supplier<? extends IForgeRegistryEntry<?>> sup) {
