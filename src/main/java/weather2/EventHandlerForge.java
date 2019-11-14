@@ -1,12 +1,14 @@
 package weather2;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientChatEvent;
@@ -15,6 +17,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -28,6 +31,7 @@ import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.tropicraft.core.common.command.CommandReloadConfig;
+import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import weather2.api.WeatherUtilData;
 import weather2.client.SceneEnhancer;
 import weather2.config.ConfigLTOverrides;
@@ -162,8 +166,12 @@ public class EventHandlerForge {
     public void onFogColors(FogColors event) {
 
 		if (ConfigMisc.Client_PotatoPC_Mode) return;
+
+		boolean ltOverride = true;
+
+		World world = Minecraft.getInstance().world;
 		
-        if (SceneEnhancer.isFogOverridding()) {
+        if (SceneEnhancer.isFogOverridding() && (!ltOverride || (world == null || DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).map(type -> world.getDimension().getType() == type).orElse(Boolean.FALSE)))) {
 			//backup original fog colors that are actively being adjusted based on time of day
 			SceneEnhancer.stormFogRedOrig = event.getRed();
 			SceneEnhancer.stormFogGreenOrig = event.getGreen();
@@ -182,7 +190,11 @@ public class EventHandlerForge {
 
 		if (ConfigMisc.Client_PotatoPC_Mode) return;
 
-		if (SceneEnhancer.isFogOverridding()) {
+		boolean ltOverride = true;
+
+		World world = Minecraft.getInstance().world;
+
+		if (SceneEnhancer.isFogOverridding() && (!ltOverride || (world == null || DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).map(type -> world.getDimension().getType() == type).orElse(Boolean.FALSE)))) {
         	//event.setCanceled(true);
         	//event.setDensity(SceneEnhancer.stormFogDensity);
 
