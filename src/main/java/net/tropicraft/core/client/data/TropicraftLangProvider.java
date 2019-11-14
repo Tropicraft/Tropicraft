@@ -318,6 +318,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(TropicraftLangKeys.COMMAND_STOPPED_MINIGAME, "You have stopped the %s minigame.");
         add(TropicraftLangKeys.COMMAND_FINISHED_MINIGAME, "The minigame %s has finished. If you were inside the minigame, you have been teleported back to your original position.");
         add(TropicraftLangKeys.COMMAND_MINIGAME_STOPPED_POLLING, "An operator has stopped polling the minigame %s.");
+        add(TropicraftLangKeys.COMMAND_STOP_POLL, "You have successfully stopped the poll.");
         
         add(TropicraftLangKeys.COMMAND_RESET_DONATION, "Resetting donation data.");
         add(TropicraftLangKeys.COMMAND_RESET_LAST_DONATION, "Reset last seen donation ID to %d.");

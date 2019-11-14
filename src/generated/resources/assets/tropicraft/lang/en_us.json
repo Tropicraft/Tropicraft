@@ -338,6 +338,7 @@
   "tropicraft.command.not_registered_minigame": "You are not currently registered for any minigames.",
   "tropicraft.command.registered_for_minigame": "You have registered for Minigame %s. When the minigame starts, random registered players will be picked to play. Please wait for hosts to start the minigame. You can continue to do what you were doing until then.",
   "tropicraft.command.sorry_already_started": "Sorry, the current minigame has already started!",
+  "tropicraft.command.stopped_polling": "You have successfully stopped the poll.",
   "tropicraft.command.unregistered_minigame": "You have unregistered for Minigame %s.",
   "tropicraft.container.bambooChest": "Bamboo Chest",
   "tropicraft.container.bambooChestDouble": "Large Bamboo Chest",

@@ -18,11 +18,11 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.tropicraft.Constants;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
-import net.tropicraft.core.common.minigames.definitions.SignatureRunMinigameDefinition;
 import net.tropicraft.core.common.minigames.definitions.UnderwaterTrashHuntMinigameDefinition;
 
 import java.util.Collection;
@@ -93,7 +93,6 @@ public class MinigameManager implements IMinigameManager
         MinecraftForge.EVENT_BUS.register(INSTANCE);
 
         INSTANCE.register(new SurviveTheTideMinigameDefinition(server));
-        INSTANCE.register(new SignatureRunMinigameDefinition());
         INSTANCE.register(new UnderwaterTrashHuntMinigameDefinition(server));
     }
 
@@ -208,14 +207,13 @@ public class MinigameManager implements IMinigameManager
         this.registeredForMinigame.clear();
 
         for (ServerPlayerEntity player : this.server.getPlayerList().getPlayers()) {
-            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_MINIGAME_STOPPED_POLLING,
+            player.sendMessage(new TranslationTextComponent(Constants.MODID + ".minigame.minigame_stopped_polling",
                     new TranslationTextComponent(minigameName).applyTextStyle(TextFormatting.ITALIC).applyTextStyle(TextFormatting.AQUA))
                     .applyTextStyle(TextFormatting.RED), ChatType.CHAT);
         }
 
         return new ActionResult<>(ActionResultType.SUCCESS,
-            new TranslationTextComponent(TropicraftLangKeys.COMMAND_STOP_POLL,
-                new TranslationTextComponent(minigameName).applyTextStyle(TextFormatting.AQUA)).applyTextStyle(TextFormatting.RED));
+            new TranslationTextComponent(TropicraftLangKeys.COMMAND_STOP_POLL).applyTextStyle(TextFormatting.GREEN));
     }
 
     @Override
