@@ -2147,13 +2147,13 @@ public class SceneEnhancer implements Runnable {
 
 			if (ltOverrideAdjustment) {
 				targetEnd = 150;
+
+				//stop flicker, screw it use static sun brightness
+				sunBrightness = 0.7F;
+
 				stormFogRed = stormFogRedOrig + (-(stormFogRedOrig - (0.7F * sunBrightness)) * adjustAmountSmooth);
 				stormFogGreen = stormFogGreenOrig + (-(stormFogGreenOrig - (0.3F * sunBrightness)) * adjustAmountSmooth);
 				stormFogBlue = stormFogBlueOrig + (-(stormFogBlueOrig - (0.15F * sunBrightness)) * adjustAmountSmooth);
-				//System.out.println(stormFogRed + " - " + stormFogGreen + " - " + stormFogBlue);
-				/*stormFogRed = 0.5F;
-				stormFogGreen = 0.21F;
-				stormFogBlue = 0.1F;*/
 				//stormFogDensity = 0.9F;
 			}
 
