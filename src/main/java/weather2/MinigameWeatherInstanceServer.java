@@ -27,7 +27,7 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
             int tickRate = 20;
             if (world.getGameTime() % tickRate == 0) {
 
-                if (phase != SurviveTheTideMinigameDefinition.MinigamePhase.PHASE1) {
+                if (!SurviveTheTideMinigameDefinition.isSafePhase(phase)) {
                     if (!specialWeatherActive()) {
 
                         //testing vals to maybe make configs
@@ -51,7 +51,7 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                     }
                 }
 
-                if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE1) {
+                if (SurviveTheTideMinigameDefinition.isSafePhase(phase)) {
                     windSpeed = 0.1F;
                 } else if (phase == SurviveTheTideMinigameDefinition.MinigamePhase.PHASE2) {
                     windSpeed = 0.5F;

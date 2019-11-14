@@ -24,12 +24,6 @@ public class CommandTropicsTeleport {
 						.requires(s -> s.hasPermissionLevel(2))
 						.executes(c -> teleport(c.getSource(), TropicraftWorldUtils.SURVIVE_THE_TIDE_DIMENSION))
 		);
-
-		dispatcher.register(
-				literal("signature_run")
-						.requires(s -> s.hasPermissionLevel(2))
-						.executes(c -> teleport(c.getSource(), TropicraftWorldUtils.SIGNATURE_RUN_DIMENSION))
-		);
 	}
 
 	private static int teleport(final CommandSource source, DimensionType dimensionType) {

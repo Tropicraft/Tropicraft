@@ -38,8 +38,11 @@ public class ConfigLT {
         public final ConfigValue<String> minigame_SurviveTheTide_playerPositions;
         public final ConfigValue<String> minigame_SurviveTheTide_respawnPosition;
         public final ConfigValue<String> minigame_SurviveTheTide_spectatorPosition;
+        public final ConfigValue<String> minigame_SurviveTheTide_spawnAreaP1;
+        public final ConfigValue<String> minigame_SurviveTheTide_spawnAreaP2;
         public final ConfigValue<String> icebergLines;
 
+        public final IntValue phase0Length;
         public final IntValue phase1Length;
         public final IntValue phase2Length;
         public final IntValue phase3Length;
@@ -67,14 +70,17 @@ public class ConfigLT {
             COMMON_BUILDER.comment("Survive The Tide settings").push("survive_the_tide");
 
             minigame_SurviveTheTide_playerPositions = COMMON_BUILDER.comment("List of spawn positions for players, number of entries must match maximumPlayerCount config value, separate each position by ; and each x y and z with , example: 5780, 141, 6955; 5780, 141, 6955")
-                    .define("minigame_SurviveTheTide_playerPositions", "5780, 141, 6955; 5780, 141, 6955; " +
-                            "5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; " +
-                            "5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955; 5780, 141, 6955");
+                    .define("minigame_SurviveTheTide_playerPositions", "5906,133,6962;5910,133,6961;5914,133,6961;5918,133,6962;5922,133,6966;" +
+                            "5923,133,6970;5923,133,6974;5922,133,6978;5918,133,6982;5914,133,6983;5910,133,6983;5906,133,6982;5902,133,6978;5901,133,6974;" +
+                            "5901,133,6970;5902,133,6966;");
 
             icebergLines = COMMON_BUILDER.comment("List of iceberg lines, tuples of block positions.")
                     .define("icebergLines", "5964,164,6879;5826,167,6906]5807,167,6924;5840,167,7050]5865,167,7068;5983,169,7054]5968,173,6907;5859,170,7047]" +
                             "5894,173,6995;5894,173,6965]5894,173,6965;5923,173,6960]5925,173,6962;5928,173,6991]5897,174,7000;5932,174,6997]5892,185,6963;5930,166,6999]" +
                             "6011,168,7036;5987,168,6917]");
+
+            minigame_SurviveTheTide_spawnAreaP1 = COMMON_BUILDER.define("minigame_SurviveTheTide_spawnAreaP1", "5895, 133, 6954");
+            minigame_SurviveTheTide_spawnAreaP2 = COMMON_BUILDER.define("minigame_SurviveTheTide_spawnAreaP2", "5928, 133, 6989");
 
             minigame_SurviveTheTide_respawnPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_respawnPosition", "5780, 141, 6955");
             minigame_SurviveTheTide_spectatorPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_spectatorPosition", "5780, 141, 6955");
@@ -82,6 +88,7 @@ public class ConfigLT {
             minimumPlayerCount = COMMON_BUILDER.defineInRange("minimumPlayerCount", 3, 1, 255);
             maximumPlayerCount = COMMON_BUILDER.defineInRange("maximumPlayerCount", 16, 2, 255);
 
+            phase0Length = COMMON_BUILDER.comment("Time in ticks pre game phase will last").defineInRange("phase0Length", 20*30, 1, Integer.MAX_VALUE);
             phase1Length = COMMON_BUILDER.comment("Time in ticks first game phase will last").defineInRange("phase1Length", 20*60*2, 1, Integer.MAX_VALUE);
             phase2Length = COMMON_BUILDER.comment("Time in ticks second game phase will last").defineInRange("phase2Length", 20*60*6, 1, Integer.MAX_VALUE);
             phase3Length = COMMON_BUILDER.comment("Time in ticks third game phase will last").defineInRange("phase3Length", 20*60*4, 1, Integer.MAX_VALUE);
@@ -196,6 +203,9 @@ public class ConfigLT {
 
     public static BlockPos minigame_SurviveTheTide_spectatorPosition = new BlockPos(5780, 141, 6955);
 
+    public static BlockPos minigame_SurviveTheTide_spawnAreaP1 = BlockPos.ZERO;
+    public static BlockPos minigame_SurviveTheTide_spawnAreaP2 = BlockPos.ZERO;
+
     public static List<IcebergLine> minigame_SurviveTheTide_icebergLines = Lists.newArrayList();
 
     public static void onLoad(final ModConfig.Loading configEvent) {
@@ -203,6 +213,9 @@ public class ConfigLT {
         minigame_SurviveTheTide_respawnPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_respawnPosition.get());
         minigame_SurviveTheTide_spectatorPosition = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_spectatorPosition.get());
         minigame_SurviveTheTide_icebergLines = getIcebergLinesFromString(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.icebergLines.get());
+        minigame_SurviveTheTide_spawnAreaP1 = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_spawnAreaP1.get());
+        minigame_SurviveTheTide_spawnAreaP2 = stringToBlockPos(ConfigLT.MINIGAME_SURVIVE_THE_TIDE.minigame_SurviveTheTide_spawnAreaP2.get());
+
         //for (BlockPos pos : minigame_SurviveTheTide_playerPositions) System.out.println("RESULT: " + pos);
     }
 
@@ -212,6 +225,15 @@ public class ConfigLT {
 
     public static String blockPosString(BlockPos pos) {
         return pos.getX() + "," + pos.getY() + "," + pos.getZ();
+    }
+
+    public static String blockPositionsString(BlockPos[] pos) {
+        String result = "";
+        for (BlockPos p : pos) {
+            result = result.concat(blockPosString(p) + ";");
+        }
+
+        return result;
     }
 
     public static String icebergLineString(BlockPos start, BlockPos end) {

@@ -1,21 +1,24 @@
 package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.*;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.tropicraft.core.common.donations.FireworkUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.block.IWaterLoggable;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -46,7 +49,10 @@ import weather2.MinigameWeatherInstanceServer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Random;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Definition implementation for the Island Royale minigame.
@@ -64,7 +70,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
     private MinigameWeatherInstanceServer minigameWeatherInstance;
 
-    private MinigamePhase phase = MinigamePhase.PHASE1;
+    private MinigamePhase phase = MinigamePhase.PHASE0;
 
     private long minigameTime = 0;
     private long phaseTime = 0;
@@ -77,10 +83,14 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     private MinecraftServer server;
 
     private boolean minigameEnded;
-    private int minigameEndedTimer;
+    private int minigameEndedTimer = 0;
     private UUID winningPlayer;
+    private ITextComponent winningPlayerName;
+
+    private Random rand = new Random();
 
     public enum MinigamePhase {
+        PHASE0,
         PHASE1,
         PHASE2,
         PHASE3,
@@ -161,24 +171,48 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     @Override
     public void worldUpdate(World world, IMinigameInstance instance) {
         if (world.getDimension().getType() == getDimension()) {
-            this.checkForGameEndCondition(instance);
+            this.checkForGameEndCondition(instance, world);
 
             minigameTime++;
             phaseTime++;
 
             this.processWaterLevel(world);
 
-            if (phase == MinigamePhase.PHASE1) {
+            if (phase == MinigamePhase.PHASE0) {
+                if (phaseTime == 20 * 7) {
+                    this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO2).applyTextStyle(TextFormatting.GRAY));
+                } else if (phaseTime == 20 * 14) {
+                    this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO3).applyTextStyle(TextFormatting.GRAY));
+                } else if (phaseTime == 20 * 21) {
+                    this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO4).applyTextStyle(TextFormatting.GRAY));
+                } else if (phaseTime == 20 * 28) {
+                    this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO5).applyTextStyle(TextFormatting.GRAY));
+                }
+
+                if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase0Length.get()) {
+                    nextPhase();
+
+                    BlockPos spawnStart = ConfigLT.minigame_SurviveTheTide_spawnAreaP1;
+                    BlockPos spawnEnd = ConfigLT.minigame_SurviveTheTide_spawnAreaP2;
+
+                    // Destroy all fences blocking players from getting out of spawn area for phase 0
+                    for (BlockPos p : BlockPos.getAllInBoxMutable(spawnStart, spawnEnd)) {
+                        if (world.getBlockState(p).getBlock() instanceof FenceBlock) {
+                            world.setBlockState(p, Blocks.AIR.getDefaultState(), 2);
+                        }
+                    }
+
+                    int minutes = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get() / 20 / 60;
+                    this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW));
+
+                    // So players can drop down without fall damage
+                    this.actionAllParticipants(instance, (p) -> p.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 10 * 20)));
+                }
+            } else if (phase == MinigamePhase.PHASE1) {
                 if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
                     nextPhase();
 
-                    for (UUID uuid : instance.getAllPlayerUUIDs()) {
-                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-                        if (player != null) {
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED).applyTextStyle(TextFormatting.RED), ChatType.CHAT);
-                        }
-                    }
+                    this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED).applyTextStyle(TextFormatting.RED));
                 }
             } else if (phase == MinigamePhase.PHASE2) {
                 if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase2Length.get()) {
@@ -200,6 +234,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
     @Override
     public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
+        BlockPos fireworkPos = player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition());
+        FireworkUtil.spawnFirework(fireworkPos, player.world, FireworkUtil.Palette.ISLAND_ROYALE.getPalette());
+
         if (!instance.getSpectators().contains(player.getUniqueID())) {
             instance.removeParticipant(player);
             instance.addSpectator(player);
@@ -207,16 +244,41 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
             player.setGameType(GameType.SPECTATOR);
         }
 
+        if (instance.getParticipants().size() == 2) {
+            Iterator<UUID> it = instance.getParticipants().iterator();
+
+            UUID p1id = it.next();
+            UUID p2id = it.next();
+
+            ServerPlayerEntity p1 = this.server.getPlayerList().getPlayerByUUID(p1id);
+            ServerPlayerEntity p2 = this.server.getPlayerList().getPlayerByUUID(p2id);
+
+            if (p1 != null && p2 != null) {
+                ITextComponent p1text = p1.getDisplayName().deepCopy().applyTextStyle(TextFormatting.AQUA);
+                ITextComponent p2text = p2.getDisplayName().deepCopy().applyTextStyle(TextFormatting.AQUA);
+
+                this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_DOWN_TO_TWO, p1text, p2text).applyTextStyle(TextFormatting.GOLD));
+            }
+        }
+
         if (instance.getParticipants().size() == 1) {
             this.minigameEnded = true;
 
             this.winningPlayer = instance.getParticipants().iterator().next();
+            this.winningPlayerName = this.server.getPlayerList().getPlayerByUUID(this.winningPlayer).getDisplayName().deepCopy();
         }
     }
 
     @Override
     public void onPlayerHurt(LivingHurtEvent event, IMinigameInstance instance) {
-        if (event.getSource().getTrueSource() instanceof PlayerEntity && this.phase == MinigamePhase.PHASE1) {
+        if (event.getSource().getTrueSource() instanceof PlayerEntity && isSafePhase(this.phase)) {
+            event.setCanceled(true);
+        }
+    }
+
+    @Override
+    public void onPlayerAttackEntity(AttackEntityEvent event, IMinigameInstance instance) {
+        if (event.getTarget() instanceof PlayerEntity && isSafePhase(this.phase)) {
             event.setCanceled(true);
         }
     }
@@ -239,7 +301,7 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         this.minigameEndedTimer = 0;
         this.winningPlayer = null;
         minigameWeatherInstance.reset();
-        phase = MinigamePhase.PHASE1;
+        phase = MinigamePhase.PHASE0;
         phaseTime = 0;
     }
 
@@ -257,20 +319,12 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     @Override
     public void onStart(CommandSource commandSource, IMinigameInstance instance) {
         minigameTime = 0;
+        minigameEndedTimer = 0;
         ServerWorld world = this.server.getWorld(this.getDimension());
-        waterLevel = world.getSeaLevel();
-        phase = MinigamePhase.PHASE1;
+        waterLevel = 120;
+        phase = MinigamePhase.PHASE0;
 
-        for (UUID uuid : instance.getAllPlayerUUIDs()) {
-            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
-
-            if (player != null) {
-                int minutes = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get() / 20 / 60;
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_START).applyTextStyle(TextFormatting.GRAY), ChatType.CHAT);
-                player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW), ChatType.CHAT);
-            }
-        }
-
+        this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO1).applyTextStyle(TextFormatting.GRAY));
         minigameWeatherInstance.setMinigameActive(true);
     }
 
@@ -291,7 +345,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     }
 
     public void nextPhase() {
-        if (phase == MinigamePhase.PHASE1) {
+        if (phase == MinigamePhase.PHASE0) {
+            phase = MinigamePhase.PHASE1;
+        } else if (phase == MinigamePhase.PHASE1) {
             phase = MinigamePhase.PHASE2;
         } else if (phase == MinigamePhase.PHASE2) {
             phase = MinigamePhase.PHASE3;
@@ -324,28 +380,67 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
         }
     }
 
-    private void checkForGameEndCondition(IMinigameInstance instance) {
+    private void messageAllPlayers(IMinigameInstance instance, ITextComponent text) {
+        this.actionAllPlayers(instance, (p) -> p.sendMessage(text));
+    }
+
+    private void actionAllPlayers(IMinigameInstance instance, Consumer<ServerPlayerEntity> action) {
+        for (UUID uuid : instance.getAllPlayerUUIDs()) {
+            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+            if (player != null) {
+                action.accept(player);
+            }
+        }
+    }
+
+    private void actionAllParticipants(IMinigameInstance instance, Consumer<ServerPlayerEntity> action) {
+        for (UUID uuid : instance.getParticipants()) {
+            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+            if (player != null) {
+                action.accept(player);
+            }
+        }
+    }
+
+    public static boolean isSafePhase(MinigamePhase phase) {
+        return phase == MinigamePhase.PHASE0 || phase == MinigamePhase.PHASE1;
+    }
+
+    private void checkForGameEndCondition(IMinigameInstance instance, World world) {
         if (this.minigameEnded) {
-            if (this.minigameEndedTimer == 0) {
+            if (this.minigameEndedTimer % 60 == 0) {
                 ServerPlayerEntity winning = this.server.getPlayerList().getPlayerByUUID(this.winningPlayer);
 
                 if (winning != null) {
-                    for (UUID uuid : instance.getAllPlayerUUIDs()) {
-                        ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+                    int xOffset = (7 + this.rand.nextInt(5)) * (this.rand.nextBoolean() ? 1 : -1);
+                    int zOffset =  (7 + this.rand.nextInt(5)) * (this.rand.nextBoolean() ? 1 : -1);
 
-                        if (player != null) {
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH, winning.getDisplayName(), ChatType.CHAT));
-                            player.sendMessage(new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH), ChatType.CHAT);
-                        }
-                    }
+                    int posX = MathHelper.floor(winning.posX) + xOffset;
+                    int posZ = MathHelper.floor(winning.posZ) + zOffset;
+
+                    int posY = world.getHeight(Type.MOTION_BLOCKING, posX, posZ);
+
+                    ((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world, posX, posY, posZ, true));
                 }
             }
 
-            this.minigameEndedTimer++;
-
-            if (this.minigameEndedTimer >= 200) {
+            if (this.minigameEndedTimer == 0) {
+                this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH1, this.winningPlayerName).applyTextStyle(TextFormatting.GRAY));
+            } else if (this.minigameEndedTimer == 20 * 7){
+                this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH2, this.winningPlayerName).applyTextStyle(TextFormatting.GRAY));
+            } else if (this.minigameEndedTimer == 20 * 14){
+                this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH3, this.winningPlayerName).applyTextStyle(TextFormatting.GRAY));
+            } else if (this.minigameEndedTimer == 20 * 21){
+                this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH4, this.winningPlayerName).applyTextStyle(TextFormatting.GRAY));
+            } else if (this.minigameEndedTimer == 20 * 28) {
+                this.messageAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.MINIGAME_FINISH).applyTextStyle(TextFormatting.GOLD));
+            } else if (this.minigameEndedTimer == 20 * 38) {
                 MinigameManager.getInstance().finishCurrentMinigame();
             }
+
+            this.minigameEndedTimer++;
         }
     }
 

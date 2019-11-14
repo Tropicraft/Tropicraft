@@ -318,6 +318,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(TropicraftLangKeys.COMMAND_STOPPED_MINIGAME, "You have stopped the %s minigame.");
         add(TropicraftLangKeys.COMMAND_FINISHED_MINIGAME, "The minigame %s has finished. If you were inside the minigame, you have been teleported back to your original position.");
         add(TropicraftLangKeys.COMMAND_MINIGAME_STOPPED_POLLING, "An operator has stopped polling the minigame %s.");
+        add(TropicraftLangKeys.COMMAND_STOP_POLL, "You have successfully stopped the poll.");
         
         add(TropicraftLangKeys.COMMAND_RESET_DONATION, "Resetting donation data.");
         add(TropicraftLangKeys.COMMAND_RESET_LAST_DONATION, "Reset last seen donation ID to %d.");
@@ -325,17 +326,21 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         add(TropicraftLangKeys.DONATION, "%s donated %s!");
 
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH, "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains. The lone survivor of the island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH1, "Through the rising sea levels, the volatile and chaotic weather, and the struggle to survive, one player remains: %s.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH2, "\nThose who have fallen have been swept away by the encroaching tides that engulf countless landmasses in this dire future.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH3, "\nThe lone survivor of this island, %s, has won - but at what cost? The world is not what it once was, and they must survive in this new apocalyptic land.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_FINISH4, "\nWhat would you do different next time? Together, we could stop this from becoming our future.");
+
         add(TropicraftLangKeys.MINIGAME_FINISH, "The minigame will end in 10 seconds...");
-        add(TropicraftLangKeys.SURVIVE_THE_TIDE_START, "The year is... 2050. Human caused climate change has gone unmitigated and the human population was forced to flee to higher ground. " +
-                "Fortunately for you, you live on an island with mountains nearby. The same cannot be said for the millions on the coastlines. Your task, should you choose to accept " +
-                "it, which you have to because of climate change, is to reach the last remaining high places and ride out the storm. Oh right, did I not mention the severe storms " +
-                "that happen sporadically and frequently these days because of the instability in the climate? Well, now you know. Work together or work against each other to reach the " +
-                "top, your true enemy is the rising sea currents. Just remember... Your resources are as limited as your time. Someone else may have the tool or food you need to survive. " +
-                "What kind of person will you be when the world is falling apart?\n\n" +
-                "Let's see!");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO1, "The year...2050. Human-caused climate change has gone unmitigated and the human population has been forced to flee to higher ground.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO2, "\nYour task, should you choose to accept it, which you have to because of climate change, is to survive the rising tides, unpredictable weather, and other players.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO3, "\nBrave the conditions and defeat the others who are just trying to survive, like you. And remember...your resources are as limited as your time.");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO4, "\nSomeone else may have the tool or food you need to survive. What kind of person will you be when the world is falling apart?");
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_INTRO5, "\nLet's see!");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, "NOTE: PvP is disabled for %s minutes! Go fetch resources before time runs out.");
         add(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_ENABLED, "WARNING: PVP HAS BEEN ENABLED! Beware of other players...");
+
+        add(TropicraftLangKeys.SURVIVE_THE_TIDE_DOWN_TO_TWO, "IT'S DOWN TO TWO PLAYERS! %s and %s are now head to head - who will triumph above these rising tides?");
     }
     
     private String getAutomaticName(Supplier<? extends IForgeRegistryEntry<?>> sup) {
