@@ -237,7 +237,9 @@ public class SceneEnhancer implements Runnable {
 			throwable.printStackTrace();
 		}*/
 
-		if (client.world != null && client.player != null && client.world.getDimension().getType() == DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).get()) {
+		if (client.world != null && client.player != null &&
+		        // Make sure we're in STT, TODO make this more efficient
+		        DimensionManager.getRegistry().getValue(TropicraftWorldUtils.SURVIVE_THE_TIDE_ID).map(type -> client.world.getDimension().getType() == type).orElse(Boolean.FALSE)) {
 			profileSurroundings();
 			tryAmbientSounds();
 		}
@@ -979,12 +981,7 @@ public class SceneEnhancer implements Runnable {
 							continue;
 
 						//block above topmost ground
-						if (canPrecipitateAt(world, pos.up())/*world.isRainingAt(pos)*/) {
-
-							//fix for splash spawning invisibly 1 block underwater
-									/*if (world.getBlockState(pos).getMaterial() == Material.WATER) {
-										pos = pos.add(0,1,0);
-									}*/
+						if (canPrecipitateAt(world, pos.up()) && world.getBlockState(pos).getMaterial() != Material.WATER) {
 
 							world.addParticle(ParticleTypes.SMOKE, pos.getX() + rand.nextFloat(), pos.getY() + 0.01D + maxY, pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 							world.addParticle(ParticleTypes.FLAME, pos.getX() + rand.nextFloat(), pos.getY() + 0.01D + maxY, pos.getZ() + rand.nextFloat(), 0.0D, 0.0D, 0.0D);
@@ -2146,8 +2143,14 @@ public class SceneEnhancer implements Runnable {
     		float targetStart = 0F;
 			float targetEnd = 0F;
 
-			if (ltOverride) {
+			boolean ltOverrideAdjustment = true;
+
+			if (ltOverrideAdjustment) {
 				targetEnd = 150;
+
+				//stop flicker, screw it use static sun brightness
+				sunBrightness = 0.7F;
+
 				stormFogRed = stormFogRedOrig + (-(stormFogRedOrig - (0.7F * sunBrightness)) * adjustAmountSmooth);
 				stormFogGreen = stormFogGreenOrig + (-(stormFogGreenOrig - (0.3F * sunBrightness)) * adjustAmountSmooth);
 				stormFogBlue = stormFogBlueOrig + (-(stormFogBlueOrig - (0.15F * sunBrightness)) * adjustAmountSmooth);

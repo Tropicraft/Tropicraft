@@ -50,9 +50,12 @@ public class DonationTileEntity extends TileEntity implements ITickableTileEntit
 	    TickerDonation.removeCallback(this);
 	}
 	
+    @SuppressWarnings("deprecation")
     public void triggerDonation() {
-        queued++;
-        markDirty();
+        if (world.isBlockLoaded(getPos())) {
+            queued++;
+            markDirty();
+        }
     }
 
     @Override

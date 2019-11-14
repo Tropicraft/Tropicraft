@@ -173,7 +173,7 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.WATER_BARRIER);
         addBlockWithTooltip(TropicraftBlocks.DONATION, "Donation Alert Spawner", "Spawns fireworks when a donation is received!");
-        addBlock(TropicraftBlocks.BOUY);
+        addBlock(TropicraftBlocks.BUOY);
         Arrays.stream(TrashType.values()).forEach(this::addBlock);
         
         // ITEMS
