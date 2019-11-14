@@ -70,17 +70,17 @@ public class ConfigLT {
             COMMON_BUILDER.comment("Survive The Tide settings").push("survive_the_tide");
 
             minigame_SurviveTheTide_playerPositions = COMMON_BUILDER.comment("List of spawn positions for players, number of entries must match maximumPlayerCount config value, separate each position by ; and each x y and z with , example: 5780, 141, 6955; 5780, 141, 6955")
-                    .define("minigame_SurviveTheTide_playerPositions", "5903,123,6970;5903,123,6974;5903,123,6978;5906,123,6981;" +
-                            "5910,123,6981;5914,123,6981;5918,123,6981;5921,123,6978;5921,123,6974;5921,123,6970;5921,123,6966;5918,123,6963;" +
-                            "5914,123,6963;5910,123,6963;5906,123,6963;5903,123,6966;");
+                    .define("minigame_SurviveTheTide_playerPositions", "5906,133,6962;5910,133,6961;5914,133,6961;5918,133,6962;5922,133,6966;" +
+                            "5923,133,6970;5923,133,6974;5922,133,6978;5918,133,6982;5914,133,6983;5910,133,6983;5906,133,6982;5902,133,6978;5901,133,6974;" +
+                            "5901,133,6970;5902,133,6966;");
 
             icebergLines = COMMON_BUILDER.comment("List of iceberg lines, tuples of block positions.")
                     .define("icebergLines", "5964,164,6879;5826,167,6906]5807,167,6924;5840,167,7050]5865,167,7068;5983,169,7054]5968,173,6907;5859,170,7047]" +
                             "5894,173,6995;5894,173,6965]5894,173,6965;5923,173,6960]5925,173,6962;5928,173,6991]5897,174,7000;5932,174,6997]5892,185,6963;5930,166,6999]" +
                             "6011,168,7036;5987,168,6917]");
 
-            minigame_SurviveTheTide_spawnAreaP1 = COMMON_BUILDER.define("minigame_SurviveTheTide_spawnAreaP1", "5923, 123, 6961");
-            minigame_SurviveTheTide_spawnAreaP2 = COMMON_BUILDER.define("minigame_SurviveTheTide_spawnAreaP2", "5901, 123, 6983");
+            minigame_SurviveTheTide_spawnAreaP1 = COMMON_BUILDER.define("minigame_SurviveTheTide_spawnAreaP1", "5895, 133, 6954");
+            minigame_SurviveTheTide_spawnAreaP2 = COMMON_BUILDER.define("minigame_SurviveTheTide_spawnAreaP2", "5928, 133, 6989");
 
             minigame_SurviveTheTide_respawnPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_respawnPosition", "5780, 141, 6955");
             minigame_SurviveTheTide_spectatorPosition = COMMON_BUILDER.define("minigame_SurviveTheTide_spectatorPosition", "5780, 141, 6955");

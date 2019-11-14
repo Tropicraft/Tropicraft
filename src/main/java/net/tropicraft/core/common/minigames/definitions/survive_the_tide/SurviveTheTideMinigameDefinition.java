@@ -3,6 +3,8 @@ package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.text.*;
@@ -44,6 +46,7 @@ import weather2.MinigameWeatherInstanceServer;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Definition implementation for the Island Royale minigame.
@@ -192,6 +195,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
                     int minutes = ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get() / 20 / 60;
                     this.sendToAllPlayers(instance, new TranslationTextComponent(TropicraftLangKeys.SURVIVE_THE_TIDE_PVP_DISABLED, new StringTextComponent(String.valueOf(minutes))).applyTextStyle(TextFormatting.YELLOW));
+
+                    // So players can drop down without fall damage
+                    this.actionAllParticipants(instance, (p) -> p.addPotionEffect(new EffectInstance(Effects.SLOW_FALLING, 10 * 20)));
                 }
             } else if (phase == MinigamePhase.PHASE1) {
                 if (phaseTime >= ConfigLT.MINIGAME_SURVIVE_THE_TIDE.phase1Length.get()) {
@@ -342,6 +348,16 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
 
             if (player != null) {
                 player.sendMessage(text, ChatType.CHAT);
+            }
+        }
+    }
+
+    private void actionAllParticipants(IMinigameInstance instance, Consumer<ServerPlayerEntity> action) {
+        for (UUID uuid : instance.getParticipants()) {
+            ServerPlayerEntity player = this.server.getPlayerList().getPlayerByUUID(uuid);
+
+            if (player != null) {
+                action.accept(player);
             }
         }
     }
