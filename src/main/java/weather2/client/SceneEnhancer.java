@@ -2143,11 +2143,17 @@ public class SceneEnhancer implements Runnable {
     		float targetStart = 0F;
 			float targetEnd = 0F;
 
-			if (ltOverride) {
+			boolean ltOverrideAdjustment = true;
+
+			if (ltOverrideAdjustment) {
 				targetEnd = 150;
 				stormFogRed = stormFogRedOrig + (-(stormFogRedOrig - (0.7F * sunBrightness)) * adjustAmountSmooth);
 				stormFogGreen = stormFogGreenOrig + (-(stormFogGreenOrig - (0.3F * sunBrightness)) * adjustAmountSmooth);
 				stormFogBlue = stormFogBlueOrig + (-(stormFogBlueOrig - (0.15F * sunBrightness)) * adjustAmountSmooth);
+				//System.out.println(stormFogRed + " - " + stormFogGreen + " - " + stormFogBlue);
+				/*stormFogRed = 0.5F;
+				stormFogGreen = 0.21F;
+				stormFogBlue = 0.1F;*/
 				//stormFogDensity = 0.9F;
 			}
 

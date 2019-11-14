@@ -66,11 +66,12 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
                 tickSync(minigameDefinition);
             }
 
+            //heavyRainfallStart(phase);
             //heavyRainfallTime = 0;
             //acidRainTime = 0;
             //acidRainStart(phase);
-            //heatwaveTime = 0;
             //heatwaveStart(phase);
+            //heatwaveTime = 0;
 
             if (heavyRainfallTime > 0) {
                 heavyRainfallTime--;
