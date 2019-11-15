@@ -21,6 +21,8 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.item.minigame.AcidRepellentUmbrellaItem;
+import net.tropicraft.core.common.item.minigame.SuperSunscreenItem;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -132,6 +134,9 @@ public class TropicraftItems {
     public static final RegistryObject<Item> FAILGULL_SPAWN_EGG = register("failgull_spawn_egg", Builder.spawnEgg(TropicraftEntities.FAILGULL));
     public static final RegistryObject<Item> DOLPHIN_SPAWN_EGG = register("dolphin_spawn_egg", Builder.spawnEgg(TropicraftEntities.DOLPHIN));
     public static final RegistryObject<Item> SEAHORSE_SPAWN_EGG = register("seahorse_spawn_egg", Builder.spawnEgg(TropicraftEntities.SEAHORSE));
+
+    public static final RegistryObject<Item> SUPER_SUNSCREEN = register("super_sunscreen", () -> new SuperSunscreenItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
+    public static final RegistryObject<Item> ACID_REPELLENT_UMBRELLA = register("acid_repellent_umbrella", () -> new AcidRepellentUmbrellaItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
 
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);

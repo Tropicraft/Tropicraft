@@ -257,6 +257,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(item -> addItemWithTooltip(item, "Music Disc", item.get().getType().getTooltip()));
 
+        addItem(TropicraftItems.SUPER_SUNSCREEN);
+        addItem(TropicraftItems.ACID_REPELLENT_UMBRELLA);
+
         // Spawn Eggs
         addItem(TropicraftItems.KOA_SPAWN_EGG, "Koa Headband");
         addItem(TropicraftItems.TROPICREEPER_SPAWN_EGG, "TropiCreeper Hat");

@@ -1,6 +1,9 @@
 package weather2;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -10,11 +13,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.tropicraft.core.common.config.ConfigLT;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.minigames.definitions.survive_the_tide.SurviveTheTideMinigameDefinition;
 import weather2.util.WeatherUtil;
 
 public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
-
     public MinigameWeatherInstanceServer() {
         super();
     }
@@ -110,15 +113,26 @@ public class MinigameWeatherInstanceServer extends MinigameWeatherInstance {
     @Override
     public void tickPlayer(PlayerEntity player) {
         if (player.isCreative()) return;
+
+        ItemStack offhand = player.getItemStackFromSlot(EquipmentSlotType.OFFHAND);
+
         if (acidRainActive()) {
             if (player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition()).getY() <= player.getPosition().getY()) {
                 if (player.world.getGameTime() % ConfigLT.MINIGAME_SURVIVE_THE_TIDE.acidRainDamageRate.get() == 0) {
-                    player.attackEntityFrom(DamageSource.GENERIC, ConfigLT.MINIGAME_SURVIVE_THE_TIDE.acidRainDamage.get());
+                    Item umbrella = TropicraftItems.ACID_REPELLENT_UMBRELLA.get();
+
+                    if (offhand.getItem() != umbrella) {
+                        player.attackEntityFrom(DamageSource.GENERIC, ConfigLT.MINIGAME_SURVIVE_THE_TIDE.acidRainDamage.get());
+                    }
                 }
             }
         } else if (heatwaveActive()) {
             if (player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition()).getY() <= player.getPosition().getY()) {
-                player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 5, 1, true, false, true));
+                Item sunscreen = TropicraftItems.SUPER_SUNSCREEN.get();
+
+                if (offhand.getItem() != sunscreen) {
+                    player.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 5, 1, true, false, true));
+                }
             }
         }
     }

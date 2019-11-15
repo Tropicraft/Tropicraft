@@ -290,6 +290,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);
 
+        generated(TropicraftItems.SUPER_SUNSCREEN);
+        generated(TropicraftItems.ACID_REPELLENT_UMBRELLA);
+
         // Spawn Eggs
         generated(TropicraftItems.KOA_SPAWN_EGG);
         generated(TropicraftItems.TROPICREEPER_SPAWN_EGG);

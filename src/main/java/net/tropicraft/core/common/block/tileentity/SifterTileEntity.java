@@ -219,7 +219,9 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
     }
 
     protected void syncInventory() {
-        TropicraftPackets.sendToDimension(new MessageSifterInventory(this), world.getDimension().getType());
+        if (!world.isRemote) {
+            TropicraftPackets.sendToDimension(new MessageSifterInventory(this), world.getDimension().getType());
+        }
     }
 
     @Nullable
