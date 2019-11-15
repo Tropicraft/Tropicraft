@@ -1,9 +1,12 @@
 package net.tropicraft.core.common.minigames.definitions.survive_the_tide;
 
 import net.minecraft.block.*;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
@@ -236,6 +239,9 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
         BlockPos fireworkPos = player.world.getHeight(Heightmap.Type.MOTION_BLOCKING, player.getPosition());
         FireworkUtil.spawnFirework(fireworkPos, player.world, FireworkUtil.Palette.ISLAND_ROYALE.getPalette());
+
+        destroyVanishingCursedItems(player.inventory);
+        player.inventory.dropAllItems();
 
         if (!instance.getSpectators().contains(player.getUniqueID())) {
             instance.removeParticipant(player);
@@ -590,5 +596,14 @@ public class SurviveTheTideMinigameDefinition implements IMinigameDefinition {
     private int calculateWaterChangeInterval(int targetLevel, int prevLevel, int phaseLength) {
         int waterLevelDiff = prevLevel - targetLevel;
         return phaseLength / waterLevelDiff;
+    }
+
+    private void destroyVanishingCursedItems(IInventory inventory) {
+        for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+            if (!itemstack.isEmpty() && EnchantmentHelper.hasVanishingCurse(itemstack)) {
+                inventory.removeStackFromSlot(i);
+            }
+        }
     }
 }
