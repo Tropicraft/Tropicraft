@@ -15,6 +15,7 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.IMinigameInstance;
+import net.tropicraft.core.common.minigames.MinigameManager;
 
 /**
  * Definition implementation for Signature Run minigame.
@@ -110,6 +111,10 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
             instance.addSpectator(player);
 
             player.setGameType(GameType.SPECTATOR);
+        }
+
+        if (instance.getParticipants().size() <= 0) {
+            MinigameManager.getInstance().finishCurrentMinigame();
         }
     }
 

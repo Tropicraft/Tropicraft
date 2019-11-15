@@ -8,6 +8,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.arguments.ResourceLocationArgument;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.common.minigames.IMinigameDefinition;
 import net.tropicraft.core.common.minigames.MinigameManager;
@@ -25,7 +26,13 @@ public class CommandPollMinigame {
 		              .requires(s -> s.hasPermissionLevel(2))
 			.executes(c -> {
 				ResourceLocation id = ResourceLocationArgument.getResourceLocation(c, "minigame_id");
-				return CommandMinigame.executeMinigameAction(() -> MinigameManager.getInstance().startPolling(id), c.getSource());
+				int result = CommandMinigame.executeMinigameAction(() -> MinigameManager.getInstance().startPolling(id), c.getSource());
+
+				if (result == 1 && c.getSource().getEntity() instanceof ServerPlayerEntity) {
+					CommandMinigame.executeMinigameAction(() -> MinigameManager.getInstance().registerFor((ServerPlayerEntity) c.getSource().getEntity()), c.getSource());
+				}
+
+				return result;
 		}))));
 	}
 }
