@@ -319,7 +319,14 @@ public class MinigameManager implements IMinigameManager
             }
         }
 
-        ITextComponent minigameName = new TranslationTextComponent(this.polling.getUnlocalizedName()).applyTextStyle(TextFormatting.AQUA);
+        ITextComponent playerName = player.getDisplayName().deepCopy().applyTextStyle(TextFormatting.GOLD);
+        ITextComponent minigameName = new TranslationTextComponent(this.polling.getUnlocalizedName()).applyTextStyle(TextFormatting.GREEN);
+
+        for (ServerPlayerEntity p : this.server.getPlayerList().getPlayers()) {
+            p.sendMessage(new TranslationTextComponent("%s has joined the %s minigame!", playerName, minigameName).applyTextStyle(TextFormatting.AQUA));
+        }
+
+        minigameName.applyTextStyle(TextFormatting.AQUA);
         ITextComponent msg = new TranslationTextComponent(TropicraftLangKeys.COMMAND_REGISTERED_FOR_MINIGAME, minigameName).applyTextStyle(TextFormatting.GREEN);
 
         return new ActionResult<>(ActionResultType.SUCCESS, msg);
