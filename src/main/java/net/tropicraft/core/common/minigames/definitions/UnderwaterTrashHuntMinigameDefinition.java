@@ -46,7 +46,9 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
     };
 
     private int maximumPlayerCount = 16;
-    private int minimumPlayerCount = 1;
+    private int minimumPlayerCount = 8;
+
+    private long minigameTime = 0;
 
     private MinecraftServer server;
 
@@ -105,6 +107,17 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
     }
 
     @Override
+    public void worldUpdate(World world, IMinigameInstance instance) {
+        if (world.getDimension().getType() == getDimension()) {
+            minigameTime++;
+
+            if (minigameTime >= 9600) {
+                MinigameManager.getInstance().finishCurrentMinigame();
+            }
+        }
+    }
+
+    @Override
     public void onPlayerDeath(ServerPlayerEntity player, IMinigameInstance instance) {
         if (!instance.getSpectators().contains(player.getUniqueID())) {
             instance.removeParticipant(player);
@@ -131,6 +144,8 @@ public class UnderwaterTrashHuntMinigameDefinition implements IMinigameDefinitio
 
     @Override
     public void onStart(CommandSource commandSource, IMinigameInstance instance) {
+        minigameTime = 0;
+
         Commands commands = this.server.getCommandManager();
 
         try {
