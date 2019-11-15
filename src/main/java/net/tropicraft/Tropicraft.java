@@ -1,6 +1,11 @@
 package net.tropicraft;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.types.templates.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -17,6 +22,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.ForgeConfig;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -25,6 +33,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -195,6 +204,9 @@ public class Tropicraft {
     private void setup(final FMLCommonSetupEvent event) {
         TropicraftPackets.init();
         TropicraftBiomes.addFeatures();
+        
+        ForgeConfig.CLIENT.alwaysSetupTerrainOffThread.set(true);
+        ((ForgeConfigSpec)ObfuscationReflectionHelper.getPrivateValue(ForgeConfig.class, null, "clientSpec")).save();
     }
     
     private void onServerStarting(final FMLServerStartingEvent event) {
