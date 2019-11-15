@@ -313,7 +313,7 @@ public class MinigameManager implements IMinigameManager
 
         this.registeredForMinigame.add(player.getUniqueID());
 
-        if (this.registeredForMinigame.size() >= this.polling.getMinimumParticipantCount()) {
+        if (this.registeredForMinigame.size() == this.polling.getMinimumParticipantCount()) {
             for (ServerPlayerEntity p : this.server.getPlayerList().getPlayers()) {
                 p.sendMessage(new TranslationTextComponent(TropicraftLangKeys.COMMAND_ENOUGH_PLAYERS).applyTextStyle(TextFormatting.AQUA));
             }
