@@ -91,6 +91,9 @@ public class Sounds {
     @SoundName("dolphin")
     public static SoundEvent DOLPHIN = null;
 
+    @SoundName("frogspit")
+    public static SoundEvent FROG_SPIT = null;
+
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     public static @interface SoundName {

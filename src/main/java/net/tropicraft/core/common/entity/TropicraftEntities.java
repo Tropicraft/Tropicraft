@@ -11,6 +11,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
+import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
@@ -19,6 +20,7 @@ import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
+import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
@@ -47,9 +49,27 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<FailgullEntity>> FAILGULL = register("failgull", TropicraftEntities::failgull);
     public static final RegistryObject<EntityType<TropicraftDolphinEntity>> DOLPHIN = register("dolphin", TropicraftEntities::dolphin);
     public static final RegistryObject<EntityType<SeahorseEntity>> SEAHORSE = register("seahorse", TropicraftEntities::seahorse);
+    public static final RegistryObject<EntityType<PoisonBlotEntity>> POISON_BLOT = register("poison_blot", TropicraftEntities::poisonBlot);
+    public static final RegistryObject<EntityType<TreeFrogEntity>> TREE_FROG = register("tree_frog", TropicraftEntities::treeFrog);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<TreeFrogEntity> treeFrog() {
+        return EntityType.Builder.create(TreeFrogEntity::new, EntityClassification.CREATURE)
+                .size(0.6F, 0.4F)
+                .setTrackingRange(80)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<PoisonBlotEntity> poisonBlot() {
+        return EntityType.Builder.<PoisonBlotEntity>create(PoisonBlotEntity::new, EntityClassification.MISC)
+                .size(0.25F, 0.25F)
+                .setTrackingRange(32)
+                .setUpdateInterval(1)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<SeahorseEntity> seahorse() {

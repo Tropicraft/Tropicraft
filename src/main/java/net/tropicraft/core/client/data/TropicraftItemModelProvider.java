@@ -1,7 +1,5 @@
 package net.tropicraft.core.client.data;
 
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.IItemProvider;
@@ -20,6 +18,8 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.FurnitureItem;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.function.Supplier;
 
 public class TropicraftItemModelProvider extends ItemModelProvider {
 
@@ -267,6 +267,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.FAILGULL_SPAWN_EGG);
         generated(TropicraftItems.DOLPHIN_SPAWN_EGG);
         generated(TropicraftItems.SEAHORSE_SPAWN_EGG);
+        generated(TropicraftItems.TREE_FROG_SPAWN_EGG);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {

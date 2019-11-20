@@ -1,9 +1,5 @@
 package net.tropicraft.core.client.data;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -12,31 +8,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.drinks.Drink;
-import net.tropicraft.core.common.entity.BambooItemFrame;
-import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
-import net.tropicraft.core.common.entity.neutral.EIHEntity;
-import net.tropicraft.core.common.entity.neutral.IguanaEntity;
-import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
-import net.tropicraft.core.common.entity.passive.FailgullEntity;
-import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
-import net.tropicraft.core.common.entity.placeable.ChairEntity;
-import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.entity.placeable.WallItemEntity;
-import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
-import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class TropicraftLangProvider extends LanguageProvider {
 
@@ -278,6 +261,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.FAILGULL_SPAWN_EGG);
         addItem(TropicraftItems.DOLPHIN_SPAWN_EGG);
         addItem(TropicraftItems.SEAHORSE_SPAWN_EGG);
+        addItem(TropicraftItems.TREE_FROG_SPAWN_EGG);
         
         // ENTITIES
         
@@ -298,6 +282,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.FAILGULL);
         addEntityType(TropicraftEntities.DOLPHIN);
         addEntityType(TropicraftEntities.SEAHORSE);
+        addEntityType(TropicraftEntities.TREE_FROG);
         
         // MISC
         
