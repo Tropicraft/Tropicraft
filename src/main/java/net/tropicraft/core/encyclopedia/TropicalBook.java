@@ -89,7 +89,7 @@ public class TropicalBook {
             }
             // FIXME Encyclopedia save data breaks if the client changes the server name
             // Needs to be moved to serverside storage
-            return Paths.get("encyclopedia-servers", server.serverName, fileName).toFile();
+            return Paths.get("encyclopedia-servers", server.serverName.replaceAll("[^A-Za-z0-9.\\- ]+", ""), fileName).toFile();
         }
         return new File(root, fileName);
     }
