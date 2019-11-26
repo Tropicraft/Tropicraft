@@ -124,7 +124,7 @@ public class Tropicraft
     
     @OnlyIn(Dist.CLIENT)
     private void setupClient(final FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(EntityKoaHunter.class, RenderKoaMan::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityKoaHunter.class, KoaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiCreeperEntity.class, TropiCreeperRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(IguanaEntity.class, IguanaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(UmbrellaEntity.class, UmbrellaRenderer::new);
@@ -132,9 +132,9 @@ public class Tropicraft
         RenderingRegistry.registerEntityRenderingHandler(BeachFloatEntity.class, BeachFloatRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiSkellyEntity.class, TropiSkellyRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(WallItemEntity.class, RenderWallItemEntity::new);
+        RenderingRegistry.registerEntityRenderingHandler(WallItemEntity.class, WallItemRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(BambooItemFrame.class, BambooItemFrameRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SeaTurtleEntity.class, RenderSeaTurtle::new);
+        RenderingRegistry.registerEntityRenderingHandler(SeaTurtleEntity.class, SeaTurtleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(MarlinEntity.class, MarlinRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(FailgullEntity.class, FailgullRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftDolphinEntity.class, TropicraftDolphinRenderer::new);

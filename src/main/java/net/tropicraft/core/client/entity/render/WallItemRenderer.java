@@ -12,9 +12,9 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import javax.annotation.Nullable;
 
 
-public class RenderWallItemEntity extends EntityRenderer<WallItemEntity> {
+public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
 
-	public RenderWallItemEntity(final EntityRendererManager entityRendererManager) {
+	public WallItemRenderer(final EntityRendererManager entityRendererManager) {
 		super(entityRendererManager);
 	}
 	

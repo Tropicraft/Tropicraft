@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.Model;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
-public class ModelKoaMan extends BipedModel<EntityKoaBase> {
+public class KoaModel extends BipedModel<EntityKoaBase> {
 	
 	private static class RendererModelCull extends RendererModel {
 		
@@ -43,7 +43,7 @@ public class ModelKoaMan extends BipedModel<EntityKoaBase> {
     public RendererModel leaf10;
     public RendererModel armbandL;
 
-    public ModelKoaMan() {
+    public KoaModel() {
         
         //textureWidth = 64;
         //textureHeight = 32;

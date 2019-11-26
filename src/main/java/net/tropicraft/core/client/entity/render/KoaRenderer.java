@@ -4,15 +4,15 @@ import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Constants;
-import net.tropicraft.core.client.entity.model.ModelKoaMan;
+import net.tropicraft.core.client.entity.model.KoaModel;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
-public class RenderKoaMan extends BipedRenderer<EntityKoaBase, ModelKoaMan>
+public class KoaRenderer extends BipedRenderer<EntityKoaBase, KoaModel>
 {
 
-    public RenderKoaMan(EntityRendererManager rendermanagerIn)
+    public KoaRenderer(EntityRendererManager rendermanagerIn)
     {
-        super(rendermanagerIn, new ModelKoaMan(), 0.5F);
+        super(rendermanagerIn, new KoaModel(), 0.5F);
         this.shadowOpaque = 0.5f;
     }
 	

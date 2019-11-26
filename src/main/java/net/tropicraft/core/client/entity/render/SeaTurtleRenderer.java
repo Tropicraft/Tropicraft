@@ -10,9 +10,9 @@ import net.tropicraft.core.common.entity.SeaTurtleEntity;
 
 import javax.annotation.Nullable;
 
-public class RenderSeaTurtle extends MobRenderer<SeaTurtleEntity, SeaTurtleModel> {
+public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleModel> {
 
-    public RenderSeaTurtle(EntityRendererManager renderManager) {
+    public SeaTurtleRenderer(EntityRendererManager renderManager) {
         super(renderManager, new SeaTurtleModel(), 0.7F);
         shadowSize = 0.5f;
 		shadowOpaque = 0.5f;
