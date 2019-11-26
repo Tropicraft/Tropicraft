@@ -1,9 +1,5 @@
 package net.tropicraft.core.client.data;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -22,6 +18,10 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class TropicraftLangProvider extends LanguageProvider {
 
@@ -264,6 +264,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.DOLPHIN_SPAWN_EGG);
         addItem(TropicraftItems.SEAHORSE_SPAWN_EGG);
         addItem(TropicraftItems.TREE_FROG_SPAWN_EGG);
+        addItem(TropicraftItems.SEA_URCHIN_SPAWN_EGG);
         
         // ENTITIES
         
@@ -285,6 +286,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.DOLPHIN);
         addEntityType(TropicraftEntities.SEAHORSE);
         addEntityType(TropicraftEntities.TREE_FROG);
+        addEntityType(TropicraftEntities.SEA_URCHIN);
+        addEntityType(TropicraftEntities.SEA_URCHIN_EGG_ENTITY, "Sea Urchin Egg");
         
         // BIOMES
         
