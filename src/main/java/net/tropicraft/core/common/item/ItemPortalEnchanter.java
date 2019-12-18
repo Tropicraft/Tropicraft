@@ -66,13 +66,18 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer entityplayer, EnumHand hand) {
-	    ItemStack itemstack = entityplayer.getHeldItem(hand);
+        ItemStack itemstack = entityplayer.getHeldItem(hand);
+
+        if (world.isRemote) {
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+        }
+
 	    boolean isDirectMode = false;
 	    if (itemstack.getTagCompound() != null) {
 	        isDirectMode = Util.getTagCompound(itemstack).hasKey("DirectMode") ? Util.getTagCompound(itemstack).getBoolean("DirectMode") : false;   
 	    }
 
-		if (!world.isRemote && (isDirectMode || entityplayer.capabilities.isCreativeMode)) {
+		if (isDirectMode || entityplayer.capabilities.isCreativeMode) {
 			TropicraftWorldUtils.teleportPlayer((EntityPlayerMP) entityplayer);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 		}
@@ -102,7 +107,6 @@ public class ItemPortalEnchanter extends ItemTropicraft {
 						found = true;
 						entityplayer.swingArm(EnumHand.MAIN_HAND);
 						(new TeleporterTropics(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(entityplayer.dimension))).buildTeleporterAt(x + searchX, y, z + searchZ, entityplayer);
-						//ModLoader.getMinecraftInstance().effectRenderer.addEffect(new EntitySplashFX(ModLoader.getMinecraftInstance().world, playerX, playerY, playerZ, 0D, 0D, 0D));
 						itemstack.damageItem(1, entityplayer);
 					}
 					pos = null;
