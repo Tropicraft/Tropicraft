@@ -1,12 +1,13 @@
 package net.tropicraft.core.common.entity.underdasea;
 
+import net.minecraft.util.IStringSerializable;
 import net.tropicraft.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public enum StarfishType {
+public enum StarfishType implements IStringSerializable {
 	/** The red knobbed starfish. */
 	RED("starfishRed", "Red Starfish", new String[] {
 		"starfish_red_0.png",
@@ -82,5 +83,10 @@ public enum StarfishType {
 		int type = new Random().nextInt(2);
 		if (type == 0) return StarfishType.RED;
 		else return StarfishType.ROYAL;
+	}
+
+	@Override
+	public String getName() {
+		return unlocalizedName;
 	}
 }

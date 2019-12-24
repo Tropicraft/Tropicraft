@@ -7,6 +7,9 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -27,9 +30,8 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	public static final float BABY_YOFFSET = 0.03125f;
 	public static final float ADULT_YOFFSET = 0.03125f;
 
-	/** The type of starfish. */
-	private StarfishType starfishType;
-	
+	private static final DataParameter<Byte> DATA_STARFISH_TYPE = EntityDataManager.createKey(StarfishEntity.class, DataSerializers.BYTE);
+
 	public StarfishEntity(final EntityType<? extends StarfishEntity> type, World world) {
 		super(type, world);
 		experienceValue = 5;
@@ -41,6 +43,12 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 		setStarfishType(StarfishType.values()[rand.nextInt(StarfishType.values().length)]);
 		return super.onInitialSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
 	}
+
+	@Override
+	public void registerData() {
+		super.registerData();
+		getDataManager().register(DATA_STARFISH_TYPE, (byte) 0);
+	}
 	
 	@Override
 	protected void registerAttributes() {
@@ -49,11 +57,11 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	}
 	
 	public StarfishType getStarfishType() {
-		return starfishType;
+		return StarfishType.values()[dataManager.get(DATA_STARFISH_TYPE)];
 	}
 	
 	public void setStarfishType(StarfishType starfishType) {
-		this.starfishType = starfishType;
+		dataManager.set(DATA_STARFISH_TYPE, (byte) starfishType.ordinal());
 	}
 	
 	@Override
@@ -65,23 +73,27 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	@Override
 	public void readAdditional(CompoundNBT nbt) {
 		super.readAdditional(nbt);
-		setStarfishType(StarfishType.values()[nbt.getByte("StarfishType")]);
+		if (nbt.contains("StarfishType")) {
+			setStarfishType(StarfishType.values()[nbt.getByte("StarfishType")]);
+		} else {
+			setStarfishType(StarfishType.RED);
+		}
 	}
 
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
-		buffer.writeByte(starfishType.ordinal());
+		buffer.writeByte(getStarfishType().ordinal());
 	}
 
 	@Override
 	public void readSpawnData(PacketBuffer additionalData) {
-		starfishType = StarfishType.values()[additionalData.readByte()];
+		setStarfishType(StarfishType.values()[additionalData.readByte()]);
 	}
 
 	@Override
 	public EggEntity createEgg() {
 		StarfishEggEntity entity = new StarfishEggEntity(TropicraftEntities.STARFISH_EGG.get(), world);
-		entity.setStarfishType(starfishType);
+		entity.setStarfishType(getStarfishType());
 		return entity;
 	}
 

@@ -8,17 +8,19 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.HandSide;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
 import net.tropicraft.core.common.entity.underdasea.StarfishType;
 
 import javax.annotation.Nullable;
 
-public class StarfishEggEntity extends EchinodermEggEntity {
+public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdditionalSpawnData {
 	private StarfishType starfishType;
 
 	public StarfishEggEntity(final EntityType<? extends StarfishEggEntity> type, World world) {
@@ -32,6 +34,16 @@ public class StarfishEggEntity extends EchinodermEggEntity {
 
 	public void setStarfishType(StarfishType starfishType) {
 		this.starfishType = starfishType;
+	}
+
+	@Override
+	public void writeSpawnData(PacketBuffer buffer) {
+		buffer.writeByte(starfishType.ordinal());
+	}
+
+	@Override
+	public void readSpawnData(PacketBuffer additionalData) {
+		starfishType = StarfishType.values()[additionalData.readByte()];
 	}
 
 	@Override

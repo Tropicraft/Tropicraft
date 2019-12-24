@@ -52,6 +52,7 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.BambooItemFrame;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -61,6 +62,7 @@ import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
+import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
@@ -102,6 +104,7 @@ public class Tropicraft
         // Registry objects
         TropicraftBlocks.BLOCKS.register(modBus);
         TropicraftItems.ITEMS.register(modBus);
+        MixerRecipes.addMixerRecipes();
         TropicraftTileEntityTypes.TILE_ENTITIES.register(modBus);
         TropicraftEntities.ENTITIES.register(modBus);
         TropicraftBiomes.BIOMES.register(modBus);
@@ -145,6 +148,7 @@ public class Tropicraft
         RenderingRegistry.registerEntityRenderingHandler(SeaUrchinEggEntity.class, EggRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(StarfishEntity.class, StarfishRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(StarfishEggEntity.class, EggRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(VMonkeyEntity.class, VMonkeyRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
