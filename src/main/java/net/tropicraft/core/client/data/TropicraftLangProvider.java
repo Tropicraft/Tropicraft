@@ -265,6 +265,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.SEAHORSE_SPAWN_EGG);
         addItem(TropicraftItems.TREE_FROG_SPAWN_EGG);
         addItem(TropicraftItems.SEA_URCHIN_SPAWN_EGG);
+        addItem(TropicraftItems.V_MONKEY_SPAWN_EGG);
         
         // ENTITIES
         
@@ -288,6 +289,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.TREE_FROG);
         addEntityType(TropicraftEntities.SEA_URCHIN);
         addEntityType(TropicraftEntities.SEA_URCHIN_EGG_ENTITY, "Sea Urchin Egg");
+        addEntityType(TropicraftEntities.STARFISH);
+        addEntityType(TropicraftEntities.STARFISH_EGG);
         
         // BIOMES
         
