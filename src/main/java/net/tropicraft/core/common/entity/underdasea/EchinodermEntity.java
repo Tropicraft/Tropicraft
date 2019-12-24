@@ -70,9 +70,8 @@ public abstract class EchinodermEntity extends WaterMobEntity {
         setEchinodermSize();
     }
 
-    public EchinodermEntity(final EntityType<? extends WaterMobEntity> type, final World world, final boolean isBaby) {
-        super(type, world);
-        setGrowingAge(isBaby ? -GROWTH_TICKS : 0);
+    public void setBaby() {
+        setGrowingAge(-GROWTH_TICKS);
         setEchinodermSize();
     }
 
@@ -86,7 +85,7 @@ public abstract class EchinodermEntity extends WaterMobEntity {
 
     @Override
     public void readAdditional(CompoundNBT compound) {
-        super.read(compound);
+        super.readAdditional(compound);
         setGrowingAge(compound.getInt("Age"));
     }
 

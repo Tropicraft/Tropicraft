@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
+import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
@@ -22,10 +23,7 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
-import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.entity.underdasea.*;
 
 import java.util.function.Supplier;
 
@@ -55,9 +53,27 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<TreeFrogEntity>> TREE_FROG = register("tree_frog", TropicraftEntities::treeFrog);
     public static final RegistryObject<EntityType<SeaUrchinEntity>> SEA_URCHIN = register("sea_urchin", TropicraftEntities::seaUrchin);
     public static final RegistryObject<EntityType<SeaUrchinEggEntity>> SEA_URCHIN_EGG_ENTITY = register("sea_urchin_egg", TropicraftEntities::seaUrchinEgg);
+    public static final RegistryObject<EntityType<StarfishEntity>> STARFISH = register("starfish", TropicraftEntities::starfish);
+    public static final RegistryObject<EntityType<StarfishEggEntity>> STARFISH_EGG = register("starfish_egg", TropicraftEntities::starfishEgg);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<StarfishEggEntity> starfishEgg() {
+        return EntityType.Builder.create(StarfishEggEntity::new, EntityClassification.WATER_CREATURE)
+                .size(0.4F, 0.5F)
+                .setTrackingRange(64)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(false);
+    }
+
+    private static EntityType.Builder<StarfishEntity> starfish() {
+        return EntityType.Builder.create(StarfishEntity::new, EntityClassification.WATER_CREATURE)
+                .size(0.5F, 0.5F)
+                .setTrackingRange(64)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<SeaUrchinEggEntity> seaUrchinEgg() {

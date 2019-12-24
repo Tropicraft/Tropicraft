@@ -56,6 +56,7 @@ import net.tropicraft.core.common.entity.BambooItemFrame;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
+import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
@@ -68,10 +69,7 @@ import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
-import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.entity.underdasea.*;
 import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.network.TropicraftPackets;
@@ -145,6 +143,8 @@ public class Tropicraft
         RenderingRegistry.registerEntityRenderingHandler(PoisonBlotEntity.class, PoisonBlotRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(SeaUrchinEntity.class, SeaUrchinRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(SeaUrchinEggEntity.class, EggRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(StarfishEntity.class, StarfishRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(StarfishEggEntity.class, EggRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
