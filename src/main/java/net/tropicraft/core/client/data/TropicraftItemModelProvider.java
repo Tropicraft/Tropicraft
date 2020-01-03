@@ -269,6 +269,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.SEAHORSE_SPAWN_EGG);
         generated(TropicraftItems.TREE_FROG_SPAWN_EGG);
         generated(TropicraftItems.SEA_URCHIN_SPAWN_EGG);
+        generated(TropicraftItems.V_MONKEY_SPAWN_EGG);
+        generated(TropicraftItems.PIRANHA_SPAWN_EGG);
+        generated(TropicraftItems.SARDINE_SPAWN_EGG);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {
