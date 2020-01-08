@@ -59,6 +59,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
 import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
+import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
@@ -153,6 +154,7 @@ public class Tropicraft
         RenderingRegistry.registerEntityRenderingHandler(SardineEntity.class, SardineRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftTropicalFishEntity.class, TropicraftTropicalFishRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EagleRayEntity.class, EagleRayRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropiSpiderEntity.class, TropiSpiderRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());

@@ -3,6 +3,7 @@ package net.tropicraft.core.common.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.fish.TropicalFishEntity;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -11,7 +12,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
 import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
+import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
+import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
@@ -31,6 +34,9 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TropicraftEntities {
+
+    private static final float EGG_WIDTH = 0.4F;
+    private static final float EGG_HEIGHT = 0.5F;
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, Constants.MODID);
 
@@ -62,9 +68,27 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<PiranhaEntity>> PIRANHA = register("piranha", TropicraftEntities::piranha);
     public static final RegistryObject<EntityType<TropicraftTropicalFishEntity>> TROPICAL_FISH = register("tropical_fish", TropicraftEntities::tropicalFish);
     public static final RegistryObject<EntityType<EagleRayEntity>> EAGLE_RAY = register("eagle_ray", TropicraftEntities::eagleRay);
+    public static final RegistryObject<EntityType<TropiSpiderEntity>> TROPI_SPIDER = register("tropi_spider", TropicraftEntities::tropiSpider);
+    public static final RegistryObject<EntityType<TropiSpiderEggEntity>> TROPI_SPIDER_EGG = register("tropi_spider_egg", TropicraftEntities::tropiSpiderEgg);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<TropiSpiderEntity> tropiSpider() {
+        return EntityType.Builder.create(TropiSpiderEntity::new, EntityClassification.CREATURE)
+                .size(1.4F, 0.9F)
+                .setTrackingRange(64)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<TropiSpiderEggEntity> tropiSpiderEgg() {
+        return EntityType.Builder.create(TropiSpiderEggEntity::new, EntityClassification.CREATURE)
+                .size(EGG_WIDTH, EGG_HEIGHT)
+                .setTrackingRange(64)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(false);
     }
 
     private static EntityType.Builder<EagleRayEntity> eagleRay() {

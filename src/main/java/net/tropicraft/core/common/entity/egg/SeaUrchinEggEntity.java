@@ -25,24 +25,4 @@ public class SeaUrchinEggEntity extends EchinodermEggEntity {
 	public Entity onHatch() {
 		return new SeaUrchinEntity(TropicraftEntities.SEA_URCHIN.get(), world);
 	}
-
-	@Override
-	public Iterable<ItemStack> getArmorInventoryList() {
-		return ImmutableList.of();
-	}
-
-	@Override
-	public ItemStack getItemStackFromSlot(EquipmentSlotType slotIn) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
-
-	}
-
-	@Override
-	public HandSide getPrimaryHand() {
-		return HandSide.LEFT;
-	}
 }

@@ -146,6 +146,7 @@ public class TropicraftItems {
     public static final RegistryObject<Item> SARDINE_SPAWN_EGG = register("sardine_spawn_egg", Builder.spawnEgg(TropicraftEntities.RIVER_SARDINE));
     public static final RegistryObject<Item> TROPICAL_FISH_SPAWN_EGG = register("tropical_fish_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPICAL_FISH));
     public static final RegistryObject<Item> EAGLE_RAY_SPAWN_EGG = register("eagle_ray_spawn_egg", Builder.spawnEgg(TropicraftEntities.EAGLE_RAY));
+    public static final RegistryObject<Item> TROPI_SPIDER_SPAWN_EGG = register("tropi_spider_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPI_SPIDER));
 
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);
