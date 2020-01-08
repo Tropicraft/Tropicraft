@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -14,6 +15,13 @@ public class PiranhaEntity extends AbstractGroupFishEntity implements IAtlasFish
         super(type, world);
     }
 
+    @Override
+    protected void registerAttributes() {
+        super.registerAttributes();
+        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
+    }
+
+    @Override
     public int getMaxGroupSize() {
         return 20;
     }

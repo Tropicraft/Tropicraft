@@ -2,10 +2,9 @@ package net.tropicraft.core.common.item;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
@@ -54,6 +53,10 @@ public class Builder {
     
     public static Supplier<FurnitureItem<BeachFloatEntity>> beachFloat(final DyeColor color) {
         return furniture(TropicraftEntities.BEACH_FLOAT, color);
+    }
+
+    public static <T extends AbstractFishEntity> Supplier<Item> fishBucket(final Supplier<EntityType<T>> type) {
+        return item(p -> new TropicraftFishBucketItem<>(type, Fluids.WATER, getDefaultProperties().maxStackSize(1)));
     }
 
     public static Supplier<Item> shell() {

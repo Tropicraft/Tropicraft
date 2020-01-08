@@ -248,6 +248,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         // Misc
         addItem(TropicraftItems.TROPICAL_FERTILIZER);
+        addItem(TropicraftItems.TROPICAL_FISH_BUCKET);
+        addItem(TropicraftItems.PIRANHA_BUCKET);
+        addItem(TropicraftItems.SARDINE_BUCKET);
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(item -> addItemWithTooltip(item, "Music Disc", item.get().getType().getTooltip()));
@@ -268,6 +271,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.V_MONKEY_SPAWN_EGG);
         addItem(TropicraftItems.PIRANHA_SPAWN_EGG);
         addItem(TropicraftItems.SARDINE_SPAWN_EGG);
+        addItem(TropicraftItems.TROPICAL_FISH_SPAWN_EGG);
         
         // ENTITIES
         
@@ -295,6 +299,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.STARFISH_EGG);
         addEntityType(TropicraftEntities.PIRANHA);
         addEntityType(TropicraftEntities.RIVER_SARDINE);
+        addEntityType(TropicraftEntities.TROPICAL_FISH);
         
         // BIOMES
         
