@@ -272,6 +272,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.PIRANHA_SPAWN_EGG);
         addItem(TropicraftItems.SARDINE_SPAWN_EGG);
         addItem(TropicraftItems.TROPICAL_FISH_SPAWN_EGG);
+        addItem(TropicraftItems.EAGLE_RAY_SPAWN_EGG);
         
         // ENTITIES
         
@@ -300,6 +301,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.PIRANHA);
         addEntityType(TropicraftEntities.RIVER_SARDINE);
         addEntityType(TropicraftEntities.TROPICAL_FISH);
+        addEntityType(TropicraftEntities.EAGLE_RAY);
         
         // BIOMES
         

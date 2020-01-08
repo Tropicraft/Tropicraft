@@ -61,9 +61,18 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<SardineEntity>> RIVER_SARDINE = register("sardine", TropicraftEntities::riverSardine);
     public static final RegistryObject<EntityType<PiranhaEntity>> PIRANHA = register("piranha", TropicraftEntities::piranha);
     public static final RegistryObject<EntityType<TropicraftTropicalFishEntity>> TROPICAL_FISH = register("tropical_fish", TropicraftEntities::tropicalFish);
+    public static final RegistryObject<EntityType<EagleRayEntity>> EAGLE_RAY = register("eagle_ray", TropicraftEntities::eagleRay);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<EagleRayEntity> eagleRay() {
+        return EntityType.Builder.create(EagleRayEntity::new, EntityClassification.WATER_CREATURE)
+                .size(2F, 0.4F)
+                .setTrackingRange(64)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<TropicraftTropicalFishEntity> tropicalFish() {

@@ -152,6 +152,7 @@ public class Tropicraft
         RenderingRegistry.registerEntityRenderingHandler(PiranhaEntity.class, PiranhaRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(SardineEntity.class, SardineRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftTropicalFishEntity.class, TropicraftTropicalFishRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EagleRayEntity.class, EagleRayRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
