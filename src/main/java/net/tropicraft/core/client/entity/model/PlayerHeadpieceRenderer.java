@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
+import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
 public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
@@ -28,6 +29,7 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 		setRotationAngles(entity, f0, f1, f2, rotationYaw, f4, f5);
 
 		GlStateManager.pushMatrix();
+		TropicraftRenderUtils.bindTextureEntity("ashen/mask");
 
 		if (entity.isSneaking()) {
 			GlStateManager.translatef(0, 0.25f, 0);

@@ -21,7 +21,7 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 
 	@Override
 	protected ResourceLocation getEntityTexture(AshenMaskEntity entity) {
-		return TropicraftRenderUtils.bindTextureEntity("ashen/mask");
+		return TropicraftRenderUtils.getTextureEntity("ashen/mask");
 	}
 
 	@Override
