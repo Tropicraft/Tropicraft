@@ -58,6 +58,7 @@ import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
 import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
+import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
@@ -67,10 +68,7 @@ import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
-import net.tropicraft.core.common.entity.placeable.ChairEntity;
-import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.entity.placeable.*;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
 import net.tropicraft.core.common.item.IColoredItem;
@@ -155,6 +153,8 @@ public class Tropicraft
         RenderingRegistry.registerEntityRenderingHandler(TropicraftTropicalFishEntity.class, TropicraftTropicalFishRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EagleRayEntity.class, EagleRayRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropiSpiderEntity.class, TropiSpiderRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(AshenEntity.class, AshenRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(AshenMaskEntity.class, AshenMaskRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());

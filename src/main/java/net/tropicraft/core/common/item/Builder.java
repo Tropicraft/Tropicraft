@@ -71,8 +71,8 @@ public class Builder {
         return item(p -> new CocktailItem(drink, p), () -> getDefaultProperties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
     }
 
-    public static Supplier<Item> mask(final int maskIndex) {
-        return item(p -> new AshenMaskItem(ArmorMaterials.ASHEN_MASK, maskIndex, p));
+    public static Supplier<AshenMaskItem> mask(final AshenMasks mask) {
+        return item(p -> new AshenMaskItem(ArmorMaterials.ASHEN_MASK, mask, p));
     }
     
     public static Supplier<TropicalMusicDiscItem> musicDisc(RecordMusic type) {

@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tropicraft:item/ashen_mask_ashen_mask5"
+  }
+}

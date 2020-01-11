@@ -255,6 +255,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.PIRANHA_BUCKET);
         generated(TropicraftItems.SARDINE_BUCKET);
         generated(TropicraftItems.TROPICAL_FISH_BUCKET);
+        generated(TropicraftItems.DAGGER);
+        TropicraftItems.ASHEN_MASKS.values().forEach(this::generated);
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);
@@ -278,6 +280,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.TROPICAL_FISH_SPAWN_EGG);
         generated(TropicraftItems.EAGLE_RAY_SPAWN_EGG);
         generated(TropicraftItems.TROPI_SPIDER_SPAWN_EGG);
+        generated(TropicraftItems.ASHEN_SPAWN_EGG);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {

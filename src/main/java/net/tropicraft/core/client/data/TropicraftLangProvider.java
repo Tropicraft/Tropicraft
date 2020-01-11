@@ -251,6 +251,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.TROPICAL_FISH_BUCKET);
         addItem(TropicraftItems.PIRANHA_BUCKET);
         addItem(TropicraftItems.SARDINE_BUCKET);
+        addItem(TropicraftItems.DAGGER);
+        TropicraftItems.ASHEN_MASKS.values().forEach(item ->addItem(item, item.get().getMaskType().getName()));
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(item -> addItemWithTooltip(item, "Music Disc", item.get().getType().getTooltip()));
@@ -274,6 +276,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.TROPICAL_FISH_SPAWN_EGG);
         addItem(TropicraftItems.EAGLE_RAY_SPAWN_EGG);
         addItem(TropicraftItems.TROPI_SPIDER_SPAWN_EGG);
+        addItem(TropicraftItems.ASHEN_SPAWN_EGG, "Ashen Ash");
         
         // ENTITIES
         
@@ -305,6 +308,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.EAGLE_RAY, "Spotted Eagle Ray");
         addEntityType(TropicraftEntities.TROPI_SPIDER);
         addEntityType(TropicraftEntities.TROPI_SPIDER_EGG, "Tropics Spider Egg");
+        addEntityType(TropicraftEntities.ASHEN);
+        addEntityType(TropicraftEntities.ASHEN_MASK);
         
         // BIOMES
         

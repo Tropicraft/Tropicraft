@@ -11,6 +11,9 @@ public enum TropicraftToolTiers implements IItemTier {
     BAMBOO(1, 110, 1.2F, 1F, 6, () -> {
         return Ingredient.fromItems(Items.BAMBOO);
     }),
+    ZIRCON(2, 200, 4.5f, 1f, 14, () -> {
+        return Ingredient.fromItems(TropicraftItems.ZIRCON.get());
+    })
     ;
 
     private final int harvestLevel;

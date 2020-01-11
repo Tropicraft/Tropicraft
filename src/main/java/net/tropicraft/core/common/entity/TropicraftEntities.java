@@ -13,6 +13,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
 import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
 import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
+import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.entity.neutral.EIHEntity;
@@ -22,14 +23,12 @@ import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
-import net.tropicraft.core.common.entity.placeable.ChairEntity;
-import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.entity.placeable.*;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
 
+import java.rmi.registry.Registry;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -70,9 +69,27 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<EagleRayEntity>> EAGLE_RAY = register("eagle_ray", TropicraftEntities::eagleRay);
     public static final RegistryObject<EntityType<TropiSpiderEntity>> TROPI_SPIDER = register("tropi_spider", TropicraftEntities::tropiSpider);
     public static final RegistryObject<EntityType<TropiSpiderEggEntity>> TROPI_SPIDER_EGG = register("tropi_spider_egg", TropicraftEntities::tropiSpiderEgg);
+    public static final RegistryObject<EntityType<AshenMaskEntity>> ASHEN_MASK = register("ashen_mask", TropicraftEntities::ashenMask);
+    public static final RegistryObject<EntityType<AshenEntity>> ASHEN = register("ashen", TropicraftEntities::ashen);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<AshenMaskEntity> ashenMask() {
+        return EntityType.Builder.<AshenMaskEntity>create(AshenMaskEntity::new, EntityClassification.MISC)
+                .size(0.8F, 0.2F)
+                .setTrackingRange(32)
+                .setUpdateInterval(10)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<AshenEntity> ashen() {
+        return EntityType.Builder.create(AshenEntity::new, EntityClassification.CREATURE)
+                .size(0.5F, 1.3F)
+                .setTrackingRange(64)
+                .setUpdateInterval(1)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<TropiSpiderEntity> tropiSpider() {

@@ -21,11 +21,15 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import javax.annotation.Nullable;
 
 public class AshenMaskItem extends ArmorItem {
-    private final int maskIndex;
+    private final AshenMasks maskType;
 
-    public AshenMaskItem(IArmorMaterial armorMaterial, int maskIndex, Properties properties) {
+    public AshenMaskItem(IArmorMaterial armorMaterial, AshenMasks maskType, Properties properties) {
         super(armorMaterial, EquipmentSlotType.HEAD, properties);
-        this.maskIndex = maskIndex;
+        this.maskType = maskType;
+    }
+
+    public AshenMasks getMaskType() {
+        return maskType;
     }
 
     /**
@@ -67,6 +71,6 @@ public class AshenMaskItem extends ArmorItem {
     @Nullable
     @Override
     public BipedModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlotType armorSlot, final BipedModel model) {
-        return armorSlot == EquipmentSlotType.HEAD ? new PlayerHeadpieceRenderer(maskIndex) : null;
+        return armorSlot == EquipmentSlotType.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal()) : null;
     }
 }
