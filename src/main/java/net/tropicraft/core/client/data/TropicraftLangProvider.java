@@ -253,6 +253,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.SARDINE_BUCKET);
         addItem(TropicraftItems.DAGGER);
         TropicraftItems.ASHEN_MASKS.values().forEach(item ->addItem(item, item.get().getMaskType().getName()));
+        addItem(TropicraftItems.BLOW_GUN);
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(item -> addItemWithTooltip(item, "Music Disc", item.get().getType().getTooltip()));

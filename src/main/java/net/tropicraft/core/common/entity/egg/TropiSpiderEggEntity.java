@@ -12,6 +12,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 
 import javax.annotation.Nullable;
+import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +22,12 @@ public class TropiSpiderEggEntity extends EggEntity {
 
 	public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, World world) {
 		super(type, world);
+	}
+
+	@Override
+	protected void registerData() {
+		super.registerData();
+		dataManager.register(MOTHER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Nullable

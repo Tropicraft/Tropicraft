@@ -257,6 +257,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.TROPICAL_FISH_BUCKET);
         generated(TropicraftItems.DAGGER);
         TropicraftItems.ASHEN_MASKS.values().forEach(this::generated);
+        generated(TropicraftItems.BLOW_GUN);
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);

@@ -28,31 +28,27 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		if (ashen.maskToTrack == null) {
-			return false;
-		}
+		return !ashen.hasMask() && ashen.maskToTrack != null && ashen.maskToTrack.isAlive();
+	}
 
+	@Override
+	public void tick() {
 		if (panicTime > 0) {
 			panicTime--;
 
 			if (ashen.world.getGameTime() % 10 == 0) {
 				Vec3d vec3 = RandomPositionGenerator.findRandomTarget(ashen, 10, 7);
 
-				if (vec3 == null) {
-					return false;
-				} else {
+				if (vec3 != null) {
 					ashen.getNavigator().tryMoveToXYZ(vec3.x, vec3.y, vec3.z, speed);
-					return true;
 				}
 			}
-
 		} else {
 			if (ashen.getDistanceSq(ashen.maskToTrack) <= maskGrabDistance) {
 				if (ashen.maskToTrack.isAlive()/* && ashen.world.loadedEntityList.contains(ashen.maskToTrack)*/) {
 					ashen.pickupMask(ashen.maskToTrack);
 				} else {
 					ashen.maskToTrack = null;
-					return false;
 				}
 			} else {
 				if (ashen.world.getGameTime() % 40 == 0) {
@@ -60,8 +56,6 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
 				}
 			}
 		}
-
-		return this.shouldExecute() || !this.ashen.getNavigator().noPath();
 	}
 
 	@Override

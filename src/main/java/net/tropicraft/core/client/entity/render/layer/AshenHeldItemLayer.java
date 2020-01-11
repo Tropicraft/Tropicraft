@@ -30,11 +30,10 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
 
     @Override
     public void render(T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        final boolean flag = ashen.getPrimaryHand() == HandSide.RIGHT;
-        final ItemStack itemstack = flag ? ashen.getHeldItemOffhand() : ashen.getHeldItemMainhand();
-        final ItemStack itemstack1 = flag ? ashen.getHeldItemMainhand() : ashen.getHeldItemOffhand();
+        final ItemStack blowGunHand = ashen.getHeldItemMainhand();
+        final ItemStack daggerHand = ashen.getHeldItemOffhand();
 
-        if (!itemstack.isEmpty() || !itemstack1.isEmpty()) {
+        if (!blowGunHand.isEmpty() || !daggerHand.isEmpty()) {
             GlStateManager.pushMatrix();
 
             if (model.isChild) {
@@ -43,8 +42,8 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 GlStateManager.scalef(0.5F, 0.5F, 0.5F);
             }
 
-            renderHeldItem(ashen, itemstack1, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT);
-            renderHeldItem(ashen, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT);
+            renderHeldItem(ashen, daggerHand, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT);
+            renderHeldItem(ashen, blowGunHand, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT);
 
             GlStateManager.popMatrix();
         }
@@ -57,26 +56,28 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
 
         if (entity.getActionState() == AshenEntity.AshenState.HOSTILE) {
             float scale = 0.5F;
-//            GL11.glPushMatrix();
-//            model.leftArm.postRender(0.0625F);
-//            GL11.glTranslatef(-0.35F, -0.45F, -0.025F);
-//            GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-//            GL11.glScalef(scale, scale, scale);
-//            Minecraft.getInstance().getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false);
-//
-//            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            model.rightArm.postRender(0.0625F);
+            if (handSide == HandSide.LEFT) {
+                GL11.glPushMatrix();
+                model.leftArm.postRender(0.0625F);
+                GL11.glTranslatef(-0.375F, -0.35F, -0.125F);
+                GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(scale, scale, scale);
+                Minecraft.getInstance().getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false);
 
-            GL11.glTranslatef(0.4F, -0.30F, -0.145F);
-            GL11.glRotatef(130F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(5F, 0.0F, 0.0F, 1.0F);
+                GL11.glPopMatrix();
+            } else {
+                GL11.glPushMatrix();
+                model.rightArm.postRender(0.0625F);
 
-            GL11.glScalef(scale, scale, scale);
-            //TODO CHANGE TO BLOW GUN
-            Minecraft.getInstance().getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false);
-            GL11.glPopMatrix();
+                GL11.glTranslatef(0.3F, -0.30F, -0.045F);
+                GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(10F, 0.0F, 0.0F, 1.0F);
+
+                GL11.glScalef(scale, scale, scale);
+                Minecraft.getInstance().getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false);
+                GL11.glPopMatrix();
+            }
         }
     }
 

@@ -56,8 +56,8 @@ public class AshenMaskEntity extends Entity {
         nbt.putByte("MaskType", getMaskType());
     }
 
-    private void setMaskType(int type) {
-        dataManager.set(MASK_TYPE, (byte) type);
+    public void setMaskType(byte type) {
+        dataManager.set(MASK_TYPE, type);
     }
 
     public byte getMaskType() {
@@ -96,16 +96,6 @@ public class AshenMaskEntity extends Entity {
             if (isAlive() && !world.isRemote) {
                 remove();
                 markVelocityChanged();
-                PlayerEntity entityplayer = null;
-
-                if (par1DamageSource.getTrueSource() instanceof PlayerEntity) {
-                    entityplayer = (PlayerEntity)par1DamageSource.getTrueSource();
-                }
-
-                if (entityplayer != null && entityplayer.abilities.isCreativeMode) {
-                    return true;
-                }
-
                 dropItemStack();
             }
 

@@ -155,6 +155,9 @@ public class TropicraftItems {
     public static final RegistryObject<Item> DAGGER = register(
             "dagger", () -> new DaggerItem(TropicraftToolTiers.ZIRCON, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1)));
 
+    public static final RegistryObject<Item> BLOW_GUN = register(
+            "blow_gun", () -> new BlowGunItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1)));
+
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);
     }
