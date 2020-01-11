@@ -84,27 +84,8 @@ public class TropicraftItems {
     public static final RegistryObject<Item> WHITE_PEARL = register("white_pearl", Builder.item());
     public static final RegistryObject<Item> BLACK_PEARL = register("black_pearl", Builder.item());
     public static final RegistryObject<Item> SCALE = register("scale", Builder.item());
-//    public static final RegistryObject<Item> NIGEL_STACHE = register(
-//            "", () -> new NigelStacheItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
-//    public static final RegistryObject<Item> maskSquareZord = register("", Builder.mask(0));
-//    public static final RegistryObject<Item> maskHornMonkey = register("", Builder.mask(1));
-//    public static final RegistryObject<Item> maskOblongatron = register("", Builder.mask(2));
-//    public static final RegistryObject<Item> maskHeadinator = register("", Builder.mask(3));
-//    public static final RegistryObject<Item> maskSquareHorn = register("", Builder.mask(4));
-//    public static final RegistryObject<Item> maskScrewAttack = register("", Builder.mask(5));
-//    public static final RegistryObject<Item> maskTheBrain = register("", Builder.mask(6));
-//    public static final RegistryObject<Item> maskBatBoy = register("", Builder.mask(7));
-//    public static final RegistryObject<Item> mask1 = register("", Builder.mask(8));
-//    public static final RegistryObject<Item> mask2 = register("", Builder.mask(9));
-//    public static final RegistryObject<Item> mask3 = register("", Builder.mask(10));
-//    public static final RegistryObject<Item> mask4 = register("", Builder.mask(11));
-//    public static final RegistryObject<Item> mask5 = register("", Builder.mask(12));
-//
-//    @SuppressWarnings("unchecked")
-//    public static final RegistryObject<Item>[] ASHEN_MASKS = new RegistryObject[] {
-//            maskSquareZord, maskHornMonkey, maskOblongatron, maskHeadinator, maskSquareHorn, maskScrewAttack,
-//            maskTheBrain, maskBatBoy, mask1, mask2, mask3, mask4, mask5
-//    };
+    public static final RegistryObject<Item> NIGEL_STACHE = register(
+            "nigel_stache", () -> new NigelStacheItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
 
     public static final RegistryObject<Item> FRESH_MARLIN = register("fresh_marlin", Builder.food(Foods.FRESH_MARLIN));
     public static final RegistryObject<Item> SEARED_MARLIN = register("seared_marlin", Builder.food(Foods.SEARED_MARLIN));

@@ -257,6 +257,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.DAGGER);
         TropicraftItems.ASHEN_MASKS.values().forEach(item ->addItem(item, item.get().getMaskType().getName()));
         addItem(TropicraftItems.BLOW_GUN);
+        addItem(TropicraftItems.NIGEL_STACHE, "Nigel's Moustache");
         
         // Tools
         addItem(TropicraftItems.ZIRCON_AXE);

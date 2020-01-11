@@ -5,6 +5,7 @@ import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.tropicraft.core.common.TropicraftTags;
 
 public class ArmorMaterials {
     public static IArmorMaterial ASHEN_MASK = new AshenMask();
@@ -33,7 +34,7 @@ public class ArmorMaterials {
 
         @Override
         public Ingredient getRepairMaterial() {
-            return Ingredient.EMPTY;//TODO Ingredient.fromItems(TropicraftItems.ASHEN_MASKS);
+            return Ingredient.fromTag(TropicraftTags.Items.ASHEN_MASKS);
         }
 
         @Override
@@ -71,7 +72,7 @@ public class ArmorMaterials {
 
         @Override
         public Ingredient getRepairMaterial() {
-            return Ingredient.EMPTY; // TODO Ingredient.fromItems(TropicraftItems.NIGEL_STACHE);
+            return Ingredient.fromItems(TropicraftItems.NIGEL_STACHE.get());
         }
 
         @Override

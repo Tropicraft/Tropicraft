@@ -99,6 +99,8 @@ public class TropicraftTags {
 
         public static final Tag<Item> SHELLS = modTag("shells");
 
+        public static final Tag<Item> ASHEN_MASKS = modTag("ashen_masks");
+
         static Tag<Item> tag(String modid, String name) {
             return tag(ItemTags.Wrapper::new, modid, name);
         }

@@ -42,6 +42,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.*;
@@ -51,6 +52,7 @@ import net.tropicraft.core.registry.ItemRegistry;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class EntityKoaBase extends VillagerEntity {
 
@@ -101,7 +103,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public int druggedTime = 0;
 
-    private static final Set<Item> TEMPTATION_ITEMS = Sets.newHashSet(/* TODO TropicraftItems.NIGEL_STACHE.get() */);
+    private static final Set<RegistryObject<Item>> TEMPTATION_ITEMS = Sets.newHashSet(TropicraftItems.NIGEL_STACHE);
 
     private boolean isMating;
     private boolean isPlaying;

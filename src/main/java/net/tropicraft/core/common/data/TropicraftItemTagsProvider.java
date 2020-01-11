@@ -13,8 +13,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropicraftItemTagsProvider extends ItemTagsProvider {
@@ -55,6 +57,10 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         
         // Swords for chunk drops
         addItemsToTag(SWORDS, Items.WOODEN_SWORD.delegate, Items.STONE_SWORD.delegate, Items.IRON_SWORD.delegate, Items.GOLDEN_SWORD.delegate, Items.DIAMOND_SWORD.delegate);
+
+        for (RegistryObject<AshenMaskItem> item : TropicraftItems.ASHEN_MASKS.values()) {
+            addItemsToTag(ASHEN_MASKS, item);
+        }
         
         // Copy block tags
         copy(TropicraftTags.Blocks.SAND, SAND);

@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class EntityAITemptHelmet extends Goal
@@ -36,17 +37,15 @@ public class EntityAITemptHelmet extends Goal
     private int delayTemptCounter;
     /** True if this EntityAITempt task is running */
     private boolean isRunning;
-    private final Set<Item> temptItem;
+    private final Set<RegistryObject<Item>> temptItem;
     /** Whether the entity using this AI will be scared by the tempter's sudden movement. */
     private final boolean scaredByPlayerMovement;
 
-    public EntityAITemptHelmet(CreatureEntity temptedEntityIn, double speedIn, Item temptItemIn, boolean scaredByPlayerMovementIn)
-    {
+    public EntityAITemptHelmet(CreatureEntity temptedEntityIn, double speedIn, RegistryObject<Item> temptItemIn, boolean scaredByPlayerMovementIn) {
         this(temptedEntityIn, speedIn, scaredByPlayerMovementIn, Sets.newHashSet(temptItemIn));
     }
 
-    public EntityAITemptHelmet(CreatureEntity temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<Item> temptItemIn)
-    {
+    public EntityAITemptHelmet(CreatureEntity temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<RegistryObject<Item>> temptItemIn) {
         this.temptedEntity = temptedEntityIn;
         this.speed = speedIn;
         this.temptItem = temptItemIn;
@@ -90,9 +89,13 @@ public class EntityAITemptHelmet extends Goal
         }
     }
 
-    protected boolean isTempting(ItemStack stack)
-    {
-        return this.temptItem.contains(stack.getItem());
+    protected boolean isTempting(ItemStack stack) {
+        for (RegistryObject<Item> items : temptItem) {
+            if (items.isPresent() && items.get().getItem() == stack.getItem()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
