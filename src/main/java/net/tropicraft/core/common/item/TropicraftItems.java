@@ -25,6 +25,7 @@ import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 
+import java.rmi.registry.Registry;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ZIRCON = register("zircon_gem", Builder.item());
     public static final RegistryObject<Item> SHAKA = register("shaka_ingot", Builder.item());
     public static final RegistryObject<Item> MANGANESE = register("manganese_ingot", Builder.item());
+    public static final RegistryObject<Item> ZIRCONIUM = register("zirconium_gem", Builder.item());
     
     public static final Map<DyeColor, RegistryObject<FurnitureItem<UmbrellaEntity>>> UMBRELLAS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
             .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c)))));
@@ -157,6 +159,28 @@ public class TropicraftItems {
 
     public static final RegistryObject<Item> BLOW_GUN = register(
             "blow_gun", () -> new BlowGunItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1)));
+
+    // TODO add zirconium tools
+
+    public static final RegistryObject<Item> ZIRCON_HOE = register("zircon_hoe", Builder.hoe(TropicraftToolTiers.ZIRCON));
+    public static final RegistryObject<Item> ZIRCONIUM_HOE = register("zirconium_hoe", Builder.hoe(TropicraftToolTiers.ZIRCONIUM));
+    public static final RegistryObject<Item> EUDIALYTE_HOE = register("eudialyte_hoe", Builder.hoe(TropicraftToolTiers.EUDIALYTE));
+
+    public static final RegistryObject<Item> ZIRCON_AXE = register("zircon_axe", Builder.axe(TropicraftToolTiers.ZIRCON));
+    public static final RegistryObject<Item> ZIRCONIUM_AXE = register("zirconium_axe", Builder.axe(TropicraftToolTiers.ZIRCONIUM));
+    public static final RegistryObject<Item> EUDIALYTE_AXE = register("eudialyte_axe", Builder.axe(TropicraftToolTiers.EUDIALYTE));
+
+    public static final RegistryObject<Item> ZIRCON_PICKAXE = register("zircon_pickaxe", Builder.pickaxe(TropicraftToolTiers.ZIRCON));
+    public static final RegistryObject<Item> ZIRCONIUM_PICKAXE = register("zirconium_pickaxe", Builder.pickaxe(TropicraftToolTiers.ZIRCONIUM));
+    public static final RegistryObject<Item> EUDIALYTE_PICKAXE = register("eudialyte_pickaxe", Builder.pickaxe(TropicraftToolTiers.EUDIALYTE));
+
+    public static final RegistryObject<Item> ZIRCON_SHOVEL = register("zircon_shovel", Builder.shovel(TropicraftToolTiers.ZIRCON));
+    public static final RegistryObject<Item> ZIRCONIUM_SHOVEL = register("zirconium_shovel", Builder.shovel(TropicraftToolTiers.ZIRCONIUM));
+    public static final RegistryObject<Item> EUDIALYTE_SHOVEL = register("eudialyte_shovel", Builder.shovel(TropicraftToolTiers.EUDIALYTE));
+
+    public static final RegistryObject<Item> ZIRCON_SWORD = register("zircon_sword", Builder.sword(TropicraftToolTiers.ZIRCON));
+    public static final RegistryObject<Item> ZIRCONIUM_SWORD = register("zirconium_sword", Builder.sword(TropicraftToolTiers.ZIRCONIUM));
+    public static final RegistryObject<Item> EUDIALYTE_SWORD = register("eudialyte_sword", Builder.sword(TropicraftToolTiers.EUDIALYTE));
 
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);

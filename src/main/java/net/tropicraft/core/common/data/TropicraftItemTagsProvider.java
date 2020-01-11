@@ -39,7 +39,8 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         addItemsToTag(ZIRCON_GEM, TropicraftItems.ZIRCON);
         addItemsToTag(MANGANESE_INGOT, TropicraftItems.MANGANESE);
         addItemsToTag(SHAKA_INGOT, TropicraftItems.SHAKA);
-        appendToTag(Tags.Items.GEMS, AZURITE_GEM, EUDIALYTE_GEM, ZIRCON_GEM);
+        addItemsToTag(ZIRCONIUM_GEM, TropicraftItems.ZIRCONIUM);
+        appendToTag(Tags.Items.GEMS, AZURITE_GEM, EUDIALYTE_GEM, ZIRCON_GEM, ZIRCONIUM_GEM);
         appendToTag(Tags.Items.INGOTS, MANGANESE_INGOT, SHAKA_INGOT);
 
         // Add bamboo sticks to forge ore tag

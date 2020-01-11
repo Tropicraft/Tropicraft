@@ -55,6 +55,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         storage(AZURITE, AZURITE_BLOCK, consumer);
         storage(EUDIALYTE, EUDIALYTE_BLOCK, consumer);
         storage(ZIRCON, ZIRCON_BLOCK, consumer);
+        storage(ZIRCONIUM, ZIRCONIUM_BLOCK, consumer);
         storage(MANGANESE, MANGANESE_BLOCK, consumer);
         storage(SHAKA, SHAKA_BLOCK, consumer);
 

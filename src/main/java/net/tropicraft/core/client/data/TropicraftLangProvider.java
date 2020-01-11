@@ -170,6 +170,8 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.BAMBOO_FLOWER_POT);
         TropicraftBlocks.ALL_POTTED_PLANTS.forEach(this::addBlock);
+
+        addBlock(TropicraftBlocks.ZIRCONIUM_BLOCK);
         
         // ITEMS
         
@@ -177,6 +179,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.AZURITE);
         addItem(TropicraftItems.EUDIALYTE);
         addItem(TropicraftItems.ZIRCON);
+        addItem(TropicraftItems.ZIRCONIUM, "Zirconium");
         addItem(TropicraftItems.SHAKA);
         addItem(TropicraftItems.MANGANESE);
         
@@ -254,6 +257,23 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.DAGGER);
         TropicraftItems.ASHEN_MASKS.values().forEach(item ->addItem(item, item.get().getMaskType().getName()));
         addItem(TropicraftItems.BLOW_GUN);
+        
+        // Tools
+        addItem(TropicraftItems.ZIRCON_AXE);
+        addItem(TropicraftItems.ZIRCON_HOE);
+        addItem(TropicraftItems.ZIRCON_PICKAXE);
+        addItem(TropicraftItems.ZIRCON_SHOVEL);
+        addItem(TropicraftItems.ZIRCON_SWORD);
+        addItem(TropicraftItems.ZIRCONIUM_AXE);
+        addItem(TropicraftItems.ZIRCONIUM_HOE);
+        addItem(TropicraftItems.ZIRCONIUM_PICKAXE);
+        addItem(TropicraftItems.ZIRCONIUM_SHOVEL);
+        addItem(TropicraftItems.ZIRCONIUM_SWORD);
+        addItem(TropicraftItems.EUDIALYTE_AXE);
+        addItem(TropicraftItems.EUDIALYTE_HOE);
+        addItem(TropicraftItems.EUDIALYTE_PICKAXE);
+        addItem(TropicraftItems.EUDIALYTE_SHOVEL);
+        addItem(TropicraftItems.EUDIALYTE_SWORD);
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(item -> addItemWithTooltip(item, "Music Disc", item.get().getType().getTooltip()));

@@ -83,6 +83,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.AZURITE_BLOCK);
             dropsSelf(TropicraftBlocks.EUDIALYTE_BLOCK);
             dropsSelf(TropicraftBlocks.ZIRCON_BLOCK);
+            dropsSelf(TropicraftBlocks.ZIRCONIUM_BLOCK);
             dropsSelf(TropicraftBlocks.SHAKA_BLOCK);
             dropsSelf(TropicraftBlocks.MANGANESE_BLOCK);
             

@@ -83,7 +83,9 @@ public class TropicraftBlocks {
             "shaka_block", Builder.oreBlock(MaterialColor.BLUE));
     public static final RegistryObject<Block> ZIRCON_BLOCK = register(
             "zircon_block", Builder.oreBlock(MaterialColor.RED));
-    
+    public static final RegistryObject<Block> ZIRCONIUM_BLOCK = register(
+            "zirconium_block", Builder.oreBlock(MaterialColor.PINK));
+
     public static final Map<TropicraftFlower, RegistryObject<FlowerBlock>> FLOWERS = Arrays.<TropicraftFlower>stream(TropicraftFlower.values())
             .collect(Collectors.toMap(Function.identity(), f -> register(f.getId(), Builder.flower(f)),
                     (f1, f2) -> { throw new IllegalStateException(); }, () -> new EnumMap<>(TropicraftFlower.class)));

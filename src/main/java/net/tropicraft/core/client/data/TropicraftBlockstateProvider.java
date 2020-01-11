@@ -72,6 +72,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.MANGANESE_BLOCK);
         simpleBlock(TropicraftBlocks.SHAKA_BLOCK);
         simpleBlock(TropicraftBlocks.ZIRCON_BLOCK);
+        simpleBlock(TropicraftBlocks.ZIRCONIUM_BLOCK);
         
         // All flowers
         TropicraftBlocks.FLOWERS.entrySet().forEach(e ->

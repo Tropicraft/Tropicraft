@@ -83,6 +83,26 @@ public class Builder {
         return item(p -> new TropicraftSpawnEgg(type, p), Builder::getDefaultProperties);
     }
 
+    public static Supplier<Item> hoe(final IItemTier tier) {
+        return item(p -> new HoeItem(tier, -2.0f, getDefaultProperties()));
+    }
+
+    public static Supplier<Item> shovel(final IItemTier tier) {
+        return item(p -> new ShovelItem(tier, 2.0f, -3.0f, getDefaultProperties()));
+    }
+
+    public static Supplier<Item> pickaxe(final IItemTier tier) {
+        return item(p -> new PickaxeItem(tier, 2, -2.0f, getDefaultProperties()));
+    }
+
+    public static Supplier<Item> axe(final IItemTier tier) {
+        return item(p -> new AxeItem(tier, 5.0f, -2.0f, getDefaultProperties()));
+    }
+
+    public static Supplier<Item> sword(final IItemTier tier) {
+        return item(p -> new SwordItem(tier, 3, -3.0f, getDefaultProperties()));
+    }
+
     private static Item.Properties getDefaultProperties() {
         return new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP);
     }

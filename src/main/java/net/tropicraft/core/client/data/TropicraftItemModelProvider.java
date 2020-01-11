@@ -51,6 +51,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.MANGANESE_BLOCK);
         blockItem(TropicraftBlocks.SHAKA_BLOCK);
         blockItem(TropicraftBlocks.ZIRCON_BLOCK);
+        blockItem(TropicraftBlocks.ZIRCONIUM_BLOCK);
         
         // All flowers
         TropicraftBlocks.FLOWERS.entrySet().forEach(e ->
@@ -156,13 +157,14 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftBlocks.BAMBOO_FLOWER_POT);
         
         generated(TropicraftItems.BAMBOO_ITEM_FRAME);
-        
+
         // ITEMS
         
         // Gems/Ingots
         generated(TropicraftItems.AZURITE);
         generated(TropicraftItems.EUDIALYTE);
         generated(TropicraftItems.ZIRCON);
+        generated(TropicraftItems.ZIRCONIUM);
         generated(TropicraftItems.SHAKA);
         generated(TropicraftItems.MANGANESE);
         
@@ -249,6 +251,23 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         // Mob drops
         generated(TropicraftItems.IGUANA_LEATHER);
+        
+        // Tools
+        generated(TropicraftItems.ZIRCON_AXE);
+        generated(TropicraftItems.ZIRCON_HOE);
+        generated(TropicraftItems.ZIRCON_PICKAXE);
+        generated(TropicraftItems.ZIRCON_SWORD);
+        generated(TropicraftItems.ZIRCON_SHOVEL);
+        generated(TropicraftItems.ZIRCONIUM_AXE);
+        generated(TropicraftItems.ZIRCONIUM_HOE);
+        generated(TropicraftItems.ZIRCONIUM_PICKAXE);
+        generated(TropicraftItems.ZIRCONIUM_SWORD);
+        generated(TropicraftItems.ZIRCONIUM_SHOVEL);
+        generated(TropicraftItems.EUDIALYTE_AXE);
+        generated(TropicraftItems.EUDIALYTE_HOE);
+        generated(TropicraftItems.EUDIALYTE_PICKAXE);
+        generated(TropicraftItems.EUDIALYTE_SWORD);
+        generated(TropicraftItems.EUDIALYTE_SHOVEL);
         
         // Misc
         generated(TropicraftItems.TROPICAL_FERTILIZER);

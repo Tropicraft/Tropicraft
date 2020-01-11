@@ -68,6 +68,7 @@ public class TropicraftTags {
         public static final Tag<Item> MANGANESE_INGOT = compatTag("ingots/manganese");
         public static final Tag<Item> SHAKA_INGOT = compatTag("ingots/shaka");
         public static final Tag<Item> ZIRCON_GEM = compatTag("gems/zircon");
+        public static final Tag<Item> ZIRCONIUM_GEM = compatTag("gems/zirconium");
         
         public static final Tag<Item> SWORDS = compatTag("swords");
 
