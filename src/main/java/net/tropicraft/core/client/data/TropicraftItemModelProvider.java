@@ -279,6 +279,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.BLOW_GUN);
         generated(TropicraftItems.NIGEL_STACHE);
         generated(TropicraftItems.WATER_WAND);
+        generated(TropicraftItems.EXPLODING_COCONUT);
         
         // Discs
         TropicraftItems.MUSIC_DISCS.values().forEach(this::generated);

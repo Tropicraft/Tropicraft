@@ -24,6 +24,7 @@ import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 import net.tropicraft.core.common.entity.placeable.*;
+import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.underdasea.*;
@@ -71,9 +72,18 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<TropiSpiderEggEntity>> TROPI_SPIDER_EGG = register("tropi_spider_egg", TropicraftEntities::tropiSpiderEgg);
     public static final RegistryObject<EntityType<AshenMaskEntity>> ASHEN_MASK = register("ashen_mask", TropicraftEntities::ashenMask);
     public static final RegistryObject<EntityType<AshenEntity>> ASHEN = register("ashen", TropicraftEntities::ashen);
+    public static final RegistryObject<EntityType<ExplodingCoconutEntity>> EXPLODING_COCONUT = register("exploding_coconut", TropicraftEntities::explodingCoconut);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<ExplodingCoconutEntity> explodingCoconut() {
+        return EntityType.Builder.<ExplodingCoconutEntity>create(ExplodingCoconutEntity::new, EntityClassification.MISC)
+                .size(0.25F, 0.25F)
+                .setTrackingRange(64)
+                .setUpdateInterval(1)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<AshenMaskEntity> ashenMask() {

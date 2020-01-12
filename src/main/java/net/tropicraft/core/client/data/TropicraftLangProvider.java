@@ -343,6 +343,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.TROPI_SPIDER_EGG, "Tropics Spider Egg");
         addEntityType(TropicraftEntities.ASHEN);
         addEntityType(TropicraftEntities.ASHEN_MASK);
+        addEntityType(TropicraftEntities.EXPLODING_COCONUT);
         
         // BIOMES
         

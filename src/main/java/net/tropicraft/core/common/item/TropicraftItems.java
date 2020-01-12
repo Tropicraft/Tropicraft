@@ -177,6 +177,9 @@ public class TropicraftItems {
     public static final RegistryObject<Item> WATER_WAND = register(
             "water_wand", () -> new WaterWandItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1).maxDamage(2000)));
 
+    public static final RegistryObject<Item> EXPLODING_COCONUT = register(
+            "exploding_coconut", () -> new ExplodingCoconutItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
+
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);
     }
