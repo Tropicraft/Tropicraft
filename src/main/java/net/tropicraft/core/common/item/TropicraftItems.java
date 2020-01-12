@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.FishBucketItem;
 import net.minecraft.item.Item;
@@ -162,6 +163,16 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ZIRCON_SWORD = register("zircon_sword", Builder.sword(TropicraftToolTiers.ZIRCON));
     public static final RegistryObject<Item> ZIRCONIUM_SWORD = register("zirconium_sword", Builder.sword(TropicraftToolTiers.ZIRCONIUM));
     public static final RegistryObject<Item> EUDIALYTE_SWORD = register("eudialyte_sword", Builder.sword(TropicraftToolTiers.EUDIALYTE));
+
+    public static final RegistryObject<Item> FIRE_BOOTS = register("fire_boots", Builder.fireArmor(EquipmentSlotType.FEET));
+    public static final RegistryObject<Item> FIRE_LEGGINGS = register("fire_leggings", Builder.fireArmor(EquipmentSlotType.LEGS));
+    public static final RegistryObject<Item> FIRE_CHESTPLATE = register("fire_chestplate", Builder.fireArmor(EquipmentSlotType.CHEST));
+    public static final RegistryObject<Item> FIRE_HELMET = register("fire_helmet", Builder.fireArmor(EquipmentSlotType.HEAD));
+
+    public static final RegistryObject<Item> SCALE_BOOTS = register("scale_boots", Builder.scaleArmor(EquipmentSlotType.FEET));
+    public static final RegistryObject<Item> SCALE_LEGGINGS = register("scale_leggings", Builder.scaleArmor(EquipmentSlotType.LEGS));
+    public static final RegistryObject<Item> SCALE_CHESTPLATE = register("scale_chestplate", Builder.scaleArmor(EquipmentSlotType.CHEST));
+    public static final RegistryObject<Item> SCALE_HELMET = register("scale_helmet", Builder.scaleArmor(EquipmentSlotType.HEAD));
 
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);

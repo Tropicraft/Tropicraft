@@ -2,6 +2,7 @@ package net.tropicraft;
 
 public class Constants {
     public static final String MODID = "tropicraft";
+    public static final String ARMOR_LOCATION = MODID + ":textures/models/armor/";
 
     public static final String[] LT17_NAMES = {
             "Emibelle", "Mark Conrad", "MongoTheElder", "Taelnia", "Direwolf20", "MrRube", "rckymtnrfc", "Drullkus",

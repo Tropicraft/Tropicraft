@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Tropicraft;
@@ -80,7 +81,7 @@ public class Builder {
     }
 
     public static <T extends Entity> Supplier<Item> spawnEgg(final RegistryObject<EntityType<T>> type) {
-        return item(p -> new TropicraftSpawnEgg(type, p), Builder::getDefaultProperties);
+        return item(p -> new TropicraftSpawnEgg<>(type, p), Builder::getDefaultProperties);
     }
 
     public static Supplier<Item> hoe(final IItemTier tier) {
@@ -105,5 +106,13 @@ public class Builder {
 
     private static Item.Properties getDefaultProperties() {
         return new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP);
+    }
+
+    public static Supplier<Item> fireArmor(EquipmentSlotType slotType) {
+        return item(p -> new FireArmorItem(slotType, getDefaultProperties().maxStackSize(1).maxDamage(300)));
+    }
+
+    public static Supplier<Item> scaleArmor(EquipmentSlotType slotType) {
+        return item(p -> new ScaleArmorItem(slotType, getDefaultProperties().maxStackSize(1)));
     }
 }

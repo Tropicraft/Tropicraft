@@ -302,6 +302,16 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.EAGLE_RAY_SPAWN_EGG);
         generated(TropicraftItems.TROPI_SPIDER_SPAWN_EGG);
         generated(TropicraftItems.ASHEN_SPAWN_EGG);
+
+        // Armor
+        generated(TropicraftItems.FIRE_BOOTS);
+        generated(TropicraftItems.FIRE_CHESTPLATE);
+        generated(TropicraftItems.FIRE_HELMET);
+        generated(TropicraftItems.FIRE_LEGGINGS);
+        generated(TropicraftItems.SCALE_BOOTS);
+        generated(TropicraftItems.SCALE_CHESTPLATE);
+        generated(TropicraftItems.SCALE_HELMET);
+        generated(TropicraftItems.SCALE_LEGGINGS);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {
