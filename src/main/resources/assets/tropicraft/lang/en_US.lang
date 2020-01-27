@@ -377,6 +377,9 @@ entity.tropicraft.tropicalfish.4.name=Geophagus Surinamensis
 entity.tropicraft.tropicalfish.5.name=Betta Fish
 entity.tropicraft.tropicalfish.6.name=Regal Tang
 entity.tropicraft.tropicalfish.7.name=Royal Gamma
+entity.tropicraft.beach_chair.name=Beach Chair
+entity.tropicraft.beach_umbrella.name=Beach Umbrella
+entity.tropicraft.beach_float.name=Beach Float
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=If you like pina coladas...
