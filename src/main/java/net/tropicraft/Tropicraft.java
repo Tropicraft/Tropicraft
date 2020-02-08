@@ -162,6 +162,7 @@ public class Tropicraft
         RenderingRegistry.registerEntityRenderingHandler(AshenEntity.class, AshenRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(AshenMaskEntity.class, AshenMaskRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ExplodingCoconutEntity.class, manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(SharkEntity.class, SharkRenderer::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());

@@ -73,9 +73,18 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<AshenMaskEntity>> ASHEN_MASK = register("ashen_mask", TropicraftEntities::ashenMask);
     public static final RegistryObject<EntityType<AshenEntity>> ASHEN = register("ashen", TropicraftEntities::ashen);
     public static final RegistryObject<EntityType<ExplodingCoconutEntity>> EXPLODING_COCONUT = register("exploding_coconut", TropicraftEntities::explodingCoconut);
+    public static final RegistryObject<EntityType<SharkEntity>> HAMMERHEAD = register("hammerhead", TropicraftEntities::hammerhead);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
+    }
+
+    private static EntityType.Builder<SharkEntity> hammerhead() {
+        return EntityType.Builder.create(SharkEntity::new, EntityClassification.WATER_CREATURE)
+                .size(2.4F, 1.5F)
+                .setTrackingRange(64)
+                .setUpdateInterval(2)
+                .setShouldReceiveVelocityUpdates(true);
     }
 
     private static EntityType.Builder<ExplodingCoconutEntity> explodingCoconut() {

@@ -1,37 +1,70 @@
 package net.tropicraft.core.common.dimension.chunk;
 
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.ReportedException;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
+import net.minecraft.world.gen.WorldGenRegion;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
+import net.tropicraft.core.common.dimension.feature.UnderwaterCoveFeature;
 
 public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGeneratorSettings> {
-    private static final float[] BIOME_WEIGHTS = (float[]) Util.make(new float[25], (weights) -> {
+    private static final float[] BIOME_WEIGHTS = Util.make(new float[25], (weights) -> {
         for(int xw = -2; xw <= 2; ++xw) {
             for(int zw = -2; zw <= 2; ++zw) {
                 float weight = 10.0F / MathHelper.sqrt((float)(xw * xw + zw * zw) + 0.2F);
                 weights[xw + 2 + (zw + 2) * 5] = weight;
             }
         }
-
     });
 
     private final OctavesNoiseGenerator depthNoise;
     private VolcanoGenerator volcanoGen;
+    private UnderwaterCoveGenerator coveGen;
 
     public TropicraftChunkGenerator(IWorld world, BiomeProvider biomeProvider, TropicraftGeneratorSettings settings) {
         super(world, biomeProvider, 4, 8, 256, settings, true);
-        this.randomSeed.skip(2620);
-        this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 16);
+        randomSeed.skip(2620);
+        depthNoise = new OctavesNoiseGenerator(randomSeed, 16);
 
-        this.volcanoGen = new VolcanoGenerator(this);
+        volcanoGen = new VolcanoGenerator(this);
+        coveGen = new UnderwaterCoveGenerator(this);
+    }
+
+    @Override
+    public void decorate(final WorldGenRegion region) {
+        int i = region.getMainChunkX();
+        int j = region.getMainChunkZ();
+        int k = i * 16;
+        int l = j * 16;
+        BlockPos blockpos = new BlockPos(k, 0, l);
+        Biome biome = this.getBiome(region, blockpos.add(8, 8, 8));
+        SharedSeedRandom sharedseedrandom = new SharedSeedRandom();
+        long i1 = sharedseedrandom.setDecorationSeed(region.getSeed(), k, l);
+
+        coveGen.decorate(region, i, j);
+
+        for(GenerationStage.Decoration deco : GenerationStage.Decoration.values()) {
+            try {
+                biome.decorate(deco, this, region, i1, sharedseedrandom, blockpos);
+            } catch (Exception exception) {
+                CrashReport crashreport = CrashReport.makeCrashReport(exception, "Biome decoration");
+                crashreport.makeCategory("Generation").addDetail("CenterX", i).addDetail("CenterZ", j).addDetail("Step", deco).addDetail("Seed", i1).addDetail("Biome", Registry.BIOME.getKey(biome));
+                throw new ReportedException(crashreport);
+            }
+        }
     }
 
     // spawn height
@@ -136,7 +169,8 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         int j = chunkPos.x;
         int k = chunkPos.z;
 
-        this.volcanoGen.generate(j, k, chunkIn, this.randomSeed);
+        volcanoGen.generate(j, k, chunkIn, randomSeed);
+        coveGen.generate(j, k, chunkIn, randomSeed);
     }
 
     @Override

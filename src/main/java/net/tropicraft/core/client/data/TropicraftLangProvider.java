@@ -300,6 +300,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.EAGLE_RAY_SPAWN_EGG);
         addItem(TropicraftItems.TROPI_SPIDER_SPAWN_EGG);
         addItem(TropicraftItems.ASHEN_SPAWN_EGG, "Ashen Ash");
+        addItem(TropicraftItems.HAMMERHEAD_SPAWN_EGG);
 
         // Armor
         addItem(TropicraftItems.FIRE_BOOTS);

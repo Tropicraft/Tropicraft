@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import java.rmi.registry.Registry;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
@@ -58,6 +59,8 @@ public class TropicraftFeatures {
 	        "koa_village", () -> new KoaVillageStructure(NoFeatureConfig::deserialize));
 	public static final RegistryObject<VolcanoFeature> VOLCANO = register(
 	        "volcano", () -> new VolcanoFeature(NoFeatureConfig::deserialize));
+	public static final RegistryObject<UnderwaterCoveFeature> UNDERWATER_COVE = register(
+			"underwater_cove", () -> new UnderwaterCoveFeature(NoFeatureConfig::deserialize));
 
 	public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Constants.MODID + ":koa_path",
             ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor()));
