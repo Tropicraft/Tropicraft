@@ -371,6 +371,9 @@ entity.tropicraft.tropicalfish.4.name=红珍珠关刀
 entity.tropicraft.tropicalfish.5.name=斗鱼
 entity.tropicraft.tropicalfish.6.name=帝王刺尾鲷
 entity.tropicraft.tropicalfish.7.name=皇家丝鲈
+entity.tropicraft.beach_chair.name=沙滩椅
+entity.tropicraft.beach_umbrella.name=沙滩伞
+entity.tropicraft.beach_float.name=沙滩浮排
 
 # Achievement localizations
 achievement.tc_craft_pina_colada=如果你喜欢椰林飘香...
