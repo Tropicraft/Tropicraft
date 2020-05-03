@@ -1,12 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import java.util.Random;
-import java.util.function.Function;
-
 import com.mojang.datafixers.Dynamic;
-
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
@@ -17,38 +12,42 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.MarginedStructureStart;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.tropicraft.Constants;
-import net.tropicraft.core.common.dimension.feature.pools.KoaVillagePools;
+import net.tropicraft.core.common.dimension.biome.TropicraftRainforestBiome;
+import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
+import net.tropicraft.core.common.dimension.feature.pools.HomeTreePools;
 
-public class KoaVillageStructure extends Structure<NoFeatureConfig> {
+import java.util.Random;
+import java.util.function.Function;
 
-    public KoaVillageStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i51419_1_) {
+public class HomeTreeFeature extends Structure<VillageConfig> {
+
+    public HomeTreeFeature(Function<Dynamic<?>, ? extends VillageConfig> p_i51419_1_) {
         super(p_i51419_1_);
     }
 
     @Override
     protected ChunkPos getStartPositionForPosition(ChunkGenerator<?> chunkGenerator, Random random, int x, int z, int spacingOffsetsX, int spacingOffsetsZ) {
-        int i = chunkGenerator.getSettings().getVillageDistance();
-        int j = chunkGenerator.getSettings().getVillageSeparation();
-        int k = x + i * spacingOffsetsX;
-        int l = z + i * spacingOffsetsZ;
-        int i1 = k < 0 ? k - i + 1 : k;
-        int j1 = l < 0 ? l - i + 1 : l;
-        int k1 = i1 / i;
-        int l1 = j1 / i;
+        int distance = chunkGenerator instanceof TropicraftChunkGenerator ? (((TropicraftChunkGenerator)chunkGenerator).getSettings().getHomeTreeDistance()) : 20;
+        int separation = chunkGenerator instanceof TropicraftChunkGenerator ? (((TropicraftChunkGenerator)chunkGenerator).getSettings().getHomeTreeSeparation()) : 4;
+        int k = x + distance * spacingOffsetsX;
+        int l = z + distance * spacingOffsetsZ;
+        int i1 = k < 0 ? k - distance + 1 : k;
+        int j1 = l < 0 ? l - distance + 1 : l;
+        int k1 = i1 / distance;
+        int l1 = j1 / distance;
         ((SharedSeedRandom)random).setLargeFeatureSeedWithSalt(chunkGenerator.getSeed(), k1, l1, 10387312);
-        k1 = k1 * i;
-        l1 = l1 * i;
-        k1 = k1 + random.nextInt(i - j);
-        l1 = l1 + random.nextInt(i - j);
+        k1 = k1 * distance;
+        l1 = l1 * distance;
+        k1 = k1 + random.nextInt(distance - separation);
+        l1 = l1 + random.nextInt(distance - separation);
         return new ChunkPos(k1, l1);
     }
 
@@ -67,8 +66,10 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
     }
 
     private boolean isValid(ChunkGenerator<?> chunkGen, BlockPos pos) {
-        return chunkGen.hasStructure(chunkGen.getBiomeProvider().getBiome(pos), TropicraftFeatures.VILLAGE.get())
-                && chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) == chunkGen.getSeaLevel();
+        return chunkGen.hasStructure(chunkGen.getBiomeProvider().getBiome(pos), TropicraftFeatures.HOME_TREE.get())
+                && chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) >= chunkGen.getSeaLevel()
+                && pos.getY() < 150
+                && chunkGen.getBiomeProvider().getBiome(pos) instanceof TropicraftRainforestBiome;
     }
     
     @Override
@@ -94,7 +95,7 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
 
     @Override
     public String getStructureName() {
-        return TropicraftFeatures.VILLAGE.getId().toString();
+        return TropicraftFeatures.HOME_TREE.getId().toString();
     }
 
     @Override
@@ -109,20 +110,21 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
         }
 
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
-            BlockPos pos = new BlockPos(chunkX * 16, 0, chunkZ * 16);
-            KoaVillagePools.init();
-            JigsawManager.func_214889_a(new ResourceLocation(Constants.MODID, "koa_village/town_centers"), 6, KoaVillage::new, generator, templateManagerIn, pos, this.components, this.rand);
+            final BlockPos pos = new BlockPos(chunkX * 16, -5, chunkZ * 16);
+            VillageConfig config = generator.getStructureConfig(biomeIn, TropicraftFeatures.HOME_TREE.get());
+            HomeTreePools.init();
+            JigsawManager.func_214889_a(config.startPool, config.size, HomeTreePiece::new, generator, templateManagerIn, pos, this.components, this.rand);
             this.recalculateStructureSize();
         }
     }
 
-    public static class KoaVillage extends AbstractVillagePiece {
+    public static class HomeTreePiece extends AbstractVillagePiece {
 
-        public KoaVillage(TemplateManager p_i50890_1_, JigsawPiece p_i50890_2_, BlockPos p_i50890_3_, int p_i50890_4_, Rotation p_i50890_5_, MutableBoundingBox p_i50890_6_) {
+        public HomeTreePiece(TemplateManager p_i50890_1_, JigsawPiece p_i50890_2_, BlockPos p_i50890_3_, int p_i50890_4_, Rotation p_i50890_5_, MutableBoundingBox p_i50890_6_) {
             super(IStructurePieceType.NVI, p_i50890_1_, p_i50890_2_, p_i50890_3_, p_i50890_4_, p_i50890_5_, p_i50890_6_);
         }
 
-        public KoaVillage(TemplateManager p_i50891_1_, CompoundNBT p_i50891_2_) {
+        public HomeTreePiece(TemplateManager p_i50891_1_, CompoundNBT p_i50891_2_) {
             super(p_i50891_1_, p_i50891_2_, IStructurePieceType.NVI);
         }
     }

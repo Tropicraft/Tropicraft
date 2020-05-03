@@ -1,23 +1,26 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import java.rmi.registry.Registry;
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableList;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftFlower;
+import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
+import net.tropicraft.core.common.dimension.feature.jigsaw.SinkInGroundProcessor;
+import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProcessor;
+import net.tropicraft.core.common.dimension.feature.jigsaw.SteepPathProcessor;
+import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
+
+import java.util.function.Supplier;
 
 public class TropicraftFeatures {
 
@@ -61,6 +64,10 @@ public class TropicraftFeatures {
 	        "volcano", () -> new VolcanoFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<UnderwaterCoveFeature> UNDERWATER_COVE = register(
 			"underwater_cove", () -> new UnderwaterCoveFeature(NoFeatureConfig::deserialize));
+	public static final RegistryObject<Structure<VillageConfig>> HOME_TREE = register(
+			"home_tree", () -> new HomeTreeFeature(VillageConfig::deserialize));
+	public static final RegistryObject<HomeTreeBranchFeature<HomeTreeBranchConfig>> HOME_TREE_BRANCH = register(
+			"home_tree_branch", () -> new HomeTreeBranchFeature<>(HomeTreeBranchConfig::deserialize));
 
 	public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Constants.MODID + ":koa_path",
             ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor()));

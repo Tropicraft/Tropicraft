@@ -18,4 +18,12 @@ public class TropicraftGeneratorSettings extends GenerationSettings {
     public int getBedrockFloorHeight() {
         return 0;
     }
+
+    public int getHomeTreeDistance() {
+        return 20;
+    }
+
+    public int getHomeTreeSeparation() {
+        return 4;
+    }
 }

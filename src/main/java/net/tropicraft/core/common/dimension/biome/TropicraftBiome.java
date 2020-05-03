@@ -27,7 +27,7 @@ public abstract class TropicraftBiome extends Biome {
         addStructure(TropicraftFeatures.VOLCANO.get(), IFeatureConfig.NO_FEATURE_CONFIG);
         // Volcano feature to add tile entity to the volcano generation. Checks in each chunk if a volcano is nearby.
         addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, createDecoratedFeature(TropicraftFeatures.VOLCANO.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
-//
+
 //        this.spawnableCreatureList.add(new SpawnListEntry(EntityParrot.class, 20, 1, 2));
 //        this.spawnableCreatureList.add(new SpawnListEntry(EntityVMonkey.class, 20, 1, 3));
 //        this.spawnableMonsterList.add(new SpawnListEntry(EntityIguana.class, 15, 1, 1));

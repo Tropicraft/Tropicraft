@@ -1,0 +1,125 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:music_disc_trade_winds",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:music_disc_eastern_isles",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:azurite_gem",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 3.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_square_zord",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_horn_monkey",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_oblongatron",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_headinator",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_square_horn",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_screw_attack",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_the_brain",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:ashen_mask_bat_boy",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:cooked_frog_leg",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 4.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:scale",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2.0,
+                "max": 5.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:nigel_stache",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bamboo",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 5.0,
+                "max": 16.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.dimension.feature;
+package net.tropicraft.core.common.dimension.feature.pools;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
@@ -10,6 +10,10 @@ import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.dimension.feature.jigsaw.AdjustBuildingHeightProcessor;
+import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
+import net.tropicraft.core.common.dimension.feature.StructureVoidProcessor;
+import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
 @SuppressWarnings("deprecation")
 public class KoaVillagePools {
