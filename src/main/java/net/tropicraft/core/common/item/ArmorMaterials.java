@@ -8,9 +8,9 @@ import net.minecraft.util.SoundEvents;
 import net.tropicraft.core.common.TropicraftTags;
 
 public class ArmorMaterials {
-    public static IArmorMaterial ASHEN_MASK = new AshenMask();
-    public static IArmorMaterial NIGEL_STACHE = new NigelStache();
-    public static IArmorMaterial SCALE_ARMOR = createArmorMaterial(
+    public static final IArmorMaterial ASHEN_MASK = new AshenMask();
+    public static final IArmorMaterial NIGEL_STACHE = new NigelStache();
+    public static final IArmorMaterial SCALE_ARMOR = createArmorMaterial(
             18,
             new int[] {2, 5, 6, 2},
             9,
@@ -19,7 +19,7 @@ public class ArmorMaterials {
             "scale",
             0.5f
     );
-    public static IArmorMaterial FIRE_ARMOR = createArmorMaterial(
+    public static final IArmorMaterial FIRE_ARMOR = createArmorMaterial(
             12,
             new int[] {2, 4, 5, 2},
             9,
@@ -28,6 +28,14 @@ public class ArmorMaterials {
             "fire",
             0.1f
     );
+    public static final IArmorMaterial SCUBA_GOGGLES = createArmorMaterial(
+            10, 
+            new int[] {0, 0, 0, 0},
+            0,
+            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,
+            null,
+            "scuba_goggles",
+            0);
 
     private static class AshenMask implements IArmorMaterial {
         @Override

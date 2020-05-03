@@ -25,6 +25,8 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
+import net.tropicraft.core.common.item.scuba.ScubaType;
 
 import java.rmi.registry.Registry;
 import java.util.Arrays;
@@ -174,6 +176,8 @@ public class TropicraftItems {
     public static final RegistryObject<Item> SCALE_LEGGINGS = register("scale_leggings", Builder.scaleArmor(EquipmentSlotType.LEGS));
     public static final RegistryObject<Item> SCALE_CHESTPLATE = register("scale_chestplate", Builder.scaleArmor(EquipmentSlotType.CHEST));
     public static final RegistryObject<Item> SCALE_HELMET = register("scale_helmet", Builder.scaleArmor(EquipmentSlotType.HEAD));
+    
+    public static final RegistryObject<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = register("yellow_scuba_goggles", Builder.scubaGoggles(ScubaType.YELLOW));
 
     public static final RegistryObject<Item> WATER_WAND = register(
             "water_wand", () -> new WaterWandItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1).maxDamage(2000)));

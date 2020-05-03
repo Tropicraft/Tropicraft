@@ -312,6 +312,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.SCALE_HELMET);
         addItem(TropicraftItems.SCALE_LEGGINGS);
         
+        // Scuba
+        addItem(TropicraftItems.YELLOW_SCUBA_GOGGLES);
+        
         // ENTITIES
         
         addEntityType(TropicraftEntities.KOA_HUNTER, "Koa");

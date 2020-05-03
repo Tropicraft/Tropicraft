@@ -315,6 +315,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.SCALE_CHESTPLATE);
         generated(TropicraftItems.SCALE_HELMET);
         generated(TropicraftItems.SCALE_LEGGINGS);
+        
+        // Scuba
+        generated(TropicraftItems.YELLOW_SCUBA_GOGGLES);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {
