@@ -43,16 +43,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
+import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.TropicsConfigs;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.registry.BlockRegistry;
 import net.tropicraft.core.registry.ItemRegistry;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Supplier;
 
 public class EntityKoaBase extends VillagerEntity {
 
@@ -282,13 +282,13 @@ public class EntityKoaBase extends VillagerEntity {
                             new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
                             new KoaTradeForPearls(ItemRegistry.fishingRod, 1, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.FRESH_MARLIN.get(), 3, 8, 2),
-                            new KoaTradeForPearls(ItemRegistry.fertilizer, 5, 8, 2)
+                            new KoaTradeForPearls(TropicraftItems.TROPICAL_FERTILIZER.get(), 5, 8, 2)
                     }));
         } else if (getRole() == Roles.HUNTER) {
             offers = func_221238_a(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
                             new KoaTradeForPearls(TropicraftItems.FROG_LEG.get(), 5, 8, 2),
-                            new KoaTradeForPearls(ItemRegistry.iguanaLeather, 2, 8, 2),
+                            new KoaTradeForPearls(TropicraftItems.IGUANA_LEATHER.get(), 2, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.SCALE.get(), 5, 8, 2)
                     }));
         }
@@ -897,7 +897,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     public void setFightingItem() {
-        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemRegistry.dagger));
+        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.DAGGER.get()));
     }
 
     public void monitorHomeVillage() {
@@ -1104,11 +1104,8 @@ public class EntityKoaBase extends VillagerEntity {
 
     public boolean isInstrument(BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        if (state.getBlock() == BlockRegistry.bongo || state.getBlock() == Blocks.NOTE_BLOCK) {
-            return true;
-        }
-
-        return false;
+        return state.getBlock().isIn(TropicraftTags.Blocks.BONGOS) ||
+                state.getBlock() == Blocks.NOTE_BLOCK;
     }
 
     public void findAndSetDrums(boolean force) {
