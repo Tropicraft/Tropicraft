@@ -1,4 +1,5 @@
 {
+  "attribute.name.forge.swimSpeed": "p\u01DD\u01DDdS \u026F\u0131\u028DS",
   "biome.tropicraft.kelp_forest": "\u0287s\u01DD\u0279o\u2132 d\u05DF\u01DD\u029E",
   "biome.tropicraft.rainforest_hills": "s\u05DF\u05DF\u0131H \u0287s\u01DD\u0279o\u025Fu\u0131\u0250\u1D1A",
   "biome.tropicraft.rainforest_island_mountains": "su\u0131\u0250\u0287unoW pu\u0250\u05DFsI \u0287s\u01DD\u0279o\u025Fu\u0131\u0250\u1D1A",
@@ -370,7 +371,9 @@
   "item.tropicraft.white_umbrella": "\u0250\u05DF\u05DF\u01DD\u0279q\u026F\u2229 \u01DD\u0287\u0131\u0265M",
   "item.tropicraft.yellow_beach_float": "\u0287\u0250o\u05DF\u2132 \u0265\u0254\u0250\u01DD\u15FA \u028Do\u05DF\u05DF\u01DD\u028E",
   "item.tropicraft.yellow_chair": "\u0279\u0131\u0250\u0265\u0186 \u028Do\u05DF\u05DF\u01DD\u028E",
+  "item.tropicraft.yellow_scuba_flippers": "s\u0279\u01DDdd\u0131\u05DF\u2132 \u0250qn\u0254S \u028Do\u05DF\u05DF\u01DD\u028E",
   "item.tropicraft.yellow_scuba_goggles": "s\u01DD\u05DFbbo\u2141 \u0250qn\u0254S \u028Do\u05DF\u05DF\u01DD\u028E",
+  "item.tropicraft.yellow_scuba_harness": "ss\u01DDu\u0279\u0250H \u0250qn\u0254S \u028Do\u05DF\u05DF\u01DD\u028E",
   "item.tropicraft.yellow_umbrella": "\u0250\u05DF\u05DF\u01DD\u0279q\u026F\u2229 \u028Do\u05DF\u05DF\u01DD\u028E",
   "item.tropicraft.zircon_axe": "\u01DDx\u2C6F uo\u0254\u0279\u0131Z",
   "item.tropicraft.zircon_gem": "\u026F\u01DD\u2141 uo\u0254\u0279\u0131Z",

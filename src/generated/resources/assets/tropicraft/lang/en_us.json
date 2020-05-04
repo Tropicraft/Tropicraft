@@ -1,4 +1,5 @@
 {
+  "attribute.name.forge.swimSpeed": "Swim Speed",
   "biome.tropicraft.kelp_forest": "Kelp Forest",
   "biome.tropicraft.rainforest_hills": "Rainforest Hills",
   "biome.tropicraft.rainforest_island_mountains": "Rainforest Island Mountains",
@@ -370,7 +371,9 @@
   "item.tropicraft.white_umbrella": "White Umbrella",
   "item.tropicraft.yellow_beach_float": "Yellow Beach Float",
   "item.tropicraft.yellow_chair": "Yellow Chair",
+  "item.tropicraft.yellow_scuba_flippers": "Yellow Scuba Flippers",
   "item.tropicraft.yellow_scuba_goggles": "Yellow Scuba Goggles",
+  "item.tropicraft.yellow_scuba_harness": "Yellow Scuba Harness",
   "item.tropicraft.yellow_umbrella": "Yellow Umbrella",
   "item.tropicraft.zircon_axe": "Zircon Axe",
   "item.tropicraft.zircon_gem": "Zircon Gem",

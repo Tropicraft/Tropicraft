@@ -26,7 +26,9 @@ import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.item.scuba.ScubaFlippersItem;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
+import net.tropicraft.core.common.item.scuba.ScubaHarnessItem;
 import net.tropicraft.core.common.item.scuba.ScubaType;
 
 public class Builder {
@@ -129,5 +131,13 @@ public class Builder {
 
     public static Supplier<ScubaGogglesItem> scubaGoggles(ScubaType type) {
         return item(p -> new ScubaGogglesItem(type, p));
+    }
+    
+    public static Supplier<ScubaHarnessItem> scubaHarness(ScubaType type) {
+        return item(p -> new ScubaHarnessItem(type, p));
+    }
+    
+    public static Supplier<ScubaFlippersItem> scubaFlippers(ScubaType type) {
+        return item(p -> new ScubaFlippersItem(type, p));
     }
 }

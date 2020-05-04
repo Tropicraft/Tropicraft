@@ -28,7 +28,7 @@ public class ArmorMaterials {
             "fire",
             0.1f
     );
-    public static final IArmorMaterial SCUBA_GOGGLES = createArmorMaterial(
+    public static final IArmorMaterial SCUBA = createArmorMaterial(
             10, 
             new int[] {0, 0, 0, 0},
             0,

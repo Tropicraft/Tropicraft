@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.IItemProvider;
@@ -314,7 +315,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         // Scuba
         addItem(TropicraftItems.YELLOW_SCUBA_GOGGLES);
-        
+        addItem(TropicraftItems.YELLOW_SCUBA_HARNESS);
+        addItem(TropicraftItems.YELLOW_SCUBA_FLIPPERS);
+
         // ENTITIES
         
         addEntityType(TropicraftEntities.KOA_HUNTER, "Koa");
@@ -364,6 +367,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         // MISC
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
+        add("attribute.name." + LivingEntity.SWIM_SPEED.getName(), "Swim Speed");
     }
     
     private String getAutomaticName(Supplier<? extends IForgeRegistryEntry<?>> sup) {

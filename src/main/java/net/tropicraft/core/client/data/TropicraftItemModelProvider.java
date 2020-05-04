@@ -318,6 +318,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         
         // Scuba
         generated(TropicraftItems.YELLOW_SCUBA_GOGGLES);
+        generated(TropicraftItems.YELLOW_SCUBA_HARNESS);
+        generated(TropicraftItems.YELLOW_SCUBA_FLIPPERS);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {
