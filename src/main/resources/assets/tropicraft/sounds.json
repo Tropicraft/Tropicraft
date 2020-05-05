@@ -17,8 +17,15 @@
 	
 	"scuba.shallow": { "category": "ambient", "sounds": [
 			{
-				"name": "tropicraft:ambient/scuba/scuba_shallow",
-				"stream": true
+				"name": "tropicraft:ambient/scuba/scuba_shallow_short",
+				"preload": true
+			}
+		]
+	},
+    "scuba.deep": { "category": "ambient", "sounds": [
+			{
+				"name": "tropicraft:ambient/scuba/scuba_deep_short",
+				"preload": true
 			}
 		]
 	},
