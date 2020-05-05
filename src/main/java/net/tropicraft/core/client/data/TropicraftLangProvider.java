@@ -368,6 +368,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
         add("attribute.name." + LivingEntity.SWIM_SPEED.getName(), "Swim Speed");
+        
+        TropicraftLangKeys.generate(this);
     }
     
     private String getAutomaticName(Supplier<? extends IForgeRegistryEntry<?>> sup) {
