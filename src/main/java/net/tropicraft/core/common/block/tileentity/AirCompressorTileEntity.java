@@ -44,7 +44,6 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
 	public void read(CompoundNBT nbt) {
 	    super.read(nbt);
 		this.compressing = nbt.getBoolean("Compressing");
-		this.ticks = nbt.getInt("Ticks");
 
 		if (nbt.contains("Tank")) {
 			setTank(ItemStack.read(nbt.getCompound("Tank")));
@@ -57,7 +56,6 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
 	public @Nonnull CompoundNBT write(@Nonnull CompoundNBT nbt) {
 		super.write(nbt);
 		nbt.putBoolean("Compressing", compressing);
-		nbt.putInt("Ticks", ticks);
 
 		CompoundNBT var4 = new CompoundNBT();
 		this.stack.write(var4);
@@ -89,7 +87,7 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
 		int airContained = tank.getRemainingAir(getTankStack());
 		int maxAir = tank.getMaxAir(getTankStack());
 
-		if (compressing && airContained < maxAir) {
+		if (compressing) {
 			int overflow = tank.addAir(fillRate, getTankStack());
 			ticks++;
 			if (overflow > 0) {
@@ -145,10 +143,14 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
 
 	public void finishCompressing() {
 		this.compressing = false;
+		this.ticks = 0;
 		syncInventory();
 	}
 	
 	public float getBreatheProgress(float partialTicks) {
+	    if (isDoneCompressing()) {
+	        return 0;
+	    }
 	    return (float) (((((ticks + partialTicks) / 20) * Math.PI) + Math.PI) % (Math.PI * 2));
 	}
 	
