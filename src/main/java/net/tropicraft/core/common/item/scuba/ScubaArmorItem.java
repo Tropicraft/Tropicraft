@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,17 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     
     public ScubaType getType() {
         return type;
+    }
+    
+    public boolean providesAir() {
+        return false;
+    }
+    
+    public void tickAir(ServerPlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
+    }
+    
+    public int getRemainingAir(ItemStack stack) {
+        return 0;
     }
     
     @Override

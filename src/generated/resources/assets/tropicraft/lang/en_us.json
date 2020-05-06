@@ -388,9 +388,10 @@
   "item.tropicraft.zirconium_shovel": "Zirconium Shovel",
   "item.tropicraft.zirconium_sword": "Zirconium Sword",
   "itemGroup.tropicraft": "Tropicraft",
-  "scuba.tropicraft.depth": "Current Depth: %.2fm",
+  "scuba.tropicraft.air_time": "Air Remaining: %s",
+  "scuba.tropicraft.depth": "Current Depth: %sm",
   "scuba.tropicraft.dive_time": "Dive Time: %s",
-  "scuba.tropicraft.max_depth": "Max Depth: %.2fm",
+  "scuba.tropicraft.max_depth": "Max Depth: %sm",
   "tropicraft.container.bambooChest": "Bamboo Chest",
   "tropicraft.container.bambooChestDouble": "Large Bamboo Chest"
 }

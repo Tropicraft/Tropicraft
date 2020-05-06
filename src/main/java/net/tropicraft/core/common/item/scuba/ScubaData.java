@@ -7,6 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
@@ -90,14 +92,17 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     public static void onPlayerTick(PlayerTickEvent event) {
         World world = event.player.world;
         if (event.phase == Phase.END && !world.isRemote) {
-            if (event.player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof ScubaArmorItem) {
+            // TODO support more than chest slot?
+            ItemStack chestStack = event.player.getItemStackFromSlot(EquipmentSlotType.CHEST);
+            Item chestItem = chestStack.getItem();
+            if (chestItem instanceof ScubaArmorItem) {
                 LazyOptional<ScubaData> data = event.player.getCapability(CAPABILITY);
-                if (!data.isPresent()) return;
                 BlockPos headPos = new BlockPos(event.player.getEyePosition(0));
                 if (world.getFluidState(headPos).isTagged(FluidTags.WATER)) {
                     data.ifPresent(d -> {
                         d.tick((ServerPlayerEntity) event.player);
                     });
+                    ((ScubaArmorItem)chestItem).tickAir((ServerPlayerEntity) event.player, EquipmentSlotType.CHEST, chestStack);
                 }
             }
         }

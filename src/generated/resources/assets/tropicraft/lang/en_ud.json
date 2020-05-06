@@ -388,9 +388,10 @@
   "item.tropicraft.zirconium_shovel": "\u05DF\u01DD\u028Co\u0265S \u026Fn\u0131uo\u0254\u0279\u0131Z",
   "item.tropicraft.zirconium_sword": "p\u0279o\u028DS \u026Fn\u0131uo\u0254\u0279\u0131Z",
   "itemGroup.tropicraft": "\u0287\u025F\u0250\u0279\u0254\u0131do\u0279\u27D8",
-  "scuba.tropicraft.depth": "\u026F\u025F\u11050\u02D9% :\u0265\u0287d\u01DD\u15E1 \u0287u\u01DD\u0279\u0279n\u0186",
+  "scuba.tropicraft.air_time": "%s :bu\u0131u\u0131\u0250\u026F\u01DD\u1D1A \u0279\u0131\u2C6F",
+  "scuba.tropicraft.depth": "\u026F%s :\u0265\u0287d\u01DD\u15E1 \u0287u\u01DD\u0279\u0279n\u0186",
   "scuba.tropicraft.dive_time": "%s :\u01DD\u026F\u0131\u27D8 \u01DD\u028C\u0131\u15E1",
-  "scuba.tropicraft.max_depth": "\u026F\u025F\u11050\u02D9% :\u0265\u0287d\u01DD\u15E1 x\u0250W",
+  "scuba.tropicraft.max_depth": "\u026F%s :\u0265\u0287d\u01DD\u15E1 x\u0250W",
   "tropicraft.container.bambooChest": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA",
   "tropicraft.container.bambooChestDouble": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA \u01DDb\u0279\u0250\uA780"
 }
