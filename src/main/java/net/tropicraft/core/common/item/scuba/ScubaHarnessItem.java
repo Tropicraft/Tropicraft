@@ -30,10 +30,27 @@ public class ScubaHarnessItem extends ScubaArmorItem {
             player.setAir(player.getMaxAir());
         }
     }
+    
+    @Override
+    public int addAir(int air, ItemStack stack) {
+        if (air > 0) {
+            int current = getRemainingAir(stack);
+            int max = getMaxAir(stack);
+            int newAir = Math.min(current + air, max);
+            stack.getOrCreateChildTag("scuba").putInt("air", newAir);
+            return air - (newAir - current);
+        }
+        return 0;
+    }
 
     @Override
     public int getRemainingAir(ItemStack stack) {
         return stack.getOrCreateChildTag("scuba").getInt("air");
+    }
+    
+    @Override
+    public int getMaxAir(ItemStack stack) {
+        return 20 * 60 * 10; // 10 Minutes
     }
     
     public static void handleUnderwaterBreathing(PlayerTickEvent event) {

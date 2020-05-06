@@ -47,6 +47,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
+import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -203,6 +204,9 @@ public class TropicraftBlocks {
     public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
             "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
             () -> drinkMixerRenderer());
+    public static final RegistryObject<AirCompressorBlock> AIR_COMPRESSOR = register(
+            "air_compressor", () -> new AirCompressorBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
+            () -> airCompressorRenderer());
     public static final RegistryObject<VolcanoBlock> VOLCANO = registerNoItem(
             "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK).noDrops()));
     
@@ -283,5 +287,10 @@ public class TropicraftBlocks {
     @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> drinkMixerRenderer() {
         return () -> new SimpleItemStackRenderer<>(new DrinkMixerTileEntity());
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    private static Callable<ItemStackTileEntityRenderer> airCompressorRenderer() {
+        return () -> new SimpleItemStackRenderer<>(new AirCompressorTileEntity());
     }
 }

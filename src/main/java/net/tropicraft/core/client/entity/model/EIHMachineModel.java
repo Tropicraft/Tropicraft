@@ -1,9 +1,10 @@
 package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.tropicraft.core.common.block.tileentity.IMachineTile;
 
-public class DrinkMixerModel extends MachineModel<DrinkMixerTileEntity> {
+public class EIHMachineModel<T extends TileEntity & IMachineTile> extends MachineModel<T> {
     final RendererModel base;
     final RendererModel back;
     final RendererModel nose;
@@ -22,7 +23,7 @@ public class DrinkMixerModel extends MachineModel<DrinkMixerTileEntity> {
     final RendererModel lidTop;
     final RendererModel mouth;
 
-    public DrinkMixerModel() {
+    public EIHMachineModel() {
         textureWidth = 64;
         textureHeight = 64;
 
@@ -114,7 +115,7 @@ public class DrinkMixerModel extends MachineModel<DrinkMixerTileEntity> {
     }
 
     @Override
-    public void renderAsBlock(DrinkMixerTileEntity te) {
+    public void renderAsBlock(T te) {
         float scale = 0.0625F;
         base.render(scale);
         back.render(scale);
@@ -136,7 +137,7 @@ public class DrinkMixerModel extends MachineModel<DrinkMixerTileEntity> {
     }
 
     @Override
-    public String getTexture(DrinkMixerTileEntity te) {
+    public String getTexture(T te) {
         return "drink_mixer";
     }
 

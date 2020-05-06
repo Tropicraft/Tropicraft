@@ -34,8 +34,16 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     
     public void tickAir(ServerPlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
     }
+
+    public int addAir(int air, ItemStack stack) {
+        return 0;
+    }
     
     public int getRemainingAir(ItemStack stack) {
+        return 0;
+    }
+    
+    public int getMaxAir(ItemStack stack) {
         return 0;
     }
     

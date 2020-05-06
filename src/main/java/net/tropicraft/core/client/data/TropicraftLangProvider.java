@@ -162,6 +162,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(Constants.MODID + ".container.bambooChestDouble", "Large Bamboo Chest");
         addBlockWithTooltip(TropicraftBlocks.SIFTER, "Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?");
         addBlockWithTooltip(TropicraftBlocks.DRINK_MIXER, "Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!");
+        addBlockWithTooltip(TropicraftBlocks.AIR_COMPRESSOR, "Place an empty scuba harness in the compressor to fill it with air!");
 
         addBlock(TropicraftBlocks.VOLCANO);
 

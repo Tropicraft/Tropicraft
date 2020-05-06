@@ -16,9 +16,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -97,8 +95,7 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
             Item chestItem = chestStack.getItem();
             if (chestItem instanceof ScubaArmorItem) {
                 LazyOptional<ScubaData> data = event.player.getCapability(CAPABILITY);
-                BlockPos headPos = new BlockPos(event.player.getEyePosition(0));
-                if (world.getFluidState(headPos).isTagged(FluidTags.WATER)) {
+                if (isUnderWater(event.player)) {
                     data.ifPresent(d -> {
                         d.tick((ServerPlayerEntity) event.player);
                     });
@@ -113,10 +110,18 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     
     private boolean dirty;
     
+    public static boolean isUnderWater(PlayerEntity player) {
+        BlockPos headPos = new BlockPos(player.getEyePosition(0));
+        return player.world.getFluidState(headPos).isTagged(FluidTags.WATER);
+    }
+    
     public static double getDepth(PlayerEntity player) {
-        int surface = player.world.getHeight(Type.WORLD_SURFACE, MathHelper.floor(player.posX), MathHelper.floor(player.posZ));
-        double depth = surface - (player.posY + player.getEyeHeight());
-        return depth;
+        if (isUnderWater(player)) {
+            int surface = player.world.getSeaLevel();
+            double depth = surface - (player.getEyePosition(0).getY());
+            return depth;
+        }
+        return 0;
     }
     
     void tick(ServerPlayerEntity player) {

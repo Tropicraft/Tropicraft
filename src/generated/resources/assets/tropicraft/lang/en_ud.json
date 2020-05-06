@@ -10,6 +10,8 @@
   "biome.tropicraft.tropics_ocean": "u\u0250\u01DD\u0254O s\u0254\u0131do\u0279\u27D8",
   "biome.tropicraft.tropics_river": "\u0279\u01DD\u028C\u0131\u1D1A s\u0254\u0131do\u0279\u27D8",
   "block.tropicraft.acai_vine": "\u01DDu\u0131\u039B \u0131\u0250\u0254\u2C6F",
+  "block.tropicraft.air_compressor": "\u0279oss\u01DD\u0279d\u026Fo\u0186 \u0279\u0131\u2C6F",
+  "block.tropicraft.air_compressor.desc": "\u00A1\u0279\u0131\u0250 \u0265\u0287\u0131\u028D \u0287\u0131 \u05DF\u05DF\u0131\u025F o\u0287 \u0279oss\u01DD\u0279d\u026Fo\u0254 \u01DD\u0265\u0287 u\u0131 ss\u01DDu\u0279\u0250\u0265 \u0250qn\u0254s \u028E\u0287d\u026F\u01DD u\u0250 \u01DD\u0254\u0250\u05DF\u0500",
   "block.tropicraft.anemone": "\u01DDuo\u026F\u01DDu\u2C6F",
   "block.tropicraft.azurite_block": "\u029E\u0254o\u05DF\u15FA \u01DD\u0287\u0131\u0279nz\u2C6F",
   "block.tropicraft.azurite_ore": "\u01DD\u0279O \u01DD\u0287\u0131\u0279nz\u2C6F",
@@ -389,9 +391,9 @@
   "item.tropicraft.zirconium_sword": "p\u0279o\u028DS \u026Fn\u0131uo\u0254\u0279\u0131Z",
   "itemGroup.tropicraft": "\u0287\u025F\u0250\u0279\u0254\u0131do\u0279\u27D8",
   "scuba.tropicraft.air_time": "%s :bu\u0131u\u0131\u0250\u026F\u01DD\u1D1A \u0279\u0131\u2C6F",
-  "scuba.tropicraft.depth": "\u026F%s :\u0265\u0287d\u01DD\u15E1 \u0287u\u01DD\u0279\u0279n\u0186",
+  "scuba.tropicraft.depth": "%s :\u0265\u0287d\u01DD\u15E1 \u0287u\u01DD\u0279\u0279n\u0186",
   "scuba.tropicraft.dive_time": "%s :\u01DD\u026F\u0131\u27D8 \u01DD\u028C\u0131\u15E1",
-  "scuba.tropicraft.max_depth": "\u026F%s :\u0265\u0287d\u01DD\u15E1 x\u0250W",
+  "scuba.tropicraft.max_depth": "%s :\u0265\u0287d\u01DD\u15E1 x\u0250W",
   "tropicraft.container.bambooChest": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA",
   "tropicraft.container.bambooChestDouble": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA \u01DDb\u0279\u0250\uA780"
 }

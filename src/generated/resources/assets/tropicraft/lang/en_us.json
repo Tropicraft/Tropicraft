@@ -10,6 +10,8 @@
   "biome.tropicraft.tropics_ocean": "Tropics Ocean",
   "biome.tropicraft.tropics_river": "Tropics River",
   "block.tropicraft.acai_vine": "Acai Vine",
+  "block.tropicraft.air_compressor": "Air Compressor",
+  "block.tropicraft.air_compressor.desc": "Place an empty scuba harness in the compressor to fill it with air!",
   "block.tropicraft.anemone": "Anemone",
   "block.tropicraft.azurite_block": "Azurite Block",
   "block.tropicraft.azurite_ore": "Azurite Ore",
@@ -389,9 +391,9 @@
   "item.tropicraft.zirconium_sword": "Zirconium Sword",
   "itemGroup.tropicraft": "Tropicraft",
   "scuba.tropicraft.air_time": "Air Remaining: %s",
-  "scuba.tropicraft.depth": "Current Depth: %sm",
+  "scuba.tropicraft.depth": "Current Depth: %s",
   "scuba.tropicraft.dive_time": "Dive Time: %s",
-  "scuba.tropicraft.max_depth": "Max Depth: %sm",
+  "scuba.tropicraft.max_depth": "Max Depth: %s",
   "tropicraft.container.bambooChest": "Bamboo Chest",
   "tropicraft.container.bambooChestDouble": "Large Bamboo Chest"
 }

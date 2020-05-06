@@ -9,8 +9,8 @@ public enum TropicraftLangKeys {
 
     SCUBA_AIR_TIME("scuba", "air_time", "Air Remaining: %s"),
     SCUBA_DIVE_TIME("scuba", "dive_time", "Dive Time: %s"),
-    SCUBA_DEPTH("scuba", "depth", "Current Depth: %sm"),
-    SCUBA_MAX_DEPTH("scuba", "max_depth", "Max Depth: %sm"),
+    SCUBA_DEPTH("scuba", "depth", "Current Depth: %s"),
+    SCUBA_MAX_DEPTH("scuba", "max_depth", "Max Depth: %s"),
     ;
 
     private final String key, value;

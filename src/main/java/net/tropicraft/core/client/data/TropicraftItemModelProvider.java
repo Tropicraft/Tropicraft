@@ -149,6 +149,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.SIFTER);
         withExistingParent(name(TropicraftBlocks.DRINK_MIXER), modLoc("item/tall_machine"))
             .texture("particle", modLoc("block/chunk"));
+        withExistingParent(name(TropicraftBlocks.AIR_COMPRESSOR), modLoc("item/tall_machine"))
+            .texture("particle", modLoc("block/chunk"));
         
         generated(TropicraftBlocks.TIKI_TORCH);
         

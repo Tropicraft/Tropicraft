@@ -11,7 +11,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.BambooMugModel;
-import net.tropicraft.core.client.entity.model.DrinkMixerModel;
+import net.tropicraft.core.client.entity.model.EIHMachineModel;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.item.CocktailItem;
@@ -23,7 +23,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     private ItemEntity dummyEntityItem;
 
     public DrinkMixerRenderer() {
-        super(TropicraftBlocks.DRINK_MIXER.get(), new DrinkMixerModel());
+        super(TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>());
         this.renderItem = Minecraft.getInstance().getItemRenderer();
     }
 

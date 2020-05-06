@@ -2,19 +2,11 @@ package net.tropicraft.core.client.scuba;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
-import net.tropicraft.core.common.item.scuba.ScubaType;
 
 public class ModelScubaGear extends BipedModel<LivingEntity> {
     
@@ -403,7 +395,7 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
             GlStateManager.pushMatrix();
             GlStateManager.scalef(0.5F, 0.5F, 0.5F);
             GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
-            this.renderScubaGear(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, false);
+            this.renderScubaGear(entityIn, scale, false);
         }
         else
         {
@@ -412,23 +404,24 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
                 GlStateManager.translatef(0.0F, 0.2F, 0.0F);
             }
 
-            this.renderScubaGear(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, true);
+            this.renderScubaGear(entityIn, scale, true);
         }
 
         GlStateManager.popMatrix();
     }
 
-    public void renderScubaGear(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, boolean renderHead) {
+    public void renderScubaGear(LivingEntity entityIn, float scale, boolean renderHead) {
+        boolean showHead = !entityIn.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty() && this.slot == EquipmentSlotType.HEAD;
+        boolean showChest = !entityIn.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty() && this.slot == EquipmentSlotType.CHEST;
+        boolean showLegs = !entityIn.getItemStackFromSlot(EquipmentSlotType.FEET).isEmpty() && this.slot == EquipmentSlotType.FEET;
+        renderScubaGear(scale, renderHead, showHead, showChest, showLegs);
+    }
+    
+    public void renderScubaGear(float scale, boolean renderHead, boolean showHead, boolean showChest, boolean showLegs) {
         hose4.rotateAngleX = 0.3075211F;
 
-        LivingEntity player = (LivingEntity)entityIn;
-
-        boolean showHead = !player.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty() && this.slot == EquipmentSlotType.HEAD;
-        bipedHead.showModel = showHead;
-        boolean showChest = !player.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty() && this.slot == EquipmentSlotType.CHEST;
         bipedBody.showModel = showChest;
-        boolean showLegs = !player.getItemStackFromSlot(EquipmentSlotType.FEET).isEmpty() && this.slot == EquipmentSlotType.FEET;
-        
+        bipedHead.showModel = showHead;
         mouthpiece.showModel = showChest;
         mouthpiece2.showModel = showChest;
         mouthpiece3.showModel = showChest;
@@ -448,8 +441,8 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
 //        }
 
         if (showChest) {
-            renderTank(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            renderBCD(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            renderTank(scale);
+            renderBCD(scale);
         }
         
         bipedRightLeg.showModel = showLegs;
@@ -472,18 +465,19 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
 
         
         if(showLegs) {
-        if(entityIn.isInWater()) {
-	        this.Fin2m3.offsetX = -0.2f;
-	        this.Fin1m3.offsetX = 0.2f;
-	
-	
-	       this.Fin1m3.offsetZ = 0.1f;
-	       this.Fin2m3.offsetZ = 0.1f;
-	        
-	        
-	        
-	        bipedLeftLeg.render(scale);
-	        bipedRightLeg.render(scale);
+            // TODO is this necessary?
+//        if(entityIn.isInWater()) {
+//	        this.Fin2m3.offsetX = -0.2f;
+//	        this.Fin1m3.offsetX = 0.2f;
+//	
+//	
+//	       this.Fin1m3.offsetZ = 0.1f;
+//	       this.Fin2m3.offsetZ = 0.1f;
+//	        
+//	        
+//	        
+//	        bipedLeftLeg.render(scale);
+//	        bipedRightLeg.render(scale);
 	        
 	     
 	        
@@ -534,7 +528,7 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
 	   
 		
 	        
-        }else {
+//        }else {
         		this.Fin2m3.offsetX = 0f;
         		
  	        this.Fin1m3.offsetX = 0f;
@@ -551,20 +545,14 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
 
  	        bipedRightLeg.render(scale);
  	    
-        }
+//        }
 
         }
         
          
     }
 
-    private void renderTank(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        TextureManager tm = Minecraft.getInstance().getTextureManager();
-
-        ItemStack gearStack = entityIn.getItemStackFromSlot(EquipmentSlotType.CHEST);
-        ScubaType material = ScubaType.YELLOW; // TODO Scuba gear.getStackInSlot(0).getItem() == ItemRegistry.pinkScubaTank ? ScubaMaterial.PINK : ScubaMaterial.YELLOW;
-        tm.bindTexture(ScubaGogglesItem.getArmorTexture(material));
-        
+    private void renderTank(float scale) {
         Tank2.rotateAngleX = 0F;
         Tank2.rotateAngleY = 0F;
         Tank2.rotateAngleZ = 0F;
@@ -644,11 +632,9 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
         Tank1m7.rotateAngleY = 0F;
         Tank1m7.rotateAngleZ = 0F;
         Tank1m7.renderWithRotation(scale);
- 
-        tm.bindTexture(new ResourceLocation(((ArmorItem)gearStack.getItem()).getArmorTexture(gearStack, entityIn, EquipmentSlotType.CHEST, null)));
     }
 
-    private void renderBCD(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    private void renderBCD(float scale) {
         BCD.rotateAngleX = 0F;
         BCD.rotateAngleY = 0F;
         BCD.rotateAngleZ = 0F;

@@ -48,11 +48,18 @@ public class ScubaHUD {
                 } else {
                     airColor = TextFormatting.GREEN;
                 }
+                double depth = ScubaData.getDepth(player);
+                String depthStr;
+                if (depth > 0) {
+                    depthStr = String.format("%.1fm", depth); 
+                } else {
+                    depthStr = "N/A"; // TODO translate
+                }
                 data.ifPresent(d -> drawHUDStrings(
                     TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + DurationFormatUtils.formatDuration(airRemaining * (1000 / 20), "HH:mm:ss")),
                     TropicraftLangKeys.SCUBA_DIVE_TIME.format(DurationFormatUtils.formatDuration(d.getDiveTime() * (1000 / 20), "HH:mm:ss")),
-                    TropicraftLangKeys.SCUBA_DEPTH.format(String.format("%.1f", ScubaData.getDepth(player))),
-                    TropicraftLangKeys.SCUBA_MAX_DEPTH.format(String.format("%.1f", d.getMaxDepth()))));
+                    TropicraftLangKeys.SCUBA_DEPTH.format(depthStr),
+                    TropicraftLangKeys.SCUBA_MAX_DEPTH.format(String.format("%.1fm", d.getMaxDepth()))));
             }
         }
     }
