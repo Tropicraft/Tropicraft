@@ -30,6 +30,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.item.scuba.PonyBottleItem;
 import net.tropicraft.core.common.item.scuba.ScubaFlippersItem;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.item.scuba.ScubaHarnessItem;
@@ -179,6 +180,8 @@ public class TropicraftItems {
     public static final RegistryObject<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = register("yellow_scuba_goggles", Builder.scubaGoggles(ScubaType.YELLOW));
     public static final RegistryObject<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = register("yellow_scuba_harness", Builder.scubaHarness(ScubaType.YELLOW));
     public static final RegistryObject<ScubaFlippersItem> YELLOW_SCUBA_FLIPPERS = register("yellow_scuba_flippers", Builder.scubaFlippers(ScubaType.YELLOW));
+    
+    public static final RegistryObject<PonyBottleItem> YELLOW_PONY_BOTTLE = register("yellow_pony_bottle", Builder.item(PonyBottleItem::new, Builder.getDefaultProperties().maxStackSize(1).maxDamage(32)));
 
     public static final RegistryObject<Item> WATER_WAND = register(
             "water_wand", () -> new WaterWandItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1).maxDamage(2000)));

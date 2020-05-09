@@ -117,7 +117,7 @@ public class Builder {
         return item(p -> new SwordItem(tier, 3, -3.0f, getDefaultProperties()));
     }
 
-    private static Item.Properties getDefaultProperties() {
+    public static Item.Properties getDefaultProperties() {
         return new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP);
     }
 

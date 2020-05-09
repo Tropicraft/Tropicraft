@@ -1,5 +1,9 @@
 package net.tropicraft.core.client.data;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -19,10 +23,6 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class TropicraftLangProvider extends LanguageProvider {
 
@@ -318,6 +318,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.YELLOW_SCUBA_GOGGLES);
         addItem(TropicraftItems.YELLOW_SCUBA_HARNESS);
         addItem(TropicraftItems.YELLOW_SCUBA_FLIPPERS);
+        
+        addItem(TropicraftItems.YELLOW_PONY_BOTTLE);
 
         // ENTITIES
         

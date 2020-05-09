@@ -322,6 +322,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.YELLOW_SCUBA_GOGGLES);
         generated(TropicraftItems.YELLOW_SCUBA_HARNESS);
         generated(TropicraftItems.YELLOW_SCUBA_FLIPPERS);
+        
+        generated(TropicraftItems.YELLOW_PONY_BOTTLE);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {
