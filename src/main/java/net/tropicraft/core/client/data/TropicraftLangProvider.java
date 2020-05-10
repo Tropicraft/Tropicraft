@@ -318,8 +318,12 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.YELLOW_SCUBA_GOGGLES);
         addItem(TropicraftItems.YELLOW_SCUBA_HARNESS);
         addItem(TropicraftItems.YELLOW_SCUBA_FLIPPERS);
+        addItem(TropicraftItems.PINK_SCUBA_GOGGLES);
+        addItem(TropicraftItems.PINK_SCUBA_HARNESS);
+        addItem(TropicraftItems.PINK_SCUBA_FLIPPERS);
         
         addItem(TropicraftItems.YELLOW_PONY_BOTTLE);
+        addItem(TropicraftItems.PINK_PONY_BOTTLE);
 
         // ENTITIES
         
