@@ -123,6 +123,11 @@ public class TropicraftDimension extends Dimension {
     public float getCloudHeight() {
         return 192;
     }
+    
+    @Override
+    public int getSeaLevel() {
+        return 127; // TODO don't hardcode this both here and TropicraftChunkGenerator
+    }
 
     /**
      * Return Vec3D with biome specific fog color
