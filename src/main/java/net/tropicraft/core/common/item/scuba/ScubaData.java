@@ -12,11 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -100,6 +103,16 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
                         d.tick((ServerPlayerEntity) event.player);
                     });
                     ((ScubaArmorItem)chestItem).tickAir((ServerPlayerEntity) event.player, EquipmentSlotType.CHEST, chestStack);
+                    if (world.getGameTime() % 60 == 0) {
+                        // TODO this effect could be better, custom packet?
+                        Vec3d eyePos = event.player.getEyePosition(0);
+                        Vec3d motion = event.player.getMotion();
+                        Vec3d particlePos = eyePos.add(motion.inverse());
+                        ((ServerWorld) world).spawnParticle(ParticleTypes.BUBBLE,
+                                particlePos.getX(), particlePos.getY(), particlePos.getZ(),
+                                4 + world.rand.nextInt(3),
+                                0.25, 0.25, 0.25, motion.length());
+                    }
                 }
             }
         }
