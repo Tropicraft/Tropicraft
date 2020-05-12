@@ -58,7 +58,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
     }
 
     // Cache vectors for this structure to avoid redoing work
-    private static final WeakHashMap<PlacementSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>();
+    private static final WeakHashMap<PlacementSettings, List<PathVector>> VECTOR_CACHE = new WeakHashMap<>(); 
 
     protected @Nullable Axis getPathDirection(BlockPos seedPos, BlockInfo current, PlacementSettings settings, Template template) {
         /*
