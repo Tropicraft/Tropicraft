@@ -5,6 +5,9 @@
     "minecraft:stone_sword",
     "minecraft:iron_sword",
     "minecraft:golden_sword",
-    "minecraft:diamond_sword"
+    "minecraft:diamond_sword",
+    "tropicraft:eudialyte_sword",
+    "tropicraft:zircon_sword",
+    "tropicraft:zirconium_sword"
   ]
 }
