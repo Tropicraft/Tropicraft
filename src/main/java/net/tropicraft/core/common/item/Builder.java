@@ -21,6 +21,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
+import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
@@ -82,7 +83,11 @@ public class Builder {
     }
 
     public static Supplier<CocktailItem> cocktail(final Drink drink) {
-        return item(p -> new CocktailItem(drink, p), () -> getDefaultProperties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
+        return item(p -> {
+            CocktailItem ret = new CocktailItem(drink, p);
+            MixerRecipes.setDrinkItem(drink, ret);
+            return ret;
+        }, () -> getDefaultProperties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
     }
 
     public static Supplier<AshenMaskItem> mask(final AshenMasks mask) {

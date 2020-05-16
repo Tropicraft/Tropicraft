@@ -38,7 +38,7 @@ public class Drinks {
 
         for (final MixerRecipe recipe : recipes) {
             for (Ingredient i : recipe.getIngredients()) {
-                if (ItemStack.areItemStacksEqual(i.getIngredient(), item)) {
+                if (i.getIngredientItem() == item.getItem()) {
                     return true;
                 }
             }
@@ -57,7 +57,7 @@ public class Drinks {
 
             for (Ingredient recipeIngredient : recipe.getIngredients()) {
                 for (ItemStack mixerIngredient : ingredients) {
-                    if (ItemStack.areItemStacksEqual(recipeIngredient.getIngredient(), mixerIngredient)) {
+                    if (recipeIngredient.getIngredientItem() == mixerIngredient.getItem()) {
                         validIngredientsFound++;
                         break;
                     }
@@ -66,7 +66,7 @@ public class Drinks {
 
             // If mixer ingredients match those of a valid recipe, we have a proper result
             // Make sure to only count valid ingredients (non-empty) when getting size
-            if (validIngredientsFound == ingredients.stream().filter(i -> !i.isEmpty()).count()) {
+            if (validIngredientsFound == recipe.getIngredients().length) {
                 return CocktailItem.makeCocktail(recipe);
             }
         }

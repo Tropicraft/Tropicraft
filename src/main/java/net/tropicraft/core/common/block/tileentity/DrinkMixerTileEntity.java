@@ -99,31 +99,14 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 	public NonNullList<ItemStack> getIngredients() {
 		return this.ingredients;
 	}
-
-	private static Ingredient findMatchingIngredient(@Nonnull ItemStack stack) {
-	    if (stack.isEmpty()) {
-	    	return null;
-		}
-
-		for (Ingredient ingredient: Ingredient.ingredientsList) {
-			if (ingredient == null) {
-				continue;
-			}
-			if (ItemStack.areItemStacksEqual(ingredient.getIngredient(), stack)) {
-				return ingredient;
-			}
-		}
-
-		return null;
-	}
-
+	
 	public static List<Ingredient> listIngredients(@Nonnull ItemStack stack) {
 		List<Ingredient> is = new ArrayList<>();
 
 		if (Drink.isDrink(stack.getItem())) {
 			Collections.addAll(is, CocktailItem.getIngredients(stack));
 		} else {
-			final Ingredient i = findMatchingIngredient(stack);
+			final Ingredient i = Ingredient.findMatchingIngredient(stack);
 			if (i != null) {
 			    is.add(i);
 			}
@@ -197,7 +180,7 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 	public boolean addToMixer(@Nonnull ItemStack ingredient) {
 		if (ingredients.get(0).isEmpty()) {
 			if (!Drink.isDrink(ingredient.getItem())) {
-				Ingredient i = findMatchingIngredient(ingredient);
+				Ingredient i = Ingredient.findMatchingIngredient(ingredient);
 				// Ordinarily we check for primary here, but I don't think that feature
 				// is as relevant anymore. Will leave it here just in case!
 				if (i == null/* || !i.isPrimary()*/) {
@@ -214,8 +197,8 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 				return false;
 			}
 
-			Ingredient ing0 = findMatchingIngredient(ingredients.get(0));
-			Ingredient i = findMatchingIngredient(ingredient);
+			Ingredient ing0 = Ingredient.findMatchingIngredient(ingredients.get(0));
+			Ingredient i = Ingredient.findMatchingIngredient(ingredient);
 
 			// See above comment about isPrimary()
 			if (i == null/* || i.isPrimary()*/ || ing0.id == i.id) {
@@ -232,9 +215,9 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 				return false;
 			}
 
-			Ingredient ing0 = findMatchingIngredient(ingredients.get(0));
-			Ingredient ing1 = findMatchingIngredient(ingredients.get(1));
-			Ingredient i = findMatchingIngredient(ingredient);
+			Ingredient ing0 = Ingredient.findMatchingIngredient(ingredients.get(0));
+			Ingredient ing1 = Ingredient.findMatchingIngredient(ingredients.get(1));
+			Ingredient i = Ingredient.findMatchingIngredient(ingredient);
 
 			// See above comment about isPrimary()
 			if (i == null/* || i.isPrimary()*/ || ing0.id == i.id || ing1.id == i.id) {
