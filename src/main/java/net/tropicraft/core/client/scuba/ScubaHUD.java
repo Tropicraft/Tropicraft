@@ -53,7 +53,7 @@ public class ScubaHUD {
                 if (depth > 0) {
                     depthStr = String.format("%.1fm", depth); 
                 } else {
-                    depthStr = "N/A"; // TODO translate
+                    depthStr = TropicraftLangKeys.NA.getLocalizedText();
                 }
                 data.ifPresent(d -> drawHUDStrings(
                     TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + DurationFormatUtils.formatDuration(airRemaining * (1000 / 20), "HH:mm:ss")),

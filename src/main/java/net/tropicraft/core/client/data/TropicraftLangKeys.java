@@ -6,6 +6,8 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.Util;
 
 public enum TropicraftLangKeys {
+    
+    NA("general", "na", "N/A"),
 
     SCUBA_AIR_TIME("scuba", "air_time", "Air Remaining: %s"),
     SCUBA_DIVE_TIME("scuba", "dive_time", "Dive Time: %s"),
