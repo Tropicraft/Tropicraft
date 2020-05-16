@@ -44,7 +44,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
 
     @Override
     public void tickAir(PlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
-        if (player.world.isRemote) return;
+        if (player.world.isRemote || player.abilities.isCreativeMode) return;
         CompoundNBT scubaData = stack.getOrCreateChildTag("scuba");
         int remaining = getRemainingAir(stack);
         if (remaining > 0) {
