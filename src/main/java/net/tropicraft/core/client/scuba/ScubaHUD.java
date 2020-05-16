@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.scuba;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import net.minecraft.client.MainWindow;
@@ -12,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -38,16 +41,7 @@ public class ScubaHUD {
             if (chestItem instanceof ScubaArmorItem) {
                 LazyOptional<ScubaData> data = player.getCapability(ScubaData.CAPABILITY);
                 int airRemaining = ((ScubaArmorItem)chestItem).getRemainingAir(chestStack);
-                TextFormatting airColor;
-                if (airRemaining < 20 * 60) { // 1 minute
-                    // Flash white/red
-                    int speed = airRemaining < 20 * 10 ? 5 : 10;
-                    airColor = (player.world.getGameTime() / speed) % 4 == 0 ? TextFormatting.WHITE : TextFormatting.RED;
-                } else if (airRemaining < 20 * 60 * 5) { // 5 minutes
-                    airColor = TextFormatting.GOLD;
-                } else {
-                    airColor = TextFormatting.GREEN;
-                }
+                TextFormatting airColor = getAirTimeColor(airRemaining, player.world);
                 double depth = ScubaData.getDepth(player);
                 String depthStr;
                 if (depth > 0) {
@@ -56,11 +50,27 @@ public class ScubaHUD {
                     depthStr = TropicraftLangKeys.NA.getLocalizedText();
                 }
                 data.ifPresent(d -> drawHUDStrings(
-                    TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + DurationFormatUtils.formatDuration(airRemaining * (1000 / 20), "HH:mm:ss")),
-                    TropicraftLangKeys.SCUBA_DIVE_TIME.format(DurationFormatUtils.formatDuration(d.getDiveTime() * (1000 / 20), "HH:mm:ss")),
+                    TropicraftLangKeys.SCUBA_AIR_TIME.format(airColor + formatTime(airRemaining)),
+                    TropicraftLangKeys.SCUBA_DIVE_TIME.format(formatTime(d.getDiveTime())),
                     TropicraftLangKeys.SCUBA_DEPTH.format(depthStr),
                     TropicraftLangKeys.SCUBA_MAX_DEPTH.format(String.format("%.1fm", d.getMaxDepth()))));
             }
+        }
+    }
+    
+    public static String formatTime(long time) {
+        return DurationFormatUtils.formatDuration(time * (1000 / 20), "HH:mm:ss");
+    }
+    
+    public static TextFormatting getAirTimeColor(int airRemaining, @Nullable World world) {
+        if (airRemaining < 20 * 60) { // 1 minute
+            // Flash white/red
+            int speed = airRemaining < 20 * 10 ? 5 : 10;
+            return world != null && (world.getGameTime() / speed) % 4 == 0 ? TextFormatting.WHITE : TextFormatting.RED;
+        } else if (airRemaining < 20 * 60 * 5) { // 5 minutes
+            return TextFormatting.GOLD;
+        } else {
+            return TextFormatting.GREEN;
         }
     }
     

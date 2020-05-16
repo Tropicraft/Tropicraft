@@ -13,9 +13,15 @@ public enum TropicraftLangKeys {
     SCUBA_DIVE_TIME("scuba", "dive_time", "Dive Time: %s"),
     SCUBA_DEPTH("scuba", "depth", "Current Depth: %s"),
     SCUBA_MAX_DEPTH("scuba", "max_depth", "Max Depth: %s"),
+    SCUBA_VISIBILITY_STAT("scuba", "scuba.visibility", "Underwater Fog Reduction") {
+        @Override
+        protected void register(TropicraftLangProvider prov) {
+            prov.add("attribute.name." + key, value);
+        }
+    }
     ;
 
-    private final String key, value;
+    protected final String key, value;
     private final TranslationTextComponent component;
 
     private TropicraftLangKeys(String type, String key) {
@@ -43,10 +49,14 @@ public enum TropicraftLangKeys {
     public String getLocalizedText() {
         return getComponent().getFormattedText();
     }
+    
+    protected void register(TropicraftLangProvider prov) {
+        prov.add(key, value);
+    }
 
     public static void generate(TropicraftLangProvider prov) {
         for (TropicraftLangKeys lang : values()) {
-            prov.add(lang.key, lang.value);
+            lang.register(prov);
         }
     }
 }

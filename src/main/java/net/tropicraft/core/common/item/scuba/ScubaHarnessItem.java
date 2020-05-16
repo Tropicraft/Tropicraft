@@ -1,20 +1,40 @@
 package net.tropicraft.core.common.item.scuba;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.data.TropicraftLangKeys;
+import net.tropicraft.core.client.scuba.ScubaHUD;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE)
 public class ScubaHarnessItem extends ScubaArmorItem {
 
     public ScubaHarnessItem(ScubaType type, Properties properties) {
         super(type, EquipmentSlotType.CHEST, properties);
+    }
+    
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        int airRemaining = getRemainingAir(stack);
+        tooltip.add(TropicraftLangKeys.SCUBA_AIR_TIME
+                .format(new StringTextComponent(ScubaHUD.formatTime(airRemaining))
+                        .applyTextStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
+                .applyTextStyle(TextFormatting.GRAY));
     }
 
     @Override

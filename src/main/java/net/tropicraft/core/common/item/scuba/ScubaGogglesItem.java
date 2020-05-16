@@ -1,5 +1,8 @@
 package net.tropicraft.core.common.item.scuba;
 
+import java.util.UUID;
+
+import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.Minecraft;
@@ -8,6 +11,10 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -24,11 +31,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.data.TropicraftLangKeys;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
 
     private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = new ResourceLocation(Constants.MODID, "textures/gui/goggles.png");
+    
+    // This is never registered to any entities, so it's not used in any logic
+    // Just here for the nice tooltip
+    private static final Attribute UNDERWATER_VISIBILITY = new RangedAttribute(null, TropicraftLangKeys.SCUBA_VISIBILITY_STAT.getKey(), 0, -1, 1);
+    private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(UUID.fromString("b09a907f-8264-455b-af81-997c06aa2268"), Constants.MODID + ".underwater.visibility", 0.25, Operation.MULTIPLY_BASE);
 
     public ScubaGogglesItem(ScubaType type, Properties builder) {
         super(type, EquipmentSlotType.HEAD, builder);
@@ -84,5 +97,14 @@ public class ScubaGogglesItem extends ScubaArmorItem {
                 event.setCanceled(true);
             }
         }
+    }
+    
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> ret = super.getAttributeModifiers(slot, stack);
+        if (slot == EquipmentSlotType.HEAD) {
+            ret.put(UNDERWATER_VISIBILITY.getName(), VISIBILITY_BOOST);
+        }
+        return ret;
     }
 }
