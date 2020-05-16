@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
@@ -48,12 +49,12 @@ public class TropicraftItems {
     public static final RegistryObject<Item> MANGANESE = register("manganese_ingot", Builder.item());
     public static final RegistryObject<Item> ZIRCONIUM = register("zirconium_gem", Builder.item());
     
-    public static final Map<DyeColor, RegistryObject<FurnitureItem<UmbrellaEntity>>> UMBRELLAS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
-            .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c)))));
-    public static final Map<DyeColor, RegistryObject<FurnitureItem<ChairEntity>>> CHAIRS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
-            .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_chair", Builder.chair(c)))));
-    public static final Map<DyeColor, RegistryObject<FurnitureItem<BeachFloatEntity>>> BEACH_FLOATS = ImmutableMap.copyOf(Arrays.stream(DyeColor.values())
-            .collect(Collectors.toMap(Function.identity(), c -> register(c.getName() + "_beach_float", Builder.beachFloat(c)))));
+    public static final Map<DyeColor, RegistryObject<FurnitureItem<UmbrellaEntity>>> UMBRELLAS = Arrays.stream(DyeColor.values())
+            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c))));
+    public static final Map<DyeColor, RegistryObject<FurnitureItem<ChairEntity>>> CHAIRS = Arrays.stream(DyeColor.values())
+            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getName() + "_chair", Builder.chair(c))));
+    public static final Map<DyeColor, RegistryObject<FurnitureItem<BeachFloatEntity>>> BEACH_FLOATS = Arrays.stream(DyeColor.values())
+            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getName() + "_beach_float", Builder.beachFloat(c))));
     
     public static final RegistryObject<Item> BAMBOO_STICK = register("bamboo_stick", Builder.item());
 
@@ -108,8 +109,8 @@ public class TropicraftItems {
     public static final RegistryObject<Item> BAMBOO_ITEM_FRAME = register(
             "bamboo_item_frame", () -> new BambooItemFrameItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
     
-    public static final ImmutableMap<RecordMusic, RegistryObject<TropicalMusicDiscItem>> MUSIC_DISCS = ImmutableMap.copyOf(Arrays.stream(RecordMusic.values())
-            .collect(Collectors.toMap(Function.identity(), type -> register("music_disc_" + type.name().toLowerCase(Locale.ROOT), Builder.musicDisc(type)))));
+    public static final ImmutableMap<RecordMusic, RegistryObject<TropicalMusicDiscItem>> MUSIC_DISCS = Arrays.stream(RecordMusic.values())
+            .collect(Maps.toImmutableEnumMap(Function.identity(), type -> register("music_disc_" + type.name().toLowerCase(Locale.ROOT), Builder.musicDisc(type))));
 
     public static final RegistryObject<Item> TROPICAL_FISH_BUCKET = register("tropical_fish_bucket", Builder.fishBucket(TropicraftEntities.TROPICAL_FISH));
     public static final RegistryObject<Item> SARDINE_BUCKET = register("sardine_bucket", Builder.fishBucket(TropicraftEntities.RIVER_SARDINE));
@@ -136,8 +137,8 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ASHEN_SPAWN_EGG = register("ashen_spawn_egg", Builder.spawnEgg(TropicraftEntities.ASHEN));
     public static final RegistryObject<Item> HAMMERHEAD_SPAWN_EGG = register("hammerhead_spawn_egg", Builder.spawnEgg(TropicraftEntities.HAMMERHEAD));
 
-    public static final ImmutableMap<AshenMasks, RegistryObject<AshenMaskItem>> ASHEN_MASKS = ImmutableMap.copyOf(Arrays.stream(AshenMasks.values())
-            .collect(Collectors.toMap(Function.identity(), type -> register("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), Builder.mask(type)))));
+    public static final ImmutableMap<AshenMasks, RegistryObject<AshenMaskItem>> ASHEN_MASKS = Arrays.stream(AshenMasks.values())
+            .collect(Maps.toImmutableEnumMap(Function.identity(), type -> register("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), Builder.mask(type))));
 
     public static final RegistryObject<Item> DAGGER = register(
             "dagger", () -> new DaggerItem(TropicraftToolTiers.ZIRCON, new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1)));

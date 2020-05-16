@@ -1,18 +1,18 @@
 {
   "replace": false,
   "values": [
-    "tropicraft:ashen_mask_ashen_mask5",
-    "tropicraft:ashen_mask_screw_attack",
+    "tropicraft:ashen_mask_square_zord",
+    "tropicraft:ashen_mask_horn_monkey",
     "tropicraft:ashen_mask_oblongatron",
-    "tropicraft:ashen_mask_ashen_mask1",
+    "tropicraft:ashen_mask_headinator",
     "tropicraft:ashen_mask_square_horn",
-    "tropicraft:ashen_mask_ashen_mask3",
+    "tropicraft:ashen_mask_screw_attack",
     "tropicraft:ashen_mask_the_brain",
     "tropicraft:ashen_mask_bat_boy",
+    "tropicraft:ashen_mask_ashen_mask1",
     "tropicraft:ashen_mask_ashen_mask2",
-    "tropicraft:ashen_mask_square_zord",
+    "tropicraft:ashen_mask_ashen_mask3",
     "tropicraft:ashen_mask_ashen_mask4",
-    "tropicraft:ashen_mask_headinator",
-    "tropicraft:ashen_mask_horn_monkey"
+    "tropicraft:ashen_mask_ashen_mask5"
   ]
 }
