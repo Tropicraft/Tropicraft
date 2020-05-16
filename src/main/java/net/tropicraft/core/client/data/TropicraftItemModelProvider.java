@@ -149,6 +149,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.SIFTER);
         withExistingParent(name(TropicraftBlocks.DRINK_MIXER), modLoc("item/tall_machine"))
             .texture("particle", modLoc("block/chunk"));
+        withExistingParent(name(TropicraftBlocks.AIR_COMPRESSOR), modLoc("item/tall_machine"))
+            .texture("particle", modLoc("block/chunk"));
         
         generated(TropicraftBlocks.TIKI_TORCH);
         
@@ -315,6 +317,17 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.SCALE_CHESTPLATE);
         generated(TropicraftItems.SCALE_HELMET);
         generated(TropicraftItems.SCALE_LEGGINGS);
+        
+        // Scuba
+        generated(TropicraftItems.YELLOW_SCUBA_GOGGLES);
+        generated(TropicraftItems.YELLOW_SCUBA_HARNESS);
+        generated(TropicraftItems.YELLOW_SCUBA_FLIPPERS);
+        generated(TropicraftItems.PINK_SCUBA_GOGGLES);
+        generated(TropicraftItems.PINK_SCUBA_HARNESS);
+        generated(TropicraftItems.PINK_SCUBA_FLIPPERS);
+        
+        generated(TropicraftItems.YELLOW_PONY_BOTTLE);
+        generated(TropicraftItems.PINK_PONY_BOTTLE);
     }
     
     private String name(Supplier<? extends IItemProvider> item) {

@@ -196,7 +196,8 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         noModelBlock(TropicraftBlocks.BAMBOO_CHEST, modBlockLoc("bamboo_side"));
         simpleBlock(TropicraftBlocks.SIFTER);
         noModelBlock(TropicraftBlocks.DRINK_MIXER, blockTexture(TropicraftBlocks.CHUNK));
-        
+        noModelBlock(TropicraftBlocks.AIR_COMPRESSOR, blockTexture(TropicraftBlocks.CHUNK));
+
         simpleBlock(TropicraftBlocks.VOLCANO, getExistingFile(mcLoc("block/bedrock")));
         
         ModelFile tikiLower = torch("tiki_torch_lower", modBlockLoc("tiki_torch_lower"));

@@ -19,6 +19,16 @@
       
 <!-- I apologize for the HTML but it looks so pretty :) -->
 
+Credits
+=======
+
+Scuba ambience sampled from sounds by:
+
+- [Carmsie](https://freesound.org/people/carmsie/) ([CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/))
+- [YoloSwaggings](https://freesound.org/people/YoloSwaggings/) ([CC-0 1.0](https://creativecommons.org/publicdomain/zero/1.0/))
+- [davi-sh](https://freesound.org/people/davi-sh/) ([CC-0 1.0](http://creativecommons.org/publicdomain/zero/1.0/))
+- [DCSFX](https://freesound.org/people/DCSFX/) ([CC-0 1.0](http://creativecommons.org/publicdomain/zero/1.0/))
+
 FAQ
 ===
 **How do I contact the team?**   

@@ -1,9 +1,14 @@
 package net.tropicraft.core.client.data;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.IItemProvider;
@@ -18,10 +23,6 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class TropicraftLangProvider extends LanguageProvider {
 
@@ -161,6 +162,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         add(Constants.MODID + ".container.bambooChestDouble", "Large Bamboo Chest");
         addBlockWithTooltip(TropicraftBlocks.SIFTER, "Place any type of tropics or regular sand in the sifter. What treasures are hidden inside?");
         addBlockWithTooltip(TropicraftBlocks.DRINK_MIXER, "Place two drink ingredients on the mixer, then place an empty mug on the base, then ???, then enjoy!");
+        addBlockWithTooltip(TropicraftBlocks.AIR_COMPRESSOR, "Place an empty scuba harness in the compressor to fill it with air!");
 
         addBlock(TropicraftBlocks.VOLCANO);
 
@@ -312,6 +314,17 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.SCALE_HELMET);
         addItem(TropicraftItems.SCALE_LEGGINGS);
         
+        // Scuba
+        addItem(TropicraftItems.YELLOW_SCUBA_GOGGLES);
+        addItem(TropicraftItems.YELLOW_SCUBA_HARNESS);
+        addItem(TropicraftItems.YELLOW_SCUBA_FLIPPERS);
+        addItem(TropicraftItems.PINK_SCUBA_GOGGLES);
+        addItem(TropicraftItems.PINK_SCUBA_HARNESS);
+        addItem(TropicraftItems.PINK_SCUBA_FLIPPERS);
+        
+        addItem(TropicraftItems.YELLOW_PONY_BOTTLE);
+        addItem(TropicraftItems.PINK_PONY_BOTTLE);
+
         // ENTITIES
         
         addEntityType(TropicraftEntities.KOA_HUNTER, "Koa");
@@ -361,6 +374,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         // MISC
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
+        add("attribute.name." + LivingEntity.SWIM_SPEED.getName(), "Swim Speed");
+        
+        TropicraftLangKeys.generate(this);
     }
     
     private String getAutomaticName(Supplier<? extends IForgeRegistryEntry<?>> sup) {

@@ -1,12 +1,10 @@
 package net.tropicraft;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.data.DataGenerator;
@@ -24,7 +22,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -37,11 +34,13 @@ import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
 import net.tropicraft.core.client.data.TropicraftItemModelProvider;
 import net.tropicraft.core.client.data.TropicraftLangProvider;
 import net.tropicraft.core.client.entity.render.*;
+import net.tropicraft.core.client.tileentity.AirCompressorRenderer;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
 import net.tropicraft.core.client.tileentity.SifterRenderer;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
+import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
@@ -73,12 +72,26 @@ import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.placeable.*;
+import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
-import net.tropicraft.core.common.entity.underdasea.*;
+import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
+import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
+import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
+import net.tropicraft.core.common.entity.underdasea.SardineEntity;
+import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
+import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
+import net.tropicraft.core.common.entity.underdasea.SharkEntity;
+import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
+import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.entity.underdasea.TropicraftTropicalFishEntity;
 import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.TropicraftItems;
+import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.network.TropicraftPackets;
 
 @Mod(Constants.MODID)
@@ -167,6 +180,7 @@ public class Tropicraft
         ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(DrinkMixerTileEntity.class, new DrinkMixerRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(AirCompressorTileEntity.class, new AirCompressorRenderer());
     }
     
     @OnlyIn(Dist.CLIENT)
@@ -183,6 +197,7 @@ public class Tropicraft
     private void setup(final FMLCommonSetupEvent event) {
         TropicraftPackets.init();
         TropicraftBiomes.addFeatures();
+        ScubaData.registerCapability();
     }
     
     private void onServerStarting(final FMLServerStartingEvent event) {

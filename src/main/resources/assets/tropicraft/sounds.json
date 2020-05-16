@@ -14,7 +14,21 @@
 	"bongo.high": { "category": "block", "sounds": [ "tropicraft:bongohigh" ] },
 	"dolphin": { "category": "entity", "sounds": [ "tropicraft:dolphin" ] },
 	"frogspit": { "category":  "hostile", "sounds":  [ "tropicraft:frogspit" ]},
-
+	
+	"scuba.shallow": { "category": "ambient", "sounds": [
+			{
+				"name": "tropicraft:ambient/scuba/scuba_shallow_short",
+				"preload": true
+			}
+		]
+	},
+    "scuba.deep": { "category": "ambient", "sounds": [
+			{
+				"name": "tropicraft:ambient/scuba/scuba_deep_short",
+				"preload": true
+			}
+		]
+	},
 
 	"summering": { "category": "record", "sounds": [
 			{

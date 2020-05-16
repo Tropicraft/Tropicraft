@@ -181,7 +181,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.BAMBOO_CHEST);
             dropsSelf(TropicraftBlocks.SIFTER);
             dropsSelf(TropicraftBlocks.DRINK_MIXER);
-                        
+            dropsSelf(TropicraftBlocks.AIR_COMPRESSOR);
+
             registerLootTable(TropicraftBlocks.TIKI_TORCH.get(), b -> droppingWhen(b, TikiTorchBlock.SECTION, TikiTorchBlock.TorchSection.UPPER));
             
             registerLootTable(TropicraftBlocks.COCONUT.get(), b -> droppingChunks(b, TropicraftItems.COCONUT_CHUNK));
