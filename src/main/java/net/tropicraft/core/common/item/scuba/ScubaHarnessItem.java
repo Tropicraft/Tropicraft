@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item.scuba;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,8 @@ public class ScubaHarnessItem extends ScubaArmorItem {
     }
 
     @Override
-    public void tickAir(ServerPlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
+    public void tickAir(PlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
+        if (player.world.isRemote) return;
         CompoundNBT scubaData = stack.getOrCreateChildTag("scuba");
         int remaining = getRemainingAir(stack);
         if (remaining > 0) {

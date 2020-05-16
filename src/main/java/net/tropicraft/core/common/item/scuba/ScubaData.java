@@ -1,5 +1,9 @@
 package net.tropicraft.core.common.item.scuba;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -32,6 +36,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -89,21 +97,29 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
         }
     }
     
+    private static final Set<ServerPlayerEntity> underwaterPlayers = Collections.newSetFromMap(new WeakHashMap<>());
+    
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
         World world = event.player.world;
-        if (event.phase == Phase.END && !world.isRemote) {
+        if (event.phase == Phase.END) {
             // TODO support more than chest slot?
             ItemStack chestStack = event.player.getItemStackFromSlot(EquipmentSlotType.CHEST);
             Item chestItem = chestStack.getItem();
             if (chestItem instanceof ScubaArmorItem) {
                 LazyOptional<ScubaData> data = event.player.getCapability(CAPABILITY);
+                if (!world.isRemote) {
+                    underwaterPlayers.add((ServerPlayerEntity) event.player);
+                }
                 if (isUnderWater(event.player)) {
                     data.ifPresent(d -> {
-                        d.tick((ServerPlayerEntity) event.player);
+                        d.tick(event.player);
+                        if (!world.isRemote) {
+                            d.updateClient((ServerPlayerEntity) event.player, false);
+                        }
                     });
-                    ((ScubaArmorItem)chestItem).tickAir((ServerPlayerEntity) event.player, EquipmentSlotType.CHEST, chestStack);
-                    if (world.getGameTime() % 60 == 0) {
+                    ((ScubaArmorItem)chestItem).tickAir(event.player, EquipmentSlotType.CHEST, chestStack);
+                    if (!world.isRemote && world.getGameTime() % 60 == 0) {
                         // TODO this effect could be better, custom packet?
                         Vec3d eyePos = event.player.getEyePosition(0);
                         Vec3d motion = event.player.getMotion();
@@ -113,8 +129,40 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
                                 4 + world.rand.nextInt(3),
                                 0.25, 0.25, 0.25, motion.length());
                     }
+                } else if (!world.isRemote && underwaterPlayers.remove(event.player)) { // Update client state as they leave the water
+                    data.ifPresent(d -> d.updateClient((ServerPlayerEntity) event.player, false));
                 }
             }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            event.getOriginal().getCapability(CAPABILITY).ifPresent(d -> {
+                event.getPlayer().getCapability(CAPABILITY).ifPresent(d2 -> d2.copyFrom(d));
+            });
+        }
+    }
+    
+    @SubscribeEvent 
+    public static void onPlayerRespawn(PlayerRespawnEvent event) {
+        updateClient(event);
+    }
+    
+    @SubscribeEvent
+    public static void onPlayerLogIn(PlayerLoggedInEvent event) {
+        updateClient(event);
+    }
+    
+    @SubscribeEvent
+    public static void onPlayerChangeDimension(PlayerChangedDimensionEvent event) {
+        updateClient(event);
+    }
+    
+    private static void updateClient(PlayerEvent event) {
+        if (!event.getPlayer().world.isRemote) {
+            event.getPlayer().getCapability(CAPABILITY).ifPresent(d -> d.updateClient((ServerPlayerEntity) event.getPlayer(), true));
         }
     }
 
@@ -137,11 +185,12 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
         return 0;
     }
     
-    void tick(ServerPlayerEntity player) {
+    void tick(PlayerEntity player) {
         this.diveTime++;
-        dirty = true;
+        if (player.world.getGameTime() % 100 == 0) {
+            dirty = true;
+        }
         updateMaxDepth(getDepth(player));
-        updateClient(player);
     }
 
     public long getDiveTime() {
@@ -151,7 +200,6 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     void updateMaxDepth(double depth) {
         if (depth > maxDepth) {
             this.maxDepth = depth;
-            dirty = true;
         }
     }
 
@@ -159,8 +207,8 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
         return maxDepth;
     }
     
-    void updateClient(ServerPlayerEntity target) {
-        if (dirty) {
+    void updateClient(ServerPlayerEntity target, boolean force) {
+        if (dirty || force) {
             TropicraftPackets.INSTANCE.send(PacketDistributor.PLAYER.with(() -> target), new MessageUpdateScubaData(this));
         }
     }
