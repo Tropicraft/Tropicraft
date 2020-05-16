@@ -1,8 +1,5 @@
 package net.tropicraft.core.common.dimension;
 
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
-
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -23,6 +20,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
+
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class TropicraftWorldUtils {
     
@@ -100,8 +100,8 @@ public class TropicraftWorldUtils {
 
         ServerWorld serverworld = player.server.getWorld(destination);
 
-        int posX = MathHelper.floor(player.posX);
-        int posZ = MathHelper.floor(player.posZ);
+        int posX = MathHelper.floor(player.getPosX());
+        int posZ = MathHelper.floor(player.getPosZ());
 
         Chunk chunk = serverworld.getChunk(posX >> 4, posZ >> 4);
         int topY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, posX & 15, posZ & 15);

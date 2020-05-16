@@ -164,11 +164,6 @@ public class TikiTorchBlock extends Block {
     }
     
     @Override
-    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
-        return getLightValue(state);
-    }
-    
-    @Override
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }

@@ -258,18 +258,18 @@ public class TeleporterTropics extends Teleporter {
         System.out.println("Start make portal");
         int searchArea = 16;
         double closestSpot = -1D;
-        int entityX = MathHelper.floor(entity.posX);
-        int entityY = MathHelper.floor(entity.posY);
-        int entityZ = MathHelper.floor(entity.posZ);
+        int entityX = MathHelper.floor(entity.getPosX());
+        int entityY = MathHelper.floor(entity.getPosY());
+        int entityZ = MathHelper.floor(entity.getPosZ());
         int foundX = entityX;
         int foundY = entityY;
         int foundZ = entityZ;
 
         for (int x = entityX - searchArea; x <= entityX + searchArea; x++) {
-            double distX = (x + 0.5D) - entity.posX;
+            double distX = (x + 0.5D) - entity.getPosX();
             nextCoords:
                 for (int z = entityZ - searchArea; z <= entityZ + searchArea; z++) {
-                    double distZ = (z + 0.5D) - entity.posZ;
+                    double distZ = (z + 0.5D) - entity.getPosZ();
 
                     // Find topmost solid block at this x,z location
                     int y = world.getHeight() - 1;
@@ -304,7 +304,7 @@ public class TeleporterTropics extends Teleporter {
                             }
                         }
 
-                        double distY = (y + 0.5D) - entity.posY;
+                        double distY = (y + 0.5D) - entity.getPosY();
                         double distance = distX * distX + distY * distY + distZ * distZ;
                         if (closestSpot < 0.0D || distance < closestSpot)
                         {
@@ -522,7 +522,7 @@ public class TeleporterTropics extends Teleporter {
                 asupplier[0] = dimension::getType;
                 asupplier[1] = () -> columnpos;
                 logger.debug("Removing tropics portal ticket for {}:{}", asupplier);
-                this.world.getChunkProvider().func_217222_b(TicketType.PORTAL, new ChunkPos(position.pos), 3, columnpos);
+                this.world.getChunkProvider().registerTicket(TicketType.PORTAL, new ChunkPos(position.pos), 3, position.pos);
                 iterator.remove();
             }
         }

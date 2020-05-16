@@ -1,18 +1,18 @@
 package net.tropicraft.core.client.entity.model;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 
 public abstract class AbstractFishModel<T extends AbstractFishEntity> extends EntityModel<T> {
-    public RendererModel body;
-    public RendererModel tail;
+    public ModelRenderer body;
+    public ModelRenderer tail;
 
     public AbstractFishModel() {
-        body = new RendererModel(this);
+        body = new ModelRenderer(this);
         body.setRotationPoint(0F, 16F, 0F);
         body.addBox(0, 0, 0, 0, 1, 1);
-        tail = new RendererModel(this);
+        tail = new ModelRenderer(this);
         tail.setRotationPoint(0, 0, -1);
         tail.addBox(0, 0, 0, 0, 1, 1);
         body.addChild(tail);
