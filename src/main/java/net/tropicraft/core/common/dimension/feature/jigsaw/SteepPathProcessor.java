@@ -1,6 +1,5 @@
-package net.tropicraft.core.common.dimension.feature;
+package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.Dynamic;
 import com.mojang.datafixers.types.DynamicOps;
 
