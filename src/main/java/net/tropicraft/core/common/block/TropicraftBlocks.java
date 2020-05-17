@@ -1,19 +1,7 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
@@ -37,7 +25,6 @@ import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -51,6 +38,17 @@ import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TropicraftBlocks {
     
@@ -115,7 +113,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<StairsBlock> THATCH_STAIRS = register(
             "thatch_stairs", Builder.stairs(THATCH_BUNDLE));
     public static final RegistryObject<StairsBlock> THATCH_STAIRS_FUZZY = register(
-            "thatch_stairs_fuzzy", Builder.stairs(THATCH_BUNDLE, BlockRenderLayer.CUTOUT_MIPPED));
+            "thatch_stairs_fuzzy", Builder.stairs(THATCH_BUNDLE));
     public static final RegistryObject<StairsBlock> BAMBOO_STAIRS = register(
             "bamboo_stairs", Builder.stairs(BAMBOO_BUNDLE));
     public static final RegistryObject<StairsBlock> CHUNK_STAIRS = register(
@@ -272,7 +270,7 @@ public class TropicraftBlocks {
     }
 
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
-        return () -> new BlockItem(block.get(), new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).setTEISR(renderMethod));
+        return () -> new BlockItem(block.get(), new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).setISTER(renderMethod));
     }
 
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final ItemGroup itemGroup) {

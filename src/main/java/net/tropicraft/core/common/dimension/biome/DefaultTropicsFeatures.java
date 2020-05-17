@@ -6,8 +6,10 @@ import net.minecraft.block.SeaPickleBlock;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.blockplacer.DoublePlantBlockPlacer;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.BlockWithContextConfig;
-import net.minecraft.world.gen.feature.DoublePlantConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
@@ -22,6 +24,9 @@ import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
 public class DefaultTropicsFeatures {
+
+    public static final BlockClusterFeatureConfig IRIS_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(TropicraftBlocks.IRIS.get().getDefaultState()), new DoublePlantBlockPlacer())).tries(64).func_227317_b_().build();
+    public static final BlockClusterFeatureConfig PINEAPPLE_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(TropicraftBlocks.PINEAPPLE.get().getDefaultState()), new DoublePlantBlockPlacer())).tries(64).func_227317_b_().build();
     
     public static void addCarvers(Biome biome) {
         biome.addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TropicraftCarvers.CAVE.get(), new ProbabilityConfig(0.25F)));
@@ -72,15 +77,15 @@ public class DefaultTropicsFeatures {
     public static void addPalmTrees(Biome biome) {
         biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(0, 0.2F, 1))));
         biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.CURVED_PALM_TREE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(0, 0.2F, 1))));
-        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.LARGE_PALM_TREE.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.2F, 1)));
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.LARGE_PALM_TREE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(0, 0.2F, 1))));
     }
     
     public static void addTropicsFlowers(Biome biome) {
-        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.TROPICS_FLOWERS.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(12)));
-        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.DOUBLE_PLANT, new DoublePlantConfig(TropicraftBlocks.IRIS.get().getDefaultState()), Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.TROPICS_FLOWERS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(12))));
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(IRIS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(10))));
     }
     
     public static void addPineapples(Biome biome) {
-        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.DOUBLE_PLANT, new DoublePlantConfig(TropicraftBlocks.PINEAPPLE.get().getDefaultState()), Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(1)));
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(PINEAPPLE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(1))));
     }
 }

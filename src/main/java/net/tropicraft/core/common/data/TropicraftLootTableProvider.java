@@ -3,6 +3,7 @@ package net.tropicraft.core.common.data;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.DoublePlantBlock;
@@ -169,7 +170,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             // Misc remaining blocks
             doubleBlock(TropicraftBlocks.IRIS);
             registerLootTable(TropicraftBlocks.PINEAPPLE.get(), b -> droppingChunks(b, TropicraftItems.PINEAPPLE_CUBES,
-                    BlockStateProperty.builder(b).with(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER)));
+                BlockStateProperty.builder(b).fromProperties(
+                        StatePropertiesPredicate.Builder.newBuilder().withProp(
+                                DoublePlantBlock.HALF, DoubleBlockHalf.UPPER))));
             
             dropsSelf(TropicraftBlocks.SMALL_BONGO_DRUM);
             dropsSelf(TropicraftBlocks.MEDIUM_BONGO_DRUM);

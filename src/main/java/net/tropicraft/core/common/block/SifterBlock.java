@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -24,28 +24,28 @@ public class SifterBlock extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        final ItemStack stack = player.getHeldItem(hand);
+
+        final boolean isSandInHand = Block.getBlockFromItem(stack.getItem()).getMaterial(state) == Material.SAND;
+        if (!isSandInHand) {
+            return ActionResultType.PASS;
+        }
+
         if (!world.isRemote) {
-            final ItemStack stack = player.getHeldItem(hand);
-
             final SifterTileEntity sifter = (SifterTileEntity) world.getTileEntity(pos);
-
             if (sifter != null && !stack.isEmpty() && !sifter.isSifting()) {
                 // TODO use item tag
-                if (Block.getBlockFromItem(stack.getItem()).getMaterial(state) == Material.SAND) {
+                if (isSandInHand) {
                     sifter.addItemToSifter(stack.split(1));
                     sifter.startSifting();
+                    return ActionResultType.CONSUME;
                 }
             }
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     } // /o/ \o\ /o\ \o\ /o\ \o/ /o/ /o/ \o\ \o\ /o/ /o/ \o/ /o\ \o/ \o/ /o\ /o\ \o/ \o/ /o/ \o\o\o\o\o\o\o\o\o\ :D
-
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 
     @Nullable
     @Override

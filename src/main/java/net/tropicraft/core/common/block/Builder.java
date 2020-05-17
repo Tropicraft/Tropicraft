@@ -1,16 +1,10 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.RotatedPillarBlock;
@@ -22,12 +16,15 @@ import net.minecraft.block.WallBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Builder {
@@ -79,18 +76,9 @@ public class Builder {
     public static Supplier<LogBlock> log(final MaterialColor topColor, final MaterialColor sideColor) {
         return block(p -> new LogBlock(topColor, p), prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
-
-    public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source) {
-        return stairs(source, BlockRenderLayer.SOLID);
-    }
     
-    public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source, BlockRenderLayer layer) {
-        return block(p -> new StairsBlock(source.lazyMap(Block::getDefaultState), p) {
-            @Override
-            public BlockRenderLayer getRenderLayer() {
-                return layer;
-            }
-        }, lazyProp(source));
+    public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source) {
+        return block(p -> new StairsBlock(source.lazyMap(Block::getDefaultState), p), lazyProp(source));
     }
 
     public static Supplier<SlabBlock> slab(final Supplier<? extends Block> source) {

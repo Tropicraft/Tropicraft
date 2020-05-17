@@ -30,6 +30,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.tropicraft.core.client.BasicColorHandler;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
 import net.tropicraft.core.client.data.TropicraftItemModelProvider;
 import net.tropicraft.core.client.data.TropicraftLangProvider;
@@ -145,44 +146,13 @@ public class Tropicraft
     
     @OnlyIn(Dist.CLIENT)
     private void setupClient(final FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(EntityKoaHunter.class, KoaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropiCreeperEntity.class, TropiCreeperRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(IguanaEntity.class, IguanaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(UmbrellaEntity.class, UmbrellaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ChairEntity.class, ChairRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(BeachFloatEntity.class, BeachFloatRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropiSkellyEntity.class, TropiSkellyRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EIHEntity.class, EIHRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(WallItemEntity.class, WallItemRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(BambooItemFrame.class, BambooItemFrameRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SeaTurtleEntity.class, SeaTurtleRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(MarlinEntity.class, MarlinRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(FailgullEntity.class, FailgullRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftDolphinEntity.class, TropicraftDolphinRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SeahorseEntity.class, SeahorseRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TreeFrogEntity.class, TreeFrogRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PoisonBlotEntity.class, PoisonBlotRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SeaUrchinEntity.class, SeaUrchinRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SeaUrchinEggEntity.class, EggRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(StarfishEntity.class, StarfishRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(StarfishEggEntity.class, EggRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(VMonkeyEntity.class, VMonkeyRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PiranhaEntity.class, PiranhaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(SardineEntity.class, SardineRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftTropicalFishEntity.class, TropicraftTropicalFishRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EagleRayEntity.class, EagleRayRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropiSpiderEntity.class, TropiSpiderRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(AshenEntity.class, AshenRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(AshenMaskEntity.class, AshenMaskRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ExplodingCoconutEntity.class, manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(SharkEntity.class, SharkRenderer::new);
+        ClientSetup.setupBlockRenderLayers();
 
-        ClientRegistry.bindTileEntitySpecialRenderer(BambooChestTileEntity.class, new BambooChestRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(SifterTileEntity.class, new SifterRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(DrinkMixerTileEntity.class, new DrinkMixerRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(AirCompressorTileEntity.class, new AirCompressorRenderer());
+        ClientSetup.setupEntityRenderers(event);
+
+        setupTileEntityRenderers();
     }
-    
+
     @OnlyIn(Dist.CLIENT)
     private void registerItemColors(ColorHandlerEvent.Item evt) {
         BasicColorHandler basic = new BasicColorHandler();

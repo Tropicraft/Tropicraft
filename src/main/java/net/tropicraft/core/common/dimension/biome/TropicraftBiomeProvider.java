@@ -41,6 +41,7 @@ public class TropicraftBiomeProvider extends BiomeProvider {
     );
 
     public TropicraftBiomeProvider(final TropicraftBiomeProviderSettings settings) {
+        super();
         final WorldInfo info = settings.getWorldInfo();
         final TropicraftGeneratorSettings generatorSettings = settings.getGeneratorSettings();
         final Layer[] layers = TropicraftLayerUtil.buildTropicsProcedure(info.getSeed(), info.getGenerator(), generatorSettings);

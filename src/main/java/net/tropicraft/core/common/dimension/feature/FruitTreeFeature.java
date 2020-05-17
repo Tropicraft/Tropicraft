@@ -1,7 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.Dynamic;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -10,6 +9,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraftforge.common.IPlantable;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
@@ -21,21 +21,21 @@ import java.util.function.Supplier;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
-public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
+public class FruitTreeFeature extends AbstractTreeFeature<TreeFeatureConfig> {
 
 	private final Supplier<BlockState> WOOD_BLOCK = () -> Blocks.OAK_LOG.getDefaultState();
 	private final Supplier<BlockState> REGULAR_LEAF_BLOCK = () -> TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState();
 	private final Supplier<BlockState> FRUIT_LEAF_BLOCK;
 	private final Supplier<? extends IPlantable> sapling;
 
-	public <T extends Block & IPlantable> FruitTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49920_1_, boolean doBlockNofityOnPlace, Supplier<T> sapling, Supplier<BlockState> fruitLeaf) {
+	public <T extends Block & IPlantable> FruitTreeFeature(Function<Dynamic<?>, ? extends TreeFeatureConfig> p_i49920_1_, boolean doBlockNofityOnPlace, Supplier<T> sapling, Supplier<BlockState> fruitLeaf) {
 		super(p_i49920_1_, doBlockNofityOnPlace);
 		this.sapling = sapling;
 		FRUIT_LEAF_BLOCK = fruitLeaf;
 	}
 
 	@Override
-	protected boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader worldObj, Random rand, BlockPos pos, MutableBoundingBox bb) {
+	protected boolean place(IWorldGenerationReader worldObj, Random rand, BlockPos pos, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox bb, TreeFeatureConfig config) {
 		pos = pos.toImmutable();
 		int height = rand.nextInt(3) + 4;
 
@@ -89,4 +89,5 @@ public class FruitTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
 	protected IPlantable getSapling() {
 	    return sapling.get();
 	}
+
 }

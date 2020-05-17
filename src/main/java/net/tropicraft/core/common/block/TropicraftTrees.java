@@ -2,7 +2,9 @@ package net.tropicraft.core.common.block;
 
 import net.minecraft.block.trees.Tree;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
 import java.util.Random;
@@ -10,7 +12,7 @@ import java.util.Random;
 public class TropicraftTrees {
     public static final Tree GRAPEFRUIT = new Tree() {
         @Override
-        protected AbstractTreeFeature<NoFeatureConfig> getTreeFeature(Random random) {
+        protected ConfiguredFeature<TreeFeatureConfig, ?> getTreeFeature(Random random, boolean generateBeehive) {
             return TropicraftFeatures.GRAPEFRUIT_TREE.get();
         }
     };

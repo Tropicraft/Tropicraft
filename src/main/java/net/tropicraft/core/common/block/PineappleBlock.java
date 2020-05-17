@@ -1,6 +1,9 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
@@ -11,6 +14,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants;
 
@@ -44,7 +48,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
 
     @Override
-    public void grow(final World world, final Random random, final BlockPos pos, final BlockState state) {
+    public void grow(final ServerWorld world, final Random random, final BlockPos pos, final BlockState state) {
         final int currentStage = state.get(STAGE);
         if (currentStage < TOTAL_GROW_TICKS) {
             final BlockState growthState = state.with(STAGE, currentStage + 1);
@@ -63,7 +67,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
 
     @Override
-    public void tick(final BlockState state, final World world, final BlockPos pos, final Random random) {
+    public void tick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random) {
         if (pos.getY() > world.getHeight() - 2) {
             return;
         }

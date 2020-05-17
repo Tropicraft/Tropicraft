@@ -162,9 +162,4 @@ public class TikiTorchBlock extends Block {
         }
         return super.getLightValue(state);
     }
-    
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 }

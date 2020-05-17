@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -66,14 +67,18 @@ public class BongoDrumBlock extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         // Only play drum sound if player hits the top
-        if (result.getFace() != Direction.UP || world.isRemote) {
-            return true;
+        if (result.getFace() != Direction.UP) {
+            return ActionResultType.PASS;
+        }
+
+        if (world.isRemote) {
+            return ActionResultType.SUCCESS;
         }
 
         playBongoSound(world, pos, state);
-        return true;
+        return ActionResultType.CONSUME;
     }
 
     @Override
@@ -87,7 +92,7 @@ public class BongoDrumBlock extends Block {
                 playBongoSound(worldIn, pos, state);
             }
 
-            worldIn.setBlockState(pos, state.with(POWERED, Boolean.valueOf(flag)), 3);
+            worldIn.setBlockState(pos, state.with(POWERED, flag), 3);
         }
     }
 
