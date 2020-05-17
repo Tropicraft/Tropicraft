@@ -64,7 +64,7 @@ public class CocktailItem extends Item implements IColoredItem {
     		for (int i = 0; i < ingredients.size(); ++i) {
     			CompoundNBT ingredient = ingredients.getCompound(i);
     			int id = ingredient.getByte("IngredientID");
-    			ITextComponent ingredientName = Ingredient.ingredientsList[id].getIngredient().getDisplayName();
+    			ITextComponent ingredientName = Ingredient.ingredientsList[id].getDisplayName();
     			int ingredientColor = Ingredient.ingredientsList[id].getColor();
     			//String lvl = StatCollector.translateToLocal("enchantment.level." + count);
     			//par3List.add(ingredientName + " " + lvl);

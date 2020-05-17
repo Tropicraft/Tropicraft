@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.feature.pools;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.jigsaw.FeatureJigsawPiece;
@@ -13,6 +14,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.jigsaw.FixedSingleJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.NoRotateSingleJigsawPiece;
 
 @SuppressWarnings("deprecation")
 public class HomeTreePools {
@@ -69,10 +71,10 @@ public class HomeTreePools {
             new ResourceLocation(Constants.MODID, "home_tree/trunks/top"),
             new ResourceLocation("empty"),
             ImmutableList.of(
-                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_0", baseProcessors), 1),
-                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_1", baseProcessors), 1),
-                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_2", baseProcessors), 1),
-                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_3", baseProcessors), 1)
+                Pair.of(new NoRotateSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_0", baseProcessors), 1),
+                Pair.of(new NoRotateSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_1", baseProcessors), 1),
+                Pair.of(new NoRotateSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_2", baseProcessors), 1),
+                Pair.of(new NoRotateSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/top/trunk_3", baseProcessors), 1)
             ),
             PlacementBehaviour.RIGID)
         );

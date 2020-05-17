@@ -1,13 +1,20 @@
 package net.tropicraft.core.common.drinks;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-
-import java.util.*;
+import net.tropicraft.core.common.item.CocktailItem;
 
 public final class MixerRecipes {
 
 	private static Map<Drink, Ingredient[]> drinkToIngredientsMap = new HashMap<>();
+	private static Map<Drink, Item> drinkToSpecialItemMap = new HashMap<>();
 
 	private MixerRecipes() {}
 
@@ -35,7 +42,11 @@ public final class MixerRecipes {
 	private static void registerMixerRecipe(Drink result, Ingredient...ingredients) {
 		Drinks.register(new MixerRecipe(result, ingredients));
 		drinkToIngredientsMap.put(result, ingredients);
-	}   
+	}
+	
+	public static void setDrinkItem(Drink drink, CocktailItem item) {
+	    drinkToSpecialItemMap.put(drink, item);
+	}
 
 	/**
 	 * Probably a more efficient way of doing this, but whatever. This gives you an ItemStack result from a Drink object
@@ -43,36 +54,38 @@ public final class MixerRecipes {
 	 * @return ItemStack form of a Drink
 	 */
 	public static ItemStack getItemStack(Drink drink) {
+	    if (drinkToSpecialItemMap.containsKey(drink)) {
+	        return new ItemStack(drinkToSpecialItemMap.get(drink));
+	    }
 		NonNullList<ItemStack> stack = NonNullList.create();
 
 		for (Ingredient i : drinkToIngredientsMap.get(drink)) {
-			stack.add(i.getIngredient());
+			stack.add(new ItemStack(i.getIngredientItem()));
 		}
 
 		return Drinks.getResult(stack);
 	}
 
 	public static boolean isValidRecipe(NonNullList<ItemStack> ingredientStacks) {
-		return true;
-//		Set<Ingredient> ingredients = new HashSet<>();
-//
-//		for (ItemStack stack : ingredientStacks) {
-//			Ingredient ingredient = Ingredient.findMatchingIngredient(stack);
-//			if (ingredient == null) {
-//				return false;
-//			}
-//
-//			ingredients.add(ingredient);
-//
-//			for (MixerRecipe recipe : Drinks.getRecipes()) {
-//				Set<Ingredient> recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
-//				if (ingredients.equals(recipeIngredientSet)) {
-//					return true;
-//				}
-//			}
-//		}
-//
-//		return false;
+		Set<Ingredient> ingredients = new HashSet<>();
+
+		for (ItemStack stack : ingredientStacks) {
+			Ingredient ingredient = Ingredient.findMatchingIngredient(stack);
+			if (ingredient == null) {
+				return false;
+			}
+
+			ingredients.add(ingredient);
+
+			for (MixerRecipe recipe : Drinks.getRecipes()) {
+				Set<Ingredient> recipeIngredientSet = new HashSet<>(Arrays.asList(recipe.getIngredients()));
+				if (ingredients.equals(recipeIngredientSet)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public static Drink getDrink(NonNullList<ItemStack> ingredientStacks) {

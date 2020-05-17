@@ -1,6 +1,9 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import java.util.function.Supplier;
+
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
@@ -15,12 +18,11 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
+import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 import net.tropicraft.core.common.dimension.feature.jigsaw.SinkInGroundProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.SteepPathProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
-
-import java.util.function.Supplier;
 
 public class TropicraftFeatures {
 
@@ -57,7 +59,7 @@ public class TropicraftFeatures {
 	public static final RegistryObject<UndergrowthFeature> UNDERGROWTH = register(
 	        "undergrowth", () -> new UndergrowthFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<RainforestVinesFeature> VINES = register(
-	        "rainforest_vines", () -> new RainforestVinesFeature(NoFeatureConfig::deserialize));
+	        "rainforest_vines", () -> new RainforestVinesFeature(RainforestVinesConfig::deserialize));
 	public static final RegistryObject<Structure<NoFeatureConfig>> VILLAGE = register(
 	        "koa_village", () -> new KoaVillageStructure(NoFeatureConfig::deserialize));
 	public static final RegistryObject<VolcanoFeature> VOLCANO = register(

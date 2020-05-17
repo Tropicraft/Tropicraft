@@ -5,14 +5,19 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.VineBlock;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Direction.Axis;
+import net.minecraft.util.Direction.AxisDirection;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
+import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -21,9 +26,12 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
     private static final byte[] OTHER_COORD_PAIRS = {
         2, 0, 0, 1, 2, 1
     };
+    
+    private final ConfiguredFeature<RainforestVinesConfig> vinesFeature;
 
     public HomeTreeBranchFeature(Function<Dynamic<?>, ? extends T> configSerializer) {
         super(configSerializer);
+        this.vinesFeature = new ConfiguredFeature<>(TropicraftFeatures.VINES.get(), new RainforestVinesConfig(4, 13, 12));
     }
 
     @Override
@@ -54,6 +62,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         genLeafCircle(world, branchX2, y2, branchZ2, leafCircleSizeConstant + 6, 0, LEAF_STATE, true);
         genLeafCircle(world, branchX2, y2 + 1, branchZ2, leafCircleSizeConstant + 10, 0, LEAF_STATE, true);
         genLeafCircle(world, branchX2, y2 + 2, branchZ2, leafCircleSizeConstant + 9, 0, LEAF_STATE, true);
+        this.vinesFeature.place(world, generator, rand, new BlockPos(branchX2, y2 - 1, branchZ2));
 
         return true;
     }
@@ -62,8 +71,8 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         int outerRadiusSquared = outerRadius * outerRadius;
         int innerRadiusSquared = innerRadius * innerRadius;
 
-        for (int i = -outerRadius + x; i < outerRadius + x; i++) {
-            for (int k = -outerRadius + z; k < outerRadius + z; k++) {
+        for (int i = -outerRadius + x; i <= outerRadius + x; i++) {
+            for (int k = -outerRadius + z; k <= outerRadius + z; k++) {
                 double d = (x - i) * (x - i) + (z - k) * (z - k);
                 if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
                     // TODO move to MutableBlockPos
@@ -71,34 +80,8 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
                     if (world.isAirBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
                         world.setBlockState(pos, state, 3);
                     }
-
-                    if (world.getRandom().nextInt(20) == 0 && vines) {
-                        genVines(world, pos.down());
-                    }
                 }
             }
-        }
-    }
-
-    public void genVines(final IWorld world, final BlockPos pos) {
-        int length = world.getRandom().nextInt(15) + 8;
-        int dir = world.getRandom().nextInt(4);
-        BooleanProperty direction;
-        switch (dir) {
-            case 0: direction = VineBlock.NORTH; break;
-            case 1: direction = VineBlock.SOUTH; break;
-            case 2: direction = VineBlock.EAST; break;
-            case 3:
-            default: direction = VineBlock.WEST; break;
-        }
-
-        for (int y = 0; y <= length; y++) {
-            // TODO move to MutableBlockPos
-            BlockPos down = pos.down(y);
-            if (world.isAirBlock(down)) {
-                world.setBlockState(down, Blocks.VINE.getDefaultState().with(direction, true), 3);
-            }
-            else break;
         }
     }
 

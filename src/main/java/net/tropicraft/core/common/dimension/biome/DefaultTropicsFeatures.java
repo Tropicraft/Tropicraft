@@ -22,6 +22,7 @@ import net.minecraft.world.gen.placement.Placement;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
 public class DefaultTropicsFeatures {
 
@@ -60,7 +61,8 @@ public class DefaultTropicsFeatures {
     }
 
     public static void addRainforestPlants(Biome biome) {
-        DefaultBiomeFeatures.addJunglePlants(biome);
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.MELON_PATCH_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(1))));
+        biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.VINES.get().withConfiguration(new RainforestVinesConfig()).withPlacement(Placement.COUNT_HEIGHT_64.configure(new FrequencyConfig(50))));
     }
     
     public static void addTropicsGems(Biome biome) {
