@@ -1,6 +1,10 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import java.util.Random;
+import java.util.function.Function;
+
 import com.mojang.datafixers.Dynamic;
+
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SharedSeedRandom;
@@ -20,12 +24,11 @@ import net.minecraft.world.gen.feature.structure.MarginedStructureStart;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftRainforestBiome;
 import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
+import net.tropicraft.core.common.dimension.feature.jigsaw.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.pools.HomeTreePools;
-
-import java.util.Random;
-import java.util.function.Function;
 
 public class HomeTreeFeature extends Structure<VillageConfig> {
 
@@ -119,13 +122,23 @@ public class HomeTreeFeature extends Structure<VillageConfig> {
     }
 
     public static class HomeTreePiece extends AbstractVillagePiece {
+        
+        private static final IStructurePieceType TYPE = IStructurePieceType.register(HomeTreePiece::new, Constants.MODID + ":home_tree");
 
         public HomeTreePiece(TemplateManager p_i50890_1_, JigsawPiece p_i50890_2_, BlockPos p_i50890_3_, int p_i50890_4_, Rotation p_i50890_5_, MutableBoundingBox p_i50890_6_) {
-            super(IStructurePieceType.NVI, p_i50890_1_, p_i50890_2_, p_i50890_3_, p_i50890_4_, p_i50890_5_, p_i50890_6_);
+            super(TYPE, p_i50890_1_, p_i50890_2_, p_i50890_3_, p_i50890_4_, p_i50890_5_, p_i50890_6_);
         }
 
         public HomeTreePiece(TemplateManager p_i50891_1_, CompoundNBT p_i50891_2_) {
-            super(p_i50891_1_, p_i50891_2_, IStructurePieceType.NVI);
+            super(p_i50891_1_, p_i50891_2_, TYPE);
+        }
+        
+        @Override
+        public Rotation getRotation() {
+            if (this.jigsawPiece instanceof NoRotateSingleJigsawPiece) {
+                return Rotation.NONE;
+            }
+            return super.getRotation();
         }
     }
 }

@@ -3,19 +3,34 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 import java.util.List;
 import java.util.Random;
 
+import com.mojang.datafixers.Dynamic;
+
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.feature.jigsaw.IJigsawDeserializer;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.tropicraft.Constants;
 
 public class NoRotateSingleJigsawPiece extends FixedSingleJigsawPiece {
+    
+    private static final IJigsawDeserializer TYPE = IJigsawDeserializer.register(Constants.MODID + ":no_rotate", NoRotateSingleJigsawPiece::new);
 
     public NoRotateSingleJigsawPiece(String p_i51400_1_, List<StructureProcessor> p_i51400_2_) {
         super(p_i51400_1_, p_i51400_2_);
+    }
+    
+    public NoRotateSingleJigsawPiece(Dynamic<?> nbt) {
+        super(nbt);
+    }
+    
+    @Override
+    public IJigsawDeserializer getType() {
+        return TYPE;
     }
 
     @Override
