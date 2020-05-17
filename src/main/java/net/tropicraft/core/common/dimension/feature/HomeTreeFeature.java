@@ -110,6 +110,8 @@ public class HomeTreeFeature extends Structure<VillageConfig> {
     public int getSize() {
         return 8;
     }
+    
+    private static final IStructurePieceType TYPE = IStructurePieceType.register(HomeTreePiece::new, Constants.MODID + ":home_tree");
 
     public static class Start extends StructureStart {
 
@@ -140,8 +142,6 @@ public class HomeTreeFeature extends Structure<VillageConfig> {
 
     public static class HomeTreePiece extends AbstractVillagePiece {
         
-        private static final IStructurePieceType TYPE = IStructurePieceType.register(HomeTreePiece::new, Constants.MODID + ":home_tree");
-
         public HomeTreePiece(TemplateManager p_i50890_1_, JigsawPiece p_i50890_2_, BlockPos p_i50890_3_, int p_i50890_4_, Rotation p_i50890_5_, MutableBoundingBox p_i50890_6_) {
             super(TYPE, p_i50890_1_, p_i50890_2_, p_i50890_3_, p_i50890_4_, p_i50890_5_, p_i50890_6_);
         }
