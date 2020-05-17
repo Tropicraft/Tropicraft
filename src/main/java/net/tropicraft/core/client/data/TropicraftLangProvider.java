@@ -261,6 +261,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.BLOW_GUN);
         addItem(TropicraftItems.NIGEL_STACHE, "Nigel's Moustache");
         addItem(TropicraftItems.WATER_WAND);
+        addItem(TropicraftItems.EXPLODING_COCONUT);
         
         // Tools
         addItem(TropicraftItems.ZIRCON_AXE);
