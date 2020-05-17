@@ -1,13 +1,17 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.mojang.datafixers.Dynamic;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.VineBlock;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.Direction.AxisDirection;
+import net.minecraft.util.SharedSeedRandom;
+import net.minecraft.util.Unit;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
@@ -18,9 +22,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
-
-import java.util.Random;
-import java.util.function.Function;
 
 public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Feature<T> {
     private static final byte[] OTHER_COORD_PAIRS = {
@@ -35,7 +36,9 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
     }
 
     @Override
-    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random randIn, BlockPos pos, T config) {
+        SharedSeedRandom rand = new SharedSeedRandom();
+        rand.setDecorationSeed(world.getSeed(), pos.getX(), pos.getZ());
         final int branchLength = rand.nextInt(10) + 15;
         // TODO make configurable
         int branchX1 = pos.getX();
@@ -64,7 +67,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         genLeafCircle(world, branchX2, y2 + 2, branchZ2, leafCircleSizeConstant + 9, 0, LEAF_STATE, true);
         this.vinesFeature.place(world, generator, rand, new BlockPos(branchX2, y2 - 1, branchZ2));
 
-        return true;
+        return false;
     }
 
     public void genLeafCircle(final IWorld world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, boolean vines) {

@@ -4,8 +4,10 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
 public abstract class TropicraftBiome extends Biome {
@@ -22,11 +24,13 @@ public abstract class TropicraftBiome extends Biome {
         DefaultBiomeFeatures.addStoneVariants(this);
         DefaultBiomeFeatures.addOres(this);
         addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Biome.createDecoratedFeature(TropicraftFeatures.VILLAGE.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+        addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, createDecoratedFeature(TropicraftFeatures.HOME_TREE.get(), new VillageConfig(Constants.MODID + ":home_tree/starts", 10), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
         
         // Add dummy volcano structure for /locate, this only adds a structure start that places nothing
         addStructure(TropicraftFeatures.VOLCANO.get(), IFeatureConfig.NO_FEATURE_CONFIG);
         // Volcano feature to add tile entity to the volcano generation. Checks in each chunk if a volcano is nearby.
         addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, createDecoratedFeature(TropicraftFeatures.VOLCANO.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+
 
 //        this.spawnableCreatureList.add(new SpawnListEntry(EntityParrot.class, 20, 1, 2));
 //        this.spawnableCreatureList.add(new SpawnListEntry(EntityVMonkey.class, 20, 1, 3));

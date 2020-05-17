@@ -46,7 +46,6 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.UNDERGROWTH.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(100)));
 
         addStructure(TropicraftFeatures.HOME_TREE.get(), new VillageConfig(Constants.MODID + ":home_tree/starts", 10));
-        addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, createDecoratedFeature(TropicraftFeatures.HOME_TREE.get(), new VillageConfig(Constants.MODID + ":home_tree/starts", 10), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
 
         addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.OCELOT, 10, 1, 1));
         addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.PARROT, 10, 1, 2));
