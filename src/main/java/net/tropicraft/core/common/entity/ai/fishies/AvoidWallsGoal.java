@@ -30,9 +30,9 @@ public class AvoidWallsGoal extends Goal {
 		Vec3d angle = entity.getHeading();
 		double frontDist = 1 + rand.nextInt(4);
 		
-		Vec3d diff = new Vec3d(entity.posX + (angle.x * frontDist), entity.posY + angle.y, entity.posZ + (angle.z * frontDist));
+		Vec3d diff = new Vec3d(entity.getPosX() + (angle.x * frontDist), entity.getPosY() + angle.y, entity.getPosZ() + (angle.z * frontDist));
 
-		BlockPos bp = new BlockPos((int)diff.x, (int)entity.posY, (int)diff.z);
+		BlockPos bp = new BlockPos((int) diff.x, (int) entity.getPosY(), (int) diff.z);
 
 		if (!entity.world.getBlockState(bp).getMaterial().isLiquid() && !entity.isMovingAwayFromWall) {
 			entity.setRandomTargetHeadingForce(32);
@@ -44,7 +44,7 @@ public class AvoidWallsGoal extends Goal {
 		
 		
 		if (entity.targetVector != null && entity.isMovingAwayFromWall) {
-			bp = new BlockPos((int)entity.targetVector.x, (int)entity.targetVector.y, (int)entity.targetVector.z);
+			bp = new BlockPos((int) entity.targetVector.x, (int) entity.targetVector.y, (int) entity.targetVector.z);
 
 			if(entity.getPosition().equals(bp) && entity.ticksExisted % 80 == 0) {
 				entity.isMovingAwayFromWall = false;

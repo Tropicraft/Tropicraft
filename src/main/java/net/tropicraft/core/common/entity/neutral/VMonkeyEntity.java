@@ -85,7 +85,7 @@ public class VMonkeyEntity extends TameableEntity {
         goalSelector.addGoal(4, new MonkeySitInChairGoal(this, sitGoal));
         goalSelector.addGoal(4, sitGoal);
         goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
-        goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+        goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         goalSelector.addGoal(8, new RandomWalkingGoal(this, 1.0D));
         goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         goalSelector.addGoal(9, new LookRandomlyGoal(this));

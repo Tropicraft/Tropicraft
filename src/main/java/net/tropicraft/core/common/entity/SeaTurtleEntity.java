@@ -1,9 +1,5 @@
 package net.tropicraft.core.common.entity;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -28,6 +24,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class SeaTurtleEntity extends TurtleEntity {
 
@@ -67,7 +66,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Nullable
     public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
         setRandomTurtleType();
-        this.lastPosY = posY;
+        this.lastPosY = getPosY();
         return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
     }
 
@@ -102,7 +101,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         }
         setNoBrakes(nbt.getBoolean("NoBrakesOnThisTrain"));
         setCanFly(nbt.getBoolean("LongsForTheSky"));
-        this.lastPosY = this.posY;
+        this.lastPosY = this.getPosY();
     }
 
     public boolean isMature() {
@@ -190,7 +189,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Override
     public void tick() {
         super.tick();
-        lastPosY = posY;
+        lastPosY = getPosY();
     }
     
     @Override
@@ -199,7 +198,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         if (this.world.isRemote) {
             if (isBeingRidden() && canBeSteered()) {
                 if (isInWater() || getCanFly()) {
-                    Vec3d movement = new Vec3d(posX, posY, posZ).subtract(prevPosX, prevPosY, prevPosZ);
+                    Vec3d movement = new Vec3d(getPosX(), getPosY(), getPosZ()).subtract(prevPosX, prevPosY, prevPosZ);
                     double speed = movement.length();
                     Vec3d particleOffset = movement.inverse().scale(2);
                     if (speed > 0.05) {
@@ -209,9 +208,9 @@ public class SeaTurtleEntity extends TurtleEntity {
                         for (int i = 0; i < particlesToSpawn; i++) {
                             Vec3d particleMotion = movement.scale(1);
                             world.addParticle(particle, true,
-                                    particleOffset.getX() + posX - 0.25 + rand.nextDouble() * 0.5,
-                                    particleOffset.getY() + posY + 0.1 + rand.nextDouble() * 0.1,
-                                    particleOffset.getZ() + posZ - 0.25 + rand.nextDouble() * 0.5, particleMotion.x, particleMotion.y, particleMotion.z);
+                                    particleOffset.getX() + getPosX() - 0.25 + rand.nextDouble() * 0.5,
+                                    particleOffset.getY() + getPosY() + 0.1 + rand.nextDouble() * 0.1,
+                                    particleOffset.getZ() + getPosZ() - 0.25 + rand.nextDouble() * 0.5, particleMotion.x, particleMotion.y, particleMotion.z);
                         }
                     }
                 }
@@ -326,12 +325,12 @@ public class SeaTurtleEntity extends TurtleEntity {
                     // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
                     this.setMotion(this.getMotion().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
                 } else {
-                    this.fallDistance = (float) Math.max(0, (posY - lastPosY) * -8);
+                    this.fallDistance = (float) Math.max(0, (getPosY() - lastPosY) * -8);
                     this.setMotion(Vec3d.ZERO);
                 }
                 this.prevLimbSwingAmount = this.limbSwingAmount;
-                double d1 = this.posX - this.prevPosX;
-                double d0 = this.posZ - this.prevPosZ;
+                double d1 = this.getPosX() - this.prevPosX;
+                double d0 = this.getPosZ() - this.prevPosZ;
                 float swinger = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
                 if (swinger > 1.0F) {
                     swinger = 1.0F;

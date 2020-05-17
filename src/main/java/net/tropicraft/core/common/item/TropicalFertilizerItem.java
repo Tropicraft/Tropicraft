@@ -1,8 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IGrowable;
@@ -14,6 +11,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.DecoratedFeatureConfig;
 import net.minecraft.world.gen.feature.FlowersFeature;
+import net.minecraft.world.server.ServerWorld;
+
+import java.util.List;
+import java.util.Random;
 
 public class TropicalFertilizerItem extends BoneMealItem {
 
@@ -39,7 +40,9 @@ public class TropicalFertilizerItem extends BoneMealItem {
                         if (j >= i / 16) {
                             BlockState blockstate2 = world.getBlockState(blockpos1);
                             if (blockstate2.getBlock() == blockstate.getBlock() && rand.nextInt(10) == 0) {
-                                ((IGrowable) blockstate.getBlock()).grow(world, rand, blockpos1, blockstate2);
+                                if (world instanceof ServerWorld) {
+                                    ((IGrowable) blockstate.getBlock()).grow((ServerWorld) world, rand, blockpos1, blockstate2);
+                                }
                             }
 
                             if (!blockstate2.isAir(world, blockpos1)) {
@@ -65,7 +68,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                         }
 
                         blockpos1 = blockpos1.add(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
-                        if (world.getBlockState(blockpos1.down()).getBlock() != Blocks.GRASS_BLOCK || world.getBlockState(blockpos1).func_224756_o(world, blockpos1)) {
+                        if (world.getBlockState(blockpos1.down()).getBlock() != Blocks.GRASS_BLOCK || world.getBlockState(blockpos1).isCollisionShapeOpaque(world, blockpos1)) {
                             break;
                         }
 

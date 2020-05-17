@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class LavaBallEntity extends Entity
 {
@@ -69,9 +68,9 @@ public class LavaBallEntity extends Entity
 
 	@OnlyIn(Dist.CLIENT)
 	public void supahDrip() {
-		float x = (float)this.posX;
-		float y = (float)this.posY;
-		float z = (float)this.posZ;
+		float x = (float) getPosX();
+		float y = (float) getPosY();
+		float z = (float) getPosZ();
 
 		if (world.isRemote) {
 			world.addParticle(ParticleTypes.LAVA, x, y, z, this.getMotion().x, -1.5F, this.getMotion().z);
@@ -128,9 +127,9 @@ public class LavaBallEntity extends Entity
 		}
 
 		//TODO: Note below, these used to be tempLavaMoving - maybe they still need to be?
-		int thisX = (int)Math.floor(posX);
-		int thisY = (int)Math.floor(posY);
-		int thisZ = (int)Math.floor(posZ);
+		int thisX = (int)Math.floor(getPosX());
+		int thisY = (int)Math.floor(getPosY());
+		int thisZ = (int)Math.floor(getPosZ());
 
 		BlockPos posCurrent = new BlockPos(thisX, thisY, thisZ);
 		BlockPos posBelow = posCurrent.down();

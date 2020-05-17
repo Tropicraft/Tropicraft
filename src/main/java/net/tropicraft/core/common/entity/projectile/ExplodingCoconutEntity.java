@@ -17,7 +17,7 @@ public class ExplodingCoconutEntity extends ProjectileItemEntity {
 	protected void onImpact(RayTraceResult result) {
         // TODO - why isn't this being called?
         if (!world.isRemote) {
-            world.createExplosion(this, posX, posY, posZ, 2.4F, Explosion.Mode.DESTROY);
+            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 2.4F, Explosion.Mode.DESTROY);
             remove();
         }
 	}

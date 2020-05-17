@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.biome;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
@@ -36,13 +37,19 @@ public class TropicsOceanBiome extends TropicraftBiome {
         DefaultTropicsFeatures.addTropicsMetals(this);
         DefaultTropicsFeatures.addUnderwaterCarvers(this);
         // Various coral features
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SIMPLE_RANDOM_SELECTOR, new SingleRandomFeature(new Feature[]{Feature.CORAL_TREE, Feature.CORAL_CLAW, Feature.CORAL_MUSHROOM}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}), Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED, new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG)));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SIMPLE_RANDOM_SELECTOR
+                .withConfiguration(new SingleRandomFeature(ImmutableList.of(
+                    Feature.CORAL_TREE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG),
+                    Feature.CORAL_CLAW.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG),
+                    Feature.CORAL_MUSHROOM.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG))))
+                .withPlacement(Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED
+                    .configure(new TopSolidWithNoiseConfig(20, 400.0D, 0.0D, Heightmap.Type.OCEAN_FLOOR_WG))));
         // Sea floor seagrass
-        DefaultBiomeFeatures.func_222309_aj(this);
+        DefaultBiomeFeatures.addTallSeagrassSparse(this);
         // Seagrass underground
         DefaultTropicsFeatures.addUndergroundSeagrass(this);
         // Ocean floor sea pickles
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(Feature.SEA_PICKLE, new CountConfig(20), Placement.CHANCE_TOP_SOLID_HEIGHTMAP, new ChanceConfig(16)));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SEA_PICKLE.withConfiguration(new CountConfig(20)).withPlacement(Placement.CHANCE_TOP_SOLID_HEIGHTMAP.configure(new ChanceConfig(16))));
         // Cave pickles
         DefaultTropicsFeatures.addUndergroundPickles(this);
 

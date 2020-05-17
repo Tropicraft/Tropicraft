@@ -1,10 +1,8 @@
 package net.tropicraft.core.common.item.scuba;
 
-import java.util.UUID;
-
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.platform.GlStateManager;
-
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -33,6 +31,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 
+import java.util.UUID;
+
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
 
@@ -53,20 +53,20 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, int width, int height, float partialTicks) {
         GlStateManager.disableDepthTest();
         GlStateManager.depthMask(false);
-        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableAlphaTest();
         Minecraft mc = Minecraft.getInstance();
-        double scaledWidth = mc.mainWindow.getScaledWidth();
-        double scaledHeight = mc.mainWindow.getScaledHeight();
+        double scaledWidth = mc.getMainWindow().getScaledWidth();
+        double scaledHeight = mc.getMainWindow().getScaledHeight();
         mc.getTextureManager().bindTexture(GOGGLES_OVERLAY_TEX_PATH);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0D, 1.0D).endVertex();
-        bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0D, 1.0D).endVertex();
-        bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
+        bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 1.0f).endVertex();
+        bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0f, 1.0f).endVertex();
+        bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
+        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
         tessellator.draw();
         GlStateManager.depthMask(true);
         GlStateManager.enableDepthTest();
@@ -83,7 +83,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
             ClientPlayerEntity clientplayerentity = (ClientPlayerEntity) info.getRenderViewEntity();
             if (clientplayerentity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof ScubaGogglesItem) {
                 // Taken from FogRenderer#setupFog in the case where the player is in fluid
-                GlStateManager.fogMode(GlStateManager.FogMode.EXP2);
+                RenderSystem.fogMode(GlStateManager.FogMode.EXP2);
                 float f = 0.05F - clientplayerentity.getWaterBrightness() * clientplayerentity.getWaterBrightness() * 0.03F;
                 Biome biome = clientplayerentity.world.getBiome(new BlockPos(clientplayerentity));
                 if (biome == Biomes.SWAMP || biome == Biomes.SWAMP_HILLS) {

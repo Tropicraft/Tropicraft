@@ -1,9 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Supplier;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +18,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class FurnitureItem<T extends FurnitureEntity> extends Item implements IColoredItem {
 
@@ -70,7 +70,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
                 entity.setRotation(placer.rotationYaw + 180);
                 entity.setColor(this.color);
 
-                if (!world.isCollisionBoxesEmpty(entity, entity.getBoundingBox().grow(-0.1D))) {
+                if (!world.hasNoCollisions(entity, entity.getBoundingBox().grow(-0.1D))) {
                     return new ActionResult<>(ActionResultType.FAIL, heldItem);
                 } else {
                     if (!world.isRemote) {

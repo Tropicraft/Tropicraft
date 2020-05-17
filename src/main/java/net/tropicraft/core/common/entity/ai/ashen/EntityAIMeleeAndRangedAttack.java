@@ -94,7 +94,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
 				return;
 			}
 	    }
-		double d0 = entityHost.getDistanceSq(attackTarget.posX, attackTarget.getBoundingBox().minY, attackTarget.posZ);
+		double d0 = entityHost.getDistanceSq(attackTarget.getPosX(), attackTarget.getBoundingBox().minY, attackTarget.getPosZ());
 		boolean flag = entityHost.getEntitySenses().canSee(attackTarget);
 
 		if (flag) {

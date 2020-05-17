@@ -63,26 +63,18 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
                 EntityPredicates.CAN_AI_TARGET.and(this.canBeSeenSelector).and(this.avoidTargetSelector)
         );
 
-        if (list.isEmpty())
-        {
+        if (list.isEmpty()) {
             return false;
-        }
-        else
-        {
+        } else {
             this.closestLivingEntity = list.get(0);
-            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntity, 16, 7, new Vec3d(this.closestLivingEntity.posX, this.closestLivingEntity.posY, this.closestLivingEntity.posZ));
+            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntity, 16, 7, new Vec3d(this.closestLivingEntity.getPosX(), this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
 
-            if (vec3d == null)
-            {
+            if (vec3d == null) {
                 return false;
-            }
-            else if (this.closestLivingEntity.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.getDistanceSq(this.theEntity))
-            {
+            } else if (this.closestLivingEntity.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.getDistanceSq(this.theEntity)) {
                 return false;
-            }
-            else
-            {
-                this.entityPathEntity = this.entityPathNavigate.func_225466_a(vec3d.x, vec3d.y, vec3d.z, 0);
+            } else {
+                this.entityPathEntity = this.entityPathNavigate.getPathToPos(vec3d.x, vec3d.y, vec3d.z, 0);
                 return this.entityPathEntity != null;
             }
         }

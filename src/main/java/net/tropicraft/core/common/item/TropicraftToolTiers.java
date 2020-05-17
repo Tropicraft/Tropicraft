@@ -3,7 +3,7 @@ package net.tropicraft.core.common.item;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyLoadBase;
+import net.minecraft.util.LazyValue;
 
 import java.util.function.Supplier;
 
@@ -27,7 +27,7 @@ public enum TropicraftToolTiers implements IItemTier {
     private final float efficiency;
     private final float attackDamage;
     private final int enchantability;
-    private final LazyLoadBase<Ingredient> repairMaterial;
+    private final LazyValue<Ingredient> repairMaterial;
 
     TropicraftToolTiers(int p_i48458_3_, int p_i48458_4_, float p_i48458_5_, float p_i48458_6_, int p_i48458_7_, Supplier<Ingredient> p_i48458_8_) {
         this.harvestLevel = p_i48458_3_;
@@ -35,7 +35,7 @@ public enum TropicraftToolTiers implements IItemTier {
         this.efficiency = p_i48458_5_;
         this.attackDamage = p_i48458_6_;
         this.enchantability = p_i48458_7_;
-        this.repairMaterial = new LazyLoadBase<>(p_i48458_8_);
+        this.repairMaterial = new LazyValue<>(p_i48458_8_);
     }
 
     public int getMaxUses() {

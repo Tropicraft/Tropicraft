@@ -74,7 +74,7 @@ public class AIAshenShootDart extends Goal {
                 return;
             }
 
-            double d0 = entity.getDistanceSq(target.posX, target.getBoundingBox().minY, target.posZ);
+            double d0 = entity.getDistanceSq(target.getPosX(), target.getBoundingBox().minY, target.getPosZ());
             boolean canSeeEnemy = entity.getEntitySenses().canSee(target);
             boolean hasSeenEnemy = seeTime > 0;
 

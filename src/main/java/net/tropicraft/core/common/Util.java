@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -18,8 +19,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class Util {
 
@@ -74,10 +73,10 @@ public class Util {
 		        int y = MathHelper.floor(player.posY);
 		        int z = MathHelper.floor(player.posZ);*/
 
-                double d = x+0.5F - ent.posX;
-                double d2 = z+0.5F - ent.posZ;
+                double d = x+0.5F - ent.getPosX();
+                double d2 = z+0.5F - ent.getPosZ();
                 double d1;
-                d1 = y+0.5F - (ent.posY + (double)ent.getEyeHeight());
+                d1 = y+0.5F - (ent.getPosY() + (double)ent.getEyeHeight());
 
                 double d3 = MathHelper.sqrt(d * d + d2 * d2);
                 float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
@@ -92,9 +91,9 @@ public class Util {
                 float randLook = rand.nextInt(90)-45;
                 //int height = 10;
                 double dist = (followDist * 0.75D) + rand.nextInt((int)followDist / 2);//rand.nextInt(26)+(queue.get(0).retryState * 6);
-                int gatherX = (int)Math.floor(center.posX + ((double)(-Math.sin((rotationYaw+randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
-                int gatherY = (int)center.posY;//Math.floor(center.posY-0.5 + (double)(-MathHelper.sin(center.rotationPitch / 180.0F * 3.1415927F) * dist) - 0D); //center.posY - 0D;
-                int gatherZ = (int)Math.floor(center.posZ + ((double)(Math.cos((rotationYaw+randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
+                int gatherX = (int)Math.floor(center.getPosX() + ((double)(-Math.sin((rotationYaw+randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
+                int gatherY = (int)center.getPosY();//Math.floor(center.posY-0.5 + (double)(-MathHelper.sin(center.rotationPitch / 180.0F * 3.1415927F) * dist) - 0D); //center.posY - 0D;
+                int gatherZ = (int)Math.floor(center.getPosZ() + ((double)(Math.cos((rotationYaw+randLook) / 180.0F * 3.1415927F)/* * Math.cos(center.rotationPitch / 180.0F * 3.1415927F)*/) * dist));
 
                 BlockPos pos = new BlockPos(gatherX, gatherY, gatherZ);
 
@@ -150,7 +149,7 @@ public class Util {
         int adjustRangeY = 10;
 
         int tryX;
-        int tryY = MathHelper.floor(entity.posY) - 1;
+        int tryY = MathHelper.floor(entity.getPosY()) - 1;
         int tryZ;
 
         for (int ii = 0; ii <= 10; ii++) {
@@ -162,9 +161,9 @@ public class Util {
                 scanSize = scanRange;
                 scanSizeY = scanRange / 2;
             }
-            tryX = MathHelper.floor(entity.posX) + (entity.world.rand.nextInt(scanSize)-scanSize/2);
+            tryX = MathHelper.floor(entity.getPosX()) + (entity.world.rand.nextInt(scanSize)-scanSize/2);
             int i = tryY + entity.world.rand.nextInt(scanSizeY)-(scanSizeY/2);
-            tryZ = MathHelper.floor(entity.posZ) + entity.world.rand.nextInt(scanSize)-scanSize/2;
+            tryZ = MathHelper.floor(entity.getPosZ()) + entity.world.rand.nextInt(scanSize)-scanSize/2;
             BlockPos posTry = new BlockPos(tryX, tryY, tryZ);
 
             boolean foundBlock = false;
@@ -235,9 +234,9 @@ public class Util {
 
     public static double getDistance(Entity ent, double x, double y, double z)
     {
-        double d0 = ent.posX - x;
-        double d1 = ent.posY - y;
-        double d2 = ent.posZ - z;
+        double d0 = ent.getPosX() - x;
+        double d1 = ent.getPosY() - y;
+        double d2 = ent.getPosZ() - z;
         return (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 

@@ -41,22 +41,22 @@ public class FishingBobberEntity extends Entity {
    private final int luck;
    private final int lureSpeed;
 
-   private FishingBobberEntity(World p_i50219_1_, EntityKoaBase p_i50219_2_, int p_i50219_3_, int p_i50219_4_) {
+   private FishingBobberEntity(World p_i50219_1_, EntityKoaBase koaBase, int luck, int lureSpeed) {
       super(EntityType.FISHING_BOBBER, p_i50219_1_);
       this.ignoreFrustumCheck = true;
-      this.angler = p_i50219_2_;
+      this.angler = koaBase;
       this.angler.setLure(this);
-      this.luck = Math.max(0, p_i50219_3_);
-      this.lureSpeed = Math.max(0, p_i50219_4_);
+      this.luck = Math.max(0, luck);
+      this.lureSpeed = Math.max(0, lureSpeed);
    }
 
    @OnlyIn(Dist.CLIENT)
    public FishingBobberEntity(World worldIn, EntityKoaBase p_i47290_2_, double x, double y, double z) {
       this(worldIn, p_i47290_2_, 0, 0);
       this.setPosition(x, y, z);
-      this.prevPosX = this.posX;
-      this.prevPosY = this.posY;
-      this.prevPosZ = this.posZ;
+      this.prevPosX = this.getPosX();
+      this.prevPosY = this.getPosY();
+      this.prevPosZ = this.getPosZ();
    }
 
    public FishingBobberEntity(EntityKoaBase p_i50220_1_, World p_i50220_2_, int p_i50220_3_, int p_i50220_4_) {
@@ -67,9 +67,9 @@ public class FishingBobberEntity extends Entity {
       float f3 = MathHelper.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
       float f4 = -MathHelper.cos(-f * ((float)Math.PI / 180F));
       float f5 = MathHelper.sin(-f * ((float)Math.PI / 180F));
-      double d0 = this.angler.posX - (double)f3 * 0.3D;
-      double d1 = this.angler.posY + (double)this.angler.getEyeHeight();
-      double d2 = this.angler.posZ - (double)f2 * 0.3D;
+      double d0 = this.angler.getPosX() - (double)f3 * 0.3D;
+      double d1 = this.angler.getPosY() + (double)this.angler.getEyeHeight();
+      double d2 = this.angler.getPosZ() - (double)f2 * 0.3D;
       this.setLocationAndAngles(d0, d1, d2, f1, f);
       Vec3d vec3d = new Vec3d((double)(-f3), (double)MathHelper.clamp(-(f5 / f4), -5.0F, 5.0F), (double)(-f2));
       double d3 = vec3d.length();
@@ -171,10 +171,8 @@ public class FishingBobberEntity extends Entity {
                      this.caughtEntity = null;
                      this.currentState = FishingBobberEntity.State.FLYING;
                   } else {
-                     this.posX = this.caughtEntity.posX;
-                     this.posY = this.caughtEntity.getBoundingBox().minY + (double)this.caughtEntity.getHeight() * 0.8D;
-                     this.posZ = this.caughtEntity.posZ;
-                     this.setPosition(this.posX, this.posY, this.posZ);
+                     setPosition(caughtEntity.getPosX(), caughtEntity.getBoundingBox().minY + (double) caughtEntity.getHeight() * 0.8D, caughtEntity.getPosZ());
+                     setPosition(getPosX(), getPosY(), getPosZ());
                   }
                }
 
@@ -183,7 +181,7 @@ public class FishingBobberEntity extends Entity {
 
             if (this.currentState == FishingBobberEntity.State.BOBBING) {
                Vec3d vec3d = this.getMotion();
-               double d0 = this.posY + vec3d.y - (double)blockpos.getY() - (double)f;
+               double d0 = this.getPosY() + vec3d.y - (double)blockpos.getY() - (double)f;
                if (Math.abs(d0) < 0.01D) {
                   d0 += Math.signum(d0) * 0.1D;
                }
@@ -203,7 +201,7 @@ public class FishingBobberEntity extends Entity {
          this.updateRotation();
          double d1 = 0.92D;
          this.setMotion(this.getMotion().scale(0.92D));
-         this.setPosition(this.posX, this.posY, this.posZ);
+         this.setPosition(getPosX(), getPosY(), getPosZ());
       }
    }
 
@@ -246,7 +244,7 @@ public class FishingBobberEntity extends Entity {
    }
 
    private void checkCollision() {
-      RayTraceResult raytraceresult = ProjectileHelper.func_221267_a(this, this.getBoundingBox().expand(this.getMotion()).grow(1.0D), (p_213856_1_) -> {
+      RayTraceResult raytraceresult = ProjectileHelper.rayTrace(this, this.getBoundingBox().expand(this.getMotion()).grow(1.0D), (p_213856_1_) -> {
          return !p_213856_1_.isSpectator() && (p_213856_1_.canBeCollidedWith() || p_213856_1_ instanceof ItemEntity) && (p_213856_1_ != this.angler || this.ticksInAir >= 5);
       }, RayTraceContext.BlockMode.COLLIDER, true);
       if (raytraceresult.getType() != RayTraceResult.Type.MISS) {
@@ -291,9 +289,9 @@ public class FishingBobberEntity extends Entity {
             float f = this.fishApproachAngle * ((float)Math.PI / 180F);
             float f1 = MathHelper.sin(f);
             float f2 = MathHelper.cos(f);
-            double d0 = this.posX + (double)(f1 * (float)this.ticksCatchableDelay * 0.1F);
-            double d1 = (double)((float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F);
-            double d2 = this.posZ + (double)(f2 * (float)this.ticksCatchableDelay * 0.1F);
+            double d0 = this.getPosX() + (double)(f1 * (float)this.ticksCatchableDelay * 0.1F);
+            double d1 = (float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F;
+            double d2 = this.getPosX() + (double)(f2 * (float)this.ticksCatchableDelay * 0.1F);
             Block block = serverworld.getBlockState(new BlockPos(d0, d1 - 1.0D, d2)).getBlock();
             if (serverworld.getBlockState(new BlockPos((int)d0, (int)d1 - 1, (int)d2)).getMaterial() == net.minecraft.block.material.Material.WATER) {
                if (this.rand.nextFloat() < 0.15F) {
@@ -310,8 +308,8 @@ public class FishingBobberEntity extends Entity {
             this.setMotion(vec3d.x, (double)(-0.4F * MathHelper.nextFloat(this.rand, 0.6F, 1.0F)), vec3d.z);
             this.playSound(SoundEvents.ENTITY_FISHING_BOBBER_SPLASH, 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
             double d3 = this.getBoundingBox().minY + 0.5D;
-            serverworld.spawnParticle(ParticleTypes.BUBBLE, this.posX, d3, this.posZ, (int)(1.0F + this.getWidth() * 20.0F), (double)this.getWidth(), 0.0D, (double)this.getWidth(), (double)0.2F);
-            serverworld.spawnParticle(ParticleTypes.FISHING, this.posX, d3, this.posZ, (int)(1.0F + this.getWidth() * 20.0F), (double)this.getWidth(), 0.0D, (double)this.getWidth(), (double)0.2F);
+            serverworld.spawnParticle(ParticleTypes.BUBBLE, getPosX(), d3, getPosZ(), (int)(1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.2F);
+            serverworld.spawnParticle(ParticleTypes.FISHING, getPosX(), d3, getPosZ(), (int)(1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.2F);
             this.ticksCatchable = MathHelper.nextInt(this.rand, 20, 40);
          }
       } else if (this.ticksCaughtDelay > 0) {
@@ -328,9 +326,9 @@ public class FishingBobberEntity extends Entity {
          if (this.rand.nextFloat() < f5) {
             float f6 = MathHelper.nextFloat(this.rand, 0.0F, 360.0F) * ((float)Math.PI / 180F);
             float f7 = MathHelper.nextFloat(this.rand, 25.0F, 60.0F);
-            double d4 = this.posX + (double)(MathHelper.sin(f6) * f7 * 0.1F);
-            double d5 = (double)((float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F);
-            double d6 = this.posZ + (double)(MathHelper.cos(f6) * f7 * 0.1F);
+            double d4 = getPosX() + (double)(MathHelper.sin(f6) * f7 * 0.1F);
+            double d5 = (float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F;
+            double d6 = getPosZ() + (double)(MathHelper.cos(f6) * f7 * 0.1F);
             Block block1 = serverworld.getBlockState(new BlockPos(d4, d5 - 1.0D, d6)).getBlock();
             if (serverworld.getBlockState(new BlockPos(d4, d5 - 1.0D, d6)).getMaterial() == net.minecraft.block.material.Material.WATER) {
                serverworld.spawnParticle(ParticleTypes.SPLASH, d4, d5, d6, 2 + this.rand.nextInt(2), (double)0.1F, 0.0D, (double)0.1F, 0.0D);
@@ -370,9 +368,9 @@ public class FishingBobberEntity extends Entity {
    }
 
    protected void bringInHookedEntity() {
-      if (this.angler != null) {
-         Vec3d vec3d = (new Vec3d(this.angler.posX - this.posX, this.angler.posY - this.posY, this.angler.posZ - this.posZ)).scale(0.1D);
-         this.caughtEntity.setMotion(this.caughtEntity.getMotion().add(vec3d));
+      if (angler != null) {
+         Vec3d vec3d = (new Vec3d(angler.getPosX() - getPosX(), angler.getPosY() - getPosY(), angler.getPosZ() - getPosZ())).scale(0.1D);
+         caughtEntity.setMotion(caughtEntity.getMotion().add(vec3d));
       }
    }
 

@@ -1,9 +1,6 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.controller.LookController;
-import net.minecraft.entity.ai.goal.FollowMobGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNavigator;
@@ -12,7 +9,6 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     private final VMonkeyEntity monkey;
@@ -88,18 +84,18 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
             monkey.getLookController().setLookPositionWithEntity(following, 10.0F, (float) monkey.getVerticalFaceSpeed());
             if (--timeToRecalcPath <= 0) {
                 timeToRecalcPath = 10;
-                double lvt_1_1_ = monkey.posX - following.posX;
-                double lvt_3_1_ = monkey.posY - following.posY;
-                double lvt_5_1_ = monkey.posZ - following.posZ;
-                double lvt_7_1_ = lvt_1_1_ * lvt_1_1_ + lvt_3_1_ * lvt_3_1_ + lvt_5_1_ * lvt_5_1_;
-                if (lvt_7_1_ > (double)(stopDistance * stopDistance)) {
+                double xDist = monkey.getPosX() - following.getPosX();
+                double yDist = monkey.getPosY() - following.getPosY();
+                double zDist = monkey.getPosZ() - following.getPosZ();
+                double sqrDist = xDist * xDist + yDist * yDist + zDist * zDist;
+                if (sqrDist > (double)(stopDistance * stopDistance)) {
                     navigation.tryMoveToEntityLiving(following, speedModifier);
                 } else {
                     navigation.clearPath();
-                    if (lvt_7_1_ <= (double)stopDistance) {
-                        double lvt_10_1_ = following.posX - monkey.posX;
-                        double lvt_12_1_ = following.posZ - monkey.posZ;
-                        navigation.tryMoveToXYZ(monkey.posX - lvt_10_1_, monkey.posY, monkey.posZ - lvt_12_1_, speedModifier);
+                    if (sqrDist <= (double)stopDistance) {
+                        double xDist2 = following.getPosX() - monkey.getPosX();
+                        double zDist2 = following.getPosZ() - monkey.getPosZ();
+                        navigation.tryMoveToXYZ(monkey.getPosX() - xDist2, monkey.getPosY(), monkey.getPosZ() - zDist2, speedModifier);
                     }
 
                 }

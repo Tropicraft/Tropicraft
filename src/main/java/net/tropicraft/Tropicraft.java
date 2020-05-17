@@ -150,7 +150,7 @@ public class Tropicraft
 
         ClientSetup.setupEntityRenderers(event);
 
-        setupTileEntityRenderers();
+        ClientSetup.setupTileEntityRenderers();
     }
 
     @OnlyIn(Dist.CLIENT)

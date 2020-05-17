@@ -143,9 +143,9 @@ public class AshenEntity extends CreatureEntity implements IRangedAttackMob {
         }
 
         ArrowEntity tippedArrow = BlowGunItem.createArrow(world, this, BlowGunItem.getProjectile());
-        double d0 = target.posX - posX;
-        double d1 = target.getBoundingBox().minY + (double)(target.getHeight() / 3.0F) - tippedArrow.posY;
-        double d2 = target.posZ - posZ;
+        double d0 = target.getPosX() - getPosX();
+        double d1 = target.getBoundingBox().minY + (double)(target.getHeight() / 3.0F) - tippedArrow.getPosY();
+        double d2 = target.getPosZ() - getPosZ();
         double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
         tippedArrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, velocity);
 
@@ -188,7 +188,7 @@ public class AshenEntity extends CreatureEntity implements IRangedAttackMob {
         setActionState(AshenState.LOST_MASK);
         maskToTrack = new AshenMaskEntity(TropicraftEntities.ASHEN_MASK.get(), world);
         maskToTrack.setMaskType(getMaskType());
-        maskToTrack.setPositionAndRotation(posX, posY, posZ, rotationYaw, 0);
+        maskToTrack.setPositionAndRotation(getPosX(), getPosY(), getPosZ(), rotationYaw, 0);
         world.addEntity(maskToTrack);
     }
 

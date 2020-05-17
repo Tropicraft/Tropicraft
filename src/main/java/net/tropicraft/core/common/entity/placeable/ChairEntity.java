@@ -1,9 +1,5 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
@@ -24,6 +20,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ChairEntity extends FurnitureEntity {
     // TODO add drips after being wet
@@ -73,25 +72,24 @@ public class ChairEntity extends FurnitureEntity {
         int j;
 
         if (/*this.getComeSailAway() && */d10 > 0.26249999999999996D) {
-            d2 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D);
-            d4 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D);
+            d2 = Math.cos((double) this.rotationYaw * Math.PI / 180.0D);
+            d4 = Math.sin((double) this.rotationYaw * Math.PI / 180.0D);
 
             if (this.getComeSailAway())
                 for (j = 0; (double)j < 1.0D + d10 * 60.0D; ++j) {
-                    double d5 = (double)(this.rand.nextFloat() * 2.0F - 1.0F);
-                    double d6 = (double)(this.rand.nextInt(2) * 2 - 1) * 0.7D;
-                    double d8;
-                    double d9;
+                    double d5 = rand.nextFloat() * 2.0F - 1.0F;
+                    double d6 = (double)(rand.nextInt(2) * 2 - 1) * 0.7D;
+                    double particleX;
+                    double particleZ;
 
-                    if (this.rand.nextBoolean()) {
-                        d8 = this.posX - d2 * d5 * 0.8D + d4 * d6;
-                        d9 = this.posZ - d4 * d5 * 0.8D - d2 * d6;
-                        this.world.addParticle(ParticleTypes.SPLASH, d8, this.posY - 0.125D, d9, getMotion().x, getMotion().y, getMotion().z);
+                    if (rand.nextBoolean()) {
+                        particleX = getPosX() - d2 * d5 * 0.8D + d4 * d6;
+                        particleZ = getPosZ() - d4 * d5 * 0.8D - d2 * d6;
                     } else {
-                        d8 = this.posX + d2 + d4 * d5 * 0.7D;
-                        d9 = this.posZ + d4 - d2 * d5 * 0.7D;
-                        this.world.addParticle(ParticleTypes.SPLASH, d8, this.posY - 0.125D, d9, getMotion().x, getMotion().y, getMotion().z);
+                        particleX = getPosX() + d2 + d4 * d5 * 0.7D;
+                        particleZ = getPosZ() + d4 - d2 * d5 * 0.7D;
                     }
+                    world.addParticle(ParticleTypes.SPLASH, particleX, getPosY() - 0.125D, particleZ, getMotion().x, getMotion().y, getMotion().z);
                 }
         }
 
@@ -144,11 +142,11 @@ public class ChairEntity extends FurnitureEntity {
 
             if (this.getComeSailAway())
                 for (l = 0; l < 4; ++l) {
-                    int i1 = MathHelper.floor(this.posX + ((double)(l % 2) - 0.5D) * 0.8D);
-                    j = MathHelper.floor(this.posZ + ((double)(l / 2) - 0.5D) * 0.8D);
+                    int i1 = MathHelper.floor(this.getPosX() + ((double)(l % 2) - 0.5D) * 0.8D);
+                    j = MathHelper.floor(this.getPosZ() + ((double)(l / 2) - 0.5D) * 0.8D);
 
                     for (int j1 = 0; j1 < 2; ++j1) {
-                        int k = MathHelper.floor(this.posY) + j1;
+                        int k = MathHelper.floor(this.getPosY()) + j1;
                         BlockPos pos = new BlockPos(i1, k, j);
                         Block block = this.world.getBlockState(pos).getBlock();
                         
@@ -178,8 +176,8 @@ public class ChairEntity extends FurnitureEntity {
 
             this.rotationPitch = 0.0F;
             d4 = (double)this.rotationYaw;
-            d11 = this.prevPosX - this.posX;
-            d12 = this.prevPosZ - this.posZ;
+            d11 = this.prevPosX - this.getPosX();
+            d12 = this.prevPosZ - this.getPosZ();
 
             if (d11 * d11 + d12 * d12 > 0.001D) {
                 d4 = (double)((float)(Math.atan2(d12, d11) * 180.0D / Math.PI));
@@ -240,12 +238,12 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     protected void writeAdditional(CompoundNBT nbt) {
         super.writeAdditional(nbt);
-        nbt.putBoolean("COME_SAIL_AWAY", Boolean.valueOf(this.getComeSailAway()));
+        nbt.putBoolean("COME_SAIL_AWAY", getComeSailAway());
     }
 
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand) {
-        if (!this.world.isRemote && !player.isSneaking()) {
+        if (!world.isRemote && !player.isSneaking()) {
             player.startRiding(this);
             return true;
         }
@@ -276,16 +274,16 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     public void updatePassenger(Entity passenger) {
         if (this.isPassenger(passenger)) {
-            Vec3d xzOffset = new Vec3d(0, 0, -0.125).rotateYaw((float) Math.toRadians(-this.rotationYaw));
-            passenger.setPosition(this.posX + xzOffset.x, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + xzOffset.z);
+            Vec3d xzOffset = new Vec3d(0, 0, -0.125).rotateYaw((float) Math.toRadians(-rotationYaw));
+            passenger.setPosition(getPosX() + xzOffset.x, getPosY() + getMountedYOffset() + passenger.getYOffset(), getPosZ() + xzOffset.z);
         }
     }
 
     public void setComeSailAway(boolean sail) {
-        this.dataManager.set(COMESAILAWAY, sail ? Byte.valueOf((byte)1) : Byte.valueOf((byte)0));
+        dataManager.set(COMESAILAWAY, sail ? Byte.valueOf((byte)1) : Byte.valueOf((byte)0));
     }
 
     public boolean getComeSailAway() {
-        return this.dataManager.get(COMESAILAWAY) == (byte)1;
+        return dataManager.get(COMESAILAWAY) == (byte)1;
     }
 }

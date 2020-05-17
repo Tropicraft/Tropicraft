@@ -68,9 +68,11 @@ public class MonkeySitInChairGoal extends Goal {
      */
     @Override
     public void startExecuting() {
-        final ChairEntity nearbyChair = getNearestEmptyChair().get();
-        entity.setSitting(true);
-        aiSit.setSitting(true);
-        entity.startRiding(nearbyChair);
+        final Optional<ChairEntity> nearbyChair = getNearestEmptyChair();
+        if (nearbyChair.isPresent()) {
+            entity.setSitting(true);
+            aiSit.setSitting(true);
+            entity.startRiding(nearbyChair.get());
+        }
     }
 }

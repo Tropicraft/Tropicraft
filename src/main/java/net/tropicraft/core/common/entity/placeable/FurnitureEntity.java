@@ -1,9 +1,5 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +19,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public abstract class FurnitureEntity extends Entity {
 
@@ -82,10 +82,11 @@ public abstract class FurnitureEntity extends Entity {
         if (damage > 0) {
             setDamage(damage - 1);
         }
-    
-        prevPosX = posX;
-        prevPosY = posY;
-        prevPosZ = posZ;
+
+        final Vec3d currentPos = getPositionVec();
+        prevPosX = currentPos.x;
+        prevPosY = currentPos.y;
+        prevPosZ = currentPos.z;
     
         super.tick();
     
@@ -132,9 +133,9 @@ public abstract class FurnitureEntity extends Entity {
 
     private void tickLerp() {
         if (this.lerpSteps > 0) {
-            double d0 = this.posX + (this.lerpX - this.posX) / (double)this.lerpSteps;
-            double d1 = this.posY + (this.lerpY - this.posY) / (double)this.lerpSteps;
-            double d2 = this.posZ + (this.lerpZ - this.posZ) / (double)this.lerpSteps;
+            double d0 = this.getPosX() + (this.lerpX - this.getPosX()) / (double)this.lerpSteps;
+            double d1 = this.getPosY() + (this.lerpY - this.getPosY()) / (double)this.lerpSteps;
+            double d2 = this.getPosZ() + (this.lerpZ - this.getPosZ()) / (double)this.lerpSteps;
             double d3 = MathHelper.wrapDegrees(this.lerpYaw - (double)this.rotationYaw);
             this.rotationYaw = (float)((double)this.rotationYaw + d3 / (double)this.lerpSteps);
             this.rotationPitch = (float)((double)this.rotationPitch + (this.lerpPitch - (double)this.rotationPitch) / (double)this.lerpSteps);
@@ -145,8 +146,8 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource damagesource, float amount) {
-        if (this.isInvulnerableTo(damagesource)) {
+    public boolean attackEntityFrom(DamageSource damageSource, float amount) {
+        if (this.isInvulnerableTo(damageSource)) {
             return false;
         }
         else if (!this.world.isRemote && isAlive()) {
@@ -154,7 +155,7 @@ public abstract class FurnitureEntity extends Entity {
             this.setTimeSinceHit(10);
             this.setDamage(this.getDamage() + amount * 10.0F);
             this.markVelocityChanged();
-            boolean flag = damagesource.getTrueSource() instanceof PlayerEntity && ((PlayerEntity)damagesource.getTrueSource()).abilities.isCreativeMode;
+            boolean flag = damageSource.getTrueSource() instanceof PlayerEntity && ((PlayerEntity)damageSource.getTrueSource()).abilities.isCreativeMode;
     
             if (flag || this.getDamage() > DAMAGE_THRESHOLD) {
                 Entity rider = this.getControllingPassenger();

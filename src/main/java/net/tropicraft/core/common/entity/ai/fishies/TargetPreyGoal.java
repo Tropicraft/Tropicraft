@@ -87,7 +87,7 @@ public class TargetPreyGoal extends Goal {
 				entity.setRandomTargetHeading();
 			}else {
 				if(entity.canEntityBeSeen(entity.aggressTarget) && entity.ticksExisted % 20 == 0) {	
-					entity.setTargetHeading(entity.aggressTarget.posX, entity.aggressTarget.posY, entity.aggressTarget.posZ, true);
+					entity.setTargetHeading(entity.aggressTarget.getPosX(), entity.aggressTarget.getPosY(), entity.aggressTarget.getPosZ(), true);
 				}
 			}
 			if(entity.aggressTarget != null) {

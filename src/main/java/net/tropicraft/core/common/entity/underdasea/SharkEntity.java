@@ -12,12 +12,12 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 import net.tropicraft.core.common.entity.ai.fishies.AvoidWallsGoal;
 import net.tropicraft.core.common.entity.ai.fishies.RandomSwimGoal;
-import net.tropicraft.core.common.entity.ai.fishies.TargetPreyGoal;
 import net.tropicraft.core.common.entity.ai.fishies.SwimToAvoidEntityGoal;
+import net.tropicraft.core.common.entity.ai.fishies.TargetPreyGoal;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -99,7 +99,7 @@ public class SharkEntity extends TropicraftFishEntity {
                 if (nearest != null) {
                     if (canEntityBeSeen(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
                         aggressTarget = nearest;
-                        setTargetHeading(aggressTarget.posX, aggressTarget.posY+1, aggressTarget.posZ, true);
+                        setTargetHeading(aggressTarget.getPosX(), aggressTarget.getPosY() + 1, aggressTarget.getPosZ(), true);
                         // Show health bar to target player
                         if (nearest instanceof ServerPlayerEntity) {
                             if (!bossInfo.getPlayers().contains(nearest)) {

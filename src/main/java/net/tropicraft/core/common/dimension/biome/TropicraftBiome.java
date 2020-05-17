@@ -15,7 +15,8 @@ public abstract class TropicraftBiome extends Biome {
     protected TropicraftBiome(final Builder builder) {
         super(builder
             .waterColor(TROPICS_WATER_COLOR)
-            .waterFogColor(TROPICS_WATER_FOG_COLOR));    }
+            .waterFogColor(TROPICS_WATER_FOG_COLOR));
+    }
     
     public void addFeatures() {
         DefaultBiomeFeatures.addStructures(this);

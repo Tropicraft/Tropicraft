@@ -147,12 +147,12 @@ public class TreeFrogEntity extends CreatureEntity implements IMob, IRangedAttac
     @Override
     public void attackEntityWithRangedAttack(final LivingEntity entity, float dist) {
         if (dist < 4F && !world.isRemote && attackTime == 0 && world.getDifficulty() != Difficulty.PEACEFUL) {
-            double d = entity.posX - posX;
-            double d1 = entity.posZ - posZ;
+            double d = entity.getPosX() - getPosX();
+            double d1 = entity.getPosZ() - getPosZ();
 
             final PoisonBlotEntity entitypoisonblot = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, world);
-            entitypoisonblot.posY += 1.3999999761581421D;
-            final double shotHeight = (entity.posY + (double) entity.getEyeHeight()) - 0.20000000298023224D - entitypoisonblot.posY;
+            entitypoisonblot.setPosition(entitypoisonblot.getPosX(), entitypoisonblot.getPosY() + 1.3999999761581421D, entitypoisonblot.getPosZ());
+            final double shotHeight = (entity.getPosY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - entitypoisonblot.getPosY();
             float f1 = MathHelper.sqrt(d * d + d1 * d1) * 0.2F;
             entity.getEntityWorld().playSound(null, entity.getPosition(), Sounds.FROG_SPIT, SoundCategory.HOSTILE, 1, 1);
             world.addEntity(entitypoisonblot);

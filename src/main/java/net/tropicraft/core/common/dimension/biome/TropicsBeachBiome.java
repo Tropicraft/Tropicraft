@@ -23,7 +23,7 @@ public class TropicsBeachBiome extends TropicraftBiome {
     @Override
     public void addFeatures() {
         super.addFeatures();
-        this.addStructure(TropicraftFeatures.VILLAGE.get(), new NoFeatureConfig());
+        addStructure(TropicraftFeatures.VILLAGE.get().withConfiguration(new NoFeatureConfig()));
 
         DefaultTropicsFeatures.addUnderwaterCarvers(this);
         

@@ -52,7 +52,7 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
 				}
 			} else {
 				if (ashen.world.getGameTime() % 40 == 0) {
-					ashen.getNavigator().tryMoveToXYZ(ashen.maskToTrack.posX, ashen.maskToTrack.posY, ashen.maskToTrack.posZ, this.speed);
+					ashen.getNavigator().tryMoveToXYZ(ashen.maskToTrack.getPosX(), ashen.maskToTrack.getPosY(), ashen.maskToTrack.getPosZ(), speed);
 				}
 			}
 		}

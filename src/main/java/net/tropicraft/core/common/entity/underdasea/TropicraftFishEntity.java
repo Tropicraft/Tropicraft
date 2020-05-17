@@ -5,21 +5,18 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import javax.vecmath.Vector2f;
-import java.util.List;
 
 public abstract class TropicraftFishEntity extends WaterMobEntity {
 
     public float swimPitch = 0f;
     public float swimYaw = 0f;
 
-    public Vector2f targetVectorHeading;
+    public Vec2f targetVectorHeading;
     public Vec3d targetVector;
 
     public int outOfWaterTime = 0;
@@ -77,21 +74,21 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
                 this.prevRotationPitch = -this.prevSwimPitch;
                 this.prevRotationYaw = -this.prevSwimYaw;
 
-                double x = (this.posX - this.prevPosX);
-                double y = (this.posY - this.prevPosY);
-                double z = (this.posZ - this.prevPosZ);
+                double x = (this.getPosX() - this.prevPosX);
+                double y = (this.getPosY() - this.prevPosY);
+                double z = (this.getPosZ() - this.prevPosZ);
                 float yaw ;
                 float pitch;
 
                 this.prevSwimYaw = this.swimYaw;
                 this.prevSwimPitch = this.swimPitch;
 
-                if (this.posX == this.prevPosX && this.posZ == this.prevPosZ) {
+                if (this.getPosX() == this.prevPosX && this.getPosZ() == this.prevPosZ) {
                     yaw = this.swimYaw;
                 } else {
                     yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
                 }
-                if (this.posY == this.prevPosY) {
+                if (this.getPosY() == this.prevPosY) {
                     pitch = this.swimPitch;
                 } else {
                     pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
@@ -123,7 +120,7 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
 
         // Out of water
         if (!isInWater()) {
-            setTargetHeading(posX, posY - 1, posZ, false);
+            setTargetHeading(getPosX(), getPosY() - 1, getPosZ(), false);
         }
 
         // Move speed
@@ -272,18 +269,13 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
         }
 
 
-        double x = (int) (posX - this.posX);
-        double y = (int) (posY - this.posY);
-        double z = (int) (posZ - this.posZ);
+        double x = (int) (posX - this.getPosX());
+        double y = (int) (posY - this.getPosY());
+        double z = (int) (posZ - this.getPosZ());
         float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
         float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
-
-        if (this.targetVectorHeading == null) {
-            this.targetVectorHeading = new Vector2f();
-        }
-        this.targetVector = new Vec3d((int)posX, (int)posY, (int)posZ);
-        targetVectorHeading.x = yaw;
-        targetVectorHeading.y = pitch;
+        targetVector = new Vec3d((int) posX, (int) posY, (int) posZ);
+        targetVectorHeading = new Vec2f(yaw, pitch);
         return true;
     }
 
@@ -303,7 +295,7 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
     public boolean setRandomTargetHeading() {
         boolean result = false;
         int dist = 16;
-        Vec3d randBlock = new Vec3d(posX + randFlip(dist), posY + randFlip(dist/2), posZ + randFlip(dist));
+        Vec3d randBlock = new Vec3d(getPosX() + randFlip(dist), getPosY() + randFlip(dist/2), getPosZ() + randFlip(dist));
 
         result = this.setTargetHeading(randBlock.x, randBlock.y, randBlock.z, true);
 
@@ -313,7 +305,7 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
                 PlayerEntity closest = world.getClosestPlayer(this, 32D);
                 if (closest != null) {
                     if (closest.isInWater())
-                        result = this.setTargetHeading(closest.posX, closest.posY, closest.posZ, true);
+                        result = this.setTargetHeading(closest.getPosX(), closest.getPosY(), closest.getPosZ(), true);
                 }
 
             }
@@ -323,20 +315,16 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
     }
 
     public void fleeEntity(Entity ent) {
-        double x = ent.posX - this.posX;
-        double y = ent.posY - this.posY;
-        double z = ent.posZ - this.posZ;
+        double x = ent.getPosX() - this.getPosX();
+        double y = ent.getPosY() - this.getPosY();
+        double z = ent.getPosZ() - this.getPosZ();
         float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90F;
         float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 
-        if (this.targetVectorHeading == null) {
-            this.targetVectorHeading = new Vector2f();
+        if (targetVector == null) {
+            targetVector = new Vec3d(ent.getPosX(), ent.getPosY() - 5 + rand.nextInt(10), ent.getPosZ());
         }
-        if (this.targetVector == null) {
-            this.targetVector = new Vec3d(ent.posX, ent.posY - 5 + rand.nextInt(10), ent.posZ);
-        }
-        targetVectorHeading.x = yaw+180;
-        targetVectorHeading.y = -(pitch/2);
+        targetVectorHeading = new Vec2f(yaw + 180, -1 * pitch/2);
     }
 
     public int randFlip(int i) {

@@ -19,7 +19,7 @@ public class ExplodingCoconutItem extends Item {
         if (!itemstack.isEmpty()) {
             itemstack.shrink(1);
         }
-        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
+        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
         if (!world.isRemote) {
             // TODO - implement config file: boolean canPlayerThrow = ArrayUtils.contains(TropicsConfigs.coconutBombWhitelist, player.getGameProfile().getName());
             final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();

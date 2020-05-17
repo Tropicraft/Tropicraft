@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.FrequencyConfig;
-import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.tropicraft.Constants;
@@ -37,16 +37,16 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
         DefaultTropicsFeatures.addTropicsGems(this);
 
         addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.UP_TREE.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(0, 0.2F, 1))));
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.SMALL_TUALUNG.get(), NoFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.3F, 1)));
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.LARGE_TUALUNG.get(), NoFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.5F, 1)));
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(TropicraftFeatures.TALL_TREE.get(), NoFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(0, 0.5F, 1)));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.SMALL_TUALUNG.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(0, 0.3F, 1))));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.LARGE_TUALUNG.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(0, 0.5F, 1))));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.TALL_TREE.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(0, 0.5F, 1))));
 
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.RAINFOREST_FLOWERS.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(4)));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.RAINFOREST_FLOWERS.get().withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(4))));
 
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, createDecoratedFeature(TropicraftFeatures.UNDERGROWTH.get(), IFeatureConfig.NO_FEATURE_CONFIG, Placement.COUNT_HEIGHTMAP_32, new FrequencyConfig(100)));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TropicraftFeatures.UNDERGROWTH.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(100))));
 
-        addStructure(TropicraftFeatures.HOME_TREE.get(), new VillageConfig(Constants.MODID + ":home_tree/starts", 10));
-        addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, createDecoratedFeature(TropicraftFeatures.HOME_TREE.get(), new VillageConfig(Constants.MODID + ":home_tree/starts", 10), Placement.NOPE, IPlacementConfig.NO_PLACEMENT_CONFIG));
+        addStructure(TropicraftFeatures.HOME_TREE.get().withConfiguration(new VillageConfig(Constants.MODID + ":home_tree/starts", 10)));
+        addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TropicraftFeatures.HOME_TREE.get().withConfiguration(new VillageConfig(Constants.MODID + ":home_tree/starts", 10)).withPlacement(Placement.NOPE.configure(NoPlacementConfig.NO_PLACEMENT_CONFIG)));
 
         addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.OCELOT, 10, 1, 1));
         addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.PARROT, 10, 1, 2));

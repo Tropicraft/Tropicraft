@@ -61,12 +61,12 @@ public class TropiSkellyEntity extends MonsterEntity {
     }
 
     private boolean isValidLightLevel() {
-        BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
-        if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
+        BlockPos blockpos = new BlockPos(getPosX(), getBoundingBox().minY, getPosZ());
+        if (world.getLightFor(LightType.SKY, blockpos) > rand.nextInt(32)) {
             return false;
         } else {
-            int i = this.world.isThundering() ? this.world.getNeighborAwareLightSubtracted(blockpos, 10) : this.world.getLight(blockpos);
-            return i <= this.rand.nextInt(8);
+            int i = world.isThundering() ? world.getNeighborAwareLightSubtracted(blockpos, 10) : world.getLight(blockpos);
+            return i <= rand.nextInt(8);
         }
     }
 

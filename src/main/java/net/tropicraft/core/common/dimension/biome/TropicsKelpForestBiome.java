@@ -31,7 +31,7 @@ public class TropicsKelpForestBiome extends TropicraftBiome {
         DefaultTropicsFeatures.addUnderwaterCarvers(this);
         
         // KELP!
-        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.KELP, IFeatureConfig.NO_FEATURE_CONFIG, Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED, new TopSolidWithNoiseConfig(120, 80, 1, Heightmap.Type.OCEAN_FLOOR_WG)));
+        addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.KELP.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.TOP_SOLID_HEIGHTMAP_NOISE_BIASED.configure(new TopSolidWithNoiseConfig(120, 80, 1, Heightmap.Type.OCEAN_FLOOR_WG))));
         
         DefaultTropicsFeatures.addUnderwaterCarvers(this);
         DefaultTropicsFeatures.addUndergroundSeagrass(this);

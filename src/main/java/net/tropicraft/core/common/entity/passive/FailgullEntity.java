@@ -52,7 +52,7 @@ public class FailgullEntity extends FlyingEntity {
 
 	private void poop() {
 		if (!world.isRemote && world.rand.nextInt(20) == 0) {
-			SnowballEntity s = new SnowballEntity(world, posX, posY, posZ);
+			SnowballEntity s = new SnowballEntity(world, getPosX(), getPosY(), getPosZ());
 			s.shoot(0, 0, 0, 0, 0);
 			world.addEntity(s);
 		}
@@ -96,8 +96,8 @@ public class FailgullEntity extends FlyingEntity {
 				double d0 = 64.0D;
 
 				if (entitylivingbase.getDistanceSq(parentEntity) < d0 * d0) {
-					double d1 = entitylivingbase.posX - parentEntity.posX;
-					double d2 = entitylivingbase.posZ - parentEntity.posZ;
+					double d1 = entitylivingbase.getPosX() - parentEntity.getPosX();
+					double d2 = entitylivingbase.getPosZ() - parentEntity.getPosZ();
 					parentEntity.renderYawOffset = parentEntity.rotationYaw = -1 * ((float) MathHelper.atan2(d1, d2)) * (180F / (float) Math.PI);
 				}
 			}
@@ -119,9 +119,9 @@ public class FailgullEntity extends FlyingEntity {
 			if (!entitymovehelper.isUpdating()) {
 				return true;
 			} else {
-				double d0 = entitymovehelper.getX() - parentEntity.posX;
-				double d1 = entitymovehelper.getY() - parentEntity.posY;
-				double d2 = entitymovehelper.getZ() - parentEntity.posZ;
+				double d0 = entitymovehelper.getX() - parentEntity.getPosX();
+				double d1 = entitymovehelper.getY() - parentEntity.getPosY();
+				double d2 = entitymovehelper.getZ() - parentEntity.getPosZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return d3 < 1.0D || d3 > 3600.0D;
 			}
@@ -134,11 +134,11 @@ public class FailgullEntity extends FlyingEntity {
 
 		@Override
 		public void startExecuting() {
-			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.posX + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d1 = this.parentEntity.posY + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d2 = this.parentEntity.posZ + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
+			final Random random = parentEntity.getRNG();
+			double nextXPos = parentEntity.getPosX() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double nextYPos = parentEntity.getPosY() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double nextZPos = parentEntity.getPosZ() + (double)((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			parentEntity.getMoveHelper().setMoveTo(nextXPos, nextYPos, nextZPos, 1.0D);
 		}
 	}
 
@@ -216,9 +216,9 @@ public class FailgullEntity extends FlyingEntity {
 		 * Checks if entity bounding box is not colliding with terrain
 		 */
 		private boolean isNotColliding(double x, double y, double z, double p_179926_7_) {
-			double d0 = (x - failgull.posX) / p_179926_7_;
-			double d1 = (y - failgull.posY) / p_179926_7_;
-			double d2 = (z - failgull.posZ) / p_179926_7_;
+			double d0 = (x - failgull.getPosX()) / p_179926_7_;
+			double d1 = (y - failgull.getPosY()) / p_179926_7_;
+			double d2 = (z - failgull.getPosZ()) / p_179926_7_;
 			AxisAlignedBB axisalignedbb = failgull.getBoundingBox();
 
 			for (int i = 1; (double) i < p_179926_7_; ++i) {

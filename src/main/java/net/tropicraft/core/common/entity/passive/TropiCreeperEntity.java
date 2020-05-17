@@ -5,7 +5,14 @@ import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.OcelotEntity;
@@ -25,8 +32,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.TropicraftTags;
-import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.entity.ai.TropiCreeperSwellGoal;
 
 import java.util.Collection;
@@ -79,12 +84,14 @@ public class TropiCreeperEntity extends CreatureEntity {
     }
 
     @Override
-    public void fall(float distance, float damageMultiplier) {
-        super.fall(distance, damageMultiplier);
+    public boolean onLivingFall(float distance, float damageMultiplier) {
+        boolean fall = super.onLivingFall(distance, damageMultiplier);
         this.timeSinceIgnited = (int)((float)this.timeSinceIgnited + distance * 1.5F);
         if (this.timeSinceIgnited > this.fuseTime - 5) {
             this.timeSinceIgnited = this.fuseTime - 5;
         }
+
+        return fall;
     }
 
     @Override
@@ -170,7 +177,7 @@ public class TropiCreeperEntity extends CreatureEntity {
     protected boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
-            this.world.playSound(player, this.posX, this.posY, this.posZ, SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
+            this.world.playSound(player, getPosX(), getPosY(), getPosZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
             player.swingArm(hand);
             if (!this.world.isRemote) {
                 this.ignite();
@@ -213,14 +220,14 @@ public class TropiCreeperEntity extends CreatureEntity {
             this.remove();
             this.spawnLingeringCloud();
         } else {
-            this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.posX, this.posY + 1F, this.posZ, 1.0D, 0.0D, 0.0D);
+            world.addParticle(ParticleTypes.EXPLOSION_EMITTER, getPosX(), getPosY() + 1F, getPosZ(), 1.0D, 0.0D, 0.0D);
         }
     }
 
     private void spawnLingeringCloud() {
         Collection<EffectInstance> collection = this.getActivePotionEffects();
         if (!collection.isEmpty()) {
-            AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(this.world, this.posX, this.posY, this.posZ);
+            AreaEffectCloudEntity areaeffectcloudentity = new AreaEffectCloudEntity(world, getPosX(), getPosY(), getPosZ());
             areaeffectcloudentity.setRadius(2.5F);
             areaeffectcloudentity.setRadiusOnUse(-0.5F);
             areaeffectcloudentity.setWaitTime(10);

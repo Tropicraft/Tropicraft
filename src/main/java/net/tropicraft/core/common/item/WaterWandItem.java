@@ -31,8 +31,7 @@ public class WaterWandItem extends Item {
                         int x1 = (int)(Math.cos(lat) * len);
                         int z1 = (int)(Math.sin(lat) * len);
                         int y1 = (int)(Math.sin(lng) * len);
-                        BlockPos pos = new BlockPos(player.posX + x1, player.posY + y1, player.posZ + z1);
-                        if (!removeWater(world, itemstack, player, pos)) {
+                        if (!removeWater(world, itemstack, player, new BlockPos(player.getPosition().add(x1, y1, z1)))) {
                             break;
                         }
                     }

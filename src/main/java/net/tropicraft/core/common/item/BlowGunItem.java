@@ -3,23 +3,23 @@ package net.tropicraft.core.common.item;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ICrossbowUser;
-import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.ArrowItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -74,18 +74,18 @@ public class BlowGunItem extends ShootableItem {
                 arrowEntity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
             }
 
-            Vec3d lookVec = shooter.func_213286_i(1.0F);
+            Vec3d lookVec = shooter.getLookVec();
             Quaternion quaternion = new Quaternion(new Vector3f(lookVec), 0, true);
             Vec3d look = shooter.getLook(1.0F);
             Vector3f look3f = new Vector3f(look);
-            look3f.func_214905_a(quaternion);
+            look3f.transform(quaternion);
             arrowEntity.shoot(look3f.getX(), look3f.getY(), look3f.getZ(), dmg, pitch);
 
             heldItem.damageItem(1, shooter, (i) -> {
                 i.sendBreakAnimation(hand);
             });
             world.addEntity(arrowEntity);
-            world.playSound(null, shooter.posX, shooter.posY, shooter.posZ, SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
+            world.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
         }
     }
 
@@ -94,8 +94,7 @@ public class BlowGunItem extends ShootableItem {
         ArrowEntity arrowEntity = (ArrowEntity) arrowItem.createArrow(world, projectile, shooter);
         arrowEntity.setDamage(0);
         arrowEntity.setHitSound(SoundEvents.ITEM_CROSSBOW_HIT);
-        arrowEntity.func_213865_o(false);
-
+        arrowEntity.setIsCritical(false);
         return arrowEntity;
     }
 

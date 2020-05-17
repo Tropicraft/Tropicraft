@@ -101,7 +101,7 @@ public abstract class EggEntity extends LivingEntity {
             if (ticksExisted >= this.getHatchTime()) {
                 if (!world.isRemote) {
                     final Entity ent = onHatch();
-                    ent.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
+                    ent.setLocationAndAngles(getPosX(), getPosY(), getPosZ(), 0.0F, 0.0F);
                     world.addEntity(ent);
                     remove();
                 }

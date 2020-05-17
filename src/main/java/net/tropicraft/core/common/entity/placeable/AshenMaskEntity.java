@@ -3,7 +3,6 @@ package net.tropicraft.core.common.entity.placeable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -89,8 +88,8 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-        if (isInvulnerableTo(par1DamageSource)) {
+    public boolean attackEntityFrom(DamageSource damageSource, float par2) {
+        if (isInvulnerableTo(damageSource)) {
             return false;
         } else {
             if (isAlive() && !world.isRemote) {

@@ -1,11 +1,5 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -19,6 +13,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -27,12 +22,17 @@ import net.minecraft.world.gen.PerlinNoiseGenerator;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.tropicraft.core.common.item.TropicraftItems;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Random;
+
 public class BeachFloatEntity extends FurnitureEntity implements IEntityAdditionalSpawnData {
 
     @Nonnull
     private static final Random rand = new Random(298457L);
     @Nonnull
-    private static final PerlinNoiseGenerator windNoise = new PerlinNoiseGenerator(rand, 1);
+    private static final PerlinNoiseGenerator windNoise = new PerlinNoiseGenerator(new SharedSeedRandom(298457L), 1, 1);
 
     /* Wind */
     private double windModifier = 0;
@@ -78,7 +78,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         }
 
         if (this.inWater) {
-            double windAng = (windNoise.getValue(posX / 1000, posZ / 1000) + 1) * Math.PI;
+            double windAng = (windNoise.noiseAt(getPosX() / 1000, getPosZ() / 1000, false) + 1) * Math.PI;
             double windX = Math.sin(windAng) * 0.0005 * windModifier;
             double windZ = Math.cos(windAng) * 0.0005 * windModifier;
             setMotion(getMotion().add(windX, 0, windZ));
@@ -205,9 +205,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
             }
 
             float len = 0.6f;
-            double x = this.posX + (-MathHelper.sin(-this.rotationYaw * 0.017453292F) * len);
-            double z = this.posZ + (-MathHelper.cos(this.rotationYaw * 0.017453292F) * len);
-            passenger.setPosition(x, this.posY + (double) f1, z);
+            double x = this.getPosX() + (-MathHelper.sin(-this.rotationYaw * 0.017453292F) * len);
+            double z = this.getPosZ() + (-MathHelper.cos(this.rotationYaw * 0.017453292F) * len);
+            passenger.setPosition(x, this.getPosY() + (double) f1, z);
             passenger.rotationYaw += this.rotationSpeed;
             passenger.setRotationYawHead(passenger.getRotationYawHead() + this.rotationSpeed);
             this.applyYawToEntity(passenger);
@@ -266,7 +266,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         int maxY = minY + 1;
         int minZ = MathHelper.floor(axisalignedbb.minZ);
         int maxZ = MathHelper.ceil(axisalignedbb.maxZ);
-        BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
+        BlockPos.PooledMutable pos = BlockPos.PooledMutable.retain();
 
         try {
             float waterHeight = minY - 1;

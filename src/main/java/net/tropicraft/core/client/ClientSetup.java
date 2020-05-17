@@ -91,7 +91,7 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HAMMERHEAD.get(), SharkRenderer::new);
     }
 
-    private static void setupTileEntityRenderers() {
+    public static void setupTileEntityRenderers() {
         ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.BAMBOO_CHEST.get(), new BambooChestRenderer());
         ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.SIFTER.get(), new SifterRenderer());
         ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.DRINK_MIXER.get(), new DrinkMixerRenderer());

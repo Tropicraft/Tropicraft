@@ -11,7 +11,6 @@ import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.registry.ItemRegistry;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -429,12 +428,11 @@ public class EntityAIGoneFishin extends Goal {
         faceCoord(coord.getX(), coord.getY(), coord.getZ(), maxDeltaYaw, maxDeltaPitch);
     }
 
-    public void faceCoord(int x, int y, int z, float maxDeltaYaw, float maxDeltaPitch)
-    {
-        double d = x+0.5F - entity.posX;
-        double d2 = z+0.5F - entity.posZ;
+    public void faceCoord(int x, int y, int z, float maxDeltaYaw, float maxDeltaPitch) {
+        double d = x+0.5F - entity.getPosX();
+        double d2 = z+0.5F - entity.getPosZ();
         double d1;
-        d1 = y+0.5F - (entity.posY + (double)entity.getEyeHeight());
+        d1 = y+0.5F - (entity.getPosY() + (double)entity.getEyeHeight());
 
         double d3 = MathHelper.sqrt(d * d + d2 * d2);
         float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
@@ -443,8 +441,7 @@ public class EntityAIGoneFishin extends Goal {
         entity.rotationYaw = updateRotation(entity.rotationYaw, f2, maxDeltaYaw);
     }
 
-    public float updateRotation(float curRotation, float targetRotation, float maxDeltaRotation)
-    {
+    public float updateRotation(float curRotation, float targetRotation, float maxDeltaRotation) {
         float f3;
         for(f3 = targetRotation - curRotation; f3 < -180F; f3 += 360F) { }
         for(; f3 >= 180F; f3 -= 360F) { }

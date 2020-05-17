@@ -9,7 +9,6 @@ import net.minecraft.util.Hand;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
-import net.tropicraft.core.common.item.CocktailItem;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -90,9 +89,9 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
             if (entity.getDistanceSq(drinkEntity) > (double)(stopDistance * stopDistance)) {
                 if (--timeToRecalcPath <= 0) {
                     timeToRecalcPath = 10;
-                    double d0 = entity.posX - drinkEntity.posX;
-                    double d1 = entity.posY - drinkEntity.posY;
-                    double d2 = entity.posZ - drinkEntity.posZ;
+                    double d0 = entity.getPosX() - drinkEntity.getPosX();
+                    double d1 = entity.getPosY() - drinkEntity.getPosY();
+                    double d2 = entity.getPosZ() - drinkEntity.getPosZ();
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
                     if (d3 > (double)(stopDistance * stopDistance)) {
@@ -101,9 +100,9 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
                         navigation.clearPath();
 
                         if (d3 <= (double)stopDistance) {
-                            double d4 = drinkEntity.posX - entity.posX;
-                            double d5 = drinkEntity.posZ - entity.posZ;
-                            navigation.tryMoveToXYZ(entity.posX - d4, entity.posY, entity.posZ - d5, speedModifier);
+                            double d4 = drinkEntity.getPosX() - entity.getPosX();
+                            double d5 = drinkEntity.getPosZ() - entity.getPosZ();
+                            navigation.tryMoveToXYZ(entity.getPosX() - d4, entity.getPosY(), entity.getPosZ() - d5, speedModifier);
                         }
                     }
                 }

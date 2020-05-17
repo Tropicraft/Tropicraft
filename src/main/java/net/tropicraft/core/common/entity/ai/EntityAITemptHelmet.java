@@ -1,9 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
 import com.google.common.collect.Sets;
-
-import java.util.EnumSet;
-import java.util.Set;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +9,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 public class EntityAITemptHelmet extends Goal
 {
@@ -101,31 +101,24 @@ public class EntityAITemptHelmet extends Goal
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean shouldContinueExecuting()
-    {
-        if (this.scaredByPlayerMovement)
-        {
-            if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 36.0D)
-            {
-                if (this.temptingPlayer.getDistanceSq(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D)
-                {
+    public boolean shouldContinueExecuting() {
+        if (this.scaredByPlayerMovement) {
+            if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 36.0D) {
+                if (this.temptingPlayer.getDistanceSq(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D) {
                     return false;
                 }
 
-                if (Math.abs((double)this.temptingPlayer.rotationPitch - this.pitch) > 5.0D || Math.abs((double)this.temptingPlayer.rotationYaw - this.yaw) > 5.0D)
-                {
+                if (Math.abs((double)this.temptingPlayer.rotationPitch - this.pitch) > 5.0D || Math.abs((double)this.temptingPlayer.rotationYaw - this.yaw) > 5.0D) {
                     return false;
                 }
-            }
-            else
-            {
-                this.targetX = this.temptingPlayer.posX;
-                this.targetY = this.temptingPlayer.posY;
-                this.targetZ = this.temptingPlayer.posZ;
+            } else {
+                this.targetX = this.temptingPlayer.getPosX();
+                this.targetY = this.temptingPlayer.getPosY();
+                this.targetZ = this.temptingPlayer.getPosZ();
             }
 
-            this.pitch = (double)this.temptingPlayer.rotationPitch;
-            this.yaw = (double)this.temptingPlayer.rotationYaw;
+            pitch = temptingPlayer.rotationPitch;
+            yaw = temptingPlayer.rotationYaw;
         }
 
         return this.shouldExecute();
@@ -134,19 +127,17 @@ public class EntityAITemptHelmet extends Goal
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting()
-    {
-        this.targetX = this.temptingPlayer.posX;
-        this.targetY = this.temptingPlayer.posY;
-        this.targetZ = this.temptingPlayer.posZ;
+    public void startExecuting() {
+        this.targetX = this.temptingPlayer.getPosX();
+        this.targetY = this.temptingPlayer.getPosY();
+        this.targetZ = this.temptingPlayer.getPosZ();
         this.isRunning = true;
     }
 
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
-    public void resetTask()
-    {
+    public void resetTask() {
         this.temptingPlayer = null;
         this.temptedEntity.getNavigator().clearPath();
         this.delayTemptCounter = 100;
@@ -156,16 +147,12 @@ public class EntityAITemptHelmet extends Goal
     /**
      * Keep ticking a continuous task that has already been started
      */
-    public void tick()
-    {
+    public void tick() {
         this.temptedEntity.getLookController().setLookPositionWithEntity(this.temptingPlayer, (float)(this.temptedEntity.getHorizontalFaceSpeed() + 20), (float)this.temptedEntity.getVerticalFaceSpeed());
 
-        if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D)
-        {
+        if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D) {
             this.temptedEntity.getNavigator().clearPath();
-        }
-        else
-        {
+        } else {
             this.temptedEntity.getNavigator().tryMoveToEntityLiving(this.temptingPlayer, this.speed);
         }
     }
