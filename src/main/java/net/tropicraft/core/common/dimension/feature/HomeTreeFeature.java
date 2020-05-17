@@ -60,19 +60,23 @@ public class HomeTreeFeature extends Structure<VillageConfig> {
         ChunkPos chunkpos = this.getStartPositionForPosition(chunkGen, rand, chunkPosX, chunkPosZ, 0, 0);
         if (chunkPosX == chunkpos.x && chunkPosZ == chunkpos.z) {
            BlockPos pos = new BlockPos((chunkPosX << 4) + 8, 0, (chunkPosZ << 4) + 8);
-           return isValid(chunkGen, pos.add(-4, 0, -4)) &&
-                  isValid(chunkGen, pos.add(-4, 0, 4)) &&
-                  isValid(chunkGen, pos.add(4, 0, 4)) &&
-                  isValid(chunkGen, pos.add(4, 0, -4));
+           int centerY = chunkGen.func_222529_a(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
+           return isValid(chunkGen, pos.add(-4, 0, -4), centerY) &&
+                  isValid(chunkGen, pos.add(-4, 0, 4), centerY) &&
+                  isValid(chunkGen, pos.add(4, 0, 4), centerY) &&
+                  isValid(chunkGen, pos.add(4, 0, -4), centerY);
         } else {
            return false;
         }
     }
 
-    private boolean isValid(ChunkGenerator<?> chunkGen, BlockPos pos) {
+    private boolean isValid(ChunkGenerator<?> chunkGen, BlockPos pos, int startY) {
+        int y = chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
         return chunkGen.hasStructure(chunkGen.getBiomeProvider().getBiome(pos), TropicraftFeatures.HOME_TREE.get())
-                && chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) >= chunkGen.getSeaLevel()
-                && pos.getY() < 150
+                && y >= chunkGen.getSeaLevel()
+                && Math.abs(y - startY) < 10
+                && y < 150
+                && y > chunkGen.getSeaLevel() + 2
                 && chunkGen.getBiomeProvider().getBiome(pos) instanceof TropicraftRainforestBiome;
     }
     
