@@ -23,7 +23,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
@@ -35,7 +38,7 @@ public class TropiCreeperEntity extends CreatureEntity {
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreeperEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreeperEntity.class, DataSerializers.BOOLEAN);
 
-    private int timeSinceIgnited;
+    private int prevTimeSinceIgnited, timeSinceIgnited;
     private int fuseTime = 30;
     private int explosionRadius = 3;
 
@@ -119,6 +122,7 @@ public class TropiCreeperEntity extends CreatureEntity {
      */
     public void tick() {
         if (this.isAlive()) {
+            this.prevTimeSinceIgnited = this.timeSinceIgnited;
             if (this.hasIgnited()) {
                 this.setCreeperState(1);
             }
@@ -241,5 +245,9 @@ public class TropiCreeperEntity extends CreatureEntity {
 
     public void ignite() {
         this.dataManager.set(IGNITED, true);
+    }
+    
+    public float getCreeperFlashIntensity(float partialTicks) {
+       return MathHelper.lerp(partialTicks, (float)this.prevTimeSinceIgnited, (float)this.timeSinceIgnited) / (float)(this.fuseTime - 2);
     }
 }
