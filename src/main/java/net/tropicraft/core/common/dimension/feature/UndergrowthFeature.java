@@ -8,8 +8,11 @@ import java.util.function.Function;
 
 import com.mojang.datafixers.Dynamic;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -29,6 +32,10 @@ public class UndergrowthFeature extends AbstractTreeFeature<NoFeatureConfig> {
         if (rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
             size = 3;
         }
+        
+        if (!isValidPosition(world, pos)) {
+            return false;
+        }
 
         if (goesBeyondWorldSize(world, pos.getY(), size)) {
             return false;
@@ -44,7 +51,7 @@ public class UndergrowthFeature extends AbstractTreeFeature<NoFeatureConfig> {
 
         for (int round = 0; round < 64; ++round) {
             BlockPos posTemp = pos.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
-            if (isAirOrLeaves(world, posTemp) && posTemp.getY() < 255) {
+            if (isValidPosition(world, posTemp) && posTemp.getY() < 255) {
                 for (int y = posTemp.getY(); y < posTemp.getY() + size; y++) {
                     int bushWidth = size - (y - posTemp.getY());
                     for (int x = posTemp.getX() - bushWidth; x < posTemp.getX() + bushWidth; x++) {
@@ -52,7 +59,7 @@ public class UndergrowthFeature extends AbstractTreeFeature<NoFeatureConfig> {
                         for (int z = posTemp.getZ() - bushWidth; z < posTemp.getZ() + bushWidth; z++) {
                             int zVariance = z - posTemp.getZ();
                             final BlockPos newPos = new BlockPos(x, y, z);
-                            if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && isAirOrLeaves(world, newPos)) {
+                            if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && isValidPosition(world, newPos)) {
                                 setBlockState(world, newPos, TropicraftBlocks.KAPOK_LEAVES.get().getDefaultState());
                             }
                         }
@@ -63,5 +70,9 @@ public class UndergrowthFeature extends AbstractTreeFeature<NoFeatureConfig> {
         }
 
         return count > 0;
+    }
+    
+    protected boolean isValidPosition(IWorldGenerationReader world, BlockPos pos) {
+        return isAirOrLeaves(world, pos) && !world.hasBlockState(pos, Blocks.CAVE_AIR.getDefaultState()::equals);
     }
 }

@@ -14,6 +14,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
+import net.tropicraft.core.common.dimension.feature.jigsaw.AirToCaveAirProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.FixedSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
@@ -26,7 +27,7 @@ public class HomeTreePools {
         
     static {
         // TODO add SpawnerProcessor
-        ImmutableList<StructureProcessor> baseProcessors = ImmutableList.of();
+        ImmutableList<StructureProcessor> baseProcessors = ImmutableList.of(new AirToCaveAirProcessor());
         ImmutableList<StructureProcessor> startProcessors = ImmutableList.<StructureProcessor>builder()
                 .addAll(baseProcessors)
                 .add(new StructureSupportsProcessor(true, TropicraftBlocks.MAHOGANY_LOG.getId()))
