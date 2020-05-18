@@ -11,10 +11,12 @@ import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.jigsaw.FixedSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.NoRotateSingleJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
 
 @SuppressWarnings("deprecation")
 public class HomeTreePools {
@@ -25,13 +27,17 @@ public class HomeTreePools {
     static {
         // TODO add SpawnerProcessor
         ImmutableList<StructureProcessor> baseProcessors = ImmutableList.of();
+        ImmutableList<StructureProcessor> startProcessors = ImmutableList.<StructureProcessor>builder()
+                .addAll(baseProcessors)
+                .add(new StructureSupportsProcessor(true, TropicraftBlocks.MAHOGANY_LOG.getId()))
+                .build();
 
         JigsawManager.REGISTRY.register(new JigsawPattern(
             new ResourceLocation(Constants.MODID, "home_tree/starts"),
             new ResourceLocation("empty"),
             ImmutableList.of(
-                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/bottom/trunk_0", baseProcessors), 1),
-                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/bottom/trunk_1", baseProcessors), 1)
+                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/bottom/trunk_0", startProcessors), 1),
+                Pair.of(new FixedSingleJigsawPiece(Constants.MODID + ":home_tree/trunks/bottom/trunk_1", startProcessors), 1)
             ),
             PlacementBehaviour.RIGID)
         );

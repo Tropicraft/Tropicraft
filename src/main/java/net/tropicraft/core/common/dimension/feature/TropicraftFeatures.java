@@ -72,7 +72,7 @@ public class TropicraftFeatures {
 			"home_tree_branch", () -> new HomeTreeBranchFeature<>(HomeTreeBranchConfig::deserialize));
 
 	public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Constants.MODID + ":koa_path",
-            ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor()));
+            ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor(false, TropicraftBlocks.BAMBOO_FENCE.getId())));
 
     private static <T extends Feature<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return FEATURES.register(name, sup);

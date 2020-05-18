@@ -12,6 +12,7 @@ import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.AdjustBuildingHeightProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.StructureVoidProcessor;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 
@@ -22,8 +23,9 @@ public class KoaVillagePools {
     }
         
     static {
-        ImmutableList<StructureProcessor> townCenterProcessors = ImmutableList.of(new StructureSupportsProcessor(), new StructureVoidProcessor());
-        ImmutableList<StructureProcessor> buildingProcessors = ImmutableList.of(new AdjustBuildingHeightProcessor(126), new StructureSupportsProcessor(), new StructureVoidProcessor());
+        StructureSupportsProcessor fenceExtender = new StructureSupportsProcessor(false, TropicraftBlocks.BAMBOO_FENCE.getId());
+        ImmutableList<StructureProcessor> townCenterProcessors = ImmutableList.of(fenceExtender, new StructureVoidProcessor());
+        ImmutableList<StructureProcessor> buildingProcessors = ImmutableList.of(new AdjustBuildingHeightProcessor(126), fenceExtender, new StructureVoidProcessor());
 
         JigsawManager.REGISTRY.register(new JigsawPattern(new ResourceLocation(Constants.MODID, "koa_village/town_centers"), 
                 new ResourceLocation("empty"), 
