@@ -1,125 +1,127 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.model.IHasArm;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
 import java.util.Random;
 
-public class VMonkeyModel extends EntityModel<VMonkeyEntity> implements IHasArm {
-    public RendererModel body;
-    public RendererModel lLegUpper;
-    public RendererModel rLegUpper;
-    public RendererModel rArmUpper;
-    public RendererModel lArmUpper;
-    public RendererModel tailBase;
-    public RendererModel tailMid;
-    public RendererModel tailTop;
-    public RendererModel rArmLower;
-    public RendererModel lArmLower;
-    public RendererModel lLegLower;
-    public RendererModel rLegLower;
-    public RendererModel face;
-    public RendererModel head;
+public class VMonkeyModel extends SegmentedModel<VMonkeyEntity> implements IHasArm {
+    public ModelRenderer body;
+    public ModelRenderer lLegUpper;
+    public ModelRenderer rLegUpper;
+    public ModelRenderer rArmUpper;
+    public ModelRenderer lArmUpper;
+    public ModelRenderer tailBase;
+    public ModelRenderer tailMid;
+    public ModelRenderer tailTop;
+    public ModelRenderer rArmLower;
+    public ModelRenderer lArmLower;
+    public ModelRenderer lLegLower;
+    public ModelRenderer rLegLower;
+    public ModelRenderer face;
+    public ModelRenderer head;
     protected Random rand;
     public float herps;
 
     public VMonkeyModel() {
-        body = new RendererModel(this, 0, 8);
+        body = new ModelRenderer(this, 0, 8);
         body.addBox(-1F, -2F, -4F, 2, 4, 9, 0F);
         body.setRotationPoint(0F, 16F, 0F);
         body.rotateAngleX = 0F;
         body.rotateAngleY = 3.141593F;
         body.rotateAngleZ = 0F;
         body.mirror = false;
-        lLegUpper = new RendererModel(this, 7, 0);
+        lLegUpper = new ModelRenderer(this, 7, 0);
         lLegUpper.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
         lLegUpper.setRotationPoint(-1F, 14F, -3.5F);
         lLegUpper.rotateAngleX = 0F;
         lLegUpper.rotateAngleY = 0F;
         lLegUpper.rotateAngleZ = 0F;
         lLegUpper.mirror = false;
-        rLegUpper = new RendererModel(this, 0, 0);
+        rLegUpper = new ModelRenderer(this, 0, 0);
         rLegUpper.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
         rLegUpper.setRotationPoint(1F, 14F, -3.5F);
         rLegUpper.rotateAngleX = 0F;
         rLegUpper.rotateAngleY = 0F;
         rLegUpper.rotateAngleZ = 0F;
         rLegUpper.mirror = false;
-        rArmUpper = new RendererModel(this, 0, 0);
+        rArmUpper = new ModelRenderer(this, 0, 0);
         rArmUpper.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
         rArmUpper.setRotationPoint(1F, 14F, 3.5F);
         rArmUpper.rotateAngleX = 0F;
         rArmUpper.rotateAngleY = 0F;
         rArmUpper.rotateAngleZ = 0F;
         rArmUpper.mirror = false;
-        lArmUpper = new RendererModel(this, 7, 0);
+        lArmUpper = new ModelRenderer(this, 7, 0);
         lArmUpper.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
         lArmUpper.setRotationPoint(-1F, 14F, 3.5F);
         lArmUpper.rotateAngleX = 0F;
         lArmUpper.rotateAngleY = 0F;
         lArmUpper.rotateAngleZ = 0F;
         lArmUpper.mirror = false;
-        tailBase = new RendererModel(this, 20, 27);
+        tailBase = new ModelRenderer(this, 20, 27);
         tailBase.addBox(-0.5F, -4F, -0.5F, 1, 3, 1, 0F);
         tailBase.setRotationPoint(0F, 15F, 3.5F);
         tailBase.rotateAngleX = 0F;
         tailBase.rotateAngleY = 3.141593F;
         tailBase.rotateAngleZ = 0F;
         tailBase.mirror = false;
-        tailMid = new RendererModel(this, 20, 24);
+        tailMid = new ModelRenderer(this, 20, 24);
         tailMid.addBox(-0.5F, -2F, -0.5F, 1, 2, 1, 0F);
         tailMid.setRotationPoint(0F, 11F, 3.5F);
         tailMid.rotateAngleX = 0F;
         tailMid.rotateAngleY = 3.141593F;
         tailMid.rotateAngleZ = 0F;
         tailMid.mirror = false;
-        tailTop = new RendererModel(this, 20, 21);
+        tailTop = new ModelRenderer(this, 20, 21);
         tailTop.addBox(-0.5F, -2F, -0.5F, 1, 2, 1, 0F);
         tailTop.setRotationPoint(0F, 9F, 3.5F);
         tailTop.rotateAngleX = 0F;
         tailTop.rotateAngleY = 3.141593F;
         tailTop.rotateAngleZ = 0F;
         tailTop.mirror = false;
-        rArmLower = new RendererModel(this, 0, 7);
+        rArmLower = new ModelRenderer(this, 0, 7);
         rArmLower.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
         rArmLower.setRotationPoint(1F, 19F, 3.5F);
         rArmLower.rotateAngleX = 0F;
         rArmLower.rotateAngleY = 0F;
         rArmLower.rotateAngleZ = 0F;
         rArmLower.mirror = false;
-        lArmLower = new RendererModel(this, 12, 0);
+        lArmLower = new ModelRenderer(this, 12, 0);
         lArmLower.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
         lArmLower.setRotationPoint(-1F, 19F, 3.5F);
         lArmLower.rotateAngleX = 0F;
         lArmLower.rotateAngleY = 0F;
         lArmLower.rotateAngleZ = 0F;
         lArmLower.mirror = false;
-        lLegLower = new RendererModel(this, 12, 0);
+        lLegLower = new ModelRenderer(this, 12, 0);
         lLegLower.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
         lLegLower.setRotationPoint(-1F, 19F, -3.5F);
         lLegLower.rotateAngleX = 0F;
         lLegLower.rotateAngleY = 0F;
         lLegLower.rotateAngleZ = 0F;
         lLegLower.mirror = false;
-        rLegLower = new RendererModel(this, 0, 7);
+        rLegLower = new ModelRenderer(this, 0, 7);
         rLegLower.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
         rLegLower.setRotationPoint(1F, 19F, -3.5F);
         rLegLower.rotateAngleX = 0F;
         rLegLower.rotateAngleY = 0F;
         rLegLower.rotateAngleZ = 0F;
         rLegLower.mirror = false;
-        face = new RendererModel(this, 0, 25);
+        face = new ModelRenderer(this, 0, 25);
         face.addBox(-2F, -1F, 0F, 4, 4, 3, 0F);
         face.setRotationPoint(0F, 15F, -5F);
         face.rotateAngleX = 0F;
         face.rotateAngleY = 3.141593F;
         face.rotateAngleZ = 0F;
         face.mirror = false;
-        head = new RendererModel(this, 25, 25);
+        head = new ModelRenderer(this, 25, 25);
         head.addBox(-3F, -2F, 0F, 6, 5, 2, 0F);
         head.setRotationPoint(0F, 15F, -5F);
         head.rotateAngleX = 0F;
@@ -129,32 +131,19 @@ public class VMonkeyModel extends EntityModel<VMonkeyEntity> implements IHasArm 
     }
 
     @Override
-    public void render(VMonkeyEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-        body.render(f5);
-        lLegUpper.render(f5);
-        rLegUpper.render(f5);
-        rArmUpper.render(f5);
-        lArmUpper.render(f5);
-        tailBase.render(f5);
-        tailMid.render(f5);
-        tailTop.render(f5);
-        rArmLower.render(f5);
-        lArmLower.render(f5);
-        lLegLower.render(f5);
-        rLegLower.render(f5);
-        face.render(f5);
-        head.render(f5);
+    public void setRotationAngles(VMonkeyEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        face.rotateAngleX = headPitch / 57.29578F + herps;
+        face.rotateAngleY = netHeadYaw / 57.29578F + 3.141593F;
+        head.rotateAngleX = face.rotateAngleX;
+        head.rotateAngleY = face.rotateAngleY;
     }
 
     @Override
-    public void setRotationAngles(final VMonkeyEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-        face.rotateAngleX = f4 / 57.29578F + herps;
-        face.rotateAngleY = f3 / 57.29578F + 3.141593F;
-        head.rotateAngleX = face.rotateAngleX;
-        head.rotateAngleY = face.rotateAngleY;
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(
+            body, lLegUpper, rLegUpper, rArmUpper, lArmUpper, tailBase, tailMid,
+            tailTop, rArmLower, lArmLower, lLegLower, rLegLower, face, head
+        );
     }
 
     @Override
@@ -289,7 +278,7 @@ public class VMonkeyModel extends EntityModel<VMonkeyEntity> implements IHasArm 
     }
 
     @Override
-    public void postRenderArm(float v, HandSide handSide) {
-        // handled in the layer
+    public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
+        // Handled in layer
     }
 }

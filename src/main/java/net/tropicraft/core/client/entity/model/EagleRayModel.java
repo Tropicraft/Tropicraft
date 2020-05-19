@@ -1,26 +1,29 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
 
-public class EagleRayModel extends EntityModel<EagleRayEntity> {
+public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 	/**
 	 * Wing joint amplitudes, linearly interpolated between previous tick and this tick using partialTicks.
 	 */
 	private float[] interpolatedWingAmplitudes = new float[EagleRayEntity.WING_JOINTS];
 
-	private RendererModel body;
+	private ModelRenderer body;
 
 	public EagleRayModel() {
 		textureWidth = 128;
 		textureHeight = 64;
 
-		body = new RendererModel(this, 32, 0);
+		body = new ModelRenderer(this, 32, 0);
 		body.addBox(-2F, 0F, 0F, 5, 3, 32);
 		body.setRotationPoint(0F, 0F, -8F);
 		body.setTextureSize(128, 64);
@@ -28,9 +31,19 @@ public class EagleRayModel extends EntityModel<EagleRayEntity> {
 	}
 
 	@Override
-	public void render(EagleRayEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-		body.render(f5);
+	public void setRotationAngles(EagleRayEntity eagleRay, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(body);
+	}
+
+	@Override
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		// TODO use bufferIn
 		renderWings();
 		renderTailSimple();
 	}
@@ -44,10 +57,10 @@ public class EagleRayModel extends EntityModel<EagleRayEntity> {
 		float minV = 0.0f;
 		float maxV = 0.5f;
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef(0.55f, 0f, 1.5f);
-		GlStateManager.rotatef(-90f, 0f, 1f, 0f);
-		GlStateManager.scalef(1.5f, 1f, 1f);
+		RenderSystem.pushMatrix();
+		RenderSystem.translatef(0.55f, 0f, 1.5f);
+		RenderSystem.rotatef(-90f, 0f, 1f, 0f);
+		RenderSystem.scalef(1.5f, 1f, 1f);
 
 		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		buffer.pos(0, 0, 0).tex(minU, minV).endVertex();
@@ -56,24 +69,24 @@ public class EagleRayModel extends EntityModel<EagleRayEntity> {
 		buffer.pos(1, 0, 0).tex(maxU, minV).endVertex();
 		tessellator.draw();
 
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 	}
 
 	private void renderWings() {
-		GlStateManager.disableLighting();
-		GlStateManager.pushMatrix();
-		GlStateManager.scalef(2f, 0.5f, 2f);
-		GlStateManager.translatef(0.1f, 0f, -0.25f);
+		RenderSystem.disableLighting();
+		RenderSystem.pushMatrix();
+		RenderSystem.scalef(2f, 0.5f, 2f);
+		RenderSystem.translatef(0.1f, 0f, -0.25f);
 		renderWing(false);
-		GlStateManager.rotatef(180f, 0f, 1f, 0f);
-		GlStateManager.translatef(0.10f, 0f, -1f);
+		RenderSystem.rotatef(180f, 0f, 1f, 0f);
+		RenderSystem.translatef(0.10f, 0f, -1f);
 		renderWing(true);
-		GlStateManager.popMatrix();
-		GlStateManager.enableLighting();
+		RenderSystem.popMatrix();
+		RenderSystem.enableLighting();
 	}
 
-	private void buf(BufferBuilder buffer, double x, double y, double z, double tex1, double tex2) {
-		buffer.pos(x, y, z).tex(tex1, tex2).endVertex();
+	private void buf(BufferBuilder buffer, double x, double y, double z, float u, float v) {
+		buffer.pos(x, y, z).tex(u, v).endVertex();
 	}
 
 	private void renderWing(boolean reverse) {

@@ -1,24 +1,24 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.model.IHasArm;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
-public class AshenModel extends EntityModel<AshenEntity> implements IHasArm {
-
-    public RendererModel rightLeg;
-    public RendererModel leftLeg;
-    public RendererModel body;
-    public RendererModel head;
-    public RendererModel mask;
-    public RendererModel leftArm;
-    public RendererModel rightArm;
-    public RendererModel leftArmSub;
-    public RendererModel rightArmSub;
+public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
+    public ModelRenderer rightLeg;
+    public ModelRenderer leftLeg;
+    public ModelRenderer body;
+    public ModelRenderer head;
+    public ModelRenderer mask;
+    public ModelRenderer leftArm;
+    public ModelRenderer rightArm;
+    public ModelRenderer leftArmSub;
+    public ModelRenderer rightArmSub;
     public float headAngle;
     public boolean swinging;
     public AshenEntity.AshenState actionState;
@@ -30,55 +30,55 @@ public class AshenModel extends EntityModel<AshenEntity> implements IHasArm {
         textureWidth = 64;
         textureHeight = 32;
 
-        rightLeg = new RendererModel(this, 25, 0);
+        rightLeg = new ModelRenderer(this, 25, 0);
         rightLeg.addBox(0F, 0F, 0F, 1, 7, 1);
         rightLeg.setRotationPoint(1F, 17F, 0F);
         rightLeg.setTextureSize(64, 32);
         rightLeg.mirror = true;
         setRotation(rightLeg, 0F, 0F, 0F);
-        leftLeg = new RendererModel(this, 25, 0);
+        leftLeg = new ModelRenderer(this, 25, 0);
         leftLeg.addBox(-1F, 0F, 0F, 1, 7, 1);
         leftLeg.setRotationPoint(-1F, 17F, 0F);
         leftLeg.setTextureSize(64, 32);
         leftLeg.mirror = true;
         setRotation(leftLeg, 0F, 0F, 0F);
-        body = new RendererModel(this, 24, 8);
+        body = new ModelRenderer(this, 24, 8);
         body.addBox(-2F, -3F, 0F, 4, 7, 3);
         body.setRotationPoint(0F, 13F, 2F);
         body.setTextureSize(64, 32);
         body.mirror = true;
         setRotation(body, 0F, 3.141593F, 0F);
-        head = new RendererModel(this, 24, 18);
+        head = new ModelRenderer(this, 24, 18);
         head.addBox(-2F, -3F, -1F, 4, 3, 4);
         head.setRotationPoint(0F, 10F, 1F);
         head.setTextureSize(64, 32);
         head.mirror = true;
         setRotation(head, 0F, 3.141593F, 0F);
         
-        //mask = new RendererModel(this, 0, 0);
+        //mask = new ModelRenderer(this, 0, 0);
         //mask.addBox(-5.5F, -10F, 3F, 11, 22, 1);
         //mask.setRotationPoint(0F, 10F, 1F);
         //mask.setTextureSize(64, 32);
         //mask.mirror = true;
         //setRotation(mask, 0F, 3.141593F, 0F);
 
-        leftArm = new RendererModel(this, "leftArm");
+        leftArm = new ModelRenderer(this);
         leftArm.setRotationPoint(-2F, 10.5F, 0.5F);
         setRotation(leftArm, 0F, 0F, 0F);
         leftArm.mirror = true;
         leftArm.setTextureOffset(0, 24).addBox(-6F, -0.5F, -0.5F, 6, 1, 1);
-        leftArmSub = new RendererModel(this, "leftArmSub");
+        leftArmSub = new ModelRenderer(this);
         leftArmSub.setRotationPoint(-5.5F, 0F, 0F);
         setRotation(leftArmSub, 0F, 0F, 0F);
         leftArmSub.mirror = true;
         leftArmSub.setTextureOffset(31, 0).addBox(-0.5F, -6F, -0.5F, 1, 6, 1);
         leftArm.addChild(leftArmSub);
-        rightArm = new RendererModel(this, "rightArm");
+        rightArm = new ModelRenderer(this);
         rightArm.setRotationPoint(2F, 10.46667F, 0.5F);
         setRotation(rightArm, 0F, 0F, 0F);
         rightArm.mirror = true;
         rightArm.setTextureOffset(0, 24).addBox(0F, -0.5F, -0.5F, 6, 1, 1);
-        rightArmSub = new RendererModel(this, "rightArmSub");
+        rightArmSub = new ModelRenderer(this);
         rightArmSub.setRotationPoint(5.5F, 0F, 0F);
         setRotation(rightArmSub, 0F, 0F, 0F);
         rightArmSub.mirror = true;
@@ -87,32 +87,9 @@ public class AshenModel extends EntityModel<AshenEntity> implements IHasArm {
     }
 
     @Override
-    public void render(AshenEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-        rightLeg.render(f5);
-        leftLeg.render(f5);
-        body.render(f5);
-        head.render(f5);
-        leftArm.render(f5);
-        rightArm.render(f5);
-    }
-
-    private void setRotation(RendererModel model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
-    @Override
-    public void setLivingAnimations(final AshenEntity entity, float f, float f1, float f2) {
-        rightLeg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.25F * f1;
-        leftLeg.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.25F * f1;
-    }
-
-    @Override
-    public void setRotationAngles(final AshenEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        head.rotateAngleX = f4 / 125F + headAngle;
-        head.rotateAngleY = f3 / 125F + 3.14159F;
+    public void setRotationAngles(AshenEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        head.rotateAngleX = headPitch / 125F + headAngle;
+        head.rotateAngleY = netHeadYaw / 125F + 3.14159F;
 
         final float armRotater = 1.247196F;
         final float subStraight = 1.570795F;
@@ -131,16 +108,16 @@ public class AshenModel extends EntityModel<AshenEntity> implements IHasArm {
                 break;
             case HOSTILE:
                 headAngle = 0.0F;
-                rightArm.rotateAngleX = 1.65F + f3 / 125F;
-                rightArm.rotateAngleY = .9F + f4 / 125F;
+                rightArm.rotateAngleX = 1.65F + limbSwing / 125F;
+                rightArm.rotateAngleY = .9F + limbSwingAmount / 125F;
                 rightArm.rotateAngleZ = armRotater;
                 rightArmSub.rotateAngleZ = 6.2F;
-                leftArm.rotateAngleZ = 0.0F - MathHelper.sin(f2 * 0.75F) * 0.0220F;
+                leftArm.rotateAngleZ = 0.0F - MathHelper.sin(limbSwingAmount * 0.75F) * 0.0220F;
                 leftArm.rotateAngleY = 0.0F;
                 leftArmSub.rotateAngleZ = 0.0F;
 
                 if (swinging) {
-                    leftArm.rotateAngleX += MathHelper.sin(f2 * 0.75F) * 0.0520F;
+                    leftArm.rotateAngleX += MathHelper.sin(limbSwingAmount * 0.75F) * 0.0520F;
                 } else {
                     leftArm.rotateAngleX = 0.0F;
                 }
@@ -156,12 +133,28 @@ public class AshenModel extends EntityModel<AshenEntity> implements IHasArm {
                 break;
         }
 
-        rightArm.rotateAngleY += MathHelper.sin(f2 * 0.25F) * 0.0020F;
-        leftArm.rotateAngleY -= MathHelper.sin(f2 * 0.25F) * 0.0020F;
+        rightArm.rotateAngleY += MathHelper.sin(ageInTicks * 0.25F) * 0.0020F;
+        leftArm.rotateAngleY -= MathHelper.sin(ageInTicks * 0.25F) * 0.0020F;
+    }
+
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(body, head, leftArm, rightArm, leftLeg, rightLeg);
+    }
+
+    private void setRotation(ModelRenderer model, float x, float y, float z) {
+        model.rotateAngleX = x;
+        model.rotateAngleY = y;
+        model.rotateAngleZ = z;
     }
 
     @Override
-    public void postRenderArm(float v, HandSide handSide) {
+    public void setLivingAnimations(final AshenEntity entity, float f, float f1, float f2) {
+        rightLeg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.25F * f1;
+        leftLeg.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.25F * f1;
+    }
+
+    @Override
+    public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
 
     }
 }

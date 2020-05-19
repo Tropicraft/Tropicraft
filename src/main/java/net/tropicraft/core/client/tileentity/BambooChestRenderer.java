@@ -1,9 +1,11 @@
 package net.tropicraft.core.client.tileentity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.model.ChestModel;
 import net.minecraft.client.renderer.tileentity.model.LargeChestModel;
@@ -17,7 +19,7 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 
 @OnlyIn(Dist.CLIENT)
-public class BambooChestRenderer extends TileEntityRenderer<BambooChestTileEntity> {
+public class BambooChestRenderer extends TileEntityRenderer<BambooChestTileEntity> {c
 
     public static ResourceLocation REGULAR_TEXTURE = TropicraftRenderUtils.getTextureTE("bamboo_chest");
     public static ResourceLocation LARGE_TEXTURE = TropicraftRenderUtils.getTextureTE("large_bamboo_chest");
@@ -30,8 +32,27 @@ public class BambooChestRenderer extends TileEntityRenderer<BambooChestTileEntit
         chestModelLarge = new LargeChestModel();
     }
 
+    private ChestModel getChestModel(BambooChestTileEntity te, int destroyStage, boolean isDouble) {
+        ResourceLocation resourceLoc;
+        if (destroyStage >= 0) {
+            resourceLoc = DESTROY_STAGES[destroyStage];
+        } else {
+            resourceLoc = isDouble ? LARGE_TEXTURE : REGULAR_TEXTURE;
+        }
+
+        this.bindTexture(resourceLoc);
+        return isDouble ? chestModelLarge : chestModel;
+    }
+
+    private void applyLidRotation(BambooChestTileEntity tileEntity, float angle, ChestModel model) {
+        float trueAngle = ((IChestLid)tileEntity).getLidAngle(angle);
+        trueAngle = 1.0F - trueAngle;
+        trueAngle = 1.0F - trueAngle * trueAngle * trueAngle;
+        model.getLid().rotateAngleX = -(trueAngle * 1.5707964F);
+    }
+
     @Override
-    public void render(BambooChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(BambooChestTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         GlStateManager.enableDepthTest();
         GlStateManager.depthFunc(515);
         GlStateManager.depthMask(true);
@@ -72,24 +93,5 @@ public class BambooChestRenderer extends TileEntityRenderer<BambooChestTileEntit
                 GlStateManager.matrixMode(5888);
             }
         }
-    }
-
-    private ChestModel getChestModel(BambooChestTileEntity te, int destroyStage, boolean isDouble) {
-        ResourceLocation resourceLoc;
-        if (destroyStage >= 0) {
-            resourceLoc = DESTROY_STAGES[destroyStage];
-        } else {
-            resourceLoc = isDouble ? LARGE_TEXTURE : REGULAR_TEXTURE;
-        }
-
-        this.bindTexture(resourceLoc);
-        return isDouble ? chestModelLarge : chestModel;
-    }
-
-    private void applyLidRotation(BambooChestTileEntity tileEntity, float angle, ChestModel model) {
-        float trueAngle = ((IChestLid)tileEntity).getLidAngle(angle);
-        trueAngle = 1.0F - trueAngle;
-        trueAngle = 1.0F - trueAngle * trueAngle * trueAngle;
-        model.getLid().rotateAngleX = -(trueAngle * 1.5707964F);
     }
 }
