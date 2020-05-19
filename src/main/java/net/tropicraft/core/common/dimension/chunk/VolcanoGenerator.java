@@ -1,10 +1,5 @@
 package net.tropicraft.core.common.dimension.chunk;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,6 +16,11 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.noise.NoiseModule;
 import net.tropicraft.core.common.dimension.noise.generator.Billowed;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
 
 public class VolcanoGenerator {
 
@@ -84,7 +84,7 @@ public class VolcanoGenerator {
 
 		NoiseModule volcNoise = getNoise(seed);
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 
 		for (int x = 0; x < CHUNK_SIZE_X; x++) {
 			for (int z = 0; z < CHUNK_SIZE_Z; z++) {
@@ -115,17 +115,17 @@ public class VolcanoGenerator {
 								if (random.nextInt(3) != 0) {
 									this.placeBlock(pos, VOLCANO_BLOCK, chunk);
 								}
-							} else if(y <= volcanoTop) {
-								this.placeBlock(pos, VOLCANO_BLOCK, chunk);
+							} else if (y <= volcanoTop) {
+								placeBlock(pos, VOLCANO_BLOCK, chunk);
 							}
 						} else {
 							// Flat area on top of the volcano
 							if (y == volcanoCrust  && rand.nextInt(CRUST_HOLE_CHANCE) != 0) {
-								this.placeBlock(pos, VOLCANO_BLOCK, chunk);
+								placeBlock(pos, VOLCANO_BLOCK, chunk);
 							} else if (y <= lavaLevel) {
-								this.placeBlock(pos, LAVA_BLOCK, chunk);
+								placeBlock(pos, LAVA_BLOCK, chunk);
 							} else {
-								this.placeBlock(pos, () -> Blocks.AIR.getDefaultState(), chunk);
+								placeBlock(pos, Blocks.AIR::getDefaultState, chunk);
 							}
 						}
 					}
@@ -251,10 +251,10 @@ public class VolcanoGenerator {
 		randZ += rand.nextInt(numChunks - offsetChunks);
 
 		if (oldi == randX && oldj == randZ) {
-			if(hasAllBiomes(generator, oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesLand)) {
+			if(hasAllBiomes(generator, oldi * 16 + 8, 0,oldj * 16 + 8, volcanoSpawnBiomesLand)) {
 				return SURFACE_BIOME;
 			}
-			if(hasAllBiomes(generator, oldi * 16 + 8, oldj * 16 + 8, volcanoSpawnBiomesOcean)) {
+			if(hasAllBiomes(generator, oldi * 16 + 8, 0,oldj * 16 + 8, volcanoSpawnBiomesOcean)) {
 				return OCEAN_BIOME;
 			}
 
@@ -290,9 +290,9 @@ public class VolcanoGenerator {
 		return biome == SURFACE_BIOME ? 0: OCEAN_HEIGHT_OFFSET;
 	}
 
-	private static boolean hasAllBiomes(ChunkGenerator<?> generator, int centerX, int centerY, List<ResourceLocation> allowedBiomes) {
+	private static boolean hasAllBiomes(ChunkGenerator<?> generator, int centerX, int centerY, int centerZ, List<ResourceLocation> allowedBiomes) {
 		BiomeProvider biomeProvider = generator.getBiomeProvider();
-		for (Biome biome : biomeProvider.getBiomesInSquare(centerX, centerY, 0)) {
+		for (Biome biome : biomeProvider.getBiomes(centerX, centerY, centerZ,0)) {
 			if (!allowedBiomes.contains(biome.getRegistryName())) {
 				return false;
 			}

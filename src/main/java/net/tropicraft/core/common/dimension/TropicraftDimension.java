@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.dimension;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
@@ -25,9 +23,15 @@ import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
 import net.tropicraft.core.common.dimension.config.TropicraftBiomeProviderSettings;
 import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
 
+import javax.annotation.Nullable;
+
 public class TropicraftDimension extends Dimension {
-    public TropicraftDimension(final World worldIn, final DimensionType typeIn) {
-        super(worldIn, typeIn);
+    public TropicraftDimension(final World worldIn, final DimensionType typeIn, final float lightFactor) {
+        super(worldIn, typeIn, lightFactor);
+    }
+
+    public TropicraftDimension(World world, DimensionType dimensionType) {
+        this(world, dimensionType, 0.0f);
     }
 
     @Override
@@ -35,7 +39,7 @@ public class TropicraftDimension extends Dimension {
         BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS.get();
         ChunkGeneratorType chunkType = TropicraftChunkGeneratorTypes.TROPICS.get();
         TropicraftGeneratorSettings genSettings = (TropicraftGeneratorSettings) chunkType.createSettings();
-        TropicraftBiomeProviderSettings settings2 = biomeType.createSettings().setWorldInfo(world.getWorldInfo()).setGeneratorSettings(genSettings);
+        TropicraftBiomeProviderSettings settings2 = biomeType.createSettings(world.getWorldInfo()).setWorldInfo(world.getWorldInfo()).setGeneratorSettings(genSettings);
         return chunkType.create(this.world, biomeType.create(settings2), genSettings);
     }
 
@@ -59,13 +63,13 @@ public class TropicraftDimension extends Dimension {
     @Override
     @Nullable
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid) {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(posX, 0, posZ);
-        Biome biome = this.world.getBiome(blockpos$mutableblockpos);
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable(posX, 0, posZ);
+        Biome biome = world.getBiome(mutablePos);
         BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
         if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN)) {
             return null;
         } else {
-            Chunk chunk = this.world.getChunk(posX >> 4, posZ >> 4);
+            Chunk chunk = world.getChunk(posX >> 4, posZ >> 4);
             int i = chunk.getTopBlockY(Heightmap.Type.MOTION_BLOCKING, posX & 15, posZ & 15);
             if (i < 0) {
                 return null;
@@ -73,14 +77,14 @@ public class TropicraftDimension extends Dimension {
                 return null;
             } else {
                 for(int j = i + 1; j >= 0; --j) {
-                    blockpos$mutableblockpos.setPos(posX, j, posZ);
-                    BlockState blockstate1 = this.world.getBlockState(blockpos$mutableblockpos);
+                    mutablePos.setPos(posX, j, posZ);
+                    BlockState blockstate1 = this.world.getBlockState(mutablePos);
                     if (!blockstate1.getFluidState().isEmpty()) {
                         break;
                     }
 
                     if (blockstate1.equals(blockstate)) {
-                        return blockpos$mutableblockpos.up().toImmutable();
+                        return mutablePos.up().toImmutable();
                     }
                 }
 

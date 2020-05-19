@@ -1,9 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import java.util.List;
-
 import com.mojang.datafixers.Dynamic;
-
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.jigsaw.IJigsawDeserializer;
@@ -12,6 +9,8 @@ import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.tropicraft.Constants;
+
+import java.util.List;
 
 /**
  * Implementation of SingleJigsawPiece that properly uses structure void
@@ -36,7 +35,7 @@ public class FixedSingleJigsawPiece extends SingleJigsawPiece {
     @Override
     protected PlacementSettings createPlacementSettings(final Rotation rotation, final MutableBoundingBox bb) {
         PlacementSettings placementsettings = super.createPlacementSettings(rotation, bb);
-        placementsettings.func_215220_b(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK);
+        placementsettings.removeProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK);
         placementsettings.addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
         return placementsettings;
     }

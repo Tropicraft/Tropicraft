@@ -10,8 +10,8 @@ public enum TropicraftRiverMixLayer implements IAreaTransformer2, IDimOffset0Tra
 
     @Override
     public int apply(INoiseRandom iNoiseRandom, IArea parent1, IArea parent2, int x, int y) {
-        final int biome = parent1.getValue(this.func_215721_a(x), this.func_215722_b(y));
-        final int river = parent2.getValue(this.func_215721_a(x), this.func_215722_b(y));
+        final int biome = parent1.getValue(getOffsetX(x), getOffsetZ(y));
+        final int river = parent2.getValue(getOffsetX(x), getOffsetZ(y));
 
         if (!TropicraftLayerUtil.isOcean(biome)) {
             if (TropicraftLayerUtil.isRiver(river)) {

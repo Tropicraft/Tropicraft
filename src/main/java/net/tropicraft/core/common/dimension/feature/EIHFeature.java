@@ -1,14 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
-
-import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import com.mojang.datafixers.Dynamic;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
@@ -20,6 +12,13 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
+import java.util.Random;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
+
 public class EIHFeature extends Feature<NoFeatureConfig> {
 
     private static final Supplier<BlockState> EIH_STATE = () -> TropicraftBlocks.CHUNK.get().getDefaultState();
@@ -30,7 +29,7 @@ public class EIHFeature extends Feature<NoFeatureConfig> {
     }
 
     @Override
-    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(final IWorld world, final ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         byte height = 5;
         int i = pos.getX();
         int j = pos.getY() + 1;

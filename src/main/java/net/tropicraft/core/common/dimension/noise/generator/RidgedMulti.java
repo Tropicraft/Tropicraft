@@ -6,7 +6,6 @@ import net.tropicraft.core.common.dimension.noise.NoiseModule;
 import java.util.Random;
 
 public class RidgedMulti extends NoiseModule {
-
 	private final FishyNoise noiseGen;
 	private final double offsetX;
 	private final double offsetY;
