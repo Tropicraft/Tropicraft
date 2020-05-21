@@ -18,7 +18,8 @@ public class FailgullRenderer extends MobRenderer<FailgullEntity, FailgullModel>
         super(rendererManager, new FailgullModel(), 0.25F);
     }
 
-    protected ResourceLocation getEntityTexture(FailgullEntity e) {
+    @Override
+    public ResourceLocation getEntityTexture(FailgullEntity e) {
         return FAILGULL_TEXTURE;
     }
 }

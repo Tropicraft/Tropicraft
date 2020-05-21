@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -19,14 +21,14 @@ public class MarlinRenderer extends MobRenderer<MarlinEntity, MarlinModel> {
     }
 
     @Override
-	public void doRender(MarlinEntity marlin, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void render(MarlinEntity marlin, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
 		getEntityModel().inWater = marlin.isInWater();
-		super.doRender(marlin, x, y, z, entityYaw, partialTicks);
+		super.render(marlin, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Nullable
 	@Override
-	protected ResourceLocation getEntityTexture(MarlinEntity marlin) {
+	public ResourceLocation getEntityTexture(MarlinEntity marlin) {
 		return TropicraftRenderUtils.getTextureEntity(marlin.getTexture());
 	}
 }

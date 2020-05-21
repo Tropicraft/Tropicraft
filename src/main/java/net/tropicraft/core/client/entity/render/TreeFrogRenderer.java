@@ -16,7 +16,7 @@ public class TreeFrogRenderer extends MobRenderer<TreeFrogEntity, TreeFrogModel>
     }
     
     @Override
-	protected ResourceLocation getEntityTexture(TreeFrogEntity entity) {
+    public ResourceLocation getEntityTexture(TreeFrogEntity entity) {
         return TropicraftRenderUtils.getTextureEntity("treefrog/treefrog" + entity.getColor());
     }
 }

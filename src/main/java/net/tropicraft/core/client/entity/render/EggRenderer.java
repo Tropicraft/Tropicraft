@@ -59,7 +59,7 @@ public class EggRenderer extends LivingRenderer<EggEntity, EggModel> {
 	}
 	
 	@Override
-	protected ResourceLocation getEntityTexture(EggEntity entity) {
+	public ResourceLocation getEntityTexture(EggEntity entity) {
 		return TropicraftRenderUtils.bindTextureEntity(entity.getEggTexture());
 	}
 }

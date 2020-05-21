@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -19,9 +20,8 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
         super(renderManager, new SharkModel(), 1);
     }
 
-    @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(SharkEntity sharkEntity) {
+    public ResourceLocation getEntityTexture(SharkEntity sharkEntity) {
         if (sharkEntity.isBoss()) {
             return BOSS_SHARK_TEXTURE;
         }
@@ -29,13 +29,13 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
     }
 
     @Override
-    protected void preRenderCallback(SharkEntity shark, float f) {
+    protected void preRenderCallback(SharkEntity shark, final MatrixStack stack, float partialTickTime) {
         float scale = 1f;
         if (shark.isBoss()) {
             scale = 1.5f;
-            GlStateManager.translatef(0, 0.3f, 0f);
+            stack.translate(0, 0.3f, 0);
         }
 
-        GlStateManager.scalef(scale, scale, scale);
+        stack.scale(scale, scale, scale);
     }
 }

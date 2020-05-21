@@ -6,8 +6,11 @@ import com.google.common.collect.ImmutableList;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
@@ -29,7 +32,7 @@ public class TropicraftFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, Constants.MODID);
 
 	public static final RegistryObject<FruitTreeFeature> GRAPEFRUIT_TREE = register(
-	        "grapefruit_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES.lazyMap(Block::getDefaultState)));
+	        "grapefruit_tree", () -> new FruitTreeFeature(TreeFeatureConfig::deserialize, true, TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES.lazyMap(Block::getDefaultState)));
 	public static final RegistryObject<FruitTreeFeature> ORANGE_TREE = register(
 	        "orange_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.ORANGE_SAPLING, () -> TropicraftBlocks.ORANGE_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<FruitTreeFeature> LEMON_TREE = register(
@@ -53,9 +56,9 @@ public class TropicraftFeatures {
 	public static final RegistryObject<EIHFeature> EIH = register(
 	        "eih", () -> new EIHFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<TropicsFlowersFeature> TROPICS_FLOWERS = register(
-	        "tropics_flowers", () -> new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftTags.Blocks.TROPICS_FLOWERS));
+	        "tropics_flowers", () -> new TropicsFlowersFeature(BlockClusterFeatureConfig::deserialize, TropicraftTags.Blocks.TROPICS_FLOWERS));
 	public static final RegistryObject<TropicsFlowersFeature> RAINFOREST_FLOWERS = register(
-	        "rainforest_flowers", () -> new TropicsFlowersFeature(NoFeatureConfig::deserialize, TropicraftTags.Blocks.RAINFOREST_FLOWERS));
+	        "rainforest_flowers", () -> new TropicsFlowersFeature(BlockClusterFeatureConfig::deserialize, TropicraftTags.Blocks.RAINFOREST_FLOWERS));
 	public static final RegistryObject<UndergrowthFeature> UNDERGROWTH = register(
 	        "undergrowth", () -> new UndergrowthFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<RainforestVinesFeature> VINES = register(

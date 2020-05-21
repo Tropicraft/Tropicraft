@@ -1,15 +1,12 @@
 package net.tropicraft.core.common.dimension.carver;
 
-import java.util.BitSet;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.Dynamic;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.carver.UnderwaterCaveWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
@@ -31,12 +28,6 @@ public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
     @Override
     protected boolean func_222700_a(IChunk chunkIn, int chunkX, int chunkZ, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         return false;
-    }
-
-    @Override
-    protected boolean carveBlock(IChunk chunk, BitSet carvingMask, Random rand, BlockPos.MutableBlockPos mutablePos, BlockPos.MutableBlockPos mutablePosUnused, BlockPos.MutableBlockPos mutablePosUnused2,
-            int seaLevel, int chunkX, int chunkZ, int x, int z, int localX, int y, int localZ, AtomicBoolean modified) {
-        return super.carveBlock(chunk, carvingMask, rand, mutablePos, mutablePosUnused, mutablePosUnused2, seaLevel, chunkX, chunkZ, x, z, localX, y, localZ, modified);
     }
     
     @Override

@@ -27,7 +27,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         2, 0, 0, 1, 2, 1
     };
     
-    private final ConfiguredFeature<RainforestVinesConfig> vinesFeature;
+    private final ConfiguredFeature<RainforestVinesConfig, RainforestVinesFeature> vinesFeature;
 
     public HomeTreeBranchFeature(Function<Dynamic<?>, ? extends T> configSerializer) {
         super(configSerializer);

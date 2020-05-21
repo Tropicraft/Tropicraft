@@ -17,7 +17,7 @@ public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, TropiC
         super(rendererManager, new TropiCreeperModel(), 0.5F);
     }
 
-    protected ResourceLocation getEntityTexture(TropiCreeperEntity e) {
+    public ResourceLocation getEntityTexture(TropiCreeperEntity e) {
         return CREEPER_TEXTURE;
     }
 }

@@ -1,12 +1,16 @@
 package net.tropicraft.core.client.entity.render.layer;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,27 +33,27 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
     }
 
     @Override
-    public void render(T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         final ItemStack blowGunHand = ashen.getHeldItemMainhand();
         final ItemStack daggerHand = ashen.getHeldItemOffhand();
 
         if (!blowGunHand.isEmpty() || !daggerHand.isEmpty()) {
-            GlStateManager.pushMatrix();
+            stack.push();
 
             if (model.isChild) {
-                GlStateManager.translatef(0.0F, 0.625F, 0.0F);
-                GlStateManager.rotatef(-20.0F, -1.0F, 0.0F, 0.0F);
-                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+                stack.translate(0.0F, 0.625F, 0.0F);
+                stack.rotate(Vector3f.XN.rotationDegrees(-20));
+                stack.scale(0.5f, 0.5f, 0.5f);
             }
 
             renderHeldItem(ashen, daggerHand, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT);
             renderHeldItem(ashen, blowGunHand, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT);
 
-            GlStateManager.popMatrix();
+            stack.pop();
         }
     }
 
-    private void renderHeldItem(AshenEntity entity, ItemStack itemstack, ItemCameraTransforms.TransformType transformType, HandSide handSide) {
+    private void func_229135_a_(LivingEntity entity, ItemStack itemstack, ItemCameraTransforms.TransformType transformType, HandSide handSide, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn) {
         if (itemstack.isEmpty()) {
             return;
         }

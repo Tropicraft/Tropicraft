@@ -1,10 +1,13 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 
 public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
@@ -14,33 +17,33 @@ public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
 	}
 
 	@Override
-	public void doRender(TropiSpiderEntity entityliving, double x, double y, double z, float yaw, float pt) {
-		GlStateManager.pushMatrix();
+	public void render(TropiSpiderEntity spider, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+		stack.push();
 		float scale = 1f;
-		if (entityliving.getSpiderType() == TropiSpiderEntity.Type.CHILD) {
+		if (spider.getSpiderType() == TropiSpiderEntity.Type.CHILD) {
 			scale = 0.5f;
 		}
-		if (entityliving.getSpiderType() == TropiSpiderEntity.Type.MOTHER) {
+		if (spider.getSpiderType() == TropiSpiderEntity.Type.MOTHER) {
 			scale = 1.2f;
 		}
 		shadowSize = scale;
 
-		GlStateManager.translated(x, y, z);
-		GlStateManager.scalef(scale, scale, scale);
-		super.doRender(entityliving, 0, 0, 0, yaw, pt);
+		// TODO still needed 1.15?
+		//GlStateManager.translated(x, y, z);
+		stack.scale(scale, scale, scale);
+		super.render(spider, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 		GlStateManager.popMatrix();
 	}
 
 
 	@Override
-	protected ResourceLocation getEntityTexture(TropiSpiderEntity entity) {
-		ResourceLocation l = TropicraftRenderUtils.bindTextureEntity("spideradult");
+	public ResourceLocation getEntityTexture(TropiSpiderEntity entity) {
 		if (entity.getSpiderType() == TropiSpiderEntity.Type.CHILD) {
-			l = TropicraftRenderUtils.bindTextureEntity("spiderchild");
+			return TropicraftRenderUtils.bindTextureEntity("spiderchild");
 		}
 		if (entity.getSpiderType() == TropiSpiderEntity.Type.MOTHER) {
-			l = TropicraftRenderUtils.bindTextureEntity("spidermother");
+			return TropicraftRenderUtils.bindTextureEntity("spidermother");
 		}
-		return l;
+		return TropicraftRenderUtils.bindTextureEntity("spideradult");
 	}
 }

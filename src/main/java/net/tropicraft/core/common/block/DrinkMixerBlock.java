@@ -16,7 +16,6 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -59,24 +58,24 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (world.isRemote) {
-			return true;
+			return ActionResultType.SUCCESS;
 		}
 
 		ItemStack stack = player.getHeldItemMainhand();
 
 		DrinkMixerTileEntity mixer = (DrinkMixerTileEntity) world.getTileEntity(pos);
 		if (mixer == null) {
-			return false;
+			return ActionResultType.FAIL;
 		}
 
 		if (mixer.isDoneMixing()) {
 			mixer.retrieveResult(player);
-			return true;
+			return ActionResultType.CONSUME;
 		}
 
 		if (stack.isEmpty()) {
 			mixer.emptyMixer(player);
-			return true;
+			return ActionResultType.CONSUME;
 		}
 
 		ItemStack ingredientStack = stack.copy();
@@ -98,7 +97,7 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
 			}
 		}
 
-		return true;
+		return ActionResultType.CONSUME;
 	}
 	
 	@Override

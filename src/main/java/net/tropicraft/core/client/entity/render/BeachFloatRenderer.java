@@ -2,6 +2,7 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.tropicraft.core.client.entity.model.BeachFloatModel;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
@@ -20,7 +21,7 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
     
     @Override
     protected void setupTransforms() {
-        GlStateManager.rotatef(-180f, 0, 1, 0);
+        RenderSystem.rotatef(-180f, 0, 1, 0);
     }
     
     @Override

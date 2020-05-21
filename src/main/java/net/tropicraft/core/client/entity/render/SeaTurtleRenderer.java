@@ -1,12 +1,15 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
+import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 
 import javax.annotation.Nullable;
 
@@ -18,16 +21,17 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
 		shadowOpaque = 0.5f;
     }
 
-	public void doRender(SeaTurtleEntity turtle, double x, double y, double z, float entityYaw, float partielTicks) {
+	public void render(SeaTurtleEntity turtle, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
 		float scale = 0.3f;
+		final float existingTime = (float) turtle.ticksExisted / 4000;
 		if (turtle.ticksExisted < 30) {
-			this.shadowOpaque = 0.5f;
-			this.shadowSize = 0.2f + (((float) turtle.ticksExisted/4000));
-			if(this.shadowSize > 0.5f) {
-				this.shadowSize = 0.5f;
+			shadowOpaque = 0.5f;
+			shadowSize = 0.2f + existingTime;
+			if (shadowSize > 0.5f) {
+				shadowSize = 0.5f;
 			}
 		} else {
-			scale = 0.3f+(((float) turtle.ticksExisted/4000));
+			scale = 0.3f + existingTime;
 			if (scale > 1f) {
 				scale = 1f;
 			}
@@ -35,18 +39,16 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
 		if (turtle.isMature()) {
 			scale = 1f;
 		}
-		GlStateManager.pushMatrix();
-		GlStateManager.translated(x, y, z);
-		GlStateManager.scalef(scale, scale, scale);
+		stack.push();
+		stack.scale(scale, scale, scale);
 
-		super.doRender(turtle, 0, 0, 0, 0, partielTicks);
+		super.render(turtle, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 
-	@Nullable
 	@Override
-	protected ResourceLocation getEntityTexture(SeaTurtleEntity seaTurtleEntity) {
+	public ResourceLocation getEntityTexture(SeaTurtleEntity seaTurtleEntity) {
 		return TropicraftRenderUtils.getTextureEntity(String.format("turtle/sea_turtle%s", seaTurtleEntity.getTurtleType()));
 	}
 }

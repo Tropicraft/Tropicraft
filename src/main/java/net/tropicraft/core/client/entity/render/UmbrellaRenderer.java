@@ -50,7 +50,7 @@ public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(final UmbrellaEntity umbrella) {
+    public ResourceLocation getEntityTexture(final UmbrellaEntity umbrella) {
         return null;
     }
 }

@@ -36,7 +36,7 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(WallItemEntity wallItemEntity) {
+    public ResourceLocation getEntityTexture(WallItemEntity wallItemEntity) {
         return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 }

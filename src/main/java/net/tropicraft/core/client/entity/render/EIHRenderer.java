@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -21,13 +22,13 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
     }
 
     @Override
-    protected void preRenderCallback(final EIHEntity eih, final float partialTickTime) {
-        GlStateManager.scalef(2.0F, 1.75F, 2.0F);
+    protected void preRenderCallback(EIHEntity eih, MatrixStack stack, float partialTickTime) {
+        stack.scale(2.0F, 1.75F, 2.0F);
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(final EIHEntity eih) {
+    public ResourceLocation getEntityTexture(final EIHEntity eih) {
         if (eih.isAware()) {
             return TEXTURE_AWARE;
         } else if (eih.isAngry()) {

@@ -25,7 +25,7 @@ public class TropiSkellyRenderer extends BipedRenderer<TropiSkellyEntity, TropiS
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(TropiSkellyEntity entity) {
+    public ResourceLocation getEntityTexture(TropiSkellyEntity entity) {
         return TEXTURE;
     }
 }

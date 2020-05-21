@@ -21,7 +21,7 @@ public class TropicraftDolphinRenderer extends MobRenderer<TropicraftDolphinEnti
 
 	@Nullable
 	@Override
-	protected ResourceLocation getEntityTexture(TropicraftDolphinEntity dolphin) {
+	public ResourceLocation getEntityTexture(TropicraftDolphinEntity dolphin) {
 		return TropicraftRenderUtils.getTextureEntity(dolphin.getTexture());
 	}
 }

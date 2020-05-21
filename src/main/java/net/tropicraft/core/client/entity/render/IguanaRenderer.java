@@ -19,7 +19,7 @@ public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaModel> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(final IguanaEntity entity) {
+    public ResourceLocation getEntityTexture(final IguanaEntity entity) {
         if (entity.getName().getString().equalsIgnoreCase(IGOR)) {
             return IGOR_TEXTURE;
         }

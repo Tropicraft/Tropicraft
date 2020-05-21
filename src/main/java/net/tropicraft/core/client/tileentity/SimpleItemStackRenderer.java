@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.tileentity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
@@ -17,7 +19,7 @@ public class SimpleItemStackRenderer<T extends TileEntity> extends ItemStackTile
     }
 
     @Override
-    public void renderByItem(final ItemStack itemstack) {
-        TileEntityRendererDispatcher.instance.getRenderer(te).render(te, 0.0D, 0.0D, 0.0D, 0.0F, -1);
+    public void render(ItemStack itemStackIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        TileEntityRendererDispatcher.instance.getRenderer(te).render(te, 0, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
 }

@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -26,7 +28,8 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
         shadowSize = 0.3f;
     }
 
-    public void doRender(AshenEntity entityAshen, double x, double y, double z, float yaw, float pitch) {
+    @Override
+    public void render(AshenEntity entityAshen, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         entityModel.actionState = entityAshen.getActionState();
         if (entityAshen.getAttackTarget() != null && entityAshen.getDistance(entityAshen.getAttackTarget()) < 5.0F && !entityAshen.isSwingInProgress) {
             entityModel.swinging = true;
@@ -35,12 +38,12 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
                 entityModel.swinging = false;
             }
         }
-        super.doRender(entityAshen, x, y, z, yaw, pitch);
+        super.render(entityAshen, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(AshenEntity ashenEntity) {
+    public ResourceLocation getEntityTexture(AshenEntity ashenEntity) {
         return ASHEN_TEXTURE_LOCATION;
     }
 }

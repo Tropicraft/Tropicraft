@@ -77,7 +77,7 @@ public class TropicraftFishRenderer<T extends AbstractFishEntity, M extends Abst
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(T entity) {
+    public ResourceLocation getEntityTexture(T entity) {
         return TropicraftRenderUtils.getTextureEntity("tropical_fish");
     }
 }

@@ -1,5 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -18,13 +20,17 @@ public class EagleRayRenderer extends MobRenderer<EagleRayEntity, EagleRayModel>
     }
 
     @Override
-    public void doRender(EagleRayEntity eagleRay, double x, double y, double z, float entityYaw, float partialTicks) {
-        super.doRender(eagleRay, x, y - 1.25, z, entityYaw, partialTicks);
+    public void render(EagleRayEntity eagleRay, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        matrixStackIn.push();
+        // TODO still needed?
+        matrixStackIn.translate(0, -1.25, 0);
+        super.render(eagleRay, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        matrixStackIn.pop();
     }
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EagleRayEntity eagleRayEntity) {
+    public ResourceLocation getEntityTexture(EagleRayEntity eagleRayEntity) {
         return RAY_TEXTURE_LOC;
     }
 }

@@ -1,6 +1,9 @@
 package net.tropicraft.core.client.entity.model;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.Model;
@@ -16,19 +19,13 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
 		}
 
 		@Override
-		public void render(float scale) {
-			GlStateManager.enableCull();
-			super.render(scale);
-			GlStateManager.disableCull();
+        public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
+            RenderSystem.enableCull();
+			super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            RenderSystem.disableCull();
 		}
 	}
 
-    /*public ModelRenderer field_78116_c;
-    public ModelRenderer field_78115_e;
-    public ModelRenderer bipedRightArm;
-    public ModelRenderer bipedLeftArm;
-    public ModelRenderer bipedRightLeg;
-    public ModelRenderer bipedLeftLeg;*/
     public ModelRenderer headband;
     public ModelRenderer armbandR;
     public ModelRenderer leaf;
@@ -43,47 +40,14 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
     public ModelRenderer leaf10;
     public ModelRenderer armbandL;
 
-    public KoaModel() {
-        
-        //textureWidth = 64;
-        //textureHeight = 32;
-
+    public KoaModel(float modelSize) {
+        super(modelSize);
         bipedHead = new ModelRenderer(this, 0, 2);
         bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
         bipedHead.setRotationPoint(0F, 0F, 0F);
         bipedHead.setTextureSize(64, 32);
         bipedHead.mirror = true;
         setRotation(bipedHead, 0F, 0F, 0F);
-        /*field_78115_e = new ModelRenderer(this, 16, 16);
-        field_78115_e.addBox(-4F, 0F, -2F, 8, 12, 4);
-        field_78115_e.setRotationPoint(0F, 0F, 0F);
-        field_78115_e.setTextureSize(64, 32);
-        field_78115_e.mirror = true;
-        setRotation(field_78115_e, 0F, 0F, 0F);
-        bipedRightArm = new ModelRenderer(this, 40, 16);
-        bipedRightArm.addBox(-2F, -2F, -2F, 3, 12, 4);
-        bipedRightArm.setRotationPoint(-4F, 3F, 0F);
-        bipedRightArm.setTextureSize(64, 32);
-        bipedRightArm.mirror = true;
-        setRotation(bipedRightArm, 0F, 0F, 0F);
-        bipedLeftArm = new ModelRenderer(this, 40, 16);
-        bipedLeftArm.addBox(-1F, -2F, -2F, 3, 12, 4);
-        bipedLeftArm.setRotationPoint(5F, 3F, 0F);
-        bipedLeftArm.setTextureSize(64, 32);
-        bipedLeftArm.mirror = true; //hey baby whats shakin		//bacon :D /me wants bacon mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-        setRotation(bipedLeftArm, 0F, 0F, 0F);
-        bipedRightLeg = new ModelRenderer(this, 0, 16);
-        bipedRightLeg.addBox(-2F, 0F, -2F, 4, 12, 4);
-        bipedRightLeg.setRotationPoint(-2F, 12F, 0F);
-        bipedRightLeg.setTextureSize(64, 32);
-        bipedRightLeg.mirror = true;
-        setRotation(bipedRightLeg, 0F, 0F, 0F);
-        bipedLeftLeg = new ModelRenderer(this, 0, 16);
-        bipedLeftLeg.addBox(-2F, 0F, -2F, 4, 12, 4);
-        bipedLeftLeg.setRotationPoint(2F, 12F, 0F);
-        bipedLeftLeg.setTextureSize(64, 32);
-        bipedLeftLeg.mirror = true;
-        setRotation(bipedLeftLeg, 0F, 0F, 0F);*/
         headband = new ModelRenderer(this, 24, 1);
         headband.addBox(-5F, 0F, -5F, 10, 2, 10);
         headband.setRotationPoint(0F, -7F, 0F);		//0,-7,0 before
@@ -176,92 +140,93 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
         setRotation(leaf10, 0F, 0F, 0F);
     }
 
+    // TODO reimplement if koa seem off in 1.15
+//    @Override
+//    public void render(EntityKoaBase entity, float f, float f1, float f2, float f3, float f4, float f5) {
+//        //super.render(entity, f, f1, f2, f3, f4, f5);
+//        setRotationAngles(entity, f, f1, f2, f3, f4, f5);
+//
+//        GlStateManager.pushMatrix();
+//
+//        if (this.isChild)
+//        {
+//            //float f = 2.0F;
+//            GlStateManager.scalef(0.75F, 0.75F, 0.75F);
+//            GlStateManager.translatef(0.0F, 16.0F * f5, 0.0F);
+//            this.bipedHead.render(f5);
+//            GlStateManager.popMatrix();
+//            GlStateManager.pushMatrix();
+//            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+//            GlStateManager.translatef(0.0F, 24.0F * f5, 0.0F);
+//            this.bipedBody.render(f5);
+//            this.bipedRightArm.render(f5);
+//            this.bipedLeftArm.render(f5);
+//            this.bipedRightLeg.render(f5);
+//            this.bipedLeftLeg.render(f5);
+//        }
+//        else {
+//            bipedHead.render(f5);
+//            bipedBody.render(f5);
+//            bipedRightArm.render(f5);
+//            bipedLeftArm.render(f5);
+//            bipedRightLeg.render(f5);
+//            bipedLeftLeg.render(f5);
+//        }
+//
+//        GlStateManager.popMatrix();
+//    }
+
     @Override
-    public void render(EntityKoaBase entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        //super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(entity, f, f1, f2, f3, f4, f5);
+    public void setRotationAngles(EntityKoaBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        isSitting = entityIn.isSitting() || entityIn.isPassenger();
+        final boolean isDancing = entityIn.isDancing();
 
-        GlStateManager.pushMatrix();
-
-        if (this.isChild)
-        {
-            //float f = 2.0F;
-            GlStateManager.scalef(0.75F, 0.75F, 0.75F);
-            GlStateManager.translatef(0.0F, 16.0F * f5, 0.0F);
-            this.bipedHead.render(f5);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-            GlStateManager.translatef(0.0F, 24.0F * f5, 0.0F);
-            this.bipedBody.render(f5);
-            this.bipedRightArm.render(f5);
-            this.bipedLeftArm.render(f5);
-            this.bipedRightLeg.render(f5);
-            this.bipedLeftLeg.render(f5);
-        }
-        else {
-            bipedHead.render(f5);
-            bipedBody.render(f5);
-            bipedRightArm.render(f5);
-            bipedLeftArm.render(f5);
-            bipedRightLeg.render(f5);
-            bipedLeftLeg.render(f5);
-        }
-
-        GlStateManager.popMatrix();
-    }
-
-    @Override
-    public void setRotationAngles(EntityKoaBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-
-        boolean isDancing = false;
-
-        if (entityIn instanceof EntityKoaBase) {
-            this.isSitting = ((EntityKoaBase) entityIn).isSitting() || entityIn.isPassenger();
-            isDancing = ((EntityKoaBase) entityIn).isDancing();
-        }
-
-        if (this.isSitting)
-        {
-            if (this.isChild) {
-                GlStateManager.translated(0, 0.1, 0);
+        if (isSitting) {
+            if (isChild) {
+                RenderSystem.translated(0, 0.1, 0);
             } else {
-                GlStateManager.translated(0, 0.3, 0);
+                RenderSystem.translated(0, 0.3, 0);
             }
         }
 
         float ticks = (entityIn.ticksExisted + Minecraft.getInstance().getRenderPartialTicks()) % 360;
 
+        final double headRot = Math.cos(Math.toRadians(ticks * 35F));
         if (isDancing) {
-            this.bipedHead.offsetY = 0.01F + (float)Math.sin(Math.toRadians(ticks * 35F)) * 0.02F;
-            this.bipedHead.offsetX = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.02F;
-            this.bipedHead.offsetZ = 0;
-            this.bipedHead.rotateAngleZ = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.05F;
+            // TODO remove translate calls in this method
+       //     RenderSystem.translated(0, 0.01F + (float)Math.sin(Math.toRadians(ticks * 35F)) * 0.02F, 0);
+      //      RenderSystem.translated((float) headRot * 0.02F, 0, 0);
+//            bipedHead.offsetY = 0.01F + (float)Math.sin(Math.toRadians(ticks * 35F)) * 0.02F;
+//            bipedHead.offsetX = (float)Math.cos(Math.toRadians(ticks * 35F)) * 0.02F;
+//            bipedHead.offsetZ = 0;
+            bipedHead.rotateAngleZ = (float) headRot * 0.05F;
         } else {
-            this.bipedHead.offsetY = 0;
-            this.bipedHead.offsetX = 0;
-            this.bipedHead.offsetZ = 0;
-            this.bipedHead.rotateAngleZ = 0;
+           // RenderSystem.translated(0, 0, 0);
+//            bipedHead.offsetY = 0;
+//            bipedHead.offsetX = 0;
+//            bipedHead.offsetZ = 0;
+            bipedHead.rotateAngleZ = 0;
         }
 
-        super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+        super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
         if (isDancing) {
             this.bipedHead.rotateAngleX += (float) Math.sin(Math.toRadians((entityIn.world.getGameTime() % 360) * 35F)) * 0.05F;
 
             float amp = 0.5F;
 
-            double x = Math.PI + Math.PI / 4 + (float) Math.sin(Math.toRadians(ticks * 35F)) * amp;
-            double y = Math.sin(Math.toRadians(ticks * 35F)) * amp;
-            double z = (float) Math.cos(Math.toRadians(ticks * 35F)) * amp;
+            final double armRot = Math.sin(Math.toRadians(ticks * 35F));
+            double x = Math.PI + Math.PI / 4 + (float) armRot * amp;
+            double y = armRot * amp;
+            double z = (float) headRot * amp;
 
-            this.bipedRightArm.rotateAngleX += x;
-            this.bipedRightArm.rotateAngleY += y;
-            this.bipedRightArm.rotateAngleZ += z;
+            bipedRightArm.rotateAngleX += x;
+            bipedRightArm.rotateAngleY += y;
+            bipedRightArm.rotateAngleZ += z;
 
-            this.bipedLeftArm.rotateAngleX += x;
-            this.bipedLeftArm.rotateAngleY += y;
-            this.bipedLeftArm.rotateAngleZ += z;
+            bipedLeftArm.rotateAngleX += x;
+            bipedLeftArm.rotateAngleY += y;
+            bipedLeftArm.rotateAngleZ += z;
         }
     }
 

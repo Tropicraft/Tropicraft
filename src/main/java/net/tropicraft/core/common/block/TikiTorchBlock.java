@@ -16,7 +16,6 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Direction.Axis;
@@ -26,7 +25,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -83,11 +81,11 @@ public class TikiTorchBlock extends Block {
     @Override
     @Deprecated
     public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-        if (func_220055_a(world, pos.down(), Direction.UP)) { // can block underneath support torch
+        if (hasEnoughSolidSide(world, pos.down(), Direction.UP)) { // can block underneath support torch
             return true;
         } else { // if not, is the block underneath a lower 2/3 tiki torch segment?
             BlockState blockstate = world.getBlockState(pos.down());
-            return blockstate.getBlock() == this && blockstate.get(SECTION) != TorchSection.UPPER ? super.isValidPosition(state, world, pos) : false;
+            return (blockstate.getBlock() == this && blockstate.get(SECTION) != TorchSection.UPPER) && super.isValidPosition(state, world, pos);
         }
     }
 

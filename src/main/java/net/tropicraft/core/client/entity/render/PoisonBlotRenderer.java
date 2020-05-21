@@ -45,7 +45,7 @@ public class PoisonBlotRenderer extends EntityRenderer<PoisonBlotEntity> {
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(PoisonBlotEntity entity) {
+    public ResourceLocation getEntityTexture(PoisonBlotEntity entity) {
         return TropicraftRenderUtils.getTextureEntity("treefrog/blot");
     }
 }

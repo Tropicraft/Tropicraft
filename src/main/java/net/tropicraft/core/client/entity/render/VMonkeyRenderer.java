@@ -23,7 +23,7 @@ public class VMonkeyRenderer extends MobRenderer<VMonkeyEntity, VMonkeyModel> {
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
     @Override
-	protected ResourceLocation getEntityTexture(VMonkeyEntity entity) {
+    public ResourceLocation getEntityTexture(VMonkeyEntity entity) {
         return entity.isAggressive() ? ANGRY_TEXTURE : TEXTURE;
 	}
 }

@@ -2,11 +2,19 @@ package net.tropicraft.core.client.entity.render;
 
 import javax.annotation.Nullable;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -14,7 +22,6 @@ import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 
 public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer<T> {
-
     private final String textureName;
     private final EntityModel<T> model;
     private final float scale;
@@ -32,41 +39,38 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     }
 
     @Override
-    public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
-        GlStateManager.pushMatrix();
-        double yOffset = getYOffset();
-        GlStateManager.translated(x, y + yOffset, z);
-        GlStateManager.rotatef(180F - yaw, 0.0F, 1.0F, 0.0F);
+    public void render(T furniture, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn) {
+        stack.push();
+        stack.translate(0, getYOffset(), 0);
+        stack.rotate(Vector3f.YP.rotationDegrees(180 - entityYaw));
         setupTransforms();
         
-        float rockingAngle = getRockingAngle(entity, partialTicks);
-        if (rockingAngle != 0F) {
-            boolean useZ = rockOnZAxis();
-            GlStateManager.translated(0, -yOffset, 0);
-            GlStateManager.rotatef(rockingAngle, useZ ? 0 : 1, 0, useZ ? 1 : 0);
-            GlStateManager.translated(0, yOffset, 0);
+        final float rockingAngle = getRockingAngle(furniture, partialTicks);;
+        if (!MathHelper.epsilonEquals(rockingAngle, 0.0F)) {
+            stack.rotate(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), rockingAngle, true));
         }
 
-        int color = entity.getColor().getColorValue();
+        final int color = furniture.getColor().getColorValue();
         red = ColorHelper.getRed(color);
         green = ColorHelper.getGreen(color);
         blue = ColorHelper.getBlue(color);
 
         // Draw uncolored layer
-        bindTexture(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer"));
-        GlStateManager.scalef(-1F, -1F, 1.0F);
-        model.render(entity, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, scale);
+        IVertexBuilder ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
+        model.render(stack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        stack.scale(-1.0F, -1.0F, 1.0F);
 
         // Draw the colored part
-        GlStateManager.pushMatrix();
-        GlStateManager.color3f(red, green, blue);
-        bindTexture(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer"));
-        model.render(entity, 0.0F, 1.0F, 0.1F, 0.0F, 0.0F, scale);
+      //  stack.push();
+       // RenderSystem.color3f(red, green, blue);
+        ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer")));
+        model.render(stack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
         GlStateManager.disableBlend();
-        GlStateManager.color3f(1, 1, 1);
-        GlStateManager.popMatrix();
-        GlStateManager.popMatrix();
-        super.doRender(entity, x, y, z, yaw, partialTicks);
+     //   GlStateManager.color3f(1, 1, 1);
+    //    stack.pop();
+
+        stack.pop();
+        super.render(furniture, entityYaw, partialTicks, stack, buffer, packedLightIn);
     }
     
     protected double getYOffset() {
@@ -92,9 +96,8 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         return false;
     }
 
-    @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(final T chair) {
+    public ResourceLocation getEntityTexture(final T furniture) {
         return null;
     }
 }

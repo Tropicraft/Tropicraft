@@ -1,7 +1,11 @@
 package net.tropicraft.core.client.entity.render;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
@@ -27,20 +31,22 @@ public class PlayerRotationHandler {
 
     @SubscribeEvent
     public static void onRenderPlayer(RenderPlayerEvent.Pre event) {
+        MatrixStack stack = event.getMatrixStack();
+        IRenderTypeBuffer buffers = event.getBuffers();
         PlayerEntity p = event.getPlayer();
         Entity riding = p.getRidingEntity();
         if (riding instanceof BeachFloatEntity) {
             FurnitureEntity floaty = (FurnitureEntity) riding;
-            GlStateManager.pushMatrix();
-            GlStateManager.translated(event.getX(), event.getY(), event.getZ());
 
-            GlStateManager.rotatef(-(floaty.prevRotationYaw + (event.getPartialRenderTick() * (floaty.rotationYaw - floaty.prevRotationYaw))), 0, 1, 0);
-            GlStateManager.translated(0, 1.55, 1.55);
-            GlStateManager.rotatef(-90, 1, 0, 0);
+            stack.push();
+            //            GlStateManager.translated(event.getX(), event.getY(), event.getZ());
+            stack.rotate(Vector3f.YN.rotationDegrees(-(floaty.prevRotationYaw + (event.getPartialRenderTick() * (floaty.rotationYaw - floaty.prevRotationYaw)))));
+            stack.translate(0, 1.55, 1.55);
+            stack.rotate(Vector3f.XN.rotationDegrees(90));
 
             // Cancel out player camera rotation
             float f = interpolateAndWrap(p.renderYawOffset, p.prevRenderYawOffset, event.getPartialRenderTick());
-            GlStateManager.rotatef(f, 0, 1, 0);
+            stack.rotate(Vector3f.YP.rotationDegrees(f));
 
             // Lock in head
             rotationYawHead = p.rotationYawHead;
@@ -52,27 +58,28 @@ public class PlayerRotationHandler {
             p.rotationPitch = 10f;
             p.prevRotationPitch = 10f;
 
-            GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
+            // TODO - 1.15 seemed to get rid of initial/after translations but maybe they are needed?
+//            GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
         }
         if (riding instanceof SeaTurtleEntity) {
             SeaTurtleEntity turtle = (SeaTurtleEntity) riding;
-            GlStateManager.pushMatrix();
-            GlStateManager.translated(event.getX(), event.getY(), event.getZ());
+            stack.push();
+//            GlStateManager.translated(event.getX(), event.getY(), event.getZ());
 
             // Cancel out player camera rotation
             float pitch = interpolateAndWrap(turtle.rotationPitch, turtle.prevRotationPitch, event.getPartialRenderTick());
             float yaw = interpolateAndWrap(turtle.rotationYawHead, turtle.prevRotationYawHead, event.getPartialRenderTick());
 
-            GlStateManager.translated(0, turtle.getMountedYOffset() - p.getYOffset(), 0);
-            GlStateManager.rotatef(-yaw, 0, 1, 0);
-            GlStateManager.translated(0, -0.1, 0); // TODO figure out why this budging is needed
-            GlStateManager.rotatef(pitch, 1, 0, 0);
-            GlStateManager.translated(0, 0.1, 0);
-            GlStateManager.rotatef(yaw, 0, 1, 0);
-            GlStateManager.translated(0, -turtle.getMountedYOffset() + p.getYOffset(), 0);
+            stack.translate(0, turtle.getMountedYOffset() - p.getYOffset(), 0);
+            stack.rotate(Vector3f.YN.rotationDegrees(yaw));
+            stack.translate(0, -0.1, 0); // TODO figure out why this budging is needed
+            stack.rotate(Vector3f.XP.rotationDegrees(pitch));
+            stack.translate(0, 0.1, 0);
+            stack.rotate(Vector3f.YP.rotationDegrees(yaw));
+            stack.translate(0, -turtle.getMountedYOffset() + p.getYOffset(), 0);
 
             Vec3d passengerOffset = (new Vec3d(-0.25f, 0.0D, 0.0D)).rotateYaw((float) (-Math.toRadians(yaw) - (Math.PI / 2)));
-            GlStateManager.translated(passengerOffset.getX(), 0, passengerOffset.getZ());
+            stack.translate(passengerOffset.getX(), 0, passengerOffset.getZ());
 
             // Lock in head
             rotationPitch = p.rotationPitch;
@@ -80,7 +87,7 @@ public class PlayerRotationHandler {
             p.rotationPitch = 10f;
             p.prevRotationPitch = 10f;
 
-            GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
+            //GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
         }
     }
 
@@ -88,7 +95,7 @@ public class PlayerRotationHandler {
     public static void onRenderPlayerPost(RenderPlayerEvent.Post event) {
         PlayerEntity p = event.getPlayer();
         if (p.getRidingEntity() instanceof BeachFloatEntity || p.getRidingEntity() instanceof SeaTurtleEntity) {
-            GlStateManager.popMatrix();
+            event.getMatrixStack().pop();
             p.rotationPitch = rotationPitch;
             p.prevRotationPitch = prevRotationPitch;
         }
@@ -99,7 +106,7 @@ public class PlayerRotationHandler {
     }
 
     @SubscribeEvent
-    public static void onRenderPlayerSpecials(RenderLivingEvent.Specials.Pre<?, ?> event) {
+    public static void onRenderPlayerSpecials(RenderLivingEvent.Pre<?, ?> event) {
         if (event.getEntity().getRidingEntity() instanceof BeachFloatEntity) {
             event.setCanceled(true);
         }
