@@ -218,13 +218,13 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         }
         
         protected static LootTable.Builder onlyWithSilkTouchOrShears(Block block) {
-            return LootTable.builder().addLootPool(LootPool.builder().acceptCondition(field_218576_d).rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block)));
+            return LootTable.builder().addLootPool(LootPool.builder().acceptCondition(SILK_TOUCH_OR_SHEARS).rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(block)));
         }
         
         protected static LootTable.Builder droppingWithSticks(Block block) {
             return onlyWithSilkTouchOrShears(block).addLootPool(LootPool.builder()
                         .rolls(ConstantRange.of(1))
-                        .acceptCondition(field_218577_e)
+                        .acceptCondition(NOT_SILK_TOUCH_OR_SHEARS)
                         .addEntry(withExplosionDecay(block, ItemLootEntry.builder(Items.STICK)
                                 .acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 2.0F))))
                                 .acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
@@ -233,7 +233,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         protected static LootTable.Builder droppingWithChancesSticksAndFruit(Block block, Block sapling, IItemProvider fruit, float[] chances) {
             return droppingWithChancesAndSticks(block, sapling, chances)
                     .addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-                            .acceptCondition(field_218577_e)
+                            .acceptCondition(NOT_SILK_TOUCH_OR_SHEARS)
                             .addEntry(withExplosionDecay(block, ItemLootEntry.builder(fruit))));
         }
         

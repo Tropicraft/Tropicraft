@@ -76,7 +76,7 @@ public class ScubaHUD {
     
     private static void drawHUDStrings(ITextComponent... components) {
         FontRenderer fr = Minecraft.getInstance().fontRenderer;
-        MainWindow mw = Minecraft.getInstance().mainWindow;
+        MainWindow mw = Minecraft.getInstance().getMainWindow();
 
         int startY = mw.getScaledHeight() - 5 - (fr.FONT_HEIGHT * components.length);
         int startX = mw.getScaledWidth() - 5;

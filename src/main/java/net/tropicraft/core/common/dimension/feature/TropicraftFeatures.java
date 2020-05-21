@@ -4,13 +4,10 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
 
-import net.minecraft.block.Block;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern.PlacementBehaviour;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
@@ -32,27 +29,27 @@ public class TropicraftFeatures {
     public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, Constants.MODID);
 
 	public static final RegistryObject<FruitTreeFeature> GRAPEFRUIT_TREE = register(
-	        "grapefruit_tree", () -> new FruitTreeFeature(TreeFeatureConfig::deserialize, true, TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES.lazyMap(Block::getDefaultState)));
+	        "grapefruit_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, TropicraftBlocks.ORANGE_SAPLING, () -> TropicraftBlocks.ORANGE_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<FruitTreeFeature> ORANGE_TREE = register(
-	        "orange_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.ORANGE_SAPLING, () -> TropicraftBlocks.ORANGE_LEAVES.get().getDefaultState()));
+	        "orange_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, TropicraftBlocks.ORANGE_SAPLING, () -> TropicraftBlocks.ORANGE_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<FruitTreeFeature> LEMON_TREE = register(
-	        "lemon_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.LEMON_SAPLING, () -> TropicraftBlocks.LEMON_LEAVES.get().getDefaultState()));
+	        "lemon_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, TropicraftBlocks.LEMON_SAPLING, () -> TropicraftBlocks.LEMON_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<FruitTreeFeature> LIME_TREE = register(
-	        "lime_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, true, TropicraftBlocks.LIME_SAPLING, () -> TropicraftBlocks.LIME_LEAVES.get().getDefaultState()));
+	        "lime_tree", () -> new FruitTreeFeature(NoFeatureConfig::deserialize, TropicraftBlocks.LIME_SAPLING, () -> TropicraftBlocks.LIME_LEAVES.get().getDefaultState()));
 	public static final RegistryObject<PalmTreeFeature> NORMAL_PALM_TREE = register(
-	        "normal_palm_tree", () -> new NormalPalmTreeFeature(NoFeatureConfig::deserialize, true));
+	        "normal_palm_tree", () -> new NormalPalmTreeFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<PalmTreeFeature> CURVED_PALM_TREE = register(
-	        "curved_palm_tree", () -> new CurvedPalmTreeFeature(NoFeatureConfig::deserialize, true));
+	        "curved_palm_tree", () -> new CurvedPalmTreeFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<PalmTreeFeature> LARGE_PALM_TREE = register(
-	        "large_palm_tree", () -> new LargePalmTreeFeature(NoFeatureConfig::deserialize, true));
+	        "large_palm_tree", () -> new LargePalmTreeFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<RainforestTreeFeature> UP_TREE = register(
-	        "up_tree", () -> new UpTreeFeature(NoFeatureConfig::deserialize, true));
+	        "up_tree", () -> new UpTreeFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<RainforestTreeFeature> SMALL_TUALUNG = register(
-	        "small_tualung", () -> new TualungFeature(NoFeatureConfig::deserialize, true, 16, 9));
+	        "small_tualung", () -> new TualungFeature(NoFeatureConfig::deserialize, 16, 9));
 	public static final RegistryObject<RainforestTreeFeature> LARGE_TUALUNG = register(
-	        "large_tualung", () -> new TualungFeature(NoFeatureConfig::deserialize, true, 25, 11));
+	        "large_tualung", () -> new TualungFeature(NoFeatureConfig::deserialize, 25, 11));
 	public static final RegistryObject<RainforestTreeFeature> TALL_TREE = register(
-	        "tall_tree", () -> new TallRainforestTreeFeature(NoFeatureConfig::deserialize, true));
+	        "tall_tree", () -> new TallRainforestTreeFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<EIHFeature> EIH = register(
 	        "eih", () -> new EIHFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<TropicsFlowersFeature> TROPICS_FLOWERS = register(

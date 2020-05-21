@@ -387,15 +387,15 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         GlStateManager.pushMatrix();
 
-        if (this.isChild) {
+        if (isChild) {
             GlStateManager.scalef(0.75F, 0.75F, 0.75F);
             GlStateManager.translatef(0.0F, 16.0F * scale, 0.0F);
-            this.bipedHead.render(scale);
+            bipedHead.render(scale);
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             GlStateManager.scalef(0.5F, 0.5F, 0.5F);
             GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
-            this.renderScubaGear(entityIn, scale, false);
+            renderScubaGear(entityIn, scale, false);
         }
         else
         {

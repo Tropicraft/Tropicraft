@@ -469,7 +469,7 @@ public class TropicraftLangProvider extends LanguageProvider {
     }
 
     @Override
-    protected void add(String key, String value) {
+    public void add(String key, String value) {
         super.add(key, value);
         upsideDown.add(key, toUpsideDown(value));
     }

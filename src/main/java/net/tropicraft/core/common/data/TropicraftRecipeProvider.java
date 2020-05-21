@@ -291,10 +291,11 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     }
     
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void storage(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        // TODO probably not ported correctly
         ShapedRecipeBuilder.shapedRecipe(output.get())
             .patternLine("XXX").patternLine("XXX").patternLine("XXX")
             .key('X', input.get())
-            .addCriterion("has_at_least_9_" + safeName(input.get()), this.hasItem(MinMaxBounds.IntBound.atLeast(9), input.get()))
+            .addCriterion("has_at_least_9_" + safeName(input.get()), this.hasItem(input.get()))
             .build(consumer);
         
         ShapelessRecipeBuilder.shapelessRecipe(input.get(), 9)

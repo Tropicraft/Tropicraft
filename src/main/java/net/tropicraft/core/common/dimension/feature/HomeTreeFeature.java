@@ -13,6 +13,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
@@ -55,26 +56,26 @@ public class HomeTreeFeature extends Structure<VillageConfig> {
     }
 
     @Override
-    public boolean hasStartAt(ChunkGenerator<?> chunkGen, Random rand, int chunkPosX, int chunkPosZ) {
-        ChunkPos chunkpos = this.getStartPositionForPosition(chunkGen, rand, chunkPosX, chunkPosZ, 0, 0);
-        if (chunkPosX == chunkpos.x && chunkPosZ == chunkpos.z) {
-           BlockPos pos = new BlockPos((chunkPosX << 4) + 8, 0, (chunkPosZ << 4) + 8);
-           return isValid(chunkGen, pos.add(-4, 0, -4)) &&
-                  isValid(chunkGen, pos.add(-4, 0, 4)) &&
-                  isValid(chunkGen, pos.add(4, 0, 4)) &&
-                  isValid(chunkGen, pos.add(4, 0, -4));
+    public boolean canBeGenerated(BiomeManager biomeManagerIn, ChunkGenerator<?> generatorIn, Random randIn, int chunkX, int chunkZ, Biome biomeIn) {
+        ChunkPos chunkpos = getStartPositionForPosition(generatorIn, randIn, chunkX, chunkZ, 0, 0);
+        if (chunkX == chunkpos.x && chunkZ == chunkpos.z) {
+            BlockPos pos = new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8);
+            return isValid(generatorIn, biomeIn, pos.add(-4, 0, -4)) &&
+                    isValid(generatorIn, biomeIn, pos.add(-4, 0, 4)) &&
+                    isValid(generatorIn, biomeIn, pos.add(4, 0, 4)) &&
+                    isValid(generatorIn, biomeIn, pos.add(4, 0, -4));
         } else {
-           return false;
+            return false;
         }
     }
 
-    private boolean isValid(ChunkGenerator<?> chunkGen, BlockPos pos) {
-        return chunkGen.hasStructure(chunkGen.getBiomeProvider().getBiome(pos), TropicraftFeatures.HOME_TREE.get())
+    private boolean isValid(ChunkGenerator<?> chunkGen, Biome biome, BlockPos pos) {
+        return chunkGen.hasStructure(biome, TropicraftFeatures.HOME_TREE.get())
                 && chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) >= chunkGen.getSeaLevel()
                 && pos.getY() < 150
-                && chunkGen.getBiomeProvider().getBiome(pos) instanceof TropicraftRainforestBiome;
+                && biome instanceof TropicraftRainforestBiome;
     }
-    
+
     @Override
     public BlockPos findNearest(World worldIn, ChunkGenerator<? extends GenerationSettings> chunkGenerator, BlockPos pos, int radius, boolean p_211405_5_) {
         BlockPos ret = super.findNearest(worldIn, chunkGenerator, pos, radius, p_211405_5_);
@@ -108,15 +109,15 @@ public class HomeTreeFeature extends Structure<VillageConfig> {
 
     public static class Start extends MarginedStructureStart {
 
-        public Start(Structure<?> p_i51110_1_, int p_i51110_2_, int p_i51110_3_, Biome p_i51110_4_, MutableBoundingBox p_i51110_5_, int p_i51110_6_, long p_i51110_7_) {
-            super(p_i51110_1_, p_i51110_2_, p_i51110_3_, p_i51110_4_, p_i51110_5_, p_i51110_6_, p_i51110_7_);
+        public Start(Structure<?> p_i51110_1_, int p_i51110_2_, int p_i51110_3_, MutableBoundingBox p_i51110_5_, int p_i51110_6_, long p_i51110_7_) {
+            super(p_i51110_1_, p_i51110_2_, p_i51110_3_, p_i51110_5_, p_i51110_6_, p_i51110_7_);
         }
 
         public void init(ChunkGenerator<?> generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome biomeIn) {
             final BlockPos pos = new BlockPos(chunkX * 16, -5, chunkZ * 16);
             VillageConfig config = generator.getStructureConfig(biomeIn, TropicraftFeatures.HOME_TREE.get());
             HomeTreePools.init();
-            JigsawManager.func_214889_a(config.startPool, config.size, HomeTreePiece::new, generator, templateManagerIn, pos, this.components, this.rand);
+            JigsawManager.addPieces(config.startPool, config.size, HomeTreePiece::new, generator, templateManagerIn, pos, this.components, this.rand);
             this.recalculateStructureSize();
         }
     }

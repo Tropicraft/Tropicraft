@@ -1,5 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAir;
+import static net.minecraft.world.gen.feature.AbstractTreeFeature.isWater;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
@@ -12,12 +14,15 @@ import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldWriter;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.IWorldGenerationReader;
+import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 public class CurvedPalmTreeFeature extends PalmTreeFeature {
-
     private static final int Z_PLUS = 0;
     private static final int Z_MINUS = 1;
     private static final int X_PLUS = 2;
@@ -28,12 +33,12 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     private int originX, originZ;
     private int dir;
 
-    public CurvedPalmTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func, boolean shouldNotifyOnPlace) {
-        super(func, shouldNotifyOnPlace);
+    public CurvedPalmTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func) {
+        super(func);
     }
 
     @Override
-    protected boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader world, Random rand, BlockPos pos, MutableBoundingBox bb) {
+    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         pos = pos.toImmutable();
 
         final int height = 9 + rand.nextInt(3);
@@ -46,7 +51,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!isSoil(world, pos.down(), getSapling())) {
+        if (!TropicraftFeatureUtil.isSoil(world, pos.down())) {
             return false;
         }
 

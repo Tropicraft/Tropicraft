@@ -15,8 +15,8 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 	private ResourceLocation texPath;
 	protected TropicraftSpecialRenderHelper renderer;
 
-	public PlayerHeadpieceRenderer(final int modelSize, final int textureIndex, final ResourceLocation texPath) {
-		super(modelSize);
+	public PlayerHeadpieceRenderer(final int textureIndex, final ResourceLocation texPath) {
+		super(0);
 		this.texPath = texPath;
 		this.textureIndex = textureIndex;
 		renderer = new TropicraftSpecialRenderHelper();

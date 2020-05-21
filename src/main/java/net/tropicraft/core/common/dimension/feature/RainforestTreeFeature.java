@@ -3,13 +3,12 @@ package net.tropicraft.core.common.dimension.feature;
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
@@ -18,29 +17,23 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatureConfig> {
+import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAir;
+
+public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
 
     /**Used in placeBlockLine*/
     protected static final byte otherCoordPairs[] = {2, 0, 0, 1, 2, 1};
 
-    public RainforestTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func, boolean doesNotifyOnPlace) {
-        super(func, doesNotifyOnPlace);
+    public RainforestTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func) {
+        super(func);
     }
 
-    protected void setState(Set<BlockPos> changedBlocks, IWorldWriter world, BlockPos pos, BlockState state, MutableBoundingBox bb) {
+    protected void setState(IWorldWriter world, BlockPos pos, BlockState state) {
         setBlockStateInternally(world, pos, state);
-        bb.expandTo(new MutableBoundingBox(pos, pos));
-        if (BlockTags.LOGS.contains(state.getBlock())) {
-            changedBlocks.add(pos.toImmutable());
-        }
     }
 
     private void setBlockStateInternally(IWorldWriter world, BlockPos pos, BlockState state) {
-        if (this.doBlockNotify) {
-            world.setBlockState(pos, state, 19);
-        } else {
-            world.setBlockState(pos, state, 18);
-        }
+        world.setBlockState(pos, state, 19);
     }
 
     protected net.minecraftforge.common.IPlantable getSapling() {
@@ -55,12 +48,12 @@ public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatur
         return TropicraftBlocks.MAHOGANY_LOG.get().getDefaultState();
     }
 
-    protected void placeLeaf(final Set<BlockPos> changedBlocks, final IWorldGenerationReader world, final MutableBoundingBox bb, int x, int y, int z) {
-        setState(changedBlocks, world, new BlockPos(x, y, z), getLeaf(), bb);
+    protected void placeLeaf(final IWorldGenerationReader world, int x, int y, int z) {
+        setState(world, new BlockPos(x, y, z), getLeaf());
     }
 
-    protected void placeLog(final Set<BlockPos> changedBlocks, final IWorldGenerationReader world, final MutableBoundingBox bb, int x, int y, int z) {
-        setState(changedBlocks, world, new BlockPos(x, y, z), getLog(), bb);
+    protected void placeLog(final IWorldGenerationReader world, int x, int y, int z) {
+        setState(world, new BlockPos(x, y, z), getLog());
     }
 
     protected boolean genCircle(IWorldGenerationReader world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
@@ -105,7 +98,7 @@ public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatur
      * @param state IBlockState to place
      * @return The coords that blocks were placed on
      */
-    public ArrayList<int[]> placeBlockLine(Set<BlockPos> changedBlocks, IWorldGenerationReader world, MutableBoundingBox bb, int ai[], int ai1[], BlockState state) {
+    public ArrayList<int[]> placeBlockLine(IWorldGenerationReader world, int ai[], int ai1[], BlockState state) {
         ArrayList<int[]> places = new ArrayList<>();
         int[] ai2 = {0, 0, 0};
         byte byte0 = 0;
@@ -140,7 +133,7 @@ public abstract class RainforestTreeFeature extends AbstractTreeFeature<NoFeatur
             ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
             ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
-            setState(changedBlocks, world, pos, state, bb);
+            setState(world, pos, state);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
         }
         return places;

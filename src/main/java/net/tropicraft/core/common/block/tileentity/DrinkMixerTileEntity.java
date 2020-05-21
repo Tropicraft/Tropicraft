@@ -128,7 +128,7 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 			BlockPos pos = getPos().offset(getBlockState().get(DrinkMixerBlock.FACING));
 			InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
 		} else {
-			InventoryHelper.spawnItemStack(world, at.posX, at.posY, at.posZ, stack);
+			InventoryHelper.spawnItemStack(world, at.getPosX(), at.getPosY(), at.getPosZ(), stack);
 		}
 	}
 

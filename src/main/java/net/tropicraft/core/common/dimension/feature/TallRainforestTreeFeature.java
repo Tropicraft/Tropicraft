@@ -4,6 +4,9 @@ import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
@@ -13,6 +16,7 @@ import java.util.function.Function;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isSoil;
 
 public class TallRainforestTreeFeature extends RainforestTreeFeature {
 
@@ -20,12 +24,12 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
     private static final int SMALL_LEAF_CHANCE = 3;
     private static final int SECOND_CANOPY_CHANCE = 3;
 
-    public TallRainforestTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func, boolean doesNotifyOnPlace) {
-        super(func, doesNotifyOnPlace);
+    public TallRainforestTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func) {
+        super(func);
     }
 
     @Override
-    protected boolean place(Set<BlockPos> changedBlocks, IWorldGenerationReader world, Random rand, BlockPos pos, MutableBoundingBox bb) {
+    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         pos = pos.toImmutable();
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
         final int height = rand.nextInt(15) + 15;
@@ -38,38 +42,38 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
             return false;
         }
 
-        if (!isSoil(world, pos.down(), getSapling())) {
+        if (!isSoil(world, pos.down())) {
             return false;
         }
 
-        if (!isSoil(world, pos.east().down(), getSapling())) {
+        if (!isSoil(world, pos.east().down())) {
             return false;
         }
 
-        if (!isSoil(world, pos.west().down(), getSapling())) {
+        if (!isSoil(world, pos.west().down())) {
             return false;
         }
 
-        if (!isSoil(world, pos.north().down(), getSapling())) {
+        if (!isSoil(world, pos.north().down())) {
             return false;
         }
 
-        if (!isSoil(world, pos.south().down(), getSapling())) {
+        if (!isSoil(world, pos.south().down())) {
             return false;
         }
 
-        setState(changedBlocks, world, new BlockPos(i, j, k), Blocks.DIRT.getDefaultState(), bb);
-        setState(changedBlocks, world, new BlockPos(i - 1, j, k), Blocks.DIRT.getDefaultState(), bb);
-        setState(changedBlocks, world, new BlockPos(i + 1, j, k), Blocks.DIRT.getDefaultState(), bb);
-        setState(changedBlocks, world, new BlockPos(i, j, k - 1), Blocks.DIRT.getDefaultState(), bb);
-        setState(changedBlocks, world, new BlockPos(i, j, k + 1), Blocks.DIRT.getDefaultState(), bb);
+        setState(world, new BlockPos(i, j, k), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i - 1, j, k), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i + 1, j, k), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i, j, k - 1), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i, j, k + 1), Blocks.DIRT.getDefaultState());
 
         for (int y = j; y < j + height; y++) {
-            placeLog(changedBlocks, world, bb, i, y, k);
-            placeLog(changedBlocks, world, bb, i - 1, y, k);
-            placeLog(changedBlocks, world, bb, i + 1, y, k);
-            placeLog(changedBlocks, world, bb, i, y, k - 1);
-            placeLog(changedBlocks, world, bb, i, y, k + 1);
+            placeLog(world, i, y, k);
+            placeLog(world, i - 1, y, k);
+            placeLog(world, i + 1, y, k);
+            placeLog(world, i, y, k - 1);
+            placeLog(world, i, y, k + 1);
 
             if (y - j > height / 2 && rand.nextInt(SMALL_LEAF_CHANCE) == 0) {
                 int nx = rand.nextInt(3) - 1 + i;
@@ -88,7 +92,7 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
                 genCircle(world, nx, y + 2, nz, leafSize - 1, leafSize - 3, getLeaf(), false);
                 genCircle(world, nx, y + 1, nz, leafSize, leafSize - 1, getLeaf(), false);
 
-                placeBlockLine(changedBlocks, world, bb, new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, getLog());
+                placeBlockLine(world, new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, getLog());
             }
         }
 

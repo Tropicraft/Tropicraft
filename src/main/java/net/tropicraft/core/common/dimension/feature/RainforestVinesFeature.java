@@ -27,7 +27,7 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
 
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, RainforestVinesConfig config) {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(pos);
+        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable(pos);
 
         int maxY = Math.min(pos.getY() + config.height, worldIn.getWorld().getDimension().getHeight());
         for (int y = pos.getY(); y < maxY; ++y) {

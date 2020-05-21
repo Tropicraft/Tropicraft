@@ -5,38 +5,44 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.IWorldGenerationBaseReader;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.AbstractSmallTreeFeature;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraftforge.common.IPlantable;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAirOrLeaves;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
-public class FruitTreeFeature extends AbstractSmallTreeFeature<TreeFeatureConfig> {
+public class FruitTreeFeature extends Feature<NoFeatureConfig> {
 
 	private final Supplier<BlockState> WOOD_BLOCK = () -> Blocks.OAK_LOG.getDefaultState();
 	private final Supplier<BlockState> REGULAR_LEAF_BLOCK = () -> TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState();
 	private final Supplier<BlockState> FRUIT_LEAF_BLOCK;
 	private final Supplier<? extends IPlantable> sapling;
 
-	public <T extends Block & IPlantable> FruitTreeFeature(Function<Dynamic<?>, ? extends TreeFeatureConfig> placer, Supplier<T> sapling, Supplier<BlockState> fruitLeaf) {
+	public <T extends Block & IPlantable> FruitTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> placer, Supplier<T> sapling, Supplier<BlockState> fruitLeaf) {
 		super(placer);
 		this.sapling = sapling;
 		FRUIT_LEAF_BLOCK = fruitLeaf;
 	}
 
+	protected IPlantable getSapling() {
+	    return sapling.get();
+	}
+
 	@Override
-	protected boolean place(IWorldGenerationReader worldObj, Random rand, BlockPos pos, Set<BlockPos> p_225557_4_, Set<BlockPos> p_225557_5_, MutableBoundingBox bb, TreeFeatureConfig config) {
+	public boolean place(IWorld worldObj, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		pos = pos.toImmutable();
 		int height = rand.nextInt(3) + 4;
 
@@ -48,7 +54,7 @@ public class FruitTreeFeature extends AbstractSmallTreeFeature<TreeFeatureConfig
 			return false;
 		}
 
-		if (!isSoil(worldObj, pos.down(), getSapling())) {
+		if (!TropicraftFeatureUtil.isSoil(worldObj, pos.down())) {
 			return false;
 		}
 
@@ -78,7 +84,7 @@ public class FruitTreeFeature extends AbstractSmallTreeFeature<TreeFeatureConfig
 		// Tree stem
 		for (int y = 0; y < height; y++) {
 			BlockPos logPos = pos.up(y);
-			if (isAirOrLeaves(worldObj, logPos) || isTallPlants(worldObj, logPos)) {
+			if (isAirOrLeaves(worldObj, logPos) || AbstractTreeFeature.isTallPlants(worldObj, logPos)) {
 				setBlockState(worldObj, logPos, WOOD_BLOCK.get());
 			}
 		}
@@ -86,8 +92,24 @@ public class FruitTreeFeature extends AbstractSmallTreeFeature<TreeFeatureConfig
 		return true;
 	}
 
-	protected IPlantable getSapling() {
-	    return sapling.get();
+	protected static boolean isDirt(IWorldGenerationBaseReader worldIn, BlockPos pos) {
+		return worldIn.hasBlockState(pos, (p_214590_0_) -> {
+			Block block = p_214590_0_.getBlock();
+			return isDirt(block) && block != Blocks.GRASS_BLOCK && block != Blocks.MYCELIUM;
+		});
 	}
 
+	protected void setDirt(IWorldGenerationReader world, BlockPos pos) {
+		if (!isDirt(world, pos)) {
+			setBlockState(world, pos, Blocks.DIRT.getDefaultState());
+		}
+	}
+
+	protected void setDirtAt(IWorldGenerationReader reader, BlockPos pos, BlockPos origin) {
+		if (!(reader instanceof IWorld)) {
+			setDirt(reader, pos);
+			return;
+		}
+		((IWorld)reader).getBlockState(pos).onPlantGrow((IWorld)reader, pos, origin);
+	}
 }

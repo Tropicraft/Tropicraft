@@ -7,6 +7,10 @@ public class TropicraftBiomeProviderSettings implements IBiomeProviderSettings {
     private WorldInfo worldInfo;
     private TropicraftGeneratorSettings generatorSettings;
 
+    public TropicraftBiomeProviderSettings(WorldInfo info) {
+        this.worldInfo = info;
+    }
+
     public TropicraftBiomeProviderSettings setWorldInfo(WorldInfo worldInfo) {
         this.worldInfo = worldInfo;
         return this;

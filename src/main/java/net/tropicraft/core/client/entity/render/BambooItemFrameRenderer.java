@@ -23,7 +23,7 @@ import net.minecraft.world.storage.MapData;
 import net.tropicraft.core.common.entity.BambooItemFrame;
 
 public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
-    private static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation("tropicraft", "bamboo_item_frame");
+    public static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation("tropicraft", "bamboo_item_frame");
     private static final ModelResourceLocation LOCATION_MODEL_MAP = new ModelResourceLocation("item_frame", "map=true");
     private final Minecraft mc = Minecraft.getInstance();
     private final net.minecraft.client.renderer.ItemRenderer itemRenderer;

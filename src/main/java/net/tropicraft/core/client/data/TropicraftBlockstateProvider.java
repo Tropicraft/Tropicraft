@@ -28,10 +28,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
+import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
@@ -48,7 +50,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     }
     
     public ExistingFileHelper getExistingHelper() {
-        return existingFileHelper;
+        return models().existingFileHelper;
     }
     
     @Override
@@ -75,8 +77,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.ZIRCONIUM_BLOCK);
         
         // All flowers
+        final BlockModelProvider models = models();
         TropicraftBlocks.FLOWERS.entrySet().forEach(e ->
-            simpleBlock(e.getValue(), withExistingParent(e.getKey().getId(), "block/cross")
+            simpleBlock(e.getValue(), models.withExistingParent(e.getKey().getId(), "block/cross")
                     .texture("cross", "tropicraft:block/flower/" + e.getKey().getId())));
         
         // Purified sand
@@ -123,7 +126,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
 
         ModelFile fuzzyThatch = fuzzyStairs("thatch_stairs_fuzzy", "thatch_side", "thatch_end", "thatch_grass");
         ModelFile fuzzyThatchOuter = fuzzyStairsOuter("thatch_stairs_fuzzy_outer", "thatch_side", "thatch_end", "thatch_grass");
-        stairsBlock(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), fuzzyThatch, getExistingFile(modLoc("thatch_stairs_inner")), fuzzyThatchOuter);
+        stairsBlock(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), fuzzyThatch, models.getExistingFile(modLoc("thatch_stairs_inner")), fuzzyThatchOuter);
         
         slabBlock(TropicraftBlocks.BAMBOO_SLAB, TropicraftBlocks.BAMBOO_BUNDLE, "bamboo_side", "bamboo_end");
         slabBlock(TropicraftBlocks.THATCH_SLAB, TropicraftBlocks.THATCH_BUNDLE, "thatch_side", "thatch_end");
@@ -183,7 +186,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         bongo(TropicraftBlocks.MEDIUM_BONGO_DRUM);
         bongo(TropicraftBlocks.LARGE_BONGO_DRUM);
         
-        ModelFile bambooLadder = withExistingParent(name(TropicraftBlocks.BAMBOO_LADDER), "ladder")
+        ModelFile bambooLadder = models.withExistingParent(name(TropicraftBlocks.BAMBOO_LADDER), "ladder")
                 .texture("particle", blockTexture(TropicraftBlocks.BAMBOO_LADDER))
                 .texture("texture", blockTexture(TropicraftBlocks.BAMBOO_LADDER));
         getVariantBuilder(TropicraftBlocks.BAMBOO_LADDER.get()) // TODO make horizontalBlock etc support this case
@@ -198,15 +201,15 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         noModelBlock(TropicraftBlocks.DRINK_MIXER, blockTexture(TropicraftBlocks.CHUNK));
         noModelBlock(TropicraftBlocks.AIR_COMPRESSOR, blockTexture(TropicraftBlocks.CHUNK));
 
-        simpleBlock(TropicraftBlocks.VOLCANO, getExistingFile(mcLoc("block/bedrock")));
+        simpleBlock(TropicraftBlocks.VOLCANO, models.getExistingFile(mcLoc("block/bedrock")));
         
-        ModelFile tikiLower = torch("tiki_torch_lower", modBlockLoc("tiki_torch_lower"));
-        ModelFile tikiUpper = torch("tiki_torch_upper", modBlockLoc("tiki_torch_upper"));
+        ModelFile tikiLower = models.torch("tiki_torch_lower", modBlockLoc("tiki_torch_lower"));
+        ModelFile tikiUpper = models.torch("tiki_torch_upper", modBlockLoc("tiki_torch_upper"));
         getVariantBuilder(TropicraftBlocks.TIKI_TORCH.get())
             .forAllStates(state -> ConfiguredModel.builder()
                     .modelFile(state.get(TikiTorchBlock.SECTION) == TorchSection.UPPER ? tikiUpper : tikiLower).build());
         
-        simpleBlock(TropicraftBlocks.COCONUT, cross("coconut", modBlockLoc("coconut")));
+        simpleBlock(TropicraftBlocks.COCONUT, models.cross("coconut", modBlockLoc("coconut")));
         
         flowerPot(TropicraftBlocks.BAMBOO_FLOWER_POT, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
         
@@ -220,11 +223,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
             flowerPot(block, TropicraftBlocks.BAMBOO_FLOWER_POT, modBlockLoc("bamboo_side"));
         }
 
-        withExistingParent("bamboo_item_frame", "item_frame")
+        models.withExistingParent("bamboo_item_frame", "item_frame")
             .texture("particle", modBlockLoc("bamboo_side"))
             .texture("wood", modBlockLoc("bamboo_side"));
-        
-        withExistingParent("bamboo_item_frame_map", "item_frame_map")
+
+        models.withExistingParent("bamboo_item_frame_map", "item_frame_map")
             .texture("particle", modBlockLoc("bamboo_side"))
             .texture("wood", modBlockLoc("bamboo_side"));
     }
@@ -243,7 +246,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     
     private ResourceLocation blockTexture(Supplier<? extends Block> block) {
         ResourceLocation base = block.get().getRegistryName();
-        return new ResourceLocation(base.getNamespace(), folder + "/" + base.getPath());
+        return new ResourceLocation(base.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + base.getPath());
     }
     
     private ResourceLocation modBlockLoc(String texture) {
@@ -255,7 +258,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     }
     
     private ModelFile cubeTop(Supplier<? extends Block> block, String suffix) {
-        return cubeTop(name(block) + "_" + suffix, blockTexture(block), modBlockLoc(name(block) + "_" + suffix));
+        return models().cubeTop(name(block) + "_" + suffix, blockTexture(block), modBlockLoc(name(block) + "_" + suffix));
     }
     
     private void simpleBlock(Supplier<? extends Block> block) {
@@ -275,7 +278,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     }
     
     private void noModelBlock(Supplier<? extends Block> block, ResourceLocation particle) {
-        simpleBlock(block, getBuilder(name(block)).texture("particle", particle));
+        simpleBlock(block, models().getBuilder(name(block)).texture("particle", particle));
     }
     
     private void axisBlock(Supplier<? extends RotatedPillarBlock> block, String texture) {
@@ -291,7 +294,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     }
     
     private ModelFile fuzzyStairs(String name, String parent, String side, String end, String cross) {
-        return withExistingParent(name, modLoc(parent))
+        return models().withExistingParent(name, modLoc(parent))
                 .texture("side", modBlockLoc(side))
                 .texture("bottom", modBlockLoc(end))
                 .texture("top", modBlockLoc(end))
@@ -319,12 +322,12 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     }
 
     private void sapling(Supplier<? extends SaplingBlock> block) {
-        simpleBlock(block, cross(name(block), blockTexture(block)));
+        simpleBlock(block, models().cross(name(block), blockTexture(block)));
     }
 
     private void fenceBlock(Supplier<? extends FenceBlock> block, String texture) {
         fenceBlock(block.get(), modBlockLoc(texture));
-        fenceInventory(name(block) + "_inventory", modBlockLoc(texture));
+        models().fenceInventory(name(block) + "_inventory", modBlockLoc(texture));
     }
     
     private void fenceGateBlock(Supplier<? extends FenceGateBlock> block, String texture) {
@@ -333,7 +336,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     
     private void wallBlock(Supplier<? extends WallBlock> block, String texture) {
         wallBlock(block.get(), modBlockLoc(texture));
-        wallInventory(name(block) + "_inventory", modBlockLoc(texture));
+        models().wallInventory(name(block) + "_inventory", modBlockLoc(texture));
     }
     
     private void doorBlock(Supplier<? extends DoorBlock> block) {
@@ -346,16 +349,17 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     
     private void doublePlant(Supplier<? extends DoublePlantBlock> block) {
         String name = name(block);
+        final BlockModelProvider models = models();
         getVariantBuilder(block.get())
-            .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.LOWER).addModels(new ConfiguredModel(cross(name + "_bottom", modBlockLoc(name + "_bottom"))))
-            .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.UPPER).addModels(new ConfiguredModel(cross(name + "_top", modBlockLoc(name + "_top"))));
+            .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.LOWER).addModels(new ConfiguredModel(models.cross(name + "_bottom", modBlockLoc(name + "_bottom"))))
+            .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.UPPER).addModels(new ConfiguredModel(models.cross(name + "_top", modBlockLoc(name + "_top"))));
     }
     
     private void bongo(Supplier<? extends BongoDrumBlock> block) {
         BongoDrumBlock.Size size = block.get().getSize();
         AxisAlignedBB bb = size.shape.getBoundingBox();
-        simpleBlock(block.get(), 
-            cubeBottomTop(name(block), modBlockLoc("bongo_side"), modBlockLoc("bongo_bottom"), modBlockLoc("bongo_top"))
+        simpleBlock(block.get(),
+            models().cubeBottomTop(name(block), modBlockLoc("bongo_side"), modBlockLoc("bongo_bottom"), modBlockLoc("bongo_top"))
                 .element()
                     .from((float) bb.minX * 16, (float) bb.minY * 16, (float) bb.minZ * 16)
                     .to((float) bb.maxX * 16, (float) bb.maxY * 16, (float) bb.maxZ * 16)
@@ -372,13 +376,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     private void flowerPot(Supplier<? extends FlowerPotBlock> full, Supplier<? extends Block> empty, ResourceLocation particle) {
         Block flower = full.get().func_220276_d();
         boolean isVanilla = flower.getRegistryName().getNamespace().equals("minecraft");
-        String parent = flower == Blocks.AIR ? "flower_pot" : !isVanilla ? "flower_pot_cross" : folder + "/potted_" + name(flower.delegate);
-        BlockModelBuilder model = withExistingParent(name(full), parent)
+        String parent = flower == Blocks.AIR ? "flower_pot" : !isVanilla ? "flower_pot_cross" : ModelProvider.BLOCK_FOLDER + "/potted_" + name(flower.delegate);
+        BlockModelBuilder model = models().withExistingParent(name(full), parent)
                 .texture("flowerpot", blockTexture(empty))
                 .texture("dirt", mcLoc("block/dirt"))
                 .texture("particle", modBlockLoc("bamboo_side"));
         if (!isVanilla) {
-            model.texture("plant", flower instanceof TropicsFlowerBlock ? modLoc(folder + "/flower/" + name(flower.delegate)) : blockTexture(flower));
+            model.texture("plant", flower instanceof TropicsFlowerBlock ? modLoc(ModelProvider.BLOCK_FOLDER + "/flower/" + name(flower.delegate)) : blockTexture(flower));
         }
         simpleBlock(full, model);
     }

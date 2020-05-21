@@ -51,12 +51,13 @@ public class TropicalFertilizerItem extends BoneMealItem {
 
                             BlockState blockstate1;
                             if (rand.nextInt(8) > 0) { // Modification here, == changed to > to invert chances
-                                List<ConfiguredFeature<?>> list = world.getBiome(blockpos1).getFlowers();
+                                List<ConfiguredFeature<?, ?>> list = world.getBiome(blockpos1).getFlowers();
                                 if (list.isEmpty()) {
                                     break;
                                 }
 
-                                blockstate1 = ((FlowersFeature) ((DecoratedFeatureConfig) (list.get(0)).config).feature.feature).getRandomFlower(rand, blockpos1);
+                                // TODO this is so ugly and hacky, pls
+                                blockstate1 = ((FlowersFeature) ((DecoratedFeatureConfig) (list.get(0)).config).feature.feature).getFlowerToPlace(rand, blockpos1, null);
                             } else {
                                 blockstate1 = blockstate;
                             }

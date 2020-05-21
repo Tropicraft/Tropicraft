@@ -9,6 +9,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.jigsaw.IJigsawDeserializer;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
@@ -39,13 +40,13 @@ public class NoRotateSingleJigsawPiece extends FixedSingleJigsawPiece {
     }
 
     @Override
-    public void func_214846_a(IWorld worldIn, BlockInfo p_214846_2_, BlockPos pos, Rotation rotationIn, Random rand, MutableBoundingBox p_214846_6_) {
-        super.func_214846_a(worldIn, p_214846_2_, pos, Rotation.NONE, rand, p_214846_6_);
+    public void handleDataMarker(IWorld worldIn, BlockInfo p_214846_2_, BlockPos pos, Rotation rotationIn, Random rand, MutableBoundingBox p_214846_6_) {
+        super.handleDataMarker(worldIn, p_214846_2_, pos, Rotation.NONE, rand, p_214846_6_);
     }
 
     @Override
-    public List<BlockInfo> func_214857_a(TemplateManager p_214857_1_, BlockPos p_214857_2_, Rotation p_214857_3_, boolean p_214857_4_) {
-        return super.func_214857_a(p_214857_1_, p_214857_2_, Rotation.NONE, p_214857_4_);
+    public List<BlockInfo> getDataMarkers(TemplateManager p_214857_1_, BlockPos p_214857_2_, Rotation p_214857_3_, boolean p_214857_4_) {
+        return super.getDataMarkers(p_214857_1_, p_214857_2_, Rotation.NONE, p_214857_4_);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class NoRotateSingleJigsawPiece extends FixedSingleJigsawPiece {
     }
 
     @Override
-    public boolean place(TemplateManager templateManagerIn, IWorld worldIn, BlockPos pos, Rotation rotationIn, MutableBoundingBox boundsIn, Random rand) {
-        return super.place(templateManagerIn, worldIn, pos, Rotation.NONE, boundsIn, rand);
+    public boolean place(TemplateManager templateManagerIn, IWorld worldIn, ChunkGenerator<?> chunkGen, BlockPos pos, Rotation rot, MutableBoundingBox boundsIn, Random rand) {
+        return super.place(templateManagerIn, worldIn, chunkGen, pos, Rotation.NONE, boundsIn, rand);
     }
 }

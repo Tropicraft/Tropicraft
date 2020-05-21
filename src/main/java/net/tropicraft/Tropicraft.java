@@ -127,7 +127,7 @@ public class Tropicraft
         TropicraftTileEntityTypes.TILE_ENTITIES.register(modBus);
         TropicraftEntities.ENTITIES.register(modBus);
         TropicraftBiomes.BIOMES.register(modBus);
-        TropicraftBiomeProviderTypes.BIOME_PROVIDER_TYPES.register(modBus);
+        //TODO 1.15 TropicraftBiomeProviderTypes.BIOME_PROVIDER_TYPES.register(modBus);
         TropicraftWorldUtils.DIMENSIONS.register(modBus);
         TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFeatures.FEATURES.register(modBus);
@@ -139,7 +139,7 @@ public class Tropicraft
     
             ModelBakery.STATE_CONTAINER_OVERRIDES = ImmutableMap.<ResourceLocation, StateContainer<Block, BlockState>>builder()
                     .putAll(ModelBakery.STATE_CONTAINER_OVERRIDES)
-                    .put(BambooItemFrameRenderer.LOCATION_BLOCK, frameState)
+                    .put(BambooItemFrameRenderer.LOCATION_MODEL, frameState)
                     .build();
         });
     }

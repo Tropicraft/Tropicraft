@@ -36,11 +36,11 @@ public class TropicraftDimension extends Dimension {
 
     @Override
     public ChunkGenerator<?> createChunkGenerator() {
-        BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS.get();
+        // TODO - add once Forge supports again BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS.get();
         ChunkGeneratorType chunkType = TropicraftChunkGeneratorTypes.TROPICS.get();
         TropicraftGeneratorSettings genSettings = (TropicraftGeneratorSettings) chunkType.createSettings();
-        TropicraftBiomeProviderSettings settings2 = biomeType.createSettings(world.getWorldInfo()).setWorldInfo(world.getWorldInfo()).setGeneratorSettings(genSettings);
-        return chunkType.create(this.world, biomeType.create(settings2), genSettings);
+        TropicraftBiomeProviderSettings settings2 = new TropicraftBiomeProviderSettings(world.getWorldInfo()).setWorldInfo(world.getWorldInfo()).setGeneratorSettings(genSettings);
+        return chunkType.create(this.world, new TropicraftBiomeProvider(settings2), genSettings);
     }
 
     /** Copied from OverworldDimension */

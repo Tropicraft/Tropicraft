@@ -1,5 +1,8 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -39,6 +42,8 @@ public class TropicraftFeatureUtil {
     }
     
     protected static boolean isSoil(final IWorld world, final BlockPos pos) {
-        return world.getBlockState(pos).isIn(BlockTags.DIRT_LIKE);
+        final BlockState blockState = world.getBlockState(pos);
+        final Block block = blockState.getBlock();
+        return block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.GRASS_BLOCK || block == Blocks.PODZOL;
     }
 }
