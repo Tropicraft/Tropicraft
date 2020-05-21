@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 
 public class EagleRayRenderer extends MobRenderer<EagleRayEntity, EagleRayModel> {
 
-    private static final ResourceLocation RAY_TEXTURE_LOC = TropicraftRenderUtils.bindTextureEntity("ray/eagleray");
+    public static final ResourceLocation RAY_TEXTURE_LOC = TropicraftRenderUtils.bindTextureEntity("ray/eagleray");
 
     public EagleRayRenderer(EntityRendererManager manager) {
         super(manager, new EagleRayModel(), 0.8f);

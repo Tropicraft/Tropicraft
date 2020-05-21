@@ -19,7 +19,8 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class BambooItemFrameItem extends HangingEntityItem {
     public BambooItemFrameItem(Item.Properties builder) {
-        super(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), builder);
+        // Game crashes if we pass to super, we don't need it anyway
+        super(null, builder);
     }
     
     @Override

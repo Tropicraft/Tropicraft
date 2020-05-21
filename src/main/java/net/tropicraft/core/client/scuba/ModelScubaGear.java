@@ -15,18 +15,17 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
     public static final ModelScubaGear CHEST = new ModelScubaGear(0, EquipmentSlotType.CHEST);
     public static final ModelScubaGear FEET = new ModelScubaGear(0, EquipmentSlotType.FEET);
     public static final ModelScubaGear HEAD = new ModelScubaGear(0, EquipmentSlotType.HEAD);
-    
-    //   ModelRenderer bipedHead;
-    //   ModelRenderer bipedBody;
-    //   ModelRenderer bipedRightArm;
-    //   ModelRenderer bipedLeftArm;
-    //    ModelRenderer bipedRightLeg;
+
+    private boolean showHead;
+    private boolean showChest;
+    private boolean showLegs;
+    private boolean isSneaking;
+
     ModelRenderer Fin1;
     ModelRenderer Fin1m1;
     ModelRenderer Fin1m2;
     ModelRenderer Fin1m3;
     ModelRenderer Fin1m4;
-    //    ModelRenderer bipedLeftLeg;
     ModelRenderer Fin2;
     ModelRenderer Fin2m1;
     ModelRenderer Fin2m2;
@@ -384,40 +383,38 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        GlStateManager.pushMatrix();
+    public void setLivingAnimations(LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
+        showHead = !entity.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty() && this.slot == EquipmentSlotType.HEAD;
+        showChest = !entity.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty() && this.slot == EquipmentSlotType.CHEST;
+        showLegs = !entity.getItemStackFromSlot(EquipmentSlotType.FEET).isEmpty() && this.slot == EquipmentSlotType.FEET;
+        isSneaking = entity.getPose() == Pose.CROUCHING;
+    }
+
+    @Override
+    public void render(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        stack.push();
 
         if (isChild) {
-            GlStateManager.scalef(0.75F, 0.75F, 0.75F);
-            GlStateManager.translatef(0.0F, 16.0F * scale, 0.0F);
-            bipedHead.render(scale);
-            GlStateManager.popMatrix();
-            GlStateManager.pushMatrix();
-            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-            GlStateManager.translatef(0.0F, 24.0F * scale, 0.0F);
-            renderScubaGear(entityIn, scale, false);
-        }
-        else
-        {
-            if (entityIn.getPose() == Pose.SNEAKING)
-            {
-                GlStateManager.translatef(0.0F, 0.2F, 0.0F);
+            stack.scale(0.75F, 0.75F, 0.75F);
+            stack.translate(0.0F, 16.0F * 1, 0.0F);
+            bipedHead.render(stack, bufferIn, packedLightIn, packedOverlayIn);
+            stack.pop();
+            stack.push();
+            stack.scale(0.5F, 0.5F, 0.5F);
+            stack.translate(0.0F, 24.0F * 1, 0.0F);
+            renderScubaGear(stack, bufferIn, packedLightIn, packedOverlayIn, false);
+        } else {
+            if (isSneaking) {
+                stack.translate(0.0F, 0.2F, 0.0F);
             }
 
-            this.renderScubaGear(entityIn, scale, true);
+            renderScubaGear(stack, bufferIn, packedLightIn, packedOverlayIn, true);
         }
 
-        GlStateManager.popMatrix();
+        stack.pop();
     }
 
-    public void renderScubaGear(LivingEntity entityIn, float scale, boolean renderHead) {
-        boolean showHead = !entityIn.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty() && this.slot == EquipmentSlotType.HEAD;
-        boolean showChest = !entityIn.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty() && this.slot == EquipmentSlotType.CHEST;
-        boolean showLegs = !entityIn.getItemStackFromSlot(EquipmentSlotType.FEET).isEmpty() && this.slot == EquipmentSlotType.FEET;
-        renderScubaGear(scale, renderHead, showHead, showChest, showLegs);
-    }
-    
-    public void renderScubaGear(float scale, boolean renderHead, boolean showHead, boolean showChest, boolean showLegs) {
+    public void renderScubaGear(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, boolean renderHead) {
         hose4.rotateAngleX = 0.3075211F;
 
         bipedBody.showModel = showChest;
@@ -437,31 +434,31 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
 //            hose6.rotateAngleX = 0F;
 //            hose6.rotateAngleY = 0F;
 //            hose6.rotateAngleZ = 0F;
-//            hose6.renderWithRotation(scale);
+//            hose6.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 //        }
 
         if (showChest) {
-            renderTank(scale);
-            renderBCD(scale);
+            renderTank(stack, bufferIn, packedLightIn, packedOverlayIn);
+            renderBCD(stack, bufferIn, packedLightIn, packedOverlayIn);
         }
         
         bipedRightLeg.showModel = showLegs;
         bipedLeftLeg.showModel = showLegs;
 
         if (renderHead) {
-            bipedHead.render(scale);
+            bipedHead.render(stack, bufferIn, packedLightIn, packedOverlayIn);
         }
 
-        bipedBody.render(scale);
-        bipedRightArm.render(scale);
-        bipedLeftArm.render(scale);
+        bipedBody.render(stack, bufferIn, packedLightIn, packedOverlayIn);
+        bipedRightArm.render(stack, bufferIn, packedLightIn, packedOverlayIn);
+        bipedLeftArm.render(stack, bufferIn, packedLightIn, packedOverlayIn);
        
         
         GlStateManager.enableCull();
         bipedRightLeg.mirror = true;
         
         bipedLeftLeg.rotationPointY = 0;
-        bipedLeftLeg.offsetY = 0.763f;
+       //TODO bipedLeftLeg.offsetY = 0.763f;
 
         
         if(showLegs) {
@@ -529,21 +526,21 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
 		
 	        
 //        }else {
-        		this.Fin2m3.offsetX = 0f;
+          //TODO  this.Fin2m3.offsetX = 0f;
         		
- 	        this.Fin1m3.offsetX = 0f;
+ 	      //TODO  this.Fin1m3.offsetX = 0f;
  	
- 	        this.Fin2m3.offsetY = 0f;
+ 	      //TODO  this.Fin2m3.offsetY = 0f;
  	
- 	        this.Fin1m3.offsetY = 0f;
+ 	     //TODO   this.Fin1m3.offsetY = 0f;
  	        
  	        this.Fin2m3.rotateAngleX = 0f;
  	
  	        this.Fin1m3.rotateAngleX = 0f;
  	        
- 	       bipedLeftLeg.render(scale);
+ 	       bipedLeftLeg.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
- 	        bipedRightLeg.render(scale);
+ 	        bipedRightLeg.render(stack, bufferIn, packedLightIn, packedOverlayIn);
  	    
 //        }
 
@@ -552,148 +549,148 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
          
     }
 
-    private void renderTank(float scale) {
+    private void renderTank(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
         Tank2.rotateAngleX = 0F;
         Tank2.rotateAngleY = 0F;
         Tank2.rotateAngleZ = 0F;
-        Tank2.renderWithRotation(scale);
+        Tank2.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m1.rotateAngleX = 0F;
         Tank2m1.rotateAngleY = 0F;
         Tank2m1.rotateAngleZ = 0F;
-        Tank2m1.renderWithRotation(scale);
+        Tank2m1.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m2.rotateAngleX = 0F;
         Tank2m2.rotateAngleY = -1.570796F;
         Tank2m2.rotateAngleZ = 0F;
-        Tank2m2.renderWithRotation(scale);
+        Tank2m2.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m3.rotateAngleX = 0F;
         Tank2m3.rotateAngleY = -1.570796F;
         Tank2m3.rotateAngleZ = 0F;
-        Tank2m3.renderWithRotation(scale);
+        Tank2m3.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m4.rotateAngleX = 0F;
         Tank2m4.rotateAngleY = 0F;
         Tank2m4.rotateAngleZ = 0F;
-        Tank2m4.renderWithRotation(scale);
+        Tank2m4.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m5.rotateAngleX = 0F;
         Tank2m5.rotateAngleY = 0F;
         Tank2m5.rotateAngleZ = 0F;
-        Tank2m5.renderWithRotation(scale);
+        Tank2m5.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m6.rotateAngleX = 0F;
         Tank2m6.rotateAngleY = 0F;
         Tank2m6.rotateAngleZ = 0F;
-        Tank2m6.renderWithRotation(scale);
+        Tank2m6.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank2m7.rotateAngleX = 0F;
         Tank2m7.rotateAngleY = 0F;
         Tank2m7.rotateAngleZ = 0F;
-        Tank2m7.renderWithRotation(scale);
+        Tank2m7.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1.rotateAngleX = 0F;
         Tank1.rotateAngleY = 0F;
         Tank1.rotateAngleZ = 0F;
-        Tank1.renderWithRotation(scale);
+        Tank1.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m1.rotateAngleX = 0F;
         Tank1m1.rotateAngleY = 0F;
         Tank1m1.rotateAngleZ = 0F;
-        Tank1m1.renderWithRotation(scale);
+        Tank1m1.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m2.rotateAngleX = 0F;
         Tank1m2.rotateAngleY = -1.570796F;
         Tank1m2.rotateAngleZ = 0F;
-        Tank1m2.renderWithRotation(scale);
+        Tank1m2.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m3.rotateAngleX = 0F;
         Tank1m3.rotateAngleY = -1.570796F;
         Tank1m3.rotateAngleZ = 0F;
-        Tank1m3.renderWithRotation(scale);
+        Tank1m3.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m4.rotateAngleX = 0F;
         Tank1m4.rotateAngleY = 0F;
         Tank1m4.rotateAngleZ = 0F;
-        Tank1m4.renderWithRotation(scale);
+        Tank1m4.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m5.rotateAngleX = 0F;
         Tank1m5.rotateAngleY = 0F;
         Tank1m5.rotateAngleZ = 0F;
-        Tank1m5.renderWithRotation(scale);
+        Tank1m5.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m6.rotateAngleX = 0F;
         Tank1m6.rotateAngleY = 0F;
         Tank1m6.rotateAngleZ = 0F;
-        Tank1m6.renderWithRotation(scale);
+        Tank1m6.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         Tank1m7.rotateAngleX = 0F;
         Tank1m7.rotateAngleY = 0F;
         Tank1m7.rotateAngleZ = 0F;
-        Tank1m7.renderWithRotation(scale);
+        Tank1m7.render(stack, bufferIn, packedLightIn, packedOverlayIn);
     }
 
-    private void renderBCD(float scale) {
+    private void renderBCD(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
         BCD.rotateAngleX = 0F;
         BCD.rotateAngleY = 0F;
         BCD.rotateAngleZ = 0F;
-        BCD.renderWithRotation(scale);
+        BCD.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD12.rotateAngleX = 0F;
         BCD12.rotateAngleY = 0F;
         BCD12.rotateAngleZ = 0F;
-        BCD12.renderWithRotation(scale);
+        BCD12.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD11.rotateAngleX = 0F;
         BCD11.rotateAngleY = 0F;
         BCD11.rotateAngleZ = 0F;
-        BCD11.renderWithRotation(scale);
+        BCD11.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD4.rotateAngleX = 0F;
         BCD4.rotateAngleY = 0F;
         BCD4.rotateAngleZ = 0F;
-        BCD4.renderWithRotation(scale);
+        BCD4.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD2.rotateAngleX = 0F;
         BCD2.rotateAngleY = 0F;
         BCD2.rotateAngleZ = 0F;
-        BCD2.renderWithRotation(scale);
+        BCD2.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD6.rotateAngleX = 0F;
         BCD6.rotateAngleY = 0F;
         BCD6.rotateAngleZ = 0F;
-        BCD6.renderWithRotation(scale);
+        BCD6.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD5.rotateAngleX = 0F;
         BCD5.rotateAngleY = 0F;
         BCD5.rotateAngleZ = 0F;
-        BCD5.renderWithRotation(scale);
+        BCD5.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD3.rotateAngleX = 0F;
         BCD3.rotateAngleY = 0F;
         BCD3.rotateAngleZ = 0F;
-        BCD3.renderWithRotation(scale);
+        BCD3.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD7.rotateAngleX = 0F;
         BCD7.rotateAngleY = 0F;
         BCD7.rotateAngleZ = 0F;
-        BCD7.renderWithRotation(scale);
+        BCD7.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD8.rotateAngleX = 0F;
         BCD8.rotateAngleY = 0F;
         BCD8.rotateAngleZ = 0F;
-        BCD8.renderWithRotation(scale);
+        BCD8.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD9.rotateAngleX = 0F;
         BCD9.rotateAngleY = 0F;
         BCD9.rotateAngleZ = 0F;
-        BCD9.renderWithRotation(scale);
+        BCD9.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
         BCD13.rotateAngleX = 0F;
         BCD13.rotateAngleY = 0F;
         BCD13.rotateAngleZ = 0F;
-        BCD13.renderWithRotation(scale);
+        BCD13.render(stack, bufferIn, packedLightIn, packedOverlayIn);
     }
 
     /**

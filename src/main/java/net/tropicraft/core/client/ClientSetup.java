@@ -54,6 +54,13 @@ public class ClientSetup {
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.DRINK_MIXER.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.SIFTER.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.TIKI_TORCH.get(), renderType);
+        TropicraftBlocks.FLOWERS.forEach((key, value) -> RenderTypeLookup.setRenderLayer(value.get(), RenderType.getCutout()));
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.PINEAPPLE.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.IRIS.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.GRAPEFRUIT_SAPLING.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.LEMON_SAPLING.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.LIME_SAPLING.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.ORANGE_SAPLING.get(), renderType);
 
         renderType = RenderType.getCutoutMipped();
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), renderType);
@@ -87,6 +94,7 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPICAL_FISH.get(), TropicraftTropicalFishRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EAGLE_RAY.get(), EagleRayRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_SPIDER.get(), TropiSpiderRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_SPIDER_EGG.get(), EggRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.ASHEN.get(), AshenRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.ASHEN_MASK.get(), AshenMaskRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EXPLODING_COCONUT.get(), manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));

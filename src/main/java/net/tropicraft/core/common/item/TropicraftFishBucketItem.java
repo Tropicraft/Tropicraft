@@ -16,7 +16,7 @@ public class TropicraftFishBucketItem<T extends AbstractFishEntity> extends Fish
     private final Supplier<? extends EntityType<T>> fishType;
 
     public TropicraftFishBucketItem(final Supplier<? extends EntityType<T>> type, Fluid fluid, Properties props) {
-        super(type.get(), fluid, props);
+        super(type, () -> fluid, props);
         this.fishType = type;
     }
 

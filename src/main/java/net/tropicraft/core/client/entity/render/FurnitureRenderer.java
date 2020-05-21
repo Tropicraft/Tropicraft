@@ -43,6 +43,8 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         stack.push();
         stack.translate(0, getYOffset(), 0);
         stack.rotate(Vector3f.YP.rotationDegrees(180 - entityYaw));
+        // it used to scale by 0.25, but for some reason this gets it to be around the proper size again?
+        stack.scale(4, 4, 4);
         setupTransforms();
         
         final float rockingAngle = getRockingAngle(furniture, partialTicks);;
@@ -57,17 +59,17 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
 
         // Draw uncolored layer
         IVertexBuilder ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
-        model.render(stack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.render(stack, ivertexbuilder, getPackedLight(furniture, partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         stack.scale(-1.0F, -1.0F, 1.0F);
 
         // Draw the colored part
-      //  stack.push();
-       // RenderSystem.color3f(red, green, blue);
+        stack.push();
+        RenderSystem.color3f(red, green, blue);
         ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer")));
-        model.render(stack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-        GlStateManager.disableBlend();
-     //   GlStateManager.color3f(1, 1, 1);
-    //    stack.pop();
+        model.render(stack, ivertexbuilder, getPackedLight(furniture, partialTicks), OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        //RenderSystem.disableBlend();
+        RenderSystem.color3f(1, 1, 1);
+        stack.pop();
 
         stack.pop();
         super.render(furniture, entityYaw, partialTicks, stack, buffer, packedLightIn);
@@ -78,6 +80,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     }
     
     protected void setupTransforms() {
+
     }
     
     protected float getRockingAngle(T entity, float partialTicks) {

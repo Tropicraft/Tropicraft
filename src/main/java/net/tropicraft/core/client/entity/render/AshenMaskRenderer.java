@@ -43,7 +43,7 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 
 		mask.renderMask(stack, ivertexbuilder, entity.getMaskType());
 
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 
 }

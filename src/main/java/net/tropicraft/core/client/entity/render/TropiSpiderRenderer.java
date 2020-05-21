@@ -32,7 +32,7 @@ public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
 		//GlStateManager.translated(x, y, z);
 		stack.scale(scale, scale, scale);
 		super.render(spider, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 
 
