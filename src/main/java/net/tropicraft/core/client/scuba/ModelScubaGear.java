@@ -1,7 +1,9 @@
 package net.tropicraft.core.client.scuba;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
@@ -382,12 +384,10 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
     }
 
     @Override
-    public void render(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         GlStateManager.pushMatrix();
 
-        if (this.isChild)
-        {
+        if (this.isChild) {
             GlStateManager.scalef(0.75F, 0.75F, 0.75F);
             GlStateManager.translatef(0.0F, 16.0F * scale, 0.0F);
             this.bipedHead.render(scale);

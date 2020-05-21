@@ -1,6 +1,10 @@
 package net.tropicraft.core.client.entity.render.layer;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -24,19 +28,15 @@ public class AshenMaskLayer extends LayerRenderer<AshenEntity, AshenModel> {
     }
 
     @Override
-    public void render(AshenEntity ashen, float v, float v1, float v2, float v3, float v4, float v5, float v6) {
+    public void render(MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn, AshenEntity ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (ashen.hasMask()) {
-            GlStateManager.pushMatrix();
-            modelAshen.head.postRender(.045F);
-            TropicraftRenderUtils.bindTextureEntity("ashen/mask");
-            GL11.glTranslatef(-0.03125F, 0.40625F, .18F);
-            mask.renderMask(ashen.getMaskType());
-            GlStateManager.popMatrix();
-        }
-    }
+            stack.push();
+           // modelAshen.head.postRender(.045F);
 
-    @Override
-    public boolean shouldCombineTextures() {
-        return true;
+            stack.translate(-0.03125F, 0.40625F, .18F);
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("ashen/mask")));
+            mask.renderMask(stack, ivertexbuilder, ashen.getMaskType());
+            stack.pop();
+        }
     }
 }

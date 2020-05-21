@@ -7,13 +7,13 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 public class TropicraftSpecialRenderHelper {
 
     public void renderMask(MatrixStack stack, IVertexBuilder buffer, int maskIndex) {
-        GlStateManager.pushMatrix();
-        Tessellator tessellator = Tessellator.getInstance();
+        stack.push();
         float f = ((float) ((maskIndex % 8) * 32) + 0.0F) / 256F;
         float f1 = ((float) ((maskIndex % 8) * 32) + 31.99F) / 256F;
         float f2 = ((float) ((maskIndex / 8) * 32) + 0.0F) / 256F;
@@ -22,16 +22,16 @@ public class TropicraftSpecialRenderHelper {
         float f3shifted = ((float) ((maskIndex / 8) * 32) + 159.99F) / 256F;
         float f4 = 0.0F;
         float f5 = 0.3F;
-        GlStateManager.enableRescaleNormal();
-        GlStateManager.translatef(-f4, -f5, 0.0F);
+        RenderSystem.enableRescaleNormal();
+        stack.translate(-f4, -f5, 0.0F);
         float f6 = 1.7F;
-        GlStateManager.scalef(f6, f6, f6);
-        GlStateManager.rotatef(180F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotatef(180F, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translatef(-0.5F, -0.5F, 0.0F);
-        popper(tessellator, f1, f2, f, f3, f1shifted, f3shifted, stack, buffer);
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.popMatrix();
+        stack.scale(f6, f6, f6);
+        stack.rotate(Vector3f.YP.rotationDegrees(180F));
+        stack.rotate(Vector3f.ZP.rotationDegrees(180F));
+        stack.translate(-0.5F, -0.5F, 0.0F);
+        popper(null, f1, f2, f, f3, f1shifted, f3shifted, stack, buffer);
+        RenderSystem.disableRescaleNormal();
+        stack.pop();
     }
 
     public void renderFish(final MatrixStack stack, final IVertexBuilder buffer, final int index) {

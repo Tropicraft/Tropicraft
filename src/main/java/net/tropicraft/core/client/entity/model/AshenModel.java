@@ -2,6 +2,7 @@ package net.tropicraft.core.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -154,7 +155,7 @@ public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
     }
 
     @Override
-    public void translateHand(HandSide sideIn, MatrixStack matrixStackIn) {
-
+    public void translateHand(HandSide side, MatrixStack stack) {
+        stack.translate(0.09375F, 0.1875F, 0.0F);
     }
 }

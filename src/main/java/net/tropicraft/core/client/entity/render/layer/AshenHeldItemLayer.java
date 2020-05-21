@@ -9,12 +9,16 @@ import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import org.lwjgl.opengl.GL11;
@@ -33,6 +37,11 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
     }
 
     @Override
+    protected ResourceLocation getEntityTexture(AshenEntity entityIn) {
+        return TropicraftRenderUtils.getTextureEntity("ashen");
+    }
+
+    @Override
     public void render(MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         final ItemStack blowGunHand = ashen.getHeldItemMainhand();
         final ItemStack daggerHand = ashen.getHeldItemOffhand();
@@ -46,14 +55,14 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.scale(0.5f, 0.5f, 0.5f);
             }
 
-            renderHeldItem(ashen, daggerHand, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT);
-            renderHeldItem(ashen, blowGunHand, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT);
+            renderHeldItem(ashen, daggerHand, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT, stack, buffer, packedLightIn);
+            renderHeldItem(ashen, blowGunHand, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT, stack, buffer, packedLightIn);
 
             stack.pop();
         }
     }
 
-    private void func_229135_a_(LivingEntity entity, ItemStack itemstack, ItemCameraTransforms.TransformType transformType, HandSide handSide, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn) {
+    private void renderHeldItem(AshenEntity entity, ItemStack itemstack, ItemCameraTransforms.TransformType transformType, HandSide handSide, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn) {
         if (itemstack.isEmpty()) {
             return;
         }
@@ -61,32 +70,26 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
         if (entity.getActionState() == AshenEntity.AshenState.HOSTILE) {
             float scale = 0.5F;
             if (handSide == HandSide.LEFT) {
-                GL11.glPushMatrix();
-                model.leftArm.postRender(0.0625F);
-                GL11.glTranslatef(-0.375F, -0.35F, -0.125F);
-                GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(scale, scale, scale);
-                Minecraft.getInstance().getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false);
-
-                GL11.glPopMatrix();
+                stack.push();
+                model.leftArm.render(stack, TropicraftRenderUtils.getEntityCutoutBuilder(buffer, getEntityTexture(entity)), combinedLightIn, OverlayTexture.NO_OVERLAY);
+                stack.translate(-0.375F, -0.35F, -0.125F);
+                stack.rotate(Vector3f.YP.rotationDegrees(90F));
+                stack.scale(scale, scale, scale);
+                Minecraft.getInstance().getItemRenderer().renderItem(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.world, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                stack.pop();
             } else {
-                GL11.glPushMatrix();
-                model.rightArm.postRender(0.0625F);
+                stack.push();
+                model.rightArm.render(stack, TropicraftRenderUtils.getEntityCutoutBuilder(buffer, getEntityTexture(entity)), combinedLightIn, OverlayTexture.NO_OVERLAY);
 
                 GL11.glTranslatef(0.3F, -0.30F, -0.045F);
-                GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(10F, 0.0F, 0.0F, 1.0F);
+                stack.rotate(Vector3f.XP.rotationDegrees(180F));
+                stack.rotate(Vector3f.YP.rotationDegrees(180F));
+                stack.rotate(Vector3f.ZP.rotationDegrees(10F));
 
-                GL11.glScalef(scale, scale, scale);
-                Minecraft.getInstance().getItemRenderer().renderItem(itemstack, entity, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false);
-                GL11.glPopMatrix();
+                stack.scale(scale, scale, scale);
+                Minecraft.getInstance().getItemRenderer().renderItem(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.world, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                stack.pop();
             }
         }
-    }
-
-    @Override
-    protected void translateToHand(HandSide handSide) {
-        GlStateManager.translatef(0.09375F, 0.1875F, 0.0F);
     }
 }

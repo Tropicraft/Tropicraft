@@ -2,14 +2,20 @@ package net.tropicraft.core.common.block;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.DoubleSidedInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityMerger;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -18,44 +24,72 @@ import net.minecraft.world.World;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 
+import java.util.Optional;
+import java.util.function.Supplier;
+
 public class BambooChestBlock extends ChestBlock {
+    private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>> field_220109_i = new TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>>() {
+        public Optional<IInventory> func_225539_a_(ChestTileEntity p_225539_1_, ChestTileEntity p_225539_2_) {
+            return Optional.of(new DoubleSidedInventory(p_225539_1_, p_225539_2_));
+        }
 
-    private static final ChestBlock.InventoryFactory<INamedContainerProvider> FACTORY = new ChestBlock.InventoryFactory<INamedContainerProvider>() {
+        public Optional<IInventory> func_225538_a_(ChestTileEntity p_225538_1_) {
+            return Optional.of(p_225538_1_);
+        }
 
-        public INamedContainerProvider forDouble(final ChestTileEntity p_212855_1_, final ChestTileEntity p_212855_2_) {
-            return new INamedContainerProvider() {
-
+        public Optional<IInventory> func_225537_b_() {
+            return Optional.empty();
+        }
+    };
+    public static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> field_220110_j = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
+        public Optional<INamedContainerProvider> func_225539_a_(final ChestTileEntity p_225539_1_, final ChestTileEntity p_225539_2_) {
+            final IInventory iinventory = new DoubleSidedInventory(p_225539_1_, p_225539_2_);
+            return Optional.of(new INamedContainerProvider() {
                 @Nullable
                 public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
-                    return field_220110_j.forDouble(p_212855_1_, p_212855_2_).createMenu(p_createMenu_1_, p_createMenu_2_, p_createMenu_3_);
+                    if (p_225539_1_.canOpen(p_createMenu_3_) && p_225539_2_.canOpen(p_createMenu_3_)) {
+                        p_225539_1_.fillWithLoot(p_createMenu_2_.player);
+                        p_225539_2_.fillWithLoot(p_createMenu_2_.player);
+                        return ChestContainer.createGeneric9X6(p_createMenu_1_, p_createMenu_2_, iinventory);
+                    } else {
+                        return null;
+                    }
                 }
 
                 public ITextComponent getDisplayName() {
-                    if (p_212855_1_.hasCustomName()) {
-                        return p_212855_1_.getDisplayName();
+                    if (p_225539_1_.hasCustomName()) {
+                        return p_225539_1_.getDisplayName();
                     } else {
-                        return (ITextComponent) (p_212855_2_.hasCustomName() ? p_212855_2_.getDisplayName() : new TranslationTextComponent(Constants.MODID + ".container.bambooChestDouble"));
+                        return (ITextComponent)(p_225539_2_.hasCustomName() ? p_225539_2_.getDisplayName() : new TranslationTextComponent(Constants.MODID + ".container.bambooChestDouble"));
                     }
                 }
-            };
+            });
         }
 
-        public INamedContainerProvider forSingle(ChestTileEntity p_212856_1_) {
-            return p_212856_1_;
+        public Optional<INamedContainerProvider> func_225538_a_(ChestTileEntity p_225538_1_) {
+            return Optional.of(p_225538_1_);
+        }
+
+        public Optional<INamedContainerProvider> func_225537_b_() {
+            return Optional.empty();
         }
     };
 
-    public BambooChestBlock(final Properties props) {
-        super(props);
+
+///////////////////////////////////////////////////////////////////////////////////
+
+    protected BambooChestBlock(Block.Properties props, Supplier<TileEntityType<? extends ChestTileEntity>> tileEntityTypeIn) {
+        super(props, tileEntityTypeIn);
     }
 
+    @Override
     public TileEntity createNewTileEntity(IBlockReader world) {
         return new BambooChestTileEntity();
     }
-    
-    @Override
+
+    @Nullable
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-        return getChestInventory(state, worldIn, pos, false, FACTORY);
+        return func_225536_a_(state, worldIn, pos, false).apply(field_220110_j).orElse(null);
     }
 
     /**

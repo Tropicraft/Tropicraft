@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -93,9 +94,9 @@ public class ClientSetup {
     }
 
     public static void setupTileEntityRenderers() {
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.BAMBOO_CHEST.get(), new BambooChestRenderer());
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.SIFTER.get(), new SifterRenderer());
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.DRINK_MIXER.get(), new DrinkMixerRenderer());
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.AIR_COMPRESSOR.get(), new AirCompressorRenderer());
+        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.BAMBOO_CHEST.get(), BambooChestRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.SIFTER.get(), SifterRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.DRINK_MIXER.get(), DrinkMixerRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.AIR_COMPRESSOR.get(), AirCompressorRenderer::new);
     }
 }

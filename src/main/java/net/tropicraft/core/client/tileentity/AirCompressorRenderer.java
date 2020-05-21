@@ -2,6 +2,8 @@ package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -15,8 +17,8 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEnti
     
     private final ModelScubaGear tankModel = new ModelScubaGear(0, EquipmentSlotType.CHEST); // Can't reuse the main one with a different scale
 
-    public AirCompressorRenderer() {
-        super(TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>());
+    public AirCompressorRenderer(final TileEntityRendererDispatcher rendererDispatcher) {
+        super(rendererDispatcher, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(RenderType::getEntitySolid));
     }
     
     @Override

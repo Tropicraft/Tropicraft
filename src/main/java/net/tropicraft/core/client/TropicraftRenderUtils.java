@@ -1,16 +1,29 @@
 package net.tropicraft.core.client;
 
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SkullItem;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Constants;
 
+import javax.annotation.Resource;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class TropicraftRenderUtils {
 
@@ -18,6 +31,28 @@ public class TropicraftRenderUtils {
      * Cache of ResourceLocations for texture binding
      */
     private static Map<String, ResourceLocation> resLocMap = Maps.newHashMap();
+    private static Map<String, Material> materialMap = Maps.newHashMap();
+
+    public static IVertexBuilder getEntityCutoutBuilder(final IRenderTypeBuffer buffer, final ResourceLocation resourceLocation) {
+        return buffer.getBuffer(RenderType.getEntityCutout(resourceLocation));
+    }
+
+    public static IBakedModel getBakedModel(final ItemRenderer itemRenderer, final ItemStack itemStack) {
+        return itemRenderer.getItemModelMesher().getItemModel(itemStack);
+    }
+
+    public static void renderModel(final Material material, final Model model, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+        IVertexBuilder ivertexbuilder = material.getBuffer(buffer, RenderType::getEntitySolid);
+        model.render(stack, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
+    }
+
+    public static Material getBlockMaterial(final String path) {
+        return materialMap.computeIfAbsent(path, m -> createBlockMaterial(path));
+    }
+
+    private static Material createBlockMaterial(final String path) {
+        return new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(path));
+    }
 
     public static ResourceLocation getTexture(String path) {
         return resLocMap.computeIfAbsent(path, k -> getResLoc(path));
@@ -72,24 +107,25 @@ public class TropicraftRenderUtils {
         return resource;
     }
 
-    public static void renderItem(final ItemStack stack, final float scale) {
-        if (!stack.isEmpty()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.disableLighting();
-            GlStateManager.scalef(scale, scale, scale);
+    public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn, IBakedModel modelIn) {
+        if (!itemStack.isEmpty()) {
+            RenderSystem.pushMatrix();
+            RenderSystem.disableLighting();
+            RenderSystem.scalef(scale, scale, scale);
 
-            if (!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || stack.getItem() instanceof SkullItem) {
-                GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+            // TODO what is this now?
+            if (/*!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || */itemStack.getItem() instanceof SkullItem) {
+                RenderSystem.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
             }
 
-            GlStateManager.pushLightingAttributes();
+            RenderSystem.pushLightingAttributes();
             RenderHelper.enableStandardItemLighting();
-            Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+            Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, leftHand, stack, buffer, combinedLightIn, combinedOverlayIn, modelIn);
             RenderHelper.disableStandardItemLighting();
-            GlStateManager.popAttributes();
+            RenderSystem.popAttributes();
 
-            GlStateManager.enableLighting();
-            GlStateManager.popMatrix();
+            RenderSystem.enableLighting();
+            RenderSystem.popMatrix();
         }
     }
 }

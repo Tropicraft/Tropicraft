@@ -28,9 +28,9 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     private final Minecraft mc = Minecraft.getInstance();
     private final net.minecraft.client.renderer.ItemRenderer itemRenderer;
 
-    public BambooItemFrameRenderer(EntityRendererManager renderManagerIn, net.minecraft.client.renderer.ItemRenderer itemRendererIn) {
+    public BambooItemFrameRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
-        this.itemRenderer = itemRendererIn;
+        itemRenderer = mc.getItemRenderer();
     }
 
     @Override
