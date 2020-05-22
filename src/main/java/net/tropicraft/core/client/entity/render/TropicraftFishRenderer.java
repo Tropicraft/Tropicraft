@@ -78,14 +78,14 @@ public class TropicraftFishRenderer<T extends AbstractFishEntity, M extends Abst
             fishTex = ((IAtlasFish) entity).getAtlasSlot()*2;
         }
 
-        renderHelper.renderFish(stack, buffer, fishTex);
+        renderHelper.renderFish(stack, buffer, fishTex, packedLightIn, overlay);
         stack.pop();
 
         stack.push();
         entityModel.tail.render(stack, buffer, packedLightIn, overlay);
         stack.rotate(Vector3f.YP.rotationDegrees(90F));
         stack.translate(-.90F, 0.725F, 0.0F);
-        renderHelper.renderFish(stack, buffer, fishTex + 1);
+        renderHelper.renderFish(stack, buffer, fishTex + 1, packedLightIn, overlay);
         stack.pop();
     }
 

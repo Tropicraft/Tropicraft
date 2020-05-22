@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
@@ -31,11 +32,11 @@ public class AshenMaskLayer extends LayerRenderer<AshenEntity, AshenModel> {
     public void render(MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn, AshenEntity ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (ashen.hasMask()) {
             stack.push();
-           // modelAshen.head.postRender(.045F);
+            //modelAshen.head.postRender(.045F);
 
             stack.translate(-0.03125F, 0.40625F, .18F);
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("ashen/mask")));
-            mask.renderMask(stack, ivertexbuilder, ashen.getMaskType());
+            mask.renderMask(stack, ivertexbuilder, ashen.getMaskType(), packedLightIn, OverlayTexture.NO_OVERLAY);
             stack.pop();
         }
     }

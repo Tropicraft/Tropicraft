@@ -69,7 +69,6 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 	}
 
 	private void renderWings(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		//RenderSystem.disableLighting();
 		matrixStackIn.push();
 		matrixStackIn.translate(0.5f / 16f, 0, -0.5f); // Center on body
 		matrixStackIn.scale(2f, 0.5f, 2f); // Scale to correct size
@@ -84,7 +83,6 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, true);
 		
 		matrixStackIn.pop();
-		//RenderSystem.enableLighting();
 	}
 
 	private void renderWing(MatrixStack stack, IVertexBuilder buffer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean reverse) {

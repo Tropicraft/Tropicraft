@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
@@ -101,9 +102,9 @@ public class BeachFloatModel extends SegmentedModel<BeachFloatEntity> {
 
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        RenderSystem.pushMatrix();
-        RenderSystem.rotatef(-90, 0, 1, 0);
+        matrixStackIn.push();
+        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-90));
         super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        RenderSystem.popMatrix();
+        matrixStackIn.pop();
     }
 }

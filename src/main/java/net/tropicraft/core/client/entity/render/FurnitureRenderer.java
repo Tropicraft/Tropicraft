@@ -46,7 +46,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         // it used to scale by 0.25, but for some reason this gets it to be around the proper size again?
         stack.scale(4, 4, 4);
         setupTransforms();
-        
+
         final float rockingAngle = getRockingAngle(furniture, partialTicks);;
         if (!MathHelper.epsilonEquals(rockingAngle, 0.0F)) {
             stack.rotate(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), rockingAngle, true));
@@ -59,20 +59,15 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
 
         // Draw uncolored layer
         IVertexBuilder ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
-        model.render(stack, ivertexbuilder, getPackedLight(furniture, partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         stack.scale(-1.0F, -1.0F, 1.0F);
+        model.render(stack, ivertexbuilder, getPackedLight(furniture, partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         // Draw the colored part
-        stack.push();
-        RenderSystem.color3f(red, green, blue);
         ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer")));
         model.render(stack, ivertexbuilder, getPackedLight(furniture, partialTicks), OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
-        //RenderSystem.disableBlend();
-        RenderSystem.color3f(1, 1, 1);
-        stack.pop();
 
-        stack.pop();
         super.render(furniture, entityYaw, partialTicks, stack, buffer, packedLightIn);
+        stack.pop();
     }
     
     protected double getYOffset() {

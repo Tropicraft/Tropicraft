@@ -41,7 +41,7 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 
 		stack.rotate(Vector3f.XN.rotationDegrees(90));
 
-		mask.renderMask(stack, ivertexbuilder, entity.getMaskType());
+		mask.renderMask(stack, ivertexbuilder, entity.getMaskType(), packedLightIn, OverlayTexture.NO_OVERLAY);
 
 		stack.pop();
 	}
