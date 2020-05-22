@@ -2,20 +2,13 @@ package net.tropicraft.core.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.BufferBuilder;
+
 import net.minecraft.client.renderer.Matrix3f;
 import net.minecraft.client.renderer.Matrix4f;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.tropicraft.core.client.TropicraftRenderUtils;
-import net.tropicraft.core.client.entity.render.EagleRayRenderer;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
 
 public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
@@ -64,26 +57,32 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 		stack.translate(0.55f, 0f, 1.5f);
 		stack.rotate(Vector3f.YP.rotationDegrees(-90f));
 		stack.scale(1.5f, 1f, 1f);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 255, 255, 255, minU, minV, packedLightIn);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 255, 255, 255, minU, maxV, packedLightIn);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 255, 255, 255, maxU, maxV, packedLightIn);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 255, 255, 255, maxU, minV, packedLightIn);
+		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 0, red, green, blue, alpha, minU, minV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 1, red, green, blue, alpha, minU, maxV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 1, 0, 1, red, green, blue, alpha, maxU, maxV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 1, 0, 0, red, green, blue, alpha, maxU, minV, packedLightIn, packedOverlayIn);
 		stack.pop();
 	}
 
-	private static void vertex(IVertexBuilder bufferIn, Matrix4f matrixIn, Matrix3f matrixNormalIn, float x, float y, int red, int green, int blue, float texU, float texV, int packedLight) {
-		bufferIn.pos(matrixIn, x, y, 0.0F).color(red, green, blue, 128).tex(texU, texV).overlay(OverlayTexture.NO_OVERLAY).lightmap(packedLight).normal(matrixNormalIn, 0.0F, 1.0F, 0.0F).endVertex();
+	private static void vertex(IVertexBuilder bufferIn, Matrix4f matrixIn, Matrix3f matrixNormalIn, float x, float y, float z, float red, float green, float blue, float alpha, float texU, float texV, int packedLight, int packedOverlay) {
+		bufferIn.pos(matrixIn, x, y, z).color(red, green, blue, alpha).tex(texU, texV).overlay(packedOverlay).lightmap(packedLight).normal(matrixNormalIn, 0.0F, -1.0F, 0.0F).endVertex();
 	}
 
 	private void renderWings(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		//RenderSystem.disableLighting();
 		matrixStackIn.push();
-		matrixStackIn.scale(2f, 0.5f, 2f);
-		matrixStackIn.translate(0.1f, 0f, -0.25f);
+		matrixStackIn.translate(0.5f / 16f, 0, -0.5f); // Center on body
+		matrixStackIn.scale(2f, 0.5f, 2f); // Scale to correct size
+		
 		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, false);
+		
+		// Rotate around center
+		matrixStackIn.translate(0, 0, 0.5f);
 		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180f));
-		matrixStackIn.translate(0.10f, 0f, -1f);
+		matrixStackIn.translate(0, 0, -0.5f);
+		
 		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, true);
+		
 		matrixStackIn.pop();
 		//RenderSystem.enableLighting();
 	}
@@ -98,6 +97,9 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 		float maxUBack = 0.25f;
 		float minVBack = 0.5f;
 		float maxVBack = 1f;
+		
+		stack.push();
+		stack.translate(1.25f / 16f, 0, 0); // Translate out to body edge
 
 		for (int i = 1; i < EagleRayEntity.WING_JOINTS; i++) {
 			float prevAmplitude = interpolatedWingAmplitudes[i - 1];
@@ -116,17 +118,19 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 			final Matrix4f matrix = stack.getLast().getMatrix();
 			final Matrix3f normal = stack.getLast().getNormal();
 
-			vertex(buffer, matrix, normal, x, amplitude-offset, 255, 255, 255, uBack, reverse ? maxVBack : minVBack, packedLightIn);
-			vertex(buffer, matrix, normal, x, amplitude-offset, 255, 255, 255, uBack, reverse ? minVBack : maxVBack, packedLightIn);
-			vertex(buffer, matrix, normal, prevX, prevAmplitude-offset, 255, 255, 255, prevUBack, reverse ? minVBack : maxVBack, packedLightIn);
-			vertex(buffer, matrix, normal, prevX, prevAmplitude-offset, 255, 255, 255, prevUBack, reverse ? maxVBack : minVBack, packedLightIn);
+			vertex(buffer, matrix, normal, x, amplitude-offset, 0, red, green, blue, alpha, uBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
+			vertex(buffer, matrix, normal, x, amplitude-offset, 1, red, green, blue, alpha, uBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
+			vertex(buffer, matrix, normal, prevX, prevAmplitude-offset, 1, red, green, blue, alpha, prevUBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
+			vertex(buffer, matrix, normal, prevX, prevAmplitude-offset, 0, red, green, blue, alpha, prevUBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
 
 			// Top
-			vertex(buffer, matrix, normal, prevX, prevAmplitude, 255, 255, 255, prevUFront, reverse ? maxVFront : minVFront, packedLightIn);
-			vertex(buffer, matrix, normal,x, amplitude, 255, 255, 255, prevUFront, reverse ? minVFront : maxVFront, packedLightIn);
-			vertex(buffer, matrix, normal, x, amplitude, 255, 255, 255, prevUFront, reverse ? minVFront : maxVFront, packedLightIn);
-			vertex(buffer, matrix, normal, x, amplitude, 255, 255, 255, uFront, reverse ? maxVFront : minVFront, packedLightIn);
+			vertex(buffer, matrix, normal, prevX, prevAmplitude, 0, red, green, blue, alpha, prevUFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
+			vertex(buffer, matrix, normal, prevX, prevAmplitude, 1, red, green, blue, alpha, prevUFront, reverse ? minVFront : maxVFront, packedLightIn, packedOverlayIn);
+			vertex(buffer, matrix, normal, x, amplitude, 1, red, green, blue, alpha, uFront, reverse ? minVFront : maxVFront, packedLightIn, packedOverlayIn);
+			vertex(buffer, matrix, normal, x, amplitude, 0, red, green, blue, alpha, uFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
 		}
+		
+		stack.pop();
 	}
 
 	@Override
