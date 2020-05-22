@@ -5,11 +5,13 @@ import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -37,6 +39,11 @@ public class MarlinEntity extends AbstractFishEntity {
         super.registerAttributes();
         getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
     }
+    
+	@Override
+	protected boolean processInteract(PlayerEntity player, Hand hand) {
+		return false; // No fish bucket
+	}
 
     @Override
     @Nullable
@@ -59,7 +66,7 @@ public class MarlinEntity extends AbstractFishEntity {
 
     @Override
     protected ItemStack getFishBucket() {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
