@@ -36,8 +36,7 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     public TropicraftChunkGenerator(IWorld world, BiomeProvider biomeProvider, TropicraftGeneratorSettings settings) {
         super(world, biomeProvider, 4, 8, 256, settings, true);
         randomSeed.skip(2620);
-        // TODO last param is new in 1.15. if things seem weird, maybe that's why
-        depthNoise = new OctavesNoiseGenerator(randomSeed, 16, 0);
+        depthNoise = new OctavesNoiseGenerator(randomSeed, 15, 0);
 
         volcanoGen = new VolcanoGenerator(this);
         coveGen = new UnderwaterCoveGenerator(this);
