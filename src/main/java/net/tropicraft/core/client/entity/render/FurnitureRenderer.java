@@ -1,12 +1,8 @@
 package net.tropicraft.core.client.entity.render;
 
-import javax.annotation.Nullable;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Vector3f;
@@ -14,7 +10,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -28,7 +23,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     private float red = 0.0F, green = 0.0F, blue = 0.0F;
 
     public FurnitureRenderer(EntityRendererManager renderManager, String textureName, EntityModel<T> model) {
-        this(renderManager, textureName, model, 0.0625f);
+        this(renderManager, textureName, model, 1);
     }
     
     public FurnitureRenderer(EntityRendererManager renderManager, String textureName, EntityModel<T> model, float scale) {
@@ -44,8 +39,8 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         stack.translate(0, getYOffset(), 0);
         stack.rotate(Vector3f.YP.rotationDegrees(180 - entityYaw));
         // it used to scale by 0.25, but for some reason this gets it to be around the proper size again?
-        stack.scale(4, 4, 4);
-        setupTransforms();
+        stack.scale(scale, scale, scale);
+        setupTransforms(stack);
 
         final float rockingAngle = getRockingAngle(furniture, partialTicks);;
         if (!MathHelper.epsilonEquals(rockingAngle, 0.0F)) {
@@ -74,7 +69,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         return 0.3125;
     }
     
-    protected void setupTransforms() {
+    protected void setupTransforms(MatrixStack stack) {
 
     }
     

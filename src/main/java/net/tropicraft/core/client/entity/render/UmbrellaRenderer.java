@@ -12,7 +12,7 @@ import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
     public UmbrellaRenderer(EntityRendererManager rendererManager) {
-        super(rendererManager, "umbrella", new UmbrellaModel(), 0.25f);
+        super(rendererManager, "umbrella", new UmbrellaModel(), 4);
         this.shadowSize = 2.5f;
     }
 
