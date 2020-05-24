@@ -16,16 +16,30 @@ public enum AshenMasks {
     ASHEN_MASK5("Ashen Mask")
     ;
 
-    private String name;
+    private final String name;
+    private final double xOffset, yOffset;
 
     public static AshenMasks[] VALUES = values();
 
     AshenMasks(String name) {
-        this.name = name;
+    	this(name, 0.5, 1);
+    }
+    
+    AshenMasks(String name, double xOffset, double yOffset) {
+    	this.name = name;
+    	this.xOffset = xOffset / 16;
+    	this.yOffset = yOffset / 16;
     }
 
     public String getName() {
         return name;
     }
 
+    public double getXOffset() {
+    	return xOffset;
+    }
+    
+    public double getYOffset() {
+    	return yOffset;
+    }
 }

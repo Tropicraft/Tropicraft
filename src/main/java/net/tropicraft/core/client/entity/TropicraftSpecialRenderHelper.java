@@ -23,7 +23,7 @@ public class TropicraftSpecialRenderHelper {
         float f4 = 0.0F;
         float f5 = 0.3F;
         stack.translate(-f4, -f5, 0.0F);
-        float f6 = 1.7F;
+        float f6 = 2F;
         stack.scale(f6, f6, f6);
         stack.rotate(Vector3f.YP.rotationDegrees(180F));
         stack.rotate(Vector3f.ZP.rotationDegrees(180F));

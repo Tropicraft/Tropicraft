@@ -124,7 +124,7 @@ public class TropicraftRenderUtils {
 
             RenderSystem.pushLightingAttributes();
             RenderHelper.enableStandardItemLighting();
-            Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, leftHand, stack, buffer, combinedLightIn, combinedOverlayIn, modelIn);
+            Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer);
             RenderHelper.disableStandardItemLighting();
             RenderSystem.popAttributes();
 

@@ -1,24 +1,27 @@
 package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.util.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
 public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 	private int textureIndex;
+	private final double xOffset, yOffset;
 	protected TropicraftSpecialRenderHelper renderer;
-
+	
 	public PlayerHeadpieceRenderer(final int textureIndex) {
+		this(textureIndex, 0, 0);
+	}
+
+	public PlayerHeadpieceRenderer(final int textureIndex, final double xOffset, final double yOffset) {
 		super(0);
 		this.textureIndex = textureIndex;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
 		renderer = new TropicraftSpecialRenderHelper();
 	}
 	
@@ -35,7 +38,6 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		// TODO
 		stack.push();
 
 		if (sneaking) {
@@ -49,16 +51,14 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 		// Flip mask to face away from the player
 		stack.rotate(Vector3f.YP.rotationDegrees(180));
 
-		// put it in the middle in front of the face, eyeholes at (Steve's) eye height
-		stack.translate(-0.025f, 0.1f, 0.3F);
+		// put it in the middle in front of the face
+		stack.translate(0.0F - xOffset, 0.112f + 0.0625f - yOffset, 0.2501F);
 
    		// renderMask handles the rendering of the mask model, but it doesn't set the texture.
 		// Setting the texture is handled in the item class.
 		renderer.renderMask(stack, bufferIn, this.textureIndex, packedLightIn, packedOverlayIn);
 		
 		stack.pop();
-
-//		GlStateManager.popMatrix();
 	}
 	
 	
