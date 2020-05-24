@@ -1,10 +1,12 @@
 package net.tropicraft.core.client;
 
+import java.util.Map;
+
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -19,11 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SkullItem;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Constants;
-
-import javax.annotation.Resource;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class TropicraftRenderUtils {
 

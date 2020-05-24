@@ -35,7 +35,6 @@ public class EggRenderer extends LivingRenderer<EggEntity, EggModel> {
 	
 	public void drawFlatEgg(EggEntity ent, double x, double y, double z, MatrixStack stack, IRenderTypeBuffer bufferIn) {
 		stack.push();
-		RenderSystem.enableRescaleNormal();
 
 		stack.translate(x, y, z);
 		stack.rotate(this.renderManager.getCameraOrientation());
@@ -50,7 +49,6 @@ public class EggRenderer extends LivingRenderer<EggEntity, EggModel> {
 		buffer.pos( .5,  .75, 0).tex(1, 0).endVertex();
 		buffer.pos(-.5,  .75, 0).tex(0, 0).endVertex();
 
-		RenderSystem.disableRescaleNormal();
 		stack.pop();
 	}
 	

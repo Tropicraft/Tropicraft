@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -9,9 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
-import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
-
-import javax.annotation.Nullable;
 
 public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleModel> {
 

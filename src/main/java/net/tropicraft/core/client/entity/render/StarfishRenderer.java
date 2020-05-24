@@ -60,7 +60,6 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
 
 		stack.scale(scale, scale, scale);
 
-		RenderSystem.enableRescaleNormal();
 
 		for (int i = 0; i < type.getLayerCount(); i++) {
 			// TODO static-ify to prevent allocation every render tick
@@ -72,7 +71,6 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
 			GlStateManager.translatef(0f, 0f, -type.getLayerHeights()[i]);
 		}
 
-		RenderSystem.disableRescaleNormal();
 		stack.pop();
 	}
 

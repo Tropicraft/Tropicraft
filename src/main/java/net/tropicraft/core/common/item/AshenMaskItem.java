@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.item;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -66,12 +67,17 @@ public class AshenMaskItem extends ArmorItem {
 
     private boolean canPlace(PlayerEntity player, Direction direction, ItemStack heldStack, BlockPos pos) {
         return !direction.getAxis().isVertical() && player.canPlayerEdit(pos, direction, heldStack);
-    }
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    @Nullable
-    @Override
-    public BipedModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlotType armorSlot, final BipedModel model) {
-        return armorSlot == EquipmentSlotType.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal(), TropicraftRenderUtils.getTextureEntity("ashen/mask")) : null;
+	@OnlyIn(Dist.CLIENT)
+	@Nullable
+	@Override
+	public BipedModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlotType armorSlot, final BipedModel model) {
+		return armorSlot == EquipmentSlotType.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal()) : null;
+	}
+
+	@Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+    	return TropicraftRenderUtils.getTextureEntity("ashen/mask").toString();
     }
 }
