@@ -82,7 +82,9 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
 		ingredientStack.setCount(1);
 
 		if (mixer.addToMixer(ingredientStack)) {
-			player.inventory.decrStackSize(player.inventory.currentItem, 1);
+			if (!player.isCreative()) {
+				player.inventory.decrStackSize(player.inventory.currentItem, 1);
+			}
 		}
 
 		if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && mixer.canMix()) {

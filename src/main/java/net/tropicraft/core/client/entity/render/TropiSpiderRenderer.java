@@ -1,13 +1,11 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
-import net.tropicraft.core.common.entity.SeaTurtleEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 
 public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
@@ -19,22 +17,12 @@ public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
 	@Override
 	public void render(TropiSpiderEntity spider, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
 		stack.push();
-		float scale = 1f;
-		if (spider.getSpiderType() == TropiSpiderEntity.Type.CHILD) {
-			scale = 0.5f;
-		}
-		if (spider.getSpiderType() == TropiSpiderEntity.Type.MOTHER) {
-			scale = 1.2f;
-		}
+		final float scale = getScale(spider);
 		shadowSize = scale;
-
-		// TODO still needed 1.15?
-		//GlStateManager.translated(x, y, z);
 		stack.scale(scale, scale, scale);
 		super.render(spider, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 		stack.pop();
 	}
-
 
 	@Override
 	public ResourceLocation getEntityTexture(TropiSpiderEntity entity) {
@@ -45,5 +33,16 @@ public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
 			return TropicraftRenderUtils.bindTextureEntity("spidermother");
 		}
 		return TropicraftRenderUtils.bindTextureEntity("spideradult");
+	}
+
+	private float getScale(final TropiSpiderEntity spider) {
+		float scale = 1.0f;
+		if (spider.getSpiderType() == TropiSpiderEntity.Type.CHILD) {
+			scale = 0.5f;
+		}
+		if (spider.getSpiderType() == TropiSpiderEntity.Type.MOTHER) {
+			scale = 1.2f;
+		}
+		return scale;
 	}
 }

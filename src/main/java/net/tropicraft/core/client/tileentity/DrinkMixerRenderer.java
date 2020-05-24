@@ -1,8 +1,6 @@
 package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -29,6 +27,18 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     private final ItemRenderer renderItem;
     private ItemEntity dummyEntityItem;
 
+    private static final float[][] INGREDIENT_OFFSETS = new float[][] {
+        {0.3f, -0.5f, 0.05f},
+        {-0.3f, -0.5f, 0.05f},
+        {0.0f, 0.3f, -0.1f}
+    };
+
+    private static final float[][] INGREDIENT_SCALES = new float[][] {
+        {1, 1, 1},
+        {1, 1, 1},
+        {0.8f, 0.8f, 0.8f}
+    };
+
     public DrinkMixerRenderer(final TileEntityRendererDispatcher rendererDispatcher) {
         super(rendererDispatcher, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(RenderType::getEntitySolid));
         this.renderItem = Minecraft.getInstance().getItemRenderer();
@@ -47,46 +57,12 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
         final NonNullList<ItemStack> ingredients = te.getIngredients();
         final int combinedLight = getCombinedLight(te.getWorld(), te.getPos());
 
-    	// TODO lots of repeat code - unify!
         if (!te.isDoneMixing()) {
-            final ItemStack firstIngredient = ingredients.get(0);
-            if (!firstIngredient.isEmpty()) {
-                stack.push();
-                stack.rotate(Vector3f.XP.rotationDegrees(90));
-                stack.rotate(Vector3f.YP.rotationDegrees(90));
-                stack.rotate(Vector3f.ZP.rotationDegrees(90));
-                stack.translate(0.3f, -0.5f, 0.05f);
-                dummyEntityItem.setItem(firstIngredient);
-                final IBakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, firstIngredient);
-                renderItem.renderItem(firstIngredient, ItemCameraTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
-                stack.pop();
-            }
-
-            final ItemStack secondIngredient = ingredients.get(1);
-            if (!secondIngredient.isEmpty()) {
-                stack.push();
-                stack.rotate(Vector3f.XP.rotationDegrees(90));
-                stack.rotate(Vector3f.YP.rotationDegrees(90));
-                stack.rotate(Vector3f.ZP.rotationDegrees(90));
-                stack.translate(-0.3f, -0.5f, 0.05f);
-                dummyEntityItem.setItem(secondIngredient);
-                final IBakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, secondIngredient);
-                renderItem.renderItem(secondIngredient, ItemCameraTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
-                stack.pop();
-            }
-
-            final ItemStack thirdIngredient = ingredients.get(2);
-            if (!thirdIngredient.isEmpty()) {
-                stack.push();
-                stack.rotate(Vector3f.XP.rotationDegrees(180f));
-                stack.rotate(Vector3f.ZP.rotationDegrees(180f));
-                stack.translate(0.0f, 0.3f, -.1f);
-                stack.scale(0.8F, 0.8F, 0.8F);
-                // GlStateManager.rotate(0, 0.0F, 1.0F, 0.0F);
-                dummyEntityItem.setItem(thirdIngredient);
-                final IBakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, thirdIngredient);
-                renderItem.renderItem(thirdIngredient, ItemCameraTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
-                stack.pop();
+            for (int index = 0; index < ingredients.size(); index++) {
+                final ItemStack ingredient = ingredients.get(index);
+                if (!ingredient.isEmpty()) {
+                    renderIngredient(stack, buffer, combinedOverlayIn, combinedLight, ingredient, index);
+                }
             }
         }
 
@@ -103,5 +79,20 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
             modelBambooMug.render(stack, ivertexbuilder, combinedLight, combinedOverlayIn, 1, 1, 1, 1);
             stack.pop();
         }
+    }
+
+    private void renderIngredient(final MatrixStack stack, final IRenderTypeBuffer buffer, final int combinedOverlayIn, final int combinedLight, final ItemStack ingredient, final int ingredientIndex) {
+        stack.push();
+        stack.rotate(Vector3f.XP.rotationDegrees(90));
+        stack.rotate(Vector3f.YP.rotationDegrees(90));
+        stack.rotate(Vector3f.ZP.rotationDegrees(90));
+        final float[] offsets = INGREDIENT_OFFSETS[ingredientIndex];
+        final float[] scales = INGREDIENT_SCALES[ingredientIndex];
+        stack.translate(offsets[0], offsets[1], offsets[2]);
+        stack.scale(scales[0], scales[1], scales[2]);
+        dummyEntityItem.setItem(ingredient);
+        final IBakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, ingredient);
+        renderItem.renderItem(ingredient, ItemCameraTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
+        stack.pop();
     }
 }

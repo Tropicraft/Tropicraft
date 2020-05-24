@@ -27,6 +27,7 @@ public class SifterBlock extends Block implements ITileEntityProvider {
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         final ItemStack stack = player.getHeldItem(hand);
 
+        // TODO use item tag
         final boolean isSandInHand = Block.getBlockFromItem(stack.getItem()).getMaterial(state) == Material.SAND;
         if (!isSandInHand) {
             return ActionResultType.PASS;
@@ -35,12 +36,16 @@ public class SifterBlock extends Block implements ITileEntityProvider {
         if (!world.isRemote) {
             final SifterTileEntity sifter = (SifterTileEntity) world.getTileEntity(pos);
             if (sifter != null && !stack.isEmpty() && !sifter.isSifting()) {
-                // TODO use item tag
-                if (isSandInHand) {
-                    sifter.addItemToSifter(stack.split(1));
-                    sifter.startSifting();
-                    return ActionResultType.CONSUME;
+                final ItemStack addItem;
+                if (!player.isCreative()) {
+                    addItem = stack.split(1);
+                } else {
+                    addItem = stack.copy().split(1);
                 }
+                sifter.addItemToSifter(addItem);
+
+                sifter.startSifting();
+                return ActionResultType.CONSUME;
             }
         }
 

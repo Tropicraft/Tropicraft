@@ -51,11 +51,11 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     @Override
     @OnlyIn(Dist.CLIENT)
     public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, int width, int height, float partialTicks) {
-        GlStateManager.disableDepthTest();
-        GlStateManager.depthMask(false);
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
         RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.disableAlphaTest();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableAlphaTest();
         Minecraft mc = Minecraft.getInstance();
         double scaledWidth = mc.getMainWindow().getScaledWidth();
         double scaledHeight = mc.getMainWindow().getScaledHeight();
@@ -68,10 +68,10 @@ public class ScubaGogglesItem extends ScubaArmorItem {
         bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
         bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
         tessellator.draw();
-        GlStateManager.depthMask(true);
-        GlStateManager.enableDepthTest();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @SubscribeEvent
