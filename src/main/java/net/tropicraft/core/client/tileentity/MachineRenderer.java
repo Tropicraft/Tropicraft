@@ -7,19 +7,22 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.MachineModel;
 import net.tropicraft.core.common.block.tileentity.IMachineTile;
 
 public abstract class MachineRenderer<T extends TileEntity & IMachineTile> extends TileEntityRenderer<T> {
     private final Block block;
-	private final MachineModel<T> model;
+	protected final MachineModel<T> model;
 
 	public MachineRenderer(final TileEntityRendererDispatcher rendererDispatcher, final Block block, final MachineModel<T> model) {
 		super(rendererDispatcher);
@@ -32,7 +35,7 @@ public abstract class MachineRenderer<T extends TileEntity & IMachineTile> exten
 		stack.push();
 		stack.translate(0.5f, 1.5f, 0.5f);
 		stack.rotate(Vector3f.XP.rotationDegrees(180));
-		stack.rotate(Vector3f.ZP.rotation(180));
+		//stack.rotate(Vector3f.ZP.rotationDegrees(180));
 
 		if (te == null || te.getWorld() == null) {
 			stack.rotate(Vector3f.YP.rotationDegrees(180));
@@ -48,31 +51,34 @@ public abstract class MachineRenderer<T extends TileEntity & IMachineTile> exten
 		}
 
 		if (te != null && te.isActive()) {
-		    animationTransform(te, partialTicks);
+		    animationTransform(te, stack, partialTicks);
 		}
 
-		RenderSystem.enableRescaleNormal();
 //		TropicraftRenderUtils.bindTextureTE(model.getTexture(te));
 //		model.renderAsBlock(te);
 
-		TropicraftRenderUtils.renderModel(getMaterial(), model, stack, buffer, combinedLightIn, combinedOverlayIn);
+		// Get light above, since block is solid
+		TropicraftRenderUtils.renderModel(getMaterial(), model, stack, buffer, getCombinedLight(te.getWorld(), te.getPos().up()), combinedOverlayIn);
 
 		if (te != null) {
-		    renderIngredients(te, stack, buffer);
+		    renderIngredients(te, stack, buffer, combinedLightIn, combinedOverlayIn);
 		}
-
-		RenderSystem.disableRescaleNormal();
 
 		//GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
 	}
 
+	protected int getCombinedLight(final IWorld world, final BlockPos pos) {
+		// Get light above, since block is solid
+		return WorldRenderer.getCombinedLight(world, pos.up());
+	}
+
 	protected abstract Material getMaterial();
 	
-	protected void animationTransform(T te, float partialTicks) {
+	protected void animationTransform(T te, MatrixStack stack, float partialTicks) {
         float angle = MathHelper.sin((float) (25f * 2f * Math.PI * te.getProgress(partialTicks))) * 15f;
-        GlStateManager.rotatef(angle, 0f, 1f, 0f);
+        stack.rotate(Vector3f.YP.rotationDegrees(angle));
 	}
 	
-	protected abstract void renderIngredients(final T te, final MatrixStack stack, final IRenderTypeBuffer buffer);
+	protected abstract void renderIngredients(final T te, final MatrixStack stack, final IRenderTypeBuffer buffer, int packedLightIn, int combinedOverlayIn);
 }

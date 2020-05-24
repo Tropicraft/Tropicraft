@@ -17,7 +17,7 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
     public static final ModelScubaGear HEAD = new ModelScubaGear(0, EquipmentSlotType.HEAD);
 
     private boolean showHead;
-    private boolean showChest;
+    public boolean showChest;
     private boolean showLegs;
     private boolean isSneaking;
 

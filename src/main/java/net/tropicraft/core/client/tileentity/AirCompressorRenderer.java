@@ -5,7 +5,9 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -28,31 +30,33 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEnti
 
     @Override
     protected Material getMaterial() {
-        return TropicraftRenderUtils.getBlockMaterial("textures/block/te/air_compressor");
+        return TropicraftRenderUtils.getTEMaterial("drink_mixer");
     }
     @Override
-    protected void animationTransform(AirCompressorTileEntity te, float partialTicks) {
+    protected void animationTransform(AirCompressorTileEntity te, final MatrixStack stack, float partialTicks) {
         float progress = te.getBreatheProgress(partialTicks);
         float sin = 1 + MathHelper.cos(progress);
         float sc = 1 + 0.05f * sin;
-        GlStateManager.translatef(0, 1.5f, 0);
-        GlStateManager.scalef(sc, sc, sc);
-        GlStateManager.translatef(0, -1.5f, 0);
+        stack.translate(0, 1.5f, 0);
+        stack.scale(sc, sc, sc);
+        stack.translate(0, -1.5f, 0);
         if (progress < Math.PI) {
             float shake = MathHelper.sin(te.getBreatheProgress(partialTicks) * 10) * 8f;
-            GlStateManager.rotatef(shake, 0, 1, 0);
+            stack.rotate(Vector3f.YP.rotationDegrees(shake));
         }
     }
 
     @Override
-    protected void renderIngredients(AirCompressorTileEntity te, MatrixStack stack, IRenderTypeBuffer buffer) {
+    protected void renderIngredients(AirCompressorTileEntity te, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         if (te.isActive()) {
-            GlStateManager.pushMatrix();
-            GlStateManager.translatef(-0.5f, 0.5f, 0);
-            GlStateManager.rotatef(90, 0, 1, 0);
-            IVertexBuilder builder = TropicraftRenderUtils.getEntityCutoutBuilder(buffer, ScubaArmorItem.getArmorTexture(te.getTank().getType()));
-            tankModel.renderScubaGear(stack, builder, 1, OverlayTexture.NO_OVERLAY, false);
-            GlStateManager.popMatrix();
+            stack.push();
+            stack.translate(-0.5f, 0.5f, 0);
+            stack.rotate(Vector3f.YP.rotationDegrees(90));
+            // TODO this is likely wrong
+            IVertexBuilder builder = ItemRenderer.getBuffer(buffer, RenderType.getEntityCutoutNoCull(ScubaArmorItem.getArmorTexture(te.getTank().getType())), true, false);
+            tankModel.showChest = true;
+            tankModel.renderScubaGear(stack, builder, getCombinedLight(te.getWorld(), te.getPos()), combinedOverlayIn, false);
+            stack.pop();
         }
     }
 }

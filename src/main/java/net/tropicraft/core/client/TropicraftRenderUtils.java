@@ -42,8 +42,7 @@ public class TropicraftRenderUtils {
     }
 
     public static void renderModel(final Material material, final Model model, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-        IVertexBuilder ivertexbuilder = material.getBuffer(buffer, RenderType::getEntitySolid);
-        model.render(stack, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
+        model.render(stack, buffer.getBuffer(model.getRenderType(material.getTextureLocation())), combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
     }
 
     public static Material getBlockMaterial(final String path) {
@@ -51,7 +50,15 @@ public class TropicraftRenderUtils {
     }
 
     private static Material createBlockMaterial(final String path) {
-        return new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, new ResourceLocation(path));
+        return new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, getTextureBlock(path));
+    }
+
+    public static Material getTEMaterial(final String path) {
+        return materialMap.computeIfAbsent(path, m -> createTEMaterial(path));
+    }
+
+    private static Material createTEMaterial(final String path) {
+        return new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, getTextureTE(path));
     }
 
     public static ResourceLocation getTexture(String path) {

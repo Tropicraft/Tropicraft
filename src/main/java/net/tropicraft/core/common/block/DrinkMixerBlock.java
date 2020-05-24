@@ -87,7 +87,9 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
 
 		if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && mixer.canMix()) {
 			mixer.startMixing();
-			player.inventory.decrStackSize(player.inventory.currentItem, 1);
+			if (!player.isCreative()) {
+				player.inventory.decrStackSize(player.inventory.currentItem, 1);
+			}
 
 			Drink craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
 			Drink pinaColada = Drink.PINA_COLADA;
