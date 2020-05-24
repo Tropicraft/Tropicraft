@@ -108,29 +108,29 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         lvt_5_1_ /= lvt_6_1_;
         lvt_4_1_ = lvt_4_1_ * 0.9F + 0.1F;
         lvt_5_1_ = (lvt_5_1_ * 4.0F - 1.0F) / 8.0F;
-        lvt_3_1_[0] = (double)lvt_5_1_ + this.getSpecialDepth(x, z);
+        lvt_3_1_[0] = (double)lvt_5_1_ + getNoiseDepthAt(x, z);
         lvt_3_1_[1] = (double)lvt_4_1_;
         return lvt_3_1_;
     }
 
-    private double getSpecialDepth(int p_222574_1_, int p_222574_2_) {
-        double sDepth = depthNoise.getValue((double)(p_222574_1_ * 200), 10.0D, (double)(p_222574_2_ * 200), 1.0D, 0.0D, true) / 8000.0D;
-        if (sDepth < 0.0D) {
-            sDepth = -sDepth * 0.3D;
+    private double getNoiseDepthAt(int noiseX, int noiseZ) {
+        double d0 = this.depthNoise.getValue((double)(noiseX * 200), 10.0D, (double)(noiseZ * 200), 1.0D, 0.0D, true) * 65535.0D / 8000.0D;
+        if (d0 < 0.0D) {
+            d0 = -d0 * 0.3D;
         }
 
-        sDepth = sDepth * 3.0D - 2.0D;
-        if (sDepth < 0.0D) {
-            sDepth /= 28.0D;
+        d0 = d0 * 3.0D - 2.0D;
+        if (d0 < 0.0D) {
+            d0 = d0 / 28.0D;
         } else {
-            if (sDepth > 1.0D) {
-                sDepth = 1.0D;
+            if (d0 > 1.0D) {
+                d0 = 1.0D;
             }
 
-            sDepth /= 40.0D;
+            d0 = d0 / 40.0D;
         }
 
-        return sDepth;
+        return d0;
     }
 
     // yoffset
