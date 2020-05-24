@@ -1,9 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.Entity;
@@ -11,8 +9,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.tropicraft.Constants;
@@ -39,8 +38,7 @@ public class PlayerRotationHandler {
             FurnitureEntity floaty = (FurnitureEntity) riding;
 
             stack.push();
-            //            GlStateManager.translated(event.getX(), event.getY(), event.getZ());
-            stack.rotate(Vector3f.YN.rotationDegrees(-(floaty.prevRotationYaw + (event.getPartialRenderTick() * (floaty.rotationYaw - floaty.prevRotationYaw)))));
+            stack.rotate(Vector3f.YP.rotationDegrees(-(floaty.prevRotationYaw + (event.getPartialRenderTick() * (floaty.rotationYaw - floaty.prevRotationYaw)))));
             stack.translate(0, 1.55, 1.55);
             stack.rotate(Vector3f.XN.rotationDegrees(90));
 
@@ -57,14 +55,15 @@ public class PlayerRotationHandler {
             prevRotationPitch = p.prevRotationPitch;
             p.rotationPitch = 10f;
             p.prevRotationPitch = 10f;
-
-            // TODO - 1.15 seemed to get rid of initial/after translations but maybe they are needed?
-//            GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
+            
+            // Cancel limb swing
+            p.limbSwing = 0;
+            p.limbSwingAmount = 0;
+            p.prevLimbSwingAmount = 0;
         }
         if (riding instanceof SeaTurtleEntity) {
             SeaTurtleEntity turtle = (SeaTurtleEntity) riding;
             stack.push();
-//            GlStateManager.translated(event.getX(), event.getY(), event.getZ());
 
             // Cancel out player camera rotation
             float pitch = interpolateAndWrap(turtle.rotationPitch, turtle.prevRotationPitch, event.getPartialRenderTick());
@@ -86,8 +85,6 @@ public class PlayerRotationHandler {
             prevRotationPitch = p.prevRotationPitch;
             p.rotationPitch = 10f;
             p.prevRotationPitch = 10f;
-
-            //GlStateManager.translated(-event.getX(), -event.getY(), -event.getZ());
         }
     }
 
@@ -106,9 +103,9 @@ public class PlayerRotationHandler {
     }
 
     @SubscribeEvent
-    public static void onRenderPlayerSpecials(RenderLivingEvent.Pre<?, ?> event) {
+    public static void onRenderPlayerSpecials(RenderNameplateEvent event) {
         if (event.getEntity().getRidingEntity() instanceof BeachFloatEntity) {
-            event.setCanceled(true);
+            event.setResult(Result.DENY);
         }
     }
 }
