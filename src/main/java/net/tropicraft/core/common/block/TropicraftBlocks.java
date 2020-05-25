@@ -1,7 +1,19 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
@@ -39,17 +51,6 @@ import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TropicraftBlocks {
     
@@ -271,9 +272,7 @@ public class TropicraftBlocks {
     }
 
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
-        return () -> new BlockItem(block.get(), new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)
-                //TODO.setISTER(renderMethod))
-        );
+        return () -> new BlockItem(block.get(), new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).setISTER(renderMethod));
     }
 
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final ItemGroup itemGroup) {
@@ -282,16 +281,16 @@ public class TropicraftBlocks {
     
     @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> chestRenderer() {
-        return () -> new SimpleItemStackRenderer<>(new BambooChestTileEntity());
+        return () -> new SimpleItemStackRenderer<>(BambooChestTileEntity::new);
     }
     
     @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> drinkMixerRenderer() {
-        return () -> new SimpleItemStackRenderer<>(new DrinkMixerTileEntity());
+        return () -> new SimpleItemStackRenderer<>(DrinkMixerTileEntity::new);
     }
     
     @OnlyIn(Dist.CLIENT)
     private static Callable<ItemStackTileEntityRenderer> airCompressorRenderer() {
-        return () -> new SimpleItemStackRenderer<>(new AirCompressorTileEntity());
+        return () -> new SimpleItemStackRenderer<>(AirCompressorTileEntity::new);
     }
 }

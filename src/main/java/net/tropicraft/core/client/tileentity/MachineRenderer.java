@@ -38,7 +38,7 @@ public abstract class MachineRenderer<T extends TileEntity & IMachineTile> exten
 		//stack.rotate(Vector3f.ZP.rotationDegrees(180));
 
 		if (te == null || te.getWorld() == null) {
-			stack.rotate(Vector3f.YP.rotationDegrees(180));
+			stack.rotate(Vector3f.YP.rotationDegrees(-90));
 		} else {
 		    BlockState state = te.getWorld().getBlockState(te.getPos());
 		    Direction facing;
@@ -47,7 +47,7 @@ public abstract class MachineRenderer<T extends TileEntity & IMachineTile> exten
 		    } else {
 		        facing = te.getDirection(state);
 		    }
-			stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalAngle()));
+			stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalAngle() + 90));
 		}
 
 		if (te != null && te.isActive()) {
@@ -70,7 +70,7 @@ public abstract class MachineRenderer<T extends TileEntity & IMachineTile> exten
 
 	protected int getCombinedLight(final IWorld world, final BlockPos pos) {
 		// Get light above, since block is solid
-		return WorldRenderer.getCombinedLight(world, pos.up());
+		return world == null ? 0xF000F0 : WorldRenderer.getCombinedLight(world, pos.up());
 	}
 
 	protected abstract Material getMaterial();
