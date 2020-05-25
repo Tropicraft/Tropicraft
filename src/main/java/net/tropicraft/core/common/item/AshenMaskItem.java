@@ -47,9 +47,7 @@ public class AshenMaskItem extends ArmorItem {
             return ActionResultType.FAIL;
         } else {
             World world = context.getWorld();
-            WallItemEntity wallItem = new WallItemEntity(TropicraftEntities.WALL_ITEM.get(), world);
-            wallItem.setHangingPosition(offsetPos);
-            wallItem.updateFacingWithBoundingBox(direction);
+            WallItemEntity wallItem = new WallItemEntity(world, offsetPos, direction);
             wallItem.setDisplayedItem(itemStack);
 
             if (wallItem.onValidSurface()) {
@@ -66,7 +64,7 @@ public class AshenMaskItem extends ArmorItem {
     }
 
     private boolean canPlace(PlayerEntity player, Direction direction, ItemStack heldStack, BlockPos pos) {
-        return !direction.getAxis().isVertical() && player.canPlayerEdit(pos, direction, heldStack);
+        return player.canPlayerEdit(pos, direction, heldStack);
 	}
 
 	@OnlyIn(Dist.CLIENT)

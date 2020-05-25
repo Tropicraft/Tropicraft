@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
@@ -21,10 +22,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.storage.MapData;
 import net.tropicraft.core.common.entity.BambooItemFrame;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
-    public static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation("tropicraft", "bamboo_item_frame");
-    private static final ModelResourceLocation LOCATION_MODEL_MAP = new ModelResourceLocation("item_frame", "map=true");
+    public static final ModelResourceLocation LOCATION_MODEL = new ModelResourceLocation(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), "map=false");
+    private static final ModelResourceLocation LOCATION_MODEL_MAP = new ModelResourceLocation(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), "map=true");
     private final Minecraft mc = Minecraft.getInstance();
     private final net.minecraft.client.renderer.ItemRenderer itemRenderer;
 

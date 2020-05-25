@@ -139,7 +139,7 @@ public class Tropicraft
     
             ModelBakery.STATE_CONTAINER_OVERRIDES = ImmutableMap.<ResourceLocation, StateContainer<Block, BlockState>>builder()
                     .putAll(ModelBakery.STATE_CONTAINER_OVERRIDES)
-                    .put(BambooItemFrameRenderer.LOCATION_MODEL, frameState)
+                    .put(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), frameState)
                     .build();
         });
     }

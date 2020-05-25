@@ -19,32 +19,26 @@ public class ShellItem extends Item {
     @Override
     public ActionResultType onItemUse(final ItemUseContext context) {
         final Direction facing = context.getFace();
-        if (facing.getAxis().isVertical()) {
+        final ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
+        final BlockPos pos = context.getPos().offset(facing);
+
+        // Must set the world coordinates here, or onValidSurface will be false.
+        final World world = context.getWorld();
+        final WallItemEntity hangingEntity = new WallItemEntity(world, pos, facing);
+        hangingEntity.setDisplayedItem(stack);
+
+        if (!context.getPlayer().canPlayerEdit(pos, facing, stack)) {
             return ActionResultType.FAIL;
         } else {
-            final ItemStack stack = context.getPlayer().getHeldItem(context.getHand());
-            final BlockPos pos = context.getPos().offset(facing);
-
-            // Must set the world coordinates here, or onValidSurface will be false.
-            final World world = context.getWorld();
-            final WallItemEntity hangingEntity = new WallItemEntity(TropicraftEntities.WALL_ITEM.get(), world);
-            hangingEntity.setHangingPosition(pos);
-            hangingEntity.updateFacingWithBoundingBox(facing);
-            hangingEntity.setDisplayedItem(stack);
-
-            if (!context.getPlayer().canPlayerEdit(pos, facing, stack)) {
-                return ActionResultType.FAIL;
-            } else {
-                if (hangingEntity.onValidSurface()) {
-                    if (!world.isRemote) {
-                        world.addEntity(hangingEntity);
-                    }
-
-                    stack.shrink(1);
+            if (hangingEntity.onValidSurface()) {
+                if (!world.isRemote) {
+                    world.addEntity(hangingEntity);
                 }
 
-                return ActionResultType.SUCCESS;
+                stack.shrink(1);
             }
+
+            return ActionResultType.SUCCESS;
         }
     }
 }
