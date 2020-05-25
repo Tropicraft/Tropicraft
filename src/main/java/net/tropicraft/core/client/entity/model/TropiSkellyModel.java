@@ -2,13 +2,13 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.AbstractZombieModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.HandSide;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 
-public class TropiSkellyModel extends BipedModel<TropiSkellyEntity> implements IHasArm {
+public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> implements IHasArm {
 	
 	private final ModelRenderer skirt;
 	
@@ -40,6 +40,12 @@ public class TropiSkellyModel extends BipedModel<TropiSkellyEntity> implements I
 
     @Override
     public void translateHand(HandSide side, final MatrixStack stack) {
-        stack.translate(0.09375F, 0.1875F, 0.0F);
+    	super.translateHand(side, stack);
+        stack.translate((side == HandSide.LEFT ? -1 : 1) * 0.1f, 0, 0.0F);
     }
+
+	@Override
+	public boolean isAggressive(TropiSkellyEntity entityIn) {
+		return entityIn.isAggressive();
+	}
 }
