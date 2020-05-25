@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.entity.render.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -18,6 +19,7 @@ public class TropiSkellyHeldItemLayer<T extends LivingEntity, M extends EntityMo
 
     @Override
     protected void translateToHand(HandSide handSide) {
+        super.translateToHand(handSide);
         GlStateManager.translatef(0.09375F, 0.1875F, 0.0F);
     }
 }
