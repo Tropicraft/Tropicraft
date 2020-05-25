@@ -1,38 +1,48 @@
 package net.tropicraft.core.common.item;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.SnowballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 
 public class ExplodingCoconutItem extends Item {
+
     public ExplodingCoconutItem(Properties properties) {
         super(properties);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+        // TODO config option
+        final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();
         ItemStack itemstack = player.getHeldItem(hand);
-        if (!itemstack.isEmpty()) {
-            itemstack.shrink(1);
-        }
-        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + 1f * 0.5F);
-        if (!world.isRemote) {
-            // TODO - implement config file: boolean canPlayerThrow = ArrayUtils.contains(TropicsConfigs.coconutBombWhitelist, player.getGameProfile().getName());
-            final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();
-            if (canPlayerThrow) {
-                SnowballEntity explodingCoconutEntity = new SnowballEntity(world, player);
-                explodingCoconutEntity.setItem(itemstack);
-                explodingCoconutEntity.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
-                world.addEntity(explodingCoconutEntity);
-            } else {
+        if (!canPlayerThrow) {
+            if (!world.isRemote) {
                 player.sendMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"));
             }
+            return new ActionResult<>(ActionResultType.PASS, itemstack);
+        }
+        
+        if (!player.isCreative()) {
+            itemstack.shrink(1);
+        }
+        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        if (!world.isRemote) {
+            ExplodingCoconutEntity snowballentity = new ExplodingCoconutEntity(world, player);
+            snowballentity.setItem(itemstack);
+            snowballentity.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+            world.addEntity(snowballentity);
         }
 
+        player.addStat(Stats.ITEM_USED.get(this));
         return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
     }
 }

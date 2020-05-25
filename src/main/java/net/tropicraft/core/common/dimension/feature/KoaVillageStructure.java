@@ -103,6 +103,8 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
     public int getSize() {
         return 8;
     }
+    
+    private static final IStructurePieceType TYPE = IStructurePieceType.register(KoaVillage::new, Constants.MODID + ":koa_village");
 
     public static class Start extends MarginedStructureStart {
 
@@ -120,8 +122,6 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
 
     public static class KoaVillage extends AbstractVillagePiece {
         
-        private static final IStructurePieceType TYPE = IStructurePieceType.register(KoaVillage::new, Constants.MODID + ":koa_village");
-
         public KoaVillage(TemplateManager p_i50890_1_, JigsawPiece p_i50890_2_, BlockPos p_i50890_3_, int p_i50890_4_, Rotation p_i50890_5_, MutableBoundingBox p_i50890_6_) {
             super(TYPE, p_i50890_1_, p_i50890_2_, p_i50890_3_, p_i50890_4_, p_i50890_5_, p_i50890_6_);
         }

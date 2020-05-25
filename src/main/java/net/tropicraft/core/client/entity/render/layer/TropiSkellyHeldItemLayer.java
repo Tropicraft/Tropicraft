@@ -13,4 +13,10 @@ public class TropiSkellyHeldItemLayer<T extends LivingEntity, M extends EntityMo
     public TropiSkellyHeldItemLayer(IEntityRenderer<T, M> renderer) {
         super(renderer);
     }
+
+//    @Override
+//    protected void translateToHand(HandSide handSide) {
+//        super.translateToHand(handSide);
+//        GlStateManager.translatef(0.09375F, 0.1875F, 0.0F);
+//    }
 }

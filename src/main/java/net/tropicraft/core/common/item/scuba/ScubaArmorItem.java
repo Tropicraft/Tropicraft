@@ -10,6 +10,8 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.ArmorMaterials;
@@ -58,6 +60,7 @@ public class ScubaArmorItem extends TropicraftArmorItem {
 
     @Override
     @Nullable
+    @OnlyIn(Dist.CLIENT)
     public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemstack, EquipmentSlotType armorSlot, A _default) {
         if (itemstack.isEmpty()) {
             return null;

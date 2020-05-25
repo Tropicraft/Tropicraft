@@ -79,6 +79,8 @@ public class TropicraftEntities {
         return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
+    // TODO review -- tracking range is in chunks...these values seem way too high
+    
     private static EntityType.Builder<SharkEntity> hammerhead() {
         return EntityType.Builder.create(SharkEntity::new, EntityClassification.WATER_CREATURE)
                 .size(2.4F, 1.5F)
