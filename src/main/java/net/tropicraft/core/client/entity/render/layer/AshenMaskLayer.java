@@ -1,21 +1,17 @@
 package net.tropicraft.core.client.entity.render.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.math.MathHelper;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.render.AshenRenderer;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
-import org.lwjgl.opengl.GL11;
 
 public class AshenMaskLayer extends LayerRenderer<AshenEntity, AshenModel> {
 
@@ -32,9 +28,11 @@ public class AshenMaskLayer extends LayerRenderer<AshenEntity, AshenModel> {
     public void render(MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn, AshenEntity ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (ashen.hasMask()) {
             stack.push();
-            //modelAshen.head.postRender(.045F);
+            modelAshen.setRotationAngles(ashen, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            modelAshen.head.translateRotate(stack);
 
-            stack.translate(-0.03125F, 0.40625F, .18F);
+            stack.translate(-0.03125F, 0.0625f * 3, .18F);
+            stack.scale(0.75f, 0.75f, 0.75f);
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("ashen/mask")));
             mask.renderMask(stack, ivertexbuilder, ashen.getMaskType(), packedLightIn, OverlayTexture.NO_OVERLAY);
             stack.pop();

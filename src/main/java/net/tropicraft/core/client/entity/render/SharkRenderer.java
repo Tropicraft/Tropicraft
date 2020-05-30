@@ -1,15 +1,13 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SharkModel;
 import net.tropicraft.core.common.entity.underdasea.SharkEntity;
-
-import javax.annotation.Nullable;
 
 public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
 

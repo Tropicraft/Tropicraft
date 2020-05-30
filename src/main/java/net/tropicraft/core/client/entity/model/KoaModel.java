@@ -20,9 +20,9 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
 
 		@Override
         public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
-            RenderSystem.enableCull();
+//            RenderSystem.enableCull();
 			super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
-            RenderSystem.disableCull();
+//            RenderSystem.disableCull();
 		}
 	}
 
@@ -183,9 +183,9 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
 
         if (isSitting) {
             if (isChild) {
-                RenderSystem.translated(0, 0.1, 0);
+//                RenderSystem.translated(0, 0.1, 0);
             } else {
-                RenderSystem.translated(0, 0.3, 0);
+//                RenderSystem.translated(0, 0.3, 0);
             }
         }
 
