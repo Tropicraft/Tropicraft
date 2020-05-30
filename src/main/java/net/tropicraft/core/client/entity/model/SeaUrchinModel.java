@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
@@ -123,21 +125,21 @@ public class SeaUrchinModel extends SegmentedModel<SeaUrchinEntity> {
 	}
 
 	@Override
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void render(MatrixStack ms, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		getParts().forEach((part) -> {
-			part.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			part.render(ms, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		});
 
 		for (int v = 0; v < VERTICAL_SPINES; v++) {
 			for (int h = 0; h < HORIZONTAL_SPINES; h++) {
-				RenderSystem.pushMatrix();
-				RenderSystem.translatef(0f, 1.25f, 0f);
-				RenderSystem.rotatef(360 * ((float) v) / VERTICAL_SPINES, 0f, 0f, 1f);
-				RenderSystem.rotatef(360 * ((float) h) / HORIZONTAL_SPINES, 1f, 0f, 0f);
-				RenderSystem.translatef(0f, -0.4f, 0f);
-				RenderSystem.scalef(0.33f, 1f, 0.33f);
-				spine.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-				RenderSystem.popMatrix();
+				ms.push();
+				ms.translate(0f, 1.25f, 0f);
+				ms.rotate(Vector3f.ZP.rotationDegrees(360 * ((float) v) / VERTICAL_SPINES));
+				ms.rotate(Vector3f.XP.rotationDegrees(360 * ((float) h) / HORIZONTAL_SPINES));
+				ms.translate(0f, -0.4f, 0f);
+				ms.scale(0.33f, 1f, 0.33f);
+				spine.render(ms, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+				ms.pop();
 			}
 		}
 	}

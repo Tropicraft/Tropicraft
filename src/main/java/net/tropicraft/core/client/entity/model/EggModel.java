@@ -1,6 +1,9 @@
 package net.tropicraft.core.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.tropicraft.core.common.entity.egg.EggEntity;
@@ -46,5 +49,11 @@ public class EggModel extends SegmentedModel<EggEntity> {
             body.rotateAngleX = 0F;
             body.rotateAngleZ = 0F;
         }
+    }
+    
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+    		float red, float green, float blue, float alpha) {
+    	super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 }
