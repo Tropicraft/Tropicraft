@@ -61,6 +61,12 @@ public class ClientSetup {
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.LEMON_SAPLING.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.LIME_SAPLING.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.ORANGE_SAPLING.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.MAHOGANY_SAPLING.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.PALM_SAPLING.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.PALM_TRAPDOOR.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_TRAPDOOR.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_DOOR.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_LADDER.get(), renderType);
 
         renderType = RenderType.getCutoutMipped();
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), renderType);

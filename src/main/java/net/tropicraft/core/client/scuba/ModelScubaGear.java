@@ -452,9 +452,7 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
         bipedBody.render(stack, bufferIn, packedLightIn, packedOverlayIn);
         bipedRightArm.render(stack, bufferIn, packedLightIn, packedOverlayIn);
         bipedLeftArm.render(stack, bufferIn, packedLightIn, packedOverlayIn);
-       
-        
-        GlStateManager.enableCull();
+
         bipedRightLeg.mirror = true;
         
         bipedLeftLeg.rotationPointY = 0;
