@@ -138,56 +138,56 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
         leaf10.mirror = true;
         headband.addChild(leaf10);
         setRotation(leaf10, 0F, 0F, 0F);
+        
+        bipedHeadwear.showModel = false;
     }
 
-    // TODO reimplement if koa seem off in 1.15
-//    @Override
-//    public void render(EntityKoaBase entity, float f, float f1, float f2, float f3, float f4, float f5) {
-//        //super.render(entity, f, f1, f2, f3, f4, f5);
-//        setRotationAngles(entity, f, f1, f2, f3, f4, f5);
-//
-//        GlStateManager.pushMatrix();
-//
-//        if (this.isChild)
-//        {
-//            //float f = 2.0F;
-//            GlStateManager.scalef(0.75F, 0.75F, 0.75F);
-//            GlStateManager.translatef(0.0F, 16.0F * f5, 0.0F);
-//            this.bipedHead.render(f5);
-//            GlStateManager.popMatrix();
-//            GlStateManager.pushMatrix();
-//            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-//            GlStateManager.translatef(0.0F, 24.0F * f5, 0.0F);
-//            this.bipedBody.render(f5);
-//            this.bipedRightArm.render(f5);
-//            this.bipedLeftArm.render(f5);
-//            this.bipedRightLeg.render(f5);
-//            this.bipedLeftLeg.render(f5);
+    @Override
+    public void render(MatrixStack ms, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+    		float red, float green, float blue, float alpha) {
+
+    	ms.push();
+//        if (isSitting) {
+//            if (isChild) {
+//            	ms.translate(0, 0.3, 0);
+//            } else {
+//                ms.translate(0, 0.6, 0);
+//            }
 //        }
-//        else {
-//            bipedHead.render(f5);
-//            bipedBody.render(f5);
-//            bipedRightArm.render(f5);
-//            bipedLeftArm.render(f5);
-//            bipedRightLeg.render(f5);
-//            bipedLeftLeg.render(f5);
-//        }
-//
-//        GlStateManager.popMatrix();
-//    }
+        
+        if (this.isChild) {
+            ms.push();
+        	ms.scale(0.75F, 0.75F, 0.75F);
+        	ms.translate(0.0F, 1.0F, 0.0F);
+            this.bipedHead.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            ms.pop();
+            ms.push();
+            ms.scale(0.5F, 0.5F, 0.5F);
+            ms.translate(0.0F, 1.5F, 0.0F);
+            this.bipedBody.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            this.bipedRightArm.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            this.bipedLeftArm.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            this.bipedRightLeg.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            this.bipedLeftLeg.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            ms.pop();
+        } else {
+            bipedHead.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            bipedBody.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            bipedRightArm.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            bipedLeftArm.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            bipedRightLeg.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+            bipedLeftLeg.render(ms, bufferIn, packedLightIn, packedOverlayIn);
+        }
+        ms.pop();
+    }
 
     @Override
     public void setRotationAngles(EntityKoaBase entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        bipedHeadwear.showModel = false;
+
         isSitting = entityIn.isSitting() || entityIn.isPassenger();
         final boolean isDancing = entityIn.isDancing();
 
-        if (isSitting) {
-            if (isChild) {
-//                RenderSystem.translated(0, 0.1, 0);
-            } else {
-//                RenderSystem.translated(0, 0.3, 0);
-            }
-        }
 
         float ticks = (entityIn.ticksExisted + Minecraft.getInstance().getRenderPartialTicks()) % 360;
 

@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.render;
 
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -35,5 +36,10 @@ public class KoaRenderer extends BipedRenderer<EntityKoaBase, KoaModel> {
 			}
 			return FEMALE_FISHER;
 		}
+	}
+	
+	@Override
+	protected RenderType func_230042_a_(EntityKoaBase p_230042_1_, boolean p_230042_2_, boolean p_230042_3_) {
+		return RenderType.getEntityCutout(getEntityTexture(p_230042_1_));
 	}
 }
