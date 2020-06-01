@@ -76,12 +76,21 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<ExplodingCoconutEntity>> EXPLODING_COCONUT = register("exploding_coconut", TropicraftEntities::explodingCoconut);
     public static final RegistryObject<EntityType<SharkEntity>> HAMMERHEAD = register("hammerhead", TropicraftEntities::hammerhead);
     public static final RegistryObject<EntityType<SeaTurtleEggEntity>> SEA_TURTLE_EGG = register("turtle_egg", TropicraftEntities::turtleEgg);
+    public static final RegistryObject<EntityType<TropiBeeEntity>> TROPI_BEE = register("tropibee", TropicraftEntities::tropiBee);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
     // TODO review -- tracking range is in chunks...these values seem way too high
+
+    private static EntityType.Builder<TropiBeeEntity> tropiBee() {
+        return EntityType.Builder.create(TropiBeeEntity::new, EntityClassification.CREATURE)
+                .size(0.4F, 0.6F)
+                .setTrackingRange(80)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
 
     private static EntityType.Builder<SeaTurtleEggEntity> turtleEgg() {
         return EntityType.Builder.create(SeaTurtleEggEntity::new, EntityClassification.CREATURE)

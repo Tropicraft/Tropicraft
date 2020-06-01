@@ -1,0 +1,22 @@
+package net.tropicraft.core.client.entity.render;
+
+import net.minecraft.client.renderer.entity.BeeRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.model.BeeModel;
+import net.minecraft.entity.passive.BeeEntity;
+import net.minecraft.util.ResourceLocation;
+import net.tropicraft.core.client.TropicraftRenderUtils;
+import net.tropicraft.core.client.entity.model.TropiBeeModel;
+import net.tropicraft.core.common.entity.TropiBeeEntity;
+
+public class TropiBeeRenderer extends MobRenderer<TropiBeeEntity, TropiBeeModel> {
+
+    public TropiBeeRenderer(EntityRendererManager p_i226033_1_) {
+        super(p_i226033_1_, new TropiBeeModel(), 0.4F);
+    }
+
+    public ResourceLocation getEntityTexture(TropiBeeEntity p_110775_1_) {
+        return TropicraftRenderUtils.getTextureEntity("tropibee");
+    }
+}

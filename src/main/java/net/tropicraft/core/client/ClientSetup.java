@@ -29,6 +29,7 @@ import net.tropicraft.core.client.entity.render.SeahorseRenderer;
 import net.tropicraft.core.client.entity.render.SharkRenderer;
 import net.tropicraft.core.client.entity.render.StarfishRenderer;
 import net.tropicraft.core.client.entity.render.TreeFrogRenderer;
+import net.tropicraft.core.client.entity.render.TropiBeeRenderer;
 import net.tropicraft.core.client.entity.render.TropiCreeperRenderer;
 import net.tropicraft.core.client.entity.render.TropiSkellyRenderer;
 import net.tropicraft.core.client.entity.render.TropiSpiderRenderer;
@@ -43,6 +44,7 @@ import net.tropicraft.core.client.tileentity.DrinkMixerRenderer;
 import net.tropicraft.core.client.tileentity.SifterRenderer;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.entity.TropiBeeEntity;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class ClientSetup {
@@ -106,6 +108,7 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EXPLODING_COCONUT.get(), manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HAMMERHEAD.get(), SharkRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEA_TURTLE_EGG.get(), EggRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_BEE.get(), TropiBeeRenderer::new);
     }
 
     public static void setupTileEntityRenderers() {
