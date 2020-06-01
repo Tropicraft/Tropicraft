@@ -12,6 +12,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -171,10 +172,15 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     @Override
     public boolean processInteract(final PlayerEntity player, final Hand hand) {
-        if (!world.isRemote && !player.isSneaking() && canFitPassenger(player) && this.isMature() && (isInWater() || getCanFly())) {
+        if (super.processInteract(player, hand)) {
+            return true;
+        }
+
+        if (!world.isRemote && !player.isSneaking() && canFitPassenger(player) && isMature() && (isInWater() || getCanFly())) {
             player.startRiding(this);
         }
-        return super.processInteract(player, hand);
+
+        return true;
     }
     
     @Override

@@ -174,15 +174,13 @@ public class VMonkeyEntity extends TameableEntity {
                     sitGoal.setSitting(true);
                     setHealth(20.0F);
                     setOwnerId(player.getUniqueID());
-                    playTameEffect(true);
                     world.setEntityState(this, (byte) 7);
                 } else {
-                    playTameEffect(false);
                     world.setEntityState(this, (byte) 6);
                 }
             }
 
-            return true;
+            return false;
         }
 
         return super.processInteract(player, hand);
