@@ -26,6 +26,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -197,6 +198,11 @@ public class AshenEntity extends CreatureEntity implements IRangedAttackMob {
         maskToTrack = null;
         setMaskType(mask.getMaskType());
         mask.remove();
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.ASHEN_SPAWN_EGG.get());
     }
 
 }

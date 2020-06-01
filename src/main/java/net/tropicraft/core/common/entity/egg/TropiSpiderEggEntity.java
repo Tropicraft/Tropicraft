@@ -2,14 +2,17 @@ package net.tropicraft.core.common.entity.egg;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 import javax.swing.text.html.Option;
@@ -93,5 +96,10 @@ public class TropiSpiderEggEntity extends EggEntity {
 	@Override
 	public int getPreHatchMovement() {
 		return 20;
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
 	}
 }

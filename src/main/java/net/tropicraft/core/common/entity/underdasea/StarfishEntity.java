@@ -11,6 +11,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -139,5 +140,10 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 		if (!world.isRemote) {
 			entityDropItem(new ItemStack(TropicraftItems.STARFISH.get()), 0);
 		}
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.STARFISH.get());
 	}
 }

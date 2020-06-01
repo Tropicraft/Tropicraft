@@ -7,12 +7,14 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -20,6 +22,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
@@ -160,5 +163,11 @@ public class TreeFrogEntity extends CreatureEntity implements IMob, IRangedAttac
             attackTime = 50;
             rotationYaw = (float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
         }
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        // TODO - add one egg per type
+        return new ItemStack(TropicraftItems.TREE_FROG_SPAWN_EGG.get());
     }
 }

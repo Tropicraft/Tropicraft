@@ -4,14 +4,17 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.DolphinEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
@@ -93,5 +96,10 @@ public class TropicraftDolphinEntity extends DolphinEntity {
     @Override
     protected SoundEvent getAmbientSound() {
         return Sounds.DOLPHIN;
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.DOLPHIN_SPAWN_EGG.get());
     }
 }

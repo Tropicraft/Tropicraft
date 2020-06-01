@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -17,11 +18,13 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropiSpiderEntity extends SpiderEntity {
 
@@ -241,5 +244,10 @@ public class TropiSpiderEntity extends SpiderEntity {
 	public void setSpiderType(byte b) {
 		getDataManager().set(TYPE, b);
 		recalculateSize();
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
 	}
 }

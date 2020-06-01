@@ -4,11 +4,14 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.BambooItemFrame;
 import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 public class WallItemEntity extends BambooItemFrame {
 
@@ -39,4 +42,9 @@ public class WallItemEntity extends BambooItemFrame {
     @Override
     public void playPlaceSound() {
     }
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return getDisplayedItem();
+	}
 }

@@ -9,6 +9,8 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
@@ -17,9 +19,11 @@ import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.PerlinNoiseGenerator;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.tropicraft.core.common.item.AshenMasks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nonnull;
@@ -345,5 +349,10 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         this.lerpYaw = MathHelper.wrapDegrees(additionalData.readDouble());
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.BEACH_FLOATS.get(DyeColor.byId(getColor().getId())).get());
     }
 }

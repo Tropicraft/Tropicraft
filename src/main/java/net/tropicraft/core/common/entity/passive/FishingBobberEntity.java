@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 

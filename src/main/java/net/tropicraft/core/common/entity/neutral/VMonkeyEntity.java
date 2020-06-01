@@ -13,10 +13,13 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.ai.vmonkey.*;
 import net.tropicraft.core.common.item.CocktailItem;
+import net.tropicraft.core.common.item.TropicraftItems;
+
 import javax.annotation.Nullable;
 
 public class VMonkeyEntity extends TameableEntity {
@@ -234,4 +237,8 @@ public class VMonkeyEntity extends TameableEntity {
         }
     }
 
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.V_MONKEY_SPAWN_EGG.get());
+    }
 }

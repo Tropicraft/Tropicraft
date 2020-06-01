@@ -11,6 +11,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.*;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -88,5 +89,10 @@ public class TropiSkellyEntity extends MonsterEntity {
     @Override
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return worldIn.getDifficulty() != Difficulty.PEACEFUL && this.isValidLightLevel() && super.canSpawn(worldIn, spawnReasonIn);
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.TROPISKELLY_SPAWN_EGG.get());
     }
 }

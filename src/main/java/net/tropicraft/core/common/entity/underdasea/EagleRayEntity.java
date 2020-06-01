@@ -4,11 +4,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 import static java.lang.Math.PI;
 
@@ -112,5 +115,10 @@ public class EagleRayEntity extends AbstractFishEntity {
 	@Override
 	protected SoundEvent getFlopSound() {
 		return null;
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.EAGLE_RAY_SPAWN_EGG.get());
 	}
 }

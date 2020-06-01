@@ -8,6 +8,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -17,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -285,5 +288,10 @@ public class ChairEntity extends FurnitureEntity {
 
     public boolean getComeSailAway() {
         return dataManager.get(COMESAILAWAY) == (byte)1;
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.CHAIRS.get(DyeColor.byId(getColor().getId())).get());
     }
 }

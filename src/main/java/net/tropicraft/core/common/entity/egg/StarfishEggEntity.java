@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -17,6 +18,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
 import net.tropicraft.core.common.entity.underdasea.StarfishType;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 
@@ -69,5 +71,10 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdd
 		baby.setBaby();
 		baby.setStarfishType(starfishType);
 		return baby;
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.STARFISH.get());
 	}
 }

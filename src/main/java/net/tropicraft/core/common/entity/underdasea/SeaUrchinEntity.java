@@ -5,13 +5,16 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SSpawnMobPacket;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 public class SeaUrchinEntity extends EchinodermEntity {
     /**
@@ -110,5 +113,10 @@ public class SeaUrchinEntity extends EchinodermEntity {
     @Override
     public IPacket<?> createSpawnPacket() {
         return new SSpawnMobPacket(this);
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.SEA_URCHIN_SPAWN_EGG.get());
     }
 }

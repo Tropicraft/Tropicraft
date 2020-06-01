@@ -21,10 +21,12 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -349,5 +351,10 @@ public class SeaTurtleEntity extends TurtleEntity {
                 super.travel(input);
             }
         }
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.SEA_TURTLE_SPAWN_EGG.get());
     }
 }

@@ -59,6 +59,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
@@ -1665,6 +1666,8 @@ public class EntityKoaBase extends VillagerEntity {
         return this.isPlaying;
     }
 
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.KOA_SPAWN_EGG.get());
+    }
 }
-
-

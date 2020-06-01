@@ -5,10 +5,13 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
@@ -25,6 +28,11 @@ public class IguanaEntity extends CreatureEntity {
 
     public IguanaEntity(EntityType<? extends CreatureEntity> type, World world) {
         super(type, world);
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.IGUANA_SPAWN_EGG.get());
     }
 
     @Override

@@ -7,12 +7,15 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.projectile.SnowballEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -231,5 +234,10 @@ public class FailgullEntity extends FlyingEntity {
 
 			return true;
 		}
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.FAILGULL_SPAWN_EGG.get());
 	}
 }
