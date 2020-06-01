@@ -359,6 +359,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.ASHEN);
         addEntityType(TropicraftEntities.ASHEN_MASK);
         addEntityType(TropicraftEntities.EXPLODING_COCONUT);
+        addEntityType(TropicraftEntities.SEA_TURTLE_EGG, "Sea Turtle Egg");
         
         // BIOMES
         

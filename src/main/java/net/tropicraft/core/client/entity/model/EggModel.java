@@ -42,9 +42,9 @@ public class EggModel extends SegmentedModel<EggEntity> {
         double randRotator = entityliving.rotationRand;
         body.rotateAngleY = 0F;
         if (hatching) {
-            body.rotateAngleY = (float) (Math.sin(entityliving.ticksExisted * .4)) * .2f;
-            body.rotateAngleX = (float) ((Math.sin(randRotator * 2))) * .2f;
-            body.rotateAngleZ = (float) ((Math.cos(randRotator * 2))) * .2f;
+            body.rotateAngleY = (float) (Math.sin((entityliving.ticksExisted + partialTick) * .6)) * .6f;
+            body.rotateAngleX = (float) ((Math.sin(randRotator * 4))) * .6f;
+            body.rotateAngleZ = (float) ((Math.cos(randRotator * 4))) * .6f;
         } else {
             body.rotateAngleX = 0F;
             body.rotateAngleZ = 0F;

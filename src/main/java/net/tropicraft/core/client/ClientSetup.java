@@ -105,6 +105,7 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.ASHEN_MASK.get(), AshenMaskRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EXPLODING_COCONUT.get(), manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HAMMERHEAD.get(), SharkRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEA_TURTLE_EGG.get(), EggRenderer::new);
     }
 
     public static void setupTileEntityRenderers() {

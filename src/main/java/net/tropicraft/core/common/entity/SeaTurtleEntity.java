@@ -1,5 +1,11 @@
 package net.tropicraft.core.common.entity;
 
+import com.google.common.collect.Sets;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.TurtleEggBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -10,8 +16,16 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.BreedGoal;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -19,17 +33,32 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.tropicraft.core.common.entity.ai.AccessibleGoalSelector;
+import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 
 public class SeaTurtleEntity extends TurtleEntity {
 
@@ -37,10 +66,13 @@ public class SeaTurtleEntity extends TurtleEntity {
     private static final DataParameter<Integer> TURTLE_TYPE = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> NO_BRAKES = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CAN_FLY = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_DIGGING = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_EGG = EntityDataManager.createKey(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
 
     private static final int NUM_TYPES = 6;
     
     private double lastPosY;
+    private int digCounter;
 
     public SeaTurtleEntity(EntityType<? extends TurtleEntity> type, World world) {
         super(type, world);
@@ -73,6 +105,26 @@ public class SeaTurtleEntity extends TurtleEntity {
         return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
     }
 
+    protected void registerGoals() {
+        super.registerGoals();
+        // goalSelector
+        GoalSelector goalSelector = ObfuscationReflectionHelper.getPrivateValue(MobEntity.class, this, "field_70714_bg");
+        // goals
+        Set<PrioritizedGoal> goalSet = ObfuscationReflectionHelper.getPrivateValue(GoalSelector.class, goalSelector, "field_220892_d");
+
+        final Optional<PrioritizedGoal> eggGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Egg")).findFirst();
+        if (eggGoal.isPresent()) {
+            goalSelector.removeGoal(eggGoal.get().getGoal());
+            goalSelector.addGoal(1, new BetterLayEggGoal(this, 1.0));
+        }
+
+        final Optional<PrioritizedGoal> mateGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Mate")).findFirst();
+        if (mateGoal.isPresent()) {
+            goalSelector.removeGoal(mateGoal.get().getGoal());
+            goalSelector.addGoal(1, new BetterMateGoal(this, 1.0));
+        }
+    }
+
     @Override
     public void registerData() {
         super.registerData();
@@ -80,6 +132,8 @@ public class SeaTurtleEntity extends TurtleEntity {
         getDataManager().register(TURTLE_TYPE, 1);
         getDataManager().register(NO_BRAKES, false);
         getDataManager().register(CAN_FLY, false);
+        getDataManager().register(IS_DIGGING, false);
+        getDataManager().register(HAS_EGG, false);
     }
 
     public void writeAdditional(CompoundNBT nbt) {
@@ -88,6 +142,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         nbt.putBoolean("IsMature", isMature());
         nbt.putBoolean("NoBrakesOnThisTrain", getNoBrakes());
         nbt.putBoolean("LongsForTheSky", getCanFly());
+        nbt.putBoolean("HasEgg", hasEgg());
     }
 
     public void readAdditional(CompoundNBT nbt) {
@@ -104,6 +159,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         }
         setNoBrakes(nbt.getBoolean("NoBrakesOnThisTrain"));
         setCanFly(nbt.getBoolean("LongsForTheSky"));
+        setHasEgg(nbt.getBoolean("HasEgg"));
         this.lastPosY = this.getPosY();
     }
 
@@ -203,6 +259,13 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Override
     public void livingTick() {
         super.livingTick();
+        if (this.isAlive() && this.isDigging() && this.digCounter >= 1 && this.digCounter % 5 == 0) {
+            BlockPos blockpos = new BlockPos(this);
+            if (this.world.getBlockState(blockpos.down()).getMaterial() == Material.SAND) {
+                this.world.playEvent(2001, blockpos, Block.getStateId(Blocks.SAND.getDefaultState()));
+            }
+        }
+
         if (this.world.isRemote) {
             if (isBeingRidden() && canBeSteered()) {
                 if (isInWater() || getCanFly()) {
@@ -356,5 +419,127 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
         return new ItemStack(TropicraftItems.SEA_TURTLE_SPAWN_EGG.get());
+    }
+
+    static class BetterLayEggGoal extends MoveToBlockGoal {
+        private final SeaTurtleEntity turtle;
+
+        BetterLayEggGoal(SeaTurtleEntity turtle, double speedIn) {
+            super(turtle, speedIn, 16);
+            this.turtle = turtle;
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean shouldExecute() {
+            return turtle.hasEgg() && turtle.getHome().withinDistance(turtle.getPositionVec(), 9.0D) ? super.shouldExecute() : false;
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && turtle.hasEgg() && turtle.getHome().withinDistance(turtle.getPositionVec(), 9.0D);
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        @Override
+        public void tick() {
+            super.tick();
+            BlockPos blockpos = new BlockPos(this.turtle);
+            if (!this.turtle.isInWater() && this.getIsAboveDestination()) {
+                if (!this.turtle.isDigging()) {
+                    this.turtle.setDigging(true);
+                } else if (this.turtle.digCounter > 200) {
+                    World world = this.turtle.world;
+                    world.playSound((PlayerEntity)null, blockpos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS, 0.3F, 0.9F + world.rand.nextFloat() * 0.2F);
+                    //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.getDefaultState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
+                    final SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
+                    final BlockPos spawnPos = destinationBlock.up();
+                    egg.setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+                    world.addEntity(egg);
+                    this.turtle.setHasEgg(false);
+                    this.turtle.setDigging(false);
+                    this.turtle.setInLove(600);
+                }
+
+                if (this.turtle.isDigging()) {
+                    this.turtle.digCounter++;
+                }
+            }
+        }
+
+        @Override
+        protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
+            if (!worldIn.isAirBlock(pos.up())) {
+                return false;
+            } else {
+                return worldIn.getBlockState(pos).getMaterial() == Material.SAND;
+            }
+        }
+    }
+
+    static class BetterMateGoal extends BreedGoal {
+        private final SeaTurtleEntity turtle;
+
+        BetterMateGoal(SeaTurtleEntity turtle, double speedIn) {
+            super(turtle, speedIn);
+            this.turtle = turtle;
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean shouldExecute() {
+            return super.shouldExecute() && !this.turtle.hasEgg();
+        }
+
+        /**
+         * Spawns a baby animal of the same type.
+         */
+        protected void spawnBaby() {
+            ServerPlayerEntity serverplayerentity = this.animal.getLoveCause();
+            if (serverplayerentity == null && this.targetMate.getLoveCause() != null) {
+                serverplayerentity = this.targetMate.getLoveCause();
+            }
+
+            if (serverplayerentity != null) {
+                serverplayerentity.addStat(Stats.ANIMALS_BRED);
+                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, (AgeableEntity)null);
+            }
+
+            this.turtle.setHasEgg(true);
+            this.animal.resetInLove();
+            this.targetMate.resetInLove();
+            Random random = this.animal.getRNG();
+            if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+                this.world.addEntity(new ExperienceOrbEntity(this.world, this.animal.getPosX(), this.animal.getPosY(), this.animal.getPosZ(), random.nextInt(7) + 1));
+            }
+
+        }
+    }
+
+    private void setDigging(boolean digging) {
+        this.digCounter = digging ? 1 : 0;
+        this.dataManager.set(IS_DIGGING, digging);
+    }
+
+    @Override
+    public boolean isDigging() {
+        return digCounter > 0;
+    }
+
+    private void setHasEgg(boolean hasEgg) {
+        this.dataManager.set(HAS_EGG, hasEgg);
+    }
+
+    @Override
+    public boolean hasEgg() {
+        return dataManager.get(HAS_EGG);
     }
 }

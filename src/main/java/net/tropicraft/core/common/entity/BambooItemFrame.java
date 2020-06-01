@@ -3,10 +3,12 @@ package net.tropicraft.core.common.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemFrameEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -53,4 +55,9 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
         this.hangingPosition = additionalData.readBlockPos();
         updateFacingWithBoundingBox(Direction.byIndex(additionalData.readByte()));
     }
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get());
+	}
 }

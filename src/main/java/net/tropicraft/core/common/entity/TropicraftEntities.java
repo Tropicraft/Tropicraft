@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
 import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
 import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
@@ -74,12 +75,21 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<AshenEntity>> ASHEN = register("ashen", TropicraftEntities::ashen);
     public static final RegistryObject<EntityType<ExplodingCoconutEntity>> EXPLODING_COCONUT = register("exploding_coconut", TropicraftEntities::explodingCoconut);
     public static final RegistryObject<EntityType<SharkEntity>> HAMMERHEAD = register("hammerhead", TropicraftEntities::hammerhead);
+    public static final RegistryObject<EntityType<SeaTurtleEggEntity>> SEA_TURTLE_EGG = register("turtle_egg", TropicraftEntities::turtleEgg);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
     }
 
     // TODO review -- tracking range is in chunks...these values seem way too high
+
+    private static EntityType.Builder<SeaTurtleEggEntity> turtleEgg() {
+        return EntityType.Builder.create(SeaTurtleEggEntity::new, EntityClassification.CREATURE)
+                .size(EGG_WIDTH, EGG_HEIGHT)
+                .setTrackingRange(64)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(false);
+    }
     
     private static EntityType.Builder<SharkEntity> hammerhead() {
         return EntityType.Builder.create(SharkEntity::new, EntityClassification.WATER_CREATURE)

@@ -32,6 +32,7 @@ public class EggRenderer extends LivingRenderer<EggEntity, EggModel> {
 			drawFlatEgg(egg, partialTicks, stack, bufferIn, packedLightIn);
 		} else {
 			shadowSize = 0.2f;
+			stack.scale(0.5f, 0.5f, 0.5f);
 			super.render(egg, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 		}
 		stack.pop();
