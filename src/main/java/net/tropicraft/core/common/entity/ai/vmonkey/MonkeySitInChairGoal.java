@@ -45,7 +45,7 @@ public class MonkeySitInChairGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (entity == null || !entity.isTamed()) {
+        if (entity == null || !entity.isTamed() || entity.getOwner() == null) {
             return false;
         }
         return hasNearbyEmptyChair() && isOwnerNearAndSitting();
