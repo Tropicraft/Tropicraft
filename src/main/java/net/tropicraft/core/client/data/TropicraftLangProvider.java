@@ -1,9 +1,5 @@
 package net.tropicraft.core.client.data;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -23,6 +19,10 @@ import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class TropicraftLangProvider extends LanguageProvider {
 
@@ -377,6 +377,12 @@ public class TropicraftLangProvider extends LanguageProvider {
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
         add("attribute.name." + LivingEntity.SWIM_SPEED.getName(), "Swim Speed");
+
+        // Koa
+        add("entity.tropicraft.koa.female.hunter.name", "Koa Hunter");
+        add("entity.tropicraft.koa.female.fisherman.name", "Koa Fisher");
+        add("entity.tropicraft.koa.male.hunter.name", "Koa Hunter");
+        add("entity.tropicraft.koa.male.fisherman.name", "Koa Fisher");
         
         TropicraftLangKeys.generate(this);
     }
