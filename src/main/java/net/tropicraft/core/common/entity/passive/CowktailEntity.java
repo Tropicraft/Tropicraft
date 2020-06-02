@@ -19,6 +19,7 @@ import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -146,6 +147,11 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 	public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
 		setCowktailType(Type.getRandomType(rand));
 		return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target) {
+		return new ItemStack(TropicraftItems.COWKTAIL_SPAWN_EGG.get());
 	}
 
 	public enum Type {
