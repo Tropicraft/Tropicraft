@@ -11,10 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:shaka_ingot",
-            "count": {
-              "min": 9
-            }
+            "item": "tropicraft:shaka_ingot"
           }
         ]
       }

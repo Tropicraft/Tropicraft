@@ -304,6 +304,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.TROPI_SPIDER_SPAWN_EGG);
         addItem(TropicraftItems.ASHEN_SPAWN_EGG, "Ashen Ash");
         addItem(TropicraftItems.HAMMERHEAD_SPAWN_EGG);
+        addItem(TropicraftItems.COWKTAIL_SPAWN_EGG);
 
         // Armor
         addItem(TropicraftItems.FIRE_BOOTS);
@@ -360,6 +361,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.ASHEN_MASK);
         addEntityType(TropicraftEntities.EXPLODING_COCONUT);
         addEntityType(TropicraftEntities.SEA_TURTLE_EGG, "Sea Turtle Egg");
+        addEntityType(TropicraftEntities.COWKTAIL, "Cowktail");
         
         // BIOMES
         
