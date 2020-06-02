@@ -3,8 +3,6 @@ package net.tropicraft.core.common.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.passive.fish.TropicalFishEntity;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,13 +22,25 @@ import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
 import net.tropicraft.core.common.entity.passive.FailgullEntity;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.placeable.*;
+import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
+import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
+import net.tropicraft.core.common.entity.placeable.ChairEntity;
+import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
-import net.tropicraft.core.common.entity.underdasea.*;
+import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
+import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
+import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
+import net.tropicraft.core.common.entity.underdasea.SardineEntity;
+import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
+import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
+import net.tropicraft.core.common.entity.underdasea.SharkEntity;
+import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
+import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
+import net.tropicraft.core.common.entity.underdasea.TropicraftTropicalFishEntity;
 
-import java.rmi.registry.Registry;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -102,7 +112,7 @@ public class TropicraftEntities {
     
     private static EntityType.Builder<SharkEntity> hammerhead() {
         return EntityType.Builder.create(SharkEntity::new, EntityClassification.WATER_CREATURE)
-                .size(2.4F, 1.5F)
+                .size(2.4F, 1.4F)
                 .setTrackingRange(64)
                 .setUpdateInterval(2)
                 .setShouldReceiveVelocityUpdates(true);

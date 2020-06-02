@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -27,8 +27,17 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
     }
 
     @Override
+    public void render(SharkEntity shark, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+        stack.push();
+        stack.translate(0, -1, 0);
+        super.render(shark, yaw, partialTicks, stack, buffer, light);
+        stack.pop();
+    }
+
+    @Override
     protected void preRenderCallback(SharkEntity shark, final MatrixStack stack, float partialTickTime) {
         float scale = 1f;
+
         if (shark.isBoss()) {
             scale = 1.5f;
             stack.translate(0, 0.3f, 0);
