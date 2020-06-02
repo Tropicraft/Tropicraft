@@ -32,6 +32,7 @@ import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
+import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
 import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
 import net.tropicraft.core.common.entity.underdasea.SardineEntity;
@@ -89,6 +90,7 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<SeaTurtleEggEntity>> SEA_TURTLE_EGG = register("turtle_egg", TropicraftEntities::turtleEgg);
     public static final RegistryObject<EntityType<TropiBeeEntity>> TROPI_BEE = register("tropibee", TropicraftEntities::tropiBee);
     public static final RegistryObject<EntityType<CowktailEntity>> COWKTAIL = register("cowktail", TropicraftEntities::cowktail);
+    public static final RegistryObject<EntityType<ManOWarEntity>> MAN_O_WAR = register("man_o_war", TropicraftEntities::manOWar);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
@@ -100,6 +102,14 @@ public class TropicraftEntities {
         return EntityType.Builder.create(CowktailEntity::new, EntityClassification.CREATURE)
                 .size(0.9F, 1.4F)
                 .setTrackingRange(80)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<ManOWarEntity> manOWar() {
+        return EntityType.Builder.create(ManOWarEntity::new, EntityClassification.WATER_CREATURE)
+                .size(0.6F, 0.8F)
+                .setTrackingRange(10)
                 .setUpdateInterval(3)
                 .setShouldReceiveVelocityUpdates(true);
     }
