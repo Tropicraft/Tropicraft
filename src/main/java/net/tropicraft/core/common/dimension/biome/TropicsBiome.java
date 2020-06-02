@@ -44,6 +44,7 @@ public class TropicsBiome extends TropicraftBiome {
         DefaultTropicsFeatures.addPineapples(this);
         
         addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TropicraftEntities.FAILGULL.get(), 10, 5, 15));
+        addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TropicraftEntities.TROPI_BEE.get(), 10, 4, 4));
 
         DefaultBiomeFeatures.addGrass(this);
         DefaultBiomeFeatures.addTallGrass(this);
