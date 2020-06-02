@@ -11,10 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:zirconium_gem",
-            "count": {
-              "min": 9
-            }
+            "item": "tropicraft:zirconium_gem"
           }
         ]
       }

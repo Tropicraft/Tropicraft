@@ -11,10 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:azurite_gem",
-            "count": {
-              "min": 9
-            }
+            "item": "tropicraft:azurite_gem"
           }
         ]
       }

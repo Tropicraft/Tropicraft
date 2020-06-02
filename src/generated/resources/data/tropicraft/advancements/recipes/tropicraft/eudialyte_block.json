@@ -11,10 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:eudialyte_gem",
-            "count": {
-              "min": 9
-            }
+            "item": "tropicraft:eudialyte_gem"
           }
         ]
       }

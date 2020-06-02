@@ -11,10 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:manganese_ingot",
-            "count": {
-              "min": 9
-            }
+            "item": "tropicraft:manganese_ingot"
           }
         ]
       }
