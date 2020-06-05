@@ -1,6 +1,12 @@
 package net.tropicraft.core.common.entity.neutral;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -21,13 +27,14 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
 
-public class TreeFrogEntity extends CreatureEntity implements IMob, IRangedAttackMob {
+public class TreeFrogEntity extends TropicraftCreatureEntity implements IMob, IRangedAttackMob {
 
     private static final DataParameter<Integer> TYPE = EntityDataManager.createKey(TreeFrogEntity.class, DataSerializers.VARINT);
 

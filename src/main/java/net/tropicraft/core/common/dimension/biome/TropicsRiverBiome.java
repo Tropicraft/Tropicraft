@@ -1,9 +1,12 @@
 package net.tropicraft.core.common.dimension.biome;
 
-import static net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs.PURIFIED_SAND_CONFIG;
-
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBuilders;
+import net.tropicraft.core.common.entity.TropicraftEntities;
+
+import static net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs.PURIFIED_SAND_CONFIG;
 
 public class TropicsRiverBiome extends TropicraftBiome {
     protected TropicsRiverBiome() {
@@ -15,10 +18,8 @@ public class TropicsRiverBiome extends TropicraftBiome {
             .scale(0.05F)
             .temperature(1.5F)
             .downfall(1.25F)
-            .parent(null));
-
-        //        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityPiranha.class, 20, 1, 12));
-        //        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityRiverSardine.class, 20, 1, 15));
+            .parent(null)
+        );
     }
     
     @Override
@@ -26,5 +27,11 @@ public class TropicsRiverBiome extends TropicraftBiome {
         super.addFeatures();
         DefaultTropicsFeatures.addCarvers(this);
         DefaultTropicsFeatures.addTropicsFlowers(this);
+
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.PIRANHA.get(), 20, 1, 12));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.RIVER_SARDINE.get(), 20, 1, 8));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(EntityType.SQUID, 8, 1, 4));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(EntityType.COD, 4, 1, 5));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(EntityType.SALMON, 4, 1, 5));
     }
 }

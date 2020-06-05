@@ -4,7 +4,13 @@ import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,10 +25,11 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
-public class EIHEntity extends CreatureEntity {
+public class EIHEntity extends TropicraftCreatureEntity {
 
     private static final DataParameter<Byte> STATE = EntityDataManager.createKey(EIHEntity.class, DataSerializers.BYTE);
     public int FLAG_SLEEP = 1 << 0;

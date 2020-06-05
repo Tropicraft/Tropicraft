@@ -54,17 +54,15 @@ public class TropicsOceanBiome extends TropicraftBiome {
         DefaultTropicsFeatures.addUndergroundPickles(this);
 
         addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.MARLIN.get(), 10, 1, 4));
-//        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityManOWar.class, 2, 1, 1));
-//        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityStarfish.class, 4, 1, 4));
-//        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaUrchin.class, 4, 1, 4));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.MAN_O_WAR.get(), 2, 1, 1));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.STARFISH.get(), 4, 1, 4));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.SEA_URCHIN.get(), 4, 1, 4));
         addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.DOLPHIN.get(), 3, 4, 7));
         addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.SEAHORSE.get(), 6, 6, 12));
-//        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySeaTurtle.class, 6, 3, 8));
         addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.SEA_TURTLE.get(), 6, 3, 8));
-//        this.spawnableMonsterList.add(new SpawnListEntry(EntityFailgull.class, 30, 5, 15));
-        addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TropicraftEntities.FAILGULL.get(), 30, 5, 15));
-//        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityTropicalFish.class, 20, 1, 1));
-//        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityEagleRay.class, 6, 2, 4));
-//        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntityShark.class, 3, 1, 3));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.TROPICAL_FISH.get(), 20, 4, 8));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.EAGLE_RAY.get(), 6, 1, 1));
+        addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(TropicraftEntities.HAMMERHEAD.get(), 2, 1, 1));
+        addSpawn(EntityClassification.AMBIENT, new SpawnListEntry(TropicraftEntities.FAILGULL.get(), 15, 5, 10));
     }
 }

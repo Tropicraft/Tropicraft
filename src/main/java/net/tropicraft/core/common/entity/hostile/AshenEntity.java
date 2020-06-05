@@ -43,7 +43,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 
-public class AshenEntity extends CreatureEntity implements IRangedAttackMob {
+public class AshenEntity extends TropicraftCreatureEntity implements IRangedAttackMob {
 
     public enum AshenState {
         PEACEFUL,

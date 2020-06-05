@@ -10,11 +10,11 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.FrequencyConfig;
-import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class TropicraftRainforestBiome extends TropicraftBiome {
 
@@ -29,7 +29,7 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
                 .downfall(2F)
                 .parent(null));
     }
-    
+
     @Override
     public void addFeatures() {
         super.addFeatures();
@@ -50,9 +50,9 @@ public class TropicraftRainforestBiome extends TropicraftBiome {
 
         addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.OCELOT, 10, 1, 1));
         addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.PARROT, 10, 1, 2));
-//
-//        this.spawnableMonsterList.add(new SpawnListEntry(EntityTreeFrog.class, 25, 2, 5));
-//        this.spawnableMonsterList.add(new SpawnListEntry(EntityTropiSpider.class, 30, 1, 1));
+
+        addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TropicraftEntities.TREE_FROG.get(), 25, 2, 5));
+        addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TropicraftEntities.TROPI_SPIDER.get(), 30, 1, 1));
 
         DefaultBiomeFeatures.addJungleGrass(this);
         DefaultTropicsFeatures.addRainforestPlants(this);
