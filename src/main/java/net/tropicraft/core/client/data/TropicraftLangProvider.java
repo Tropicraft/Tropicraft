@@ -296,7 +296,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.SEAHORSE_SPAWN_EGG);
         addItem(TropicraftItems.TREE_FROG_SPAWN_EGG);
         addItem(TropicraftItems.SEA_URCHIN_SPAWN_EGG);
-        addItem(TropicraftItems.V_MONKEY_SPAWN_EGG);
+        addItem(TropicraftItems.V_MONKEY_SPAWN_EGG, "Vervet Monkey Spawn Egg");
         addItem(TropicraftItems.PIRANHA_SPAWN_EGG);
         addItem(TropicraftItems.SARDINE_SPAWN_EGG);
         addItem(TropicraftItems.TROPICAL_FISH_SPAWN_EGG);
@@ -366,6 +366,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.COWKTAIL);
         addEntityType(TropicraftEntities.MAN_O_WAR, "Man o' War");
         addEntityType(TropicraftEntities.TROPI_BEE, "Tropibee");
+        addEntityType(TropicraftEntities.V_MONKEY, "Vervet Monkey");
         
         // BIOMES
         

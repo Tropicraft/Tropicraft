@@ -12,10 +12,12 @@ public class Foods {
 
     public static final Food COOKED_RAY = new Food.Builder().hunger(5).saturation(0.5f).build();
     public static final Food FRESH_MARLIN = new Food.Builder().hunger(2).saturation(0.3f).build();
-    public static final Food SEARED_MARLIN = new Food.Builder().hunger(2).saturation(0.65f).build();
+    public static final Food SEARED_MARLIN = new Food.Builder().hunger(5).saturation(0.65f).build();
     public static final Food COOKED_FROG_LEG = new Food.Builder().hunger(2).saturation(0.15f).build();
     public static final Food SEA_URCHIN_ROE = new Food.Builder().hunger(3).saturation(0.3f).build();
     public static final Food TOASTED_NORI = new Food.Builder().hunger(2).saturation(0.2f).build();
     public static final Food RAW_FISH = new Food.Builder().hunger(2).saturation(0.2f).build();
+    public static final Food RAW_RAY = new Food.Builder().hunger(1).saturation(0.2f).build();
+    public static final Food RAW_FROG_LEG = new Food.Builder().hunger(1).saturation(0.2f).build();
     public static final Food COOKED_FISH = new Food.Builder().hunger(4).saturation(0.4f).build();
 }

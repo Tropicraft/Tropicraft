@@ -29,13 +29,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
+import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.function.IntFunction;
 
 public class CowktailEntity extends CowEntity implements net.minecraftforge.common.IShearable {
 	private static final DataParameter<String> COWKTAIL_TYPE = EntityDataManager.createKey(CowktailEntity.class, DataSerializers.STRING);
@@ -55,12 +57,15 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 
 	public boolean processInteract(PlayerEntity player, Hand hand) {
 		ItemStack itemstack = player.getHeldItem(hand);
-		if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isChild() && !player.abilities.isCreativeMode) {
-			itemstack.shrink(1);
+		if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isChild()) {
+			if (player.abilities.isCreativeMode) {
+				itemstack.shrink(1);
+			}
 
-			RegistryObject<CocktailItem>[] cocktails = TropicraftItems.COCKTAILS.values().stream()
-					.toArray((IntFunction<RegistryObject<CocktailItem>[]>) RegistryObject[]::new);;
-			ItemStack cocktailItem = new ItemStack(cocktails[rand.nextInt(cocktails.length)].get());
+			final List<RegistryObject<CocktailItem>> cocktails = new ArrayList<>(TropicraftItems.COCKTAILS.values());
+			// Remove generic cocktail from cowktail
+			cocktails.removeIf(cocktail -> cocktail.isPresent() && cocktail.get().getDrink() == Drink.COCKTAIL);
+			final ItemStack cocktailItem = new ItemStack(cocktails.get(rand.nextInt(cocktails.size())).get());
 
 			if (itemstack.isEmpty()) {
 				player.setHeldItem(hand, cocktailItem);

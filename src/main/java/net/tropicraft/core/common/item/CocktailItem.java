@@ -258,4 +258,8 @@ public class CocktailItem extends Item implements IColoredItem {
 		}
 		return super.getDisplayName(stack);
 	}
+
+	public Drink getDrink() {
+		return drink;
+	}
 }

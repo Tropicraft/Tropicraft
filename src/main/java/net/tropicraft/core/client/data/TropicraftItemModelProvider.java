@@ -248,7 +248,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.SEA_URCHIN_ROE);
         generated(TropicraftItems.TOASTED_NORI);
         generated(TropicraftItems.RAW_FISH, modLoc(folder + "/smolfish"));
-        generated(TropicraftItems.COOKED_FISH, modLoc(folder + "/smolfish"));
+        generated(TropicraftItems.COOKED_FISH, modLoc(folder + "/cooked_smolfish"));
         generated(TropicraftItems.POISON_FROG_SKIN);
         
         // Mob drops

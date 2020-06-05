@@ -92,9 +92,9 @@ public class TropicraftItems {
 
     public static final RegistryObject<Item> FRESH_MARLIN = register("fresh_marlin", Builder.food(Foods.FRESH_MARLIN));
     public static final RegistryObject<Item> SEARED_MARLIN = register("seared_marlin", Builder.food(Foods.SEARED_MARLIN));
-    public static final RegistryObject<Item> RAW_RAY = register("raw_ray", Builder.item());
+    public static final RegistryObject<Item> RAW_RAY = register("raw_ray", Builder.food(Foods.RAW_RAY));
     public static final RegistryObject<Item> COOKED_RAY = register("cooked_ray", Builder.food(Foods.COOKED_RAY));
-    public static final RegistryObject<Item> FROG_LEG = register("frog_leg", Builder.item());
+    public static final RegistryObject<Item> FROG_LEG = register("frog_leg", Builder.food(Foods.RAW_FROG_LEG));
     public static final RegistryObject<Item> COOKED_FROG_LEG = register("cooked_frog_leg", Builder.food(Foods.COOKED_FROG_LEG));
     public static final RegistryObject<Item> SEA_URCHIN_ROE = register("sea_urchin_roe", Builder.food(Foods.SEA_URCHIN_ROE));
     public static final RegistryObject<Item> TOASTED_NORI = register("toasted_nori", Builder.food(Foods.TOASTED_NORI));
