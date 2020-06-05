@@ -1,10 +1,8 @@
 package net.tropicraft.core.common.entity;
 
-import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.TurtleEggBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.CreatureAttribute;
@@ -17,9 +15,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -47,15 +43,11 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.tropicraft.core.common.entity.ai.AccessibleGoalSelector;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -208,6 +200,10 @@ public class SeaTurtleEntity extends TurtleEntity {
     public Entity getControllingPassenger() {
         final List<Entity> passengers = getPassengers();
         return passengers.isEmpty() ? null : passengers.get(0);
+    }
+
+    public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+        return pos.getY() < world.getSeaLevel() + 4 && world.getBlockState(pos.down()).getBlock() == Blocks.SAND && world.getLightSubtracted(pos, 0) > 8;
     }
 
     @Override
