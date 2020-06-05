@@ -9,12 +9,9 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
-import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.model.TropiBeeModel;
-import net.tropicraft.core.client.entity.render.AshenRenderer;
 import net.tropicraft.core.client.entity.render.TropiBeeRenderer;
 import net.tropicraft.core.common.entity.TropiBeeEntity;
-import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class SunglassesLayer extends LayerRenderer<TropiBeeEntity, TropiBeeModel> {
 
@@ -33,7 +30,11 @@ public class SunglassesLayer extends LayerRenderer<TropiBeeEntity, TropiBeeModel
         beeModel.setRotationAngles(bee, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         beeModel.getBody().translateRotate(stack);
 
-        stack.translate(0.03125F, 0.175, -.313F);
+        if (!bee.isChild()) {
+            stack.translate(0.03125F, 0.175, -.313F);
+        } else {
+            stack.translate(0.03125F, 0.295, -.163F);
+        }
         stack.rotate(Vector3f.YP.rotationDegrees(180));
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("sunglasses")));
         mask.renderMask(stack, ivertexbuilder, 0, packedLightIn, OverlayTexture.NO_OVERLAY);

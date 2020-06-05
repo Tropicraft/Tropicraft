@@ -4,8 +4,6 @@ import net.minecraft.client.renderer.entity.model.BeeModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.tropicraft.core.common.entity.TropiBeeEntity;
 
-import java.util.Iterator;
-
 public class TropiBeeModel extends BeeModel<TropiBeeEntity> {
     private final ModelRenderer hat1;
     private final ModelRenderer hat2;
@@ -33,9 +31,7 @@ public class TropiBeeModel extends BeeModel<TropiBeeEntity> {
 
     public ModelRenderer getBody() {
         ModelRenderer body = null;
-        final Iterator<ModelRenderer> iterator = getBodyParts().iterator();
-        while (iterator.hasNext()) {
-            final ModelRenderer b = iterator.next();
+        for (ModelRenderer b : getBodyParts()) {
             body = b;
             break;
         }
