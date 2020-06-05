@@ -35,6 +35,7 @@ import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
 import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
+import net.tropicraft.core.common.data.TropicraftEntityTypeTagsProvider;
 import net.tropicraft.core.common.data.TropicraftItemTagsProvider;
 import net.tropicraft.core.common.data.TropicraftLootTableProvider;
 import net.tropicraft.core.common.data.TropicraftRecipeProvider;
@@ -144,6 +145,7 @@ public class Tropicraft
             gen.addProvider(new TropicraftItemTagsProvider(gen));
             gen.addProvider(new TropicraftRecipeProvider(gen));
             gen.addProvider(new TropicraftLootTableProvider(gen));
+            gen.addProvider(new TropicraftEntityTypeTagsProvider(gen));
         }
     }
 }

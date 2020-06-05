@@ -1,7 +1,5 @@
 package net.tropicraft.core.common;
 
-import java.util.function.Function;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
@@ -9,6 +7,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Constants;
+
+import java.util.function.Function;
 
 public class TropicraftTags {
 

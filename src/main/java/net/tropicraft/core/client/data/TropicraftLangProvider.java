@@ -306,6 +306,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.HAMMERHEAD_SPAWN_EGG);
         addItem(TropicraftItems.COWKTAIL_SPAWN_EGG);
         addItem(TropicraftItems.MAN_O_WAR_SPAWN_EGG);
+        addItem(TropicraftItems.TROPIBEE_SPAWN_EGG);
 
         // Armor
         addItem(TropicraftItems.FIRE_BOOTS);
@@ -364,6 +365,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.SEA_TURTLE_EGG, "Sea Turtle Egg");
         addEntityType(TropicraftEntities.COWKTAIL);
         addEntityType(TropicraftEntities.MAN_O_WAR, "Man o' War");
+        addEntityType(TropicraftEntities.TROPI_BEE, "Tropibee");
         
         // BIOMES
         

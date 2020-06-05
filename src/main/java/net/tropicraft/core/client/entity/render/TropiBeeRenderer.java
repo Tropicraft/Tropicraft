@@ -16,7 +16,10 @@ public class TropiBeeRenderer extends MobRenderer<TropiBeeEntity, TropiBeeModel>
         addLayer(new SunglassesLayer(this));
     }
 
-    public ResourceLocation getEntityTexture(TropiBeeEntity p_110775_1_) {
+    public ResourceLocation getEntityTexture(TropiBeeEntity bee) {
+        if (bee.hasNectar()) {
+            return TropicraftRenderUtils.getTextureEntity("tropibee_nectar");
+        }
         return TropicraftRenderUtils.getTextureEntity("tropibee");
     }
 }
