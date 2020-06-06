@@ -1,12 +1,5 @@
 package net.tropicraft.core.common.item.scuba;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -24,8 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -47,6 +38,12 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.network.message.MessageUpdateScubaData;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE)
 public class ScubaData implements INBTSerializable<CompoundNBT> {
@@ -213,7 +210,6 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void copyFrom(ScubaData data) {
         this.diveTime = data.getDiveTime();
         this.maxDepth = data.getMaxDepth();
