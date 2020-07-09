@@ -2,6 +2,7 @@ package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -50,18 +51,17 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     }
 
     @Override
-    public void renderIngredients(final DrinkMixerTileEntity te, final MatrixStack stack, final IRenderTypeBuffer buffer, int packedLightIn, int combinedOverlayIn) {
+    public void renderIngredients(final DrinkMixerTileEntity te, final MatrixStack stack, final IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
     	if (dummyEntityItem == null) {
     		 dummyEntityItem = new ItemEntity(Minecraft.getInstance().world, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
     	}
         final NonNullList<ItemStack> ingredients = te.getIngredients();
-        final int combinedLight = getCombinedLight(te.getWorld(), te.getPos());
 
         if (!te.isDoneMixing()) {
             for (int index = 0; index < ingredients.size(); index++) {
                 final ItemStack ingredient = ingredients.get(index);
                 if (!ingredient.isEmpty()) {
-                    renderIngredient(stack, buffer, combinedOverlayIn, combinedLight, ingredient, index);
+                    renderIngredient(stack, buffer, combinedOverlayIn, combinedLightIn, ingredient, index);
                 }
             }
         }
@@ -76,7 +76,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
                 modelBambooMug.renderLiquid = false;
             }
             IVertexBuilder ivertexbuilder = buffer.getBuffer(modelBambooMug.getRenderType(TropicraftRenderUtils.getTextureTE("bamboo_mug")));
-            modelBambooMug.render(stack, ivertexbuilder, combinedLight, combinedOverlayIn, 1, 1, 1, 1);
+            modelBambooMug.render(stack, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
             stack.pop();
         }
     }

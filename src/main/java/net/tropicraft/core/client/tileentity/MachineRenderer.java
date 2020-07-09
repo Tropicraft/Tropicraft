@@ -1,21 +1,17 @@
 package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.MachineModel;
 import net.tropicraft.core.common.block.tileentity.IMachineTile;
@@ -58,7 +54,7 @@ public abstract class MachineRenderer<T extends TileEntity & IMachineTile> exten
 //		model.renderAsBlock(te);
 
 		// Get light above, since block is solid
-		TropicraftRenderUtils.renderModel(getMaterial(), model, stack, buffer, getCombinedLight(te.getWorld(), te.getPos().up()), combinedOverlayIn);
+		TropicraftRenderUtils.renderModel(getMaterial(), model, stack, buffer, combinedLightIn, combinedOverlayIn);
 
 		if (te != null) {
 		    renderIngredients(te, stack, buffer, combinedLightIn, combinedOverlayIn);
@@ -66,11 +62,6 @@ public abstract class MachineRenderer<T extends TileEntity & IMachineTile> exten
 
 		//GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
-	}
-
-	protected int getCombinedLight(final IWorld world, final BlockPos pos) {
-		// Get light above, since block is solid
-		return world == null ? 0xF000F0 : WorldRenderer.getCombinedLight(world, pos.up());
 	}
 
 	protected abstract Material getMaterial();

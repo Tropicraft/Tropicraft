@@ -55,7 +55,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEnti
             // TODO this is likely wrong
             IVertexBuilder builder = ItemRenderer.getBuffer(buffer, RenderType.getEntityCutoutNoCull(ScubaArmorItem.getArmorTexture(te.getTank().getType())), true, false);
             tankModel.showChest = true;
-            tankModel.renderScubaGear(stack, builder, getCombinedLight(te.getWorld(), te.getPos()), combinedOverlayIn, false);
+            tankModel.renderScubaGear(stack, builder, combinedLightIn, combinedOverlayIn, false);
             stack.pop();
         }
     }

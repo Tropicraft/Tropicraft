@@ -200,12 +200,12 @@ public class TropicraftBlocks {
             "bamboo_chest", () -> new BambooChestBlock(Block.Properties.from(BAMBOO_BUNDLE.get()).hardnessAndResistance(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()),
             () -> chestRenderer());
     public static final RegistryObject<SifterBlock> SIFTER = register(
-            "sifter", () -> new SifterBlock(Block.Properties.from(Blocks.OAK_PLANKS)));
+            "sifter", () -> new SifterBlock(Block.Properties.from(Blocks.OAK_PLANKS).notSolid()));
     public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
-            "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
+            "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30).notSolid()),
             () -> drinkMixerRenderer());
     public static final RegistryObject<AirCompressorBlock> AIR_COMPRESSOR = register(
-            "air_compressor", () -> new AirCompressorBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30)),
+            "air_compressor", () -> new AirCompressorBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30).notSolid()),
             () -> airCompressorRenderer());
     public static final RegistryObject<VolcanoBlock> VOLCANO = registerNoItem(
             "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK).noDrops()));
