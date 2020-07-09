@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -92,15 +93,20 @@ public class TikiTorchBlock extends Block {
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockPos blockpos = context.getPos();
+        if (placeShortTorchOn(context.getWorld().getBlockState(blockpos.down()))) {
+        	return getDefaultState().with(SECTION, TorchSection.UPPER);
+        }
         BlockState ret = getDefaultState().with(SECTION, TorchSection.LOWER);
-        return blockpos.getY() < context.getWorld().getDimension().getHeight() - 1 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) ? ret : null;
+        return blockpos.getY() < context.getWorld().getDimension().getHeight() - 1 && 
+        		context.getWorld().getBlockState(blockpos.up()).isReplaceable(context) &&
+        		context.getWorld().getBlockState(blockpos.up(2)).isReplaceable(context) ? ret : null;
     }
     
     @Override
     @Deprecated
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
         return facing.getAxis() == Axis.Y && !this.isValidPosition(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-     }
+	}
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
@@ -108,36 +114,48 @@ public class TikiTorchBlock extends Block {
 
         if (section == TorchSection.UPPER) return;
 
-        // Only place top block if it's on a fence
-        BlockState stateBelow = worldIn.getBlockState(pos.down());
-        if (stateBelow.getBlock().isIn(BlockTags.FENCES) || stateBelow.getBlock().isIn(BlockTags.WALLS)) {
-            worldIn.setBlockState(pos, this.getDefaultState().with(SECTION, TorchSection.UPPER), Constants.BlockFlags.DEFAULT);
-        } else {
-            worldIn.setBlockState(pos.up(), this.getDefaultState().with(SECTION, TorchSection.MIDDLE), Constants.BlockFlags.DEFAULT);
-            worldIn.setBlockState(pos.up(2), this.getDefaultState().with(SECTION, TorchSection.UPPER), Constants.BlockFlags.DEFAULT);  
-        }
+        worldIn.setBlockState(pos.up(), this.getDefaultState().with(SECTION, TorchSection.MIDDLE), Constants.BlockFlags.DEFAULT);
+        worldIn.setBlockState(pos.up(2), this.getDefaultState().with(SECTION, TorchSection.UPPER), Constants.BlockFlags.DEFAULT);  
+    }
+    
+    private boolean placeShortTorchOn(BlockState state) {
+    	// Only place top block if it's on a fence/wall
+    	return state.getBlock().isIn(BlockTags.FENCES) || state.getBlock().isIn(BlockTags.WALLS);
     }
 
     @Override
-    public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-        super.harvestBlock(worldIn, player, pos, Blocks.AIR.getDefaultState(), te, stack);
-    }
-
-    @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+    public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
         TorchSection section = state.get(SECTION);
-        // Clean up other pieces
-        for (int i = 0; i < 2; i++) {
-            int offset = i - section.height;
-            BlockPos pos2 = pos.up(offset >= 0 ? offset + 1 : offset);
-            BlockState state2 = worldIn.getBlockState(pos2);
-            if (state2.getBlock() == this && state2.get(SECTION) != section) {
-                worldIn.destroyBlock(pos2, false);
-            }
-        }
-
-        super.onBlockHarvested(worldIn, pos, state, player);
-     }
+        BlockPos base = pos.down(section.height);
+		for (TorchSection otherSection : TorchSection.values()) {
+			BlockPos pos2 = base.up(otherSection.height);
+			BlockState state2 = world.getBlockState(pos2);
+			if (state2.getBlock() == this && state2.get(SECTION) == otherSection) {
+				super.harvestBlock(world, player, pos2, state2, te, stack);
+		        world.setBlockState(pos2, world.getFluidState(pos2).getBlockState(), world.isRemote ? 11 : 3);
+			}
+		}
+	}
+    
+    @Override
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
+    	boolean ret = false;
+        TorchSection section = state.get(SECTION);
+        BlockPos base = pos.down(section.height);
+		for (TorchSection otherSection : TorchSection.values()) {
+			BlockPos pos2 = base.up(otherSection.height);
+			BlockState state2 = world.getBlockState(pos2);
+			if (state2.getBlock() == this && state2.get(SECTION) == otherSection) {
+				if (player.isCreative()) {
+					ret |= super.removedByPlayer(state2, world, pos2, player, willHarvest, fluid);
+				} else {
+					this.onBlockHarvested(world, pos2, state2, player);
+					ret = true;
+				}
+			}
+		}
+		return ret;
+	}
 
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
