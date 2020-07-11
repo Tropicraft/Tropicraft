@@ -67,7 +67,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
         if (!list.isEmpty()) {
             for (ItemEntity item : list) {
                 if (!item.isInvisible()) {
-                    if (item.getItem().isItemEqual(stack)) {
+                    if (item.getItem().isItemEqual(stack) && item.isAlive()) {
                     	drinkEntity = item;
                     	return true;
                     }
@@ -85,6 +85,11 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     public void tick() {
         if (drinkEntity != null && !entity.getLeashed()) {
             entity.getLookController().setLookPositionWithEntity(drinkEntity, 10.0F, (float) entity.getVerticalFaceSpeed());
+
+            if (!drinkEntity.isAlive()) {
+                drinkEntity = null;
+                return;
+            }
 
             if (entity.getDistanceSq(drinkEntity) > (double)(stopDistance * stopDistance)) {
                 if (--timeToRecalcPath <= 0) {
