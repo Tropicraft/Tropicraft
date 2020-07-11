@@ -54,6 +54,7 @@ public class VMonkeyEntity extends TameableEntity {
 
     /** Entity this monkey is following around */
     private LivingEntity following;
+    private boolean madAboutStolenAlcohol;
 
     public VMonkeyEntity(EntityType<? extends TameableEntity> type, World world) {
         super(type, world);
@@ -85,6 +86,7 @@ public class VMonkeyEntity extends TameableEntity {
         goalSelector.addGoal(3, new MonkeyPickUpPinaColadaGoal(this));
         goalSelector.addGoal(2, new MonkeyStealDrinkGoal(this));
         goalSelector.addGoal(2, new MonkeySitAndDrinkGoal(this));
+        goalSelector.addGoal(2, new MonkeyAngryThrowGoal(this));
         goalSelector.addGoal(4, new MonkeySitInChairGoal(this, sitGoal));
         goalSelector.addGoal(4, sitGoal);
         goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
@@ -240,5 +242,13 @@ public class VMonkeyEntity extends TameableEntity {
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
         return new ItemStack(TropicraftItems.V_MONKEY_SPAWN_EGG.get());
+    }
+
+    public boolean isMadAboutStolenAlcohol() {
+        return madAboutStolenAlcohol;
+    }
+
+    public void setMadAboutStolenAlcohol(boolean madAboutStolenAlcohol) {
+        this.madAboutStolenAlcohol = madAboutStolenAlcohol;
     }
 }
