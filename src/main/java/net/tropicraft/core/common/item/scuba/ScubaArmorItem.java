@@ -75,8 +75,8 @@ public class ScubaArmorItem extends TropicraftArmorItem {
             armorModel = ModelScubaGear.CHEST;
             break;
         case FEET:
-            armorModel = ModelScubaGear.FEET;
-            break;  
+            armorModel = new ModelScubaGear(0, EquipmentSlotType.FEET);//.FEET;
+            break;
         default:
             return null;
         }

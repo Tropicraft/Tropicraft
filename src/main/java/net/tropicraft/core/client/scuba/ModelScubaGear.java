@@ -4,11 +4,17 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.ResourceLocation;
 
 public class ModelScubaGear extends BipedModel<LivingEntity> {
     
@@ -85,7 +91,7 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
     }
 
     public ModelScubaGear(final float scale, final EquipmentSlotType slot) {
-        super(scale);
+        super(RenderType::getEntityCutout, scale, 0, 64, 32);
         this.slot = slot;
         leftArmPose = BipedModel.ArmPose.EMPTY;
         rightArmPose = BipedModel.ArmPose.EMPTY;
@@ -389,6 +395,11 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
         showLegs = !entity.getItemStackFromSlot(EquipmentSlotType.FEET).isEmpty() && this.slot == EquipmentSlotType.FEET;
         isSneaking = entity.getPose() == Pose.CROUCHING;
     }
+    
+    private void renderArmor(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean glintIn, BipedModel<?> modelIn, float red, float green, float blue, ResourceLocation armorResource) {
+        IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(bufferIn, modelIn.getRenderType(armorResource), false, glintIn);
+        modelIn.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+     }
 
     @Override
     public void render(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
@@ -455,7 +466,7 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
 
         bipedRightLeg.mirror = true;
         
-        bipedLeftLeg.rotationPointY = 0;
+//        bipedLeftLeg.rotationPointY = 0;
        //TODO bipedLeftLeg.offsetY = 0.763f;
 
         
