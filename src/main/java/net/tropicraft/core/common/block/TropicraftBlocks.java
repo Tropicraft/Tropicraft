@@ -22,6 +22,7 @@ import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.LadderBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SaplingBlock;
@@ -135,14 +136,14 @@ public class TropicraftBlocks {
     public static final RegistryObject<SlabBlock> MAHOGANY_SLAB = register(
             "mahogany_slab", Builder.slab(MAHOGANY_PLANKS));
 
-    public static final RegistryObject<TropicraftLeavesBlock> MAHOGANY_LEAVES = register("mahogany_leaves", Builder.leaves());
-    public static final RegistryObject<TropicraftLeavesBlock> PALM_LEAVES = register("palm_leaves", Builder.leaves());
-    public static final RegistryObject<TropicraftLeavesBlock> KAPOK_LEAVES = register("kapok_leaves", Builder.leaves());
-    public static final RegistryObject<TropicraftLeavesBlock> FRUIT_LEAVES = register("fruit_leaves", Builder.leaves());
-    public static final RegistryObject<TropicraftLeavesBlock> GRAPEFRUIT_LEAVES = register("grapefruit_leaves", Builder.leaves());
-    public static final RegistryObject<TropicraftLeavesBlock> LEMON_LEAVES = register("lemon_leaves", Builder.leaves());
-    public static final RegistryObject<TropicraftLeavesBlock> LIME_LEAVES = register("lime_leaves", Builder.leaves());
-    public static final RegistryObject<TropicraftLeavesBlock> ORANGE_LEAVES = register("orange_leaves", Builder.leaves());
+    public static final RegistryObject<LeavesBlock> MAHOGANY_LEAVES = register("mahogany_leaves", Builder.leaves(false));
+    public static final RegistryObject<LeavesBlock> PALM_LEAVES = register("palm_leaves", Builder.leaves(false));
+    public static final RegistryObject<LeavesBlock> KAPOK_LEAVES = register("kapok_leaves", Builder.leaves(false));
+    public static final RegistryObject<LeavesBlock> FRUIT_LEAVES = register("fruit_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> GRAPEFRUIT_LEAVES = register("grapefruit_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> LEMON_LEAVES = register("lemon_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> LIME_LEAVES = register("lime_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> ORANGE_LEAVES = register("orange_leaves", Builder.leaves(true));
 
     public static final RegistryObject<SaplingBlock> GRAPEFRUIT_SAPLING = register("grapefruit_sapling", Builder.sapling(TropicraftTrees.GRAPEFRUIT));
     public static final RegistryObject<SaplingBlock> LEMON_SAPLING = register("lemon_sapling", Builder.sapling(TropicraftTrees.LEMON));

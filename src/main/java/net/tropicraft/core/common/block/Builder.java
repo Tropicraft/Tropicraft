@@ -1,11 +1,17 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FlowerPotBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SaplingBlock;
@@ -20,11 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Builder {
@@ -85,8 +86,8 @@ public class Builder {
         return block(SlabBlock::new, lazyProp(source));
     }
 
-    public static Supplier<TropicraftLeavesBlock> leaves() {
-        return block(TropicraftLeavesBlock::new, lazyProp(Blocks.OAK_LEAVES.delegate));
+    public static Supplier<LeavesBlock> leaves(boolean decay) {
+        return block(decay ? LeavesBlock::new : TropicraftLeavesBlock::new, lazyProp(Blocks.OAK_LEAVES.delegate));
     }
 
     @SafeVarargs
