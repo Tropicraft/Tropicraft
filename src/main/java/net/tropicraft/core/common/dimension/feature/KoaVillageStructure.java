@@ -70,7 +70,7 @@ public class KoaVillageStructure extends Structure<NoFeatureConfig> {
     private boolean isValid(ChunkGenerator<?> chunkGen, final Biome biome, BlockPos pos) {
         // TODO if not working correctly, investigate the use of biome here instead of the biome at exactly 'pos'
         return chunkGen.hasStructure(biome, TropicraftFeatures.VILLAGE.get())
-                && chunkGen.func_222532_b(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) == chunkGen.getSeaLevel();
+                && chunkGen.getHeight(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) == chunkGen.getSeaLevel();
     }
     
     @Override

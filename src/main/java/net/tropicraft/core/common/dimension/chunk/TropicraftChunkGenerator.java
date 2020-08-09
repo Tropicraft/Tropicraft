@@ -174,10 +174,10 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
     }
 
     @Override
-    public int func_222529_a(int p_222529_1_, int p_222529_2_, Type heightmapType) {
-        int height = super.func_222529_a(p_222529_1_, p_222529_2_, heightmapType);
+    public int getHeight(int x, int z, Type heightmapType) {
+        int height = super.getHeight(x, z, heightmapType);
         if (heightmapType != Type.OCEAN_FLOOR && heightmapType != Type.OCEAN_FLOOR_WG) {
-            return Math.max(height, this.volcanoGen.getVolcanoHeight(height, p_222529_1_, p_222529_2_));
+            return Math.max(height, this.volcanoGen.getVolcanoHeight(height, x, z));
         }
         return height;
     }

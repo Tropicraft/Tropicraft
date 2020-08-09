@@ -89,7 +89,7 @@ public class BambooChestBlock extends ChestBlock {
 
     @Nullable
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-        return func_225536_a_(state, worldIn, pos, false).apply(field_220110_j).orElse(null);
+        return combine(state, worldIn, pos, false).apply(field_220110_j).orElse(null);
     }
 
     /**

@@ -10,7 +10,7 @@ public enum TropicraftVoronoiZoomLayer implements IAreaTransformer1 {
     private static final int ZOOM_BITS = 2;
 
     @Override
-    public int func_215728_a(IExtendedNoiseRandom<?> random, IArea area, int x, int y) {
+    public int apply(IExtendedNoiseRandom<?> random, IArea area, int x, int y) {
         int absx = x - 2;
         int absy = y - 2;
         int shiftedAbsX = absx >> 2;

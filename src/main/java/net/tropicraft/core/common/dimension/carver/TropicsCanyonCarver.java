@@ -31,18 +31,18 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
     }
     
     @Override
-    public boolean func_225555_a_(IChunk p_225555_1_, Function<BlockPos, Biome> p_225555_2_, Random p_225555_3_, int p_225555_4_, int p_225555_5_, int p_225555_6_, int p_225555_7_, int p_225555_8_, BitSet p_225555_9_, ProbabilityConfig p_225555_10_) {
+    public boolean carveRegion(IChunk chunk, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int p_225555_7_, int p_225555_8_, BitSet p_225555_9_, ProbabilityConfig p_225555_10_) {
         int i = (this.func_222704_c() * 2 - 1) * 16;
-        double d0 = p_225555_5_ * 16 + p_225555_3_.nextInt(16);
-        double d1 = p_225555_3_.nextInt(p_225555_3_.nextInt(80) + 8) + 20;
-        double d2 = p_225555_6_ * 16 + p_225555_3_.nextInt(16);
-        float f = p_225555_3_.nextFloat() * ((float) Math.PI * 2F);
-        float f1 = (p_225555_3_.nextFloat() - 0.5F) * 2.0F / 8.0F;
+        double d0 = chunkXOffset * 16 + rand.nextInt(16);
+        double d1 = rand.nextInt(rand.nextInt(80) + 8) + 20;
+        double d2 = chunkZOffset * 16 + rand.nextInt(16);
+        float f = rand.nextFloat() * ((float) Math.PI * 2F);
+        float f1 = (rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
         double d3 = 3.0D;
-        float f2 = (p_225555_3_.nextFloat() * 2.0F + p_225555_3_.nextFloat()) * 2.0F;
-        int j = i - p_225555_3_.nextInt(i / 4);
+        float f2 = (rand.nextFloat() * 2.0F + rand.nextFloat()) * 2.0F;
+        int j = i - rand.nextInt(i / 4);
         int k = 0;
-        this.func_227204_a_(p_225555_1_, p_225555_2_, p_225555_3_.nextLong(), p_225555_4_, p_225555_7_, p_225555_8_, d0, d1, d2, f2, f, f1, 0, j, 3.0D, p_225555_9_);
+        this.func_227204_a_(chunk, biomePos, rand.nextLong(), seaLevel, p_225555_7_, p_225555_8_, d0, d1, d2, f2, f, f1, 0, j, 3.0D, p_225555_9_);
         return true;
     }
 
