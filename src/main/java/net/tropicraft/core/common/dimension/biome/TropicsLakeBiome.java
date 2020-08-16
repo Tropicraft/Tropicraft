@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.dimension.biome;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
+import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBuilders;
 
 public class TropicsLakeBiome extends TropicraftBiome {
     protected TropicsLakeBiome() {
         super(new Biome.Builder()
-                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
+                .surfaceBuilder(TropicraftSurfaceBuilders._UNDERWATER, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
                 .precipitation(RainType.RAIN)
                 .category(Category.NONE)
                 .depth(-0.6F)

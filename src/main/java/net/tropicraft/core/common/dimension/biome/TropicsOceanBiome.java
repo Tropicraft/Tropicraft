@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.biome;
 
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
@@ -13,14 +14,14 @@ import net.minecraft.world.gen.placement.ChanceConfig;
 import net.minecraft.world.gen.placement.CountConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidWithNoiseConfig;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
+import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBuilders;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class TropicsOceanBiome extends TropicraftBiome {
     public TropicsOceanBiome() {
         super(new Biome.Builder()
-                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
+                .surfaceBuilder(TropicraftSurfaceBuilders._UNDERWATER, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
                 .precipitation(RainType.RAIN)
                 .category(Category.OCEAN)
                 .depth(-1.6F)

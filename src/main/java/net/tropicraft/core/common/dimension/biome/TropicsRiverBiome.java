@@ -11,7 +11,7 @@ import static net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs.
 public class TropicsRiverBiome extends TropicraftBiome {
     protected TropicsRiverBiome() {
         super(new Biome.Builder()
-            .surfaceBuilder(TropicraftSurfaceBuilders._RIVER, PURIFIED_SAND_CONFIG.get())
+            .surfaceBuilder(TropicraftSurfaceBuilders._UNDERWATER, PURIFIED_SAND_CONFIG.get())
             .precipitation(RainType.RAIN)
             .category(Category.RIVER)
             .depth(-0.7F)

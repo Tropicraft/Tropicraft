@@ -10,13 +10,14 @@ import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidWithNoiseConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.tropicraft.core.common.dimension.config.TropicsBuilderConfigs;
+import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBuilders;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class TropicsKelpForestBiome extends TropicraftBiome {
 
     protected TropicsKelpForestBiome() {
         super(new Biome.Builder()
-                .surfaceBuilder(SurfaceBuilder.DEFAULT, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
+                .surfaceBuilder(TropicraftSurfaceBuilders._UNDERWATER, TropicsBuilderConfigs.PURIFIED_SAND_CONFIG.get())
                 .precipitation(RainType.RAIN)
                 .category(Category.OCEAN)
                 .depth(-1.5F)
