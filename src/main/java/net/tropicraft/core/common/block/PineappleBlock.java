@@ -1,10 +1,14 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -13,12 +17,12 @@ import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants;
-
-import java.util.Random;
 
 public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlantable {
 
@@ -90,8 +94,27 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
             }
         }
     }
-
-    public boolean canBlockStay(World worldIn, BlockPos pos, BlockState state) {
+    
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+    	if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+    		super.onBlockHarvested(worldIn, pos, state, player);
+    	} else {
+    	    worldIn.playEvent(player, 2001, pos, getStateId(state));
+    	    spawnDrops(state, worldIn, pos, null, player, player.getHeldItemMainhand());
+    	}
+    }
+    
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+    	if (isValidPosition(stateIn, worldIn, currentPos)) {
+    		return stateIn;
+    	}
+    	return Blocks.AIR.getDefaultState();
+    }
+    
+    @Override
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         if (state.get(HALF) == DoubleBlockHalf.UPPER) {
             return worldIn.getBlockState(pos.down()).getBlock() == this;
         } else {
@@ -104,7 +127,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
         }
     }
 
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+    private boolean canPlaceBlockAt(IWorldReader worldIn, BlockPos pos) {
         BlockState state = worldIn.getBlockState(pos.down());
         Block block = state.getBlock();
 
