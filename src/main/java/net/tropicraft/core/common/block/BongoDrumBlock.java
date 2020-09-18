@@ -13,6 +13,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
@@ -77,7 +78,7 @@ public class BongoDrumBlock extends Block {
             return ActionResultType.SUCCESS;
         }
 
-        playBongoSound(world, pos, state);
+        playBongoSound(world, pos, state, getAdjustedPitch(result));
         return ActionResultType.CONSUME;
     }
 
@@ -106,15 +107,39 @@ public class BongoDrumBlock extends Block {
         }
     }
 
+    public void playBongoSound(World world, BlockPos pos, BlockState state) {
+        playBongoSound(world, pos, state, 1F);
+    }
+
     /**
      * Play the bongo sound in game. Sound played determined by the size
      */
-    public void playBongoSound(World world, BlockPos pos, BlockState state) {
-        world.playSound(null, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, size.soundEvent.get(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+    public void playBongoSound(World world, BlockPos pos, BlockState state, float pitch) {
+        world.playSound(null, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, size.soundEvent.get(), SoundCategory.BLOCKS, 1.0F, pitch);
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
+    }
+
+    public float getAdjustedPitch(RayTraceResult hitVec) {
+        if (hitVec == null || hitVec.getHitVec() == null) return 1F;
+        double distX = Math.abs(hitVec.getHitVec().x - (int)hitVec.getHitVec().x - 0.5);
+        double distZ = Math.abs(hitVec.getHitVec().z - (int)hitVec.getHitVec().z - 0.5);
+        double dist = (float) Math.sqrt(distX * distX + distZ * distZ);
+        double radiusMax = 1F;
+        if (size == Size.SMALL) {
+            radiusMax = 8D / 16D / 2D;
+        } else if (size == Size.MEDIUM) {
+            radiusMax = 10D / 16D / 2D;
+        } else if (size == Size.LARGE) {
+            radiusMax = 12D / 16D / 2D;
+        }
+        double adjPitch = dist / radiusMax;
+        //adjust to auto tuned nths
+        /*float noteCount = 18F;
+        adjPitch = ((int)(adjPitch * noteCount)) / noteCount;*/
+        return 1F + (float) adjPitch;
     }
 }
