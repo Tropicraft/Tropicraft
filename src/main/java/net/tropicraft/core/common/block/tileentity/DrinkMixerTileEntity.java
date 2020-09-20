@@ -277,7 +277,9 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 	}
 
 	protected void syncInventory() {
-		TropicraftPackets.sendToDimension(new MessageMixerInventory(this), world.getDimension().getType());
+		if (!world.isRemote) {
+			TropicraftPackets.sendToDimension(new MessageMixerInventory(this), world.getDimension().getType());
+		}
 	}
 
 	@Nullable
