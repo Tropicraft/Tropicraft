@@ -3,17 +3,22 @@ package net.tropicraft.core.common.dimension;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.DerivedWorldInfo;
+import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -56,6 +61,14 @@ public class TropicraftWorldUtils {
 				DimensionManager.keepLoaded(TROPICS_DIMENSION, false);
 			} else {
 				TROPICS_DIMENSION = DimensionType.byName(id);
+			}
+		}
+
+		@SubscribeEvent
+		public static void onWorldLoad(WorldEvent.Load event) {
+			IWorld world = event.getWorld();
+			if (world instanceof ServerWorld && world.getDimension().getType() == TROPICS_DIMENSION) {
+				replaceWorldInfo((ServerWorld) world);
 			}
 		}
 	}
@@ -109,4 +122,54 @@ public class TropicraftWorldUtils {
 
         net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }
+
+	/**
+	 * We need to replace the world info object for the dimension with a custom one that will allow for changing weather
+	 * through commands. By default vanilla delegates non-overworld dimensions to the overworld without allowing for mutation
+	 */
+	private static void replaceWorldInfo(ServerWorld world) {
+		MinecraftServer server = world.getServer();
+		ServerWorld overworld = server.getWorld(DimensionType.OVERWORLD);
+
+		world.worldInfo = new TropicsWorldInfo(overworld.getWorldInfo());
+	}
+
+	static class TropicsWorldInfo extends DerivedWorldInfo {
+		private final WorldInfo overworld;
+
+		TropicsWorldInfo(WorldInfo overworld) {
+			super(overworld);
+			this.overworld = overworld;
+		}
+
+		@Override
+		public void setDayTime(long time) {
+			this.overworld.setDayTime(time);
+		}
+
+		@Override
+		public void setClearWeatherTime(int time) {
+			this.overworld.setClearWeatherTime(time);
+		}
+
+		@Override
+		public void setRaining(boolean raining) {
+			this.overworld.setRaining(raining);
+		}
+
+		@Override
+		public void setRainTime(int time) {
+			this.overworld.setRainTime(time);
+		}
+
+		@Override
+		public void setThundering(boolean thundering) {
+			this.overworld.setThundering(thundering);
+		}
+
+		@Override
+		public void setThunderTime(int time) {
+			this.overworld.setThunderTime(time);
+		}
+	}
 }
