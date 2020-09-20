@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX ",
+    " B ",
+    " B "
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:zircon_gem"
+    },
+    "B": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  },
+  "result": {
+    "item": "tropicraft:zircon_hoe"
+  }
+}

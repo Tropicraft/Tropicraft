@@ -1,18 +1,5 @@
 package net.tropicraft.core.common.data;
 
-import static net.tropicraft.core.common.block.TropicraftBlocks.*;
-import static net.tropicraft.core.common.block.TropicraftFlower.*;
-import static net.tropicraft.core.common.item.TropicraftItems.*;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
-import javax.annotation.CheckReturnValue;
-import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.StringUtils;
-
-import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
@@ -37,6 +24,114 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.drinks.Drink;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import static net.tropicraft.core.common.block.TropicraftBlocks.AZURITE_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_BUNDLE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_CHEST;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FLOWER_POT;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_LADDER;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_WALL;
+import static net.tropicraft.core.common.block.TropicraftBlocks.DRINK_MIXER;
+import static net.tropicraft.core.common.block.TropicraftBlocks.EUDIALYTE_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.IRIS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LARGE_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_PLANKS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MANGANESE_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MEDIUM_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_PLANKS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.SHAKA_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.SIFTER;
+import static net.tropicraft.core.common.block.TropicraftBlocks.SMALL_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_BUNDLE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_FENCE_GATE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_STAIRS_FUZZY;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.TIKI_TORCH;
+import static net.tropicraft.core.common.block.TropicraftBlocks.ZIRCONIUM_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftBlocks.ZIRCON_BLOCK;
+import static net.tropicraft.core.common.block.TropicraftFlower.CANNA;
+import static net.tropicraft.core.common.block.TropicraftFlower.COMMELINA_DIFFUSA;
+import static net.tropicraft.core.common.block.TropicraftFlower.DRACAENA;
+import static net.tropicraft.core.common.block.TropicraftFlower.ORANGE_ANTHURIUM;
+import static net.tropicraft.core.common.block.TropicraftFlower.RED_ANTHURIUM;
+import static net.tropicraft.core.common.item.TropicraftItems.AZURITE;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_MUG;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_SPEAR;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_STICK;
+import static net.tropicraft.core.common.item.TropicraftItems.BEACH_FLOATS;
+import static net.tropicraft.core.common.item.TropicraftItems.CHAIRS;
+import static net.tropicraft.core.common.item.TropicraftItems.COCKTAILS;
+import static net.tropicraft.core.common.item.TropicraftItems.COCONUT_CHUNK;
+import static net.tropicraft.core.common.item.TropicraftItems.COFFEE_BERRY;
+import static net.tropicraft.core.common.item.TropicraftItems.COOKED_FISH;
+import static net.tropicraft.core.common.item.TropicraftItems.COOKED_FROG_LEG;
+import static net.tropicraft.core.common.item.TropicraftItems.COOKED_RAY;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_AXE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_HOE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_PICKAXE;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_SHOVEL;
+import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_SWORD;
+import static net.tropicraft.core.common.item.TropicraftItems.FRESH_MARLIN;
+import static net.tropicraft.core.common.item.TropicraftItems.FROG_LEG;
+import static net.tropicraft.core.common.item.TropicraftItems.IGUANA_LEATHER;
+import static net.tropicraft.core.common.item.TropicraftItems.MANGANESE;
+import static net.tropicraft.core.common.item.TropicraftItems.PINEAPPLE_CUBES;
+import static net.tropicraft.core.common.item.TropicraftItems.RAW_COFFEE_BEAN;
+import static net.tropicraft.core.common.item.TropicraftItems.RAW_FISH;
+import static net.tropicraft.core.common.item.TropicraftItems.RAW_RAY;
+import static net.tropicraft.core.common.item.TropicraftItems.ROASTED_COFFEE_BEAN;
+import static net.tropicraft.core.common.item.TropicraftItems.SEARED_MARLIN;
+import static net.tropicraft.core.common.item.TropicraftItems.SHAKA;
+import static net.tropicraft.core.common.item.TropicraftItems.TROPICAL_FERTILIZER;
+import static net.tropicraft.core.common.item.TropicraftItems.UMBRELLAS;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_AXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_HOE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_PICKAXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_SHOVEL;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_SWORD;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_AXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_HOE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_PICKAXE;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_SHOVEL;
+import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON_SWORD;
 
 public class TropicraftRecipeProvider extends RecipeProvider {
 
@@ -58,6 +153,26 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         storage(ZIRCONIUM, ZIRCONIUM_BLOCK, consumer);
         storage(MANGANESE, MANGANESE_BLOCK, consumer);
         storage(SHAKA, SHAKA_BLOCK, consumer);
+
+        pickaxe(ZIRCON, ZIRCON_PICKAXE, consumer);
+        pickaxe(ZIRCONIUM, ZIRCONIUM_PICKAXE, consumer);
+        pickaxe(EUDIALYTE, EUDIALYTE_PICKAXE, consumer);
+
+        axe(ZIRCON, ZIRCON_AXE, consumer);
+        axe(ZIRCONIUM, ZIRCONIUM_AXE, consumer);
+        axe(EUDIALYTE, EUDIALYTE_AXE, consumer);
+
+        shovel(ZIRCON, ZIRCON_SHOVEL, consumer);
+        shovel(ZIRCONIUM, ZIRCONIUM_SHOVEL, consumer);
+        shovel(EUDIALYTE, EUDIALYTE_SHOVEL, consumer);
+
+        hoe(ZIRCON, ZIRCON_HOE, consumer);
+        hoe(ZIRCONIUM, ZIRCONIUM_HOE, consumer);
+        hoe(EUDIALYTE, EUDIALYTE_HOE, consumer);
+
+        sword(ZIRCON, ZIRCON_SWORD, consumer);
+        sword(ZIRCONIUM, ZIRCONIUM_SWORD, consumer);
+        sword(EUDIALYTE, EUDIALYTE_SWORD, consumer);
 
         for (DyeColor color : DyeColor.values()) {
             IItemProvider wool = SheepEntity.WOOL_BY_COLOR.get(color);
@@ -302,6 +417,66 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .addIngredient(output.get())
             .addCriterion("has_" + safeName(output.get()), this.hasItem(output.get()))
             .build(consumer, safeId(input.get()) + "_from_" + safeName(output.get()));
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void pickaxe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine("XXX")
+                .patternLine(" B ")
+                .patternLine(" B ")
+                .key('X', input.get())
+                .key('B', BAMBOO_STICK.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .addCriterion("has_" + safeName(Items.BAMBOO), hasItem(Items.BAMBOO))
+                .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void shovel(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine(" X ")
+                .patternLine(" B ")
+                .patternLine(" B ")
+                .key('X', input.get())
+                .key('B', BAMBOO_STICK.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .addCriterion("has_" + safeName(Items.BAMBOO), hasItem(Items.BAMBOO))
+                .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void axe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine("XX ")
+                .patternLine("XB ")
+                .patternLine(" B ")
+                .key('X', input.get())
+                .key('B', BAMBOO_STICK.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .addCriterion("has_" + safeName(Items.BAMBOO), hasItem(Items.BAMBOO))
+                .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void hoe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine("XX ")
+                .patternLine(" B ")
+                .patternLine(" B ")
+                .key('X', input.get())
+                .key('B', BAMBOO_STICK.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .addCriterion("has_" + safeName(Items.BAMBOO), hasItem(Items.BAMBOO))
+                .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void sword(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine(" X ")
+                .patternLine(" X ")
+                .patternLine(" B ")
+                .key('X', input.get())
+                .key('B', BAMBOO_STICK.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .addCriterion("has_" + safeName(Items.BAMBOO), hasItem(Items.BAMBOO))
+                .build(consumer);
     }
 
     @CheckReturnValue
