@@ -1,10 +1,6 @@
 package net.tropicraft.core.common.data;
 
-import static net.tropicraft.core.common.TropicraftTags.Items.*;
-
-import java.util.Arrays;
-import java.util.function.Supplier;
-
+import net.minecraft.block.FlowerBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.Item;
@@ -18,6 +14,41 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.Arrays;
+import java.util.function.Supplier;
+
+import static net.tropicraft.core.common.TropicraftTags.Items.ASHEN_MASKS;
+import static net.tropicraft.core.common.TropicraftTags.Items.AZURITE_GEM;
+import static net.tropicraft.core.common.TropicraftTags.Items.AZURITE_ORE;
+import static net.tropicraft.core.common.TropicraftTags.Items.DOORS;
+import static net.tropicraft.core.common.TropicraftTags.Items.EUDIALYTE_GEM;
+import static net.tropicraft.core.common.TropicraftTags.Items.EUDIALYTE_ORE;
+import static net.tropicraft.core.common.TropicraftTags.Items.FENCES;
+import static net.tropicraft.core.common.TropicraftTags.Items.LEAVES;
+import static net.tropicraft.core.common.TropicraftTags.Items.LOGS;
+import static net.tropicraft.core.common.TropicraftTags.Items.MANGANESE_INGOT;
+import static net.tropicraft.core.common.TropicraftTags.Items.MANGANESE_ORE;
+import static net.tropicraft.core.common.TropicraftTags.Items.PLANKS;
+import static net.tropicraft.core.common.TropicraftTags.Items.SAND;
+import static net.tropicraft.core.common.TropicraftTags.Items.SAPLINGS;
+import static net.tropicraft.core.common.TropicraftTags.Items.SHAKA_INGOT;
+import static net.tropicraft.core.common.TropicraftTags.Items.SHAKA_ORE;
+import static net.tropicraft.core.common.TropicraftTags.Items.SHELLS;
+import static net.tropicraft.core.common.TropicraftTags.Items.SLABS;
+import static net.tropicraft.core.common.TropicraftTags.Items.SMALL_FLOWERS;
+import static net.tropicraft.core.common.TropicraftTags.Items.STAIRS;
+import static net.tropicraft.core.common.TropicraftTags.Items.SWORDS;
+import static net.tropicraft.core.common.TropicraftTags.Items.TRAPDOORS;
+import static net.tropicraft.core.common.TropicraftTags.Items.WALLS;
+import static net.tropicraft.core.common.TropicraftTags.Items.WOODEN_DOORS;
+import static net.tropicraft.core.common.TropicraftTags.Items.WOODEN_FENCES;
+import static net.tropicraft.core.common.TropicraftTags.Items.WOODEN_SLABS;
+import static net.tropicraft.core.common.TropicraftTags.Items.WOODEN_STAIRS;
+import static net.tropicraft.core.common.TropicraftTags.Items.WOODEN_TRAPDOORS;
+import static net.tropicraft.core.common.TropicraftTags.Items.ZIRCONIUM_GEM;
+import static net.tropicraft.core.common.TropicraftTags.Items.ZIRCON_GEM;
+import static net.tropicraft.core.common.TropicraftTags.Items.ZIRCON_ORE;
 
 public class TropicraftItemTagsProvider extends ItemTagsProvider {
 
@@ -61,6 +92,10 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
 
         for (RegistryObject<AshenMaskItem> item : TropicraftItems.ASHEN_MASKS.values()) {
             addItemsToTag(ASHEN_MASKS, item);
+        }
+
+        for (RegistryObject<FlowerBlock> flower : TropicraftBlocks.FLOWERS.values()) {
+            addItemsToTag(ItemTags.FLOWERS, flower);
         }
         
         // Copy block tags

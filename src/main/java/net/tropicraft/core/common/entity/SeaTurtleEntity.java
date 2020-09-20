@@ -97,6 +97,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
     }
 
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         // goalSelector
