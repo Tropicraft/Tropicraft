@@ -31,7 +31,10 @@ public class CoconutBlock extends DirectionalBlock {
 
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return HorizontalFaceBlock.func_220185_b(worldIn, pos, state.get(FACING));
+		Direction dir = state.get(FACING);
+		BlockPos checkPos = pos.offset(dir);
+		return worldIn.getBlockState(checkPos).getBlock() == Blocks.GRINDSTONE // coconut yeeters allowed
+				|| Block.hasEnoughSolidSide(worldIn, checkPos, dir.getOpposite());
 	}
 
 	@Override
