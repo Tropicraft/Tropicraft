@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "YYY",
+    "X X",
+    " Z "
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    },
+    "Y": {
+      "item": "tropicraft:zircon_gem"
+    },
+    "Z": {
+      "item": "minecraft:pink_dye"
+    }
+  },
+  "result": {
+    "item": "tropicraft:pink_scuba_goggles"
+  }
+}

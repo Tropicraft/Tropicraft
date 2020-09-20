@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static net.tropicraft.core.common.block.TropicraftBlocks.AIR_COMPRESSOR;
 import static net.tropicraft.core.common.block.TropicraftBlocks.AZURITE_BLOCK;
 import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_BUNDLE;
 import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_CHEST;
@@ -90,10 +91,12 @@ import static net.tropicraft.core.common.block.TropicraftFlower.DRACAENA;
 import static net.tropicraft.core.common.block.TropicraftFlower.ORANGE_ANTHURIUM;
 import static net.tropicraft.core.common.block.TropicraftFlower.RED_ANTHURIUM;
 import static net.tropicraft.core.common.item.TropicraftItems.AZURITE;
+import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_ITEM_FRAME;
 import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_MUG;
 import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_SPEAR;
 import static net.tropicraft.core.common.item.TropicraftItems.BAMBOO_STICK;
 import static net.tropicraft.core.common.item.TropicraftItems.BEACH_FLOATS;
+import static net.tropicraft.core.common.item.TropicraftItems.BLOW_GUN;
 import static net.tropicraft.core.common.item.TropicraftItems.CHAIRS;
 import static net.tropicraft.core.common.item.TropicraftItems.COCKTAILS;
 import static net.tropicraft.core.common.item.TropicraftItems.COCONUT_CHUNK;
@@ -101,6 +104,7 @@ import static net.tropicraft.core.common.item.TropicraftItems.COFFEE_BERRY;
 import static net.tropicraft.core.common.item.TropicraftItems.COOKED_FISH;
 import static net.tropicraft.core.common.item.TropicraftItems.COOKED_FROG_LEG;
 import static net.tropicraft.core.common.item.TropicraftItems.COOKED_RAY;
+import static net.tropicraft.core.common.item.TropicraftItems.DAGGER;
 import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE;
 import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_AXE;
 import static net.tropicraft.core.common.item.TropicraftItems.EUDIALYTE_HOE;
@@ -112,14 +116,29 @@ import static net.tropicraft.core.common.item.TropicraftItems.FROG_LEG;
 import static net.tropicraft.core.common.item.TropicraftItems.IGUANA_LEATHER;
 import static net.tropicraft.core.common.item.TropicraftItems.MANGANESE;
 import static net.tropicraft.core.common.item.TropicraftItems.PINEAPPLE_CUBES;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_PONY_BOTTLE;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_SCUBA_FLIPPERS;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_SCUBA_GOGGLES;
+import static net.tropicraft.core.common.item.TropicraftItems.PINK_SCUBA_HARNESS;
 import static net.tropicraft.core.common.item.TropicraftItems.RAW_COFFEE_BEAN;
 import static net.tropicraft.core.common.item.TropicraftItems.RAW_FISH;
 import static net.tropicraft.core.common.item.TropicraftItems.RAW_RAY;
 import static net.tropicraft.core.common.item.TropicraftItems.ROASTED_COFFEE_BEAN;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_BOOTS;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_CHESTPLATE;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_HELMET;
+import static net.tropicraft.core.common.item.TropicraftItems.SCALE_LEGGINGS;
 import static net.tropicraft.core.common.item.TropicraftItems.SEARED_MARLIN;
 import static net.tropicraft.core.common.item.TropicraftItems.SHAKA;
+import static net.tropicraft.core.common.item.TropicraftItems.TOASTED_NORI;
 import static net.tropicraft.core.common.item.TropicraftItems.TROPICAL_FERTILIZER;
 import static net.tropicraft.core.common.item.TropicraftItems.UMBRELLAS;
+import static net.tropicraft.core.common.item.TropicraftItems.WATER_WAND;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_PONY_BOTTLE;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_SCUBA_FLIPPERS;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_SCUBA_GOGGLES;
+import static net.tropicraft.core.common.item.TropicraftItems.YELLOW_SCUBA_HARNESS;
 import static net.tropicraft.core.common.item.TropicraftItems.ZIRCON;
 import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM;
 import static net.tropicraft.core.common.item.TropicraftItems.ZIRCONIUM_AXE;
@@ -174,6 +193,11 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         sword(ZIRCONIUM, ZIRCONIUM_SWORD, consumer);
         sword(EUDIALYTE, EUDIALYTE_SWORD, consumer);
 
+        helmet(SCALE, SCALE_HELMET, consumer);
+        chestplate(SCALE, SCALE_CHESTPLATE, consumer);
+        leggings(SCALE, SCALE_LEGGINGS, consumer);
+        boots(SCALE, SCALE_BOOTS, consumer);
+
         for (DyeColor color : DyeColor.values()) {
             IItemProvider wool = SheepEntity.WOOL_BY_COLOR.get(color);
             ShapedRecipeBuilder.shapedRecipe(UMBRELLAS.get(color).get())
@@ -220,6 +244,13 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .addIngredient(COFFEE_BERRY.get())
             .addCriterion("has_coffee_bean", this.hasItem(COFFEE_BERRY.get()))
             .build(consumer);
+
+        ShapelessRecipeBuilder.shapelessRecipe(ZIRCONIUM.get())
+            .addIngredient(AZURITE.get(), 2)
+            .addIngredient(ZIRCON.get(), 2)
+            .addCriterion("has_zircon", hasItem(ZIRCON.get()))
+            .addCriterion("has_azurite", hasItem(AZURITE.get()))
+            .build(consumer);
         
         food(RAW_COFFEE_BEAN, ROASTED_COFFEE_BEAN, 0.1F, consumer);
         
@@ -228,7 +259,8 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .key('X', Items.BAMBOO)
             .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
             .build(consumer);
-        
+
+        food(Items.SEAGRASS.delegate, TOASTED_NORI, 0.1F, consumer);
         food(FRESH_MARLIN, SEARED_MARLIN, 0.15F, consumer);
         food(RAW_RAY, COOKED_RAY, 0.15F, consumer);
         food(FROG_LEG, COOKED_FROG_LEG, 0.1F, consumer);
@@ -304,6 +336,49 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 1, SMALL_BONGO_DRUM, consumer);
         bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 2, MEDIUM_BONGO_DRUM, consumer);
         bongo(IGUANA_LEATHER, MAHOGANY_PLANKS, 3, LARGE_BONGO_DRUM, consumer);
+
+        // Scuba gear
+        goggles(PINK_SCUBA_GOGGLES, Items.PINK_DYE.delegate, consumer);
+        goggles(YELLOW_SCUBA_GOGGLES, Items.YELLOW_DYE.delegate, consumer);
+
+        flippers(PINK_SCUBA_FLIPPERS, Items.PINK_DYE.delegate, consumer);
+        flippers(YELLOW_SCUBA_FLIPPERS, Items.YELLOW_DYE.delegate, consumer);
+
+        harness(PINK_SCUBA_HARNESS, Items.PINK_DYE.delegate, consumer);
+        harness(YELLOW_SCUBA_HARNESS, Items.YELLOW_DYE.delegate, consumer);
+
+        ponyBottle(PINK_PONY_BOTTLE, Items.PINK_DYE.delegate, consumer);
+        ponyBottle(YELLOW_PONY_BOTTLE, Items.YELLOW_DYE.delegate, consumer);
+
+        ShapedRecipeBuilder.shapedRecipe(WATER_WAND.get(), 1)
+            .patternLine("  X")
+            .patternLine(" Y ")
+            .patternLine("Y  ")
+            .key('X', AZURITE.get())
+            .key('Y', Items.GOLD_INGOT)
+            .addCriterion("has_" + safeName(AZURITE.get()), hasItem(AZURITE.get()))
+            .addCriterion("has_gold_ingot", hasItem(Items.GOLD_INGOT))
+            .build(consumer);
+
+        ShapedRecipeBuilder.shapedRecipe(BAMBOO_ITEM_FRAME.get(), 1)
+            .patternLine("XXX")
+            .patternLine("XYX")
+            .patternLine("XXX")
+            .key('X', Items.BAMBOO)
+            .key('Y', Items.LEATHER)
+            .addCriterion("has_bamboo", hasItem(Items.BAMBOO))
+            .addCriterion("has_leather", hasItem(Items.LEATHER))
+            .build(consumer);
+
+        ShapedRecipeBuilder.shapedRecipe(AIR_COMPRESSOR.get(), 1)
+            .patternLine("XXX")
+            .patternLine("XYX")
+            .patternLine("XXX")
+            .key('X', CHUNK.get())
+            .key('Y', AZURITE.get())
+            .addCriterion("has_" + safeName(CHUNK.get()), hasItem(CHUNK.get()))
+            .addCriterion("has_" + safeName(AZURITE.get()), hasItem(AZURITE.get()))
+            .build(consumer);
         
         ShapedRecipeBuilder.shapedRecipe(BAMBOO_LADDER.get(), 4)
             .patternLine("S S").patternLine("BSB").patternLine("S S")
@@ -365,6 +440,25 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .addIngredient(TropicraftFlower.MAGIC_MUSHROOM.get())
             .addIngredient(TropicraftFlower.CROTON.get())
             .addCriterion("has_magic_mushroom", this.hasItem(TropicraftFlower.MAGIC_MUSHROOM.get()))
+            .build(consumer);
+
+        ShapedRecipeBuilder.shapedRecipe(DAGGER.get())
+            .patternLine("X")
+            .patternLine("I")
+            .key('X', CHUNK.get())
+            .key('I', BAMBOO_STICK.get())
+            .addCriterion("has_" + safeName(CHUNK.get()), hasItem(CHUNK.get()))
+            .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
+            .build(consumer);
+
+        ShapedRecipeBuilder.shapedRecipe(BLOW_GUN.get())
+            .patternLine("X  ")
+            .patternLine(" I ")
+            .patternLine("  X")
+            .key('X', BAMBOO_STICK.get())
+            .key('I', ZIRCON.get())
+            .addCriterion("has_" + safeName(ZIRCON.get()), hasItem(ZIRCON.get()))
+            .addCriterion("has_" + safeName(BAMBOO_STICK.get()), hasItem(BAMBOO_STICK.get()))
             .build(consumer);
     }
     
@@ -479,6 +573,44 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .build(consumer);
     }
 
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void helmet(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine("XXX")
+                .patternLine("X X")
+                .key('X', input.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void chestplate(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine("X X")
+                .patternLine("XXX")
+                .patternLine("XXX")
+                .key('X', input.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void leggings(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine("XXX")
+                .patternLine("X X")
+                .patternLine("X X")
+                .key('X', input.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void boots(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(output.get())
+                .patternLine("X X")
+                .patternLine("X X")
+                .key('X', input.get())
+                .addCriterion("has_" + safeName(input.get()), hasItem(input.get()))
+                .build(consumer);
+    }
+
     @CheckReturnValue
     private <T extends IItemProvider & IForgeRegistryEntry<?>> ShapelessRecipeBuilder singleItemUnfinished(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount) {
         return ShapelessRecipeBuilder.shapelessRecipe(result.get(), amount)
@@ -586,6 +718,53 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .key('B', bottom.get())
             .setGroup("tropicraft:bongos")
             .addCriterion("has_" + safeName(top.get()), this.hasItem(top.get()))
+            .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void goggles(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 1)
+            .patternLine("YYY")
+            .patternLine("X X")
+            .patternLine(" Z ")
+            .key('X', Blocks.GLASS_PANE)
+            .key('Y', ZIRCON.get())
+            .key('Z', source.get())
+            .addCriterion("has_" + safeName(source.get()), hasItem(source.get()))
+            .addCriterion("has_" + safeName(ZIRCON.get()), hasItem(ZIRCON.get()))
+            .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void flippers(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 1)
+            .patternLine("XX")
+            .patternLine("YY")
+            .patternLine("XX")
+            .key('X', source.get())
+            .key('Y', ZIRCON.get())
+            .addCriterion("has_" + safeName(source.get()), hasItem(source.get()))
+            .addCriterion("has_" + safeName(ZIRCON.get()), hasItem(ZIRCON.get()))
+            .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void ponyBottle(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 1)
+            .patternLine("Y")
+            .patternLine("X")
+            .key('X', Blocks.PINK_STAINED_GLASS_PANE)
+            .key('Y', Blocks.LEVER)
+            .addCriterion("has_" + safeName(Blocks.PINK_STAINED_GLASS_PANE), hasItem(Blocks.PINK_STAINED_GLASS_PANE))
+            .build(consumer);
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void harness(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 1)
+            .patternLine("Y Y")
+            .patternLine("YXY")
+            .patternLine("YZY")
+            .key('X', source.get())
+            .key('Y', TropicraftTags.Items.LEATHER)
+            .key('Z', AZURITE.get())
+            .addCriterion("has_" + safeName(AZURITE.get()), hasItem(AZURITE.get()))
             .build(consumer);
     }
 }

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "Y Y",
+    "YXY",
+    "YZY"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:yellow_dye"
+    },
+    "Y": {
+      "tag": "tropicraft:leather"
+    },
+    "Z": {
+      "item": "tropicraft:azurite_gem"
+    }
+  },
+  "result": {
+    "item": "tropicraft:yellow_scuba_harness"
+  }
+}

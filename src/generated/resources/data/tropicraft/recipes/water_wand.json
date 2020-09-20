@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  X",
+    " Y ",
+    "Y  "
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:azurite_gem"
+    },
+    "Y": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "tropicraft:water_wand"
+  }
+}

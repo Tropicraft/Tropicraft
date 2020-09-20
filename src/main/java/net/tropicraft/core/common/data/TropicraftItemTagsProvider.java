@@ -25,6 +25,7 @@ import static net.tropicraft.core.common.TropicraftTags.Items.DOORS;
 import static net.tropicraft.core.common.TropicraftTags.Items.EUDIALYTE_GEM;
 import static net.tropicraft.core.common.TropicraftTags.Items.EUDIALYTE_ORE;
 import static net.tropicraft.core.common.TropicraftTags.Items.FENCES;
+import static net.tropicraft.core.common.TropicraftTags.Items.LEATHER;
 import static net.tropicraft.core.common.TropicraftTags.Items.LEAVES;
 import static net.tropicraft.core.common.TropicraftTags.Items.LOGS;
 import static net.tropicraft.core.common.TropicraftTags.Items.MANGANESE_INGOT;
@@ -75,6 +76,9 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         addItemsToTag(ZIRCONIUM_GEM, TropicraftItems.ZIRCONIUM);
         appendToTag(Tags.Items.GEMS, AZURITE_GEM, EUDIALYTE_GEM, ZIRCON_GEM, ZIRCONIUM_GEM);
         appendToTag(Tags.Items.INGOTS, MANGANESE_INGOT, SHAKA_INGOT);
+
+        addItemsToTag(LEATHER, TropicraftItems.IGUANA_LEATHER);
+        appendToTag(Tags.Items.LEATHER, LEATHER);
 
         // Add bamboo sticks to forge ore tag
         addItemsToTag(Tags.Items.RODS_WOODEN, TropicraftItems.BAMBOO_STICK);

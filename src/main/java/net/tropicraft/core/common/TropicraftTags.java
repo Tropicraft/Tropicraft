@@ -95,6 +95,8 @@ public class TropicraftTags {
         public static final Tag<Item> TRAPDOORS = modTag("trapdoors");
         public static final Tag<Item> FENCES = modTag("fences");
         public static final Tag<Item> WALLS = modTag("walls");
+
+        public static final Tag<Item> LEATHER = modTag("leather");
         
         public static final Tag<Item> FISHES = modTag("fishes");
 

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "Y",
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:pink_stained_glass_pane"
+    },
+    "Y": {
+      "item": "minecraft:lever"
+    }
+  },
+  "result": {
+    "item": "tropicraft:pink_pony_bottle"
+  }
+}

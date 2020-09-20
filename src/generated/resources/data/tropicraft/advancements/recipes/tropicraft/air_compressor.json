@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:air_compressor"
+    ]
+  },
+  "criteria": {
+    "has_chunk": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:chunk"
+          }
+        ]
+      }
+    },
+    "has_azurite_gem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:azurite_gem"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:air_compressor"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_chunk",
+      "has_azurite_gem",
+      "has_the_recipe"
+    ]
+  ]
+}
