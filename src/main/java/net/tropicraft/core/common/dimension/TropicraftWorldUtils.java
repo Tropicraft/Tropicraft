@@ -53,8 +53,7 @@ public class TropicraftWorldUtils {
 			if (DimensionType.byName(id) == null) {
 				TROPICS_DIMENSION = DimensionManager.registerDimension(id, TROPICRAFT_MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
 				//TROPICS_DIMENSION.setRegistryName(new ResourceLocation(Constants.MODID, "tropics"));
-				// FIXME dimension unloading causes issues when functions are running every tick
-				DimensionManager.keepLoaded(TROPICS_DIMENSION, true);
+				DimensionManager.keepLoaded(TROPICS_DIMENSION, false);
 			} else {
 				TROPICS_DIMENSION = DimensionType.byName(id);
 			}
