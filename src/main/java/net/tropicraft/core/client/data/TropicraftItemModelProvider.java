@@ -137,6 +137,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         // Misc remaining blocks
         blockSprite(TropicraftBlocks.IRIS, modLoc("block/iris_top"));
         blockSprite(TropicraftBlocks.PINEAPPLE, modLoc("block/pineapple_top"));
+        blockItem(TropicraftBlocks.COFFEE_BUSH, "_stage_6");
         
         blockItem(TropicraftBlocks.SMALL_BONGO_DRUM);
         blockItem(TropicraftBlocks.MEDIUM_BONGO_DRUM);

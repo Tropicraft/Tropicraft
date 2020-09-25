@@ -1,11 +1,5 @@
 package net.tropicraft.core.client.data;
 
-import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
-import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
@@ -38,10 +32,17 @@ import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
 import net.tropicraft.core.common.block.BongoDrumBlock;
+import net.tropicraft.core.common.block.CoffeeBushBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicsFlowerBlock;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
 
 public class TropicraftBlockstateProvider extends BlockStateProvider {
 
@@ -201,6 +202,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         noModelBlock(TropicraftBlocks.DRINK_MIXER, blockTexture(TropicraftBlocks.CHUNK));
         noModelBlock(TropicraftBlocks.AIR_COMPRESSOR, blockTexture(TropicraftBlocks.CHUNK));
 
+        getVariantBuilder(TropicraftBlocks.COFFEE_BUSH.get())
+            .forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(coffeeBush(state.get(CoffeeBushBlock.AGE))).build());
+
         simpleBlock(TropicraftBlocks.VOLCANO, models.getExistingFile(mcLoc("block/bedrock")));
         
         ModelFile tikiLower = models.torch("tiki_torch_lower", modBlockLoc("tiki_torch_lower"));
@@ -299,6 +304,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
                 .texture("bottom", modBlockLoc(end))
                 .texture("top", modBlockLoc(end))
                 .texture("cross", modBlockLoc(cross));
+    }
+
+    private ModelFile coffeeBush(int age) {
+        return models().withExistingParent("coffee_bush_stage_" + age, modLoc("coffee_bush"))
+            .texture("bush", modBlockLoc("coffee_bush_stage" + age));
     }
     
     private ModelFile fuzzyStairs(String name, String side, String end, String cross) {

@@ -191,6 +191,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             
             dropsSelf(TropicraftBlocks.BAMBOO_FLOWER_POT);
             TropicraftBlocks.ALL_POTTED_PLANTS.forEach(ro -> registerLootTable(ro.get(), b -> droppingFlowerPotAndFlower((FlowerPotBlock) b)));
+
+            registerLootTable(TropicraftBlocks.COFFEE_BUSH.get(), dropNumberOfItems(TropicraftBlocks.COFFEE_BUSH.get(), TropicraftItems.RAW_COFFEE_BEAN, 1, 3));
         }
         
         private void dropsSelf(Supplier<? extends Block> block) {
@@ -264,6 +266,12 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         
         protected static LootTable.Builder droppingChunks(Block block, Supplier<? extends IItemProvider> chunk, ILootCondition.IBuilder condition) {
             return LootTable.builder().addLootPool(droppingChunksPool(block, chunk).acceptCondition(condition));
+        }
+
+        private static LootTable.Builder dropNumberOfItems(Block block, Supplier<? extends IItemProvider> drop, final int minDrops, final int maxDrops) {
+            return LootTable.builder().addLootPool(LootPool.builder().addEntry(ItemLootEntry.builder(drop.get())
+                    .acceptFunction(SetCount.builder(RandomValueRange.of(minDrops, maxDrops)))
+                    .alternatively(withSurvivesExplosion(block, ItemLootEntry.builder(block)))));
         }
         
         @Override

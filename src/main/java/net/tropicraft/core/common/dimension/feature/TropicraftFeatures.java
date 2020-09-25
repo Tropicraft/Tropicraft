@@ -1,9 +1,6 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableList;
-
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
@@ -23,6 +20,8 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.SinkInGroundProcessor
 import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.SteepPathProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
+
+import java.util.function.Supplier;
 
 public class TropicraftFeatures {
 
@@ -70,6 +69,8 @@ public class TropicraftFeatures {
 			"home_tree", () -> new HomeTreeFeature(VillageConfig::deserialize));
 	public static final RegistryObject<HomeTreeBranchFeature<HomeTreeBranchConfig>> HOME_TREE_BRANCH = register(
 			"home_tree_branch", () -> new HomeTreeBranchFeature<>(HomeTreeBranchConfig::deserialize));
+	public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register(
+			"coffee_bush", () -> new CoffeePlantFeature(NoFeatureConfig::deserialize));
 
 	public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Constants.MODID + ":koa_path",
             ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor(false, TropicraftBlocks.BAMBOO_FENCE.getId())));

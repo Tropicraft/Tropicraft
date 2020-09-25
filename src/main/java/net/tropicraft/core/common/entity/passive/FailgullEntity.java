@@ -21,8 +21,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -182,15 +180,6 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 		}
 
 		return null;
-	}
-
-	@Override
-	protected void updateAITasks() {
-		super.updateAITasks();
-
-		if (isFlockLeader && this.getActivePotionEffect(Effects.GLOWING) == null) {
-			this.addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 1));
-		}
 	}
 
 	@Nullable

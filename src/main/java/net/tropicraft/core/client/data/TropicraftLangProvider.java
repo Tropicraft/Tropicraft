@@ -174,6 +174,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         TropicraftBlocks.ALL_POTTED_PLANTS.forEach(this::addBlock);
 
         addBlock(TropicraftBlocks.ZIRCONIUM_BLOCK);
+        addBlock(TropicraftBlocks.COFFEE_BUSH);
         
         // ITEMS
         
