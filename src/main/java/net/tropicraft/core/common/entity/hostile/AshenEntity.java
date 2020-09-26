@@ -153,8 +153,6 @@ public class AshenEntity extends TropicraftCreatureEntity implements IRangedAtta
         tippedArrow.setDamage(1);
         tippedArrow.setKnockbackStrength(0);
 
-        tippedArrow.setPotionEffect(BlowGunItem.getProjectile());
-
         playSound(SoundEvents.ITEM_CROSSBOW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
         world.addEntity(tippedArrow);
     }

@@ -11,7 +11,6 @@ import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.ShootableItem;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
@@ -27,44 +26,52 @@ import java.util.function.Predicate;
 
 public class BlowGunItem extends ShootableItem {
 
-    public static final String LOADED = "Loaded";
-
     public BlowGunItem(final Properties properties) {
         super(properties);
     }
 
     @Override
     public Predicate<ItemStack> getInventoryAmmoPredicate() {
-        return ARROWS;
+        return (itemStack) -> {
+            if (itemStack.getItem() == Items.TIPPED_ARROW) {
+                for (final EffectInstance effectInstance : PotionUtils.getEffectsFromStack(itemStack)) {
+                    if (effectInstance.getPotion() == Effects.SLOWNESS) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack heldStack = player.getHeldItem(hand);
-        // TODO figure out how to do crafting or hand-loading
-        if (isLoaded(heldStack) || true) {
-            fireProjectile(world, player, hand, heldStack, getProjectile(), 1.0F, player.abilities.isCreativeMode, 10, 0);
-            setLoaded(heldStack, false);
+        ItemStack ammo = getAmmo(player, heldStack);
+        if (!ammo.isEmpty()) {
+            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.abilities.isCreativeMode, 10, 0);
             return new ActionResult<>(ActionResultType.SUCCESS, heldStack);
         } else {
             return new ActionResult<>(ActionResultType.FAIL, heldStack);
         }
     }
 
+    private static ItemStack getAmmo(LivingEntity entityIn, ItemStack stack) {
+        final boolean isCreativeMode = entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).abilities.isCreativeMode;
+        final ItemStack ammo = entityIn.findAmmo(stack);
+        if (isCreativeMode) {
+            return getProjectile();
+        }
+        if (!ammo.isEmpty()) {
+            return ammo;
+        }
+        return ItemStack.EMPTY;
+    }
+
     public static ItemStack getProjectile() {
         ItemStack itemStack = new ItemStack(Items.TIPPED_ARROW);
         itemStack = PotionUtils.appendEffects(itemStack, ImmutableList.of(new EffectInstance(Effects.SLOWNESS, 3 * 20, 20)));
         return itemStack;
-    }
-
-    public static boolean isLoaded(ItemStack stack) {
-        CompoundNBT nbt = stack.getTag();
-        return nbt != null && nbt.getBoolean(LOADED);
-    }
-
-    public static void setLoaded(ItemStack stack, boolean isLoaded) {
-        CompoundNBT nbt = stack.getOrCreateTag();
-        nbt.putBoolean(LOADED, isLoaded);
     }
 
     public static void fireProjectile(World world, LivingEntity shooter, Hand hand, ItemStack heldItem, ItemStack projectile, float soundPitch, boolean isCreativeMode, float dmg, float pitch) {
@@ -84,6 +91,12 @@ public class BlowGunItem extends ShootableItem {
             heldItem.damageItem(1, shooter, (i) -> {
                 i.sendBreakAnimation(hand);
             });
+
+            projectile.split(1);
+            if (projectile.isEmpty() && shooter instanceof PlayerEntity) {
+                ((PlayerEntity) shooter).inventory.deleteStack(projectile);
+            }
+
             world.addEntity(arrowEntity);
             world.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
         }
@@ -95,6 +108,7 @@ public class BlowGunItem extends ShootableItem {
         arrowEntity.setDamage(0);
         arrowEntity.setHitSound(SoundEvents.ITEM_CROSSBOW_HIT);
         arrowEntity.setIsCritical(false);
+        arrowEntity.setPotionEffect(getProjectile());
         return arrowEntity;
     }
 
