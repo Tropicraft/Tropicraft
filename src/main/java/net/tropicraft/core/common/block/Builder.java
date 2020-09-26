@@ -1,10 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,6 +21,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Builder {
@@ -125,11 +125,11 @@ public class Builder {
     }
 
     public static Supplier<FlowerPotBlock> tropicraftPot() {
-        return pot(null, Blocks.AIR.delegate, lazyProp(Material.MISCELLANEOUS).then(p -> p.hardnessAndResistance(0).sound(SoundType.BAMBOO)));
+        return pot(null, Blocks.AIR.delegate, lazyProp(Material.MISCELLANEOUS).then(p -> p.hardnessAndResistance(0.2F, 5.0F).sound(SoundType.BAMBOO)));
     }
 
     public static Supplier<FlowerPotBlock> tropicraftPot(final Supplier<? extends Block> block) {
-        return pot(TropicraftBlocks.BAMBOO_FLOWER_POT, block, lazyProp(Material.MISCELLANEOUS).then(p -> p.hardnessAndResistance(0).sound(SoundType.BAMBOO)));
+        return pot(TropicraftBlocks.BAMBOO_FLOWER_POT, block, lazyProp(Material.MISCELLANEOUS).then(p -> p.hardnessAndResistance(0.2F, 5.0F).sound(SoundType.BAMBOO)));
     }
 
     public static Supplier<FlowerPotBlock> vanillaPot(final Supplier<? extends Block> block) {

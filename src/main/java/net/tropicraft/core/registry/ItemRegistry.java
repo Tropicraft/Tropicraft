@@ -12,4 +12,4 @@ public class ItemRegistry extends TropicraftRegistry {
     public static Item fishingRod = Items.TROPICAL_FISH;
     public static Item diveComputer = Items.TROPICAL_FISH;
     public static Item trimix = Items.TROPICAL_FISH;
-}
+}t
