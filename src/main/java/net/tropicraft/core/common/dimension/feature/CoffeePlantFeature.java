@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.datafixers.Dynamic;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -17,69 +17,34 @@ import java.util.function.Function;
 
 public class CoffeePlantFeature extends Feature<NoFeatureConfig> {
 
+    public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.getDefaultState();
+    public static final BlockState COFE = TropicraftBlocks.COFFEE_BUSH.get().withAge(6);
+    public static final BlockState FARMLAND = Blocks.FARMLAND.getDefaultState();
+    public static final BlockState WATER = Blocks.WATER.getDefaultState();
+
     public CoffeePlantFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> configFactoryIn) {
         super(configFactoryIn);
     }
 
     @Override
     public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
-        int nx = (x + rand.nextInt(8)) - rand.nextInt(8);
-        int nz = (z + rand.nextInt(8)) - rand.nextInt(8);
+        final BlockPos genPos = new BlockPos((pos.getX() + rand.nextInt(8)) - rand.nextInt(8), pos.getY(), (pos.getZ() + rand.nextInt(8)) - rand.nextInt(8));
 
-        int ny = y;
-
-        final BlockPos genPos = new BlockPos(nx, ny, nz);
-        if (!worldIn.isAirBlock(genPos) || worldIn.getBlockState(genPos.down()).getBlock() != Blocks.GRASS) {
+        // Find a suitable place to generate
+        if (!worldIn.isAirBlock(genPos) || worldIn.getBlockState(genPos.down()).getBlock() != GRASS_BLOCK.getBlock() || worldIn.isAirBlock(genPos.down(2))) {
             return false;
         }
 
         Direction viableDirection = null;
 
-        // Scan for existing water
+        // Scan for potential water spot
         for (final Direction dir : Direction.Plane.HORIZONTAL) {
-            int neighborx = nx + dir.getXOffset();
-            int neighborz = nz + dir.getZOffset();
+            final int neighborx = genPos.getX() + dir.getXOffset();
+            final int neighborz = genPos.getZ() + dir.getZOffset();
 
-            if (worldIn.getBlockState(new BlockPos(neighborx, ny - 1, neighborz)).getMaterial() == Material.WATER) {
+            if (!worldIn.isAirBlock(new BlockPos(neighborx, pos.getY() - 1, neighborz))) {
                 viableDirection = dir;
                 break;
-            }
-
-        }
-
-        if (viableDirection == null) {
-            // Scan for places to put a water source block
-            for (final Direction dir : Direction.Plane.HORIZONTAL) {
-                int neighborx = nx + dir.getXOffset();
-                int neighborz = nz + dir.getZOffset();
-                final BlockPos waterPos = new BlockPos(neighborx, ny, neighborz);
-
-                // isAirBlock call for ny - 2 is to prevent a waterfall from spawning
-                if (!worldIn.isAirBlock(waterPos)
-                        || worldIn.getBlockState(waterPos.down()).getBlock() != Blocks.GRASS
-                        || worldIn.isAirBlock(waterPos.down(2))) {
-                    continue;
-                }
-
-                // Check if the water block we'd place would be enclosed by grass (Don't want accidental waterfalls)
-                boolean surrounded = true;
-
-                for (final Direction surroundingDir : Direction.Plane.HORIZONTAL) {
-                    int surroundingx = neighborx + surroundingDir.getXOffset();
-                    int surroundingz = neighborz + surroundingDir.getZOffset();
-                    final BlockPos surrPos = new BlockPos(surroundingx, ny, surroundingz);
-
-                    if (!worldIn.isAirBlock(surrPos) || worldIn.getBlockState(surrPos.down()).getBlock() != Blocks.GRASS) {
-                        surrounded = false;
-                        break;
-                    }
-                }
-
-                if (surrounded) {
-                    viableDirection = dir;
-                    break;
-                }
             }
         }
 
@@ -87,12 +52,18 @@ public class CoffeePlantFeature extends Feature<NoFeatureConfig> {
             return false;
         }
 
-        worldIn.setBlockState(new BlockPos(nx + viableDirection.getXOffset(), ny - 1, nz + viableDirection.getZOffset()), Blocks.WATER.getDefaultState(), 3);
-        worldIn.setBlockState(new BlockPos(nx, ny - 1, nz), Blocks.FARMLAND.getDefaultState(), 3);
+        final BlockPos waterPos = new BlockPos(genPos.getX() + viableDirection.getXOffset(), pos.getY() - 1, genPos.getZ() + viableDirection.getZOffset());
+        worldIn.setBlockState(waterPos, WATER, 3);
+        worldIn.setBlockState(genPos.down(), FARMLAND, 3);
+
+        for (final Direction dir : Direction.Plane.HORIZONTAL) {
+            worldIn.setBlockState(waterPos.offset(dir), GRASS_BLOCK, 3);
+        }
 
         for (int i = 0; i < 3; ++i) {
-            if (worldIn.isAirBlock(new BlockPos(nx, ny + i, nz))) {
-                worldIn.setBlockState(new BlockPos(nx, ny + i, nz), TropicraftBlocks.COFFEE_BUSH.get().withAge(6), 3);
+            final BlockPos upPos = genPos.up(i);
+            if (worldIn.isAirBlock(upPos)) {
+                worldIn.setBlockState(upPos, COFE, 3);
             } else {
                 break;
             }
