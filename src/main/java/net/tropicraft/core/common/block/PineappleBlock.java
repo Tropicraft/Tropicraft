@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,6 +22,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.Random;
+
 public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlantable {
 
     /** Number of total random ticks it takes for this pineapple to grow */
@@ -42,13 +42,13 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
 
     @Override
-    public boolean canGrow(IBlockReader iBlockReader, BlockPos blockPos, BlockState blockState, boolean b) {
-        return false;
+    public boolean canGrow(IBlockReader world, BlockPos pos, BlockState blockState, boolean b) {
+        return blockState.getBlock() == TropicraftBlocks.PINEAPPLE.get() && blockState.get(PineappleBlock.HALF) == DoubleBlockHalf.LOWER && world.getBlockState(pos.up()).isAir();
     }
 
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, BlockState blockState) {
-        return false;
+        return true;
     }
 
     @Override
@@ -116,26 +116,15 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         if (state.get(HALF) == DoubleBlockHalf.UPPER) {
-            return worldIn.getBlockState(pos.down()).getBlock() == this;
+            return worldIn.getBlockState(pos.down()).getBlock() == TropicraftBlocks.PINEAPPLE.get();
         } else {
-            BlockState iblockstate = worldIn.getBlockState(pos.up());
-            if (iblockstate.getBlock() == this) {
-                return false;
-            } else { // If just the stem
-                return canPlaceBlockAt(worldIn, pos);
-            }
+            return canPlaceBlockAt(worldIn, pos);
         }
     }
 
     private boolean canPlaceBlockAt(IWorldReader worldIn, BlockPos pos) {
-        BlockState state = worldIn.getBlockState(pos.down());
-        Block block = state.getBlock();
-
-        if (block.canSustainPlant(state, worldIn, pos.down(), Direction.UP, this)) {
-            return true;
-        }
-
-        return false;
+        final BlockState belowState = worldIn.getBlockState(pos.down());
+        return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.down(), Direction.UP, this);
     }
 
     @Override
