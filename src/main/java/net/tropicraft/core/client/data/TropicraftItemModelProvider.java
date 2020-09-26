@@ -160,6 +160,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftBlocks.BAMBOO_FLOWER_POT);
         
         generated(TropicraftItems.BAMBOO_ITEM_FRAME);
+        generated(TropicraftItems.FISHING_NET);
 
         // ITEMS
         

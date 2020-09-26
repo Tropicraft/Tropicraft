@@ -81,7 +81,6 @@ import net.tropicraft.core.common.entity.ai.EntityAIPlayKoa;
 import net.tropicraft.core.common.entity.ai.EntityAITemptHelmet;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.item.TropicraftItems;
-import net.tropicraft.core.registry.ItemRegistry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -320,9 +319,11 @@ public class EntityKoaBase extends VillagerEntity {
             offers = func_221238_a(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
                             new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
-                            new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
-                            new KoaTradeForPearls(ItemRegistry.fishingRod, 1, 8, 2),
+                            new KoaTradeForPearls(TropicraftItems.FISHING_NET.get(), 1, 8, 2),
+                            new KoaTradeForPearls(Items.FISHING_ROD, 1, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.FRESH_MARLIN.get(), 3, 8, 2),
+                            new KoaTradeForPearls(TropicraftItems.SARDINE_BUCKET.get(), 1, 4, 2),
+                            new KoaTradeForPearls(TropicraftItems.PIRANHA_BUCKET.get(), 1, 3, 2),
                             new KoaTradeForPearls(TropicraftItems.TROPICAL_FERTILIZER.get(), 5, 8, 2)
                     }));
         } else if (getRole() == Roles.HUNTER) {
@@ -695,7 +696,9 @@ public class EntityKoaBase extends VillagerEntity {
                     addPotionEffect(new EffectInstance(Effects.NAUSEA, druggedTime));
                     findAndSetDrums(true);
 
-                } else if (!stack.isEmpty() && stack.getItem() == ItemRegistry.diveComputer) {
+                }
+                // [1.15] Cojo - commenting out until we know what we want koa scuba interaction to be
+                /*else if (!stack.isEmpty() && stack.getItem() == ItemRegistry.diveComputer) {
                     long diveTime = 0;
 
                     doTrade = false;
@@ -731,7 +734,7 @@ public class EntityKoaBase extends VillagerEntity {
                         if (timeLeft == 0) timeLeft = 1;
                         player.sendMessage(new TranslationTextComponent("entity.tropicraft.koa.trade.not_enough_time", timeLeft));
                     }
-                }
+                }*/
 
                 if (doTrade) {
                     // Make the super method think this villager is already trading, to block the GUI from opening

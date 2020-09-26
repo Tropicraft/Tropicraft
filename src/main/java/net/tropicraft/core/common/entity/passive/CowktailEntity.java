@@ -46,15 +46,18 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 		super(type, worldIn);
 	}
 
+	@Override
 	public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
 		return worldIn.getBlockState(pos.down()).getBlock() == Blocks.MYCELIUM ? 10.0F : worldIn.getBrightness(pos) - 0.5F;
 	}
 
+	@Override
 	protected void registerData() {
 		super.registerData();
 		this.dataManager.register(COWKTAIL_TYPE, Type.IRIS.name);
 	}
 
+	@Override
 	public boolean processInteract(PlayerEntity player, Hand hand) {
 		ItemStack itemstack = player.getHeldItem(hand);
 		if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isChild()) {
@@ -80,6 +83,7 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 		return super.processInteract(player, hand);
 	}
 
+	@Override
 	public void writeAdditional(CompoundNBT compound) {
 		super.writeAdditional(compound);
 		compound.putString("Type", this.getCowktailType().name);
@@ -88,6 +92,7 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 	/**
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
+	@Override
 	public void readAdditional(CompoundNBT compound) {
 		super.readAdditional(compound);
 		this.setCowktailType(CowktailEntity.Type.getTypeByName(compound.getString("Type")));
@@ -101,6 +106,7 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 		return CowktailEntity.Type.getTypeByName(this.dataManager.get(COWKTAIL_TYPE));
 	}
 
+	@Override
 	public CowktailEntity createChild(AgeableEntity ageable) {
 		CowktailEntity CowktailEntity = TropicraftEntities.COWKTAIL.get().create(this.world);
 		CowktailEntity.setCowktailType(this.func_213445_a((CowktailEntity)ageable));
@@ -166,7 +172,7 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 		private final String name;
 		private final BlockState renderState;
 
-		private Type(String nameIn, BlockState renderStateIn) {
+		Type(String nameIn, BlockState renderStateIn) {
 			this.name = nameIn;
 			this.renderState = renderStateIn;
 		}
