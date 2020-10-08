@@ -106,7 +106,9 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> MAHOGANY_PLANKS = register("mahogany_planks", Builder.plank(MaterialColor.BROWN));
     public static final RegistryObject<Block> PALM_PLANKS = register("palm_planks", Builder.plank(MaterialColor.WOOD));
     public static final RegistryObject<LogBlock> MAHOGANY_LOG = register("mahogany_log", Builder.log(MaterialColor.WOOD, MaterialColor.BROWN));
-    public static final RegistryObject<LogBlock> PALM_LOG = register("palm_log", Builder.log(MaterialColor.WOOD, MaterialColor.BROWN));
+    public static final RegistryObject<LogBlock> PALM_LOG = register("palm_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
+    public static final RegistryObject<RotatedPillarBlock> MAHOGANY_WOOD = register("mohogany_wood", Builder.wood(MaterialColor.WOOD));
+    public static final RegistryObject<RotatedPillarBlock> PALM_WOOD = register("palm_wood", Builder.wood(MaterialColor.GRAY));
 
     public static final RegistryObject<StairsBlock> PALM_STAIRS = register(
             "palm_stairs", Builder.stairs(PALM_PLANKS));

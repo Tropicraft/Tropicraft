@@ -89,6 +89,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.MAHOGANY_LOG);
         addBlock(TropicraftBlocks.PALM_LOG);
 
+        addBlock(TropicraftBlocks.MAHOGANY_WOOD);
+        addBlock(TropicraftBlocks.PALM_WOOD);
+
         // Stairs & Slabs
         addBlock(TropicraftBlocks.BAMBOO_STAIRS);
         addBlock(TropicraftBlocks.THATCH_STAIRS);

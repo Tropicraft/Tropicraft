@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "tropicraft:block/palm_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "tropicraft:block/palm_wood"
+    },
+    "axis=z": {
+      "model": "tropicraft:block/palm_wood",
+      "x": 90
+    }
+  }
+}

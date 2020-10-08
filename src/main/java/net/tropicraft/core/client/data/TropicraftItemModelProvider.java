@@ -76,6 +76,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.MAHOGANY_LOG);
         blockItem(TropicraftBlocks.PALM_LOG);
         
+        blockItem(TropicraftBlocks.MAHOGANY_WOOD);
+        blockItem(TropicraftBlocks.PALM_WOOD);
+        
         // Stairs & Slabs
         blockItem(TropicraftBlocks.BAMBOO_STAIRS);
         blockItem(TropicraftBlocks.THATCH_STAIRS);

@@ -109,6 +109,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.MAHOGANY_LOG);
             dropsSelf(TropicraftBlocks.PALM_LOG);
             
+            dropsSelf(TropicraftBlocks.MAHOGANY_WOOD);
+            dropsSelf(TropicraftBlocks.PALM_WOOD);
+            
             // Stairs & Slabs
             dropsSelf(TropicraftBlocks.BAMBOO_STAIRS);
             dropsSelf(TropicraftBlocks.THATCH_STAIRS);

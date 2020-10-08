@@ -77,6 +77,10 @@ public class Builder {
     public static Supplier<LogBlock> log(final MaterialColor topColor, final MaterialColor sideColor) {
         return block(p -> new LogBlock(topColor, p), prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
+
+    public static Supplier<RotatedPillarBlock> wood(final MaterialColor color) {
+        return block(RotatedPillarBlock::new, prop(Material.WOOD, color).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    }
     
     public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source) {
         return block(p -> new StairsBlock(source.lazyMap(Block::getDefaultState), p), lazyProp(source));

@@ -111,7 +111,7 @@ jar {
 }
 
 tasks.curseforge.enabled = !dev && project.hasProperty('cojo_curseforge_key')
-    
+
 curseforge {
     if (project.hasProperty('cojo_curseforge_key')) {
         apiKey = project.cojo_curseforge_key
