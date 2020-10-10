@@ -231,7 +231,7 @@ public class SeaTurtleEntity extends TurtleEntity {
             return true;
         }
 
-        if (!world.isRemote && !player.isSneaking() && canFitPassenger(player) && isMature() && (isInWater() || getCanFly())) {
+        if (!world.isRemote && !player.isSneaking() && canFitPassenger(player) && isMature()) {
             player.startRiding(this);
         }
 
