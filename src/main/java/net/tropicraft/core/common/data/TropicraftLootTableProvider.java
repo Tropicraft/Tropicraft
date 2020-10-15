@@ -272,9 +272,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         }
 
         private static LootTable.Builder dropNumberOfItems(Block block, Supplier<? extends IItemProvider> drop, final int minDrops, final int maxDrops) {
-            return LootTable.builder().addLootPool(LootPool.builder().addEntry(ItemLootEntry.builder(drop.get())
-                    .acceptFunction(SetCount.builder(RandomValueRange.of(minDrops, maxDrops)))
-                    .alternatively(withSurvivesExplosion(block, ItemLootEntry.builder(block)))));
+            return LootTable.builder().addLootPool(withSurvivesExplosion(block, LootPool.builder()
+            		.addEntry(ItemLootEntry.builder(drop.get()))
+                    	.acceptFunction(SetCount.builder(RandomValueRange.of(minDrops, maxDrops)))));
         }
         
         @Override
