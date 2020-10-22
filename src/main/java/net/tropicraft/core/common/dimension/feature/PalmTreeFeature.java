@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.mojang.datafixers.Dynamic;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SaplingBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.IWorldGenerationReader;
@@ -24,7 +25,7 @@ public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
         super(placer);
     }
 
-    protected net.minecraftforge.common.IPlantable getSapling() {
+    protected SaplingBlock getSapling() {
         return TropicraftBlocks.PALM_SAPLING.get();
     }
     

@@ -1,22 +1,19 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
+
+import java.util.Random;
+import java.util.function.Function;
+
 import com.mojang.datafixers.Dynamic;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
-
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isSoil;
 
 public class TallRainforestTreeFeature extends RainforestTreeFeature {
 
@@ -26,6 +23,10 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
 
     public TallRainforestTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func) {
         super(func);
+    }
+
+    private boolean isSoil(IWorld world, BlockPos pos) {
+        return getSapling().isValidPosition(getSapling().getDefaultState(), world, pos.down());
     }
 
     @Override

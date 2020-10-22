@@ -37,7 +37,7 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!TropicraftFeatureUtil.isSoil(world, pos.down())) {
+        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos.down())) {
             return false;
         }
 

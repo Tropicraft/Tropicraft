@@ -1,9 +1,20 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAirOrLeaves;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
+
+import java.util.Random;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.mojang.datafixers.Dynamic;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.BushBlock;
+import net.minecraft.block.SaplingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -16,28 +27,20 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.common.IPlantable;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
-import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAirOrLeaves;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
-
 public class FruitTreeFeature extends Feature<NoFeatureConfig> {
 
 	private final Supplier<BlockState> WOOD_BLOCK = () -> Blocks.OAK_LOG.getDefaultState();
 	private final Supplier<BlockState> REGULAR_LEAF_BLOCK = () -> TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState();
 	private final Supplier<BlockState> FRUIT_LEAF_BLOCK;
-	private final Supplier<? extends IPlantable> sapling;
+	private final Supplier<? extends SaplingBlock> sapling;
 
-	public <T extends Block & IPlantable> FruitTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> placer, Supplier<T> sapling, Supplier<BlockState> fruitLeaf) {
+	public FruitTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> placer, Supplier<? extends SaplingBlock> sapling, Supplier<BlockState> fruitLeaf) {
 		super(placer);
 		this.sapling = sapling;
 		FRUIT_LEAF_BLOCK = fruitLeaf;
 	}
 
-	protected IPlantable getSapling() {
+	protected SaplingBlock getSapling() {
 	    return sapling.get();
 	}
 
@@ -54,7 +57,7 @@ public class FruitTreeFeature extends Feature<NoFeatureConfig> {
 			return false;
 		}
 
-		if (!TropicraftFeatureUtil.isSoil(worldObj, pos.down())) {
+        if (!getSapling().isValidPosition(getSapling().getDefaultState(), worldObj, pos.down())) {
 			return false;
 		}
 

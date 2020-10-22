@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature;
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SaplingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -36,7 +37,7 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
         world.setBlockState(pos, state, 19);
     }
 
-    protected net.minecraftforge.common.IPlantable getSapling() {
+    protected SaplingBlock getSapling() {
         return TropicraftBlocks.MAHOGANY_SAPLING.get();
     }
 
