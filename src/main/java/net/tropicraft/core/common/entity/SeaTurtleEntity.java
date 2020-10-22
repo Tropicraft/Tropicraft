@@ -368,13 +368,12 @@ public class SeaTurtleEntity extends TurtleEntity {
                 this.stepHeight = 1.0F;
                 this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
 
-                float strafe = controllingEntity.moveStrafing * 0.1F;
+                float strafe = controllingEntity.moveStrafing;
                 float forward = getNoBrakes() ? 1 : controllingEntity.moveForward;
-                float vertical = controllingEntity.moveVertical;
+                float vertical = controllingEntity.moveVertical; // Players never use this?
 
-                double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * (getMotion().length() + 0.1) * (forward >= 0 ? 1 : -1);
+                double verticalFromPitch = -Math.sin(Math.toRadians(rotationPitch)) * forward;
                 forward *= MathHelper.clamp(1 - (Math.abs(rotationPitch) / 90), 0.01f, 1);
-                forward *= this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue();
 
                 if (!isInWater()) {
                     if (getCanFly()) {
@@ -386,9 +385,13 @@ public class SeaTurtleEntity extends TurtleEntity {
                 }
 
                 if (this.canPassengerSteer()) {
-                    Vec3d travel = new Vec3d(strafe, verticalFromPitch + vertical, forward);
-                    // This value controls how fast speed builds up
-                    moveRelative(0.05F, travel);
+                    Vec3d travel = new Vec3d(strafe, verticalFromPitch + vertical, forward)
+                    		.scale(this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue())
+                    		// This scale controls max speed. We reduce it significantly here so that the range of speed is higher
+                    		// This is compensated for by the high value passed to moveRelative
+                    		.scale(0.025F);
+                    // This is the effective speed modifier, controls the post-scaling of the movement vector
+                    moveRelative(1F, travel);
                     move(MoverType.SELF, getMotion());
                     // This value controls how much speed is "dampened" which effectively controls how much drift there is, and the max speed
                     this.setMotion(this.getMotion().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
