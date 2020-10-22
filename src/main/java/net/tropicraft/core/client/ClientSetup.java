@@ -58,6 +58,7 @@ public class ClientSetup {
         TropicraftBlocks.FLOWERS.forEach((key, value) -> RenderTypeLookup.setRenderLayer(value.get(), RenderType.getCutout()));
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.PINEAPPLE.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.IRIS.get(), renderType);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.COFFEE_BUSH.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.GRAPEFRUIT_SAPLING.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.LEMON_SAPLING.get(), renderType);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.LIME_SAPLING.get(), renderType);

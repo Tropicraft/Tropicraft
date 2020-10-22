@@ -78,6 +78,7 @@ public class Tropicraft
 
         // Registry objects
         TropicraftBlocks.BLOCKS.register(modBus);
+        TropicraftBlocks.BLOCKITEMS.register(modBus);
         TropicraftItems.ITEMS.register(modBus);
         MixerRecipes.addMixerRecipes();
         TropicraftTileEntityTypes.TILE_ENTITIES.register(modBus);

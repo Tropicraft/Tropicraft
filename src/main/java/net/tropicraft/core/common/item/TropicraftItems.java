@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.BlockNamedItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -74,7 +75,7 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ORANGE = register("orange", Builder.food(Foods.ORANGE));
     public static final RegistryObject<Item> PINEAPPLE_CUBES = register("pineapple_cubes", Builder.food(Foods.PINEAPPLE_CUBES));
     public static final RegistryObject<Item> COCONUT_CHUNK = register("coconut_chunk", Builder.food(Foods.COCONUT_CHUNK));
-    public static final RegistryObject<Item> RAW_COFFEE_BEAN = register("raw_coffee_bean", Builder.item());
+    public static final RegistryObject<BlockNamedItem> RAW_COFFEE_BEAN = register("raw_coffee_bean", Builder.blockNamedItem(TropicraftBlocks.COFFEE_BUSH));
     public static final RegistryObject<Item> ROASTED_COFFEE_BEAN = register("roasted_coffee_bean", Builder.item());
     public static final RegistryObject<Item> COFFEE_BERRY = register("coffee_berry", Builder.item());
     public static final RegistryObject<Item> BAMBOO_MUG = register("bamboo_mug", Builder.item());

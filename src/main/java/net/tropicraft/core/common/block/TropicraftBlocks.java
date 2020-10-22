@@ -1,7 +1,19 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
@@ -39,23 +51,11 @@ import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
-import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TropicraftBlocks {
     
     public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, Constants.MODID);
-    public static final DeferredRegister<Item> ITEMS = TropicraftItems.ITEMS;
+    public static final DeferredRegister<Item> BLOCKITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Constants.MODID);
     
     public static final RegistryObject<PortalWaterBlock> PORTAL_WATER = registerNoItem(
             "portal_water", () -> new PortalWaterBlock(Block.Properties.create(Material.WATER).noDrops()));
@@ -218,7 +218,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<FlowerPotBlock> BAMBOO_FLOWER_POT = register(
             "bamboo_flower_pot", Builder.tropicraftPot());
 
-    public static final RegistryObject<CoffeeBushBlock> COFFEE_BUSH = register(
+    public static final RegistryObject<CoffeeBushBlock> COFFEE_BUSH = registerNoItem(
             "coffee_bush", () -> new CoffeeBushBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GRASS).hardnessAndResistance(0.15f).sound(SoundType.PLANT).notSolid()));
 
     @SuppressWarnings("unchecked")
@@ -264,7 +264,7 @@ public class TropicraftBlocks {
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Function<RegistryObject<T>, Supplier<? extends Item>> itemCreator) {
         RegistryObject<T> ret = registerNoItem(name, sup);
-        ITEMS.register(name, itemCreator.apply(ret));
+        BLOCKITEMS.register(name, itemCreator.apply(ret));
         return ret;
     }
     

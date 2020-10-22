@@ -1,7 +1,8 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "#bush"
+    "particle": "#bush",
+    "stem": "tropicraft:block/coffee_bush_stem"
   },
   "elements": [
     {   "from": [ 0, 0, 0 ],
