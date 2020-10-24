@@ -133,15 +133,6 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	public boolean isPotentialMate(EchinodermEntity other) {
 		return super.isPotentialMate(other) && ((StarfishEntity) other).getStarfishType() == getStarfishType();
 	}
-	
-	@Override
-	public void onDeath(DamageSource d) {
-		super.onDeath(d);
-		// TODO replace with loot table
-		if (!world.isRemote) {
-			entityDropItem(new ItemStack(TropicraftItems.STARFISH.get()), 0);
-		}
-	}
 
 	@Override
 	public ItemStack getPickedResult(RayTraceResult target) {
