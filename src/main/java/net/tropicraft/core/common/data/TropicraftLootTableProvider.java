@@ -119,10 +119,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
 
 		//Only Green frogs should drop poison skins!
     	private static final ILootCondition.IBuilder GREEN = 
-    			EntityHasProperty.builder(LootContext.EntityTarget.THIS, 
-    					EntityPredicate.Builder.create().flags(
-    							new EntityFlagsPredicate(null, null, null, null, false)).nbt(
-    									new NBTPredicate(Util.make(new CompoundNBT(), c -> c.putInt("Type", TreeFrogEntity.Type.GREEN.ordinal())))));
+    			EntityHasProperty.builder(LootContext.EntityTarget.THIS, EntityPredicate.Builder.create()
+    			    .flags(new EntityFlagsPredicate(null, null, null, null, false))
+    			    .nbt(new NBTPredicate(Util.make(new CompoundNBT(), c -> c.putInt("Type", TreeFrogEntity.Type.GREEN.ordinal())))));
     	public void registerFrogLoot() {
 			this.registerLootTable(TropicraftEntities.TREE_FROG.get(), LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptCondition(GREEN)
