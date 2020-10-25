@@ -94,9 +94,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             noDrops(TropicraftEntities.TROPI_SKELLY);
             dropItemsWithEnchantBonus(TropicraftEntities.EIH, TropicraftBlocks.CHUNK.get().asItem(), ConstantRange.of(3));
             dropItem(TropicraftEntities.SEA_TURTLE, TropicraftItems.TURTLE_SHELL);
-            dropItem(TropicraftEntities.MARLIN, TropicraftItems.FRESH_MARLIN, RandomValueRange.of(1, 3));
+            dropItemsWithEnchantBonus(TropicraftEntities.MARLIN, TropicraftItems.FRESH_MARLIN, RandomValueRange.of(1, 3));
             noDrops(TropicraftEntities.FAILGULL);
-            dropItem(TropicraftEntities.DOLPHIN, TropicraftItems.TROPICAL_FERTILIZER,
+            dropItemsWithEnchantBonus(TropicraftEntities.DOLPHIN, TropicraftItems.TROPICAL_FERTILIZER,
                     RandomValueRange.of(1, 3));
             noDrops(TropicraftEntities.SEAHORSE);
             this.registerLootTable(TropicraftEntities.TREE_FROG.get(),
@@ -119,7 +119,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             noDrops(TropicraftEntities.TROPI_SPIDER);
             noDrops(TropicraftEntities.TROPI_SPIDER_EGG);
             noDrops(TropicraftEntities.ASHEN);
-            dropItem(TropicraftEntities.HAMMERHEAD, TropicraftItems.TROPICAL_FERTILIZER,
+            dropItemsWithEnchantBonus(TropicraftEntities.HAMMERHEAD, TropicraftItems.TROPICAL_FERTILIZER,
                     RandomValueRange.of(1, 3));
             noDrops(TropicraftEntities.SEA_TURTLE_EGG);
             noDrops(TropicraftEntities.TROPI_BEE);
@@ -146,7 +146,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                     LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(loot.get()))));
         }
 
-        public <T extends LivingEntity> void dropItem(RegistryObject<EntityType<T>> entity,
+        public <T extends LivingEntity> void dropItemsWithEnchantBonus(RegistryObject<EntityType<T>> entity,
                 RegistryObject<Item> loot, IRandomRange range) {
             dropItemsWithEnchantBonus(entity, loot.get(), range);
         }
