@@ -1,3 +1,23 @@
 {
-  "type": "minecraft:entity"
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:music_disc_eastern_isles"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:entity_properties",
+          "predicate": {
+            "type": "#minecraft:skeletons"
+          },
+          "entity": "killer"
+        }
+      ]
+    }
+  ]
 }

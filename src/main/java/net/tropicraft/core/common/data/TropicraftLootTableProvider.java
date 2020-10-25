@@ -33,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
@@ -60,6 +61,7 @@ import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
+import net.tropicraft.core.common.item.RecordMusic;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropicraftLootTableProvider extends LootTableProvider {
@@ -85,7 +87,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
     	@Override
     	protected void addTables() {
 
-    		registerMinimalLootTable(TropicraftEntities.TROPI_CREEPER);
+    		registerCreeperLoot();
 			registerEntityLoot(TropicraftEntities.IGUANA, TropicraftItems.IGUANA_LEATHER, TropicraftItems.SCALE, ConstantRange.of(3));
 			registerMinimalLootTable(TropicraftEntities.TROPI_SKELLY);
 			registerEntityLoot(TropicraftEntities.EIH, TropicraftBlocks.CHUNK.get().asItem(), ConstantRange.of(3));
@@ -130,6 +132,10 @@ public class TropicraftLootTableProvider extends LootTableProvider {
 			);
 		}
 
+    	public void registerCreeperLoot() {
+    		this.registerLootTable(TropicraftEntities.TROPI_CREEPER.get(), LootTable.builder().addLootPool(LootPool.builder().addEntry(ItemLootEntry.builder(TropicraftItems.MUSIC_DISCS.get(RecordMusic.EASTERN_ISLES).get())).acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.KILLER, EntityPredicate.Builder.create().type(EntityTypeTags.SKELETONS)))));
+		}
+    	
     	//Drops a single item, not affected by enchantment, and several other items that are affected by Enchantment
     	//Looting will at most double yield with Looting III
 		public <T extends LivingEntity> void registerEntityLoot(RegistryObject<EntityType<T>> entity, RegistryObject<Item> loot,
