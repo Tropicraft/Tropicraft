@@ -10,7 +10,10 @@ import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.advancements.criterion.EntityFlagsPredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.advancements.criterion.NBTPredicate;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
@@ -25,13 +28,18 @@ import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.data.loot.EntityLootTables;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.world.storage.loot.ConstantRange;
+import net.minecraft.world.storage.loot.IRandomRange;
 import net.minecraft.world.storage.loot.ItemLootEntry;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootParameterSet;
 import net.minecraft.world.storage.loot.LootParameterSets;
 import net.minecraft.world.storage.loot.LootPool;
@@ -40,6 +48,7 @@ import net.minecraft.world.storage.loot.LootTable.Builder;
 import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.ValidationTracker;
 import net.minecraft.world.storage.loot.conditions.BlockStateProperty;
+import net.minecraft.world.storage.loot.conditions.EntityHasProperty;
 import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraft.world.storage.loot.conditions.MatchTool;
 import net.minecraft.world.storage.loot.conditions.TableBonus;
@@ -50,6 +59,7 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropicraftLootTableProvider extends LootTableProvider {
@@ -75,79 +85,85 @@ public class TropicraftLootTableProvider extends LootTableProvider {
     	@Override
     	protected void addTables() {
 
-			this.registerLootTable(TropicraftEntities.TROPI_CREEPER.get(), LootTable.builder());
-			registerEntityLoot(TropicraftEntities.IGUANA.get(), TropicraftItems.IGUANA_LEATHER.get(), TropicraftItems.SCALE, 3);
-			this.registerLootTable(TropicraftEntities.TROPI_SKELLY.get(), LootTable.builder());
-			
-			//TODO:I think this drops something, but I don't understand what.
-			// https://github.com/Tropicraft/Tropicraft/blob/e8c1d3028fdaad90a122e4c456d35ae6654029d9/src/main/java/net/tropicraft/core/common/entity/hostile/EntityEIH.java#L172-L178
-			this.registerLootTable(TropicraftEntities.EIH.get(), LootTable.builder());
-			
-			registerEntityLoot(TropicraftEntities.SEA_TURTLE.get(), TropicraftItems.TURTLE_SHELL.get());
-			
-			registerEntityLoot(TropicraftEntities.MARLIN.get(), TropicraftItems.FRESH_MARLIN.get(), 1, 3);
-			
-			this.registerLootTable(TropicraftEntities.FAILGULL.get(), LootTable.builder());
-			registerEntityLoot(TropicraftEntities.DOLPHIN.get(), TropicraftItems.TROPICAL_FERTILIZER.get(), 1, 3);
-			this.registerLootTable(TropicraftEntities.SEAHORSE.get(), LootTable.builder());
-			
-			//TODO: Only Green frogs should drop poison skins!
-			registerEntityLoot(TropicraftEntities.TREE_FROG.get(), TropicraftItems.POISON_FROG_SKIN.get());
-			
-			//TODO: Only drop roe if it's an adult!
-			registerEntityLoot(TropicraftEntities.SEA_URCHIN.get(), TropicraftItems.SEA_URCHIN_ROE.get());
-			
-			this.registerLootTable(TropicraftEntities.SEA_URCHIN_EGG_ENTITY.get(), LootTable.builder());
-			
-			registerEntityLoot(TropicraftEntities.STARFISH.get(), TropicraftItems.STARFISH.get());
-			
-			this.registerLootTable(TropicraftEntities.STARFISH_EGG.get(), LootTable.builder());
-			this.registerLootTable(TropicraftEntities.V_MONKEY.get(), LootTable.builder());
-			this.registerLootTable(TropicraftEntities.RIVER_SARDINE.get(), LootTable.builder());
-			registerEntityLoot(TropicraftEntities.RIVER_SARDINE.get(), TropicraftItems.RAW_FISH.get());
-			registerEntityLoot(TropicraftEntities.PIRANHA.get(), TropicraftItems.RAW_FISH.get());
-			registerEntityLoot(TropicraftEntities.TROPICAL_FISH.get(), TropicraftItems.RAW_FISH.get());
+    		registerMinimalLootTable(TropicraftEntities.TROPI_CREEPER);
+			registerEntityLoot(TropicraftEntities.IGUANA, TropicraftItems.IGUANA_LEATHER, TropicraftItems.SCALE, ConstantRange.of(3));
+			registerMinimalLootTable(TropicraftEntities.TROPI_SKELLY);
+			registerEntityLoot(TropicraftEntities.EIH, TropicraftBlocks.CHUNK.get().asItem(), ConstantRange.of(3));
+			registerEntityLoot(TropicraftEntities.SEA_TURTLE, TropicraftItems.TURTLE_SHELL);
+			registerEntityLoot(TropicraftEntities.MARLIN, TropicraftItems.FRESH_MARLIN, RandomValueRange.of(1, 3));
+			registerMinimalLootTable(TropicraftEntities.FAILGULL);
+			registerEntityLoot(TropicraftEntities.DOLPHIN, TropicraftItems.TROPICAL_FERTILIZER, RandomValueRange.of(1, 3));
+			registerMinimalLootTable(TropicraftEntities.SEAHORSE);
+			registerFrogLoot();
+			registerEntityLoot(TropicraftEntities.SEA_URCHIN, TropicraftItems.SEA_URCHIN_ROE);
+			registerMinimalLootTable(TropicraftEntities.SEA_URCHIN_EGG_ENTITY);
+			registerEntityLoot(TropicraftEntities.STARFISH, TropicraftItems.STARFISH);
+			registerMinimalLootTable(TropicraftEntities.STARFISH_EGG);
+			registerMinimalLootTable(TropicraftEntities.V_MONKEY);
+			registerMinimalLootTable(TropicraftEntities.RIVER_SARDINE);
+			registerEntityLoot(TropicraftEntities.RIVER_SARDINE, TropicraftItems.RAW_FISH);
+			registerEntityLoot(TropicraftEntities.PIRANHA, TropicraftItems.RAW_FISH);
+			registerEntityLoot(TropicraftEntities.TROPICAL_FISH, TropicraftItems.RAW_FISH);
+			registerEntityLoot(TropicraftEntities.EAGLE_RAY, TropicraftItems.RAW_RAY);
+			registerMinimalLootTable(TropicraftEntities.TROPI_SPIDER);
+			registerMinimalLootTable(TropicraftEntities.TROPI_SPIDER_EGG);
+			registerMinimalLootTable(TropicraftEntities.ASHEN);
+			registerEntityLoot(TropicraftEntities.HAMMERHEAD, TropicraftItems.TROPICAL_FERTILIZER, RandomValueRange.of(1, 3));
+			registerMinimalLootTable(TropicraftEntities.SEA_TURTLE_EGG);
+			registerMinimalLootTable(TropicraftEntities.TROPI_BEE);
+			registerMinimalLootTable(TropicraftEntities.COWKTAIL);
+			registerEntityLoot(TropicraftEntities.MAN_O_WAR, Items.SLIME_BALL, RandomValueRange.of(3, 4));
+}
 
-			registerEntityLoot(TropicraftEntities.EAGLE_RAY.get(), TropicraftItems.RAW_RAY.get());
-			
-			this.registerLootTable(TropicraftEntities.TROPI_SPIDER.get(), LootTable.builder());
-			this.registerLootTable(TropicraftEntities.TROPI_SPIDER_EGG.get(), LootTable.builder());
-			this.registerLootTable(TropicraftEntities.ASHEN.get(), LootTable.builder());
-			registerEntityLoot(TropicraftEntities.HAMMERHEAD.get(), TropicraftItems.TROPICAL_FERTILIZER.get(), 1, 3);
-			
-			this.registerLootTable(TropicraftEntities.SEA_TURTLE_EGG.get(), LootTable.builder());
-			this.registerLootTable(TropicraftEntities.TROPI_BEE.get(), LootTable.builder());
-			this.registerLootTable(TropicraftEntities.COWKTAIL.get(), LootTable.builder());
-			registerEntityLoot(TropicraftEntities.MAN_O_WAR.get(), Items.SLIME_BALL, 3, 4);
-    				
-    				
-    				
-    				
-    		//this.registerLootTable(TropicraftEntities.IGUANA.get(), LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.LEATHER).acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))).addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.BEEF).acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 3.0F))).acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
-    	}
+		//Only Green frogs should drop poison skins!
+    	private static final ILootCondition.IBuilder GREEN = 
+    			EntityHasProperty.builder(LootContext.EntityTarget.THIS, 
+    					EntityPredicate.Builder.create().flags(
+    							new EntityFlagsPredicate(null, null, null, null, false)).nbt(
+    									new NBTPredicate(Util.make(new CompoundNBT(), c -> c.putInt("Type", TreeFrogEntity.Type.GREEN.ordinal())))));
+    	public void registerFrogLoot() {
+			this.registerLootTable(TropicraftEntities.TREE_FROG.get(), LootTable.builder()
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptCondition(GREEN)
+					.addEntry(ItemLootEntry.builder(TropicraftItems.POISON_FROG_SKIN.get())))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(2))
+							.addEntry(ItemLootEntry.builder(TropicraftItems.FROG_LEG.get())))
+			);
+		}
 
-		public void registerEntityLoot(EntityType<?> entity, Item loot,
-				RegistryObject<Item> multiLoot, int multiLootBaseAmount) {
-			this.registerLootTable(entity, LootTable.builder()
-					.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-							.addEntry(ItemLootEntry.builder(loot)))
-					.addLootPool(LootPool.builder().rolls(ConstantRange.of(multiLootBaseAmount))
-							.addEntry(ItemLootEntry.builder(multiLoot.get())
-									.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0F, 1F / 3F))))));
+    	//Drops a single item, not affected by enchantment, and several other items that are affected by Enchantment
+    	//Looting will at most double yield with Looting III
+		public <T extends LivingEntity> void registerEntityLoot(RegistryObject<EntityType<T>> entity, RegistryObject<Item> loot,
+				RegistryObject<Item> multiLoot, IRandomRange range) {
+			this.registerLootTable(entity.get(), LootTable.builder()
+			.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
+					.addEntry(ItemLootEntry.builder(loot.get())))
+			.addLootPool(LootPool.builder().rolls(range)
+					.addEntry(ItemLootEntry.builder(multiLoot.get())
+							.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0F, 1F / 3F))))));
 		}
-    	
-		public void registerEntityLoot(EntityType<?> entity, Item singleLoot) {
-			this.registerLootTable(entity, LootTable.builder()
+
+		//Just drops a single item, not affected by enchantment
+		public <T extends LivingEntity> void registerEntityLoot(RegistryObject<EntityType<T>> entity, RegistryObject<Item> loot) {
+			this.registerLootTable(entity.get(), LootTable.builder()
 					.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-							.addEntry(ItemLootEntry.builder(singleLoot)))
-					);
+							.addEntry(ItemLootEntry.builder(loot.get()))));
 		}
-		
-		public void registerEntityLoot(EntityType<?> entity, Item loot, int min, int max) {
-			this.registerLootTable(entity, LootTable.builder()
-					.addLootPool(LootPool.builder().rolls(RandomValueRange.of(min, max))
+
+		public <T extends LivingEntity> void registerEntityLoot(RegistryObject<EntityType<T>> entity, RegistryObject<Item> loot, IRandomRange range) {
+			registerEntityLoot(entity, loot.get(), range);
+		}
+
+    	//Drops several items that are affected by Enchantment
+    	//Looting will at most double yield with Looting III
+		public <T extends LivingEntity> void registerEntityLoot(RegistryObject<EntityType<T>> entity, Item loot, IRandomRange range) {
+			this.registerLootTable(entity.get(), LootTable.builder()
+					.addLootPool(LootPool.builder().rolls(range)
 							.addEntry(ItemLootEntry.builder(loot)
 									.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0F, 1F / 3F))))));
+		}
+		
+		public <T extends LivingEntity> void registerMinimalLootTable(RegistryObject<EntityType<T>> entity) {
+			this.registerLootTable(entity.get(), LootTable.builder());
 		}
 		
         @Override
