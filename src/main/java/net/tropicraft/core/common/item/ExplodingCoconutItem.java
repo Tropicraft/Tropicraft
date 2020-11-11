@@ -11,6 +11,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 
 public class ExplodingCoconutItem extends Item {
@@ -23,8 +24,10 @@ public class ExplodingCoconutItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         // TODO config option
         final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();
+        //allow to use anywhere but in the main area of the server
+        final boolean ltOverride = !world.getDimension().getType().getRegistryName().toString().equals("tropicraft:tropics");
         ItemStack itemstack = player.getHeldItem(hand);
-        if (!canPlayerThrow) {
+        if (!canPlayerThrow && !ltOverride) {
             if (!world.isRemote) {
                 player.sendMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"));
             }
