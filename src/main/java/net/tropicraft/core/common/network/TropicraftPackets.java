@@ -6,6 +6,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.tropicraft.Constants;
+import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
 import net.tropicraft.core.common.network.message.MessageMixerInventory;
 import net.tropicraft.core.common.network.message.MessageMixerStart;
@@ -16,9 +17,9 @@ import net.tropicraft.core.common.network.message.MessageUpdateScubaData;
 public class TropicraftPackets {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Constants.MODID, "main"),
-            () -> Constants.PROTOCOL_VERSION,
-            Constants.PROTOCOL_VERSION::equals,
-            Constants.PROTOCOL_VERSION::equals
+            () -> Tropicraft.getCompatVersion(),
+            Tropicraft::isCompatibleVersion,
+            Tropicraft::isCompatibleVersion
     );
 
     private static int messageID = 0;

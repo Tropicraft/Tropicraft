@@ -71,7 +71,7 @@ public class Tropicraft
 
     public Tropicraft() {
     	// Compatible with all versions that match the semver (excluding the qualifier e.g. "-beta+42")
-    	ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(this::getCompatVersion, (s, v) -> getCompatVersion().equals(getCompatVersion(s))));
+    	ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(Tropicraft::getCompatVersion, (s, v) -> Tropicraft.isCompatibleVersion(s)));
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // General mod setup
@@ -112,11 +112,14 @@ public class Tropicraft
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");
-    private String getCompatVersion() {
+    public static String getCompatVersion() {
     	return getCompatVersion(ModList.get().getModContainerById(Constants.MODID).orElseThrow(IllegalStateException::new).getModInfo().getVersion().toString());
     }
-    private String getCompatVersion(String fullVersion) {
+    private static String getCompatVersion(String fullVersion) {
     	return QUALIFIER.matcher(fullVersion).replaceAll("");
+    }
+    public static boolean isCompatibleVersion(String version) {
+    	return getCompatVersion().equals(getCompatVersion(version));
     }
 
     @OnlyIn(Dist.CLIENT)
