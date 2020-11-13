@@ -95,11 +95,7 @@ public class BambooMugModel extends Model {
             float g = (float)(liquidColor >> 8 & 255) / 255.0F;
             float b = (float)(liquidColor & 255) / 255.0F;
 
-            RenderSystem.disableTexture();
-            RenderSystem.color3f(r, g, b);
-            liquid.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-            RenderSystem.enableTexture();
-            RenderSystem.color3f(1f, 1f, 1f);
+            liquid.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red * r, green * g, blue * b, alpha);
         }
     }
 }

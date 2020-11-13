@@ -10,8 +10,8 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.Material;
@@ -113,23 +113,15 @@ public class TropicraftRenderUtils {
 
     public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn, IBakedModel modelIn) {
         if (!itemStack.isEmpty()) {
-            RenderSystem.pushMatrix();
-            RenderSystem.disableLighting();
-            RenderSystem.scalef(scale, scale, scale);
+            stack.push();
+            stack.scale(scale, scale, scale);
 
             // TODO what is this now?
             if (/*!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || */itemStack.getItem() instanceof SkullItem) {
-                RenderSystem.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                stack.rotate(Vector3f.YP.rotationDegrees(180.0F));
             }
-
-            RenderSystem.pushLightingAttributes();
-            RenderHelper.enableStandardItemLighting();
             Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer);
-            RenderHelper.disableStandardItemLighting();
-            RenderSystem.popAttributes();
-
-            RenderSystem.enableLighting();
-            RenderSystem.popMatrix();
+            stack.pop();
         }
     }
 }
