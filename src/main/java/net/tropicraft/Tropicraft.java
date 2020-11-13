@@ -1,5 +1,7 @@
 package net.tropicraft;
 
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableMap;
@@ -22,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -67,9 +70,10 @@ public class Tropicraft
     });
 
     public Tropicraft() {
-    	ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> Constants.PROTOCOL_VERSION, (s, v) -> Constants.PROTOCOL_VERSION.equals(s)));
+    	// Compatible with all versions that match the semver (excluding the qualifier e.g. "-beta+42")
+    	ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(this::getCompatVersion, (s, v) -> getCompatVersion().equals(getCompatVersion(s))));
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        
+
         // General mod setup
         modBus.addListener(this::setup);
         modBus.addListener(this::gatherData);
@@ -106,7 +110,15 @@ public class Tropicraft
                     .build();
         });
     }
-    
+
+    private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");
+    private String getCompatVersion() {
+    	return getCompatVersion(ModList.get().getModContainerById(Constants.MODID).orElseThrow(IllegalStateException::new).getModInfo().getVersion().toString());
+    }
+    private String getCompatVersion(String fullVersion) {
+    	return QUALIFIER.matcher(fullVersion).replaceAll("");
+    }
+
     @OnlyIn(Dist.CLIENT)
     private void setupClient(final FMLClientSetupEvent event) {
         ClientSetup.setupBlockRenderLayers();
