@@ -14,12 +14,11 @@ import net.tropicraft.core.common.network.message.MessageSifterStart;
 import net.tropicraft.core.common.network.message.MessageUpdateScubaData;
 
 public class TropicraftPackets {
-    private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Constants.MODID, "main"),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
+            () -> Constants.PROTOCOL_VERSION,
+            Constants.PROTOCOL_VERSION::equals,
+            Constants.PROTOCOL_VERSION::equals
     );
 
     private static int messageID = 0;
