@@ -31,7 +31,6 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
 
     private final OctavesNoiseGenerator depthNoise;
     private VolcanoGenerator volcanoGen;
-    private UnderwaterCoveGenerator coveGen;
 
     public TropicraftChunkGenerator(IWorld world, BiomeProvider biomeProvider, TropicraftGeneratorSettings settings) {
         super(world, biomeProvider, 4, 8, 256, settings, true);
@@ -39,7 +38,6 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         depthNoise = new OctavesNoiseGenerator(randomSeed, 15, 0);
 
         volcanoGen = new VolcanoGenerator(this);
-        coveGen = new UnderwaterCoveGenerator(this);
     }
 
     @Override
@@ -52,8 +50,6 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         Biome biome = getBiome(region.getBiomeManager(), blockpos.add(8, 8, 8));
         SharedSeedRandom sharedseedrandom = new SharedSeedRandom();
         long i1 = sharedseedrandom.setDecorationSeed(region.getSeed(), k, l);
-
-        coveGen.decorate(region, i, j);
 
         for(GenerationStage.Decoration deco : GenerationStage.Decoration.values()) {
             try {
@@ -170,7 +166,6 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator<TropicraftGene
         int k = chunkPos.z;
 
         volcanoGen.generate(j, k, chunkIn, randomSeed);
-        coveGen.generate(j, k, chunkIn, randomSeed);
     }
 
     @Override

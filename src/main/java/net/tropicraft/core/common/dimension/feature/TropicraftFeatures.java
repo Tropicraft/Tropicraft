@@ -63,8 +63,6 @@ public class TropicraftFeatures {
 	        "koa_village", () -> new KoaVillageStructure(NoFeatureConfig::deserialize));
 	public static final RegistryObject<VolcanoFeature> VOLCANO = register(
 	        "volcano", () -> new VolcanoFeature(NoFeatureConfig::deserialize));
-	public static final RegistryObject<UnderwaterCoveFeature> UNDERWATER_COVE = register(
-			"underwater_cove", () -> new UnderwaterCoveFeature(NoFeatureConfig::deserialize));
 	public static final RegistryObject<Structure<VillageConfig>> HOME_TREE = register(
 			"home_tree", () -> new HomeTreeFeature(VillageConfig::deserialize));
 	public static final RegistryObject<HomeTreeBranchFeature<HomeTreeBranchConfig>> HOME_TREE_BRANCH = register(
