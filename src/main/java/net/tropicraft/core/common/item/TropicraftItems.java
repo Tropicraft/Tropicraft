@@ -1,7 +1,15 @@
 package net.tropicraft.core.common.item;
 
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -30,17 +38,10 @@ import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.item.scuba.ScubaHarnessItem;
 import net.tropicraft.core.common.item.scuba.ScubaType;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
 public class TropicraftItems {
     
-    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Constants.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MODID);
     
     public static final RegistryObject<Item> AZURITE = register("azurite_gem", Builder.item());
     public static final RegistryObject<Item> EUDIALYTE = register("eudialyte_gem", Builder.item());
@@ -50,11 +51,11 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ZIRCONIUM = register("zirconium_gem", Builder.item());
     
     public static final Map<DyeColor, RegistryObject<FurnitureItem<UmbrellaEntity>>> UMBRELLAS = Arrays.stream(DyeColor.values())
-            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getName() + "_umbrella", Builder.umbrella(c))));
+            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getString() + "_umbrella", Builder.umbrella(c))));
     public static final Map<DyeColor, RegistryObject<FurnitureItem<ChairEntity>>> CHAIRS = Arrays.stream(DyeColor.values())
-            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getName() + "_chair", Builder.chair(c))));
+            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getString() + "_chair", Builder.chair(c))));
     public static final Map<DyeColor, RegistryObject<FurnitureItem<BeachFloatEntity>>> BEACH_FLOATS = Arrays.stream(DyeColor.values())
-            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getName() + "_beach_float", Builder.beachFloat(c))));
+            .collect(Maps.toImmutableEnumMap(Function.identity(), c -> register(c.getString() + "_beach_float", Builder.beachFloat(c))));
     
     public static final RegistryObject<Item> BAMBOO_STICK = register("bamboo_stick", Builder.item());
 
@@ -211,13 +212,13 @@ public class TropicraftItems {
             .forEach(b -> {
                 if (b.getEmptyPot().getRegistryName().equals(TropicraftBlocks.BAMBOO_FLOWER_POT.getId()) && b.getEmptyPot() != b) {
                     addPlant(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), b);
-                } else if (b.func_220276_d().getRegistryName().getNamespace().equals(Constants.MODID)) {
+                } else if (b.getFlower().getRegistryName().getNamespace().equals(Constants.MODID)) {
                     addPlant((FlowerPotBlock) Blocks.FLOWER_POT, b);
                 }
             });
     }
     
     private static void addPlant(FlowerPotBlock empty, FlowerPotBlock full) {
-        empty.addPlant(full.func_220276_d().getRegistryName(), full.delegate);
+        empty.addPlant(full.getFlower().getRegistryName(), full.delegate);
     }
 }

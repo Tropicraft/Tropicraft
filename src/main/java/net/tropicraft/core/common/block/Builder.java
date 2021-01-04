@@ -1,5 +1,10 @@
 package net.tropicraft.core.common.block;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -7,7 +12,6 @@ import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.LogBlock;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SlabBlock;
@@ -17,15 +21,11 @@ import net.minecraft.block.WallBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Builder {
@@ -74,8 +74,8 @@ public class Builder {
         return block(prop(Material.WOOD, color).hardnessAndResistance(2.0F, 3.0F).sound(SoundType.WOOD));
     }
 
-    public static Supplier<LogBlock> log(final MaterialColor topColor, final MaterialColor sideColor) {
-        return block(p -> new LogBlock(topColor, p), prop(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+    public static Supplier<RotatedPillarBlock> log(final MaterialColor topColor, final MaterialColor sideColor) {
+        return block(p -> new RotatedPillarBlock(p), prop(Material.WOOD, state -> state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
     }
 
     public static Supplier<RotatedPillarBlock> wood(final MaterialColor color) {
@@ -145,6 +145,10 @@ public class Builder {
     }
 
     private static Block.Properties prop(final Material material, final MaterialColor color) {
+        return Block.Properties.create(material, color);
+    }
+
+    private static Block.Properties prop(final Material material, final Function<BlockState, MaterialColor> color) {
         return Block.Properties.create(material, color);
     }
     

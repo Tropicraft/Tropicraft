@@ -1,23 +1,24 @@
 package net.tropicraft.core.common.data;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.EntityTypeTagsProvider;
-import net.minecraft.entity.EntityType;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.Tag;
-import net.tropicraft.core.common.entity.TropicraftEntities;
-
 import java.util.Arrays;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.EntityTypeTagsProvider;
+import net.minecraft.entity.EntityType;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag.INamedTag;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.tropicraft.Constants;
+import net.tropicraft.core.common.entity.TropicraftEntities;
+
 public class TropicraftEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
-    public TropicraftEntityTypeTagsProvider(DataGenerator p_i49827_1_) {
-        super(p_i49827_1_);
+    public TropicraftEntityTypeTagsProvider(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
+        super(generatorIn, Constants.MODID, existingFileHelper);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected void registerTags() {
         appendToTag(EntityTypeTags.BEEHIVE_INHABITORS, TropicraftEntities.TROPI_BEE);
@@ -29,8 +30,8 @@ public class TropicraftEntityTypeTagsProvider extends EntityTypeTagsProvider {
     }
 
     @SafeVarargs
-    private final void appendToTag(Tag<EntityType<?>> tag, Supplier<? extends EntityType<?>>... types) {
-        getBuilder(tag).add(resolveAll(EntityType<?>[]::new, types));
+    private final void appendToTag(INamedTag<EntityType<?>> tag, Supplier<? extends EntityType<?>>... types) {
+        getOrCreateBuilder(tag).add(resolveAll(EntityType<?>[]::new, types));
     }
 
     @Override

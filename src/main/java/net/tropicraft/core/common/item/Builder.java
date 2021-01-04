@@ -109,7 +109,7 @@ public class Builder {
     }
 
     public static Supplier<Item> hoe(final IItemTier tier) {
-        return item(p -> new HoeItem(tier, -2.0f, getDefaultProperties()));
+        return item(p -> new HoeItem(tier, 0, -2.0f, getDefaultProperties()));
     }
 
     public static Supplier<Item> shovel(final IItemTier tier) {

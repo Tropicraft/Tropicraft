@@ -7,6 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -62,7 +64,7 @@ public class Util {
 
             double distToPlayer = getDistance(ent, x, y, z);//ent.getDistanceToEntity(player);
 
-            double followDist = ent.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
+            double followDist = ent.getAttribute(Attributes.FOLLOW_RANGE).getValue();
 
             if (distToPlayer <= followDist) {
                 //boolean success = ent.getNavigator().tryMoveToEntityLiving(player, moveSpeedAmp);

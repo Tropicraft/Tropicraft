@@ -1,5 +1,11 @@
 package net.tropicraft.core.client.data;
 
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
+import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
@@ -25,9 +31,9 @@ import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.BlockTropicraftSand;
@@ -37,12 +43,6 @@ import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicsFlowerBlock;
-
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static net.minecraftforge.client.model.generators.ConfiguredModel.allRotations;
-import static net.minecraftforge.client.model.generators.ConfiguredModel.allYRotations;
 
 public class TropicraftBlockstateProvider extends BlockStateProvider {
 

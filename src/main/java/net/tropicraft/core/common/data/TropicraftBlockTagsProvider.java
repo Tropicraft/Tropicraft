@@ -1,7 +1,73 @@
 package net.tropicraft.core.common.data;
 
-import static net.tropicraft.core.common.block.TropicraftBlocks.*;
-import static net.tropicraft.core.common.block.TropicraftFlower.*;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_POTTED_TROPICS_PLANTS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_WALL;
+import static net.tropicraft.core.common.block.TropicraftBlocks.CORAL_SAND;
+import static net.tropicraft.core.common.block.TropicraftBlocks.FOAMY_SAND;
+import static net.tropicraft.core.common.block.TropicraftBlocks.FRUIT_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.GRAPEFRUIT_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.GRAPEFRUIT_SAPLING;
+import static net.tropicraft.core.common.block.TropicraftBlocks.KAPOK_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LARGE_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LEMON_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LEMON_SAPLING;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LIME_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.LIME_SAPLING;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_PLANKS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_SAPLING;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MEDIUM_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.MINERAL_SAND;
+import static net.tropicraft.core.common.block.TropicraftBlocks.ORANGE_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.ORANGE_SAPLING;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LEAVES;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LOG;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_PLANKS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_SAPLING;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.PURIFIED_SAND;
+import static net.tropicraft.core.common.block.TropicraftBlocks.SMALL_BONGO_DRUM;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_DOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_FENCE;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_SLAB;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_STAIRS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_TRAPDOOR;
+import static net.tropicraft.core.common.block.TropicraftBlocks.VANILLA_POTTED_TROPICS_PLANTS;
+import static net.tropicraft.core.common.block.TropicraftBlocks.VOLCANIC_SAND;
+import static net.tropicraft.core.common.block.TropicraftFlower.ACAI_VINE;
+import static net.tropicraft.core.common.block.TropicraftFlower.ANEMONE;
+import static net.tropicraft.core.common.block.TropicraftFlower.BROMELIAD;
+import static net.tropicraft.core.common.block.TropicraftFlower.CANNA;
+import static net.tropicraft.core.common.block.TropicraftFlower.COMMELINA_DIFFUSA;
+import static net.tropicraft.core.common.block.TropicraftFlower.CROCOSMIA;
+import static net.tropicraft.core.common.block.TropicraftFlower.CROTON;
+import static net.tropicraft.core.common.block.TropicraftFlower.DRACAENA;
+import static net.tropicraft.core.common.block.TropicraftFlower.FOLIAGE;
+import static net.tropicraft.core.common.block.TropicraftFlower.MAGIC_MUSHROOM;
+import static net.tropicraft.core.common.block.TropicraftFlower.ORANGE_ANTHURIUM;
+import static net.tropicraft.core.common.block.TropicraftFlower.ORCHID;
+import static net.tropicraft.core.common.block.TropicraftFlower.PATHOS;
+import static net.tropicraft.core.common.block.TropicraftFlower.RED_ANTHURIUM;
+import static net.tropicraft.core.common.block.TropicraftFlower.TROPICAL_FERN;
 
 import java.util.Arrays;
 import java.util.function.IntFunction;
@@ -12,14 +78,16 @@ import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag.INamedTag;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 
 public class TropicraftBlockTagsProvider extends BlockTagsProvider {
 
-    public TropicraftBlockTagsProvider(DataGenerator p_i49827_1_) {
-        super(p_i49827_1_);
+    public TropicraftBlockTagsProvider(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
+        super(generatorIn, Constants.MODID, existingFileHelper);
     }
 
     @SuppressWarnings("unchecked")
@@ -93,28 +161,28 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
     }
 
     @SafeVarargs
-    private final void createTag(Tag<Block> tag, Supplier<? extends Block>... blocks) {
-        getBuilder(tag).add(resolveAll(Block[]::new, blocks));
+    private final void createTag(INamedTag<Block> tag, Supplier<? extends Block>... blocks) {
+        getOrCreateBuilder(tag).add(resolveAll(Block[]::new, blocks));
     }
     
     @SafeVarargs
-    private final void appendToTag(Tag<Block> tag, Tag<Block>... toAppend) {
-        getBuilder(tag).add(toAppend);
+    private final void appendToTag(INamedTag<Block> tag, INamedTag<Block>... toAppend) {
+        getOrCreateBuilder(tag).addTags(toAppend);
     }
     
     @SafeVarargs
-    private final void extendTag(Tag<Block> tag, Tag<Block> toExtend, Supplier<? extends Block>... blocks) {
-        getBuilder(tag).add(toExtend).add(resolveAll(Block[]::new, blocks));
+    private final void extendTag(INamedTag<Block> tag, INamedTag<Block> toExtend, Supplier<? extends Block>... blocks) {
+        getOrCreateBuilder(tag).addTag(toExtend).add(resolveAll(Block[]::new, blocks));
     }
     
     @SafeVarargs
-    private final void createAndAppend(Tag<Block> tag, Tag<Block> to, Supplier<? extends Block>... blocks) {
+    private final void createAndAppend(INamedTag<Block> tag, INamedTag<Block> to, Supplier<? extends Block>... blocks) {
         createTag(tag, blocks);
         appendToTag(to, tag);
     }
 
     @SafeVarargs
-    private final void extendAndAppend(Tag<Block> tag, Tag<Block> toExtend, Tag<Block> to, Supplier<? extends Block>... blocks) {
+    private final void extendAndAppend(INamedTag<Block> tag, INamedTag<Block> toExtend, INamedTag<Block> to, Supplier<? extends Block>... blocks) {
         extendTag(tag, toExtend, blocks);
         appendToTag(to, tag);
     }

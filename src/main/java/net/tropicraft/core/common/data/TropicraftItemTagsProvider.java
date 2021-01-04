@@ -1,23 +1,5 @@
 package net.tropicraft.core.common.data;
 
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.ItemTagsProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.util.IItemProvider;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fml.RegistryObject;
-import net.tropicraft.core.common.TropicraftTags;
-import net.tropicraft.core.common.block.TropicraftBlocks;
-import net.tropicraft.core.common.item.AshenMaskItem;
-import net.tropicraft.core.common.item.TropicraftItems;
-
-import java.util.Arrays;
-import java.util.function.Supplier;
-
 import static net.tropicraft.core.common.TropicraftTags.Items.ASHEN_MASKS;
 import static net.tropicraft.core.common.TropicraftTags.Items.AZURITE_GEM;
 import static net.tropicraft.core.common.TropicraftTags.Items.AZURITE_ORE;
@@ -51,10 +33,31 @@ import static net.tropicraft.core.common.TropicraftTags.Items.ZIRCONIUM_GEM;
 import static net.tropicraft.core.common.TropicraftTags.Items.ZIRCON_GEM;
 import static net.tropicraft.core.common.TropicraftTags.Items.ZIRCON_ORE;
 
+import java.util.Arrays;
+import java.util.function.Supplier;
+
+import net.minecraft.block.FlowerBlock;
+import net.minecraft.data.BlockTagsProvider;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.ItemTagsProvider;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.IItemProvider;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.RegistryObject;
+import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.item.AshenMaskItem;
+import net.tropicraft.core.common.item.TropicraftItems;
+
 public class TropicraftItemTagsProvider extends ItemTagsProvider {
 
-    public TropicraftItemTagsProvider(DataGenerator p_i49827_1_) {
-        super(p_i49827_1_);
+    public TropicraftItemTagsProvider(DataGenerator generatorIn, BlockTagsProvider blockTags, ExistingFileHelper existingFileHelper) {
+        super(generatorIn, blockTags, Constants.MODID, existingFileHelper);
     }
 
     @Override
@@ -128,13 +131,13 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
     }
 
     @SafeVarargs
-    private final void addItemsToTag(Tag<Item> tag, Supplier<? extends IItemProvider>... items) {
-        getBuilder(tag).add(Arrays.stream(items).map(Supplier::get).map(IItemProvider::asItem).toArray(Item[]::new));
+    private final void addItemsToTag(INamedTag<Item> tag, Supplier<? extends IItemProvider>... items) {
+        getOrCreateBuilder(tag).add(Arrays.stream(items).map(Supplier::get).map(IItemProvider::asItem).toArray(Item[]::new));
     }
     
     @SafeVarargs
-    private final void appendToTag(Tag<Item> tag, Tag<Item>... toAppend) {
-        getBuilder(tag).add(toAppend);
+    private final void appendToTag(INamedTag<Item> tag, INamedTag<Item>... toAppend) {
+        getOrCreateBuilder(tag).addTags(toAppend);
     }
 
     @Override

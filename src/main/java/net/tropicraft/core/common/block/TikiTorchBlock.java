@@ -18,8 +18,8 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Direction.Axis;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -168,14 +168,5 @@ public class TikiTorchBlock extends Block {
             world.addParticle(ParticleTypes.SMOKE, d, d1, d2, 0.0D, 0.0D, 0.0D);
             world.addParticle(ParticleTypes.FLAME, d, d1, d2, 0.0D, 0.0D, 0.0D);
         }
-    }
-    
-    @Override
-    @Deprecated
-    public int getLightValue(BlockState state) {
-        if (state.get(SECTION) == TorchSection.UPPER) {
-            return 15;
-        }
-        return super.getLightValue(state);
     }
 }
