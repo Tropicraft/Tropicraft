@@ -1,5 +1,5 @@
 {
-  "parent": "block/outer_stairs",
+  "parent": "minecraft:block/outer_stairs",
   "textures": {
     "side": "tropicraft:block/chunk",
     "bottom": "tropicraft:block/chunk",

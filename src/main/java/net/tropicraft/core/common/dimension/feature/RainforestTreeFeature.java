@@ -1,32 +1,28 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
-
-import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAir;
 
 public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
 
     /**Used in placeBlockLine*/
     protected static final byte otherCoordPairs[] = {2, 0, 0, 1, 2, 1};
 
-    public RainforestTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func) {
-        super(func);
+    public RainforestTreeFeature(Codec<NoFeatureConfig> codec) {
+        super(codec);
     }
 
     protected void setState(IWorldWriter world, BlockPos pos, BlockState state) {
@@ -70,7 +66,7 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
             }
 
             final BlockPos pos = new BlockPos(i, j, k);
-            if (isAir(world, pos)) {
+            if (isAirAt(world, pos)) {
                 setBlockStateInternally(world, pos, Blocks.VINE.getDefaultState());
                 break;
             }
@@ -82,7 +78,7 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
 
         for (int y = j - 1; y > j - length; y--) {
             final BlockPos vinePos = new BlockPos(i, y, k);
-            if (isAir(world, vinePos)) {
+            if (isAirAt(world, vinePos)) {
                 setBlockStateInternally(world, vinePos, Blocks.VINE.getDefaultState());
             } else {
                 return true;
@@ -160,8 +156,8 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
                 double d = (i - x) * (i - x) + (k - z) * (k - z);
                 if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius) {
                     BlockPos pos2 = new BlockPos(i, y, k);
-                    if (isAir(world, pos2) || solid) {
-                        if (world.setBlockState(pos2, state, 3)) {
+                    if (isAirAt(world, pos2) || solid) {
+                        if (world.setBlockState(pos2, state, Constants.BlockFlags.DEFAULT)) {
                             hasGenned = true;
                         }
                     }

@@ -10,12 +10,14 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
 import java.util.List;
+
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
 public class MonkeyAngryThrowGoal extends Goal {
   private final VMonkeyEntity entity;
@@ -146,13 +148,13 @@ public class MonkeyAngryThrowGoal extends Goal {
     double d0 = leapTarget.getPosX() - entity.getPosX();
     double d1 = leapTarget.getPosZ() - entity.getPosZ();
     float f = MathHelper.sqrt(d0 * d0 + d1 * d1);
-    final Vec3d motion = entity.getMotion();
+    final Vector3d motion = entity.getMotion();
 
     if ((double)f >= 1.0E-4D) {
       entity.setMotion(motion.add(d0 / (double)f * 0.5D * 0.800000011920929D + motion.x * 0.20000000298023224D, 0, d1 / (double)f * 0.5D * 0.800000011920929D + motion.z * 0.20000000298023224D));
     }
 
-    entity.setMotion(new Vec3d(motion.x, 0.25, motion.z));
+    entity.setMotion(new Vector3d(motion.x, 0.25, motion.z));
   }
 
   private ItemEntity nearbyMug() {

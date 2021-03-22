@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.text.ITextComponent;
@@ -25,11 +26,13 @@ public class BambooChestTileEntity extends ChestTileEntity {
         return getName();
     }
 
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    @Override
+    public void read(BlockState blockState, CompoundNBT compound) {
+        super.read(blockState, compound);
         unbreakable = compound.getBoolean("unbreakable");
     }
 
+    @Override
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
         compound.putBoolean("unbreakable", unbreakable);

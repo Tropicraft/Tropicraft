@@ -1,33 +1,27 @@
 package net.tropicraft.core.common.dimension.feature;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+
+import java.util.Random;
+
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
-
-import com.mojang.datafixers.Dynamic;
-
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-
 public class LargePalmTreeFeature extends PalmTreeFeature {
-    public LargePalmTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func) {
-        super(func);
+    public LargePalmTreeFeature(Codec<NoFeatureConfig> codec) {
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
         pos = pos.toImmutable();
 
-        int height = rand.nextInt(7) + 7;
+        int height = random.nextInt(7) + 7;
 
         if (goesBeyondWorldSize(world, pos.getY(), height)) {
             return false;
@@ -37,7 +31,7 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos.down())) {
+        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
             return false;
         }
 
@@ -177,7 +171,7 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
         placeLeaf(world, i + 0, j + height + 3, k + 5);
 
         for (int c = 0; c < 4; c++) {
-            spawnCoconuts(world, new BlockPos(i, j + height + 1, k).offset(Direction.byHorizontalIndex(i)), rand, 2, getLeaf());
+            spawnCoconuts(world, new BlockPos(i, j + height + 1, k).offset(Direction.byHorizontalIndex(i)), random, 2, getLeaf());
         }
 
         return true;

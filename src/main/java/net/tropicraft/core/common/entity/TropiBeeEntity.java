@@ -6,15 +6,16 @@ import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class TropiBeeEntity extends BeeEntity {
-    public TropiBeeEntity(EntityType<? extends BeeEntity> p_i225714_1_, World p_i225714_2_) {
-        super(p_i225714_1_, p_i225714_2_);
+    public TropiBeeEntity(EntityType<? extends BeeEntity> type, World world) {
+        super(type, world);
     }
 
     @Override
-    public BeeEntity createChild(AgeableEntity mob) {
+    public BeeEntity createChild(ServerWorld world, AgeableEntity partner) {
         return TropicraftEntities.TROPI_BEE.get().create(this.world);
     }
 

@@ -16,16 +16,16 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
@@ -34,12 +34,13 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CowktailEntity extends CowEntity implements net.minecraftforge.common.IShearable {
+public class CowktailEntity extends CowEntity implements IForgeShearable {
 	private static final DataParameter<String> COWKTAIL_TYPE = EntityDataManager.createKey(CowktailEntity.class, DataSerializers.STRING);
 
 	public CowktailEntity(EntityType<? extends CowktailEntity> type, World worldIn) {
@@ -58,7 +59,7 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 	}
 
 	@Override
-	public boolean processInteract(PlayerEntity player, Hand hand) {
+	public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
 		ItemStack itemstack = player.getHeldItem(hand);
 		if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isChild()) {
 			if (player.abilities.isCreativeMode) {
@@ -77,10 +78,10 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 			}
 
 			this.playSound(SoundEvents.ENTITY_MOOSHROOM_SUSPICIOUS_MILK, 1.0F, 1.0F);
-			return true;
+			return ActionResultType.SUCCESS;
 		}
 
-		return super.processInteract(player, hand);
+		return super.getEntityInteractionResult(player, hand);
 	}
 
 	@Override
@@ -107,13 +108,13 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 	}
 
 	@Override
-	public CowktailEntity createChild(AgeableEntity ageable) {
-		CowktailEntity CowktailEntity = TropicraftEntities.COWKTAIL.get().create(this.world);
-		CowktailEntity.setCowktailType(this.func_213445_a((CowktailEntity)ageable));
-		return CowktailEntity;
+	public CowktailEntity createChild(ServerWorld world, AgeableEntity ageable) {
+		CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.world);
+		child.setCowktailType(this.getOffspringType((CowktailEntity)ageable));
+		return child;
 	}
 
-	private CowktailEntity.Type func_213445_a(CowktailEntity p_213445_1_) {
+	private CowktailEntity.Type getOffspringType(CowktailEntity p_213445_1_) {
 		CowktailEntity.Type CowktailEntity$type = this.getCowktailType();
 		CowktailEntity.Type CowktailEntity$type1 = p_213445_1_.getCowktailType();
 		CowktailEntity.Type CowktailEntity$type2;
@@ -127,12 +128,13 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 	}
 
 	@Override
-	public boolean isShearable(ItemStack item, net.minecraft.world.IWorldReader world, net.minecraft.util.math.BlockPos pos) {
+	public boolean isShearable(@Nonnull ItemStack item, World world, BlockPos pos) {
 		return !this.isChild();
 	}
 
+	@Nonnull
 	@Override
-	public java.util.List<ItemStack> onSheared(ItemStack item, net.minecraft.world.IWorld world, net.minecraft.util.math.BlockPos pos, int fortune) {
+	public List<ItemStack> onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune) {
 		java.util.List<ItemStack> ret = new java.util.ArrayList<>();
 		this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosYHeight(0.5D), this.getPosZ(), 0.0D, 0.0D, 0.0D);
 		if (!this.world.isRemote) {
@@ -155,7 +157,7 @@ public class CowktailEntity extends CowEntity implements net.minecraftforge.comm
 	}
 
 	@Nullable
-	public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
+	public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
 		setCowktailType(Type.getRandomType(rand));
 		return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
 	}

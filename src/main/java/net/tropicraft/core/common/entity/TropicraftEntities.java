@@ -2,28 +2,21 @@ package net.tropicraft.core.common.entity;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
-import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
-import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
-import net.tropicraft.core.common.entity.egg.StarfishEggEntity;
-import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
+import net.tropicraft.core.common.entity.egg.*;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
@@ -31,29 +24,12 @@ import net.tropicraft.core.common.entity.neutral.EIHEntity;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
-import net.tropicraft.core.common.entity.passive.CowktailEntity;
-import net.tropicraft.core.common.entity.passive.EntityKoaHunter;
-import net.tropicraft.core.common.entity.passive.FailgullEntity;
-import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
-import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
-import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
-import net.tropicraft.core.common.entity.placeable.ChairEntity;
-import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.entity.placeable.WallItemEntity;
+import net.tropicraft.core.common.entity.passive.*;
+import net.tropicraft.core.common.entity.placeable.*;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
-import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
-import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
-import net.tropicraft.core.common.entity.underdasea.MarlinEntity;
-import net.tropicraft.core.common.entity.underdasea.PiranhaEntity;
-import net.tropicraft.core.common.entity.underdasea.SardineEntity;
-import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
-import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
-import net.tropicraft.core.common.entity.underdasea.SharkEntity;
-import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftDolphinEntity;
-import net.tropicraft.core.common.entity.underdasea.TropicraftTropicalFishEntity;
+import net.tropicraft.core.common.entity.underdasea.*;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -64,7 +40,7 @@ public class TropicraftEntities {
     private static final float EGG_WIDTH = 0.4F;
     private static final float EGG_HEIGHT = 0.5F;
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, Constants.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Constants.MODID);
 
     public static final RegistryObject<EntityType<EntityKoaHunter>> KOA_HUNTER = register("koa", TropicraftEntities::koaHunter);
     public static final RegistryObject<EntityType<TropiCreeperEntity>> TROPI_CREEPER = register("tropicreeper", TropicraftEntities::tropicreeper);
@@ -457,5 +433,37 @@ public class TropicraftEntities {
 
     public static <T extends MobEntity> boolean canSpawnSurfaceOceanWaterMob(EntityType<T> waterMob, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
         return pos.getY() > world.getSeaLevel() - 3 && pos.getY() < world.getSeaLevel() && world.getFluidState(pos).isTagged(FluidTags.WATER);
+    }
+
+    @SubscribeEvent
+    public static void onCreateEntityAttributes(EntityAttributeCreationEvent event) {
+        event.put(KOA_HUNTER.get(), EntityKoaBase.createAttributes().create());
+        event.put(TROPI_CREEPER.get(), TropiCreeperEntity.createAttributes().create());
+        event.put(IGUANA.get(), IguanaEntity.createAttributes().create());
+        event.put(TROPI_SKELLY.get(), TropiSkellyEntity.func_233666_p_().create());
+        event.put(EIH.get(), EIHEntity.createAttributes().create());
+        event.put(SEA_TURTLE.get(), SeaTurtleEntity.func_234228_eK_().create());
+        event.put(MARLIN.get(), MarlinEntity.createAttributes().create());
+        event.put(FAILGULL.get(), FailgullEntity.createAttributes().create());
+        event.put(DOLPHIN.get(), TropicraftDolphinEntity.func_234190_eK_().create());
+        event.put(SEAHORSE.get(), SeahorseEntity.createAttributes().create());
+        event.put(TREE_FROG.get(), TreeFrogEntity.createAttributes().create());
+        event.put(SEA_URCHIN.get(), SeaUrchinEntity.createAttributes().create());
+        event.put(SEA_URCHIN_EGG_ENTITY.get(), EggEntity.createAttributes().create());
+        event.put(STARFISH.get(), StarfishEntity.createAttributes().create());
+        event.put(STARFISH_EGG.get(), EggEntity.createAttributes().create());
+        event.put(V_MONKEY.get(), VMonkeyEntity.createAttributes().create());
+        event.put(RIVER_SARDINE.get(), SardineEntity.createAttributes().create());
+        event.put(PIRANHA.get(), PiranhaEntity.createAttributes().create());
+        event.put(TROPICAL_FISH.get(), TropicraftTropicalFishEntity.createAttributes().create());
+        event.put(EAGLE_RAY.get(), EagleRayEntity.createAttributes().create());
+        event.put(TROPI_SPIDER.get(), TropiSpiderEntity.func_234305_eI_().create());
+        event.put(TROPI_SPIDER_EGG.get(), EggEntity.createAttributes().create());
+        event.put(ASHEN.get(), AshenEntity.createAttributes().create());
+        event.put(HAMMERHEAD.get(), SharkEntity.createAttributes().create());
+        event.put(SEA_TURTLE_EGG.get(), EggEntity.createAttributes().create());
+        event.put(TROPI_BEE.get(), TropiBeeEntity.func_234182_eX_().create());
+        event.put(COWKTAIL.get(), CowktailEntity.registerAttributes().create());
+        event.put(MAN_O_WAR.get(), ManOWarEntity.createAttributes().create());
     }
 }

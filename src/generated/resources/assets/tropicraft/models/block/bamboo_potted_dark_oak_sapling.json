@@ -1,8 +1,8 @@
 {
-  "parent": "block/potted_dark_oak_sapling",
+  "parent": "minecraft:block/potted_dark_oak_sapling",
   "textures": {
     "flowerpot": "tropicraft:block/bamboo_flower_pot",
-    "dirt": "block/dirt",
+    "dirt": "minecraft:block/dirt",
     "particle": "tropicraft:block/bamboo_side"
   }
 }

@@ -249,7 +249,7 @@ public class TropicraftDolphinModel extends SegmentedModel<TropicraftDolphinEnti
 				tailHorzSpeed = 0.25f;
 			}
 		} else {
-			if (dolphin.onGround) {
+			if (dolphin.isOnGround()) {
 				tailVertSpeed = 0.0f;
 				tailHorzSpeed = 0.05f;
 			} else {

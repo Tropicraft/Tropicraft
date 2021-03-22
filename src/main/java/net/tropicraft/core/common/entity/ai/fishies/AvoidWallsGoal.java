@@ -2,81 +2,80 @@ package net.tropicraft.core.common.entity.ai.fishies;
 
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 
 import java.util.EnumSet;
 import java.util.Random;
 
 public class AvoidWallsGoal extends Goal {
-	public TropicraftFishEntity entity;
-	public Random rand;
+    public TropicraftFishEntity entity;
+    public Random rand;
 
-	public AvoidWallsGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn) {
+    public AvoidWallsGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn) {
         entity = entityObjIn;
         rand = entity.getRNG();
         setMutexFlags(flags);
     }
 
-	@Override
-	public boolean shouldExecute() {
-		return entity.isInWater();
-	}
+    @Override
+    public boolean shouldExecute() {
+        return entity.isInWater();
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		// Wall correction
-		Vec3d angle = entity.getHeading();
-		double frontDist = 1 + rand.nextInt(4);
-		
-		Vec3d diff = new Vec3d(entity.getPosX() + (angle.x * frontDist), entity.getPosY() + angle.y, entity.getPosZ() + (angle.z * frontDist));
+    @Override
+    public void tick() {
+        super.tick();
+        // Wall correction
+        Vector3d angle = entity.getHeading();
+        double frontDist = 1 + rand.nextInt(4);
+        
+        Vector3d diff = new Vector3d(entity.getPosX() + (angle.x * frontDist), entity.getPosY() + angle.y, entity.getPosZ() + (angle.z * frontDist));
 
-		BlockPos bp = new BlockPos((int) diff.x, (int) entity.getPosY(), (int) diff.z);
+        BlockPos bp = new BlockPos((int) diff.x, (int) entity.getPosY(), (int) diff.z);
 
-		if (!entity.world.getBlockState(bp).getMaterial().isLiquid() && !entity.isMovingAwayFromWall) {
-			entity.setRandomTargetHeadingForce(32);
-			entity.isMovingAwayFromWall = true;
-		}
-		
-		if (entity.ticksExisted % 20 == 0 && entity.isMovingAwayFromWall)
-			entity.isMovingAwayFromWall = false;
-		
-		
-		if (entity.targetVector != null && entity.isMovingAwayFromWall) {
-			bp = new BlockPos((int) entity.targetVector.x, (int) entity.targetVector.y, (int) entity.targetVector.z);
+        if (!entity.world.getBlockState(bp).getMaterial().isLiquid() && !entity.isMovingAwayFromWall) {
+            entity.setRandomTargetHeadingForce(32);
+            entity.isMovingAwayFromWall = true;
+        }
+        
+        if (entity.ticksExisted % 20 == 0 && entity.isMovingAwayFromWall)
+            entity.isMovingAwayFromWall = false;
+        
+        
+        if (entity.targetVector != null && entity.isMovingAwayFromWall) {
+            bp = new BlockPos((int) entity.targetVector.x, (int) entity.targetVector.y, (int) entity.targetVector.z);
 
-			if(entity.getPosition().equals(bp) && entity.ticksExisted % 80 == 0) {
-				entity.isMovingAwayFromWall = false;
-			}
-		}
-		
-		
-		// Near surface check
-		bp = entity.getPosition();
-		if (!entity.world.getBlockState(bp).getMaterial().isLiquid()) {
-			if (entity.swimPitch > 0f) {
-				entity.isPanicking = false;
-				entity.setRandomTargetHeadingForce(32);
-			}
-		}
+            if(entity.getPosition().equals(bp) && entity.ticksExisted % 80 == 0) {
+                entity.isMovingAwayFromWall = false;
+            }
+        }
+        
+        
+        // Near surface check
+        bp = entity.getPosition();
+        if (!entity.world.getBlockState(bp).getMaterial().isLiquid()) {
+            if (entity.swimPitch > 0f) {
+                entity.isPanicking = false;
+                entity.setRandomTargetHeadingForce(32);
+            }
+        }
 
-		bp = new BlockPos(entity.getPosition().down(2));
+        bp = new BlockPos(entity.getPosition().down(2));
 
-		// Hitting bottom check
-		if (!entity.world.getBlockState(bp).getMaterial().isLiquid()) {
-			if (entity.swimPitch < 0f) {
-				entity.swimPitch+= 2f;
-			}
-		}
-	}
+        // Hitting bottom check
+        if (!entity.world.getBlockState(bp).getMaterial().isLiquid()) {
+            if (entity.swimPitch < 0f) {
+                entity.swimPitch+= 2f;
+            }
+        }
+    }
 
-	/**
-	 * Returns whether an in-progress EntityAIBase should continue executing
-	 */
-	@Override
+    /**
+     * Returns whether an in-progress EntityAIBase should continue executing
+     */
+    @Override
     public boolean shouldContinueExecuting() {
-
-		return entity.isInWater();
-	}
+        return entity.isInWater();
+    }
 }

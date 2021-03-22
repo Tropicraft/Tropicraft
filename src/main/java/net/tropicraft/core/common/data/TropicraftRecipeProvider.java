@@ -641,11 +641,11 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void bark(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
         ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
-    		.patternLine("##").patternLine("##")
-    		.key('#', source.get())
-    		.setGroup("bark")
-    		.addCriterion("has_log", this.hasItem(Blocks.ACACIA_LOG))
-    		.build(consumer);
+            .patternLine("##").patternLine("##")
+            .key('#', source.get())
+            .setGroup("bark")
+            .addCriterion("has_log", this.hasItem(Blocks.ACACIA_LOG))
+            .build(consumer);
     }
     
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void stairs(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, boolean stone, Consumer<IFinishedRecipe> consumer) {

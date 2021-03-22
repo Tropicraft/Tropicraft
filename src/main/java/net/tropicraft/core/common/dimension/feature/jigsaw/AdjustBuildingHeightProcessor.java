@@ -1,9 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorldReader;
@@ -15,8 +13,13 @@ import net.minecraft.world.gen.feature.template.Template.EntityInfo;
 import net.tropicraft.Constants;
 
 public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
+    public static final Codec<AdjustBuildingHeightProcessor> CODEC = RecordCodecBuilder.create(instance -> {
+        return instance.group(
+                Codec.INT.optionalFieldOf("base", 126).forGetter(c -> c.base)
+        ).apply(instance, AdjustBuildingHeightProcessor::new);
+    });
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":adjust_building_height", AdjustBuildingHeightProcessor::new);
+    static final IStructureProcessorType<AdjustBuildingHeightProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":adjust_building_height", () -> CODEC);
     
     private final int base;
 
@@ -24,12 +27,8 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
         this.base = base;
     }
 
-    public AdjustBuildingHeightProcessor(Dynamic<?> p_i51337_1_) {
-        this(126); // FIXME
-    }
-
     @Override
-    public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
+    public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockPos p, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
         if (seedPos.getY() < base) {
             return new BlockInfo(blockInfo.pos.up(), blockInfo.state, blockInfo.nbt);
         }
@@ -45,12 +44,7 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
     }
 
     @Override
-    protected IStructureProcessorType getType() {
+    protected IStructureProcessorType<?> getType() {
         return TYPE;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("base"), ops.createInt(this.base))));
     }
 }

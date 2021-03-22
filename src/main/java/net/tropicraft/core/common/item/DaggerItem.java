@@ -1,13 +1,15 @@
 package net.tropicraft.core.common.item;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
@@ -17,12 +19,22 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class DaggerItem extends Item {
 
     private final IItemTier tier;
+    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+
     public DaggerItem(IItemTier tier, Properties properties) {
         super(properties.defaultMaxDamage(tier.getMaxUses()));
         this.tier = tier;
+
+        this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+                .putAll(super.getAttributeModifiers(EquipmentSlotType.MAINHAND, new ItemStack(this)))
+                .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) tier.getAttackDamage() + 2.5D, AttributeModifier.Operation.ADDITION))
+                .put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", 0, AttributeModifier.Operation.ADDITION))
+                .build();
     }
 
     @Override
@@ -65,18 +77,12 @@ public class DaggerItem extends Item {
         return state.getBlock() == Blocks.COBWEB;
     }
 
-    /**
-     * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
-     */
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) tier.getAttackDamage() + 2.5D, AttributeModifier.Operation.ADDITION));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", 0, AttributeModifier.Operation.ADDITION));
+            return defaultModifiers;
+        } else {
+            return super.getAttributeModifiers(slot, stack);
         }
-
-        return multimap;
     }
 }

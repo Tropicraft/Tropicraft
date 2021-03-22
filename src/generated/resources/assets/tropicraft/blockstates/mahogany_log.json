@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "tropicraft:block/mahogany_log",
+      "model": "tropicraft:block/mahogany_log_horizontal",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "tropicraft:block/mahogany_log"
     },
     "axis=z": {
-      "model": "tropicraft:block/mahogany_log",
+      "model": "tropicraft:block/mahogany_log_horizontal",
       "x": 90
     }
   }

@@ -12,9 +12,12 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.DecoratedFeatureConfig;
 import net.minecraft.world.gen.feature.FlowersFeature;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.List;
 import java.util.Random;
+
+import net.minecraft.item.Item.Properties;
 
 public class TropicalFertilizerItem extends BoneMealItem {
 
@@ -51,25 +54,25 @@ public class TropicalFertilizerItem extends BoneMealItem {
 
                             BlockState blockstate1;
                             if (rand.nextInt(8) > 0) { // Modification here, == changed to > to invert chances
-                                List<ConfiguredFeature<?, ?>> list = world.getBiome(blockpos1).getFlowers();
+                                List<ConfiguredFeature<?, ?>> list = world.getBiome(blockpos1).getGenerationSettings().getFlowerFeatures();
                                 if (list.isEmpty()) {
                                     break;
                                 }
 
                                 // TODO this is so ugly and hacky, pls
-                                blockstate1 = ((FlowersFeature) ((DecoratedFeatureConfig) (list.get(0)).config).feature.feature).getFlowerToPlace(rand, blockpos1, null);
+                                blockstate1 = ((FlowersFeature) ((DecoratedFeatureConfig) (list.get(0)).config).feature.get().config).getFlowerToPlace(rand, blockpos1, null);
                             } else {
                                 blockstate1 = blockstate;
                             }
 
                             if (blockstate1.isValidPosition(world, blockpos1)) {
-                                world.setBlockState(blockpos1, blockstate1, 3);
+                                world.setBlockState(blockpos1, blockstate1, Constants.BlockFlags.DEFAULT);
                             }
                             break;
                         }
 
                         blockpos1 = blockpos1.add(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
-                        if (world.getBlockState(blockpos1.down()).getBlock() != Blocks.GRASS_BLOCK || world.getBlockState(blockpos1).isCollisionShapeOpaque(world, blockpos1)) {
+                        if (world.getBlockState(blockpos1.down()).getBlock() != Blocks.GRASS_BLOCK || world.getBlockState(blockpos1).hasOpaqueCollisionShape(world, blockpos1)) {
                             break;
                         }
 

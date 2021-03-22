@@ -1,9 +1,5 @@
 package net.tropicraft.core.common.item.scuba;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -22,6 +18,11 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 import net.tropicraft.core.client.scuba.ScubaHUD;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
+import net.minecraft.item.Item.Properties;
+
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE)
 public class ScubaHarnessItem extends ScubaArmorItem {
 
@@ -36,8 +37,8 @@ public class ScubaHarnessItem extends ScubaArmorItem {
         int airRemaining = getRemainingAir(stack);
         tooltip.add(TropicraftLangKeys.SCUBA_AIR_TIME
                 .format(new StringTextComponent(ScubaHUD.formatTime(airRemaining))
-                        .applyTextStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
-                .applyTextStyle(TextFormatting.GRAY));
+                        .mergeStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
+                .mergeStyle(TextFormatting.GRAY));
     }
 
     @Override

@@ -10,27 +10,27 @@ import net.tropicraft.core.common.item.AshenMaskItem;
 
 public class AIAshenShootDart extends Goal {
 
-	private final AshenEntity entity;
-	private int attackCooldown;
+    private final AshenEntity entity;
+    private int attackCooldown;
     private int attackTime = -1;
     private int seeTime;
-	private final float maxAttackDistance;
+    private final float maxAttackDistance;
     private boolean strafingClockwise;
     private boolean strafingBackwards;
     private int strafingTime = -1;
     private float moveSpeedAmplifier;
-	
-	public AIAshenShootDart(AshenEntity entity) {
-		this.entity = entity;
-		attackCooldown = 60;
-		maxAttackDistance = 15 * 15;
-		moveSpeedAmplifier = 1.0F;
-	}
-	
+    
+    public AIAshenShootDart(AshenEntity entity) {
+        this.entity = entity;
+        attackCooldown = 60;
+        maxAttackDistance = 15 * 15;
+        moveSpeedAmplifier = 1.0F;
+    }
+    
     public void setAttackCooldown(int attackCooldown) {
         this.attackCooldown = attackCooldown;
     }
-	
+    
     /**
      * Returns whether the EntityAIBase should begin execution.
      */

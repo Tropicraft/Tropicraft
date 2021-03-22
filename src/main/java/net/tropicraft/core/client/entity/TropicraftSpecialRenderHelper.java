@@ -2,12 +2,11 @@ package net.tropicraft.core.client.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-
-import net.minecraft.client.renderer.Matrix3f;
-import net.minecraft.client.renderer.Matrix4f;
-import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.util.math.vector.Matrix3f;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3i;
 
 public class TropicraftSpecialRenderHelper {
 
@@ -50,11 +49,11 @@ public class TropicraftSpecialRenderHelper {
     }
     
     public static void vertex(IVertexBuilder bufferIn, MatrixStack ms, double x, double y, double z, float red, float green, float blue, float alpha, float texU, float texV, Direction normal, int packedLight, int packedOverlay) {
-    	vertex(bufferIn, ms.getLast().getMatrix(), ms.getLast().getNormal(), x, y, z, red, green, blue, alpha, texU, texV, normal, packedLight, packedOverlay);
+        vertex(bufferIn, ms.getLast().getMatrix(), ms.getLast().getNormal(), x, y, z, red, green, blue, alpha, texU, texV, normal, packedLight, packedOverlay);
     }
 
     public static void vertex(IVertexBuilder bufferIn, Matrix4f matrixIn, Matrix3f matrixNormalIn, double x, double y, double z, float red, float green, float blue, float alpha, float texU, float texV, Direction normal, int packedLight, int packedOverlay) {
-    	Vec3i normalVec = normal.getDirectionVec();
+        Vector3i normalVec = normal.getDirectionVec();
         bufferIn.pos(matrixIn, (float) x, (float) y, (float) z).color(red, green, blue, alpha).tex(texU, texV).overlay(packedOverlay).lightmap(packedLight).normal(matrixNormalIn, normalVec.getX(), normalVec.getY(), normalVec.getZ()).endVertex();
     }
 

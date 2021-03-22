@@ -1,22 +1,18 @@
 package net.tropicraft.core.client.entity.render.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.HandSide;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
-import org.lwjgl.opengl.GL11;
 
 @OnlyIn(Dist.CLIENT)
 public class VMonkeyHeldItemLayer<T extends VMonkeyEntity, M extends EntityModel<T> & IHasArm> extends HeldItemLayer<T, M> {
@@ -26,7 +22,7 @@ public class VMonkeyHeldItemLayer<T extends VMonkeyEntity, M extends EntityModel
 
     @Override
     public void render(MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, T monkey, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (monkey.isSitting() && !monkey.getHeldItemMainhand().isEmpty()) {
+        if (monkey.isQueuedToSit() && !monkey.getHeldItemMainhand().isEmpty()) {
             stack.push();
             stack.translate(0.0F, 1.30F, -0.425F);
             stack.rotate(Vector3f.ZP.rotationDegrees(180));

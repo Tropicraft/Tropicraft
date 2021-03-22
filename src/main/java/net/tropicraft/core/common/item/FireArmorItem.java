@@ -11,12 +11,14 @@ import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
+
+import net.minecraft.item.Item.Properties;
 
 public class FireArmorItem extends TropicraftArmorItem {
     public FireArmorItem(EquipmentSlotType slotType, Properties properties) {
@@ -64,7 +66,7 @@ public class FireArmorItem extends TropicraftArmorItem {
 
         int extraRand = 0;
 
-        final Vec3d motion = player.getMotion();
+        final Vector3d motion = player.getMotion();
         double plSpeed = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
 
         if (plSpeed < 0.1F) {
@@ -96,7 +98,7 @@ public class FireArmorItem extends TropicraftArmorItem {
             // why do we do this on the client?
             if (onLava && !inLava) {
                 player.setMotion(motion.mul(1, 0, 1));
-                player.onGround = true;
+                player.setOnGround(true);
             }
 
             // why do we do this on the client???????
@@ -126,7 +128,7 @@ public class FireArmorItem extends TropicraftArmorItem {
                 if (rand.nextInt(22) == 0) particle = ParticleTypes.LARGE_SMOKE;
 
                 if (onLava || rand.nextInt(1 + extraRand) == 0) {
-                    Vec3d motion1 = player.getMotion();
+                    Vector3d motion1 = player.getMotion();
                     player.world.addParticle(particle,
                             gatherX + ((rand.nextFloat() * range) - (range/2)),
                             gatherY + ((rand.nextFloat() * range) - (range/2)),

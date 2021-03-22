@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.placeable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -15,12 +14,13 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -42,12 +42,6 @@ public class ChairEntity extends FurnitureEntity {
         super(type, world, TropicraftItems.CHAIRS);
     }
 
-    @Nullable
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getBoundingBox();
-    }
-
     /**
      * Called to update the entity's position/logic.
      */
@@ -63,7 +57,7 @@ public class ChairEntity extends FurnitureEntity {
                 double d3 = this.getBoundingBox().minY + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double)(i + 1) / (double)b0 - 0.125D;
                 AxisAlignedBB axisalignedbb = new AxisAlignedBB(this.getBoundingBox().minX, d1, this.getBoundingBox().minZ, this.getBoundingBox().maxX, d3, this.getBoundingBox().maxZ);
 
-                if (this.world.isMaterialInBB(axisalignedbb, Material.WATER)) {
+                if (this.world.containsAnyLiquid(axisalignedbb)) {
                     d0 += 1.0D / (double)b0;
                 }
             }
@@ -166,7 +160,7 @@ public class ChairEntity extends FurnitureEntity {
             if (this.getComeSailAway() && this.onGround) {
                 setMotion(getMotion().mul(0.5, 0.5, 0.5));
             } else if (this.onGround) {
-                setMotion(Vec3d.ZERO);
+                setMotion(Vector3d.ZERO);
             }
 
             this.move(MoverType.SELF, getMotion());
@@ -245,13 +239,13 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (!world.isRemote && !player.isSneaking()) {
             player.startRiding(this);
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return !player.isRidingSameEntity(this);
+        return !player.isRidingSameEntity(this) ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     /**
@@ -266,7 +260,7 @@ public class ChairEntity extends FurnitureEntity {
     @Nullable
     public Entity getControllingPassenger() {
         List<Entity> list = this.getPassengers();
-        return list.isEmpty() ? null : (Entity)list.get(0);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
@@ -277,7 +271,7 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     public void updatePassenger(Entity passenger) {
         if (this.isPassenger(passenger)) {
-            Vec3d xzOffset = new Vec3d(0, 0, -0.125).rotateYaw((float) Math.toRadians(-rotationYaw));
+            Vector3d xzOffset = new Vector3d(0, 0, -0.125).rotateYaw((float) Math.toRadians(-rotationYaw));
             passenger.setPosition(getPosX() + xzOffset.x, getPosY() + getMountedYOffset() + passenger.getYOffset(), getPosZ() + xzOffset.z);
         }
     }

@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.item;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +10,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceRenderer;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.Item.Properties;
 
 public class NigelStacheItem extends ArmorItem {
 
@@ -28,6 +30,6 @@ public class NigelStacheItem extends ArmorItem {
     
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-    	return TropicraftRenderUtils.getTextureArmor("nigel_layer_1").toString();
+        return TropicraftRenderUtils.getTextureArmor("nigel_layer_1").toString();
     }
 }

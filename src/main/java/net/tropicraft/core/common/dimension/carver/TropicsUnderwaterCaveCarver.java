@@ -1,21 +1,19 @@
 package net.tropicraft.core.common.dimension.carver;
 
-import java.util.Random;
-import java.util.function.Function;
-
 import com.google.common.collect.ImmutableSet;
-import com.mojang.datafixers.Dynamic;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.carver.UnderwaterCaveWorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
+import java.util.Random;
+
 public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
 
-    public TropicsUnderwaterCaveCarver(Function<Dynamic<?>, ? extends ProbabilityConfig> p_i49922_1_) {
-        super(p_i49922_1_);
+    public TropicsUnderwaterCaveCarver(Codec<ProbabilityConfig> codec) {
+        super(codec);
         this.carvableBlocks = ImmutableSet.<Block> builder().addAll(this.carvableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())
                 .add(TropicraftBlocks.FOAMY_SAND.get())
@@ -31,7 +29,7 @@ public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
     }
     
     @Override
-    protected float generateCaveRadius(Random rand) {
+    protected float func_230359_a_(Random rand) {
         float f = rand.nextFloat() * 3.0F + rand.nextFloat();
         if (rand.nextInt(10) == 0) {
            f *= rand.nextFloat() * rand.nextFloat() * 5.0F + 1.0F;
@@ -41,7 +39,7 @@ public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
     }
     
     @Override
-    protected int generateCaveStartY(Random p_222726_1_) {
-        return p_222726_1_.nextInt(p_222726_1_.nextInt(240) + 8);
+    protected int func_230361_b_(Random random) {
+        return random.nextInt(random.nextInt(240) + 8);
     }
 }

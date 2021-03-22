@@ -1,18 +1,9 @@
 package net.tropicraft.core.common.entity.hostile;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.RandomWalkingGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -28,7 +19,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.ashen.AIAshenChaseAndPickupLostMask;
@@ -68,14 +59,14 @@ public class AshenEntity extends TropicraftCreatureEntity implements IRangedAtta
         return HandSide.RIGHT;
     }
 
-    @Override
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld p_213386_1_, DifficultyInstance p_213386_2_, SpawnReason p_213386_3_, @Nullable ILivingEntityData p_213386_4_, @Nullable CompoundNBT p_213386_5_) {
+    @Override
+    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData spawnData, @Nullable CompoundNBT dataTag) {
         setHeldItem(Hand.OFF_HAND, new ItemStack(TropicraftItems.BLOW_GUN.get()));
         setHeldItem(Hand.MAIN_HAND, new ItemStack(TropicraftItems.DAGGER.get()));
-        setMaskType((byte) AshenMasks.VALUES[p_213386_1_.getRandom().nextInt(AshenMasks.VALUES.length)].ordinal());
+        setMaskType((byte) AshenMasks.VALUES[world.getRandom().nextInt(AshenMasks.VALUES.length)].ordinal());
         setActionState(AshenState.HOSTILE);
-        return super.onInitialSpawn(p_213386_1_, p_213386_2_, p_213386_3_, p_213386_4_, p_213386_5_);
+        return super.onInitialSpawn(world, difficulty, reason, spawnData, dataTag);
     }
 
     @Override
@@ -100,15 +91,11 @@ public class AshenEntity extends TropicraftCreatureEntity implements IRangedAtta
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, EntityKoaBase.class, true));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-
-        getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return CreatureEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0);
     }
 
     public boolean hasMask() {

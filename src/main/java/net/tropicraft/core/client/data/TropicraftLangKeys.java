@@ -13,12 +13,7 @@ public enum TropicraftLangKeys {
     SCUBA_DIVE_TIME("scuba", "dive_time", "Dive Time: %s"),
     SCUBA_DEPTH("scuba", "depth", "Current Depth: %s"),
     SCUBA_MAX_DEPTH("scuba", "max_depth", "Max Depth: %s"),
-    SCUBA_VISIBILITY_STAT("scuba", "scuba.visibility", "Underwater Fog Reduction") {
-        @Override
-        protected void register(TropicraftLangProvider prov) {
-            prov.add("attribute.name." + key, value);
-        }
-    }
+    SCUBA_VISIBILITY_STAT("scuba", "scuba.visibility", "Underwater Fog Reduction")
     ;
 
     protected final String key, value;
@@ -47,7 +42,7 @@ public enum TropicraftLangKeys {
     }
 
     public String getLocalizedText() {
-        return getComponent().getFormattedText();
+        return getComponent().getString();
     }
     
     protected void register(TropicraftLangProvider prov) {

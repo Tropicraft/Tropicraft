@@ -13,6 +13,8 @@ import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import java.util.EnumSet;
 import java.util.Set;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAITemptHelmet extends Goal
 {
     /** The entity using this AI that is tempted by the player. */

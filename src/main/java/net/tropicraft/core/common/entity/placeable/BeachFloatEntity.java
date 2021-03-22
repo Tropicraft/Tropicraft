@@ -1,18 +1,21 @@
 package net.tropicraft.core.common.entity.placeable;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SharedSeedRandom;
@@ -23,7 +26,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.PerlinNoiseGenerator;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.tropicraft.core.common.item.AshenMasks;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nonnull;
@@ -36,7 +38,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Nonnull
     private static final Random rand = new Random(298457L);
     @Nonnull
-    private static final PerlinNoiseGenerator windNoise = new PerlinNoiseGenerator(new SharedSeedRandom(298457L), 1, 1);
+    private static final PerlinNoiseGenerator windNoise = new PerlinNoiseGenerator(new SharedSeedRandom(298457L), ImmutableList.of(0));
 
     /* Wind */
     private double windModifier = 0;
@@ -123,13 +125,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
 
         if (!this.world.isRemote) {
             List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-
-            if (list != null && !list.isEmpty()) {
-                for (int k1 = 0; k1 < list.size(); ++k1) {
-                    Entity entity = list.get(k1);
-                    if (entity != this.getControllingPassenger() && entity.canBePushed()) {
-                        entity.applyEntityCollision(this);
-                    }
+            for (Entity entity : list) {
+                if (entity != this.getControllingPassenger() && entity.canBePushed()) {
+                    entity.applyEntityCollision(this);
                 }
             }
 
@@ -156,30 +154,42 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     @Override
-    public boolean handleWaterMovement() {
+    protected boolean func_233566_aG_() {
+        this.eyesFluidLevel.clear();
+        this.updateWaterState();
+        boolean lava = this.handleFluidAcceleration(FluidTags.LAVA, this.world.getDimensionType().isUltrawarm() ? 0.007 : 0.0023333333333333335D);
+        return this.isInWater() || lava;
+    }
+
+    void updateWaterState() {
         AxisAlignedBB temp = getBoundingBox();
         setBoundingBox(temp.contract(1, 0, 1).contract(-1, 0.125, -1));
-        if (this.handleFluidAcceleration(FluidTags.WATER)) {
-            if (!this.inWater && !this.firstUpdate) {
-                this.doWaterSplashEffect();
-            }
 
-            this.inWater = true;
-        } else {
-            this.inWater = false;
+        try {
+            if (this.handleFluidAcceleration(FluidTags.WATER, 0.014D)) {
+                if (!this.inWater && !this.firstUpdate) {
+                    this.doWaterSplashEffect();
+                }
+
+                this.fallDistance = 0.0F;
+                this.inWater = true;
+                this.extinguish();
+            } else {
+                this.inWater = false;
+            }
+        } finally {
+            setBoundingBox(temp);
         }
-        setBoundingBox(temp);
-        return this.inWater;
     }
-    
+
     @Override
-    public boolean processInitialInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (!this.world.isRemote && !player.isSneaking()) {
             player.startRiding(this);
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return !player.isRidingSameEntity(this);
+        return !player.isRidingSameEntity(this) ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     /* Following three methods copied from EntityBoat for passenger updates */
@@ -257,7 +267,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     private boolean isClientFirstPerson() {
-        return Minecraft.getInstance().gameSettings.thirdPersonView == 0;
+        return Minecraft.getInstance().gameSettings.getPointOfView() == PointOfView.FIRST_PERSON;
     }
 
     /* Again, from entity boat, for water checks */
@@ -270,31 +280,27 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         int maxY = minY + 1;
         int minZ = MathHelper.floor(axisalignedbb.minZ);
         int maxZ = MathHelper.ceil(axisalignedbb.maxZ);
-        BlockPos.PooledMutable pos = BlockPos.PooledMutable.retain();
 
-        try {
-            float waterHeight = minY - 1;
+        BlockPos.Mutable pos = new BlockPos.Mutable();
+        float waterHeight = minY - 1;
 
-            for (int y = maxY; y >= minY; --y) {
-                for (int x = minX; x < maxX; x++) {
-                    for (int z = minZ; z < maxZ; ++z) {
-                        pos.setPos(x, y, z);
-                        IFluidState fluidstate = this.world.getFluidState(pos);
+        for (int y = maxY; y >= minY; --y) {
+            for (int x = minX; x < maxX; x++) {
+                for (int z = minZ; z < maxZ; ++z) {
+                    pos.setPos(x, y, z);
+                    FluidState fluidstate = this.world.getFluidState(pos);
 
-                        if (fluidstate.getFluid().isEquivalentTo(Fluids.WATER)) {
-                            waterHeight = Math.max(waterHeight, pos.getY() + fluidstate.getActualHeight(this.world, pos));
-                        }
-                        if (waterHeight >= maxY) {
-                            return waterHeight;
-                        }
+                    if (fluidstate.getFluid().isEquivalentTo(Fluids.WATER)) {
+                        waterHeight = Math.max(waterHeight, pos.getY() + fluidstate.getActualHeight(this.world, pos));
+                    }
+                    if (waterHeight >= maxY) {
+                        return waterHeight;
                     }
                 }
             }
-
-            return waterHeight;
-        } finally {
-            pos.close();
         }
+
+        return waterHeight;
     }
 
     /**
@@ -325,7 +331,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Nullable
     public Entity getControllingPassenger() {
         List<Entity> list = this.getPassengers();
-        return list.isEmpty() ? null : (Entity) list.get(0);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     /**

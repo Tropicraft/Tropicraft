@@ -6,38 +6,44 @@ import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
 import java.util.EnumSet;
 
-public class TropiCreeperSwellGoal extends Goal {
-    private final TropiCreeperEntity field_75269_a;
-    private LivingEntity field_75268_b;
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
-    public TropiCreeperSwellGoal(TropiCreeperEntity p_i1655_1_) {
-        this.field_75269_a = p_i1655_1_;
+public class TropiCreeperSwellGoal extends Goal {
+    private final TropiCreeperEntity creeper;
+    private LivingEntity target;
+
+    public TropiCreeperSwellGoal(TropiCreeperEntity creeper) {
+        this.creeper = creeper;
         this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
+    @Override
     public boolean shouldExecute() {
-        LivingEntity lvt_1_1_ = this.field_75269_a.getAttackTarget();
-        return this.field_75269_a.getCreeperState() > 0 || lvt_1_1_ != null && this.field_75269_a.getDistanceSq(lvt_1_1_) < 9.0D;
+        LivingEntity lvt_1_1_ = this.creeper.getAttackTarget();
+        return this.creeper.getCreeperState() > 0 || lvt_1_1_ != null && this.creeper.getDistanceSq(lvt_1_1_) < 9.0D;
     }
 
+    @Override
     public void startExecuting() {
-        this.field_75269_a.getNavigator().clearPath();
-        this.field_75268_b = this.field_75269_a.getAttackTarget();
+        this.creeper.getNavigator().clearPath();
+        this.target = this.creeper.getAttackTarget();
     }
 
+    @Override
     public void resetTask() {
-        this.field_75268_b = null;
+        this.target = null;
     }
 
+    @Override
     public void tick() {
-        if (this.field_75268_b == null) {
-            this.field_75269_a.setCreeperState(-1);
-        } else if (this.field_75269_a.getDistanceSq(this.field_75268_b) > 49.0D) {
-            this.field_75269_a.setCreeperState(-1);
-        } else if (!this.field_75269_a.getEntitySenses().canSee(this.field_75268_b)) {
-            this.field_75269_a.setCreeperState(-1);
+        if (this.target == null) {
+            this.creeper.setCreeperState(-1);
+        } else if (this.creeper.getDistanceSq(this.target) > 49.0D) {
+            this.creeper.setCreeperState(-1);
+        } else if (!this.creeper.getEntitySenses().canSee(this.target)) {
+            this.creeper.setCreeperState(-1);
         } else {
-            this.field_75269_a.setCreeperState(1);
+            this.creeper.setCreeperState(1);
         }
     }
 }

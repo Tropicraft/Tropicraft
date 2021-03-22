@@ -13,25 +13,27 @@ import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class MonkeyPickUpPinaColadaGoal extends Goal {
 
-	private VMonkeyEntity entity;
-	private ItemEntity drinkEntity;
-	private final double speedModifier;
+    private VMonkeyEntity entity;
+    private ItemEntity drinkEntity;
+    private final double speedModifier;
     private final PathNavigator navigation;
     private int timeToRecalcPath;
     private final float stopDistance;
     private float oldWaterCost;
-	
-	public MonkeyPickUpPinaColadaGoal(VMonkeyEntity monkey) {
+    
+    public MonkeyPickUpPinaColadaGoal(VMonkeyEntity monkey) {
         entity = monkey;
         setMutexFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
         speedModifier = 1.0F;
         stopDistance = 1.0F;
         navigation = entity.getNavigator();
         drinkEntity = null;
-	}
-	
+    }
+    
     @Override
     public boolean shouldContinueExecuting() {
         return !entity.isTamed() && !entity.selfHoldingDrink(Drink.PINA_COLADA) && drinkEntity != null;
@@ -39,9 +41,9 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-	    // Add some variablity / throttling
-	    if (entity.getRNG().nextInt(20) != 0) {
-	        return false;
+        // Add some variablity / throttling
+        if (entity.getRNG().nextInt(20) != 0) {
+            return false;
         }
         return !entity.isTamed() && !entity.selfHoldingDrink(Drink.PINA_COLADA) && hasNearbyDrink(Drink.PINA_COLADA) && drinkEntity != null;
     }
@@ -60,7 +62,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     }
 
     private boolean hasNearbyDrink(final Drink drink) {
-    	ItemStack stack = MixerRecipes.getItemStack(drink);
+        ItemStack stack = MixerRecipes.getItemStack(drink);
 
         List<ItemEntity> list = entity.world.getEntitiesWithinAABB(ItemEntity.class, entity.getBoundingBox().grow(10.0D));
         
@@ -68,8 +70,8 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
             for (ItemEntity item : list) {
                 if (!item.isInvisible()) {
                     if (item.getItem().isItemEqual(stack) && item.isAlive()) {
-                    	drinkEntity = item;
-                    	return true;
+                        drinkEntity = item;
+                        return true;
                     }
                 }
             }
@@ -113,8 +115,8 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
                     }
                 }
             } else {
-            	entity.setHeldItem(Hand.MAIN_HAND, drinkEntity.getItem());
-            	drinkEntity.remove();
+                entity.setHeldItem(Hand.MAIN_HAND, drinkEntity.getItem());
+                drinkEntity.remove();
             }
         }
     }

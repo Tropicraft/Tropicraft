@@ -1,12 +1,8 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import java.util.Set;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceBlock;
@@ -22,46 +18,50 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.tropicraft.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public class StructureSupportsProcessor extends CheatyStructureProcessor {
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":structure_supports", StructureSupportsProcessor::new);
+    public static final Codec<StructureSupportsProcessor> CODEC = RecordCodecBuilder.create(instance -> {
+        return instance.group(
+            Codec.BOOL.optionalFieldOf("can_replace_land", false).forGetter(p -> p.canReplaceLand),
+            ResourceLocation.CODEC.listOf().fieldOf("states_to_extend").forGetter(p -> new ArrayList<>(p.statesToExtend))
+        ).apply(instance, StructureSupportsProcessor::new);
+    });
+
+    static final IStructureProcessorType<StructureSupportsProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":structure_supports", () -> CODEC);
     
     private final boolean canReplaceLand;
     private final Set<ResourceLocation> statesToExtend;
 
-    public StructureSupportsProcessor(boolean canReplaceLand, ResourceLocation... statesToExtend) {
+    public StructureSupportsProcessor(boolean canReplaceLand, List<ResourceLocation> statesToExtend) {
         this.canReplaceLand = canReplaceLand;
-        this.statesToExtend = Sets.newHashSet(statesToExtend);
-    }
-
-    public StructureSupportsProcessor(Dynamic<?> p_i51337_1_) {
-        this(p_i51337_1_.get("canReplaceLand").asBoolean(false),
-             p_i51337_1_.get("statesToExtend").asStream()
-                    .map(d -> new ResourceLocation(d.asString().get()))
-                    .toArray(ResourceLocation[]::new));
+        this.statesToExtend = new ObjectOpenHashSet<>(statesToExtend);
     }
 
     @Override
-    public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
+    public BlockInfo process(IWorldReader world, BlockPos seedPos, BlockPos pos2, BlockInfo originalInfo, BlockInfo blockInfo, PlacementSettings placement, Template template) {
         BlockPos pos = blockInfo.pos;
-        if (p_215194_3_.pos.getY() <= 1 && statesToExtend.contains(blockInfo.state.getBlock().getRegistryName())) {
-            if (!canReplaceLand && !canPassThrough(worldReaderIn, pos)) {
+        if (originalInfo.pos.getY() <= 1 && statesToExtend.contains(blockInfo.state.getBlock().getRegistryName())) {
+            if (!canReplaceLand && !canPassThrough(world, pos)) {
                 // Delete blocks that would generate inside land
                 return null;
             }
-            if (p_215194_3_.pos.getY() == 0) {
+            if (originalInfo.pos.getY() == 0) {
                 // Don't generate blocks underneath solid land
-                if (!canReplaceLand && !canPassThrough(worldReaderIn, pos.up())) {
+                if (!canReplaceLand && !canPassThrough(world, pos.up())) {
                     return null;
                 }
                 BlockPos fencePos = pos.down();
                 // Extend blocks at the bottom of a structure down to the ground
-                while (canPassThrough(worldReaderIn, fencePos)) {
+                while (canPassThrough(world, fencePos)) {
                     BlockState state = blockInfo.state;
-                    if (state.has(BlockStateProperties.WATERLOGGED)) {
-                        state = state.with(FenceBlock.WATERLOGGED, worldReaderIn.getBlockState(fencePos).getBlock() == Blocks.WATER);
+                    if (state.hasProperty(BlockStateProperties.WATERLOGGED)) {
+                        state = state.with(FenceBlock.WATERLOGGED, world.getBlockState(fencePos).getBlock() == Blocks.WATER);
                     }
-                    setBlockState(worldReaderIn, fencePos, state);
+                    setBlockState(world, fencePos, state);
                     fencePos = fencePos.down();
                 }
             }
@@ -74,15 +74,7 @@ public class StructureSupportsProcessor extends CheatyStructureProcessor {
     }
 
     @Override
-    protected IStructureProcessorType getType() {
+    protected IStructureProcessorType<?> getType() {
         return TYPE;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(
-                ops.createString("canReplaceLand"), ops.createBoolean(canReplaceLand),
-                ops.createString("statesToExtend"), ops.createList(this.statesToExtend.stream()
-                        .map(rl -> ops.createString(rl.toString()))))));
     }
 }

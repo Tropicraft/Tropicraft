@@ -9,12 +9,12 @@ import net.minecraft.world.World;
 
 public class TropicraftCreatureEntity extends CreatureEntity {
 
-    public TropicraftCreatureEntity(EntityType<? extends CreatureEntity> p_i48575_1_, World p_i48575_2_) {
-        super(p_i48575_1_, p_i48575_2_);
+    public TropicraftCreatureEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
+        super(type, worldIn);
     }
 
     @Override
-    public float getBlockPathWeight(BlockPos p_205022_1_, IWorldReader p_205022_2_) {
-        return p_205022_2_.getBlockState(p_205022_1_.down()).getBlock() == Blocks.GRASS_BLOCK ? 10.0F : p_205022_2_.getBrightness(p_205022_1_) - 0.5F;
+    public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
+        return worldIn.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK ? 10.0F : worldIn.getBrightness(pos) - 0.5F;
     }
 }

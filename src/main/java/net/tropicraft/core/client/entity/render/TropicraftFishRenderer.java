@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
@@ -36,7 +36,8 @@ public class TropicraftFishRenderer<T extends AbstractFishEntity, M extends Abst
         boolean isVisible = this.isVisible(entity);
         boolean shouldRender = !isVisible && !entity.isInvisibleToPlayer(Minecraft.getInstance().player);
         if (isVisible || shouldRender) {
-            renderFishy(entity, partialTicks, matrixStackIn, bufferIn.getBuffer(func_230042_a_(entity, isVisible, shouldRender)), packedLightIn, getPackedOverlay(entity, getOverlayProgress(entity, partialTicks)));
+            boolean glowing = Minecraft.getInstance().isEntityGlowing(entity);
+            renderFishy(entity, partialTicks, matrixStackIn, bufferIn.getBuffer(func_230496_a_(entity, isVisible, shouldRender, glowing)), packedLightIn, getPackedOverlay(entity, getOverlayProgress(entity, partialTicks)));
         }
         super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
@@ -44,30 +45,30 @@ public class TropicraftFishRenderer<T extends AbstractFishEntity, M extends Abst
     protected void renderFishy(T entity, float partialTicks, MatrixStack stack, IVertexBuilder buffer, int light, int overlay) {
         stack.push();
 
-		stack.rotate(Vector3f.YP.rotationDegrees(-90));
-		stack.rotate(Vector3f.YP.rotationDegrees(-(MathHelper.lerp(partialTicks, entity.prevRotationYawHead, entity.rotationYawHead))));
-		stack.rotate(Vector3f.XP.rotationDegrees(180));
-		stack.scale(0.3f, 0.3f, 0.5f);
+        stack.rotate(Vector3f.YP.rotationDegrees(-90));
+        stack.rotate(Vector3f.YP.rotationDegrees(-(MathHelper.lerp(partialTicks, entity.prevRotationYawHead, entity.rotationYawHead))));
+        stack.rotate(Vector3f.XP.rotationDegrees(180));
+        stack.scale(0.3f, 0.3f, 0.5f);
         stack.translate(.85F, -0.3F, 0.0F);
 
-		int fishTex = 0;
-		if (entity instanceof IAtlasFish) {
-			fishTex = ((IAtlasFish) entity).getAtlasSlot() * 2;
-		}
+        int fishTex = 0;
+        if (entity instanceof IAtlasFish) {
+            fishTex = ((IAtlasFish) entity).getAtlasSlot() * 2;
+        }
 
-		renderHelper.renderFish(stack, buffer, fishTex, light, overlay);
+        renderHelper.renderFish(stack, buffer, fishTex, light, overlay);
 
-		stack.translate(-1.7f, 0, 0);
-		stack.translate(.85f, 0, 0.025f);
-		stack.rotate(Vector3f.YP.rotation(entityModel.tail.rotateAngleY));
-		stack.translate(-.85f, 0, -0.025f);
-		renderHelper.renderFish(stack, buffer, fishTex + 1, light, overlay);
+        stack.translate(-1.7f, 0, 0);
+        stack.translate(.85f, 0, 0.025f);
+        stack.rotate(Vector3f.YP.rotation(entityModel.tail.rotateAngleY));
+        stack.translate(-.85f, 0, -0.025f);
+        renderHelper.renderFish(stack, buffer, fishTex + 1, light, overlay);
 
         stack.pop();
     }
 
     @Override
-    protected void preRenderCallback(T entitylivingbaseIn, MatrixStack stack, float partialTickTime) {
+    protected void preRenderCallback(T entity, MatrixStack stack, float partialTickTime) {
         stack.scale(.75F, .20F, .20F);
     }
 

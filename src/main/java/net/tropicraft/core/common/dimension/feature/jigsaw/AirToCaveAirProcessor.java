@@ -1,10 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import javax.annotation.Nullable;
-
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -16,32 +12,25 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.tropicraft.Constants;
 
+import javax.annotation.Nullable;
+
 public class AirToCaveAirProcessor extends StructureProcessor {
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":air_to_cave_air", AirToCaveAirProcessor::new);
-    
-    public AirToCaveAirProcessor() {}
+    public static final Codec<AirToCaveAirProcessor> CODEC = Codec.unit(new AirToCaveAirProcessor());
 
-    public AirToCaveAirProcessor(Dynamic<?> p_i51337_1_) {
-        this();
-    }
+    static final IStructureProcessorType<AirToCaveAirProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":air_to_cave_air", () -> CODEC);
     
     @Override
     @Nullable
-    public BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
+    public BlockInfo process(IWorldReader world, BlockPos pos, BlockPos pos2, BlockInfo originalInfo, BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
         if (blockInfo.state.getBlock() == Blocks.AIR) {
             return new BlockInfo(blockInfo.pos, Blocks.CAVE_AIR.getDefaultState(), blockInfo.nbt);
         }
-        return super.process(worldReaderIn, pos, p_215194_3_, blockInfo, placementSettingsIn, template);
+        return super.process(world, pos, pos2, originalInfo, blockInfo, placementSettingsIn, template);
     }
 
     @Override
-    protected IStructureProcessorType getType() {
+    protected IStructureProcessorType<?> getType() {
         return TYPE;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops);
     }
 }

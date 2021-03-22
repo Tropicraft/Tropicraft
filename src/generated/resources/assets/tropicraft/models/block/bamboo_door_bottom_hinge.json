@@ -1,5 +1,5 @@
 {
-  "parent": "block/door_bottom_rh",
+  "parent": "minecraft:block/door_bottom_rh",
   "textures": {
     "bottom": "tropicraft:block/bamboo_door_bottom",
     "top": "tropicraft:block/bamboo_door_top"

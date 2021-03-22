@@ -1,11 +1,7 @@
 package net.tropicraft;
 
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.common.collect.ImmutableMap;
-
+import com.google.common.reflect.Reflection;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,12 +17,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ExtensionPoint;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -42,26 +35,35 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
-import net.tropicraft.core.common.data.TropicraftBlockTagsProvider;
-import net.tropicraft.core.common.data.TropicraftEntityTypeTagsProvider;
-import net.tropicraft.core.common.data.TropicraftItemTagsProvider;
-import net.tropicraft.core.common.data.TropicraftLootTableProvider;
-import net.tropicraft.core.common.data.TropicraftRecipeProvider;
-import net.tropicraft.core.common.dimension.TropicraftWorldUtils;
+import net.tropicraft.core.common.data.*;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
+import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.carver.TropicraftCarvers;
-import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
+import net.tropicraft.core.common.dimension.carver.TropicraftConfiguredCarvers;
+import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
+import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
+import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredStructures;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
+import net.tropicraft.core.common.dimension.feature.block_state_provider.TropicraftBlockStateProviders;
+import net.tropicraft.core.common.dimension.feature.jigsaw.*;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.jigsaw.piece.SingleNoAirJigsawPiece;
+import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
+import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftConfiguredSurfaceBuilders;
+import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBuilders;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.network.TropicraftPackets;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.regex.Pattern;
 
 @Mod(Constants.MODID)
-public class Tropicraft
-{
+public class Tropicraft {
     public static final ItemGroup TROPICRAFT_ITEM_GROUP = (new ItemGroup("tropicraft") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
@@ -70,8 +72,8 @@ public class Tropicraft
     });
 
     public Tropicraft() {
-    	// Compatible with all versions that match the semver (excluding the qualifier e.g. "-beta+42")
-    	ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(Tropicraft::getCompatVersion, (s, v) -> Tropicraft.isCompatibleVersion(s)));
+        // Compatible with all versions that match the semver (excluding the qualifier e.g. "-beta+42")
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(Tropicraft::getCompatVersion, (s, v) -> Tropicraft.isCompatibleVersion(s)));
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // General mod setup
@@ -83,8 +85,10 @@ public class Tropicraft
             modBus.addListener(this::setupClient);
             modBus.addListener(this::registerItemColors);
         });
-        
+
         MinecraftForge.EVENT_BUS.addListener(this::onServerStarting);
+
+        TropicraftDimension.addDefaultDimensionKey();
 
         // Registry objects
         TropicraftBlocks.BLOCKS.register(modBus);
@@ -93,17 +97,16 @@ public class Tropicraft
         MixerRecipes.addMixerRecipes();
         TropicraftTileEntityTypes.TILE_ENTITIES.register(modBus);
         TropicraftEntities.ENTITIES.register(modBus);
-        TropicraftBiomes.BIOMES.register(modBus);
-        //TODO 1.15 TropicraftBiomeProviderTypes.BIOME_PROVIDER_TYPES.register(modBus);
-        TropicraftWorldUtils.DIMENSIONS.register(modBus);
         TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFeatures.FEATURES.register(modBus);
-        TropicraftChunkGeneratorTypes.CHUNK_GENERATOR_TYPES.register(modBus);
+        TropicraftFeatures.STRUCTURES.register(modBus);
+        TropicraftSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
+        TropicraftBlockStateProviders.BLOCK_STATE_PROVIDERS.register(modBus);
 
         // Hack in our item frame models the way vanilla does
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            StateContainer<Block, BlockState> frameState = new StateContainer.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(BlockState::new);
-    
+            StateContainer<Block, BlockState> frameState = new StateContainer.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).createStateContainer(Block::getDefaultState, BlockState::new);
+
             ModelBakery.STATE_CONTAINER_OVERRIDES = ImmutableMap.<ResourceLocation, StateContainer<Block, BlockState>>builder()
                     .putAll(ModelBakery.STATE_CONTAINER_OVERRIDES)
                     .put(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), frameState)
@@ -112,14 +115,17 @@ public class Tropicraft
     }
 
     private static final Pattern QUALIFIER = Pattern.compile("-\\w+\\+\\d+");
+
     public static String getCompatVersion() {
-    	return getCompatVersion(ModList.get().getModContainerById(Constants.MODID).orElseThrow(IllegalStateException::new).getModInfo().getVersion().toString());
+        return getCompatVersion(ModList.get().getModContainerById(Constants.MODID).orElseThrow(IllegalStateException::new).getModInfo().getVersion().toString());
     }
+
     private static String getCompatVersion(String fullVersion) {
-    	return QUALIFIER.matcher(fullVersion).replaceAll("");
+        return QUALIFIER.matcher(fullVersion).replaceAll("");
     }
+
     public static boolean isCompatibleVersion(String version) {
-    	return getCompatVersion().equals(getCompatVersion(version));
+        return getCompatVersion().equals(getCompatVersion(version));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -129,6 +135,8 @@ public class Tropicraft
         ClientSetup.setupEntityRenderers(event);
 
         ClientSetup.setupTileEntityRenderers();
+
+        ClientSetup.setupDimensionRenderInfo();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -141,33 +149,61 @@ public class Tropicraft
             }
         }
     }
-    
+
     private void setup(final FMLCommonSetupEvent event) {
         TropicraftPackets.init();
-        TropicraftBiomes.addFeatures();
         ScubaData.registerCapability();
         TropicraftEntities.registerSpawns();
+
+        TropicraftChunkGenerator.register();
+        TropicraftBiomeProvider.register();
+
+        Reflection.initialize(
+                SingleNoAirJigsawPiece.class, NoRotateSingleJigsawPiece.class,
+                AdjustBuildingHeightProcessor.class, AirToCaveAirProcessor.class, SinkInGroundProcessor.class,
+                SmoothingGravityProcessor.class, SteepPathProcessor.class, StructureSupportsProcessor.class,
+                StructureVoidProcessor.class
+        );
     }
-    
+
     private void onServerStarting(final FMLServerStartingEvent event) {
         CommandTropicsTeleport.register(event.getServer().getCommandManager().getDispatcher());
     }
 
     private void gatherData(GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         if (event.includeClient()) {
-            TropicraftBlockstateProvider blockstates = new TropicraftBlockstateProvider(gen, event.getExistingFileHelper());
+            TropicraftBlockstateProvider blockstates = new TropicraftBlockstateProvider(gen, existingFileHelper);
             gen.addProvider(blockstates);
             gen.addProvider(new TropicraftItemModelProvider(gen, blockstates.getExistingHelper()));
             gen.addProvider(new TropicraftLangProvider(gen));
         }
         if (event.includeServer()) {
-            gen.addProvider(new TropicraftBlockTagsProvider(gen));
-            gen.addProvider(new TropicraftItemTagsProvider(gen));
+            TropicraftBlockTagsProvider blockTags = new TropicraftBlockTagsProvider(gen, existingFileHelper);
+            gen.addProvider(blockTags);
+            gen.addProvider(new TropicraftItemTagsProvider(gen, blockTags, existingFileHelper));
             gen.addProvider(new TropicraftRecipeProvider(gen));
             gen.addProvider(new TropicraftLootTableProvider(gen));
-            gen.addProvider(new TropicraftEntityTypeTagsProvider(gen));
+            gen.addProvider(new TropicraftEntityTypeTagsProvider(gen, existingFileHelper));
+
+            gatherWorldgenData(gen);
         }
+    }
+
+    private void gatherWorldgenData(DataGenerator gen) {
+        gen.addProvider(new TropicraftWorldgenProvider(gen, generator -> {
+            TropicraftConfiguredFeatures features = generator.addConfiguredFeatures(TropicraftConfiguredFeatures::new);
+            TropicraftConfiguredSurfaceBuilders surfaceBuilders = generator.addConfiguredSurfaceBuilders(TropicraftConfiguredSurfaceBuilders::new);
+            TropicraftConfiguredCarvers carvers = generator.addConfiguredCarvers(TropicraftConfiguredCarvers::new);
+            TropicraftProcessorLists processors = generator.addProcessorLists(TropicraftProcessorLists::new);
+            TropicraftTemplatePools templates = generator.addTemplatePools(consumer -> new TropicraftTemplatePools(consumer, features, processors));
+            TropicraftConfiguredStructures structures = generator.addConfiguredStructures(consumer -> new TropicraftConfiguredStructures(consumer, templates));
+
+            generator.addBiomes(consumer -> {
+                return new TropicraftBiomes(consumer, features, structures, carvers, surfaceBuilders);
+            });
+        }));
     }
 }

@@ -9,14 +9,16 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class SwimToAvoidEntityGoal extends Goal {
 
-	public TropicraftFishEntity entity;
-	public Random rand;
-	public Class<? extends Entity>[] entityClassToAvoid;
-	public double distanceToAvoid;
+    public TropicraftFishEntity entity;
+    public Random rand;
+    public Class<? extends Entity>[] entityClassToAvoid;
+    public double distanceToAvoid;
 
-	public SwimToAvoidEntityGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn, double dist, Class<? extends Entity>[] classes) {
+    public SwimToAvoidEntityGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn, double dist, Class<? extends Entity>[] classes) {
         this.entity = entityObjIn;
         rand = this.entity.getRNG();
         entityClassToAvoid = classes;
@@ -24,30 +26,30 @@ public class SwimToAvoidEntityGoal extends Goal {
         setMutexFlags(flags);
     }
 
-	@Override
-	public boolean shouldExecute() {
-		return entity.isInWater();
-	}
+    @Override
+    public boolean shouldExecute() {
+        return entity.isInWater();
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		
-		List<Entity> ents = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getBoundingBox().grow(this.distanceToAvoid));
-		List<Class<? extends Entity>> classes = Arrays.asList(entityClassToAvoid);
-		for (int i = 0; i < ents.size(); i++) {
-			if (classes.contains(ents.get(i).getClass())) {
-				entity.fleeEntity(ents.get(i));
-				break;
-			}
-		}			
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        
+        List<Entity> ents = entity.world.getEntitiesWithinAABBExcludingEntity(entity, entity.getBoundingBox().grow(this.distanceToAvoid));
+        List<Class<? extends Entity>> classes = Arrays.asList(entityClassToAvoid);
+        for (int i = 0; i < ents.size(); i++) {
+            if (classes.contains(ents.get(i).getClass())) {
+                entity.fleeEntity(ents.get(i));
+                break;
+            }
+        }            
+    }
 
-	/**
-	 * Returns whether an in-progress EntityAIBase should continue executing
-	 */
-	@Override
+    /**
+     * Returns whether an in-progress EntityAIBase should continue executing
+     */
+    @Override
     public boolean shouldContinueExecuting() {
-		return entity.isInWater();
-	}
+        return entity.isInWater();
+    }
 }

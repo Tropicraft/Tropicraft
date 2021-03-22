@@ -15,13 +15,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
+
+import net.minecraft.item.Item.Properties;
 
 public class FurnitureItem<T extends FurnitureEntity> extends Item implements IColoredItem {
 
@@ -46,10 +48,10 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
         if (rayTraceResult.getType() == net.minecraft.util.math.RayTraceResult.Type.MISS) {
             return new ActionResult<>(ActionResultType.PASS, heldItem);
         } else {
-            Vec3d lookvec = placer.getLook(1.0F);
+            Vector3d lookvec = placer.getLook(1.0F);
             List<Entity> nearbyEntities = world.getEntitiesInAABBexcluding(placer, placer.getBoundingBox().expand(lookvec.scale(5.0D)).grow(1.0D), EntityPredicates.NOT_SPECTATING);
             if (!nearbyEntities.isEmpty()) {
-                Vec3d eyePosition = placer.getEyePosition(1.0F);
+                Vector3d eyePosition = placer.getEyePosition(1.0F);
                 Iterator<Entity> nearbyEntityIterator = nearbyEntities.iterator();
 
                 while (nearbyEntityIterator.hasNext()) {
@@ -62,11 +64,11 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
             }
 
             if (rayTraceResult.getType() == net.minecraft.util.math.RayTraceResult.Type.BLOCK) {
-                Vec3d hitVec = rayTraceResult.getHitVec();
+                Vector3d hitVec = rayTraceResult.getHitVec();
 
                 final T entity = this.entityType.get().create(world);
                 entity.moveToBlockPosAndAngles(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
-                entity.setMotion(Vec3d.ZERO);
+                entity.setMotion(Vector3d.ZERO);
                 entity.setRotation(placer.rotationYaw + 180);
                 entity.setColor(this.color);
 

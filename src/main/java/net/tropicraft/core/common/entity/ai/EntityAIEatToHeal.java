@@ -1,18 +1,20 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
+
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
 public class EntityAIEatToHeal extends Goal
 {
@@ -79,7 +81,7 @@ public class EntityAIEatToHeal extends Goal
             }
 
             //prevent walking into the fire
-            double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+            double dist = entityObj.getPositionVec().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
             if (dist < 5D) {
                 consumeOneStackSizeOfFoodAtHome();
                 entityObj.heal(5);
@@ -96,11 +98,11 @@ public class EntityAIEatToHeal extends Goal
 
                     boolean success = false;
 
-                    if (this.entityObj.getDistanceSq(new Vec3d(blockposGoal)) > 256.0D) {
-                        Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
+                    if (this.entityObj.getDistanceSq(Vector3d.copyCentered(blockposGoal)) > 256.0D) {
+                        Vector3d Vector3d = RandomPositionGenerator.func_234133_a_(this.entityObj, 14, 3, new Vector3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
-                        if (vec3d != null) {
-                            success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+                        if (Vector3d != null) {
+                            success = this.entityObj.getNavigator().tryMoveToXYZ(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
                         }
                     } else {
                         success = this.entityObj.getNavigator().tryMoveToXYZ((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
@@ -172,7 +174,7 @@ public class EntityAIEatToHeal extends Goal
         }
 
         //prevent walking into the fire
-        double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        double dist = entityObj.getPositionVec().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
         if (dist <= 3D) {
             return true;
         }

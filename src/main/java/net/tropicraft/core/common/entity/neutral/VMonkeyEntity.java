@@ -2,6 +2,8 @@ package net.tropicraft.core.common.entity.neutral;
 
 import com.google.common.base.Predicate;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,10 +13,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.ai.vmonkey.*;
 import net.tropicraft.core.common.item.CocktailItem;
@@ -27,29 +31,25 @@ public class VMonkeyEntity extends TameableEntity {
     private static final DataParameter<Byte> DATA_FLAGS = EntityDataManager.createKey(VMonkeyEntity.class, DataSerializers.BYTE);
     private static final int FLAG_CLIMBING = 1 << 0;
 
-    public static final Predicate<LivingEntity> FOLLOW_PREDICATE = new Predicate<LivingEntity>() {
-        public boolean apply(@Nullable LivingEntity ent) {
-            if (ent == null) return false;
-            if (!(ent instanceof PlayerEntity)) return false;
+    public static final Predicate<LivingEntity> FOLLOW_PREDICATE = ent -> {
+        if (ent == null) return false;
+        if (!(ent instanceof PlayerEntity)) return false;
 
-            PlayerEntity player = (PlayerEntity) ent;
-            ItemStack heldMain = player.getHeldItemMainhand();
-            ItemStack heldOff = player.getHeldItemOffhand();
+        PlayerEntity player = (PlayerEntity) ent;
+        ItemStack heldMain = player.getHeldItemMainhand();
+        ItemStack heldOff = player.getHeldItemOffhand();
 
-            if (heldMain.getItem() instanceof CocktailItem) {
-                if (CocktailItem.getDrink(heldMain) == Drink.PINA_COLADA) {
-                    return true;
-                }
+        if (heldMain.getItem() instanceof CocktailItem) {
+            if (CocktailItem.getDrink(heldMain) == Drink.PINA_COLADA) {
+                return true;
             }
-
-            if (heldOff.getItem() instanceof CocktailItem) {
-                if (CocktailItem.getDrink(heldOff) == Drink.PINA_COLADA) {
-                    return true;
-                }
-            }
-
-            return false;
         }
+
+        if (heldOff.getItem() instanceof CocktailItem) {
+            return CocktailItem.getDrink(heldOff) == Drink.PINA_COLADA;
+        }
+
+        return false;
     };
 
     /** Entity this monkey is following around */
@@ -66,20 +66,16 @@ public class VMonkeyEntity extends TameableEntity {
         dataManager.register(DATA_FLAGS, (byte) 0);
     }
 
-    @Override
-    public void registerAttributes() {
-        super.registerAttributes();
-
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3);
-
-        getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return TameableEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        sitGoal = new SitGoal(this);
         goalSelector.addGoal(1, new SwimGoal(this));
         goalSelector.addGoal(3, new MonkeyFollowNearestPinaColadaHolderGoal(this, 1.0D, 2.0F, 10.0F));
         goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
@@ -87,8 +83,8 @@ public class VMonkeyEntity extends TameableEntity {
         goalSelector.addGoal(2, new MonkeyStealDrinkGoal(this));
         goalSelector.addGoal(2, new MonkeySitAndDrinkGoal(this));
         goalSelector.addGoal(2, new MonkeyAngryThrowGoal(this));
-        goalSelector.addGoal(4, new MonkeySitInChairGoal(this, sitGoal));
-        goalSelector.addGoal(4, sitGoal);
+        goalSelector.addGoal(4, new MonkeySitInChairGoal(this));
+        goalSelector.addGoal(4, new SitGoal(this));
         goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
         goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
         goalSelector.addGoal(8, new RandomWalkingGoal(this, 1.0D));
@@ -156,11 +152,11 @@ public class VMonkeyEntity extends TameableEntity {
     }
 
     @Override
-    public boolean processInteract(final PlayerEntity player, final Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (isTamed()) {
             if (isOwner(player) && !world.isRemote) {
-                sitGoal.setSitting(!isSitting());
+                this.setSitting(!isQueuedToSit());
                 isJumping = false;
                 navigator.clearPath();
                 setAttackTarget(null);
@@ -176,7 +172,7 @@ public class VMonkeyEntity extends TameableEntity {
                     setTamed(true);
                     navigator.clearPath();
                     setAttackTarget(null);
-                    sitGoal.setSitting(true);
+                    this.setSitting(true);
                     setHealth(20.0F);
                     setOwnerId(player.getUniqueID());
                     world.setEntityState(this, (byte) 7);
@@ -185,10 +181,10 @@ public class VMonkeyEntity extends TameableEntity {
                 }
             }
 
-            return false;
+            return ActionResultType.PASS;
         }
 
-        return super.processInteract(player, hand);
+        return super.getEntityInteractionResult(player, hand);
     }
 
     @Override
@@ -198,11 +194,11 @@ public class VMonkeyEntity extends TameableEntity {
 
     @Nullable
     @Override
-    public AgeableEntity createChild(AgeableEntity entity) {
+    public AgeableEntity createChild(ServerWorld world, AgeableEntity entity) {
         return null;
     }
 
-
+    @Override
     public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
         // Only attack players, and only when not tamed
         // NOTE: Maybe we want to attack other players though?
@@ -211,7 +207,7 @@ public class VMonkeyEntity extends TameableEntity {
 
     @Override
     public boolean attackEntityAsMob(Entity entity) {
-        boolean damaged = entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float) getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
+        boolean damaged = entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
 
         if (damaged) {
             applyEnchantments(this, entity);
@@ -226,10 +222,7 @@ public class VMonkeyEntity extends TameableEntity {
             return false;
         } else {
             Entity entity = source.getTrueSource();
-
-            if (sitGoal != null) {
-                sitGoal.setSitting(false);
-            }
+            this.setSitting(false);
 
             if (entity != null && entity.getType() != EntityType.PLAYER && !(entity instanceof ArrowEntity)) {
                 amount = (amount + 1.0F) / 2.0F;

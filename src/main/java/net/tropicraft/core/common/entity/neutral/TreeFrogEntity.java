@@ -1,12 +1,8 @@
 package net.tropicraft.core.common.entity.neutral;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -21,10 +17,10 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
@@ -73,12 +69,10 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements IMob, IR
         goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
-        getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return CreatureEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 5.0)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -93,7 +87,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements IMob, IR
 
                     // this.jump();
                     // this.motionY += -0.01D + rand.nextDouble() * 0.1D;
-                    final Vec3d motion = getMotion();
+                    final Vector3d motion = getMotion();
 
                     double speed = Math.sqrt(motion.x * motion.x + motion.z * motion.z);
                     if (speed > 0.02D) {
@@ -128,18 +122,18 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements IMob, IR
         setFrogType(nbt.getInt("Type"));
     }
 
-    @Override
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+    @Override
+    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData spawnData, @Nullable CompoundNBT dataTag) {
         final int type = rand.nextInt(Type.values().length);
         setFrogType(type);
 
         if (type != 0) {
-            hostileAI = new NearestAttackableTargetGoal<PlayerEntity>(this, PlayerEntity.class, true);
+            hostileAI = new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true);
             targetSelector.addGoal(1, hostileAI);
         }
 
-        return super.onInitialSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
+        return super.onInitialSpawn(world, difficulty, reason, spawnData, dataTag);
     }
 
     public void setFrogType(int i) {
@@ -160,13 +154,13 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements IMob, IR
             double d = entity.getPosX() - getPosX();
             double d1 = entity.getPosZ() - getPosZ();
 
-            final PoisonBlotEntity entitypoisonblot = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, world);
-            entitypoisonblot.setPosition(entitypoisonblot.getPosX(), entitypoisonblot.getPosY() + 1.3999999761581421D, entitypoisonblot.getPosZ());
-            final double shotHeight = (entity.getPosY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - entitypoisonblot.getPosY();
+            final PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, world);
+            poison.setPosition(poison.getPosX(), poison.getPosY() + 1.3999999761581421D, poison.getPosZ());
+            final double shotHeight = (entity.getPosY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - poison.getPosY();
             float f1 = MathHelper.sqrt(d * d + d1 * d1) * 0.2F;
             entity.getEntityWorld().playSound(null, entity.getPosition(), Sounds.FROG_SPIT, SoundCategory.HOSTILE, 1, 1);
-            world.addEntity(entitypoisonblot);
-            entitypoisonblot.shoot(d, shotHeight + (double) f1, d1, 0.6F, 12F);
+            world.addEntity(poison);
+            poison.shoot(d, shotHeight + (double) f1, d1, 0.6F, 12F);
             attackTime = 50;
             rotationYaw = (float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
         }

@@ -1,67 +1,47 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAirOrLeaves;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
-
-import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import com.mojang.datafixers.Dynamic;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.BushBlock;
-import net.minecraft.block.SaplingBlock;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.IWorldGenerationBaseReader;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraftforge.common.IPlantable;
-import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.minecraft.world.gen.feature.TreeFeature;
+import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 
-public class FruitTreeFeature extends Feature<NoFeatureConfig> {
+import java.util.Random;
 
-	private final Supplier<BlockState> WOOD_BLOCK = () -> Blocks.OAK_LOG.getDefaultState();
-	private final Supplier<BlockState> REGULAR_LEAF_BLOCK = () -> TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState();
-	private final Supplier<BlockState> FRUIT_LEAF_BLOCK;
-	private final Supplier<? extends SaplingBlock> sapling;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
-	public FruitTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> placer, Supplier<? extends SaplingBlock> sapling, Supplier<BlockState> fruitLeaf) {
-		super(placer);
-		this.sapling = sapling;
-		FRUIT_LEAF_BLOCK = fruitLeaf;
-	}
-
-	protected SaplingBlock getSapling() {
-	    return sapling.get();
+public class FruitTreeFeature extends Feature<FruitTreeConfig> {
+	public FruitTreeFeature(Codec<FruitTreeConfig> codec) {
+		super(codec);
 	}
 
 	@Override
-	public boolean place(IWorld worldObj, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FruitTreeConfig config) {
 		pos = pos.toImmutable();
 		int height = rand.nextInt(3) + 4;
 
-		if (goesBeyondWorldSize(worldObj, pos.getY(), height)) {
+		if (goesBeyondWorldSize(world, pos.getY(), height)) {
 			return false;
 		}
 
-		if (!isBBAvailable(worldObj, pos, height)) {
+		if (!isBBAvailable(world, pos, height)) {
 			return false;
 		}
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), worldObj, pos.down())) {
+		BlockState sapling = config.sapling;
+		if (!sapling.isValidPosition(world, pos)) {
 			return false;
 		}
 
-		setDirtAt(worldObj, pos, pos.down());
+		setDirtAt(world, pos);
 
 		for (int y = (pos.getY() - 3) + height; y <= pos.getY() + height; y++) {
 			int presizeMod = y - (pos.getY() + height);
@@ -70,14 +50,14 @@ public class FruitTreeFeature extends Feature<NoFeatureConfig> {
 				int localX = x - pos.getX();
 				for (int z = pos.getZ() - size; z <= pos.getZ() + size; z++) {
 					int localZ = z - pos.getZ();
-					if ((Math.abs(localX) != size || Math.abs(localZ) != size || rand.nextInt(2) != 0 && presizeMod != 0) && isAirOrLeaves(worldObj, new BlockPos(x, y, z))) {
+					if ((Math.abs(localX) != size || Math.abs(localZ) != size || rand.nextInt(2) != 0 && presizeMod != 0) && TreeFeature.isAirOrLeavesAt(world, new BlockPos(x, y, z))) {
 						BlockPos leafPos = new BlockPos(x, y, z);
 						if (rand.nextBoolean()) {
 							// Set fruit-bearing leaves here
-							setBlockState(worldObj, leafPos, FRUIT_LEAF_BLOCK.get());
+							setBlockState(world, leafPos, config.fruitLeaves);
 						} else {
 							// Set plain fruit tree leaves here
-							setBlockState(worldObj, leafPos, REGULAR_LEAF_BLOCK.get());
+							setBlockState(world, leafPos, config.leaves);
 						}
 					}
 				}
@@ -87,17 +67,17 @@ public class FruitTreeFeature extends Feature<NoFeatureConfig> {
 		// Tree stem
 		for (int y = 0; y < height; y++) {
 			BlockPos logPos = pos.up(y);
-			if (isAirOrLeaves(worldObj, logPos) || AbstractTreeFeature.isTallPlants(worldObj, logPos)) {
-				setBlockState(worldObj, logPos, WOOD_BLOCK.get());
+			if (TreeFeature.isReplaceableAt(world, logPos)) {
+				setBlockState(world, logPos, config.wood);
 			}
 		}
 
 		return true;
 	}
 
-	protected static boolean isDirt(IWorldGenerationBaseReader worldIn, BlockPos pos) {
-		return worldIn.hasBlockState(pos, (p_214590_0_) -> {
-			Block block = p_214590_0_.getBlock();
+	protected static boolean isDirt(IWorldGenerationBaseReader world, BlockPos pos) {
+		return world.hasBlockState(pos, (state) -> {
+			Block block = state.getBlock();
 			return isDirt(block) && block != Blocks.GRASS_BLOCK && block != Blocks.MYCELIUM;
 		});
 	}
@@ -108,11 +88,7 @@ public class FruitTreeFeature extends Feature<NoFeatureConfig> {
 		}
 	}
 
-	protected void setDirtAt(IWorldGenerationReader reader, BlockPos pos, BlockPos origin) {
-		if (!(reader instanceof IWorld)) {
-			setDirt(reader, pos);
-			return;
-		}
-		((IWorld)reader).getBlockState(pos).onPlantGrow((IWorld)reader, pos, origin);
+	protected void setDirtAt(IWorldGenerationReader reader, BlockPos pos) {
+		setDirt(reader, pos);
 	}
 }

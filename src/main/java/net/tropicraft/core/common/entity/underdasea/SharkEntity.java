@@ -1,7 +1,8 @@
 package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -58,11 +59,10 @@ public class SharkEntity extends TropicraftFishEntity {
         getDataManager().register(IS_BOSS, false);
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-        getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return WaterMobEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
     public void setBoss() {
@@ -74,12 +74,12 @@ public class SharkEntity extends TropicraftFishEntity {
     }
 
     private void setBossTraits() {
-        getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8);
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8);
         //TODO this.setDropStack(ItemRegistry.yellowFlippers, 1);
         setCustomName(new StringTextComponent("Elder Hammerhead"));
         setCustomNameVisible(true);
         setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20);
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
         // TODO in renderer - this.setTexture("hammerhead4");
         if (!world.isRemote) {
             bossInfo.setName(new StringTextComponent("Elder Hammerhead"));

@@ -3,24 +3,25 @@ package net.tropicraft.core.common.dimension.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC0Transformer;
 
-public enum TropicraftAddSubBiomesLayer implements IC0Transformer {
-    RAINFOREST(TropicraftLayerUtil.RAINFOREST_PLAINS_ID, TropicraftLayerUtil.RAINFOREST_IDS)
-    ;
+public final class TropicraftAddSubBiomesLayer implements IC0Transformer {
+	final int baseID;
+	final int[] subBiomeIDs;
 
-    final LazyInt baseID;
-    final LazyInt[] subBiomeIDs;
+	TropicraftAddSubBiomesLayer(final int baseID, final int[] subBiomeIDs) {
+		this.baseID = baseID;
+		this.subBiomeIDs = subBiomeIDs;
+	}
 
-    TropicraftAddSubBiomesLayer(final LazyInt baseID, final LazyInt[] subBiomeIDs) {
-        this.baseID = baseID;
-        this.subBiomeIDs = subBiomeIDs;
-    }
+	public static TropicraftAddSubBiomesLayer rainforest(TropicraftBiomeIds biomeIds) {
+		return new TropicraftAddSubBiomesLayer(biomeIds.rainforestPlains, new int[] { biomeIds.rainforestHills, biomeIds.rainforestMountains });
+	}
 
-    @Override
-    public int apply(INoiseRandom random, int center) {
-        if (center == baseID.getAsInt()) {
-            return subBiomeIDs[random.random(subBiomeIDs.length)].getAsInt();
-        } else {
-            return center;
-        }
-    }
+	@Override
+	public int apply(INoiseRandom random, int center) {
+		if (center == baseID) {
+			return subBiomeIDs[random.random(subBiomeIDs.length)];
+		} else {
+			return center;
+		}
+	}
 }

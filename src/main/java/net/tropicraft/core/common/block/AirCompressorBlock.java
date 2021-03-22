@@ -30,11 +30,11 @@ import java.util.List;
 
 public class AirCompressorBlock extends Block {
 
-	@Nonnull
+    @Nonnull
     public static final EnumProperty<Direction> FACING = HorizontalBlock.HORIZONTAL_FACING;
 
     public AirCompressorBlock(Block.Properties properties) {
-		super(properties);
+        super(properties);
         this.setDefaultState(this.getStateContainer().getBaseState().with(FACING, Direction.NORTH));
     }
 
@@ -45,7 +45,7 @@ public class AirCompressorBlock extends Block {
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent(getTranslationKey() + ".desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent(getTranslationKey() + ".desc").mergeStyle(TextFormatting.GRAY));
     }
 
     @Override
@@ -56,43 +56,43 @@ public class AirCompressorBlock extends Block {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (world.isRemote) {
-			return ActionResultType.SUCCESS;
-		}
+        if (world.isRemote) {
+            return ActionResultType.SUCCESS;
+        }
 
-		ItemStack stack = player.getHeldItemMainhand();
+        ItemStack stack = player.getHeldItemMainhand();
 
-		AirCompressorTileEntity mixer = (AirCompressorTileEntity)world.getTileEntity(pos);
+        AirCompressorTileEntity mixer = (AirCompressorTileEntity)world.getTileEntity(pos);
 
-		if (mixer.isDoneCompressing()) {
-			mixer.ejectTank();
+        if (mixer.isDoneCompressing()) {
+            mixer.ejectTank();
             return ActionResultType.CONSUME;
-		}
+        }
 
-		if (stack.isEmpty()) {
-			mixer.ejectTank();
+        if (stack.isEmpty()) {
+            mixer.ejectTank();
             return ActionResultType.CONSUME;
-		}
+        }
 
-		ItemStack ingredientStack = stack.copy();
-		ingredientStack.setCount(1);
+        ItemStack ingredientStack = stack.copy();
+        ingredientStack.setCount(1);
 
-		if (mixer.addTank(ingredientStack)) {
-			player.inventory.decrStackSize(player.inventory.currentItem, 1);
-		}
+        if (mixer.addTank(ingredientStack)) {
+            player.inventory.decrStackSize(player.inventory.currentItem, 1);
+        }
 
         return ActionResultType.CONSUME;
-	}
+    }
 
     @Override
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!world.isRemote) {
-		    AirCompressorTileEntity te = (AirCompressorTileEntity) world.getTileEntity(pos);
-			te.ejectTank();
-		}
+        if (!world.isRemote) {
+            AirCompressorTileEntity te = (AirCompressorTileEntity) world.getTileEntity(pos);
+            te.ejectTank();
+        }
 
         super.onReplaced(state, world, pos, newState, isMoving);
-	}
+    }
     
     @Override
     public boolean hasTileEntity(BlockState state) {
@@ -102,8 +102,8 @@ public class AirCompressorBlock extends Block {
     @Override
     @Nullable
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new AirCompressorTileEntity();
-	}
+        return new AirCompressorTileEntity();
+    }
 
     @Override
     @Nullable

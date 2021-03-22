@@ -24,6 +24,8 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlantable {
 
     /** Number of total random ticks it takes for this pineapple to grow */
@@ -97,20 +99,20 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     
     @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-    	if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-    		super.onBlockHarvested(worldIn, pos, state, player);
-    	} else {
-    	    worldIn.playEvent(player, 2001, pos, getStateId(state));
-    	    spawnDrops(state, worldIn, pos, null, player, player.getHeldItemMainhand());
-    	}
+        if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+            super.onBlockHarvested(worldIn, pos, state, player);
+        } else {
+            worldIn.playEvent(player, 2001, pos, getStateId(state));
+            spawnDrops(state, worldIn, pos, null, player, player.getHeldItemMainhand());
+        }
     }
     
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-    	if (isValidPosition(stateIn, worldIn, currentPos)) {
-    		return stateIn;
-    	}
-    	return Blocks.AIR.getDefaultState();
+        if (isValidPosition(stateIn, worldIn, currentPos)) {
+            return stateIn;
+        }
+        return Blocks.AIR.getDefaultState();
     }
     
     @Override
@@ -128,7 +130,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
 
     @Override
-    public void onBlockPlacedBy(World p_180633_1_, BlockPos p_180633_2_, BlockState p_180633_3_, LivingEntity p_180633_4_, ItemStack p_180633_5_) {
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         // override super behavior of placing top half of double flower by default
     }
 }

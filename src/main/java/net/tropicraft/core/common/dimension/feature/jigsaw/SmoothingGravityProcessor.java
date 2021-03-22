@@ -1,9 +1,7 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
-
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Direction.AxisDirection;
@@ -21,7 +19,14 @@ import net.tropicraft.Constants;
 
 public class SmoothingGravityProcessor extends PathStructureProcessor {
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":smooth_gravity", SteepPathProcessor::new);
+    public static final Codec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.create(instance -> {
+        return instance.group(
+                Heightmap.Type.CODEC.fieldOf("heightmap").forGetter(p -> p.heightmap),
+                Codec.INT.fieldOf("offset").forGetter(p -> p.offset)
+        ).apply(instance, SmoothingGravityProcessor::new);
+    });
+
+    static final IStructureProcessorType<SmoothingGravityProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":smooth_gravity", () -> CODEC);
 
     private final Heightmap.Type heightmap;
     private final int offset;
@@ -35,7 +40,7 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
     }
 
     @Override
-    public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
+    public BlockInfo process(IWorldReader world, BlockPos seedPos, BlockPos pos2, BlockInfo originalBlockInfo, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
         Axis pathDir = getPathDirection(seedPos, blockInfo, placementSettingsIn, template);
         if (pathDir == null) {
             pathDir = Axis.X; // Better than nothing
@@ -43,22 +48,17 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
         BlockPos pos = blockInfo.pos;
         BlockPos posForward = pos.offset(Direction.getFacingFromAxis(AxisDirection.POSITIVE, pathDir));
         BlockPos posBackward = pos.offset(Direction.getFacingFromAxis(AxisDirection.NEGATIVE, pathDir));
-        int heightForward = worldReaderIn.getHeight(heightmap, posForward.getX(), posForward.getZ()) + offset;
-        int heightBackward = worldReaderIn.getHeight(heightmap, posBackward.getX(), posBackward.getZ()) + offset;
-        int height = worldReaderIn.getHeight(heightmap, pos.getX(), pos.getZ()) + offset;
+        int heightForward = world.getHeight(heightmap, posForward.getX(), posForward.getZ()) + offset;
+        int heightBackward = world.getHeight(heightmap, posBackward.getX(), posBackward.getZ()) + offset;
+        int height = world.getHeight(heightmap, pos.getX(), pos.getZ()) + offset;
         if (heightForward > height && heightBackward > height) {
             return new BlockInfo(new BlockPos(pos.getX(), Math.min(heightForward, heightBackward), pos.getZ()), blockInfo.state, blockInfo.nbt);
         }
-        return baseline.process(worldReaderIn, seedPos, p_215194_3_, blockInfo, placementSettingsIn, template);
+        return baseline.process(world, seedPos, pos2, originalBlockInfo, blockInfo, placementSettingsIn, template);
     }
 
     @Override
-    protected IStructureProcessorType getType() {
+    protected IStructureProcessorType<?> getType() {
         return TYPE;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops, ops.createMap(ImmutableMap.of(ops.createString("heightmap"), ops.createString(this.heightmap.getId()), ops.createString("offset"), ops.createInt(this.offset))));
     }
 }

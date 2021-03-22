@@ -17,7 +17,8 @@ public class ArmorMaterials {
             SoundEvents.ITEM_ARMOR_EQUIP_CHAIN,
             Ingredient.fromItems(TropicraftItems.SCALE.get()),
             "scale",
-            0.5f
+            0.5f,
+            0.0F
     );
     public static final IArmorMaterial FIRE_ARMOR = createArmorMaterial(
             12,
@@ -26,7 +27,8 @@ public class ArmorMaterials {
             SoundEvents.ITEM_ARMOR_EQUIP_IRON,
             null,
             "fire",
-            0.1f
+            0.1f,
+            0.0F
     );
     public static final IArmorMaterial SCUBA = createArmorMaterial(
             10, 
@@ -35,7 +37,9 @@ public class ArmorMaterials {
             SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,
             null,
             "scuba_goggles",
-            0);
+            0,
+            0.0F
+    );
 
     private static class AshenMask implements IArmorMaterial {
         @Override
@@ -70,6 +74,11 @@ public class ArmorMaterials {
 
         @Override
         public float getToughness() {
+            return 0;
+        }
+
+        @Override
+        public float getKnockbackResistance() {
             return 0;
         }
     }
@@ -110,10 +119,15 @@ public class ArmorMaterials {
         public float getToughness() {
             return 0;
         }
+
+        @Override
+        public float getKnockbackResistance() {
+            return 0;
+        }
     }
 
     public static IArmorMaterial createArmorMaterial(final int durability, final int[] dmgReduction, final int enchantability, final SoundEvent soundEvent,
-                                                     final Ingredient repairMaterial, final String name, final float toughness) {
+                                                     final Ingredient repairMaterial, final String name, final float toughness, float knockbackResistance) {
         return new IArmorMaterial() {
             @Override
             public int getDurability(EquipmentSlotType equipmentSlotType) {
@@ -148,6 +162,11 @@ public class ArmorMaterials {
             @Override
             public float getToughness() {
                 return toughness;
+            }
+
+            @Override
+            public float getKnockbackResistance() {
+                return knockbackResistance;
             }
         };
     }

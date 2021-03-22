@@ -9,23 +9,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.MoveTowardsRestrictionGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.TradeWithPlayerGoal;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.merchant.villager.VillagerData;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
@@ -34,12 +21,7 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.MerchantOffer;
-import net.minecraft.item.MerchantOffers;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -51,48 +33,28 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.TropicraftTags;
-import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.entity.TropicraftEntities;
-import net.tropicraft.core.common.entity.ai.EntityAIAvoidEntityOnLowHealth;
-import net.tropicraft.core.common.entity.ai.EntityAIChillAtFire;
-import net.tropicraft.core.common.entity.ai.EntityAIEatToHeal;
-import net.tropicraft.core.common.entity.ai.EntityAIGoneFishin;
-import net.tropicraft.core.common.entity.ai.EntityAIKoaMate;
-import net.tropicraft.core.common.entity.ai.EntityAIPartyTime;
-import net.tropicraft.core.common.entity.ai.EntityAIPlayKoa;
-import net.tropicraft.core.common.entity.ai.EntityAITemptHelmet;
-import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
+import net.tropicraft.core.common.entity.ai.*;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class EntityKoaBase extends VillagerEntity {
 
@@ -112,16 +74,15 @@ public class EntityKoaBase extends VillagerEntity {
     private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> LURE_ID = EntityDataManager.createKey(EntityKoaBase.class, DataSerializers.VARINT);
 
-    private Goal taskFishing = new EntityAIGoneFishin(this);
+    private final Goal taskFishing = new EntityAIGoneFishin(this);
 
     private float clientHealthLastTracked = 0;
 
     public static int MAX_HOME_DISTANCE = 128;
 
-    private static final int INVALID_DIM = Integer.MAX_VALUE;
     private int villageID = -1;
 
-    private int villageDimID = INVALID_DIM;
+    private RegistryKey<World> villageDimension;
 
     private FishingBobberEntity lure;
 
@@ -136,8 +97,8 @@ public class EntityKoaBase extends VillagerEntity {
     public int hitIndex3 = 0;
     public int hitDelay = 0;
     private long lastTradeTime = 0;
-    private static int TRADE_COOLDOWN = 24000*3;
-    private static int DIVE_TIME_NEEDED = 60*60;
+    private static final int TRADE_COOLDOWN = 24000*3;
+    private static final int DIVE_TIME_NEEDED = 60*60;
 
     public boolean debug = false;
 
@@ -147,6 +108,8 @@ public class EntityKoaBase extends VillagerEntity {
 
     private boolean isMating;
     private boolean isPlaying;
+
+    private boolean finalizedSpawn;
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             //TODO: 1.14 fix
@@ -190,8 +153,8 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    protected void dealFireDamage(int amount) {
-
+    public boolean isImmuneToFire() {
+        return true;
     }
 
     public long getLastTradeTime() {
@@ -223,7 +186,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     public void setSitting(boolean sitting) {
-        this.getDataManager().set(SITTING, Boolean.valueOf(sitting));
+        this.getDataManager().set(SITTING, sitting);
     }
 
     public boolean isDancing() {
@@ -231,18 +194,18 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     public void setDancing(boolean val) {
-        this.getDataManager().set(DANCING, Boolean.valueOf(val));
+        this.getDataManager().set(DANCING, val);
     }
 
     @Override
     protected void registerData() {
         super.registerData();
-        this.getDataManager().register(ROLE, Integer.valueOf(0));
-        this.getDataManager().register(GENDER, Integer.valueOf(0));
-        this.getDataManager().register(ORIENTATION, Integer.valueOf(0));
-        this.getDataManager().register(SITTING, Boolean.valueOf(false));
-        this.getDataManager().register(DANCING, Boolean.valueOf(false));
-        this.getDataManager().register(LURE_ID, Integer.valueOf(-1));
+        this.getDataManager().register(ROLE, 0);
+        this.getDataManager().register(GENDER, 0);
+        this.getDataManager().register(ORIENTATION, 0);
+        this.getDataManager().register(SITTING, false);
+        this.getDataManager().register(DANCING, false);
+        this.getDataManager().register(LURE_ID, -1);
     }
 
     @Override
@@ -316,7 +279,7 @@ public class EntityKoaBase extends VillagerEntity {
         Int2ObjectMap<VillagerTrades.ITrade[]> offers = null;
 
         if (getRole() == Roles.FISHERMAN) {
-            offers = func_221238_a(ImmutableMap.of(1,
+            offers = toIntMap(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
                             new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.FISHING_NET.get(), 1, 8, 2),
@@ -327,7 +290,7 @@ public class EntityKoaBase extends VillagerEntity {
                             new KoaTradeForPearls(TropicraftItems.TROPICAL_FERTILIZER.get(), 5, 8, 2)
                     }));
         } else if (getRole() == Roles.HUNTER) {
-            offers = func_221238_a(ImmutableMap.of(1,
+            offers = toIntMap(ImmutableMap.of(1,
                     new VillagerTrades.ITrade[]{
                             new KoaTradeForPearls(TropicraftItems.FROG_LEG.get(), 5, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.IGUANA_LEATHER.get(), 2, 8, 2),
@@ -337,7 +300,7 @@ public class EntityKoaBase extends VillagerEntity {
 
         return offers;
 
-        /*func_221238_a(ImmutableMap.of(1,
+        /*toIntMap(ImmutableMap.of(1,
                 new VillagerTrades.ITrade[]{
                         new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
                         new KoaTradeForPearls(ItemRegistry.fishingNet, 1, 8, 2),
@@ -369,7 +332,7 @@ public class EntityKoaBase extends VillagerEntity {
                         new VillagerTrades.ItemsForEmeraldsTrade(Items.GLISTERING_MELON_SLICE, 4, 3, 30)}));*/
     }
 
-    private static Int2ObjectMap<VillagerTrades.ITrade[]> func_221238_a(ImmutableMap<Integer, VillagerTrades.ITrade[]> p_221238_0_) {
+    private static Int2ObjectMap<VillagerTrades.ITrade[]> toIntMap(ImmutableMap<Integer, VillagerTrades.ITrade[]> p_221238_0_) {
         return new Int2ObjectOpenHashMap<>(p_221238_0_);
     }
 
@@ -501,7 +464,7 @@ public class EntityKoaBase extends VillagerEntity {
 
             @Override
             protected double getAttackReachSqr(LivingEntity attackTarget) {
-                return (double)(this.attacker.getType().getSize().width * 2.5F * this.attacker.getType().getSize().width * 2.5F + attackTarget.getType().getSize().width);
+                return this.attacker.getType().getSize().width * 2.5F * this.attacker.getType().getSize().width * 2.5F + attackTarget.getType().getSize().width;
             }
         });
 
@@ -534,12 +497,10 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public VillagerEntity createChild(AgeableEntity ageable) {
-        //EntityVillager ent = super.createChild(ageable);
-        EntityKoaHunter entityvillager = new EntityKoaHunter(TropicraftEntities.KOA_HUNTER.get(), this.world);
-        entityvillager.onInitialSpawn(this.world, this.world.getDifficultyForLocation(new BlockPos(entityvillager)), SpawnReason.BREEDING, null, null);
-
-        return entityvillager;
+    public VillagerEntity createChild(ServerWorld world, AgeableEntity ageable) {
+        EntityKoaHunter child = new EntityKoaHunter(TropicraftEntities.KOA_HUNTER.get(), this.world);
+        child.onInitialSpawn(world, world.getDifficultyForLocation(child.getPosition()), SpawnReason.BREEDING, null, null);
+        return child;
     }
 
     @Override
@@ -596,15 +557,12 @@ public class EntityKoaBase extends VillagerEntity {
 
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return VillagerEntity.registerAttributes()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 30.0)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0)
+                .createMutableAttribute(Attributes.ARMOR, 2.0);
     }
 
     @Override
@@ -616,22 +574,22 @@ public class EntityKoaBase extends VillagerEntity {
     @Override
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        float f = (float)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
-        int i = 0;
+        float damage = (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
+        float knockback = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
         if (entityIn instanceof LivingEntity)
         {
-            f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((LivingEntity)entityIn).getCreatureAttribute());
-            i += EnchantmentHelper.getKnockbackModifier(this);
+            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((LivingEntity)entityIn).getCreatureAttribute());
+            knockback += EnchantmentHelper.getKnockbackModifier(this);
         }
 
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
 
         if (flag)
         {
-            if (i > 0 && entityIn instanceof LivingEntity)
+            if (knockback > 0 && entityIn instanceof LivingEntity)
             {
-                ((LivingEntity)entityIn).knockBack(this, (float)i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                ((LivingEntity)entityIn).applyKnockback(knockback * 0.5F, MathHelper.sin(this.rotationYaw * 0.017453292F), -MathHelper.cos(this.rotationYaw * 0.017453292F));
                 this.setMotion(this.getMotion().x * 0.6D, this.getMotion().y, this.getMotion().z * 0.6D);
                 /*this.motionX *= 0.6D;
                 this.motionZ *= 0.6D;*/
@@ -672,12 +630,11 @@ public class EntityKoaBase extends VillagerEntity {
     private static final Field _buyingList = Util.findField(VillagerEntity.class, "field_70963_i", "buyingList");*/
     
     @Override
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+        if (hand != Hand.MAIN_HAND) return ActionResultType.PASS;
 
-        if (hand != Hand.MAIN_HAND) return false;
-
-    	boolean ret = false;
-    	try {
+        ActionResultType ret = ActionResultType.PASS;
+        try {
             boolean doTrade = true;
             if (!this.world.isRemote) {
 
@@ -739,14 +696,14 @@ public class EntityKoaBase extends VillagerEntity {
                 if (doTrade) {
                     // Make the super method think this villager is already trading, to block the GUI from opening
                     //_buyingPlayer.set(this, player);
-                    ret = super.processInteract(player, hand);
+                    ret = super.getEntityInteractionResult(player, hand);
                     //_buyingPlayer.set(this, null);
                 }
             }
-    	} catch (Exception e) {
-    		throw new RuntimeException(e);
-    	}
-    	return ret;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ret;
     }
 
     @Override
@@ -766,7 +723,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     @Nullable
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setHomePosAndDistance(this.getPosition(), MAX_HOME_DISTANCE);
 
         rollDiceChild();
@@ -777,11 +734,7 @@ public class EntityKoaBase extends VillagerEntity {
 
         updateUniqueEntityAI();
 
-        findAndSetHomeToCloseChest(true);
-        findAndSetFireSource(true);
-        findAndSetDrums(true);
-
-        ILivingEntityData data = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        finalizedSpawn = true;
 
         /*VillagerRegistry.VillagerProfession koaProfession = new VillagerRegistry.VillagerProfession("koa_profession", "");
         this.setProfession(koaProfession);*/
@@ -789,7 +742,7 @@ public class EntityKoaBase extends VillagerEntity {
         //TODO: 1.14 make sure not needed, overwritten with getOfferMap now
         //initTrades();
 
-        return data;
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public void rollDiceChild() {
@@ -858,7 +811,10 @@ public class EntityKoaBase extends VillagerEntity {
         compound.putInt("orientation_id", this.getDataManager().get(ORIENTATION));
 
         compound.putInt("village_id", villageID);
-        compound.putInt("village_dim_id", villageDimID);
+
+        if (villageDimension != null) {
+            compound.putString("village_dimension", villageDimension.getLocation().toString());
+        }
 
         compound.putLong("lastTradeTime", lastTradeTime);
 
@@ -899,10 +855,10 @@ public class EntityKoaBase extends VillagerEntity {
         this.villageID = compound.getInt("village_id");
 
         //backwards compat
-        if (!compound.contains("village_dim_id")) {
-            this.villageDimID = TropicsConfigs.tropicsDimensionID;
+        if (!compound.contains("village_dimension")) {
+            this.villageDimension = world.getDimensionKey();
         } else {
-            this.villageDimID = compound.getInt("village_dim_id");
+            this.villageDimension = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(compound.getString("village_dim_id")));
         }
 
         if (compound.contains("role_id")) {
@@ -945,11 +901,11 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     public void monitorHomeVillage() {
-        if (villageDimID != INVALID_DIM) {
+        if (villageDimension != null) {
             //if (villageID != -1) {
 
                 //if not in home dimension, full reset
-                if (this.world.getDimension().getType().getId() != villageDimID) {
+                if (this.world.getDimensionKey() != villageDimension) {
                     dbg("koa detected different dimension, zapping memory");
                     zapMemory();
                     addPotionEffect(new EffectInstance(Effects.SLOWNESS, 5));
@@ -972,9 +928,9 @@ public class EntityKoaBase extends VillagerEntity {
                 this.setVillageAndDimID(village.locationID, village.dimID);
             } else {
                 //check we have a chest locked in
-                TileEntity tile = world.getTileEntity(func_213384_dI());
+                TileEntity tile = world.getTileEntity(getRestrictCenter());
                 if ((tile instanceof ChestTileEntity)) {
-                    village = createNewVillage(func_213384_dI());
+                    village = createNewVillage(getRestrictCenter());
                     if (village != null) {
                         this.setVillageAndDimID(village.locationID, village.dimID);
                         dbg("Koa created a new village!");
@@ -1059,7 +1015,7 @@ public class EntityKoaBase extends VillagerEntity {
 
         boolean tryFind = false;
 
-        if (villageID == -1 || villageDimID == INVALID_DIM) {
+        if (villageID == -1 || villageDimension == null) {
             tryFind = true;
             //make sure return status is correct
             villageID = -1;
@@ -1069,8 +1025,8 @@ public class EntityKoaBase extends VillagerEntity {
             List<EntityKoaBase> listEnts = world.getEntitiesWithinAABB(EntityKoaBase.class, new AxisAlignedBB(this.getPosition()).grow(20, 20, 20));
             Collections.shuffle(listEnts);
             for (EntityKoaBase ent : listEnts) {
-                if (ent.villageID != -1 && ent.villageDimID != INVALID_DIM) {
-                    this.setVillageAndDimID(ent.villageID, ent.villageDimID);
+                if (ent.villageID != -1 && ent.villageDimension != null) {
+                    this.setVillageAndDimID(ent.villageID, ent.villageDimension);
                     break;
                 }
             }
@@ -1081,7 +1037,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public void findAndSetFireSource(boolean force) {
 
-        //this.setHomePosAndDistance(this.func_213384_dI(), 128);
+        //this.setHomePosAndDistance(this.getRestrictCenter(), 128);
 
         if (!force && (world.getGameTime()+this.getEntityId()) % (20*30) != 0) return;
 
@@ -1154,7 +1110,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public void findAndSetDrums(boolean force) {
 
-        //this.setHomePosAndDistance(this.func_213384_dI(), 128);
+        //this.setHomePosAndDistance(this.getRestrictCenter(), 128);
 
         if (!force && (world.getGameTime()+this.getEntityId()) % (20*30) != 0) return;
 
@@ -1322,6 +1278,12 @@ public class EntityKoaBase extends VillagerEntity {
 
     @Override
     public void livingTick() {
+        if (finalizedSpawn) {
+            finalizedSpawn = false;
+            findAndSetHomeToCloseChest(true);
+            findAndSetFireSource(true);
+            findAndSetDrums(true);
+        }
 
         this.updateArmSwingProgress();
         super.livingTick();
@@ -1358,11 +1320,11 @@ public class EntityKoaBase extends VillagerEntity {
                     this.getMotion().add(0, 0.15F, 0);
                 }
             }
-            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.60D);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.60D);
 
             this.setPathPriority(PathNodeType.WATER, 8);
         } else {
-            this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 
             this.setPathPriority(PathNodeType.WATER, -1);
         }
@@ -1431,9 +1393,9 @@ public class EntityKoaBase extends VillagerEntity {
         if (!bonie.getIsWillingToMate(true)) return false;
         if (boner.isChild() || bonie.isChild()) return false;
         if (boner.getOrientation() == Orientations.STRAIT) {
-            if (boner.getGender() == bonie.getGender()) return false;
+            return boner.getGender() != bonie.getGender();
         } else if (boner.getOrientation() == Orientations.GAY) {
-            if (boner.getGender() != bonie.getGender()) return false;
+            return boner.getGender() == bonie.getGender();
         }
         return true;
     }
@@ -1446,13 +1408,13 @@ public class EntityKoaBase extends VillagerEntity {
         this.villageID = villageID;
     }*/
 
-    public void setVillageAndDimID(int villageID, int villageDimID) {
+    public void setVillageAndDimID(int villageID, RegistryKey<World> villageDimID) {
         this.villageID = villageID;
-        this.villageDimID = villageDimID;
+        this.villageDimension = villageDimID;
     }
 
-    public int getVillageDimID() {
-        return villageDimID;
+    public RegistryKey<World> getVillageDimension() {
+        return villageDimension;
     }
 
     /*public void setVillageDimID(int villageDimID) {
@@ -1629,8 +1591,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public void onStruckByLightning(LightningBoltEntity lightningBolt) {
-        //cancel super witch code
+    public void causeLightningStrike(ServerWorld world, LightningBoltEntity lightning) {
     }
 
     public void zapMemory() {
@@ -1638,7 +1599,7 @@ public class EntityKoaBase extends VillagerEntity {
         setHomePosAndDistance(BlockPos.ZERO, -1);
         setFirelacePos(null);
 
-        villageDimID = INVALID_DIM;
+        villageDimension = null;
         villageID = -1;
     }
 

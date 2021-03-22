@@ -27,14 +27,14 @@ public class ExplodingCoconutEntity extends ProjectileItemEntity {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-	@Override
-	protected void onImpact(RayTraceResult result) {
-		// TODO - why isn't this being called?
-		if (!world.isRemote) {
-			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 2.4F, Explosion.Mode.DESTROY);
-			remove();
-		}
-	}
+    @Override
+    protected void onImpact(RayTraceResult result) {
+        // TODO - why isn't this being called?
+        if (!world.isRemote) {
+            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 2.4F, Explosion.Mode.DESTROY);
+            remove();
+        }
+    }
 
     @Override
     protected Item getDefaultItem() {

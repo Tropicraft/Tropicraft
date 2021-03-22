@@ -34,7 +34,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
      */
     @Override
     public boolean shouldExecute() {
-        if (monkey.isSitting()) return false;
+        if (monkey.isQueuedToSit()) return false;
         if (monkey.isTamed()) return false;
         if (monkey.selfHoldingDrink(Drink.PINA_COLADA)) return false;
 

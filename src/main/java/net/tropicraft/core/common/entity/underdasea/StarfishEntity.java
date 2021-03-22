@@ -2,8 +2,10 @@ package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -13,7 +15,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -40,7 +42,7 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 
 	@Override
 	@Nullable
-	public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+	public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
 		setStarfishType(StarfishType.values()[rand.nextInt(StarfishType.values().length)]);
 		return super.onInitialSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
 	}
@@ -50,11 +52,10 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 		super.registerData();
 		getDataManager().register(DATA_STARFISH_TYPE, (byte) 0);
 	}
-	
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+
+	public static AttributeModifierMap.MutableAttribute createAttributes() {
+		return WaterMobEntity.func_233666_p_()
+				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0);
 	}
 	
 	public StarfishType getStarfishType() {

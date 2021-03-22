@@ -6,9 +6,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -21,6 +20,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants;
+
+import net.minecraft.block.AbstractBlock.Properties;
 
 public class BlockTropicraftSand extends FallingBlock {
     public static final BooleanProperty UNDERWATER = BooleanProperty.create("underwater");
@@ -64,7 +65,7 @@ public class BlockTropicraftSand extends FallingBlock {
 
     @Override
     public BlockState getStateForPlacement(final BlockItemUseContext context) {
-        final IFluidState upState = context.getWorld().getFluidState(context.getPos().up());
+        final FluidState upState = context.getWorld().getFluidState(context.getPos().up());
         boolean waterAbove = false;
         if (!upState.isEmpty()) {
             waterAbove = true;
@@ -75,7 +76,7 @@ public class BlockTropicraftSand extends FallingBlock {
     @Override
     @Deprecated
     public void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos pos2, boolean isMoving) {
-        final IFluidState upState = world.getFluidState(pos.up());
+        final FluidState upState = world.getFluidState(pos.up());
         boolean underwater = upState.getFluid().isEquivalentTo(Fluids.WATER);
         if (underwater != state.get(UNDERWATER)) {
             world.setBlockState(pos, state.with(UNDERWATER, underwater), Constants.BlockFlags.BLOCK_UPDATE);

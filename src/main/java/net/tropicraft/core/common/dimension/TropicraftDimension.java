@@ -1,163 +1,95 @@
 package net.tropicraft.core.common.dimension;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.ChunkGeneratorType;
+import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.hooks.BasicEventHooks;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
-import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProviderTypes;
-import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGeneratorTypes;
-import net.tropicraft.core.common.dimension.config.TropicraftBiomeProviderSettings;
-import net.tropicraft.core.common.dimension.config.TropicraftGeneratorSettings;
+import net.tropicraft.core.common.dimension.chunk.TropicraftChunkGenerator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.util.LinkedHashSet;
+import java.util.function.Supplier;
 
-public class TropicraftDimension extends Dimension {
-    public TropicraftDimension(final World worldIn, final DimensionType typeIn, final float lightFactor) {
-        super(worldIn, typeIn, lightFactor);
-    }
+public class TropicraftDimension {
+    private static final Logger LOGGER = LogManager.getLogger(TropicraftDimension.class);
 
-    public TropicraftDimension(World world, DimensionType dimensionType) {
-        this(world, dimensionType, 0.0f);
-    }
+    public static final ResourceLocation ID = new ResourceLocation(Constants.MODID, "tropics");
 
-    @Override
-    public ChunkGenerator<?> createChunkGenerator() {
-        // TODO - add once Forge supports again BiomeProviderType<TropicraftBiomeProviderSettings, TropicraftBiomeProvider> biomeType = TropicraftBiomeProviderTypes.TROPICS.get();
-        ChunkGeneratorType chunkType = TropicraftChunkGeneratorTypes.TROPICS.get();
-        TropicraftGeneratorSettings genSettings = (TropicraftGeneratorSettings) chunkType.createSettings();
-        TropicraftBiomeProviderSettings settings2 = new TropicraftBiomeProviderSettings(world.getWorldInfo()).setWorldInfo(world.getWorldInfo()).setGeneratorSettings(genSettings);
-        return chunkType.create(this.world, new TropicraftBiomeProvider(settings2), genSettings);
-    }
+    public static final RegistryKey<World> WORLD = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, ID);
+    public static final RegistryKey<Dimension> DIMENSION = RegistryKey.getOrCreateKey(Registry.DIMENSION_KEY, ID);
+    public static final RegistryKey<DimensionType> DIMENSION_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, ID);
+    public static final RegistryKey<DimensionSettings> DIMENSION_SETTINGS = RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, ID);
 
-    /** Copied from OverworldDimension */
-    @Override
-    @Nullable
-    public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid) {
-        for(int i = chunkPosIn.getXStart(); i <= chunkPosIn.getXEnd(); ++i) {
-            for(int j = chunkPosIn.getZStart(); j <= chunkPosIn.getZEnd(); ++j) {
-                BlockPos blockpos = this.findSpawn(i, j, checkValid);
-                if (blockpos != null) {
-                    return blockpos;
-                }
-            }
+    @SuppressWarnings("unchecked")
+    public static void addDefaultDimensionKey() {
+        try {
+            Field dimensionKeysField = ObfuscationReflectionHelper.findField(Dimension.class, "field_236056_e_");
+            LinkedHashSet<RegistryKey<Dimension>> keys = (LinkedHashSet<RegistryKey<Dimension>>) dimensionKeysField.get(null);
+            keys.add(DIMENSION);
+        } catch (ReflectiveOperationException e) {
+            LOGGER.error("Failed to add tropics as a default dimension key", e);
         }
-
-        return null;
     }
 
-    /** Copied from OverworldDimension */
-    @Override
-    @Nullable
-    public BlockPos findSpawn(int posX, int posZ, boolean checkValid) {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable(posX, 0, posZ);
-        Biome biome = world.getBiome(mutablePos);
-        BlockState blockstate = biome.getSurfaceBuilderConfig().getTop();
-        if (checkValid && !blockstate.getBlock().isIn(BlockTags.VALID_SPAWN)) {
-            return null;
+    public static ChunkGenerator createGenerator(Registry<Biome> biomeRegistry, Registry<DimensionSettings> dimensionSettingsRegistry, long seed) {
+        Supplier<DimensionSettings> dimensionSettings = () -> {
+            // fallback to overworld so that we don't crash before our datapack is loaded (horrible workaround)
+            DimensionSettings settings = dimensionSettingsRegistry.getValueForKey(DIMENSION_SETTINGS);
+            return settings != null ? settings : dimensionSettingsRegistry.getOrThrow(DimensionSettings.OVERWORLD);
+        };
+        TropicraftBiomeProvider biomeSource = new TropicraftBiomeProvider(seed, biomeRegistry);
+        return new TropicraftChunkGenerator(biomeSource, seed, dimensionSettings);
+    }
+
+    public static void teleportPlayer(ServerPlayerEntity player, RegistryKey<World> dimensionType) {
+        if (player.world.getDimensionKey() == dimensionType) {
+            teleportPlayerNoPortal(player, World.OVERWORLD);
         } else {
-            Chunk chunk = world.getChunk(posX >> 4, posZ >> 4);
-            int i = chunk.getTopBlockY(Heightmap.Type.MOTION_BLOCKING, posX & 15, posZ & 15);
-            if (i < 0) {
-                return null;
-            } else if (chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, posX & 15, posZ & 15) > chunk.getTopBlockY(Heightmap.Type.OCEAN_FLOOR, posX & 15, posZ & 15)) {
-                return null;
-            } else {
-                for(int j = i + 1; j >= 0; --j) {
-                    mutablePos.setPos(posX, j, posZ);
-                    BlockState blockstate1 = this.world.getBlockState(mutablePos);
-                    if (!blockstate1.getFluidState().isEmpty()) {
-                        break;
-                    }
-
-                    if (blockstate1.equals(blockstate)) {
-                        return mutablePos.up().toImmutable();
-                    }
-                }
-
-                return null;
-            }
+            teleportPlayerNoPortal(player, dimensionType);
         }
     }
 
     /**
-     * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime)
-     * mimics overworld code
+     * Finds the top Y position relative to the dimension the player is teleporting to and places
+     * the entity at that position. Avoids portal generation by using player.teleport() instead of
+     * player.changeDimension()
+     *
+     * @param player The player that will be teleported
+     * @param destination The target dimension to teleport to
      */
-    @Override
-    public float calculateCelestialAngle(long worldTime, float partialTicks) {
-        int i = (int)(worldTime % 24000L);
-        float f = ((float)i + partialTicks) / 24000.0F - 0.25F;
-        if (f < 0.0F) {
-            ++f;
+    public static void teleportPlayerNoPortal(ServerPlayerEntity player, RegistryKey<World> destination) {
+        ServerWorld world = player.server.getWorld(destination);
+        if (world == null) {
+            LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.getLocation());
+            return;
         }
 
-        if (f > 1.0F) {
-            --f;
-        }
+        if (!ForgeHooks.onTravelToDimension(player, destination)) return;
 
-        float f1 = 1.0F - (float)((Math.cos((double)f * Math.PI) + 1.0D) / 2.0D);
-        f = f + (f1 - f) / 3.0F;
-        return f;
-    }
+        int x = MathHelper.floor(player.getPosX());
+        int z = MathHelper.floor(player.getPosZ());
 
-    /**
-     * Returns 'true' if in the "main surface world", but 'false' if in the Nether or End dimensions.
-     */
-    @Override
-    public boolean isSurfaceWorld() {
-        return true;
-    }
+        Chunk chunk = world.getChunk(x >> 4, z >> 4);
+        int topY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
+        player.teleport(world, x + 0.5, topY + 1.0, z + 0.5, player.rotationYaw, player.rotationPitch);
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public float getCloudHeight() {
-        return 192;
-    }
-    
-    @Override
-    public int getSeaLevel() {
-        return 127; // TODO don't hardcode this both here and TropicraftChunkGenerator
-    }
-
-    /**
-     * Return Vec3D with biome specific fog color
-     * Copies overworld fog code
-     */
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public Vec3d getFogColor(float p_76562_1_, float p_76562_2_) {
-        float f = MathHelper.cos(p_76562_1_ * ((float)Math.PI * 2F)) * 2.0F + 0.5F;
-        f = MathHelper.clamp(f, 0.0F, 1.0F);
-        float f1 = 0.7529412F;
-        float f2 = 0.84705883F;
-        float f3 = 1.0F;
-        f1 = f1 * (f * 0.94F + 0.06F);
-        f2 = f2 * (f * 0.94F + 0.06F);
-        f3 = f3 * (f * 0.91F + 0.09F);
-        return new Vec3d(f1, f2, f3);
-    }
-
-    @Override
-    public boolean canRespawnHere() {
-        return true;
-    }
-
-    @Override
-    public boolean doesXZShowFog(int x, int z) {
-        return false;
+        BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }
 }

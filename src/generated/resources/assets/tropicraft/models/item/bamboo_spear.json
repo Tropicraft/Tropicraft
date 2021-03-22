@@ -6,7 +6,7 @@
   "overrides": [
     {
       "predicate": {
-        "throwing": 1.0
+        "minecraft:throwing": 1.0
       },
       "model": "tropicraft:item/bamboo_spear_throwing"
     }

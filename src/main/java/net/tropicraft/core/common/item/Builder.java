@@ -1,25 +1,12 @@
 package net.tropicraft.core.common.item;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.BlockNamedItem;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Food;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.PickaxeItem;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
@@ -33,6 +20,9 @@ import net.tropicraft.core.common.item.scuba.ScubaFlippersItem;
 import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.item.scuba.ScubaHarnessItem;
 import net.tropicraft.core.common.item.scuba.ScubaType;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Builder {
     
@@ -54,11 +44,11 @@ public class Builder {
     
     public static <T> Supplier<T> item(Function<Item.Properties, T> ctor, Supplier<Item.Properties> properties) {
         return () -> ctor.apply(properties.get());
-	}
+    }
 
-	public static Supplier<BlockNamedItem> blockNamedItem(Supplier<? extends Block> block) {
-		return item(p -> new BlockNamedItem(block.get(), p));
-	}
+    public static Supplier<BlockNamedItem> blockNamedItem(Supplier<? extends Block> block) {
+        return item(p -> new BlockNamedItem(block.get(), p));
+    }
 
     private static <T extends FurnitureEntity> Supplier<FurnitureItem<T>> furniture(Supplier<EntityType<T>> type, DyeColor color) {
         return item(p -> new FurnitureItem<>(p, type, color));

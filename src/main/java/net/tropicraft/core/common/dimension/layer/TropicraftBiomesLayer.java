@@ -3,15 +3,19 @@ package net.tropicraft.core.common.dimension.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IC0Transformer;
 
-import static net.tropicraft.core.common.dimension.layer.TropicraftLayerUtil.isLand;
+public final class TropicraftBiomesLayer implements IC0Transformer {
+    private final TropicraftBiomeIds biomeIds;
+    private final int[] landIds;
 
-public enum TropicraftBiomesLayer implements IC0Transformer {
-    INSTANCE;
+    public TropicraftBiomesLayer(TropicraftBiomeIds biomeIds) {
+        this.biomeIds = biomeIds;
+        this.landIds = new int[] { biomeIds.land, biomeIds.rainforestPlains };
+    }
 
     @Override
     public int apply(INoiseRandom iNoiseRandom, int center) {
-        if (isLand(center)) {
-            return TropicraftLayerUtil.TROPICS_LAND_IDS[iNoiseRandom.random(TropicraftLayerUtil.TROPICS_LAND_IDS.length)].getAsInt();
+        if (biomeIds.isLand(center)) {
+            return landIds[iNoiseRandom.random(landIds.length)];
         }
 
         return center;

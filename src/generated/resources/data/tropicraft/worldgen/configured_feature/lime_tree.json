@@ -1,0 +1,62 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "wood": {
+              "Properties": {
+                "axis": "y"
+              },
+              "Name": "minecraft:oak_log"
+            },
+            "sapling": {
+              "Properties": {
+                "stage": "0"
+              },
+              "Name": "tropicraft:lime_sapling"
+            },
+            "leaves": {
+              "Properties": {
+                "persistent": "false",
+                "distance": "7"
+              },
+              "Name": "tropicraft:fruit_leaves"
+            },
+            "fruit_leaves": {
+              "Properties": {
+                "persistent": "false",
+                "distance": "7"
+              },
+              "Name": "tropicraft:lime_leaves"
+            }
+          },
+          "type": "tropicraft:fruit_tree"
+        },
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {},
+              "type": "minecraft:heightmap"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 0,
+        "extra_chance": 0.2,
+        "extra_count": 1
+      },
+      "type": "minecraft:count_extra"
+    }
+  },
+  "type": "minecraft:decorated"
+}

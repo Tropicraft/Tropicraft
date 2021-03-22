@@ -11,20 +11,20 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 public class KoaModel extends BipedModel<EntityKoaBase> {
-	
-	private static class ModelRendererCull extends ModelRenderer {
-		
-		public ModelRendererCull(Model model, int texOffX, int texOffY) {
-			super(model, texOffX, texOffY);
-		}
+    
+    private static class ModelRendererCull extends ModelRenderer {
+        
+        public ModelRendererCull(Model model, int texOffX, int texOffY) {
+            super(model, texOffX, texOffY);
+        }
 
-		@Override
+        @Override
         public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
 //            RenderSystem.enableCull();
-			super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+            super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 //            RenderSystem.disableCull();
-		}
-	}
+        }
+    }
 
     public ModelRenderer headband;
     public ModelRenderer armbandR;
@@ -50,20 +50,20 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
         setRotation(bipedHead, 0F, 0F, 0F);
         headband = new ModelRenderer(this, 24, 1);
         headband.addBox(-5F, 0F, -5F, 10, 2, 10);
-        headband.setRotationPoint(0F, -7F, 0F);		//0,-7,0 before
+        headband.setRotationPoint(0F, -7F, 0F);        //0,-7,0 before
         headband.setTextureSize(64, 32);
         headband.mirror = true;
         bipedHead.addChild(headband);
         setRotation(headband, 0F, 0F, 0F);
         armbandR = new ModelRenderer(this, 35, 6);
-        armbandR.addBox(2.5F, -2F, -2.5F, 5, 1, 5);	//offset, dimensions
-        armbandR.setRotationPoint(-6F, 3F, 0F);	//position
+        armbandR.addBox(2.5F, -2F, -2.5F, 5, 1, 5);    //offset, dimensions
+        armbandR.setRotationPoint(-6F, 3F, 0F);    //position
         armbandR.setTextureSize(64, 32);
         bipedRightArm.addChild(armbandR);
         setRotation(armbandR, 0F, 0F, 0F);
         armbandL = new ModelRenderer(this, 34, 1);
-        armbandL.addBox(-7.5F, -2F, -2.5F, 5, 1, 5);		//offset, dimensions
-        armbandL.setRotationPoint(6F, 3F, 0F);		//position
+        armbandL.addBox(-7.5F, -2F, -2.5F, 5, 1, 5);        //offset, dimensions
+        armbandL.setRotationPoint(6F, 3F, 0F);        //position
         armbandL.setTextureSize(64, 32);
         armbandL.mirror = true;
         bipedLeftArm.addChild(armbandL);
@@ -144,12 +144,12 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
 
     @Override
     public void render(MatrixStack ms, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
-    		float red, float green, float blue, float alpha) {
+            float red, float green, float blue, float alpha) {
 
-    	ms.push();
+        ms.push();
 //        if (isSitting) {
 //            if (isChild) {
-//            	ms.translate(0, 0.3, 0);
+//                ms.translate(0, 0.3, 0);
 //            } else {
 //                ms.translate(0, 0.6, 0);
 //            }
@@ -157,8 +157,8 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
         
         if (this.isChild) {
             ms.push();
-        	ms.scale(0.75F, 0.75F, 0.75F);
-        	ms.translate(0.0F, 1.0F, 0.0F);
+            ms.scale(0.75F, 0.75F, 0.75F);
+            ms.translate(0.0F, 1.0F, 0.0F);
             this.bipedHead.render(ms, bufferIn, packedLightIn, packedOverlayIn);
             ms.pop();
             ms.push();

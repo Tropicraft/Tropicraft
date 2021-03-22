@@ -9,9 +9,9 @@ import net.minecraft.util.HandSide;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 
 public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> implements IHasArm {
-	
-	private final ModelRenderer skirt;
-	
+    
+    private final ModelRenderer skirt;
+    
     public TropiSkellyModel() {
         super(0.0F, 0.0F, 64, 64);
         float g = 0.0F;
@@ -40,12 +40,12 @@ public class TropiSkellyModel extends AbstractZombieModel<TropiSkellyEntity> imp
 
     @Override
     public void translateHand(HandSide side, final MatrixStack stack) {
-    	super.translateHand(side, stack);
+        super.translateHand(side, stack);
         stack.translate((side == HandSide.LEFT ? -1 : 1) * 0.1f, 0, 0.0F);
     }
 
-	@Override
-	public boolean isAggressive(TropiSkellyEntity entityIn) {
-		return entityIn.isAggressive();
-	}
+    @Override
+    public boolean isAggressive(TropiSkellyEntity entityIn) {
+        return entityIn.isAggressive();
+    }
 }

@@ -3,19 +3,23 @@ package net.tropicraft.core.common.dimension.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IBishopTransformer;
 
-public enum TropicraftExpandIslandLayer implements IBishopTransformer {
-    INSTANCE;
+public final class TropicraftExpandIslandLayer implements IBishopTransformer {
+    private final TropicraftBiomeIds biomeIds;
+
+    public TropicraftExpandIslandLayer(TropicraftBiomeIds biomeIds) {
+        this.biomeIds = biomeIds;
+    }
 
     @Override
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
-        if (TropicraftLayerUtil.isOcean(center)) {
-            final boolean isNorthEastOcean = TropicraftLayerUtil.isOcean(ne);
-            final boolean isSouthEastOcean = TropicraftLayerUtil.isOcean(se);
-            final boolean isSouthWestOcean = TropicraftLayerUtil.isOcean(sw);
-            final boolean isNorthWestOcean = TropicraftLayerUtil.isOcean(nw);
+        if (biomeIds.isOcean(center)) {
+            final boolean isNorthEastOcean = biomeIds.isOcean(ne);
+            final boolean isSouthEastOcean = biomeIds.isOcean(se);
+            final boolean isSouthWestOcean = biomeIds.isOcean(sw);
+            final boolean isNorthWestOcean = biomeIds.isOcean(nw);
             if (!isNorthWestOcean || !isSouthWestOcean || !isNorthEastOcean || !isSouthEastOcean) {
                 int chance = 1;
-                int result = TropicraftLayerUtil.LAND_ID.getAsInt();
+                int result = biomeIds.land;
 
                 if (!isNorthWestOcean && random.random(chance++) == 0) {
                     result = nw;

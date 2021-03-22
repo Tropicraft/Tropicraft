@@ -4,15 +4,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.tropicraft.core.common.TropicsConfigs;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
+
+import net.minecraft.item.Item.Properties;
 
 public class ExplodingCoconutItem extends Item {
 
@@ -25,11 +23,11 @@ public class ExplodingCoconutItem extends Item {
         // TODO config option
         final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();
         //allow to use anywhere but in the main area of the server
-        final boolean ltOverride = !world.getDimension().getType().getRegistryName().toString().equals("tropicraft:tropics");
+        final boolean ltOverride = world.getDimensionKey() != TropicraftDimension.WORLD;
         ItemStack itemstack = player.getHeldItem(hand);
         if (!canPlayerThrow && !ltOverride) {
             if (!world.isRemote) {
-                player.sendMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"));
+                player.sendStatusMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"), false);
             }
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         }
@@ -41,7 +39,7 @@ public class ExplodingCoconutItem extends Item {
         if (!world.isRemote) {
             ExplodingCoconutEntity snowballentity = new ExplodingCoconutEntity(world, player);
             snowballentity.setItem(itemstack);
-            snowballentity.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+            snowballentity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
             world.addEntity(snowballentity);
         }
 

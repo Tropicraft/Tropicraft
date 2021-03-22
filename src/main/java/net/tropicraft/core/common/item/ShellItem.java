@@ -10,6 +10,8 @@ import net.minecraft.world.World;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
+import net.minecraft.item.Item.Properties;
+
 public class ShellItem extends Item {
 
     public ShellItem(final Properties properties) {

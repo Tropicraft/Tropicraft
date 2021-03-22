@@ -1,19 +1,18 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
@@ -24,12 +23,12 @@ public class EIHFeature extends Feature<NoFeatureConfig> {
     private static final Supplier<BlockState> EIH_STATE = () -> TropicraftBlocks.CHUNK.get().getDefaultState();
     private static final BlockState LAVA_STATE = Blocks.LAVA.getDefaultState();
 
-    public EIHFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> p_i49878_1_) {
-        super(p_i49878_1_);
+    public EIHFeature(Codec<NoFeatureConfig> codec) {
+        super(codec);
     }
 
     @Override
-    public boolean place(final IWorld world, final ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         byte height = 5;
         int i = pos.getX();
         int j = pos.getY() + 1;
@@ -273,7 +272,7 @@ public class EIHFeature extends Feature<NoFeatureConfig> {
             case 8:
                 blockState = TropicraftBlocks.ZIRCON_BLOCK.get().getDefaultState();
                 break;
-            default:	// Should never get called, if so, redstone in tropics :o
+            default:    // Should never get called, if so, redstone in tropics :o
                 blockState = Blocks.REDSTONE_BLOCK.getDefaultState();
                 break;
         }

@@ -23,6 +23,8 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class CoffeeBushBlock extends CropsBlock {
 
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 6);

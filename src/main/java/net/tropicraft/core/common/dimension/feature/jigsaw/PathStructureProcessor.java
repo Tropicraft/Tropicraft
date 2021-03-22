@@ -1,14 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import java.util.List;
-import java.util.WeakHashMap;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
-
 import com.google.common.base.Preconditions;
-import com.mojang.datafixers.Dynamic;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.block.JigsawBlock;
 import net.minecraft.util.Direction;
@@ -16,19 +8,20 @@ import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.Template.BlockInfo;
 import net.tropicraft.Constants;
 
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.WeakHashMap;
+import java.util.stream.Collectors;
+
 public abstract class PathStructureProcessor extends CheatyStructureProcessor {
 
     protected PathStructureProcessor() {}
-
-    protected PathStructureProcessor(Dynamic<?> dynamic) {
-        this();
-    }
 
     // Represents a section of the structure which is a path going in a certain direction
     private static class PathVector {
@@ -38,10 +31,10 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
         PathVector(BlockPos start, Direction dir) {
             Preconditions.checkArgument(dir.getAxis().isHorizontal(), "Invalid direction for path vector at " + start);
             this.dir = dir;
-            Vec3d ortho = new Vec3d(dir.rotateY().getDirectionVec());
+            Vector3d ortho = Vector3d.copy(dir.rotateY().getDirectionVec());
             bb = toMutable(new AxisAlignedBB(start)
                     // Expand 16 blocks in front of the vector
-                    .expand(new Vec3d(dir.getDirectionVec()).scale(16))
+                    .expand(Vector3d.copy(dir.getDirectionVec()).scale(16))
                     // Add 1 block to each side
                     .expand(ortho).expand(ortho.inverse())
                     // Cover a good amount of vertical space
@@ -72,7 +65,7 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
                 template.func_215381_a(seedPos, settings, Blocks.JIGSAW).stream() // Find all jigsaw blocks
                         .filter(b -> b.nbt.getString("attachement_type").equals(Constants.MODID + ":path_center")) // Filter for vector markers
-                        .map(bi -> new PathVector(bi.pos.subtract(seedPos), bi.state.get(JigsawBlock.FACING))) // Convert pos to structure local, extract facing
+                        .map(bi -> new PathVector(bi.pos.subtract(seedPos), JigsawBlock.getConnectingDirection(bi.state))) // Convert pos to structure local, extract facing
                         .collect(Collectors.toList()))
                 .stream()
                 .filter(pv -> pv.contains(current.pos, settings)) // Find vectors that contain this block
