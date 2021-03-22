@@ -1,13 +1,11 @@
 package net.tropicraft.core.client.entity.render;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
+
+import javax.annotation.Nullable;
 
 public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
@@ -25,7 +23,7 @@ public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 //                UmbrellaEntity entityUmbrella = (UmbrellaEntity) entityIn;
 //
 //                // Calculate which direction the umbrella is "shaking"
-//                Vec3d offsetVec = Vec3d.ZERO;
+//                Vector3d offsetVec = Vector3d.ZERO;
 //                float offset = getRockingAngle(entityUmbrella, partialTicks) / 10f;
 //                if (offset != 0.0F) {
 //                    offsetVec = offsetVec.add(offset, 0, 0).rotateYaw((float) Math.toRadians(90 - yaw));

@@ -4,11 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.IItemProvider;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
@@ -388,7 +390,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         // MISC
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
-        add("attribute.name." + LivingEntity.SWIM_SPEED.getName(), "Swim Speed");
+        add("attribute.name." + ForgeMod.SWIM_SPEED.get().getRegistryName().getPath(), "Swim Speed");
 
         // Koa
         add("entity.tropicraft.koa.female.hunter.name", "Koa Hunter");
@@ -427,20 +429,22 @@ public class TropicraftLangProvider extends LanguageProvider {
     
     private void addTooltip(Supplier<? extends IItemProvider> item, List<String> tooltip) {
         for (int i = 0; i < tooltip.size(); i++) {
-            add(item.get().asItem().getTranslationKey() + ".desc." + i, tooltip.get(i));
+            String key = item.get().asItem().getTranslationKey() + ".desc." + i;
+            add(key, tooltip.get(i));
         }
     }
     
     private void add(ItemGroup group, String name) {
-        add(group.getTranslationKey(), name);
+        add("itemGroup." + group.getPath(), name);
     }
     
     private void addEntityType(Supplier<? extends EntityType<?>> entity) {
         addEntityType(entity, getAutomaticName(entity));
     }
     
-    private void addBiome(Supplier<? extends Biome> biome) {
-        addBiome(biome, getAutomaticName(biome));
+    private void addBiome(RegistryKey<Biome> biome) {
+        ResourceLocation id = biome.getLocation();
+        add("biome." + id.getNamespace() + "." + id.getPath(), Util.toEnglishName(id.getPath()));
     }
     
     // Automatic en_ud generation

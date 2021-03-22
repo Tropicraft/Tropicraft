@@ -95,7 +95,7 @@ public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
         final float subStraight = 1.570795F;
 
         switch (actionState) {
-            case LOST_MASK: 											//Mask off
+            case LOST_MASK:                                             //Mask off
                 headAngle = -0.4F;
                 rightArm.rotateAngleZ = -armRotater;
                 rightArmSub.rotateAngleZ = -5.1F;

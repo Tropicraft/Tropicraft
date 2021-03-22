@@ -17,6 +17,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAIGoneFishin extends Goal {
 
     enum FISHING_STATE {
@@ -90,7 +92,7 @@ public class EntityAIGoneFishin extends Goal {
         entity.lastTimeFished = 0;
         debugTask = false;
 
-        BlockPos blockpos = new BlockPos(this.entity);
+        BlockPos blockpos = this.entity.getPosition();
 
         if ((!this.entity.world.isDaytime() || this.entity.world.isRaining() && this.entity.world.getBiome(blockpos).getPrecipitation() == Biome.RainType.RAIN)) {
             return false;
@@ -235,7 +237,7 @@ public class EntityAIGoneFishin extends Goal {
                     }
                 }
 
-                if (entity.getLure() != null && (entity.getLure().onGround || entity.getLure().caughtEntity != null)) {
+                if (entity.getLure() != null && (entity.getLure().isOnGround() || entity.getLure().caughtEntity != null)) {
                     resetTask();
                 }
 
@@ -287,9 +289,9 @@ public class EntityAIGoneFishin extends Goal {
                 }
 
             } else if (state == FISHING_STATE.RETURN_TO_BASE) {
-                //entity.func_213384_dI()
+                //entity.getRestrictCenter()
 
-                //debug(entity.func_213384_dI());
+                //debug(entity.getRestrictCenter());
                 if (Util.getDistance(entity, homePosition.getX(), homePosition.getY(), homePosition.getZ()) < 3D) {
                     debug("dropping off fish, reset");
                     fishCaught = 0;
@@ -308,7 +310,7 @@ public class EntityAIGoneFishin extends Goal {
                 }
             } else if (state == FISHING_STATE.WALKING_TO_LAND) {
 
-                if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.onGround) {
+                if (Util.getDistance(entity, posLastLandFound.getX(), posLastLandFound.getY(), posLastLandFound.getZ()) < 5D || entity.isOnGround()) {
                     posLastLandFound = new BlockPos(entity.getPosition());
                     entity.getNavigator().clearPath();
                     setState(FISHING_STATE.FISHING);

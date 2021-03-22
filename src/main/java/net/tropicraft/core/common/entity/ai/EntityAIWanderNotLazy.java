@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.entity.ai;
 
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
@@ -49,17 +49,16 @@ public class EntityAIWanderNotLazy extends Goal {
             }
         }
 
-        Vec3d vec3d = RandomPositionGenerator.findRandomTarget(this.entity, 10, 7);
-
-        if (vec3d == null)
+        Vector3d vec = RandomPositionGenerator.findRandomTarget(this.entity, 10, 7);
+        if (vec == null)
         {
             return false;
         }
         else
         {
-            this.xPosition = vec3d.x;
-            this.yPosition = vec3d.y;
-            this.zPosition = vec3d.z;
+            this.xPosition = vec.x;
+            this.yPosition = vec.y;
+            this.zPosition = vec.z;
             this.mustUpdate = false;
             return true;
         }

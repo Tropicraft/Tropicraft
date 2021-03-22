@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.item;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.Quaternion;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -14,15 +12,15 @@ import net.minecraft.item.ShootableItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.*;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 
 import java.util.function.Predicate;
+
+import net.minecraft.item.Item.Properties;
 
 public class BlowGunItem extends ShootableItem {
 
@@ -42,6 +40,11 @@ public class BlowGunItem extends ShootableItem {
             }
             return false;
         };
+    }
+
+    @Override
+    public int func_230305_d_() {
+        return 8;
     }
 
     @Override
@@ -81,9 +84,9 @@ public class BlowGunItem extends ShootableItem {
                 arrowEntity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
             }
 
-            Vec3d lookVec = shooter.getLookVec();
+            Vector3d lookVec = shooter.getLookVec();
             Quaternion quaternion = new Quaternion(new Vector3f(lookVec), 0, true);
-            Vec3d look = shooter.getLook(1.0F);
+            Vector3d look = shooter.getLook(1.0F);
             Vector3f look3f = new Vector3f(look);
             look3f.transform(quaternion);
             arrowEntity.shoot(look3f.getX(), look3f.getY(), look3f.getZ(), dmg, pitch);

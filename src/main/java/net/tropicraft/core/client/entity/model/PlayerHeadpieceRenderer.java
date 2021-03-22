@@ -2,10 +2,9 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.vector.Vector3f;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
 public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {

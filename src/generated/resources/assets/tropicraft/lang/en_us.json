@@ -1,6 +1,5 @@
 {
-  "attribute.name.forge.swimSpeed": "Swim Speed",
-  "attribute.name.scuba.tropicraft.scuba.visibility": "Underwater Fog Reduction",
+  "attribute.name.swim_speed": "Swim Speed",
   "biome.tropicraft.kelp_forest": "Kelp Forest",
   "biome.tropicraft.rainforest_hills": "Rainforest Hills",
   "biome.tropicraft.rainforest_island_mountains": "Rainforest Island Mountains",
@@ -418,6 +417,7 @@
   "scuba.tropicraft.depth": "Current Depth: %s",
   "scuba.tropicraft.dive_time": "Dive Time: %s",
   "scuba.tropicraft.max_depth": "Max Depth: %s",
+  "scuba.tropicraft.scuba.visibility": "Underwater Fog Reduction",
   "tropicraft.container.bambooChest": "Bamboo Chest",
   "tropicraft.container.bambooChestDouble": "Large Bamboo Chest"
 }

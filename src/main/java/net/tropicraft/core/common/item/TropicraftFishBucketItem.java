@@ -9,8 +9,11 @@ import net.minecraft.item.FishBucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.function.Supplier;
+
+import net.minecraft.item.Item.Properties;
 
 public class TropicraftFishBucketItem<T extends AbstractFishEntity> extends FishBucketItem {
     private final Supplier<? extends EntityType<T>> fishType;
@@ -20,14 +23,15 @@ public class TropicraftFishBucketItem<T extends AbstractFishEntity> extends Fish
         this.fishType = type;
     }
 
-    public void onLiquidPlaced(World p_203792_1_, ItemStack p_203792_2_, BlockPos p_203792_3_) {
-        if (!p_203792_1_.isRemote) {
-            this.placeFish(p_203792_1_, p_203792_2_, p_203792_3_);
+    @Override
+    public void onLiquidPlaced(World world, ItemStack stack, BlockPos pos) {
+        if (!world.isRemote) {
+            this.placeFish((ServerWorld) world, stack, pos);
         }
     }
 
-    private void placeFish(World p_205357_1_, ItemStack p_205357_2_, BlockPos p_205357_3_) {
-        Entity fishy = fishType.get().spawn(p_205357_1_, p_205357_2_, null, p_205357_3_, SpawnReason.BUCKET, true, false);
+    private void placeFish(ServerWorld world, ItemStack stack, BlockPos pos) {
+        Entity fishy = fishType.get().spawn(world, stack, null, pos, SpawnReason.BUCKET, true, false);
         if (fishy != null) {
             ((AbstractFishEntity) fishy).setFromBucket(true);
         }

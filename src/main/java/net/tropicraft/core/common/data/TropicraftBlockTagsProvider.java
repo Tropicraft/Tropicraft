@@ -1,79 +1,5 @@
 package net.tropicraft.core.common.data;
 
-import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_DOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_FENCE;
-import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_POTTED_TROPICS_PLANTS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_SLAB;
-import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_STAIRS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.BAMBOO_TRAPDOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_FENCE;
-import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_SLAB;
-import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_STAIRS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.CHUNK_WALL;
-import static net.tropicraft.core.common.block.TropicraftBlocks.CORAL_SAND;
-import static net.tropicraft.core.common.block.TropicraftBlocks.FOAMY_SAND;
-import static net.tropicraft.core.common.block.TropicraftBlocks.FRUIT_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.GRAPEFRUIT_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.GRAPEFRUIT_SAPLING;
-import static net.tropicraft.core.common.block.TropicraftBlocks.KAPOK_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.LARGE_BONGO_DRUM;
-import static net.tropicraft.core.common.block.TropicraftBlocks.LEMON_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.LEMON_SAPLING;
-import static net.tropicraft.core.common.block.TropicraftBlocks.LIME_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.LIME_SAPLING;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_DOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_FENCE;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_LOG;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_PLANKS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_SAPLING;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_SLAB;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_STAIRS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MAHOGANY_TRAPDOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MEDIUM_BONGO_DRUM;
-import static net.tropicraft.core.common.block.TropicraftBlocks.MINERAL_SAND;
-import static net.tropicraft.core.common.block.TropicraftBlocks.ORANGE_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.ORANGE_SAPLING;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_DOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_FENCE;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LEAVES;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_LOG;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_PLANKS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_SAPLING;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_SLAB;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_STAIRS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PALM_TRAPDOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.PURIFIED_SAND;
-import static net.tropicraft.core.common.block.TropicraftBlocks.SMALL_BONGO_DRUM;
-import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_DOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_FENCE;
-import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_SLAB;
-import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_STAIRS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.THATCH_TRAPDOOR;
-import static net.tropicraft.core.common.block.TropicraftBlocks.VANILLA_POTTED_TROPICS_PLANTS;
-import static net.tropicraft.core.common.block.TropicraftBlocks.VOLCANIC_SAND;
-import static net.tropicraft.core.common.block.TropicraftFlower.ACAI_VINE;
-import static net.tropicraft.core.common.block.TropicraftFlower.ANEMONE;
-import static net.tropicraft.core.common.block.TropicraftFlower.BROMELIAD;
-import static net.tropicraft.core.common.block.TropicraftFlower.CANNA;
-import static net.tropicraft.core.common.block.TropicraftFlower.COMMELINA_DIFFUSA;
-import static net.tropicraft.core.common.block.TropicraftFlower.CROCOSMIA;
-import static net.tropicraft.core.common.block.TropicraftFlower.CROTON;
-import static net.tropicraft.core.common.block.TropicraftFlower.DRACAENA;
-import static net.tropicraft.core.common.block.TropicraftFlower.FOLIAGE;
-import static net.tropicraft.core.common.block.TropicraftFlower.MAGIC_MUSHROOM;
-import static net.tropicraft.core.common.block.TropicraftFlower.ORANGE_ANTHURIUM;
-import static net.tropicraft.core.common.block.TropicraftFlower.ORCHID;
-import static net.tropicraft.core.common.block.TropicraftFlower.PATHOS;
-import static net.tropicraft.core.common.block.TropicraftFlower.RED_ANTHURIUM;
-import static net.tropicraft.core.common.block.TropicraftFlower.TROPICAL_FERN;
-
-import java.util.Arrays;
-import java.util.function.IntFunction;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-
 import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
@@ -83,6 +9,14 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
+
+import java.util.Arrays;
+import java.util.function.IntFunction;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static net.tropicraft.core.common.block.TropicraftBlocks.*;
+import static net.tropicraft.core.common.block.TropicraftFlower.*;
 
 public class TropicraftBlockTagsProvider extends BlockTagsProvider {
 

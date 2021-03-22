@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -96,8 +95,7 @@ public abstract class EchinodermEntity extends WaterMobEntity {
     }
 
     @Override
-    public void knockBack(Entity entity, float par2, double par3, double par5) {
-        // don't move when hit
+    public void applyKnockback(float strength, double ratioX, double ratioZ) {
     }
 
     @Override

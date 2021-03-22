@@ -1,28 +1,25 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import java.util.Random;
-import java.util.function.Function;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import com.mojang.datafixers.Dynamic;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SaplingBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.CoconutBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.Random;
 
 public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
 
-    public PalmTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> placer) {
-        super(placer);
+    public PalmTreeFeature(Codec<NoFeatureConfig> codec) {
+        super(codec);
     }
 
     protected SaplingBlock getSapling() {
@@ -38,17 +35,24 @@ public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
     }
 
     protected void placeLeaf(final IWorldGenerationReader world, int x, int y, int z) {
-    	BlockPos pos = new BlockPos(x, y, z);
-    	// From FoliagePlacer
-    	if (AbstractTreeFeature.isAirOrLeaves(world, pos) || AbstractTreeFeature.isTallPlants(world, pos) || AbstractTreeFeature.isWater(world, pos)) {
-    		setBlockState(world, new BlockPos(x, y, z), getLeaf());
-    	}
+        this.placeLeaf(world, new BlockPos(x, y, z));
+    }
+
+    protected void placeLeaf(final IWorldGenerationReader world, BlockPos pos) {
+        // From FoliagePlacer
+        if (TreeFeature.isReplaceableAt(world, pos)) {
+            setBlockState(world, pos, getLeaf());
+        }
     }
 
     protected void placeLog(final IWorldGenerationReader world, int x, int y, int z) {
-    	if (AbstractTreeFeature.canBeReplacedByLogs(world, new BlockPos(x, y, z))) {
-    		setBlockState(world, new BlockPos(x, y, z), getLog());
-    	}
+        this.placeLog(world, new BlockPos(x, y, z));
+    }
+
+    protected void placeLog(final IWorldGenerationReader world, BlockPos pos) {
+        if (TreeFeature.isLogsAt(world, pos)) {
+            setBlockState(world, pos, getLog());
+        }
     }
 
     private static final Direction[] DIRECTIONS = ArrayUtils.removeElement(Direction.values(), Direction.UP);
@@ -56,7 +60,7 @@ public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
         final BlockState coconut = TropicraftBlocks.COCONUT.get().getDefaultState();
         for (Direction d : DIRECTIONS) {
             BlockPos pos2 = pos.offset(d);
-            if (random.nextInt(chance) == 0 && AbstractTreeFeature.isAirOrLeaves(world, pos2)) {
+            if (random.nextInt(chance) == 0 && TreeFeature.isAirOrLeavesAt(world, pos2)) {
                 world.setBlockState(pos2, coconut.with(CoconutBlock.FACING, d.getOpposite()), Constants.BlockFlags.DEFAULT);
             }
         }

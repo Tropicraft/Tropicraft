@@ -1,6 +1,10 @@
 package net.tropicraft.core.common.entity.hostile;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,19 +50,19 @@ public class TropiSkellyEntity extends MonsterEntity {
         }
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23);
-        this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
-        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return MonsterEntity.func_234295_eP_()
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23)
+                .createMutableAttribute(Attributes.ARMOR, 2.0)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.5)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 35.0);
     }
 
     @Override
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld p_213386_1_, DifficultyInstance p_213386_2_, SpawnReason p_213386_3_, @Nullable ILivingEntityData p_213386_4_, @Nullable CompoundNBT p_213386_5_) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setHeldItem(Hand.MAIN_HAND, new ItemStack(TropicraftItems.BAMBOO_SPEAR.get()));
-        return super.onInitialSpawn(p_213386_1_, p_213386_2_, p_213386_3_, p_213386_4_, p_213386_5_);
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     private boolean isValidLightLevel() {

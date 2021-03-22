@@ -22,6 +22,8 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.item.Item.Properties;
+
 public class AshenMaskItem extends ArmorItem {
     private final AshenMasks maskType;
 
@@ -65,17 +67,17 @@ public class AshenMaskItem extends ArmorItem {
 
     private boolean canPlace(PlayerEntity player, Direction direction, ItemStack heldStack, BlockPos pos) {
         return player.canPlayerEdit(pos, direction, heldStack);
-	}
+    }
 
-	@OnlyIn(Dist.CLIENT)
-	@Nullable
-	@Override
-	public BipedModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlotType armorSlot, final BipedModel model) {
-		return armorSlot == EquipmentSlotType.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
-	}
+    @OnlyIn(Dist.CLIENT)
+    @Nullable
+    @Override
+    public BipedModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlotType armorSlot, final BipedModel model) {
+        return armorSlot == EquipmentSlotType.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
+    }
 
-	@Override
+    @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-    	return TropicraftRenderUtils.getTextureEntity("ashen/mask").toString();
+        return TropicraftRenderUtils.getTextureEntity("ashen/mask").toString();
     }
 }

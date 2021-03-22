@@ -1,7 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
@@ -24,52 +22,61 @@ import net.minecraft.world.World;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 public class BambooChestBlock extends ChestBlock {
-    private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>> field_220109_i = new TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>>() {
+    private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>> CHEST_COMBINER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>>() {
+        @Override
         public Optional<IInventory> func_225539_a_(ChestTileEntity p_225539_1_, ChestTileEntity p_225539_2_) {
             return Optional.of(new DoubleSidedInventory(p_225539_1_, p_225539_2_));
         }
 
+        @Override
         public Optional<IInventory> func_225538_a_(ChestTileEntity p_225538_1_) {
             return Optional.of(p_225538_1_);
         }
 
+        @Override
         public Optional<IInventory> func_225537_b_() {
             return Optional.empty();
         }
     };
-    public static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> field_220110_j = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
-        public Optional<INamedContainerProvider> func_225539_a_(final ChestTileEntity p_225539_1_, final ChestTileEntity p_225539_2_) {
-            final IInventory iinventory = new DoubleSidedInventory(p_225539_1_, p_225539_2_);
+    public static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> MENU_PROVIDER_COMBINER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
+        @Override
+        public Optional<INamedContainerProvider> func_225539_a_(final ChestTileEntity left, final ChestTileEntity right) {
+            final IInventory inventory = new DoubleSidedInventory(left, right);
             return Optional.of(new INamedContainerProvider() {
+                @Override
                 @Nullable
-                public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
-                    if (p_225539_1_.canOpen(p_createMenu_3_) && p_225539_2_.canOpen(p_createMenu_3_)) {
-                        p_225539_1_.fillWithLoot(p_createMenu_2_.player);
-                        p_225539_2_.fillWithLoot(p_createMenu_2_.player);
-                        return ChestContainer.createGeneric9X6(p_createMenu_1_, p_createMenu_2_, iinventory);
+                public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
+                    if (left.canOpen(player) && right.canOpen(player)) {
+                        left.fillWithLoot(playerInventory.player);
+                        right.fillWithLoot(playerInventory.player);
+                        return ChestContainer.createGeneric9X6(id, playerInventory, inventory);
                     } else {
                         return null;
                     }
                 }
 
+                @Override
                 public ITextComponent getDisplayName() {
-                    if (p_225539_1_.hasCustomName()) {
-                        return p_225539_1_.getDisplayName();
+                    if (left.hasCustomName()) {
+                        return left.getDisplayName();
                     } else {
-                        return (ITextComponent)(p_225539_2_.hasCustomName() ? p_225539_2_.getDisplayName() : new TranslationTextComponent(Constants.MODID + ".container.bambooChestDouble"));
+                        return right.hasCustomName() ? right.getDisplayName() : new TranslationTextComponent(Constants.MODID + ".container.bambooChestDouble");
                     }
                 }
             });
         }
 
-        public Optional<INamedContainerProvider> func_225538_a_(ChestTileEntity p_225538_1_) {
-            return Optional.of(p_225538_1_);
+        @Override
+        public Optional<INamedContainerProvider> func_225538_a_(ChestTileEntity chest) {
+            return Optional.of(chest);
         }
 
+        @Override
         public Optional<INamedContainerProvider> func_225537_b_() {
             return Optional.empty();
         }
@@ -87,9 +94,10 @@ public class BambooChestBlock extends ChestBlock {
         return new BambooChestTileEntity();
     }
 
+    @Override
     @Nullable
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-        return combine(state, worldIn, pos, false).apply(field_220110_j).orElse(null);
+        return combine(state, worldIn, pos, false).apply(MENU_PROVIDER_COMBINER).orElse(null);
     }
 
     /**
@@ -97,6 +105,7 @@ public class BambooChestBlock extends ChestBlock {
      * 
      * @deprecated call via {@link BlockState#getPlayerRelativeBlockHardness(PlayerEntity, IBlockReader, BlockPos)} whenever possible. Implementing/overriding is fine.
      */
+    @Override
     @Deprecated
     public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
         final BambooChestTileEntity tileEntity = (BambooChestTileEntity) world.getTileEntity(pos);
@@ -111,8 +120,8 @@ public class BambooChestBlock extends ChestBlock {
     // MethodHandle uc = null, lc = null;
     // try {
     // MethodHandles.Lookup lookup = MethodHandles.lookup();
-    // uc = lookup.unreflectGetter(ObfuscationReflectionHelper.findField(DoubleSidedInventory.class, "field_70478_c"));
-    // lc = lookup.unreflectGetter(ObfuscationReflectionHelper.findField(DoubleSidedInventory.class, "field_70477_b"));
+    // uc = lookup.unreflectGetter(ObfuscationReflectionHelper.findField(DoubleSidedInventory.class, "container2"));
+    // lc = lookup.unreflectGetter(ObfuscationReflectionHelper.findField(DoubleSidedInventory.class, "container1"));
     // } catch (IllegalAccessException e) {
     // e.printStackTrace();
     // }

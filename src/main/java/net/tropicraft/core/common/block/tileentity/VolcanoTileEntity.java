@@ -9,11 +9,10 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.chunk.VolcanoGenerator;
@@ -159,11 +158,11 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 
 	public void throwLavaFromCaldera(double force) {
 		// Create vector at center facing in the +x direction
-		Vec3d pos = new Vec3d(((getWorld().rand.nextDouble() / 2) + 0.3) * radius, lavaLevel + 2, 0);
+		Vector3d pos = new Vector3d(((getWorld().rand.nextDouble() / 2) + 0.3) * radius, lavaLevel + 2, 0);
 		// Get a random angle from 0 to 2PI (radians)
 		float angle = getWorld().rand.nextFloat() * (float) Math.PI * 2;
 		// Rotate the center vector to this angle, and offset it to the volcano's position
-		pos = pos.rotateYaw(angle).add(new Vec3d(getPos()));
+		pos = pos.rotateYaw(angle).add(Vector3d.copyCentered(getPos()));
 		// Compute x/y components of angle
 		double motX = force * Math.cos(angle);
 		double motZ = force * Math.sin(-angle);
@@ -317,8 +316,8 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	@Override
-	public void read(CompoundNBT nbt) {
-		super.read(nbt);
+	public void read(BlockState blockState, CompoundNBT nbt) {
+		super.read(blockState, nbt);
 		state = VolcanoState.valueOf(nbt.getString("state"));
 		ticksUntilDormant = nbt.getInt("ticksUntilDormant");
 		ticksUntilSmoking = nbt.getInt("ticksUntilSmoking");
@@ -346,7 +345,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		read(pkt.getNbtCompound());
+		read(getBlockState(), pkt.getNbtCompound());
 	}
 
 	@Override

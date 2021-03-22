@@ -1,0 +1,24 @@
+{
+  "name": "tropicraft:home_tree/dummy",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "tropicraft:home_tree/dummy",
+        "processors": "tropicraft:home_tree/base",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "tropicraft:home_tree/outer_dummy",
+        "processors": "tropicraft:home_tree/base",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

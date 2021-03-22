@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "tropicraft:block/bamboo_bundle",
+      "model": "tropicraft:block/bamboo_bundle_horizontal",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "tropicraft:block/bamboo_bundle"
     },
     "axis=z": {
-      "model": "tropicraft:block/bamboo_bundle",
+      "model": "tropicraft:block/bamboo_bundle_horizontal",
       "x": 90
     }
   }

@@ -1,0 +1,22 @@
+{
+  "name": "tropicraft:home_tree/branches/east",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 4,
+      "element": {
+        "feature": "tropicraft:home_tree/branch/east",
+        "projection": "rigid",
+        "element_type": "minecraft:feature_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "feature": "tropicraft:home_tree/branch/east_exact",
+        "projection": "rigid",
+        "element_type": "minecraft:feature_pool_element"
+      }
+    }
+  ]
+}

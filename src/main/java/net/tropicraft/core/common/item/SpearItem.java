@@ -1,50 +1,53 @@
 package net.tropicraft.core.common.item;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.TridentItem;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class SpearItem extends TridentItem {
 
-    private final IItemTier tier;
-    private final int attackDamage;
-    private final float attackSpeed;
+	private final IItemTier tier;
 
-    public SpearItem(IItemTier tier, int attackDamage, float attackSpeed, Properties properties) {
-        super(properties.defaultMaxDamage(tier.getMaxUses()));
-        this.tier = tier;
-        this.attackDamage = attackDamage;
-        this.attackSpeed = attackSpeed;
-    }
+	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
-    @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-        // TODO
-    }
-    
-    @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot);
-        if (slot == EquipmentSlotType.MAINHAND) {
-           multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION));
-           multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", attackSpeed, AttributeModifier.Operation.ADDITION));
-        }
+	public SpearItem(IItemTier tier, int attackDamage, float attackSpeed, Properties properties) {
+		super(properties.defaultMaxDamage(tier.getMaxUses()));
+		this.tier = tier;
 
-        return multimap;
-    }
+		this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+				.putAll(super.getAttributeModifiers(EquipmentSlotType.MAINHAND, new ItemStack(this)))
+				.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION))
+				.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", attackSpeed, AttributeModifier.Operation.ADDITION))
+				.build();
+	}
 
-    public int getItemEnchantability() {
-       return this.tier.getEnchantability();
-    }
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+		// TODO
+	}
 
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-       return this.tier.getRepairMaterial().test(repair) || super.getIsRepairable(toRepair, repair);
-    }
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
+		return slot == EquipmentSlotType.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
+	}
+
+	@Override
+	public int getItemEnchantability(ItemStack stack) {
+		return this.tier.getEnchantability();
+	}
+
+	@Override
+	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+		return this.tier.getRepairMaterial().test(repair) || super.getIsRepairable(toRepair, repair);
+	}
 }

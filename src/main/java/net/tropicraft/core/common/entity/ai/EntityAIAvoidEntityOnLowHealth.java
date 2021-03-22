@@ -7,11 +7,13 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
+
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
 public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     private final Predicate<Entity> canBeSeenSelector;
@@ -32,7 +34,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
 
     public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
     {
-        this(theEntityIn, classToAvoidIn, (p_203782_0_) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn, healthToAvoid);
+        this(theEntityIn, classToAvoidIn, (entity) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn, healthToAvoid);
     }
 
     public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, Predicate<Entity> avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
@@ -67,14 +69,14 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
             return false;
         } else {
             this.closestLivingEntity = list.get(0);
-            Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntity, 16, 7, new Vec3d(this.closestLivingEntity.getPosX(), this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
+            Vector3d Vector3d = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theEntity, 16, 7, new Vector3d(this.closestLivingEntity.getPosX(), this.closestLivingEntity.getPosY(), this.closestLivingEntity.getPosZ()));
 
-            if (vec3d == null) {
+            if (Vector3d == null) {
                 return false;
-            } else if (this.closestLivingEntity.getDistanceSq(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.getDistanceSq(this.theEntity)) {
+            } else if (this.closestLivingEntity.getDistanceSq(Vector3d.x, Vector3d.y, Vector3d.z) < this.closestLivingEntity.getDistanceSq(this.theEntity)) {
                 return false;
             } else {
-                this.entityPathEntity = this.entityPathNavigate.getPathToPos(vec3d.x, vec3d.y, vec3d.z, 0);
+                this.entityPathEntity = this.entityPathNavigate.pathfind(Vector3d.x, Vector3d.y, Vector3d.z, 0);
                 return this.entityPathEntity != null;
             }
         }
@@ -86,7 +88,7 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     @Override
     public boolean shouldContinueExecuting()
     {
-        return !this.entityPathNavigate.noPath();
+        return this.entityPathNavigate.hasPath();
     }
 
     /**

@@ -1,8 +1,8 @@
 {
-  "parent": "block/potted_allium",
+  "parent": "minecraft:block/potted_allium",
   "textures": {
     "flowerpot": "tropicraft:block/bamboo_flower_pot",
-    "dirt": "block/dirt",
+    "dirt": "minecraft:block/dirt",
     "particle": "tropicraft:block/bamboo_side"
   }
 }

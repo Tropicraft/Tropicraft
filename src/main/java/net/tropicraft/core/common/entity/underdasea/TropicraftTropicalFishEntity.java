@@ -2,8 +2,9 @@ package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,14 +14,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -66,10 +63,9 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
         super(type, world);
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return AbstractGroupFishEntity.func_234176_m_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 5.0);
     }
 
     @Override
@@ -80,7 +76,7 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
 
     @Override
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
         entityData = super.onInitialSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
         if (nbt != null && nbt.contains("BucketVariantTag", 3)) {
             setFishType(FishType.getById(nbt.getInt("BucketVariantTag")));
@@ -139,7 +135,7 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
     }
 
     @Override
-    public boolean processInteract(PlayerEntity player, Hand hand) {
+    protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (!stack.isEmpty() && stack.getItem() == TropicraftItems.FISHING_NET.get()) {
             final int firstHotbarSlot = 0;
@@ -166,11 +162,11 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
                 player.swingArm(hand);
                 world.playSound(player, getPosition(), SoundEvents.ENTITY_GENERIC_SWIM, SoundCategory.PLAYERS, 0.25f, 1f + (rand.nextFloat() * 0.4f));
                 remove();
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return super.processInteract(player, hand);
+        return super.getEntityInteractionResult(player, hand);
     }
 
     @Override

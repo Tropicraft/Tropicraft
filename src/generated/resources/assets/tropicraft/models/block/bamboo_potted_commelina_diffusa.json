@@ -1,8 +1,8 @@
 {
-  "parent": "block/flower_pot_cross",
+  "parent": "minecraft:block/flower_pot_cross",
   "textures": {
     "flowerpot": "tropicraft:block/bamboo_flower_pot",
-    "dirt": "block/dirt",
+    "dirt": "minecraft:block/dirt",
     "particle": "tropicraft:block/bamboo_side",
     "plant": "tropicraft:block/flower/commelina_diffusa"
   }

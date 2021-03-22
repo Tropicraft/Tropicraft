@@ -6,6 +6,8 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.tropicraft.Constants;
 
+import net.minecraft.item.Item.Properties;
+
 public class ScaleArmorItem extends TropicraftArmorItem {
     public ScaleArmorItem(EquipmentSlotType slotType, Properties properties) {
         super(ArmorMaterials.SCALE_ARMOR, slotType, properties);

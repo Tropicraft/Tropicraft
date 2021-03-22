@@ -1,13 +1,10 @@
 package net.tropicraft.core.common.entity.passive;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -25,7 +22,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -33,12 +30,9 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
 public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 
@@ -52,6 +46,14 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 		this.setPathPriority(PathNodeType.COCOA, -1.0F);
 		this.setPathPriority(PathNodeType.FENCE, -1.0F);
+	}
+
+	public static AttributeModifierMap.MutableAttribute createAttributes() {
+		return AnimalEntity.func_233666_p_()
+				.createMutableAttribute(Attributes.MAX_HEALTH, 3.0)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.6)
+				.createMutableAttribute(Attributes.FLYING_SPEED, 0.9)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 12.0);
 	}
 
 	@Override
@@ -89,16 +91,6 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 		goalSelector.addGoal(1, new SelectFlockLeader(this));
 		goalSelector.addGoal(2, new SetTravelDestination());
 		goalSelector.addGoal(2, new FollowLeaderGoal());
-	}
-
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttributes().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
-		this.getAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.9F);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6F);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(12D);
 	}
 
 	@Override
@@ -153,7 +145,7 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 
 	@Nullable
 	@Override
-	public AgeableEntity createChild(AgeableEntity ageable) {
+	public AgeableEntity createChild(ServerWorld world, AgeableEntity partner) {
 		return null;
 	}
 
@@ -195,11 +187,11 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 			}
 		}
 
-		Vec3d vec3d = getLook(0.0F);
+		Vector3d Vector3d = getLook(0.0F);
 
-		Vec3d vec3d2 = RandomPositionGenerator.findAirTarget(FailgullEntity.this, 40, 3, vec3d, ((float)Math.PI / 2F), 2, 1);
-		final Vec3d groundTarget = RandomPositionGenerator.findGroundTarget(FailgullEntity.this, 40, 4, -2, vec3d, (double) ((float) Math.PI / 2F));
-		return vec3d2 != null ? new BlockPos(vec3d2) : groundTarget != null ? new BlockPos(groundTarget) : null;
+		Vector3d Vector3d2 = RandomPositionGenerator.findAirTarget(FailgullEntity.this, 40, 3, Vector3d, ((float)Math.PI / 2F), 2, 1);
+		final Vector3d groundTarget = RandomPositionGenerator.findGroundTarget(FailgullEntity.this, 40, 4, -2, Vector3d, (double) ((float) Math.PI / 2F));
+		return Vector3d2 != null ? new BlockPos(Vector3d2) : groundTarget != null ? new BlockPos(groundTarget) : null;
 	}
 
 	@Override
@@ -223,7 +215,7 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 
 		@Override
 		public boolean shouldContinueExecuting() {
-			return canFollow() && getNavigator().func_226337_n_();
+			return canFollow() && getNavigator().hasPath();
 		}
 
 		@Override
@@ -234,9 +226,9 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 				navigator.setPath(navigator.getPathToPos(flockLeader.getPosition(), 1), 1.0D);
 				return;
 			}
-			BlockPos vec3d = getRandomLocation();
-			if (vec3d != null) {
-				navigator.setPath(navigator.getPathToPos(vec3d, 1), 1.0D);
+			BlockPos Vector3d = getRandomLocation();
+			if (Vector3d != null) {
+				navigator.setPath(navigator.getPathToPos(Vector3d, 1), 1.0D);
 			}
 
 		}
@@ -258,15 +250,15 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 
 		@Override
 		public boolean shouldContinueExecuting() {
-			return shouldLead() && getNavigator().func_226337_n_();
+			return shouldLead() && getNavigator().hasPath();
 		}
 
 		@Override
 		public void startExecuting() {
-			BlockPos vec3d = getRandomLocation();
-			if (vec3d != null) {
+			BlockPos Vector3d = getRandomLocation();
+			if (Vector3d != null) {
 				final PathNavigator navigator = getNavigator();
-				navigator.setPath(navigator.getPathToPos(vec3d, 1), 1.0D);
+				navigator.setPath(navigator.getPathToPos(Vector3d, 1), 1.0D);
 			}
 		}
 	}
@@ -285,7 +277,7 @@ public class FailgullEntity extends AnimalEntity implements IFlyingAnimal {
 			}
 
 			final Entity flockLeader = mob.getFlockLeader();
-			return flockLeader == null || !flockLeader.isAlive() || flockLeader.removed;
+			return flockLeader == null || !flockLeader.isAlive();
 		}
 
 		@Override

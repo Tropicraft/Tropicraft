@@ -5,13 +5,15 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
+
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
 public class EntityAIChillAtFire extends Goal
 {
@@ -44,15 +46,11 @@ public class EntityAIChillAtFire extends Goal
             return false;
         }
 
-        BlockPos blockpos = new BlockPos(this.entityObj);
+        BlockPos blockpos = this.entityObj.getPosition();
 
         if (!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN) {
             if (!isTooClose()) {
-                if (entityObj.world.rand.nextInt(20) == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return entityObj.world.rand.nextInt(20) == 0;
             } else {
                 return false;
             }
@@ -74,22 +72,14 @@ public class EntityAIChillAtFire extends Goal
             return false;
         }
 
-        BlockPos blockpos = new BlockPos(this.entityObj);
-        //return !this.entityObj.getNavigator().noPath();
+        BlockPos blockpos = this.entityObj.getPosition();
+        //return !this.entityObj.getNavigation().noPath();
         if (!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN)
         {
-            if (!isTooClose()) {
-                return true;
-            } else {
-                return false;
-            }
+            return !isTooClose();
 
         } else {
-            if (entityObj.world.rand.nextInt(60) == 0) {
-                return false;
-            } else {
-                return true;
-            }
+            return entityObj.world.rand.nextInt(60) != 0;
         }
     }
 
@@ -113,8 +103,8 @@ public class EntityAIChillAtFire extends Goal
         }
 
         //prevent walking into the fire
-        double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        if (dist < 4D && entityObj.onGround) {
+        double dist = entityObj.getPositionVec().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        if (dist < 4D && entityObj.isOnGround()) {
             entityObj.setSitting(true);
             entityObj.getNavigator().clearPath();
             isClose = true;
@@ -156,11 +146,11 @@ public class EntityAIChillAtFire extends Goal
 
                 boolean success = false;
 
-                if (this.entityObj.getDistanceSq(new Vec3d(blockposGoal)) > 256.0D) {
-                    Vec3d vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(this.entityObj, 14, 3, new Vec3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
+                if (this.entityObj.getDistanceSq(Vector3d.copyCentered(blockposGoal)) > 256.0D) {
+                    Vector3d Vector3d = RandomPositionGenerator.func_234133_a_(this.entityObj, 14, 3, new Vector3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
-                    if (vec3d != null) {
-                        success = this.entityObj.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+                    if (Vector3d != null) {
+                        success = this.entityObj.getNavigator().tryMoveToXYZ(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
                     } else {
                         success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
                     }
@@ -231,11 +221,8 @@ public class EntityAIChillAtFire extends Goal
         }
 
         //prevent walking into the fire
-        double dist = entityObj.getPositionVector().distanceTo(new Vec3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
-        if (dist <= 3D) {
-            return true;
-        }
-        return false;
+        double dist = entityObj.getPositionVec().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        return dist <= 3D;
     }
 }
 

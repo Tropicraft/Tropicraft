@@ -1,18 +1,13 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
@@ -23,14 +18,14 @@ public class TualungFeature extends RainforestTreeFeature {
     private int baseHeight;
     private int maxHeight;
 
-    public TualungFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func, int maxHeight, int baseHeight) {
-        super(func);
+    public TualungFeature(Codec<NoFeatureConfig> codec, int maxHeight, int baseHeight) {
+        super(codec);
         this.baseHeight = baseHeight;
         this.maxHeight = maxHeight;
     }
 
     @Override
-    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         pos = pos.toImmutable();
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
         int height = rand.nextInt(maxHeight - baseHeight) + baseHeight + j;
@@ -48,7 +43,7 @@ public class TualungFeature extends RainforestTreeFeature {
             return false;
         }
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos.down())) {
+        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
             return false;
         }
 

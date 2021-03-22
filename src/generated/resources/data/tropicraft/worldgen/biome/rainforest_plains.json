@@ -1,0 +1,149 @@
+{
+  "effects": {
+    "sky_color": 7907327,
+    "fog_color": 12638463,
+    "water_color": 5172447,
+    "water_fog_color": 270131
+  },
+  "surface_builder": "minecraft:grass",
+  "carvers": {
+    "air": [
+      "tropicraft:cave",
+      "tropicraft:canyon"
+    ]
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_coal",
+      "minecraft:ore_iron",
+      "minecraft:ore_gold",
+      "minecraft:ore_redstone",
+      "minecraft:ore_diamond",
+      "minecraft:ore_lapis",
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite",
+      "minecraft:ore_diorite",
+      "minecraft:ore_andesite",
+      "tropicraft:azurite",
+      "tropicraft:eudialyte",
+      "tropicraft:zircon"
+    ],
+    [],
+    [
+      "tropicraft:rainforest_up_tree",
+      "tropicraft:rainforest_small_tualung",
+      "tropicraft:rainforest_large_tualung",
+      "tropicraft:rainforest_tall_tree",
+      "tropicraft:rainforest_flowers",
+      "tropicraft:coffee_bush",
+      "tropicraft:undergrowth",
+      "minecraft:patch_grass_jungle",
+      "minecraft:patch_melon",
+      "tropicraft:rainforest_vines"
+    ]
+  ],
+  "starts": [
+    "minecraft:mineshaft",
+    "minecraft:stronghold",
+    "tropicraft:home_tree",
+    "tropicraft:koa_village",
+    "tropicraft:home_tree"
+  ],
+  "spawners": {
+    "monster": [
+      {
+        "type": "minecraft:parrot",
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "tropicraft:v_monkey",
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tropicraft:iguana",
+        "weight": 15,
+        "minCount": 4,
+        "maxCount": 4
+      },
+      {
+        "type": "tropicraft:tropicreeper",
+        "weight": 4,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "tropicraft:eih",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tropicraft:tropiskelly",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "tropicraft:tropi_spider",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 2
+      },
+      {
+        "type": "tropicraft:ashen",
+        "weight": 6,
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "creature": [
+      {
+        "type": "minecraft:ocelot",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "minecraft:parrot",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "tropicraft:tree_frog",
+        "weight": 25,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "tropicraft:tropi_spider",
+        "weight": 30,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "player_spawn_friendly": false,
+  "precipitation": "rain",
+  "temperature": 1.5,
+  "downfall": 2.0,
+  "category": "jungle",
+  "depth": 0.25,
+  "scale": 0.1
+}

@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.item.scuba;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -14,14 +15,11 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
@@ -33,6 +31,8 @@ import net.tropicraft.core.client.data.TropicraftLangKeys;
 
 import java.util.UUID;
 
+import net.minecraft.item.Item.Properties;
+
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
 
@@ -40,11 +40,18 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     
     // This is never registered to any entities, so it's not used in any logic
     // Just here for the nice tooltip
-    private static final Attribute UNDERWATER_VISIBILITY = new RangedAttribute(null, TropicraftLangKeys.SCUBA_VISIBILITY_STAT.getKey(), 0, -1, 1);
+    private static final Attribute UNDERWATER_VISIBILITY = new RangedAttribute(TropicraftLangKeys.SCUBA_VISIBILITY_STAT.getKey(), 0, -1, 1);
     private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(UUID.fromString("b09a907f-8264-455b-af81-997c06aa2268"), Constants.MODID + ".underwater.visibility", 0.25, Operation.MULTIPLY_BASE);
+
+    private final Multimap<Attribute, AttributeModifier> boostedModifiers;
 
     public ScubaGogglesItem(ScubaType type, Properties builder) {
         super(type, EquipmentSlotType.HEAD, builder);
+
+        this.boostedModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+                .putAll(super.getAttributeModifiers(EquipmentSlotType.HEAD, new ItemStack(this)))
+                .put(UNDERWATER_VISIBILITY, VISIBILITY_BOOST)
+                .build();
     }
     
     // Taken from ForgeIngameGui#renderPumpkinOverlay
@@ -78,18 +85,14 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     @OnlyIn(Dist.CLIENT)
     public static void renderWaterFog(FogDensity event) {
         ActiveRenderInfo info = event.getInfo();
-        IFluidState ifluidstate = info.getFluidState();
-        if (ifluidstate.isTagged(FluidTags.WATER) && info.getRenderViewEntity() instanceof ClientPlayerEntity) {
-            ClientPlayerEntity clientplayerentity = (ClientPlayerEntity) info.getRenderViewEntity();
-            if (clientplayerentity.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof ScubaGogglesItem) {
+        FluidState fluid = info.getFluidState();
+        if (fluid.isTagged(FluidTags.WATER) && info.getRenderViewEntity() instanceof ClientPlayerEntity) {
+            ClientPlayerEntity player = (ClientPlayerEntity) info.getRenderViewEntity();
+            if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof ScubaGogglesItem) {
                 // Taken from FogRenderer#setupFog in the case where the player is in fluid
                 RenderSystem.fogMode(GlStateManager.FogMode.EXP2);
-                float f = 0.05F - clientplayerentity.getWaterBrightness() * clientplayerentity.getWaterBrightness() * 0.03F;
-                Biome biome = clientplayerentity.world.getBiome(new BlockPos(clientplayerentity));
-                if (biome == Biomes.SWAMP || biome == Biomes.SWAMP_HILLS) {
-                    f += 0.005F;
-                }
-                
+                float f = 0.05F - player.getWaterBrightness() * player.getWaterBrightness() * 0.03F;
+
                 // Reduce fog slightly
                 f *= 0.75F;
     
@@ -98,13 +101,13 @@ public class ScubaGogglesItem extends ScubaArmorItem {
             }
         }
     }
-    
+
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        Multimap<String, AttributeModifier> ret = super.getAttributeModifiers(slot, stack);
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.HEAD) {
-            ret.put(UNDERWATER_VISIBILITY.getName(), VISIBILITY_BOOST);
+            return boostedModifiers;
+        } else {
+            return super.getAttributeModifiers(slot, stack);
         }
-        return ret;
     }
 }

@@ -3,10 +3,9 @@ package net.tropicraft.core.client.entity.model;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.vector.Vector3f;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 
 public class BeachFloatModel extends SegmentedModel<BeachFloatEntity> {

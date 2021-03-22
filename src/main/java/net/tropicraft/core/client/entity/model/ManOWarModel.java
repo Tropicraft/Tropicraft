@@ -88,7 +88,7 @@ public class ManOWarModel extends SegmentedModel<ManOWarEntity> {
 
     @Override
     public void setRotationAngles(ManOWarEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entity.onGround) {
+        if (entity.isOnGround()) {
             Tent3.rotateAngleZ = 0F;
             Tent3.rotateAngleX = 0F;
             Tent1.rotateAngleZ = 0F;

@@ -1,6 +1,5 @@
 {
-  "attribute.name.forge.swimSpeed": "p\u01DD\u01DDdS \u026F\u0131\u028DS",
-  "attribute.name.scuba.tropicraft.scuba.visibility": "uo\u0131\u0287\u0254np\u01DD\u1D1A bo\u2132 \u0279\u01DD\u0287\u0250\u028D\u0279\u01DDpu\u2229",
+  "attribute.name.swim_speed": "p\u01DD\u01DDdS \u026F\u0131\u028DS",
   "biome.tropicraft.kelp_forest": "\u0287s\u01DD\u0279o\u2132 d\u05DF\u01DD\u029E",
   "biome.tropicraft.rainforest_hills": "s\u05DF\u05DF\u0131H \u0287s\u01DD\u0279o\u025Fu\u0131\u0250\u1D1A",
   "biome.tropicraft.rainforest_island_mountains": "su\u0131\u0250\u0287unoW pu\u0250\u05DFsI \u0287s\u01DD\u0279o\u025Fu\u0131\u0250\u1D1A",
@@ -418,6 +417,7 @@
   "scuba.tropicraft.depth": "%s :\u0265\u0287d\u01DD\u15E1 \u0287u\u01DD\u0279\u0279n\u0186",
   "scuba.tropicraft.dive_time": "%s :\u01DD\u026F\u0131\u27D8 \u01DD\u028C\u0131\u15E1",
   "scuba.tropicraft.max_depth": "%s :\u0265\u0287d\u01DD\u15E1 x\u0250W",
+  "scuba.tropicraft.scuba.visibility": "uo\u0131\u0287\u0254np\u01DD\u1D1A bo\u2132 \u0279\u01DD\u0287\u0250\u028D\u0279\u01DDpu\u2229",
   "tropicraft.container.bambooChest": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA",
   "tropicraft.container.bambooChestDouble": "\u0287s\u01DD\u0265\u0186 ooq\u026F\u0250\u15FA \u01DDb\u0279\u0250\uA780"
 }

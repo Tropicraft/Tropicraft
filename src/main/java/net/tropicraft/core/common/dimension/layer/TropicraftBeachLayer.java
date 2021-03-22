@@ -3,20 +3,21 @@ package net.tropicraft.core.common.dimension.layer;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IBishopTransformer;
 
-import static net.tropicraft.core.common.dimension.layer.TropicraftLayerUtil.isOcean;
-import static net.tropicraft.core.common.dimension.layer.TropicraftLayerUtil.isRiver;
+public final class TropicraftBeachLayer implements IBishopTransformer {
+    private final TropicraftBiomeIds biomeIds;
 
-public enum TropicraftBeachLayer implements IBishopTransformer {
-    INSTANCE;
+    public TropicraftBeachLayer(TropicraftBiomeIds biomeIds) {
+        this.biomeIds = biomeIds;
+    }
 
     @Override
     public int apply(INoiseRandom iNoiseRandom, int ne, int se, int sw, int nw, int center) {
-        if (isOcean(center) && (!isOcean(ne) || !isOcean(se) || !isOcean(sw) || !isOcean(nw))) {
-            return TropicraftLayerUtil.BEACH_ID.getAsInt();
+        if (biomeIds.isOcean(center) && (!biomeIds.isOcean(ne) || !biomeIds.isOcean(se) || !biomeIds.isOcean(sw) || !biomeIds.isOcean(nw))) {
+            return biomeIds.beach;
         }
 
-        if (isRiver(center) && (!isRiver(ne) || !isRiver(se) || !isRiver(sw) || !isRiver(nw))) {
-            return TropicraftLayerUtil.BEACH_ID.getAsInt();
+        if (biomeIds.isRiver(center) && (!biomeIds.isRiver(ne) || !biomeIds.isRiver(se) || !biomeIds.isRiver(sw) || !biomeIds.isRiver(nw))) {
+            return biomeIds.beach;
         }
 
         return center;

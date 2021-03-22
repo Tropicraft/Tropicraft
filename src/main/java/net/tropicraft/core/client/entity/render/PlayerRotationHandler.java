@@ -1,13 +1,12 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderNameplateEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -77,7 +76,7 @@ public class PlayerRotationHandler {
             stack.rotate(Vector3f.YP.rotationDegrees(yaw));
             stack.translate(0, -turtle.getMountedYOffset() + p.getYOffset(), 0);
 
-            Vec3d passengerOffset = (new Vec3d(-0.25f, 0.0D, 0.0D)).rotateYaw((float) (-Math.toRadians(yaw) - (Math.PI / 2)));
+            Vector3d passengerOffset = (new Vector3d(-0.25f, 0.0D, 0.0D)).rotateYaw((float) (-Math.toRadians(yaw) - (Math.PI / 2)));
             stack.translate(passengerOffset.getX(), 0, passengerOffset.getZ());
 
             // Lock in head

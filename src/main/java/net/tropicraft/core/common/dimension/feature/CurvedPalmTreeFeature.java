@@ -1,26 +1,19 @@
 package net.tropicraft.core.common.dimension.feature;
 
-import static net.minecraft.world.gen.feature.AbstractTreeFeature.isAir;
-import static net.minecraft.world.gen.feature.AbstractTreeFeature.isWater;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
-import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
-
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
-
-import com.mojang.datafixers.Dynamic;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorldWriter;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+
+import java.util.Random;
+
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
+import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
 public class CurvedPalmTreeFeature extends PalmTreeFeature {
     private static final int Z_PLUS = 0;
@@ -33,12 +26,12 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     private int originX, originZ;
     private int dir;
 
-    public CurvedPalmTreeFeature(Function<Dynamic<?>, ? extends NoFeatureConfig> func) {
-        super(func);
+    public CurvedPalmTreeFeature(Codec<NoFeatureConfig> codec) {
+        super(codec);
     }
 
     @Override
-    public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
         pos = pos.toImmutable();
 
         final int height = 9 + rand.nextInt(3);
@@ -51,7 +44,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos.down())) {
+        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
             return false;
         }
 
@@ -65,7 +58,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         for (int xx = 0; xx < 4; xx++) {
             for (int yy = 0; yy < height; yy++) {
                 final BlockPos posWithDir = getPosWithDir(xx, yy + y, 0);
-                if (!isAir(world, posWithDir)) {
+                if (!isAirAt(world, posWithDir)) {
                     return false;
                 }
             }
@@ -75,7 +68,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         for (int xx = 0; xx < 9; xx++) {
             for (int zz = 0; zz < 9; zz++) {
                 for (int yy = height - 3; yy < height + 4; yy++) {
-                    if (!isAir(world, getPosWithDir(xx + TOP_OFFSET, yy + y, zz))) {
+                    if (!isAirAt(world, getPosWithDir(xx + TOP_OFFSET, yy + y, zz))) {
                         return false;
                     }
                 }
@@ -137,7 +130,6 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         int iNeg = 0;
         int kPos = 0;
         int kNeg = 0;
-
         while (iPos < WATER_SEARCH_DIST &&  !isWater(world, new BlockPos(x + iPos, 127, z))) {
             iPos++;
         }
@@ -155,7 +147,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         }
 
         if (iPos < Math.abs(iNeg) && iPos < kPos && iPos < Math.abs(kNeg)) {
-            return X_PLUS;  	 // 1
+            return X_PLUS;       // 1
         } else if (Math.abs(iNeg) < iPos && Math.abs(iNeg) < kPos && Math.abs(iNeg) < Math.abs(kNeg)) {
             return X_MINUS;    // 2
         } else if (kPos < Math.abs(iNeg) && kPos < iPos && kPos < Math.abs(kNeg)) {
@@ -199,6 +191,10 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         } else {
             return -1;
         }
+    }
+
+    private static boolean isWater(IWorldGenerationReader world, BlockPos pos) {
+        return world.hasBlockState(pos, state -> state.matchesBlock(Blocks.WATER));
     }
 
     private int pickDirection(final IWorldGenerationReader world, final Random rand, int x, int z) {

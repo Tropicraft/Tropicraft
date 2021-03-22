@@ -5,13 +5,15 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
 import java.util.EnumSet;
+
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
 public class MonkeyStealDrinkGoal extends Goal {
     private VMonkeyEntity entity;
@@ -39,13 +41,13 @@ public class MonkeyStealDrinkGoal extends Goal {
         double d0 = leapTarget.getPosX() - entity.getPosX();
         double d1 = leapTarget.getPosZ() - entity.getPosZ();
         float f = MathHelper.sqrt(d0 * d0 + d1 * d1);
-        final Vec3d motion = entity.getMotion();
+        final Vector3d motion = entity.getMotion();
 
         if ((double)f >= 1.0E-4D) {
             entity.setMotion(motion.add(d0 / (double)f * 0.5D * 0.800000011920929D + motion.x * 0.20000000298023224D, 0, d1 / (double)f * 0.5D * 0.800000011920929D + motion.z * 0.20000000298023224D));
         }
 
-        entity.setMotion(new Vec3d(motion.x, 0.25, motion.z));
+        entity.setMotion(new Vector3d(motion.x, 0.25, motion.z));
     }
 
     @Override

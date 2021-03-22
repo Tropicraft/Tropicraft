@@ -17,6 +17,8 @@ import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class SifterBlock extends Block implements ITileEntityProvider {
 
     public SifterBlock(final Properties properties) {
@@ -28,7 +30,7 @@ public class SifterBlock extends Block implements ITileEntityProvider {
         final ItemStack stack = player.getHeldItem(hand);
 
         // TODO use item tag
-        final boolean isSandInHand = Block.getBlockFromItem(stack.getItem()).getMaterial(state) == Material.SAND;
+        final boolean isSandInHand = Block.getBlockFromItem(stack.getItem()).getDefaultState().getMaterial() == Material.SAND;
         if (!isSandInHand) {
             return ActionResultType.PASS;
         }

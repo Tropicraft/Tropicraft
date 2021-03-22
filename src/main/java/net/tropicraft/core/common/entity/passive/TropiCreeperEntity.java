@@ -4,16 +4,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,16 +18,11 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.ai.TropiCreeperSwellGoal;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -42,15 +30,20 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import java.util.Collection;
 
 public class TropiCreeperEntity extends CreatureEntity {
-    private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreeperEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreeperEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> STATE = EntityDataManager.createKey(TropiCreeperEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(TropiCreeperEntity.class, DataSerializers.BOOLEAN);
 
     private int prevTimeSinceIgnited, timeSinceIgnited;
     private int fuseTime = 30;
     private int explosionRadius = 3;
 
-    public TropiCreeperEntity(final EntityType<? extends CreatureEntity> entityType, final World p_i48575_2_) {
-        super(entityType, p_i48575_2_);
+    public TropiCreeperEntity(final EntityType<? extends CreatureEntity> entityType, final World worldIn) {
+        super(entityType, worldIn);
+    }
+
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return CreatureEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -72,12 +65,6 @@ public class TropiCreeperEntity extends CreatureEntity {
         super.registerData();
         this.dataManager.register(STATE, -1);
         this.dataManager.register(IGNITED, false);
-    }
-
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     }
 
     /**
@@ -180,21 +167,21 @@ public class TropiCreeperEntity extends CreatureEntity {
     }
 
     @Override
-    protected boolean processInteract(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
             this.world.playSound(player, getPosX(), getPosY(), getPosZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
             player.swingArm(hand);
             if (!this.world.isRemote) {
                 this.ignite();
-                itemstack.damageItem(1, player, (p_213625_1_) -> {
-                    p_213625_1_.sendBreakAnimation(hand);
+                itemstack.damageItem(1, player, p -> {
+                    p.sendBreakAnimation(hand);
                 });
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return super.processInteract(player, hand);
+        return super.getEntityInteractionResult(player, hand);
     }
 
     /**

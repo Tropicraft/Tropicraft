@@ -4,7 +4,8 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 
 public abstract class EggEntity extends LivingEntity {
 
-	private static final DataParameter<Integer> HATCH_DELAY = EntityDataManager.createKey(EggEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> HATCH_DELAY = EntityDataManager.createKey(EggEntity.class, DataSerializers.VARINT);
 
     public double rotationRand;
    
@@ -26,6 +27,10 @@ public abstract class EggEntity extends LivingEntity {
         ignoreFrustumCheck = true;
        
         rotationYaw = rand.nextInt(360);
+    }
+
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return LivingEntity.registerAttributes().createMutableAttribute(Attributes.MAX_HEALTH, 2.0);
     }
 
     @Override
@@ -43,17 +48,11 @@ public abstract class EggEntity extends LivingEntity {
     }
 
     @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(2.0D);
-    }
-
-    @Override
     protected void registerData() {
         super.registerData();
-		dataManager.register(HATCH_DELAY, 0);
-		setHatchDelay(-60 + rand.nextInt(120));
-	}
+        dataManager.register(HATCH_DELAY, 0);
+        setHatchDelay(-60 + rand.nextInt(120));
+    }
 
     public abstract boolean shouldEggRenderFlat();
     
@@ -66,7 +65,7 @@ public abstract class EggEntity extends LivingEntity {
     
     /**
      * The amount of time in ticks it will take for the egg to hatch
-     * 	eg. hatch on tick n
+     *     eg. hatch on tick n
      * @return a positive number
      */
     public abstract int getHatchTime();
@@ -108,14 +107,14 @@ public abstract class EggEntity extends LivingEntity {
             }
         } 
     }
-	
-	public void setHatchDelay(int i) {
-		this.getDataManager().set(HATCH_DELAY, -60 + rand.nextInt(120));
-	}
-	
-	public int getHatchDelay() {
-		return this.getDataManager().get(HATCH_DELAY);
-	}
+    
+    public void setHatchDelay(int i) {
+        this.getDataManager().set(HATCH_DELAY, -60 + rand.nextInt(120));
+    }
+    
+    public int getHatchDelay() {
+        return this.getDataManager().get(HATCH_DELAY);
+    }
 
     @Override
     public Iterable<ItemStack> getArmorInventoryList() {

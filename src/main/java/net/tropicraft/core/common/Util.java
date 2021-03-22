@@ -6,9 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -71,9 +69,9 @@ public class Util {
                 success = ent.getNavigator().tryMoveToXYZ(x, y, z, moveSpeedAmp);
                 //System.out.println("success? " + success + "- move to player: " + ent + " -> " + player);
             } else {
-		        /*int x = MathHelper.floor(player.posX);
-		        int y = MathHelper.floor(player.posY);
-		        int z = MathHelper.floor(player.posZ);*/
+                /*int x = MathHelper.floor(player.posX);
+                int y = MathHelper.floor(player.posY);
+                int z = MathHelper.floor(player.posZ);*/
 
                 double d = x+0.5F - ent.getPosX();
                 double d2 = z+0.5F - ent.getPosZ();
@@ -108,7 +106,7 @@ public class Util {
                     //int offset = -5;
 
                     while (tries < 30) {
-                        if (world.isAirBlock(pos) && world.isAirBlock(pos.up())/* || !block.isSideSolid(block.getDefaultState(), world, new BlockPos(gatherX, gatherY, gatherZ), EnumFacing.UP)*/) {
+                        if (world.isAirBlock(pos) && world.isAirBlock(pos.up())/* || !block.isSideSolid(block.defaultBlockState(), world, new BlockPos(gatherX, gatherY, gatherZ), EnumFacing.UP)*/) {
                             break;
                         }
                         gatherY += 1;//offset++;

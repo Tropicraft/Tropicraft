@@ -1,0 +1,16 @@
+{
+  "config": {
+    "feature": {
+      "config": {},
+      "type": "tropicraft:underground_sea_pickle"
+    },
+    "decorator": {
+      "config": {
+        "step": "liquid",
+        "probability": 0.05
+      },
+      "type": "minecraft:carving_mask"
+    }
+  },
+  "type": "minecraft:decorated"
+}

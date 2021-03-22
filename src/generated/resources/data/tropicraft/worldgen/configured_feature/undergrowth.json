@@ -1,0 +1,42 @@
+{
+  "config": {
+    "feature": {
+      "config": {},
+      "type": "tropicraft:undergrowth"
+    },
+    "decorator": {
+      "config": {
+        "outer": {
+          "config": {
+            "count": 100
+          },
+          "type": "minecraft:count"
+        },
+        "inner": {
+          "config": {
+            "outer": {
+              "config": {
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
+                  "config": {},
+                  "type": "minecraft:heightmap"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "inner": {
+              "config": {},
+              "type": "minecraft:spread_32_above"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    }
+  },
+  "type": "minecraft:decorated"
+}

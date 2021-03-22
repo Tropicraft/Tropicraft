@@ -1,9 +1,8 @@
 package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.util.math.vector.Vector3f;
 import net.tropicraft.core.client.entity.model.BeachFloatModel;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 

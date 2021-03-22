@@ -11,6 +11,8 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class MonkeySitAndDrinkGoal extends Goal {
     private static final int DEFAULT_WAIT = 40;
 
@@ -28,7 +30,7 @@ public class MonkeySitAndDrinkGoal extends Goal {
      */
     @Override
     public void resetTask() {
-        entity.setSitting(false);
+        entity.setQueuedToSit(false);
         entity.entityDropItem(new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
         entity.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
         waitCounter = DEFAULT_WAIT;
@@ -46,7 +48,7 @@ public class MonkeySitAndDrinkGoal extends Goal {
 
     @Override
     public void startExecuting() {
-        entity.setSitting(true);
+        entity.setQueuedToSit(true);
         entity.setAggroed(false);
         entity.setAttackTarget(null);
         entity.setFollowing(null);

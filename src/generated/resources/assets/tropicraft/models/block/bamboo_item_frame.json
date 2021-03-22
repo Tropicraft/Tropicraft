@@ -1,5 +1,5 @@
 {
-  "parent": "block/item_frame",
+  "parent": "minecraft:block/item_frame",
   "textures": {
     "particle": "tropicraft:block/bamboo_side",
     "wood": "tropicraft:block/bamboo_side"

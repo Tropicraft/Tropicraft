@@ -3,14 +3,9 @@ package net.tropicraft.core.common.entity.neutral;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,7 +15,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
@@ -60,13 +55,12 @@ public class EIHEntity extends TropicraftCreatureEntity {
         getDataManager().set(STATE, state);
     }
 
-    @Override
-    public void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(100.0D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return CreatureEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 40.0)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25)
+                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 100.0)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0);
     }
 
     @Override
@@ -121,7 +115,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         super.baseTick();
 
         if (isAsleep()) {
-            setMotion(Vec3d.ZERO);
+            setMotion(Vector3d.ZERO);
         }
 
         if (!isAsleep()) {

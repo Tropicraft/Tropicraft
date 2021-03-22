@@ -5,9 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.*;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
@@ -37,7 +35,7 @@ public class IguanaEntity extends TropicraftCreatureEntity {
     private UUID angerTargetUUID;
 
     private static final UUID ATTACK_SPEED_BOOST_MODIFIER_UUID = UUID.fromString("49455A49-7EC5-45BA-B886-3B90B23A1718");
-    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = (new AttributeModifier(ATTACK_SPEED_BOOST_MODIFIER_UUID, "Attacking speed boost", 0.05D, AttributeModifier.Operation.ADDITION)).setSaved(false);
+    private static final AttributeModifier ATTACK_SPEED_BOOST_MODIFIER = new AttributeModifier(ATTACK_SPEED_BOOST_MODIFIER_UUID, "Attacking speed boost", 0.05D, AttributeModifier.Operation.ADDITION);
 
     public IguanaEntity(EntityType<? extends CreatureEntity> type, World world) {
         super(type, world);
@@ -57,11 +55,11 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return CreatureEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 35.0)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0);
     }
 
     @Override
@@ -108,16 +106,16 @@ public class IguanaEntity extends TropicraftCreatureEntity {
 
     @Override
     protected void updateAITasks() {
-        IAttributeInstance iattributeinstance = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        ModifiableAttributeInstance attribute = this.getAttribute(Attributes.MOVEMENT_SPEED);
 
         if (this.isAngry()) {
-            if (!this.isChild() && !iattributeinstance.hasModifier(ATTACK_SPEED_BOOST_MODIFIER)) {
-                iattributeinstance.applyModifier(ATTACK_SPEED_BOOST_MODIFIER);
+            if (!this.isChild() && !attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER)) {
+                attribute.applyNonPersistentModifier(ATTACK_SPEED_BOOST_MODIFIER);
             }
 
             --this.angerLevel;
-        } else if (iattributeinstance.hasModifier(ATTACK_SPEED_BOOST_MODIFIER)) {
-            iattributeinstance.removeModifier(ATTACK_SPEED_BOOST_MODIFIER);
+        } else if (attribute.hasModifier(ATTACK_SPEED_BOOST_MODIFIER)) {
+            attribute.removeModifier(ATTACK_SPEED_BOOST_MODIFIER);
         }
 
         if (this.angerLevel > 0 && this.angerTargetUUID != null && this.getRevengeTarget() == null) {

@@ -473,84 +473,84 @@ public class ModelScubaGear extends BipedModel<LivingEntity> {
         if(showLegs) {
             // TODO is this necessary?
 //        if(entityIn.isInWater()) {
-//	        this.Fin2m3.offsetX = -0.2f;
-//	        this.Fin1m3.offsetX = 0.2f;
-//	
-//	
-//	       this.Fin1m3.offsetZ = 0.1f;
-//	       this.Fin2m3.offsetZ = 0.1f;
-//	        
-//	        
-//	        
-//	        bipedLeftLeg.render(scale);
-//	        bipedRightLeg.render(scale);
-	        
-	     
-	        
-	      /*  GlStateManager.pushMatrix();
-		     
-		        
+//            this.Fin2m3.offsetX = -0.2f;
+//            this.Fin1m3.offsetX = 0.2f;
+//    
+//    
+//           this.Fin1m3.offsetZ = 0.1f;
+//           this.Fin2m3.offsetZ = 0.1f;
+//            
+//            
+//            
+//            bipedLeftLeg.render(scale);
+//            bipedRightLeg.render(scale);
+            
+         
+            
+          /*  GlStateManager.pushMatrix();
+             
+                
 
-		        GlStateManager.translate(0f, 0f, 0.22f+((-MathHelper.cos(limbSwing * 0.6662F))/(1.7f*Math.PI)));
-		        GlStateManager.translate(0f, -0.05f+(float)(-MathHelper.cos(limbSwing)/64), 0f);
+                GlStateManager.translate(0f, 0f, 0.22f+((-MathHelper.cos(limbSwing * 0.6662F))/(1.7f*Math.PI)));
+                GlStateManager.translate(0f, -0.05f+(float)(-MathHelper.cos(limbSwing)/64), 0f);
 
-		        
-		        GlStateManager.translate(0f, offsetY, -0.4f);
-		        
-		        GlStateManager.rotate(-paddleAngle+((float)Math.sin(ageInTicks*paddleSpeed)*paddleAmount), 1f, 0f, 0f);
-		   
-		        GlStateManager.translate(0f, -offsetY, 0.2f);
-		        
-
-
-		        this.Fin2m3.render(scale);
-		        
-		        GlStateManager.popMatrix();*/
-
-	       	        
-		        
-		     
-	        
-	        
-	      /*  GlStateManager.pushMatrix();
-	     
-	        GlStateManager.translate(0, 0, 0.1f);
-
-	        GlStateManager.translate(0f, 0f, 0.23f+((MathHelper.cos(limbSwing * 0.6662f))/(1.7f*Math.PI)));
-	        GlStateManager.translate(0f, -0.05f+(float)(MathHelper.cos(limbSwing)/64), 0f);
-
-	        
-	        GlStateManager.translate(0f, offsetY, -0.4f);
-	        
-	        GlStateManager.rotate(-paddleAngle-((float)Math.sin(ageInTicks*paddleSpeed)*paddleAmount), 1f, 0f, 0f);
-	   
-	        GlStateManager.translate(0f, -offsetY, 0.2f);
+                
+                GlStateManager.translate(0f, offsetY, -0.4f);
+                
+                GlStateManager.rotate(-paddleAngle+((float)Math.sin(ageInTicks*paddleSpeed)*paddleAmount), 1f, 0f, 0f);
+           
+                GlStateManager.translate(0f, -offsetY, 0.2f);
+                
 
 
-	        this.Fin1m3.render(scale);
-	        
-	        GlStateManager.popMatrix();*/
+                this.Fin2m3.render(scale);
+                
+                GlStateManager.popMatrix();*/
 
-	   
-		
-	        
+                       
+                
+             
+            
+            
+          /*  GlStateManager.pushMatrix();
+         
+            GlStateManager.translate(0, 0, 0.1f);
+
+            GlStateManager.translate(0f, 0f, 0.23f+((MathHelper.cos(limbSwing * 0.6662f))/(1.7f*Math.PI)));
+            GlStateManager.translate(0f, -0.05f+(float)(MathHelper.cos(limbSwing)/64), 0f);
+
+            
+            GlStateManager.translate(0f, offsetY, -0.4f);
+            
+            GlStateManager.rotate(-paddleAngle-((float)Math.sin(ageInTicks*paddleSpeed)*paddleAmount), 1f, 0f, 0f);
+       
+            GlStateManager.translate(0f, -offsetY, 0.2f);
+
+
+            this.Fin1m3.render(scale);
+            
+            GlStateManager.popMatrix();*/
+
+       
+        
+            
 //        }else {
           //TODO  this.Fin2m3.offsetX = 0f;
-        		
- 	      //TODO  this.Fin1m3.offsetX = 0f;
- 	
- 	      //TODO  this.Fin2m3.offsetY = 0f;
- 	
- 	     //TODO   this.Fin1m3.offsetY = 0f;
- 	        
- 	        this.Fin2m3.rotateAngleX = 0f;
- 	
- 	        this.Fin1m3.rotateAngleX = 0f;
- 	        
- 	       bipedLeftLeg.render(stack, bufferIn, packedLightIn, packedOverlayIn);
+                
+           //TODO  this.Fin1m3.offsetX = 0f;
+     
+           //TODO  this.Fin2m3.offsetY = 0f;
+     
+          //TODO   this.Fin1m3.offsetY = 0f;
+             
+             this.Fin2m3.rotateAngleX = 0f;
+     
+             this.Fin1m3.rotateAngleX = 0f;
+             
+            bipedLeftLeg.render(stack, bufferIn, packedLightIn, packedOverlayIn);
 
- 	        bipedRightLeg.render(stack, bufferIn, packedLightIn, packedOverlayIn);
- 	    
+             bipedRightLeg.render(stack, bufferIn, packedLightIn, packedOverlayIn);
+         
 //        }
 
         }

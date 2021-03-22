@@ -15,37 +15,37 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
     public SeaTurtleRenderer(EntityRendererManager renderManager) {
         super(renderManager, new SeaTurtleModel(), 0.7F);
         shadowSize = 0.5f;
-		shadowOpaque = 0.5f;
+        shadowOpaque = 0.5f;
     }
 
-	public void render(SeaTurtleEntity turtle, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		float scale = 0.3f;
-		final float existingTime = (float) turtle.ticksExisted / 4000;
-		if (turtle.ticksExisted < 30) {
-			shadowOpaque = 0.5f;
-			shadowSize = 0.2f + existingTime;
-			if (shadowSize > 0.5f) {
-				shadowSize = 0.5f;
-			}
-		} else {
-			scale = 0.3f + existingTime;
-			if (scale > 1f) {
-				scale = 1f;
-			}
-		}
-		if (turtle.isMature()) {
-			scale = 1f;
-		}
-		stack.push();
-		stack.scale(scale, scale, scale);
+    public void render(SeaTurtleEntity turtle, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        float scale = 0.3f;
+        final float existingTime = (float) turtle.ticksExisted / 4000;
+        if (turtle.ticksExisted < 30) {
+            shadowOpaque = 0.5f;
+            shadowSize = 0.2f + existingTime;
+            if (shadowSize > 0.5f) {
+                shadowSize = 0.5f;
+            }
+        } else {
+            scale = 0.3f + existingTime;
+            if (scale > 1f) {
+                scale = 1f;
+            }
+        }
+        if (turtle.isMature()) {
+            scale = 1f;
+        }
+        stack.push();
+        stack.scale(scale, scale, scale);
 
-		super.render(turtle, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+        super.render(turtle, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 
-		stack.pop();
-	}
+        stack.pop();
+    }
 
-	@Override
-	public ResourceLocation getEntityTexture(SeaTurtleEntity seaTurtleEntity) {
-		return TropicraftRenderUtils.getTextureEntity(String.format("turtle/sea_turtle%s", seaTurtleEntity.getTurtleType()));
-	}
+    @Override
+    public ResourceLocation getEntityTexture(SeaTurtleEntity seaTurtleEntity) {
+        return TropicraftRenderUtils.getTextureEntity(String.format("turtle/sea_turtle%s", seaTurtleEntity.getTurtleType()));
+    }
 }

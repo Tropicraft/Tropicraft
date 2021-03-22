@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -158,7 +159,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
         currentSiftTime = SIFT_TIME;
 
         if (!world.isRemote) {
-            TropicraftPackets.sendToDimension(new MessageSifterStart(this), world.getDimension().getType());
+            TropicraftPackets.sendToDimension(new MessageSifterStart(this), world.getDimensionKey());
         }
     }
 
@@ -185,8 +186,8 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
-        super.read(nbt);
+    public void read(BlockState blockState, CompoundNBT nbt) {
+        super.read(blockState, nbt);
         isSifting = nbt.getBoolean("isSifting");
         currentSiftTime = nbt.getInt("currentSiftTime");
 
@@ -215,11 +216,11 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(pkt.getNbtCompound());
+        read(getBlockState(), pkt.getNbtCompound());
     }
 
     protected void syncInventory() {
-        TropicraftPackets.sendToDimension(new MessageSifterInventory(this), world.getDimension().getType());
+        TropicraftPackets.sendToDimension(new MessageSifterInventory(this), world.getDimensionKey());
     }
 
     @Nullable

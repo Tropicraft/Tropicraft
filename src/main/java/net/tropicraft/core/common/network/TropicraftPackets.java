@@ -1,18 +1,14 @@
 package net.tropicraft.core.common.network;
 
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
-import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
-import net.tropicraft.core.common.network.message.MessageMixerInventory;
-import net.tropicraft.core.common.network.message.MessageMixerStart;
-import net.tropicraft.core.common.network.message.MessageSifterInventory;
-import net.tropicraft.core.common.network.message.MessageSifterStart;
-import net.tropicraft.core.common.network.message.MessageUpdateScubaData;
+import net.tropicraft.core.common.network.message.*;
 
 public class TropicraftPackets {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -37,7 +33,7 @@ public class TropicraftPackets {
         INSTANCE.registerMessage(getUniqueId(), MessageUpdateScubaData.class, MessageUpdateScubaData::encode, MessageUpdateScubaData::decode, MessageUpdateScubaData::handle);
     }
 
-    public static void sendToDimension(final TropicraftMessage msg, final DimensionType dimType) {
+    public static void sendToDimension(final TropicraftMessage msg, final RegistryKey<World> dimType) {
         INSTANCE.send(PacketDistributor.DIMENSION.with(() -> dimType), msg);
     }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "tropicraft:koa_village/villagers",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "tropicraft:koa_village/villagers/unemployed",
+        "processors": "minecraft:empty",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    }
+  ]
+}

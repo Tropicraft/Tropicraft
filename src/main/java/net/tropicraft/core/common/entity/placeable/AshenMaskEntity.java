@@ -11,7 +11,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
@@ -73,7 +73,7 @@ public class AshenMaskEntity extends Entity {
             }
         }
 
-        final Vec3d motion = getMotion();
+        final Vector3d motion = getMotion();
 
         if (onGround) {
             setMotion(motion.mul(0.5, 0, 0.5));

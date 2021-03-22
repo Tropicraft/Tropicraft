@@ -12,8 +12,8 @@ import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.BreedGoal;
 import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
@@ -30,18 +30,18 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.*;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -70,28 +70,28 @@ public class SeaTurtleEntity extends TurtleEntity {
         super(type, world);
     }
 
-    protected void registerAttributes() {
-        super.registerAttributes();
-    }
-
+    @Override
     public boolean isPushedByWater() {
         return false;
     }
 
+    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }
 
+    @Override
     public CreatureAttribute getCreatureAttribute() {
         return CreatureAttribute.WATER;
     }
 
+    @Override
     protected float determineNextStepDistance() {
         return this.distanceWalkedOnStepModified + 0.15F;
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
+    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
         setRandomTurtleType();
         this.lastPosY = getPosY();
         return super.onInitialSpawn(world, difficultyInstance, spawnReason, data, nbt);
@@ -129,6 +129,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         getDataManager().register(HAS_EGG, false);
     }
 
+    @Override
     public void writeAdditional(CompoundNBT nbt) {
         super.writeAdditional(nbt);
         nbt.putInt("TurtleType", getTurtleType());
@@ -138,6 +139,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         nbt.putBoolean("HasEgg", hasEgg());
     }
 
+    @Override
     public void readAdditional(CompoundNBT nbt) {
         super.readAdditional(nbt);
         if (nbt.contains("TurtleType")) {
@@ -217,25 +219,27 @@ public class SeaTurtleEntity extends TurtleEntity {
         return super.getMountedYOffset() - 0.1;
     }
 
-    @Override
     @Nullable
-    public AgeableEntity createChild(AgeableEntity ent) {
+    @Override
+    public AgeableEntity createChild(ServerWorld world, AgeableEntity partner) {
         return TropicraftEntities.SEA_TURTLE.get().create(this.world)
-                .setTurtleType(rand.nextBoolean() && ent instanceof SeaTurtleEntity ? ((SeaTurtleEntity)ent).getTurtleType() : getTurtleType())
+                .setTurtleType(rand.nextBoolean() && partner instanceof SeaTurtleEntity ? ((SeaTurtleEntity)partner).getTurtleType() : getTurtleType())
                 .setIsMature(false);
     }
 
+
     @Override
-    public boolean processInteract(final PlayerEntity player, final Hand hand) {
-        if (super.processInteract(player, hand)) {
-            return true;
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+        ActionResultType result = super.getEntityInteractionResult(player, hand);
+        if (result != ActionResultType.PASS) {
+            return result;
         }
 
         if (!world.isRemote && !player.isSneaking() && canFitPassenger(player) && isMature()) {
             player.startRiding(this);
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
     
     @Override
@@ -257,24 +261,24 @@ public class SeaTurtleEntity extends TurtleEntity {
     public void livingTick() {
         super.livingTick();
         if (this.isAlive() && this.isDigging() && this.digCounter >= 1 && this.digCounter % 5 == 0) {
-            BlockPos blockpos = new BlockPos(this);
-            if (this.world.getBlockState(blockpos.down()).getMaterial() == Material.SAND) {
-                this.world.playEvent(2001, blockpos, Block.getStateId(Blocks.SAND.getDefaultState()));
+            BlockPos pos = this.getPosition();
+            if (this.world.getBlockState(pos.down()).getMaterial() == Material.SAND) {
+                this.world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, pos, Block.getStateId(Blocks.SAND.getDefaultState()));
             }
         }
 
         if (this.world.isRemote) {
             if (isBeingRidden() && canBeSteered()) {
                 if (isInWater() || getCanFly()) {
-                    Vec3d movement = new Vec3d(getPosX(), getPosY(), getPosZ()).subtract(prevPosX, prevPosY, prevPosZ);
+                    Vector3d movement = new Vector3d(getPosX(), getPosY(), getPosZ()).subtract(prevPosX, prevPosY, prevPosZ);
                     double speed = movement.length();
-                    Vec3d particleOffset = movement.inverse().scale(2);
+                    Vector3d particleOffset = movement.inverse().scale(2);
                     if (speed > 0.05) {
                         int maxParticles = MathHelper.ceil(speed * 5);
                         int particlesToSpawn = rand.nextInt(1 + maxParticles);
                         IParticleData particle = isInWater() ? ParticleTypes.BUBBLE : ParticleTypes.END_ROD;
                         for (int i = 0; i < particlesToSpawn; i++) {
-                            Vec3d particleMotion = movement.scale(1);
+                            Vector3d particleMotion = movement.scale(1);
                             world.addParticle(particle, true,
                                     particleOffset.getX() + getPosX() - 0.25 + rand.nextDouble() * 0.5,
                                     particleOffset.getY() + getPosY() + 0.1 + rand.nextDouble() * 0.1,
@@ -330,7 +334,7 @@ public class SeaTurtleEntity extends TurtleEntity {
                         }
                         //this.swimSpeedCurrent = 1f;
                     }
-                    //	this.swimYaw = -passenger.rotationYaw;
+                    //    this.swimYaw = -passenger.rotationYaw;
                 }
                 //p.rotationYaw = this.rotationYaw;
             } else
@@ -348,7 +352,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     @Override
-    public void travel(Vec3d input) {
+    public void travel(Vector3d input) {
         if (isAlive()) {
             if (isBeingRidden() && canBeSteered()) {
                 final Entity controllingPassenger = getControllingPassenger();
@@ -377,19 +381,19 @@ public class SeaTurtleEntity extends TurtleEntity {
 
                 if (!isInWater()) {
                     if (getCanFly()) {
-                        this.setMotion(this.getMotion().add(0, -this.getAttribute(ENTITY_GRAVITY).getValue() * 0.05, 0));
+                        this.setMotion(this.getMotion().add(0, -this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue() * 0.05, 0));
                     } else {
                         // Lower max speed when breaching, as a penalty to uncareful driving
-                        this.setMotion(this.getMotion().mul(0.9, 0.99, 0.9).add(0, -this.getAttribute(ENTITY_GRAVITY).getValue(), 0));
+                        this.setMotion(this.getMotion().mul(0.9, 0.99, 0.9).add(0, -this.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getValue(), 0));
                     }
                 }
 
                 if (this.canPassengerSteer()) {
-                    Vec3d travel = new Vec3d(strafe, verticalFromPitch + vertical, forward)
-                    		.scale(this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue())
-                    		// This scale controls max speed. We reduce it significantly here so that the range of speed is higher
-                    		// This is compensated for by the high value passed to moveRelative
-                    		.scale(0.025F);
+                    Vector3d travel = new Vector3d(strafe, verticalFromPitch + vertical, forward)
+                            .scale(this.getAttribute(Attributes.MOVEMENT_SPEED).getValue())
+                            // This scale controls max speed. We reduce it significantly here so that the range of speed is higher
+                            // This is compensated for by the high value passed to moveRelative
+                            .scale(0.025F);
                     // This is the effective speed modifier, controls the post-scaling of the movement vector
                     moveRelative(1F, travel);
                     move(MoverType.SELF, getMotion());
@@ -397,7 +401,7 @@ public class SeaTurtleEntity extends TurtleEntity {
                     this.setMotion(this.getMotion().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
                 } else {
                     this.fallDistance = (float) Math.max(0, (getPosY() - lastPosY) * -8);
-                    this.setMotion(Vec3d.ZERO);
+                    this.setMotion(Vector3d.ZERO);
                 }
                 this.prevLimbSwingAmount = this.limbSwingAmount;
                 double d1 = this.getPosX() - this.prevPosX;
@@ -433,13 +437,15 @@ public class SeaTurtleEntity extends TurtleEntity {
          * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
          * method as well.
          */
+        @Override
         public boolean shouldExecute() {
-            return turtle.hasEgg() && turtle.getHome().withinDistance(turtle.getPositionVec(), 9.0D) ? super.shouldExecute() : false;
+            return turtle.hasEgg() && turtle.getHome().withinDistance(turtle.getPositionVec(), 9.0D) && super.shouldExecute();
         }
 
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
+        @Override
         public boolean shouldContinueExecuting() {
             return super.shouldContinueExecuting() && turtle.hasEgg() && turtle.getHome().withinDistance(turtle.getPositionVec(), 9.0D);
         }
@@ -450,14 +456,14 @@ public class SeaTurtleEntity extends TurtleEntity {
         @Override
         public void tick() {
             super.tick();
-            BlockPos blockpos = new BlockPos(this.turtle);
+            BlockPos blockpos = this.turtle.getPosition();
             if (!this.turtle.isInWater() && this.getIsAboveDestination()) {
                 if (!this.turtle.isDigging()) {
                     this.turtle.setDigging(true);
                 } else if (this.turtle.digCounter > 200) {
                     World world = this.turtle.world;
-                    world.playSound((PlayerEntity)null, blockpos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS, 0.3F, 0.9F + world.rand.nextFloat() * 0.2F);
-                    //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.getDefaultState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
+                    world.playSound(null, blockpos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS, 0.3F, 0.9F + world.rand.nextFloat() * 0.2F);
+                    //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.defaultBlockState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
                     final SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
                     final BlockPos spawnPos = destinationBlock.up();
                     egg.setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
@@ -495,6 +501,7 @@ public class SeaTurtleEntity extends TurtleEntity {
          * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
          * method as well.
          */
+        @Override
         public boolean shouldExecute() {
             return super.shouldExecute() && !this.turtle.hasEgg();
         }
@@ -502,6 +509,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         /**
          * Spawns a baby animal of the same type.
          */
+        @Override
         protected void spawnBaby() {
             ServerPlayerEntity serverplayerentity = this.animal.getLoveCause();
             if (serverplayerentity == null && this.targetMate.getLoveCause() != null) {
@@ -510,7 +518,7 @@ public class SeaTurtleEntity extends TurtleEntity {
 
             if (serverplayerentity != null) {
                 serverplayerentity.addStat(Stats.ANIMALS_BRED);
-                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, (AgeableEntity)null);
+                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, null);
             }
 
             this.turtle.setHasEgg(true);

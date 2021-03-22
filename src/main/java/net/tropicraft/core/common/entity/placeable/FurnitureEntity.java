@@ -13,9 +13,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -83,7 +82,7 @@ public abstract class FurnitureEntity extends Entity {
             setDamage(damage - 1);
         }
 
-        final Vec3d currentPos = getPositionVec();
+        final Vector3d currentPos = getPositionVec();
         prevPosX = currentPos.x;
         prevPosY = currentPos.y;
         prevPosZ = currentPos.z;
@@ -93,7 +92,7 @@ public abstract class FurnitureEntity extends Entity {
         tickLerp();
     
         if (preventMotion()) {
-            setMotion(Vec3d.ZERO);
+            setMotion(Vector3d.ZERO);
         }
     
         //updateRocking();
@@ -176,11 +175,6 @@ public abstract class FurnitureEntity extends Entity {
 
     private ItemStack getItemStack() {
         return new ItemStack(itemLookup.apply(getColor()));
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBox(Entity entity) {
-        return entity.getBoundingBox();
     }
 
     @Override

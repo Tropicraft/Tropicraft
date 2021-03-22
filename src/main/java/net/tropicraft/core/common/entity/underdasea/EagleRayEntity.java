@@ -1,11 +1,12 @@
 package net.tropicraft.core.common.entity.underdasea;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -48,15 +49,14 @@ public class EagleRayEntity extends AbstractFishEntity {
 		super(type, world);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+	public static AttributeModifierMap.MutableAttribute createAttributes() {
+		return AbstractFishEntity.func_234176_m_()
+				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0);
 	}
-	
+
 	@Override
-	protected boolean processInteract(PlayerEntity player, Hand hand) {
-		return false; // No fish bucket
+	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+		return ActionResultType.PASS;
 	}
 
 	@Override

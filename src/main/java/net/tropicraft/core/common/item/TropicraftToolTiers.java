@@ -29,13 +29,13 @@ public enum TropicraftToolTiers implements IItemTier {
     private final int enchantability;
     private final LazyValue<Ingredient> repairMaterial;
 
-    TropicraftToolTiers(int p_i48458_3_, int p_i48458_4_, float p_i48458_5_, float p_i48458_6_, int p_i48458_7_, Supplier<Ingredient> p_i48458_8_) {
-        this.harvestLevel = p_i48458_3_;
-        this.maxUses = p_i48458_4_;
-        this.efficiency = p_i48458_5_;
-        this.attackDamage = p_i48458_6_;
-        this.enchantability = p_i48458_7_;
-        this.repairMaterial = new LazyValue<>(p_i48458_8_);
+    TropicraftToolTiers(int harvestLevelIn, int maxUsesIn, float efficiencyIn, float attackDamageIn, int enchantabilityIn, Supplier<Ingredient> repairMaterialIn) {
+        this.harvestLevel = harvestLevelIn;
+        this.maxUses = maxUsesIn;
+        this.efficiency = efficiencyIn;
+        this.attackDamage = attackDamageIn;
+        this.enchantability = enchantabilityIn;
+        this.repairMaterial = new LazyValue<>(repairMaterialIn);
     }
 
     public int getMaxUses() {

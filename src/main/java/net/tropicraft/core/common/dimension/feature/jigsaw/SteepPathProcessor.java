@@ -1,8 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
-
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LadderBlock;
 import net.minecraft.block.StairsBlock;
@@ -20,24 +18,19 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class SteepPathProcessor extends PathStructureProcessor {
+    public static final Codec<SteepPathProcessor> CODEC = Codec.unit(new SteepPathProcessor());
 
-    static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":steep_path", SteepPathProcessor::new);
-
-    public SteepPathProcessor() {}
-
-    public SteepPathProcessor(Dynamic<?> p_i51337_1_) {
-        this();
-    }
+    static final IStructureProcessorType<SteepPathProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":steep_path", () -> CODEC);
 
     @Override
-    public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
+    public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockPos pos2, BlockInfo originalBlockInfo, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
         BlockPos pos = blockInfo.pos;
 
-        if (p_215194_3_.pos.getY() != 1 || p_215194_3_.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get()) {
+        if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get()) {
             return blockInfo;
         }
 
-        Direction.Axis axis = getPathDirection(seedPos, p_215194_3_, placementSettingsIn, template);
+        Direction.Axis axis = getPathDirection(seedPos, blockInfo, placementSettingsIn, template);
         if (axis == null) {
             return blockInfo;
         }
@@ -97,13 +90,8 @@ public class SteepPathProcessor extends PathStructureProcessor {
     }
     
     @Override
-    protected IStructureProcessorType getType() {
+    protected IStructureProcessorType<?> getType() {
         return TYPE;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> ops) {
-        return new Dynamic<>(ops);
     }
 
 }

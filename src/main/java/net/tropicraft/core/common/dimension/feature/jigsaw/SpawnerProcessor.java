@@ -1,9 +1,8 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -16,46 +15,40 @@ import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 import net.minecraft.world.gen.feature.template.Template;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class SpawnerProcessor extends StructureProcessor {
-    // TODO fix
-    //public static final IStructureProcessorType TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":spawner_processor", SpawnerProcessor::new);
-
     public static final SpawnerProcessor IGUANA = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.IGUANA.get()));
     public static final SpawnerProcessor ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.get()));
     public static final SpawnerProcessor EIH = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.EIH.get()));
     public static final SpawnerProcessor IGUANA_AND_ASHEN = new SpawnerProcessor(ImmutableList.of(TropicraftEntities.ASHEN.get(), TropicraftEntities.IGUANA.get()));
 
-    private List<EntityType<?>> entityTypes;
+    public static final Codec<SpawnerProcessor> CODEC = RecordCodecBuilder.create(instance -> {
+        return instance.group(
+                Registry.ENTITY_TYPE.listOf().fieldOf("entity_types").forGetter(p -> p.entityTypes)
+        ).apply(instance, SpawnerProcessor::new);
+    });
+
+    public static final IStructureProcessorType<SpawnerProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":spawner_processor", () -> CODEC);
+
+    private final List<EntityType<?>> entityTypes;
 
     public SpawnerProcessor(final List<EntityType<?>> entityTypes) {
         this.entityTypes = entityTypes;
     }
 
-    public SpawnerProcessor(final Dynamic<?> dynamic) {
-        this(dynamic.get("entityTypes").asList((type) -> EntityType.byKey(type.asString().orElse("tropicraft:ashen")).get()));
-    }
-
     @Override
-    protected IStructureProcessorType getType() {
-        // TODO
-        //return TYPE;
-        return null;
-    }
-
-    @Override
-    protected <T> Dynamic<T> serialize0(DynamicOps<T> dynamicOps) {
-        return new Dynamic<T>(dynamicOps, dynamicOps.createMap(ImmutableMap.of(dynamicOps.createString("entityTypes"),
-                dynamicOps.createList(this.entityTypes.stream().map(type -> dynamicOps.createString(type.getRegistryName().getPath()))))));
+    protected IStructureProcessorType<?> getType() {
+        return TYPE;
     }
 
     @Override
     @Nullable
-    public Template.BlockInfo process(IWorldReader world, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings settings) {
+    public Template.BlockInfo process(IWorldReader world, BlockPos pos, BlockPos pos2, Template.BlockInfo originalBlockInfo, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
         final Block block = blockInfo.state.getBlock();
 
         if (block != Blocks.SPAWNER) {

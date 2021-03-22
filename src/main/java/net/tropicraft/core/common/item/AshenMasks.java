@@ -22,13 +22,13 @@ public enum AshenMasks {
     public static AshenMasks[] VALUES = values();
 
     AshenMasks(String name) {
-    	this(name, 0.5, 1);
+        this(name, 0.5, 1);
     }
     
     AshenMasks(String name, double xOffset, double yOffset) {
-    	this.name = name;
-    	this.xOffset = xOffset / 16;
-    	this.yOffset = yOffset / 16;
+        this.name = name;
+        this.xOffset = xOffset / 16;
+        this.yOffset = yOffset / 16;
     }
 
     public String getName() {
@@ -36,10 +36,10 @@ public enum AshenMasks {
     }
 
     public double getXOffset() {
-    	return xOffset;
+        return xOffset;
     }
     
     public double getYOffset() {
-    	return yOffset;
+        return yOffset;
     }
 }

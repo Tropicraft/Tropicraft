@@ -2,20 +2,19 @@ package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.vector.Vector3f;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.BambooMugModel;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
@@ -46,15 +45,15 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     }
 
     @Override
-    protected Material getMaterial() {
+    protected RenderMaterial getMaterial() {
         return TropicraftRenderUtils.getTEMaterial("drink_mixer");
     }
 
     @Override
     public void renderIngredients(final DrinkMixerTileEntity te, final MatrixStack stack, final IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-    	if (dummyEntityItem == null) {
-    		 dummyEntityItem = new ItemEntity(Minecraft.getInstance().world, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
-    	}
+        if (dummyEntityItem == null) {
+             dummyEntityItem = new ItemEntity(Minecraft.getInstance().world, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
+        }
         final NonNullList<ItemStack> ingredients = te.getIngredients();
 
         if (!te.isDoneMixing()) {

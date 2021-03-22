@@ -2,7 +2,6 @@ package net.tropicraft.core.common.entity.ai.vmonkey;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.SitGoal;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 
@@ -10,13 +9,13 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class MonkeySitInChairGoal extends Goal {
     private VMonkeyEntity entity;
-    private SitGoal aiSit;
 
-    public MonkeySitInChairGoal(VMonkeyEntity monkey, SitGoal aiSit) {
+    public MonkeySitInChairGoal(VMonkeyEntity monkey) {
         this.entity = monkey;
-        this.aiSit = aiSit;
         setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
     }
 
@@ -38,7 +37,6 @@ public class MonkeySitInChairGoal extends Goal {
     public void resetTask() {
         entity.stopRiding();
         entity.setSitting(false);
-        aiSit.setSitting(false);
         // TODO - no longer needed?
         // entity.resetRideCooldown();
     }
@@ -71,7 +69,6 @@ public class MonkeySitInChairGoal extends Goal {
         final Optional<ChairEntity> nearbyChair = getNearestEmptyChair();
         if (nearbyChair.isPresent()) {
             entity.setSitting(true);
-            aiSit.setSitting(true);
             entity.startRiding(nearbyChair.get());
         }
     }

@@ -5,10 +5,13 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
 import java.util.List;
+
+import net.minecraft.entity.ai.goal.Goal.Flag;
 
 public class EntityAIKoaMate extends Goal
 {
@@ -187,7 +190,7 @@ public class EntityAIKoaMate extends Goal
     //TODO: 1.14 readd
     private void giveBirth()
     {
-        AgeableEntity entityvillager = this.villagerObj.createChild(this.mate);
+        AgeableEntity entityvillager = this.villagerObj.createChild((ServerWorld) world, this.mate);
         this.mate.setGrowingAge(6000);
         this.villagerObj.setGrowingAge(6000);
         this.mate.setIsWillingToMate(false);
@@ -199,7 +202,7 @@ public class EntityAIKoaMate extends Goal
         entityvillager.setGrowingAge(-24000);
         entityvillager.setLocationAndAngles(villagerObj.getPosX(), villagerObj.getPosY(), villagerObj.getPosZ(), 0.0F, 0.0F);
         if (entityvillager instanceof EntityKoaBase) {
-            ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimID());
+            ((EntityKoaBase) entityvillager).setVillageAndDimID(villagerObj.getVillageID(), villagerObj.getVillageDimension());
             entityvillager.setHomePosAndDistance(villagerObj.getHomePosition(), EntityKoaBase.MAX_HOME_DISTANCE);
 
             //TODO: 1.14 readd
@@ -212,7 +215,7 @@ public class EntityAIKoaMate extends Goal
 
             ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
 
-            ((EntityKoaBase) entityvillager).getWorld().playSound(null, entityvillager.getPosition(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.AMBIENT, 1, 1);
+            entityvillager.world.playSound(null, entityvillager.getPosition(), SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.AMBIENT, 1, 1);
         }
 
 

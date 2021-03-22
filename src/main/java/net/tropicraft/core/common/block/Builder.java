@@ -1,23 +1,6 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.trees.Tree;
@@ -26,6 +9,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
+
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class Builder {
@@ -96,7 +84,7 @@ public class Builder {
 
     @SafeVarargs
     public static Supplier<SaplingBlock> sapling(final Tree tree, final Supplier<? extends Block>... validPlantBlocks) {
-    	return block(p -> new SaplingBlock(tree, p) {
+        return block(p -> new SaplingBlock(tree, p) {
             protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
                 final Block block = state.getBlock();
                 if (validPlantBlocks == null || validPlantBlocks.length == 0) {

@@ -148,7 +148,7 @@ public class VMonkeyModel extends SegmentedModel<VMonkeyEntity> implements IHasA
 
     @Override
     public void setLivingAnimations(VMonkeyEntity entityvmonkey, float f, float f1, float f2) {
-        if (entityvmonkey.isSitting()) {
+        if (entityvmonkey.isQueuedToSit()) {
             body.setRotationPoint(0F, 20F, 0F);
             body.rotateAngleX = 0.9320058F;
             body.rotateAngleY = 3.141593F;
@@ -187,13 +187,13 @@ public class VMonkeyModel extends SegmentedModel<VMonkeyEntity> implements IHasA
             body.rotateAngleX = 1.570796F;
             body.setRotationPoint(0F, 16F, 0F);
             lLegUpper.setRotationPoint(-1F, 12F, 2F);
-            //lLegUpper.rotateAngleX = -1.570796F;	
+            //lLegUpper.rotateAngleX = -1.570796F;    
             rLegUpper.setRotationPoint(1F, 12F, 2F);
-            //rLegUpper.rotateAngleX = -1.570796F;		
+            //rLegUpper.rotateAngleX = -1.570796F;        
             rArmUpper.setRotationPoint(1F, 19.5F, 2F);
-            //rArmUpper.rotateAngleX = -1.570796F;		
+            //rArmUpper.rotateAngleX = -1.570796F;        
             lArmUpper.setRotationPoint(-1F, 19.5F, 2F);
-            //lArmUpper.rotateAngleX = -1.570796F;		
+            //lArmUpper.rotateAngleX = -1.570796F;        
             tailBase.setRotationPoint(0F, 19.5F, 0.5F);
             tailBase.rotateAngleX = 1.570796F;
             tailBase.rotateAngleY = 3.141593F;
@@ -207,11 +207,11 @@ public class VMonkeyModel extends SegmentedModel<VMonkeyEntity> implements IHasA
             rArmLower.setRotationPoint(1F, 19.5F, -3F);
             //rArmLower.rotateAngleX = -0.6981317F;
             lArmLower.setRotationPoint(-1F, 19.5F, -3F);
-            //lArmLower.rotateAngleX = -0.6981317F;		
+            //lArmLower.rotateAngleX = -0.6981317F;        
             lLegLower.setRotationPoint(-1F, 12F, -3F);
-            //lLegLower.rotateAngleX = -2.443461F;	
+            //lLegLower.rotateAngleX = -2.443461F;    
             rLegLower.setRotationPoint(1F, 12F, -3F);
-            //rLegLower.rotateAngleX = -2.443461F;		
+            //rLegLower.rotateAngleX = -2.443461F;        
             face.setRotationPoint(0F, 11F, 1F);
             herps = 1.570796F;
             head.setRotationPoint(0F, 11F, 1F);

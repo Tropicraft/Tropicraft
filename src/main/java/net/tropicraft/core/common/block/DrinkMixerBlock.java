@@ -1,9 +1,5 @@
 package net.tropicraft.core.common.block;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
@@ -32,87 +28,92 @@ import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.TropicraftItems;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class DrinkMixerBlock extends Block implements ITileEntityProvider {
-	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
-	public DrinkMixerBlock(final Properties properties) {
-		super(properties);
-		setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
-	}
+    public DrinkMixerBlock(final Properties properties) {
+        super(properties);
+        setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
+    }
 
-	@Override
-	protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-	}
+    @Override
+    protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
 
     /**
      * allows items to add custom lines of information to the mouseover description
      */
     @OnlyIn(Dist.CLIENT)
     @Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void addInformation(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
         super.addInformation(stack, world, tooltip, flag);
-        tooltip.add(new TranslationTextComponent(getTranslationKey() + ".desc").applyTextStyle(TextFormatting.GRAY));
+        tooltip.add(new TranslationTextComponent(getTranslationKey() + ".desc").mergeStyle(TextFormatting.GRAY));
     }
 
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (world.isRemote) {
-			return ActionResultType.SUCCESS;
-		}
+    @Override
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+        if (world.isRemote) {
+            return ActionResultType.SUCCESS;
+        }
 
-		ItemStack stack = player.getHeldItemMainhand();
+        ItemStack stack = player.getHeldItemMainhand();
 
-		DrinkMixerTileEntity mixer = (DrinkMixerTileEntity) world.getTileEntity(pos);
-		if (mixer == null) {
-			return ActionResultType.FAIL;
-		}
+        DrinkMixerTileEntity mixer = (DrinkMixerTileEntity) world.getTileEntity(pos);
+        if (mixer == null) {
+            return ActionResultType.FAIL;
+        }
 
-		if (mixer.isDoneMixing()) {
-			mixer.retrieveResult(player);
-			return ActionResultType.CONSUME;
-		}
+        if (mixer.isDoneMixing()) {
+            mixer.retrieveResult(player);
+            return ActionResultType.CONSUME;
+        }
 
-		if (stack.isEmpty()) {
-			mixer.emptyMixer(player);
-			return ActionResultType.CONSUME;
-		}
+        if (stack.isEmpty()) {
+            mixer.emptyMixer(player);
+            return ActionResultType.CONSUME;
+        }
 
-		ItemStack ingredientStack = stack.copy();
-		ingredientStack.setCount(1);
+        ItemStack ingredientStack = stack.copy();
+        ingredientStack.setCount(1);
 
-		if (mixer.addToMixer(ingredientStack)) {
-			if (!player.isCreative()) {
-				player.inventory.decrStackSize(player.inventory.currentItem, 1);
-			}
-		}
+        if (mixer.addToMixer(ingredientStack)) {
+            if (!player.isCreative()) {
+                player.inventory.decrStackSize(player.inventory.currentItem, 1);
+            }
+        }
 
-		if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && mixer.canMix()) {
-			mixer.startMixing();
-			if (!player.isCreative()) {
-				player.inventory.decrStackSize(player.inventory.currentItem, 1);
-			}
+        if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && mixer.canMix()) {
+            mixer.startMixing();
+            if (!player.isCreative()) {
+                player.inventory.decrStackSize(player.inventory.currentItem, 1);
+            }
 
-			Drink craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
-			Drink pinaColada = Drink.PINA_COLADA;
+            Drink craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
+            Drink pinaColada = Drink.PINA_COLADA;
 
-			if (craftedDrink != null && craftedDrink.drinkId == pinaColada.drinkId) {
-				// TODO advancements entityPlayer.addStat(AchievementRegistry.craftPinaColada);
-			}
-		}
+            if (craftedDrink != null && craftedDrink.drinkId == pinaColada.drinkId) {
+                // TODO advancements entityPlayer.addStat(AchievementRegistry.craftPinaColada);
+            }
+        }
 
-		return ActionResultType.CONSUME;
-	}
-	
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState ret = super.getStateForPlacement(context);
-		return ret.with(FACING, context.getPlayer().getHorizontalFacing());
-	}
+        return ActionResultType.CONSUME;
+    }
+    
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState ret = super.getStateForPlacement(context);
+        return ret.with(FACING, context.getPlayer().getHorizontalFacing());
+    }
 
-	@Nullable
-	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new DrinkMixerTileEntity();
-	}
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader world) {
+        return new DrinkMixerTileEntity();
+    }
 }

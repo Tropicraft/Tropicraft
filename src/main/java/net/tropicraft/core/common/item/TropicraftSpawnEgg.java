@@ -23,10 +23,13 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.AbstractSpawner;
 import net.minecraftforge.fml.RegistryObject;
 
 import java.util.Objects;
+
+import net.minecraft.item.Item.Properties;
 
 public class TropicraftSpawnEgg<T extends Entity> extends Item {
 
@@ -61,14 +64,14 @@ public class TropicraftSpawnEgg<T extends Entity> extends Item {
             }
 
             BlockPos spawnPos;
-            if (state.getCollisionShape(world, pos).isEmpty()) {
+            if (state.getCollisionShapeUncached(world, pos).isEmpty()) {
                 spawnPos = pos;
             } else {
                 spawnPos = pos.offset(dir);
             }
 
             EntityType<?> type3 = typeIn.get();
-            if (type3.spawn(world, itemStack, context.getPlayer(), spawnPos, SpawnReason.SPAWN_EGG, true, !Objects.equals(pos, spawnPos) && dir == Direction.UP) != null) {
+            if (type3.spawn((ServerWorld) world, itemStack, context.getPlayer(), spawnPos, SpawnReason.SPAWN_EGG, true, !Objects.equals(pos, spawnPos) && dir == Direction.UP) != null) {
                 itemStack.shrink(1);
             }
 
@@ -79,30 +82,30 @@ public class TropicraftSpawnEgg<T extends Entity> extends Item {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack heldItem = player.getHeldItem(hand);
         if (world.isRemote) {
-            return new ActionResult(ActionResultType.PASS, heldItem);
+            return ActionResult.resultPass(heldItem);
         } else {
             RayTraceResult rayTraceResult = rayTrace(world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
             if (rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
-                return new ActionResult(ActionResultType.PASS, heldItem);
+                return ActionResult.resultPass(heldItem);
             } else {
-                BlockRayTraceResult traceResult = (BlockRayTraceResult)rayTraceResult;
+                BlockRayTraceResult traceResult = (BlockRayTraceResult) rayTraceResult;
                 BlockPos tracePos = traceResult.getPos();
                 if (!(world.getBlockState(tracePos).getBlock() instanceof FlowingFluidBlock)) {
-                    return new ActionResult(ActionResultType.PASS, heldItem);
+                    return ActionResult.resultPass(heldItem);
                 } else if (world.isBlockModifiable(player, tracePos) && player.canPlayerEdit(tracePos, traceResult.getFace(), heldItem)) {
                     EntityType<?> type = typeIn.get();
-                    if (type.spawn(world, heldItem, player, tracePos, SpawnReason.SPAWN_EGG, false, false) == null) {
-                        return new ActionResult(ActionResultType.PASS, heldItem);
+                    if (type.spawn((ServerWorld) world, heldItem, player, tracePos, SpawnReason.SPAWN_EGG, false, false) == null) {
+                        return ActionResult.resultPass(heldItem);
                     } else {
                         if (!player.abilities.isCreativeMode) {
                             heldItem.shrink(1);
                         }
 
                         player.addStat(Stats.ITEM_USED.get(this));
-                        return new ActionResult(ActionResultType.SUCCESS, heldItem);
+                        return ActionResult.resultSuccess(heldItem);
                     }
                 } else {
-                    return new ActionResult(ActionResultType.FAIL, heldItem);
+                    return ActionResult.resultFail(heldItem);
                 }
             }
         }

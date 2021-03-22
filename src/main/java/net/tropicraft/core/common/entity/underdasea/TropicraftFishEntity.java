@@ -7,8 +7,8 @@ import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector2f;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public abstract class TropicraftFishEntity extends WaterMobEntity {
@@ -16,8 +16,8 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
     public float swimPitch = 0f;
     public float swimYaw = 0f;
 
-    public Vec2f targetVectorHeading;
-    public Vec3d targetVector;
+    public Vector2f targetVectorHeading;
+    public Vector3d targetVector;
 
     public int outOfWaterTime = 0;
     public float outOfWaterAngle = 0f;
@@ -102,7 +102,7 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
                 if (isAIDisabled() && isInWater()) {
                     fallVelocity = 0f;
                     swimSpeedCurrent = 0;
-                    setMotion(new Vec3d(0, 0, 0));
+                    setMotion(Vector3d.ZERO);
                 }
         }
 
@@ -274,14 +274,14 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
         double z = (int) (posZ - this.getPosZ());
         float yaw = (float) ((Math.atan2(z, x) * 180D) / Math.PI) - 90f;
         float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
-        targetVector = new Vec3d((int) posX, (int) posY, (int) posZ);
-        targetVectorHeading = new Vec2f(yaw, pitch);
+        targetVector = new Vector3d((int) posX, (int) posY, (int) posZ);
+        targetVectorHeading = new Vector2f(yaw, pitch);
         return true;
     }
 
 
-    public Vec3d getHeading() {
-        return new Vec3d(Math.sin(this.swimYaw * (Math.PI / 180.0)), Math.sin(this.swimPitch * (Math.PI / 180.0)), Math.cos(this.swimYaw * (Math.PI / 180.0))).normalize();
+    public Vector3d getHeading() {
+        return new Vector3d(Math.sin(this.swimYaw * (Math.PI / 180.0)), Math.sin(this.swimPitch * (Math.PI / 180.0)), Math.cos(this.swimYaw * (Math.PI / 180.0))).normalize();
     }
 
     public void setRandomTargetHeadingForce(int maxTimes) {
@@ -295,7 +295,7 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
     public boolean setRandomTargetHeading() {
         boolean result = false;
         int dist = 16;
-        Vec3d randBlock = new Vec3d(getPosX() + randFlip(dist), getPosY() + randFlip(dist/2), getPosZ() + randFlip(dist));
+        Vector3d randBlock = new Vector3d(getPosX() + randFlip(dist), getPosY() + randFlip(dist/2), getPosZ() + randFlip(dist));
 
         result = this.setTargetHeading(randBlock.x, randBlock.y, randBlock.z, true);
 
@@ -322,9 +322,9 @@ public abstract class TropicraftFishEntity extends WaterMobEntity {
         float pitch = (float) (-((Math.atan2(y, MathHelper.sqrt(x * x + z * z)) * 180D) / Math.PI));
 
         if (targetVector == null) {
-            targetVector = new Vec3d(ent.getPosX(), ent.getPosY() - 5 + rand.nextInt(10), ent.getPosZ());
+            targetVector = new Vector3d(ent.getPosX(), ent.getPosY() - 5 + rand.nextInt(10), ent.getPosZ());
         }
-        targetVectorHeading = new Vec2f(yaw + 180, -1 * pitch/2);
+        targetVectorHeading = new Vector2f(yaw + 180, -1 * pitch/2);
     }
 
     public int randFlip(int i) {

@@ -16,32 +16,32 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditionalSpawnData {
 
-	public BambooItemFrame(final EntityType<? extends ItemFrameEntity> type, final World world) {
-		super(type, world);
-	}
+    public BambooItemFrame(final EntityType<? extends ItemFrameEntity> type, final World world) {
+        super(type, world);
+    }
 
-	public BambooItemFrame(World worldIn, BlockPos pos, Direction direction) {
-		this(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), worldIn, pos, direction);
-	}
+    public BambooItemFrame(World worldIn, BlockPos pos, Direction direction) {
+        this(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), worldIn, pos, direction);
+    }
 
-	protected BambooItemFrame(final EntityType<? extends BambooItemFrame> type, final World world, final BlockPos pos,
-			final Direction direction) {
-		super(type, world);
-		this.hangingPosition = pos;
-		this.updateFacingWithBoundingBox(direction);
-	}
-	
-	@Override
-	protected void dropItemOrSelf(Entity entityIn, boolean dropSelf) {
-		super.dropItemOrSelf(entityIn, false);
-		if (dropSelf) {
-			this.entityDropItem(TropicraftItems.BAMBOO_ITEM_FRAME.get());
-		}
-	}
+    protected BambooItemFrame(final EntityType<? extends BambooItemFrame> type, final World world, final BlockPos pos,
+            final Direction direction) {
+        super(type, world);
+        this.hangingPosition = pos;
+        this.updateFacingWithBoundingBox(direction);
+    }
+    
+    @Override
+    protected void dropItemOrSelf(Entity entityIn, boolean dropSelf) {
+        super.dropItemOrSelf(entityIn, false);
+        if (dropSelf) {
+            this.entityDropItem(TropicraftItems.BAMBOO_ITEM_FRAME.get());
+        }
+    }
 
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class BambooItemFrame extends ItemFrameEntity implements IEntityAdditiona
         updateFacingWithBoundingBox(Direction.byIndex(additionalData.readByte()));
     }
 
-	@Override
-	public ItemStack getPickedResult(RayTraceResult target) {
-		return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get());
-	}
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(TropicraftItems.BAMBOO_ITEM_FRAME.get());
+    }
 }

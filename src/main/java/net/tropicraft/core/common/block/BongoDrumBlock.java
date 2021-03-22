@@ -25,6 +25,8 @@ import net.tropicraft.core.common.sound.Sounds;
 
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 @Mod.EventBusSubscriber
 public class BongoDrumBlock extends Block {
 

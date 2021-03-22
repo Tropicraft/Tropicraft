@@ -3,7 +3,9 @@ package net.tropicraft.core.common.entity.underdasea;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
@@ -41,10 +43,9 @@ public class SeaUrchinEntity extends EchinodermEntity {
         super(entityTypeIn, worldIn);
     }
 
-    @Override
-    protected void registerAttributes() {
-        super.registerAttributes();
-        getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return WaterMobEntity.func_233666_p_()
+                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0);
     }
 
     @Override
