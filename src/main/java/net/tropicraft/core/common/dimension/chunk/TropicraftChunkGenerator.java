@@ -3,21 +3,21 @@ package net.tropicraft.core.common.dimension.chunk;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.Heightmap.Type;
-import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
 
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 public class TropicraftChunkGenerator extends NoiseChunkGenerator {
     public static final Codec<TropicraftChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> {
@@ -35,6 +35,16 @@ public class TropicraftChunkGenerator extends NoiseChunkGenerator {
         super(biomeProvider, seed, settings);
         this.seed = seed;
         this.volcano = new VolcanoGenerator(seed, biomeProvider);
+
+        // maintain parity with old noise. cursed? very. i'm sorry :(
+        SharedSeedRandom random = new SharedSeedRandom(seed);
+        new OctavesNoiseGenerator(random, IntStream.rangeClosed(-15, 0));
+        new OctavesNoiseGenerator(random, IntStream.rangeClosed(-15, 0));
+        new OctavesNoiseGenerator(random, IntStream.rangeClosed(-7, 0));
+        new PerlinNoiseGenerator(random, IntStream.rangeClosed(-3, 0));
+
+        random.skip(2620);
+        this.field_236082_u_ = new OctavesNoiseGenerator(random, IntStream.rangeClosed(-15, 0));
     }
 
     public static void register() {

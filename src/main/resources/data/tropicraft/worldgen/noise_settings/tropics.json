@@ -30,7 +30,7 @@
   "noise": {
     "random_density_offset": true,
     "density_factor": 1.0,
-    "density_offset": 0.0,
+    "density_offset": 0.03125,
     "simplex_surface_noise": true,
     "bottom_slide": {
       "target": -30,
