@@ -3,7 +3,7 @@
   "package": "net.tropicraft.core.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "tropicraft.refmap.json",
-  "mixins": ["worldgen.DimensionTypeMixin"],
+  "mixins": ["worldgen.WorldSettingsImportMixin"],
   "injectors": {
     "defaultRequire": 1
   },
