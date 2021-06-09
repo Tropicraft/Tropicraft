@@ -196,6 +196,8 @@ public final class TropicraftBiomes {
         generation.withStructure(structures.homeTree);
 
         DefaultBiomeFeatures.withJungleGrass(generation);
+        DefaultBiomeFeatures.withLightBambooVegetation(generation);
+
         features.addRainforestPlants(generation);
 
         MobSpawnInfo.Builder spawns = defaultSpawns();
