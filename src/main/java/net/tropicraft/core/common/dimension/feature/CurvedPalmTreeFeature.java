@@ -48,6 +48,10 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
+        if (world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK) {
+            world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
+        }
+
         final int x = pos.getX(), y = pos.getY(), z = pos.getZ();
 
         int dir = this.pickDirection(world, rand, x, z);

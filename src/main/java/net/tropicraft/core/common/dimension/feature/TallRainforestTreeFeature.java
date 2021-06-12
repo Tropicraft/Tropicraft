@@ -61,11 +61,11 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
             return false;
         }
 
-        setState(world, new BlockPos(i, j, k), Blocks.DIRT.getDefaultState());
-        setState(world, new BlockPos(i - 1, j, k), Blocks.DIRT.getDefaultState());
-        setState(world, new BlockPos(i + 1, j, k), Blocks.DIRT.getDefaultState());
-        setState(world, new BlockPos(i, j, k - 1), Blocks.DIRT.getDefaultState());
-        setState(world, new BlockPos(i, j, k + 1), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i, j - 1, k), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i - 1, j - 1, k), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i + 1, j - 1, k), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i, j - 1, k - 1), Blocks.DIRT.getDefaultState());
+        setState(world, new BlockPos(i, j - 1, k + 1), Blocks.DIRT.getDefaultState());
 
         for (int y = j; y < j + height; y++) {
             placeLog(world, i, y, k);

@@ -43,7 +43,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
 
         final float rockingAngle = getRockingAngle(furniture, partialTicks);;
         if (!MathHelper.epsilonEquals(rockingAngle, 0.0F)) {
-            stack.rotate(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), rockingAngle, true));
+            stack.rotate(new Quaternion(getRockingAxis(), rockingAngle, true));
         }
 
         final int color = furniture.getColor().getColorValue();
@@ -74,18 +74,22 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     
     protected float getRockingAngle(T entity, float partialTicks) {
         float f2 = entity.getTimeSinceHit() - partialTicks;
-        float f3 = entity.getDamage();
+        float f3 = entity.getDamage() - partialTicks;
         if (f3 < 0.0F) {
             f3 = 0.0F;
         }
         if (f2 > 0.0F) {
-            return ((MathHelper.sin(f2) * f2 * f3) / 10F) * (float) entity.getForwardDirection();
+            return ((MathHelper.sin(f2) * f2 * f3) / getRockAmount()) * (float) entity.getForwardDirection();
         }
         return 0;
     }
-    
-    protected boolean rockOnZAxis() {
-        return false;
+
+    protected Vector3f getRockingAxis() {
+        return new Vector3f(1.0F, 0.0F, 1.0F);
+    }
+
+    protected float getRockAmount() {
+        return 10;
     }
 
     @Override
