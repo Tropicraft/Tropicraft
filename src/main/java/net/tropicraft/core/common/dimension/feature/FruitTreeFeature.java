@@ -41,7 +41,7 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 			return false;
 		}
 
-		setDirtAt(world, pos);
+		setDirtAt(world, pos.down());
 
 		for (int y = (pos.getY() - 3) + height; y <= pos.getY() + height; y++) {
 			int presizeMod = y - (pos.getY() + height);

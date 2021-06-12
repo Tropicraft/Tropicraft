@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -34,6 +35,8 @@ public class UpTreeFeature extends RainforestTreeFeature {
         if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
             return false;
         }
+
+        world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
 
         for (int y = j; y < j + height; y++) {
             placeLog(world, i, y, k);

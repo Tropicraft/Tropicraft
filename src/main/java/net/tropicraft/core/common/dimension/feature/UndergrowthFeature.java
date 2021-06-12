@@ -41,6 +41,7 @@ public class UndergrowthFeature extends Feature<NoFeatureConfig> {
             return false;
         }
 
+        world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
         setBlockState(world, pos, TropicraftBlocks.MAHOGANY_LOG.get().getDefaultState());
 
         int count = 0;

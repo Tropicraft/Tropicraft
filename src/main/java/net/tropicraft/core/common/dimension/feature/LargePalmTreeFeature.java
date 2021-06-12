@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -33,6 +34,10 @@ public class LargePalmTreeFeature extends PalmTreeFeature {
 
         if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
             return false;
+        }
+
+        if (world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK) {
+            world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
         }
 
         // Place trunk

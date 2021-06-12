@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -33,6 +34,10 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
 
         if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
             return false;
+        }
+
+        if (world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK) {
+            world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
         }
 
         int i = pos.getX(), j = pos.getY(), k = pos.getZ();

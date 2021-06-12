@@ -22,9 +22,14 @@ public class BeachFloatRenderer extends FurnitureRenderer<BeachFloatEntity> {
     protected void setupTransforms(MatrixStack stack) {
         stack.rotate(Vector3f.YP.rotationDegrees(-180));
     }
-    
+
     @Override
-    protected boolean rockOnZAxis() {
-        return true;
+    protected Vector3f getRockingAxis() {
+        return Vector3f.XP;
+    }
+
+    @Override
+    protected float getRockAmount() {
+        return 25;
     }
 }
