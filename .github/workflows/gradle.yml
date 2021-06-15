@@ -21,3 +21,7 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2.2.3
+      with:
+          path: build/libs/**/*.jar
