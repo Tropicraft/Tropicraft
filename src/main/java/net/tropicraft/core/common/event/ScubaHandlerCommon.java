@@ -11,6 +11,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -35,7 +36,11 @@ public class ScubaHandlerCommon {
 		}
 	}
 	
-	@SubscribeEvent
+	/**
+	 * The event priority ensures it gets called
+	 * after hitbox-altering mods like Morph and Metamorph
+	 */
+	@SubscribeEvent(priority=EventPriority.LOW)
 	public void onTickPlayer(PlayerTickEvent event) {
 		if (!event.type.equals(TickEvent.Type.PLAYER))
 			return;
@@ -45,7 +50,7 @@ public class ScubaHandlerCommon {
 		
 		boolean inLiquid = isInWater(p);
 
-		if(event.phase.equals(Phase.END)) {
+		if(event.phase.equals(Phase.END) && isPlayerHitbox(p)) {
 			if(!inLiquid) {
 				if(d.targetHeight == d.currentHeight) {
 					float f;
@@ -120,6 +125,25 @@ public class ScubaHandlerCommon {
 		}
 		p.height = height;
 	}
+
+	/**
+	 * Whether this is a player hitbox, or a hitbox for something else
+	 * like Metamorph
+	 */
+	public boolean isPlayerHitbox(EntityPlayer p) {
+		if (p.isElytraFlying()) {
+			return p.width == 0.6F && p.height == 0.6F;
+		}
+		else if (p.isPlayerSleeping()) {
+			return p.width == 0.2F && p.height == 0.2F;
+		}
+		else if (p.isSneaking()) {
+			return p.width == 0.6F && p.height == 1.65F;
+		}
+		else {
+			return p.width == 0.6F && p.height == 1.8F;
+		}
+	}
 	
 	public float lerp(float x1, float x2, float t) {
 		float f = MathHelper.wrapDegrees(x2 - x1);
@@ -147,7 +171,7 @@ public class ScubaHandlerCommon {
 	}
 	
 	public boolean isInWater(EntityPlayer p, double offsetX, double offsetY, double offsetZ) {
-		return p.world.isAABBInMaterial(p.getEntityBoundingBox().offset(offsetX, offsetY, offsetZ), Material.WATER);
+		return p.world.isMaterialInBB(p.getEntityBoundingBox().offset(offsetX, offsetY, offsetZ), Material.WATER);
 	}
 	
 	public boolean isInWater(EntityPlayer p) {
