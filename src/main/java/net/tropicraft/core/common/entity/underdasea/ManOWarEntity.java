@@ -180,18 +180,6 @@ public class ManOWarEntity extends WaterMobEntity {
     }
 
     @Override
-    public void onDeath(DamageSource d) {
-        super.onDeath(d);
-        if (!this.world.isRemote) {
-            int numDrops = 3 + this.rand.nextInt(1);
-
-            for (int i = 0; i < numDrops; i++) {
-                entityDropItem(Items.SLIME_BALL, 1);
-            }
-        }
-    }
-
-    @Override
     public int getTalkInterval() {
         return 120;
     }

@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:poison_frog_skin"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:entity_properties",
+          "predicate": {
+            "nbt": "{Type:0}",
+            "flags": {
+              "is_baby": false
+            }
+          },
+          "entity": "this"
+        }
+      ]
+    },
+    {
+      "rolls": 2,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tropicraft:frog_leg"
+        }
+      ]
+    }
+  ]
+}
