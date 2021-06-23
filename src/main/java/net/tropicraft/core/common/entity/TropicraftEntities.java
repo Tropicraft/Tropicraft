@@ -440,7 +440,7 @@ public class TropicraftEntities {
         event.put(KOA_HUNTER.get(), EntityKoaBase.createAttributes().create());
         event.put(TROPI_CREEPER.get(), TropiCreeperEntity.createAttributes().create());
         event.put(IGUANA.get(), IguanaEntity.createAttributes().create());
-        event.put(TROPI_SKELLY.get(), TropiSkellyEntity.func_233666_p_().create());
+        event.put(TROPI_SKELLY.get(), TropiSkellyEntity.createAttributes().create());
         event.put(EIH.get(), EIHEntity.createAttributes().create());
         event.put(SEA_TURTLE.get(), SeaTurtleEntity.func_234228_eK_().create());
         event.put(MARLIN.get(), MarlinEntity.createAttributes().create());
