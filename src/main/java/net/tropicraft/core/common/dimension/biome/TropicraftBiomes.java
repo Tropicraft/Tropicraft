@@ -98,7 +98,7 @@ public final class TropicraftBiomes {
         Biome.Category category = event.getCategory();
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
 
-        if (category == Biome.Category.BEACH) {
+        if (category == Biome.Category.BEACH && event.getClimate().precipitation != Biome.RainType.SNOW) {
             generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
                     TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
                             .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)

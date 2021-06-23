@@ -32,7 +32,7 @@ public class Drink {
         }
 
         private boolean isSunset(World world) {
-            long timeDay = world.getDayTime();
+            long timeDay = world.getDayTime() % 24000;
             return timeDay > 12200 && timeDay < 14000;
         }
     }).setAlwaysEdible(true);
