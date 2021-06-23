@@ -1,7 +1,5 @@
 package net.tropicraft.core.common;
 
-import java.util.function.Function;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
@@ -9,6 +7,8 @@ import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.Constants;
+
+import java.util.function.Function;
 
 public class TropicraftTags {
 
@@ -98,8 +98,6 @@ public class TropicraftTags {
 
         public static final INamedTag<Item> LEATHER = modTag("leather");
         
-        public static final INamedTag<Item> FISHES = modTag("fishes");
-
         public static final INamedTag<Item> SHELLS = modTag("shells");
 
         public static final INamedTag<Item> ASHEN_MASKS = modTag("ashen_masks");
