@@ -373,7 +373,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
                 .texture("dirt", mcLoc("block/dirt"))
                 .texture("particle", modBlockLoc("bamboo_side"));
         if (!isVanilla) {
-            model.texture("plant", flower instanceof TropicsFlowerBlock ? modLoc(ModelProvider.BLOCK_FOLDER + "/flower/" + name(flower.delegate)) : blockTexture(flower));
+            if (flower instanceof TropicsFlowerBlock) {
+                model.texture("plant", modLoc(ModelProvider.BLOCK_FOLDER + "/flower/" + name(flower.delegate)));
+            } else if (flower instanceof TallFlowerBlock) {
+                model.texture("plant", modLoc(ModelProvider.BLOCK_FOLDER + "/"+ name(flower.delegate) + "_top"));
+            } else {
+                model.texture("plant", blockTexture(flower));
+            }
         }
         simpleBlock(full, model);
     }

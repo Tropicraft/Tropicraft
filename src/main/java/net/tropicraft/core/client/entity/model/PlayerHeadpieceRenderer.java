@@ -23,29 +23,18 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 		this.yOffset = yOffset;
 		renderer = new TropicraftSpecialRenderHelper();
 	}
-	
-	private float rotationYaw;
-	private float rotationPitch;
-	private boolean sneaking;
-
-	@Override
-	public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.rotationYaw = netHeadYaw;
-		this.rotationPitch = headPitch;
-		this.sneaking = entityIn.isCrouching();
-	}
 
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		stack.push();
 
-		if (sneaking) {
+		if (isSneak) {
 			stack.translate(0, 0.25f, 0);
 		}
 
 		// Set head rotation to mask
-		stack.rotate(Vector3f.YP.rotationDegrees(rotationYaw));
-		stack.rotate(Vector3f.XP.rotationDegrees(rotationPitch));
+		stack.rotate(Vector3f.YP.rotation(bipedHead.rotateAngleY));
+		stack.rotate(Vector3f.XP.rotation(bipedHead.rotateAngleX));
 
 		// Flip mask to face away from the player
 		stack.rotate(Vector3f.YP.rotationDegrees(180));

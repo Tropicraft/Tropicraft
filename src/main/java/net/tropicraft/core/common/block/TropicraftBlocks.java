@@ -1,36 +1,8 @@
 package net.tropicraft.core.common.block;
 
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.TallFlowerBlock;
-import net.minecraft.block.TrapDoorBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
@@ -51,6 +23,13 @@ import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TropicraftBlocks {
     
@@ -224,6 +203,7 @@ public class TropicraftBlocks {
     @SuppressWarnings("unchecked")
     private static final Set<RegistryObject<? extends Block>> POTTABLE_PLANTS = ImmutableSet.<RegistryObject<? extends Block>>builder()
             .add(PALM_SAPLING, MAHOGANY_SAPLING, GRAPEFRUIT_SAPLING, LEMON_SAPLING, LIME_SAPLING, ORANGE_SAPLING)
+            .add(IRIS)
             .addAll(FLOWERS.values())
             .build();
     
