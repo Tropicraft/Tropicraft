@@ -407,9 +407,9 @@ public class TropicraftEntities {
         registerLandSpawn(SEA_TURTLE.get(), SeaTurtleEntity::canSpawnOnLand);
         registerLandSpawn(TREE_FROG.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(V_MONKEY.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(ASHEN.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(COWKTAIL.get(), TropicraftEntities::canAnimalSpawn);
 
+        registerLandSpawn(ASHEN.get(), MobEntity::canSpawnOn);
         registerLandSpawn(FAILGULL.get(), MobEntity::canSpawnOn);
         registerLandSpawn(TROPI_BEE.get(), MobEntity::canSpawnOn);
         // TODO tropibee, or from nests?
