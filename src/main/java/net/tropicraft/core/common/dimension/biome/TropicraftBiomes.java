@@ -96,32 +96,38 @@ public final class TropicraftBiomes {
         }
 
         Biome.Category category = event.getCategory();
+
+        Biome.RainType precipitation = event.getClimate().precipitation;
+        if (precipitation == Biome.RainType.SNOW) {
+            return;
+        }
+
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
 
-        if (category == Biome.Category.BEACH && event.getClimate().precipitation != Biome.RainType.SNOW) {
+        if (category == Biome.Category.BEACH) {
             generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
                     TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
                             .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.1F, 1)))
+                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, 1)))
             );
             generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
                     TropicraftFeatures.CURVED_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
                             .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.1F, 1)))
+                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, 1)))
             );
             generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
                     TropicraftFeatures.LARGE_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE)
                             .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.1F, 1)))
+                            .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.08F, 1)))
             );
         } else if (category == Biome.Category.JUNGLE) {
             SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.PINEAPPLE.get().getDefaultState());
             generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION,
                     Feature.RANDOM_PATCH.withConfiguration(new BlockClusterFeatureConfig.Builder(state, new DoublePlantBlockPlacer())
-                            .tries(64)
-                            .preventProjection()
+                            .tries(6)
+                            .replaceable()
                             .build()
-                    ).withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+                    ).withPlacement(Features.Placements.PATCH_PLACEMENT)
             );
         }
     }
