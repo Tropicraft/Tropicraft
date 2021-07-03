@@ -24,23 +24,29 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
 
 import java.util.UUID;
 
-import net.minecraft.item.Item.Properties;
-
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
 
     private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = new ResourceLocation(Constants.MODID, "textures/gui/goggles.png");
-    
+
+    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, Constants.MODID);
+
     // This is never registered to any entities, so it's not used in any logic
     // Just here for the nice tooltip
-    private static final Attribute UNDERWATER_VISIBILITY = new RangedAttribute(TropicraftLangKeys.SCUBA_VISIBILITY_STAT.getKey(), 0, -1, 1);
+    private static final RegistryObject<Attribute> UNDERWATER_VISIBILITY = ATTRIBUTES.register(
+            "underwater_visibility",
+            () -> new RangedAttribute(TropicraftLangKeys.SCUBA_VISIBILITY_STAT.getKey(), 0, -1, 1)
+    );
     private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(UUID.fromString("b09a907f-8264-455b-af81-997c06aa2268"), Constants.MODID + ".underwater.visibility", 0.25, Operation.MULTIPLY_BASE);
 
     private final Multimap<Attribute, AttributeModifier> boostedModifiers;
@@ -50,7 +56,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
 
         this.boostedModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
                 .putAll(super.getAttributeModifiers(EquipmentSlotType.HEAD, new ItemStack(this)))
-                .put(UNDERWATER_VISIBILITY, VISIBILITY_BOOST)
+                .put(UNDERWATER_VISIBILITY.get(), VISIBILITY_BOOST)
                 .build();
     }
     
