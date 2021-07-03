@@ -19,6 +19,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.LazyValue;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,15 +50,18 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     );
     private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(UUID.fromString("b09a907f-8264-455b-af81-997c06aa2268"), Constants.MODID + ".underwater.visibility", 0.25, Operation.MULTIPLY_BASE);
 
-    private final Multimap<Attribute, AttributeModifier> boostedModifiers;
+    private final LazyValue<Multimap<Attribute, AttributeModifier>> boostedModifiers;
 
     public ScubaGogglesItem(ScubaType type, Properties builder) {
         super(type, EquipmentSlotType.HEAD, builder);
 
-        this.boostedModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
-                .putAll(super.getAttributeModifiers(EquipmentSlotType.HEAD, new ItemStack(this)))
-                .put(UNDERWATER_VISIBILITY.get(), VISIBILITY_BOOST)
-                .build();
+        // lazily initialize because attributes are registered after items
+        this.boostedModifiers = new LazyValue<>(() ->
+                ImmutableMultimap.<Attribute, AttributeModifier>builder()
+                        .putAll(super.getAttributeModifiers(EquipmentSlotType.HEAD, new ItemStack(this)))
+                        .put(UNDERWATER_VISIBILITY.get(), VISIBILITY_BOOST)
+                        .build()
+        );
     }
     
     // Taken from ForgeIngameGui#renderPumpkinOverlay
@@ -111,7 +115,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.HEAD) {
-            return boostedModifiers;
+            return boostedModifiers.getValue();
         } else {
             return super.getAttributeModifiers(slot, stack);
         }
