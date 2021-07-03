@@ -57,6 +57,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.IColoredItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.item.scuba.ScubaData;
+import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -94,6 +95,7 @@ public class Tropicraft {
         TropicraftBlocks.BLOCKS.register(modBus);
         TropicraftBlocks.BLOCKITEMS.register(modBus);
         TropicraftItems.ITEMS.register(modBus);
+        ScubaGogglesItem.ATTRIBUTES.register(modBus);
         MixerRecipes.addMixerRecipes();
         TropicraftTileEntityTypes.TILE_ENTITIES.register(modBus);
         TropicraftEntities.ENTITIES.register(modBus);
