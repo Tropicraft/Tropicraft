@@ -80,7 +80,9 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
                 BAMBOO_FENCE, CHUNK_FENCE, THATCH_FENCE);
         createAndAppend(TropicraftTags.Blocks.WALLS, BlockTags.WALLS,
                 CHUNK_WALL);
-        
+
+        createAndAppend(TropicraftTags.Blocks.CLIMBABLE, BlockTags.CLIMBABLE, BAMBOO_LADDER);
+
         // Flower pots
         createAndAppend(TropicraftTags.Blocks.FLOWER_POTS, BlockTags.FLOWER_POTS,
                 Stream.concat(BAMBOO_POTTED_TROPICS_PLANTS.stream(), Stream.concat(BAMBOO_POTTED_VANILLA_PLANTS.stream(), VANILLA_POTTED_TROPICS_PLANTS.stream()))
