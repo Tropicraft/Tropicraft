@@ -38,7 +38,7 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
                         mutablePos.move(direction);
                         BlockState attaching = world.getBlockState(mutablePos);
                         if ((attaching.getBlock() == Blocks.GRASS_BLOCK && rand.nextInt(4) == 0) || attaching.isIn(BlockTags.LEAVES)) {
-                            if (direction != Direction.DOWN && VineBlock.hasEnoughSolidSide(world, mutablePos, direction)) {
+                            if (direction != Direction.DOWN && VineBlock.canAttachTo(world, mutablePos, direction)) {
                                 mutablePos.move(direction.getOpposite());
                                 int len = rand.nextInt(3) + 2;
                                 for (int j = 0; j < len && world.isAirBlock(mutablePos); j++) {
