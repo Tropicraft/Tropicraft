@@ -13,7 +13,7 @@ public final class TropicraftAddSubBiomesLayer implements IC0Transformer {
 	}
 
 	public static TropicraftAddSubBiomesLayer rainforest(TropicraftBiomeIds biomeIds) {
-		return new TropicraftAddSubBiomesLayer(biomeIds.rainforestPlains, new int[] { biomeIds.rainforestHills, biomeIds.rainforestMountains });
+		return new TropicraftAddSubBiomesLayer(biomeIds.rainforestPlains, new int[] { biomeIds.rainforestPlains, biomeIds.rainforestHills, biomeIds.rainforestMountains });
 	}
 
 	@Override
