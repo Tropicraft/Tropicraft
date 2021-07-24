@@ -159,7 +159,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
         currentSiftTime = SIFT_TIME;
 
         if (!world.isRemote) {
-            TropicraftPackets.sendToDimension(new MessageSifterStart(this), world.getDimensionKey());
+            TropicraftPackets.sendToDimension(new MessageSifterStart(this), world);
         }
     }
 
@@ -221,7 +221,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
 
     protected void syncInventory() {
         if (!world.isRemote()) {
-            TropicraftPackets.sendToDimension(new MessageSifterInventory(this), world.getDimensionKey());
+            TropicraftPackets.sendToDimension(new MessageSifterInventory(this), world);
         }
     }
 

@@ -119,7 +119,7 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
         this.ticks = 0;
         this.mixing = true;
         if (!world.isRemote) {
-            TropicraftPackets.sendToDimension(new MessageMixerStart(this), world.getDimensionKey());
+            TropicraftPackets.sendToDimension(new MessageMixerStart(this), world);
         }
     }
     
@@ -278,7 +278,7 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
 
     protected void syncInventory() {
         if (!world.isRemote) {
-            TropicraftPackets.sendToDimension(new MessageMixerInventory(this), world.getDimensionKey());
+            TropicraftPackets.sendToDimension(new MessageMixerInventory(this), world);
         }
     }
 
