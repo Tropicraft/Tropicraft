@@ -9,6 +9,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.network.message.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TropicraftPackets {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -17,6 +19,8 @@ public class TropicraftPackets {
             Tropicraft::isCompatibleVersion,
             Tropicraft::isCompatibleVersion
     );
+
+    private static final Logger LOGGER = LogManager.getLogger(TropicraftPackets.class);
 
     private static int messageID = 0;
 
@@ -33,7 +37,13 @@ public class TropicraftPackets {
         INSTANCE.registerMessage(getUniqueId(), MessageUpdateScubaData.class, MessageUpdateScubaData::encode, MessageUpdateScubaData::decode, MessageUpdateScubaData::handle);
     }
 
-    public static void sendToDimension(final TropicraftMessage msg, final RegistryKey<World> dimType) {
-        INSTANCE.send(PacketDistributor.DIMENSION.with(() -> dimType), msg);
+    public static void sendToDimension(final TropicraftMessage msg, final World world) {
+        RegistryKey<World> dimension = world.getDimensionKey();
+        if (world.isRemote()) {
+            LOGGER.warn("Attempted to send packet to dimension on client world", new RuntimeException());
+            return;
+        }
+
+        INSTANCE.send(PacketDistributor.DIMENSION.with(() -> dimension), msg);
     }
 }
