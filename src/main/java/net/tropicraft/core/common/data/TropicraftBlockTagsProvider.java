@@ -51,7 +51,7 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
         
         // Logs & Planks
         createAndAppend(TropicraftTags.Blocks.LOGS, BlockTags.LOGS,
-                PALM_LOG, MAHOGANY_LOG);
+                PALM_LOG, MAHOGANY_LOG, MANGROVE_LOG);
         createAndAppend(TropicraftTags.Blocks.PLANKS, BlockTags.PLANKS,
                 PALM_PLANKS, MAHOGANY_PLANKS);
         

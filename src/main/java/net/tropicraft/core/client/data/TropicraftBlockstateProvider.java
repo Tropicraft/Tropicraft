@@ -93,12 +93,16 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         
         logBlock(TropicraftBlocks.MAHOGANY_LOG.get());
         logBlock(TropicraftBlocks.PALM_LOG.get());
-        
+
         ResourceLocation mahoganyBark = blockTexture(TropicraftBlocks.MAHOGANY_LOG.get());
         axisBlock(TropicraftBlocks.MAHOGANY_WOOD.get(), mahoganyBark, mahoganyBark);
         ResourceLocation palmBark = blockTexture(TropicraftBlocks.PALM_LOG.get());
         axisBlock(TropicraftBlocks.PALM_WOOD.get(), palmBark, palmBark);
-        
+
+        logBlock(TropicraftBlocks.MANGROVE_LOG.get());
+        ResourceLocation mangroveBark = blockTexture(TropicraftBlocks.MANGROVE_LOG.get());
+        axisBlock(TropicraftBlocks.MANGROVE_WOOD.get(), mangroveBark, mangroveBark);
+
         // Stairs & Slabs
         stairsBlock(TropicraftBlocks.BAMBOO_STAIRS, "bamboo_side", "bamboo_end");
         stairsBlock(TropicraftBlocks.THATCH_STAIRS, "thatch_side", "thatch_end");

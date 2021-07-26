@@ -1,0 +1,29 @@
+{
+  "textures": {
+    "particle": "#appendages"
+  },
+  "elements": [
+    {
+      "name": "plane",
+      "from": [0, 0, 8],
+      "to": [16, 16, 8],
+      "rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#appendages"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#appendages"}
+      }
+    },
+    {
+      "name": "plane",
+      "from": [0, 0, 8],
+      "to": [16, 16, 8],
+      "rotation": {"angle": -45, "axis": "y", "origin": [8, 0, 8]},
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#appendages"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#appendages"}
+      }
+    }
+  ]
+}

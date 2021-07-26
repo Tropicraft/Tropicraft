@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:block/mangrove_roots/appendages",
+  "textures": {
+    "appendages": "tropicraft:block/mangrove_roots_appendages_high_short"
+  }
+}
