@@ -133,6 +133,20 @@ public class TropicraftBlocks {
     public static final RegistryObject<SaplingBlock> PALM_SAPLING = register(
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
 
+    public static final RegistryObject<RotatedPillarBlock> MANGROVE_LOG = register("mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
+    public static final RegistryObject<RotatedPillarBlock> MANGROVE_WOOD = register("mangrove_wood", Builder.wood(MaterialColor.GRAY));
+
+    public static final RegistryObject<Block> MANGROVE_ROOTS = register("mangrove_roots",
+            () -> new MangroveRootsBlock(
+                    Block.Properties.create(Material.WOOD)
+                            .hardnessAndResistance(2.0f)
+                            .harvestTool(ToolType.AXE)
+                            .sound(SoundType.WOOD)
+                            .notSolid()
+                            .setOpaque((state, world, pos) -> false)
+            )
+    );
+
     public static final RegistryObject<FenceBlock> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
     public static final RegistryObject<FenceBlock> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
     public static final RegistryObject<FenceBlock> CHUNK_FENCE = register("chunk_fence", Builder.fence(CHUNK));

@@ -1,37 +1,16 @@
 package net.tropicraft.core.common.data;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
-import net.minecraft.block.Block;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.block.DoublePlantBlock;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.block.SlabBlock;
+import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
-import net.minecraft.loot.ConstantRange;
-import net.minecraft.loot.ItemLootEntry;
-import net.minecraft.loot.LootParameterSet;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.RandomValueRange;
-import net.minecraft.loot.ValidationTracker;
+import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.BlockStateProperty;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.conditions.MatchTool;
@@ -44,6 +23,13 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.TropicraftItems;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class TropicraftLootTableProvider extends LootTableProvider {
 
@@ -111,6 +97,10 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             
             dropsSelf(TropicraftBlocks.MAHOGANY_WOOD);
             dropsSelf(TropicraftBlocks.PALM_WOOD);
+
+            dropsSelf(TropicraftBlocks.MANGROVE_LOG);
+            dropsSelf(TropicraftBlocks.MANGROVE_WOOD);
+            dropsSelf(TropicraftBlocks.MANGROVE_ROOTS);
             
             // Stairs & Slabs
             dropsSelf(TropicraftBlocks.BAMBOO_STAIRS);
