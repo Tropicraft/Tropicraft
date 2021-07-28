@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
+import net.tropicraft.core.common.dimension.feature.tree.RainforestVinesFeature;
 
 import java.util.Random;
 

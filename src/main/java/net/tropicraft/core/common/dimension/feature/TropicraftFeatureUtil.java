@@ -38,7 +38,7 @@ public class TropicraftFeatureUtil {
         return true;
     }
     
-    protected static boolean isSoil(final IWorld world, final BlockPos pos) {
+    public static boolean isSoil(final IWorld world, final BlockPos pos) {
         final BlockState blockState = world.getBlockState(pos);
         final Block block = blockState.getBlock();
         return block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.GRASS_BLOCK || block == Blocks.PODZOL;

@@ -1,4 +1,4 @@
-package net.tropicraft.core.common.dimension.feature;
+package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;

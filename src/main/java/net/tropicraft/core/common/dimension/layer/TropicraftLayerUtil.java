@@ -37,7 +37,8 @@ public class TropicraftLayerUtil {
         IAreaFactory<T> biomeLayerGen = new TropicraftBiomesLayer(biomeIds).apply(context.apply(15), addIslandLayer);
         IAreaFactory<T> oceanLayerGen = TropicraftAddWeightedSubBiomesLayer.ocean(biomeIds).apply(context.apply(16), biomeLayerGen);
         IAreaFactory<T> hillsLayerGen = TropicraftAddSubBiomesLayer.rainforest(biomeIds).apply(context.apply(17), oceanLayerGen);
-        zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2002), hillsLayerGen);
+        IAreaFactory<T> mangroveLayer = new TropicraftMangroveLayer(biomeIds, 5).apply(context.apply(18), hillsLayerGen);
+        zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2002), mangroveLayer);
 
         IAreaFactory<T> riverLayer = zoomLayer;
         riverLayer = new TropicraftRiverInitLayer(biomeIds).apply(context.apply(12), riverLayer);

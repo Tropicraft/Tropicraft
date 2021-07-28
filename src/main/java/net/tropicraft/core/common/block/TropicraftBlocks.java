@@ -144,6 +144,7 @@ public class TropicraftBlocks {
                             .sound(SoundType.WOOD)
                             .notSolid()
                             .setOpaque((state, world, pos) -> false)
+                            .setNeedsPostProcessing((state, world, pos) -> true)
             )
     );
 

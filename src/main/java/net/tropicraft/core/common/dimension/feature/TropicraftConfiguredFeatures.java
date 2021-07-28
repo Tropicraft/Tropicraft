@@ -11,6 +11,7 @@ import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.CaveEdgeConfig;
 import net.minecraft.world.gen.placement.Placement;
@@ -24,7 +25,9 @@ import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFr
 import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
+import net.tropicraft.core.common.dimension.feature.tree.MangroveTrunkPlacer;
 
+import java.util.OptionalInt;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -43,6 +46,8 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> rainforestTallTree;
     public final ConfiguredFeature<?, ?> rainforestVines;
     public final ConfiguredFeature<?, ?> eih;
+    public final ConfiguredFeature<?, ?> shortMangrove;
+    public final ConfiguredFeature<?, ?> tallMangrove;
 
     public final ConfiguredFeature<?, ?> pineapplePatch;
     public final ConfiguredFeature<?, ?> tropicsFlowers;
@@ -97,6 +102,34 @@ public final class TropicraftConfiguredFeatures {
         this.rainforestTallTree = features.sparseTree("rainforest_tall_tree", TropicraftFeatures.TALL_TREE, IFeatureConfig.NO_FEATURE_CONFIG, 0.5F);
         this.rainforestVines = features.register("rainforest_vines", TropicraftFeatures.VINES,
                 f -> f.withConfiguration(new RainforestVinesConfig()).square().count(50)
+        );
+
+        this.shortMangrove = features.tree("short_mangrove",
+                new BaseTreeFeatureConfig.Builder(
+                        new SimpleBlockStateProvider(TropicraftBlocks.MANGROVE_LOG.get().getDefaultState()),
+                        new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
+                        new FancyFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(4), 4),
+                        new MangroveTrunkPlacer(5, 3, 0, TropicraftBlocks.MANGROVE_ROOTS.get()),
+                        new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+                )
+                        .setMaxWaterDepth(1)
+                        .setIgnoreVines()
+                        .build(),
+                2, 0.6F, 1
+        );
+
+        this.tallMangrove = features.tree("tall_mangrove",
+                new BaseTreeFeatureConfig.Builder(
+                        new SimpleBlockStateProvider(TropicraftBlocks.MANGROVE_LOG.get().getDefaultState()),
+                        new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
+                        new FancyFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(4), 4),
+                        new MangroveTrunkPlacer(7, 4, 4, TropicraftBlocks.MANGROVE_ROOTS.get()),
+                        new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+                )
+                        .setMaxWaterDepth(2)
+                        .setIgnoreVines()
+                        .build(),
+                1, 0.8F, 1
         );
 
         this.eih = features.noConfig("eih", TropicraftFeatures.EIH,
@@ -230,6 +263,11 @@ public final class TropicraftConfiguredFeatures {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.rainforestVines);
     }
 
+    public void addMangroveTrees(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.shortMangrove);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.tallMangrove);
+    }
+
     public void addPineapples(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.pineapplePatch);
     }
@@ -290,6 +328,14 @@ public final class TropicraftConfiguredFeatures {
             return this.register(id, feature, f -> {
                 return f.withConfiguration(config).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
                         .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, chance, 1)));
+            });
+        }
+
+        public <F extends Feature<?>> ConfiguredFeature<?, ?> tree(String id, BaseTreeFeatureConfig config, int count, float extraChance, int extraCount) {
+            return this.register(id, Feature.TREE, feature -> {
+                return feature.withConfiguration(config)
+                        .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+                        .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(count, extraChance, extraCount)));
             });
         }
 
