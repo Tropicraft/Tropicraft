@@ -47,6 +47,7 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> RAINFOREST_ISLAND_MOUNTAINS = key("rainforest_island_mountains");
     public static final RegistryKey<Biome> TROPICS_RIVER = key("tropics_river");
     public static final RegistryKey<Biome> TROPICS_BEACH = key("tropics_beach");
+    public static final RegistryKey<Biome> MANGROVES = key("mangroves");
 
     private static RegistryKey<Biome> key(String id) {
         return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, new ResourceLocation(Constants.MODID, id));
@@ -63,6 +64,8 @@ public final class TropicraftBiomes {
     public final Biome kelpForest;
 
     public final Biome tropicsRiver;
+
+    public final Biome mangroves;
 
     private final TropicraftConfiguredFeatures features;
     private final TropicraftConfiguredStructures structures;
@@ -86,6 +89,8 @@ public final class TropicraftBiomes {
         this.kelpForest = worldgen.register(KELP_FOREST, createKelpForest());
 
         this.tropicsRiver = worldgen.register(TROPICS_RIVER, createTropicsRiver());
+
+        this.mangroves = worldgen.register(MANGROVES, createMangroves());
     }
 
     @SubscribeEvent
@@ -280,6 +285,62 @@ public final class TropicraftBiomes {
                 .build();
     }
 
+    private Biome createTropicsRiver() {
+        BiomeGenerationSettings.Builder generation = defaultGeneration()
+                .withSurfaceBuilder(surfaces.sandy);
+
+        carvers.addLand(generation);
+
+        features.addTropicsFlowers(generation);
+
+        MobSpawnInfo.Builder spawns = defaultSpawns();
+        addRiverWaterCreatures(spawns);
+
+        return new Biome.Builder()
+                .precipitation(Biome.RainType.RAIN)
+                .depth(-0.7F).scale(0.05F)
+                .temperature(1.5F).downfall(1.25F)
+                .category(Biome.Category.RIVER)
+                .withGenerationSettings(generation.build())
+                .withMobSpawnSettings(spawns.build())
+                .setEffects(defaultAmbience().build())
+                .build();
+    }
+
+    private Biome createMangroves() {
+        BiomeGenerationSettings.Builder generation = defaultGeneration()
+                .withSurfaceBuilder(surfaces.tropics);
+
+        carvers.addLand(generation);
+
+        features.addTropicsFlowers(generation);
+        features.addMangroveTrees(generation);
+
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SEAGRASS_SWAMP);
+
+        DefaultBiomeFeatures.withBadlandsGrass(generation);
+        DefaultBiomeFeatures.withTallGrass(generation);
+
+        MobSpawnInfo.Builder spawns = defaultSpawns();
+        spawns.withSpawner(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(TropicraftEntities.FAILGULL.get(), 10, 5, 15));
+        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TropicraftEntities.TREE_FROG.get(), 4, 4, 4));
+
+        addRiverWaterCreatures(spawns);
+
+        BiomeAmbience.Builder ambience = defaultAmbience();
+        ambience.setWaterColor(0x66C197).setWaterFogColor(0x0C3522);
+
+        return new Biome.Builder()
+                .precipitation(Biome.RainType.RAIN)
+                .depth(-0.2F).scale(0.0F)
+                .temperature(2.0F).downfall(1.5F)
+                .category(Biome.Category.SWAMP)
+                .withGenerationSettings(generation.build())
+                .withMobSpawnSettings(spawns.build())
+                .setEffects(ambience.build())
+                .build();
+    }
+
     private void addOceanWaterCreatures(MobSpawnInfo.Builder spawns) {
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(TropicraftEntities.MARLIN.get(), 10, 1, 4));
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(TropicraftEntities.MAN_O_WAR.get(), 2, 1, 1));
@@ -293,30 +354,12 @@ public final class TropicraftBiomes {
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(TropicraftEntities.HAMMERHEAD.get(), 2, 1, 1));
     }
 
-    private Biome createTropicsRiver() {
-        BiomeGenerationSettings.Builder generation = defaultGeneration()
-                .withSurfaceBuilder(surfaces.sandy);
-
-        carvers.addLand(generation);
-
-        features.addTropicsFlowers(generation);
-
-        MobSpawnInfo.Builder spawns = defaultSpawns();
+    private void addRiverWaterCreatures(MobSpawnInfo.Builder spawns) {
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(TropicraftEntities.PIRANHA.get(), 20, 1, 12));
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(TropicraftEntities.RIVER_SARDINE.get(), 20, 1, 8));
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(EntityType.SQUID, 8, 1, 4));
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(EntityType.COD, 4, 1, 5));
         spawns.withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(EntityType.SALMON, 4, 1, 5));
-
-        return new Biome.Builder()
-                .precipitation(Biome.RainType.RAIN)
-                .depth(-0.7F).scale(0.05F)
-                .temperature(1.5F).downfall(1.25F)
-                .category(Biome.Category.RIVER)
-                .withGenerationSettings(generation.build())
-                .withMobSpawnSettings(spawns.build())
-                .setEffects(defaultAmbience().build())
-                .build();
     }
 
     private BiomeGenerationSettings.Builder defaultGeneration() {

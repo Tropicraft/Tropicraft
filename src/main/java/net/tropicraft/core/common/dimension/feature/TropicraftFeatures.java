@@ -20,6 +20,7 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.SinkInGroundProcessor
 import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.SteepPathProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
+import net.tropicraft.core.common.dimension.feature.tree.*;
 
 import java.util.function.Supplier;
 

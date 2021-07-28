@@ -36,6 +36,8 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+    private static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
+
     public MangroveRootsBlock(Block.Properties properties) {
         super(properties);
         this.setDefaultState(this.getStateContainer().getBaseState()
@@ -45,6 +47,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
                 .with(EAST, Connection.NONE)
                 .with(SOUTH, Connection.NONE)
                 .with(WEST, Connection.NONE)
+                .with(WATERLOGGED, false)
         );
     }
 
@@ -119,7 +122,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
                 .with(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
                 .with(WEST, this.getConnectionFor(world, pos, Direction.WEST));
 
-        if (this.getConnectionCount(state) < 2 && !world.getBlockState(pos.up()).matchesBlock(this)) {
+        if (!this.isTall(state) && !world.getBlockState(pos.up()).matchesBlock(this)) {
             state = state.with(TALL, false)
                     .with(NORTH, state.get(NORTH).shorten())
                     .with(EAST, state.get(EAST).shorten())
@@ -141,7 +144,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
             }
 
             if (adjacentState.matchesBlock(this)) {
-                boolean tall = adjacentState.get(TALL);
+                boolean tall = this.isAdjacentTall(world, adjacentPos, direction.getOpposite());
                 return tall ? Connection.HIGH : Connection.LOW;
             } else {
                 return Connection.HIGH;
@@ -151,21 +154,31 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return Connection.NONE;
     }
 
+    private boolean isAdjacentTall(IBlockReader world, BlockPos pos, Direction sourceDirection) {
+        for (Direction direction : DIRECTIONS) {
+            if (direction != sourceDirection && this.canConnectTo(world, pos.offset(direction), direction)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isTall(BlockState state) {
+        int count = 0;
+        if (state.get(NORTH).exists()) count++;
+        if (state.get(EAST).exists()) count++;
+        if (state.get(SOUTH).exists()) count++;
+        if (state.get(WEST).exists()) count++;
+        return count > 1;
+    }
+
     private boolean canConnectTo(IBlockReader world, BlockPos pos, Direction direction) {
         return this.canConnectTo(world.getBlockState(pos), world, pos, direction);
     }
 
     private boolean canConnectTo(BlockState state, IBlockReader world, BlockPos pos, Direction direction) {
         return state.matchesBlock(this) || state.isSolidSide(world, pos, direction);
-    }
-
-    private int getConnectionCount(BlockState state) {
-        int count = 0;
-        if (state.get(NORTH).exists()) count++;
-        if (state.get(EAST).exists()) count++;
-        if (state.get(SOUTH).exists()) count++;
-        if (state.get(WEST).exists()) count++;
-        return count;
     }
 
     private boolean isGrounded(IBlockReader world, BlockPos pos) {
