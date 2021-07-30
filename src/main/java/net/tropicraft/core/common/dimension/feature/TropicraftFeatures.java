@@ -47,6 +47,8 @@ public class TropicraftFeatures {
     public static final RegistryObject<HomeTreeBranchFeature<HomeTreeBranchConfig>> HOME_TREE_BRANCH = register("home_tree_branch", () -> new HomeTreeBranchFeature<>(HomeTreeBranchConfig.CODEC));
     public static final RegistryObject<CoffeePlantFeature> COFFEE_BUSH = register("coffee_bush", () -> new CoffeePlantFeature(NoFeatureConfig.CODEC));
 
+    public static final RegistryObject<ReedsFeature> REEDS = register("reeds", () -> new ReedsFeature(NoFeatureConfig.CODEC));
+
     public static final PlacementBehaviour KOA_PATH = PlacementBehaviour.create("KOA_PATH", Constants.MODID + ":koa_path",
             ImmutableList.of(new SmoothingGravityProcessor(Heightmap.Type.WORLD_SURFACE_WG, -1), new SinkInGroundProcessor(), new SteepPathProcessor(), new StructureSupportsProcessor(false, ImmutableList.of(TropicraftBlocks.BAMBOO_FENCE.getId()))));
 

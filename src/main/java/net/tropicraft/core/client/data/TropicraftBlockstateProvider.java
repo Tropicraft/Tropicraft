@@ -167,7 +167,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         // Misc remaining blocks
         doublePlant(TropicraftBlocks.IRIS);
         doublePlant(TropicraftBlocks.PINEAPPLE);
-        
+
+        reedsBlock(TropicraftBlocks.REEDS);
+
         bongo(TropicraftBlocks.SMALL_BONGO_DRUM);
         bongo(TropicraftBlocks.MEDIUM_BONGO_DRUM);
         bongo(TropicraftBlocks.LARGE_BONGO_DRUM);
@@ -348,6 +350,16 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         getVariantBuilder(block.get())
             .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.LOWER).addModels(new ConfiguredModel(models.cross(name + "_bottom", modBlockLoc(name + "_bottom"))))
             .partialState().with(TallFlowerBlock.HALF, DoubleBlockHalf.UPPER).addModels(new ConfiguredModel(models.cross(name + "_top", modBlockLoc(name + "_top"))));
+    }
+
+    private void reedsBlock(Supplier<? extends ReedsBlock> block) {
+        VariantBlockStateBuilder builder = getVariantBuilder(block.get());
+        for (ReedsBlock.Type type : ReedsBlock.Type.values()) {
+            VariantBlockStateBuilder.PartialBlockstate partialState = builder.partialState().with(ReedsBlock.TYPE, type);
+            for (String texture : type.getTextures()) {
+                partialState.addModels(new ConfiguredModel(models().crop(texture, modBlockLoc(texture))));
+            }
+        }
     }
     
     private void bongo(Supplier<? extends BongoDrumBlock> block) {

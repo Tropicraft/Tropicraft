@@ -166,7 +166,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                 BlockStateProperty.builder(b).fromProperties(
                         StatePropertiesPredicate.Builder.newBuilder().withProp(
                                 DoublePlantBlock.HALF, DoubleBlockHalf.UPPER))));
-            
+
+            dropsSelf(TropicraftBlocks.REEDS);
+
             dropsSelf(TropicraftBlocks.SMALL_BONGO_DRUM);
             dropsSelf(TropicraftBlocks.MEDIUM_BONGO_DRUM);
             dropsSelf(TropicraftBlocks.LARGE_BONGO_DRUM);

@@ -317,6 +317,7 @@ public final class TropicraftBiomes {
         features.addMangroveTrees(generation);
 
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SEAGRASS_SWAMP);
+        features.addMangroveReeds(generation);
 
         DefaultBiomeFeatures.withBadlandsGrass(generation);
         DefaultBiomeFeatures.withTallGrass(generation);

@@ -61,6 +61,8 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> undergroundSeagrassOnDirt;
     public final ConfiguredFeature<?, ?> undergroundSeaPickles;
 
+    public final ConfiguredFeature<?, ?> mangroveReeds;
+
     public final ConfiguredFeature<?, ?> azurite;
     public final ConfiguredFeature<?, ?> eudialyte;
     public final ConfiguredFeature<?, ?> zircon;
@@ -190,6 +192,10 @@ public final class TropicraftConfiguredFeatures {
             return feature.withPlacement(Placement.CARVING_MASK.configure(new CaveEdgeConfig(GenerationStage.Carving.LIQUID, 0.05F)));
         });
 
+        this.mangroveReeds = features.noConfig("mangrove_reeds", TropicraftFeatures.REEDS, feature -> {
+            return feature.count(32).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT);
+        });
+
         this.azurite = features.register("azurite", Feature.ORE, f -> {
             return f.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, TropicraftBlocks.AZURITE_ORE.get().getDefaultState(), 8))
                     .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(100, 0, 128)))
@@ -266,6 +272,10 @@ public final class TropicraftConfiguredFeatures {
     public void addMangroveTrees(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.shortMangrove);
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.tallMangrove);
+    }
+
+    public void addMangroveReeds(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.mangroveReeds);
     }
 
     public void addPineapples(BiomeGenerationSettings.Builder generation) {

@@ -169,6 +169,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
 
         withExistingParent(name(TropicraftBlocks.MANGROVE_ROOTS), modLoc("block/mangrove_roots/stem"));
 
+        blockSprite(TropicraftBlocks.REEDS, modLoc("block/reeds_top_tall"));
+
         // ITEMS
         
         // Gems/Ingots
