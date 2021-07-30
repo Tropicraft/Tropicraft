@@ -6,18 +6,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "condition": "minecraft:inverted",
-              "term": {
-                "condition": "minecraft:block_state_property",
-                "block": "tropicraft:reeds",
-                "properties": {
-                  "type": "top"
-                }
-              }
-            }
-          ],
           "name": "tropicraft:reeds"
         }
       ],
