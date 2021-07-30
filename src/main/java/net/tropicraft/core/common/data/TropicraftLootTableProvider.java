@@ -20,6 +20,7 @@ import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.block.ReedsBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -166,7 +167,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                 BlockStateProperty.builder(b).fromProperties(
                         StatePropertiesPredicate.Builder.newBuilder().withProp(
                                 DoublePlantBlock.HALF, DoubleBlockHalf.UPPER))));
-            
+
+            reedsBlock(TropicraftBlocks.REEDS);
+
             dropsSelf(TropicraftBlocks.SMALL_BONGO_DRUM);
             dropsSelf(TropicraftBlocks.MEDIUM_BONGO_DRUM);
             dropsSelf(TropicraftBlocks.LARGE_BONGO_DRUM);
@@ -234,6 +237,18 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         
         private void doubleBlock(Supplier<? extends Block> block) {
             registerLootTable(block.get(), b -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
+        }
+
+        private void reedsBlock(Supplier<? extends Block> block) {
+            registerLootTable(block.get(), b -> {
+                ILootCondition.IBuilder isTop = BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(ReedsBlock.TYPE, ReedsBlock.Type.TOP));
+                LootPool.Builder pool = LootPool.builder()
+                        .rolls(ConstantRange.of(1))
+                        .addEntry(ItemLootEntry.builder(b)
+                                .acceptCondition(isTop.inverted()));
+                return LootTable.builder()
+                        .addLootPool(withSurvivesExplosion(b, pool));
+            });
         }
 
         // Same as droppingAndFlowerPot but with variable flower pot item

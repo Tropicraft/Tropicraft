@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tropicraft:block/reeds_top_tall"
+  }
+}

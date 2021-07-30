@@ -41,7 +41,7 @@
               "type": "minecraft:fancy_foliage_placer"
             },
             "trunk_placer": {
-              "base_height": 6,
+              "base_height": 7,
               "height_rand_a": 4,
               "height_rand_b": 4,
               "roots_block": "tropicraft:mangrove_roots",
@@ -69,7 +69,7 @@
     "decorator": {
       "config": {
         "count": 1,
-        "extra_chance": 0.5,
+        "extra_chance": 0.8,
         "extra_count": 1
       },
       "type": "minecraft:count_extra"
