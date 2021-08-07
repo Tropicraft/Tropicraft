@@ -247,7 +247,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     protected void applyYawToEntity(Entity entityToUpdate) {
-        if (!entityToUpdate.world.isRemote || isClientFirstPerson()) {
+        if (!entityToUpdate.world.isRemote || isClientFirstPerson(entityToUpdate)) {
             entityToUpdate.setRenderYawOffset(this.rotationYaw);
             float yaw = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
             float pitch = MathHelper.wrapDegrees(entityToUpdate.rotationPitch - this.rotationPitch);
@@ -266,8 +266,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         this.applyYawToEntity(entityToUpdate);
     }
 
-    private boolean isClientFirstPerson() {
-        return Minecraft.getInstance().gameSettings.getPointOfView() == PointOfView.FIRST_PERSON;
+    private static boolean isClientFirstPerson(Entity entity) {
+        Minecraft client = Minecraft.getInstance();
+        return client.renderViewEntity == entity && client.gameSettings.getPointOfView() == PointOfView.FIRST_PERSON;
     }
 
     /* Again, from entity boat, for water checks */
