@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
@@ -21,9 +22,7 @@ import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import net.tropicraft.core.common.block.MangroveRootsBlock;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
@@ -58,7 +57,58 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         this.growRoots(roots, random, rootLength);
         this.placeRoots(world, origin, rootLength, roots);
 
-        return super.getFoliages(world, random, height, origin, logs, bounds, config);
+        // Set ground to dirt
+        func_236909_a_(world, origin.down());
+
+        for (int i = 0; i < height; ++i) {
+            func_236911_a_(world, random, origin.up(i), logs, bounds, config);
+        }
+
+        List<FoliagePlacer.Foliage> leafNodes = new ArrayList<>();
+
+        leafNodes.add(new FoliagePlacer.Foliage(origin.up(height), 1, false));
+
+        // Grow branches
+        int count = 2 + random.nextInt(3);
+        Map<Integer, Direction> dirMap = new HashMap<>();
+        dirMap.put(0, Direction.Plane.HORIZONTAL.random(random));
+
+        for (int i = 1; i < count; i++) {
+            // Make sure branches never overlap
+            do {
+                dirMap.put(i, Direction.Plane.HORIZONTAL.random(random));
+            } while (dirMap.get(i - 1) == dirMap.get(i));
+        }
+
+        for (int i = 0; i < count; i++) {
+            BlockPos base = origin.up(height - count + i);
+
+            int length = 1 + random.nextInt(2);
+
+            boolean hasBranch = false;
+            Direction direction = dirMap.get(i);
+
+            for (int j = 1; j <= length + 1; j++) {
+                if (j == length) {
+                    func_236911_a_(world, random, base.offset(direction, j).up(), logs, bounds, config);
+                    leafNodes.add(new FoliagePlacer.Foliage(base.offset(direction, j).up(), random.nextInt(2), false));
+                    break;
+                }
+
+                // Branch off the current branch to make a small node
+                if (!hasBranch && random.nextBoolean()) {
+                    hasBranch = true;
+                    Direction branchBranchDir = random.nextBoolean() ? direction.rotateY() : direction.rotateYCCW();
+
+                    func_236911_a_(world, random, base.offset(direction, j).offset(branchBranchDir), logs, bounds, config);
+                    leafNodes.add(new FoliagePlacer.Foliage(base.offset(direction, j).offset(branchBranchDir), 0, false));
+                }
+
+                func_236911_a_(world, random, base.offset(direction, j), logs, bounds, config);
+            }
+        }
+
+        return leafNodes;
     }
 
     private void growRoots(RootSystem roots, Random random, int length) {

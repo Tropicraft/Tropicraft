@@ -35,20 +35,19 @@
               "type": "minecraft:simple_state_provider"
             },
             "foliage_placer": {
-              "radius": 2,
-              "offset": 4,
-              "height": 4,
-              "type": "minecraft:fancy_foliage_placer"
+              "radius": 0,
+              "offset": 0,
+              "type": "tropicraft:mangrove"
             },
             "trunk_placer": {
               "base_height": 7,
-              "height_rand_a": 4,
-              "height_rand_b": 4,
+              "height_rand_a": 3,
+              "height_rand_b": 0,
               "roots_block": "tropicraft:mangrove_roots",
               "type": "tropicraft:mangrove"
             }
           },
-          "type": "minecraft:tree"
+          "type": "tropicraft:mangrove_tree"
         },
         "decorator": {
           "config": {

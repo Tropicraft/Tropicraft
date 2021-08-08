@@ -97,7 +97,8 @@
     ],
     "creature": [],
     "ambient": [],
-    "water_creature": [
+    "water_creature": [],
+    "water_ambient": [
       {
         "type": "tropicraft:piranha",
         "weight": 20,
@@ -129,7 +130,6 @@
         "maxCount": 5
       }
     ],
-    "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},

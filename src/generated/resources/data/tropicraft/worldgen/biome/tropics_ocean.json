@@ -110,7 +110,8 @@
         "maxCount": 10
       }
     ],
-    "water_creature": [
+    "water_creature": [],
+    "water_ambient": [
       {
         "type": "tropicraft:marlin",
         "weight": 10,
@@ -172,7 +173,6 @@
         "maxCount": 1
       }
     ],
-    "water_ambient": [],
     "misc": []
   },
   "spawn_costs": {},

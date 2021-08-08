@@ -50,6 +50,7 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.*;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.SingleNoAirJigsawPiece;
 import net.tropicraft.core.common.dimension.feature.pools.TropicraftTemplatePools;
+import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacers;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
 import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftConfiguredSurfaceBuilders;
 import net.tropicraft.core.common.dimension.surfacebuilders.TropicraftSurfaceBuilders;
@@ -102,6 +103,7 @@ public class Tropicraft {
         TropicraftEntities.ENTITIES.register(modBus);
         TropicraftCarvers.CARVERS.register(modBus);
         TropicraftFeatures.FEATURES.register(modBus);
+        TropicraftFoliagePlacers.FOLIAGE_PLACERS.register(modBus);
         TropicraftFeatures.STRUCTURES.register(modBus);
         TropicraftSurfaceBuilders.SURFACE_BUILDERS.register(modBus);
         TropicraftBlockStateProviders.BLOCK_STATE_PROVIDERS.register(modBus);
