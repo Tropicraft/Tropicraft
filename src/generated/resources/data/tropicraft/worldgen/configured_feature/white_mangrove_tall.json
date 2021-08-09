@@ -38,14 +38,15 @@
     "foliage_placer": {
       "radius": 0,
       "offset": 0,
-      "type": "tropicraft:small_mangrove"
+      "type": "tropicraft:mangrove"
     },
     "trunk_placer": {
-      "height_rand_b": 0,
       "roots_block": "tropicraft:white_mangrove_roots",
       "pneumatophores": true,
+      "can_generate_raised": false,
       "base_height": 7,
       "height_rand_a": 3,
+      "height_rand_b": 0,
       "type": "tropicraft:mangrove"
     }
   },

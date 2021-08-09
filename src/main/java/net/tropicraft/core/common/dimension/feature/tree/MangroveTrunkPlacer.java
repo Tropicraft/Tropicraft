@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.TreeFeature;
@@ -31,6 +32,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return getAbstractTrunkCodec(instance)
                 .and(Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .and(Codec.BOOL.fieldOf("pneumatophores").forGetter(c -> c.pneumatophores))
+                .and(Codec.BOOL.fieldOf("can_generate_raised").forGetter(c -> c.canGenerateRaised))
                 .apply(instance, MangroveTrunkPlacer::new);
     });
 
@@ -42,11 +44,13 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
     private final Block rootsBlock;
     private final boolean pneumatophores;
+    private final boolean canGenerateRaised;
 
-    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, Block rootsBlock, boolean pneumatophores) {
+    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, Block rootsBlock, boolean pneumatophores, boolean canGenerateRaised) {
         super(baseHeight, heightRandA, heightRandB);
         this.rootsBlock = rootsBlock;
         this.pneumatophores = pneumatophores;
+        this.canGenerateRaised = canGenerateRaised;
     }
 
     @Override
@@ -58,6 +62,20 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
         int rootLength = MathHelper.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
 
+        boolean placeDirtOnOrigin = true;
+        if (this.canGenerateRaised) {
+            // If we're allowed to, we can raise the mangrove up a little depending on the water depth
+            int floorY = world.getHeight(Heightmap.Type.OCEAN_FLOOR, origin).getY();
+            int surfaceY = world.getHeight(Heightmap.Type.WORLD_SURFACE, origin).getY();
+            int waterDepth = surfaceY - floorY; // Water depth is the distance from the surface to the floor
+
+            // If we're in 1 or 2 deep water or land, we have a 1/2 chance of making the mangrove raised from the surface of the water
+            if (waterDepth <= 2 && random.nextInt(2) == 0) {
+                origin = new BlockPos(origin.getX(), surfaceY + 1, origin.getZ());
+                placeDirtOnOrigin = false;
+            }
+        }
+
         RootSystem roots = new RootSystem();
         this.growRoots(roots, random, rootLength);
         this.placeRoots(world, origin, rootLength, roots);
@@ -66,8 +84,10 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
             this.placePneumatophores(world, origin, random);
         }
 
-        // Set ground to dirt
-        func_236909_a_(world, origin.down());
+        if (placeDirtOnOrigin) {
+            // Set ground to dirt
+            func_236909_a_(world, origin.down());
+        }
 
         for (int i = 0; i < height; ++i) {
             func_236911_a_(world, random, origin.up(i), logs, bounds, config);
