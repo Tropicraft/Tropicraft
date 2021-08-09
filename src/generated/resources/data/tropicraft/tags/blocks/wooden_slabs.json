@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "tropicraft:palm_slab",
-    "tropicraft:mahogany_slab"
+    "tropicraft:mahogany_slab",
+    "tropicraft:white_mangrove_slab",
+    "tropicraft:red_mangrove_slab"
   ]
 }

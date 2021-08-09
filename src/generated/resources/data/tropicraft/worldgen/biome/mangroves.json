@@ -35,9 +35,7 @@
     ],
     [],
     [
-      "tropicraft:small_mangrove",
-      "tropicraft:short_mangrove",
-      "tropicraft:tall_mangrove",
+      "tropicraft:mangrove_vegetation",
       "tropicraft:tropics_flowers",
       "tropicraft:iris_flowers",
       "minecraft:seagrass_deep_warm",
@@ -119,14 +117,27 @@
         "maxCount": 15
       }
     ],
-    "water_creature": [],
-    "water_ambient": [
+    "water_creature": [
       {
         "type": "tropicraft:piranha",
         "weight": 20,
         "minCount": 1,
         "maxCount": 12
       },
+      {
+        "type": "tropicraft:hammerhead",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "minecraft:squid",
+        "weight": 8,
+        "minCount": 1,
+        "maxCount": 4
+      }
+    ],
+    "water_ambient": [
       {
         "type": "tropicraft:sardine",
         "weight": 20,
@@ -150,12 +161,6 @@
         "weight": 6,
         "minCount": 6,
         "maxCount": 12
-      },
-      {
-        "type": "minecraft:squid",
-        "weight": 8,
-        "minCount": 1,
-        "maxCount": 4
       },
       {
         "type": "minecraft:cod",
@@ -184,6 +189,6 @@
   "temperature": 2.0,
   "downfall": 1.5,
   "category": "swamp",
-  "depth": -0.275,
+  "depth": -0.25,
   "scale": -0.03
 }

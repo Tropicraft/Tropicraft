@@ -98,10 +98,16 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.MAHOGANY_WOOD);
             dropsSelf(TropicraftBlocks.PALM_WOOD);
 
-            dropsSelf(TropicraftBlocks.MANGROVE_LOG);
-            dropsSelf(TropicraftBlocks.MANGROVE_WOOD);
-            dropsSelf(TropicraftBlocks.MANGROVE_ROOTS);
-            
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_LOG);
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_WOOD);
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_PLANKS);
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_ROOTS);
+
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_LOG);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_WOOD);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_PLANKS);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_ROOTS);
+
             // Stairs & Slabs
             dropsSelf(TropicraftBlocks.BAMBOO_STAIRS);
             dropsSelf(TropicraftBlocks.THATCH_STAIRS);
@@ -109,13 +115,17 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.PALM_STAIRS);
             dropsSelf(TropicraftBlocks.MAHOGANY_STAIRS);
             dropsSelf(TropicraftBlocks.THATCH_STAIRS_FUZZY);
-            
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_STAIRS);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_STAIRS);
+
             slab(TropicraftBlocks.BAMBOO_SLAB);
             slab(TropicraftBlocks.THATCH_SLAB);
             slab(TropicraftBlocks.CHUNK_SLAB);
             slab(TropicraftBlocks.PALM_SLAB);
             slab(TropicraftBlocks.MAHOGANY_SLAB);
-            
+            slab(TropicraftBlocks.WHITE_MANGROVE_SLAB);
+            slab(TropicraftBlocks.RED_MANGROVE_SLAB);
+
             // Leaves
             leaves(TropicraftBlocks.MAHOGANY_LEAVES, TropicraftBlocks.MAHOGANY_SAPLING, RARE_SAPLING_RATES);
             leaves(TropicraftBlocks.PALM_LEAVES, TropicraftBlocks.PALM_SAPLING, SAPLING_RATES);
@@ -125,7 +135,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             fruitLeaves(TropicraftBlocks.LEMON_LEAVES, TropicraftBlocks.LEMON_SAPLING, TropicraftItems.LEMON);
             fruitLeaves(TropicraftBlocks.LIME_LEAVES, TropicraftBlocks.LIME_SAPLING, TropicraftItems.LIME);
             fruitLeaves(TropicraftBlocks.ORANGE_LEAVES, TropicraftBlocks.ORANGE_SAPLING, TropicraftItems.ORANGE);
-            
+            leaves(TropicraftBlocks.WHITE_MANGROVE_LEAVES, TropicraftBlocks.WHITE_MANGROVE_SAPLING, SAPLING_RATES);
+            leaves(TropicraftBlocks.RED_MANGROVE_LEAVES, TropicraftBlocks.RED_MANGROVE_SAPLING, SAPLING_RATES);
+
             // Saplings
             dropsSelf(TropicraftBlocks.MAHOGANY_SAPLING);
             dropsSelf(TropicraftBlocks.PALM_SAPLING);
@@ -133,19 +145,25 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.LEMON_SAPLING);
             dropsSelf(TropicraftBlocks.LIME_SAPLING);
             dropsSelf(TropicraftBlocks.ORANGE_SAPLING);
-            
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_SAPLING);
+
             // Fences, Gates, and Walls
             dropsSelf(TropicraftBlocks.BAMBOO_FENCE);
             dropsSelf(TropicraftBlocks.THATCH_FENCE);
             dropsSelf(TropicraftBlocks.CHUNK_FENCE);
             dropsSelf(TropicraftBlocks.PALM_FENCE);
             dropsSelf(TropicraftBlocks.MAHOGANY_FENCE);
-            
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_FENCE);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_FENCE);
+
             dropsSelf(TropicraftBlocks.BAMBOO_FENCE_GATE);
             dropsSelf(TropicraftBlocks.THATCH_FENCE_GATE);
             dropsSelf(TropicraftBlocks.CHUNK_FENCE_GATE);
             dropsSelf(TropicraftBlocks.PALM_FENCE_GATE);
             dropsSelf(TropicraftBlocks.MAHOGANY_FENCE_GATE);
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_FENCE_GATE);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_FENCE_GATE);
 
             dropsSelf(TropicraftBlocks.CHUNK_WALL);
 
@@ -154,12 +172,16 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             doubleBlock(TropicraftBlocks.THATCH_DOOR);
             doubleBlock(TropicraftBlocks.PALM_DOOR);
             doubleBlock(TropicraftBlocks.MAHOGANY_DOOR);
-            
+            doubleBlock(TropicraftBlocks.WHITE_MANGROVE_DOOR);
+            doubleBlock(TropicraftBlocks.RED_MANGROVE_DOOR);
+
             dropsSelf(TropicraftBlocks.BAMBOO_TRAPDOOR);
             dropsSelf(TropicraftBlocks.THATCH_TRAPDOOR);
             dropsSelf(TropicraftBlocks.PALM_TRAPDOOR);
             dropsSelf(TropicraftBlocks.MAHOGANY_TRAPDOOR);
-            
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_TRAPDOOR);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_TRAPDOOR);
+
             // Misc remaining blocks
             doubleBlock(TropicraftBlocks.IRIS);
             registerLootTable(TropicraftBlocks.PINEAPPLE.get(), b -> droppingChunks(b, TropicraftItems.PINEAPPLE_CUBES,

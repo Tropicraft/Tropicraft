@@ -1,6 +1,5 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
@@ -22,12 +21,16 @@ import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import net.tropicraft.core.common.block.MangroveRootsBlock;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
         return getAbstractTrunkCodec(instance)
                 .and(Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock))
+                .and(Codec.BOOL.fieldOf("pneumatophores").forGetter(c -> c.pneumatophores))
                 .apply(instance, MangroveTrunkPlacer::new);
     });
 
@@ -38,10 +41,12 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     private static final int MAX_SIZE = MAX_RADIUS * 2 + 1;
 
     private final Block rootsBlock;
+    private final boolean pneumatophores;
 
-    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, Block rootsBlock) {
+    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, Block rootsBlock, boolean pneumatophores) {
         super(baseHeight, heightRandA, heightRandB);
         this.rootsBlock = rootsBlock;
+        this.pneumatophores = pneumatophores;
     }
 
     @Override
@@ -57,6 +62,10 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         this.growRoots(roots, random, rootLength);
         this.placeRoots(world, origin, rootLength, roots);
 
+        if (this.pneumatophores) {
+            this.placePneumatophores(world, origin, random);
+        }
+
         // Set ground to dirt
         func_236909_a_(world, origin.down());
 
@@ -65,20 +74,17 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
 
         List<FoliagePlacer.Foliage> leafNodes = new ArrayList<>();
-
         leafNodes.add(new FoliagePlacer.Foliage(origin.up(height), 1, false));
 
-        // Grow branches
-        int count = 2 + random.nextInt(3);
-        Map<Integer, Direction> dirMap = new HashMap<>();
-        dirMap.put(0, Direction.Plane.HORIZONTAL.random(random));
+        this.growBranches(world, random, height, origin, logs, bounds, config, leafNodes);
 
-        for (int i = 1; i < count; i++) {
-            // Make sure branches never overlap
-            do {
-                dirMap.put(i, Direction.Plane.HORIZONTAL.random(random));
-            } while (dirMap.get(i - 1) == dirMap.get(i));
-        }
+        return leafNodes;
+    }
+
+    private void growBranches(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config, List<FoliagePlacer.Foliage> leafNodes) {
+        int count = 2 + random.nextInt(3);
+
+        Direction lastDirection = null;
 
         for (int i = 0; i < count; i++) {
             BlockPos base = origin.up(height - count + i);
@@ -86,7 +92,13 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
             int length = 1 + random.nextInt(2);
 
             boolean hasBranch = false;
-            Direction direction = dirMap.get(i);
+
+            Direction direction;
+            do {
+                direction = Direction.Plane.HORIZONTAL.random(random);
+            } while (direction == lastDirection);
+
+            lastDirection = direction;
 
             for (int j = 1; j <= length + 1; j++) {
                 if (j == length) {
@@ -107,8 +119,6 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                 func_236911_a_(world, random, base.offset(direction, j), logs, bounds, config);
             }
         }
-
-        return leafNodes;
     }
 
     private void growRoots(RootSystem roots, Random random, int length) {
@@ -167,16 +177,52 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                 int y = maxY;
                 while (y >= minY) {
                     mutablePos.setY(y--);
-
-                    if (isReplaceableAt(world, mutablePos)) {
-                        BlockState state = this.rootsBlock.getDefaultState()
-                                .with(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, mutablePos));
-                        TreeFeature.setBlockStateWithoutUpdate(world, mutablePos, state);
-                    } else {
+                    if (!this.setRootsAt(world, mutablePos)) {
                         break;
                     }
                 }
             }
+        }
+    }
+
+    private void placePneumatophores(IWorldGenerationReader world, BlockPos origin, Random random) {
+        int count = random.nextInt(4) + 4;
+        int maxTopY = origin.getY() + 3;
+        int minBottomY = origin.getY() - 6;
+
+        BlockPos.Mutable mutablePos = origin.toMutable();
+        mutablePos.move(Direction.UP);
+
+        while (isWaterAt(world, mutablePos) && mutablePos.getY() < maxTopY) {
+            mutablePos.move(Direction.UP);
+        }
+
+        int topY = mutablePos.getY();
+
+        for (int i = 0; i < count; i++) {
+            int dx = random.nextInt(MAX_RADIUS) - random.nextInt(MAX_RADIUS);
+            int dz = random.nextInt(MAX_RADIUS) - random.nextInt(MAX_RADIUS);
+            if (dx == 0 && dz == 0) continue;
+            mutablePos.setAndOffset(origin, dx, 0, dz);
+
+            int y = topY;
+            while (y >= minBottomY) {
+                mutablePos.setY(y--);
+                if (!this.setRootsAt(world, mutablePos)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean setRootsAt(IWorldGenerationReader world, BlockPos pos) {
+        if (isReplaceableAt(world, pos)) {
+            BlockState state = this.rootsBlock.getDefaultState()
+                    .with(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
+            TreeFeature.setBlockStateWithoutUpdate(world, pos, state);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -190,6 +236,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                     || state.isIn(BlockTags.LEAVES)
                     || state.getMaterial() == Material.TALL_PLANTS
                     || state.getMaterial() == Material.SEA_GRASS
+                    || state.getMaterial() == Material.PLANTS
                     || state.matchesBlock(Blocks.WATER);
         });
     }

@@ -155,6 +155,10 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     private boolean isAdjacentTall(IBlockReader world, BlockPos pos, Direction sourceDirection) {
+        if (world.getBlockState(pos.up()).matchesBlock(this)) {
+            return true;
+        }
+
         for (Direction direction : DIRECTIONS) {
             if (direction != sourceDirection && this.canConnectTo(world, pos.offset(direction), direction)) {
                 return true;

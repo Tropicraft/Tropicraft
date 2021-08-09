@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:red_mangrove_door"
+    ]
+  },
+  "criteria": {
+    "has_red_mangrove_planks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:red_mangrove_planks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:red_mangrove_door"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_red_mangrove_planks",
+      "has_the_recipe"
+    ]
+  ]
+}

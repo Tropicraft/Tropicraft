@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tropicraft:item/white_mangrove_door"
+  }
+}

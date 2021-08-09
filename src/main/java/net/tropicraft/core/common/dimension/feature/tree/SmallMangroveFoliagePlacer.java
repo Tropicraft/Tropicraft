@@ -28,13 +28,13 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> p_230372_8_, int p_230372_9_, MutableBoundingBox p_230372_10_) {
-        this.func_236753_a_(world, random, config, node.func_236763_a_(), node.func_236764_b_(), p_230372_8_, 1, node.func_236765_c_(), p_230372_10_);
-        this.func_236753_a_(world, random, config, node.func_236763_a_(), node.func_236764_b_(), p_230372_8_, 0, node.func_236765_c_(), p_230372_10_);
+    protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, MutableBoundingBox p_230372_10_) {
+        this.func_236753_a_(world, random, config, node.func_236763_a_(), node.func_236764_b_(), leaves, 1, node.func_236765_c_(), p_230372_10_);
+        this.func_236753_a_(world, random, config, node.func_236763_a_(), node.func_236764_b_(), leaves, 0, node.func_236765_c_(), p_230372_10_);
     }
 
     @Override
-    public int func_230374_a_(Random p_230374_1_, int p_230374_2_, BaseTreeFeatureConfig p_230374_3_) {
+    public int func_230374_a_(Random random, int p_230374_2_, BaseTreeFeatureConfig config) {
         return 0;
     }
 

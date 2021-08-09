@@ -3,8 +3,14 @@ package net.tropicraft.core.common.block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.trees.Tree;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.DynamicRegistries;
+import net.minecraft.util.registry.MutableRegistry;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
@@ -19,20 +25,20 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class TropicraftTrees {
-    public static final Tree GRAPEFRUIT = create((random, beehive) ->
+    public static final Tree GRAPEFRUIT = create((server, random, beehive) ->
             TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES))
     );
-    public static final Tree LEMON = create((random, beehive) ->
+    public static final Tree LEMON = create((server, random, beehive) ->
             TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.LEMON_SAPLING, TropicraftBlocks.LEMON_LEAVES))
     );
-    public static final Tree LIME = create((random, beehive) ->
+    public static final Tree LIME = create((server, random, beehive) ->
             TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.LIME_SAPLING, TropicraftBlocks.LIME_LEAVES))
     );
-    public static final Tree ORANGE = create((random, beehive) ->
+    public static final Tree ORANGE = create((server, random, beehive) ->
             TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.ORANGE_SAPLING, TropicraftBlocks.ORANGE_LEAVES))
     );
 
-    public static final Tree RAINFOREST = create((random, beehive) -> {
+    public static final Tree RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
         if (treeType == 0) {
             return TropicraftFeatures.TALL_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
@@ -45,7 +51,7 @@ public class TropicraftTrees {
         }
     });
 
-    public static final Tree PALM = create((random, beehive) -> {
+    public static final Tree PALM = create((server, random, beehive) -> {
         final int palmType = random.nextInt(3);
         if (palmType == 0) {
             return TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
@@ -55,6 +61,22 @@ public class TropicraftTrees {
             return TropicraftFeatures.LARGE_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
         }
     });
+
+    public static final Tree WHITE_MANGROVE = create("white_mangrove");
+    public static final Tree RED_MANGROVE = create("red_mangrove");
+
+    private static Tree create(String id) {
+        RegistryKey<ConfiguredFeature<?, ?>> key = RegistryKey.getOrCreateKey(
+                Registry.CONFIGURED_FEATURE_KEY,
+                new ResourceLocation(net.tropicraft.Constants.MODID, id)
+        );
+
+        return create((server, random, beehive) -> {
+            DynamicRegistries registries = server.getDynamicRegistries();
+            MutableRegistry<ConfiguredFeature<?, ?>> features = registries.getRegistry(Registry.CONFIGURED_FEATURE_KEY);
+            return features.getValueForKey(key);
+        });
+    }
 
     private static Tree create(FeatureProvider featureProvider) {
         return new Tree() {
@@ -66,7 +88,7 @@ public class TropicraftTrees {
 
             @Override
             public boolean attemptGrowTree(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState sapling, Random random) {
-                ConfiguredFeature<?, ?> feature = featureProvider.getFeature(random, this.hasFlowers(world, pos));
+                ConfiguredFeature<?, ?> feature = featureProvider.getFeature(world.getServer(), random, this.hasFlowers(world, pos));
                 if (feature == null) {
                     return false;
                 }
@@ -95,6 +117,6 @@ public class TropicraftTrees {
 
     interface FeatureProvider {
         @Nullable
-        ConfiguredFeature<?, ?> getFeature(Random random, boolean beehive);
+        ConfiguredFeature<?, ?> getFeature(MinecraftServer server, Random random, boolean beehive);
     }
 }
