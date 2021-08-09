@@ -132,7 +132,7 @@ public final class TropicraftConfiguredFeatures {
                 new BaseTreeFeatureConfig.Builder(
                         redMangroveTrunk, redMangroveLeaves,
                         mangroveFoliage,
-                        new MangroveTrunkPlacer(3, 3, 0, redMangroveRoots, false),
+                        new MangroveTrunkPlacer(3, 3, 0, redMangroveRoots, false, true),
                         mangroveMinimumSize
                 ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).setMaxWaterDepth(1).build()
         );
@@ -150,7 +150,7 @@ public final class TropicraftConfiguredFeatures {
                 new BaseTreeFeatureConfig.Builder(
                         mangroveTrunk, mangroveLeaves,
                         mangroveFoliage,
-                        new MangroveTrunkPlacer(5, 3, 0, mangroveRoots, true),
+                        new MangroveTrunkPlacer(5, 3, 0, mangroveRoots, true, false),
                         mangroveMinimumSize
                 ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).setMaxWaterDepth(1).build()
         );
@@ -158,7 +158,7 @@ public final class TropicraftConfiguredFeatures {
                 new BaseTreeFeatureConfig.Builder(
                         mangroveTrunk, mangroveLeaves,
                         mangroveFoliage,
-                        new MangroveTrunkPlacer(7, 3, 0, mangroveRoots, true),
+                        new MangroveTrunkPlacer(7, 3, 0, mangroveRoots, true, false),
                         mangroveMinimumSize
                 ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).setMaxWaterDepth(2).build()
         );

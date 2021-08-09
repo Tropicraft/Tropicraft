@@ -32,6 +32,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return getAbstractTrunkCodec(instance)
                 .and(Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .and(Codec.BOOL.fieldOf("pneumatophores").forGetter(c -> c.pneumatophores))
+                .and(Codec.BOOL.fieldOf("can_generate_raised").forGetter(c -> c.canGenerateRaised))
                 .apply(instance, MangroveTrunkPlacer::new);
     });
 
@@ -43,11 +44,13 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
     private final Block rootsBlock;
     private final boolean pneumatophores;
+    private final boolean canGenerateRaised;
 
-    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, Block rootsBlock, boolean pneumatophores) {
+    public MangroveTrunkPlacer(int baseHeight, int heightRandA, int heightRandB, Block rootsBlock, boolean pneumatophores, boolean canGenerateRaised) {
         super(baseHeight, heightRandA, heightRandB);
         this.rootsBlock = rootsBlock;
         this.pneumatophores = pneumatophores;
+        this.canGenerateRaised = canGenerateRaised;
     }
 
     @Override
@@ -60,14 +63,14 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         int rootLength = MathHelper.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
 
         boolean placeDirtOnOrigin = true;
-        if (!this.pneumatophores) {
-            // If we don't have pneumatophores, we can raise the mangrove up a little depending on the water depth
+        if (this.canGenerateRaised) {
+            // If we're allowed to, we can raise the mangrove up a little depending on the water depth
             int floorY = world.getHeight(Heightmap.Type.OCEAN_FLOOR, origin).getY();
             int surfaceY = world.getHeight(Heightmap.Type.WORLD_SURFACE, origin).getY();
             int waterDepth = surfaceY - floorY; // Water depth is the distance from the surface to the floor
 
-            // If we're in 1 or 2 deep water, we have a 1/2 chance of making the mangrove raised from the surface of the water
-            if (waterDepth > 0 && waterDepth <= 2 && random.nextInt(2) == 0) {
+            // If we're in 1 or 2 deep water or land, we have a 1/2 chance of making the mangrove raised from the surface of the water
+            if (waterDepth <= 2 && random.nextInt(2) == 0) {
                 origin = new BlockPos(origin.getX(), surfaceY + 1, origin.getZ());
                 placeDirtOnOrigin = false;
             }
