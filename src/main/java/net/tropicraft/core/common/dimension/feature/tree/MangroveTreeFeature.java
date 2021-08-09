@@ -27,7 +27,7 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
 
     @Override
     public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BaseTreeFeatureConfig config) {
-        BlockPos placePos = this.findPlacePos(world, pos, random, config);
+        BlockPos placePos = this.findPlacePos(world, pos, config);
         if (placePos == null) return false;
 
         BlockPos soilPos = placePos.down();
@@ -47,7 +47,7 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
     }
 
     @Nullable
-    private BlockPos findPlacePos(ISeedReader world, BlockPos pos, Random random, BaseTreeFeatureConfig config) {
+    private BlockPos findPlacePos(ISeedReader world, BlockPos pos, BaseTreeFeatureConfig config) {
         if (config.forcePlacement) {
             return pos;
         }
