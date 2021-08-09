@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "tropicraft:palm_fence",
-    "tropicraft:mahogany_fence"
+    "tropicraft:mahogany_fence",
+    "tropicraft:white_mangrove_fence",
+    "tropicraft:red_mangrove_fence"
   ]
 }

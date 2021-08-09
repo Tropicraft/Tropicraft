@@ -12,7 +12,9 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
@@ -24,50 +26,45 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, BaseTreeFeatureConfig config) {
-        BlockPos genPos;
-        boolean secondWaterCheck = false;
-        if (!config.forcePlacement) {
-            int floorY = reader.getHeight(Heightmap.Type.OCEAN_FLOOR, pos).getY();
-            int surfaceY = reader.getHeight(Heightmap.Type.WORLD_SURFACE, pos).getY();
-            if (surfaceY - floorY > 3 || config.maxWaterDepth == 0) {
-                return false;
-            } else if (surfaceY - floorY > config.maxWaterDepth) {
-                secondWaterCheck = true;
-            }
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BaseTreeFeatureConfig config) {
+        BlockPos placePos = this.findPlacePos(world, pos, config);
+        if (placePos == null) return false;
 
-            int y;
-            if (config.heightmap == Heightmap.Type.OCEAN_FLOOR) {
-                y = floorY;
-            } else if (config.heightmap == Heightmap.Type.WORLD_SURFACE) {
-                y = surfaceY;
-            } else {
-                y = reader.getHeight(config.heightmap, pos).getY();
-            }
+        BlockPos soilPos = placePos.down();
+        BlockState soilState = world.getBlockState(soilPos);
+        boolean replaceSoil = soilState.isIn(BlockTags.SAND) || soilState.getFluidState().isTagged(FluidTags.WATER);
 
-            genPos = new BlockPos(pos.getX(), y, pos.getZ());
+        try {
+            if (replaceSoil) world.setBlockState(soilPos, Blocks.DIRT.getDefaultState(), Constants.BlockFlags.DEFAULT);
+            return this.backing.generate(world, generator, random, pos, config);
+        } finally {
+            if (replaceSoil) world.setBlockState(soilPos, soilState, Constants.BlockFlags.DEFAULT);
+        }
+    }
+
+    @Nullable
+    private BlockPos findPlacePos(ISeedReader world, BlockPos pos, BaseTreeFeatureConfig config) {
+        if (config.forcePlacement) {
+            return pos;
+        }
+
+        int floorY = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos).getY();
+        int surfaceY = world.getHeight(Heightmap.Type.WORLD_SURFACE, pos).getY();
+        if (surfaceY - floorY > 3 || config.maxWaterDepth == 0) {
+            return null;
+        } else if (surfaceY - floorY > config.maxWaterDepth) {
+            return new BlockPos(pos.getX(), surfaceY - config.maxWaterDepth, pos.getZ());
+        }
+
+        int y;
+        if (config.heightmap == Heightmap.Type.OCEAN_FLOOR) {
+            y = floorY;
+        } else if (config.heightmap == Heightmap.Type.WORLD_SURFACE) {
+            y = surfaceY;
         } else {
-            genPos = pos;
+            y = world.getHeight(config.heightmap, pos).getY();
         }
 
-        if (secondWaterCheck) {
-            int surfaceY = reader.getHeight(Heightmap.Type.WORLD_SURFACE, pos).getY();
-            genPos = new BlockPos(pos.getX(), surfaceY - config.maxWaterDepth, pos.getZ());
-        }
-        BlockState downState = reader.getBlockState(genPos.down());
-        boolean reset = false;
-
-        if (downState.isIn(BlockTags.SAND) || downState.getFluidState().isTagged(FluidTags.WATER)) {
-            reset = true;
-            reader.setBlockState(genPos.down(), Blocks.DIRT.getDefaultState(), 3);
-        }
-
-        boolean ret = this.backing.generate(reader, generator, rand, pos, config);
-
-        if (reset) {
-            reader.setBlockState(genPos.down(), downState, 3);
-        }
-
-        return ret;
+        return new BlockPos(pos.getX(), y, pos.getZ());
     }
 }

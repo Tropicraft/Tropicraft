@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_inventory",
+  "textures": {
+    "texture": "tropicraft:block/red_mangrove_planks"
+  }
+}

@@ -11,12 +11,11 @@ import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
+import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.CaveEdgeConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidRangeConfig;
-import net.minecraft.world.gen.treedecorator.LeaveVineTreeDecorator;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -50,9 +49,16 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> rainforestTallTree;
     public final ConfiguredFeature<?, ?> rainforestVines;
     public final ConfiguredFeature<?, ?> eih;
-    public final ConfiguredFeature<?, ?> shortMangrove;
-    public final ConfiguredFeature<?, ?> tallMangrove;
-    public final ConfiguredFeature<?, ?> smallMangrove;
+
+    public final ConfiguredFeature<?, ?> redMangroveShort;
+    public final ConfiguredFeature<?, ?> redMangroveSmall;
+    public final ConfiguredFeature<?, ?> redMangrove;
+
+    public final ConfiguredFeature<?, ?> whiteMangroveShort;
+    public final ConfiguredFeature<?, ?> whiteMangroveTall;
+    public final ConfiguredFeature<?, ?> whiteMangrove;
+
+    public final ConfiguredFeature<?, ?> mangroveVegetation;
 
     public final ConfiguredFeature<?, ?> pineapplePatch;
     public final ConfiguredFeature<?, ?> tropicsFlowers;
@@ -111,46 +117,60 @@ public final class TropicraftConfiguredFeatures {
                 f -> f.withConfiguration(new RainforestVinesConfig()).square().count(50)
         );
 
-        this.shortMangrove = features.mangrove("short_mangrove",
-                new BaseTreeFeatureConfig.Builder(
-                        new SimpleBlockStateProvider(TropicraftBlocks.MANGROVE_LOG.get().getDefaultState()),
-                        new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
-                        new MangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
-                        new MangroveTrunkPlacer(5, 3, 0, TropicraftBlocks.MANGROVE_ROOTS.get()),
-                        new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
-                )
-                        .setMaxWaterDepth(1)
-                        .setIgnoreVines()
-                        .build(),
-                2, 0.6F, 1
-        );
+        FoliagePlacer mangroveFoliage = new MangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0));
+        BlockStateProvider redMangroveTrunk = new SimpleBlockStateProvider(TropicraftBlocks.RED_MANGROVE_LOG.get().getDefaultState());
+        BlockStateProvider redMangroveLeaves = new SimpleBlockStateProvider(TropicraftBlocks.RED_MANGROVE_LEAVES.get().getDefaultState());
+        Block redMangroveRoots = TropicraftBlocks.RED_MANGROVE_ROOTS.get();
 
-        this.tallMangrove = features.mangrove("tall_mangrove",
-                new BaseTreeFeatureConfig.Builder(
-                        new SimpleBlockStateProvider(TropicraftBlocks.MANGROVE_LOG.get().getDefaultState()),
-                        new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
-                        new MangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
-                        new MangroveTrunkPlacer(7, 3, 0, TropicraftBlocks.MANGROVE_ROOTS.get()),
-                        new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
-                )
-                        .setMaxWaterDepth(2)
-                        .setIgnoreVines()
-                        .build(),
-                1, 0.8F, 1
-        );
+        BlockStateProvider mangroveTrunk = new SimpleBlockStateProvider(TropicraftBlocks.WHITE_MANGROVE_LOG.get().getDefaultState());
+        BlockStateProvider mangroveLeaves = new SimpleBlockStateProvider(TropicraftBlocks.WHITE_MANGROVE_LEAVES.get().getDefaultState());
+        Block mangroveRoots = TropicraftBlocks.WHITE_MANGROVE_ROOTS.get();
 
-        this.smallMangrove = features.mangrove("small_mangrove",
+        TwoLayerFeature mangroveMinimumSize = new TwoLayerFeature(0, 0, 0, OptionalInt.of(4));
+
+        this.redMangroveShort = features.mangrove("red_mangrove_short",
                 new BaseTreeFeatureConfig.Builder(
-                        new SimpleBlockStateProvider(TropicraftBlocks.MANGROVE_LOG.get().getDefaultState()),
-                        new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
+                        redMangroveTrunk, redMangroveLeaves,
+                        mangroveFoliage,
+                        new MangroveTrunkPlacer(3, 3, 0, redMangroveRoots, false),
+                        mangroveMinimumSize
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).setMaxWaterDepth(1).build()
+        );
+        this.redMangroveSmall = features.mangrove("red_mangrove_small",
+                new BaseTreeFeatureConfig.Builder(
+                        redMangroveTrunk, redMangroveLeaves,
                         new SmallMangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
-                        new SmallMangroveTrunkPlacer(2, 1, 0, TropicraftBlocks.MANGROVE_ROOTS.get()),
-                        new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
-                )
-                        .setIgnoreVines()
-                        .build(),
-                2, 0.3F, 1
+                        new SmallMangroveTrunkPlacer(2, 1, 0, redMangroveRoots),
+                        mangroveMinimumSize
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).build()
         );
+        this.redMangrove = features.randomBoolean("red_mangrove", this.redMangroveShort, this.redMangroveSmall);
+
+        this.whiteMangroveShort = features.mangrove("white_mangrove_short",
+                new BaseTreeFeatureConfig.Builder(
+                        mangroveTrunk, mangroveLeaves,
+                        mangroveFoliage,
+                        new MangroveTrunkPlacer(5, 3, 0, mangroveRoots, true),
+                        mangroveMinimumSize
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).setMaxWaterDepth(1).build()
+        );
+        this.whiteMangroveTall = features.mangrove("white_mangrove_tall",
+                new BaseTreeFeatureConfig.Builder(
+                        mangroveTrunk, mangroveLeaves,
+                        new SmallMangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+                        new MangroveTrunkPlacer(7, 3, 0, mangroveRoots, true),
+                        mangroveMinimumSize
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).setMaxWaterDepth(2).build()
+        );
+        this.whiteMangrove = features.randomBoolean("white_mangrove", this.whiteMangroveShort, this.whiteMangroveTall);
+
+        this.mangroveVegetation = features.register("mangrove_vegetation", Feature.SIMPLE_RANDOM_SELECTOR, feature -> {
+            return feature.withConfiguration(new SingleRandomFeature(
+                    ImmutableList.of(() -> this.whiteMangrove, () -> this.redMangrove)
+            ))
+                    .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
+                    .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(3, 0.5F, 1)));
+        });
 
         this.eih = features.noConfig("eih", TropicraftFeatures.EIH,
                 f -> f.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
@@ -288,9 +308,7 @@ public final class TropicraftConfiguredFeatures {
     }
 
     public void addMangroveTrees(BiomeGenerationSettings.Builder generation) {
-        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.smallMangrove);
-        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.shortMangrove);
-        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.tallMangrove);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.mangroveVegetation);
     }
 
     public void addMangroveReeds(BiomeGenerationSettings.Builder generation) {
@@ -368,11 +386,13 @@ public final class TropicraftConfiguredFeatures {
             });
         }
 
-        public <F extends Feature<?>> ConfiguredFeature<?, ?> mangrove(String id, BaseTreeFeatureConfig config, int count, float extraChance, int extraCount) {
-            return this.register(id, TropicraftFeatures.MANGROVE_TREE.get(), feature -> {
-                return feature.withConfiguration(config)
-                        .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                        .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(count, extraChance, extraCount)));
+        public ConfiguredFeature<?, ?> mangrove(String id, BaseTreeFeatureConfig config) {
+            return this.register(id, TropicraftFeatures.MANGROVE_TREE.get(), feature -> feature.withConfiguration(config));
+        }
+
+        public ConfiguredFeature<?, ?> randomBoolean(String id, ConfiguredFeature<?, ?> left, ConfiguredFeature<?, ?> right) {
+            return this.register(id, Feature.RANDOM_BOOLEAN_SELECTOR, feature -> {
+                return feature.withConfiguration(new TwoFeatureChoiceConfig(() -> left, () -> right));
             });
         }
 

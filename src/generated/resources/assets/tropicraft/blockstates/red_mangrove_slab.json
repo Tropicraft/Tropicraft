@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "tropicraft:block/red_mangrove_slab_top"
+    },
+    "type=bottom": {
+      "model": "tropicraft:block/red_mangrove_slab"
+    },
+    "type=double": {
+      "model": "tropicraft:block/red_mangrove_planks"
+    }
+  }
+}

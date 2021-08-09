@@ -110,55 +110,12 @@
         "maxCount": 10
       }
     ],
-    "water_creature": [],
-    "water_ambient": [
+    "water_creature": [
       {
         "type": "tropicraft:marlin",
         "weight": 10,
         "minCount": 1,
         "maxCount": 4
-      },
-      {
-        "type": "tropicraft:man_o_war",
-        "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
-      },
-      {
-        "type": "tropicraft:starfish",
-        "weight": 4,
-        "minCount": 1,
-        "maxCount": 4
-      },
-      {
-        "type": "tropicraft:sea_urchin",
-        "weight": 4,
-        "minCount": 1,
-        "maxCount": 4
-      },
-      {
-        "type": "tropicraft:dolphin",
-        "weight": 3,
-        "minCount": 4,
-        "maxCount": 7
-      },
-      {
-        "type": "tropicraft:seahorse",
-        "weight": 6,
-        "minCount": 6,
-        "maxCount": 12
-      },
-      {
-        "type": "tropicraft:turtle",
-        "weight": 6,
-        "minCount": 3,
-        "maxCount": 8
-      },
-      {
-        "type": "tropicraft:tropical_fish",
-        "weight": 20,
-        "minCount": 4,
-        "maxCount": 8
       },
       {
         "type": "tropicraft:eagle_ray",
@@ -167,7 +124,51 @@
         "maxCount": 1
       },
       {
+        "type": "tropicraft:turtle",
+        "weight": 6,
+        "minCount": 3,
+        "maxCount": 8
+      },
+      {
+        "type": "tropicraft:dolphin",
+        "weight": 3,
+        "minCount": 4,
+        "maxCount": 7
+      },
+      {
         "type": "tropicraft:hammerhead",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "water_ambient": [
+      {
+        "type": "tropicraft:tropical_fish",
+        "weight": 20,
+        "minCount": 4,
+        "maxCount": 8
+      },
+      {
+        "type": "tropicraft:starfish",
+        "weight": 4,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tropicraft:seahorse",
+        "weight": 6,
+        "minCount": 6,
+        "maxCount": 12
+      },
+      {
+        "type": "tropicraft:sea_urchin",
+        "weight": 4,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tropicraft:man_o_war",
         "weight": 2,
         "minCount": 1,
         "maxCount": 1

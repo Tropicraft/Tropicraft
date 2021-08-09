@@ -1,7 +1,6 @@
 {
   "textures": {
-    "0": "tropicraft:block/mangrove_log",
-    "particle": "tropicraft:block/mangrove_log"
+    "particle": "#roots"
   },
   "elements": [
     {
@@ -9,12 +8,12 @@
       "from": [10, 12, 6],
       "to": [16, 16, 10],
       "faces": {
-        "north": {"uv": [0, 6, 6, 10], "texture": "#0"},
-        "east": {"uv": [0, 6, 4, 10], "texture": "#0", "cullface": "east"},
-        "south": {"uv": [0, 6, 6, 10], "texture": "#0"},
-        "west": {"uv": [0, 6, 4, 10], "texture": "#0"},
-        "up": {"uv": [0, 6, 6, 10], "texture": "#0", "cullface": "up"},
-        "down": {"uv": [0, 6, 6, 10], "texture": "#0"}
+        "north": {"uv": [0, 6, 6, 10], "texture": "#roots"},
+        "east": {"uv": [0, 6, 4, 10], "texture": "#roots", "cullface": "east"},
+        "south": {"uv": [0, 6, 6, 10], "texture": "#roots"},
+        "west": {"uv": [0, 6, 4, 10], "texture": "#roots"},
+        "up": {"uv": [0, 6, 6, 10], "texture": "#roots", "cullface": "up"},
+        "down": {"uv": [0, 6, 6, 10], "texture": "#roots"}
       }
     }
   ]

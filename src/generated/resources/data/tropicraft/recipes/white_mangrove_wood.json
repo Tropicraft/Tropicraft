@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "tropicraft:white_mangrove_log"
+    }
+  },
+  "result": {
+    "item": "tropicraft:white_mangrove_wood",
+    "count": 3
+  }
+}

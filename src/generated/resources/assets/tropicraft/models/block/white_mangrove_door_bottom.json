@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom",
+  "textures": {
+    "bottom": "tropicraft:block/white_mangrove_door_bottom",
+    "top": "tropicraft:block/white_mangrove_door_top"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "config": {
+    "feature_true": "tropicraft:red_mangrove_short",
+    "feature_false": "tropicraft:red_mangrove_small"
+  },
+  "type": "minecraft:random_boolean_selector"
+}

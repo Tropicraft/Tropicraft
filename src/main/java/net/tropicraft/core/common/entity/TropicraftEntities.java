@@ -96,7 +96,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<ManOWarEntity> manOWar() {
-        return EntityType.Builder.create(ManOWarEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(ManOWarEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.6F, 0.8F)
                 .setTrackingRange(10)
                 .setUpdateInterval(3)
@@ -176,7 +176,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<TropicraftTropicalFishEntity> tropicalFish() {
-        return EntityType.Builder.create(TropicraftTropicalFishEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(TropicraftTropicalFishEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.3F, 0.4F)
                 .setTrackingRange(4)
                 .setUpdateInterval(3)
@@ -184,7 +184,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<SardineEntity> riverSardine() {
-        return EntityType.Builder.create(SardineEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(SardineEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.3F, 0.4F)
                 .setTrackingRange(4)
                 .setUpdateInterval(3)
@@ -208,7 +208,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<StarfishEggEntity> starfishEgg() {
-        return EntityType.Builder.create(StarfishEggEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(StarfishEggEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.4F, 0.5F)
                 .setTrackingRange(8)
                 .setUpdateInterval(3)
@@ -216,7 +216,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<StarfishEntity> starfish() {
-        return EntityType.Builder.create(StarfishEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(StarfishEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.5F, 0.5F)
                 .setTrackingRange(4)
                 .setUpdateInterval(15)
@@ -224,7 +224,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<SeaUrchinEggEntity> seaUrchinEgg() {
-        return EntityType.Builder.create(SeaUrchinEggEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(SeaUrchinEggEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.4F, 0.5F)
                 .setTrackingRange(6)
                 .setUpdateInterval(15)
@@ -232,7 +232,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<SeaUrchinEntity> seaUrchin() {
-        return EntityType.Builder.create(SeaUrchinEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(SeaUrchinEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.5F, 0.5F)
                 .setTrackingRange(8)
                 .setUpdateInterval(3)
@@ -256,7 +256,7 @@ public class TropicraftEntities {
     }
 
     private static EntityType.Builder<SeahorseEntity> seahorse() {
-        return EntityType.Builder.create(SeahorseEntity::new, EntityClassification.WATER_CREATURE)
+        return EntityType.Builder.create(SeahorseEntity::new, EntityClassification.WATER_AMBIENT)
                 .size(0.5F, 0.6F)
                 .setTrackingRange(8)
                 .setUpdateInterval(3)

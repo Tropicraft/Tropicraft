@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "tropicraft:palm_stairs",
-    "tropicraft:mahogany_stairs"
+    "tropicraft:mahogany_stairs",
+    "tropicraft:white_mangrove_stairs",
+    "tropicraft:red_mangrove_stairs"
   ]
 }

@@ -97,14 +97,15 @@
     ],
     "creature": [],
     "ambient": [],
-    "water_creature": [],
-    "water_ambient": [
+    "water_creature": [
       {
         "type": "tropicraft:piranha",
         "weight": 20,
         "minCount": 1,
         "maxCount": 12
-      },
+      }
+    ],
+    "water_ambient": [
       {
         "type": "tropicraft:sardine",
         "weight": 20,
