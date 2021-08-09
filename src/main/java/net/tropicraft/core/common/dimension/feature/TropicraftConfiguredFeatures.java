@@ -157,7 +157,7 @@ public final class TropicraftConfiguredFeatures {
         this.whiteMangroveTall = features.mangrove("white_mangrove_tall",
                 new BaseTreeFeatureConfig.Builder(
                         mangroveTrunk, mangroveLeaves,
-                        new SmallMangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+                        mangroveFoliage,
                         new MangroveTrunkPlacer(7, 3, 0, mangroveRoots, true),
                         mangroveMinimumSize
                 ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT)).setMaxWaterDepth(2).build()

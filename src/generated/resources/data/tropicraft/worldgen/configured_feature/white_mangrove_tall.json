@@ -38,7 +38,7 @@
     "foliage_placer": {
       "radius": 0,
       "offset": 0,
-      "type": "tropicraft:small_mangrove"
+      "type": "tropicraft:mangrove"
     },
     "trunk_placer": {
       "height_rand_b": 0,
