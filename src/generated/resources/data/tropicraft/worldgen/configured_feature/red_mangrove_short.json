@@ -41,11 +41,12 @@
       "type": "tropicraft:mangrove"
     },
     "trunk_placer": {
-      "height_rand_b": 0,
       "roots_block": "tropicraft:red_mangrove_roots",
       "pneumatophores": false,
+      "can_generate_raised": true,
       "base_height": 3,
       "height_rand_a": 3,
+      "height_rand_b": 0,
       "type": "tropicraft:mangrove"
     }
   },
