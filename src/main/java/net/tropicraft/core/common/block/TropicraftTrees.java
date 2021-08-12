@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.trees.Tree;
@@ -13,30 +14,25 @@ import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
+import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class TropicraftTrees {
-    public static final Tree GRAPEFRUIT = create((server, random, beehive) ->
-            TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES))
-    );
-    public static final Tree LEMON = create((server, random, beehive) ->
-            TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.LEMON_SAPLING, TropicraftBlocks.LEMON_LEAVES))
-    );
-    public static final Tree LIME = create((server, random, beehive) ->
-            TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.LIME_SAPLING, TropicraftBlocks.LIME_LEAVES))
-    );
-    public static final Tree ORANGE = create((server, random, beehive) ->
-            TropicraftFeatures.FRUIT_TREE.get().withConfiguration(new FruitTreeConfig(TropicraftBlocks.ORANGE_SAPLING, TropicraftBlocks.ORANGE_LEAVES))
-    );
+    public static final Tree GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES);
+    public static final Tree LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES);
+    public static final Tree LIME = createFruit(TropicraftBlocks.LIME_SAPLING);
+    public static final Tree ORANGE = createFruit(TropicraftBlocks.ORANGE_SAPLING);
 
     public static final Tree RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
@@ -64,6 +60,20 @@ public class TropicraftTrees {
 
     public static final Tree WHITE_MANGROVE = create("white_mangrove");
     public static final Tree RED_MANGROVE = create("red_mangrove");
+
+    private static Tree createFruit(Supplier<? extends Block> fruitLeaves) {
+        return create((server, random, beehive) -> {
+            BaseTreeFeatureConfig config = new BaseTreeFeatureConfig.Builder(
+                    new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()),
+                    new WeightedBlockStateProvider().addWeightedBlockstate(TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), 1).addWeightedBlockstate(fruitLeaves.get().getDefaultState(), 1),
+                    new CitrusFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+                    new CitrusTrunkPlacer(6, 3, 0),
+                    new TwoLayerFeature(1, 0, 2)
+            ).build();
+
+           return Feature.TREE.withConfiguration(config);
+        });
+    }
 
     private static Tree create(String id) {
         RegistryKey<ConfiguredFeature<?, ?>> key = RegistryKey.getOrCreateKey(
