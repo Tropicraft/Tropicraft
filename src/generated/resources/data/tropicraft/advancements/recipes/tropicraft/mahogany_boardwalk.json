@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:mahogany_boardwalk"
+    ]
+  },
+  "criteria": {
+    "has_mahogany_slab": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:mahogany_slab"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:mahogany_boardwalk"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mahogany_slab",
+      "has_the_recipe"
+    ]
+  ]
+}

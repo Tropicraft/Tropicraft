@@ -1,0 +1,105 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "type": "short|short_post",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_short",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "tall|tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_tall",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_back|tall_post_front_back",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_tall_connection",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_front|tall_post_front_back",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_tall_connection",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "short|short_post",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_short",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "tall|tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_tall",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_back|tall_post_front_back",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_tall_connection",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_front|tall_post_front_back",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_tall_connection",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "short_post"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_short_post"
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post|tall_post_front|tall_post_back|tall_post_front_back"
+      },
+      "apply": {
+        "model": "tropicraft:block/red_mangrove_boardwalk_tall_post"
+      }
+    }
+  ]
+}

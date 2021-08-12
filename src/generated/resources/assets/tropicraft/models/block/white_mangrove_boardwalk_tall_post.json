@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:block/boardwalk/tall_post",
+  "textures": {
+    "planks": "tropicraft:block/white_mangrove_planks"
+  }
+}

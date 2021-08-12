@@ -287,7 +287,13 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .key('B', Items.BAMBOO)
             .addCriterion("has_bamboo", this.hasItem(Items.BAMBOO))
             .build(consumer);
-        
+
+        boardwalk(BAMBOO_SLAB, BAMBOO_BOARDWALK, consumer);
+        boardwalk(PALM_SLAB, PALM_BOARDWALK, consumer);
+        boardwalk(MAHOGANY_SLAB, MAHOGANY_BOARDWALK, consumer);
+        boardwalk(RED_MANGROVE_SLAB, RED_MANGROVE_BOARDWALK, consumer);
+        boardwalk(WHITE_MANGROVE_SLAB, WHITE_MANGROVE_BOARDWALK, consumer);
+
         ShapedRecipeBuilder.shapedRecipe(BAMBOO_CHEST.get())
             .patternLine("BBB").patternLine("B B").patternLine("BBB")
             .key('B', Items.BAMBOO)
@@ -568,6 +574,17 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .addCriterion("has_" + safeName(source.get()), this.hasItem(source.get()))
                 .build(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
         }
+    }
+
+    private <T extends IItemProvider & IForgeRegistryEntry<?>> void boardwalk(Supplier<? extends T> slab, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+        ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
+                .patternLine("XXX")
+                .patternLine("S S")
+                .key('X', slab.get())
+                .key('S', Tags.Items.RODS_WOODEN)
+                .setGroup("tropicraft:boardwalk")
+                .addCriterion("has_" + safeName(slab.get()), hasItem(slab.get()))
+                .build(consumer);
     }
     
     private <T extends IItemProvider & IForgeRegistryEntry<?>> void fence(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {

@@ -1,0 +1,19 @@
+{
+  "credit": "Made with Blockbench",
+  "textures": {
+    "particle": "#planks"
+  },
+  "elements": [
+    {
+      "from": [6, 0, 6],
+      "to": [10, 3, 10],
+      "faces": {
+        "north": {"uv": [12, 13, 16, 16], "texture": "#planks"},
+        "east": {"uv": [8, 13, 12, 16], "texture": "#planks"},
+        "south": {"uv": [4, 13, 8, 16], "texture": "#planks"},
+        "west": {"uv": [0, 13, 4, 16], "texture": "#planks"},
+        "down": {"uv": [6, 12, 10, 16], "texture": "#planks", "cullface": "down"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "tropicraft:boardwalk",
+  "pattern": [
+    "XXX",
+    "S S"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:red_mangrove_slab"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "tropicraft:red_mangrove_boardwalk",
+    "count": 3
+  }
+}

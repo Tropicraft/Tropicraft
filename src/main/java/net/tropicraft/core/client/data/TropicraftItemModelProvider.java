@@ -174,7 +174,13 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.LARGE_BONGO_DRUM);
         
         blockSprite(TropicraftBlocks.BAMBOO_LADDER);
-        
+
+        blockItem(TropicraftBlocks.BAMBOO_BOARDWALK, "_short");
+        blockItem(TropicraftBlocks.PALM_BOARDWALK, "_short");
+        blockItem(TropicraftBlocks.MAHOGANY_BOARDWALK, "_short");
+        blockItem(TropicraftBlocks.RED_MANGROVE_BOARDWALK, "_short");
+        blockItem(TropicraftBlocks.WHITE_MANGROVE_BOARDWALK, "_short");
+
         withExistingParent(name(TropicraftBlocks.BAMBOO_CHEST), mcLoc("item/chest"))
             .texture("particle", modLoc("block/bamboo_side"));
         blockItem(TropicraftBlocks.SIFTER);

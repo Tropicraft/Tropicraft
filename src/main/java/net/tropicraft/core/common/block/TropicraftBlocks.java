@@ -207,6 +207,12 @@ public class TropicraftBlocks {
     public static final RegistryObject<LadderBlock> BAMBOO_LADDER = register(
             "bamboo_ladder", () -> new LadderBlock(Block.Properties.from(Blocks.BAMBOO)) {});
 
+    public static final RegistryObject<Block> BAMBOO_BOARDWALK = register("bamboo_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(BAMBOO_SLAB.get()).notSolid()));
+    public static final RegistryObject<Block> PALM_BOARDWALK = register("palm_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(PALM_SLAB.get()).notSolid()));
+    public static final RegistryObject<Block> MAHOGANY_BOARDWALK = register("mahogany_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(MAHOGANY_SLAB.get()).notSolid()));
+    public static final RegistryObject<Block> RED_MANGROVE_BOARDWALK = register("red_mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(RED_MANGROVE_SLAB.get()).notSolid()));
+    public static final RegistryObject<Block> WHITE_MANGROVE_BOARDWALK = register("white_mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(WHITE_MANGROVE_SLAB.get()).notSolid()));
+
     public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
             "bamboo_chest", () -> new BambooChestBlock(Block.Properties.from(BAMBOO_BUNDLE.get()).hardnessAndResistance(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()),
             () -> chestRenderer());
