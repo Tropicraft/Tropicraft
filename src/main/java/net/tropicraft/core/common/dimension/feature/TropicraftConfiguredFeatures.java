@@ -10,6 +10,7 @@ import net.minecraft.world.gen.blockplacer.DoublePlantBlockPlacer;
 import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
@@ -25,10 +26,7 @@ import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFr
 import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
-import net.tropicraft.core.common.dimension.feature.tree.MangroveFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.MangroveTrunkPlacer;
-import net.tropicraft.core.common.dimension.feature.tree.SmallMangroveFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.SmallMangroveTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.*;
 
 import java.util.OptionalInt;
 import java.util.function.Function;
@@ -368,7 +366,15 @@ public final class TropicraftConfiguredFeatures {
         }
 
         public ConfiguredFeature<?, ?> fruitTree(String id, Supplier<? extends Block> sapling, Supplier<? extends Block> fruitLeaves) {
-            return this.sparseTree(id, TropicraftFeatures.FRUIT_TREE, new FruitTreeConfig(sapling, fruitLeaves), 0.2F);
+            BaseTreeFeatureConfig config = new BaseTreeFeatureConfig.Builder(
+                    new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()),
+                    new WeightedBlockStateProvider().addWeightedBlockstate(TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), 1).addWeightedBlockstate(fruitLeaves.get().getDefaultState(), 1),
+                    new CitrusFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+                    new CitrusTrunkPlacer(6, 3, 0),
+                    new TwoLayerFeature(1, 0, 2)
+            ).build();
+
+            return this.tree(id, config, 0, 0.1F, 1);
         }
 
         public <C extends IFeatureConfig, F extends Feature<C>> ConfiguredFeature<?, ?> sparseTree(String id, RegistryObject<F> feature, C config, float chance) {
