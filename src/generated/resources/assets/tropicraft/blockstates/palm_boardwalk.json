@@ -1,0 +1,119 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "type": "short|short_post",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_short",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "type": "tall|tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "type": "short_post",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_short_post",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall_post",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_back|tall_post_front_back",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall_connection",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_front|tall_post_front_back",
+        "axis": "x"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall_connection",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "type": "short|short_post",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_short"
+      }
+    },
+    {
+      "when": {
+        "type": "tall|tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall"
+      }
+    },
+    {
+      "when": {
+        "type": "short_post",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_short_post"
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post|tall_post_front|tall_post_back|tall_post_front_back",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall_post"
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_back|tall_post_front_back",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall_connection"
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post_front|tall_post_front_back",
+        "axis": "z"
+      },
+      "apply": {
+        "model": "tropicraft:block/palm_boardwalk_tall_connection",
+        "y": 180
+      }
+    }
+  ]
+}

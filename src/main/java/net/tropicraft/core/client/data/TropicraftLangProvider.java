@@ -188,6 +188,12 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.BAMBOO_LADDER);
 
+        addBlock(TropicraftBlocks.BAMBOO_BOARDWALK);
+        addBlock(TropicraftBlocks.PALM_BOARDWALK);
+        addBlock(TropicraftBlocks.MAHOGANY_BOARDWALK);
+        addBlock(TropicraftBlocks.RED_MANGROVE_BOARDWALK);
+        addBlock(TropicraftBlocks.WHITE_MANGROVE_BOARDWALK);
+
         addBlock(TropicraftBlocks.BAMBOO_CHEST);
         add(Constants.MODID + ".container.bambooChest", "Bamboo Chest");
         add(Constants.MODID + ".container.bambooChestDouble", "Large Bamboo Chest");

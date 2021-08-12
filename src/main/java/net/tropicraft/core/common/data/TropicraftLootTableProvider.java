@@ -196,7 +196,13 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.LARGE_BONGO_DRUM);
             
             dropsSelf(TropicraftBlocks.BAMBOO_LADDER);
-            
+
+            dropsSelf(TropicraftBlocks.BAMBOO_BOARDWALK);
+            dropsSelf(TropicraftBlocks.PALM_BOARDWALK);
+            dropsSelf(TropicraftBlocks.MAHOGANY_BOARDWALK);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_BOARDWALK);
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_BOARDWALK);
+
             dropsSelf(TropicraftBlocks.BAMBOO_CHEST);
             dropsSelf(TropicraftBlocks.SIFTER);
             dropsSelf(TropicraftBlocks.DRINK_MIXER);
