@@ -4,34 +4,63 @@
       "config": {
         "feature": {
           "config": {
-            "wood": {
-              "Properties": {
-                "axis": "y"
-              },
-              "Name": "minecraft:oak_log"
+            "max_water_depth": 0,
+            "ignore_vines": false,
+            "heightmap": "OCEAN_FLOOR",
+            "minimum_size": {
+              "limit": 1,
+              "lower_size": 0,
+              "upper_size": 2,
+              "type": "minecraft:two_layers_feature_size"
             },
-            "sapling": {
-              "Properties": {
-                "stage": "0"
+            "decorators": [],
+            "trunk_provider": {
+              "state": {
+                "Properties": {
+                  "axis": "y"
+                },
+                "Name": "minecraft:oak_log"
               },
-              "Name": "tropicraft:orange_sapling"
+              "type": "minecraft:simple_state_provider"
             },
-            "leaves": {
-              "Properties": {
-                "persistent": "false",
-                "distance": "7"
-              },
-              "Name": "tropicraft:fruit_leaves"
+            "leaves_provider": {
+              "entries": [
+                {
+                  "weight": 1,
+                  "data": {
+                    "Properties": {
+                      "persistent": "false",
+                      "distance": "7"
+                    },
+                    "Name": "tropicraft:fruit_leaves"
+                  }
+                },
+                {
+                  "weight": 1,
+                  "data": {
+                    "Properties": {
+                      "persistent": "false",
+                      "distance": "7"
+                    },
+                    "Name": "tropicraft:orange_leaves"
+                  }
+                }
+              ],
+              "type": "minecraft:weighted_state_provider"
             },
-            "fruit_leaves": {
-              "Properties": {
-                "persistent": "false",
-                "distance": "7"
-              },
-              "Name": "tropicraft:orange_leaves"
+            "foliage_placer": {
+              "radius": 0,
+              "offset": 0,
+              "type": "tropicraft:citrus"
+            },
+            "trunk_placer": {
+              "base_height": 6,
+              "height_rand_a": 3,
+              "height_rand_b": 0,
+              "type": "tropicraft:citrus"
             }
           },
-          "type": "tropicraft:fruit_tree"
+          "type": "minecraft:tree"
         },
         "decorator": {
           "config": {
@@ -52,7 +81,7 @@
     "decorator": {
       "config": {
         "count": 0,
-        "extra_chance": 0.2,
+        "extra_chance": 0.1,
         "extra_count": 1
       },
       "type": "minecraft:count_extra"
