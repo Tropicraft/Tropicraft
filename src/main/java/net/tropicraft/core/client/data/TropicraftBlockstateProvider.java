@@ -90,24 +90,21 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         // Planks & Logs
         simpleBlock(TropicraftBlocks.MAHOGANY_PLANKS);
         simpleBlock(TropicraftBlocks.PALM_PLANKS);
-        simpleBlock(TropicraftBlocks.WHITE_MANGROVE_PLANKS);
-        simpleBlock(TropicraftBlocks.RED_MANGROVE_PLANKS);
+        simpleBlock(TropicraftBlocks.MANGROVE_PLANKS);
 
         logBlock(TropicraftBlocks.MAHOGANY_LOG.get());
         logBlock(TropicraftBlocks.PALM_LOG.get());
-
-        ResourceLocation mahoganyBark = blockTexture(TropicraftBlocks.MAHOGANY_LOG.get());
-        axisBlock(TropicraftBlocks.MAHOGANY_WOOD.get(), mahoganyBark, mahoganyBark);
-        ResourceLocation palmBark = blockTexture(TropicraftBlocks.PALM_LOG.get());
-        axisBlock(TropicraftBlocks.PALM_WOOD.get(), palmBark, palmBark);
+        woodBlock(TropicraftBlocks.MAHOGANY_WOOD, TropicraftBlocks.MAHOGANY_LOG);
+        woodBlock(TropicraftBlocks.PALM_WOOD, TropicraftBlocks.PALM_LOG);
 
         logBlock(TropicraftBlocks.WHITE_MANGROVE_LOG.get());
-        ResourceLocation mangroveBark = blockTexture(TropicraftBlocks.WHITE_MANGROVE_LOG.get());
-        axisBlock(TropicraftBlocks.WHITE_MANGROVE_WOOD.get(), mangroveBark, mangroveBark);
+        woodBlock(TropicraftBlocks.WHITE_MANGROVE_WOOD, TropicraftBlocks.WHITE_MANGROVE_LOG);
 
         logBlock(TropicraftBlocks.RED_MANGROVE_LOG.get());
-        ResourceLocation redMangroveBark = blockTexture(TropicraftBlocks.RED_MANGROVE_LOG.get());
-        axisBlock(TropicraftBlocks.RED_MANGROVE_WOOD.get(), redMangroveBark, redMangroveBark);
+        woodBlock(TropicraftBlocks.RED_MANGROVE_WOOD, TropicraftBlocks.RED_MANGROVE_LOG);
+        logBlock(TropicraftBlocks.STRIPPED_MANGROVE_LOG.get());
+
+        woodBlock(TropicraftBlocks.STRIPPED_MANGROVE_WOOD, TropicraftBlocks.STRIPPED_MANGROVE_LOG);
 
         // Stairs & Slabs
         stairsBlock(TropicraftBlocks.BAMBOO_STAIRS, "bamboo_side", "bamboo_end");
@@ -115,8 +112,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         stairsBlock(TropicraftBlocks.CHUNK_STAIRS, "chunk");
         stairsBlock(TropicraftBlocks.PALM_STAIRS, "palm_planks");
         stairsBlock(TropicraftBlocks.MAHOGANY_STAIRS, "mahogany_planks");
-        stairsBlock(TropicraftBlocks.WHITE_MANGROVE_STAIRS, "white_mangrove_planks");
-        stairsBlock(TropicraftBlocks.RED_MANGROVE_STAIRS, "red_mangrove_planks");
+        stairsBlock(TropicraftBlocks.MANGROVE_STAIRS, "mangrove_planks");
 
         ModelFile fuzzyThatch = fuzzyStairs("thatch_stairs_fuzzy", "thatch_side", "thatch_end", "thatch_grass");
         ModelFile fuzzyThatchOuter = fuzzyStairsOuter("thatch_stairs_fuzzy_outer", "thatch_side", "thatch_end", "thatch_grass");
@@ -127,8 +123,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         slabBlock(TropicraftBlocks.CHUNK_SLAB, TropicraftBlocks.CHUNK);
         slabBlock(TropicraftBlocks.PALM_SLAB, TropicraftBlocks.PALM_PLANKS);
         slabBlock(TropicraftBlocks.MAHOGANY_SLAB, TropicraftBlocks.MAHOGANY_PLANKS);
-        slabBlock(TropicraftBlocks.WHITE_MANGROVE_SLAB, TropicraftBlocks.WHITE_MANGROVE_PLANKS);
-        slabBlock(TropicraftBlocks.RED_MANGROVE_SLAB, TropicraftBlocks.RED_MANGROVE_PLANKS);
+        slabBlock(TropicraftBlocks.MANGROVE_SLAB, TropicraftBlocks.MANGROVE_PLANKS);
 
         // Leaves
         simpleBlock(TropicraftBlocks.MAHOGANY_LEAVES);
@@ -158,16 +153,14 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         fenceBlock(TropicraftBlocks.CHUNK_FENCE, "chunk");
         fenceBlock(TropicraftBlocks.PALM_FENCE, "palm_planks");
         fenceBlock(TropicraftBlocks.MAHOGANY_FENCE, "mahogany_planks");
-        fenceBlock(TropicraftBlocks.WHITE_MANGROVE_FENCE, "white_mangrove_planks");
-        fenceBlock(TropicraftBlocks.RED_MANGROVE_FENCE, "red_mangrove_planks");
+        fenceBlock(TropicraftBlocks.MANGROVE_FENCE, "mangrove_planks");
 
         fenceGateBlock(TropicraftBlocks.BAMBOO_FENCE_GATE, "bamboo_side");
         fenceGateBlock(TropicraftBlocks.THATCH_FENCE_GATE, "thatch_side");
         fenceGateBlock(TropicraftBlocks.CHUNK_FENCE_GATE, "chunk");
         fenceGateBlock(TropicraftBlocks.PALM_FENCE_GATE, "palm_planks");
         fenceGateBlock(TropicraftBlocks.MAHOGANY_FENCE_GATE, "mahogany_planks");
-        fenceGateBlock(TropicraftBlocks.WHITE_MANGROVE_FENCE_GATE, "white_mangrove_planks");
-        fenceGateBlock(TropicraftBlocks.RED_MANGROVE_FENCE_GATE, "red_mangrove_planks");
+        fenceGateBlock(TropicraftBlocks.MANGROVE_FENCE_GATE, "mangrove_planks");
 
         wallBlock(TropicraftBlocks.CHUNK_WALL, "chunk");
 
@@ -176,15 +169,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         doorBlock(TropicraftBlocks.THATCH_DOOR);
         doorBlock(TropicraftBlocks.PALM_DOOR);
         doorBlock(TropicraftBlocks.MAHOGANY_DOOR);
-        doorBlock(TropicraftBlocks.WHITE_MANGROVE_DOOR);
-        doorBlock(TropicraftBlocks.RED_MANGROVE_DOOR);
+        doorBlock(TropicraftBlocks.MANGROVE_DOOR);
 
         trapdoorBlock(TropicraftBlocks.BAMBOO_TRAPDOOR);
         trapdoorBlock(TropicraftBlocks.THATCH_TRAPDOOR);
         trapdoorBlock(TropicraftBlocks.PALM_TRAPDOOR);
         trapdoorBlock(TropicraftBlocks.MAHOGANY_TRAPDOOR);
-        trapdoorBlock(TropicraftBlocks.WHITE_MANGROVE_TRAPDOOR);
-        trapdoorBlock(TropicraftBlocks.RED_MANGROVE_TRAPDOOR);
+        trapdoorBlock(TropicraftBlocks.MANGROVE_TRAPDOOR);
 
         // Misc remaining blocks
         doublePlant(TropicraftBlocks.IRIS);
@@ -209,8 +200,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         boardwalk(TropicraftBlocks.BAMBOO_BOARDWALK, modBlockLoc("bamboo_side"));
         boardwalk(TropicraftBlocks.PALM_BOARDWALK, blockTexture(TropicraftBlocks.PALM_PLANKS));
         boardwalk(TropicraftBlocks.MAHOGANY_BOARDWALK, blockTexture(TropicraftBlocks.MAHOGANY_PLANKS));
-        boardwalk(TropicraftBlocks.RED_MANGROVE_BOARDWALK, blockTexture(TropicraftBlocks.RED_MANGROVE_PLANKS));
-        boardwalk(TropicraftBlocks.WHITE_MANGROVE_BOARDWALK, blockTexture(TropicraftBlocks.WHITE_MANGROVE_PLANKS));
+        boardwalk(TropicraftBlocks.MANGROVE_BOARDWALK, blockTexture(TropicraftBlocks.MANGROVE_PLANKS));
 
         noModelBlock(TropicraftBlocks.BAMBOO_CHEST, modBlockLoc("bamboo_side"));
         simpleBlock(TropicraftBlocks.SIFTER);
@@ -311,6 +301,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     private void stairsBlock(Supplier<? extends StairsBlock> block, String side, String topBottom) {
         stairsBlock(block.get(), modBlockLoc(side), modBlockLoc(topBottom), modBlockLoc(topBottom));
+    }
+
+    private void woodBlock(Supplier<? extends RotatedPillarBlock> wood, Supplier<? extends Block> bark) {
+        ResourceLocation barkTexture = blockTexture(bark.get());
+        axisBlock(wood.get(), barkTexture, barkTexture);
     }
 
     private ModelFile fuzzyStairs(String name, String parent, String side, String end, String cross) {

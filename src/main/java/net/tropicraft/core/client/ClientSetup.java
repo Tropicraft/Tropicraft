@@ -71,11 +71,9 @@ public class ClientSetup {
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.PALM_TRAPDOOR.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.PALM_DOOR.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.WHITE_MANGROVE_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.WHITE_MANGROVE_TRAPDOOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.WHITE_MANGROVE_DOOR.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.RED_MANGROVE_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.RED_MANGROVE_TRAPDOOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.RED_MANGROVE_DOOR.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.MANGROVE_TRAPDOOR.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.MANGROVE_DOOR.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_TRAPDOOR.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_DOOR.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_LADDER.get(), cutout);

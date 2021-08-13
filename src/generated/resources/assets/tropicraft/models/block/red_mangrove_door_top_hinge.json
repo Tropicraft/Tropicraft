@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_rh",
-  "textures": {
-    "bottom": "tropicraft:block/red_mangrove_door_bottom",
-    "top": "tropicraft:block/red_mangrove_door_top"
-  }
-}

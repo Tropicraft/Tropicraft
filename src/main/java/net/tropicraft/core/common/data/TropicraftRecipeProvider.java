@@ -164,12 +164,12 @@ public class TropicraftRecipeProvider extends RecipeProvider {
 
         bark(WHITE_MANGROVE_LOG, WHITE_MANGROVE_WOOD, consumer);
         bark(RED_MANGROVE_LOG, RED_MANGROVE_WOOD, consumer);
+        bark(STRIPPED_MANGROVE_LOG, STRIPPED_MANGROVE_WOOD, consumer);
 
         // Stairs
         stairs(PALM_PLANKS, PALM_STAIRS, "wooden_stairs", false, consumer);
         stairs(MAHOGANY_PLANKS, MAHOGANY_STAIRS, "wooden_stairs", false, consumer);
-        stairs(WHITE_MANGROVE_PLANKS, WHITE_MANGROVE_STAIRS, "wooden_stairs", false, consumer);
-        stairs(RED_MANGROVE_PLANKS, RED_MANGROVE_STAIRS, "wooden_stairs", false, consumer);
+        stairs(MANGROVE_PLANKS, MANGROVE_STAIRS, "wooden_stairs", false, consumer);
 
         stairs(THATCH_BUNDLE, THATCH_STAIRS, null, false, consumer);
         stairs(BAMBOO_BUNDLE, BAMBOO_STAIRS, null, false, consumer);
@@ -185,8 +185,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         // Slabs
         slab(PALM_PLANKS, PALM_SLAB, "wooden_slab", false, consumer);
         slab(MAHOGANY_PLANKS, MAHOGANY_SLAB, "wooden_slab", false, consumer);
-        slab(WHITE_MANGROVE_PLANKS, WHITE_MANGROVE_SLAB, "wooden_slab", false, consumer);
-        slab(RED_MANGROVE_PLANKS, RED_MANGROVE_SLAB, "wooden_slab", false, consumer);
+        slab(MANGROVE_PLANKS, MANGROVE_SLAB, "wooden_slab", false, consumer);
 
         slab(THATCH_BUNDLE, THATCH_SLAB, null, false, consumer);
         slab(BAMBOO_BUNDLE, BAMBOO_SLAB, null, false, consumer);
@@ -195,8 +194,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         // Fences
         fence(PALM_PLANKS, PALM_FENCE, "wooden_fence", consumer);
         fence(MAHOGANY_PLANKS, MAHOGANY_FENCE, "wooden_fence", consumer);
-        fence(WHITE_MANGROVE_PLANKS, WHITE_MANGROVE_FENCE, "wooden_fence", consumer);
-        fence(RED_MANGROVE_PLANKS, RED_MANGROVE_FENCE, "wooden_fence", consumer);
+        fence(MANGROVE_PLANKS, MANGROVE_FENCE, "wooden_fence", consumer);
 
         fence(THATCH_BUNDLE, THATCH_FENCE, null, consumer);
         fence(BAMBOO_BUNDLE, BAMBOO_FENCE, null, consumer);
@@ -205,8 +203,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         // Fence Gates
         fenceGate(PALM_PLANKS, PALM_FENCE_GATE, "wooden_fence_gate", consumer);
         fenceGate(MAHOGANY_PLANKS, MAHOGANY_FENCE_GATE, "wooden_fence_gate", consumer);
-        fenceGate(WHITE_MANGROVE_PLANKS, WHITE_MANGROVE_FENCE_GATE, "wooden_fence_gate", consumer);
-        fenceGate(RED_MANGROVE_PLANKS, RED_MANGROVE_FENCE_GATE, "wooden_fence_gate", consumer);
+        fenceGate(MANGROVE_PLANKS, MANGROVE_FENCE_GATE, "wooden_fence_gate", consumer);
 
         fenceGate(THATCH_BUNDLE, THATCH_FENCE_GATE, null, consumer);
         fenceGate(BAMBOO_BUNDLE, BAMBOO_FENCE_GATE, null, consumer);
@@ -218,8 +215,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         // Doors
         door(PALM_PLANKS, PALM_DOOR, "wooden_door", consumer);
         door(MAHOGANY_PLANKS, MAHOGANY_DOOR, "wooden_door", consumer);
-        door(WHITE_MANGROVE_PLANKS, WHITE_MANGROVE_DOOR, "wooden_door", consumer);
-        door(RED_MANGROVE_PLANKS, RED_MANGROVE_DOOR, "wooden_door", consumer);
+        door(MANGROVE_PLANKS, MANGROVE_DOOR, "wooden_door", consumer);
 
         door(THATCH_BUNDLE, THATCH_DOOR, null, consumer);
         door(BAMBOO_BUNDLE, BAMBOO_DOOR, null, consumer);
@@ -227,8 +223,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         // Trap doors
         trapDoor(PALM_PLANKS, PALM_TRAPDOOR, "wooden_trapdoor", consumer);
         trapDoor(MAHOGANY_PLANKS, MAHOGANY_TRAPDOOR, "wooden_trapdoor", consumer);
-        trapDoor(WHITE_MANGROVE_PLANKS, WHITE_MANGROVE_TRAPDOOR, "wooden_trapdoor", consumer);
-        trapDoor(RED_MANGROVE_PLANKS, RED_MANGROVE_TRAPDOOR, "wooden_trapdoor", consumer);
+        trapDoor(MANGROVE_PLANKS, MANGROVE_TRAPDOOR, "wooden_trapdoor", consumer);
 
         trapDoor(THATCH_BUNDLE, THATCH_TRAPDOOR, null, consumer);
         trapDoor(BAMBOO_BUNDLE, BAMBOO_TRAPDOOR, null, consumer);
@@ -291,8 +286,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         boardwalk(BAMBOO_SLAB, BAMBOO_BOARDWALK, consumer);
         boardwalk(PALM_SLAB, PALM_BOARDWALK, consumer);
         boardwalk(MAHOGANY_SLAB, MAHOGANY_BOARDWALK, consumer);
-        boardwalk(RED_MANGROVE_SLAB, RED_MANGROVE_BOARDWALK, consumer);
-        boardwalk(WHITE_MANGROVE_SLAB, WHITE_MANGROVE_BOARDWALK, consumer);
+        boardwalk(MANGROVE_SLAB, MANGROVE_BOARDWALK, consumer);
 
         ShapedRecipeBuilder.shapedRecipe(BAMBOO_CHEST.get())
             .patternLine("BBB").patternLine("B B").patternLine("BBB")
