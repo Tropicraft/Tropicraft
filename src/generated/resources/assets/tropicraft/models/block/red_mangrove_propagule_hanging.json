@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "tropicraft:block/red_mangrove_sapling"
+    "cross": "tropicraft:block/red_mangrove_propagule"
   }
 }

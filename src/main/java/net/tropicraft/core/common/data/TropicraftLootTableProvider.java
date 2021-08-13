@@ -135,8 +135,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             fruitLeaves(TropicraftBlocks.LEMON_LEAVES, TropicraftBlocks.LEMON_SAPLING, TropicraftItems.LEMON);
             fruitLeaves(TropicraftBlocks.LIME_LEAVES, TropicraftBlocks.LIME_SAPLING, TropicraftItems.LIME);
             fruitLeaves(TropicraftBlocks.ORANGE_LEAVES, TropicraftBlocks.ORANGE_SAPLING, TropicraftItems.ORANGE);
-            leaves(TropicraftBlocks.WHITE_MANGROVE_LEAVES, TropicraftBlocks.WHITE_MANGROVE_SAPLING, SAPLING_RATES);
-            leaves(TropicraftBlocks.RED_MANGROVE_LEAVES, TropicraftBlocks.RED_MANGROVE_SAPLING, SAPLING_RATES);
+            leavesNoSapling(TropicraftBlocks.WHITE_MANGROVE_LEAVES);
+            leavesNoSapling(TropicraftBlocks.RED_MANGROVE_LEAVES);
 
             // Saplings
             dropsSelf(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -145,8 +145,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.LEMON_SAPLING);
             dropsSelf(TropicraftBlocks.LIME_SAPLING);
             dropsSelf(TropicraftBlocks.ORANGE_SAPLING);
-            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
-            dropsSelf(TropicraftBlocks.RED_MANGROVE_SAPLING);
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
 
             // Fences, Gates, and Walls
             dropsSelf(TropicraftBlocks.BAMBOO_FENCE);

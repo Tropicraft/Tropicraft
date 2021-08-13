@@ -118,8 +118,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.LEMON_LEAVES);
         blockItem(TropicraftBlocks.LIME_LEAVES);
         blockItem(TropicraftBlocks.ORANGE_LEAVES);
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_LEAVES);
-        blockItemLike(TropicraftBlocks.RED_MANGROVE_LEAVES, TropicraftBlocks.WHITE_MANGROVE_LEAVES);
+
+        withExistingParent(name(TropicraftBlocks.WHITE_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
+        withExistingParent(name(TropicraftBlocks.RED_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
 
         // Saplings
         blockSprite(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -128,8 +129,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockSprite(TropicraftBlocks.LEMON_SAPLING);
         blockSprite(TropicraftBlocks.LIME_SAPLING);
         blockSprite(TropicraftBlocks.ORANGE_SAPLING);
-        blockSprite(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
-        blockSprite(TropicraftBlocks.RED_MANGROVE_SAPLING);
+
+        blockSprite(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, modLoc("block/white_mangrove_propagule"));
+        blockSprite(TropicraftBlocks.RED_MANGROVE_PROPAGULE, modLoc("block/red_mangrove_propagule"));
 
         // Fences, Gates, and Walls
         blockWithInventoryModel(TropicraftBlocks.BAMBOO_FENCE);
@@ -382,10 +384,6 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
     
     private ItemModelBuilder blockItem(Supplier<? extends Block> block, String suffix) {
         return withExistingParent(name(block), modLoc("block/" + name(block) + suffix));
-    }
-
-    private ItemModelBuilder blockItemLike(Supplier<? extends Block> block, Supplier<? extends Block> looksLike) {
-        return withExistingParent(name(block), modLoc("block/" + name(looksLike)));
     }
 
     private ItemModelBuilder blockWithInventoryModel(Supplier<? extends Block> block) {

@@ -135,15 +135,16 @@ public class TropicraftBlocks {
 
     public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_LOG = register("white_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
     public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_WOOD = register("white_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
-    public static final RegistryObject<LeavesBlock> WHITE_MANGROVE_LEAVES = register("white_mangrove_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> WHITE_MANGROVE_LEAVES = register("white_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.WHITE_MANGROVE_PROPAGULE));
     public static final RegistryObject<Block> WHITE_MANGROVE_ROOTS = register("white_mangrove_roots", Builder.mangroveRoots());
-    public static final RegistryObject<SaplingBlock> WHITE_MANGROVE_SAPLING = register("white_mangrove_sapling", Builder.waterloggableSapling(TropicraftTrees.WHITE_MANGROVE));
 
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
-    public static final RegistryObject<LeavesBlock> RED_MANGROVE_LEAVES = register("red_mangrove_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> RED_MANGROVE_LEAVES = register("red_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.RED_MANGROVE_PROPAGULE));
     public static final RegistryObject<Block> RED_MANGROVE_ROOTS = register("red_mangrove_roots", Builder.mangroveRoots());
-    public static final RegistryObject<SaplingBlock> RED_MANGROVE_SAPLING = register("red_mangrove_sapling", Builder.waterloggableSapling(TropicraftTrees.RED_MANGROVE));
+
+    public static final RegistryObject<PropaguleBlock> WHITE_MANGROVE_PROPAGULE = register("white_mangrove_propagule", Builder.propagule(TropicraftTrees.WHITE_MANGROVE));
+    public static final RegistryObject<PropaguleBlock> RED_MANGROVE_PROPAGULE = register("red_mangrove_propagule", Builder.propagule(TropicraftTrees.RED_MANGROVE));
 
     public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = register("stripped_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
     public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = register("stripped_mangrove_wood", Builder.wood(MaterialColor.GRAY));

@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
-public final class WaterloggableSaplingBlock extends SaplingBlock implements IWaterLoggable {
+public class WaterloggableSaplingBlock extends SaplingBlock implements IWaterLoggable {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public WaterloggableSaplingBlock(Tree tree, Properties properties) {

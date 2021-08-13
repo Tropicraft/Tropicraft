@@ -134,8 +134,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.LEMON_LEAVES);
         simpleBlock(TropicraftBlocks.LIME_LEAVES);
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
-        simpleBlock(TropicraftBlocks.WHITE_MANGROVE_LEAVES.get());
-        simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES.get(), cubeAll(TropicraftBlocks.WHITE_MANGROVE_LEAVES));
+
+        ModelFile mangroveLeaves = models().cubeAll("mangrove_leaves", modBlockLoc("mangrove_leaves"));
+        simpleBlock(TropicraftBlocks.WHITE_MANGROVE_LEAVES.get(), mangroveLeaves);
+        simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES.get(), mangroveLeaves);
 
         // Saplings
         sapling(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -144,8 +146,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         sapling(TropicraftBlocks.LEMON_SAPLING);
         sapling(TropicraftBlocks.LIME_SAPLING);
         sapling(TropicraftBlocks.ORANGE_SAPLING);
-        sapling(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
-        sapling(TropicraftBlocks.RED_MANGROVE_SAPLING);
+
+        propagule(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, "white_mangrove_propagule");
+        propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE, "red_mangrove_propagule");
 
         // Fences, Gates, and Walls
         fenceBlock(TropicraftBlocks.BAMBOO_FENCE, "bamboo_side");
@@ -343,6 +346,15 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     private void sapling(Supplier<? extends SaplingBlock> block) {
         simpleBlock(block, models().cross(name(block), blockTexture(block)));
+    }
+
+    private void propagule(Supplier<? extends PropaguleBlock> block, String texture) {
+        BlockModelBuilder planted = models().cross(name(block) + "_planted", modBlockLoc(texture + "_planted"));
+        BlockModelBuilder hanging = models().cross(name(block) + "_hanging", modBlockLoc(texture));
+
+        getVariantBuilder(block.get())
+                .partialState().with(PropaguleBlock.PLANTED, false).addModels(new ConfiguredModel(hanging))
+                .partialState().with(PropaguleBlock.PLANTED, true).addModels(new ConfiguredModel(planted));
     }
 
     private void fenceBlock(Supplier<? extends FenceBlock> block, String texture) {
