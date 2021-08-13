@@ -146,11 +146,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         sapling(TropicraftBlocks.LEMON_SAPLING);
         sapling(TropicraftBlocks.LIME_SAPLING);
         sapling(TropicraftBlocks.ORANGE_SAPLING);
-        sapling(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
-        sapling(TropicraftBlocks.RED_MANGROVE_SAPLING);
 
-        propagule(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, "mangrove_propagule");
-        propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE, "mangrove_propagule");
+        propagule(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, "white_mangrove_propagule");
+        propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE, "red_mangrove_propagule");
 
         // Fences, Gates, and Walls
         fenceBlock(TropicraftBlocks.BAMBOO_FENCE, "bamboo_side");
@@ -352,7 +350,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
 
     private void propagule(Supplier<? extends PropaguleBlock> block, String texture) {
         BlockModelBuilder planted = models().cross(name(block) + "_planted", modBlockLoc(texture + "_planted"));
-        BlockModelBuilder hanging = models().cross(name(block) + "_hanging", modBlockLoc(texture + "_hanging"));
+        BlockModelBuilder hanging = models().cross(name(block) + "_hanging", modBlockLoc(texture));
 
         getVariantBuilder(block.get())
                 .partialState().with(PropaguleBlock.PLANTED, false).addModels(new ConfiguredModel(hanging))

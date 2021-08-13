@@ -35,7 +35,6 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
         // Saplings & Leaves
         createAndAppend(TropicraftTags.Blocks.SAPLINGS, BlockTags.SAPLINGS,
                 PALM_SAPLING, MAHOGANY_SAPLING, GRAPEFRUIT_SAPLING, LEMON_SAPLING, LIME_SAPLING, ORANGE_SAPLING,
-                WHITE_MANGROVE_SAPLING, RED_MANGROVE_SAPLING,
                 WHITE_MANGROVE_PROPAGULE, RED_MANGROVE_PROPAGULE
         );
         createAndAppend(TropicraftTags.Blocks.LEAVES, BlockTags.LEAVES,

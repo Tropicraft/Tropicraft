@@ -129,11 +129,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockSprite(TropicraftBlocks.LEMON_SAPLING);
         blockSprite(TropicraftBlocks.LIME_SAPLING);
         blockSprite(TropicraftBlocks.ORANGE_SAPLING);
-        blockSprite(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
-        blockSprite(TropicraftBlocks.RED_MANGROVE_SAPLING);
 
-        blockSprite(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, modLoc("item/mangrove_propagule"));
-        blockSprite(TropicraftBlocks.RED_MANGROVE_PROPAGULE, modLoc("item/mangrove_propagule"));
+        blockSprite(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, modLoc("block/white_mangrove_propagule"));
+        blockSprite(TropicraftBlocks.RED_MANGROVE_PROPAGULE, modLoc("block/red_mangrove_propagule"));
 
         // Fences, Gates, and Walls
         blockWithInventoryModel(TropicraftBlocks.BAMBOO_FENCE);

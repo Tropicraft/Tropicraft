@@ -141,8 +141,6 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.LEMON_SAPLING);
         addBlock(TropicraftBlocks.LIME_SAPLING);
         addBlock(TropicraftBlocks.ORANGE_SAPLING);
-        addBlock(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
-        addBlock(TropicraftBlocks.RED_MANGROVE_SAPLING);
         addBlock(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE);
         addBlock(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
 

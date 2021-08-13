@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 public class MangroveLeavesBlock extends LeavesBlock {
     private static final int PROPAGULE_GROW_CHANCE = 80;
-    public static final int SPACING = 2;
+    private static final int SPACING = 2;
 
     private final Supplier<PropaguleBlock> propaguleBlock;
 
@@ -21,31 +21,28 @@ public class MangroveLeavesBlock extends LeavesBlock {
 
     @Override
     public boolean ticksRandomly(BlockState state) {
-        return true;
+        return this.canGrowPropagules(state) || super.ticksRandomly(state);
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.randomTick(state, world, pos, random);
 
-        if (random.nextInt(PROPAGULE_GROW_CHANCE) == 0) {
-            this.tryGrowPropagule(state, world, pos);
+        if (this.canGrowPropagules(state) && random.nextInt(PROPAGULE_GROW_CHANCE) == 0) {
+            this.tryGrowPropagule(world, pos);
         }
     }
 
-    private void tryGrowPropagule(BlockState state, ServerWorld world, BlockPos pos) {
-        if (state.get(DISTANCE) > 3) {
-            return;
-        }
-
+    private void tryGrowPropagule(ServerWorld world, BlockPos pos) {
         BlockPos growPos = pos.down();
-        if (world.isAirBlock(growPos) && world.isAirBlock(growPos.down())) {
-            if (this.hasNearPropagule(world, pos)) {
-                return;
-            }
-
-            world.setBlockState(growPos, this.propaguleBlock.get().getDefaultState().with(PropaguleBlock.PLANTED, false));
+        if (world.isAirBlock(growPos) && world.isAirBlock(growPos.down()) && !this.hasNearPropagule(world, pos)) {
+            BlockState propagule = this.propaguleBlock.get().getDefaultState().with(PropaguleBlock.PLANTED, false);
+            world.setBlockState(growPos, propagule);
         }
+    }
+
+    private boolean canGrowPropagules(BlockState state) {
+        return state.get(DISTANCE) <= 3;
     }
 
     private boolean hasNearPropagule(ServerWorld world, BlockPos source) {

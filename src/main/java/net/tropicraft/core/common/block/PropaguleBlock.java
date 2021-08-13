@@ -57,10 +57,6 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        this.randomTickPlanted(state, world, pos, random);
-    }
-
-    private void randomTickPlanted(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!world.isAreaLoaded(pos, 1)) return;
 
         if (world.getLight(pos.up()) >= 9 && random.nextInt(GROW_CHANCE) == 0) {
