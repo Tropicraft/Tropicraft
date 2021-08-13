@@ -98,6 +98,10 @@ public class Builder {
         return block(decay ? LeavesBlock::new : TropicraftLeavesBlock::new, lazyProp(Blocks.OAK_LEAVES.delegate));
     }
 
+    public static Supplier<LeavesBlock> mangroveLeaves(Supplier<RegistryObject<PropaguleBlock>> propagule) {
+        return block(properties -> new MangroveLeavesBlock(properties.tickRandomly(), () -> propagule.get().get()), lazyProp(Blocks.OAK_LEAVES.delegate));
+    }
+
     public static Supplier<Block> mangroveRoots() {
         return () -> new MangroveRootsBlock(
                 Block.Properties.create(Material.WOOD)
@@ -126,6 +130,10 @@ public class Builder {
 
     public static Supplier<SaplingBlock> waterloggableSapling(final Tree tree) {
         return block(p -> new WaterloggableSaplingBlock(tree, p), lazyProp(Blocks.OAK_SAPLING.delegate));
+    }
+
+    public static Supplier<PropaguleBlock> propagule(final Tree tree) {
+        return block(p -> new PropaguleBlock(tree, p), lazyProp(Blocks.OAK_SAPLING.delegate));
     }
 
     public static Supplier<FenceBlock> fence(final Supplier<? extends Block> source) {

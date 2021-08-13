@@ -147,6 +147,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.ORANGE_SAPLING);
             dropsSelf(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_SAPLING);
+            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE);
+            dropsSelf(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
 
             // Fences, Gates, and Walls
             dropsSelf(TropicraftBlocks.BAMBOO_FENCE);

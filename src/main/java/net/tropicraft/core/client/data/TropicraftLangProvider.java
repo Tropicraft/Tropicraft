@@ -143,6 +143,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.ORANGE_SAPLING);
         addBlock(TropicraftBlocks.WHITE_MANGROVE_SAPLING);
         addBlock(TropicraftBlocks.RED_MANGROVE_SAPLING);
+        addBlock(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE);
+        addBlock(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
 
         // Fences, Gates, and Walls
         addBlock(TropicraftBlocks.BAMBOO_FENCE);
