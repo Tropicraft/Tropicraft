@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_trapdoor",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:mangrove_planks"
+    }
+  },
+  "result": {
+    "item": "tropicraft:mangrove_trapdoor",
+    "count": 2
+  }
+}

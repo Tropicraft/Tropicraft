@@ -63,13 +63,29 @@ public class Builder {
     }
 
     public static Supplier<RotatedPillarBlock> log(final MaterialColor topColor, final MaterialColor sideColor) {
-        return block(p -> new RotatedPillarBlock(p), prop(Material.WOOD, state -> state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+        return block(RotatedPillarBlock::new, logProperties(topColor, sideColor));
+    }
+
+    public static Supplier<RotatedPillarBlock> log(final MaterialColor topColor, final MaterialColor sideColor, Supplier<RegistryObject<RotatedPillarBlock>> stripped) {
+        return block(properties -> new TropicraftLogBlock(properties, () -> stripped.get().get()), logProperties(topColor, sideColor));
+    }
+
+    private static AbstractBlock.Properties logProperties(MaterialColor topColor, MaterialColor sideColor) {
+        return prop(Material.WOOD, state -> state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD);
     }
 
     public static Supplier<RotatedPillarBlock> wood(final MaterialColor color) {
-        return block(RotatedPillarBlock::new, prop(Material.WOOD, color).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+        return block(RotatedPillarBlock::new, woodProperties(color));
     }
-    
+
+    public static Supplier<RotatedPillarBlock> wood(final MaterialColor color, Supplier<RegistryObject<RotatedPillarBlock>> stripped) {
+        return block(properties -> new TropicraftLogBlock(properties, () -> stripped.get().get()), woodProperties(color));
+    }
+
+    private static AbstractBlock.Properties woodProperties(MaterialColor color) {
+        return prop(Material.WOOD, color).hardnessAndResistance(2.0F).sound(SoundType.WOOD);
+    }
+
     public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source) {
         return block(p -> new StairsBlock(source.lazyMap(Block::getDefaultState), p), lazyProp(source));
     }
@@ -125,7 +141,7 @@ public class Builder {
     }
 
     public static Supplier<BongoDrumBlock> bongo(final BongoDrumBlock.Size bongoSize) {
-        return block(p -> new BongoDrumBlock(bongoSize, p), prop(Material.WOOD, MaterialColor.WHITE_TERRACOTTA).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+        return block(p -> new BongoDrumBlock(bongoSize, p), woodProperties(MaterialColor.WHITE_TERRACOTTA));
     }
     
     public static Supplier<FlowerPotBlock> pot(final Supplier<FlowerPotBlock> emptyPot, final Supplier<? extends Block> flower, final Supplier<Block.Properties> properties) {

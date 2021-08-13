@@ -54,21 +54,21 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
         
         // Logs & Planks
         createAndAppend(TropicraftTags.Blocks.LOGS, BlockTags.LOGS,
-                PALM_LOG, MAHOGANY_LOG, WHITE_MANGROVE_LOG, RED_MANGROVE_LOG);
+                PALM_LOG, MAHOGANY_LOG, WHITE_MANGROVE_LOG, RED_MANGROVE_LOG, STRIPPED_MANGROVE_LOG);
         createAndAppend(TropicraftTags.Blocks.PLANKS, BlockTags.PLANKS,
                 PALM_PLANKS, MAHOGANY_PLANKS);
         
         // Wooden deco blocks
         createAndAppend(TropicraftTags.Blocks.WOODEN_SLABS, BlockTags.WOODEN_SLABS,
-                PALM_SLAB, MAHOGANY_SLAB, WHITE_MANGROVE_SLAB, RED_MANGROVE_SLAB);
+                PALM_SLAB, MAHOGANY_SLAB, MANGROVE_SLAB);
         createAndAppend(TropicraftTags.Blocks.WOODEN_STAIRS, BlockTags.WOODEN_STAIRS,
-                PALM_STAIRS, MAHOGANY_STAIRS, WHITE_MANGROVE_STAIRS, RED_MANGROVE_STAIRS);
+                PALM_STAIRS, MAHOGANY_STAIRS, MANGROVE_STAIRS);
         createAndAppend(TropicraftTags.Blocks.WOODEN_DOORS, BlockTags.WOODEN_DOORS,
-                PALM_DOOR, MAHOGANY_DOOR, WHITE_MANGROVE_DOOR, RED_MANGROVE_DOOR);
+                PALM_DOOR, MAHOGANY_DOOR, MANGROVE_DOOR);
         createAndAppend(TropicraftTags.Blocks.WOODEN_TRAPDOORS, BlockTags.WOODEN_TRAPDOORS,
-                PALM_TRAPDOOR, MAHOGANY_TRAPDOOR, WHITE_MANGROVE_TRAPDOOR, RED_MANGROVE_TRAPDOOR);
+                PALM_TRAPDOOR, MAHOGANY_TRAPDOOR, MANGROVE_TRAPDOOR);
         createAndAppend(TropicraftTags.Blocks.WOODEN_FENCES, BlockTags.WOODEN_FENCES,
-                PALM_FENCE, MAHOGANY_FENCE, WHITE_MANGROVE_FENCE, RED_MANGROVE_FENCE);
+                PALM_FENCE, MAHOGANY_FENCE, MANGROVE_FENCE);
         
         // All deco blocks
         extendAndAppend(TropicraftTags.Blocks.SLABS, TropicraftTags.Blocks.WOODEN_SLABS, BlockTags.SLABS,

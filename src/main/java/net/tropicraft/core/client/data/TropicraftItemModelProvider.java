@@ -85,8 +85,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.RED_MANGROVE_LOG);
         blockItem(TropicraftBlocks.RED_MANGROVE_WOOD);
 
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_PLANKS);
-        blockItem(TropicraftBlocks.RED_MANGROVE_PLANKS);
+        blockItem(TropicraftBlocks.STRIPPED_MANGROVE_LOG);
+        blockItem(TropicraftBlocks.STRIPPED_MANGROVE_WOOD);
+
+        blockItem(TropicraftBlocks.MANGROVE_PLANKS);
 
         withExistingParent(name(TropicraftBlocks.WHITE_MANGROVE_ROOTS), modLoc("block/mangrove_roots/white/stem"));
         withExistingParent(name(TropicraftBlocks.RED_MANGROVE_ROOTS), modLoc("block/mangrove_roots/red/stem"));
@@ -98,16 +100,14 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.PALM_STAIRS);
         blockItem(TropicraftBlocks.MAHOGANY_STAIRS);
         blockItem(TropicraftBlocks.THATCH_STAIRS_FUZZY);
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_STAIRS);
-        blockItem(TropicraftBlocks.RED_MANGROVE_STAIRS);
+        blockItem(TropicraftBlocks.MANGROVE_STAIRS);
 
         blockItem(TropicraftBlocks.BAMBOO_SLAB);
         blockItem(TropicraftBlocks.THATCH_SLAB);
         blockItem(TropicraftBlocks.CHUNK_SLAB);
         blockItem(TropicraftBlocks.PALM_SLAB);
         blockItem(TropicraftBlocks.MAHOGANY_SLAB);
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_SLAB);
-        blockItem(TropicraftBlocks.RED_MANGROVE_SLAB);
+        blockItem(TropicraftBlocks.MANGROVE_SLAB);
 
         // Leaves
         blockItem(TropicraftBlocks.MAHOGANY_LEAVES);
@@ -137,16 +137,14 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockWithInventoryModel(TropicraftBlocks.CHUNK_FENCE);
         blockWithInventoryModel(TropicraftBlocks.PALM_FENCE);
         blockWithInventoryModel(TropicraftBlocks.MAHOGANY_FENCE);
-        blockWithInventoryModel(TropicraftBlocks.WHITE_MANGROVE_FENCE);
-        blockWithInventoryModel(TropicraftBlocks.RED_MANGROVE_FENCE);
+        blockWithInventoryModel(TropicraftBlocks.MANGROVE_FENCE);
 
         blockItem(TropicraftBlocks.BAMBOO_FENCE_GATE);
         blockItem(TropicraftBlocks.THATCH_FENCE_GATE);
         blockItem(TropicraftBlocks.CHUNK_FENCE_GATE);
         blockItem(TropicraftBlocks.PALM_FENCE_GATE);
         blockItem(TropicraftBlocks.MAHOGANY_FENCE_GATE);
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_FENCE_GATE);
-        blockItem(TropicraftBlocks.RED_MANGROVE_FENCE_GATE);
+        blockItem(TropicraftBlocks.MANGROVE_FENCE_GATE);
 
         blockWithInventoryModel(TropicraftBlocks.CHUNK_WALL);
 
@@ -155,15 +153,13 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftBlocks.THATCH_DOOR);
         generated(TropicraftBlocks.PALM_DOOR);
         generated(TropicraftBlocks.MAHOGANY_DOOR);
-        generated(TropicraftBlocks.WHITE_MANGROVE_DOOR);
-        generated(TropicraftBlocks.RED_MANGROVE_DOOR);
+        generated(TropicraftBlocks.MANGROVE_DOOR);
 
         blockItem(TropicraftBlocks.BAMBOO_TRAPDOOR, "_bottom");
         blockItem(TropicraftBlocks.THATCH_TRAPDOOR, "_bottom");
         blockItem(TropicraftBlocks.PALM_TRAPDOOR, "_bottom");
         blockItem(TropicraftBlocks.MAHOGANY_TRAPDOOR, "_bottom");
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_TRAPDOOR, "_bottom");
-        blockItem(TropicraftBlocks.RED_MANGROVE_TRAPDOOR, "_bottom");
+        blockItem(TropicraftBlocks.MANGROVE_TRAPDOOR, "_bottom");
 
         // Misc remaining blocks
         blockSprite(TropicraftBlocks.IRIS, modLoc("block/iris_top"));
@@ -178,8 +174,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.BAMBOO_BOARDWALK, "_short");
         blockItem(TropicraftBlocks.PALM_BOARDWALK, "_short");
         blockItem(TropicraftBlocks.MAHOGANY_BOARDWALK, "_short");
-        blockItem(TropicraftBlocks.RED_MANGROVE_BOARDWALK, "_short");
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_BOARDWALK, "_short");
+        blockItem(TropicraftBlocks.MANGROVE_BOARDWALK, "_short");
 
         withExistingParent(name(TropicraftBlocks.BAMBOO_CHEST), mcLoc("item/chest"))
             .texture("particle", modLoc("block/bamboo_side"));

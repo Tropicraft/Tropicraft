@@ -1,6 +1,0 @@
-{
-  "parent": "tropicraft:block/boardwalk/short_post",
-  "textures": {
-    "planks": "tropicraft:block/red_mangrove_planks"
-  }
-}

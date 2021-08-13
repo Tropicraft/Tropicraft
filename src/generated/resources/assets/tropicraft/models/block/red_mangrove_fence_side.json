@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/fence_side",
-  "textures": {
-    "texture": "tropicraft:block/red_mangrove_planks"
-  }
-}

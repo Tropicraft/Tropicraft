@@ -133,33 +133,27 @@ public class TropicraftBlocks {
     public static final RegistryObject<SaplingBlock> PALM_SAPLING = register(
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
 
-    public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_LOG = register("white_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
-    public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_WOOD = register("white_mangrove_wood", Builder.wood(MaterialColor.GRAY));
+    public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_LOG = register("white_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
+    public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_WOOD = register("white_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
     public static final RegistryObject<LeavesBlock> WHITE_MANGROVE_LEAVES = register("white_mangrove_leaves", Builder.leaves(true));
     public static final RegistryObject<Block> WHITE_MANGROVE_ROOTS = register("white_mangrove_roots", Builder.mangroveRoots());
-
-    public static final RegistryObject<Block> WHITE_MANGROVE_PLANKS = register("white_mangrove_planks", Builder.plank(MaterialColor.WOOD));
-    public static final RegistryObject<StairsBlock> WHITE_MANGROVE_STAIRS = register("white_mangrove_stairs", Builder.stairs(WHITE_MANGROVE_PLANKS));
-    public static final RegistryObject<SlabBlock> WHITE_MANGROVE_SLAB = register("white_mangrove_slab", Builder.slab(WHITE_MANGROVE_PLANKS));
-    public static final RegistryObject<FenceBlock> WHITE_MANGROVE_FENCE = register("white_mangrove_fence", Builder.fence(WHITE_MANGROVE_PLANKS));
-    public static final RegistryObject<FenceGateBlock> WHITE_MANGROVE_FENCE_GATE = register("white_mangrove_fence_gate", Builder.fenceGate(WHITE_MANGROVE_PLANKS));
-    public static final RegistryObject<DoorBlock> WHITE_MANGROVE_DOOR = register("white_mangrove_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
-    public static final RegistryObject<TrapDoorBlock> WHITE_MANGROVE_TRAPDOOR = register("white_mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(WHITE_MANGROVE_DOOR.get())) {});
     public static final RegistryObject<SaplingBlock> WHITE_MANGROVE_SAPLING = register("white_mangrove_sapling", Builder.waterloggableSapling(TropicraftTrees.WHITE_MANGROVE));
 
-    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
-    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.GRAY));
+    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
+    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
     public static final RegistryObject<LeavesBlock> RED_MANGROVE_LEAVES = register("red_mangrove_leaves", Builder.leaves(true));
     public static final RegistryObject<Block> RED_MANGROVE_ROOTS = register("red_mangrove_roots", Builder.mangroveRoots());
-
-    public static final RegistryObject<Block> RED_MANGROVE_PLANKS = register("red_mangrove_planks", Builder.plank(MaterialColor.WOOD));
-    public static final RegistryObject<StairsBlock> RED_MANGROVE_STAIRS = register("red_mangrove_stairs", Builder.stairs(RED_MANGROVE_PLANKS));
-    public static final RegistryObject<SlabBlock> RED_MANGROVE_SLAB = register("red_mangrove_slab", Builder.slab(RED_MANGROVE_PLANKS));
-    public static final RegistryObject<FenceBlock> RED_MANGROVE_FENCE = register("red_mangrove_fence", Builder.fence(RED_MANGROVE_PLANKS));
-    public static final RegistryObject<FenceGateBlock> RED_MANGROVE_FENCE_GATE = register("red_mangrove_fence_gate", Builder.fenceGate(RED_MANGROVE_PLANKS));
-    public static final RegistryObject<DoorBlock> RED_MANGROVE_DOOR = register("red_mangrove_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
-    public static final RegistryObject<TrapDoorBlock> RED_MANGROVE_TRAPDOOR = register("red_mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(RED_MANGROVE_DOOR.get())) {});
     public static final RegistryObject<SaplingBlock> RED_MANGROVE_SAPLING = register("red_mangrove_sapling", Builder.waterloggableSapling(TropicraftTrees.RED_MANGROVE));
+
+    public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = register("stripped_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
+    public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = register("stripped_mangrove_wood", Builder.wood(MaterialColor.GRAY));
+    public static final RegistryObject<Block> MANGROVE_PLANKS = register("mangrove_planks", Builder.plank(MaterialColor.WOOD));
+    public static final RegistryObject<StairsBlock> MANGROVE_STAIRS = register("mangrove_stairs", Builder.stairs(MANGROVE_PLANKS));
+    public static final RegistryObject<SlabBlock> MANGROVE_SLAB = register("mangrove_slab", Builder.slab(MANGROVE_PLANKS));
+    public static final RegistryObject<FenceBlock> MANGROVE_FENCE = register("mangrove_fence", Builder.fence(MANGROVE_PLANKS));
+    public static final RegistryObject<FenceGateBlock> MANGROVE_FENCE_GATE = register("mangrove_fence_gate", Builder.fenceGate(MANGROVE_PLANKS));
+    public static final RegistryObject<DoorBlock> MANGROVE_DOOR = register("mangrove_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
+    public static final RegistryObject<TrapDoorBlock> MANGROVE_TRAPDOOR = register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(MANGROVE_DOOR.get())) {});
 
     public static final RegistryObject<ReedsBlock> REEDS = register("reeds", () -> new ReedsBlock(Block.Properties.from(Blocks.SUGAR_CANE)));
 
@@ -210,8 +204,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> BAMBOO_BOARDWALK = register("bamboo_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(BAMBOO_SLAB.get()).notSolid()));
     public static final RegistryObject<Block> PALM_BOARDWALK = register("palm_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(PALM_SLAB.get()).notSolid()));
     public static final RegistryObject<Block> MAHOGANY_BOARDWALK = register("mahogany_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(MAHOGANY_SLAB.get()).notSolid()));
-    public static final RegistryObject<Block> RED_MANGROVE_BOARDWALK = register("red_mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(RED_MANGROVE_SLAB.get()).notSolid()));
-    public static final RegistryObject<Block> WHITE_MANGROVE_BOARDWALK = register("white_mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(WHITE_MANGROVE_SLAB.get()).notSolid()));
+    public static final RegistryObject<Block> MANGROVE_BOARDWALK = register("mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(MANGROVE_SLAB.get()).notSolid()));
 
     public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
             "bamboo_chest", () -> new BambooChestBlock(Block.Properties.from(BAMBOO_BUNDLE.get()).hardnessAndResistance(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()),
