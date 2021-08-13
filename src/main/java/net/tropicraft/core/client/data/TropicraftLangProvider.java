@@ -80,6 +80,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.VOLCANIC_SAND);
         addBlock(TropicraftBlocks.MINERAL_SAND);
 
+        // Mud
+        addBlock(TropicraftBlocks.MUD);
+
         // Bundles
         addBlock(TropicraftBlocks.BAMBOO_BUNDLE);
         addBlock(TropicraftBlocks.THATCH_BUNDLE);

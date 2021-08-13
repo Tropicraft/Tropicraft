@@ -1,12 +1,12 @@
 {
   "effects": {
     "sky_color": 7907327,
-    "grass_color": 3060507,
+    "grass_color": 7320092,
     "fog_color": 12638463,
     "water_color": 6734231,
     "water_fog_color": 800034
   },
-  "surface_builder": "tropicraft:tropics",
+  "surface_builder": "tropicraft:mangrove",
   "carvers": {
     "air": [
       "tropicraft:cave",
@@ -31,7 +31,8 @@
       "minecraft:ore_gravel",
       "minecraft:ore_granite",
       "minecraft:ore_diorite",
-      "minecraft:ore_andesite"
+      "minecraft:ore_andesite",
+      "tropicraft:mud_disk"
     ],
     [],
     [

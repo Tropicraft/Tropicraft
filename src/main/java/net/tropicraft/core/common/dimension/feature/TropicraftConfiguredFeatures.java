@@ -23,7 +23,6 @@ import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
-import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 import net.tropicraft.core.common.dimension.feature.tree.*;
@@ -57,6 +56,8 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> whiteMangrove;
 
     public final ConfiguredFeature<?, ?> mangroveVegetation;
+
+    public final ConfiguredFeature<?, ?> mudDisk;
 
     public final ConfiguredFeature<?, ?> pineapplePatch;
     public final ConfiguredFeature<?, ?> tropicsFlowers;
@@ -169,6 +170,16 @@ public final class TropicraftConfiguredFeatures {
                     .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
                     .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(3, 0.5F, 1)));
         });
+
+        this.mudDisk = features.register("mud_disk", Feature.DISK, feature -> feature
+                .withConfiguration(new SphereReplaceConfig(
+                        TropicraftBlocks.MUD.get().getDefaultState(),
+                        FeatureSpread.create(2, 4),
+                        2,
+                        ImmutableList.of(Blocks.DIRT.getDefaultState(), Blocks.GRASS_BLOCK.getDefaultState())
+                ))
+                .withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).count(3)
+        );
 
         this.eih = features.noConfig("eih", TropicraftFeatures.EIH,
                 f -> f.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
@@ -305,8 +316,12 @@ public final class TropicraftConfiguredFeatures {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.rainforestVines);
     }
 
-    public void addMangroveTrees(BiomeGenerationSettings.Builder generation) {
+    public void addMangroveVegetation(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.mangroveVegetation);
+    }
+
+    public void addMudDisks(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, this.mudDisk);
     }
 
     public void addMangroveReeds(BiomeGenerationSettings.Builder generation) {

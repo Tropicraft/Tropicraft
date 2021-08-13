@@ -309,11 +309,12 @@ public final class TropicraftBiomes {
 
     private Biome createMangroves() {
         BiomeGenerationSettings.Builder generation = defaultGeneration()
-                .withSurfaceBuilder(surfaces.tropics);
+                .withSurfaceBuilder(surfaces.mangrove);
 
         carvers.addLand(generation);
 
-        features.addMangroveTrees(generation);
+        features.addMudDisks(generation);
+        features.addMangroveVegetation(generation);
         features.addTropicsFlowers(generation);
 
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SEAGRASS_DEEP_WARM);
@@ -332,7 +333,7 @@ public final class TropicraftBiomes {
 
         BiomeAmbience.Builder ambience = defaultAmbience();
         ambience.setWaterColor(0x66C197).setWaterFogColor(0x0C3522);
-        ambience.withGrassColor(0x2eb31b);
+        ambience.withGrassColor(0x6FB21C);
 
         return new Biome.Builder()
                 .precipitation(Biome.RainType.RAIN)

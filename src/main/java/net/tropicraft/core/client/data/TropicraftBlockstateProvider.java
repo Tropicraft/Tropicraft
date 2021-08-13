@@ -13,6 +13,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.*;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -82,6 +83,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.FOAMY_SAND, applyRotations());
         simpleBlock(TropicraftBlocks.VOLCANIC_SAND, applyRotations());
         simpleBlock(TropicraftBlocks.MINERAL_SAND, applyRotations());
+
+        // Mud
+        ConfiguredModel[] mudModels = ArrayUtils.addAll(
+                allYRotations(models.cubeAll("mud", modBlockLoc("mud")), 0, false, 5),
+                allYRotations(models.cubeAll("mud_with_stones", modBlockLoc("mud_with_stones")), 0, false, 1)
+        );
+        simpleBlock(TropicraftBlocks.MUD.get(), mudModels);
 
         // Bundles
         axisBlock(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo");
