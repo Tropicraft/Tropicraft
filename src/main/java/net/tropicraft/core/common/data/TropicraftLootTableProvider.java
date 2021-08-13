@@ -83,6 +83,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.FOAMY_SAND);
             dropsSelf(TropicraftBlocks.VOLCANIC_SAND);
             dropsSelf(TropicraftBlocks.MINERAL_SAND);
+
+            // Mud
+            dropsSelf(TropicraftBlocks.MUD);
             
             // Bundles
             dropsSelf(TropicraftBlocks.BAMBOO_BUNDLE);

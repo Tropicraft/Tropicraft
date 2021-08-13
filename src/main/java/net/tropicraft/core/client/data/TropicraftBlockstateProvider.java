@@ -83,6 +83,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.VOLCANIC_SAND, applyRotations());
         simpleBlock(TropicraftBlocks.MINERAL_SAND, applyRotations());
 
+        // Mud
+        simpleBlock(TropicraftBlocks.MUD, applyRotations());
+
         // Bundles
         axisBlock(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo");
         axisBlock(TropicraftBlocks.THATCH_BUNDLE, "thatch");

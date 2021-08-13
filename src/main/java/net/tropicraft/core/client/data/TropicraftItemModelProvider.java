@@ -64,7 +64,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.FOAMY_SAND);
         blockItem(TropicraftBlocks.VOLCANIC_SAND);
         blockItem(TropicraftBlocks.MINERAL_SAND);
-        
+
+        // Mud
+        blockItem(TropicraftBlocks.MUD);
+
         // Bundles
         blockItem(TropicraftBlocks.BAMBOO_BUNDLE);
         blockItem(TropicraftBlocks.THATCH_BUNDLE);

@@ -19,7 +19,9 @@ public class TropicsCaveCarver extends CaveWorldCarver {
                 .add(TropicraftBlocks.MINERAL_SAND.get())
                 .add(TropicraftBlocks.PACKED_PURIFIED_SAND.get())
                 .add(TropicraftBlocks.PURIFIED_SAND.get())
-                .add(TropicraftBlocks.VOLCANIC_SAND.get()).build();
+                .add(TropicraftBlocks.VOLCANIC_SAND.get())
+                .add(TropicraftBlocks.MUD.get())
+                .build();
     }
 
     @Override

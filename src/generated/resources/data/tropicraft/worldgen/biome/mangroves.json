@@ -6,7 +6,7 @@
     "water_color": 6734231,
     "water_fog_color": 800034
   },
-  "surface_builder": "tropicraft:tropics",
+  "surface_builder": "tropicraft:grass_and_dirt",
   "carvers": {
     "air": [
       "tropicraft:cave",
@@ -31,7 +31,8 @@
       "minecraft:ore_gravel",
       "minecraft:ore_granite",
       "minecraft:ore_diorite",
-      "minecraft:ore_andesite"
+      "minecraft:ore_andesite",
+      "tropicraft:mud_disk"
     ],
     [],
     [
