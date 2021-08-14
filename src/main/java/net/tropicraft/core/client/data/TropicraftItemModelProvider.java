@@ -67,6 +67,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
 
         // Mud
         blockItem(TropicraftBlocks.MUD);
+        blockItem(TropicraftBlocks.MUD_WITH_PIANGUAS);
 
         // Bundles
         blockItem(TropicraftBlocks.BAMBOO_BUNDLE);
@@ -199,6 +200,8 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.FISHING_NET);
 
         blockSprite(TropicraftBlocks.REEDS, modLoc("block/reeds_top_tall"));
+
+        generated(TropicraftItems.PIANGUAS);
 
         // ITEMS
         

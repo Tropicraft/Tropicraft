@@ -76,6 +76,7 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
         
         // Copy block tags
         copy(TropicraftTags.Blocks.SAND, SAND);
+        copy(TropicraftTags.Blocks.MUD, MUD);
 
         copy(TropicraftTags.Blocks.SAPLINGS, SAPLINGS);
         copy(TropicraftTags.Blocks.LEAVES, LEAVES);

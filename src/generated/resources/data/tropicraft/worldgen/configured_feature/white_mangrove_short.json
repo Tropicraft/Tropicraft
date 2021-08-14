@@ -14,6 +14,11 @@
       {
         "probability": 0.02,
         "type": "minecraft:beehive"
+      },
+      {
+        "count": 8,
+        "spread": 4,
+        "type": "tropicraft:pianguas"
       }
     ],
     "trunk_provider": {

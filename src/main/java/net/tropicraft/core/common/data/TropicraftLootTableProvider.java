@@ -15,6 +15,7 @@ import net.minecraft.loot.conditions.BlockStateProperty;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.conditions.MatchTool;
 import net.minecraft.loot.conditions.TableBonus;
+import net.minecraft.loot.functions.ApplyBonus;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.IItemProvider;
@@ -86,7 +87,23 @@ public class TropicraftLootTableProvider extends LootTableProvider {
 
             // Mud
             dropsSelf(TropicraftBlocks.MUD);
-            
+
+            registerLootTable(TropicraftBlocks.MUD_WITH_PIANGUAS.get(), withExplosionDecay(TropicraftBlocks.MUD_WITH_PIANGUAS.get(),
+                    LootTable.builder()
+                            .addLootPool(LootPool.builder()
+                                    .addEntry(ItemLootEntry.builder(TropicraftBlocks.MUD_WITH_PIANGUAS.get())
+                                            .acceptCondition(SILK_TOUCH)
+                                            .alternatively(ItemLootEntry.builder(TropicraftBlocks.MUD.get()))
+                                    )
+                            )
+                            .addLootPool(LootPool.builder()
+                                    .acceptCondition(NO_SILK_TOUCH)
+                                    .addEntry(ItemLootEntry.builder(TropicraftItems.PIANGUAS.get())
+                                            .acceptFunction(ApplyBonus.oreDrops(Enchantments.FORTUNE))
+                                    )
+                            )
+            ));
+
             // Bundles
             dropsSelf(TropicraftBlocks.BAMBOO_BUNDLE);
             dropsSelf(TropicraftBlocks.THATCH_BUNDLE);

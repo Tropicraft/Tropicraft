@@ -90,6 +90,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
                 allYRotations(models.cubeAll("mud_with_stones", modBlockLoc("mud_with_stones")), 0, false, 1)
         );
         simpleBlock(TropicraftBlocks.MUD.get(), mudModels);
+        simpleBlock(TropicraftBlocks.MUD_WITH_PIANGUAS, applyYRotations(0));
 
         // Bundles
         axisBlock(TropicraftBlocks.BAMBOO_BUNDLE, "bamboo");

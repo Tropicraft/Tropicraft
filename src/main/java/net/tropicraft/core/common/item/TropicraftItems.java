@@ -1,15 +1,7 @@
 package net.tropicraft.core.common.item;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -32,11 +24,14 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
-import net.tropicraft.core.common.item.scuba.PonyBottleItem;
-import net.tropicraft.core.common.item.scuba.ScubaFlippersItem;
-import net.tropicraft.core.common.item.scuba.ScubaGogglesItem;
-import net.tropicraft.core.common.item.scuba.ScubaHarnessItem;
-import net.tropicraft.core.common.item.scuba.ScubaType;
+import net.tropicraft.core.common.item.scuba.*;
+
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.MOD)
 public class TropicraftItems {
@@ -199,6 +194,8 @@ public class TropicraftItems {
             "exploding_coconut", () -> new ExplodingCoconutItem(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
 
     public static final RegistryObject<Item> FISHING_NET = register("fishing_net", () -> new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).maxStackSize(1)));
+
+    public static final RegistryObject<Item> PIANGUAS = register("pianguas", () -> new Item(new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP)));
 
     private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return ITEMS.register(name, sup);

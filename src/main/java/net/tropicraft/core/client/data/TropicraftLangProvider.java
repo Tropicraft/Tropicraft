@@ -82,6 +82,7 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         // Mud
         addBlock(TropicraftBlocks.MUD);
+        addBlock(TropicraftBlocks.MUD_WITH_PIANGUAS);
 
         // Bundles
         addBlock(TropicraftBlocks.BAMBOO_BUNDLE);
@@ -301,6 +302,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.WATER_WAND);
         addItem(TropicraftItems.EXPLODING_COCONUT);
         addItem(TropicraftItems.FISHING_NET);
+
+        addItem(TropicraftItems.PIANGUAS);
         
         // Tools
         addItem(TropicraftItems.ZIRCON_AXE);
