@@ -2,6 +2,7 @@ package net.tropicraft.core.common.dimension.surfacebuilders;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
@@ -14,7 +15,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> {
-    private static final SurfaceBuilderConfig MUD = new SurfaceBuilderConfig(TropicraftBlocks.MUD.get().getDefaultState(), TropicraftBlocks.MUD.get().getDefaultState(), TropicraftBlocks.MUD.get().getDefaultState());
+    private static final SurfaceBuilderConfig MUD = new SurfaceBuilderConfig(TropicraftBlocks.MUD.get().getDefaultState(), Blocks.DIRT.getDefaultState(), TropicraftBlocks.MUD.get().getDefaultState());
 
     private PerlinNoiseGenerator noise;
     private long seed;

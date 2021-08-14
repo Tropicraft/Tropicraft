@@ -18,17 +18,20 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants;
-
-import net.minecraft.block.AbstractBlock.Properties;
 
 public class BlockTropicraftSand extends FallingBlock {
     public static final BooleanProperty UNDERWATER = BooleanProperty.create("underwater");
 
+    private final int dustColor;
+
     public BlockTropicraftSand(final Properties properties) {
         super(properties);
         this.setDefaultState(this.getDefaultState().with(UNDERWATER, false));
+        this.dustColor = this.getMaterialColor().colorValue;
     }
 
     @Override
@@ -82,5 +85,11 @@ public class BlockTropicraftSand extends FallingBlock {
             world.setBlockState(pos, state.with(UNDERWATER, underwater), Constants.BlockFlags.BLOCK_UPDATE);
         }
         super.neighborChanged(state, world, pos, block, pos2, isMoving);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public int getDustColor(BlockState state, IBlockReader reader, BlockPos pos) {
+        return this.dustColor | 0xFF000000;
     }
 }

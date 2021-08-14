@@ -8,25 +8,25 @@
         },
         "decorator": {
           "config": {
-            "count": 32
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {},
+              "type": "minecraft:top_solid_heightmap"
+            }
           },
-          "type": "minecraft:count"
+          "type": "minecraft:decorated"
         }
       },
       "type": "minecraft:decorated"
     },
     "decorator": {
       "config": {
-        "outer": {
-          "config": {},
-          "type": "minecraft:square"
-        },
-        "inner": {
-          "config": {},
-          "type": "minecraft:top_solid_heightmap"
-        }
+        "count": 2
       },
-      "type": "minecraft:decorated"
+      "type": "minecraft:count"
     }
   },
   "type": "minecraft:decorated"
