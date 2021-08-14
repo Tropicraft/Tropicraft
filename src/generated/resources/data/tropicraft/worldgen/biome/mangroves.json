@@ -190,6 +190,6 @@
   "temperature": 2.0,
   "downfall": 1.5,
   "category": "swamp",
-  "depth": -0.25,
-  "scale": -0.03
+  "depth": -0.2,
+  "scale": -0.045
 }
