@@ -337,7 +337,7 @@ public final class TropicraftBiomes {
 
         return new Biome.Builder()
                 .precipitation(Biome.RainType.RAIN)
-                .depth(-0.2F).scale(-0.045F)
+                .depth(-0.18F).scale(-0.045F)
                 .temperature(2.0F).downfall(1.5F)
                 .category(Biome.Category.SWAMP)
                 .withGenerationSettings(generation.build())
