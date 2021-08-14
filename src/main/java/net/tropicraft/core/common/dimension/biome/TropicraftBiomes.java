@@ -148,8 +148,10 @@ public final class TropicraftBiomes {
         features.addEih(generation);
         features.addTropicsFlowers(generation);
         features.addPineapples(generation);
+        features.addRegularSeagrass(generation);
 
-        DefaultBiomeFeatures.withBadlandsGrass(generation);
+        features.addTropicsGrass(generation);
+        DefaultBiomeFeatures.withLargeFern(generation);
         DefaultBiomeFeatures.withTallGrass(generation);
 
         MobSpawnInfo.Builder spawns = defaultSpawns();
@@ -173,6 +175,7 @@ public final class TropicraftBiomes {
         BiomeGenerationSettings.Builder generation = defaultGeneration()
                 .withSurfaceBuilder(surfaces.sandy);
 
+        features.addRegularSeagrass(generation);
         carvers.addUnderwater(generation);
 
         features.addPalmTrees(generation);
@@ -199,6 +202,7 @@ public final class TropicraftBiomes {
 
         features.addTropicsGems(generation);
         features.addRainforestTrees(generation);
+        features.addRegularSeagrass(generation);
 
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, features.rainforestFlowers);
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, features.coffeeBush);
