@@ -309,7 +309,7 @@ public final class TropicraftBiomes {
 
     private Biome createMangroves() {
         BiomeGenerationSettings.Builder generation = defaultGeneration()
-                .withSurfaceBuilder(surfaces.grassAndDirt);
+                .withSurfaceBuilder(surfaces.mangrove);
 
         carvers.addLand(generation);
 
