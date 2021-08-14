@@ -54,6 +54,14 @@ public class Builder {
         return block(BlockTropicraftSand::new, prop(Material.SAND, color).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).hardnessAndResistance(hardness, resistance));
     }
 
+    public static Supplier<MudBlock> mud() {
+        AbstractBlock.Properties properties = Block.Properties.from(Blocks.DIRT).speedFactor(0.5F)
+                .harvestTool(ToolType.SHOVEL)
+                .setAllowsSpawn((s, w, p, e) -> true).setOpaque((s, w, p) -> true)
+                .setBlocksVision((s, w, p) -> true).setSuffocates((s, w, p) -> true);
+        return block(MudBlock::new, properties);
+    }
+
     public static Supplier<RotatedPillarBlock> bundle(final Block.Properties properties) {
         return block(RotatedPillarBlock::new, properties);
     }

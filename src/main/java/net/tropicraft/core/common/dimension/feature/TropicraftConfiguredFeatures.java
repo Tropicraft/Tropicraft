@@ -327,7 +327,7 @@ public final class TropicraftConfiguredFeatures {
     }
 
     public void addMudDisks(BiomeGenerationSettings.Builder generation) {
-        generation.withFeature(GenerationStage.Decoration`.UNDERGROUND_ORES, this.mudDisk);
+        generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, this.mudDisk);
     }
 
     public void addMangroveReeds(BiomeGenerationSettings.Builder generation) {

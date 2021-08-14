@@ -47,7 +47,9 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
 
     @Override
     protected boolean isValidGround(BlockState state, IBlockReader world, BlockPos pos) {
-        return super.isValidGround(state, world, pos) || state.isIn(BlockTags.SAND) || state.matchesBlock(TropicraftBlocks.MUD.get());
+        return super.isValidGround(state, world, pos) || state.isIn(BlockTags.SAND)
+                || state.matchesBlock(TropicraftBlocks.MUD.get())
+                || state.matchesBlock(TropicraftBlocks.MUD_WITH_PIANGUAS.get());
     }
 
     @Override

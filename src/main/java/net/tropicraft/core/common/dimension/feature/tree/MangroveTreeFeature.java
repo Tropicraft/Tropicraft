@@ -34,7 +34,7 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
         BlockState soilState = world.getBlockState(soilPos);
 
         // Force placement: put dirt under the current position so that the tree always places
-        boolean replaceSoil = soilState.matchesBlock(TropicraftBlocks.MUD.get()) ||
+        boolean replaceSoil = soilState.matchesBlock(TropicraftBlocks.MUD.get()) || soilState.matchesBlock(TropicraftBlocks.MUD_WITH_PIANGUAS.get()) ||
                 soilState.getFluidState().isTagged(FluidTags.WATER) ||
                 (world.getBlockState(soilPos.down()).getFluidState().isTagged(FluidTags.WATER));
 

@@ -31,7 +31,7 @@ public class BlockTropicraftSand extends FallingBlock {
     public BlockTropicraftSand(final Properties properties) {
         super(properties);
         this.setDefaultState(this.getDefaultState().with(UNDERWATER, false));
-        this.dustColor = this.getMaterialColor().colorValue;
+        this.dustColor = this.getMaterialColor().colorValue | 0xFF000000;
     }
 
     @Override
@@ -90,6 +90,6 @@ public class BlockTropicraftSand extends FallingBlock {
     @Override
     @OnlyIn(Dist.CLIENT)
     public int getDustColor(BlockState state, IBlockReader reader, BlockPos pos) {
-        return this.dustColor | 0xFF000000;
+        return this.dustColor;
     }
 }

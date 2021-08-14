@@ -18,7 +18,7 @@ public class TropicsUnderwaterCanyonCarver extends UnderwaterCanyonWorldCarver {
                 .add(TropicraftBlocks.PACKED_PURIFIED_SAND.get())
                 .add(TropicraftBlocks.PURIFIED_SAND.get())
                 .add(TropicraftBlocks.VOLCANIC_SAND.get())
-                .add(TropicraftBlocks.MUD.get())
+                .add(TropicraftBlocks.MUD.get(), TropicraftBlocks.MUD_WITH_PIANGUAS.get())
                 .build();
     }
 }
