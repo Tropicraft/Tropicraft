@@ -10,6 +10,8 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 
 public final class MudBlock extends Block {
@@ -42,5 +44,12 @@ public final class MudBlock extends Block {
     @Override
     public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
         return false;
+    }
+
+    @Override
+    @Deprecated
+    @OnlyIn(Dist.CLIENT)
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+        return 0.2F;
     }
 }

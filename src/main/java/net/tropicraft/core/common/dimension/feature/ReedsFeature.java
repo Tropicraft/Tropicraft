@@ -39,7 +39,7 @@ public final class ReedsFeature extends Feature<NoFeatureConfig> {
         BlockPos.Mutable bottomPos = new BlockPos.Mutable();
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 32; i++) {
             int x = origin.getX() + random.nextInt(8) - random.nextInt(8);
             int z = origin.getZ() + random.nextInt(8) - random.nextInt(8);
             int y = world.getHeight(Heightmap.Type.OCEAN_FLOOR, x, z);

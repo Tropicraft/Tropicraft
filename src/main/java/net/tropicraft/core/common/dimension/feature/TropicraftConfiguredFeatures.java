@@ -237,7 +237,7 @@ public final class TropicraftConfiguredFeatures {
         });
 
         this.mangroveReeds = features.noConfig("mangrove_reeds", TropicraftFeatures.REEDS, feature -> {
-            return feature.count(32).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT);
+            return feature.withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).count(2);
         });
 
         this.azurite = features.register("azurite", Feature.ORE, f -> {
