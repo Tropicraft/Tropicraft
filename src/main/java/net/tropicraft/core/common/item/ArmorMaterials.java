@@ -2,12 +2,23 @@ package net.tropicraft.core.common.item;
 
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.tropicraft.core.common.TropicraftTags;
 
+import javax.annotation.Nullable;
+import java.util.stream.Stream;
+
 public class ArmorMaterials {
+    private static final Ingredient NO_INGREDIENT = new Ingredient(Stream.empty()) {
+        @Override
+        public boolean test(@Nullable ItemStack stack) {
+            return false;
+        }
+    };
+
     public static final IArmorMaterial ASHEN_MASK = new AshenMask();
     public static final IArmorMaterial NIGEL_STACHE = new NigelStache();
     public static final IArmorMaterial SCALE_ARMOR = createArmorMaterial(
@@ -25,7 +36,7 @@ public class ArmorMaterials {
             new int[] {2, 4, 5, 2},
             9,
             SoundEvents.ITEM_ARMOR_EQUIP_IRON,
-            null,
+            NO_INGREDIENT,
             "fire",
             0.1f,
             0.0F
@@ -35,7 +46,7 @@ public class ArmorMaterials {
             new int[] {0, 0, 0, 0},
             0,
             SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,
-            null,
+            NO_INGREDIENT,
             "scuba_goggles",
             0,
             0.0F
