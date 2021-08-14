@@ -43,6 +43,7 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> rainforestTallTree;
     public final ConfiguredFeature<?, ?> rainforestVines;
     public final ConfiguredFeature<?, ?> eih;
+    public final ConfiguredFeature<?, ?> tropicsGrass;
 
     public final ConfiguredFeature<?, ?> redMangroveShort;
     public final ConfiguredFeature<?, ?> redMangroveSmall;
@@ -64,6 +65,7 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> coffeeBush;
     public final ConfiguredFeature<?, ?> undergrowth;
 
+    public final ConfiguredFeature<?, ?> seagrass;
     public final ConfiguredFeature<?, ?> undergroundSeagrassOnStone;
     public final ConfiguredFeature<?, ?> undergroundSeagrassOnDirt;
     public final ConfiguredFeature<?, ?> undergroundSeaPickles;
@@ -183,6 +185,9 @@ public final class TropicraftConfiguredFeatures {
                         .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(0, 0.01F, 1)))
         );
 
+        this.tropicsGrass = features.register("tropics_grass", Feature.RANDOM_PATCH,
+                f -> f.withConfiguration(Features.Configs.JUNGLE_VEGETATION_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).count(10));
+
         this.pineapplePatch = features.register("pineapple_patch", Feature.RANDOM_PATCH, feature -> {
             SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.PINEAPPLE.get().getDefaultState());
             return feature.withConfiguration(new BlockClusterFeatureConfig.Builder(state, new DoublePlantBlockPlacer())
@@ -212,6 +217,10 @@ public final class TropicraftConfiguredFeatures {
         });
         this.undergrowth = features.noConfig("undergrowth", TropicraftFeatures.UNDERGROWTH, feature -> {
             return feature.withPlacement(Features.Placements.VEGETATION_PLACEMENT.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).count(100));
+        });
+
+        this.seagrass = features.register("seagrass", Feature.SEAGRASS, feature -> {
+            return feature.withConfiguration(new ProbabilityConfig(0.3f)).count(48).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).count(3);
         });
 
         this.undergroundSeagrassOnStone = features.register("underground_seagrass_on_stone", Feature.SIMPLE_BLOCK, feature -> {
@@ -318,11 +327,15 @@ public final class TropicraftConfiguredFeatures {
     }
 
     public void addMudDisks(BiomeGenerationSettings.Builder generation) {
-        generation.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, this.mudDisk);
+        generation.withFeature(GenerationStage.Decoration`.UNDERGROUND_ORES, this.mudDisk);
     }
 
     public void addMangroveReeds(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.mangroveReeds);
+    }
+
+    public void addTropicsGrass(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.tropicsGrass);
     }
 
     public void addPineapples(BiomeGenerationSettings.Builder generation) {
@@ -352,6 +365,10 @@ public final class TropicraftConfiguredFeatures {
     public void addUndergroundSeagrass(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.undergroundSeagrassOnStone);
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.undergroundSeagrassOnDirt);
+    }
+
+    public void addRegularSeagrass(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.seagrass);
     }
 
     public void addUndergroundPickles(BiomeGenerationSettings.Builder generation) {

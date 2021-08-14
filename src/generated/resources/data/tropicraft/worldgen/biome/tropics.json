@@ -45,7 +45,9 @@
       "tropicraft:tropics_flowers",
       "tropicraft:iris_flowers",
       "tropicraft:pineapple_patch",
-      "minecraft:patch_grass_badlands",
+      "tropicraft:seagrass",
+      "tropicraft:tropics_grass",
+      "minecraft:patch_large_fern",
       "minecraft:patch_tall_grass"
     ]
   ],
