@@ -21,7 +21,7 @@ public final class TropicraftConfiguredSurfaceBuilders {
     public final ConfiguredSurfaceBuilder<?> tropics;
     public final ConfiguredSurfaceBuilder<?> sandy;
 
-    public final ConfiguredSurfaceBuilder<?> grassAndDirt;
+    public final ConfiguredSurfaceBuilder<?> mangrove;
 
     public TropicraftConfiguredSurfaceBuilders(WorldgenDataConsumer<ConfiguredSurfaceBuilder<?>> worldgen) {
         Register surfaceBuilders = new Register(worldgen);
@@ -41,7 +41,7 @@ public final class TropicraftConfiguredSurfaceBuilders {
                 new UnderwaterSurfaceBuilder.Config(sandyConfig, landConfig, sandyUnderwaterConfig)
         );
 
-        this.grassAndDirt = surfaceBuilders.register("grass_and_dirt", SurfaceBuilder.DEFAULT, new SurfaceBuilderConfig(grass, dirt, dirt));
+        this.mangrove = surfaceBuilders.register("mangrove", TropicraftSurfaceBuilders.MANGROVE, new SurfaceBuilderConfig(grass, dirt, dirt));
     }
 
     static final class Register {

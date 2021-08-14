@@ -6,7 +6,7 @@
     "water_color": 6734231,
     "water_fog_color": 800034
   },
-  "surface_builder": "tropicraft:grass_and_dirt",
+  "surface_builder": "tropicraft:mangrove",
   "carvers": {
     "air": [
       "tropicraft:cave",
