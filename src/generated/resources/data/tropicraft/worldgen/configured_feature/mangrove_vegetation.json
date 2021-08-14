@@ -29,11 +29,11 @@
     },
     "decorator": {
       "config": {
-        "count": 3,
-        "extra_chance": 0.5,
-        "extra_count": 1
+        "noise_to_count_ratio": 6,
+        "noise_factor": 200.0,
+        "noise_offset": 1.0
       },
-      "type": "minecraft:count_extra"
+      "type": "minecraft:count_noise_biased"
     }
   },
   "type": "minecraft:decorated"

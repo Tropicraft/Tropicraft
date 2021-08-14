@@ -3,7 +3,6 @@ package net.tropicraft.core.common.dimension.feature.tree;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
@@ -13,6 +12,7 @@ import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraftforge.common.util.Constants;
+import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -34,7 +34,7 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
         BlockState soilState = world.getBlockState(soilPos);
 
         // Force placement: put dirt under the current position so that the tree always places
-        boolean replaceSoil = soilState.isIn(BlockTags.SAND) ||
+        boolean replaceSoil = soilState.matchesBlock(TropicraftBlocks.MUD.get()) ||
                 soilState.getFluidState().isTagged(FluidTags.WATER) ||
                 (world.getBlockState(soilPos.down()).getFluidState().isTagged(FluidTags.WATER));
 
