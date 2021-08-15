@@ -15,6 +15,7 @@ public final class TropicraftBiomeIds {
     public final int rainforestPlains;
     public final int rainforestHills;
     public final int rainforestMountains;
+    public final int bambooRainforest;
     public final int mangroves;
 
     public TropicraftBiomeIds(Registry<Biome> biomes) {
@@ -27,6 +28,7 @@ public final class TropicraftBiomeIds {
         this.rainforestPlains = getId(biomes, TropicraftBiomes.RAINFOREST_PLAINS);
         this.rainforestHills = getId(biomes, TropicraftBiomes.RAINFOREST_HILLS);
         this.rainforestMountains = getId(biomes, TropicraftBiomes.RAINFOREST_MOUNTAINS);
+        this.bambooRainforest = getId(biomes, TropicraftBiomes.BAMBOO_RAINFOREST);
         this.mangroves = getId(biomes, TropicraftBiomes.MANGROVES);
     }
 

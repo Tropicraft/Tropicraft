@@ -44,6 +44,7 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> RAINFOREST_PLAINS = key("rainforest_plains");
     public static final RegistryKey<Biome> RAINFOREST_HILLS = key("rainforest_hills");
     public static final RegistryKey<Biome> RAINFOREST_MOUNTAINS = key("rainforest_mountains");
+    public static final RegistryKey<Biome> BAMBOO_RAINFOREST = key("bamboo_rainforest");
     public static final RegistryKey<Biome> RAINFOREST_ISLAND_MOUNTAINS = key("rainforest_island_mountains");
     public static final RegistryKey<Biome> TROPICS_RIVER = key("tropics_river");
     public static final RegistryKey<Biome> TROPICS_BEACH = key("tropics_beach");
@@ -58,6 +59,7 @@ public final class TropicraftBiomes {
     public final Biome rainforestPlains;
     public final Biome rainforestHills;
     public final Biome rainforestMountains;
+    public final Biome bambooRainforest;
     public final Biome rainforestIslandMountains;
 
     public final Biome tropicsOcean;
@@ -83,6 +85,7 @@ public final class TropicraftBiomes {
         this.rainforestPlains = worldgen.register(RAINFOREST_PLAINS, createRainforest(0.25F, 0.1F));
         this.rainforestHills = worldgen.register(RAINFOREST_HILLS, createRainforest(0.45F, 0.425F));
         this.rainforestMountains = worldgen.register(RAINFOREST_MOUNTAINS, createRainforest(0.8F, 0.8F));
+        this.bambooRainforest = worldgen.register(BAMBOO_RAINFOREST, createRainforest(0.25F, 0.25F, true));
         this.rainforestIslandMountains = worldgen.register(RAINFOREST_ISLAND_MOUNTAINS, createRainforest(0.1F, 1.2F));
 
         this.tropicsOcean = worldgen.register(TROPICS_OCEAN, createTropicsOcean());
@@ -195,6 +198,10 @@ public final class TropicraftBiomes {
     }
 
     private Biome createRainforest(float depth, float scale) {
+        return createRainforest(depth, scale, false);
+    }
+
+    private Biome createRainforest(float depth, float scale, boolean bamboo) {
         BiomeGenerationSettings.Builder generation = defaultGeneration()
                 .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 
@@ -214,6 +221,10 @@ public final class TropicraftBiomes {
         DefaultBiomeFeatures.withLightBambooVegetation(generation);
 
         features.addRainforestPlants(generation);
+
+        if (bamboo) {
+            features.addBamboo(generation);
+        }
 
         MobSpawnInfo.Builder spawns = defaultSpawns();
         spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.OCELOT, 10, 1, 1));

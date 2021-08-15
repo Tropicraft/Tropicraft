@@ -418,6 +418,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBiome(TropicraftBiomes.RAINFOREST_PLAINS);
         addBiome(TropicraftBiomes.RAINFOREST_HILLS);
         addBiome(TropicraftBiomes.RAINFOREST_MOUNTAINS);
+        addBiome(TropicraftBiomes.BAMBOO_RAINFOREST);
         addBiome(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS);
         addBiome(TropicraftBiomes.TROPICS_RIVER);
         addBiome(TropicraftBiomes.TROPICS_BEACH);
