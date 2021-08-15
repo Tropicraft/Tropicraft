@@ -14,6 +14,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
+import net.tropicraft.core.common.TropicraftTags;
 
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
         return SHAPE;
     }
 
@@ -48,8 +49,7 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
     @Override
     protected boolean isValidGround(BlockState state, IBlockReader world, BlockPos pos) {
         return super.isValidGround(state, world, pos) || state.isIn(BlockTags.SAND)
-                || state.matchesBlock(TropicraftBlocks.MUD.get())
-                || state.matchesBlock(TropicraftBlocks.MUD_WITH_PIANGUAS.get());
+                || state.isIn(TropicraftTags.Blocks.MUD);
     }
 
     @Override

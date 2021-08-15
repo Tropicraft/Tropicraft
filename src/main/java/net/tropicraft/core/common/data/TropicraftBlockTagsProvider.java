@@ -31,7 +31,9 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
         
         createAndAppend(TropicraftTags.Blocks.SAND, BlockTags.SAND,
                 PURIFIED_SAND, CORAL_SAND, FOAMY_SAND, MINERAL_SAND, VOLCANIC_SAND);
-        
+
+        createTag(TropicraftTags.Blocks.MUD, MUD, MUD_WITH_PIANGUAS);
+
         // Saplings & Leaves
         createAndAppend(TropicraftTags.Blocks.SAPLINGS, BlockTags.SAPLINGS,
                 PALM_SAPLING, MAHOGANY_SAPLING, GRAPEFRUIT_SAPLING, LEMON_SAPLING, LIME_SAPLING, ORANGE_SAPLING,

@@ -23,10 +23,17 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.server.ServerWorld;
+
+import java.util.Random;
 
 public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     private static final Reference2ByteMap<BlockState> STATE_TO_KEY = new Reference2ByteOpenHashMap<>();
     private static final VoxelShape[] SHAPE_TABLE = buildShapeTable();
+
+    private static final int PIANGUA_GROW_CHANCE = 80;
+    private static final int PIANGUA_SPACING = 2;
+    private static final int PIANGUA_SPAWN_RADIUS = 1;
 
     public static final BooleanProperty TALL = BooleanProperty.create("tall");
     public static final BooleanProperty GROUNDED = BooleanProperty.create("grounded");
@@ -239,6 +246,52 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
 
     @Override
     public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+        return false;
+    }
+
+    @Override
+    public boolean ticksRandomly(BlockState state) {
+        return state.get(GROUNDED) && state.get(TALL);
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        if (random.nextInt(PIANGUA_GROW_CHANCE) == 0) {
+            this.tryGrowPianguas(world, pos, random);
+        }
+    }
+
+    private void tryGrowPianguas(ServerWorld world, BlockPos pos, Random random) {
+        BlockPos soilPos = pos.down();
+        if (!world.getBlockState(soilPos).matchesBlock(TropicraftBlocks.MUD.get())) {
+            return;
+        }
+
+        BlockPos growPos = soilPos.add(
+                random.nextInt(PIANGUA_SPAWN_RADIUS * 2 + 1) - PIANGUA_SPAWN_RADIUS,
+                -random.nextInt(PIANGUA_SPAWN_RADIUS + 1),
+                random.nextInt(PIANGUA_SPAWN_RADIUS * 2 + 1) - PIANGUA_SPAWN_RADIUS
+        );
+
+        BlockState growIn = world.getBlockState(growPos);
+        if (growIn.matchesBlock(TropicraftBlocks.MUD.get()) && !world.getBlockState(growPos.up()).isSolid()) {
+            if (!this.hasNearPianguas(world, growPos)) {
+                world.setBlockState(growPos, TropicraftBlocks.MUD_WITH_PIANGUAS.get().getDefaultState());
+            }
+        }
+    }
+
+    private boolean hasNearPianguas(ServerWorld world, BlockPos source) {
+        Block mudWithPianguas = TropicraftBlocks.MUD_WITH_PIANGUAS.get();
+        BlockPos minSpacingPos = source.add(-PIANGUA_SPAWN_RADIUS, -PIANGUA_SPAWN_RADIUS, -PIANGUA_SPAWN_RADIUS);
+        BlockPos maxSpacingPos = source.add(PIANGUA_SPAWN_RADIUS, 0, PIANGUA_SPAWN_RADIUS);
+
+        for (BlockPos pos : BlockPos.getAllInBoxMutable(minSpacingPos, maxSpacingPos)) {
+            if (world.getBlockState(pos).matchesBlock(mudWithPianguas)) {
+                return true;
+            }
+        }
+
         return false;
     }
 

@@ -15,6 +15,7 @@ public class TropicraftTags {
     public static class Blocks extends TropicraftTags {
 
         public static final INamedTag<Block> SAND = modTag("sand");
+        public static final INamedTag<Block> MUD = modTag("mud");
 
         public static final INamedTag<Block> SAPLINGS = modTag("saplings");
         public static final INamedTag<Block> LEAVES = modTag("leaves");
@@ -76,6 +77,7 @@ public class TropicraftTags {
         public static final INamedTag<Item> SWORDS = compatTag("swords");
 
         public static final INamedTag<Item> SAND = modTag("sand");
+        public static final INamedTag<Item> MUD = modTag("mud");
 
         public static final INamedTag<Item> SAPLINGS = modTag("saplings");
         public static final INamedTag<Item> LEAVES = modTag("leaves");
