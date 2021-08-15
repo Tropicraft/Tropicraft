@@ -34,6 +34,7 @@ public class TropicraftBiomeProvider extends BiomeProvider {
             TropicraftBiomes.RAINFOREST_HILLS,
             TropicraftBiomes.RAINFOREST_PLAINS,
             TropicraftBiomes.RAINFOREST_MOUNTAINS,
+            TropicraftBiomes.BAMBOO_RAINFOREST,
             TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS,
             TropicraftBiomes.KELP_FOREST,
             TropicraftBiomes.MANGROVES

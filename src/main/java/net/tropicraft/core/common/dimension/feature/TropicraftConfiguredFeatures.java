@@ -44,6 +44,7 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> rainforestVines;
     public final ConfiguredFeature<?, ?> eih;
     public final ConfiguredFeature<?, ?> tropicsGrass;
+    public final ConfiguredFeature<?, ?> bamboo;
 
     public final ConfiguredFeature<?, ?> redMangroveShort;
     public final ConfiguredFeature<?, ?> redMangroveSmall;
@@ -187,6 +188,13 @@ public final class TropicraftConfiguredFeatures {
 
         this.tropicsGrass = features.register("tropics_grass", Feature.RANDOM_PATCH,
                 f -> f.withConfiguration(Features.Configs.JUNGLE_VEGETATION_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).count(10));
+
+        this.bamboo = features.register("bamboo", Feature.BAMBOO,
+                f -> f.withConfiguration(new ProbabilityConfig(0.15F))
+                        .withPlacement(Features.Placements.BAMBOO_PLACEMENT)
+                        .square()
+                        .withPlacement(Placement.COUNT_NOISE_BIASED.configure(new TopSolidWithNoiseConfig(70, 140.0D, 0.3D)))
+        );
 
         this.pineapplePatch = features.register("pineapple_patch", Feature.RANDOM_PATCH, feature -> {
             SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.PINEAPPLE.get().getDefaultState());
@@ -336,6 +344,10 @@ public final class TropicraftConfiguredFeatures {
 
     public void addTropicsGrass(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.tropicsGrass);
+    }
+
+    public void addBamboo(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.bamboo);
     }
 
     public void addPineapples(BiomeGenerationSettings.Builder generation) {
