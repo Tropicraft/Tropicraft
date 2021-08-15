@@ -92,8 +92,8 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
     private Direction.Axis getAxis(BlockPos start, BlockPos end) {
         Direction.Axis axis = Direction.Axis.Y;
         int xOffset = Math.abs(end.getX() - start.getX());
-        int zOffst = Math.abs(end.getZ() - start.getZ());
-        int maxOffset = Math.max(xOffset, zOffst);
+        int zOffset = Math.abs(end.getZ() - start.getZ());
+        int maxOffset = Math.max(xOffset, zOffset);
 
         if (maxOffset > 0) {
             if (xOffset == maxOffset) {
