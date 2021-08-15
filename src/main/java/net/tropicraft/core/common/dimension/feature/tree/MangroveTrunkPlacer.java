@@ -225,6 +225,21 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
             if (dx == 0 && dz == 0) continue;
             mutablePos.setAndOffset(origin, dx, 0, dz);
 
+            // Don't generate pneumatophores if there isn't a solid block in the column to attach onto
+            boolean canGenerate = false;
+            for (int y = minBottomY; y <= topY; y++) {
+                mutablePos.setY(y);
+
+                if (world.hasBlockState(mutablePos, b -> b.getMaterial().isOpaque())) {
+                    canGenerate = true;
+                    break;
+                }
+            }
+
+            if (!canGenerate) {
+                continue;
+            }
+
             int y = topY;
             while (y >= minBottomY) {
                 mutablePos.setY(y--);
