@@ -13,6 +13,7 @@ import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
+import net.minecraft.world.gen.foliageplacer.JungleFoliagePlacer;
 import net.minecraft.world.gen.placement.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
@@ -57,6 +58,8 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> mangroveVegetation;
 
     public final ConfiguredFeature<?, ?> mudDisk;
+
+    public final ConfiguredFeature<?, ?> pleodendron;
 
     public final ConfiguredFeature<?, ?> pineapplePatch;
     public final ConfiguredFeature<?, ?> tropicsFlowers;
@@ -126,6 +129,16 @@ public final class TropicraftConfiguredFeatures {
         Block mangroveRoots = TropicraftBlocks.WHITE_MANGROVE_ROOTS.get();
 
         TwoLayerFeature mangroveMinimumSize = new TwoLayerFeature(0, 0, 0, OptionalInt.of(4));
+
+        this.pleodendron = features.tree("pleodendron",
+                new BaseTreeFeatureConfig.Builder(
+                        new SimpleBlockStateProvider(Blocks.JUNGLE_LOG.getDefaultState()),
+                        new SimpleBlockStateProvider(Blocks.JUNGLE_LEAVES.getDefaultState()),
+                        new PleodendronFoliagePlacer(FeatureSpread.create(2), FeatureSpread.create(0), 1),
+                        new PleodendronTrunkPlacer(10, 8, 0),
+                        new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+                ).build(),
+                0, 0.05f, 1);
 
         this.redMangroveShort = features.mangrove("red_mangrove_short",
                 new BaseTreeFeatureConfig.Builder(
@@ -332,6 +345,10 @@ public final class TropicraftConfiguredFeatures {
 
     public void addMangroveVegetation(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.mangroveVegetation);
+    }
+
+    public void addPleodendron(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.pleodendron);
     }
 
     public void addMudDisks(BiomeGenerationSettings.Builder generation) {
