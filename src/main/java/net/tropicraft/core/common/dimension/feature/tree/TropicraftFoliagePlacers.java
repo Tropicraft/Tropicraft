@@ -13,6 +13,7 @@ public final class TropicraftFoliagePlacers {
     public static RegistryObject<FoliagePlacerType<MangroveFoliagePlacer>> MANGROVE = register("mangrove", MangroveFoliagePlacer.CODEC);
     public static RegistryObject<FoliagePlacerType<SmallMangroveFoliagePlacer>> SMALL_MANGROVE = register("small_mangrove", SmallMangroveFoliagePlacer.CODEC);
     public static RegistryObject<FoliagePlacerType<CitrusFoliagePlacer>> CITRUS = register("citrus", CitrusFoliagePlacer.CODEC);
+    public static RegistryObject<FoliagePlacerType<PleodendronFoliagePlacer>> PLEODENDRON = register("pleodendron", PleodendronFoliagePlacer.CODEC);
 
     private static <T extends FoliagePlacer> RegistryObject<FoliagePlacerType<T>> register(String name, Codec<T> codec) {
         return FOLIAGE_PLACERS.register(name, () -> new FoliagePlacerType<>(codec));
