@@ -18,46 +18,46 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
-    public static final Codec<CitrusTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
+public class PleodendronTrunkPlacer extends AbstractTrunkPlacer {
+    public static final Codec<PleodendronTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
         return getAbstractTrunkCodec(instance)
-                .apply(instance, CitrusTrunkPlacer::new);
+                .apply(instance, PleodendronTrunkPlacer::new);
     });
 
-    public CitrusTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {
+    public PleodendronTrunkPlacer(int baseHeight, int heightRandA, int heightRandB) {
         super(baseHeight, heightRandA, heightRandB);
     }
 
     @Override
     protected TrunkPlacerType<?> getPlacerType() {
-        return TropicraftTrunkPlacers.CITRUS;
+        return TropicraftTrunkPlacers.PLEODENDRON;
     }
 
     @Override
     public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
-        ArrayList<FoliagePlacer.Foliage> leafNodes = new ArrayList<>();
-
-        // Set grass to dirt
         func_236909_a_(world, origin.down());
+        List<FoliagePlacer.Foliage> leafNodes = new ArrayList<>();
 
-        // Place trunk
         for (int i = 0; i < height; ++i) {
             func_236911_a_(world, random, origin.up(i), logs, bounds, config);
         }
 
-        // Add center leaf cluster
-        leafNodes.add(new FoliagePlacer.Foliage(origin.up(height - 1), 1, false));
+        leafNodes.add(new FoliagePlacer.Foliage(origin.up(height + 1), -1, false));
 
-        growBranches(world, random, origin.up(height - 4), logs, bounds, config, leafNodes);
+        for (int i = 5; i < height - 4; ++i) {
+            if (random.nextInt(4) == 0) {
+                growBranches(world, random, origin.up(i), logs, bounds, config, leafNodes);
+            }
+        }
 
         return leafNodes;
     }
 
     private void growBranches(IWorldGenerationReader world, Random random, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config, List<FoliagePlacer.Foliage> leafNodes) {
-        int count = random.nextInt(3) + 1;
+        int count = random.nextInt(2) + 1;
         double thetaOffset = random.nextDouble() * 2 * Math.PI;
 
-        // Place 1-3 branches
+        // Place 1-2 branches
         for (int i = 0; i < count; i++) {
             // Get angle of this branch
             double theta = (((double) i / count) * 2 * Math.PI) + thetaOffset;
@@ -70,9 +70,8 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
 
             for (int j = 1; j <= dist; j++) {
                 int x = (int) (Math.cos(theta) * j);
-                int y = j == dist ? 1 : 0; // Make branch go up
                 int z = (int) (Math.sin(theta) * j);
-                BlockPos local = origin.add(x, y, z);
+                BlockPos local = origin.add(x, 0, z);
 
                 // Get axis based on position
                 Direction.Axis axis = Util.getAxisFromPositions(origin, local);
@@ -83,7 +82,7 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
 
                 // Add leaves around the branch
                 if (j == dist) {
-                    leafNodes.add(new FoliagePlacer.Foliage(local, 0, false));
+                    leafNodes.add(new FoliagePlacer.Foliage(local.up(1), -2, false));
                 }
             }
         }
