@@ -11,6 +11,7 @@ import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
+import net.tropicraft.core.common.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
                 BlockPos local = origin.add(x, y, z);
 
                 // Get axis based on position
-                Direction.Axis axis = getAxis(origin, local);
+                Direction.Axis axis = Util.getAxisFromPositions(origin, local);
 
                 // Place branch and add to logs
                 func_236913_a_(world, local, config.trunkProvider.getBlockState(random, local).with(RotatedPillarBlock.AXIS, axis), bounds);
@@ -86,23 +87,5 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
                 }
             }
         }
-    }
-
-    // Lifted from FancyTrunkPlacer#func_236889_a_
-    private Direction.Axis getAxis(BlockPos start, BlockPos end) {
-        Direction.Axis axis = Direction.Axis.Y;
-        int xOffset = Math.abs(end.getX() - start.getX());
-        int zOffset = Math.abs(end.getZ() - start.getZ());
-        int maxOffset = Math.max(xOffset, zOffset);
-
-        if (maxOffset > 0) {
-            if (xOffset == maxOffset) {
-                axis = Direction.Axis.X;
-            } else {
-                axis = Direction.Axis.Z;
-            }
-        }
-
-        return axis;
     }
 }

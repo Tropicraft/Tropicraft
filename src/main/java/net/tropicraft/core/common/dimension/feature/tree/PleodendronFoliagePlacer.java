@@ -21,17 +21,17 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
    protected final int height;
 
-   public PleodendronFoliagePlacer(FeatureSpread p_i242000_1_, FeatureSpread p_i242000_2_, int p_i242000_3_) {
-      super(p_i242000_1_, p_i242000_2_);
-      this.height = p_i242000_3_;
+   public PleodendronFoliagePlacer(FeatureSpread radius, FeatureSpread offset, int height) {
+      super(radius, offset);
+      this.height = height;
    }
 
    protected FoliagePlacerType<?> getPlacerType() {
       return TropicraftFoliagePlacers.PLEODENDRON.get();
    }
 
-   protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, FoliagePlacer.Foliage foliage, int p_230372_6_, int y, Set<BlockPos> leaves, int start, MutableBoundingBox bounds) {
-      int i = foliage.func_236765_c_() ? p_230372_6_ : 2;
+   protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int height, FoliagePlacer.Foliage foliage, int offset, int y, Set<BlockPos> leaves, int start, MutableBoundingBox bounds) {
+      int i = foliage.func_236765_c_() ? offset : 2;
 
       for(int j = start; j >= start - i; --j) {
          int k = y + foliage.func_236764_b_() + 1 - j;
@@ -40,7 +40,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
    }
 
-   public int func_230374_a_(Random random, int p_230374_2_, BaseTreeFeatureConfig config) {
+   public int func_230374_a_(Random random, int height, BaseTreeFeatureConfig config) {
       return this.height;
    }
 
