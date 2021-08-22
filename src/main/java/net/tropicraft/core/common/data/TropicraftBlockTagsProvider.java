@@ -37,11 +37,11 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
         // Saplings & Leaves
         createAndAppend(TropicraftTags.Blocks.SAPLINGS, BlockTags.SAPLINGS,
                 PALM_SAPLING, MAHOGANY_SAPLING, GRAPEFRUIT_SAPLING, LEMON_SAPLING, LIME_SAPLING, ORANGE_SAPLING,
-                WHITE_MANGROVE_PROPAGULE, RED_MANGROVE_PROPAGULE
+                RED_MANGROVE_PROPAGULE, TALL_MANGROVE_PROPAGULE, TEA_MANGROVE_PROPAGULE, BLACK_MANGROVE_PROPAGULE
         );
         createAndAppend(TropicraftTags.Blocks.LEAVES, BlockTags.LEAVES,
                 MAHOGANY_LEAVES, PALM_LEAVES, KAPOK_LEAVES, FRUIT_LEAVES, GRAPEFRUIT_LEAVES, LEMON_LEAVES, LIME_LEAVES, ORANGE_LEAVES,
-                WHITE_MANGROVE_LEAVES, RED_MANGROVE_LEAVES);
+                RED_MANGROVE_LEAVES, TALL_MANGROVE_LEAVES, TEA_MANGROVE_LEAVES, BLACK_MANGROVE_LEAVES);
         
         // Flowers
         createAndAppend(TropicraftTags.Blocks.SMALL_FLOWERS, BlockTags.SMALL_FLOWERS,
@@ -56,9 +56,12 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
         
         // Logs & Planks
         createAndAppend(TropicraftTags.Blocks.LOGS, BlockTags.LOGS,
-                PALM_LOG, MAHOGANY_LOG, WHITE_MANGROVE_LOG, RED_MANGROVE_LOG, STRIPPED_MANGROVE_LOG);
+                PALM_LOG, MAHOGANY_LOG, LIGHT_MANGROVE_LOG, RED_MANGROVE_LOG, BLACK_MANGROVE_LOG, STRIPPED_MANGROVE_LOG);
         createAndAppend(TropicraftTags.Blocks.PLANKS, BlockTags.PLANKS,
                 PALM_PLANKS, MAHOGANY_PLANKS);
+
+        createTag(TropicraftTags.Blocks.ROOTS,
+                RED_MANGROVE_ROOTS, LIGHT_MANGROVE_ROOTS, BLACK_MANGROVE_ROOTS);
         
         // Wooden deco blocks
         createAndAppend(TropicraftTags.Blocks.WOODEN_SLABS, BlockTags.WOODEN_SLABS,

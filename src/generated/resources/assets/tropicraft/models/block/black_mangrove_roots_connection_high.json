@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:block/mangrove_roots/connection_high",
+  "textures": {
+    "roots": "tropicraft:block/black_mangrove_roots"
+  }
+}

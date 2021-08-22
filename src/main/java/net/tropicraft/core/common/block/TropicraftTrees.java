@@ -20,7 +20,6 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
-import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
 
@@ -58,8 +57,10 @@ public class TropicraftTrees {
         }
     });
 
-    public static final Tree WHITE_MANGROVE = create("white_mangrove");
     public static final Tree RED_MANGROVE = create("red_mangrove");
+    public static final Tree TALL_MANGROVE = create("tall_mangrove");
+    public static final Tree TEA_MANGROVE = create("tea_mangrove");
+    public static final Tree BLACK_MANGROVE = create("black_mangrove");
 
     private static Tree createFruit(Supplier<? extends Block> fruitLeaves) {
         return create((server, random, beehive) -> {

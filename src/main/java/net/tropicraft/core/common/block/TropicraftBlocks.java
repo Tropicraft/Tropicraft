@@ -136,18 +136,26 @@ public class TropicraftBlocks {
     public static final RegistryObject<SaplingBlock> PALM_SAPLING = register(
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
 
-    public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_LOG = register("white_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
-    public static final RegistryObject<RotatedPillarBlock> WHITE_MANGROVE_WOOD = register("white_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
-    public static final RegistryObject<LeavesBlock> WHITE_MANGROVE_LEAVES = register("white_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.WHITE_MANGROVE_PROPAGULE));
-    public static final RegistryObject<Block> WHITE_MANGROVE_ROOTS = register("white_mangrove_roots", Builder.mangroveRoots());
-
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
-    public static final RegistryObject<LeavesBlock> RED_MANGROVE_LEAVES = register("red_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.RED_MANGROVE_PROPAGULE));
     public static final RegistryObject<Block> RED_MANGROVE_ROOTS = register("red_mangrove_roots", Builder.mangroveRoots());
 
-    public static final RegistryObject<PropaguleBlock> WHITE_MANGROVE_PROPAGULE = register("white_mangrove_propagule", Builder.propagule(TropicraftTrees.WHITE_MANGROVE));
+    public static final RegistryObject<RotatedPillarBlock> LIGHT_MANGROVE_LOG = register("light_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
+    public static final RegistryObject<RotatedPillarBlock> LIGHT_MANGROVE_WOOD = register("light_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
+    public static final RegistryObject<Block> LIGHT_MANGROVE_ROOTS = register("light_mangrove_roots", Builder.mangroveRoots());
+
+    public static final RegistryObject<RotatedPillarBlock> BLACK_MANGROVE_LOG = register("black_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
+    public static final RegistryObject<RotatedPillarBlock> BLACK_MANGROVE_WOOD = register("black_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
+    public static final RegistryObject<Block> BLACK_MANGROVE_ROOTS = register("black_mangrove_roots", Builder.mangroveRoots());
+
+    public static final RegistryObject<LeavesBlock> RED_MANGROVE_LEAVES = register("red_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.RED_MANGROVE_PROPAGULE));
+    public static final RegistryObject<LeavesBlock> TALL_MANGROVE_LEAVES = register("tall_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.TALL_MANGROVE_PROPAGULE));
+    public static final RegistryObject<LeavesBlock> TEA_MANGROVE_LEAVES = register("tea_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.TEA_MANGROVE_PROPAGULE));
+    public static final RegistryObject<LeavesBlock> BLACK_MANGROVE_LEAVES = register("black_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.BLACK_MANGROVE_PROPAGULE));
     public static final RegistryObject<PropaguleBlock> RED_MANGROVE_PROPAGULE = register("red_mangrove_propagule", Builder.propagule(TropicraftTrees.RED_MANGROVE));
+    public static final RegistryObject<PropaguleBlock> TALL_MANGROVE_PROPAGULE = register("tall_mangrove_propagule", Builder.propagule(TropicraftTrees.TALL_MANGROVE));
+    public static final RegistryObject<PropaguleBlock> TEA_MANGROVE_PROPAGULE = register("tea_mangrove_propagule", Builder.propagule(TropicraftTrees.TEA_MANGROVE));
+    public static final RegistryObject<PropaguleBlock> BLACK_MANGROVE_PROPAGULE = register("black_mangrove_propagule", Builder.propagule(TropicraftTrees.BLACK_MANGROVE));
 
     public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = register("stripped_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
     public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = register("stripped_mangrove_wood", Builder.wood(MaterialColor.GRAY));

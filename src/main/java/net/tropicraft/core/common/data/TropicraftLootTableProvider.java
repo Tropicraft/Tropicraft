@@ -118,13 +118,17 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.MAHOGANY_WOOD);
             dropsSelf(TropicraftBlocks.PALM_WOOD);
 
-            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_LOG);
-            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_WOOD);
-            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_ROOTS);
-
             dropsSelf(TropicraftBlocks.RED_MANGROVE_LOG);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_WOOD);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_ROOTS);
+
+            dropsSelf(TropicraftBlocks.LIGHT_MANGROVE_LOG);
+            dropsSelf(TropicraftBlocks.LIGHT_MANGROVE_WOOD);
+            dropsSelf(TropicraftBlocks.LIGHT_MANGROVE_ROOTS);
+
+            dropsSelf(TropicraftBlocks.BLACK_MANGROVE_LOG);
+            dropsSelf(TropicraftBlocks.BLACK_MANGROVE_WOOD);
+            dropsSelf(TropicraftBlocks.BLACK_MANGROVE_ROOTS);
 
             dropsSelf(TropicraftBlocks.STRIPPED_MANGROVE_LOG);
             dropsSelf(TropicraftBlocks.STRIPPED_MANGROVE_WOOD);
@@ -155,8 +159,10 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             fruitLeaves(TropicraftBlocks.LEMON_LEAVES, TropicraftBlocks.LEMON_SAPLING, TropicraftItems.LEMON);
             fruitLeaves(TropicraftBlocks.LIME_LEAVES, TropicraftBlocks.LIME_SAPLING, TropicraftItems.LIME);
             fruitLeaves(TropicraftBlocks.ORANGE_LEAVES, TropicraftBlocks.ORANGE_SAPLING, TropicraftItems.ORANGE);
-            leavesNoSapling(TropicraftBlocks.WHITE_MANGROVE_LEAVES);
             leavesNoSapling(TropicraftBlocks.RED_MANGROVE_LEAVES);
+            leavesNoSapling(TropicraftBlocks.TALL_MANGROVE_LEAVES);
+            leavesNoSapling(TropicraftBlocks.TEA_MANGROVE_LEAVES);
+            leavesNoSapling(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
             // Saplings
             dropsSelf(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -165,8 +171,10 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.LEMON_SAPLING);
             dropsSelf(TropicraftBlocks.LIME_SAPLING);
             dropsSelf(TropicraftBlocks.ORANGE_SAPLING);
-            dropsSelf(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
+            dropsSelf(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
+            dropsSelf(TropicraftBlocks.TEA_MANGROVE_PROPAGULE);
+            dropsSelf(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE);
 
             // Fences, Gates, and Walls
             dropsSelf(TropicraftBlocks.BAMBOO_FENCE);

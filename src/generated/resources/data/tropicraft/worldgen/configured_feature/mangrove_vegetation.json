@@ -2,15 +2,7 @@
   "config": {
     "feature": {
       "config": {
-        "feature": {
-          "config": {
-            "features": [
-              "tropicraft:white_mangrove",
-              "tropicraft:red_mangrove"
-            ]
-          },
-          "type": "minecraft:simple_random_selector"
-        },
+        "feature": "tropicraft:mangroves",
         "decorator": {
           "config": {
             "outer": {
@@ -29,9 +21,9 @@
     },
     "decorator": {
       "config": {
-        "noise_to_count_ratio": 6,
+        "noise_to_count_ratio": 7,
         "noise_factor": 200.0,
-        "noise_offset": 1.0
+        "noise_offset": 1.5
       },
       "type": "minecraft:count_noise_biased"
     }

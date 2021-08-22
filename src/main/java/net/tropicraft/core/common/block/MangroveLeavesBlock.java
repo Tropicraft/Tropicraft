@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class MangroveLeavesBlock extends LeavesBlock {
-    private static final int PROPAGULE_GROW_CHANCE = 100;
+    private static final int PROPAGULE_GROW_CHANCE = 200;
     private static final int SPACING = 2;
 
     private final Supplier<PropaguleBlock> propaguleBlock;

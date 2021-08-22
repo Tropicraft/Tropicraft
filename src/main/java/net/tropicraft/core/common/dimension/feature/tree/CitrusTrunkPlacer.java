@@ -75,7 +75,7 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
                 BlockPos local = origin.add(x, y, z);
 
                 // Get axis based on position
-                Direction.Axis axis = Util.getAxisFromPositions(origin, local);
+                Direction.Axis axis = Util.getAxisBetween(origin, local);
 
                 // Place branch and add to logs
                 func_236913_a_(world, local, config.trunkProvider.getBlockState(random, local).with(RotatedPillarBlock.AXIS, axis), bounds);

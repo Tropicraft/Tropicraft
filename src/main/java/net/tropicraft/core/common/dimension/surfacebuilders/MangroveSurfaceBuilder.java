@@ -30,7 +30,7 @@ public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     public void buildSurface(Random random, IChunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
         double streamNoise = this.streamNoise.noiseAt(x * 0.025, z * 0.025, false);
         double mudNoise = this.mudNoise.noiseAt(x * 0.03125, z * 0.03125, false);
-        boolean placeMud = mudNoise > 0.25;
+        boolean muddy = mudNoise > -0.1;
 
         if (streamNoise > -0.1 && streamNoise < 0.1) {
             this.placeStream(chunk, x, z, startHeight, defaultFluid, seaLevel);
@@ -38,11 +38,10 @@ public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 
         if (streamNoise > -0.2 && streamNoise < 0.2) {
             double chance = 1 - (Math.abs(streamNoise) * 5);
-            placeMud = random.nextDouble() > chance;
+            muddy = random.nextDouble() > chance;
         }
 
-
-        SurfaceBuilder.DEFAULT.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, placeMud ? MUD : config);
+        SurfaceBuilder.DEFAULT.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, muddy ? MUD : config);
     }
 
     private void placeStream(IChunk chunk, int x, int z, int startHeight, BlockState defaultFluid, int seaLevel) {

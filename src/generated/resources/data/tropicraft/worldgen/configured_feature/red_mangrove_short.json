@@ -47,8 +47,8 @@
     },
     "trunk_placer": {
       "roots_block": "tropicraft:red_mangrove_roots",
-      "pneumatophores": false,
       "can_generate_raised": true,
+      "tea_mangrove": false,
       "base_height": 3,
       "height_rand_a": 3,
       "height_rand_b": 0,

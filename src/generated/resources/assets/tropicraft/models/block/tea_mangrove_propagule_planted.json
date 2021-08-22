@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "tropicraft:block/tea_mangrove_propagule_planted"
+  }
+}
