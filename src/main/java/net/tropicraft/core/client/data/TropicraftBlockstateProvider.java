@@ -2,6 +2,7 @@ package net.tropicraft.core.client.data;
 
 import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.Direction;
@@ -106,13 +107,18 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         woodBlock(TropicraftBlocks.MAHOGANY_WOOD, TropicraftBlocks.MAHOGANY_LOG);
         woodBlock(TropicraftBlocks.PALM_WOOD, TropicraftBlocks.PALM_LOG);
 
-        logBlock(TropicraftBlocks.WHITE_MANGROVE_LOG.get());
-        woodBlock(TropicraftBlocks.WHITE_MANGROVE_WOOD, TropicraftBlocks.WHITE_MANGROVE_LOG);
-
         logBlock(TropicraftBlocks.RED_MANGROVE_LOG.get());
         woodBlock(TropicraftBlocks.RED_MANGROVE_WOOD, TropicraftBlocks.RED_MANGROVE_LOG);
-        logBlock(TropicraftBlocks.STRIPPED_MANGROVE_LOG.get());
+        logBlock(TropicraftBlocks.LIGHT_MANGROVE_LOG.get());
+        woodBlock(TropicraftBlocks.LIGHT_MANGROVE_WOOD, TropicraftBlocks.LIGHT_MANGROVE_LOG);
+        logBlock(TropicraftBlocks.BLACK_MANGROVE_LOG.get());
+        woodBlock(TropicraftBlocks.BLACK_MANGROVE_WOOD, TropicraftBlocks.BLACK_MANGROVE_LOG);
 
+        mangroveRoots(TropicraftBlocks.RED_MANGROVE_ROOTS);
+        mangroveRoots(TropicraftBlocks.LIGHT_MANGROVE_ROOTS);
+        mangroveRoots(TropicraftBlocks.BLACK_MANGROVE_ROOTS);
+
+        logBlock(TropicraftBlocks.STRIPPED_MANGROVE_LOG.get());
         woodBlock(TropicraftBlocks.STRIPPED_MANGROVE_WOOD, TropicraftBlocks.STRIPPED_MANGROVE_LOG);
 
         // Stairs & Slabs
@@ -145,8 +151,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
 
         ModelFile mangroveLeaves = models().cubeAll("mangrove_leaves", modBlockLoc("mangrove_leaves"));
-        simpleBlock(TropicraftBlocks.WHITE_MANGROVE_LEAVES.get(), mangroveLeaves);
         simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES.get(), mangroveLeaves);
+        simpleBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES.get(), mangroveLeaves);
+        simpleBlock(TropicraftBlocks.TEA_MANGROVE_LEAVES.get(), mangroveLeaves);
+        simpleBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES.get(), mangroveLeaves);
 
         // Saplings
         sapling(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -156,8 +164,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         sapling(TropicraftBlocks.LIME_SAPLING);
         sapling(TropicraftBlocks.ORANGE_SAPLING);
 
-        propagule(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, "white_mangrove_propagule");
         propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE, "red_mangrove_propagule");
+        propagule(TropicraftBlocks.TALL_MANGROVE_PROPAGULE, "light_mangrove_propagule");
+        propagule(TropicraftBlocks.TEA_MANGROVE_PROPAGULE, "light_mangrove_propagule");
+        propagule(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE, "black_mangrove_propagule");
 
         // Fences, Gates, and Walls
         fenceBlock(TropicraftBlocks.BAMBOO_FENCE, "bamboo_side");
@@ -418,6 +428,59 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
                             .texture(dir.getAxis().isHorizontal() ? "#side" : dir == Direction.DOWN ? "#bottom": "#top")
                             .cullface(dir.getAxis().isVertical() ? dir : null))
                     .end());
+    }
+
+    private void mangroveRoots(Supplier<? extends Block> block) {
+        String name = name(block);
+        ResourceLocation roots = modBlockLoc(name);
+
+        ModelFile stem = models().withExistingParent(name(block) + "_stem", modBlockLoc("mangrove_roots/stem"))
+                .texture("roots", roots);
+        ModelFile stemShort = models().withExistingParent(name(block) + "_stem_short", modBlockLoc("mangrove_roots/stem_short"))
+                .texture("roots", roots);
+        ModelFile connectionLow = models().withExistingParent(name(block) + "_connection_low", modBlockLoc("mangrove_roots/connection_low"))
+                .texture("roots", roots);
+        ModelFile connectionHigh = models().withExistingParent(name(block) + "_connection_high", modBlockLoc("mangrove_roots/connection_high"))
+                .texture("roots", roots);
+
+        ModelFile appendagesHigh = models().withExistingParent(name(block) + "_appendages_high", modBlockLoc("mangrove_roots/appendages"))
+                .texture("appendages", modBlockLoc(name + "_appendages_high"));
+        ModelFile appendagesHighShort = models().withExistingParent(name(block) + "_appendages_high_short", modBlockLoc("mangrove_roots/appendages"))
+                .texture("appendages", modBlockLoc(name + "_appendages_high_short"));
+        ModelFile appendagesGrounded = models().withExistingParent(name(block) + "_appendages_ground", modBlockLoc("mangrove_roots/appendages"))
+                .texture("appendages", modBlockLoc(name + "_appendages_ground"));
+        ModelFile appendagesGroundedShort = models().withExistingParent(name(block) + "_appendages_ground_short", modBlockLoc("mangrove_roots/appendages"))
+                .texture("appendages", modBlockLoc(name + "_appendages_ground_short"));
+
+        MultiPartBlockStateBuilder builder = getMultipartBuilder(block.get());
+
+        builder.part().modelFile(stem).addModel()
+                .condition(MangroveRootsBlock.TALL, true);
+        builder.part().modelFile(stemShort).addModel()
+                .condition(MangroveRootsBlock.TALL, false);
+
+        builder.part().modelFile(appendagesGrounded).addModel()
+                .condition(MangroveRootsBlock.TALL, true)
+                .condition(MangroveRootsBlock.GROUNDED, true);
+        builder.part().modelFile(appendagesGroundedShort).addModel()
+                .condition(MangroveRootsBlock.TALL, false)
+                .condition(MangroveRootsBlock.GROUNDED, true);
+        builder.part().modelFile(appendagesHigh).addModel()
+                .condition(MangroveRootsBlock.TALL, true)
+                .condition(MangroveRootsBlock.GROUNDED, false);
+        builder.part().modelFile(appendagesHighShort).addModel()
+                .condition(MangroveRootsBlock.TALL, false)
+                .condition(MangroveRootsBlock.GROUNDED, false);
+
+        for (int i = 0; i < 4; i++) {
+            EnumProperty<MangroveRootsBlock.Connection> connection = MangroveRootsBlock.CONNECTIONS[i];
+            int rotation = (i * 90 + 270) % 360;
+
+            builder.part().modelFile(connectionHigh).rotationY(rotation).uvLock(true).addModel()
+                    .condition(connection, MangroveRootsBlock.Connection.HIGH);
+            builder.part().modelFile(connectionLow).rotationY(rotation).uvLock(true).addModel()
+                    .condition(connection, MangroveRootsBlock.Connection.LOW);
+        }
     }
 
     private void boardwalk(Supplier<? extends Block> block, ResourceLocation texture) {

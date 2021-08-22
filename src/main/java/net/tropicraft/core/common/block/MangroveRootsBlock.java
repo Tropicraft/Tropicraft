@@ -32,8 +32,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     private static final VoxelShape[] SHAPE_TABLE = buildShapeTable();
 
     private static final int PIANGUA_GROW_CHANCE = 80;
-    private static final int PIANGUA_SPACING = 2;
-    private static final int PIANGUA_SPAWN_RADIUS = 1;
+    private static final int PIANGUA_RADIUS = 1;
 
     public static final BooleanProperty TALL = BooleanProperty.create("tall");
     public static final BooleanProperty GROUNDED = BooleanProperty.create("grounded");
@@ -44,7 +43,8 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
+    public static final Direction[] DIRECTIONS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
+    public static final EnumProperty<Connection>[] CONNECTIONS = new EnumProperty[] { NORTH, EAST, SOUTH, WEST };
 
     public MangroveRootsBlock(Block.Properties properties) {
         super(properties);
@@ -268,9 +268,9 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         }
 
         BlockPos growPos = soilPos.add(
-                random.nextInt(PIANGUA_SPAWN_RADIUS * 2 + 1) - PIANGUA_SPAWN_RADIUS,
-                -random.nextInt(PIANGUA_SPAWN_RADIUS + 1),
-                random.nextInt(PIANGUA_SPAWN_RADIUS * 2 + 1) - PIANGUA_SPAWN_RADIUS
+                random.nextInt(PIANGUA_RADIUS * 2 + 1) - PIANGUA_RADIUS,
+                -random.nextInt(PIANGUA_RADIUS + 1),
+                random.nextInt(PIANGUA_RADIUS * 2 + 1) - PIANGUA_RADIUS
         );
 
         BlockState growIn = world.getBlockState(growPos);
@@ -283,8 +283,8 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
 
     private boolean hasNearPianguas(ServerWorld world, BlockPos source) {
         Block mudWithPianguas = TropicraftBlocks.MUD_WITH_PIANGUAS.get();
-        BlockPos minSpacingPos = source.add(-PIANGUA_SPAWN_RADIUS, -PIANGUA_SPAWN_RADIUS, -PIANGUA_SPAWN_RADIUS);
-        BlockPos maxSpacingPos = source.add(PIANGUA_SPAWN_RADIUS, 0, PIANGUA_SPAWN_RADIUS);
+        BlockPos minSpacingPos = source.add(-PIANGUA_RADIUS, -PIANGUA_RADIUS, -PIANGUA_RADIUS);
+        BlockPos maxSpacingPos = source.add(PIANGUA_RADIUS, 0, PIANGUA_RADIUS);
 
         for (BlockPos pos : BlockPos.getAllInBoxMutable(minSpacingPos, maxSpacingPos)) {
             if (world.getBlockState(pos).matchesBlock(mudWithPianguas)) {

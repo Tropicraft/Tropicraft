@@ -1,6 +1,0 @@
-{
-  "parent": "tropicraft:block/mangrove_roots/stem",
-  "textures": {
-    "roots": "tropicraft:block/red_mangrove_roots"
-  }
-}

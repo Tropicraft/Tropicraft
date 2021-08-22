@@ -98,13 +98,17 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.MAHOGANY_WOOD);
         addBlock(TropicraftBlocks.PALM_WOOD);
 
-        addBlock(TropicraftBlocks.WHITE_MANGROVE_LOG);
-        addBlock(TropicraftBlocks.WHITE_MANGROVE_WOOD);
-        addBlock(TropicraftBlocks.WHITE_MANGROVE_ROOTS);
-
         addBlock(TropicraftBlocks.RED_MANGROVE_LOG);
         addBlock(TropicraftBlocks.RED_MANGROVE_WOOD);
         addBlock(TropicraftBlocks.RED_MANGROVE_ROOTS);
+
+        addBlock(TropicraftBlocks.LIGHT_MANGROVE_LOG);
+        addBlock(TropicraftBlocks.LIGHT_MANGROVE_WOOD);
+        addBlock(TropicraftBlocks.LIGHT_MANGROVE_ROOTS);
+
+        addBlock(TropicraftBlocks.BLACK_MANGROVE_LOG);
+        addBlock(TropicraftBlocks.BLACK_MANGROVE_WOOD);
+        addBlock(TropicraftBlocks.BLACK_MANGROVE_ROOTS);
 
         addBlock(TropicraftBlocks.STRIPPED_MANGROVE_LOG);
         addBlock(TropicraftBlocks.STRIPPED_MANGROVE_WOOD);
@@ -135,8 +139,10 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.LEMON_LEAVES);
         addBlock(TropicraftBlocks.LIME_LEAVES);
         addBlock(TropicraftBlocks.ORANGE_LEAVES);
-        addBlock(TropicraftBlocks.WHITE_MANGROVE_LEAVES);
         addBlock(TropicraftBlocks.RED_MANGROVE_LEAVES);
+        addBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES);
+        addBlock(TropicraftBlocks.TEA_MANGROVE_LEAVES);
+        addBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
         // Saplings
         addBlock(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -145,8 +151,10 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.LEMON_SAPLING);
         addBlock(TropicraftBlocks.LIME_SAPLING);
         addBlock(TropicraftBlocks.ORANGE_SAPLING);
-        addBlock(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE);
-        addBlock(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
+        addBlockWithTooltip(TropicraftBlocks.RED_MANGROVE_PROPAGULE, "Rhizophora mangle");
+        addBlockWithTooltip(TropicraftBlocks.TALL_MANGROVE_PROPAGULE, "Rhizophora racemosa");
+        addBlockWithTooltip(TropicraftBlocks.TEA_MANGROVE_PROPAGULE, "Pelliciera rhizophorae");
+        addBlockWithTooltip(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE, "Avicennia germinans");
 
         // Fences, Gates, and Walls
         addBlock(TropicraftBlocks.BAMBOO_FENCE);

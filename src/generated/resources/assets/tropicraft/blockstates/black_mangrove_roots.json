@@ -1,0 +1,134 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "tall": "true"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_stem"
+      }
+    },
+    {
+      "when": {
+        "tall": "false"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_stem_short"
+      }
+    },
+    {
+      "when": {
+        "tall": "true",
+        "grounded": "true"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_appendages_ground"
+      }
+    },
+    {
+      "when": {
+        "tall": "false",
+        "grounded": "true"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_appendages_ground_short"
+      }
+    },
+    {
+      "when": {
+        "tall": "true",
+        "grounded": "false"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_appendages_high"
+      }
+    },
+    {
+      "when": {
+        "tall": "false",
+        "grounded": "false"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_appendages_high_short"
+      }
+    },
+    {
+      "when": {
+        "north": "high"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_high",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "low"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_low",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "high"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_high",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "low"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_low",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "high"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_high",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "low"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_low",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "high"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_high",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "low"
+      },
+      "apply": {
+        "model": "tropicraft:block/black_mangrove_roots_connection_low",
+        "y": 180,
+        "uvlock": true
+      }
+    }
+  ]
+}

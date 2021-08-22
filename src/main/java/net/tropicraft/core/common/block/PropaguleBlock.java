@@ -3,7 +3,9 @@ package net.tropicraft.core.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.trees.Tree;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.BlockTags;
@@ -11,11 +13,16 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.common.TropicraftTags;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public final class PropaguleBlock extends WaterloggableSaplingBlock {
@@ -28,6 +35,11 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
     public PropaguleBlock(Tree tree, Properties properties) {
         super(tree, properties);
         this.setDefaultState(this.stateContainer.getBaseState().with(STAGE, 0).with(WATERLOGGED, false).with(PLANTED, true));
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+        tooltip.add(new TranslationTextComponent(getTranslationKey() + ".desc").mergeStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
     }
 
     @Override

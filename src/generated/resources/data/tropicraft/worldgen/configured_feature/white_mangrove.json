@@ -1,7 +1,0 @@
-{
-  "config": {
-    "feature_true": "tropicraft:white_mangrove_short",
-    "feature_false": "tropicraft:white_mangrove_tall"
-  },
-  "type": "minecraft:random_boolean_selector"
-}

@@ -6,6 +6,8 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.SmallMangroveTrunkPlacer;
 
 public final class TropicraftTrunkPlacers {
     public static final TrunkPlacerType<MangroveTrunkPlacer> MANGROVE = register("mangrove", MangroveTrunkPlacer.CODEC);

@@ -23,6 +23,7 @@ import net.tropicraft.core.common.dimension.feature.jigsaw.SmoothingGravityProce
 import net.tropicraft.core.common.dimension.feature.jigsaw.SteepPathProcessor;
 import net.tropicraft.core.common.dimension.feature.jigsaw.StructureSupportsProcessor;
 import net.tropicraft.core.common.dimension.feature.tree.*;
+import net.tropicraft.core.common.dimension.feature.tree.mangrove.MangroveTreeFeature;
 
 import java.util.function.Supplier;
 

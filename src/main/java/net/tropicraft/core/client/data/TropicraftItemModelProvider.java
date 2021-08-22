@@ -83,19 +83,23 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.MAHOGANY_WOOD);
         blockItem(TropicraftBlocks.PALM_WOOD);
 
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_LOG);
-        blockItem(TropicraftBlocks.WHITE_MANGROVE_WOOD);
-
         blockItem(TropicraftBlocks.RED_MANGROVE_LOG);
         blockItem(TropicraftBlocks.RED_MANGROVE_WOOD);
+
+        blockItem(TropicraftBlocks.LIGHT_MANGROVE_LOG);
+        blockItem(TropicraftBlocks.LIGHT_MANGROVE_WOOD);
+
+        blockItem(TropicraftBlocks.BLACK_MANGROVE_LOG);
+        blockItem(TropicraftBlocks.BLACK_MANGROVE_WOOD);
 
         blockItem(TropicraftBlocks.STRIPPED_MANGROVE_LOG);
         blockItem(TropicraftBlocks.STRIPPED_MANGROVE_WOOD);
 
         blockItem(TropicraftBlocks.MANGROVE_PLANKS);
 
-        withExistingParent(name(TropicraftBlocks.WHITE_MANGROVE_ROOTS), modLoc("block/mangrove_roots/white/stem"));
-        withExistingParent(name(TropicraftBlocks.RED_MANGROVE_ROOTS), modLoc("block/mangrove_roots/red/stem"));
+        withExistingParent(name(TropicraftBlocks.RED_MANGROVE_ROOTS), modLoc("block/red_mangrove_roots_stem"));
+        withExistingParent(name(TropicraftBlocks.LIGHT_MANGROVE_ROOTS), modLoc("block/light_mangrove_roots_stem"));
+        withExistingParent(name(TropicraftBlocks.BLACK_MANGROVE_ROOTS), modLoc("block/black_mangrove_roots_stem"));
 
         // Stairs & Slabs
         blockItem(TropicraftBlocks.BAMBOO_STAIRS);
@@ -123,8 +127,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.LIME_LEAVES);
         blockItem(TropicraftBlocks.ORANGE_LEAVES);
 
-        withExistingParent(name(TropicraftBlocks.WHITE_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
         withExistingParent(name(TropicraftBlocks.RED_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
+        withExistingParent(name(TropicraftBlocks.TALL_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
+        withExistingParent(name(TropicraftBlocks.TEA_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
+        withExistingParent(name(TropicraftBlocks.BLACK_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
 
         // Saplings
         blockSprite(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -134,8 +140,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockSprite(TropicraftBlocks.LIME_SAPLING);
         blockSprite(TropicraftBlocks.ORANGE_SAPLING);
 
-        blockSprite(TropicraftBlocks.WHITE_MANGROVE_PROPAGULE, modLoc("block/white_mangrove_propagule"));
         blockSprite(TropicraftBlocks.RED_MANGROVE_PROPAGULE, modLoc("block/red_mangrove_propagule"));
+        blockSprite(TropicraftBlocks.TALL_MANGROVE_PROPAGULE, modLoc("block/light_mangrove_propagule"));
+        blockSprite(TropicraftBlocks.TEA_MANGROVE_PROPAGULE, modLoc("block/light_mangrove_propagule"));
+        blockSprite(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE, modLoc("block/black_mangrove_propagule"));
 
         // Fences, Gates, and Walls
         blockWithInventoryModel(TropicraftBlocks.BAMBOO_FENCE);
