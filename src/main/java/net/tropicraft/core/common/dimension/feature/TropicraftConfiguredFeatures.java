@@ -138,9 +138,9 @@ public final class TropicraftConfiguredFeatures {
                 0, 0.05f, 1);
 
         FoliagePlacer mangroveFoliage = new MangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0));
-        BlockStateProvider redMangroveTrunk = new SimpleBlockStateProvider(TropicraftBlocks.RED_MANGROVE_LOG.get().getDefaultState());
-        BlockStateProvider lightMangroveTrunk = new SimpleBlockStateProvider(TropicraftBlocks.LIGHT_MANGROVE_LOG.get().getDefaultState());
-        BlockStateProvider blackMangroveTrunk = new SimpleBlockStateProvider(TropicraftBlocks.BLACK_MANGROVE_LOG.get().getDefaultState());
+        BlockStateProvider redMangroveLog = new SimpleBlockStateProvider(TropicraftBlocks.RED_MANGROVE_LOG.get().getDefaultState());
+        BlockStateProvider lightMangroveLog = new SimpleBlockStateProvider(TropicraftBlocks.LIGHT_MANGROVE_LOG.get().getDefaultState());
+        BlockStateProvider blackMangroveLog = new SimpleBlockStateProvider(TropicraftBlocks.BLACK_MANGROVE_LOG.get().getDefaultState());
         Block redMangroveRoots = TropicraftBlocks.RED_MANGROVE_ROOTS.get();
         Block lightMangroveRoots = TropicraftBlocks.LIGHT_MANGROVE_ROOTS.get();
         Block blackMangroveRoots = TropicraftBlocks.BLACK_MANGROVE_ROOTS.get();
@@ -152,17 +152,15 @@ public final class TropicraftConfiguredFeatures {
 
         TwoLayerFeature mangroveMinimumSize = new TwoLayerFeature(0, 0, 0, OptionalInt.of(4));
 
+        MangroveTrunkPlacer redMangroveTrunk = new MangroveTrunkPlacer(3, 3, 0, redMangroveRoots, true, false);
         this.redMangroveShort = features.mangrove("red_mangrove_short",
-                new BaseTreeFeatureConfig.Builder(
-                        redMangroveTrunk, redMangroveLeaves,
-                        mangroveFoliage,
-                        new MangroveTrunkPlacer(3, 3, 0, redMangroveRoots, false, true),
-                        mangroveMinimumSize
-                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR)).setMaxWaterDepth(1).build()
+                new BaseTreeFeatureConfig.Builder(redMangroveLog, redMangroveLeaves, mangroveFoliage, redMangroveTrunk, mangroveMinimumSize)
+                        .setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR))
+                        .setMaxWaterDepth(1).build()
         );
         this.redMangroveSmall = features.mangrove("red_mangrove_small",
                 new BaseTreeFeatureConfig.Builder(
-                        redMangroveTrunk, redMangroveLeaves,
+                        redMangroveLog, redMangroveLeaves,
                         new SmallMangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
                         new SmallMangroveTrunkPlacer(2, 1, 0, redMangroveRoots),
                         mangroveMinimumSize
@@ -172,27 +170,31 @@ public final class TropicraftConfiguredFeatures {
 
         this.tallMangrove = features.mangrove("tall_mangrove",
                 new BaseTreeFeatureConfig.Builder(
-                        lightMangroveTrunk, tallMangroveLeaves,
+                        lightMangroveLog, tallMangroveLeaves,
                         mangroveFoliage,
-                        new MangroveTrunkPlacer(7, 3, 0, lightMangroveRoots, false, false),
+                        new MangroveTrunkPlacer(7, 4, 2, lightMangroveRoots, false, false),
                         mangroveMinimumSize
                 ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR)).setMaxWaterDepth(2).build()
         );
+
+        PneumatophoresTreeDecorator teaMangrovePneumatophores = new PneumatophoresTreeDecorator(lightMangroveRoots, 2, 6, 4);
         this.teaMangrove = features.mangrove("tea_mangrove",
                 new BaseTreeFeatureConfig.Builder(
-                        lightMangroveTrunk, teaMangroveLeaves,
+                        lightMangroveLog, teaMangroveLeaves,
                         mangroveFoliage,
-                        new MangroveTrunkPlacer(6, 3, 0, lightMangroveRoots, true, false),
+                        new MangroveTrunkPlacer(5, 3, 0, lightMangroveRoots, false, true),
                         mangroveMinimumSize
-                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR)).setMaxWaterDepth(1).build()
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR, teaMangrovePneumatophores)).setMaxWaterDepth(1).build()
         );
+
+        PneumatophoresTreeDecorator blackMangrovePneumatophores = new PneumatophoresTreeDecorator(blackMangroveRoots, 8, 16, 6);
         this.blackMangrove = features.mangrove("black_mangrove",
                 new BaseTreeFeatureConfig.Builder(
-                        blackMangroveTrunk, blackMangroveLeaves,
+                        blackMangroveLog, blackMangroveLeaves,
                         mangroveFoliage,
                         new MangroveTrunkPlacer(5, 3, 0, blackMangroveRoots, true, false),
                         mangroveMinimumSize
-                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR)).setMaxWaterDepth(1).build()
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).setMaxWaterDepth(1).build()
         );
         this.lightMangroves = features.random("light_mangroves", this.tallMangrove, this.teaMangrove, this.blackMangrove);
 

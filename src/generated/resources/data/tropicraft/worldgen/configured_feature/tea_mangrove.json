@@ -19,6 +19,13 @@
         "count": 8,
         "spread": 4,
         "type": "tropicraft:pianguas"
+      },
+      {
+        "roots_block": "tropicraft:light_mangrove_roots",
+        "min_count": 2,
+        "max_count": 6,
+        "spread": 4,
+        "type": "tropicraft:pneumatophores"
       }
     ],
     "trunk_provider": {
@@ -47,8 +54,8 @@
     },
     "trunk_placer": {
       "roots_block": "tropicraft:light_mangrove_roots",
-      "pneumatophores": true,
       "can_generate_raised": false,
+      "tea_mangrove": true,
       "base_height": 6,
       "height_rand_a": 3,
       "height_rand_b": 0,

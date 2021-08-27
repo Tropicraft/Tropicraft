@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tropicraft:block/light_mangrove_propagule"
+    "layer0": "tropicraft:block/tall_mangrove_propagule"
   }
 }

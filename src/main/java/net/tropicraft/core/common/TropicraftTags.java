@@ -28,6 +28,8 @@ public class TropicraftTags {
         public static final INamedTag<Block> LOGS = modTag("logs");
         public static final INamedTag<Block> PLANKS = modTag("planks");
 
+        public static final INamedTag<Block> ROOTS = modTag("roots");
+
         public static final INamedTag<Block> WOODEN_SLABS = modTag("wooden_slabs");
         public static final INamedTag<Block> WOODEN_STAIRS = modTag("wooden_stairs");
         public static final INamedTag<Block> WOODEN_DOORS = modTag("wooden_doors");

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tropicraft:block/mangrove_leaves"
+      "model": "tropicraft:block/red_mangrove_leaves"
     }
   }
 }

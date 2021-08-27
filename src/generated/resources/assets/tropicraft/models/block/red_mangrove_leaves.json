@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tropicraft:block/mangrove_leaves"
+    "all": "tropicraft:block/red_mangrove_leaves"
   }
 }

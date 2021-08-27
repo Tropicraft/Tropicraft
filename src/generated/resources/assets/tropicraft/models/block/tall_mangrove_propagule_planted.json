@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "tropicraft:block/light_mangrove_propagule_planted"
+    "cross": "tropicraft:block/tall_mangrove_propagule_planted"
   }
 }

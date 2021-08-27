@@ -7,10 +7,10 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -39,7 +39,7 @@ public class PianguasTreeDecorator extends TreeDecorator {
 
     @Override
     public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, MutableBoundingBox box) {
-        BlockPos lowestLog = findLowestBlock(logs);
+        BlockPos lowestLog = Util.findLowestBlock(logs);
         if (lowestLog == null) return;
 
         for (int i = 0; i < this.count; i++) {
@@ -52,20 +52,5 @@ public class PianguasTreeDecorator extends TreeDecorator {
                 func_227423_a_(world, local, TropicraftBlocks.MUD_WITH_PIANGUAS.get().getDefaultState(), placed, box);
             }
         }
-    }
-
-    @Nullable
-    private BlockPos findLowestBlock(List<BlockPos> blocks) {
-        if (blocks.isEmpty()) return null;
-
-        BlockPos lowest = blocks.get(0);
-        for (int i = 1; i < blocks.size(); i++) {
-            BlockPos block = blocks.get(i);
-            if (lowest.getY() > block.getY()) {
-                lowest = block;
-            }
-        }
-
-        return lowest;
     }
 }

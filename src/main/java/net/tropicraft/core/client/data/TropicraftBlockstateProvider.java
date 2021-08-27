@@ -150,11 +150,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.LIME_LEAVES);
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
 
-        ModelFile mangroveLeaves = models().cubeAll("mangrove_leaves", modBlockLoc("mangrove_leaves"));
-        simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES.get(), mangroveLeaves);
-        simpleBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES.get(), mangroveLeaves);
-        simpleBlock(TropicraftBlocks.TEA_MANGROVE_LEAVES.get(), mangroveLeaves);
-        simpleBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES.get(), mangroveLeaves);
+        simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES);
+        simpleBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES);
+        simpleBlock(TropicraftBlocks.TEA_MANGROVE_LEAVES);
+        simpleBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
         // Saplings
         sapling(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -164,10 +163,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         sapling(TropicraftBlocks.LIME_SAPLING);
         sapling(TropicraftBlocks.ORANGE_SAPLING);
 
-        propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE, "red_mangrove_propagule");
-        propagule(TropicraftBlocks.TALL_MANGROVE_PROPAGULE, "light_mangrove_propagule");
-        propagule(TropicraftBlocks.TEA_MANGROVE_PROPAGULE, "light_mangrove_propagule");
-        propagule(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE, "black_mangrove_propagule");
+        propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
+        propagule(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
+        propagule(TropicraftBlocks.TEA_MANGROVE_PROPAGULE);
+        propagule(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE);
 
         // Fences, Gates, and Walls
         fenceBlock(TropicraftBlocks.BAMBOO_FENCE, "bamboo_side");
@@ -367,9 +366,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(block, models().cross(name(block), blockTexture(block)));
     }
 
-    private void propagule(Supplier<? extends PropaguleBlock> block, String texture) {
-        BlockModelBuilder planted = models().cross(name(block) + "_planted", modBlockLoc(texture + "_planted"));
-        BlockModelBuilder hanging = models().cross(name(block) + "_hanging", modBlockLoc(texture));
+    private void propagule(Supplier<? extends PropaguleBlock> block) {
+        String name = name(block);
+        BlockModelBuilder planted = models().cross(name + "_planted", modBlockLoc(name + "_planted"));
+        BlockModelBuilder hanging = models().cross(name + "_hanging", modBlockLoc(name));
 
         getVariantBuilder(block.get())
                 .partialState().with(PropaguleBlock.PLANTED, false).addModels(new ConfiguredModel(hanging))

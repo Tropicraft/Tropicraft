@@ -127,10 +127,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.LIME_LEAVES);
         blockItem(TropicraftBlocks.ORANGE_LEAVES);
 
-        withExistingParent(name(TropicraftBlocks.RED_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
-        withExistingParent(name(TropicraftBlocks.TALL_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
-        withExistingParent(name(TropicraftBlocks.TEA_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
-        withExistingParent(name(TropicraftBlocks.BLACK_MANGROVE_LEAVES), modLoc("block/mangrove_leaves"));
+        blockItem(TropicraftBlocks.RED_MANGROVE_LEAVES);
+        blockItem(TropicraftBlocks.TALL_MANGROVE_LEAVES);
+        blockItem(TropicraftBlocks.TEA_MANGROVE_LEAVES);
+        blockItem(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
         // Saplings
         blockSprite(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -140,10 +140,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockSprite(TropicraftBlocks.LIME_SAPLING);
         blockSprite(TropicraftBlocks.ORANGE_SAPLING);
 
-        blockSprite(TropicraftBlocks.RED_MANGROVE_PROPAGULE, modLoc("block/red_mangrove_propagule"));
-        blockSprite(TropicraftBlocks.TALL_MANGROVE_PROPAGULE, modLoc("block/light_mangrove_propagule"));
-        blockSprite(TropicraftBlocks.TEA_MANGROVE_PROPAGULE, modLoc("block/light_mangrove_propagule"));
-        blockSprite(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE, modLoc("block/black_mangrove_propagule"));
+        blockSprite(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
+        blockSprite(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
+        blockSprite(TropicraftBlocks.TEA_MANGROVE_PROPAGULE);
+        blockSprite(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE);
 
         // Fences, Gates, and Walls
         blockWithInventoryModel(TropicraftBlocks.BAMBOO_FENCE);
