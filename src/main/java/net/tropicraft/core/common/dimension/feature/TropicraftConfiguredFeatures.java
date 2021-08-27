@@ -192,7 +192,7 @@ public final class TropicraftConfiguredFeatures {
                 new BaseTreeFeatureConfig.Builder(
                         blackMangroveLog, blackMangroveLeaves,
                         mangroveFoliage,
-                        new MangroveTrunkPlacer(5, 3, 0, blackMangroveRoots, true, false),
+                        new MangroveTrunkPlacer(4, 3, 0, blackMangroveRoots, true, false),
                         mangroveMinimumSize
                 ).setDecorators(ImmutableList.of(Features.Placements.BEES_002_PLACEMENT, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).setMaxWaterDepth(1).build()
         );

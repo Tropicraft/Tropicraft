@@ -56,7 +56,7 @@
       "roots_block": "tropicraft:light_mangrove_roots",
       "can_generate_raised": false,
       "tea_mangrove": true,
-      "base_height": 6,
+      "base_height": 5,
       "height_rand_a": 3,
       "height_rand_b": 0,
       "type": "tropicraft:mangrove"
