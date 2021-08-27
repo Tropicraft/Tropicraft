@@ -35,7 +35,8 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 public final class TropicraftBiomes {
     public static final int TROPICS_WATER_COLOR = 0x4eecdf;
     public static final int TROPICS_WATER_FOG_COLOR = 0x041f33;
-    public static final int TROPICS_FOG_COLOR = 0xbae6c3;
+    public static final int TROPICS_FOG_COLOR = 0xC0D8FF;
+    public static final int RAINFOREST_FOG_COLOR = 0xbae6c3;
     public static final int TROPICS_SKY_COLOR = getSkyColor(0.8F);
 
     public static final RegistryKey<Biome> TROPICS_OCEAN = key("tropics_ocean");
@@ -170,7 +171,7 @@ public final class TropicraftBiomes {
                 .category(Biome.Category.PLAINS)
                 .withGenerationSettings(generation.build())
                 .withMobSpawnSettings(spawns.build())
-                .setEffects(defaultAmbience().build())
+                .setEffects(defaultAmbience(true).build())
                 .build();
     }
 
@@ -193,7 +194,7 @@ public final class TropicraftBiomes {
                 .category(Biome.Category.BEACH)
                 .withGenerationSettings(generation.build())
                 .withMobSpawnSettings(defaultSpawns().build())
-                .setEffects(defaultAmbience().build())
+                .setEffects(defaultAmbience(false).build())
                 .build();
     }
 
@@ -240,7 +241,7 @@ public final class TropicraftBiomes {
                 .category(Biome.Category.JUNGLE)
                 .withGenerationSettings(generation.build())
                 .withMobSpawnSettings(spawns.build())
-                .setEffects(defaultAmbience().build())
+                .setEffects(defaultAmbience(true).build())
                 .build();
     }
 
@@ -271,7 +272,7 @@ public final class TropicraftBiomes {
                 .category(Biome.Category.OCEAN)
                 .withGenerationSettings(generation.build())
                 .withMobSpawnSettings(spawns.build())
-                .setEffects(defaultAmbience().build())
+                .setEffects(defaultAmbience(false).build())
                 .build();
     }
 
@@ -297,7 +298,7 @@ public final class TropicraftBiomes {
                 .category(Biome.Category.OCEAN)
                 .withGenerationSettings(generation.build())
                 .withMobSpawnSettings(spawns.build())
-                .setEffects(defaultAmbience().build())
+                .setEffects(defaultAmbience(false).build())
                 .build();
     }
 
@@ -319,7 +320,7 @@ public final class TropicraftBiomes {
                 .category(Biome.Category.RIVER)
                 .withGenerationSettings(generation.build())
                 .withMobSpawnSettings(spawns.build())
-                .setEffects(defaultAmbience().build())
+                .setEffects(defaultAmbience(false).build())
                 .build();
     }
 
@@ -347,7 +348,7 @@ public final class TropicraftBiomes {
 
         addMangroveWaterCreatures(spawns);
 
-        BiomeAmbience.Builder ambience = defaultAmbience();
+        BiomeAmbience.Builder ambience = defaultAmbience(true);
         ambience.setWaterColor(0x66C197).setWaterFogColor(0x0C3522);
         ambience.withGrassColor(0x6FB21C);
 
@@ -425,9 +426,9 @@ public final class TropicraftBiomes {
         return spawns;
     }
 
-    private BiomeAmbience.Builder defaultAmbience() {
+    private BiomeAmbience.Builder defaultAmbience(boolean greenFog) {
         return new BiomeAmbience.Builder()
-                .setFogColor(TROPICS_FOG_COLOR)
+                .setFogColor(greenFog ? RAINFOREST_FOG_COLOR : TROPICS_FOG_COLOR)
                 .withSkyColor(TROPICS_SKY_COLOR)
                 .setWaterColor(TROPICS_WATER_COLOR)
                 .setWaterFogColor(TROPICS_WATER_FOG_COLOR);
