@@ -13,10 +13,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -163,7 +160,8 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     private boolean isAdjacentTall(IBlockReader world, BlockPos pos, Direction sourceDirection) {
-        if (world.getBlockState(pos.up()).matchesBlock(this)) {
+        BlockState aboveState = world.getBlockState(pos.up());
+        if (aboveState.matchesBlock(this) || aboveState.func_242698_a(world, pos, Direction.DOWN, BlockVoxelShape.CENTER)) {
             return true;
         }
 
