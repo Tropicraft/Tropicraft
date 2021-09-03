@@ -135,6 +135,10 @@ public class TropicraftItems {
     public static final RegistryObject<Item> COWKTAIL_SPAWN_EGG = register("cowktail_spawn_egg", Builder.spawnEgg(TropicraftEntities.COWKTAIL));
     public static final RegistryObject<Item> MAN_O_WAR_SPAWN_EGG = register("man_o_war_spawn_egg", Builder.spawnEgg(TropicraftEntities.MAN_O_WAR));
     public static final RegistryObject<Item> TROPIBEE_SPAWN_EGG = register("tropibee_spawn_egg", Builder.spawnEgg(TropicraftEntities.TROPI_BEE));
+    public static final RegistryObject<Item> TAPIR_SPAWN_EGG = register("tapir_spawn_egg", Builder.spawnEgg(TropicraftEntities.TAPIR));
+    public static final RegistryObject<Item> JAGUAR_SPAWN_EGG = register("jaguar_spawn_egg", Builder.spawnEgg(TropicraftEntities.JAGUAR));
+    public static final RegistryObject<Item> BASILISK_LIZARD_SPAWN_EGG = register("basilisk_lizard_spawn_egg", Builder.spawnEgg(TropicraftEntities.BASILISK_LIZARD));
+    public static final RegistryObject<Item> HUMMINGBIRD_SPAWN_EGG = register("hummingbird_spawn_egg", Builder.spawnEgg(TropicraftEntities.HUMMINGBIRD));
 
     public static final ImmutableMap<AshenMasks, RegistryObject<AshenMaskItem>> ASHEN_MASKS = Arrays.stream(AshenMasks.values())
             .collect(Maps.toImmutableEnumMap(Function.identity(), type -> register("ashen_mask_" + type.name().toLowerCase(Locale.ROOT), Builder.mask(type))));

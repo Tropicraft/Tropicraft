@@ -20,11 +20,9 @@ import net.tropicraft.core.common.entity.egg.*;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
-import net.tropicraft.core.common.entity.neutral.EIHEntity;
-import net.tropicraft.core.common.entity.neutral.IguanaEntity;
-import net.tropicraft.core.common.entity.neutral.TreeFrogEntity;
-import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
+import net.tropicraft.core.common.entity.neutral.*;
 import net.tropicraft.core.common.entity.passive.*;
+import net.tropicraft.core.common.entity.passive.basilisk.BasiliskLizardEntity;
 import net.tropicraft.core.common.entity.placeable.*;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
@@ -80,6 +78,10 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<TropiBeeEntity>> TROPI_BEE = register("tropibee", TropicraftEntities::tropiBee);
     public static final RegistryObject<EntityType<CowktailEntity>> COWKTAIL = register("cowktail", TropicraftEntities::cowktail);
     public static final RegistryObject<EntityType<ManOWarEntity>> MAN_O_WAR = register("man_o_war", TropicraftEntities::manOWar);
+    public static final RegistryObject<EntityType<TapirEntity>> TAPIR = register("tapir", TropicraftEntities::tapir);
+    public static final RegistryObject<EntityType<JaguarEntity>> JAGUAR = register("jaguar", TropicraftEntities::jaguar);
+    public static final RegistryObject<EntityType<BasiliskLizardEntity>> BASILISK_LIZARD = register("basilisk_lizard", TropicraftEntities::basiliskLizard);
+    public static final RegistryObject<EntityType<HummingbirdEntity>> HUMMINGBIRD = register("hummingbird", TropicraftEntities::hummingbird);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
@@ -385,6 +387,38 @@ public class TropicraftEntities {
                 .setShouldReceiveVelocityUpdates(true);
     }
 
+    private static EntityType.Builder<TapirEntity> tapir() {
+        return EntityType.Builder.create(TapirEntity::new, EntityClassification.MONSTER)
+                .size(0.8F, 1.0F)
+                .setTrackingRange(10)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<JaguarEntity> jaguar() {
+        return EntityType.Builder.create(JaguarEntity::new, EntityClassification.MONSTER)
+                .size(0.9F, 1.0F)
+                .setTrackingRange(10)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<BasiliskLizardEntity> basiliskLizard() {
+        return EntityType.Builder.create(BasiliskLizardEntity::new, EntityClassification.MONSTER)
+                .size(0.7F, 0.4F)
+                .setTrackingRange(8)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<HummingbirdEntity> hummingbird() {
+        return EntityType.Builder.create(HummingbirdEntity::new, EntityClassification.MONSTER)
+                .size(0.5F, 0.5F)
+                .setTrackingRange(8)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
     public static void registerSpawns() {
         registerWaterSpawn(TROPICAL_FISH.get(), AbstractFishEntity::func_223363_b);
         registerWaterSpawn(RIVER_SARDINE.get(), AbstractFishEntity::func_223363_b);
@@ -408,6 +442,10 @@ public class TropicraftEntities {
         registerLandSpawn(TREE_FROG.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(V_MONKEY.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(COWKTAIL.get(), TropicraftEntities::canAnimalSpawn);
+        registerLandSpawn(TAPIR.get(), TropicraftEntities::canAnimalSpawn);
+        registerLandSpawn(JAGUAR.get(), TropicraftEntities::canAnimalSpawn);
+        registerLandSpawn(BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
+        registerLandSpawn(HUMMINGBIRD.get(), HummingbirdEntity::canHummingbirdSpawnOn);
 
         registerLandSpawn(ASHEN.get(), MobEntity::canSpawnOn);
         registerLandSpawn(FAILGULL.get(), MobEntity::canSpawnOn);
@@ -465,5 +503,9 @@ public class TropicraftEntities {
         event.put(TROPI_BEE.get(), TropiBeeEntity.func_234182_eX_().create());
         event.put(COWKTAIL.get(), CowktailEntity.registerAttributes().create());
         event.put(MAN_O_WAR.get(), ManOWarEntity.createAttributes().create());
+        event.put(TAPIR.get(), TapirEntity.createAttributes().create());
+        event.put(JAGUAR.get(), JaguarEntity.createAttributes().create());
+        event.put(BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().create());
+        event.put(HUMMINGBIRD.get(), HummingbirdEntity.createAttributes().create());
     }
 }
