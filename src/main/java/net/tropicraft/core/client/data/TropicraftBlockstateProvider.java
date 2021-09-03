@@ -501,30 +501,27 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         for (Direction.Axis axis : horizontals) {
             int rotation = axis == Direction.Axis.X ? 270 : 0;
 
-            builder.part().modelFile(shortModel).rotationY(rotation).addModel()
+            builder.part().modelFile(shortModel).rotationY(rotation).uvLock(true).addModel()
                     .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.SHORTS)
                     .condition(BoardwalkBlock.AXIS, axis);
 
-            builder.part().modelFile(tallModel).rotationY(rotation).addModel()
+            builder.part().modelFile(tallModel).rotationY(rotation).uvLock(true).addModel()
                     .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALLS)
                     .condition(BoardwalkBlock.AXIS, axis);
 
-            builder.part().modelFile(shortPostModel).rotationY(rotation).addModel()
-                    .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.SHORT_POSTS)
-                    .condition(BoardwalkBlock.AXIS, axis);
-
-            builder.part().modelFile(tallPostModel).rotationY(rotation).addModel()
-                    .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL_POSTS)
-                    .condition(BoardwalkBlock.AXIS, axis);
-
-            builder.part().modelFile(tallConnectionModel).rotationY(rotation).addModel()
+            builder.part().modelFile(tallConnectionModel).rotationY(rotation).uvLock(true).addModel()
                     .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.BACKS)
                     .condition(BoardwalkBlock.AXIS, axis);
 
-            builder.part().modelFile(tallConnectionModel).rotationY((rotation + 180) % 360).addModel()
+            builder.part().modelFile(tallConnectionModel).rotationY((rotation + 180) % 360).uvLock(true).addModel()
                     .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.FRONTS)
                     .condition(BoardwalkBlock.AXIS, axis);
         }
+
+        builder.part().modelFile(shortPostModel).addModel()
+                .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.SHORT_POSTS);
+        builder.part().modelFile(tallPostModel).addModel()
+                .condition(BoardwalkBlock.TYPE, BoardwalkBlock.Type.TALL_POSTS);
     }
 
     private void flowerPot(Supplier<? extends FlowerPotBlock> full, Supplier<? extends Block> empty) {

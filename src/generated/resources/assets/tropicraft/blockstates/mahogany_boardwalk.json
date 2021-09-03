@@ -7,7 +7,8 @@
       },
       "apply": {
         "model": "tropicraft:block/mahogany_boardwalk_short",
-        "y": 270
+        "y": 270,
+        "uvlock": true
       }
     },
     {
@@ -17,27 +18,8 @@
       },
       "apply": {
         "model": "tropicraft:block/mahogany_boardwalk_tall",
-        "y": 270
-      }
-    },
-    {
-      "when": {
-        "type": "short_post",
-        "axis": "x"
-      },
-      "apply": {
-        "model": "tropicraft:block/mahogany_boardwalk_short_post",
-        "y": 270
-      }
-    },
-    {
-      "when": {
-        "type": "tall_post|tall_post_front|tall_post_back|tall_post_front_back",
-        "axis": "x"
-      },
-      "apply": {
-        "model": "tropicraft:block/mahogany_boardwalk_tall_post",
-        "y": 270
+        "y": 270,
+        "uvlock": true
       }
     },
     {
@@ -47,7 +29,8 @@
       },
       "apply": {
         "model": "tropicraft:block/mahogany_boardwalk_tall_connection",
-        "y": 270
+        "y": 270,
+        "uvlock": true
       }
     },
     {
@@ -57,7 +40,8 @@
       },
       "apply": {
         "model": "tropicraft:block/mahogany_boardwalk_tall_connection",
-        "y": 90
+        "y": 90,
+        "uvlock": true
       }
     },
     {
@@ -66,7 +50,8 @@
         "axis": "z"
       },
       "apply": {
-        "model": "tropicraft:block/mahogany_boardwalk_short"
+        "model": "tropicraft:block/mahogany_boardwalk_short",
+        "uvlock": true
       }
     },
     {
@@ -75,25 +60,8 @@
         "axis": "z"
       },
       "apply": {
-        "model": "tropicraft:block/mahogany_boardwalk_tall"
-      }
-    },
-    {
-      "when": {
-        "type": "short_post",
-        "axis": "z"
-      },
-      "apply": {
-        "model": "tropicraft:block/mahogany_boardwalk_short_post"
-      }
-    },
-    {
-      "when": {
-        "type": "tall_post|tall_post_front|tall_post_back|tall_post_front_back",
-        "axis": "z"
-      },
-      "apply": {
-        "model": "tropicraft:block/mahogany_boardwalk_tall_post"
+        "model": "tropicraft:block/mahogany_boardwalk_tall",
+        "uvlock": true
       }
     },
     {
@@ -102,7 +70,8 @@
         "axis": "z"
       },
       "apply": {
-        "model": "tropicraft:block/mahogany_boardwalk_tall_connection"
+        "model": "tropicraft:block/mahogany_boardwalk_tall_connection",
+        "uvlock": true
       }
     },
     {
@@ -112,7 +81,24 @@
       },
       "apply": {
         "model": "tropicraft:block/mahogany_boardwalk_tall_connection",
-        "y": 180
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "type": "short_post"
+      },
+      "apply": {
+        "model": "tropicraft:block/mahogany_boardwalk_short_post"
+      }
+    },
+    {
+      "when": {
+        "type": "tall_post|tall_post_front|tall_post_back|tall_post_front_back"
+      },
+      "apply": {
+        "model": "tropicraft:block/mahogany_boardwalk_tall_post"
       }
     }
   ]
