@@ -108,6 +108,24 @@
         "weight": 6,
         "minCount": 2,
         "maxCount": 4
+      },
+      {
+        "type": "tropicraft:tapir",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tropicraft:jaguar",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tropicraft:hummingbird",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 4
       }
     ],
     "creature": [

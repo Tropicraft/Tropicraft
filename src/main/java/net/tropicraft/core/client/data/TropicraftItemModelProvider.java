@@ -361,6 +361,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.COWKTAIL_SPAWN_EGG);
         generated(TropicraftItems.MAN_O_WAR_SPAWN_EGG);
         generated(TropicraftItems.TROPIBEE_SPAWN_EGG);
+        generated(TropicraftItems.TAPIR_SPAWN_EGG);
+        generated(TropicraftItems.JAGUAR_SPAWN_EGG);
+        generated(TropicraftItems.BASILISK_LIZARD_SPAWN_EGG);
+        generated(TropicraftItems.HUMMINGBIRD_SPAWN_EGG);
 
         // Armor
         generated(TropicraftItems.FIRE_BOOTS);

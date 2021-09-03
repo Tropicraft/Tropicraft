@@ -357,6 +357,10 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.COWKTAIL_SPAWN_EGG);
         addItem(TropicraftItems.MAN_O_WAR_SPAWN_EGG);
         addItem(TropicraftItems.TROPIBEE_SPAWN_EGG);
+        addItem(TropicraftItems.TAPIR_SPAWN_EGG);
+        addItem(TropicraftItems.JAGUAR_SPAWN_EGG);
+        addItem(TropicraftItems.BASILISK_LIZARD_SPAWN_EGG);
+        addItem(TropicraftItems.HUMMINGBIRD_SPAWN_EGG);
 
         // Armor
         addItem(TropicraftItems.FIRE_BOOTS);
@@ -417,7 +421,11 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.MAN_O_WAR, "Man o' War");
         addEntityType(TropicraftEntities.TROPI_BEE, "Tropibee");
         addEntityType(TropicraftEntities.V_MONKEY, "Vervet Monkey");
-        
+        addEntityType(TropicraftEntities.TAPIR);
+        addEntityType(TropicraftEntities.JAGUAR);
+        addEntityType(TropicraftEntities.BASILISK_LIZARD);
+        addEntityType(TropicraftEntities.HUMMINGBIRD);
+
         // BIOMES
         
         addBiome(TropicraftBiomes.TROPICS_OCEAN);
@@ -430,7 +438,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBiome(TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS);
         addBiome(TropicraftBiomes.TROPICS_RIVER);
         addBiome(TropicraftBiomes.TROPICS_BEACH);
-        
+        addBiome(TropicraftBiomes.MANGROVES);
+
         // MISC
         
         add(Tropicraft.TROPICRAFT_ITEM_GROUP, "Tropicraft");
