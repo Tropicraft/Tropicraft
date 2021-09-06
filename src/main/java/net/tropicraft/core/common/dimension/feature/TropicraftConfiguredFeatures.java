@@ -79,7 +79,7 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> homeTreeBranchSouthWest;
     public final ConfiguredFeature<?, ?> homeTreeBranchSouthWestExact;
 
-    public TropicraftConfiguredFeatures(WorldgenDataConsumer<ConfiguredFeature<?, ?>> worldgen) {
+    public TropicraftConfiguredFeatures(WorldgenDataConsumer<? extends ConfiguredFeature<?, ?>> worldgen) {
         Register features = new Register(worldgen);
 
         this.grapefruitTree = features.fruitTree("grapefruit_tree", TropicraftBlocks.GRAPEFRUIT_SAPLING, TropicraftBlocks.GRAPEFRUIT_LEAVES);
@@ -266,8 +266,9 @@ public final class TropicraftConfiguredFeatures {
     static final class Register {
         private final WorldgenDataConsumer<ConfiguredFeature<?, ?>> worldgen;
 
-        Register(WorldgenDataConsumer<ConfiguredFeature<?, ?>> worldgen) {
-            this.worldgen = worldgen;
+        @SuppressWarnings("unchecked")
+		Register(WorldgenDataConsumer<? extends ConfiguredFeature<?, ?>> worldgen) {
+            this.worldgen = (WorldgenDataConsumer<ConfiguredFeature<?, ?>>) worldgen;
         }
 
         public <F extends Feature<?>> ConfiguredFeature<?, ?> register(String id, F feature, Function<F, ConfiguredFeature<?, ?>> configure) {

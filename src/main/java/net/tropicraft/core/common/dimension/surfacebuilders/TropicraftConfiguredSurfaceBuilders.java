@@ -21,7 +21,7 @@ public final class TropicraftConfiguredSurfaceBuilders {
     public final ConfiguredSurfaceBuilder<?> tropics;
     public final ConfiguredSurfaceBuilder<?> sandy;
 
-    public TropicraftConfiguredSurfaceBuilders(WorldgenDataConsumer<ConfiguredSurfaceBuilder<?>> worldgen) {
+    public TropicraftConfiguredSurfaceBuilders(WorldgenDataConsumer<? extends ConfiguredSurfaceBuilder<?>> worldgen) {
         Register surfaceBuilders = new Register(worldgen);
 
         SurfaceBuilderConfig landConfig = new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.STONE.getDefaultState());
@@ -39,8 +39,9 @@ public final class TropicraftConfiguredSurfaceBuilders {
     static final class Register {
         private final WorldgenDataConsumer<ConfiguredSurfaceBuilder<?>> worldgen;
 
-        Register(WorldgenDataConsumer<ConfiguredSurfaceBuilder<?>> worldgen) {
-            this.worldgen = worldgen;
+        @SuppressWarnings("unchecked")
+		Register(WorldgenDataConsumer<? extends ConfiguredSurfaceBuilder<?>> worldgen) {
+            this.worldgen = (WorldgenDataConsumer<ConfiguredSurfaceBuilder<?>>) worldgen;
         }
 
         public <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> ConfiguredSurfaceBuilder<?> register(String id, RegistryObject<S> surfaceBuilder, C config) {
