@@ -4,8 +4,8 @@
         "type": "edges",
 		"layer": "CUTOUT",
         "textures": [
-            "tropicraft:blocks/sand_foamy_ctm",
-            "tropicraft:blocks/sand_foamy"
+            "tropicraft:block/foamy_sand_ctm",
+            "tropicraft:block/foamy_sand"
         ],
         "extra": {
             "connect_to": [{ 
