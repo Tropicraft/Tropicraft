@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "XXX",
+      "XDX",
+      "XXX"
+    ],
+    "key": {
+      "D": {
+        "item": "minecraft:dirt"
+      },
+      "X": {
+        "item": "tropicraft:purified_sand"
+      }
+    },
+    "result": {
+      "item": "minecraft:sand",
+      "count": 8
+    }
+  }
