@@ -1,9 +1,14 @@
 {
     "type": "minecraft:smelting",
-    "ingredient": {
-      "item": "tropicraft:purified_sand"
-    },
+    "ingredient": [
+      {
+        "tag": "minecraft:sand"
+      },
+      {
+        "item": "tropicraft:purified_sand"
+      }
+    ],
     "result": "minecraft:glass",
     "experience": 0.1,
-    "cookingtime": 100
+    "cookingtime": 200
   }
