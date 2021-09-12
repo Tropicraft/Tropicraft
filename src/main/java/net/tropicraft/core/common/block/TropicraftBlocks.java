@@ -157,7 +157,7 @@ public class TropicraftBlocks {
             "thatch_door", () -> new DoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
     
     public static final RegistryObject<TrapDoorBlock> BAMBOO_TRAPDOOR = register(
-            "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(BAMBOO_DOOR.get())) {});
+            "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(BAMBOO_DOOR.get()).notSolid()) {});
     public static final RegistryObject<TrapDoorBlock> PALM_TRAPDOOR = register(
             "palm_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(PALM_DOOR.get())) {});
     public static final RegistryObject<TrapDoorBlock> MAHOGANY_TRAPDOOR = register(
