@@ -51,7 +51,15 @@ public class Builder {
     }
 
     public static Supplier<BlockTropicraftSand> sand(final MaterialColor color, final float hardness, final float resistance) {
-        return block(BlockTropicraftSand::new, prop(Material.SAND, color).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).hardnessAndResistance(hardness, resistance));
+        return sand(BlockTropicraftSand::new, color, hardness, resistance);
+    }
+
+    public static Supplier<VolcanicSandBlock> volcanicSand(final MaterialColor color) {
+        return sand(VolcanicSandBlock::new, color, 0.5f, 0.5f);
+    }
+
+    public static <T extends BlockTropicraftSand> Supplier<T> sand(Function<Block.Properties, T> ctor, final MaterialColor color, final float hardness, final float resistance) {
+        return block(ctor, prop(Material.SAND, color).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).hardnessAndResistance(hardness, resistance));
     }
 
     public static Supplier<MudBlock> mud() {

@@ -4,8 +4,8 @@
         "type": "edges",
 		"layer": "CUTOUT",
         "textures": [
-            "tropicraft:blocks/sand_volcanic_ctm",
-            "tropicraft:blocks/sand_volcanic"
+            "tropicraft:block/volcanic_sand_ctm",
+            "tropicraft:block/volcanic_sand"
         ],
         "extra": {
             "connect_to": [{ 

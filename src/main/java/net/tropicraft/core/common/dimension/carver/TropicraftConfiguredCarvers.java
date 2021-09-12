@@ -17,7 +17,7 @@ public final class TropicraftConfiguredCarvers {
     public final ConfiguredCarver<?> underwaterCave;
     public final ConfiguredCarver<?> underwaterCanyon;
 
-    public TropicraftConfiguredCarvers(WorldgenDataConsumer<ConfiguredCarver<?>> worldgen) {
+    public TropicraftConfiguredCarvers(WorldgenDataConsumer<? extends ConfiguredCarver<?>> worldgen) {
         Register carvers = new Register(worldgen);
 
         this.cave = carvers.register("cave", TropicraftCarvers.CAVE, new ProbabilityConfig(0.25F));
@@ -39,8 +39,9 @@ public final class TropicraftConfiguredCarvers {
     static final class Register {
         private final WorldgenDataConsumer<ConfiguredCarver<?>> worldgen;
 
-        Register(WorldgenDataConsumer<ConfiguredCarver<?>> worldgen) {
-            this.worldgen = worldgen;
+        @SuppressWarnings("unchecked")
+		Register(WorldgenDataConsumer<? extends ConfiguredCarver<?>> worldgen) {
+            this.worldgen = (WorldgenDataConsumer<ConfiguredCarver<?>>) worldgen;
         }
 
         public <C extends ICarverConfig, WC extends WorldCarver<C>> ConfiguredCarver<?> register(String id, RegistryObject<WC> carver, C config) {

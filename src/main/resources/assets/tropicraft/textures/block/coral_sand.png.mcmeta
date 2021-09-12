@@ -4,8 +4,8 @@
         "type": "edges",
 		"layer": "CUTOUT",
         "textures": [
-            "tropicraft:blocks/sand_coral_ctm",
-            "tropicraft:blocks/sand_coral"
+            "tropicraft:block/coral_sand_ctm",
+            "tropicraft:block/coral_sand"
         ],
         "extra": {
             "connect_to": [{ 

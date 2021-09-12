@@ -24,6 +24,7 @@ import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.StructureProcessorList;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -145,8 +146,8 @@ public final class TropicraftWorldgenProvider implements IDataProvider {
         }
 
         public <T, R> R add(
-                String path, @Nullable Registry<T> registry, Codec<Supplier<T>> codec,
-                EntryGenerator<T, R> entryGenerator
+                String path, @Nullable Registry<? super T> registry, Codec<Supplier<T>> codec,
+                EntryGenerator<? extends T, R> entryGenerator
         ) {
             return entryGenerator.generate((id, entry) -> {
                 Path entryPath = root.resolve(id.getNamespace()).resolve(path).resolve(id.getPath() + ".json");
