@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
+import net.tropicraft.core.common.block.VolcanicSandBlock;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 import net.tropicraft.core.common.dimension.noise.NoiseModule;
 import net.tropicraft.core.common.dimension.noise.generator.Billowed;
@@ -65,7 +66,7 @@ public class VolcanoGenerator {
 
     private final static Supplier<BlockState> VOLCANO_BLOCK = TropicraftBlocks.CHUNK.lazyMap(Block::getDefaultState);
     private final static Supplier<BlockState> LAVA_BLOCK = () -> Blocks.LAVA.getDefaultState();
-    private final static Supplier<BlockState> SAND_BLOCK = TropicraftBlocks.VOLCANIC_SAND.lazyMap(Block::getDefaultState);
+    private final static Supplier<BlockState> SAND_BLOCK = TropicraftBlocks.VOLCANIC_SAND.lazyMap(b -> b.getDefaultState().with(VolcanicSandBlock.HOT, true));
 
     private final BiomeProvider biomeSource;
 

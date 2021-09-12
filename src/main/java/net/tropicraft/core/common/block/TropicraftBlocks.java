@@ -74,7 +74,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> PACKED_PURIFIED_SAND = register("packed_purified_sand", Builder.sand(MaterialColor.SAND, 2, 30));
     public static final RegistryObject<Block> CORAL_SAND = register("coral_sand", Builder.sand(MaterialColor.PINK));
     public static final RegistryObject<Block> FOAMY_SAND = register("foamy_sand", Builder.sand(MaterialColor.GREEN));
-    public static final RegistryObject<Block> VOLCANIC_SAND = register("volcanic_sand", Builder.sand(MaterialColor.LIGHT_GRAY));
+    public static final RegistryObject<Block> VOLCANIC_SAND = register("volcanic_sand", Builder.volcanicSand(MaterialColor.LIGHT_GRAY));
     public static final RegistryObject<Block> MINERAL_SAND = register("mineral_sand", Builder.sand(MaterialColor.SAND));
 
     public static final RegistryObject<RotatedPillarBlock> BAMBOO_BUNDLE = register(
