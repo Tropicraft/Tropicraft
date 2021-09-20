@@ -42,7 +42,7 @@ Most likely! Find Cojo on Discord or IRC to receive permission and find out what
    
 <p align="center">
   <a href="https://lovetropics.com/">
-  <img src="https://tropicraft.net/LoveTropics.png">
+  <img src="https://cdn.tropicraft.net/LoveTropics.png">
   </a>
 </p>
 
