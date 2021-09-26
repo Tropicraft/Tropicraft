@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ByteMap;
 import it.unimi.dsi.fastutil.objects.Reference2ByteOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -188,7 +189,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     private boolean canConnectTo(BlockState state, IBlockReader world, BlockPos pos, Direction direction) {
-        return state.matchesBlock(this) || state.isSolidSide(world, pos, direction);
+        return (state.matchesBlock(this) || state.isSolidSide(world, pos, direction)) && !FenceBlock.cannotAttach(state.getBlock());
     }
 
     private boolean isGrounded(IBlockReader world, BlockPos pos) {
