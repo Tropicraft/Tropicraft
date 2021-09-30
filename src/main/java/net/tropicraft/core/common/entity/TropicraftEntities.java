@@ -80,7 +80,8 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<ManOWarEntity>> MAN_O_WAR = register("man_o_war", TropicraftEntities::manOWar);
     public static final RegistryObject<EntityType<TapirEntity>> TAPIR = register("tapir", TropicraftEntities::tapir);
     public static final RegistryObject<EntityType<JaguarEntity>> JAGUAR = register("jaguar", TropicraftEntities::jaguar);
-    public static final RegistryObject<EntityType<BasiliskLizardEntity>> BASILISK_LIZARD = register("basilisk_lizard", TropicraftEntities::basiliskLizard);
+    public static final RegistryObject<EntityType<BasiliskLizardEntity>> BROWN_BASILISK_LIZARD = register("brown_basilisk_lizard", TropicraftEntities::basiliskLizard);
+    public static final RegistryObject<EntityType<BasiliskLizardEntity>> GREEN_BASILISK_LIZARD = register("green_basilisk_lizard", TropicraftEntities::basiliskLizard);
     public static final RegistryObject<EntityType<HummingbirdEntity>> HUMMINGBIRD = register("hummingbird", TropicraftEntities::hummingbird);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
@@ -444,7 +445,8 @@ public class TropicraftEntities {
         registerLandSpawn(COWKTAIL.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(TAPIR.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(JAGUAR.get(), TropicraftEntities::canAnimalSpawn);
-        registerLandSpawn(BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
+        registerLandSpawn(BROWN_BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
+        registerLandSpawn(GREEN_BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(HUMMINGBIRD.get(), HummingbirdEntity::canHummingbirdSpawnOn);
 
         registerLandSpawn(ASHEN.get(), MobEntity::canSpawnOn);
@@ -505,7 +507,8 @@ public class TropicraftEntities {
         event.put(MAN_O_WAR.get(), ManOWarEntity.createAttributes().create());
         event.put(TAPIR.get(), TapirEntity.createAttributes().create());
         event.put(JAGUAR.get(), JaguarEntity.createAttributes().create());
-        event.put(BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().create());
+        event.put(BROWN_BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().create());
+        event.put(GREEN_BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().create());
         event.put(HUMMINGBIRD.get(), HummingbirdEntity.createAttributes().create());
     }
 }

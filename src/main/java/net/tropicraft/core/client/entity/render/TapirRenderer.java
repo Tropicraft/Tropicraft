@@ -13,6 +13,7 @@ import net.tropicraft.core.common.entity.passive.TapirEntity;
 @OnlyIn(Dist.CLIENT)
 public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEntity>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/tapir.png");
+    private static final ResourceLocation BABY_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/tapir_baby.png");
 
     public TapirRenderer(EntityRendererManager manager) {
         super(manager, new TapirModel<>(), 0.6F);
@@ -25,6 +26,6 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
 
     @Override
     public ResourceLocation getEntityTexture(TapirEntity entity) {
-        return TEXTURE;
+        return entity.isChild() ? BABY_TEXTURE : TEXTURE;
     }
 }

@@ -102,7 +102,8 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.MAN_O_WAR.get(), ManOWarRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TAPIR.get(), TapirRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.JAGUAR.get(), JaguarRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.BASILISK_LIZARD.get(), BasiliskLizardRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.BROWN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::brown);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.GREEN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::green);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HUMMINGBIRD.get(), HummingbirdRenderer::new);
     }
 

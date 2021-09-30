@@ -27,6 +27,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public final class BasiliskLizardEntity extends AnimalEntity {
@@ -86,7 +87,11 @@ public final class BasiliskLizardEntity extends AnimalEntity {
 
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
-        return new ItemStack(TropicraftItems.BASILISK_LIZARD_SPAWN_EGG.get());
+        if (getType() == TropicraftEntities.BROWN_BASILISK_LIZARD.get()) {
+            return new ItemStack(TropicraftItems.BROWN_BASILISK_LIZARD_SPAWN_EGG.get());
+        } else {
+            return new ItemStack(TropicraftItems.GREEN_BASILISK_LIZARD_SPAWN_EGG.get());
+        }
     }
 
     @Override

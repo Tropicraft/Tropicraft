@@ -359,7 +359,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.TROPIBEE_SPAWN_EGG);
         addItem(TropicraftItems.TAPIR_SPAWN_EGG);
         addItem(TropicraftItems.JAGUAR_SPAWN_EGG);
-        addItem(TropicraftItems.BASILISK_LIZARD_SPAWN_EGG);
+        addItem(TropicraftItems.BROWN_BASILISK_LIZARD_SPAWN_EGG);
+        addItem(TropicraftItems.GREEN_BASILISK_LIZARD_SPAWN_EGG);
         addItem(TropicraftItems.HUMMINGBIRD_SPAWN_EGG);
 
         // Armor
@@ -423,7 +424,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.V_MONKEY, "Vervet Monkey");
         addEntityType(TropicraftEntities.TAPIR);
         addEntityType(TropicraftEntities.JAGUAR);
-        addEntityType(TropicraftEntities.BASILISK_LIZARD);
+        addEntityType(TropicraftEntities.BROWN_BASILISK_LIZARD);
+        addEntityType(TropicraftEntities.GREEN_BASILISK_LIZARD);
         addEntityType(TropicraftEntities.HUMMINGBIRD);
 
         // BIOMES
