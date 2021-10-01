@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -47,7 +48,7 @@ public class SeahorseEntity extends AbstractTexturedFishEntity {
 
 	@Override
 	protected SoundEvent getFlopSound() {
-		return null;
+		return SoundEvents.ENTITY_SALMON_FLOP;
 	}
 
 	@Override

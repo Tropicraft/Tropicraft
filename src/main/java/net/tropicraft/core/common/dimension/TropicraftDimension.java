@@ -6,14 +6,13 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Dimension;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.FolderName;
 import net.minecraft.world.storage.SaveFormat;
@@ -140,5 +139,19 @@ public class TropicraftDimension {
         player.teleport(world, x + 0.5, topY + 1.0, z + 0.5, player.rotationYaw, player.rotationPitch);
 
         BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
+    }
+
+    // hack to get the correct sea level given a world: the vanilla IWorldReader.getSeaLevel() is deprecated and always returns 63 despite the chunk generator
+    public static int getSeaLevel(IWorldReader world) {
+        if (world instanceof ServerWorld) {
+            ServerChunkProvider chunkProvider = ((ServerWorld) world).getChunkProvider();
+            return chunkProvider.getChunkGenerator().getSeaLevel();
+        } else if (world instanceof World) {
+            RegistryKey<World> dimensionKey = ((World) world).getDimensionKey();
+            if (dimensionKey == WORLD) {
+                return 127;
+            }
+        }
+        return world.getSeaLevel();
     }
 }

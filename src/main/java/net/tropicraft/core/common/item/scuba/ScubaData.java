@@ -36,6 +36,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.network.TropicraftPackets;
 import net.tropicraft.core.common.network.message.MessageUpdateScubaData;
 
@@ -175,7 +176,7 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     
     public static double getDepth(PlayerEntity player) {
         if (isUnderWater(player)) {
-            int surface = player.world.getSeaLevel();
+            int surface = TropicraftDimension.getSeaLevel(player.world);
             double depth = surface - (player.getEyePosition(0).getY());
             return depth;
         }

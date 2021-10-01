@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
@@ -16,6 +17,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
+import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.*;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.entity.hostile.TropiSkellyEntity;
@@ -23,6 +26,7 @@ import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.entity.neutral.*;
 import net.tropicraft.core.common.entity.passive.*;
 import net.tropicraft.core.common.entity.passive.basilisk.BasiliskLizardEntity;
+import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
 import net.tropicraft.core.common.entity.placeable.*;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 import net.tropicraft.core.common.entity.projectile.LavaBallEntity;
@@ -83,6 +87,10 @@ public class TropicraftEntities {
     public static final RegistryObject<EntityType<BasiliskLizardEntity>> BROWN_BASILISK_LIZARD = register("brown_basilisk_lizard", TropicraftEntities::basiliskLizard);
     public static final RegistryObject<EntityType<BasiliskLizardEntity>> GREEN_BASILISK_LIZARD = register("green_basilisk_lizard", TropicraftEntities::basiliskLizard);
     public static final RegistryObject<EntityType<HummingbirdEntity>> HUMMINGBIRD = register("hummingbird", TropicraftEntities::hummingbird);
+    public static final RegistryObject<EntityType<FiddlerCrabEntity>> FIDDLER_CRAB = register("fiddler_crab", TropicraftEntities::fiddlerCrab);
+    public static final RegistryObject<EntityType<SpiderMonkeyEntity>> SPIDER_MONKEY = register("spider_monkey", TropicraftEntities::spiderMonkey);
+    public static final RegistryObject<EntityType<WhiteLippedPeccaryEntity>> WHITE_LIPPED_PECCARY = register("white_lipped_peccary", TropicraftEntities::whiteLippedPeccary);
+    public static final RegistryObject<EntityType<CuberaEntity>> CUBERA = register("cubera", TropicraftEntities::cubera);
 
     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final Supplier<EntityType.Builder<E>> sup) {
         return ENTITIES.register(name, () -> sup.get().build(name));
@@ -420,6 +428,39 @@ public class TropicraftEntities {
                 .setShouldReceiveVelocityUpdates(true);
     }
 
+    // TODO: sizes and categories
+    private static EntityType.Builder<FiddlerCrabEntity> fiddlerCrab() {
+        return EntityType.Builder.create(FiddlerCrabEntity::new, EntityClassification.MONSTER)
+                .size(0.5F, 0.2F)
+                .setTrackingRange(10)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<SpiderMonkeyEntity> spiderMonkey() {
+        return EntityType.Builder.create(SpiderMonkeyEntity::new, EntityClassification.MONSTER)
+                .size(0.5F, 0.6F)
+                .setTrackingRange(10)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<WhiteLippedPeccaryEntity> whiteLippedPeccary() {
+        return EntityType.Builder.create(WhiteLippedPeccaryEntity::new, EntityClassification.MONSTER)
+                .size(0.7F, 0.8F)
+                .setTrackingRange(8)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
+    private static EntityType.Builder<CuberaEntity> cubera() {
+        return EntityType.Builder.create(CuberaEntity::new, EntityClassification.WATER_CREATURE)
+                .size(1.2F, 0.8F)
+                .setTrackingRange(8)
+                .setUpdateInterval(3)
+                .setShouldReceiveVelocityUpdates(true);
+    }
+
     public static void registerSpawns() {
         registerWaterSpawn(TROPICAL_FISH.get(), AbstractFishEntity::func_223363_b);
         registerWaterSpawn(RIVER_SARDINE.get(), AbstractFishEntity::func_223363_b);
@@ -448,6 +489,10 @@ public class TropicraftEntities {
         registerLandSpawn(BROWN_BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(GREEN_BASILISK_LIZARD.get(), TropicraftEntities::canAnimalSpawn);
         registerLandSpawn(HUMMINGBIRD.get(), HummingbirdEntity::canHummingbirdSpawnOn);
+        registerNoRestrictionSpawn(FIDDLER_CRAB.get(), FiddlerCrabEntity::canCrabSpawn);
+        registerLandSpawn(SPIDER_MONKEY.get(), TropicraftEntities::canAnimalSpawn);
+        registerLandSpawn(WHITE_LIPPED_PECCARY.get(), TropicraftEntities::canAnimalSpawn);
+        registerWaterSpawn(CUBERA.get(), TropicraftEntities::canSpawnOceanWaterMob);
 
         registerLandSpawn(ASHEN.get(), MobEntity::canSpawnOn);
         registerLandSpawn(FAILGULL.get(), MobEntity::canSpawnOn);
@@ -456,7 +501,10 @@ public class TropicraftEntities {
     }
 
     public static boolean canAnimalSpawn(EntityType<? extends MobEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        return worldIn.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK || worldIn.getBlockState(pos.down()).getMaterial() == Material.SAND;
+        BlockState groundState = worldIn.getBlockState(pos.down());
+        return groundState.getBlock() == Blocks.GRASS_BLOCK
+                || groundState.getMaterial() == Material.SAND
+                || groundState.isIn(TropicraftTags.Blocks.MUD);
     }
 
     private static <T extends MobEntity> void registerLandSpawn(final EntityType<T> type, EntitySpawnPlacementRegistry.IPlacementPredicate<T> predicate) {
@@ -467,12 +515,18 @@ public class TropicraftEntities {
         EntitySpawnPlacementRegistry.register(type, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, predicate);
     }
 
+    private static <T extends MobEntity> void registerNoRestrictionSpawn(final EntityType<T> type,  EntitySpawnPlacementRegistry.IPlacementPredicate<T> predicate) {
+        EntitySpawnPlacementRegistry.register(type, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, predicate);
+    }
+
     public static <T extends MobEntity> boolean canSpawnOceanWaterMob(EntityType<T> waterMob, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return pos.getY() > 90 && pos.getY() < world.getSeaLevel() && world.getFluidState(pos).isTagged(FluidTags.WATER);
+        int seaLevel = TropicraftDimension.getSeaLevel(world);
+        return pos.getY() > 90 && pos.getY() < seaLevel && world.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 
     public static <T extends MobEntity> boolean canSpawnSurfaceOceanWaterMob(EntityType<T> waterMob, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return pos.getY() > world.getSeaLevel() - 3 && pos.getY() < world.getSeaLevel() && world.getFluidState(pos).isTagged(FluidTags.WATER);
+        int seaLevel = TropicraftDimension.getSeaLevel(world);
+        return pos.getY() > seaLevel - 3 && pos.getY() < seaLevel && world.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 
     @SubscribeEvent
@@ -510,5 +564,9 @@ public class TropicraftEntities {
         event.put(BROWN_BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().create());
         event.put(GREEN_BASILISK_LIZARD.get(), BasiliskLizardEntity.createAttributes().create());
         event.put(HUMMINGBIRD.get(), HummingbirdEntity.createAttributes().create());
+        event.put(FIDDLER_CRAB.get(), FiddlerCrabEntity.createAttributes().create());
+        event.put(SPIDER_MONKEY.get(), SpiderMonkeyEntity.createAttributes().create());
+        event.put(WHITE_LIPPED_PECCARY.get(), WhiteLippedPeccaryEntity.createAttributes().create());
+        event.put(CUBERA.get(), CuberaEntity.createAttributes().create());
     }
 }

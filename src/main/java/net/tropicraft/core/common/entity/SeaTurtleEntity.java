@@ -43,6 +43,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -206,7 +207,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
-        return pos.getY() < world.getSeaLevel() + 4 && world.getBlockState(pos.down()).getBlock() == Blocks.SAND && world.getLightSubtracted(pos, 0) > 8;
+        return pos.getY() < TropicraftDimension.getSeaLevel(world) + 4 && world.getBlockState(pos.down()).getBlock() == Blocks.SAND && world.getLightSubtracted(pos, 0) > 8;
     }
 
     @Override
@@ -423,6 +424,11 @@ public class SeaTurtleEntity extends TurtleEntity {
     @Override
     public ItemStack getPickedResult(RayTraceResult target) {
         return new ItemStack(TropicraftItems.SEA_TURTLE_SPAWN_EGG.get());
+    }
+
+    @Override
+    public boolean canBeRiddenInWater(Entity rider) {
+        return true;
     }
 
     static class BetterLayEggGoal extends MoveToBlockGoal {

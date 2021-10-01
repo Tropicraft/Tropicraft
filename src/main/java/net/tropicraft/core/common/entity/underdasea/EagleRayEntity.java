@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -91,7 +92,7 @@ public class EagleRayEntity extends AbstractFishEntity {
 	}
 
 	private float amplitudeFunc(float n) {
-		double angle = 2 * PI * n / (WING_JOINTS - 1f);
+		double angle = 2 * PI * -n / (WING_JOINTS - 1f);
 		return decayFunc(n) * MathHelper.sin((float) (getAnimationProgress() * 2 * PI + PHASES * angle));
 	}
 
@@ -114,7 +115,7 @@ public class EagleRayEntity extends AbstractFishEntity {
 
 	@Override
 	protected SoundEvent getFlopSound() {
-		return null;
+		return SoundEvents.ENTITY_SALMON_FLOP;
 	}
 
 	@Override

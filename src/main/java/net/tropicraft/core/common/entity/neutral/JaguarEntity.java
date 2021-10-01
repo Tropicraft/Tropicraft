@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.function.Supplier;
@@ -37,6 +38,8 @@ public class JaguarEntity extends AnimalEntity {
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.25));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 0.8, 1e-5f));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 10.0F));
+
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, WhiteLippedPeccaryEntity.class, 20, true, true, null));
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {

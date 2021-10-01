@@ -362,6 +362,10 @@ public class TropicraftLangProvider extends LanguageProvider {
         addItem(TropicraftItems.BROWN_BASILISK_LIZARD_SPAWN_EGG);
         addItem(TropicraftItems.GREEN_BASILISK_LIZARD_SPAWN_EGG);
         addItem(TropicraftItems.HUMMINGBIRD_SPAWN_EGG);
+        addItem(TropicraftItems.FIDDLER_CRAB_SPAWN_EGG);
+        addItem(TropicraftItems.SPIDER_MONKEY_SPAWN_EGG);
+        addItem(TropicraftItems.WHITE_LIPPED_PECCARY_SPAWN_EGG);
+        addItem(TropicraftItems.CUBERA_SPAWN_EGG);
 
         // Armor
         addItem(TropicraftItems.FIRE_BOOTS);
@@ -427,6 +431,10 @@ public class TropicraftLangProvider extends LanguageProvider {
         addEntityType(TropicraftEntities.BROWN_BASILISK_LIZARD);
         addEntityType(TropicraftEntities.GREEN_BASILISK_LIZARD);
         addEntityType(TropicraftEntities.HUMMINGBIRD);
+        addEntityType(TropicraftEntities.FIDDLER_CRAB);
+        addEntityType(TropicraftEntities.SPIDER_MONKEY);
+        addEntityType(TropicraftEntities.WHITE_LIPPED_PECCARY);
+        addEntityType(TropicraftEntities.CUBERA);
 
         // BIOMES
         

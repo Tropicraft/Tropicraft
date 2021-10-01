@@ -366,6 +366,10 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.BROWN_BASILISK_LIZARD_SPAWN_EGG);
         generated(TropicraftItems.GREEN_BASILISK_LIZARD_SPAWN_EGG);
         generated(TropicraftItems.HUMMINGBIRD_SPAWN_EGG);
+        generated(TropicraftItems.FIDDLER_CRAB_SPAWN_EGG);
+        generated(TropicraftItems.SPIDER_MONKEY_SPAWN_EGG);
+        generated(TropicraftItems.WHITE_LIPPED_PECCARY_SPAWN_EGG);
+        generated(TropicraftItems.CUBERA_SPAWN_EGG);
 
         // Armor
         generated(TropicraftItems.FIRE_BOOTS);

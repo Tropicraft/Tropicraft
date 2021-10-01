@@ -53,13 +53,13 @@
     "monster": [
       {
         "type": "minecraft:parrot",
-        "weight": 20,
+        "weight": 15,
         "minCount": 1,
         "maxCount": 2
       },
       {
         "type": "tropicraft:v_monkey",
-        "weight": 20,
+        "weight": 15,
         "minCount": 1,
         "maxCount": 3
       },
@@ -94,10 +94,10 @@
         "maxCount": 2
       },
       {
-        "type": "tropicraft:ashen",
-        "weight": 6,
-        "minCount": 2,
-        "maxCount": 4
+        "type": "tropicraft:fiddler_crab",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 2
       }
     ],
     "creature": [],

@@ -15,6 +15,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -74,7 +75,7 @@ public class MarlinEntity extends AbstractFishEntity {
 
     @Override
     protected SoundEvent getFlopSound() {
-        return null;
+        return SoundEvents.ENTITY_SALMON_FLOP;
     }
 
     public void setTexture(final String textureName) {

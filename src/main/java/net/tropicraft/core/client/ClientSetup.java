@@ -105,6 +105,10 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.BROWN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::brown);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.GREEN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::green);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HUMMINGBIRD.get(), HummingbirdRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.FIDDLER_CRAB.get(), FiddlerCrabRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SPIDER_MONKEY.get(), SpiderMonkeyRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), WhiteLippedPeccaryRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.CUBERA.get(), CuberaRenderer::new);
     }
 
     public static void setupTileEntityRenderers() {
