@@ -26,7 +26,7 @@ public final class PapayaTreeDecorator extends TreeDecorator {
         return TropicraftTreeDecorators.PAPAYA.get();
     }
 
-    public void func_225576_a_(ISeedReader world, Random rand, List<BlockPos> logs, List<BlockPos> p_225576_4_, Set<BlockPos> p_225576_5_, MutableBoundingBox p_225576_6_) {
+    public void func_225576_a_(ISeedReader world, Random rand, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> changed, MutableBoundingBox bounds) {
         int y = logs.get(logs.size() - 1).getY();
 
         for (BlockPos log : logs) {
@@ -37,15 +37,11 @@ public final class PapayaTreeDecorator extends TreeDecorator {
                     BlockPos pos = log.offset(direction);
 
                     if (Feature.isAirAt(world, pos)) {
-                        System.out.println(pos);
-
                         BlockState blockstate = TropicraftBlocks.PAPAYA.get().getDefaultState()
                                 .with(PapayaBlock.AGE, rand.nextInt(2))
                                 .with(CocoaBlock.HORIZONTAL_FACING, direction.getOpposite());
 
                         world.setBlockState(pos, blockstate, 3);
-//                        this.func_227423_a_(world, pos, blockstate, p_225576_5_, p_225576_6_);
-                        System.out.println(world.getBlockState(pos).getBlock());
                     }
                 }
             }
