@@ -14,6 +14,7 @@ import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.placement.*;
+import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -22,10 +23,7 @@ import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
-import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
-import net.tropicraft.core.common.dimension.feature.tree.PleodendronFoliagePlacer;
-import net.tropicraft.core.common.dimension.feature.tree.PleodendronTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.*;
 import net.tropicraft.core.common.dimension.feature.tree.mangrove.*;
 
 import java.util.Arrays;
@@ -62,6 +60,7 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> lightMangroves;
 
     public final ConfiguredFeature<?, ?> mangroves;
+    public final ConfiguredFeature<?, ?> papaya;
 
     public final ConfiguredFeature<?, ?> mangroveVegetation;
 
@@ -136,6 +135,17 @@ public final class TropicraftConfiguredFeatures {
                         new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
                 ).build(),
                 0, 0.05f, 1);
+
+        this.papaya = features.tree("papaya",
+                new BaseTreeFeatureConfig.Builder(
+                        new SimpleBlockStateProvider(TropicraftBlocks.PAPAYA_LOG.get().getDefaultState()),
+                        new SimpleBlockStateProvider(TropicraftBlocks.PAPAYA_LEAVES.get().getDefaultState()),
+                        new PapayaFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+                        new StraightTrunkPlacer(5, 2, 3),
+                        new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new PapayaTreeDecorator())).setMaxWaterDepth(1).build(),
+                0, 0.2f, 1
+        );
 
         FoliagePlacer mangroveFoliage = new MangroveFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0));
         BlockStateProvider redMangroveLog = new SimpleBlockStateProvider(TropicraftBlocks.RED_MANGROVE_LOG.get().getDefaultState());
@@ -370,6 +380,10 @@ public final class TropicraftConfiguredFeatures {
 
     public void addPleodendron(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.pleodendron);
+    }
+
+    public void addPapaya(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.papaya);
     }
 
     public void addMudDisks(BiomeGenerationSettings.Builder generation) {

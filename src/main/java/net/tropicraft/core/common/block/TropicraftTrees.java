@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.block;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -17,21 +18,36 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.PapayaFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.PapayaTreeDecorator;
 
 import javax.annotation.Nullable;
+import java.util.OptionalInt;
 import java.util.Random;
 import java.util.function.Supplier;
 
 public class TropicraftTrees {
     public static final Tree GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES);
     public static final Tree LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES);
-    public static final Tree LIME = createFruit(TropicraftBlocks.LIME_SAPLING);
-    public static final Tree ORANGE = createFruit(TropicraftBlocks.ORANGE_SAPLING);
+    public static final Tree LIME = createFruit(TropicraftBlocks.LIME_LEAVES);
+    public static final Tree ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES);
+    public static final Tree PAPAYA = create((server, random, beehive) -> {
+        BaseTreeFeatureConfig config = new BaseTreeFeatureConfig.Builder(
+                new SimpleBlockStateProvider(TropicraftBlocks.PAPAYA_LOG.get().getDefaultState()),
+                new SimpleBlockStateProvider(TropicraftBlocks.PAPAYA_LEAVES.get().getDefaultState()),
+                new PapayaFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+                new StraightTrunkPlacer(5, 2, 3),
+                new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+        ).setDecorators(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new PapayaTreeDecorator())).setMaxWaterDepth(1).build();
+
+        return Feature.TREE.withConfiguration(config);
+    });
 
     public static final Tree RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
@@ -69,7 +85,7 @@ public class TropicraftTrees {
                     new WeightedBlockStateProvider().addWeightedBlockstate(TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), 1).addWeightedBlockstate(fruitLeaves.get().getDefaultState(), 1),
                     new CitrusFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
                     new CitrusTrunkPlacer(6, 3, 0),
-                    new TwoLayerFeature(1, 0, 2)
+                    new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
             ).build();
 
            return Feature.TREE.withConfiguration(config);
