@@ -124,6 +124,8 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         logBlock(TropicraftBlocks.STRIPPED_MANGROVE_LOG.get());
         woodBlock(TropicraftBlocks.STRIPPED_MANGROVE_WOOD, TropicraftBlocks.STRIPPED_MANGROVE_LOG);
 
+        logBlock(TropicraftBlocks.PAPAYA_LOG.get());
+
         // Stairs & Slabs
         stairsBlock(TropicraftBlocks.BAMBOO_STAIRS, "bamboo_side", "bamboo_end");
         stairsBlock(TropicraftBlocks.THATCH_STAIRS, "thatch_side", "thatch_end");
@@ -152,6 +154,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.LEMON_LEAVES);
         simpleBlock(TropicraftBlocks.LIME_LEAVES);
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
+        simpleBlock(TropicraftBlocks.PAPAYA_LEAVES);
 
         simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES);
         simpleBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES);
@@ -159,12 +162,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
         // Saplings
-        plant(TropicraftBlocks.MAHOGANY_SAPLING);
-        plant(TropicraftBlocks.PALM_SAPLING);
-        plant(TropicraftBlocks.GRAPEFRUIT_SAPLING);
-        plant(TropicraftBlocks.LEMON_SAPLING);
-        plant(TropicraftBlocks.LIME_SAPLING);
-        plant(TropicraftBlocks.ORANGE_SAPLING);
+        sapling(TropicraftBlocks.MAHOGANY_SAPLING);
+        sapling(TropicraftBlocks.PALM_SAPLING);
+        sapling(TropicraftBlocks.GRAPEFRUIT_SAPLING);
+        sapling(TropicraftBlocks.LEMON_SAPLING);
+        sapling(TropicraftBlocks.LIME_SAPLING);
+        sapling(TropicraftBlocks.ORANGE_SAPLING);
+        sapling(TropicraftBlocks.PAPAYA_SAPLING);
 
         propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
         propagule(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);

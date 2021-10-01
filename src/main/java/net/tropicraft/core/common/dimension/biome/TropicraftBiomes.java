@@ -150,6 +150,7 @@ public final class TropicraftBiomes {
         features.addFruitTrees(generation);
         features.addPalmTrees(generation);
         features.addEih(generation);
+        features.addPapaya(generation);
         features.addTropicsFlowers(generation);
         features.addPineapples(generation);
         features.addRegularSeagrass(generation);
@@ -215,6 +216,7 @@ public final class TropicraftBiomes {
         features.addPleodendron(generation);
         features.addRainforestTrees(generation);
         features.addRegularSeagrass(generation);
+        features.addPapaya(generation);
 
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, features.rainforestFlowers);
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, features.coffeeBush);

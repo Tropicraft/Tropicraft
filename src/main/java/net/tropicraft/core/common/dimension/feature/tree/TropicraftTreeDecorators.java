@@ -14,6 +14,7 @@ public final class TropicraftTreeDecorators {
     public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATORS = DeferredRegister.create(ForgeRegistries.TREE_DECORATOR_TYPES, Constants.MODID);
     public static RegistryObject<TreeDecoratorType<PianguasTreeDecorator>> PIANGUAS = register("pianguas", PianguasTreeDecorator.CODEC);
     public static RegistryObject<TreeDecoratorType<PneumatophoresTreeDecorator>> PNEUMATOPHORES = register("pneumatophores", PneumatophoresTreeDecorator.CODEC);
+    public static RegistryObject<TreeDecoratorType<PapayaTreeDecorator>> PAPAYA = register("papaya", PapayaTreeDecorator.CODEC);
 
     private static <T extends TreeDecorator> RegistryObject<TreeDecoratorType<T>> register(String name, Codec<T> codec) {
         return TREE_DECORATORS.register(name, () -> new TreeDecoratorType<>(codec));
