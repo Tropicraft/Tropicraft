@@ -19,6 +19,7 @@ import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -125,6 +126,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         woodBlock(TropicraftBlocks.STRIPPED_MANGROVE_WOOD, TropicraftBlocks.STRIPPED_MANGROVE_LOG);
 
         logBlock(TropicraftBlocks.PAPAYA_LOG.get());
+        woodBlock(TropicraftBlocks.PAPAYA_WOOD, TropicraftBlocks.PAPAYA_LOG);
 
         // Stairs & Slabs
         stairsBlock(TropicraftBlocks.BAMBOO_STAIRS, "bamboo_side", "bamboo_end");
@@ -273,7 +275,12 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
             .texture("particle", modBlockLoc("bamboo_side"))
             .texture("wood", modBlockLoc("bamboo_side"));
 
+
         TropicraftBlocks.JIGARBOV_WALL_TORCHES.forEach((type, block) -> jigarbovTorch(block, type));
+
+        models.withExistingParent("papaya_stage0", "cocoa_stage2")
+                .texture("particle", modBlockLoc("papaya_stage0"))
+                .texture("cocoa", modBlockLoc("papaya_stage0"));
     }
 
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {

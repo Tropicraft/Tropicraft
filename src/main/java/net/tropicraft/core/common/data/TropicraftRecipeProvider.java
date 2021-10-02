@@ -162,6 +162,14 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         bark(MAHOGANY_LOG, MAHOGANY_WOOD, consumer);
         bark(PALM_LOG, PALM_WOOD, consumer);
 
+        // Papaya log -> Jungle log
+        ShapelessRecipeBuilder.shapelessRecipe(Blocks.JUNGLE_LOG)
+                .addIngredient(PAPAYA_LOG.get())
+                .addCriterion("has_papaya_log", hasItem(PAPAYA_LOG.get()))
+                .build(consumer);
+
+        bark(PAPAYA_LOG, PAPAYA_WOOD, consumer);
+
         bark(RED_MANGROVE_LOG, RED_MANGROVE_WOOD, consumer);
         bark(LIGHT_MANGROVE_LOG, LIGHT_MANGROVE_WOOD, consumer);
         bark(BLACK_MANGROVE_LOG, BLACK_MANGROVE_WOOD, consumer);
