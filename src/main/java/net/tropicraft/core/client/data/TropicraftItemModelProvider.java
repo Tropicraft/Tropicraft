@@ -84,6 +84,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.PALM_WOOD);
 
         blockItem(TropicraftBlocks.PAPAYA_LOG);
+        blockItem(TropicraftBlocks.PAPAYA_WOOD);
 
         blockItem(TropicraftBlocks.RED_MANGROVE_LOG);
         blockItem(TropicraftBlocks.RED_MANGROVE_WOOD);

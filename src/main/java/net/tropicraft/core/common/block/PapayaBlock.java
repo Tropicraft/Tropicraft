@@ -21,10 +21,10 @@ import java.util.Random;
 
 public class PapayaBlock extends HorizontalBlock implements IGrowable {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_0_1;
-    protected static final VoxelShape COCOA_EAST_AABB = Block.makeCuboidShape(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D);
-    protected static final VoxelShape COCOA_WEST_AABB = Block.makeCuboidShape(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D);
-    protected static final VoxelShape COCOA_NORTH_AABB = Block.makeCuboidShape(4.0D, 3.0D, 1.0D, 12.0D, 12.0D, 9.0D);
-    protected static final VoxelShape COCOA_SOUTH_AABB = Block.makeCuboidShape(4.0D, 3.0D, 7.0D, 12.0D, 12.0D, 15.0D);
+    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(7.0D, 3.0D, 4.0D, 15.0D, 12.0D, 12.0D);
+    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(1.0D, 3.0D, 4.0D, 9.0D, 12.0D, 12.0D);
+    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(4.0D, 3.0D, 1.0D, 12.0D, 12.0D, 9.0D);
+    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(4.0D, 3.0D, 7.0D, 12.0D, 12.0D, 15.0D);
 
     public PapayaBlock(AbstractBlock.Properties properties) {
         super(properties);
@@ -51,14 +51,14 @@ public class PapayaBlock extends HorizontalBlock implements IGrowable {
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         switch(state.get(HORIZONTAL_FACING)) {
             case SOUTH:
-                return COCOA_SOUTH_AABB;
+                return SOUTH_AABB;
             case NORTH:
             default:
-                return COCOA_NORTH_AABB;
+                return NORTH_AABB;
             case WEST:
-                return COCOA_WEST_AABB;
+                return WEST_AABB;
             case EAST:
-                return COCOA_EAST_AABB;
+                return EAST_AABB;
         }
     }
 

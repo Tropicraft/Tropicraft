@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
+import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
@@ -139,6 +141,7 @@ public class TropicraftBlocks {
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
 
     public static final RegistryObject<RotatedPillarBlock> PAPAYA_LOG = register("papaya_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
+    public static final RegistryObject<RotatedPillarBlock> PAPAYA_WOOD = register("papaya_wood", Builder.wood(MaterialColor.GRAY));
 
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
@@ -172,7 +175,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<TrapDoorBlock> MANGROVE_TRAPDOOR = register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(MANGROVE_DOOR.get())) {});
 
     public static final RegistryObject<ReedsBlock> REEDS = register("reeds", () -> new ReedsBlock(Block.Properties.from(Blocks.SUGAR_CANE)));
-    public static final RegistryObject<PapayaBlock> PAPAYA = register("papaya", () -> new PapayaBlock(AbstractBlock.Properties.create(Material.PLANTS).tickRandomly().hardnessAndResistance(0.2F, 3.0F).sound(SoundType.WOOD).notSolid()));
+    public static final RegistryObject<PapayaBlock> PAPAYA = registerWithFood("papaya", () -> new PapayaBlock(AbstractBlock.Properties.create(Material.PLANTS).tickRandomly().hardnessAndResistance(0.2F, 3.0F).sound(SoundType.WOOD).notSolid()), Foods.PAPAYA);
 
     public static final RegistryObject<FenceBlock> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
     public static final RegistryObject<FenceBlock> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
@@ -279,6 +282,10 @@ public class TropicraftBlocks {
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
+
+    private static <T extends Block> RegistryObject<T> registerWithFood(String name, Supplier<? extends T> sup, Food foo) {
+        return register(name, sup, TropicraftBlocks::itemDefault);
+    }
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
         return register(name, sup, block -> item(block, renderMethod));
@@ -300,6 +307,10 @@ public class TropicraftBlocks {
 
     private static Supplier<BlockItem> itemDefault(final RegistryObject<? extends Block> block) {
         return item(block, Tropicraft.TROPICRAFT_ITEM_GROUP);
+    }
+
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, Food food) {
+        return () -> new BlockItem(block.get(), new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).food(food));
     }
 
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {

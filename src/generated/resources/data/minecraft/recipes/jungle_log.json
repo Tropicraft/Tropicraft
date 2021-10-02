@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tropicraft:papaya_log"
+    }
+  ],
+  "result": {
+    "item": "minecraft:jungle_log"
+  }
+}

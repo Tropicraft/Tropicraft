@@ -120,6 +120,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.PALM_WOOD);
 
             dropsSelf(TropicraftBlocks.PAPAYA_LOG);
+            dropsSelf(TropicraftBlocks.PAPAYA_WOOD);
 
             dropsSelf(TropicraftBlocks.RED_MANGROVE_LOG);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_WOOD);
