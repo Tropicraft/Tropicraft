@@ -428,7 +428,6 @@ public class TropicraftEntities {
                 .setShouldReceiveVelocityUpdates(true);
     }
 
-    // TODO: sizes and categories
     private static EntityType.Builder<FiddlerCrabEntity> fiddlerCrab() {
         return EntityType.Builder.create(FiddlerCrabEntity::new, EntityClassification.MONSTER)
                 .size(0.5F, 0.2F)

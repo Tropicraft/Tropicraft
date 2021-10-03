@@ -79,7 +79,7 @@ public class SpiderMonkeyEntity extends AnimalEntity {
             return;
         }
 
-        if (this.world.rand.nextInt(100) == 0) {
+        if (this.world.rand.nextInt(200) == 0) {
             boolean standing = this.world.rand.nextInt(3) == 0;
             this.setStanding(standing);
         }

@@ -11,6 +11,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 
@@ -36,6 +37,7 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
         // Force placement: put dirt under the current position so that the tree always places
         boolean replaceSoil = soilState.isIn(TropicraftTags.Blocks.MUD) ||
                 soilState.getFluidState().isTagged(FluidTags.WATER) ||
+                soilState.isIn(Tags.Blocks.SAND) ||
                 (world.getBlockState(soilPos.down()).getFluidState().isTagged(FluidTags.WATER));
 
         try {

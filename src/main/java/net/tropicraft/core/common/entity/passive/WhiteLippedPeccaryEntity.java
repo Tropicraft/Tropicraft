@@ -27,7 +27,6 @@ public class WhiteLippedPeccaryEntity extends AnimalEntity {
         super(type, world);
     }
 
-    // TODO: behaviour & animations
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
