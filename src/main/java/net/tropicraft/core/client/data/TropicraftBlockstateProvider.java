@@ -14,6 +14,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.*;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
+import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.function.Function;
@@ -231,6 +232,8 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         getVariantBuilder(TropicraftBlocks.COFFEE_BUSH.get())
             .forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(coffeeBush(state.get(CoffeeBushBlock.AGE))).build());
+
+        hugePlant(TropicraftBlocks.GOLDEN_LEATHER_FERN);
 
         simpleBlock(TropicraftBlocks.VOLCANO, models.getExistingFile(mcLoc("block/bedrock")));
 
@@ -546,5 +549,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
             }
         }
         simpleBlock(full, model);
+    }
+
+    private void hugePlant(Supplier<? extends HugePlantBlock> block) {
+        BlockModelBuilder cross = models().singleTexture(name(block), modBlockLoc("huge_cross"), "cross", blockTexture(block));
+
+        getMultipartBuilder(block.get())
+                .part().modelFile(cross).addModel()
+                .condition(HugePlantBlock.CENTER, true);
     }
 }

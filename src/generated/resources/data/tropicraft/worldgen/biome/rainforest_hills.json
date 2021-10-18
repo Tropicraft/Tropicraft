@@ -130,8 +130,8 @@
       {
         "type": "tropicraft:spider_monkey",
         "weight": 15,
-        "minCount": 2,
-        "maxCount": 4
+        "minCount": 5,
+        "maxCount": 8
       }
     ],
     "creature": [

@@ -19,6 +19,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
+import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
@@ -240,6 +241,11 @@ public class TropicraftBlocks {
 
     public static final RegistryObject<CoffeeBushBlock> COFFEE_BUSH = registerNoItem(
             "coffee_bush", () -> new CoffeeBushBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GRASS).hardnessAndResistance(0.15f).sound(SoundType.PLANT).notSolid()));
+
+    public static final RegistryObject<HugePlantBlock> GOLDEN_LEATHER_FERN = register(
+            "golden_leather_fern",
+            () -> new HugePlantBlock(Block.Properties.from(Blocks.LARGE_FERN))
+    );
 
     @SuppressWarnings("unchecked")
     private static final Set<RegistryObject<? extends Block>> POTTABLE_PLANTS = ImmutableSet.<RegistryObject<? extends Block>>builder()

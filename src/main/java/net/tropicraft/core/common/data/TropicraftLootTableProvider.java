@@ -239,6 +239,8 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             TropicraftBlocks.ALL_POTTED_PLANTS.forEach(ro -> registerLootTable(ro.get(), b -> droppingFlowerPotAndFlower((FlowerPotBlock) b)));
 
             registerLootTable(TropicraftBlocks.COFFEE_BUSH.get(), dropNumberOfItems(TropicraftBlocks.COFFEE_BUSH.get(), TropicraftItems.RAW_COFFEE_BEAN, 1, 3));
+
+            dropsSelf(TropicraftBlocks.GOLDEN_LEATHER_FERN);
         }
         
         private void dropsSelf(Supplier<? extends Block> block) {

@@ -219,6 +219,7 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.ZIRCONIUM_BLOCK);
         addBlock(TropicraftBlocks.COFFEE_BUSH);
+        addBlock(TropicraftBlocks.GOLDEN_LEATHER_FERN);
 
         addBlock(TropicraftBlocks.REEDS);
         

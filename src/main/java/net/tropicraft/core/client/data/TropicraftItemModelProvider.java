@@ -197,7 +197,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
             .texture("particle", modLoc("block/chunk"));
         withExistingParent(name(TropicraftBlocks.AIR_COMPRESSOR), modLoc("item/tall_machine"))
             .texture("particle", modLoc("block/chunk"));
-        
+
+        generated(TropicraftBlocks.GOLDEN_LEATHER_FERN);
+
         generated(TropicraftBlocks.TIKI_TORCH);
         
         blockSprite(TropicraftBlocks.COCONUT);

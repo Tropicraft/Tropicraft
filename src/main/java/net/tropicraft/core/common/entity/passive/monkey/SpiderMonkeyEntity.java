@@ -99,6 +99,7 @@ public class SpiderMonkeyEntity extends AnimalEntity {
 
     public void setStanding(boolean standing) {
         this.dataManager.set(STANDING, standing);
+        this.standAnimation = standing ? STAND_ANIMATION_LENGTH : 0;
     }
 
     public boolean isStanding() {

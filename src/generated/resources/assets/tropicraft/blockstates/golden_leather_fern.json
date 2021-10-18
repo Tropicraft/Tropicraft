@@ -1,0 +1,12 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "center": "true"
+      },
+      "apply": {
+        "model": "tropicraft:block/golden_leather_fern"
+      }
+    }
+  ]
+}

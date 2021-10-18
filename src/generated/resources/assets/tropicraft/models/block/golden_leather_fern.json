@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:block/huge_cross",
+  "textures": {
+    "cross": "tropicraft:block/golden_leather_fern"
+  }
+}
