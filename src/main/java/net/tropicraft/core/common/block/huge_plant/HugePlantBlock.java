@@ -9,12 +9,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
-import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -27,12 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public final class HugePlantBlock extends BushBlock {
-    public static final BooleanProperty CENTER = BooleanProperty.create("center");
-    public static final BooleanProperty SEED = BooleanProperty.create("seed");
+    public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
     public HugePlantBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(CENTER, false).with(SEED, false));
+        this.setDefaultState(this.stateContainer.getBaseState().with(TYPE, Type.OUTER));
     }
 
     @Override
@@ -49,7 +48,7 @@ public final class HugePlantBlock extends BushBlock {
             }
         }
 
-        return this.getDefaultState().with(SEED, true);
+        return this.getDefaultState().with(TYPE, Type.SEED);
     }
 
     @Override
@@ -121,7 +120,7 @@ public final class HugePlantBlock extends BushBlock {
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        if (state.get(SEED)) {
+        if (state.get(TYPE) == Type.SEED) {
             return super.getDrops(state, builder);
         } else {
             return Collections.emptyList();
@@ -130,16 +129,32 @@ public final class HugePlantBlock extends BushBlock {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(CENTER, SEED);
+        builder.add(TYPE);
     }
 
     static boolean isSeedBlock(Block block, BlockState state) {
-        return state.matchesBlock(block) && state.get(SEED);
+        return state.matchesBlock(block) && state.get(TYPE) == Type.SEED;
+    }
+
+    public enum Type implements IStringSerializable {
+        SEED("seed"),
+        CENTER("center"),
+        OUTER("outer");
+
+        private final String key;
+
+        Type(String key) {
+            this.key = key;
+        }
+
+        @Override
+        public String getString() {
+            return this.key;
+        }
     }
 
     public static final class Shape implements Iterable<BlockPos> {
         public static final int RADIUS = 1;
-        public static final int SIZE = RADIUS * 2 + 1;
 
         private final Block block;
         private final BlockPos seed;
@@ -179,9 +194,14 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         public BlockState blockAt(BlockPos pos) {
-            return this.block.getDefaultState()
-                    .with(CENTER, pos.equals(this.center()))
-                    .with(SEED, pos.equals(this.seed()));
+            Type type = Type.OUTER;
+            if (pos.equals(this.seed())) {
+                type = Type.SEED;
+            } else if (pos.equals(this.center())) {
+                type = Type.CENTER;
+            }
+
+            return this.block.getDefaultState().with(TYPE, type);
         }
 
         public BlockPos seed() {
@@ -192,15 +212,15 @@ public final class HugePlantBlock extends BushBlock {
             return this.seed.add(0, RADIUS, 0);
         }
 
-        public AxisAlignedBB asAabb(Vector3d view) {
+        public AxisAlignedBB asAabb() {
             BlockPos seed = this.seed;
             return new AxisAlignedBB(
-                    seed.getX() - RADIUS - view.x,
-                    seed.getY() - view.y,
-                    seed.getZ() - RADIUS - view.z,
-                    seed.getX() + RADIUS + 1.0 - view.x,
-                    seed.getY() + RADIUS * 2 + 1.0 - view.y,
-                    seed.getZ() + RADIUS + 1.0 - view.z
+                    seed.getX() - RADIUS,
+                    seed.getY(),
+                    seed.getZ() - RADIUS,
+                    seed.getX() + RADIUS + 1.0,
+                    seed.getY() + 2 * RADIUS + 1.0,
+                    seed.getZ() + RADIUS + 1.0
             );
         }
 

@@ -1,8 +1,5 @@
 {
   "ambientocclusion": false,
-  "textures": {
-    "particle": "#cross"
-  },
   "elements": [
     {
       "from": [-15.2, -16, 24],

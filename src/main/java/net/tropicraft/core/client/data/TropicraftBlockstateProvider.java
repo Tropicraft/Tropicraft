@@ -6,6 +6,7 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.model.generators.*;
@@ -283,6 +284,11 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         return new ResourceLocation(base.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + base.getPath());
     }
 
+    private ResourceLocation itemTexture(Supplier<? extends IItemProvider> item) {
+        ResourceLocation base = item.get().asItem().getRegistryName();
+        return new ResourceLocation(base.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + base.getPath());
+    }
+
     private ResourceLocation modBlockLoc(String texture) {
         return modLoc("block/" + texture);
     }
@@ -552,10 +558,12 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
     }
 
     private void hugePlant(Supplier<? extends HugePlantBlock> block) {
-        BlockModelBuilder cross = models().singleTexture(name(block), modBlockLoc("huge_cross"), "cross", blockTexture(block));
+        BlockModelBuilder cross = models().withExistingParent(name(block), modBlockLoc("huge_cross"))
+                .texture("cross", blockTexture(block))
+                .texture("particle", itemTexture(block));
 
         getMultipartBuilder(block.get())
                 .part().modelFile(cross).addModel()
-                .condition(HugePlantBlock.CENTER, true);
+                .condition(HugePlantBlock.TYPE, HugePlantBlock.Type.CENTER);
     }
 }

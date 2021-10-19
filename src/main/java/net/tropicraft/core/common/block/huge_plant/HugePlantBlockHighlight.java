@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +37,8 @@ public final class HugePlantBlockHighlight {
 
         IVertexBuilder builder = event.getBuffers().getBuffer(RenderType.getLines());
 
-        AxisAlignedBB aabb = shape.asAabb(event.getInfo().getProjectedView());
+        Vector3d view = event.getInfo().getProjectedView();
+        AxisAlignedBB aabb = shape.asAabb().offset(-view.x, -view.y, -view.z);
         WorldRenderer.drawBoundingBox(event.getMatrix(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
 
         event.setCanceled(true);
