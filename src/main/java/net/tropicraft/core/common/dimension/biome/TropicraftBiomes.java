@@ -342,6 +342,7 @@ public final class TropicraftBiomes {
 
         features.addMudDisks(generation);
         features.addMangroveVegetation(generation);
+        features.addGoldenLeatherFern(generation);
         features.addTropicsFlowers(generation);
 
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SEAGRASS_DEEP_WARM);

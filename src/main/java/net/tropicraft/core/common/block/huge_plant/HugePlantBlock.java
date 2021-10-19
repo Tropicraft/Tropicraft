@@ -31,7 +31,7 @@ public final class HugePlantBlock extends BushBlock {
 
     public HugePlantBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(TYPE, Type.OUTER));
+        this.setDefaultState(this.stateContainer.getBaseState().with(TYPE, Type.SEED));
     }
 
     @Override
@@ -85,10 +85,24 @@ public final class HugePlantBlock extends BushBlock {
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
         if (isSeedBlock(this, state)) {
+            BlockState worldState = world.getBlockState(pos);
+            if (worldState != state && !this.isValidPositionToPlace(world, pos)) {
+                return false;
+            }
+
             return super.isValidPosition(state, world, pos);
         } else {
             return Shape.match(this, world, pos) != null;
         }
+    }
+
+    private boolean isValidPositionToPlace(IWorldReader world, BlockPos pos) {
+        for (BlockPos plantPos : Shape.fromSeed(this, pos)) {
+            if (!world.getBlockState(plantPos).getMaterial().isReplaceable()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void placeAt(IWorld world, BlockPos pos, int flags) {

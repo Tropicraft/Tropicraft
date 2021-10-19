@@ -19,6 +19,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
+import net.tropicraft.core.common.dimension.feature.block_placer.HugePlantBlockPlacer;
 import net.tropicraft.core.common.dimension.feature.block_state_provider.NoiseFromTagBlockStateProvider;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
@@ -66,6 +67,8 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> mangroveVegetation;
 
     public final ConfiguredFeature<?, ?> mudDisk;
+
+    public final ConfiguredFeature<?, ?> goldenLeatherFern;
 
     public final ConfiguredFeature<?, ?> pleodendron;
 
@@ -126,6 +129,14 @@ public final class TropicraftConfiguredFeatures {
         this.rainforestVines = features.register("rainforest_vines", TropicraftFeatures.VINES,
                 f -> f.withConfiguration(new RainforestVinesConfig()).square().count(50)
         );
+
+        this.goldenLeatherFern = features.register("golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
+            SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.GOLDEN_LEATHER_FERN.get().getDefaultState());
+            return feature.withConfiguration(new BlockClusterFeatureConfig.Builder(state, HugePlantBlockPlacer.INSTANCE)
+                    .tries(4)
+                    .build()
+            ).withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
+        });
 
         this.pleodendron = features.tree("pleodendron",
                 new BaseTreeFeatureConfig.Builder(
@@ -366,6 +377,10 @@ public final class TropicraftConfiguredFeatures {
 
     public void addMangroveVegetation(BiomeGenerationSettings.Builder generation) {
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.mangroveVegetation);
+    }
+
+    public void addGoldenLeatherFern(BiomeGenerationSettings.Builder generation) {
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.goldenLeatherFern);
     }
 
     public void addPleodendron(BiomeGenerationSettings.Builder generation) {
