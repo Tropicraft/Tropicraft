@@ -16,6 +16,7 @@ import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.*;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
+import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.function.Function;
@@ -265,6 +266,8 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         models.withExistingParent("bamboo_item_frame_map", "item_frame_map")
             .texture("particle", modBlockLoc("bamboo_side"))
             .texture("wood", modBlockLoc("bamboo_side"));
+
+        TropicraftBlocks.JIGARBOV_WALL_TORCHES.forEach((type, block) -> jigarbovTorch(block, type));
     }
 
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {
@@ -565,5 +568,28 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         getMultipartBuilder(block.get())
                 .part().modelFile(cross).addModel()
                 .condition(HugePlantBlock.TYPE, HugePlantBlock.Type.CENTER);
+    }
+
+    private void jigarbovTorch(Supplier<? extends RedstoneTorchBlock> block, JigarbovTorchType type) {
+        ResourceLocation parent = modBlockLoc("jigarbov_wall_torch");
+        ResourceLocation etchTexture = modBlockLoc("jigarbov/" + type.getName());
+
+        BlockModelBuilder modelLit = models().withExistingParent(name(block), parent)
+                .texture("torch", mcLoc("block/redstone_torch"))
+                .texture("jigarbov", etchTexture);
+        BlockModelBuilder modelOff = models().withExistingParent(name(block) + "_off", parent)
+                .texture("torch", mcLoc("block/redstone_torch_off"))
+                .texture("jigarbov", etchTexture);
+
+        getVariantBuilder(block.get())
+                .forAllStates(state -> {
+                    boolean lit = state.get(RedstoneTorchBlock.LIT);
+                    Direction facing = state.get(RedstoneWallTorchBlock.FACING);
+                    int angle = ((int) facing.getHorizontalAngle() + 90) % 360;
+                    return ConfiguredModel.builder()
+                            .modelFile(lit ? modelLit : modelOff)
+                            .rotationY(angle)
+                            .build();
+                });
     }
 }

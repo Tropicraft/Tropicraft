@@ -20,6 +20,7 @@ import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
+import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
 import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
@@ -276,7 +277,14 @@ public class TropicraftBlocks {
             .addAll(VANILLA_POTTED_TROPICS_PLANTS)
             .addAll(BAMBOO_POTTED_VANILLA_PLANTS)
             .build();
-    
+
+    public static final Map<JigarbovTorchType, RegistryObject<RedstoneWallTorchBlock>> JIGARBOV_WALL_TORCHES = Arrays.stream(JigarbovTorchType.values())
+            .collect(Collectors.toMap(Function.identity(),
+                    type -> registerNoItem("jigarbov_" + type.getName() + "_wall_torch", () -> {
+                        return new RedstoneWallTorchBlock(Block.Properties.from(Blocks.REDSTONE_WALL_TORCH).lootFrom(() -> Blocks.REDSTONE_TORCH));
+                    })
+            ));
+
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }

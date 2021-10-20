@@ -20,6 +20,7 @@ import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -324,7 +325,13 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            return TropicraftBlocks.BLOCKS.getEntries().stream().map(Supplier::get).collect(Collectors.toList());
+            return TropicraftBlocks.BLOCKS.getEntries().stream()
+                    .map(Supplier::get)
+                    .filter(block -> {
+                        ResourceLocation lootTable = block.getLootTable();
+                        return lootTable != null && lootTable.getNamespace().equals(Constants.MODID);
+                    })
+                    .collect(Collectors.toList());
         }
     }
 }
