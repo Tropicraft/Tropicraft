@@ -184,9 +184,7 @@ public final class HugePlantBlock extends BushBlock {
 
         @Nullable
         public static Shape match(Block block, IBlockReader world, BlockPos pos) {
-            BlockPos minPos = pos.add(-RADIUS, -RADIUS * 2, -RADIUS);
-            BlockPos maxPos = pos.add(RADIUS, 0, RADIUS);
-            for (BlockPos plantPos : BlockPos.getAllInBoxMutable(minPos, maxPos)) {
+            for (BlockPos plantPos : matchPositions(pos)) {
                 if (isSeedBlock(block, world.getBlockState(plantPos))) {
                     Shape shape = Shape.fromSeed(block, plantPos);
                     if (shape.validate(world)) {
@@ -194,8 +192,23 @@ public final class HugePlantBlock extends BushBlock {
                     }
                 }
             }
-
             return null;
+        }
+
+        @Nullable
+        public static Shape matchIncomplete(Block block, IBlockReader world, BlockPos pos) {
+            for (BlockPos plantPos : matchPositions(pos)) {
+                if (isSeedBlock(block, world.getBlockState(plantPos))) {
+                    return Shape.fromSeed(block, plantPos);
+                }
+            }
+            return null;
+        }
+
+        private static Iterable<BlockPos> matchPositions(BlockPos pos) {
+            BlockPos minPos = pos.add(-RADIUS, -RADIUS * 2, -RADIUS);
+            BlockPos maxPos = pos.add(RADIUS, 0, RADIUS);
+            return BlockPos.getAllInBoxMutable(minPos, maxPos);
         }
 
         public boolean validate(IBlockReader world) {

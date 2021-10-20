@@ -32,7 +32,7 @@ public final class HugePlantBlockHighlight {
     }
 
     private static void renderHugePlantHighlight(DrawHighlightEvent.HighlightBlock event, ClientWorld world, BlockPos pos, BlockState state) {
-        HugePlantBlock.Shape shape = HugePlantBlock.Shape.match(state.getBlock(), world, pos);
+        HugePlantBlock.Shape shape = HugePlantBlock.Shape.matchIncomplete(state.getBlock(), world, pos);
         if (shape == null) return;
 
         IVertexBuilder builder = event.getBuffers().getBuffer(RenderType.getLines());
