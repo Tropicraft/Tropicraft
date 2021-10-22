@@ -243,9 +243,21 @@ public class TropicraftBlocks {
     public static final RegistryObject<CoffeeBushBlock> COFFEE_BUSH = registerNoItem(
             "coffee_bush", () -> new CoffeeBushBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GRASS).hardnessAndResistance(0.15f).sound(SoundType.PLANT).notSolid()));
 
-    public static final RegistryObject<HugePlantBlock> GOLDEN_LEATHER_FERN = register(
-            "golden_leather_fern",
+    public static final RegistryObject<BushBlock> GOLDEN_LEATHER_FERN = register(
+            "small_golden_leather_fern",
+            () -> new GrowableSinglePlantBlock(Block.Properties.from(Blocks.FERN), () -> TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN)
+    );
+
+    public static final RegistryObject<DoublePlantBlock> TALL_GOLDEN_LEATHER_FERN = registerNoItem(
+            "tall_golden_leather_fern",
+            () -> new GrowableDoublePlantBlock(Block.Properties.from(Blocks.LARGE_FERN), () -> TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN)
+                    .setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN)
+    );
+
+    public static final RegistryObject<HugePlantBlock> LARGE_GOLDEN_LEATHER_FERN = registerNoItem(
+            "golden_leather_fern", // TODO: update name before release
             () -> new HugePlantBlock(Block.Properties.from(Blocks.LARGE_FERN))
+                    .setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN)
     );
 
     @SuppressWarnings("unchecked")

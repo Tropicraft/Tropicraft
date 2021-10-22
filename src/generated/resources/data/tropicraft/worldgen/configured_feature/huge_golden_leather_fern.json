@@ -12,7 +12,7 @@
             "zspread": 7,
             "whitelist": [],
             "blacklist": [],
-            "tries": 4,
+            "tries": 3,
             "state_provider": {
               "state": {
                 "Properties": {

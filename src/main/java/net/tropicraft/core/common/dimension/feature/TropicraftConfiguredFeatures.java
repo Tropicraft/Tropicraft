@@ -68,7 +68,9 @@ public final class TropicraftConfiguredFeatures {
 
     public final ConfiguredFeature<?, ?> mudDisk;
 
-    public final ConfiguredFeature<?, ?> goldenLeatherFern;
+    public final ConfiguredFeature<?, ?> smallGoldenLeatherFern;
+    public final ConfiguredFeature<?, ?> tallGoldenLeatherFern;
+    public final ConfiguredFeature<?, ?> hugeGoldenLeatherFern;
 
     public final ConfiguredFeature<?, ?> pleodendron;
 
@@ -130,10 +132,26 @@ public final class TropicraftConfiguredFeatures {
                 f -> f.withConfiguration(new RainforestVinesConfig()).square().count(50)
         );
 
-        this.goldenLeatherFern = features.register("golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
+        this.smallGoldenLeatherFern = features.register("small_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
             SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.GOLDEN_LEATHER_FERN.get().getDefaultState());
+            return feature.withConfiguration(new BlockClusterFeatureConfig.Builder(state, SimpleBlockPlacer.PLACER)
+                    .tries(12)
+                    .build()
+            ).withPlacement(Features.Placements.PATCH_PLACEMENT);
+        });
+
+        this.tallGoldenLeatherFern = features.register("tall_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
+            SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN.get().getDefaultState());
+            return feature.withConfiguration(new BlockClusterFeatureConfig.Builder(state, DoublePlantBlockPlacer.PLACER)
+                    .tries(6)
+                    .build()
+            ).withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
+        });
+
+        this.hugeGoldenLeatherFern = features.register("huge_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
+            SimpleBlockStateProvider state = new SimpleBlockStateProvider(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get().getDefaultState());
             return feature.withConfiguration(new BlockClusterFeatureConfig.Builder(state, HugePlantBlockPlacer.INSTANCE)
-                    .tries(4)
+                    .tries(3)
                     .build()
             ).withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
         });
@@ -380,7 +398,9 @@ public final class TropicraftConfiguredFeatures {
     }
 
     public void addGoldenLeatherFern(BiomeGenerationSettings.Builder generation) {
-        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.goldenLeatherFern);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.smallGoldenLeatherFern);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.tallGoldenLeatherFern);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, this.hugeGoldenLeatherFern);
     }
 
     public void addPleodendron(BiomeGenerationSettings.Builder generation) {

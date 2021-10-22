@@ -242,10 +242,16 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             registerLootTable(TropicraftBlocks.COFFEE_BUSH.get(), dropNumberOfItems(TropicraftBlocks.COFFEE_BUSH.get(), TropicraftItems.RAW_COFFEE_BEAN, 1, 3));
 
             dropsSelf(TropicraftBlocks.GOLDEN_LEATHER_FERN);
+            dropsOther(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN, TropicraftBlocks.GOLDEN_LEATHER_FERN);
+            dropsOther(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN, TropicraftBlocks.GOLDEN_LEATHER_FERN);
         }
         
         private void dropsSelf(Supplier<? extends Block> block) {
             registerDropSelfLootTable(block.get());
+        }
+
+        private void dropsOther(Supplier<? extends Block> block, Supplier<? extends IItemProvider> drops) {
+            registerDropping(block.get(), drops.get());
         }
         
         private void dropsOreItem(Supplier<? extends Block> block, Supplier<? extends IItemProvider> item) {

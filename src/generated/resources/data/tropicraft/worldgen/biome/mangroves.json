@@ -37,7 +37,9 @@
     [],
     [
       "tropicraft:mangrove_vegetation",
-      "tropicraft:golden_leather_fern",
+      "tropicraft:small_golden_leather_fern",
+      "tropicraft:tall_golden_leather_fern",
+      "tropicraft:huge_golden_leather_fern",
       "tropicraft:tropics_flowers",
       "tropicraft:iris_flowers",
       "minecraft:seagrass_deep_warm",

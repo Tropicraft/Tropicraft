@@ -219,7 +219,11 @@ public class TropicraftLangProvider extends LanguageProvider {
 
         addBlock(TropicraftBlocks.ZIRCONIUM_BLOCK);
         addBlock(TropicraftBlocks.COFFEE_BUSH);
-        addBlock(TropicraftBlocks.GOLDEN_LEATHER_FERN);
+
+        // TODO: remove explicit names once we change ids to match
+        addBlock(TropicraftBlocks.GOLDEN_LEATHER_FERN, "Golden Leather Fern");
+        addBlock(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN);
+        addBlock(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN, "Large Golden Leather Fern");
 
         addBlock(TropicraftBlocks.REEDS);
         

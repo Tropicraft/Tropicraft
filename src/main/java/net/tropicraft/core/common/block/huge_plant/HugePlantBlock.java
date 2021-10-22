@@ -12,26 +12,37 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 public final class HugePlantBlock extends BushBlock {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
+    private Supplier<RegistryObject<? extends IItemProvider>> pickItem;
+
     public HugePlantBlock(Properties properties) {
         super(properties);
         this.setDefaultState(this.stateContainer.getBaseState().with(TYPE, Type.SEED));
+    }
+
+    public HugePlantBlock setPickItem(Supplier<RegistryObject<? extends IItemProvider>> item) {
+        this.pickItem = item;
+        return this;
     }
 
     @Override
@@ -139,6 +150,14 @@ public final class HugePlantBlock extends BushBlock {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+        if (this.pickItem != null) {
+            return new ItemStack(this.pickItem.get().get());
+        }
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override

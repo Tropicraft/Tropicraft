@@ -1,7 +1,7 @@
 {
   "parent": "tropicraft:block/huge_cross",
   "textures": {
-    "cross": "tropicraft:block/golden_leather_fern",
-    "particle": "tropicraft:item/golden_leather_fern"
+    "cross": "tropicraft:block/large_golden_leather_fern",
+    "particle": "tropicraft:block/small_golden_leather_fern"
   }
 }

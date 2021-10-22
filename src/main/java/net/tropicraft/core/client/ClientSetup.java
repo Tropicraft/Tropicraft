@@ -34,6 +34,8 @@ public class ClientSetup {
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.IRIS.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.COFFEE_BUSH.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.GOLDEN_LEATHER_FERN.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN.get(), cutout);
+        RenderTypeLookup.setRenderLayer(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.GRAPEFRUIT_SAPLING.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.LEMON_SAPLING.get(), cutout);
         RenderTypeLookup.setRenderLayer(TropicraftBlocks.LIME_SAPLING.get(), cutout);

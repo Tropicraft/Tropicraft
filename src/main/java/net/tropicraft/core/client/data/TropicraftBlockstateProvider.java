@@ -159,12 +159,12 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
         // Saplings
-        sapling(TropicraftBlocks.MAHOGANY_SAPLING);
-        sapling(TropicraftBlocks.PALM_SAPLING);
-        sapling(TropicraftBlocks.GRAPEFRUIT_SAPLING);
-        sapling(TropicraftBlocks.LEMON_SAPLING);
-        sapling(TropicraftBlocks.LIME_SAPLING);
-        sapling(TropicraftBlocks.ORANGE_SAPLING);
+        plant(TropicraftBlocks.MAHOGANY_SAPLING);
+        plant(TropicraftBlocks.PALM_SAPLING);
+        plant(TropicraftBlocks.GRAPEFRUIT_SAPLING);
+        plant(TropicraftBlocks.LEMON_SAPLING);
+        plant(TropicraftBlocks.LIME_SAPLING);
+        plant(TropicraftBlocks.ORANGE_SAPLING);
 
         propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
         propagule(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
@@ -235,7 +235,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
             .forAllStates(state -> ConfiguredModel.builder()
                 .modelFile(coffeeBush(state.get(CoffeeBushBlock.AGE))).build());
 
-        hugePlant(TropicraftBlocks.GOLDEN_LEATHER_FERN);
+        plant(TropicraftBlocks.GOLDEN_LEATHER_FERN, modBlockLoc("small_golden_leather_fern"));
+        doublePlant(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN);
+        hugePlant(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN, modBlockLoc("large_golden_leather_fern"), blockTexture(TropicraftBlocks.GOLDEN_LEATHER_FERN));
 
         simpleBlock(TropicraftBlocks.VOLCANO, models.getExistingFile(mcLoc("block/bedrock")));
 
@@ -374,8 +376,12 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         slabBlock(block.get(), doubleslab.get().getRegistryName(), modBlockLoc(side), modBlockLoc(end), modBlockLoc(end));
     }
 
-    private void sapling(Supplier<? extends SaplingBlock> block) {
-        simpleBlock(block, models().cross(name(block), blockTexture(block)));
+    private void plant(Supplier<? extends BushBlock> block) {
+        plant(block, blockTexture(block));
+    }
+
+    private void plant(Supplier<? extends BushBlock> block, ResourceLocation texture) {
+        simpleBlock(block, models().cross(name(block), texture));
     }
 
     private void propagule(Supplier<? extends PropaguleBlock> block) {
@@ -560,10 +566,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(full, model);
     }
 
-    private void hugePlant(Supplier<? extends HugePlantBlock> block) {
+    private void hugePlant(Supplier<? extends HugePlantBlock> block, ResourceLocation texture, ResourceLocation particle) {
         BlockModelBuilder cross = models().withExistingParent(name(block), modBlockLoc("huge_cross"))
-                .texture("cross", blockTexture(block))
-                .texture("particle", itemTexture(block));
+                .texture("cross", texture)
+                .texture("particle", particle);
 
         getMultipartBuilder(block.get())
                 .part().modelFile(cross).addModel()
