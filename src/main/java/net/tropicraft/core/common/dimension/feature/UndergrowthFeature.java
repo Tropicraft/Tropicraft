@@ -1,29 +1,29 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 
-public class UndergrowthFeature extends Feature<NoFeatureConfig> {
+public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
     private static final int LARGE_BUSH_CHANCE = 5;
 
-    public UndergrowthFeature(Codec<NoFeatureConfig> codec) {
+    public UndergrowthFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
     
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
         int size = 2;
         if (rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
             size = 3;
@@ -37,17 +37,17 @@ public class UndergrowthFeature extends Feature<NoFeatureConfig> {
             return false;
         }
 
-        if (!TropicraftFeatureUtil.isSoil(world, pos.down())) {
+        if (!TropicraftFeatureUtil.isSoil(world, pos.below())) {
             return false;
         }
 
-        world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
-        setBlockState(world, pos, TropicraftBlocks.MAHOGANY_LOG.get().getDefaultState());
+        world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
+        setBlock(world, pos, TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState());
 
         int count = 0;
 
         for (int round = 0; round < 64; ++round) {
-            BlockPos posTemp = pos.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
+            BlockPos posTemp = pos.offset(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
             if (isValidPosition(world, posTemp) && posTemp.getY() < 255) {
                 for (int y = posTemp.getY(); y < posTemp.getY() + size; y++) {
                     int bushWidth = size - (y - posTemp.getY());
@@ -57,7 +57,7 @@ public class UndergrowthFeature extends Feature<NoFeatureConfig> {
                             int zVariance = z - posTemp.getZ();
                             final BlockPos newPos = new BlockPos(x, y, z);
                             if ((Math.abs(xVariance) != bushWidth || Math.abs(zVariance) != bushWidth || rand.nextInt(2) != 0) && isValidPosition(world, newPos)) {
-                                setBlockState(world, newPos, TropicraftBlocks.KAPOK_LEAVES.get().getDefaultState());
+                                setBlock(world, newPos, TropicraftBlocks.KAPOK_LEAVES.get().defaultBlockState());
                             }
                         }
                     }
@@ -69,7 +69,7 @@ public class UndergrowthFeature extends Feature<NoFeatureConfig> {
         return count > 0;
     }
     
-    protected boolean isValidPosition(IWorldGenerationReader world, BlockPos pos) {
-        return TreeFeature.isAirOrLeavesAt(world, pos) && !world.hasBlockState(pos, Blocks.CAVE_AIR.getDefaultState()::equals);
+    protected boolean isValidPosition(LevelSimulatedRW world, BlockPos pos) {
+        return TreeFeature.isAirOrLeaves(world, pos) && !world.isStateAtPosition(pos, Blocks.CAVE_AIR.defaultBlockState()::equals);
     }
 }

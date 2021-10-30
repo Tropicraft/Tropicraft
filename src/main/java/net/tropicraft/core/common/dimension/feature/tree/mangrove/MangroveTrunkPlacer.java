@@ -3,23 +3,13 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
-import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.MangroveRootsBlock;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTrunkPlacers;
@@ -31,7 +21,7 @@ import java.util.Set;
 
 public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     public static final Codec<MangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
-        return getAbstractTrunkCodec(instance)
+        return trunkPlacerParts(instance)
                 .and(Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .and(Codec.BOOL.fieldOf("can_generate_raised").forGetter(c -> c.canGenerateRaised))
                 .and(Codec.BOOL.fieldOf("tea_mangrove").forGetter(c -> c.teaMangrove))
@@ -56,13 +46,13 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
     }
 
     @Override
-    protected TrunkPlacerType<?> getPlacerType() {
+    protected TrunkPlacerType<?> type() {
         return TropicraftTrunkPlacers.MANGROVE;
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
-        int rootLength = MathHelper.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedRW world, Random random, int height, BlockPos origin, Set<BlockPos> logs, BoundingBox bounds, TreeConfiguration config) {
+        int rootLength = Mth.clamp(height - 5, MIN_LENGTH, MAX_LENGTH);
 
         boolean placeDirtOnOrigin = true;
         if (this.canGenerateRaised) {
@@ -87,15 +77,15 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
         if (placeDirtOnOrigin) {
             // Set ground to dirt
-            func_236909_a_(world, origin.down());
+            setDirtAt(world, origin.below());
         }
 
         for (int i = 0; i < height; ++i) {
-            func_236911_a_(world, random, origin.up(i), logs, bounds, config);
+            placeLog(world, random, origin.above(i), logs, bounds, config);
         }
 
-        List<FoliagePlacer.Foliage> leafNodes = new ArrayList<>();
-        leafNodes.add(new FoliagePlacer.Foliage(origin.up(height), 1, false));
+        List<FoliagePlacer.FoliageAttachment> leafNodes = new ArrayList<>();
+        leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(height), 1, false));
 
         this.growBranches(world, random, height, origin, logs, bounds, config, leafNodes);
 
@@ -117,13 +107,13 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         return depth;
     }
 
-    private void growBranches(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config, List<FoliagePlacer.Foliage> leafNodes) {
+    private void growBranches(LevelSimulatedRW world, Random random, int height, BlockPos origin, Set<BlockPos> logs, BoundingBox bounds, TreeConfiguration config, List<FoliagePlacer.Foliage> leafNodes) {
         int count = 2 + random.nextInt(3);
 
         Direction lastDirection = null;
 
         for (int i = 0; i < count; i++) {
-            BlockPos base = origin.up(height - count + i);
+            BlockPos base = origin.above(height - count + i);
 
             int length = 1 + random.nextInt(2);
 
@@ -131,28 +121,28 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
             Direction direction;
             do {
-                direction = Direction.Plane.HORIZONTAL.random(random);
+                direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
             } while (direction == lastDirection);
 
             lastDirection = direction;
 
             for (int j = 1; j <= length + 1; j++) {
                 if (j == length) {
-                    func_236911_a_(world, random, base.offset(direction, j).up(), logs, bounds, config);
-                    leafNodes.add(new FoliagePlacer.Foliage(base.offset(direction, j).up(), random.nextInt(2), false));
+                    placeLog(world, random, base.relative(direction, j).above(), logs, bounds, config);
+                    leafNodes.add(new FoliagePlacer.FoliageAttachment(base.relative(direction, j).above(), random.nextInt(2), false));
                     break;
                 }
 
                 // Branch off the current branch to make a small node
                 if (!hasBranch && random.nextBoolean()) {
                     hasBranch = true;
-                    Direction branchBranchDir = random.nextBoolean() ? direction.rotateY() : direction.rotateYCCW();
+                    Direction branchBranchDir = random.nextBoolean() ? direction.getClockWise() : direction.getCounterClockWise();
 
-                    func_236911_a_(world, random, base.offset(direction, j).offset(branchBranchDir), logs, bounds, config);
-                    leafNodes.add(new FoliagePlacer.Foliage(base.offset(direction, j).offset(branchBranchDir), 0, false));
+                    placeLog(world, random, base.relative(direction, j).relative(branchBranchDir), logs, bounds, config);
+                    leafNodes.add(new FoliagePlacer.FoliageAttachment(base.relative(direction, j).relative(branchBranchDir), 0, false));
                 }
 
-                func_236911_a_(world, random, base.offset(direction, j), logs, bounds, config);
+                placeLog(world, random, base.relative(direction, j), logs, bounds, config);
             }
         }
     }
@@ -187,8 +177,8 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
 
     private static Direction nextFlow(Random random, Direction side) {
         switch (random.nextInt(3)) {
-            case 0: return side.rotateY();
-            case 1: return side.rotateYCCW();
+            case 0: return side.getClockWise();
+            case 1: return side.getCounterClockWise();
             default: return side;
         }
     }
@@ -204,8 +194,8 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private void placeRoots(IWorldGenerationReader world, BlockPos origin, int rootLength, RootSystem roots) {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+    private void placeRoots(LevelSimulatedRW world, BlockPos origin, int rootLength, RootSystem roots) {
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         for (int z = -MAX_RADIUS; z <= MAX_RADIUS; z++) {
             for (int x = -MAX_RADIUS; x <= MAX_RADIUS; x++) {
@@ -214,7 +204,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
                     continue;
                 }
 
-                mutablePos.setPos(origin.getX() + x, 0, origin.getZ() + z);
+                mutablePos.set(origin.getX() + x, 0, origin.getZ() + z);
 
                 int rootHeight = rootLength - RootSystem.distance(root);
                 if (rootHeight <= 0) continue;
@@ -233,35 +223,35 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
     }
 
-    private boolean setRootsAt(IWorldGenerationReader world, BlockPos pos) {
+    private boolean setRootsAt(LevelSimulatedRW world, BlockPos pos) {
         return setRootsAt(world, pos, this.rootsBlock);
     }
 
-    public static boolean setRootsAt(IWorldGenerationReader world, BlockPos pos, Block rootsBlock) {
+    public static boolean setRootsAt(LevelSimulatedRW world, BlockPos pos, Block rootsBlock) {
         if (isReplaceableAt(world, pos)) {
-            BlockState state = rootsBlock.getDefaultState()
-                    .with(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
-            TreeFeature.setBlockStateWithoutUpdate(world, pos, state);
+            BlockState state = rootsBlock.defaultBlockState()
+                    .setValue(MangroveRootsBlock.WATERLOGGED, isWaterAt(world, pos));
+            TreeFeature.setBlockKnownShape(world, pos, state);
             return true;
         } else {
             return false;
         }
     }
 
-    public static boolean isReplaceableAt(IWorldGenerationReader world, BlockPos pos) {
-        return world.hasBlockState(pos, state -> {
+    public static boolean isReplaceableAt(LevelSimulatedRW world, BlockPos pos) {
+        return world.isStateAtPosition(pos, state -> {
             return state.isAir()
-                    || state.isIn(BlockTags.LEAVES)
-                    || state.getMaterial() == Material.TALL_PLANTS
-                    || state.getMaterial() == Material.SEA_GRASS
-                    || state.getMaterial() == Material.PLANTS
-                    || state.matchesBlock(Blocks.WATER)
-                    || state.isIn(TropicraftTags.Blocks.ROOTS);
+                    || state.is(BlockTags.LEAVES)
+                    || state.getMaterial() == Material.REPLACEABLE_PLANT
+                    || state.getMaterial() == Material.REPLACEABLE_WATER_PLANT
+                    || state.getMaterial() == Material.PLANT
+                    || state.is(Blocks.WATER)
+                    || state.is(TropicraftTags.Blocks.ROOTS);
         });
     }
 
-    public static boolean isWaterAt(IWorldGenerationReader world, BlockPos pos) {
-        return world.hasBlockState(pos, state -> state.getFluidState().getFluid() == Fluids.WATER);
+    public static boolean isWaterAt(LevelSimulatedRW world, BlockPos pos) {
+        return world.isStateAtPosition(pos, state -> state.getFluidState().getType() == Fluids.WATER);
     }
 
     static final class RootGrower {
@@ -281,7 +271,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
 
         void growOut(int pos, int distance, Direction side, Direction flow) {
-            int growPos = RootSystem.offsetPos(pos, flow.getXOffset(), flow.getZOffset());
+            int growPos = RootSystem.offsetPos(pos, flow.getStepX(), flow.getStepZ());
             this.growAt(growPos, RootSystem.root(distance + 1, side, flow));
         }
 
@@ -327,7 +317,7 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
 
         static int root(int distance, Direction side, Direction flow) {
-            return root(distance) | (side.getHorizontalIndex() << 3) | (flow.getHorizontalIndex() << 1);
+            return root(distance) | (side.get2DDataValue() << 3) | (flow.get2DDataValue() << 1);
         }
 
         static int root(int distance) {
@@ -339,11 +329,11 @@ public final class MangroveTrunkPlacer extends FancyTrunkPlacer {
         }
 
         static Direction side(int root) {
-            return Direction.byHorizontalIndex((root >> 3) & 0b11);
+            return Direction.from2DDataValue((root >> 3) & 0b11);
         }
 
         static Direction flow(int root) {
-            return Direction.byHorizontalIndex((root >> 1) & 0b11);
+            return Direction.from2DDataValue((root >> 1) & 0b11);
         }
     }
 }

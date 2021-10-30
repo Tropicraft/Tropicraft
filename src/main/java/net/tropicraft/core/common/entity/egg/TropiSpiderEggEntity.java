@@ -1,15 +1,15 @@
 package net.tropicraft.core.common.entity.egg;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -21,30 +21,30 @@ import java.util.UUID;
 
 public class TropiSpiderEggEntity extends EggEntity {
 
-	protected static final DataParameter<Optional<UUID>> MOTHER_UNIQUE_ID = EntityDataManager.createKey(TropiSpiderEggEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	protected static final EntityDataAccessor<Optional<UUID>> MOTHER_UNIQUE_ID = SynchedEntityData.defineId(TropiSpiderEggEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-	public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, World world) {
+	public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, Level world) {
 		super(type, world);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(MOTHER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(MOTHER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Nullable
 	public UUID getMotherId() {
-		return dataManager.get(MOTHER_UNIQUE_ID).orElse(null);
+		return entityData.get(MOTHER_UNIQUE_ID).orElse(null);
 	}
 
 	public void setMotherId(@Nullable UUID uuid) {
-		dataManager.set(MOTHER_UNIQUE_ID, Optional.ofNullable(uuid));
+		entityData.set(MOTHER_UNIQUE_ID, Optional.ofNullable(uuid));
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT nbt) {
-		super.writeAdditional(nbt);
+	public void addAdditionalSaveData(CompoundTag nbt) {
+		super.addAdditionalSaveData(nbt);
 		if (getMotherId() == null) {
 			nbt.putString("MotherUUID", "");
 		} else {
@@ -53,8 +53,8 @@ public class TropiSpiderEggEntity extends EggEntity {
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT nbt) {
-		super.readAdditional(nbt);
+	public void readAdditionalSaveData(CompoundTag nbt) {
+		super.readAdditionalSaveData(nbt);
 		String motherUUID = "";
 		if (nbt.contains("MotherUUID", 8)) {
 			motherUUID = nbt.getString("MotherUUID");
@@ -77,15 +77,15 @@ public class TropiSpiderEggEntity extends EggEntity {
 
 	@Override
 	public Entity onHatch() {
-		if (world instanceof ServerWorld && getMotherId() != null) {
-			final ServerWorld serverWorld = (ServerWorld) world;
-			final Entity e = serverWorld.getEntityByUuid(getMotherId());
+		if (level instanceof ServerLevel && getMotherId() != null) {
+			final ServerLevel serverWorld = (ServerLevel) level;
+			final Entity e = serverWorld.getEntity(getMotherId());
 
 			if (e instanceof TropiSpiderEntity) {
 				return TropiSpiderEntity.haveBaby((TropiSpiderEntity) e);
 			}
 		}
-		return TropicraftEntities.TROPI_SPIDER.get().create(world);
+		return TropicraftEntities.TROPI_SPIDER.get().create(level);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class TropiSpiderEggEntity extends EggEntity {
 	}
 
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target) {
+	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
 	}
 }

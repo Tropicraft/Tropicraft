@@ -3,18 +3,18 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.feature.template.IStructureProcessorType;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.StructureProcessor;
-import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -33,7 +33,7 @@ public class SpawnerProcessor extends StructureProcessor {
         ).apply(instance, SpawnerProcessor::new);
     });
 
-    public static final IStructureProcessorType<SpawnerProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":spawner_processor", () -> CODEC);
+    public static final StructureProcessorType<SpawnerProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":spawner_processor", () -> CODEC);
 
     private final List<EntityType<?>> entityTypes;
 
@@ -42,28 +42,28 @@ public class SpawnerProcessor extends StructureProcessor {
     }
 
     @Override
-    protected IStructureProcessorType<?> getType() {
+    protected StructureProcessorType<?> getType() {
         return TYPE;
     }
 
     @Override
     @Nullable
-    public Template.BlockInfo process(IWorldReader world, BlockPos pos, BlockPos pos2, Template.BlockInfo originalBlockInfo, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
+    public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
         final Block block = blockInfo.state.getBlock();
 
         if (block != Blocks.SPAWNER) {
             return blockInfo;
         } else {
-            final CompoundNBT tag = new CompoundNBT();
+            final CompoundTag tag = new CompoundTag();
             String typeName = Registry.ENTITY_TYPE.getKey(entityTypes.get(0)).toString();
 
             tag.putString("id", entityTypes.get(0).getRegistryName().getPath());
 
             blockInfo.nbt.getCompound("SpawnData").putString("id", typeName);
             // TODO not working
-            final ListNBT list = blockInfo.nbt.getList("SpawnPotentials", 9);
+            final ListTag list = blockInfo.nbt.getList("SpawnPotentials", 9);
             for (int i = 0; i < list.size(); i++) {
-                final CompoundNBT nbt = list.getCompound(i);
+                final CompoundTag nbt = list.getCompound(i);
                 nbt.getCompound("Entity").putString("id", typeName);
             }
 

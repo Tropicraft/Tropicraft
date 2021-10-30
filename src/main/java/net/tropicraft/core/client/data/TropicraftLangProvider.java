@@ -1,15 +1,15 @@
 package net.tropicraft.core.client.data;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.data.HashCache;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -500,27 +500,27 @@ public class TropicraftLangProvider extends LanguageProvider {
         addTooltip(block, tooltip);
     }
     
-    private void addTooltip(Supplier<? extends IItemProvider> item, String tooltip) {
-        add(item.get().asItem().getTranslationKey() + ".desc", tooltip);
+    private void addTooltip(Supplier<? extends ItemLike> item, String tooltip) {
+        add(item.get().asItem().getDescriptionId() + ".desc", tooltip);
     }
     
-    private void addTooltip(Supplier<? extends IItemProvider> item, List<String> tooltip) {
+    private void addTooltip(Supplier<? extends ItemLike> item, List<String> tooltip) {
         for (int i = 0; i < tooltip.size(); i++) {
-            String key = item.get().asItem().getTranslationKey() + ".desc." + i;
+            String key = item.get().asItem().getDescriptionId() + ".desc." + i;
             add(key, tooltip.get(i));
         }
     }
     
-    private void add(ItemGroup group, String name) {
-        add("itemGroup." + group.getPath(), name);
+    private void add(CreativeModeTab group, String name) {
+        add("itemGroup." + group.getRecipeFolderName(), name);
     }
     
     private void addEntityType(Supplier<? extends EntityType<?>> entity) {
         addEntityType(entity, getAutomaticName(entity));
     }
     
-    private void addBiome(RegistryKey<Biome> biome) {
-        ResourceLocation id = biome.getLocation();
+    private void addBiome(ResourceKey<Biome> biome) {
+        ResourceLocation id = biome.location();
         add("biome." + id.getNamespace() + "." + id.getPath(), Util.toEnglishName(id.getPath()));
     }
     
@@ -576,8 +576,8 @@ public class TropicraftLangProvider extends LanguageProvider {
     }
 
     @Override
-    public void act(DirectoryCache cache) throws IOException {
-        super.act(cache);
-        upsideDown.act(cache);
+    public void run(HashCache cache) throws IOException {
+        super.run(cache);
+        upsideDown.run(cache);
     }
 }

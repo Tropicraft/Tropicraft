@@ -2,36 +2,36 @@ package net.tropicraft.core.client.entity.render;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SeahorseModel;
 import net.tropicraft.core.common.entity.underdasea.SeahorseEntity;
 
 public class SeahorseRenderer extends MobRenderer<SeahorseEntity, SeahorseModel> {
-	public SeahorseRenderer(EntityRendererManager renderManager) {
+	public SeahorseRenderer(EntityRenderDispatcher renderManager) {
 		super(renderManager, new SeahorseModel(), 0.5F);
-		shadowOpaque = 0.5f;
+		shadowStrength = 0.5f;
 	}
 
 	@Override
-	public void render(SeahorseEntity seahorse, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		matrixStackIn.push();
+	public void render(SeahorseEntity seahorse, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+		matrixStackIn.pushPose();
 
 		matrixStackIn.translate(0, -1f, 0);
 		matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 
 		super.render(seahorse, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-		matrixStackIn.pop();
+		matrixStackIn.popPose();
 	}
 
 	@Nullable
 	@Override
-	public ResourceLocation getEntityTexture(SeahorseEntity seahorseEntity) {
+	public ResourceLocation getTextureLocation(SeahorseEntity seahorseEntity) {
 		return TropicraftRenderUtils.getTextureEntity(String.format("seahorse/%s", seahorseEntity.getTexture()));
 	}
 }

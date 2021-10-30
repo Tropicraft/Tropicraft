@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.drinks.*;
@@ -23,7 +23,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.core.NonNullList;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 
 public class CocktailItem extends Item implements IColoredItem {
 
@@ -45,16 +52,16 @@ public class CocktailItem extends Item implements IColoredItem {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
         Drink drink = getDrink(stack);
 
         if (drink == Drink.COCKTAIL && stack.hasTag() && stack.getTag().contains("Ingredients")) {
-            final ListNBT ingredients = stack.getTag().getList("Ingredients", 10);
+            final ListTag ingredients = stack.getTag().getList("Ingredients", 10);
     
             for (int i = 0; i < ingredients.size(); ++i) {
-                CompoundNBT ingredient = ingredients.getCompound(i);
+                CompoundTag ingredient = ingredients.getCompound(i);
                 int id = ingredient.getByte("IngredientID");
-                ITextComponent ingredientName = Ingredient.ingredientsList[id].getDisplayName();
+                Component ingredientName = Ingredient.ingredientsList[id].getDisplayName();
                 int ingredientColor = Ingredient.ingredientsList[id].getColor();
                 //String lvl = StatCollector.translateToLocal("enchantment.level." + count);
                 //par3List.add(ingredientName + " " + lvl);
@@ -64,7 +71,7 @@ public class CocktailItem extends Item implements IColoredItem {
     }
 
     public static int getCocktailColor(ItemStack stack) {
-        final CompoundNBT tag = stack.getTag();
+        final CompoundTag tag = stack.getTag();
         if (tag != null && !tag.isEmpty()) {
             if (tag.contains("Color")) {
                 return tag.getInt("Color");
@@ -75,16 +82,16 @@ public class CocktailItem extends Item implements IColoredItem {
 
     public static @Nonnull ItemStack makeCocktail(MixerRecipe recipe) {
         final ItemStack stack = MixerRecipes.getItemStack(recipe.getCraftingResult());
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         Drink drink = recipe.getCraftingResult();
         nbt.putByte("DrinkID", (byte) drink.drinkId);
-        ListNBT tagList = new ListNBT();
+        ListTag tagList = new ListTag();
 
         Ingredient primary = null;
         List<Ingredient> additives = new LinkedList<>();
 
         for (Ingredient ingredient: recipe.getIngredients()) {
-            CompoundNBT ingredientNbt = new CompoundNBT();
+            CompoundTag ingredientNbt = new CompoundTag();
             ingredientNbt.putByte("IngredientID", (byte)ingredient.id);
             tagList.add(ingredientNbt);
 
@@ -112,9 +119,9 @@ public class CocktailItem extends Item implements IColoredItem {
     public static @Nonnull ItemStack makeCocktail(final NonNullList<ItemStack> itemStacks) {
         // TODO fixme this is so ugly ugh
         final ItemStack stack = new ItemStack(TropicraftItems.COCKTAILS.get(Drink.COCKTAIL).get());
-        CompoundNBT nbt = new CompoundNBT();
+        CompoundTag nbt = new CompoundTag();
         nbt.putByte("DrinkID", (byte) Drink.COCKTAIL.drinkId);
-        ListNBT tagList = new ListNBT();
+        ListTag tagList = new ListTag();
 
         List<Ingredient> ingredients = new ArrayList<>();
         for (ItemStack ingredientStack : itemStacks) {
@@ -126,7 +133,7 @@ public class CocktailItem extends Item implements IColoredItem {
         List<Ingredient> additives = new LinkedList<>();
 
         for (Ingredient ingredient : ingredients) {
-            CompoundNBT ingredientNbt = new CompoundNBT();
+            CompoundTag ingredientNbt = new CompoundTag();
             ingredientNbt.putByte("IngredientID", (byte)ingredient.id);
             tagList.add(ingredientNbt);
 
@@ -157,8 +164,8 @@ public class CocktailItem extends Item implements IColoredItem {
             return new Ingredient[0];
         }
 
-        CompoundNBT nbt = stack.getTag();
-        ListNBT tagList = nbt.getList("Ingredients", 10);
+        CompoundTag nbt = stack.getTag();
+        ListTag tagList = nbt.getList("Ingredients", 10);
         Ingredient[] ingredients = new Ingredient[tagList.size()];
 
         for (int i = 0; i < tagList.size(); ++i) {
@@ -183,12 +190,12 @@ public class CocktailItem extends Item implements IColoredItem {
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.DRINK;
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.DRINK;
     }
 
-    public ItemStack onFoodEaten(ItemStack itemstack, World world, PlayerEntity player) {
-        world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+    public ItemStack onFoodEaten(ItemStack itemstack, Level world, Player player) {
+        world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
 
         for (Ingredient ingredient: getIngredients(itemstack)) {
             ingredient.onDrink(player);
@@ -208,14 +215,14 @@ public class CocktailItem extends Item implements IColoredItem {
      * the Item before the action is complete.
      */
     @Override
-    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull LivingEntity entityLiving) {
-        if (entityLiving instanceof PlayerEntity) {
-            final PlayerEntity player = (PlayerEntity) entityLiving;
+    public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull Level worldIn, @Nonnull LivingEntity entityLiving) {
+        if (entityLiving instanceof Player) {
+            final Player player = (Player) entityLiving;
             onFoodEaten(stack, worldIn, player);
 
             Drink drink = getDrink(stack);
 
-            if (worldIn.isRainingAt(player.getPosition()) && drink == Drink.PINA_COLADA) {
+            if (worldIn.isRainingAt(player.blockPosition()) && drink == Drink.PINA_COLADA) {
                 // TODO advancements player.addStat(AchievementRegistry.drinkPinaColada);
             }
         }
@@ -224,17 +231,17 @@ public class CocktailItem extends Item implements IColoredItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
-        ItemStack stack = playerIn.getHeldItem(hand);
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand hand) {
+        ItemStack stack = playerIn.getItemInHand(hand);
         Drink drink = getDrink(stack);
 
         if (drink == null) {
-            return new ActionResult<>(ActionResultType.FAIL, stack);
+            return new InteractionResultHolder<>(InteractionResult.FAIL, stack);
         }
 
-        playerIn.setActiveHand(hand);
+        playerIn.startUsingItem(hand);
 
-        return new ActionResult<>(ActionResultType.SUCCESS, stack);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
     }
 
     @Override
@@ -244,12 +251,12 @@ public class CocktailItem extends Item implements IColoredItem {
     }
     
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
+    public Component getName(ItemStack stack) {
         Drink drink = getDrink(stack);
         if (drink != null) {
-            return super.getDisplayName(stack).deepCopy().mergeStyle(drink.textFormatting).mergeStyle(TextFormatting.BOLD);
+            return super.getName(stack).copy().withStyle(drink.textFormatting).withStyle(ChatFormatting.BOLD);
         }
-        return super.getDisplayName(stack);
+        return super.getName(stack);
     }
 
     public Drink getDrink() {

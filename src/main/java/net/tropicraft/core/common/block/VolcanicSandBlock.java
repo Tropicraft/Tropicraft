@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class VolcanicSandBlock extends BlockTropicraftSand {
 
@@ -18,29 +18,28 @@ public class VolcanicSandBlock extends BlockTropicraftSand {
 
 	public VolcanicSandBlock(Block.Properties properties) {
 		super(properties);
-		this.setDefaultState(getDefaultState().with(HOT, false));
+		this.registerDefaultState(defaultBlockState().setValue(HOT, false));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(HOT);
 	}
 
 	@Override
-	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity) {
-		final BlockState state = world.getBlockState(pos);
-		if (state.get(HOT)) {
+	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
+		if (state.getValue(HOT)) {
 			if (entity instanceof LivingEntity) {
 				final LivingEntity living = (LivingEntity) entity;
-				final ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.FEET);
-	
+				final ItemStack stack = living.getItemBySlot(EquipmentSlot.FEET);
+
 				// If entity isn't wearing anything on their feetsies
 				if (stack.isEmpty()) {
-					living.attackEntityFrom(DamageSource.LAVA, 0.5F);
+					living.hurt(DamageSource.LAVA, 0.5F);
 				}
 			} else {
-				entity.attackEntityFrom(DamageSource.LAVA, 0.5F);
+				entity.hurt(DamageSource.LAVA, 0.5F);
 			}
 		}
 	}

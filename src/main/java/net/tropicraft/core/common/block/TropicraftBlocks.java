@@ -3,18 +3,51 @@ package net.tropicraft.core.common.block;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.RedstoneWallTorchBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TallFlowerBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
@@ -29,8 +62,13 @@ import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -42,34 +80,34 @@ public class TropicraftBlocks {
     public static final DeferredRegister<Item> BLOCKITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MODID);
     
     public static final RegistryObject<PortalWaterBlock> PORTAL_WATER = registerNoItem(
-            "portal_water", () -> new PortalWaterBlock(Block.Properties.create(Material.WATER).noDrops()));
+            "portal_water", () -> new PortalWaterBlock(Block.Properties.of(Material.WATER).noDrops()));
 
     public static final RegistryObject<Block> CHUNK = register(
-            "chunk", Builder.block(Block.Properties.create(Material.ROCK, MaterialColor.BLACK).hardnessAndResistance(6.0F, 30F)));
+            "chunk", Builder.block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).strength(6.0F, 30F)));
     
     public static final RegistryObject<Block> AZURITE_ORE = register(
-            "azurite_ore", Builder.ore(MaterialColor.GRAY));
+            "azurite_ore", Builder.ore(MaterialColor.COLOR_GRAY));
     public static final RegistryObject<Block> EUDIALYTE_ORE = register(
-            "eudialyte_ore", Builder.ore(MaterialColor.GRAY));
+            "eudialyte_ore", Builder.ore(MaterialColor.COLOR_GRAY));
     public static final RegistryObject<Block> MANGANESE_ORE = register(
-            "manganese_ore", Builder.ore(MaterialColor.BLACK));
+            "manganese_ore", Builder.ore(MaterialColor.COLOR_BLACK));
     public static final RegistryObject<Block> SHAKA_ORE = register(
-            "shaka_ore", Builder.ore(MaterialColor.BLACK));
+            "shaka_ore", Builder.ore(MaterialColor.COLOR_BLACK));
     public static final RegistryObject<Block> ZIRCON_ORE = register(
-            "zircon_ore", Builder.ore(MaterialColor.GRAY));
+            "zircon_ore", Builder.ore(MaterialColor.COLOR_GRAY));
 
     public static final RegistryObject<Block> AZURITE_BLOCK = register(
-            "azurite_block", Builder.oreBlock(MaterialColor.LIGHT_BLUE));
+            "azurite_block", Builder.oreBlock(MaterialColor.COLOR_LIGHT_BLUE));
     public static final RegistryObject<Block> EUDIALYTE_BLOCK = register(
-            "eudialyte_block", Builder.oreBlock(MaterialColor.PINK));
+            "eudialyte_block", Builder.oreBlock(MaterialColor.COLOR_PINK));
     public static final RegistryObject<Block> MANGANESE_BLOCK = register(
-            "manganese_block", Builder.oreBlock(MaterialColor.PURPLE));
+            "manganese_block", Builder.oreBlock(MaterialColor.COLOR_PURPLE));
     public static final RegistryObject<Block> SHAKA_BLOCK = register(
-            "shaka_block", Builder.oreBlock(MaterialColor.BLUE));
+            "shaka_block", Builder.oreBlock(MaterialColor.COLOR_BLUE));
     public static final RegistryObject<Block> ZIRCON_BLOCK = register(
-            "zircon_block", Builder.oreBlock(MaterialColor.RED));
+            "zircon_block", Builder.oreBlock(MaterialColor.COLOR_RED));
     public static final RegistryObject<Block> ZIRCONIUM_BLOCK = register(
-            "zirconium_block", Builder.oreBlock(MaterialColor.PINK));
+            "zirconium_block", Builder.oreBlock(MaterialColor.COLOR_PINK));
 
     public static final Map<TropicraftFlower, RegistryObject<FlowerBlock>> FLOWERS = Arrays.<TropicraftFlower>stream(TropicraftFlower.values())
             .collect(Collectors.toMap(Function.identity(), f -> register(f.getId(), Builder.flower(f)),
@@ -77,41 +115,41 @@ public class TropicraftBlocks {
 
     public static final RegistryObject<Block> PURIFIED_SAND = register("purified_sand", Builder.sand(MaterialColor.SAND));
     public static final RegistryObject<Block> PACKED_PURIFIED_SAND = register("packed_purified_sand", Builder.sand(MaterialColor.SAND, 2, 30));
-    public static final RegistryObject<Block> CORAL_SAND = register("coral_sand", Builder.sand(MaterialColor.PINK));
-    public static final RegistryObject<Block> FOAMY_SAND = register("foamy_sand", Builder.sand(MaterialColor.GREEN));
-    public static final RegistryObject<Block> VOLCANIC_SAND = register("volcanic_sand", Builder.volcanicSand(MaterialColor.LIGHT_GRAY));
+    public static final RegistryObject<Block> CORAL_SAND = register("coral_sand", Builder.sand(MaterialColor.COLOR_PINK));
+    public static final RegistryObject<Block> FOAMY_SAND = register("foamy_sand", Builder.sand(MaterialColor.COLOR_GREEN));
+    public static final RegistryObject<Block> VOLCANIC_SAND = register("volcanic_sand", Builder.volcanicSand(MaterialColor.COLOR_LIGHT_GRAY));
     public static final RegistryObject<Block> MINERAL_SAND = register("mineral_sand", Builder.sand(MaterialColor.SAND));
 
     public static final RegistryObject<Block> MUD = register("mud", Builder.mud());
     public static final RegistryObject<Block> MUD_WITH_PIANGUAS = register("mud_with_pianguas", Builder.mud());
 
     public static final RegistryObject<RotatedPillarBlock> BAMBOO_BUNDLE = register(
-            "bamboo_bundle", Builder.bundle(AbstractBlock.Properties.create(Material.BAMBOO, MaterialColor.FOLIAGE).sound(SoundType.BAMBOO).hardnessAndResistance(0.2F, 5.0F)));
+            "bamboo_bundle", Builder.bundle(BlockBehaviour.Properties.of(Material.BAMBOO, MaterialColor.PLANT).sound(SoundType.BAMBOO).strength(0.2F, 5.0F)));
     public static final RegistryObject<RotatedPillarBlock> THATCH_BUNDLE = register(
-            "thatch_bundle", Builder.bundle(Block.Properties.create(Material.ORGANIC, MaterialColor.WOOD).sound(SoundType.PLANT).hardnessAndResistance(0.2F, 5.0F)));
+            "thatch_bundle", Builder.bundle(Block.Properties.of(Material.GRASS, MaterialColor.WOOD).sound(SoundType.GRASS).strength(0.2F, 5.0F)));
 
-    public static final RegistryObject<Block> MAHOGANY_PLANKS = register("mahogany_planks", Builder.plank(MaterialColor.BROWN));
+    public static final RegistryObject<Block> MAHOGANY_PLANKS = register("mahogany_planks", Builder.plank(MaterialColor.COLOR_BROWN));
     public static final RegistryObject<Block> PALM_PLANKS = register("palm_planks", Builder.plank(MaterialColor.WOOD));
-    public static final RegistryObject<RotatedPillarBlock> MAHOGANY_LOG = register("mahogany_log", Builder.log(MaterialColor.WOOD, MaterialColor.BROWN));
-    public static final RegistryObject<RotatedPillarBlock> PALM_LOG = register("palm_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
+    public static final RegistryObject<RotatedPillarBlock> MAHOGANY_LOG = register("mahogany_log", Builder.log(MaterialColor.WOOD, MaterialColor.COLOR_BROWN));
+    public static final RegistryObject<RotatedPillarBlock> PALM_LOG = register("palm_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN));
     public static final RegistryObject<RotatedPillarBlock> MAHOGANY_WOOD = register("mohogany_wood", Builder.wood(MaterialColor.WOOD));
-    public static final RegistryObject<RotatedPillarBlock> PALM_WOOD = register("palm_wood", Builder.wood(MaterialColor.GRAY));
+    public static final RegistryObject<RotatedPillarBlock> PALM_WOOD = register("palm_wood", Builder.wood(MaterialColor.COLOR_GRAY));
 
-    public static final RegistryObject<StairsBlock> PALM_STAIRS = register(
+    public static final RegistryObject<StairBlock> PALM_STAIRS = register(
             "palm_stairs", Builder.stairs(PALM_PLANKS));
-    public static final RegistryObject<StairsBlock> MAHOGANY_STAIRS = register(
+    public static final RegistryObject<StairBlock> MAHOGANY_STAIRS = register(
             "mahogany_stairs", Builder.stairs(MAHOGANY_PLANKS));
-    public static final RegistryObject<StairsBlock> THATCH_STAIRS = register(
+    public static final RegistryObject<StairBlock> THATCH_STAIRS = register(
             "thatch_stairs", Builder.stairs(THATCH_BUNDLE));
-    public static final RegistryObject<StairsBlock> THATCH_STAIRS_FUZZY = register(
+    public static final RegistryObject<StairBlock> THATCH_STAIRS_FUZZY = register(
             "thatch_stairs_fuzzy", Builder.stairs(THATCH_BUNDLE));
-    public static final RegistryObject<StairsBlock> BAMBOO_STAIRS = register(
+    public static final RegistryObject<StairBlock> BAMBOO_STAIRS = register(
             "bamboo_stairs", Builder.stairs(BAMBOO_BUNDLE));
-    public static final RegistryObject<StairsBlock> CHUNK_STAIRS = register(
+    public static final RegistryObject<StairBlock> CHUNK_STAIRS = register(
             "chunk_stairs", Builder.stairs(CHUNK));
 
     public static final RegistryObject<Block> COCONUT = register(
-            "coconut", () -> new CoconutBlock(Block.Properties.create(Material.GOURD).hardnessAndResistance(2.0f).harvestTool(ToolType.AXE).sound(SoundType.STONE)));
+            "coconut", () -> new CoconutBlock(Block.Properties.of(Material.VEGETABLE).strength(2.0f).harvestTool(ToolType.AXE).sound(SoundType.STONE)));
 
     public static final RegistryObject<SlabBlock> BAMBOO_SLAB = register(
             "bamboo_slab", Builder.slab(BAMBOO_BUNDLE));
@@ -143,19 +181,19 @@ public class TropicraftBlocks {
     public static final RegistryObject<SaplingBlock> PALM_SAPLING = register(
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
 
-    public static final RegistryObject<RotatedPillarBlock> PAPAYA_LOG = register("papaya_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
-    public static final RegistryObject<RotatedPillarBlock> PAPAYA_WOOD = register("papaya_wood", Builder.wood(MaterialColor.GRAY));
+    public static final RegistryObject<RotatedPillarBlock> PAPAYA_LOG = register("papaya_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN));
+    public static final RegistryObject<RotatedPillarBlock> PAPAYA_WOOD = register("papaya_wood", Builder.wood(MaterialColor.COLOR_GRAY));
 
-    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
-    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
+    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
+    public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.COLOR_GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
     public static final RegistryObject<Block> RED_MANGROVE_ROOTS = register("red_mangrove_roots", Builder.mangroveRoots());
 
-    public static final RegistryObject<RotatedPillarBlock> LIGHT_MANGROVE_LOG = register("light_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
-    public static final RegistryObject<RotatedPillarBlock> LIGHT_MANGROVE_WOOD = register("light_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
+    public static final RegistryObject<RotatedPillarBlock> LIGHT_MANGROVE_LOG = register("light_mangrove_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
+    public static final RegistryObject<RotatedPillarBlock> LIGHT_MANGROVE_WOOD = register("light_mangrove_wood", Builder.wood(MaterialColor.COLOR_GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
     public static final RegistryObject<Block> LIGHT_MANGROVE_ROOTS = register("light_mangrove_roots", Builder.mangroveRoots());
 
-    public static final RegistryObject<RotatedPillarBlock> BLACK_MANGROVE_LOG = register("black_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
-    public static final RegistryObject<RotatedPillarBlock> BLACK_MANGROVE_WOOD = register("black_mangrove_wood", Builder.wood(MaterialColor.GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
+    public static final RegistryObject<RotatedPillarBlock> BLACK_MANGROVE_LOG = register("black_mangrove_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
+    public static final RegistryObject<RotatedPillarBlock> BLACK_MANGROVE_WOOD = register("black_mangrove_wood", Builder.wood(MaterialColor.COLOR_GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
     public static final RegistryObject<Block> BLACK_MANGROVE_ROOTS = register("black_mangrove_roots", Builder.mangroveRoots());
 
     public static final RegistryObject<LeavesBlock> RED_MANGROVE_LEAVES = register("red_mangrove_leaves", Builder.mangroveLeaves(() -> TropicraftBlocks.RED_MANGROVE_PROPAGULE));
@@ -167,17 +205,17 @@ public class TropicraftBlocks {
     public static final RegistryObject<PropaguleBlock> TEA_MANGROVE_PROPAGULE = register("tea_mangrove_propagule", Builder.propagule(TropicraftTrees.TEA_MANGROVE));
     public static final RegistryObject<PropaguleBlock> BLACK_MANGROVE_PROPAGULE = register("black_mangrove_propagule", Builder.propagule(TropicraftTrees.BLACK_MANGROVE));
 
-    public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = register("stripped_mangrove_log", Builder.log(MaterialColor.GRAY, MaterialColor.BROWN));
-    public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = register("stripped_mangrove_wood", Builder.wood(MaterialColor.GRAY));
+    public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = register("stripped_mangrove_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN));
+    public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = register("stripped_mangrove_wood", Builder.wood(MaterialColor.COLOR_GRAY));
     public static final RegistryObject<Block> MANGROVE_PLANKS = register("mangrove_planks", Builder.plank(MaterialColor.WOOD));
-    public static final RegistryObject<StairsBlock> MANGROVE_STAIRS = register("mangrove_stairs", Builder.stairs(MANGROVE_PLANKS));
+    public static final RegistryObject<StairBlock> MANGROVE_STAIRS = register("mangrove_stairs", Builder.stairs(MANGROVE_PLANKS));
     public static final RegistryObject<SlabBlock> MANGROVE_SLAB = register("mangrove_slab", Builder.slab(MANGROVE_PLANKS));
     public static final RegistryObject<FenceBlock> MANGROVE_FENCE = register("mangrove_fence", Builder.fence(MANGROVE_PLANKS));
     public static final RegistryObject<FenceGateBlock> MANGROVE_FENCE_GATE = register("mangrove_fence_gate", Builder.fenceGate(MANGROVE_PLANKS));
-    public static final RegistryObject<DoorBlock> MANGROVE_DOOR = register("mangrove_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
-    public static final RegistryObject<TrapDoorBlock> MANGROVE_TRAPDOOR = register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(MANGROVE_DOOR.get())) {});
+    public static final RegistryObject<DoorBlock> MANGROVE_DOOR = register("mangrove_door", () -> new DoorBlock(Block.Properties.copy(Blocks.OAK_DOOR)) {});
+    public static final RegistryObject<TrapDoorBlock> MANGROVE_TRAPDOOR = register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(MANGROVE_DOOR.get())) {});
 
-    public static final RegistryObject<ReedsBlock> REEDS = register("reeds", () -> new ReedsBlock(Block.Properties.from(Blocks.SUGAR_CANE)));
+    public static final RegistryObject<ReedsBlock> REEDS = register("reeds", () -> new ReedsBlock(Block.Properties.copy(Blocks.SUGAR_CANE)));
     public static final RegistryObject<PapayaBlock> PAPAYA = registerWithFood("papaya", () -> new PapayaBlock(AbstractBlock.Properties.create(Material.PLANTS).tickRandomly().hardnessAndResistance(0.2F, 3.0F).sound(SoundType.WOOD).notSolid()), Foods.PAPAYA);
 
     public static final RegistryObject<FenceBlock> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
@@ -195,77 +233,77 @@ public class TropicraftBlocks {
     public static final RegistryObject<WallBlock> CHUNK_WALL = register("chunk_wall", Builder.wall(CHUNK));
     
     public static final RegistryObject<DoorBlock> BAMBOO_DOOR = register(
-            "bamboo_door", () -> new DoorBlock(Block.Properties.from(BAMBOO_BUNDLE.get()).hardnessAndResistance(1.0F)) {});
+            "bamboo_door", () -> new DoorBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1.0F)) {});
     public static final RegistryObject<DoorBlock> PALM_DOOR = register(
-            "palm_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
+            "palm_door", () -> new DoorBlock(Block.Properties.copy(Blocks.OAK_DOOR)) {});
     public static final RegistryObject<DoorBlock> MAHOGANY_DOOR = register(
-            "mahogany_door", () -> new DoorBlock(Block.Properties.from(Blocks.OAK_DOOR)) {});
+            "mahogany_door", () -> new DoorBlock(Block.Properties.copy(Blocks.OAK_DOOR)) {});
     public static final RegistryObject<DoorBlock> THATCH_DOOR = register(
-            "thatch_door", () -> new DoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
+            "thatch_door", () -> new DoorBlock(Block.Properties.copy(THATCH_BUNDLE.get())) {});
     
     public static final RegistryObject<TrapDoorBlock> BAMBOO_TRAPDOOR = register(
-            "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(BAMBOO_DOOR.get()).notSolid()) {});
+            "bamboo_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(BAMBOO_DOOR.get()).noOcclusion()) {});
     public static final RegistryObject<TrapDoorBlock> PALM_TRAPDOOR = register(
-            "palm_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(PALM_DOOR.get())) {});
+            "palm_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(PALM_DOOR.get())) {});
     public static final RegistryObject<TrapDoorBlock> MAHOGANY_TRAPDOOR = register(
-            "mahogany_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(MAHOGANY_DOOR.get())) {});
+            "mahogany_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(MAHOGANY_DOOR.get())) {});
     public static final RegistryObject<TrapDoorBlock> THATCH_TRAPDOOR = register(
-            "thatch_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(THATCH_BUNDLE.get())) {});
+            "thatch_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(THATCH_BUNDLE.get())) {});
 
     public static final RegistryObject<TallFlowerBlock> IRIS = register(
-            "iris", () -> new TallFlowerBlock(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT)));
+            "iris", () -> new TallFlowerBlock(Block.Properties.of(Material.REPLACEABLE_PLANT).noCollission().strength(0).sound(SoundType.GRASS)));
     public static final RegistryObject<PineappleBlock> PINEAPPLE = register(
-            "pineapple", () -> new PineappleBlock(Block.Properties.create(Material.TALL_PLANTS).tickRandomly().doesNotBlockMovement().hardnessAndResistance(0).sound(SoundType.PLANT)));
+            "pineapple", () -> new PineappleBlock(Block.Properties.of(Material.REPLACEABLE_PLANT).randomTicks().noCollission().strength(0).sound(SoundType.GRASS)));
 
     public static final RegistryObject<BongoDrumBlock> SMALL_BONGO_DRUM = register("small_bongo_drum", Builder.bongo(BongoDrumBlock.Size.SMALL));
     public static final RegistryObject<BongoDrumBlock> MEDIUM_BONGO_DRUM = register("medium_bongo_drum", Builder.bongo(BongoDrumBlock.Size.MEDIUM));
     public static final RegistryObject<BongoDrumBlock> LARGE_BONGO_DRUM = register("large_bongo_drum", Builder.bongo(BongoDrumBlock.Size.LARGE));
 
     public static final RegistryObject<LadderBlock> BAMBOO_LADDER = register(
-            "bamboo_ladder", () -> new LadderBlock(Block.Properties.from(Blocks.BAMBOO)) {});
+            "bamboo_ladder", () -> new LadderBlock(Block.Properties.copy(Blocks.BAMBOO)) {});
 
-    public static final RegistryObject<Block> BAMBOO_BOARDWALK = register("bamboo_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(BAMBOO_SLAB.get()).notSolid()));
-    public static final RegistryObject<Block> PALM_BOARDWALK = register("palm_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(PALM_SLAB.get()).notSolid()));
-    public static final RegistryObject<Block> MAHOGANY_BOARDWALK = register("mahogany_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(MAHOGANY_SLAB.get()).notSolid()));
-    public static final RegistryObject<Block> MANGROVE_BOARDWALK = register("mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.from(MANGROVE_SLAB.get()).notSolid()));
+    public static final RegistryObject<Block> BAMBOO_BOARDWALK = register("bamboo_boardwalk", () -> new BoardwalkBlock(Block.Properties.copy(BAMBOO_SLAB.get()).noOcclusion()));
+    public static final RegistryObject<Block> PALM_BOARDWALK = register("palm_boardwalk", () -> new BoardwalkBlock(Block.Properties.copy(PALM_SLAB.get()).noOcclusion()));
+    public static final RegistryObject<Block> MAHOGANY_BOARDWALK = register("mahogany_boardwalk", () -> new BoardwalkBlock(Block.Properties.copy(MAHOGANY_SLAB.get()).noOcclusion()));
+    public static final RegistryObject<Block> MANGROVE_BOARDWALK = register("mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.copy(MANGROVE_SLAB.get()).noOcclusion()));
 
     public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
-            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.from(BAMBOO_BUNDLE.get()).hardnessAndResistance(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()),
+            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()),
             () -> chestRenderer());
     public static final RegistryObject<SifterBlock> SIFTER = register(
-            "sifter", () -> new SifterBlock(Block.Properties.from(Blocks.OAK_PLANKS).notSolid()));
+            "sifter", () -> new SifterBlock(Block.Properties.copy(Blocks.OAK_PLANKS).noOcclusion()));
     public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
-            "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30).notSolid()),
+            "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()),
             () -> drinkMixerRenderer());
     public static final RegistryObject<AirCompressorBlock> AIR_COMPRESSOR = register(
-            "air_compressor", () -> new AirCompressorBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2, 30).notSolid()),
+            "air_compressor", () -> new AirCompressorBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()),
             () -> airCompressorRenderer());
     public static final RegistryObject<VolcanoBlock> VOLCANO = registerNoItem(
-            "volcano", () -> new VolcanoBlock(Block.Properties.from(Blocks.BEDROCK).noDrops()));
+            "volcano", () -> new VolcanoBlock(Block.Properties.copy(Blocks.BEDROCK).noDrops()));
     
     public static final RegistryObject<TikiTorchBlock> TIKI_TORCH = register(
-            "tiki_torch", () -> new TikiTorchBlock(Block.Properties.from(Blocks.TORCH).sound(SoundType.WOOD).setLightLevel(state -> state.get(TikiTorchBlock.SECTION) == TorchSection.UPPER ? 15 : 0)));
+            "tiki_torch", () -> new TikiTorchBlock(Block.Properties.copy(Blocks.TORCH).sound(SoundType.WOOD).lightLevel(state -> state.getValue(TikiTorchBlock.SECTION) == TorchSection.UPPER ? 15 : 0)));
     
     public static final RegistryObject<FlowerPotBlock> BAMBOO_FLOWER_POT = register(
             "bamboo_flower_pot", Builder.tropicraftPot());
 
     public static final RegistryObject<CoffeeBushBlock> COFFEE_BUSH = registerNoItem(
-            "coffee_bush", () -> new CoffeeBushBlock(Block.Properties.create(Material.PLANTS, MaterialColor.GRASS).hardnessAndResistance(0.15f).sound(SoundType.PLANT).notSolid()));
+            "coffee_bush", () -> new CoffeeBushBlock(Block.Properties.of(Material.PLANT, MaterialColor.GRASS).strength(0.15f).sound(SoundType.GRASS).noOcclusion()));
 
     public static final RegistryObject<BushBlock> GOLDEN_LEATHER_FERN = register(
             "small_golden_leather_fern",
-            () -> new GrowableSinglePlantBlock(Block.Properties.from(Blocks.FERN), () -> TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN)
+            () -> new GrowableSinglePlantBlock(Block.Properties.copy(Blocks.FERN), () -> TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN)
     );
 
     public static final RegistryObject<DoublePlantBlock> TALL_GOLDEN_LEATHER_FERN = registerNoItem(
             "tall_golden_leather_fern",
-            () -> new GrowableDoublePlantBlock(Block.Properties.from(Blocks.LARGE_FERN), () -> TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN)
+            () -> new GrowableDoublePlantBlock(Block.Properties.copy(Blocks.LARGE_FERN), () -> TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN)
                     .setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN)
     );
 
     public static final RegistryObject<HugePlantBlock> LARGE_GOLDEN_LEATHER_FERN = registerNoItem(
             "golden_leather_fern", // TODO: update name before release
-            () -> new HugePlantBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().zeroHardnessAndResistance().sound(SoundType.PLANT))
+            () -> new HugePlantBlock(Block.Properties.of(Material.PLANT).noOcclusion().instabreak().sound(SoundType.GRASS))
                     .setPickItem(() -> TropicraftBlocks.GOLDEN_LEATHER_FERN)
     );
 
@@ -302,9 +340,9 @@ public class TropicraftBlocks {
     public static final Map<JigarbovTorchType, RegistryObject<RedstoneWallTorchBlock>> JIGARBOV_WALL_TORCHES = Arrays.stream(JigarbovTorchType.values())
             .collect(Collectors.toMap(Function.identity(),
                     type -> registerNoItem("jigarbov_" + type.getName() + "_wall_torch", () -> {
-                        return new RedstoneWallTorchBlock(Block.Properties.from(Blocks.REDSTONE_WALL_TORCH).lootFrom(() -> Blocks.REDSTONE_TORCH)) {
+                        return new RedstoneWallTorchBlock(Block.Properties.copy(Blocks.REDSTONE_WALL_TORCH).lootFrom(() -> Blocks.REDSTONE_TORCH)) {
                             @Override
-                            public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+                            public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
                                 return new ItemStack(Items.REDSTONE_TORCH);
                             }
                         };
@@ -319,11 +357,11 @@ public class TropicraftBlocks {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
     
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Supplier<Supplier<BlockEntityWithoutLevelRenderer>> renderMethod) {
         return register(name, sup, block -> item(block, renderMethod));
     }
     
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, ItemGroup tab) {
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, CreativeModeTab tab) {
         return register(name, sup, block -> item(block, tab));
     }
     
@@ -341,30 +379,41 @@ public class TropicraftBlocks {
         return item(block, Tropicraft.TROPICRAFT_ITEM_GROUP);
     }
 
-    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, Food food) {
-        return () -> new BlockItem(block.get(), new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).food(food));
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, FoodProperties food) {
+        return () -> new BlockItem(block.get(), new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).food(food));
     }
 
-    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
-        return () -> new BlockItem(block.get(), new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP).setISTER(renderMethod));
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final Supplier<Supplier<BlockEntityWithoutLevelRenderer>> renderMethod) {
+        return () -> new BlockItem(block.get(), new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)) {
+            @Override
+            public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+                consumer.accept(new IItemRenderProperties() {
+
+                    @Override
+                    public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+                        return renderMethod.get().get();
+                    }
+                });
+            }
+        };
     }
 
-    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final ItemGroup itemGroup) {
-        return () -> new BlockItem(block.get(), new Item.Properties().group(itemGroup));
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final CreativeModeTab itemGroup) {
+        return () -> new BlockItem(block.get(), new Item.Properties().tab(itemGroup));
     }
     
     @OnlyIn(Dist.CLIENT)
-    private static Callable<ItemStackTileEntityRenderer> chestRenderer() {
+    private static Callable<BlockEntityWithoutLevelRenderer> chestRenderer() {
         return () -> new SimpleItemStackRenderer<>(BambooChestTileEntity::new);
     }
     
     @OnlyIn(Dist.CLIENT)
-    private static Callable<ItemStackTileEntityRenderer> drinkMixerRenderer() {
+    private static Callable<BlockEntityWithoutLevelRenderer> drinkMixerRenderer() {
         return () -> new SimpleItemStackRenderer<>(DrinkMixerTileEntity::new);
     }
     
     @OnlyIn(Dist.CLIENT)
-    private static Callable<ItemStackTileEntityRenderer> airCompressorRenderer() {
+    private static Callable<BlockEntityWithoutLevelRenderer> airCompressorRenderer() {
         return () -> new SimpleItemStackRenderer<>(AirCompressorTileEntity::new);
     }
 }

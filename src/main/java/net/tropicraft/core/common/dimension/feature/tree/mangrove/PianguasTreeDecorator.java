@@ -2,11 +2,11 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
@@ -33,12 +33,12 @@ public class PianguasTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<?> getDecoratorType() {
+    protected TreeDecoratorType<?> type() {
         return TropicraftTreeDecorators.PIANGUAS.get();
     }
 
     @Override
-    public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, MutableBoundingBox box) {
+    public void place(WorldGenLevel world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, BoundingBox box) {
         BlockPos lowestLog = Util.findLowestBlock(logs);
         if (lowestLog == null) return;
 
@@ -48,8 +48,8 @@ public class PianguasTreeDecorator extends TreeDecorator {
             int y = lowestLog.getY() - random.nextInt(this.spread);
 
             BlockPos local = new BlockPos(x, y, z);
-            if (world.getBlockState(local).matchesBlock(TropicraftBlocks.MUD.get())) {
-                func_227423_a_(world, local, TropicraftBlocks.MUD_WITH_PIANGUAS.get().getDefaultState(), placed, box);
+            if (world.getBlockState(local).is(TropicraftBlocks.MUD.get())) {
+                setBlock(world, local, TropicraftBlocks.MUD_WITH_PIANGUAS.get().defaultBlockState(), placed, box);
             }
         }
     }

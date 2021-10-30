@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Containers;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
 import net.tropicraft.core.common.block.DrinkMixerBlock;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.Drinks;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEntity, IMachineTile {
+public class DrinkMixerTileEntity extends BlockEntity implements TickableBlockEntity, IMachineTile {
     /** Number of ticks to mix */
     private static final int TICKS_TO_MIX = 4*20;
     private static final int MAX_NUM_INGREDIENTS = 3;
@@ -47,36 +47,36 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
     }
 
     @Override
-    public void read(BlockState blockState, @Nonnull CompoundNBT nbt) {
-        super.read(blockState, nbt);
+    public void load(BlockState blockState, @Nonnull CompoundTag nbt) {
+        super.load(blockState, nbt);
         ticks = nbt.getInt("MixTicks");
         mixing = nbt.getBoolean("Mixing");
 
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
             if (nbt.contains("Ingredient" + i)) {
-                ingredients.set(i, ItemStack.read(nbt.getCompound("Ingredient" + i)));
+                ingredients.set(i, ItemStack.of(nbt.getCompound("Ingredient" + i)));
             }
         }
 
         if (nbt.contains("Result")) {
-            result = ItemStack.read(nbt.getCompound("Result"));
+            result = ItemStack.of(nbt.getCompound("Result"));
         }
     }
 
     @Override
-    public @Nonnull CompoundNBT write(@Nonnull CompoundNBT nbt) {
-        super.write(nbt);
+    public @Nonnull CompoundTag save(@Nonnull CompoundTag nbt) {
+        super.save(nbt);
         nbt.putInt("MixTicks", ticks);
         nbt.putBoolean("Mixing", mixing);
 
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
-            CompoundNBT ingredientNbt = new CompoundNBT();
-            ingredients.get(i).write(ingredientNbt);
+            CompoundTag ingredientNbt = new CompoundTag();
+            ingredients.get(i).save(ingredientNbt);
             nbt.put("Ingredient" + i, ingredientNbt);
         }
 
-        CompoundNBT resultNbt = new CompoundNBT();
-        result.write(resultNbt);
+        CompoundTag resultNbt = new CompoundTag();
+        result.save(resultNbt);
         nbt.put("Result", resultNbt);
 
         return nbt;
@@ -118,21 +118,21 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
     public void startMixing() {
         this.ticks = 0;
         this.mixing = true;
-        if (!world.isRemote) {
-            TropicraftPackets.sendToDimension(new MessageMixerStart(this), world);
+        if (!level.isClientSide) {
+            TropicraftPackets.sendToDimension(new MessageMixerStart(this), level);
         }
     }
     
-    private void dropItem(@Nonnull ItemStack stack, @Nullable PlayerEntity at) {
+    private void dropItem(@Nonnull ItemStack stack, @Nullable Player at) {
         if (at == null) {
-            BlockPos pos = getPos().offset(getBlockState().get(DrinkMixerBlock.FACING));
-            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+            BlockPos pos = getBlockPos().relative(getBlockState().getValue(DrinkMixerBlock.FACING));
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
         } else {
-            InventoryHelper.spawnItemStack(world, at.getPosX(), at.getPosY(), at.getPosZ(), stack);
+            Containers.dropItemStack(level, at.getX(), at.getY(), at.getZ(), stack);
         }
     }
 
-    public void emptyMixer(@Nullable PlayerEntity at) {
+    public void emptyMixer(@Nullable Player at) {
         for (int i = 0; i < MAX_NUM_INGREDIENTS; i++) {
             if (!ingredients.get(i).isEmpty()) {
                 dropItem(ingredients.get(i), at);
@@ -145,7 +145,7 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
         syncInventory();
     }
 
-    public void retrieveResult(@Nullable PlayerEntity at) {
+    public void retrieveResult(@Nullable Player at) {
         if (result.isEmpty()) {
             return;
         }
@@ -259,7 +259,7 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
     
     @Override
     public Direction getDirection(BlockState state) {
-        return state.get(DrinkMixerBlock.FACING);
+        return state.getValue(DrinkMixerBlock.FACING);
     }
 
     /**
@@ -272,29 +272,29 @@ public class DrinkMixerTileEntity extends TileEntity implements ITickableTileEnt
      * @param pkt The data packet
      */
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(getBlockState(), pkt.getNbtCompound());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        load(getBlockState(), pkt.getTag());
     }
 
     protected void syncInventory() {
-        if (!world.isRemote) {
-            TropicraftPackets.sendToDimension(new MessageMixerInventory(this), world);
+        if (!level.isClientSide) {
+            TropicraftPackets.sendToDimension(new MessageMixerInventory(this), level);
         }
     }
 
     @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, 1, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, this.getUpdateTag());
     }
 
-    public CompoundNBT getUpdateTag() {
-        return writeItems(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return writeItems(new CompoundTag());
     }
 
-    private CompoundNBT writeItems(final CompoundNBT nbt) {
-        super.write(nbt);
-        ItemStackHelper.saveAllItems(nbt, ingredients, true);
-        ItemStackHelper.saveAllItems(nbt, NonNullList.from(result), true);
+    private CompoundTag writeItems(final CompoundTag nbt) {
+        super.save(nbt);
+        ContainerHelper.saveAllItems(nbt, ingredients, true);
+        ContainerHelper.saveAllItems(nbt, NonNullList.of(result), true);
         return nbt;
     }
 

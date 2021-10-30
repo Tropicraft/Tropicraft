@@ -1,10 +1,10 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.client.entity.render.layer.AshenHeldItemLayer;
@@ -17,25 +17,25 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
 
     private static final ResourceLocation ASHEN_TEXTURE_LOCATION = TropicraftRenderUtils.bindTextureEntity("ashen/ashen");
 
-    public AshenRenderer(EntityRendererManager manager) {
+    public AshenRenderer(EntityRenderDispatcher manager) {
         super(manager, new AshenModel(), 0.5f);
 
         addLayer(new AshenMaskLayer(this));
         AshenHeldItemLayer<AshenEntity, AshenModel> layer = new AshenHeldItemLayer<>(this);
-        layer.setAshenModel(entityModel);
+        layer.setAshenModel(model);
         addLayer(layer);
-        shadowOpaque = 0.5f;
-        shadowSize = 0.3f;
+        shadowStrength = 0.5f;
+        shadowRadius = 0.3f;
     }
 
     @Override
-    public void render(AshenEntity entityAshen, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        entityModel.actionState = entityAshen.getActionState();
-        if (entityAshen.getAttackTarget() != null && entityAshen.getDistance(entityAshen.getAttackTarget()) < 5.0F && !entityAshen.isSwingInProgress) {
-            entityModel.swinging = true;
+    public void render(AshenEntity entityAshen, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+        model.actionState = entityAshen.getActionState();
+        if (entityAshen.getTarget() != null && entityAshen.distanceTo(entityAshen.getTarget()) < 5.0F && !entityAshen.swinging) {
+            model.swinging = true;
         } else {
-            if (entityAshen.isSwingInProgress && entityAshen.swingProgressInt > 6) {
-                entityModel.swinging = false;
+            if (entityAshen.swinging && entityAshen.swingTime > 6) {
+                model.swinging = false;
             }
         }
         super.render(entityAshen, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
@@ -43,7 +43,7 @@ public class AshenRenderer extends MobRenderer<AshenEntity, AshenModel> {
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(AshenEntity ashenEntity) {
+    public ResourceLocation getTextureLocation(AshenEntity ashenEntity) {
         return ASHEN_TEXTURE_LOCATION;
     }
 }

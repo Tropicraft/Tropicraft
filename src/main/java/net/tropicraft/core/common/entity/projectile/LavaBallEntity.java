@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.entity.projectile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -28,7 +28,7 @@ public class LavaBallEntity extends Entity
     public double accelerationY;
     public double accelerationZ;
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, World world) {
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world) {
         super(type, world);
         setFire = false;
         held = false;
@@ -36,10 +36,10 @@ public class LavaBallEntity extends Entity
         lifeTimer = 0;
     }
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type,World world, double i, double j, double k, double motX, double motY, double motZ) {
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type,Level world, double i, double j, double k, double motX, double motY, double motZ) {
         super(type, world);
         setFire = false;
-        setLocationAndAngles(i, j, k, 0, 0);
+        moveTo(i, j, k, 0, 0);
         accelerationX = motX;
         accelerationY = motY;
         accelerationZ = motZ;
@@ -48,7 +48,7 @@ public class LavaBallEntity extends Entity
         lifeTimer = 0;
     }
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, World world, float startSize) {
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, float startSize) {
         super(type, world);
         size = startSize;
         setFire = false;
@@ -57,28 +57,28 @@ public class LavaBallEntity extends Entity
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return true;
     }
 
     @Override
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return true;
     }
 
     @OnlyIn(Dist.CLIENT)
     public void supahDrip() {
-        float x = (float) getPosX();
-        float y = (float) getPosY();
-        float z = (float) getPosZ();
+        float x = (float) getX();
+        float y = (float) getY();
+        float z = (float) getZ();
 
-        if (world.isRemote) {
-            world.addParticle(ParticleTypes.LAVA, x, y, z, this.getMotion().x, -1.5F, this.getMotion().z);
+        if (level.isClientSide) {
+            level.addParticle(ParticleTypes.LAVA, x, y, z, this.getDeltaMovement().x, -1.5F, this.getDeltaMovement().z);
         }
     }
 
     @Override
-    protected void registerData()
+    protected void defineSynchedData()
     {
 
     }
@@ -97,9 +97,9 @@ public class LavaBallEntity extends Entity
             this.remove();
         }
 
-        double motionX = this.getMotion().x;
-        double motionY = this.getMotion().y;
-        double motionZ = this.getMotion().z;
+        double motionX = this.getDeltaMovement().x;
+        double motionY = this.getDeltaMovement().y;
+        double motionZ = this.getDeltaMovement().z;
 
         if (size < 1) {
             size += .025;
@@ -114,57 +114,57 @@ public class LavaBallEntity extends Entity
 
         if (!onGround) {
             motionY -=.05F;
-            if (world.isRemote) {
-                for (int i = 0; i < 5 + rand.nextInt(3); i++){
+            if (level.isClientSide) {
+                for (int i = 0; i < 5 + random.nextInt(3); i++){
                     supahDrip();
                 }
             }
         }
 
-        if (collidedHorizontally) {
+        if (horizontalCollision) {
             motionZ = 0;
             motionX = 0;
         }
 
         //TODO: Note below, these used to be tempLavaMoving - maybe they still need to be?
-        int thisX = (int)Math.floor(getPosX());
-        int thisY = (int)Math.floor(getPosY());
-        int thisZ = (int)Math.floor(getPosZ());
+        int thisX = (int)Math.floor(getX());
+        int thisY = (int)Math.floor(getY());
+        int thisZ = (int)Math.floor(getZ());
 
         BlockPos posCurrent = new BlockPos(thisX, thisY, thisZ);
-        BlockPos posBelow = posCurrent.down();
-        BlockState stateBelow = world.getBlockState(posBelow);
+        BlockPos posBelow = posCurrent.below();
+        BlockState stateBelow = level.getBlockState(posBelow);
 
-        if (!world.isAirBlock(posBelow) && stateBelow.getMaterial() != Material.LAVA && !held) {
+        if (!level.isEmptyBlock(posBelow) && stateBelow.getMaterial() != Material.LAVA && !held) {
             if (setFire) {
-                world.setBlockState(posCurrent, Blocks.LAVA.getDefaultState(), 3);
+                level.setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
                 this.remove();
             }
 
             if (!setFire) {
-                if (world.isAirBlock(posCurrent.west())) {
-                    world.setBlockState(posCurrent.west(), Blocks.LAVA.getDefaultState(), 2);
+                if (level.isEmptyBlock(posCurrent.west())) {
+                    level.setBlock(posCurrent.west(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                if (world.isAirBlock(posCurrent.east())) {
-                    world.setBlockState(posCurrent.east(), Blocks.LAVA.getDefaultState(), 2);
+                if (level.isEmptyBlock(posCurrent.east())) {
+                    level.setBlock(posCurrent.east(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                if (world.isAirBlock(posCurrent.south())) {
-                    world.setBlockState(posCurrent.south(), Blocks.LAVA.getDefaultState(), 2);
+                if (level.isEmptyBlock(posCurrent.south())) {
+                    level.setBlock(posCurrent.south(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                if (world.isAirBlock(posCurrent.north())) {
-                    world.setBlockState(posCurrent.north(), Blocks.LAVA.getDefaultState(), 2);
+                if (level.isEmptyBlock(posCurrent.north())) {
+                    level.setBlock(posCurrent.north(), Blocks.LAVA.defaultBlockState(), 2);
                 }
 
-                world.setBlockState(posCurrent, Blocks.LAVA.getDefaultState(), 3);
+                level.setBlock(posCurrent, Blocks.LAVA.defaultBlockState(), 3);
                 setFire = true;
             }
         }
 
-        Vector3d motion = new Vector3d(motionX + this.accelerationX, motionY + this.accelerationY, motionZ + this.accelerationZ);
-        this.setMotion(motion);
+        Vec3 motion = new Vec3(motionX + this.accelerationX, motionY + this.accelerationY, motionZ + this.accelerationZ);
+        this.setDeltaMovement(motion);
 
         this.move(MoverType.SELF, motion);
     }
@@ -176,17 +176,17 @@ public class LavaBallEntity extends Entity
     }*/
 
     @Override
-    protected void readAdditional(CompoundNBT nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
         this.lifeTimer = nbt.getInt("lifeTimer");
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putInt("lifeTimer", this.lifeTimer);
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

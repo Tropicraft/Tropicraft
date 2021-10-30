@@ -1,34 +1,27 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.GlazedTerracottaBlock;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Direction.AxisDirection;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.template.IStructureProcessorType;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.Template.BlockInfo;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 public class SteepPathProcessor extends PathStructureProcessor {
     public static final Codec<SteepPathProcessor> CODEC = Codec.unit(new SteepPathProcessor());
 
-    static final IStructureProcessorType<SteepPathProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":steep_path", () -> CODEC);
+    static final StructureProcessorType<SteepPathProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":steep_path", () -> CODEC);
 
     @Override
-    public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockPos pos2, BlockInfo originalBlockInfo, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
+    public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos seedPos, BlockPos pos2, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
         BlockPos pos = blockInfo.pos;
 
         if (originalBlockInfo.pos.getY() != 1 || originalBlockInfo.state.getBlock() == TropicraftBlocks.BAMBOO_STAIRS.get() || originalBlockInfo.state.isAir()) {
@@ -44,10 +37,10 @@ public class SteepPathProcessor extends PathStructureProcessor {
         int bridgeTo = -1;
         
         BlockState ladder = null;
-        for (AxisDirection axisDir : AxisDirection.values()) {
-            Direction dir = Direction.getFacingFromAxis(axisDir, axis);
+        for (Direction.AxisDirection axisDir : Direction.AxisDirection.values()) {
+            Direction dir = Direction.get(axisDir, axis);
             // Detect an overhang by checking if the heightmap between spots differs by >2
-            BlockPos nextHeight = worldReaderIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, pos.offset(dir)).down();
+            BlockPos nextHeight = worldReaderIn.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos.relative(dir)).below();
             if (nextHeight.getY() > pos.getY()) {
                 ladder = getLadderState(dir);
                 bridgeTo = nextHeight.getY();
@@ -71,19 +64,19 @@ public class SteepPathProcessor extends PathStructureProcessor {
             return blockInfo;//new BlockInfo(blockInfo.pos, debugState, blockInfo.nbt); // Nothing to do here, we're on flat ground
         }
         // The facing the ladder stores is opposite to the direction it's placed (i.e. it faces "outward")
-        Direction dir = ladder.get(LadderBlock.FACING).getOpposite();
-        pos = pos.up();
-        if (bridgeTo == pos.getY() && canPlaceLadderAt(worldReaderIn, pos.up(), dir) == null) {
+        Direction dir = ladder.getValue(LadderBlock.FACING).getOpposite();
+        pos = pos.above();
+        if (bridgeTo == pos.getY() && canPlaceLadderAt(worldReaderIn, pos.above(), dir) == null) {
         	if (pos.getY() > 127) {
 	            // If the next spot up can't support a ladder, this is a one block step, so place a stair block
-	            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().getDefaultState().with(StairsBlock.FACING, dir));
+	            setBlockState(worldReaderIn, pos, TropicraftBlocks.THATCH_STAIRS.get().defaultBlockState().setValue(StairBlock.FACING, dir));
         	}
         } else {
             // Otherwise, place ladders upwards until we find air (bridging over an initial gap if required)
             while (bridgeTo >= pos.getY() || canPlaceLadderAt(worldReaderIn, pos, dir) != null) {
                 setBlockState(worldReaderIn, pos, ladder);
-                setBlockState(worldReaderIn, pos.offset(dir), TropicraftBlocks.THATCH_BUNDLE.get().getDefaultState());
-                pos = pos.up();
+                setBlockState(worldReaderIn, pos.relative(dir), TropicraftBlocks.THATCH_BUNDLE.get().defaultBlockState());
+                pos = pos.above();
             }
         }
         return blockInfo;//new BlockInfo(blockInfo.pos, debugState, blockInfo.nbt);
@@ -91,12 +84,12 @@ public class SteepPathProcessor extends PathStructureProcessor {
     
     // Check that there is a solid block behind the ladder at this pos, and return the correct ladder state
     // Returns null if placement is not possible
-    private BlockState canPlaceLadderAt(IWorldReader worldReaderIn, BlockPos pos, Direction dir) {
-        BlockPos check = pos.offset(dir);
+    private BlockState canPlaceLadderAt(LevelReader worldReaderIn, BlockPos pos, Direction dir) {
+        BlockPos check = pos.relative(dir);
         BlockState state = worldReaderIn.getBlockState(check);
         if (!state.isAir(worldReaderIn, check)) {
             BlockState ladderState = getLadderState(dir);
-            if (ladderState.isValidPosition(worldReaderIn, pos)) {
+            if (ladderState.canSurvive(worldReaderIn, pos)) {
                 return ladderState;
             }
         }
@@ -104,11 +97,11 @@ public class SteepPathProcessor extends PathStructureProcessor {
     }
     
     private BlockState getLadderState(Direction dir) {
-        return TropicraftBlocks.BAMBOO_LADDER.get().getDefaultState().with(LadderBlock.FACING, dir.getOpposite());
+        return TropicraftBlocks.BAMBOO_LADDER.get().defaultBlockState().setValue(LadderBlock.FACING, dir.getOpposite());
     }
     
     @Override
-    protected IStructureProcessorType<?> getType() {
+    protected StructureProcessorType<?> getType() {
         return TYPE;
     }
 

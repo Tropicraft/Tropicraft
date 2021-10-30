@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.network.message;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 
@@ -16,11 +16,11 @@ public class MessageSifterStart extends MessageTileEntity<SifterTileEntity> {
 		super(sifter);
 	}
 
-	public static void encode(final MessageSifterStart message, final PacketBuffer buf) {
+	public static void encode(final MessageSifterStart message, final FriendlyByteBuf buf) {
 		MessageTileEntity.encode(message, buf);
 	}
 
-	public static MessageSifterStart decode(final PacketBuffer buf) {
+	public static MessageSifterStart decode(final FriendlyByteBuf buf) {
 		final MessageSifterStart message = new MessageSifterStart();
 		MessageTileEntity.decode(message, buf);
 		return message;

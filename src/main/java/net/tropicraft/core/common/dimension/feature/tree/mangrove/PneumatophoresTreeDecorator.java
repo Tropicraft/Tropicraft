@@ -2,14 +2,14 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
-import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import static net.minecraft.world.gen.feature.TreeFeature.isReplaceableAt;
+import static net.minecraft.world.gen.feature.TreeFeature.validTreePos;
 
-public class PneumatophoresTreeDecorator extends TreeDecorator {
+public clasnet.minecraft.world.level.levelgen.feature.TreeFeatureecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),
@@ -40,12 +40,12 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<?> getDecoratorType() {
+    protected TreeDecoratorType<?> type() {
         return TropicraftTreeDecorators.PNEUMATOPHORES.get();
     }
 
     @Override
-    public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, MutableBoundingBox box) {
+    public void place(WorldGenLevel world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, BoundingBox box) {
         BlockPos origin = Util.findLowestBlock(logs);
         if (origin == null) return;
 
@@ -54,7 +54,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
         int maxTopY = origin.getY() + 3;
         int minBottomY = origin.getY() - 6;
 
-        BlockPos.Mutable mutablePos = origin.toMutable();
+        BlockPos.MutableBlockPos mutablePos = origin.mutable();
         while (MangroveTrunkPlacer.isWaterAt(world, mutablePos) && mutablePos.getY() < maxTopY) {
             mutablePos.move(Direction.UP);
         }
@@ -65,7 +65,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int dx = random.nextInt(spread) - random.nextInt(spread);
             int dz = random.nextInt(spread) - random.nextInt(spread);
             if (dx == 0 && dz == 0) continue;
-            mutablePos.setAndOffset(origin, dx, 0, dz);
+            mutablePos.setWithOffset(origin, dx, 0, dz);
 
             // Don't generate pneumatophores if there isn't a solid block in the column to attach onto
             boolean canGenerate = false;
@@ -73,7 +73,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             for (int y = topY; y >= minBottomY; y--) {
                 mutablePos.setY(y);
 
-                if (!isReplaceableAt(world, mutablePos)) {
+                if (!validTreePos(world, mutablePos)) {
                     canGenerate = true;
                     minY = y;
                     break;

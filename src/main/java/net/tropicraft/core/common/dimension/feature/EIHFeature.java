@@ -1,15 +1,15 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
@@ -18,17 +18,17 @@ import java.util.function.Supplier;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
-public class EIHFeature extends Feature<NoFeatureConfig> {
+public class EIHFeature extends Feature<NoneFeatureConfiguration> {
 
-    private static final Supplier<BlockState> EIH_STATE = () -> TropicraftBlocks.CHUNK.get().getDefaultState();
-    private static final BlockState LAVA_STATE = Blocks.LAVA.getDefaultState();
+    private static final Supplier<BlockState> EIH_STATE = () -> TropicraftBlocks.CHUNK.get().defaultBlockState();
+    private static final BlockState LAVA_STATE = Blocks.LAVA.defaultBlockState();
 
-    public EIHFeature(Codec<NoFeatureConfig> codec) {
+    public EIHFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
         byte height = 5;
         int i = pos.getX();
         int j = pos.getY() + 1;
@@ -42,7 +42,7 @@ public class EIHFeature extends Feature<NoFeatureConfig> {
             return false;
         }
 
-        if (!TropicraftFeatureUtil.isSoil(world, pos.down()) && world.getBlockState(pos.down()).getMaterial() != Material.SAND) {
+        if (!TropicraftFeatureUtil.isSoil(world, pos.below()) && world.getBlockState(pos.below()).getMaterial() != Material.SAND) {
             return false;
         }
 
@@ -230,8 +230,8 @@ public class EIHFeature extends Feature<NoFeatureConfig> {
         return true;
     }
     
-    private void setBlock(IWorld world, int i, int i1, int i2, final BlockState state) {
-        world.setBlockState(new BlockPos(i, i1, i2), state, 3);
+    private void setBlock(LevelAccessor world, int i, int i1, int i2, final BlockState state) {
+        world.setBlock(new BlockPos(i, i1, i2), state, 3);
     }
 
     /**
@@ -240,7 +240,7 @@ public class EIHFeature extends Feature<NoFeatureConfig> {
      * @param y yCoord
      * @param z zCoord
      */
-    private void placeEye(IWorld world, int x, int y, int z, int eyeRand) {
+    private void placeEye(LevelAccessor world, int x, int y, int z, int eyeRand) {
         if (world.getRandom().nextInt(1000) == 0) {
             eyeRand = world.getRandom().nextInt(9);
         }
@@ -249,34 +249,34 @@ public class EIHFeature extends Feature<NoFeatureConfig> {
         switch (eyeRand) {
             case 0:
             case 5:
-                blockState = Blocks.GLOWSTONE.getDefaultState();
+                blockState = Blocks.GLOWSTONE.defaultBlockState();
                 break;
             case 1:
-                blockState = Blocks.OBSIDIAN.getDefaultState();
+                blockState = Blocks.OBSIDIAN.defaultBlockState();
                 break;
             case 2:
-                blockState = Blocks.DIAMOND_BLOCK.getDefaultState();
+                blockState = Blocks.DIAMOND_BLOCK.defaultBlockState();
                 break;
             case 3:
-                blockState = Blocks.IRON_BLOCK.getDefaultState();
+                blockState = Blocks.IRON_BLOCK.defaultBlockState();
                 break;
             case 4:
-                blockState = Blocks.GOLD_BLOCK.getDefaultState();
+                blockState = Blocks.GOLD_BLOCK.defaultBlockState();
                 break;
             case 6:
-                blockState = TropicraftBlocks.AZURITE_BLOCK.get().getDefaultState();
+                blockState = TropicraftBlocks.AZURITE_BLOCK.get().defaultBlockState();
                 break;
             case 7:
-                blockState = TropicraftBlocks.EUDIALYTE_BLOCK.get().getDefaultState();
+                blockState = TropicraftBlocks.EUDIALYTE_BLOCK.get().defaultBlockState();
                 break;
             case 8:
-                blockState = TropicraftBlocks.ZIRCON_BLOCK.get().getDefaultState();
+                blockState = TropicraftBlocks.ZIRCON_BLOCK.get().defaultBlockState();
                 break;
             default:    // Should never get called, if so, redstone in tropics :o
-                blockState = Blocks.REDSTONE_BLOCK.getDefaultState();
+                blockState = Blocks.REDSTONE_BLOCK.defaultBlockState();
                 break;
         }
 
-        setBlockState(world, new BlockPos(x, y, z), blockState);
+        setBlock(world, new BlockPos(x, y, z), blockState);
     }
 }

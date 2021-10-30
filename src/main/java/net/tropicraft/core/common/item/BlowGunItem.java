@@ -1,39 +1,45 @@
 package net.tropicraft.core.common.item;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.ShootableItem;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionUtils;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.util.*;
-import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.world.World;
+import com.mojang.math.Quaternion;
+import net.minecraft.world.phys.Vec3;
+import com.mojang.math.Vector3f;
+import net.minecraft.world.level.Level;
 
 import java.util.function.Predicate;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
-public class BlowGunItem extends ShootableItem {
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+
+public class BlowGunItem extends ProjectileWeaponItem {
 
     public BlowGunItem(final Properties properties) {
         super(properties);
     }
 
     @Override
-    public Predicate<ItemStack> getInventoryAmmoPredicate() {
+    public Predicate<ItemStack> getAllSupportedProjectiles() {
         return (itemStack) -> {
             if (itemStack.getItem() == Items.TIPPED_ARROW) {
-                for (final EffectInstance effectInstance : PotionUtils.getEffectsFromStack(itemStack)) {
-                    if (effectInstance.getPotion() == Effects.SLOWNESS) {
+                for (final MobEffectInstance effectInstance : PotionUtils.getMobEffects(itemStack)) {
+                    if (effectInstance.getEffect() == MobEffects.MOVEMENT_SLOWDOWN) {
                         return true;
                     }
                 }
@@ -43,25 +49,25 @@ public class BlowGunItem extends ShootableItem {
     }
 
     @Override
-    public int func_230305_d_() {
+    public int getDefaultProjectileRange() {
         return 8;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack heldStack = player.getHeldItem(hand);
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        ItemStack heldStack = player.getItemInHand(hand);
         ItemStack ammo = getAmmo(player, heldStack);
         if (!ammo.isEmpty()) {
-            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.abilities.isCreativeMode, 10, 0);
-            return new ActionResult<>(ActionResultType.SUCCESS, heldStack);
+            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.abilities.instabuild, 10, 0);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, heldStack);
         } else {
-            return new ActionResult<>(ActionResultType.FAIL, heldStack);
+            return new InteractionResultHolder<>(InteractionResult.FAIL, heldStack);
         }
     }
 
     private static ItemStack getAmmo(LivingEntity entityIn, ItemStack stack) {
-        final boolean isCreativeMode = entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).abilities.isCreativeMode;
-        final ItemStack ammo = entityIn.findAmmo(stack);
+        final boolean isCreativeMode = entityIn instanceof Player && ((Player)entityIn).abilities.instabuild;
+        final ItemStack ammo = entityIn.getProjectile(stack);
         if (isCreativeMode) {
             return getProjectile();
         }
@@ -73,45 +79,45 @@ public class BlowGunItem extends ShootableItem {
 
     public static ItemStack getProjectile() {
         ItemStack itemStack = new ItemStack(Items.TIPPED_ARROW);
-        itemStack = PotionUtils.appendEffects(itemStack, ImmutableList.of(new EffectInstance(Effects.SLOWNESS, 3 * 20, 20)));
+        itemStack = PotionUtils.setCustomEffects(itemStack, ImmutableList.of(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 3 * 20, 20)));
         return itemStack;
     }
 
-    public static void fireProjectile(World world, LivingEntity shooter, Hand hand, ItemStack heldItem, ItemStack projectile, float soundPitch, boolean isCreativeMode, float dmg, float pitch) {
-        if (!world.isRemote) {
-            AbstractArrowEntity arrowEntity = createArrow(world, shooter, projectile);
+    public static void fireProjectile(Level world, LivingEntity shooter, InteractionHand hand, ItemStack heldItem, ItemStack projectile, float soundPitch, boolean isCreativeMode, float dmg, float pitch) {
+        if (!world.isClientSide) {
+            AbstractArrow arrowEntity = createArrow(world, shooter, projectile);
             if (isCreativeMode) {
-                arrowEntity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+                arrowEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
 
-            Vector3d lookVec = shooter.getLookVec();
+            Vec3 lookVec = shooter.getLookAngle();
             Quaternion quaternion = new Quaternion(new Vector3f(lookVec), 0, true);
-            Vector3d look = shooter.getLook(1.0F);
+            Vec3 look = shooter.getViewVector(1.0F);
             Vector3f look3f = new Vector3f(look);
             look3f.transform(quaternion);
-            arrowEntity.shoot(look3f.getX(), look3f.getY(), look3f.getZ(), dmg, pitch);
+            arrowEntity.shoot(look3f.x(), look3f.y(), look3f.z(), dmg, pitch);
 
-            heldItem.damageItem(1, shooter, (i) -> {
-                i.sendBreakAnimation(hand);
+            heldItem.hurtAndBreak(1, shooter, (i) -> {
+                i.broadcastBreakEvent(hand);
             });
 
             projectile.split(1);
-            if (projectile.isEmpty() && shooter instanceof PlayerEntity) {
-                ((PlayerEntity) shooter).inventory.deleteStack(projectile);
+            if (projectile.isEmpty() && shooter instanceof Player) {
+                ((Player) shooter).inventory.removeItem(projectile);
             }
 
-            world.addEntity(arrowEntity);
-            world.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
+            world.addFreshEntity(arrowEntity);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, soundPitch);
         }
     }
 
-    public static ArrowEntity createArrow(World world, LivingEntity shooter, ItemStack projectile) {
+    public static Arrow createArrow(Level world, LivingEntity shooter, ItemStack projectile) {
         ArrowItem arrowItem = (ArrowItem) (projectile.getItem() instanceof ArrowItem ? projectile.getItem() : Items.ARROW);
-        ArrowEntity arrowEntity = (ArrowEntity) arrowItem.createArrow(world, projectile, shooter);
-        arrowEntity.setDamage(0);
-        arrowEntity.setHitSound(SoundEvents.ITEM_CROSSBOW_HIT);
-        arrowEntity.setIsCritical(false);
-        arrowEntity.setPotionEffect(getProjectile());
+        Arrow arrowEntity = (Arrow) arrowItem.createArrow(world, projectile, shooter);
+        arrowEntity.setBaseDamage(0);
+        arrowEntity.setSoundEvent(SoundEvents.CROSSBOW_HIT);
+        arrowEntity.setCritArrow(false);
+        arrowEntity.setEffectsFromItem(getProjectile());
         return arrowEntity;
     }
 

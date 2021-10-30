@@ -3,13 +3,13 @@ package net.tropicraft.core.common.dimension.biome;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.layer.Layer;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.newbiome.layer.Layer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
@@ -18,15 +18,15 @@ import net.tropicraft.core.common.dimension.layer.TropicraftLayerUtil;
 import java.util.Objects;
 import java.util.Set;
 
-public class TropicraftBiomeProvider extends BiomeProvider {
+public class TropicraftBiomeProvider extends BiomeSource {
     public static final Codec<TropicraftBiomeProvider> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 Codec.LONG.fieldOf("seed").stable().forGetter(b -> b.seed),
-                RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(b -> b.biomes)
+                RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(b -> b.biomes)
         ).apply(instance, instance.stable(TropicraftBiomeProvider::new));
     });
 
-    private static final Set<RegistryKey<Biome>> POSSIBLE_BIOMES = ImmutableSet.of(
+    private static final Set<ResourceKey<Biome>> POSSIBLE_BIOMES = ImmutableSet.of(
             TropicraftBiomes.TROPICS,
             TropicraftBiomes.TROPICS_OCEAN,
             TropicraftBiomes.TROPICS_RIVER,
@@ -48,7 +48,7 @@ public class TropicraftBiomeProvider extends BiomeProvider {
     private final Layer noiseLayer;
 
     public TropicraftBiomeProvider(long seed, Registry<Biome> biomes) {
-        super(POSSIBLE_BIOMES.stream().map(biomes::getValueForKey).filter(Objects::nonNull).map(biome -> () -> biome));
+        super(POSSIBLE_BIOMES.stream().map(biomes::get).filter(Objects::nonNull).map(biome -> () -> biome));
 
         this.seed = seed;
         this.biomes = biomes;
@@ -57,22 +57,22 @@ public class TropicraftBiomeProvider extends BiomeProvider {
     }
 
     public static void register() {
-        Registry.register(Registry.BIOME_PROVIDER_CODEC, new ResourceLocation(Constants.MODID, "tropics"), CODEC);
+        Registry.register(Registry.BIOME_SOURCE, new ResourceLocation(Constants.MODID, "tropics"), CODEC);
     }
 
     @Override
-    protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
+    protected Codec<? extends BiomeSource> codec() {
         return CODEC;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public BiomeProvider getBiomeProvider(long seed) {
+    public BiomeSource withSeed(long seed) {
         return new TropicraftBiomeProvider(seed, biomes);
     }
 
     @Override
     public Biome getNoiseBiome(int x, int y, int z) {
-        return noiseLayer.func_242936_a(biomes, x, z);
+        return noiseLayer.get(biomes, x, z);
     }
 }

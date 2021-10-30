@@ -2,16 +2,16 @@ package net.tropicraft.core.common.dimension.chunk;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.IChunk;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.Heightmap.Type;
-import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.StructureFeatureManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
@@ -19,66 +19,72 @@ import net.tropicraft.Constants;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-public class TropicraftChunkGenerator extends NoiseChunkGenerator {
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.synth.PerlinNoise;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
+
+public class TropicraftChunkGenerator extends NoiseBasedChunkGenerator {
     public static final Codec<TropicraftChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                BiomeProvider.CODEC.fieldOf("biome_source").forGetter(g -> g.biomeProvider),
+                BiomeSource.CODEC.fieldOf("biome_source").forGetter(g -> g.biomeSource),
                 Codec.LONG.fieldOf("seed").stable().forGetter(g -> g.seed),
-                DimensionSettings.DIMENSION_SETTINGS_CODEC.fieldOf("settings").forGetter(g -> g.field_236080_h_)
+                NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(g -> g.settings)
         ).apply(instance, instance.stable(TropicraftChunkGenerator::new));
     });
 
     private final VolcanoGenerator volcano;
     private final long seed;
 
-    public TropicraftChunkGenerator(BiomeProvider biomeProvider, long seed, Supplier<DimensionSettings> settings) {
+    public TropicraftChunkGenerator(BiomeSource biomeProvider, long seed, Supplier<NoiseGeneratorSettings> settings) {
         super(biomeProvider, seed, settings);
         this.seed = seed;
         this.volcano = new VolcanoGenerator(seed, biomeProvider);
 
         // maintain parity with old noise. cursed? very. i'm sorry :(
-        SharedSeedRandom random = new SharedSeedRandom(seed);
-        new OctavesNoiseGenerator(random, IntStream.rangeClosed(-15, 0));
-        new OctavesNoiseGenerator(random, IntStream.rangeClosed(-15, 0));
-        new OctavesNoiseGenerator(random, IntStream.rangeClosed(-7, 0));
-        new PerlinNoiseGenerator(random, IntStream.rangeClosed(-3, 0));
+        WorldgenRandom random = new WorldgenRandom(seed);
+        new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
+        new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
+        new PerlinNoise(random, IntStream.rangeClosed(-7, 0));
+        new PerlinSimplexNoise(random, IntStream.rangeClosed(-3, 0));
 
-        random.skip(2620);
-        this.field_236082_u_ = new OctavesNoiseGenerator(random, IntStream.rangeClosed(-15, 0));
+        random.consumeCount(2620);
+        this.depthNoise = new PerlinNoise(random, IntStream.rangeClosed(-15, 0));
     }
 
     public static void register() {
-        Registry.register(Registry.CHUNK_GENERATOR_CODEC, new ResourceLocation(Constants.MODID, "tropics"), CODEC);
+        Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation(Constants.MODID, "tropics"), CODEC);
     }
 
     @Override
-    protected Codec<? extends ChunkGenerator> func_230347_a_() {
+    protected Codec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public ChunkGenerator func_230349_a_(long seed) {
-        return new TropicraftChunkGenerator(this.biomeProvider.getBiomeProvider(seed), seed, this.field_236080_h_);
+    public ChunkGenerator withSeed(long seed) {
+        return new TropicraftChunkGenerator(this.biomeSource.withSeed(seed), seed, this.settings);
     }
 
     @Override
-    public int getGroundHeight() {
+    public int getSpawnHeight() {
         return getSeaLevel() + 1;
     }
 
     @Override
-    public void func_230352_b_(IWorld world, StructureManager structures, IChunk chunk) {
-        super.func_230352_b_(world, structures, chunk);
+    public void fillFromNoise(LevelAccessor world, StructureFeatureManager structures, ChunkAccess chunk) {
+        super.fillFromNoise(world, structures, chunk);
 
         ChunkPos chunkPos = chunk.getPos();
-        volcano.generate(chunkPos.x, chunkPos.z, chunk, randomSeed);
+        volcano.generate(chunkPos.x, chunkPos.z, chunk, random);
     }
 
     @Override
-    public int getHeight(int x, int z, Type heightmapType) {
-        int height = super.getHeight(x, z, heightmapType);
-        if (heightmapType != Type.OCEAN_FLOOR && heightmapType != Type.OCEAN_FLOOR_WG) {
+    public int getBaseHeight(int x, int z, Types heightmapType) {
+        int height = super.getBaseHeight(x, z, heightmapType);
+        if (heightmapType != Types.OCEAN_FLOOR && heightmapType != Types.OCEAN_FLOOR_WG) {
             return Math.max(height, this.volcano.getVolcanoHeight(height, x, z));
         }
         return height;

@@ -1,16 +1,22 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.projectile.ExplodingCoconutEntity;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
+
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 
 public class ExplodingCoconutItem extends Item {
 
@@ -19,31 +25,31 @@ public class ExplodingCoconutItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         // TODO config option
-        final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();
+        final boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks();
         //allow to use anywhere but in the main area of the server
-        final boolean ltOverride = world.getDimensionKey() != TropicraftDimension.WORLD;
-        ItemStack itemstack = player.getHeldItem(hand);
+        final boolean ltOverride = world.dimension() != TropicraftDimension.WORLD;
+        ItemStack itemstack = player.getItemInHand(hand);
         if (!canPlayerThrow && !ltOverride) {
-            if (!world.isRemote) {
-                player.sendStatusMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"), false);
+            if (!world.isClientSide) {
+                player.displayClientMessage(new TranslatableComponent("tropicraft.coconutBombWarning"), false);
             }
-            return new ActionResult<>(ActionResultType.PASS, itemstack);
+            return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
         }
         
         if (!player.isCreative()) {
             itemstack.shrink(1);
         }
-        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-        if (!world.isRemote) {
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        if (!world.isClientSide) {
             ExplodingCoconutEntity snowballentity = new ExplodingCoconutEntity(world, player);
             snowballentity.setItem(itemstack);
-            snowballentity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
-            world.addEntity(snowballentity);
+            snowballentity.shootFromRotation(player, player.xRot, player.yRot, 0.0F, 1.5F, 1.0F);
+            world.addFreshEntity(snowballentity);
         }
 
-        player.addStat(Stats.ITEM_USED.get(this));
-        return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+        player.awardStat(Stats.ITEM_USED.get(this));
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
     }
 }

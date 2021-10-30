@@ -1,25 +1,25 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMaskItem;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIMeleeAndRangedAttack extends Goal
 {
     /** The entity the AI instance has been applied to */
     private final AshenEntity entityHost;
     /** The entity (as a RangedAttackMob) the AI instance has been applied to. */
-    private final IRangedAttackMob rangedAttackEntityHost;
+    private final RangedAttackMob rangedAttackEntityHost;
     private LivingEntity attackTarget;
     /**
      * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the
@@ -49,15 +49,15 @@ public class EntityAIMeleeAndRangedAttack extends Goal
         this.shootCutoffRange = maxAttackDistanceIn;
         this.shootCutoffRangeSqr = maxAttackDistanceIn * maxAttackDistanceIn;
         this.meleeHitRange = meleeHitRange;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
-        LivingEntity entitylivingbase = entityHost.getRevengeTarget();
+    public boolean canUse() {
+        LivingEntity entitylivingbase = entityHost.getLastHurtByMob();
 
         if (entitylivingbase == null) {
             return false;
@@ -71,15 +71,15 @@ public class EntityAIMeleeAndRangedAttack extends Goal
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
-        return shouldExecute() || !entityHost.getNavigator().noPath();
+    public boolean canContinueToUse() {
+        return canUse() || !entityHost.getNavigation().isDone();
     }
 
     /**
      * Resets the task
      */
     @Override
-    public void resetTask() {
+    public void stop() {
         attackTarget = null;
         seeTime = 0;
         rangedAttackTime = -1;
@@ -91,13 +91,13 @@ public class EntityAIMeleeAndRangedAttack extends Goal
     @Override
     public void tick() {
         if (attackTarget != null) {
-            ItemStack headGear = attackTarget.getItemStackFromSlot(EquipmentSlotType.HEAD);
+            ItemStack headGear = attackTarget.getItemBySlot(EquipmentSlot.HEAD);
             if (headGear.getItem() instanceof AshenMaskItem) {
                 return;
             }
         }
-        double d0 = entityHost.getDistanceSq(attackTarget.getPosX(), attackTarget.getBoundingBox().minY, attackTarget.getPosZ());
-        boolean flag = entityHost.getEntitySenses().canSee(attackTarget);
+        double d0 = entityHost.distanceToSqr(attackTarget.getX(), attackTarget.getBoundingBox().minY, attackTarget.getZ());
+        boolean flag = entityHost.getSensing().canSee(attackTarget);
 
         if (flag) {
             ++seeTime;
@@ -112,16 +112,16 @@ public class EntityAIMeleeAndRangedAttack extends Goal
         }
 
         if (seeTime >= 20) {
-            entityHost.getNavigator().tryMoveToEntityLiving(attackTarget, entityMoveSpeed);
+            entityHost.getNavigation().moveTo(attackTarget, entityMoveSpeed);
         }
 
-        entityHost.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
+        entityHost.getLookControl().setLookAt(attackTarget, 30.0F, 30.0F);
         float f;
 
         //System.out.println(rangedAttackTime);
 
         if (--rangedAttackTime <= 0) {
-            f = MathHelper.sqrt(d0) / shootCutoffRange;
+            f = Mth.sqrt(d0) / shootCutoffRange;
             float f1 = f;
 
             if (f < 0.1F) {
@@ -133,11 +133,11 @@ public class EntityAIMeleeAndRangedAttack extends Goal
             }
 
             if (d0 >= (double)shootCutoffRange * (double)shootCutoffRange) {
-                rangedAttackEntityHost.attackEntityWithRangedAttack(attackTarget, f1);
+                rangedAttackEntityHost.performRangedAttack(attackTarget, f1);
                 rangedAttackTime = maxRangedAttackTime;
             } else if (d0 <= meleeHitRange * meleeHitRange) {
-                entityHost.attackEntityAsMob(attackTarget);
-                entityHost.swingArm(Hand.MAIN_HAND);
+                entityHost.doHurtTarget(attackTarget);
+                entityHost.swing(InteractionHand.MAIN_HAND);
                 rangedAttackTime = maxMeleeAttackTime;
             }
         }

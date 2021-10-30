@@ -2,15 +2,15 @@ package net.tropicraft.core.common.dimension.feature.config;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.function.Supplier;
 
-public final class FruitTreeConfig implements IFeatureConfig {
+public final class FruitTreeConfig implements FeatureConfiguration {
     public static final Codec<FruitTreeConfig> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 BlockState.CODEC.fieldOf("wood").forGetter(c -> c.wood),
@@ -33,10 +33,10 @@ public final class FruitTreeConfig implements IFeatureConfig {
     }
 
     public FruitTreeConfig(BlockState sapling, BlockState fruitLeaves) {
-        this(Blocks.OAK_LOG.getDefaultState(), sapling, TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), fruitLeaves);
+        this(Blocks.OAK_LOG.defaultBlockState(), sapling, TropicraftBlocks.FRUIT_LEAVES.get().defaultBlockState(), fruitLeaves);
     }
 
     public FruitTreeConfig(Supplier<? extends Block> sapling, Supplier<? extends Block> fruitLeaves) {
-        this(sapling.get().getDefaultState(), fruitLeaves.get().getDefaultState());
+        this(sapling.get().defaultBlockState(), fruitLeaves.get().defaultBlockState());
     }
 }

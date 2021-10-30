@@ -8,13 +8,13 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.network.chat.Component;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.CocktailItem;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -37,7 +37,7 @@ public class Ingredient implements Comparable<Ingredient> {
     public static final Ingredient coconut = new Ingredient(11, TropicraftBlocks.COCONUT, false, 0xefefef).addAction(new DrinkActionFood(1, 0.1f));
     public static final Ingredient coconutChunk = new Ingredient(12, TropicraftItems.COCONUT_CHUNK, false, 0xefefef/*, 0.1f*/).addAction(new DrinkActionFood(1, 0.1f));
     public static final Ingredient sugarcane = new Ingredient(13, Items.SUGAR_CANE.delegate, false, 0xb1ff6b, 0.1f);
-    public static final Ingredient roastedCoffeeBean = new Ingredient(14, TropicraftItems.ROASTED_COFFEE_BEAN, false, 0x68442c, 0.95f).addAction(new DrinkActionFood(4, 0.2f)).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
+    public static final Ingredient roastedCoffeeBean = new Ingredient(14, TropicraftItems.ROASTED_COFFEE_BEAN, false, 0x68442c, 0.95f).addAction(new DrinkActionFood(4, 0.2f)).addAction(new DrinkActionPotion(MobEffects.MOVEMENT_SPEED, 5, 1));
     public static final Ingredient waterBucket = new Ingredient(15, Items.WATER_BUCKET.delegate, false, 0xffffff);
     public static final Ingredient milkBucket = new Ingredient(16, Items.MILK_BUCKET.delegate, false, 0xffffff, 0.1f).addAction(new DrinkActionFood(2, 0.2f));
     public static final Ingredient cocoaBean = new Ingredient(17, Items.COCOA_BEANS.delegate, false, 0x805A3E, 0.95f).addAction(new DrinkActionFood(4, 0.2f));
@@ -46,7 +46,7 @@ public class Ingredient implements Comparable<Ingredient> {
      * An ItemStack representing the item this ingredient is
      */
     @Nonnull
-    private Supplier<? extends IItemProvider> item;
+    private Supplier<? extends ItemLike> item;
 
     /**
      * Render color of this Ingredient in a mug
@@ -78,7 +78,7 @@ public class Ingredient implements Comparable<Ingredient> {
         this.item = Items.AIR.delegate;
     }
 
-    public Ingredient(int id, @Nonnull Supplier<? extends IItemProvider> ingredientItem, boolean primary, int color) {
+    public Ingredient(int id, @Nonnull Supplier<? extends ItemLike> ingredientItem, boolean primary, int color) {
         if (ingredientsList[id] != null) {
             throw new IllegalArgumentException("Ingredient Id slot " + id + " already occupied by " + ingredientsList[id] + "!");
         }
@@ -90,7 +90,7 @@ public class Ingredient implements Comparable<Ingredient> {
         ingredientsList[id] = this;
     }
 
-    public Ingredient(int id, @Nonnull Supplier<? extends IItemProvider> ingredientItem, boolean primary, int color, float alpha) {
+    public Ingredient(int id, @Nonnull Supplier<? extends ItemLike> ingredientItem, boolean primary, int color, float alpha) {
         this(id, ingredientItem, primary, color);
         this.alpha = alpha;
     }
@@ -134,7 +134,7 @@ public class Ingredient implements Comparable<Ingredient> {
         return Integer.compare(id, other.id);
     }
     
-    public void onDrink(PlayerEntity player) {
+    public void onDrink(Player player) {
         for (final DrinkAction action: actions) {
             action.onDrink(player);
         }
@@ -166,8 +166,8 @@ public class Ingredient implements Comparable<Ingredient> {
         return is;
     }
 
-    public ITextComponent getDisplayName() {
-        return new ItemStack(getIngredientItem()).getDisplayName();
+    public Component getDisplayName() {
+        return new ItemStack(getIngredientItem()).getHoverName();
     }
 
 }

@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.dimension.feature.block_placer;
 
-import net.minecraft.world.gen.blockplacer.BlockPlacerType;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

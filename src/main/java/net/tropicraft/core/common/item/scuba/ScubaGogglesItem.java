@@ -4,42 +4,49 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.LazyLoadedValue;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.data.TropicraftLangKeys;
+import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
-
-    private static final ResourceLocation GOGGLES_OVERLAY_TEX_PATH = new ResourceLocation(Constants.MODID, "textures/gui/goggles.png");
-
+    
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, Constants.MODID);
 
     // This is never registered to any entities, so it's not used in any logic
@@ -50,62 +57,33 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     );
     private static final AttributeModifier VISIBILITY_BOOST = new AttributeModifier(UUID.fromString("b09a907f-8264-455b-af81-997c06aa2268"), Constants.MODID + ".underwater.visibility", 0.25, Operation.MULTIPLY_BASE);
 
-    private final LazyValue<Multimap<Attribute, AttributeModifier>> boostedModifiers;
+    private final LazyLoadedValue<Multimap<Attribute, AttributeModifier>> boostedModifiers;
 
     public ScubaGogglesItem(ScubaType type, Properties builder) {
-        super(type, EquipmentSlotType.HEAD, builder);
+        super(type, EquipmentSlot.HEAD, builder);
 
         // lazily initialize because attributes are registered after items
-        this.boostedModifiers = new LazyValue<>(() ->
+        this.boostedModifiers = new LazyLoadedValue<>(() ->
                 ImmutableMultimap.<Attribute, AttributeModifier>builder()
-                        .putAll(super.getAttributeModifiers(EquipmentSlotType.HEAD, new ItemStack(this)))
+                        .putAll(super.getAttributeModifiers(EquipmentSlot.HEAD, new ItemStack(this)))
                         .put(UNDERWATER_VISIBILITY.get(), VISIBILITY_BOOST)
                         .build()
         );
-    }
-    
-    // Taken from ForgeIngameGui#renderPumpkinOverlay
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, int width, int height, float partialTicks) {
-        RenderSystem.disableDepthTest();
-        RenderSystem.depthMask(false);
-        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.disableAlphaTest();
-        Minecraft mc = Minecraft.getInstance();
-        double scaledWidth = mc.getMainWindow().getScaledWidth();
-        double scaledHeight = mc.getMainWindow().getScaledHeight();
-        mc.getTextureManager().bindTexture(GOGGLES_OVERLAY_TEX_PATH);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 1.0f).endVertex();
-        bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0f, 1.0f).endVertex();
-        bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
-        tessellator.draw();
-        RenderSystem.depthMask(true);
-        RenderSystem.enableDepthTest();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void renderWaterFog(FogDensity event) {
-        ActiveRenderInfo info = event.getInfo();
-        FluidState fluid = info.getFluidState();
-        if (fluid.isTagged(FluidTags.WATER) && info.getRenderViewEntity() instanceof ClientPlayerEntity) {
-            ClientPlayerEntity player = (ClientPlayerEntity) info.getRenderViewEntity();
-            if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof ScubaGogglesItem) {
-                // Taken from FogRenderer#setupFog in the case where the player is in fluid
-                RenderSystem.fogMode(GlStateManager.FogMode.EXP2);
-                float f = 0.05F - player.getWaterBrightness() * player.getWaterBrightness() * 0.03F;
+        Camera info = event.getInfo();
+        //FluidState fluid = info.getFluidInCamera();
+        FogType fogType = info.getFluidInCamera();
+        if (/*fluid.is(FluidTags.WATER) &&*/fogType == FogType.WATER && info.getEntity() instanceof LocalPlayer player) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ScubaGogglesItem) {
+                float f = 192.0F;
+                f *= Math.max(0.25F, player.getWaterVision());
 
-                // Reduce fog slightly
-                f *= 0.75F;
-    
+                f *= 1.25;
+
                 event.setDensity(f);
                 event.setCanceled(true);
             }
@@ -113,9 +91,9 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.HEAD) {
-            return boostedModifiers.getValue();
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        if (slot == EquipmentSlot.HEAD) {
+            return boostedModifiers.get();
         } else {
             return super.getAttributeModifiers(slot, stack);
         }

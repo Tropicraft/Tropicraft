@@ -2,17 +2,17 @@ package net.tropicraft.core.common.entity.ai;
 
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.NoteBlock;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.NoteBlock;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIPartyTime extends Goal
 {
@@ -45,25 +45,25 @@ public class EntityAIPartyTime extends Goal
     public EntityAIPartyTime(EntityKoaBase entityObjIn)
     {
         this.entityObj = entityObjIn;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
 
         if ((!entityObj.getWantsToParty() && this.entityObj.druggedTime <= 0) || entityObj.listPosDrums.size() == 0) {
             return false;
         }
 
-        BlockPos blockpos = this.entityObj.getPosition();
+        BlockPos blockpos = this.entityObj.blockPosition();
 
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN)) {
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN)) {
             if (!isTooClose()) {
-                if (entityObj.world.rand.nextInt(20) == 0) {
+                if (entityObj.level.random.nextInt(20) == 0) {
                     return true;
                 } else {
                     return false;
@@ -82,16 +82,16 @@ public class EntityAIPartyTime extends Goal
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
-        BlockPos blockpos = this.entityObj.getPosition();
+        BlockPos blockpos = this.entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if ((this.entityObj.druggedTime > 0 || !this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN))
+        if ((this.entityObj.druggedTime > 0 || !this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN))
         {
             return !isTooClose();
 
         } else {
-            return entityObj.world.rand.nextInt(60) != 0;
+            return entityObj.level.random.nextInt(60) != 0;
         }
     }
 
@@ -106,42 +106,42 @@ public class EntityAIPartyTime extends Goal
             blockposGoal = entityObj.listPosDrums.get(assignedDrumIndex);
         }
 
-        if (entityObj.world.getGameTime() % 200 == 0){
+        if (entityObj.level.getGameTime() % 200 == 0){
             if (this.entityObj.listPosDrums.size() > 0) {
-                assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
+                assignedDrumIndex = entityObj.level.random.nextInt(entityObj.listPosDrums.size());
             }
             //if (wasClose) {
-                bangDrum = entityObj.world.rand.nextBoolean();
+                bangDrum = entityObj.level.random.nextBoolean();
             //}
         }
 
         if (blockposGoal == null) {
-            resetTask();
+            stop();
             return;
         }
 
         //prevent walking onto source
-        double dist = entityObj.getPositionVec().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        double dist = entityObj.position().distanceTo(new Vec3(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
         if (dist < 8D) {
             wasClose = true;
         }
         if (dist < 3D && entityObj.isOnGround()) {
             isClose = true;
-            entityObj.getNavigator().clearPath();
+            entityObj.getNavigation().stop();
             if (!bangDrum) {
                 //entityObj.setSitting(true);
                 entityObj.setDancing(true);
-                this.entityObj.getJumpController().setJumping();
-                this.entityObj.rotationYaw = entityObj.world.rand.nextInt(360);
+                this.entityObj.getJumpControl().jump();
+                this.entityObj.yRot = entityObj.level.random.nextInt(360);
             } else {
                 entityObj.setDancing(false);
                 if (true || lookUpdateTimer <= 0) {
 
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+                    entityObj.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 
                     //keep for testing, was neat sounding
                     int amp = 1;//entityObj.level.random.nextInt(10) + 1;
-                    int rate = 4 + (entityObj.getEntityId() % 7);
+                    int rate = 4 + (entityObj.getId() % 7);
 
                     int index1 = 0;
 
@@ -160,7 +160,7 @@ public class EntityAIPartyTime extends Goal
                     int phases = 4;
                     int phaseSplit = (nightEnd - nightStart) / phases;
 
-                    int timeOfDay = (int)(entityObj.world.getDayTime() % 24000);
+                    int timeOfDay = (int)(entityObj.level.getDayTime() % 24000);
                     int nightTime = (timeOfDay - nightStart);
 
                     if (nightTime > phaseSplit * 3) {
@@ -197,14 +197,14 @@ public class EntityAIPartyTime extends Goal
                             hit = true;
                         }
                     } else {
-                        hit = entityObj.world.getGameTime() % (amp * rate) == 0;
+                        hit = entityObj.level.getGameTime() % (amp * rate) == 0;
                     }
                     //System.out.println(entityObj.world.getGameTime());
 
                     if (hit) {
                         //System.out.println("stage: " + entityObj.hitIndex + " - " + entityObj.hitIndex2);
                         entityObj.hitIndex2++;
-                        BlockState state = entityObj.world.getBlockState(blockposGoal);
+                        BlockState state = entityObj.level.getBlockState(blockposGoal);
                         //TODO: 1.14 readd
                         /*if (state.getBlock() instanceof BlockBongoDrum) {
                             //((BlockBongoDrum) state.getOwner()).playBongoSound(entityObj.world, null, blockposGoal, state);
@@ -215,18 +215,18 @@ public class EntityAIPartyTime extends Goal
                             entityObj.swingArm(Hand.MAIN_HAND);
                         } else */
                         if (state.getBlock() instanceof NoteBlock) {
-                            if (entityObj.world.rand.nextInt(10) == 0) {
-                                for (int i = 0; i < 1 + entityObj.world.rand.nextInt(4); i++) {
+                            if (entityObj.level.random.nextInt(10) == 0) {
+                                for (int i = 0; i < 1 + entityObj.level.random.nextInt(4); i++) {
                                     //note.changePitch();
-                                    state.cycleValue(NoteBlock.NOTE).get(NoteBlock.NOTE);
+                                    state.cycle(NoteBlock.NOTE).getValue(NoteBlock.NOTE);
                                 }
                             } else {
                                 //note.triggerNote(entityObj.world, blockposGoal);
-                                state.getBlock().onBlockClicked(state, entityObj.world, blockposGoal,
-                                        FakePlayerFactory.get((ServerWorld) entityObj.world,
+                                state.getBlock().attack(state, entityObj.level, blockposGoal,
+                                        FakePlayerFactory.get((ServerLevel) entityObj.level,
                                                 new GameProfile(UUID.fromString(" e517cf6a-ce31-4ac8-b48d-44b4f0f918a7"), "tropicraftKoa")));
                             }
-                            entityObj.swingArm(Hand.MAIN_HAND);
+                            entityObj.swing(InteractionHand.MAIN_HAND);
 
                         }
                     }
@@ -235,7 +235,7 @@ public class EntityAIPartyTime extends Goal
 
                 }
 
-                this.entityObj.getLookController().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+                this.entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                         8F, 8F);
             }
 
@@ -247,7 +247,7 @@ public class EntityAIPartyTime extends Goal
 
         if (!isClose) {
             entityObj.setDancing(true);
-            if ((this.entityObj.getNavigator().noPath() || walkingTimeout <= 0) && repathPentalty <= 0) {
+            if ((this.entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
 
                 int i = blockposGoal.getX();
                 int j = blockposGoal.getY();
@@ -255,17 +255,17 @@ public class EntityAIPartyTime extends Goal
 
                 boolean success = false;
 
-                if (this.entityObj.getDistanceSq(Vector3d.copyCentered(blockposGoal)) > 256.0) {
-                    Vector3d Vector3d = RandomPositionGenerator.func_234133_a_(this.entityObj, 14, 3, new Vector3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
+                if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0) {
+                    Vec3 Vector3d = RandomPos.getLandPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                     if (Vector3d != null) {
-                        success = this.entityObj.getNavigator().tryMoveToXYZ(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                        success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
                     } else {
                         success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
                         //System.out.println("success? " + success);
                     }
                 } else {
-                    success = this.entityObj.getNavigator().tryMoveToXYZ((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                    success = this.entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
                 }
 
                 if (!success) {
@@ -295,14 +295,14 @@ public class EntityAIPartyTime extends Goal
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting()
+    public void start()
     {
-        super.startExecuting();
+        super.start();
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
-        this.entityObj.getNavigator().clearPath();
+        this.entityObj.getNavigation().stop();
         if (this.entityObj.listPosDrums.size() > 0) {
-            assignedDrumIndex = entityObj.world.rand.nextInt(entityObj.listPosDrums.size());
+            assignedDrumIndex = entityObj.level.random.nextInt(entityObj.listPosDrums.size());
         }
         //System.out.println("start party mode");
     }
@@ -311,9 +311,9 @@ public class EntityAIPartyTime extends Goal
      * Resets the task
      */
     @Override
-    public void resetTask()
+    public void stop()
     {
-        super.resetTask();
+        super.stop();
         entityObj.setSitting(false);
         walkingTimeout = 0;
         entityObj.setDancing(false);
@@ -327,9 +327,9 @@ public class EntityAIPartyTime extends Goal
         BlockPos blockposGoal = null;
         if (this.entityObj.posLastFireplaceFound != null) {
             //path to base of fire
-            blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
+            blockposGoal = this.entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getHomePosition();
+            blockposGoal = this.entityObj.getRestrictCenter();
         }
 
         if (blockposGoal == null || blockposGoal == BlockPos.ZERO) {
@@ -337,7 +337,7 @@ public class EntityAIPartyTime extends Goal
         }
 
         //prevent walking into the fire
-        return entityObj.getPositionVec().isWithinDistanceOf(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()), 1.0);
+        return entityObj.position().closerThan(new Vec3(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()), 1.0);
     }
 }
 

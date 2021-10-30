@@ -1,19 +1,21 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MusicDiscItem;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.RecordItem;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public class TropicalMusicDiscItem extends MusicDiscItem {
+import net.minecraft.world.item.Item.Properties;
+
+public class TropicalMusicDiscItem extends RecordItem {
     
     private final RecordMusic type;
 
@@ -23,18 +25,18 @@ public class TropicalMusicDiscItem extends MusicDiscItem {
     }
     
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(getDescLine(1).deepCopy().mergeStyle(TextFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        tooltip.add(getDescLine(1).copy().withStyle(ChatFormatting.GRAY));
     }
     
-    private IFormattableTextComponent getDescLine(int i) {
-        return new TranslationTextComponent(this.getTranslationKey() + ".desc." + i);
+    private MutableComponent getDescLine(int i) {
+        return new TranslatableComponent(this.getDescriptionId() + ".desc." + i);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public IFormattableTextComponent getDescription() {
+    public MutableComponent getDisplayName() {
         return this.getDescLine(0);
     }
 

@@ -1,21 +1,21 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.feature.template.StructureProcessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 
 public abstract class CheatyStructureProcessor extends StructureProcessor {
-    protected boolean isAirOrWater(IWorldReader worldReaderIn, BlockPos pos) {
-        return worldReaderIn.isAirBlock(pos) || worldReaderIn.getBlockState(pos).getBlock() == Blocks.WATER;
+    protected boolean isAirOrWater(LevelReader worldReaderIn, BlockPos pos) {
+        return worldReaderIn.isEmptyBlock(pos) || worldReaderIn.getBlockState(pos).getBlock() == Blocks.WATER;
     }
 
-    protected boolean setBlockState(IWorldReader world, BlockPos pos, BlockState state) {
-        if (world instanceof IWorld) {
-            return ((IWorld) world).setBlockState(pos, state, BlockFlags.NO_RERENDER | BlockFlags.UPDATE_NEIGHBORS);
+    protected boolean setBlockState(LevelReader world, BlockPos pos, BlockState state) {
+        if (world instanceof LevelAccessor) {
+            return ((LevelAccessor) world).setBlock(pos, state, BlockFlags.NO_RERENDER | BlockFlags.UPDATE_NEIGHBORS);
         }
         return false;
     }

@@ -6,9 +6,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.JigsawBlock;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.JigsawTileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
@@ -19,11 +18,12 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.jigsaw.IJigsawDeserializer;
 import net.minecraft.world.gen.feature.jigsaw.JigsawOrientation;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.block.entity.JigsawBlockEntity;
+import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
 import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -46,29 +46,29 @@ public final class HomeTreeBranchPiece extends JigsawPiece implements PieceWithG
 
     private static final IJigsawDeserializer<HomeTreeBranchPiece> TYPE = IJigsawDeserializer.func_236851_a_(Constants.MODID + ":home_tree_branch", CODEC);
 
-    private static final CompoundNBT JIGSAW_NBT = createJigsawNbt();
+    private static final CompoundTag JIGSAW_NBT = createJigsawNbt();
 
     // TODO make home tree radius configurable
     public final float minAngle;
     public final float maxAngle;
 
     public HomeTreeBranchPiece(float minAngle, float maxAngle) {
-        super(JigsawPattern.PlacementBehaviour.RIGID);
+        super(StructureTemplatePool.Projection.RIGID);
         this.minAngle = minAngle;
         this.maxAngle = maxAngle;
     }
 
-    public static Function<JigsawPattern.PlacementBehaviour, HomeTreeBranchPiece> create(float minAngle, float maxAngle) {
+    public static Function<StructureTemplatePool.Projection, HomeTreeBranchPiece> create(float minAngle, float maxAngle) {
         return placementBehaviour -> new HomeTreeBranchPiece(minAngle, maxAngle);
     }
 
-    private static CompoundNBT createJigsawNbt() {
-        CompoundNBT nbt = new CompoundNBT();
+    private static CompoundTag createJigsawNbt() {
+        CompoundTag nbt = new CompoundTag();
         nbt.putString("name", "minecraft:bottom");
         nbt.putString("final_state", "minecraft:air");
         nbt.putString("pool", "minecraft:empty");
         nbt.putString("target", "minecraft:empty");
-        nbt.putString("joint", JigsawTileEntity.OrientationType.ROLLABLE.getString());
+        nbt.putString("joint", JigsawBlockEntity.JointType.ROLLABLE.getSerializedName());
         return nbt;
     }
 

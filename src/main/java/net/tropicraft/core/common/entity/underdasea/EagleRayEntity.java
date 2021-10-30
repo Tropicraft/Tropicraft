@@ -1,23 +1,23 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import static java.lang.Math.PI;
 
-public class EagleRayEntity extends AbstractFishEntity {
+public class EagleRayEntity extends AbstractFish {
 
 	/**
 	 * Number of joints the wings have. End points included.
@@ -46,18 +46,18 @@ public class EagleRayEntity extends AbstractFishEntity {
 	 */
 	private int animationTicks;
 
-	public EagleRayEntity(EntityType<? extends EagleRayEntity> type, World world) {
+	public EagleRayEntity(EntityType<? extends EagleRayEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return AbstractFishEntity.func_234176_m_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0);
+	public static AttributeSupplier.Builder createAttributes() {
+		return AbstractFish.createAttributes()
+				.add(Attributes.MAX_HEALTH, 10.0);
 	}
 
 	@Override
-	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-		return ActionResultType.PASS;
+	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class EagleRayEntity extends AbstractFishEntity {
 		super.tick();
 		//this.setSwimSpeeds(1f, 0.2f, 0.2f);
 
-		if (world.isRemote) {
+		if (level.isClientSide) {
 			if (animationTicks < WING_CYCLE_TICKS) {
 				animationTicks++;
 			} else {
@@ -93,7 +93,7 @@ public class EagleRayEntity extends AbstractFishEntity {
 
 	private float amplitudeFunc(float n) {
 		double angle = 2 * PI * -n / (WING_JOINTS - 1f);
-		return decayFunc(n) * MathHelper.sin((float) (getAnimationProgress() * 2 * PI + PHASES * angle));
+		return decayFunc(n) * Mth.sin((float) (getAnimationProgress() * 2 * PI + PHASES * angle));
 	}
 
 	private float getAnimationProgress() {
@@ -109,17 +109,17 @@ public class EagleRayEntity extends AbstractFishEntity {
 	}
 
 	@Override
-	protected ItemStack getFishBucket() {
+	protected ItemStack getBucketItemStack() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
 	protected SoundEvent getFlopSound() {
-		return SoundEvents.ENTITY_SALMON_FLOP;
+		return SoundEvents.SALMON_FLOP;
 	}
 
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target) {
+	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(TropicraftItems.EAGLE_RAY_SPAWN_EGG.get());
 	}
 }

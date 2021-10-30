@@ -1,58 +1,58 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.ReedsBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
-public final class ReedsFeature extends Feature<NoFeatureConfig> {
-    private static final BlockState REEDS = TropicraftBlocks.REEDS.get().getDefaultState();
+public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
+    private static final BlockState REEDS = TropicraftBlocks.REEDS.get().defaultBlockState();
 
     private static final int HEIGHT_ABOVE_WATER = 2;
     private static final int MAX_HEIGHT = 3;
 
     private static final int MAX_DEPTH = MAX_HEIGHT;
 
-    public ReedsFeature(Codec<NoFeatureConfig> codec) {
+    public ReedsFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos origin, NoFeatureConfig config) {
-        if (!world.getBlockState(origin).matchesBlock(Blocks.WATER) || !world.isAirBlock(origin.up())) {
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos origin, NoneFeatureConfiguration config) {
+        if (!world.getBlockState(origin).is(Blocks.WATER) || !world.isEmptyBlock(origin.above())) {
             return false;
         }
 
         boolean generated = false;
 
-        BlockPos.Mutable bottomPos = new BlockPos.Mutable();
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos bottomPos = new BlockPos.MutableBlockPos();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         for (int i = 0; i < 32; i++) {
             int x = origin.getX() + random.nextInt(8) - random.nextInt(8);
             int z = origin.getZ() + random.nextInt(8) - random.nextInt(8);
-            int y = world.getHeight(Heightmap.Type.OCEAN_FLOOR, x, z);
+            int y = world.getHeight(Heightmap.Types.OCEAN_FLOOR, x, z);
 
-            bottomPos.setPos(x, y, z);
+            bottomPos.set(x, y, z);
             generated |= this.generateOne(world, bottomPos, random, mutablePos);
         }
 
         return generated;
     }
 
-    private boolean generateOne(ISeedReader world, BlockPos pos, Random random, BlockPos.Mutable mutablePos) {
-        if (!REEDS.isValidPosition(world, pos) || !this.canReplace(world.getBlockState(pos))) {
+    private boolean generateOne(WorldGenLevel world, BlockPos pos, Random random, BlockPos.MutableBlockPos mutablePos) {
+        if (!REEDS.canSurvive(world, pos) || !this.canReplace(world.getBlockState(pos))) {
             return false;
         }
 
@@ -71,12 +71,12 @@ public final class ReedsFeature extends Feature<NoFeatureConfig> {
         return true;
     }
 
-    private boolean validateHeight(ISeedReader world, BlockPos pos, int height, BlockPos.Mutable mutablePos) {
+    private boolean validateHeight(WorldGenLevel world, BlockPos pos, int height, BlockPos.MutableBlockPos mutablePos) {
         if (height > MAX_HEIGHT) {
             return false;
         }
 
-        mutablePos.setPos(pos);
+        mutablePos.set(pos);
         for (int y = height; y >= 0; y--) {
             mutablePos.setY(pos.getY() + height);
             if (!this.canReplace(world.getBlockState(mutablePos))) {
@@ -88,14 +88,14 @@ public final class ReedsFeature extends Feature<NoFeatureConfig> {
     }
 
     private boolean canReplace(BlockState state) {
-        return state.matchesBlock(Blocks.WATER) || state.isAir();
+        return state.is(Blocks.WATER) || state.isAir();
     }
 
-    private int getWaterDepthAt(ISeedReader world, BlockPos pos, BlockPos.Mutable mutablePos) {
+    private int getWaterDepthAt(WorldGenLevel world, BlockPos pos, BlockPos.MutableBlockPos mutablePos) {
         int depth = 0;
 
-        mutablePos.setPos(pos);
-        while (world.getBlockState(mutablePos).matchesBlock(Blocks.WATER)) {
+        mutablePos.set(pos);
+        while (world.getBlockState(mutablePos).is(Blocks.WATER)) {
             mutablePos.move(Direction.UP);
             if (++depth >= MAX_DEPTH) {
                 break;
@@ -105,23 +105,23 @@ public final class ReedsFeature extends Feature<NoFeatureConfig> {
         return depth;
     }
 
-    private void generateShort(ISeedReader world, BlockPos pos) {
+    private void generateShort(WorldGenLevel world, BlockPos pos) {
         BlockState state = REEDS
-                .with(ReedsBlock.TYPE, ReedsBlock.Type.SINGLE)
-                .with(ReedsBlock.WATERLOGGED, false);
+                .setValue(ReedsBlock.TYPE, ReedsBlock.Type.SINGLE)
+                .setValue(ReedsBlock.WATERLOGGED, false);
 
-        world.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+        world.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
     }
 
-    private boolean generateTall(ISeedReader world, BlockPos pos, int height, BlockPos.Mutable mutablePos) {
+    private boolean generateTall(WorldGenLevel world, BlockPos pos, int height, BlockPos.MutableBlockPos mutablePos) {
         for (int y = 0; y < height; y++) {
             mutablePos.setY(pos.getY() + y);
 
             BlockState state = REEDS
-                    .with(ReedsBlock.TYPE, y == height - 1 ? ReedsBlock.Type.TOP : ReedsBlock.Type.BOTTOM)
-                    .with(ReedsBlock.WATERLOGGED, world.getBlockState(mutablePos).matchesBlock(Blocks.WATER));
+                    .setValue(ReedsBlock.TYPE, y == height - 1 ? ReedsBlock.Type.TOP : ReedsBlock.Type.BOTTOM)
+                    .setValue(ReedsBlock.WATERLOGGED, world.getBlockState(mutablePos).is(Blocks.WATER));
 
-            world.setBlockState(mutablePos, state, Constants.BlockFlags.BLOCK_UPDATE);
+            world.setBlock(mutablePos, state, Constants.BlockFlags.BLOCK_UPDATE);
         }
 
         return true;

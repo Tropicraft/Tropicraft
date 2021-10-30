@@ -1,41 +1,41 @@
 package net.tropicraft.core.common.entity.projectile;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 
-public class PoisonBlotEntity extends ThrowableEntity {
+public class PoisonBlotEntity extends ThrowableProjectile {
 
-    public PoisonBlotEntity(EntityType<? extends ThrowableEntity> type, World world) {
+    public PoisonBlotEntity(EntityType<? extends ThrowableProjectile> type, Level world) {
         super(type, world);
     }
 
-    public PoisonBlotEntity(EntityType<? extends ThrowableEntity> type, LivingEntity thrower, World world) {
+    public PoisonBlotEntity(EntityType<? extends ThrowableProjectile> type, LivingEntity thrower, Level world) {
         super(type, thrower, world);
     }
 
     @Override
-    protected void onImpact(RayTraceResult result) {
-        if (result.getType() == RayTraceResult.Type.ENTITY) {
-            final Entity entity = ((EntityRayTraceResult) result).getEntity();
+    protected void onHit(HitResult result) {
+        if (result.getType() == HitResult.Type.ENTITY) {
+            final Entity entity = ((EntityHitResult) result).getEntity();
 
-            if (entity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) entity;
-                player.addPotionEffect(new EffectInstance(Effects.POISON, 12 * 20, 0));
+            if (entity instanceof Player) {
+                Player player = (Player) entity;
+                player.addEffect(new MobEffectInstance(MobEffects.POISON, 12 * 20, 0));
                 remove();
             }
         }
     }
 
     @Override
-    protected void registerData() {
+    protected void defineSynchedData() {
 
     }
 }

@@ -1,26 +1,30 @@
 package net.tropicraft.core.common.block.huge_plant;
 
-import net.minecraft.block.*;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.core.client.ParticleEffects;
 
 import javax.annotation.Nullable;
@@ -32,81 +36,81 @@ import java.util.function.Supplier;
 public final class HugePlantBlock extends BushBlock {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
-    private Supplier<RegistryObject<? extends IItemProvider>> pickItem;
+    private Supplier<RegistryObject<? extends ItemLike>> pickItem;
 
     public HugePlantBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(TYPE, Type.SEED));
+        this.registerDefaultState(this.stateDefinition.any().setValue(TYPE, Type.SEED));
     }
 
-    public HugePlantBlock setPickItem(Supplier<RegistryObject<? extends IItemProvider>> item) {
+    public HugePlantBlock setPickItem(Supplier<RegistryObject<? extends ItemLike>> item) {
         this.pickItem = item;
         return this;
     }
 
     @Override
     @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        World world = context.getWorld();
-        BlockPos pos = context.getPos();
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
 
         for (BlockPos plantPos : Shape.fromSeed(this, pos)) {
             if (plantPos.equals(pos)) continue;
 
-            if (!world.getBlockState(plantPos).isReplaceable(context)) {
+            if (!world.getBlockState(plantPos).canBeReplaced(context)) {
                 return null;
             }
         }
 
-        return this.getDefaultState().with(TYPE, Type.SEED);
+        return this.defaultBlockState().setValue(TYPE, Type.SEED);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         Shape shape = Shape.fromSeed(this, pos);
         for (BlockPos plantPos : shape) {
             if (!plantPos.equals(pos)) {
                 BlockState plantState = shape.blockAt(plantPos);
-                world.setBlockState(plantPos, plantState, Constants.BlockFlags.DEFAULT);
+                world.setBlock(plantPos, plantState, Constants.BlockFlags.DEFAULT);
             }
         }
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos) {
         Shape shape = Shape.match(this, world, pos);
         if (shape == null) {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
 
         if (this.isValidPosition(world, shape)) {
             return state;
         } else {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
     }
 
-    private boolean isValidPosition(IWorld world, Shape shape) {
+    private boolean isValidPosition(LevelAccessor world, Shape shape) {
         BlockPos seedPos = shape.seed();
         BlockState seedState = world.getBlockState(seedPos);
-        return super.isValidPosition(seedState, world, seedPos);
+        return super.canSurvive(seedState, world, seedPos);
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         if (isSeedBlock(this, state)) {
             BlockState worldState = world.getBlockState(pos);
             if (worldState != state && !this.isValidPositionToPlace(world, pos)) {
                 return false;
             }
 
-            return super.isValidPosition(state, world, pos);
+            return super.canSurvive(state, world, pos);
         } else {
             return Shape.match(this, world, pos) != null;
         }
     }
 
-    private boolean isValidPositionToPlace(IWorldReader world, BlockPos pos) {
+    private boolean isValidPositionToPlace(LevelReader world, BlockPos pos) {
         for (BlockPos plantPos : Shape.fromSeed(this, pos)) {
             if (!world.getBlockState(plantPos).getMaterial().isReplaceable()) {
                 return false;
@@ -115,34 +119,34 @@ public final class HugePlantBlock extends BushBlock {
         return true;
     }
 
-    public void placeAt(IWorld world, BlockPos pos, int flags) {
+    public void placeAt(LevelAccessor world, BlockPos pos, int flags) {
         Shape shape = Shape.fromSeed(this, pos);
         for (BlockPos plantPos : shape) {
             BlockState plantState = shape.blockAt(plantPos);
-            world.setBlockState(plantPos, plantState, flags);
+            world.setBlock(plantPos, plantState, flags);
         }
     }
 
     @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         Shape shape = Shape.match(this, world, pos);
         if (shape == null) {
             return;
         }
 
-        if (!world.isRemote) {
+        if (!world.isClientSide) {
             if (!player.isCreative()) {
-                spawnDrops(state, world, shape.seed(), null, player, player.getHeldItemMainhand());
+                dropResources(state, world, shape.seed(), null, player, player.getMainHandItem());
             }
 
             int flags = Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS | Constants.BlockFlags.NO_NEIGHBOR_DROPS;
 
             // Play break sound
             SoundType soundtype = state.getSoundType(world, pos, null);
-            world.playSound(null, pos, soundtype.getBreakSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+            world.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
             for (BlockPos plantPos : shape) {
-                world.setBlockState(plantPos, Blocks.AIR.getDefaultState(), flags);
+                world.setBlock(plantPos, Blocks.AIR.defaultBlockState(), flags);
             }
         } else {
             // We need to manually play the breaking particles to prevent vanilla logic from creating too many
@@ -155,7 +159,7 @@ public final class HugePlantBlock extends BushBlock {
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        if (state.get(TYPE) == Type.SEED) {
+        if (state.getValue(TYPE) == Type.SEED) {
             return super.getDrops(state, builder);
         } else {
             return Collections.emptyList();
@@ -163,7 +167,7 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         if (this.pickItem != null) {
             return new ItemStack(this.pickItem.get().get());
         }
@@ -171,15 +175,15 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(TYPE);
     }
 
     private static boolean isSeedBlock(Block block, BlockState state) {
-        return state.matchesBlock(block) && state.get(TYPE) == Type.SEED;
+        return state.is(block) && state.getValue(TYPE) == Type.SEED;
     }
 
-    public enum Type implements IStringSerializable {
+    public enum Type implements StringRepresentable {
         SEED("seed"),
         CENTER("center"),
         OUTER("outer");
@@ -191,7 +195,7 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         @Override
-        public String getString() {
+        public String getSerializedName() {
             return this.key;
         }
     }
@@ -212,7 +216,7 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         @Nullable
-        public static Shape match(Block block, IBlockReader world, BlockPos pos) {
+        public static Shape match(Block block, BlockGetter world, BlockPos pos) {
             for (BlockPos plantPos : matchPositions(pos)) {
                 if (isSeedBlock(block, world.getBlockState(plantPos))) {
                     Shape shape = Shape.fromSeed(block, plantPos);
@@ -225,7 +229,7 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         @Nullable
-        public static Shape matchIncomplete(Block block, IBlockReader world, BlockPos pos) {
+        public static Shape matchIncomplete(Block block, BlockGetter world, BlockPos pos) {
             for (BlockPos plantPos : matchPositions(pos)) {
                 if (isSeedBlock(block, world.getBlockState(plantPos))) {
                     return Shape.fromSeed(block, plantPos);
@@ -235,14 +239,14 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         private static Iterable<BlockPos> matchPositions(BlockPos pos) {
-            BlockPos minPos = pos.add(-RADIUS, -RADIUS * 2, -RADIUS);
-            BlockPos maxPos = pos.add(RADIUS, 0, RADIUS);
-            return BlockPos.getAllInBoxMutable(minPos, maxPos);
+            BlockPos minPos = pos.offset(-RADIUS, -RADIUS * 2, -RADIUS);
+            BlockPos maxPos = pos.offset(RADIUS, 0, RADIUS);
+            return BlockPos.betweenClosed(minPos, maxPos);
         }
 
-        public boolean validate(IBlockReader world) {
+        public boolean validate(BlockGetter world) {
             for (BlockPos pos : this) {
-                if (!world.getBlockState(pos).matchesBlock(this.block)) {
+                if (!world.getBlockState(pos).is(this.block)) {
                     return false;
                 }
             }
@@ -257,7 +261,7 @@ public final class HugePlantBlock extends BushBlock {
                 type = Type.CENTER;
             }
 
-            return this.block.getDefaultState().with(TYPE, type);
+            return this.block.defaultBlockState().setValue(TYPE, type);
         }
 
         public BlockPos seed() {
@@ -265,12 +269,12 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         public BlockPos center() {
-            return this.seed.add(0, RADIUS, 0);
+            return this.seed.offset(0, RADIUS, 0);
         }
 
-        public AxisAlignedBB asAabb() {
+        public AABB asAabb() {
             BlockPos seed = this.seed;
-            return new AxisAlignedBB(
+            return new AABB(
                     seed.getX() - RADIUS,
                     seed.getY(),
                     seed.getZ() - RADIUS,
@@ -283,9 +287,9 @@ public final class HugePlantBlock extends BushBlock {
         @Override
         public Iterator<BlockPos> iterator() {
             BlockPos center = this.center();
-            return BlockPos.getAllInBoxMutable(
-                    center.add(-RADIUS, -RADIUS, -RADIUS),
-                    center.add(RADIUS, RADIUS, RADIUS)
+            return BlockPos.betweenClosed(
+                    center.offset(-RADIUS, -RADIUS, -RADIUS),
+                    center.offset(RADIUS, RADIUS, RADIUS)
             ).iterator();
         }
     }

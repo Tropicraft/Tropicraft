@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.network;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -37,9 +37,9 @@ public class TropicraftPackets {
         INSTANCE.registerMessage(getUniqueId(), MessageUpdateScubaData.class, MessageUpdateScubaData::encode, MessageUpdateScubaData::decode, MessageUpdateScubaData::handle);
     }
 
-    public static void sendToDimension(final TropicraftMessage msg, final World world) {
-        RegistryKey<World> dimension = world.getDimensionKey();
-        if (world.isRemote()) {
+    public static void sendToDimension(final TropicraftMessage msg, final Level world) {
+        ResourceKey<Level> dimension = world.dimension();
+        if (world.isClientSide()) {
             LOGGER.warn("Attempted to send packet to dimension on client world", new RuntimeException());
             return;
         }

@@ -1,37 +1,40 @@
 package net.tropicraft.core.common.entity.passive.basilisk;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.entity.ai.goal.RandomWalkingGoal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
+import com.mojang.math.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public final class BasiliskLizardEntity extends AnimalEntity {
-    private static final DataParameter<Boolean> RUNNING = EntityDataManager.createKey(BasiliskLizardEntity.class, DataSerializers.BOOLEAN);
+public final class BasiliskLizardEntity extends Animal {
+    private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(BasiliskLizardEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final float WATER_WALK_SPEED_BOOST = 1.6F;
     private static final int WATER_WALK_TIME = 10;
@@ -44,49 +47,49 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     private int runningAnimation;
     private int prevRunningAnimation;
 
-    public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, World world) {
+    public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
         super(type, world);
-        this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6.0)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     @Override
-    protected PathNavigator createNavigator(World world) {
+    protected PathNavigation createNavigation(Level world) {
         return new WaterWalking.Navigator(this, world);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
-        this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 1.0));
-        this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(RUNNING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RUNNING, false);
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
 
     @Override
-    public BasiliskLizardEntity createChild(ServerWorld world, AgeableEntity mate) {
+    public BasiliskLizardEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return null;
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         if (getType() == TropicraftEntities.BROWN_BASILISK_LIZARD.get()) {
             return new ItemStack(TropicraftItems.BROWN_BASILISK_LIZARD_SPAWN_EGG.get());
         } else {
@@ -98,11 +101,11 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     public void tick() {
         super.tick();
 
-        if (!this.world.isRemote()) {
+        if (!this.level.isClientSide()) {
             this.tickMovementTimer();
             this.tickSwimming();
 
-            this.dataManager.set(RUNNING, this.onWaterSurface);
+            this.entityData.set(RUNNING, this.onWaterSurface);
         } else {
             this.tickRunningAnimation();
         }
@@ -111,7 +114,7 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     private void tickRunningAnimation() {
         this.prevRunningAnimation = this.runningAnimation;
 
-        if (this.dataManager.get(RUNNING)) {
+        if (this.entityData.get(RUNNING)) {
             if (this.runningAnimation < RUNNING_ANIMATION_LENGTH) {
                 this.runningAnimation++;
             }
@@ -153,7 +156,7 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     private void tickMovementTimer() {
-        if (this.moveForward != 0.0F) {
+        if (this.zza != 0.0F) {
             this.movingTimer = WATER_WALK_TIME;
         } else {
             if (this.movingTimer > 0) {
@@ -163,18 +166,18 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     private void tickSwimming() {
-        if (!this.onWaterSurface && this.isInWater() && this.func_233571_b_(FluidTags.WATER) > this.getFluidJumpHeight()) {
+        if (!this.onWaterSurface && this.isInWater() && this.getFluidHeight(FluidTags.WATER) > this.getFluidJumpThreshold()) {
             boolean shouldWaterWalk = this.shouldWaterWalk();
-            if (shouldWaterWalk || this.rand.nextFloat() < 0.8F) {
-                this.setMotion(this.getMotion().scale(0.5).add(0.0, 0.1, 0.0));
+            if (shouldWaterWalk || this.random.nextFloat() < 0.8F) {
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.5).add(0.0, 0.1, 0.0));
             }
         }
     }
 
     @Override
-    protected Vector3d maybeBackOffFromEdge(Vector3d offset, MoverType mover) {
+    protected Vec3 maybeBackOffFromEdge(Vec3 offset, MoverType mover) {
         if (this.shouldWaterWalk()) {
-            Vector3d result = WaterWalking.collide(this.world, this.getBoundingBox(), offset);
+            Vec3 result = WaterWalking.collide(this.level, this.getBoundingBox(), offset);
             this.onWaterSurface = offset.y < 0.0 && result.y != offset.y;
             return result;
         } else {
@@ -184,19 +187,19 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     @Override
-    protected void updateFallState(double y, boolean onGround, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
         this.onGround |= this.onWaterSurface;
-        super.updateFallState(y, this.onGround, state, pos);
+        super.checkFallDamage(y, this.onGround, state, pos);
     }
 
     @Override
-    public float getAIMoveSpeed() {
-        float speed = super.getAIMoveSpeed();
+    public float getSpeed() {
+        float speed = super.getSpeed();
         return this.onWaterSurface ? speed * WATER_WALK_SPEED_BOOST : speed;
     }
 
     @Override
-    public boolean func_230285_a_(Fluid fluid) {
+    public boolean canStandOnFluid(Fluid fluid) {
         return WaterWalking.canWalkOn(fluid);
     }
 
@@ -205,7 +208,7 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     public float getRunningAnimation(float partialTicks) {
-        float animation = MathHelper.lerp(partialTicks, prevRunningAnimation, runningAnimation);
+        float animation = Mth.lerp(partialTicks, prevRunningAnimation, runningAnimation);
         return Easings.inOutSine(animation / RUNNING_ANIMATION_LENGTH);
     }
 }

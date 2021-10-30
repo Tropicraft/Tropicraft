@@ -1,37 +1,37 @@
 package net.tropicraft.core.common.entity.passive;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.server.SSpawnObjectPacket;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
 public class FishingBobberEntity extends Entity {
-   private static final DataParameter<Integer> DATA_HOOKED_ENTITY = EntityDataManager.createKey(FishingBobberEntity.class, DataSerializers.VARINT);
+   private static final EntityDataAccessor<Integer> DATA_HOOKED_ENTITY = SynchedEntityData.defineId(FishingBobberEntity.class, EntityDataSerializers.INT);
    private boolean inGround;
    private int ticksInGround;
    private final EntityKoaBase angler;
@@ -45,9 +45,9 @@ public class FishingBobberEntity extends Entity {
    private final int luck;
    private final int lureSpeed;
 
-   private FishingBobberEntity(World p_i50219_1_, EntityKoaBase koaBase, int luck, int lureSpeed) {
+   private FishingBobberEntity(Level p_i50219_1_, EntityKoaBase koaBase, int luck, int lureSpeed) {
       super(EntityType.FISHING_BOBBER, p_i50219_1_);
-      this.ignoreFrustumCheck = true;
+      this.noCulling = true;
       this.angler = koaBase;
       this.angler.setLure(this);
       this.luck = Math.max(0, luck);
@@ -55,61 +55,61 @@ public class FishingBobberEntity extends Entity {
    }
 
    @OnlyIn(Dist.CLIENT)
-   public FishingBobberEntity(World worldIn, EntityKoaBase p_i47290_2_, double x, double y, double z) {
+   public FishingBobberEntity(Level worldIn, EntityKoaBase p_i47290_2_, double x, double y, double z) {
       this(worldIn, p_i47290_2_, 0, 0);
-      this.setPosition(x, y, z);
-      this.prevPosX = this.getPosX();
-      this.prevPosY = this.getPosY();
-      this.prevPosZ = this.getPosZ();
+      this.setPos(x, y, z);
+      this.xo = this.getX();
+      this.yo = this.getY();
+      this.zo = this.getZ();
    }
 
-   public FishingBobberEntity(EntityKoaBase p_i50220_1_, World p_i50220_2_, int p_i50220_3_, int p_i50220_4_) {
+   public FishingBobberEntity(EntityKoaBase p_i50220_1_, Level p_i50220_2_, int p_i50220_3_, int p_i50220_4_) {
       this(p_i50220_2_, p_i50220_1_, p_i50220_3_, p_i50220_4_);
-      float f = this.angler.rotationPitch;
-      float f1 = this.angler.rotationYaw;
-      float f2 = MathHelper.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-      float f3 = MathHelper.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-      float f4 = -MathHelper.cos(-f * ((float)Math.PI / 180F));
-      float f5 = MathHelper.sin(-f * ((float)Math.PI / 180F));
-      double d0 = this.angler.getPosX() - (double)f3 * 0.3D;
-      double d1 = this.angler.getPosY() + (double)this.angler.getEyeHeight();
-      double d2 = this.angler.getPosZ() - (double)f2 * 0.3D;
-      this.setLocationAndAngles(d0, d1, d2, f1, f);
-      Vector3d Vector3d = new Vector3d(-f3, MathHelper.clamp(-(f5 / f4), -5.0F, 5.0F), -f2);
+      float f = this.angler.xRot;
+      float f1 = this.angler.yRot;
+      float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+      float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+      float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));
+      float f5 = Mth.sin(-f * ((float)Math.PI / 180F));
+      double d0 = this.angler.getX() - (double)f3 * 0.3D;
+      double d1 = this.angler.getY() + (double)this.angler.getEyeHeight();
+      double d2 = this.angler.getZ() - (double)f2 * 0.3D;
+      this.moveTo(d0, d1, d2, f1, f);
+      Vec3 Vector3d = new Vec3(-f3, Mth.clamp(-(f5 / f4), -5.0F, 5.0F), -f2);
       double d3 = Vector3d.length();
-      Vector3d = Vector3d.mul(0.6D / d3 + 0.5D + this.rand.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.rand.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.rand.nextGaussian() * 0.0045D);
-      this.setMotion(Vector3d);
-      this.rotationYaw = (float)(MathHelper.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI));
-      this.rotationPitch = (float)(MathHelper.atan2(Vector3d.y, MathHelper.sqrt(getDistanceSq(Vector3d))) * (double)(180F / (float)Math.PI));
-      this.prevRotationYaw = this.rotationYaw;
-      this.prevRotationPitch = this.rotationPitch;
+      Vector3d = Vector3d.multiply(0.6D / d3 + 0.5D + this.random.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.random.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.random.nextGaussian() * 0.0045D);
+      this.setDeltaMovement(Vector3d);
+      this.yRot = (float)(Mth.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI));
+      this.xRot = (float)(Mth.atan2(Vector3d.y, Mth.sqrt(distanceToSqr(Vector3d))) * (double)(180F / (float)Math.PI));
+      this.yRotO = this.yRot;
+      this.xRotO = this.xRot;
    }
 
    @Override
-   protected void registerData() {
-      this.getDataManager().register(DATA_HOOKED_ENTITY, 0);
+   protected void defineSynchedData() {
+      this.getEntityData().define(DATA_HOOKED_ENTITY, 0);
    }
 
    @Override
-   public void notifyDataManagerChange(DataParameter<?> key) {
+   public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
       if (DATA_HOOKED_ENTITY.equals(key)) {
-         int i = this.getDataManager().get(DATA_HOOKED_ENTITY);
-         this.caughtEntity = i > 0 ? this.world.getEntityByID(i - 1) : null;
+         int i = this.getEntityData().get(DATA_HOOKED_ENTITY);
+         this.caughtEntity = i > 0 ? this.level.getEntity(i - 1) : null;
       }
 
-      super.notifyDataManagerChange(key);
+      super.onSyncedDataUpdated(key);
    }
 
    @Override
    @OnlyIn(Dist.CLIENT)
-   public boolean isInRangeToRenderDist(double distance) {
+   public boolean shouldRenderAtSqrDistance(double distance) {
       double d0 = 64.0D;
       return distance < 4096.0D;
    }
 
    @Override
    @OnlyIn(Dist.CLIENT)
-   public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+   public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
    }
 
    @Override
@@ -117,7 +117,7 @@ public class FishingBobberEntity extends Entity {
       super.tick();
 
       if (this.angler == null) {
-         if (this.ticksExisted > 40) {
+         if (this.tickCount > 40) {
             remove();
          }
          return;
@@ -125,7 +125,7 @@ public class FishingBobberEntity extends Entity {
 
       if (this.angler == null) {
          this.remove();
-      } else if (this.world.isRemote || !this.shouldStopFishing()) {
+      } else if (this.level.isClientSide || !this.shouldStopFishing()) {
          if (this.inGround) {
             ++this.ticksInGround;
             if (this.ticksInGround >= 1200) {
@@ -135,34 +135,34 @@ public class FishingBobberEntity extends Entity {
          }
 
          float f = 0.0F;
-         BlockPos blockpos = this.getPosition();
-         FluidState ifluidstate = this.world.getFluidState(blockpos);
-         if (ifluidstate.isTagged(FluidTags.WATER)) {
-            f = ifluidstate.getActualHeight(this.world, blockpos);
+         BlockPos blockpos = this.blockPosition();
+         FluidState ifluidstate = this.level.getFluidState(blockpos);
+         if (ifluidstate.is(FluidTags.WATER)) {
+            f = ifluidstate.getHeight(this.level, blockpos);
          }
 
          if (this.currentState == FishingBobberEntity.State.FLYING) {
             if (this.caughtEntity != null) {
-               this.setMotion(Vector3d.ZERO);
+               this.setDeltaMovement(Vec3.ZERO);
                this.currentState = FishingBobberEntity.State.HOOKED_IN_ENTITY;
                return;
             }
 
             if (f > 0.0F) {
-               this.setMotion(this.getMotion().mul(0.3D, 0.2D, 0.3D));
+               this.setDeltaMovement(this.getDeltaMovement().multiply(0.3D, 0.2D, 0.3D));
                this.currentState = FishingBobberEntity.State.BOBBING;
                return;
             }
 
-            if (!this.world.isRemote) {
+            if (!this.level.isClientSide) {
                this.checkCollision();
             }
 
-            if (!this.inGround && !this.onGround && !this.collidedHorizontally) {
+            if (!this.inGround && !this.onGround && !this.horizontalCollision) {
                ++this.ticksInAir;
             } else {
                this.ticksInAir = 0;
-               this.setMotion(Vector3d.ZERO);
+               this.setDeltaMovement(Vec3.ZERO);
             }
          } else {
             if (this.currentState == FishingBobberEntity.State.HOOKED_IN_ENTITY) {
@@ -171,8 +171,8 @@ public class FishingBobberEntity extends Entity {
                      this.caughtEntity = null;
                      this.currentState = FishingBobberEntity.State.FLYING;
                   } else {
-                     setPosition(caughtEntity.getPosX(), caughtEntity.getBoundingBox().minY + (double) caughtEntity.getHeight() * 0.8D, caughtEntity.getPosZ());
-                     setPosition(getPosX(), getPosY(), getPosZ());
+                     setPos(caughtEntity.getX(), caughtEntity.getBoundingBox().minY + (double) caughtEntity.getBbHeight() * 0.8D, caughtEntity.getZ());
+                     setPos(getX(), getY(), getZ());
                   }
                }
 
@@ -180,37 +180,37 @@ public class FishingBobberEntity extends Entity {
             }
 
             if (this.currentState == FishingBobberEntity.State.BOBBING) {
-               Vector3d Vector3d = this.getMotion();
-               double d0 = this.getPosY() + Vector3d.y - (double)blockpos.getY() - (double)f;
+               Vec3 Vector3d = this.getDeltaMovement();
+               double d0 = this.getY() + Vector3d.y - (double)blockpos.getY() - (double)f;
                if (Math.abs(d0) < 0.01D) {
                   d0 += Math.signum(d0) * 0.1D;
                }
 
-               this.setMotion(Vector3d.x * 0.9D, Vector3d.y - d0 * (double)this.rand.nextFloat() * 0.2D, Vector3d.z * 0.9D);
-               if (!this.world.isRemote && f > 0.0F) {
+               this.setDeltaMovement(Vector3d.x * 0.9D, Vector3d.y - d0 * (double)this.random.nextFloat() * 0.2D, Vector3d.z * 0.9D);
+               if (!this.level.isClientSide && f > 0.0F) {
                   this.catchingFish(blockpos);
                }
             }
          }
 
-         if (!ifluidstate.isTagged(FluidTags.WATER)) {
-            this.setMotion(this.getMotion().add(0.0D, -0.03D, 0.0D));
+         if (!ifluidstate.is(FluidTags.WATER)) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.03D, 0.0D));
          }
 
-         this.move(MoverType.SELF, this.getMotion());
+         this.move(MoverType.SELF, this.getDeltaMovement());
          this.updateRotation();
          double d1 = 0.92D;
-         this.setMotion(this.getMotion().scale(0.92D));
-         this.setPosition(getPosX(), getPosY(), getPosZ());
+         this.setDeltaMovement(this.getDeltaMovement().scale(0.92D));
+         this.setPos(getX(), getY(), getZ());
       }
    }
 
    private boolean shouldStopFishing() {
-      ItemStack itemstack = this.angler.getHeldItemMainhand();
-      ItemStack itemstack1 = this.angler.getHeldItemOffhand();
-      boolean flag = itemstack.getItem() instanceof net.minecraft.item.FishingRodItem;
-      boolean flag1 = itemstack1.getItem() instanceof net.minecraft.item.FishingRodItem;
-      if (!this.angler.removed && this.angler.isAlive() && (flag || flag1) && !(this.getDistanceSq(this.angler) > 1024.0D)) {
+      ItemStack itemstack = this.angler.getMainHandItem();
+      ItemStack itemstack1 = this.angler.getOffhandItem();
+      boolean flag = itemstack.getItem() instanceof net.minecraft.world.item.FishingRodItem;
+      boolean flag1 = itemstack1.getItem() instanceof net.minecraft.world.item.FishingRodItem;
+      if (!this.angler.removed && this.angler.isAlive() && (flag || flag1) && !(this.distanceToSqr(this.angler) > 1024.0D)) {
          return false;
       } else {
          this.remove();
@@ -219,36 +219,36 @@ public class FishingBobberEntity extends Entity {
    }
 
    private void updateRotation() {
-      Vector3d Vector3d = this.getMotion();
-      float f = MathHelper.sqrt(getDistanceSq(Vector3d));
-      this.rotationYaw = (float)(MathHelper.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI));
+      Vec3 Vector3d = this.getDeltaMovement();
+      float f = Mth.sqrt(distanceToSqr(Vector3d));
+      this.yRot = (float)(Mth.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI));
 
-      for(this.rotationPitch = (float)(MathHelper.atan2(Vector3d.y, (double)f) * (double)(180F / (float)Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+      for(this.xRot = (float)(Mth.atan2(Vector3d.y, (double)f) * (double)(180F / (float)Math.PI)); this.xRot - this.xRotO < -180.0F; this.xRotO -= 360.0F) {
       }
 
-      while(this.rotationPitch - this.prevRotationPitch >= 180.0F) {
-         this.prevRotationPitch += 360.0F;
+      while(this.xRot - this.xRotO >= 180.0F) {
+         this.xRotO += 360.0F;
       }
 
-      while(this.rotationYaw - this.prevRotationYaw < -180.0F) {
-         this.prevRotationYaw -= 360.0F;
+      while(this.yRot - this.yRotO < -180.0F) {
+         this.yRotO -= 360.0F;
       }
 
-      while(this.rotationYaw - this.prevRotationYaw >= 180.0F) {
-         this.prevRotationYaw += 360.0F;
+      while(this.yRot - this.yRotO >= 180.0F) {
+         this.yRotO += 360.0F;
       }
 
-      this.rotationPitch = MathHelper.lerp(0.2F, this.prevRotationPitch, this.rotationPitch);
-      this.rotationYaw = MathHelper.lerp(0.2F, this.prevRotationYaw, this.rotationYaw);
+      this.xRot = Mth.lerp(0.2F, this.xRotO, this.xRot);
+      this.yRot = Mth.lerp(0.2F, this.yRotO, this.yRot);
    }
 
    private void checkCollision() {
-      RayTraceResult result = ProjectileHelper.func_234618_a_(this, entity -> {
-         return !entity.isSpectator() && (entity.canBeCollidedWith() || entity instanceof ItemEntity) && (entity != this.angler || this.ticksInAir >= 5);
+      HitResult result = ProjectileUtil.getHitResult(this, entity -> {
+         return !entity.isSpectator() && (entity.isPickable() || entity instanceof ItemEntity) && (entity != this.angler || this.ticksInAir >= 5);
       });
-      if (result.getType() != RayTraceResult.Type.MISS) {
-         if (result.getType() == RayTraceResult.Type.ENTITY) {
-            this.caughtEntity = ((EntityRayTraceResult)result).getEntity();
+      if (result.getType() != HitResult.Type.MISS) {
+         if (result.getType() == HitResult.Type.ENTITY) {
+            this.caughtEntity = ((EntityHitResult)result).getEntity();
             this.setHookedEntity();
          } else {
             this.inGround = true;
@@ -258,18 +258,18 @@ public class FishingBobberEntity extends Entity {
    }
 
    private void setHookedEntity() {
-      this.getDataManager().set(DATA_HOOKED_ENTITY, this.caughtEntity.getEntityId() + 1);
+      this.getEntityData().set(DATA_HOOKED_ENTITY, this.caughtEntity.getId() + 1);
    }
 
    private void catchingFish(BlockPos p_190621_1_) {
-      ServerWorld serverworld = (ServerWorld)this.world;
+      ServerLevel serverworld = (ServerLevel)this.level;
       int i = 1;
-      BlockPos blockpos = p_190621_1_.up();
-      if (this.rand.nextFloat() < 0.25F && this.world.isRainingAt(blockpos)) {
+      BlockPos blockpos = p_190621_1_.above();
+      if (this.random.nextFloat() < 0.25F && this.level.isRainingAt(blockpos)) {
          ++i;
       }
 
-      if (this.rand.nextFloat() < 0.5F && !this.world.canBlockSeeSky(blockpos)) {
+      if (this.random.nextFloat() < 0.5F && !this.level.canSeeSkyFromBelowWater(blockpos)) {
          --i;
       }
 
@@ -279,37 +279,37 @@ public class FishingBobberEntity extends Entity {
             this.ticksCaughtDelay = 0;
             this.ticksCatchableDelay = 0;
          } else {
-            this.setMotion(this.getMotion().add(0.0D, -0.2D * (double)this.rand.nextFloat() * (double)this.rand.nextFloat(), 0.0D));
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.2D * (double)this.random.nextFloat() * (double)this.random.nextFloat(), 0.0D));
          }
       } else if (this.ticksCatchableDelay > 0) {
          this.ticksCatchableDelay -= i;
          if (this.ticksCatchableDelay > 0) {
-            this.fishApproachAngle = (float)((double)this.fishApproachAngle + this.rand.nextGaussian() * 4.0D);
+            this.fishApproachAngle = (float)((double)this.fishApproachAngle + this.random.nextGaussian() * 4.0D);
             float f = this.fishApproachAngle * ((float)Math.PI / 180F);
-            float f1 = MathHelper.sin(f);
-            float f2 = MathHelper.cos(f);
-            double d0 = this.getPosX() + (double)(f1 * (float)this.ticksCatchableDelay * 0.1F);
-            double d1 = (float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F;
-            double d2 = this.getPosX() + (double)(f2 * (float)this.ticksCatchableDelay * 0.1F);
+            float f1 = Mth.sin(f);
+            float f2 = Mth.cos(f);
+            double d0 = this.getX() + (double)(f1 * (float)this.ticksCatchableDelay * 0.1F);
+            double d1 = (float)Mth.floor(this.getBoundingBox().minY) + 1.0F;
+            double d2 = this.getX() + (double)(f2 * (float)this.ticksCatchableDelay * 0.1F);
             Block block = serverworld.getBlockState(new BlockPos(d0, d1 - 1.0D, d2)).getBlock();
-            if (serverworld.getBlockState(new BlockPos((int)d0, (int)d1 - 1, (int)d2)).getMaterial() == net.minecraft.block.material.Material.WATER) {
-               if (this.rand.nextFloat() < 0.15F) {
-                  serverworld.spawnParticle(ParticleTypes.BUBBLE, d0, d1 - (double)0.1F, d2, 1, f1, 0.1D, f2, 0.0D);
+            if (serverworld.getBlockState(new BlockPos((int)d0, (int)d1 - 1, (int)d2)).getMaterial() == net.minecraft.world.level.material.Material.WATER) {
+               if (this.random.nextFloat() < 0.15F) {
+                  serverworld.sendParticles(ParticleTypes.BUBBLE, d0, d1 - (double)0.1F, d2, 1, f1, 0.1D, f2, 0.0D);
                }
 
                float f3 = f1 * 0.04F;
                float f4 = f2 * 0.04F;
-               serverworld.spawnParticle(ParticleTypes.FISHING, d0, d1, d2, 0, f4, 0.01D, -f3, 1.0D);
-               serverworld.spawnParticle(ParticleTypes.FISHING, d0, d1, d2, 0, -f4, 0.01D, f3, 1.0D);
+               serverworld.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, f4, 0.01D, -f3, 1.0D);
+               serverworld.sendParticles(ParticleTypes.FISHING, d0, d1, d2, 0, -f4, 0.01D, f3, 1.0D);
             }
          } else {
-            Vector3d Vector3d = this.getMotion();
-            this.setMotion(Vector3d.x, (double)(-0.4F * MathHelper.nextFloat(this.rand, 0.6F, 1.0F)), Vector3d.z);
-            this.playSound(SoundEvents.ENTITY_FISHING_BOBBER_SPLASH, 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+            Vec3 Vector3d = this.getDeltaMovement();
+            this.setDeltaMovement(Vector3d.x, (double)(-0.4F * Mth.nextFloat(this.random, 0.6F, 1.0F)), Vector3d.z);
+            this.playSound(SoundEvents.FISHING_BOBBER_SPLASH, 0.25F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
             double d3 = this.getBoundingBox().minY + 0.5D;
-            serverworld.spawnParticle(ParticleTypes.BUBBLE, getPosX(), d3, getPosZ(), (int)(1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.2F);
-            serverworld.spawnParticle(ParticleTypes.FISHING, getPosX(), d3, getPosZ(), (int)(1.0F + this.getWidth() * 20.0F), this.getWidth(), 0.0D, this.getWidth(), 0.2F);
-            this.ticksCatchable = MathHelper.nextInt(this.rand, 20, 40);
+            serverworld.sendParticles(ParticleTypes.BUBBLE, getX(), d3, getZ(), (int)(1.0F + this.getBbWidth() * 20.0F), this.getBbWidth(), 0.0D, this.getBbWidth(), 0.2F);
+            serverworld.sendParticles(ParticleTypes.FISHING, getX(), d3, getZ(), (int)(1.0F + this.getBbWidth() * 20.0F), this.getBbWidth(), 0.0D, this.getBbWidth(), 0.2F);
+            this.ticksCatchable = Mth.nextInt(this.random, 20, 40);
          }
       } else if (this.ticksCaughtDelay > 0) {
          this.ticksCaughtDelay -= i;
@@ -322,38 +322,38 @@ public class FishingBobberEntity extends Entity {
             f5 = (float)((double)f5 + (double)(60 - this.ticksCaughtDelay) * 0.01D);
          }
 
-         if (this.rand.nextFloat() < f5) {
-            float f6 = MathHelper.nextFloat(this.rand, 0.0F, 360.0F) * ((float)Math.PI / 180F);
-            float f7 = MathHelper.nextFloat(this.rand, 25.0F, 60.0F);
-            double d4 = getPosX() + (double)(MathHelper.sin(f6) * f7 * 0.1F);
-            double d5 = (float)MathHelper.floor(this.getBoundingBox().minY) + 1.0F;
-            double d6 = getPosZ() + (double)(MathHelper.cos(f6) * f7 * 0.1F);
+         if (this.random.nextFloat() < f5) {
+            float f6 = Mth.nextFloat(this.random, 0.0F, 360.0F) * ((float)Math.PI / 180F);
+            float f7 = Mth.nextFloat(this.random, 25.0F, 60.0F);
+            double d4 = getX() + (double)(Mth.sin(f6) * f7 * 0.1F);
+            double d5 = (float)Mth.floor(this.getBoundingBox().minY) + 1.0F;
+            double d6 = getZ() + (double)(Mth.cos(f6) * f7 * 0.1F);
             Block block1 = serverworld.getBlockState(new BlockPos(d4, d5 - 1.0D, d6)).getBlock();
-            if (serverworld.getBlockState(new BlockPos(d4, d5 - 1.0D, d6)).getMaterial() == net.minecraft.block.material.Material.WATER) {
-               serverworld.spawnParticle(ParticleTypes.SPLASH, d4, d5, d6, 2 + this.rand.nextInt(2), 0.1F, 0.0D, 0.1F, 0.0D);
+            if (serverworld.getBlockState(new BlockPos(d4, d5 - 1.0D, d6)).getMaterial() == net.minecraft.world.level.material.Material.WATER) {
+               serverworld.sendParticles(ParticleTypes.SPLASH, d4, d5, d6, 2 + this.random.nextInt(2), 0.1F, 0.0D, 0.1F, 0.0D);
             }
          }
 
          if (this.ticksCaughtDelay <= 0) {
-            this.fishApproachAngle = MathHelper.nextFloat(this.rand, 0.0F, 360.0F);
-            this.ticksCatchableDelay = MathHelper.nextInt(this.rand, 20, 80);
+            this.fishApproachAngle = Mth.nextFloat(this.random, 0.0F, 360.0F);
+            this.ticksCatchableDelay = Mth.nextInt(this.random, 20, 80);
          }
       } else {
-         this.ticksCaughtDelay = MathHelper.nextInt(this.rand, 100, 600);
+         this.ticksCaughtDelay = Mth.nextInt(this.random, 100, 600);
          this.ticksCaughtDelay -= this.lureSpeed * 20 * 5;
       }
 
    }
 
    @Override
-   public void writeAdditional(CompoundNBT compound) {
+   public void addAdditionalSaveData(CompoundTag compound) {
    }
 
    /**
     * (abstract) Protected helper method to read subclass entity data from NBT.
     */
    @Override
-   public void readAdditional(CompoundNBT compound) {
+   public void readAdditionalSaveData(CompoundTag compound) {
    }
 
    /**
@@ -361,18 +361,18 @@ public class FishingBobberEntity extends Entity {
     */
    @Override
    @OnlyIn(Dist.CLIENT)
-   public void handleStatusUpdate(byte id) {
-      if (id == 31 && this.world.isRemote && this.caughtEntity instanceof PlayerEntity && ((PlayerEntity)this.caughtEntity).isUser()) {
+   public void handleEntityEvent(byte id) {
+      if (id == 31 && this.level.isClientSide && this.caughtEntity instanceof Player && ((Player)this.caughtEntity).isLocalPlayer()) {
          this.bringInHookedEntity();
       }
 
-      super.handleStatusUpdate(id);
+      super.handleEntityEvent(id);
    }
 
    protected void bringInHookedEntity() {
       if (angler != null) {
-         Vector3d Vector3d = (new Vector3d(angler.getPosX() - getPosX(), angler.getPosY() - getPosY(), angler.getPosZ() - getPosZ())).scale(0.1D);
-         caughtEntity.setMotion(caughtEntity.getMotion().add(Vector3d));
+         Vec3 Vector3d = (new Vec3(angler.getX() - getX(), angler.getY() - getY(), angler.getZ() - getZ())).scale(0.1D);
+         caughtEntity.setDeltaMovement(caughtEntity.getDeltaMovement().add(Vector3d));
       }
    }
 
@@ -381,7 +381,7 @@ public class FishingBobberEntity extends Entity {
     * prevent them from trampling crops
     */
    @Override
-   protected boolean canTriggerWalking() {
+   protected boolean isMovementNoisy() {
       return false;
    }
 
@@ -406,14 +406,14 @@ public class FishingBobberEntity extends Entity {
     * Returns false if this Entity is a boss, true otherwise.
     */
    @Override
-   public boolean canChangeDimension() {
+   public boolean canChangeDimensions() {
       return false;
    }
 
    @Override
-   public IPacket<?> createSpawnPacket() {
+   public Packet<?> getAddEntityPacket() {
       Entity entity = this.getAngler();
-      return new SSpawnObjectPacket(this, entity == null ? this.getEntityId() : entity.getEntityId());
+      return new ClientboundAddEntityPacket(this, entity == null ? this.getId() : entity.getId());
    }
 
    enum State {

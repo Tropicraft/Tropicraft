@@ -7,12 +7,14 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilder;
+import net.minecraft.world.level.levelgen.surfacebuilders.SurfaceBuilderBaseConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
-public class OsaRainforestSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> {
-    private static final SurfaceBuilderConfig MUD = new SurfaceBuilderConfig(TropicraftBlocks.MUD.get().getDefaultState(), Blocks.DIRT.getDefaultState(), TropicraftBlocks.MUD.get().getDefaultState());
+public class OsaRainforestSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderBaseConfiguration> {
+    private static final SurfaceBuilderBaseConfiguration MUD = new SurfaceBuilderBaseConfiguration(TropicraftBlocks.MUD.get().getDefaultState(), Blocks.DIRT.getDefaultState(), TropicraftBlocks.MUD.get().getDefaultState());
 
     public OsaRainforestSurfaceBuilder(Codec<SurfaceBuilderConfig> codec) {
         super(codec);

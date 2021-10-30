@@ -1,15 +1,15 @@
 package net.tropicraft.core.common.block.jigarbov;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.StringRepresentable;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public enum JigarbovTorchType implements IStringSerializable {
+public enum JigarbovTorchType implements StringRepresentable {
     ACACIA("acacia", () -> Blocks.ACACIA_LOG),
     BIRCH("birch", () -> Blocks.BIRCH_LOG),
     DARK_OAK("dark_oak", () -> Blocks.DARK_OAK_LOG),
@@ -32,7 +32,7 @@ public enum JigarbovTorchType implements IStringSerializable {
 
     @Nullable
     public static JigarbovTorchType byBlock(Block block) {
-        if (block.isIn(BlockTags.LOGS)) {
+        if (block.is(BlockTags.LOGS)) {
             for (JigarbovTorchType type : VALUES) {
                 if (type.matchesLog(block)) {
                     return type;
@@ -52,7 +52,7 @@ public enum JigarbovTorchType implements IStringSerializable {
     }
 
     @Override
-    public String getString() {
+    public String getSerializedName() {
         return name;
     }
 }

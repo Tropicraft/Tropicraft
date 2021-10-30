@@ -2,8 +2,10 @@ package net.tropicraft.core.common.dimension.layer;
 
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.ICastleTransformer;
+import net.minecraft.world.level.newbiome.context.Context;
+import net.minecraft.world.level.newbiome.layer.traits.CastleTransformer;
 
-public final class TropicraftApplyOsaLayer implements ICastleTransformer {
+public final class TropicraftApplyOsaLayer implements CastleTransformer {
     private final TropicraftBiomeIds ids;
 
     public TropicraftApplyOsaLayer(TropicraftBiomeIds ids) {
@@ -19,19 +21,19 @@ public final class TropicraftApplyOsaLayer implements ICastleTransformer {
     }
 
     @Override
-    public int apply(INoiseRandom context, int north, int west, int south, int east, int center) {
-        if (canOsaGenerate(center)) {
+    public int apply(Context pContext, int pNorth, int pEast, int pSouth, int pWest, int pCenter) {
+        if (canOsaGenerate(pCenter)) {
             // Rare chance of simply existing
-            if (context.random(18) == 0) {
+            if (pContext.nextRandom(18) == 0) {
                 return this.ids.osaRainforest;
             }
 
             // 5/6 of the time when bordering mangrove, generate osa rainforest
-            if (context.random(6) > 0) {
-                return isMangrove(north) || isMangrove(west) || isMangrove(south) || isMangrove(east) ? this.ids.osaRainforest : center;
+            if (pContext.nextRandom(6) > 0) {
+                return isMangrove(pNorth) || isMangrove(pWest) || isMangrove(pSouth) || isMangrove(pEast) ? this.ids.osaRainforest : pCenter;
             }
         }
 
-        return center;
+        return pCenter;
     }
 }

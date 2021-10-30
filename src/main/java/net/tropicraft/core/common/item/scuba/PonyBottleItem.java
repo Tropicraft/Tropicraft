@@ -3,15 +3,15 @@ package net.tropicraft.core.common.item.scuba;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -24,8 +24,8 @@ public class PonyBottleItem extends Item {
     }
     
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.DRINK;
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.DRINK;
     }
     
     @Override
@@ -34,13 +34,13 @@ public class PonyBottleItem extends Item {
     }
     
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (player.getAir() < player.getMaxAir()) {
-            player.setActiveHand(hand);
-            return new ActionResult<>(ActionResultType.SUCCESS, stack);
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (player.getAirSupply() < player.getMaxAirSupply()) {
+            player.startUsingItem(hand);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
         } else {
-            return new ActionResult<>(ActionResultType.PASS, stack);
+            return new InteractionResultHolder<>(InteractionResult.PASS, stack);
         }
     }
     
@@ -49,9 +49,9 @@ public class PonyBottleItem extends Item {
         super.onUsingTick(stack, player, count);
         int fillAmt = FILL_RATE + 1; // +1 to counteract the -1 per tick while underwater
         // Wait for drink sound to start, and don't add air that won't fit
-        if (player.getItemInUseCount() <= 25 && player.getAir() < player.getMaxAir() - fillAmt) {
-            player.setAir(player.getAir() + fillAmt);
-            stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
+        if (player.getUseItemRemainingTicks() <= 25 && player.getAirSupply() < player.getMaxAirSupply() - fillAmt) {
+            player.setAirSupply(player.getAirSupply() + fillAmt);
+            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
         }
     }
     

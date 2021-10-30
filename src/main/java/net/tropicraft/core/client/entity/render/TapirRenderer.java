@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
@@ -15,17 +15,17 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/tapir.png");
     private static final ResourceLocation BABY_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/tapir_baby.png");
 
-    public TapirRenderer(EntityRendererManager manager) {
+    public TapirRenderer(EntityRenderDispatcher manager) {
         super(manager, new TapirModel<>(), 0.6F);
     }
 
     @Override
-    protected void preRenderCallback(TapirEntity entity, MatrixStack matrixStack, float partialTicks) {
+    protected void scale(TapirEntity entity, PoseStack matrixStack, float partialTicks) {
         matrixStack.scale(0.8F, 0.8F, 0.8F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(TapirEntity entity) {
-        return entity.isChild() ? BABY_TEXTURE : TEXTURE;
+    public ResourceLocation getTextureLocation(TapirEntity entity) {
+        return entity.isBaby() ? BABY_TEXTURE : TEXTURE;
     }
 }

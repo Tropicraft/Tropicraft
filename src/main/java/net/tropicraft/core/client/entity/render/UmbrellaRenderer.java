@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.entity.model.UmbrellaModel;
 import net.tropicraft.core.common.entity.placeable.UmbrellaEntity;
 
@@ -9,9 +9,9 @@ import javax.annotation.Nullable;
 
 public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
-    public UmbrellaRenderer(EntityRendererManager rendererManager) {
+    public UmbrellaRenderer(EntityRenderDispatcher rendererManager) {
         super(rendererManager, "umbrella", new UmbrellaModel(), 4);
-        this.shadowSize = 2.5f;
+        this.shadowRadius = 2.5f;
     }
 
     //TODO
@@ -49,7 +49,7 @@ public class UmbrellaRenderer extends FurnitureRenderer<UmbrellaEntity> {
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(final UmbrellaEntity umbrella) {
+    public ResourceLocation getTextureLocation(final UmbrellaEntity umbrella) {
         return null;
     }
 }

@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.item.scuba;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
@@ -21,24 +21,24 @@ import net.tropicraft.core.client.scuba.ScubaHUD;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE)
 public class ScubaHarnessItem extends ScubaArmorItem {
 
     public ScubaHarnessItem(ScubaType type, Properties properties) {
-        super(type, EquipmentSlotType.CHEST, properties);
+        super(type, EquipmentSlot.CHEST, properties);
     }
     
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
         int airRemaining = getRemainingAir(stack);
         tooltip.add(TropicraftLangKeys.SCUBA_AIR_TIME
-                .format(new StringTextComponent(ScubaHUD.formatTime(airRemaining))
-                        .mergeStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
-                .mergeStyle(TextFormatting.GRAY));
+                .format(new TextComponent(ScubaHUD.formatTime(airRemaining))
+                        .withStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
+                .withStyle(ChatFormatting.GRAY));
     }
 
     @Override
@@ -47,13 +47,13 @@ public class ScubaHarnessItem extends ScubaArmorItem {
     }
 
     @Override
-    public void tickAir(PlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
-        if (player.world.isRemote || player.abilities.isCreativeMode) return;
-        CompoundNBT scubaData = stack.getOrCreateChildTag("scuba");
+    public void tickAir(Player player, EquipmentSlot slot, ItemStack stack) {
+        if (player.level.isClientSide || player.abilities.instabuild) return;
+        CompoundTag scubaData = stack.getOrCreateTagElement("scuba");
         int remaining = getRemainingAir(stack);
         if (remaining > 0) {
             scubaData.putInt("air", remaining - 1);
-            player.setAir(player.getMaxAir());
+            player.setAirSupply(player.getMaxAirSupply());
         }
     }
     
@@ -63,7 +63,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
             int current = getRemainingAir(stack);
             int max = getMaxAir(stack);
             int newAir = Math.min(current + air, max);
-            stack.getOrCreateChildTag("scuba").putInt("air", newAir);
+            stack.getOrCreateTagElement("scuba").putInt("air", newAir);
             return air - (newAir - current);
         }
         return 0;
@@ -71,7 +71,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
 
     @Override
     public int getRemainingAir(ItemStack stack) {
-        return stack.getOrCreateChildTag("scuba").getInt("air");
+        return stack.getOrCreateTagElement("scuba").getInt("air");
     }
     
     @Override

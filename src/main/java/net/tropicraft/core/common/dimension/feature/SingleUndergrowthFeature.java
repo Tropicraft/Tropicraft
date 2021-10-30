@@ -9,21 +9,23 @@ import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 
-public class SingleUndergrowthFeature extends Feature<NoFeatureConfig> {
+public class SingleUndergrowthFeature extends Feature<NoneFeatureConfiguration> {
     private static final int LARGE_BUSH_CHANCE = 4;
 
-    public SingleUndergrowthFeature(Codec<NoFeatureConfig> codec) {
+    public SingleUndergrowthFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
     
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
         int size = 2;
         if (rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
             size = 3;

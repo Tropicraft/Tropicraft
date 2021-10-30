@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.data;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -401,11 +401,11 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         generated(TropicraftItems.PINK_PONY_BOTTLE);
     }
     
-    private String name(Supplier<? extends IItemProvider> item) {
+    private String name(Supplier<? extends ItemLike> item) {
         return item.get().asItem().getRegistryName().getPath();
     }
     
-    private ResourceLocation itemTexture(Supplier<? extends IItemProvider> item) {
+    private ResourceLocation itemTexture(Supplier<? extends ItemLike> item) {
         return modLoc("item/" + name(item));
     }
     
@@ -429,19 +429,19 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         return generated(() -> block.get().asItem(), texture);
     }
     
-    private ItemModelBuilder generated(Supplier<? extends IItemProvider> item) {
+    private ItemModelBuilder generated(Supplier<? extends ItemLike> item) {
         return generated(item, itemTexture(item));
     }
 
-    private ItemModelBuilder generated(Supplier<? extends IItemProvider> item, ResourceLocation texture) {
+    private ItemModelBuilder generated(Supplier<? extends ItemLike> item, ResourceLocation texture) {
         return getBuilder(name(item)).parent(new UncheckedModelFile("item/generated")).texture("layer0", texture);
     }
     
-    private ItemModelBuilder handheld(Supplier<? extends IItemProvider> item) {
+    private ItemModelBuilder handheld(Supplier<? extends ItemLike> item) {
         return handheld(item, itemTexture(item));
     }
     
-    private ItemModelBuilder handheld(Supplier<? extends IItemProvider> item, ResourceLocation texture) {
+    private ItemModelBuilder handheld(Supplier<? extends ItemLike> item, ResourceLocation texture) {
         return withExistingParent(name(item), "item/handheld").texture("layer0", texture);
     }
 }

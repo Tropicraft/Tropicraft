@@ -3,11 +3,11 @@ package net.tropicraft.core.client.entity.render;
 import com.google.common.collect.Maps;
 import java.util.Map;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.model.CowModel;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
+import net.minecraft.client.model.CowModel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.Util;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
@@ -22,7 +22,7 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
 		map.put(CowktailEntity.Type.ANEMONE, new ResourceLocation(Constants.MODID, "textures/entity/cowktail/anemone_cowktail.png"));
 	});
 
-	public CowktailRenderer(EntityRendererManager renderManagerIn) {
+	public CowktailRenderer(EntityRenderDispatcher renderManagerIn) {
 		super(renderManagerIn, new CowModel<>(), 0.7F);
 		this.addLayer(new CowktailLayer<>(this));
 	}
@@ -30,7 +30,7 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
 	/**
 	 * Returns the location of an entity's texture.
 	 */
-	public ResourceLocation getEntityTexture(CowktailEntity entity) {
+	public ResourceLocation getTextureLocation(CowktailEntity entity) {
 		return textures.get(entity.getCowktailType());
 	}
 }

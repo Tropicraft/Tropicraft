@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.item;
 
 import com.google.common.collect.Maps;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.tropicraft.Constants;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.Map;
 import java.util.Random;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class LoveTropicsShellItem extends ShellItem implements IColoredItem {
 
@@ -34,7 +34,7 @@ public class LoveTropicsShellItem extends ShellItem implements IColoredItem {
 
     @Override
     public int getColor(ItemStack itemstack, int pass) {
-        final CompoundNBT tag = itemstack.getTag();
+        final CompoundTag tag = itemstack.getTag();
         if (tag != null && !tag.isEmpty() && tag.contains("Name")) {
             return pass == 0 ? 0xFFFFFFFF : LTUtil.colors.get(tag.getString("Name"));
         }
@@ -42,12 +42,12 @@ public class LoveTropicsShellItem extends ShellItem implements IColoredItem {
     }
 
     @Override
-    public ITextComponent getDisplayName(final ItemStack stack) {
+    public Component getName(final ItemStack stack) {
         if (!stack.hasTag() || !stack.getTag().contains("Name")) {
-            return super.getDisplayName(stack);
+            return super.getName(stack);
         }
         final String name = stack.getTag().getString("Name");
         final String type = name.endsWith("s") ? "with_s" : "normal";
-        return new TranslationTextComponent("item.tropicraft.shell.owned." + type, name);
+        return new TranslatableComponent("item.tropicraft.shell.owned." + type, name);
     }
 }

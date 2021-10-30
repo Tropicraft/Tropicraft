@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.network.message;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 
@@ -16,11 +16,11 @@ public class MessageMixerStart extends MessageTileEntity<DrinkMixerTileEntity> {
 		super(sifter);
 	}
 
-	public static void encode(final MessageMixerStart message, final PacketBuffer buf) {
+	public static void encode(final MessageMixerStart message, final FriendlyByteBuf buf) {
 		MessageTileEntity.encode(message, buf);
 	}
 
-	public static MessageMixerStart decode(final PacketBuffer buf) {
+	public static MessageMixerStart decode(final FriendlyByteBuf buf) {
 		final MessageMixerStart message = new MessageMixerStart();
 		MessageTileEntity.decode(message, buf);
 		return message;

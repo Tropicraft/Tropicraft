@@ -1,11 +1,12 @@
 package net.tropicraft.core.common.dimension.feature.pools;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
-import net.minecraft.world.gen.feature.template.StructureProcessorList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.structures.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 import net.tropicraft.core.common.dimension.feature.TropicraftConfiguredFeatures;
@@ -19,38 +20,38 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 public final class TropicraftTemplatePools {
-    public final JigsawPattern koaTownCenters;
-    public final JigsawPattern koaHuts;
-    public final JigsawPattern koaStreets;
-    public final JigsawPattern koaTerminators;
-    public final JigsawPattern koaVillagers;
-    public final JigsawPattern koaFish;
-    public final JigsawPattern homeTreeStarts;
-    public final JigsawPattern homeTreeRoofs;
-    public final JigsawPattern homeTreeDummy;
-    public final JigsawPattern homeTreeTrunkMiddle;
-    public final JigsawPattern homeTreeTrunkTop;
-    public final JigsawPattern homeTreeBranchesSouth;
-    public final JigsawPattern homeTreeBranchesSouthEast;
-    public final JigsawPattern homeTreeBranchesEast;
-    public final JigsawPattern homeTreeBranchesNorthEast;
-    public final JigsawPattern homeTreeBranchesNorth;
-    public final JigsawPattern homeTreeBranchesNorthWest;
-    public final JigsawPattern homeTreeBranchesWest;
-    public final JigsawPattern homeTreeBranchesSouthWest;
+    public final StructureTemplatePool koaTownCenters;
+    public final StructureTemplatePool koaHuts;
+    public final StructureTemplatePool koaStreets;
+    public final StructureTemplatePool koaTerminators;
+    public final StructureTemplatePool koaVillagers;
+    public final StructureTemplatePool koaFish;
+    public final StructureTemplatePool homeTreeStarts;
+    public final StructureTemplatePool homeTreeRoofs;
+    public final StructureTemplatePool homeTreeDummy;
+    public final StructureTemplatePool homeTreeTrunkMiddle;
+    public final StructureTemplatePool homeTreeTrunkTop;
+    public final StructureTemplatePool homeTreeBranchesSouth;
+    public final StructureTemplatePool homeTreeBranchesSouthEast;
+    public final StructureTemplatePool homeTreeBranchesEast;
+    public final StructureTemplatePool homeTreeBranchesNorthEast;
+    public final StructureTemplatePool homeTreeBranchesNorth;
+    public final StructureTemplatePool homeTreeBranchesNorthWest;
+    public final StructureTemplatePool homeTreeBranchesWest;
+    public final StructureTemplatePool homeTreeBranchesSouthWest;
 
-    public TropicraftTemplatePools(WorldgenDataConsumer<JigsawPattern> worldgen, TropicraftConfiguredFeatures features, TropicraftProcessorLists processors) {
+    public TropicraftTemplatePools(WorldgenDataConsumer<StructureTemplatePool> worldgen, TropicraftConfiguredFeatures features, TropicraftProcessorLists processors) {
         Register pools = new Register(worldgen);
 
         this.koaTownCenters = pools.register(
                 "koa_village/town_centers",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 noAirSingle("koa_village/town_centers/firepit_01", processors.koaTownCenters, 1)
         );
 
         this.koaHuts = pools.register(
                 "koa_village/huts",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 noAirSingle("koa_village/huts/hut_01", processors.koaBuildings, 5),
                 noAirSingle("koa_village/huts/hut_02", processors.koaBuildings, 2),
                 noAirSingle("koa_village/huts/hut_03", processors.koaBuildings, 3),
@@ -88,39 +89,39 @@ public final class TropicraftTemplatePools {
 
         this.koaVillagers = pools.register(
                 "koa_village/villagers",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 noAirSingle("koa_village/villagers/unemployed", 1)
         );
 
         this.koaFish = pools.register(
                 "koa_village/fish",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 noAirSingle("koa_village/fish/fish_01", 1)
         );
 
         this.homeTreeStarts = pools.register(
                 "home_tree/starts",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 singlePiece("home_tree/trunks/bottom/trunk_0", processors.homeTreeStart, 1),
                 singlePiece("home_tree/trunks/bottom/trunk_1", processors.homeTreeStart, 1)
         );
 
         this.homeTreeRoofs = pools.register(
                 "home_tree/roofs",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 singlePiece("home_tree/roofs/roof_0", processors.homeTreeBase, 1)
         );
 
         this.homeTreeDummy = pools.register(
                 "home_tree/dummy",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 singlePiece("home_tree/dummy", processors.homeTreeBase, 1),
                 singlePiece("home_tree/outer_dummy", processors.homeTreeBase, 1)
         );
 
         this.homeTreeTrunkMiddle = pools.register(
                 "home_tree/trunks/middle",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 singlePiece("home_tree/trunks/middle/trunk_0", processors.homeTreeBase, 1),
                 singlePiece("home_tree/trunks/middle/trunk_1", processors.homeTreeBase, 1),
                 singlePiece("home_tree/trunks/middle/trunk_1_iguanas", processors.homeTreeBase, 1),
@@ -129,7 +130,7 @@ public final class TropicraftTemplatePools {
 
         this.homeTreeTrunkTop = pools.register(
                 "home_tree/trunks/top",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 noRotateSingle("home_tree/trunks/top/trunk_0", processors.homeTreeBase, 1),
                 noRotateSingle("home_tree/trunks/top/trunk_1", processors.homeTreeBase, 1),
                 noRotateSingle("home_tree/trunks/top/trunk_2", processors.homeTreeBase, 1),
@@ -138,97 +139,97 @@ public final class TropicraftTemplatePools {
 
         this.homeTreeBranchesSouth = pools.register(
                 "home_tree/branches/south",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(-30, 30, 4),
                 homeTreeBranch(0, 0, 1)
         );
         this.homeTreeBranchesSouthEast = pools.register(
                 "home_tree/branches/southeast",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(30, 60, 4),
                 homeTreeBranch(45, 45, 1)
         );
         this.homeTreeBranchesEast = pools.register(
                 "home_tree/branches/east",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(60, 120, 4),
                 homeTreeBranch(90, 90, 1)
         );
         this.homeTreeBranchesNorthEast = pools.register(
                 "home_tree/branches/northeast",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(120, 150, 4),
                 homeTreeBranch(135, 135, 1)
         );
         this.homeTreeBranchesNorth = pools.register(
                 "home_tree/branches/north",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(150, 210, 4),
                 homeTreeBranch(180, 180, 1)
         );
         this.homeTreeBranchesNorthWest = pools.register(
                 "home_tree/branches/northwest",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(210, 240, 4),
                 homeTreeBranch(225, 225, 1)
         );
         this.homeTreeBranchesWest = pools.register(
                 "home_tree/branches/west",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(240, 300, 4),
                 homeTreeBranch(270, 270, 1)
         );
         this.homeTreeBranchesSouthWest = pools.register(
                 "home_tree/branches/southwest",
-                JigsawPattern.PlacementBehaviour.RIGID,
+                StructureTemplatePool.Projection.RIGID,
                 homeTreeBranch(300, 330, 4),
                 homeTreeBranch(315, 315, 1)
         );
     }
 
-    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> singlePiece(String path, StructureProcessorList processors, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> singlePiece(String path, StructureProcessorList processors, int weight) {
         return new Pair<>(
-                JigsawPiece.func_242861_b(Constants.MODID + ":" + path, processors),
+                StructurePoolElement.single(Constants.MODID + ":" + path, processors),
                 weight
         );
     }
 
-    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> singlePiece(String path, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> singlePiece(String path, int weight) {
         return new Pair<>(
-                JigsawPiece.func_242859_b(Constants.MODID + ":" + path),
+                StructurePoolElement.single(Constants.MODID + ":" + path),
                 weight
         );
     }
 
-    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> noAirSingle(String path, StructureProcessorList processors, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noAirSingle(String path, StructureProcessorList processors, int weight) {
         return new Pair<>(
                 SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path, processors),
                 weight
         );
     }
 
-    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> noAirSingle(String path, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noAirSingle(String path, int weight) {
         return new Pair<>(
                 SingleNoAirJigsawPiece.create(Constants.MODID + ":" + path),
                 weight
         );
     }
 
-    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> noRotateSingle(String path, StructureProcessorList processors, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> noRotateSingle(String path, StructureProcessorList processors, int weight) {
         return new Pair<>(
                 NoRotateSingleJigsawPiece.createNoRotate(Constants.MODID + ":" + path, processors),
                 weight
         );
     }
 
-    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> feature(ConfiguredFeature<?, ?> feature, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer> feature(ConfiguredFeature<?, ?> feature, int weight) {
         return new Pair<>(
-                JigsawPiece.func_242845_a(feature),
+                StructurePoolElement.feature(feature),
                 weight
         );
     }
 
-    private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> homeTreeBranch(float minAngle, float maxAngle, int weight) {
+    private static Pair<Function<StructureTemplatePool.Projection, ? extends StructurePiece>, Integer> homeTreeBranch(float minAngle, float maxAngle, int weight) {
         return new Pair<>(
                 HomeTreeBranchPiece.create(minAngle, maxAngle),
                 weight
@@ -236,23 +237,23 @@ public final class TropicraftTemplatePools {
     }
 
     static final class Register {
-        private final WorldgenDataConsumer<JigsawPattern> worldgen;
+        private final WorldgenDataConsumer<StructureTemplatePool> worldgen;
 
-        Register(WorldgenDataConsumer<JigsawPattern> worldgen) {
+        Register(WorldgenDataConsumer<StructureTemplatePool> worldgen) {
             this.worldgen = worldgen;
         }
 
         @SafeVarargs
-        public final JigsawPattern register(String id, JigsawPattern.PlacementBehaviour placementBehaviour, Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer>... pieces) {
+        public final StructureTemplatePool register(String id, StructureTemplatePool.Projection placementBehaviour, Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer>... pieces) {
             return this.register(id, new ResourceLocation("empty"), placementBehaviour, pieces);
         }
 
         @SafeVarargs
-        public final JigsawPattern register(String id, ResourceLocation fallback, JigsawPattern.PlacementBehaviour placementBehaviour, Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer>... pieces) {
-            return this.register(new JigsawPattern(new ResourceLocation(Constants.MODID, id), fallback, Arrays.asList(pieces), placementBehaviour));
+        public final StructureTemplatePool register(String id, ResourceLocation fallback, StructureTemplatePool.Projection placementBehaviour, Pair<Function<StructureTemplatePool.Projection, ? extends StructurePoolElement>, Integer>... pieces) {
+            return this.register(new StructureTemplatePool(new ResourceLocation(Constants.MODID, id), fallback, Arrays.asList(pieces), placementBehaviour));
         }
 
-        public JigsawPattern register(JigsawPattern templatePool) {
+        public StructureTemplatePool register(StructureTemplatePool templatePool) {
             return this.worldgen.register(templatePool.getName(), templatePool);
         }
     }

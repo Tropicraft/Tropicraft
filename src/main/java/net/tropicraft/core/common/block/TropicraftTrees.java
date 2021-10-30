@@ -1,25 +1,41 @@
 package net.tropicraft.core.common.block;
 
+<<<<<<< HEAD
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.trees.Tree;
+=======
+import net.minecraft.data.worldgen.Features;
+import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+>>>>>>> Mojang Conversion
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.DynamicRegistries;
-import net.minecraft.util.registry.MutableRegistry;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
-import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.WritableRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.gen.feature.*;
+<<<<<<< HEAD
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.server.ServerWorld;
+=======
+import net.minecraft.server.level.ServerLevel;
+>>>>>>> Mojang Conversion
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
@@ -32,112 +48,123 @@ import java.util.OptionalInt;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class TropicraftTrees {
-    public static final Tree GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES);
-    public static final Tree LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES);
-    public static final Tree LIME = createFruit(TropicraftBlocks.LIME_LEAVES);
-    public static final Tree ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES);
-    public static final Tree PAPAYA = create((server, random, beehive) -> {
-        BaseTreeFeatureConfig config = new BaseTreeFeatureConfig.Builder(
-                new SimpleBlockStateProvider(TropicraftBlocks.PAPAYA_LOG.get().getDefaultState()),
-                new SimpleBlockStateProvider(TropicraftBlocks.PAPAYA_LEAVES.get().getDefaultState()),
-                new PapayaFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
-                new StraightTrunkPlacer(5, 2, 3),
-                new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
-        ).setDecorators(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new PapayaTreeDecorator())).setMaxWaterDepth(1).build();
+import net.minecraft.util.UniformInt;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 
-        return Feature.TREE.withConfiguration(config);
+public class TropicraftTrees {
+    public static final AbstractTreeGrower GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES, TropicraftBlocks.GRAPEFRUIT_SAPLING);
+    public static final AbstractTreeGrower LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES, TropicraftBlocks.LEMON_SAPLING);
+    public static final AbstractTreeGrower LIME = createFruit(TropicraftBlocks.LIME_LEAVES, TropicraftBlocks.LIME_SAPLING);
+    public static final AbstractTreeGrower ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES, TropicraftBlocks.ORANGE_SAPLING);
+    public static final AbstractTreeGrower PAPAYA = create((server, random, beehive) -> {
+        TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
+                new SimpleStateProvider(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
+                new StraightTrunkPlacer(5, 2, 3),
+                new SimpleStateProvider(TropicraftBlocks.PAPAYA_LEAVES.get().defaultBlockState()),
+                new SimpleStateProvider(TropicraftBlocks.PAPAYA_SAPLING.get().defaultBlockState()),
+                new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+        ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_005, new PapayaTreeDecorator())).maxWaterDepth(1).build();
+
+        return Feature.TREE.configured(config);
     });
 
-    public static final Tree RAINFOREST = create((server, random, beehive) -> {
+    public static final AbstractTreeGrower RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
         if (treeType == 0) {
-            return TropicraftFeatures.TALL_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.TALL_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
         } else if (treeType == 1) {
-            return TropicraftFeatures.SMALL_TUALUNG.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.SMALL_TUALUNG.get().configured(NoneFeatureConfiguration.INSTANCE);
         } else if (treeType == 2) {
-            return TropicraftFeatures.UP_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.UP_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
         } else {
-            return TropicraftFeatures.LARGE_TUALUNG.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.LARGE_TUALUNG.get().configured(NoneFeatureConfiguration.INSTANCE);
         }
     });
 
-    public static final Tree PALM = create((server, random, beehive) -> {
+    public static final AbstractTreeGrower PALM = create((server, random, beehive) -> {
         final int palmType = random.nextInt(3);
         if (palmType == 0) {
-            return TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.NORMAL_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
         } else if (palmType == 1) {
-            return TropicraftFeatures.CURVED_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.CURVED_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
         } else {
-            return TropicraftFeatures.LARGE_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.LARGE_PALM_TREE.get().configured(NoneFeatureConfiguration.INSTANCE);
         }
     });
 
-    public static final Tree RED_MANGROVE = create("red_mangrove");
-    public static final Tree TALL_MANGROVE = create("tall_mangrove");
-    public static final Tree TEA_MANGROVE = create("tea_mangrove");
-    public static final Tree BLACK_MANGROVE = create("black_mangrove");
+    public static final AbstractTreeGrower RED_MANGROVE = create("red_mangrove");
+    public static final AbstractTreeGrower TALL_MANGROVE = create("tall_mangrove");
+    public static final AbstractTreeGrower TEA_MANGROVE = create("tea_mangrove");
+    public static final AbstractTreeGrower BLACK_MANGROVE = create("black_mangrove");
 
-    private static Tree createFruit(Supplier<? extends Block> fruitLeaves) {
+    private static AbstractTreeGrower createFruit(Supplier<? extends Block> fruitLeaves, Supplier<? extends Block> fruitSapling) {
         return create((server, random, beehive) -> {
-            WeightedBlockStateProvider leaves = new WeightedBlockStateProvider()
-                    .addWeightedBlockstate(TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), 1)
-                    .addWeightedBlockstate(fruitLeaves.get().getDefaultState(), 1);
+            WeightedStateProvider leaves = new WeightedStateProvider(
+                    SimpleWeightedRandomList.<BlockState>builder()
+                            .add(TropicraftBlocks.FRUIT_LEAVES.get().defaultBlockState(), 1)
+                            .add(fruitLeaves.get().defaultBlockState(), 1)
+            );
 
-            BaseTreeFeatureConfig config = new BaseTreeFeatureConfig.Builder(
-                    new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()),
-                    leaves,
-                    new CitrusFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+            TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
+                    new SimpleStateProvider(Blocks.OAK_LOG.defaultBlockState()),
                     new CitrusTrunkPlacer(6, 3, 0),
-                    new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
+                    leaves,
+                    new SimpleStateProvider(fruitSapling.get().defaultBlockState()),
+                    new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
+                    new TwoLayersFeatureSize(1, 0, 2)
             ).build();
 
-           return Feature.TREE.withConfiguration(config);
+            return Feature.TREE.configured(config);
         });
     }
 
-    private static Tree create(String id) {
-        RegistryKey<ConfiguredFeature<?, ?>> key = RegistryKey.getOrCreateKey(
-                Registry.CONFIGURED_FEATURE_KEY,
+    private static AbstractTreeGrower create(String id) {
+        ResourceKey<ConfiguredFeature<?, ?>> key = ResourceKey.create(
+                Registry.CONFIGURED_FEATURE_REGISTRY,
                 new ResourceLocation(net.tropicraft.Constants.MODID, id)
         );
 
         return create((server, random, beehive) -> {
-            DynamicRegistries registries = server.getDynamicRegistries();
-            MutableRegistry<ConfiguredFeature<?, ?>> features = registries.getRegistry(Registry.CONFIGURED_FEATURE_KEY);
-            return features.getValueForKey(key);
+            RegistryAccess registries = server.registryAccess();
+            WritableRegistry<ConfiguredFeature<?, ?>> features = registries.registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+            return features.get(key);
         });
     }
 
-    private static Tree create(FeatureProvider featureProvider) {
-        return new Tree() {
+    private static AbstractTreeGrower create(FeatureProvider featureProvider) {
+        return new AbstractTreeGrower() {
             @Nullable
             @Override
-            protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean beehive) {
+            protected ConfiguredFeature<TreeConfiguration, ?> getConfiguredFeature(Random random, boolean beehive) {
                 return null;
             }
 
             @Override
-            public boolean attemptGrowTree(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState sapling, Random random) {
+            public boolean growTree(ServerLevel world, ChunkGenerator generator, BlockPos pos, BlockState sapling, Random random) {
                 ConfiguredFeature<?, ?> feature = featureProvider.getFeature(world.getServer(), random, this.hasFlowers(world, pos));
                 if (feature == null) {
                     return false;
                 }
 
-                world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.NO_RERENDER);
-                if (feature.generate(world, generator, random, pos)) {
+                world.setBlock(pos, Blocks.AIR.defaultBlockState(), Constants.BlockFlags.NO_RERENDER);
+                if (feature.place(world, generator, random, pos)) {
                     return true;
                 } else {
-                    world.setBlockState(pos, sapling, Constants.BlockFlags.NO_RERENDER);
+                    world.setBlock(pos, sapling, Constants.BlockFlags.NO_RERENDER);
                     return false;
                 }
             }
 
-            private boolean hasFlowers(IWorld world, BlockPos origin) {
-                BlockPos min = origin.add(-2, -1, -2);
-                BlockPos max = origin.add(2, 1, 2);
-                for (BlockPos pos : BlockPos.Mutable.getAllInBoxMutable(min, max)) {
-                    if (world.getBlockState(pos).isIn(BlockTags.FLOWERS)) {
+            private boolean hasFlowers(LevelAccessor world, BlockPos origin) {
+                BlockPos min = origin.offset(-2, -1, -2);
+                BlockPos max = origin.offset(2, 1, 2);
+                for (BlockPos pos : BlockPos.MutableBlockPos.betweenClosed(min, max)) {
+                    if (world.getBlockState(pos).is(BlockTags.FLOWERS)) {
                         return true;
                     }
                 }

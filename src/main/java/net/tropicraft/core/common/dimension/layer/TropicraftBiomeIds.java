@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.dimension.layer;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomes;
 
 public final class TropicraftBiomeIds {
@@ -36,8 +36,8 @@ public final class TropicraftBiomeIds {
         this.osaRainforest = getId(biomes, TropicraftBiomes.OSA_RAINFOREST);
     }
 
-    private static int getId(Registry<Biome> biomes, RegistryKey<Biome> key) {
-        return biomes.getId(biomes.getValueForKey(key));
+    private static int getId(Registry<Biome> biomes, ResourceKey<Biome> key) {
+        return biomes.getId(biomes.get(key));
     }
 
     public boolean isOcean(final int biome) {

@@ -4,10 +4,10 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.registry.*;
-import net.minecraft.world.Dimension;
+import net.minecraft.world.level.dimension.LevelStem;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import org.spongepowered.asm.mixin.Final;
@@ -20,11 +20,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalInt;
 
-@Mixin(WorldSettingsImport.class)
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.WritableRegistry;
+import net.minecraft.resources.RegistryReadOps;
+
+@Mixin(RegistryReadOps.class)
 public class WorldSettingsImportMixin {
     @Shadow
     @Final
-    private DynamicRegistries.Impl dynamicRegistries;
+    private RegistryAccess.RegistryHolder dynamicRegistries;
 
     /**
      * Add the tropicraft dimension to both new worlds and existing worlds when they get loaded.
@@ -34,29 +40,29 @@ public class WorldSettingsImportMixin {
             at = @At("HEAD")
     )
     @SuppressWarnings("unchecked")
-    private void decode(SimpleRegistry<?> registry, RegistryKey<?> registryKey, Codec<?> codec, CallbackInfoReturnable<DataResult<SimpleRegistry<?>>> ci) {
-        if (registryKey == Registry.DIMENSION_KEY && registry.getOrDefault(TropicraftDimension.ID) == null) {
-            this.addDimensions((SimpleRegistry<Dimension>) registry);
+    private void decode(MappedRegistry<?> registry, ResourceKey<?> registryKey, Codec<?> codec, CallbackInfoReturnable<DataResult<MappedRegistry<?>>> ci) {
+        if (registryKey == Registry.LEVEL_STEM_REGISTRY && registry.get(TropicraftDimension.ID) == null) {
+            this.addDimensions((MappedRegistry<LevelStem>) registry);
         }
     }
 
-    private void addDimensions(SimpleRegistry<Dimension> registry) {
-        Dimension overworld = registry.getValueForKey(Dimension.OVERWORLD);
+    private void addDimensions(MappedRegistry<LevelStem> registry) {
+        LevelStem overworld = registry.get(LevelStem.OVERWORLD);
         if (overworld == null) {
             return;
         }
 
         // steal the seed from the overworld chunk generator.
         // not necessarily the world seed if a datapack changes it, but it's probably a safe bet.
-        long seed = overworld.getChunkGenerator().field_235950_e_;
+        long seed = overworld.generator().strongholdSeed;
 
-        Dimension dimension = TropicraftDimension.createDimension(
-                this.dynamicRegistries.getRegistry(Registry.DIMENSION_TYPE_KEY),
-                this.dynamicRegistries.getRegistry(Registry.BIOME_KEY),
-                this.dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY),
+        LevelStem dimension = TropicraftDimension.createDimension(
+                this.dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY),
+                this.dynamicRegistries.registryOrThrow(Registry.BIOME_REGISTRY),
+                this.dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY),
                 seed
         );
-        registry.validateAndRegister(OptionalInt.empty(), TropicraftDimension.DIMENSION, dimension, Lifecycle.stable());
+        registry.registerOrOverride(OptionalInt.empty(), TropicraftDimension.DIMENSION, dimension, Lifecycle.stable());
     }
 
     /**
@@ -72,7 +78,7 @@ public class WorldSettingsImportMixin {
     )
     private <E> DataResult<Pair<E, OptionalInt>> modifyDataResult(
             DataResult<Pair<E, OptionalInt>> result,
-            RegistryKey<? extends Registry<E>> registryKey, MutableRegistry<E> registry, Codec<E> mapCodec, ResourceLocation id
+            ResourceKey<? extends Registry<E>> registryKey, WritableRegistry<E> registry, Codec<E> mapCodec, ResourceLocation id
     ) {
         if (id.getNamespace().equals(Constants.MODID)) {
             return result.setLifecycle(Lifecycle.stable());

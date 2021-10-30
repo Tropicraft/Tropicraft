@@ -2,12 +2,15 @@ buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://maven.parchmentmc.org' }
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath 'org.parchmentmc:librarian:1.+'
+
     }
 }
 plugins {
@@ -16,6 +19,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 group = 'net.tropicraft'
 archivesBaseName = 'Tropicraft'
@@ -32,17 +36,17 @@ if (System.getenv('GITHUB_RUN_NUMBER')) {
     version = "${mod_version}-${release_type}+${buildnumber}"
 }
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '16' // Need this here so eclipse task generates correctly.
 
 minecraft {
-	mappings channel: 'snapshot', version: '20210309-1.16.5'
-    
+    mappings channel: 'parchment', version: '2021.12.12-1.17.1'
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
         	taskName 'tropicraft_client'
-        	
+
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
@@ -58,7 +62,7 @@ minecraft {
 
         server {
         	taskName 'tropicraft_server'
-        
+
             workingDirectory project.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
@@ -71,12 +75,12 @@ minecraft {
                 }
             }
         }
-        
+
         data {
         	taskName 'tropicraft_data'
-        
+
             workingDirectory project.file('run')
-            
+
             environment 'target', 'fmluserdevdata'
 
             property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
@@ -88,10 +92,10 @@ minecraft {
                     source sourceSets.main
                 }
             }
-            
+
 			args '--mod', 'tropicraft', '--all', '--output', '"' + rootProject.file('src/generated/resources/') + '"',
-				 '--existing', '"' + sourceSets.main.resources.srcDirs[0] + '"' 
-			
+				 '--existing', '"' + sourceSets.main.resources.srcDirs[0] + '"'
+
         }
     }
 }
@@ -107,7 +111,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    annotationProcessor 'org.spongepowered:mixin:0.8:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
 }
 
 jar {
@@ -155,3 +159,5 @@ if (System.getProperty("idea.sync.active") == "true") {
         }
     }
 }
+
+

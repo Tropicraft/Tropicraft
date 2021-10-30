@@ -1,22 +1,22 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.BossInfo;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerBossEvent;
 import net.tropicraft.core.common.entity.ai.fishies.AvoidWallsGoal;
 import net.tropicraft.core.common.entity.ai.fishies.RandomSwimGoal;
 import net.tropicraft.core.common.entity.ai.fishies.SwimToAvoidEntityGoal;
@@ -28,15 +28,15 @@ import java.util.EnumSet;
 
 public class SharkEntity extends TropicraftFishEntity {
 
-    private static final DataParameter<Boolean> IS_BOSS = EntityDataManager.createKey(SharkEntity.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_BOSS = SynchedEntityData.defineId(SharkEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
-    private ArrayList<ServerPlayerEntity> bossTargets = new ArrayList<>();
+    private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS);
+    private ArrayList<ServerPlayer> bossTargets = new ArrayList<>();
     private boolean hasSetBoss = false;
 
-    public SharkEntity(EntityType<? extends WaterMobEntity> type, World world) {
+    public SharkEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);
-        experienceValue = 20;
+        xpReward = 20;
         this.setApproachesPlayers(true);
         // TODO - this.setDropStack(ItemRegistry.fertilizer, 3);
     }
@@ -47,42 +47,42 @@ public class SharkEntity extends TropicraftFishEntity {
         //goalSelector.addGoal(0, new EntityAISwimAvoidPredator(0, this, 2D));
         goalSelector.addGoal(0, new AvoidWallsGoal(EnumSet.of(Goal.Flag.MOVE), this));
         if (fleeFromPlayers) {
-            goalSelector.addGoal(0, new SwimToAvoidEntityGoal(EnumSet.of(Goal.Flag.MOVE), this, 5F, new Class[] {PlayerEntity.class}));
+            goalSelector.addGoal(0, new SwimToAvoidEntityGoal(EnumSet.of(Goal.Flag.MOVE), this, 5F, new Class[] {Player.class}));
         }
         goalSelector.addGoal(2, new TargetPreyGoal(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK), this));
         goalSelector.addGoal(2, new RandomSwimGoal(EnumSet.of(Goal.Flag.MOVE), this));
     }
 
     @Override
-    public void registerData() {
-        super.registerData();
-        getDataManager().register(IS_BOSS, false);
+    public void defineSynchedData() {
+        super.defineSynchedData();
+        getEntityData().define(IS_BOSS, false);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return WaterMobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0);
+    public static AttributeSupplier.Builder createAttributes() {
+        return WaterAnimal.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0)
+                .add(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
     public void setBoss() {
-        getDataManager().set(IS_BOSS, true);
+        getEntityData().set(IS_BOSS, true);
     }
 
     public boolean isBoss() {
-        return this.getDataManager().get(IS_BOSS);
+        return this.getEntityData().get(IS_BOSS);
     }
 
     private void setBossTraits() {
         getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8);
         //TODO this.setDropStack(ItemRegistry.yellowFlippers, 1);
-        setCustomName(new StringTextComponent("Elder Hammerhead"));
+        setCustomName(new TextComponent("Elder Hammerhead"));
         setCustomNameVisible(true);
         setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
         // TODO in renderer - this.setTexture("hammerhead4");
-        if (!world.isRemote) {
-            bossInfo.setName(new StringTextComponent("Elder Hammerhead"));
+        if (!level.isClientSide) {
+            bossInfo.setName(new TextComponent("Elder Hammerhead"));
         }
         hasSetBoss = true;
     }
@@ -96,18 +96,18 @@ public class SharkEntity extends TropicraftFishEntity {
                 setBossTraits();
             }
 
-            if (!world.isRemote) {
+            if (!level.isClientSide) {
                 // Search for suitable target
-                PlayerEntity nearest = world.getClosestPlayer(this, 64D);
+                Player nearest = level.getNearestPlayer(this, 64D);
                 if (nearest != null) {
-                    if (canEntityBeSeen(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
+                    if (canSee(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
                         aggressTarget = nearest;
-                        setTargetHeading(aggressTarget.getPosX(), aggressTarget.getPosY() + 1, aggressTarget.getPosZ(), true);
+                        setTargetHeading(aggressTarget.getX(), aggressTarget.getY() + 1, aggressTarget.getZ(), true);
                         // Show health bar to target player
-                        if (nearest instanceof ServerPlayerEntity) {
+                        if (nearest instanceof ServerPlayer) {
                             if (!bossInfo.getPlayers().contains(nearest)) {
-                                bossTargets.add((ServerPlayerEntity) nearest);
-                                bossInfo.addPlayer((ServerPlayerEntity) nearest);
+                                bossTargets.add((ServerPlayer) nearest);
+                                bossInfo.addPlayer((ServerPlayer) nearest);
                             }
                         }
                     } else {
@@ -118,9 +118,9 @@ public class SharkEntity extends TropicraftFishEntity {
                 }
 
                 // Heal if no target
-                if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 80 == 0 && this.aggressTarget == null) {
+                if (this.getHealth() < this.getMaxHealth() && this.tickCount % 80 == 0 && this.aggressTarget == null) {
                     this.heal(1f);
-                    this.spawnExplosionParticle();
+                    this.spawnAnim();
                 }
                 // Update health bar
                 this.bossInfo.setPercent(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
@@ -130,7 +130,7 @@ public class SharkEntity extends TropicraftFishEntity {
 
     private void clearBossTargets() {
         if (bossTargets.size() > 0) {
-            for (ServerPlayerEntity p : bossTargets) {
+            for (ServerPlayer p : bossTargets) {
                 bossInfo.removePlayer(p);
             }
             bossTargets.clear();
@@ -138,26 +138,26 @@ public class SharkEntity extends TropicraftFishEntity {
     }
 
     @Override
-    public void writeAdditional(CompoundNBT n) {
+    public void addAdditionalSaveData(CompoundTag n) {
         n.putBoolean("isBoss", isBoss());
-        super.writeAdditional(n);
+        super.addAdditionalSaveData(n);
     }
 
     @Override
-    public void readAdditional(CompoundNBT n) {
+    public void readAdditionalSaveData(CompoundTag n) {
         if (n.getBoolean("isBoss")) {
             setBoss();
         }
-        super.readAdditional(n);
+        super.readAdditionalSaveData(n);
     }
 
     @Override
-    public boolean canDespawn(double p) {
-        return !isBoss() && super.canDespawn(p);
+    public boolean removeWhenFarAway(double p) {
+        return !isBoss() && super.removeWhenFarAway(p);
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.HAMMERHEAD_SPAWN_EGG.get());
     }
 }

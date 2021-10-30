@@ -1,10 +1,10 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.Entity;
 
 public abstract class TropicraftAgeableModel<T extends Entity> extends EntityModel<T> {
     private static final double MODEL_OFFSET = 1.501;
@@ -12,41 +12,41 @@ public abstract class TropicraftAgeableModel<T extends Entity> extends EntityMod
     static final float CHILD_SCALE = 0.5F;
 
     @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        if (!this.isChild) {
+    public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        if (!this.young) {
             this.renderAdult(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         } else {
             this.renderChild(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         }
     }
 
-    protected void renderAdult(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    protected void renderAdult(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         this.getBody().render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         this.getHead().render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
-    protected void renderChild(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    protected void renderChild(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float reciprocalScale = 1.0F - CHILD_SCALE;
 
-        ModelRenderer head = this.getHead();
-        matrixStack.push();
+        ModelPart head = this.getHead();
+        matrixStack.pushPose();
         matrixStack.translate(0.0, MODEL_OFFSET * reciprocalScale, 0.0);
         matrixStack.translate(
-                (-head.rotationPointX * reciprocalScale) / 16.0,
-                (-head.rotationPointY * reciprocalScale) / 16.0,
-                (-head.rotationPointZ * reciprocalScale) / 16.0
+                (-head.x * reciprocalScale) / 16.0,
+                (-head.y * reciprocalScale) / 16.0,
+                (-head.z * reciprocalScale) / 16.0
         );
         head.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        matrixStack.pop();
+        matrixStack.popPose();
 
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.translate(0.0, MODEL_OFFSET * reciprocalScale, 0.0);
         matrixStack.scale(CHILD_SCALE, CHILD_SCALE, CHILD_SCALE);
         this.getBody().render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
-    protected abstract ModelRenderer getHead();
+    protected abstract ModelPart getHead();
 
-    protected abstract ModelRenderer getBody();
+    protected abstract ModelPart getBody();
 }

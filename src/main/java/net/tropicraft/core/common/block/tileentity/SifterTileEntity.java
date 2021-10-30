@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.BlockPos;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class SifterTileEntity extends TileEntity implements ITickableTileEntity {
+public class SifterTileEntity extends BlockEntity implements TickableBlockEntity {
 
     /** Number of seconds to sift multiplied by the number of ticks per second */
     private static final int SIFT_TIME = 4 * 20;
@@ -61,7 +61,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
         }
 
         // Rotation animation
-        if (world.isRemote) {
+        if (level.isClientSide) {
             yaw2 = yaw % 360.0D;
             yaw += 4.545454502105713D;
         }
@@ -95,7 +95,7 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
                 } else {
                     name = Constants.LT18_NAMES[rand.nextInt(Constants.LT18_NAMES.length)];
                 }
-                final CompoundNBT nameTag = new CompoundNBT();
+                final CompoundTag nameTag = new CompoundTag();
                 nameTag.putString("Name", name);
                 stack = new ItemStack(TropicraftItems.LOVE_TROPICS_SHELL.get());
                 stack.setTag(nameTag);
@@ -108,17 +108,17 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
     }
 
     private void spawnItem(ItemStack stack, BlockPos pos) {
-        if (world.isRemote) {
+        if (level.isClientSide) {
             return;
         }
 
-        final ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-        world.addEntity(itemEntity);
+        final ItemEntity itemEntity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
+        level.addFreshEntity(itemEntity);
     }
 
     private ItemStack getCommonItem() {
         // Random from -1 to size-1
-        final int shellIndex = rand.nextInt(TropicraftTags.Items.SHELLS.getAllElements().size() + 1) - 1;
+        final int shellIndex = rand.nextInt(TropicraftTags.Items.SHELLS.getValues().size() + 1) - 1;
         if (shellIndex < 0) {
             return getRareItem();
         }
@@ -158,17 +158,17 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
         isSifting = true;
         currentSiftTime = SIFT_TIME;
 
-        if (!world.isRemote) {
-            TropicraftPackets.sendToDimension(new MessageSifterStart(this), world);
+        if (!level.isClientSide) {
+            TropicraftPackets.sendToDimension(new MessageSifterStart(this), level);
         }
     }
 
     private void stopSifting() {
-        final double x = pos.getX() + world.rand.nextDouble() * 1.4;
-        final double y = pos.getY() + world.rand.nextDouble() * 1.4;
-        final double z = pos.getZ() + world.rand.nextDouble() * 1.4;
+        final double x = worldPosition.getX() + level.random.nextDouble() * 1.4;
+        final double y = worldPosition.getY() + level.random.nextDouble() * 1.4;
+        final double z = worldPosition.getZ() + level.random.nextDouble() * 1.4;
 
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             dumpResults(new BlockPos(x, y, z));
         }
         currentSiftTime = SIFT_TIME;
@@ -186,57 +186,57 @@ public class SifterTileEntity extends TileEntity implements ITickableTileEntity 
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT nbt) {
-        super.read(blockState, nbt);
+    public void load(BlockState blockState, CompoundTag nbt) {
+        super.load(blockState, nbt);
         isSifting = nbt.getBoolean("isSifting");
         currentSiftTime = nbt.getInt("currentSiftTime");
 
         if (nbt.contains("Item", 10)) {
-            siftItem = ItemStack.read(nbt.getCompound("Item"));
+            siftItem = ItemStack.of(nbt.getCompound("Item"));
         }
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT nbt) {
-        super.write(nbt);
+    public CompoundTag save(CompoundTag nbt) {
+        super.save(nbt);
         nbt.putBoolean("isSifting", isSifting);
         nbt.putInt("currentSiftTime", currentSiftTime);
         if (!siftItem.isEmpty()) {
-            nbt.put("Item", siftItem.write(new CompoundNBT()));
+            nbt.put("Item", siftItem.save(new CompoundTag()));
         }
         return nbt;
     }
 
-    public CompoundNBT getTagCompound(ItemStack stack) {
+    public CompoundTag getTagCompound(ItemStack stack) {
         if (!stack.hasTag())
-            stack.setTag(new CompoundNBT());
+            stack.setTag(new CompoundTag());
 
         return stack.getTag();
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(getBlockState(), pkt.getNbtCompound());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        load(getBlockState(), pkt.getTag());
     }
 
     protected void syncInventory() {
-        if (!world.isRemote()) {
-            TropicraftPackets.sendToDimension(new MessageSifterInventory(this), world);
+        if (!level.isClientSide()) {
+            TropicraftPackets.sendToDimension(new MessageSifterInventory(this), level);
         }
     }
 
     @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, 1, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, this.getUpdateTag());
     }
 
-    public CompoundNBT getUpdateTag() {
-        return writeItems(new CompoundNBT());
+    public CompoundTag getUpdateTag() {
+        return writeItems(new CompoundTag());
     }
 
-    private CompoundNBT writeItems(final CompoundNBT nbt) {
-        super.write(nbt);
-        ItemStackHelper.saveAllItems(nbt, NonNullList.from(siftItem), true);
+    private CompoundTag writeItems(final CompoundTag nbt) {
+        super.save(nbt);
+        ContainerHelper.saveAllItems(nbt, NonNullList.of(siftItem), true);
         return nbt;
     }
 

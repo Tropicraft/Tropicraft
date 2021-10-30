@@ -1,8 +1,8 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -14,14 +14,14 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class TropicraftDolphinRenderer extends MobRenderer<TropicraftDolphinEntity, TropicraftDolphinModel> {
 
-    public TropicraftDolphinRenderer(EntityRendererManager renderManager) {
+    public TropicraftDolphinRenderer(EntityRenderDispatcher renderManager) {
         super(renderManager, new TropicraftDolphinModel(), 0.5F);
-        shadowOpaque = 0.5f;
+        shadowStrength = 0.5f;
     }
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(TropicraftDolphinEntity dolphin) {
+    public ResourceLocation getTextureLocation(TropicraftDolphinEntity dolphin) {
         return TropicraftRenderUtils.getTextureEntity(dolphin.getTexture());
     }
 }

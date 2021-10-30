@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 
 import java.util.Random;
 
@@ -14,13 +14,13 @@ import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.isBBAvailable;
 
 public class NormalPalmTreeFeature extends PalmTreeFeature {
-    public NormalPalmTreeFeature(Codec<NoFeatureConfig> codec) {
+    public NormalPalmTreeFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-        pos = pos.toImmutable();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
+        pos = pos.immutable();
 
         int height = random.nextInt(4) + 6;
 
@@ -32,12 +32,12 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
+        if (!getSapling().canSurvive(getSapling().defaultBlockState(), world, pos)) {
             return false;
         }
 
-        if (world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK) {
-            world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
+        if (world.getBlockState(pos.below()).getBlock() == Blocks.GRASS_BLOCK) {
+            world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
         }
 
         int i = pos.getX(), j = pos.getY(), k = pos.getZ();
@@ -73,8 +73,8 @@ public class NormalPalmTreeFeature extends PalmTreeFeature {
         placeLeaf(world, i - 3, j + height, k - 3);
 
         for (int j1 = 0; j1 < height + 2; j1++) {
-            BlockPos logPos = pos.up(j1);
-            if (TreeFeature.isReplaceableAt(world, logPos)) {
+            BlockPos logPos = pos.above(j1);
+            if (TreeFeature.validTreePos(world, logPos)) {
                 placeLog(world, logPos);
             }
         }

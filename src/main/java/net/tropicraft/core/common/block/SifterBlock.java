@@ -1,42 +1,42 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class SifterBlock extends Block implements ITileEntityProvider {
+public class SifterBlock extends Block implements EntityBlock {
 
     public SifterBlock(final Properties properties) {
         super(properties);
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        final ItemStack stack = player.getHeldItem(hand);
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+        final ItemStack stack = player.getItemInHand(hand);
 
         // TODO use item tag
-        final boolean isSandInHand = Block.getBlockFromItem(stack.getItem()).getDefaultState().getMaterial() == Material.SAND;
+        final boolean isSandInHand = Block.byItem(stack.getItem()).defaultBlockState().getMaterial() == Material.SAND;
         if (!isSandInHand) {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
 
-        if (!world.isRemote) {
-            final SifterTileEntity sifter = (SifterTileEntity) world.getTileEntity(pos);
+        if (!world.isClientSide) {
+            final SifterTileEntity sifter = (SifterTileEntity) world.getBlockEntity(pos);
             if (sifter != null && !stack.isEmpty() && !sifter.isSifting()) {
                 final ItemStack addItem;
                 if (!player.isCreative()) {
@@ -47,16 +47,16 @@ public class SifterBlock extends Block implements ITileEntityProvider {
                 sifter.addItemToSifter(addItem);
 
                 sifter.startSifting();
-                return ActionResultType.CONSUME;
+                return InteractionResult.CONSUME;
             }
         }
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     } // /o/ \o\ /o\ \o\ /o\ \o/ /o/ /o/ \o\ \o\ /o/ /o/ \o/ /o\ \o/ \o/ /o\ /o\ \o/ \o/ /o/ \o\o\o\o\o\o\o\o\o\ :D
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(final IBlockReader world) {
+    public BlockEntity newBlockEntity(final BlockGetter world) {
         return new SifterTileEntity();
     }
 }

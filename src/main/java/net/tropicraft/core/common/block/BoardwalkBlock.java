@@ -1,72 +1,74 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public final class BoardwalkBlock extends Block implements IWaterLoggable {
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+public final class BoardwalkBlock extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
-    private static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(0.0, 11.0, 0.0, 16.0, 16.0, 16.0);
+    private static final VoxelShape BOTTOM_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
+    private static final VoxelShape TOP_SHAPE = Block.box(0.0, 11.0, 0.0, 16.0, 16.0, 16.0);
 
     public BoardwalkBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(AXIS, Direction.Axis.X).with(TYPE, Type.SHORT).with(WATERLOGGED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.X).setValue(TYPE, Type.SHORT).setValue(WATERLOGGED, false));
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-        Type type = state.get(TYPE);
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        Type type = state.getValue(TYPE);
         if (type.isTall()) {
-            return type.hasPost() ? VoxelShapes.fullCube() : TOP_SHAPE;
+            return type.hasPost() ? Shapes.block() : TOP_SHAPE;
         } else {
             return BOTTOM_SHAPE;
         }
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        World world = context.getWorld();
-        BlockPos pos = context.getPos();
-        boolean tall = context.getHitVec().y - pos.getY() > 0.5;
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        boolean tall = context.getClickLocation().y - pos.getY() > 0.5;
 
-        BlockState state = this.getDefaultState()
-                .with(AXIS, context.getPlacementHorizontalFacing().getAxis())
-                .with(TYPE, tall ? Type.TALL : Type.SHORT)
-                .with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER);
+        BlockState state = this.defaultBlockState()
+                .setValue(AXIS, context.getHorizontalDirection().getAxis())
+                .setValue(TYPE, tall ? Type.TALL : Type.SHORT)
+                .setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER);
         state = this.applyConnections(state, world, pos);
 
         return state;
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-        if (state.get(WATERLOGGED)) {
-            world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
+        if (state.getValue(WATERLOGGED)) {
+            world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
         if (facing != Direction.UP) {
@@ -76,12 +78,12 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
         }
     }
 
-    private BlockState applyConnections(BlockState state, IWorld world, BlockPos pos) {
-        Direction.Axis axis = state.get(AXIS);
-        boolean tall = state.get(TYPE).isTall();
+    private BlockState applyConnections(BlockState state, LevelAccessor world, BlockPos pos) {
+        Direction.Axis axis = state.getValue(AXIS);
+        boolean tall = state.getValue(TYPE).isTall();
 
-        BlockPos downPos = pos.down();
-        boolean posted = hasEnoughSolidSide(world, downPos, Direction.UP);
+        BlockPos downPos = pos.below();
+        boolean posted = canSupportCenter(world, downPos, Direction.UP);
 
         if (tall) {
             boolean front = this.connectsTo(world, pos, axis, Direction.AxisDirection.POSITIVE);
@@ -89,30 +91,30 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
             if (front || back) posted = true;
 
             Type type = Type.tall(posted, front, back);
-            return state.with(TYPE, type);
+            return state.setValue(TYPE, type);
         } else {
-            return state.with(TYPE, posted ? Type.SHORT_POST : Type.SHORT);
+            return state.setValue(TYPE, posted ? Type.SHORT_POST : Type.SHORT);
         }
     }
 
-    private boolean connectsTo(IWorld world, BlockPos pos, Direction.Axis axis, Direction.AxisDirection direction) {
-        BlockPos connectPos = pos.offset(Direction.getFacingFromAxisDirection(axis, direction));
+    private boolean connectsTo(LevelAccessor world, BlockPos pos, Direction.Axis axis, Direction.AxisDirection direction) {
+        BlockPos connectPos = pos.relative(Direction.fromAxisAndDirection(axis, direction));
         BlockState connectState = world.getBlockState(connectPos);
-        return connectState.matchesBlock(this) && connectState.get(TYPE).isShort();
+        return connectState.is(this) && connectState.getValue(TYPE).isShort();
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
         switch (rotation) {
             case COUNTERCLOCKWISE_90:
-            case CLOCKWISE_90: switch (state.get(AXIS)) {
-                case Z: return state.with(AXIS, Direction.Axis.X);
-                case X: return state.with(AXIS, Direction.Axis.Z);
+            case CLOCKWISE_90: switch (state.getValue(AXIS)) {
+                case Z: return state.setValue(AXIS, Direction.Axis.X);
+                case X: return state.setValue(AXIS, Direction.Axis.Z);
                 default: return state;
             }
             default: return state;
@@ -120,27 +122,27 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AXIS, TYPE, WATERLOGGED);
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader world, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos pos) {
         return true;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos) {
         return 1.0F;
     }
 
     @Override
-    public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
         return false;
     }
 
-    public enum Type implements IStringSerializable {
+    public enum Type implements StringRepresentable {
         TALL("tall"),
         TALL_POST("tall_post"),
         TALL_POST_FRONT("tall_post_front"),
@@ -186,7 +188,7 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
         }
 
         @Override
-        public String getString() {
+        public String getSerializedName() {
             return this.name;
         }
     }

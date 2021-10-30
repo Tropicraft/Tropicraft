@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.tropicraft.core.common.TropicraftTags;
 
 import javax.annotation.Nullable;
@@ -19,63 +19,63 @@ public class ArmorMaterials {
         }
     };
 
-    public static final IArmorMaterial ASHEN_MASK = new AshenMask();
-    public static final IArmorMaterial NIGEL_STACHE = new NigelStache();
-    public static final IArmorMaterial SCALE_ARMOR = createArmorMaterial(
+    public static final ArmorMaterial ASHEN_MASK = new AshenMask();
+    public static final ArmorMaterial NIGEL_STACHE = new NigelStache();
+    public static final ArmorMaterial SCALE_ARMOR = createArmorMaterial(
             18,
             new int[] {2, 5, 6, 2},
             9,
-            SoundEvents.ITEM_ARMOR_EQUIP_CHAIN,
-            Ingredient.fromItems(TropicraftItems.SCALE.get()),
+            SoundEvents.ARMOR_EQUIP_CHAIN,
+            Ingredient.of(TropicraftItems.SCALE.get()),
             "scale",
             0.5f,
             0.0F
     );
-    public static final IArmorMaterial FIRE_ARMOR = createArmorMaterial(
+    public static final ArmorMaterial FIRE_ARMOR = createArmorMaterial(
             12,
             new int[] {2, 4, 5, 2},
             9,
-            SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+            SoundEvents.ARMOR_EQUIP_IRON,
             NO_INGREDIENT,
             "fire",
             0.1f,
             0.0F
     );
-    public static final IArmorMaterial SCUBA = createArmorMaterial(
+    public static final ArmorMaterial SCUBA = createArmorMaterial(
             10, 
             new int[] {0, 0, 0, 0},
             0,
-            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,
+            SoundEvents.ARMOR_EQUIP_GENERIC,
             NO_INGREDIENT,
             "scuba_goggles",
             0,
             0.0F
     );
 
-    private static class AshenMask implements IArmorMaterial {
+    private static class AshenMask implements ArmorMaterial {
         @Override
-        public int getDurability(EquipmentSlotType slotIn) {
+        public int getDurabilityForSlot(EquipmentSlot slotIn) {
             return 10;
         }
 
         @Override
-        public int getDamageReductionAmount(EquipmentSlotType slotIn) {
-            return slotIn == EquipmentSlotType.HEAD ? 1 : 0;
+        public int getDefenseForSlot(EquipmentSlot slotIn) {
+            return slotIn == EquipmentSlot.HEAD ? 1 : 0;
         }
 
         @Override
-        public int getEnchantability() {
+        public int getEnchantmentValue() {
             return 15;
         }
 
         @Override
-        public SoundEvent getSoundEvent() {
-            return SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
+        public SoundEvent getEquipSound() {
+            return SoundEvents.ARMOR_EQUIP_LEATHER;
         }
 
         @Override
-        public Ingredient getRepairMaterial() {
-            return Ingredient.fromTag(TropicraftTags.Items.ASHEN_MASKS);
+        public Ingredient getRepairIngredient() {
+            return Ingredient.of(TropicraftTags.Items.ASHEN_MASKS);
         }
 
         @Override
@@ -94,31 +94,31 @@ public class ArmorMaterials {
         }
     }
 
-    private static class NigelStache implements IArmorMaterial {
+    private static class NigelStache implements ArmorMaterial {
 
         @Override
-        public int getDurability(EquipmentSlotType slotIn) {
+        public int getDurabilityForSlot(EquipmentSlot slotIn) {
             return 10;
         }
 
         @Override
-        public int getDamageReductionAmount(EquipmentSlotType slotIn) {
-            return slotIn == EquipmentSlotType.HEAD ? 1 : 0;
+        public int getDefenseForSlot(EquipmentSlot slotIn) {
+            return slotIn == EquipmentSlot.HEAD ? 1 : 0;
         }
 
         @Override
-        public int getEnchantability() {
+        public int getEnchantmentValue() {
             return 15;
         }
 
         @Override
-        public SoundEvent getSoundEvent() {
-            return SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
+        public SoundEvent getEquipSound() {
+            return SoundEvents.ARMOR_EQUIP_LEATHER;
         }
 
         @Override
-        public Ingredient getRepairMaterial() {
-            return Ingredient.fromItems(TropicraftItems.NIGEL_STACHE.get());
+        public Ingredient getRepairIngredient() {
+            return Ingredient.of(TropicraftItems.NIGEL_STACHE.get());
         }
 
         @Override
@@ -137,31 +137,31 @@ public class ArmorMaterials {
         }
     }
 
-    public static IArmorMaterial createArmorMaterial(final int durability, final int[] dmgReduction, final int enchantability, final SoundEvent soundEvent,
+    public static ArmorMaterial createArmorMaterial(final int durability, final int[] dmgReduction, final int enchantability, final SoundEvent soundEvent,
                                                      final Ingredient repairMaterial, final String name, final float toughness, float knockbackResistance) {
-        return new IArmorMaterial() {
+        return new ArmorMaterial() {
             @Override
-            public int getDurability(EquipmentSlotType equipmentSlotType) {
+            public int getDurabilityForSlot(EquipmentSlot equipmentSlotType) {
                 return durability;
             }
 
             @Override
-            public int getDamageReductionAmount(EquipmentSlotType equipmentSlotType) {
+            public int getDefenseForSlot(EquipmentSlot equipmentSlotType) {
                 return dmgReduction[equipmentSlotType.getIndex()];
             }
 
             @Override
-            public int getEnchantability() {
+            public int getEnchantmentValue() {
                 return enchantability;
             }
 
             @Override
-            public SoundEvent getSoundEvent() {
+            public SoundEvent getEquipSound() {
                 return soundEvent;
             }
 
             @Override
-            public Ingredient getRepairMaterial() {
+            public Ingredient getRepairIngredient() {
                 return repairMaterial;
             }
 

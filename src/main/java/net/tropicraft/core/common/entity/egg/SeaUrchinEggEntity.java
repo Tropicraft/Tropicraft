@@ -1,19 +1,19 @@
 package net.tropicraft.core.common.entity.egg;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.HandSide;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.underdasea.SeaUrchinEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public class SeaUrchinEggEntity extends EchinodermEggEntity {
-	public SeaUrchinEggEntity(final EntityType<? extends SeaUrchinEggEntity> type, World world) {
+	public SeaUrchinEggEntity(final EntityType<? extends SeaUrchinEggEntity> type, Level world) {
 		super(type, world);
 	}
 
@@ -24,11 +24,11 @@ public class SeaUrchinEggEntity extends EchinodermEggEntity {
 
 	@Override
 	public Entity onHatch() {
-		return new SeaUrchinEntity(TropicraftEntities.SEA_URCHIN.get(), world);
+		return new SeaUrchinEntity(TropicraftEntities.SEA_URCHIN.get(), level);
 	}
 
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target) {
+	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(TropicraftItems.SEA_URCHIN_SPAWN_EGG.get());
 	}
 }

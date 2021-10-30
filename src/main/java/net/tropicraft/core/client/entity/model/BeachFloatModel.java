@@ -1,97 +1,137 @@
 package net.tropicraft.core.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.placeable.BeachFloatEntity;
 
-public class BeachFloatModel extends SegmentedModel<BeachFloatEntity> {
-    public ModelRenderer floatCross4;
-    public ModelRenderer floatCross3;
-    public ModelRenderer floatCross2;
-    public ModelRenderer floatCross1;
-    public ModelRenderer topFloatCross4;
-    public ModelRenderer topFloatCross3;
-    public ModelRenderer topFloatCross2;
-    public ModelRenderer topFloatCross1;
-    public ModelRenderer floatFoot;
-    public ModelRenderer floatTop;
-    public ModelRenderer headPillow;
-    public ModelRenderer topBed;
-    public ModelRenderer bottomBed;
+public class BeachFloatModel extends ListModel<BeachFloatEntity> {
+    public ModelPart floatCross4;
+    public ModelPart floatCross3;
+    public ModelPart floatCross2;
+    public ModelPart floatCross1;
+    public ModelPart topFloatCross4;
+    public ModelPart topFloatCross3;
+    public ModelPart topFloatCross2;
+    public ModelPart topFloatCross1;
+    public ModelPart floatFoot;
+    public ModelPart floatTop;
+    public ModelPart headPillow;
+    public ModelPart topBed;
+    public ModelPart bottomBed;
 
-    public BeachFloatModel() {
-        floatCross4 = new ModelRenderer(this, 0, 0);
-        floatCross4.addBox(0F, -1F, -1F, 16, 2, 2, 0F);
-        floatCross4.setRotationPoint(0F, 23F, -6F);
+    public BeachFloatModel(ModelPart root) {
+        this.floatCross4 = root.getChild("floatCross4");
+        this.floatCross3 = root.getChild("floatCross3");
+        this.floatCross2 = root.getChild("floatCross2");
+        this.floatCross1 = root.getChild("floatCross1");
+        this.topFloatCross4 = root.getChild("topFloatCross4");
+        this.topFloatCross3 = root.getChild("topFloatCross3");
+        this.topFloatCross2 = root.getChild("topFloatCross2");
+        this.topFloatCross1 = root.getChild("topFloatCross1");
+        this.floatFoot = root.getChild("floatFoot");
+        this.floatTop = root.getChild("floatTop");
+        this.headPillow = root.getChild("headPillow");
+        this.topBed = root.getChild("topBed");
+        this.bottomBed = root.getChild("bottomBed");
 
-        floatCross3 = new ModelRenderer(this, 0, 0);
-        floatCross3.addBox(0F, -1F, -1F, 16, 2, 2, 0F);
-        floatCross3.setRotationPoint(0F, 23F, -2F);
+        //floatCross4 = new ModelPart(this, 0, 0);
+        //floatCross4.addCuboid(0F, -1F, -1F, 16, 2, 2);
+        //floatCross4.setPivot(0F, 23F, -6F);
 
-        floatCross2 = new ModelRenderer(this, 0, 0);
-        floatCross2.addBox(0F, -1F, -1F, 16, 2, 2, 0F);
-        floatCross2.setRotationPoint(0F, 23F, 2F);
+        //floatCross3 = new ModelPart(this, 0, 0);
+        //floatCross3.addCuboid(0F, -1F, -1F, 16, 2, 2);
+        //floatCross3.setPivot(0F, 23F, -2F);
 
-        floatCross1 = new ModelRenderer(this, 0, 0);
-        floatCross1.addBox(0F, -1F, -1F, 16, 2, 2, 0F);
-        floatCross1.setRotationPoint(0F, 23F, 6F);
+        //floatCross2 = new ModelPart(this, 0, 0);
+        //floatCross2.addCuboid(0F, -1F, -1F, 16, 2, 2);
+        //floatCross2.setPivot(0F, 23F, 2F);
 
-        topFloatCross4 = new ModelRenderer(this, 0, 0);
-        topFloatCross4.addBox(0F, -1F, -1F, 16, 2, 2, 0F);
-        topFloatCross4.setRotationPoint(0F, 23F, -6F);
-        topFloatCross4.rotateAngleZ = 3.141593F;
+        //floatCross1 = new ModelPart(this, 0, 0);
+        //floatCross1.addCuboid(0F, -1F, -1F, 16, 2, 2);
+        //floatCross1.setPivot(0F, 23F, 6F);
 
-        topFloatCross3 = new ModelRenderer(this, 0, 0);
-        topFloatCross3.addBox(0F, -1F, -1F, 16, 2, 2, 0F);
-        topFloatCross3.setRotationPoint(0F, 23F, -2F);
-        topFloatCross3.rotateAngleZ = 3.141593F;
+        //topFloatCross4 = new ModelPart(this, 0, 0);
+        //topFloatCross4.addCuboid(0F, -1F, -1F, 16, 2, 2);
+        //topFloatCross4.setPivot(0F, 23F, -6F);
+        //topFloatCross4.roll = 3.141593F;
 
-        topFloatCross2 = new ModelRenderer(this, 0, 0);
-        topFloatCross2.addBox(0F, 0F, 1F, 16, 2, 2, 0F);
-        topFloatCross2.setRotationPoint(0F, 24F, 0F);
-        topFloatCross2.rotateAngleZ = 3.141593F;
+        //topFloatCross3 = new ModelPart(this, 0, 0);
+        //topFloatCross3.addCuboid(0F, -1F, -1F, 16, 2, 2);
+        //topFloatCross3.setPivot(0F, 23F, -2F);
+        //topFloatCross3.roll = 3.141593F;
 
-        topFloatCross1 = new ModelRenderer(this, 0, 0);
-        topFloatCross1.addBox(0F, -1F, -1F, 16, 2, 2, 0F);
-        topFloatCross1.setRotationPoint(0F, 23F, 6F);
-        topFloatCross1.rotateAngleZ = 3.141593F;
+        //topFloatCross2 = new ModelPart(this, 0, 0);
+        //topFloatCross2.addCuboid(0F, 0F, 1F, 16, 2, 2);
+        //topFloatCross2.setPivot(0F, 24F, 0F);
+        //topFloatCross2.roll = 3.141593F;
 
-        floatFoot = new ModelRenderer(this, 0, 4);
-        floatFoot.addBox(-7F, -1F, 0F, 14, 2, 2, 0F);
-        floatFoot.setRotationPoint(16F, 23F, 0F);
-        floatFoot.rotateAngleY = 1.570796F;
+        //topFloatCross1 = new ModelPart(this, 0, 0);
+        //topFloatCross1.addCuboid(0F, -1F, -1F, 16, 2, 2);
+        //topFloatCross1.setPivot(0F, 23F, 6F);
+        //topFloatCross1.roll = 3.141593F;
 
-        floatTop = new ModelRenderer(this, 0, 4);
-        floatTop.addBox(-7F, -1F, 0F, 14, 2, 2, 0F);
-        floatTop.setRotationPoint(-17F, 24F, 0F);
-        floatTop.rotateAngleX = 1.570796F;
-        floatTop.rotateAngleY = -1.570796F;
+        //floatFoot = new ModelPart(this, 0, 4);
+        //floatFoot.addCuboid(-7F, -1F, 0F, 14, 2, 2);
+        //floatFoot.setPivot(16F, 23F, 0F);
+        //floatFoot.yaw = 1.570796F;
 
-        headPillow = new ModelRenderer(this, 0, 13);
-        headPillow.addBox(-6F, -1.5F, -4F, 12, 2, 4, 0F);
-        headPillow.setRotationPoint(-12F, 22F, 0F);
-        headPillow.rotateAngleY = 1.570796F;
+        //floatTop = new ModelPart(this, 0, 4);
+        //floatTop.addCuboid(-7F, -1F, 0F, 14, 2, 2);
+        //floatTop.setPivot(-17F, 24F, 0F);
+        //floatTop.pitch = 1.570796F;
+        //floatTop.yaw = -1.570796F;
 
-        topBed = new ModelRenderer(this, 0, 19);
-        topBed.addBox(-6F, -0.5F, -6F, 14, 1, 12, 0F);
-        topBed.setRotationPoint(-6F, 22F, 0F);
+        //headPillow = new ModelPart(this, 0, 13);
+        //headPillow.addCuboid(-6F, -1.5F, -4F, 12, 2, 4);
+        //headPillow.setPivot(-12F, 22F, 0F);
+        //headPillow.yaw = 1.570796F;
 
-        bottomBed = new ModelRenderer(this, 0, 19);
-        bottomBed.addBox(-6F, -0.5F, -6F, 14, 1, 12, 0F);
-        bottomBed.setRotationPoint(8F, 22F, 0F);
+        //topBed = new ModelPart(this, 0, 19);
+        //topBed.addCuboid(-6F, -0.5F, -6F, 14, 1, 12);
+        //topBed.setPivot(-6F, 22F, 0F);
+
+        //bottomBed = new ModelPart(this, 0, 19);
+        //bottomBed.addCuboid(-6F, -0.5F, -6F, 14, 1, 12);
+        //bottomBed.setPivot(8F, 22F, 0F);
+    }
+
+    public static LayerDefinition create(){
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
+
+        modelPartData.addOrReplaceChild("floatCross4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, -6F));
+        modelPartData.addOrReplaceChild("floatCross3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, -2F));
+        modelPartData.addOrReplaceChild("floatCross2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, 2F));
+        modelPartData.addOrReplaceChild("floatCross1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offset(0F, 23F, 6F));
+        modelPartData.addOrReplaceChild("topFloatCross4", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 23F, -6F, 0F,0F, 3.141593F));
+        modelPartData.addOrReplaceChild("topFloatCross3", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 23F, -2F, 0F,0F, 3.141593F));
+        modelPartData.addOrReplaceChild("topFloatCross2", CubeListBuilder.create().texOffs(0, 0).addBox(0F, 0F, 1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 24F, 0F, 0F,0F, 3.141593F));
+        modelPartData.addOrReplaceChild("topFloatCross1", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -1F, -1F, 16, 2, 2), PartPose.offsetAndRotation(0F, 23F, 6F, 0F,0F, 3.141593F));
+        modelPartData.addOrReplaceChild("floatFoot", CubeListBuilder.create().texOffs(0, 4).addBox(-7F, -1F, 0F, 14, 2, 2), PartPose.offsetAndRotation(16F, 23F, 0F, 0F,1.570796F, 0F));
+        modelPartData.addOrReplaceChild("floatTop", CubeListBuilder.create().texOffs(0, 4).addBox(-7F, -1F, 0F, 14, 2, 2), PartPose.offsetAndRotation(-17F, 24F, 0F, 1.570796F,-1.570796F, 0F));
+        modelPartData.addOrReplaceChild("headPillow", CubeListBuilder.create().texOffs(0, 13).addBox(-6F, -1.5F, -4F, 12, 2, 4), PartPose.offsetAndRotation(-12F, 22F, 0F, 0F,1.570796F, 0F));
+        modelPartData.addOrReplaceChild("topBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6F, -0.5F, -6F, 14, 1, 12), PartPose.offset(-6F, 22F, 0F));
+        modelPartData.addOrReplaceChild("bottomBed", CubeListBuilder.create().texOffs(0, 19).addBox(-6F, -0.5F, -6F, 14, 1, 12), PartPose.offset(8F, 22F, 0F));
+
+        return LayerDefinition.create(modelData,64,32);
     }
 
     @Override
-    public void setRotationAngles(BeachFloatEntity beachFloat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(BeachFloatEntity beachFloat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(
             floatCross4, floatCross3, floatCross2, floatCross1,
             topFloatCross4, topFloatCross3, topFloatCross2, topFloatCross1,
@@ -100,10 +140,10 @@ public class BeachFloatModel extends SegmentedModel<BeachFloatEntity> {
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        matrixStackIn.push();
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-90));
-        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        matrixStackIn.pop();
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStackIn.pushPose();
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-90));
+        super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        matrixStackIn.popPose();
     }
 }

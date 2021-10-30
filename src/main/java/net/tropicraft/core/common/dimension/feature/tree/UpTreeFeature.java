@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Random;
 
@@ -14,13 +14,13 @@ import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil
 
 public class UpTreeFeature extends RainforestTreeFeature {
 
-    public UpTreeFeature(Codec<NoFeatureConfig> codec) {
+    public UpTreeFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        pos = pos.toImmutable();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+        pos = pos.immutable();
         final int height = rand.nextInt(4) + 6;
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 
@@ -32,11 +32,11 @@ public class UpTreeFeature extends RainforestTreeFeature {
             return false;
         }
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
+        if (!getSapling().canSurvive(getSapling().defaultBlockState(), world, pos)) {
             return false;
         }
 
-        world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
+        world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
 
         for (int y = j; y < j + height; y++) {
             placeLog(world, i, y, k);
