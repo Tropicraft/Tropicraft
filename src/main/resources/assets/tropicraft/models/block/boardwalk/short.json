@@ -13,7 +13,7 @@
         "north": {"uv": [0, 0, 16, 2], "texture": "#planks"},
         "east": {"uv": [5, 9, 11, 11], "texture": "#planks", "cullface": "east"},
         "south": {"uv": [0, 7, 16, 9], "texture": "#planks"},
-        "west": {"uv": [5, 9, 11, 11], "texture": "#planks", "cullface": "south"},
+        "west": {"uv": [5, 9, 11, 11], "texture": "#planks", "cullface": "west"},
         "up": {"uv": [0, 9, 16, 15], "texture": "#planks"},
         "down": {"uv": [0, 1, 16, 7], "texture": "#planks"}
       }
