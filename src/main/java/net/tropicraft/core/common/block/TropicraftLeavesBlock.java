@@ -15,7 +15,7 @@ public class TropicraftLeavesBlock extends LeavesBlock {
     }
 
     @Override
-    public boolean ticksRandomly(BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return false;
     }
 

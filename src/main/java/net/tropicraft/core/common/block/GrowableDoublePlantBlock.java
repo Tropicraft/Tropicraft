@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public final class GrowableDoublePlantBlock extends DoublePlantBlock implements IGrowable {
     private final Supplier<RegistryObject<HugePlantBlock>> growInto;
     private Supplier<RegistryObject<? extends IItemProvider>> pickItem;
@@ -37,29 +39,29 @@ public final class GrowableDoublePlantBlock extends DoublePlantBlock implements 
     }
 
     @Override
-    public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
     @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(World world, Random random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-        BlockPos lowerPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
+    public void performBonemeal(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+        BlockPos lowerPos = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below();
 
         HugePlantBlock growBlock = this.growInto.get().get();
-        BlockState growState = growBlock.getDefaultState();
-        if (growState.isValidPosition(world, lowerPos)) {
+        BlockState growState = growBlock.defaultBlockState();
+        if (growState.canSurvive(world, lowerPos)) {
             growBlock.placeAt(world, lowerPos, Constants.BlockFlags.BLOCK_UPDATE);
         }
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             return super.getDrops(state, builder);
         } else {
             return Collections.emptyList();

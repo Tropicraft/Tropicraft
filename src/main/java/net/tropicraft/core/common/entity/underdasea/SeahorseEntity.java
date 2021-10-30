@@ -22,18 +22,18 @@ public class SeahorseEntity extends AbstractTexturedFishEntity {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return AbstractFishEntity.func_234176_m_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 4.0);
+		return AbstractFishEntity.createAttributes()
+				.add(Attributes.MAX_HEALTH, 4.0);
 	}
 
 	@Override
-	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+	protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 		return ActionResultType.PASS;
 	}
 
 	@Override
 	String getRandomTexture() {
-		return SEAHORSE_TEXTURE_NAMES[rand.nextInt(SEAHORSE_TEXTURE_NAMES.length)];
+		return SEAHORSE_TEXTURE_NAMES[random.nextInt(SEAHORSE_TEXTURE_NAMES.length)];
 	}
 
 	@Override
@@ -42,13 +42,13 @@ public class SeahorseEntity extends AbstractTexturedFishEntity {
 	}
 
 	@Override
-	protected ItemStack getFishBucket() {
+	protected ItemStack getBucketItemStack() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
 	protected SoundEvent getFlopSound() {
-		return SoundEvents.ENTITY_SALMON_FLOP;
+		return SoundEvents.SALMON_FLOP;
 	}
 
 	@Override

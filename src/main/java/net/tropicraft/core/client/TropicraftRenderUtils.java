@@ -29,15 +29,15 @@ public class TropicraftRenderUtils {
     private static Map<String, RenderMaterial> materialMap = Maps.newHashMap();
 
     public static IVertexBuilder getEntityCutoutBuilder(final IRenderTypeBuffer buffer, final ResourceLocation resourceLocation) {
-        return buffer.getBuffer(RenderType.getEntityCutout(resourceLocation));
+        return buffer.getBuffer(RenderType.entityCutout(resourceLocation));
     }
 
     public static IBakedModel getBakedModel(final ItemRenderer itemRenderer, final ItemStack itemStack) {
-        return itemRenderer.getItemModelMesher().getItemModel(itemStack);
+        return itemRenderer.getItemModelShaper().getItemModel(itemStack);
     }
 
     public static void renderModel(final RenderMaterial material, final Model model, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
-        model.render(stack, buffer.getBuffer(model.getRenderType(material.getTextureLocation())), combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
+        model.renderToBuffer(stack, buffer.getBuffer(model.renderType(material.texture())), combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
     }
 
     public static RenderMaterial getBlockMaterial(final String path) {
@@ -45,7 +45,7 @@ public class TropicraftRenderUtils {
     }
 
     private static RenderMaterial createBlockMaterial(final String path) {
-        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, getTextureBlock(path));
+        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, getTextureBlock(path));
     }
 
     public static RenderMaterial getTEMaterial(final String path) {
@@ -53,7 +53,7 @@ public class TropicraftRenderUtils {
     }
 
     private static RenderMaterial createTEMaterial(final String path) {
-        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE, getTextureTE(path));
+        return new RenderMaterial(AtlasTexture.LOCATION_BLOCKS, getTextureTE(path));
     }
 
     public static ResourceLocation getTexture(String path) {
@@ -105,21 +105,21 @@ public class TropicraftRenderUtils {
     }
 
     public static ResourceLocation bindTexture(ResourceLocation resource) {
-        Minecraft.getInstance().getTextureManager().bindTexture(resource);
+        Minecraft.getInstance().getTextureManager().bind(resource);
         return resource;
     }
 
     public static void renderItem(ItemStack itemStack, final float scale, boolean leftHand, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn, IBakedModel modelIn) {
         if (!itemStack.isEmpty()) {
-            stack.push();
+            stack.pushPose();
             stack.scale(scale, scale, scale);
 
             // TODO what is this now?
             if (/*!Minecraft.getInstance().getItemRenderer().shouldRenderItemIn3D(stack) || */itemStack.getItem() instanceof SkullItem) {
-                stack.rotate(Vector3f.YP.rotationDegrees(180.0F));
+                stack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
             }
-            Minecraft.getInstance().getItemRenderer().renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer);
-            stack.pop();
+            Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemCameraTransforms.TransformType.FIXED, combinedLightIn, combinedOverlayIn, stack, buffer);
+            stack.popPose();
         }
     }
 }

@@ -22,7 +22,7 @@ public final class HugePlantBlockPlacer extends BlockPlacer {
     }
 
     @Override
-    protected BlockPlacerType<?> getBlockPlacerType() {
+    protected BlockPlacerType<?> type() {
         return TropicraftBlockPlacerTypes.HUGE_PLANT.get();
     }
 }

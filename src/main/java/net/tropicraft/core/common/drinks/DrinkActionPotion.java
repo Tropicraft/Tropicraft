@@ -17,6 +17,6 @@ public class DrinkActionPotion extends DrinkAction {
 
     @Override
     public void onDrink(PlayerEntity player) {
-        player.addPotionEffect(new EffectInstance(potion, duration * 20, amplifier));
+        player.addEffect(new EffectInstance(potion, duration * 20, amplifier));
     }
 }

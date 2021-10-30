@@ -14,8 +14,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public final class MudBlock extends Block {
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.0, 0.0, 0.0, 16.0, 14.0, 16.0);
+    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0);
 
     public MudBlock(Properties properties) {
         super(properties);
@@ -27,13 +29,13 @@ public final class MudBlock extends Block {
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos) {
-        return VoxelShapes.fullCube();
+    public VoxelShape getBlockSupportShape(BlockState state, IBlockReader world, BlockPos pos) {
+        return VoxelShapes.block();
     }
 
     @Override
-    public VoxelShape getRayTraceShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-        return VoxelShapes.fullCube();
+    public VoxelShape getVisualShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+        return VoxelShapes.block();
     }
 
     @Override
@@ -42,14 +44,14 @@ public final class MudBlock extends Block {
     }
 
     @Override
-    public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+    public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
         return false;
     }
 
     @Override
     @Deprecated
     @OnlyIn(Dist.CLIENT)
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos) {
         return 0.2F;
     }
 }

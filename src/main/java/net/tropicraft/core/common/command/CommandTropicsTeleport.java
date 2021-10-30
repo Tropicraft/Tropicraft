@@ -14,14 +14,14 @@ public class CommandTropicsTeleport {
     public static void register(final CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
                 literal("tropics")
-                        .requires(s -> s.hasPermissionLevel(2))
+                        .requires(s -> s.hasPermission(2))
                         .executes(c -> teleport(c.getSource()))
         );
     }
 
     private static int teleport(final CommandSource source) {
         if (source.getEntity().getType() != EntityType.PLAYER) {
-            source.sendErrorMessage(new StringTextComponent("Cannot teleport non-players!"));
+            source.sendFailure(new StringTextComponent("Cannot teleport non-players!"));
         }
         TropicraftDimension.teleportPlayer((ServerPlayerEntity) source.getEntity(), TropicraftDimension.WORLD);
         return 1;

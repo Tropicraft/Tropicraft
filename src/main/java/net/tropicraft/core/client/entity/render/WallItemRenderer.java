@@ -22,18 +22,18 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
     
     @Override
     public void render(final WallItemEntity entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        stack.push();
-        stack.rotate(Vector3f.XP.rotationDegrees(entity.rotationPitch));
-        stack.rotate(Vector3f.YP.rotationDegrees(180.0F - entity.rotationYaw));
-        stack.rotate(Vector3f.ZP.rotationDegrees(entity.getRotation() * 360 / 8F));        
-        TropicraftRenderUtils.renderItem(entity.getDisplayedItem(), 1, false, stack, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, null);
-        stack.pop();
+        stack.pushPose();
+        stack.mulPose(Vector3f.XP.rotationDegrees(entity.xRot));
+        stack.mulPose(Vector3f.YP.rotationDegrees(180.0F - entity.yRot));
+        stack.mulPose(Vector3f.ZP.rotationDegrees(entity.getRotation() * 360 / 8F));        
+        TropicraftRenderUtils.renderItem(entity.getItem(), 1, false, stack, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY, null);
+        stack.popPose();
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
     }
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(WallItemEntity wallItemEntity) {
-        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+    public ResourceLocation getTextureLocation(WallItemEntity wallItemEntity) {
+        return AtlasTexture.LOCATION_BLOCKS;
     }
 }

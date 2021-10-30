@@ -11,8 +11,8 @@ public final class ModelAnimator {
     static Cycle cycle;
 
     public static void look(ModelRenderer part, float yaw, float pitch) {
-        part.rotateAngleX = pitch * DEG_TO_RAD;
-        part.rotateAngleY = yaw * DEG_TO_RAD;
+        part.xRot = pitch * DEG_TO_RAD;
+        part.yRot = yaw * DEG_TO_RAD;
     }
 
     public static Cycle cycle(float time, float scale) {

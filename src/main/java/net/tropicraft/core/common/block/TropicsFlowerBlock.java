@@ -9,6 +9,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class TropicsFlowerBlock extends FlowerBlock {
 
     private final VoxelShape shape;
@@ -21,6 +23,6 @@ public class TropicsFlowerBlock extends FlowerBlock {
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
         Vector3d offset = state.getOffset(world, pos);
-        return shape.withOffset(offset.x, offset.y, offset.z);
+        return shape.move(offset.x, offset.y, offset.z);
     }
 }

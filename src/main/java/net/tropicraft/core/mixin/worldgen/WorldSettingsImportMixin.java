@@ -35,28 +35,28 @@ public class WorldSettingsImportMixin {
     )
     @SuppressWarnings("unchecked")
     private void decode(SimpleRegistry<?> registry, RegistryKey<?> registryKey, Codec<?> codec, CallbackInfoReturnable<DataResult<SimpleRegistry<?>>> ci) {
-        if (registryKey == Registry.DIMENSION_KEY && registry.getOrDefault(TropicraftDimension.ID) == null) {
+        if (registryKey == Registry.LEVEL_STEM_REGISTRY && registry.get(TropicraftDimension.ID) == null) {
             this.addDimensions((SimpleRegistry<Dimension>) registry);
         }
     }
 
     private void addDimensions(SimpleRegistry<Dimension> registry) {
-        Dimension overworld = registry.getValueForKey(Dimension.OVERWORLD);
+        Dimension overworld = registry.get(Dimension.OVERWORLD);
         if (overworld == null) {
             return;
         }
 
         // steal the seed from the overworld chunk generator.
         // not necessarily the world seed if a datapack changes it, but it's probably a safe bet.
-        long seed = overworld.getChunkGenerator().field_235950_e_;
+        long seed = overworld.generator().strongholdSeed;
 
         Dimension dimension = TropicraftDimension.createDimension(
-                this.dynamicRegistries.getRegistry(Registry.DIMENSION_TYPE_KEY),
-                this.dynamicRegistries.getRegistry(Registry.BIOME_KEY),
-                this.dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY),
+                this.dynamicRegistries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY),
+                this.dynamicRegistries.registryOrThrow(Registry.BIOME_REGISTRY),
+                this.dynamicRegistries.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY),
                 seed
         );
-        registry.validateAndRegister(OptionalInt.empty(), TropicraftDimension.DIMENSION, dimension, Lifecycle.stable());
+        registry.registerOrOverride(OptionalInt.empty(), TropicraftDimension.DIMENSION, dimension, Lifecycle.stable());
     }
 
     /**

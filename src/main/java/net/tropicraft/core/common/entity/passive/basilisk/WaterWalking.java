@@ -28,24 +28,24 @@ import java.util.stream.StreamSupport;
 
 public final class WaterWalking {
     private static final double HEIGHT = 14.0 / 16.0;
-    public static final VoxelShape COLLIDER = Block.makeCuboidShape(0.0, 0.0, 0.0, 16.0, HEIGHT * 16.0, 16.0);
+    public static final VoxelShape COLLIDER = Block.box(0.0, 0.0, 0.0, 16.0, HEIGHT * 16.0, 16.0);
 
     public static boolean canWalkOn(FluidState fluid) {
-        return !fluid.isEmpty() && canWalkOn(fluid.getFluid()) && fluid.getLevel() == 8;
+        return !fluid.isEmpty() && canWalkOn(fluid.getType()) && fluid.getAmount() == 8;
     }
 
     public static boolean canWalkOn(Fluid fluid) {
-        return fluid.isIn(FluidTags.WATER);
+        return fluid.is(FluidTags.WATER);
     }
 
     public static Vector3d collide(IBlockReader world, AxisAlignedBB box, Vector3d offset) {
-        if (offset.lengthSquared() == 0.0 || offset.y >= 0.0) {
+        if (offset.lengthSqr() == 0.0 || offset.y >= 0.0) {
             return offset;
         }
 
-        Stream<VoxelShape> collisions = WaterWalking.collisions(world, box.expand(offset));
+        Stream<VoxelShape> collisions = WaterWalking.collisions(world, box.expandTowards(offset));
 
-        double dy = VoxelShapes.getAllowedOffset(Direction.Axis.Y, box, collisions, offset.y);
+        double dy = VoxelShapes.collide(Direction.Axis.Y, box, collisions, offset.y);
         return new Vector3d(offset.x, dy, offset.z);
     }
 
@@ -83,14 +83,14 @@ public final class WaterWalking {
             CubeCoordinateIterator iterator = this.iterator;
             BlockPos.Mutable mutablePos = this.mutablePos;
 
-            while (iterator.hasNext()) {
-                int x = iterator.getX();
-                int y = iterator.getY();
-                int z = iterator.getZ();
+            while (iterator.advance()) {
+                int x = iterator.nextX();
+                int y = iterator.nextY();
+                int z = iterator.nextZ();
 
-                if (canWalkOn(world.getFluidState(mutablePos.setPos(x, y, z)))) {
+                if (canWalkOn(world.getFluidState(mutablePos.set(x, y, z)))) {
                     if (this.box.intersects(x, y, z, x + 1.0, y + HEIGHT, z + 1.0)) {
-                        action.accept(COLLIDER.withOffset(x, y, z));
+                        action.accept(COLLIDER.move(x, y, z));
                         return true;
                     }
                 }
@@ -103,23 +103,23 @@ public final class WaterWalking {
     public static final class Navigator extends GroundPathNavigator {
         public Navigator(MobEntity entity, World world) {
             super(entity, world);
-            this.setCanSwim(true);
+            this.setCanFloat(true);
         }
 
         @Override
-        protected PathFinder getPathFinder(int depth) {
-            this.nodeProcessor = new WalkNodeProcessor();
-            return new PathFinder(this.nodeProcessor, depth);
+        protected PathFinder createPathFinder(int depth) {
+            this.nodeEvaluator = new WalkNodeProcessor();
+            return new PathFinder(this.nodeEvaluator, depth);
         }
 
         @Override
-        protected boolean func_230287_a_(PathNodeType type) {
-            return type == PathNodeType.WATER || type == PathNodeType.WATER_BORDER || super.func_230287_a_(type);
+        protected boolean hasValidPathType(PathNodeType type) {
+            return type == PathNodeType.WATER || type == PathNodeType.WATER_BORDER || super.hasValidPathType(type);
         }
 
         @Override
-        public boolean canEntityStandOnPos(BlockPos pos) {
-            return canWalkOn(this.world.getFluidState(pos)) || super.canEntityStandOnPos(pos);
+        public boolean isStableDestination(BlockPos pos) {
+            return canWalkOn(this.level.getFluidState(pos)) || super.isStableDestination(pos);
         }
     }
 }

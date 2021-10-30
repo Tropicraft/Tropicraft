@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 public class VMonkeyEntity extends TameableEntity {
 
-    private static final DataParameter<Byte> DATA_FLAGS = EntityDataManager.createKey(VMonkeyEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<Byte> DATA_FLAGS = EntityDataManager.defineId(VMonkeyEntity.class, DataSerializers.BYTE);
     private static final int FLAG_CLIMBING = 1 << 0;
 
     public static final Predicate<LivingEntity> FOLLOW_PREDICATE = ent -> {
@@ -36,8 +36,8 @@ public class VMonkeyEntity extends TameableEntity {
         if (!(ent instanceof PlayerEntity)) return false;
 
         PlayerEntity player = (PlayerEntity) ent;
-        ItemStack heldMain = player.getHeldItemMainhand();
-        ItemStack heldOff = player.getHeldItemOffhand();
+        ItemStack heldMain = player.getMainHandItem();
+        ItemStack heldOff = player.getOffhandItem();
 
         if (heldMain.getItem() instanceof CocktailItem) {
             if (CocktailItem.getDrink(heldMain) == Drink.PINA_COLADA) {
@@ -61,16 +61,16 @@ public class VMonkeyEntity extends TameableEntity {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        dataManager.register(DATA_FLAGS, (byte) 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(DATA_FLAGS, (byte) 0);
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return TameableEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0);
+        return TameableEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.3)
+                .add(Attributes.ATTACK_DAMAGE, 2.0);
     }
 
     @Override
@@ -96,14 +96,14 @@ public class VMonkeyEntity extends TameableEntity {
     }
 
     @Override
-    public void writeAdditional(final CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(final CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putByte("MonkeyFlags", getMonkeyFlags());
     }
 
     @Override
-    public void readAdditional(final CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(final CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         setMonkeyFlags(compound.getByte("MonkeyFlags"));
     }
 
@@ -116,7 +116,7 @@ public class VMonkeyEntity extends TameableEntity {
     }
 
     public boolean selfHoldingDrink(Drink drink) {
-        ItemStack heldItem = getHeldItemMainhand();
+        ItemStack heldItem = getMainHandItem();
         if (heldItem.getItem() instanceof CocktailItem) {
             return CocktailItem.getDrink(heldItem) == drink;
         }
@@ -124,11 +124,11 @@ public class VMonkeyEntity extends TameableEntity {
     }
 
     private void setMonkeyFlags(final byte flags) {
-        getDataManager().set(DATA_FLAGS, flags);
+        getEntityData().set(DATA_FLAGS, flags);
     }
 
     private byte getMonkeyFlags() {
-        return getDataManager().get(DATA_FLAGS);
+        return getEntityData().get(DATA_FLAGS);
     }
 
     public boolean isClimbing() {
@@ -141,94 +141,94 @@ public class VMonkeyEntity extends TameableEntity {
 
     public void setMonkeyFlag(int id, boolean flag) {
         if (flag) {
-            dataManager.set(DATA_FLAGS, (byte)(dataManager.get(DATA_FLAGS) | id));
+            entityData.set(DATA_FLAGS, (byte)(entityData.get(DATA_FLAGS) | id));
         } else {
-            dataManager.set(DATA_FLAGS, (byte)(dataManager.get(DATA_FLAGS) & ~id));
+            entityData.set(DATA_FLAGS, (byte)(entityData.get(DATA_FLAGS) & ~id));
         }
     }
 
     private boolean getMonkeyFlag(int flag) {
-        return (dataManager.get(DATA_FLAGS) & flag) != 0;
+        return (entityData.get(DATA_FLAGS) & flag) != 0;
     }
 
     @Override
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (isTamed()) {
-            if (isOwner(player) && !world.isRemote) {
-                this.setSitting(!isQueuedToSit());
-                isJumping = false;
-                navigator.clearPath();
-                setAttackTarget(null);
-                setAggroed(false);
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (isTame()) {
+            if (isOwnedBy(player) && !level.isClientSide) {
+                this.setOrderedToSit(!isOrderedToSit());
+                jumping = false;
+                navigation.stop();
+                setTarget(null);
+                setAggressive(false);
             }
-        } else if (!stack.isEmpty() && isBreedingItem(stack)) {
-            if (!player.abilities.isCreativeMode) {
+        } else if (!stack.isEmpty() && isFood(stack)) {
+            if (!player.abilities.instabuild) {
                 stack.shrink(1);
             }
 
-            if (!world.isRemote) {
-                if (rand.nextInt(3) == 0) {
-                    setTamed(true);
-                    navigator.clearPath();
-                    setAttackTarget(null);
-                    this.setSitting(true);
+            if (!level.isClientSide) {
+                if (random.nextInt(3) == 0) {
+                    setTame(true);
+                    navigation.stop();
+                    setTarget(null);
+                    this.setOrderedToSit(true);
                     setHealth(20.0F);
-                    setOwnerId(player.getUniqueID());
-                    world.setEntityState(this, (byte) 7);
+                    setOwnerUUID(player.getUUID());
+                    level.broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    world.setEntityState(this, (byte) 6);
+                    level.broadcastEntityEvent(this, (byte) 6);
                 }
             }
 
             return ActionResultType.PASS;
         }
 
-        return super.getEntityInteractionResult(player, hand);
+        return super.mobInteract(player, hand);
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return CocktailItem.getDrink(stack) == Drink.PINA_COLADA;
     }
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld world, AgeableEntity entity) {
+    public AgeableEntity getBreedOffspring(ServerWorld world, AgeableEntity entity) {
         return null;
     }
 
     @Override
-    public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+    public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
         // Only attack players, and only when not tamed
         // NOTE: Maybe we want to attack other players though?
-        return !isTamed() && target.getType() == EntityType.PLAYER;
+        return !isTame() && target.getType() == EntityType.PLAYER;
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entity) {
-        boolean damaged = entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
+    public boolean doHurtTarget(Entity entity) {
+        boolean damaged = entity.hurt(DamageSource.mobAttack(this), (float) getAttribute(Attributes.ATTACK_DAMAGE).getValue());
 
         if (damaged) {
-            applyEnchantments(this, entity);
+            doEnchantDamageEffects(this, entity);
         }
 
         return damaged;
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (isInvulnerableTo(source)) {
             return false;
         } else {
-            Entity entity = source.getTrueSource();
-            this.setSitting(false);
+            Entity entity = source.getEntity();
+            this.setOrderedToSit(false);
 
             if (entity != null && entity.getType() != EntityType.PLAYER && !(entity instanceof ArrowEntity)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
-            return super.attackEntityFrom(source, amount);
+            return super.hurt(source, amount);
         }
     }
 

@@ -23,15 +23,15 @@ public class ExplodingCoconutEntity extends ProjectileItemEntity {
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
-    protected void onImpact(RayTraceResult result) {
+    protected void onHit(RayTraceResult result) {
         // TODO - why isn't this being called?
-        if (!world.isRemote) {
-            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 2.4F, Explosion.Mode.DESTROY);
+        if (!level.isClientSide) {
+            level.explode(this, getX(), getY(), getZ(), 2.4F, Explosion.Mode.DESTROY);
             remove();
         }
     }

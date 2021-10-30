@@ -36,24 +36,24 @@ public class TropicraftTrees {
     public static final Tree RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
         if (treeType == 0) {
-            return TropicraftFeatures.TALL_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.TALL_TREE.get().configured(NoFeatureConfig.INSTANCE);
         } else if (treeType == 1) {
-            return TropicraftFeatures.SMALL_TUALUNG.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.SMALL_TUALUNG.get().configured(NoFeatureConfig.INSTANCE);
         } else if (treeType == 2) {
-            return TropicraftFeatures.UP_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.UP_TREE.get().configured(NoFeatureConfig.INSTANCE);
         } else {
-            return TropicraftFeatures.LARGE_TUALUNG.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.LARGE_TUALUNG.get().configured(NoFeatureConfig.INSTANCE);
         }
     });
 
     public static final Tree PALM = create((server, random, beehive) -> {
         final int palmType = random.nextInt(3);
         if (palmType == 0) {
-            return TropicraftFeatures.NORMAL_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.NORMAL_PALM_TREE.get().configured(NoFeatureConfig.INSTANCE);
         } else if (palmType == 1) {
-            return TropicraftFeatures.CURVED_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.CURVED_PALM_TREE.get().configured(NoFeatureConfig.INSTANCE);
         } else {
-            return TropicraftFeatures.LARGE_PALM_TREE.get().withConfiguration(NoFeatureConfig.INSTANCE);
+            return TropicraftFeatures.LARGE_PALM_TREE.get().configured(NoFeatureConfig.INSTANCE);
         }
     });
 
@@ -65,27 +65,27 @@ public class TropicraftTrees {
     private static Tree createFruit(Supplier<? extends Block> fruitLeaves) {
         return create((server, random, beehive) -> {
             BaseTreeFeatureConfig config = new BaseTreeFeatureConfig.Builder(
-                    new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()),
-                    new WeightedBlockStateProvider().addWeightedBlockstate(TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), 1).addWeightedBlockstate(fruitLeaves.get().getDefaultState(), 1),
-                    new CitrusFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
+                    new SimpleBlockStateProvider(Blocks.OAK_LOG.defaultBlockState()),
+                    new WeightedBlockStateProvider().add(TropicraftBlocks.FRUIT_LEAVES.get().defaultBlockState(), 1).add(fruitLeaves.get().defaultBlockState(), 1),
+                    new CitrusFoliagePlacer(FeatureSpread.fixed(0), FeatureSpread.fixed(0)),
                     new CitrusTrunkPlacer(6, 3, 0),
                     new TwoLayerFeature(1, 0, 2)
             ).build();
 
-           return Feature.TREE.withConfiguration(config);
+           return Feature.TREE.configured(config);
         });
     }
 
     private static Tree create(String id) {
-        RegistryKey<ConfiguredFeature<?, ?>> key = RegistryKey.getOrCreateKey(
-                Registry.CONFIGURED_FEATURE_KEY,
+        RegistryKey<ConfiguredFeature<?, ?>> key = RegistryKey.create(
+                Registry.CONFIGURED_FEATURE_REGISTRY,
                 new ResourceLocation(net.tropicraft.Constants.MODID, id)
         );
 
         return create((server, random, beehive) -> {
-            DynamicRegistries registries = server.getDynamicRegistries();
-            MutableRegistry<ConfiguredFeature<?, ?>> features = registries.getRegistry(Registry.CONFIGURED_FEATURE_KEY);
-            return features.getValueForKey(key);
+            DynamicRegistries registries = server.registryAccess();
+            MutableRegistry<ConfiguredFeature<?, ?>> features = registries.registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+            return features.get(key);
         });
     }
 
@@ -93,31 +93,31 @@ public class TropicraftTrees {
         return new Tree() {
             @Nullable
             @Override
-            protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean beehive) {
+            protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getConfiguredFeature(Random random, boolean beehive) {
                 return null;
             }
 
             @Override
-            public boolean attemptGrowTree(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState sapling, Random random) {
+            public boolean growTree(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState sapling, Random random) {
                 ConfiguredFeature<?, ?> feature = featureProvider.getFeature(world.getServer(), random, this.hasFlowers(world, pos));
                 if (feature == null) {
                     return false;
                 }
 
-                world.setBlockState(pos, Blocks.AIR.getDefaultState(), Constants.BlockFlags.NO_RERENDER);
-                if (feature.generate(world, generator, random, pos)) {
+                world.setBlock(pos, Blocks.AIR.defaultBlockState(), Constants.BlockFlags.NO_RERENDER);
+                if (feature.place(world, generator, random, pos)) {
                     return true;
                 } else {
-                    world.setBlockState(pos, sapling, Constants.BlockFlags.NO_RERENDER);
+                    world.setBlock(pos, sapling, Constants.BlockFlags.NO_RERENDER);
                     return false;
                 }
             }
 
             private boolean hasFlowers(IWorld world, BlockPos origin) {
-                BlockPos min = origin.add(-2, -1, -2);
-                BlockPos max = origin.add(2, 1, 2);
-                for (BlockPos pos : BlockPos.Mutable.getAllInBoxMutable(min, max)) {
-                    if (world.getBlockState(pos).isIn(BlockTags.FLOWERS)) {
+                BlockPos min = origin.offset(-2, -1, -2);
+                BlockPos max = origin.offset(2, 1, 2);
+                for (BlockPos pos : BlockPos.Mutable.betweenClosed(min, max)) {
+                    if (world.getBlockState(pos).is(BlockTags.FLOWERS)) {
                         return true;
                     }
                 }

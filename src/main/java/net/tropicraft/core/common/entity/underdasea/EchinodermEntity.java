@@ -57,7 +57,7 @@ public abstract class EchinodermEntity extends WaterMobEntity {
     /**
      * Growing Age. Replaced old data watcher DW_GROWING_AGE
      */
-    private static final DataParameter<Integer> GROWING_AGE = EntityDataManager.createKey(EchinodermEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> GROWING_AGE = EntityDataManager.defineId(EchinodermEntity.class, DataSerializers.INT);
 
     /**
      * Custom yOffset variable
@@ -77,29 +77,29 @@ public abstract class EchinodermEntity extends WaterMobEntity {
     public abstract EggEntity createEgg();
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        dataManager.register(GROWING_AGE, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(GROWING_AGE, 0);
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
         setGrowingAge(compound.getInt("Age"));
     }
 
     @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("Age", getGrowingAge());
     }
 
     @Override
-    public void applyKnockback(float strength, double ratioX, double ratioZ) {
+    public void knockback(float strength, double ratioX, double ratioZ) {
     }
 
     @Override
-    public boolean isChild() {
+    public boolean isBaby() {
         return getGrowingAge() < 0;
     }
 
@@ -112,8 +112,8 @@ public abstract class EchinodermEntity extends WaterMobEntity {
         EchinodermEntity closestMate = null;
         double closestSqDist = -1f;
 
-        AxisAlignedBB aabb = getBoundingBox().grow(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
-        for (Object obj : world.getEntitiesWithinAABB(getClass(), aabb)) {
+        AxisAlignedBB aabb = getBoundingBox().inflate(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
+        for (Object obj : level.getEntitiesOfClass(getClass(), aabb)) {
             // don't masturbate
             if (obj == this) {
                 continue;
@@ -127,7 +127,7 @@ public abstract class EchinodermEntity extends WaterMobEntity {
                 continue;
             }
 
-            double sqDist = getDistanceSq(other);
+            double sqDist = distanceToSqr(other);
 
             if (sqDist < BREEDING_PROXIMITY && (closestSqDist == -1f || sqDist < closestSqDist)) {
                 closestMate = other;
@@ -144,7 +144,7 @@ public abstract class EchinodermEntity extends WaterMobEntity {
 
     public boolean isPotentialMate(final EchinodermEntity other) {
         // we are no pedophiles or rapists
-        return !other.isChild() && other.isHorny();
+        return !other.isBaby() && other.isHorny();
     }
 
     /**
@@ -153,11 +153,11 @@ public abstract class EchinodermEntity extends WaterMobEntity {
      * @return the number of ticks.
      */
     public int getGrowingAge() {
-        return this.dataManager.get(GROWING_AGE);
+        return this.entityData.get(GROWING_AGE);
     }
 
     public void setGrowingAge(int age) {
-        this.dataManager.set(GROWING_AGE, age);
+        this.entityData.set(GROWING_AGE, age);
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class EchinodermEntity extends WaterMobEntity {
         float height = getBabyHeight() + growthProgress*(getAdultHeight() - getBabyHeight());
         float yO = getBabyYOffset() + growthProgress*(getAdultYOffset() - getBabyYOffset());
 
-        recalculateSize();
+        refreshDimensions();
     //TODO    setSize(width, height);
         yOffset = yO;
     }
@@ -186,9 +186,9 @@ public abstract class EchinodermEntity extends WaterMobEntity {
 //    }
 
     @Override
-    public double getYOffset() {
+    public double getMyRidingOffset() {
         if (yOffset < 0) {
-            return super.getYOffset();
+            return super.getMyRidingOffset();
         } else {
             return yOffset;
         }

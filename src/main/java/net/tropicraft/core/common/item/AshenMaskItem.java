@@ -39,23 +39,23 @@ public class AshenMaskItem extends ArmorItem {
     /**
      * Called when this item is used when targetting a Block
      */
-    public ActionResultType onItemUse(ItemUseContext context) {
-        BlockPos pos = context.getPos();
-        Direction direction = context.getFace();
-        BlockPos offsetPos = pos.offset(direction);
+    public ActionResultType useOn(ItemUseContext context) {
+        BlockPos pos = context.getClickedPos();
+        Direction direction = context.getClickedFace();
+        BlockPos offsetPos = pos.relative(direction);
         PlayerEntity player = context.getPlayer();
-        ItemStack itemStack = context.getItem();
+        ItemStack itemStack = context.getItemInHand();
         if (player != null && !this.canPlace(player, direction, itemStack, offsetPos)) {
             return ActionResultType.FAIL;
         } else {
-            World world = context.getWorld();
+            World world = context.getLevel();
             WallItemEntity wallItem = new WallItemEntity(world, offsetPos, direction);
-            wallItem.setDisplayedItem(itemStack);
+            wallItem.setItem(itemStack);
 
-            if (wallItem.onValidSurface()) {
-                if (!world.isRemote) {
-                    wallItem.playPlaceSound();
-                    world.addEntity(wallItem);
+            if (wallItem.survives()) {
+                if (!world.isClientSide) {
+                    wallItem.playPlacementSound();
+                    world.addFreshEntity(wallItem);
                 }
 
                 itemStack.shrink(1);
@@ -66,7 +66,7 @@ public class AshenMaskItem extends ArmorItem {
     }
 
     private boolean canPlace(PlayerEntity player, Direction direction, ItemStack heldStack, BlockPos pos) {
-        return player.canPlayerEdit(pos, direction, heldStack);
+        return player.mayUseItemAt(pos, direction, heldStack);
     }
 
     @OnlyIn(Dist.CLIENT)

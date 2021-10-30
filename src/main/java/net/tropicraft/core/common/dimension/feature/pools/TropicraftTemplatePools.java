@@ -187,14 +187,14 @@ public final class TropicraftTemplatePools {
 
     private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> singlePiece(String path, StructureProcessorList processors, int weight) {
         return new Pair<>(
-                JigsawPiece.func_242861_b(Constants.MODID + ":" + path, processors),
+                JigsawPiece.single(Constants.MODID + ":" + path, processors),
                 weight
         );
     }
 
     private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> singlePiece(String path, int weight) {
         return new Pair<>(
-                JigsawPiece.func_242859_b(Constants.MODID + ":" + path),
+                JigsawPiece.single(Constants.MODID + ":" + path),
                 weight
         );
     }
@@ -222,7 +222,7 @@ public final class TropicraftTemplatePools {
 
     private static Pair<Function<JigsawPattern.PlacementBehaviour, ? extends JigsawPiece>, Integer> feature(ConfiguredFeature<?, ?> feature, int weight) {
         return new Pair<>(
-                JigsawPiece.func_242845_a(feature),
+                JigsawPiece.feature(feature),
                 weight
         );
     }

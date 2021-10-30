@@ -46,14 +46,14 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
 
     public MangroveRootsBlock(Block.Properties properties) {
         super(properties);
-        this.setDefaultState(this.getStateContainer().getBaseState()
-                .with(TALL, true)
-                .with(GROUNDED, false)
-                .with(NORTH, Connection.NONE)
-                .with(EAST, Connection.NONE)
-                .with(SOUTH, Connection.NONE)
-                .with(WEST, Connection.NONE)
-                .with(WATERLOGGED, false)
+        this.registerDefaultState(this.getStateDefinition().any()
+                .setValue(TALL, true)
+                .setValue(GROUNDED, false)
+                .setValue(NORTH, Connection.NONE)
+                .setValue(EAST, Connection.NONE)
+                .setValue(SOUTH, Connection.NONE)
+                .setValue(WEST, Connection.NONE)
+                .setValue(WATERLOGGED, false)
         );
     }
 
@@ -75,21 +75,21 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     private static VoxelShape computeShapeFor(boolean tall, boolean north, boolean east, boolean south, boolean west) {
         double height = tall ? 16.0 : 10.0;
 
-        VoxelShape shape = Block.makeCuboidShape(6.0, 0.0, 6.0, 10.0, height, 10.0);
-        if (north) shape = VoxelShapes.or(shape, Block.makeCuboidShape(6.0, 0.0, 0.0, 10.0, height, 6.0));
-        if (east) shape = VoxelShapes.or(shape, Block.makeCuboidShape(10.0, 0.0, 6.0, 16.0, height, 10.0));
-        if (south) shape = VoxelShapes.or(shape, Block.makeCuboidShape(6.0, 0.0, 10.0, 10.0, height, 16.0));
-        if (west) shape = VoxelShapes.or(shape, Block.makeCuboidShape(0.0, 0.0, 6.0, 6.0, height, 10.0));
+        VoxelShape shape = Block.box(6.0, 0.0, 6.0, 10.0, height, 10.0);
+        if (north) shape = VoxelShapes.or(shape, Block.box(6.0, 0.0, 0.0, 10.0, height, 6.0));
+        if (east) shape = VoxelShapes.or(shape, Block.box(10.0, 0.0, 6.0, 16.0, height, 10.0));
+        if (south) shape = VoxelShapes.or(shape, Block.box(6.0, 0.0, 10.0, 10.0, height, 16.0));
+        if (west) shape = VoxelShapes.or(shape, Block.box(0.0, 0.0, 6.0, 6.0, height, 10.0));
 
         return shape;
     }
 
     private static int shapeKey(BlockState state) {
-        return (state.get(TALL) ? 1 : 0)
-                | (state.get(NORTH).exists() ? 1 << 1 : 0)
-                | (state.get(EAST).exists() ? 1 << 2 : 0)
-                | (state.get(SOUTH).exists() ? 1 << 3 : 0)
-                | (state.get(WEST).exists() ? 1 << 4 : 0);
+        return (state.getValue(TALL) ? 1 : 0)
+                | (state.getValue(NORTH).exists() ? 1 << 1 : 0)
+                | (state.getValue(EAST).exists() ? 1 << 2 : 0)
+                | (state.getValue(SOUTH).exists() ? 1 << 3 : 0)
+                | (state.getValue(WEST).exists() ? 1 << 4 : 0);
     }
 
     @Override
@@ -99,57 +99,57 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader reader, BlockPos pos) {
-        return super.getCollisionShape(state, reader, pos);
+    public VoxelShape getBlockSupportShape(BlockState state, IBlockReader reader, BlockPos pos) {
+        return super.getBlockSupportShape(state, reader, pos);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getConnectedState(context.getWorld(), context.getPos());
+        return this.getConnectedState(context.getLevel(), context.getClickedPos());
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-        if (state.get(WATERLOGGED)) {
-            world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+        if (state.getValue(WATERLOGGED)) {
+            world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
         return this.getConnectedState(world, currentPos);
     }
 
     private BlockState getConnectedState(IBlockReader world, BlockPos pos) {
-        BlockState state = this.getDefaultState()
-                .with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER)
-                .with(GROUNDED, this.isGrounded(world, pos));
+        BlockState state = this.defaultBlockState()
+                .setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER)
+                .setValue(GROUNDED, this.isGrounded(world, pos));
 
         state = state
-                .with(NORTH, this.getConnectionFor(world, pos, Direction.NORTH))
-                .with(EAST, this.getConnectionFor(world, pos, Direction.EAST))
-                .with(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
-                .with(WEST, this.getConnectionFor(world, pos, Direction.WEST));
+                .setValue(NORTH, this.getConnectionFor(world, pos, Direction.NORTH))
+                .setValue(EAST, this.getConnectionFor(world, pos, Direction.EAST))
+                .setValue(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
+                .setValue(WEST, this.getConnectionFor(world, pos, Direction.WEST));
 
-        if (!this.isTall(state) && !world.getBlockState(pos.up()).matchesBlock(this)) {
-            state = state.with(TALL, false)
-                    .with(NORTH, state.get(NORTH).shorten())
-                    .with(EAST, state.get(EAST).shorten())
-                    .with(SOUTH, state.get(SOUTH).shorten())
-                    .with(WEST, state.get(WEST).shorten());
+        if (!this.isTall(state) && !world.getBlockState(pos.above()).is(this)) {
+            state = state.setValue(TALL, false)
+                    .setValue(NORTH, state.getValue(NORTH).shorten())
+                    .setValue(EAST, state.getValue(EAST).shorten())
+                    .setValue(SOUTH, state.getValue(SOUTH).shorten())
+                    .setValue(WEST, state.getValue(WEST).shorten());
         }
 
         return state;
     }
 
     private Connection getConnectionFor(IBlockReader world, BlockPos pos, Direction direction) {
-        BlockPos adjacentPos = pos.offset(direction);
+        BlockPos adjacentPos = pos.relative(direction);
         BlockState adjacentState = world.getBlockState(adjacentPos);
 
         if (this.canConnectTo(adjacentState, world, adjacentPos, direction)) {
             // don't add a connection if the block above us has that connection too
-            if (world.getBlockState(pos.up()).matchesBlock(this) && this.canConnectTo(world, adjacentPos.up(), direction)) {
+            if (world.getBlockState(pos.above()).is(this) && this.canConnectTo(world, adjacentPos.above(), direction)) {
                 return Connection.NONE;
             }
 
-            if (adjacentState.matchesBlock(this)) {
+            if (adjacentState.is(this)) {
                 boolean tall = this.isAdjacentTall(world, adjacentPos, direction.getOpposite());
                 return tall ? Connection.HIGH : Connection.LOW;
             } else {
@@ -161,13 +161,13 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     private boolean isAdjacentTall(IBlockReader world, BlockPos pos, Direction sourceDirection) {
-        BlockState aboveState = world.getBlockState(pos.up());
-        if (aboveState.matchesBlock(this) || aboveState.func_242698_a(world, pos, Direction.DOWN, BlockVoxelShape.CENTER)) {
+        BlockState aboveState = world.getBlockState(pos.above());
+        if (aboveState.is(this) || aboveState.isFaceSturdy(world, pos, Direction.DOWN, BlockVoxelShape.CENTER)) {
             return true;
         }
 
         for (Direction direction : DIRECTIONS) {
-            if (direction != sourceDirection && this.canConnectTo(world, pos.offset(direction), direction)) {
+            if (direction != sourceDirection && this.canConnectTo(world, pos.relative(direction), direction)) {
                 return true;
             }
         }
@@ -177,10 +177,10 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
 
     private boolean isTall(BlockState state) {
         int count = 0;
-        if (state.get(NORTH).exists()) count++;
-        if (state.get(EAST).exists()) count++;
-        if (state.get(SOUTH).exists()) count++;
-        if (state.get(WEST).exists()) count++;
+        if (state.getValue(NORTH).exists()) count++;
+        if (state.getValue(EAST).exists()) count++;
+        if (state.getValue(SOUTH).exists()) count++;
+        if (state.getValue(WEST).exists()) count++;
         return count > 1;
     }
 
@@ -189,42 +189,42 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     private boolean canConnectTo(BlockState state, IBlockReader world, BlockPos pos, Direction direction) {
-        return (state.matchesBlock(this) || state.isSolidSide(world, pos, direction)) && !FenceBlock.cannotAttach(state.getBlock());
+        return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state.getBlock());
     }
 
     private boolean isGrounded(IBlockReader world, BlockPos pos) {
-        BlockPos groundPos = pos.down();
-        return world.getBlockState(groundPos).isSolidSide(world, groundPos, Direction.UP);
+        BlockPos groundPos = pos.below();
+        return world.getBlockState(groundPos).isFaceSturdy(world, groundPos, Direction.UP);
     }
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-        return !state.get(WATERLOGGED);
+        return !state.getValue(WATERLOGGED);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
     public BlockState rotate(BlockState state, Rotation rotation) {
         switch (rotation) {
             case CLOCKWISE_180: return state
-                    .with(NORTH, state.get(SOUTH))
-                    .with(EAST, state.get(WEST))
-                    .with(SOUTH, state.get(NORTH))
-                    .with(WEST, state.get(EAST));
+                    .setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(EAST, state.getValue(WEST))
+                    .setValue(SOUTH, state.getValue(NORTH))
+                    .setValue(WEST, state.getValue(EAST));
             case COUNTERCLOCKWISE_90: return state
-                    .with(NORTH, state.get(EAST))
-                    .with(EAST, state.get(SOUTH))
-                    .with(SOUTH, state.get(WEST))
-                    .with(WEST, state.get(NORTH));
+                    .setValue(NORTH, state.getValue(EAST))
+                    .setValue(EAST, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(WEST))
+                    .setValue(WEST, state.getValue(NORTH));
             case CLOCKWISE_90: return state
-                    .with(NORTH, state.get(WEST))
-                    .with(EAST, state.get(NORTH))
-                    .with(SOUTH, state.get(EAST))
-                    .with(WEST, state.get(SOUTH));
+                    .setValue(NORTH, state.getValue(WEST))
+                    .setValue(EAST, state.getValue(NORTH))
+                    .setValue(SOUTH, state.getValue(EAST))
+                    .setValue(WEST, state.getValue(SOUTH));
             default: return state;
         }
     }
@@ -232,25 +232,25 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
         switch (mirror) {
-            case LEFT_RIGHT: return state.with(NORTH, state.get(SOUTH)).with(SOUTH, state.get(NORTH));
-            case FRONT_BACK: return state.with(EAST, state.get(WEST)).with(WEST, state.get(EAST));
+            case LEFT_RIGHT: return state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
+            case FRONT_BACK: return state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
             default: return super.mirror(state, mirror);
         }
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(TALL, GROUNDED, NORTH, EAST, SOUTH, WEST, WATERLOGGED);
     }
 
     @Override
-    public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+    public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
         return false;
     }
 
     @Override
-    public boolean ticksRandomly(BlockState state) {
-        return state.get(GROUNDED) && state.get(TALL);
+    public boolean isRandomlyTicking(BlockState state) {
+        return state.getValue(GROUNDED) && state.getValue(TALL);
     }
 
     @Override
@@ -261,32 +261,32 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     private void tryGrowPianguas(ServerWorld world, BlockPos pos, Random random) {
-        BlockPos soilPos = pos.down();
-        if (!world.getBlockState(soilPos).matchesBlock(TropicraftBlocks.MUD.get())) {
+        BlockPos soilPos = pos.below();
+        if (!world.getBlockState(soilPos).is(TropicraftBlocks.MUD.get())) {
             return;
         }
 
-        BlockPos growPos = soilPos.add(
+        BlockPos growPos = soilPos.offset(
                 random.nextInt(PIANGUA_RADIUS * 2 + 1) - PIANGUA_RADIUS,
                 -random.nextInt(PIANGUA_RADIUS + 1),
                 random.nextInt(PIANGUA_RADIUS * 2 + 1) - PIANGUA_RADIUS
         );
 
         BlockState growIn = world.getBlockState(growPos);
-        if (growIn.matchesBlock(TropicraftBlocks.MUD.get()) && !world.getBlockState(growPos.up()).isSolid()) {
+        if (growIn.is(TropicraftBlocks.MUD.get()) && !world.getBlockState(growPos.above()).canOcclude()) {
             if (!this.hasNearPianguas(world, growPos)) {
-                world.setBlockState(growPos, TropicraftBlocks.MUD_WITH_PIANGUAS.get().getDefaultState());
+                world.setBlockAndUpdate(growPos, TropicraftBlocks.MUD_WITH_PIANGUAS.get().defaultBlockState());
             }
         }
     }
 
     private boolean hasNearPianguas(ServerWorld world, BlockPos source) {
         Block mudWithPianguas = TropicraftBlocks.MUD_WITH_PIANGUAS.get();
-        BlockPos minSpacingPos = source.add(-PIANGUA_RADIUS, -PIANGUA_RADIUS, -PIANGUA_RADIUS);
-        BlockPos maxSpacingPos = source.add(PIANGUA_RADIUS, 0, PIANGUA_RADIUS);
+        BlockPos minSpacingPos = source.offset(-PIANGUA_RADIUS, -PIANGUA_RADIUS, -PIANGUA_RADIUS);
+        BlockPos maxSpacingPos = source.offset(PIANGUA_RADIUS, 0, PIANGUA_RADIUS);
 
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(minSpacingPos, maxSpacingPos)) {
-            if (world.getBlockState(pos).matchesBlock(mudWithPianguas)) {
+        for (BlockPos pos : BlockPos.betweenClosed(minSpacingPos, maxSpacingPos)) {
+            if (world.getBlockState(pos).is(mudWithPianguas)) {
                 return true;
             }
         }
@@ -310,7 +310,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         }
 
         @Override
-        public String getString() {
+        public String getSerializedName() {
             return this.key;
         }
 

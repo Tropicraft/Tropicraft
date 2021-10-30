@@ -41,16 +41,16 @@ public class TropicraftDimension {
 
     public static final ResourceLocation ID = new ResourceLocation(Constants.MODID, "tropics");
 
-    public static final RegistryKey<World> WORLD = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, ID);
-    public static final RegistryKey<Dimension> DIMENSION = RegistryKey.getOrCreateKey(Registry.DIMENSION_KEY, ID);
-    public static final RegistryKey<DimensionType> DIMENSION_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, ID);
-    public static final RegistryKey<DimensionSettings> DIMENSION_SETTINGS = RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, ID);
+    public static final RegistryKey<World> WORLD = RegistryKey.create(Registry.DIMENSION_REGISTRY, ID);
+    public static final RegistryKey<Dimension> DIMENSION = RegistryKey.create(Registry.LEVEL_STEM_REGISTRY, ID);
+    public static final RegistryKey<DimensionType> DIMENSION_TYPE = RegistryKey.create(Registry.DIMENSION_TYPE_REGISTRY, ID);
+    public static final RegistryKey<DimensionSettings> DIMENSION_SETTINGS = RegistryKey.create(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY, ID);
 
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event) {
         if (event.getWorld() instanceof ServerWorld) {
             ServerWorld world = (ServerWorld) event.getWorld();
-            if (world.getDimensionKey() == World.OVERWORLD) {
+            if (world.dimension() == World.OVERWORLD) {
                 upgradeTropicraftDimension(world.getServer());
             }
         }
@@ -60,10 +60,10 @@ public class TropicraftDimension {
         // forge put dimensions in a different place to where vanilla does with its custom dimension support
         // we need to move our old data to the correct place if it exists
 
-        SaveFormat.LevelSave save = server.anvilConverterForAnvilFile;
+        SaveFormat.LevelSave save = server.storageSource;
 
-        File oldDimension = save.resolveFilePath(new FolderName("tropicraft/tropics")).toFile();
-        File newDimension = save.getDimensionFolder(WORLD);
+        File oldDimension = save.getLevelPath(new FolderName("tropicraft/tropics")).toFile();
+        File newDimension = save.getDimensionPath(WORLD);
         if (oldDimension.exists() && !newDimension.exists()) {
             try {
                 FileUtils.moveDirectory(oldDimension, newDimension);
@@ -76,7 +76,7 @@ public class TropicraftDimension {
     @SuppressWarnings("unchecked")
     public static void addDefaultDimensionKey() {
         try {
-            Field dimensionKeysField = ObfuscationReflectionHelper.findField(Dimension.class, "field_236056_e_");
+            Field dimensionKeysField = ObfuscationReflectionHelper.findField(Dimension.class, "BUILTIN_ORDER");
             LinkedHashSet<RegistryKey<Dimension>> keys = (LinkedHashSet<RegistryKey<Dimension>>) dimensionKeysField.get(null);
             keys.add(DIMENSION);
         } catch (ReflectiveOperationException e) {
@@ -99,7 +99,7 @@ public class TropicraftDimension {
     public static ChunkGenerator createGenerator(Registry<Biome> biomeRegistry, Registry<DimensionSettings> dimensionSettingsRegistry, long seed) {
         Supplier<DimensionSettings> dimensionSettings = () -> {
             // fallback to overworld so that we don't crash before our datapack is loaded (horrible workaround)
-            DimensionSettings settings = dimensionSettingsRegistry.getValueForKey(DIMENSION_SETTINGS);
+            DimensionSettings settings = dimensionSettingsRegistry.get(DIMENSION_SETTINGS);
             return settings != null ? settings : dimensionSettingsRegistry.getOrThrow(DimensionSettings.OVERWORLD);
         };
         TropicraftBiomeProvider biomeSource = new TropicraftBiomeProvider(seed, biomeRegistry);
@@ -107,7 +107,7 @@ public class TropicraftDimension {
     }
 
     public static void teleportPlayer(ServerPlayerEntity player, RegistryKey<World> dimensionType) {
-        if (player.world.getDimensionKey() == dimensionType) {
+        if (player.level.dimension() == dimensionType) {
             teleportPlayerNoPortal(player, World.OVERWORLD);
         } else {
             teleportPlayerNoPortal(player, dimensionType);
@@ -123,20 +123,20 @@ public class TropicraftDimension {
      * @param destination The target dimension to teleport to
      */
     public static void teleportPlayerNoPortal(ServerPlayerEntity player, RegistryKey<World> destination) {
-        ServerWorld world = player.server.getWorld(destination);
+        ServerWorld world = player.server.getLevel(destination);
         if (world == null) {
-            LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.getLocation());
+            LOGGER.error("Cannot teleport player to dimension {} as it does not exist!", destination.location());
             return;
         }
 
         if (!ForgeHooks.onTravelToDimension(player, destination)) return;
 
-        int x = MathHelper.floor(player.getPosX());
-        int z = MathHelper.floor(player.getPosZ());
+        int x = MathHelper.floor(player.getX());
+        int z = MathHelper.floor(player.getZ());
 
         Chunk chunk = world.getChunk(x >> 4, z >> 4);
-        int topY = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
-        player.teleport(world, x + 0.5, topY + 1.0, z + 0.5, player.rotationYaw, player.rotationPitch);
+        int topY = chunk.getHeight(Heightmap.Type.WORLD_SURFACE, x & 15, z & 15);
+        player.teleportTo(world, x + 0.5, topY + 1.0, z + 0.5, player.yRot, player.xRot);
 
         BasicEventHooks.firePlayerChangedDimensionEvent(player, destination, destination);
     }
@@ -144,10 +144,10 @@ public class TropicraftDimension {
     // hack to get the correct sea level given a world: the vanilla IWorldReader.getSeaLevel() is deprecated and always returns 63 despite the chunk generator
     public static int getSeaLevel(IWorldReader world) {
         if (world instanceof ServerWorld) {
-            ServerChunkProvider chunkProvider = ((ServerWorld) world).getChunkProvider();
-            return chunkProvider.getChunkGenerator().getSeaLevel();
+            ServerChunkProvider chunkProvider = ((ServerWorld) world).getChunkSource();
+            return chunkProvider.getGenerator().getSeaLevel();
         } else if (world instanceof World) {
-            RegistryKey<World> dimensionKey = ((World) world).getDimensionKey();
+            RegistryKey<World> dimensionKey = ((World) world).dimension();
             if (dimensionKey == WORLD) {
                 return 127;
             }

@@ -17,16 +17,16 @@ import java.util.List;
 
 public class Drink {
     public static final Int2ObjectMap<Drink> DRINKS = new Int2ObjectOpenHashMap<>();
-    public static final Drink LEMONADE = new Drink(1, 0xfadb41, "lemonade", TextFormatting.YELLOW).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
-    public static final Drink LIMEADE = new Drink(2, 0x84e88a, "limeade", TextFormatting.GREEN).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
-    public static final Drink ORANGEADE = new Drink(3, 0xf3be36, "orangeade", TextFormatting.GOLD).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
-    public static final Drink CAIPIRINHA = new Drink(4, 0x94ff36, "caipirinha", TextFormatting.GREEN).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1)).setHasUmbrella(true);
-    public static final Drink BLACK_COFFEE = new Drink(5, 0x68442c, "black_coffee", TextFormatting.WHITE).addAction(new DrinkActionPotion(Effects.REGENERATION, 5, 1)).addAction(new DrinkActionPotion(Effects.SPEED, 5, 2));
-    public static final Drink PINA_COLADA = new Drink(6, 0xefefef, "pina_colada", TextFormatting.GOLD).addAction(new DrinkActionPotion(Effects.NAUSEA, 10, 0)).addAction(new DrinkAction() {
+    public static final Drink LEMONADE = new Drink(1, 0xfadb41, "lemonade", TextFormatting.YELLOW).addAction(new DrinkActionPotion(Effects.MOVEMENT_SPEED, 5, 1));
+    public static final Drink LIMEADE = new Drink(2, 0x84e88a, "limeade", TextFormatting.GREEN).addAction(new DrinkActionPotion(Effects.MOVEMENT_SPEED, 5, 1));
+    public static final Drink ORANGEADE = new Drink(3, 0xf3be36, "orangeade", TextFormatting.GOLD).addAction(new DrinkActionPotion(Effects.MOVEMENT_SPEED, 5, 1));
+    public static final Drink CAIPIRINHA = new Drink(4, 0x94ff36, "caipirinha", TextFormatting.GREEN).addAction(new DrinkActionPotion(Effects.MOVEMENT_SPEED, 5, 1)).setHasUmbrella(true);
+    public static final Drink BLACK_COFFEE = new Drink(5, 0x68442c, "black_coffee", TextFormatting.WHITE).addAction(new DrinkActionPotion(Effects.REGENERATION, 5, 1)).addAction(new DrinkActionPotion(Effects.MOVEMENT_SPEED, 5, 2));
+    public static final Drink PINA_COLADA = new Drink(6, 0xefefef, "pina_colada", TextFormatting.GOLD).addAction(new DrinkActionPotion(Effects.CONFUSION, 10, 0)).addAction(new DrinkAction() {
         
         @Override
         public void onDrink(PlayerEntity player) {
-            if (!player.world.isRemote && isSunset(player.world) && player.getRidingEntity() instanceof ChairEntity) {
+            if (!player.level.isClientSide && isSunset(player.level) && player.getVehicle() instanceof ChairEntity) {
                 TropicraftDimension.teleportPlayer((ServerPlayerEntity) player, TropicraftDimension.WORLD);
             }
         }
@@ -36,8 +36,8 @@ public class Drink {
             return timeDay > 12200 && timeDay < 14000;
         }
     }).setAlwaysEdible(true);
-    public static final Drink COCONUT_WATER = new Drink(7, 0xdfdfdf, "coconut_water", TextFormatting.WHITE).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
-    public static final Drink MAI_TAI = new Drink(8, 0xff772e, "mai_tai", TextFormatting.GOLD).addAction(new DrinkActionPotion(Effects.NAUSEA, 5, 0));
+    public static final Drink COCONUT_WATER = new Drink(7, 0xdfdfdf, "coconut_water", TextFormatting.WHITE).addAction(new DrinkActionPotion(Effects.MOVEMENT_SPEED, 5, 1));
+    public static final Drink MAI_TAI = new Drink(8, 0xff772e, "mai_tai", TextFormatting.GOLD).addAction(new DrinkActionPotion(Effects.CONFUSION, 5, 0));
     public static final Drink COCKTAIL = new Drink(9, 0, "cocktail", TextFormatting.WHITE);
 
     public int drinkId;

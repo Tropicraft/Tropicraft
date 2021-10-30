@@ -14,7 +14,7 @@ public final class TropicraftAddInlandLayer implements IBishopTransformer {
 
     @Override
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
-        if (biomeIds.isLand(nw) && biomeIds.isLand(sw) && biomeIds.isLand(ne) && biomeIds.isLand(se) && biomeIds.isLand(center) && random.random(chance) == 0) {
+        if (biomeIds.isLand(nw) && biomeIds.isLand(sw) && biomeIds.isLand(ne) && biomeIds.isLand(se) && biomeIds.isLand(center) && random.nextRandom(chance) == 0) {
             return biomeIds.land;
         }
 

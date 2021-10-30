@@ -25,8 +25,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public final class PropaguleBlock extends WaterloggableSaplingBlock {
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     private static final int GROW_CHANCE = 7;
 
@@ -34,12 +36,12 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
 
     public PropaguleBlock(Tree tree, Properties properties) {
         super(tree, properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(STAGE, 0).with(WATERLOGGED, false).with(PLANTED, true));
+        this.registerDefaultState(this.stateDefinition.any().setValue(STAGE, 0).setValue(WATERLOGGED, false).setValue(PLANTED, true));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-        tooltip.add(new TranslationTextComponent(getTranslationKey() + ".desc").mergeStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
+    public void appendHoverText(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+        tooltip.add(new TranslationTextComponent(getDescriptionId() + ".desc").withStyle(TextFormatting.GRAY, TextFormatting.ITALIC));
     }
 
     @Override
@@ -48,50 +50,50 @@ public final class PropaguleBlock extends WaterloggableSaplingBlock {
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-        if (state.get(PLANTED)) {
-            BlockPos groundPos = pos.down();
-            return this.isValidGround(world.getBlockState(groundPos), world, groundPos);
+    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+        if (state.getValue(PLANTED)) {
+            BlockPos groundPos = pos.below();
+            return this.mayPlaceOn(world.getBlockState(groundPos), world, groundPos);
         } else {
-            BlockPos topPos = pos.up();
-            return world.getBlockState(topPos).isIn(BlockTags.LEAVES);
+            BlockPos topPos = pos.above();
+            return world.getBlockState(topPos).is(BlockTags.LEAVES);
         }
     }
 
     @Override
-    protected boolean isValidGround(BlockState state, IBlockReader world, BlockPos pos) {
-        return super.isValidGround(state, world, pos) || state.isIn(BlockTags.SAND)
-                || state.isIn(TropicraftTags.Blocks.MUD);
+    protected boolean mayPlaceOn(BlockState state, IBlockReader world, BlockPos pos) {
+        return super.mayPlaceOn(state, world, pos) || state.is(BlockTags.SAND)
+                || state.is(TropicraftTags.Blocks.MUD);
     }
 
     @Override
-    public boolean ticksRandomly(BlockState state) {
-        return state.get(PLANTED);
+    public boolean isRandomlyTicking(BlockState state) {
+        return state.getValue(PLANTED);
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (!world.isAreaLoaded(pos, 1)) return;
 
-        if (world.getLight(pos.up()) >= 9 && random.nextInt(GROW_CHANCE) == 0) {
-            this.placeTree(world, pos, state, random);
+        if (world.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(GROW_CHANCE) == 0) {
+            this.advanceTree(world, pos, state, random);
         }
     }
 
     @Override
-    public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
-        return state.get(PLANTED);
+    public boolean isValidBonemealTarget(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
+        return state.getValue(PLANTED);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return super.getStateForPlacement(context)
-                .with(PLANTED, context.getFace() != Direction.DOWN);
+                .setValue(PLANTED, context.getClickedFace() != Direction.DOWN);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        super.fillStateContainer(builder);
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(PLANTED);
     }
 }

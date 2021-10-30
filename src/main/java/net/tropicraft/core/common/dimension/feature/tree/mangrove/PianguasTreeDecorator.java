@@ -33,12 +33,12 @@ public class PianguasTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<?> getDecoratorType() {
+    protected TreeDecoratorType<?> type() {
         return TropicraftTreeDecorators.PIANGUAS.get();
     }
 
     @Override
-    public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, MutableBoundingBox box) {
+    public void place(ISeedReader world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, MutableBoundingBox box) {
         BlockPos lowestLog = Util.findLowestBlock(logs);
         if (lowestLog == null) return;
 
@@ -48,8 +48,8 @@ public class PianguasTreeDecorator extends TreeDecorator {
             int y = lowestLog.getY() - random.nextInt(this.spread);
 
             BlockPos local = new BlockPos(x, y, z);
-            if (world.getBlockState(local).matchesBlock(TropicraftBlocks.MUD.get())) {
-                func_227423_a_(world, local, TropicraftBlocks.MUD_WITH_PIANGUAS.get().getDefaultState(), placed, box);
+            if (world.getBlockState(local).is(TropicraftBlocks.MUD.get())) {
+                setBlock(world, local, TropicraftBlocks.MUD_WITH_PIANGUAS.get().defaultBlockState(), placed, box);
             }
         }
     }

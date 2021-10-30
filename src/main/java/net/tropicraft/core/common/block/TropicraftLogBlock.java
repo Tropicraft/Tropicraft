@@ -11,6 +11,8 @@ import net.minecraftforge.common.ToolType;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public final class TropicraftLogBlock extends RotatedPillarBlock {
     private final Supplier<RotatedPillarBlock> strippedBlock;
 
@@ -23,7 +25,7 @@ public final class TropicraftLogBlock extends RotatedPillarBlock {
     @Override
     public BlockState getToolModifiedState(BlockState state, World world, BlockPos pos, PlayerEntity player, ItemStack stack, ToolType toolType) {
         if (toolType == ToolType.AXE) {
-            return this.strippedBlock.get().getDefaultState().with(AXIS, state.get(AXIS));
+            return this.strippedBlock.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
         }
         return null;
     }

@@ -22,34 +22,34 @@ public class CowktailLayer<T extends CowktailEntity> extends LayerRenderer<T, Co
    }
 
    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-      if (!entitylivingbaseIn.isChild() && !entitylivingbaseIn.isInvisible()) {
-         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+      if (!entitylivingbaseIn.isBaby() && !entitylivingbaseIn.isInvisible()) {
+         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRenderer();
          BlockState blockstate = entitylivingbaseIn.getCowktailType().getRenderState();
-         int i = LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F);
-         matrixStackIn.push();
+         int i = LivingRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F);
+         matrixStackIn.pushPose();
          matrixStackIn.translate((double)0.2F, (double)-0.35F, 0.5D);
-         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-48.0F));
+         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
          matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
          matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-         blockrendererdispatcher.renderBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
-         matrixStackIn.pop();
-         matrixStackIn.push();
+         blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
+         matrixStackIn.popPose();
+         matrixStackIn.pushPose();
          matrixStackIn.translate((double)0.2F, (double)-0.35F, 0.5D);
-         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(42.0F));
+         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(42.0F));
          matrixStackIn.translate((double)0.1F, 0.0D, (double)-0.6F);
-         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-48.0F));
+         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
          matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
          matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-         blockrendererdispatcher.renderBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
-         matrixStackIn.pop();
-         matrixStackIn.push();
-         this.getEntityModel().getHead().translateRotate(matrixStackIn);
+         blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
+         matrixStackIn.popPose();
+         matrixStackIn.pushPose();
+         this.getParentModel().getHead().translateAndRotate(matrixStackIn);
          matrixStackIn.translate(0.0D, (double)-0.7F, (double)-0.2F);
-         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-78.0F));
+         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-78.0F));
          matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
          matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-         blockrendererdispatcher.renderBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
-         matrixStackIn.pop();
+         blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
+         matrixStackIn.popPose();
       }
    }
 }

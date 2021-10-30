@@ -23,7 +23,7 @@ public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, TropiC
 
     // From CreperRenderer
     @Override
-    protected void preRenderCallback(TropiCreeperEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(TropiCreeperEntity entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
         float f = entitylivingbaseIn.getCreeperFlashIntensity(partialTickTime);
         float f1 = 1.0F + MathHelper.sin(f * 100.0F) * f * 0.01F;
         f = MathHelper.clamp(f, 0.0F, 1.0F);
@@ -36,12 +36,12 @@ public class TropiCreeperRenderer extends MobRenderer<TropiCreeperEntity, TropiC
 
     // From Creeper Renderer
     @Override
-    protected float getOverlayProgress(TropiCreeperEntity livingEntityIn, float partialTicks) {
+    protected float getWhiteOverlayProgress(TropiCreeperEntity livingEntityIn, float partialTicks) {
         float f = livingEntityIn.getCreeperFlashIntensity(partialTicks);
         return (int) (f * 10.0F) % 2 == 0 ? 0.0F : MathHelper.clamp(f, 0.5F, 1.0F);
     }
 
-    public ResourceLocation getEntityTexture(TropiCreeperEntity e) {
+    public ResourceLocation getTextureLocation(TropiCreeperEntity e) {
         return CREEPER_TEXTURE;
     }
 }

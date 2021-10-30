@@ -42,7 +42,7 @@ public class BongoDrumBlock extends Block {
 
         Size(int size, final Supplier<SoundEvent> soundEvent) {
             double offset = (16 - size) / 2;
-            this.shape = makeCuboidShape(offset, 0, offset, 16 - offset, 16, 16 - offset);
+            this.shape = box(offset, 0, offset, 16 - offset, 16, 16 - offset);
             this.soundEvent = soundEvent;
         }
     }
@@ -52,7 +52,7 @@ public class BongoDrumBlock extends Block {
     public BongoDrumBlock(final Size size, final Properties properties) {
         super(properties);
         this.size = size;
-        setDefaultState(stateContainer.getBaseState().with(POWERED, Boolean.FALSE));
+        registerDefaultState(stateDefinition.any().setValue(POWERED, Boolean.FALSE));
     }
 
     public Size getSize() {
@@ -70,13 +70,13 @@ public class BongoDrumBlock extends Block {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         // Only play drum sound if player hits the top
-        if (result.getFace() != Direction.UP) {
+        if (result.getDirection() != Direction.UP) {
             return ActionResultType.PASS;
         }
 
-        if (world.isRemote) {
+        if (world.isClientSide) {
             return ActionResultType.SUCCESS;
         }
 
@@ -86,16 +86,16 @@ public class BongoDrumBlock extends Block {
 
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (worldIn.isRemote) {
+        if (worldIn.isClientSide) {
             return;
         }
-        boolean flag = worldIn.isBlockPowered(pos);
-        if (flag != state.get(POWERED)) {
+        boolean flag = worldIn.hasNeighborSignal(pos);
+        if (flag != state.getValue(POWERED)) {
             if (flag) {
                 playBongoSound(worldIn, pos, state);
             }
 
-            worldIn.setBlockState(pos, state.with(POWERED, flag), 3);
+            worldIn.setBlock(pos, state.setValue(POWERED, flag), 3);
         }
     }
 
@@ -121,14 +121,14 @@ public class BongoDrumBlock extends Block {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
     }
 
     public float getAdjustedPitch(RayTraceResult hitVec) {
-        if (hitVec == null || hitVec.getHitVec() == null) return 1F;
-        double distX = Math.abs(hitVec.getHitVec().x - (int)hitVec.getHitVec().x - 0.5);
-        double distZ = Math.abs(hitVec.getHitVec().z - (int)hitVec.getHitVec().z - 0.5);
+        if (hitVec == null || hitVec.getLocation() == null) return 1F;
+        double distX = Math.abs(hitVec.getLocation().x - (int)hitVec.getLocation().x - 0.5);
+        double distZ = Math.abs(hitVec.getLocation().z - (int)hitVec.getLocation().z - 0.5);
         double dist = (float) Math.sqrt(distX * distX + distZ * distZ);
         double radiusMax = 1F;
         if (size == Size.SMALL) {

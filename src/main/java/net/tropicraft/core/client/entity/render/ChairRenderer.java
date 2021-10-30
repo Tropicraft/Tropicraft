@@ -10,7 +10,7 @@ public class ChairRenderer extends FurnitureRenderer<ChairEntity> {
 
     public ChairRenderer(EntityRendererManager rendererManager) {
         super(rendererManager, "chair", new ChairModel());
-        shadowSize = 0.65f;
+        shadowRadius = 0.65f;
     }
     
     @Override

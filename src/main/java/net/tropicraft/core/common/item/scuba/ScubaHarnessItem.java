@@ -32,13 +32,13 @@ public class ScubaHarnessItem extends ScubaArmorItem {
     
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
         int airRemaining = getRemainingAir(stack);
         tooltip.add(TropicraftLangKeys.SCUBA_AIR_TIME
                 .format(new StringTextComponent(ScubaHUD.formatTime(airRemaining))
-                        .mergeStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
-                .mergeStyle(TextFormatting.GRAY));
+                        .withStyle(ScubaHUD.getAirTimeColor(airRemaining, worldIn)))
+                .withStyle(TextFormatting.GRAY));
     }
 
     @Override
@@ -48,12 +48,12 @@ public class ScubaHarnessItem extends ScubaArmorItem {
 
     @Override
     public void tickAir(PlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
-        if (player.world.isRemote || player.abilities.isCreativeMode) return;
-        CompoundNBT scubaData = stack.getOrCreateChildTag("scuba");
+        if (player.level.isClientSide || player.abilities.instabuild) return;
+        CompoundNBT scubaData = stack.getOrCreateTagElement("scuba");
         int remaining = getRemainingAir(stack);
         if (remaining > 0) {
             scubaData.putInt("air", remaining - 1);
-            player.setAir(player.getMaxAir());
+            player.setAirSupply(player.getMaxAirSupply());
         }
     }
     
@@ -63,7 +63,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
             int current = getRemainingAir(stack);
             int max = getMaxAir(stack);
             int newAir = Math.min(current + air, max);
-            stack.getOrCreateChildTag("scuba").putInt("air", newAir);
+            stack.getOrCreateTagElement("scuba").putInt("air", newAir);
             return air - (newAir - current);
         }
         return 0;
@@ -71,7 +71,7 @@ public class ScubaHarnessItem extends ScubaArmorItem {
 
     @Override
     public int getRemainingAir(ItemStack stack) {
-        return stack.getOrCreateChildTag("scuba").getInt("air");
+        return stack.getOrCreateTagElement("scuba").getInt("air");
     }
     
     @Override

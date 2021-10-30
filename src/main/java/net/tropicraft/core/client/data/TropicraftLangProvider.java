@@ -492,18 +492,18 @@ public class TropicraftLangProvider extends LanguageProvider {
     }
     
     private void addTooltip(Supplier<? extends IItemProvider> item, String tooltip) {
-        add(item.get().asItem().getTranslationKey() + ".desc", tooltip);
+        add(item.get().asItem().getDescriptionId() + ".desc", tooltip);
     }
     
     private void addTooltip(Supplier<? extends IItemProvider> item, List<String> tooltip) {
         for (int i = 0; i < tooltip.size(); i++) {
-            String key = item.get().asItem().getTranslationKey() + ".desc." + i;
+            String key = item.get().asItem().getDescriptionId() + ".desc." + i;
             add(key, tooltip.get(i));
         }
     }
     
     private void add(ItemGroup group, String name) {
-        add("itemGroup." + group.getPath(), name);
+        add("itemGroup." + group.getRecipeFolderName(), name);
     }
     
     private void addEntityType(Supplier<? extends EntityType<?>> entity) {
@@ -511,7 +511,7 @@ public class TropicraftLangProvider extends LanguageProvider {
     }
     
     private void addBiome(RegistryKey<Biome> biome) {
-        ResourceLocation id = biome.getLocation();
+        ResourceLocation id = biome.location();
         add("biome." + id.getNamespace() + "." + id.getPath(), Util.toEnglishName(id.getPath()));
     }
     
@@ -567,8 +567,8 @@ public class TropicraftLangProvider extends LanguageProvider {
     }
 
     @Override
-    public void act(DirectoryCache cache) throws IOException {
-        super.act(cache);
-        upsideDown.act(cache);
+    public void run(DirectoryCache cache) throws IOException {
+        super.run(cache);
+        upsideDown.run(cache);
     }
 }

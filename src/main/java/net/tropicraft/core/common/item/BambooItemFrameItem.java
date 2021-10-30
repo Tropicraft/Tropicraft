@@ -24,27 +24,27 @@ public class BambooItemFrameItem extends HangingEntityItem {
     }
     
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        BlockPos blockpos = context.getPos();
-        Direction direction = context.getFace();
-        BlockPos blockpos1 = blockpos.offset(direction);
+    public ActionResultType useOn(ItemUseContext context) {
+        BlockPos blockpos = context.getClickedPos();
+        Direction direction = context.getClickedFace();
+        BlockPos blockpos1 = blockpos.relative(direction);
         PlayerEntity playerentity = context.getPlayer();
-        ItemStack itemstack = context.getItem();
-        if (playerentity != null && !this.canPlace(playerentity, direction, itemstack, blockpos1)) {
+        ItemStack itemstack = context.getItemInHand();
+        if (playerentity != null && !this.mayPlace(playerentity, direction, itemstack, blockpos1)) {
            return ActionResultType.FAIL;
         } else {
-           World world = context.getWorld();
+           World world = context.getLevel();
            HangingEntity hangingentity = new BambooItemFrame(world, blockpos1, direction);
 
            CompoundNBT compoundnbt = itemstack.getTag();
            if (compoundnbt != null) {
-              EntityType.applyItemNBT(world, playerentity, hangingentity, compoundnbt);
+              EntityType.updateCustomEntityTag(world, playerentity, hangingentity, compoundnbt);
            }
 
-           if (hangingentity.onValidSurface()) {
-              if (!world.isRemote) {
-                 hangingentity.playPlaceSound();
-                 world.addEntity(hangingentity);
+           if (hangingentity.survives()) {
+              if (!world.isClientSide) {
+                 hangingentity.playPlacementSound();
+                 world.addFreshEntity(hangingentity);
               }
 
               itemstack.shrink(1);
@@ -54,7 +54,7 @@ public class BambooItemFrameItem extends HangingEntityItem {
         }
      }
 
-    protected boolean canPlace(PlayerEntity player, Direction direction, ItemStack itemStack, BlockPos pos) {
-        return !World.isOutsideBuildHeight(pos) && player.canPlayerEdit(pos, direction, itemStack);
+    protected boolean mayPlace(PlayerEntity player, Direction direction, ItemStack itemStack, BlockPos pos) {
+        return !World.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, itemStack);
     }
 }

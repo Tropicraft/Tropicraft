@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public final class HugePlantBlock extends BushBlock {
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
@@ -37,7 +39,7 @@ public final class HugePlantBlock extends BushBlock {
 
     public HugePlantBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(TYPE, Type.SEED));
+        this.registerDefaultState(this.stateDefinition.any().setValue(TYPE, Type.SEED));
     }
 
     public HugePlantBlock setPickItem(Supplier<RegistryObject<? extends IItemProvider>> item) {
@@ -48,60 +50,60 @@ public final class HugePlantBlock extends BushBlock {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        World world = context.getWorld();
-        BlockPos pos = context.getPos();
+        World world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
 
         for (BlockPos plantPos : Shape.fromSeed(this, pos)) {
             if (plantPos.equals(pos)) continue;
 
-            if (!world.getBlockState(plantPos).isReplaceable(context)) {
+            if (!world.getBlockState(plantPos).canBeReplaced(context)) {
                 return null;
             }
         }
 
-        return this.getDefaultState().with(TYPE, Type.SEED);
+        return this.defaultBlockState().setValue(TYPE, Type.SEED);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         Shape shape = Shape.fromSeed(this, pos);
         for (BlockPos plantPos : shape) {
             if (!plantPos.equals(pos)) {
                 BlockState plantState = shape.blockAt(plantPos);
-                world.setBlockState(plantPos, plantState, Constants.BlockFlags.DEFAULT);
+                world.setBlock(plantPos, plantState, Constants.BlockFlags.DEFAULT);
             }
         }
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos pos, BlockPos facingPos) {
         Shape shape = Shape.match(this, world, pos);
         if (shape == null) {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
 
         if (this.isValidPosition(world, shape)) {
             return state;
         } else {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
     }
 
     private boolean isValidPosition(IWorld world, Shape shape) {
         BlockPos seedPos = shape.seed();
         BlockState seedState = world.getBlockState(seedPos);
-        return super.isValidPosition(seedState, world, seedPos);
+        return super.canSurvive(seedState, world, seedPos);
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
         if (isSeedBlock(this, state)) {
             BlockState worldState = world.getBlockState(pos);
             if (worldState != state && !this.isValidPositionToPlace(world, pos)) {
                 return false;
             }
 
-            return super.isValidPosition(state, world, pos);
+            return super.canSurvive(state, world, pos);
         } else {
             return Shape.match(this, world, pos) != null;
         }
@@ -120,32 +122,32 @@ public final class HugePlantBlock extends BushBlock {
         Shape shape = Shape.fromSeed(this, pos);
         for (BlockPos plantPos : shape) {
             BlockState plantState = shape.blockAt(plantPos);
-            world.setBlockState(plantPos, plantState, flags);
+            world.setBlock(plantPos, plantState, flags);
         }
     }
 
     @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isRemote) {
+    public void playerWillDestroy(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!world.isClientSide) {
             Shape shape = Shape.match(this, world, pos);
             if (shape == null) return;
 
             if (!player.isCreative()) {
-                spawnDrops(state, world, shape.seed(), null, player, player.getHeldItemMainhand());
+                dropResources(state, world, shape.seed(), null, player, player.getMainHandItem());
             }
 
             int flags = Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS | Constants.BlockFlags.NO_NEIGHBOR_DROPS;
 
             for (BlockPos plantPos : shape) {
-                world.setBlockState(plantPos, Blocks.AIR.getDefaultState(), flags);
-                world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, plantPos, Block.getStateId(state));
+                world.setBlock(plantPos, Blocks.AIR.defaultBlockState(), flags);
+                world.levelEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, plantPos, Block.getId(state));
             }
         }
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        if (state.get(TYPE) == Type.SEED) {
+        if (state.getValue(TYPE) == Type.SEED) {
             return super.getDrops(state, builder);
         } else {
             return Collections.emptyList();
@@ -161,12 +163,12 @@ public final class HugePlantBlock extends BushBlock {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(TYPE);
     }
 
     static boolean isSeedBlock(Block block, BlockState state) {
-        return state.matchesBlock(block) && state.get(TYPE) == Type.SEED;
+        return state.is(block) && state.getValue(TYPE) == Type.SEED;
     }
 
     public enum Type implements IStringSerializable {
@@ -181,7 +183,7 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         @Override
-        public String getString() {
+        public String getSerializedName() {
             return this.key;
         }
     }
@@ -225,14 +227,14 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         private static Iterable<BlockPos> matchPositions(BlockPos pos) {
-            BlockPos minPos = pos.add(-RADIUS, -RADIUS * 2, -RADIUS);
-            BlockPos maxPos = pos.add(RADIUS, 0, RADIUS);
-            return BlockPos.getAllInBoxMutable(minPos, maxPos);
+            BlockPos minPos = pos.offset(-RADIUS, -RADIUS * 2, -RADIUS);
+            BlockPos maxPos = pos.offset(RADIUS, 0, RADIUS);
+            return BlockPos.betweenClosed(minPos, maxPos);
         }
 
         public boolean validate(IBlockReader world) {
             for (BlockPos pos : this) {
-                if (!world.getBlockState(pos).matchesBlock(this.block)) {
+                if (!world.getBlockState(pos).is(this.block)) {
                     return false;
                 }
             }
@@ -247,7 +249,7 @@ public final class HugePlantBlock extends BushBlock {
                 type = Type.CENTER;
             }
 
-            return this.block.getDefaultState().with(TYPE, type);
+            return this.block.defaultBlockState().setValue(TYPE, type);
         }
 
         public BlockPos seed() {
@@ -255,7 +257,7 @@ public final class HugePlantBlock extends BushBlock {
         }
 
         public BlockPos center() {
-            return this.seed.add(0, RADIUS, 0);
+            return this.seed.offset(0, RADIUS, 0);
         }
 
         public AxisAlignedBB asAabb() {
@@ -273,9 +275,9 @@ public final class HugePlantBlock extends BushBlock {
         @Override
         public Iterator<BlockPos> iterator() {
             BlockPos center = this.center();
-            return BlockPos.getAllInBoxMutable(
-                    center.add(-RADIUS, -RADIUS, -RADIUS),
-                    center.add(RADIUS, RADIUS, RADIUS)
+            return BlockPos.betweenClosed(
+                    center.offset(-RADIUS, -RADIUS, -RADIUS),
+                    center.offset(RADIUS, RADIUS, RADIUS)
             ).iterator();
         }
     }

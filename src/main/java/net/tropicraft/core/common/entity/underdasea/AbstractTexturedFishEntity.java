@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public abstract class AbstractTexturedFishEntity extends AbstractFishEntity {
-    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.createKey(AbstractTexturedFishEntity.class, DataSerializers.STRING);
+    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.defineId(AbstractTexturedFishEntity.class, DataSerializers.STRING);
 
     public AbstractTexturedFishEntity(EntityType<? extends AbstractFishEntity> type, World world) {
         super(type, world);
@@ -25,35 +25,35 @@ public abstract class AbstractTexturedFishEntity extends AbstractFishEntity {
     abstract String getDefaultTexture();
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        dataManager.register(TEXTURE_NAME, getDefaultTexture());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(TEXTURE_NAME, getDefaultTexture());
     }
 
     @Override
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
         setTexture(getRandomTexture());
-        return super.onInitialSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
+        return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbt) {
-        super.writeAdditional(nbt);
+    public void addAdditionalSaveData(CompoundNBT nbt) {
+        super.addAdditionalSaveData(nbt);
         nbt.putString("Texture", getTexture());
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbt) {
-        super.readAdditional(nbt);
+    public void readAdditionalSaveData(CompoundNBT nbt) {
+        super.readAdditionalSaveData(nbt);
         setTexture(nbt.getString("Texture"));
     }
 
     public void setTexture(final String textureName) {
-        getDataManager().set(TEXTURE_NAME, textureName);
+        getEntityData().set(TEXTURE_NAME, textureName);
     }
 
     public String getTexture() {
-        return getDataManager().get(TEXTURE_NAME);
+        return getEntityData().get(TEXTURE_NAME);
     }
 }

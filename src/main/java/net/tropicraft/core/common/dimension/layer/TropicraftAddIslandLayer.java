@@ -32,7 +32,7 @@ public final class TropicraftAddIslandLayer implements IBishopTransformer {
 
     @Override
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
-        if (!biomeIds.isLand(nw) && !biomeIds.isLand(sw) && !biomeIds.isLand(ne) && !biomeIds.isLand(se) && !biomeIds.isLand(center) && random.random(chance) == 0) {
+        if (!biomeIds.isLand(nw) && !biomeIds.isLand(sw) && !biomeIds.isLand(ne) && !biomeIds.isLand(se) && !biomeIds.isLand(center) && random.nextRandom(chance) == 0) {
             return landId;
             // TODO - maybe this is incorrect, but in old tropicode we actually didn't return the variable, it was unused return landID;
         }

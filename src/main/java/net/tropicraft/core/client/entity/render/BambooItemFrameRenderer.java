@@ -37,59 +37,59 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     @Override
     public void render(BambooItemFrame entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        matrixStackIn.push();
-        Direction direction = entityIn.getHorizontalFacing();
+        matrixStackIn.pushPose();
+        Direction direction = entityIn.getDirection();
         Vector3d Vector3d = this.getRenderOffset(entityIn, partialTicks);
         matrixStackIn.translate(-Vector3d.x, -Vector3d.y, -Vector3d.z);
         double d0 = 0.46875D;
-        matrixStackIn.translate((double)direction.getXOffset() * 0.46875D, (double)direction.getYOffset() * 0.46875D, (double)direction.getZOffset() * 0.46875D);
-        matrixStackIn.rotate(Vector3f.XP.rotationDegrees(entityIn.rotationPitch));
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - entityIn.rotationYaw));
-        BlockRendererDispatcher blockrendererdispatcher = this.mc.getBlockRendererDispatcher();
-        ModelManager modelmanager = blockrendererdispatcher.getBlockModelShapes().getModelManager();
-        ModelResourceLocation modelresourcelocation = entityIn.getDisplayedItem().getItem() instanceof FilledMapItem ? LOCATION_MODEL_MAP : LOCATION_MODEL;
-        matrixStackIn.push();
+        matrixStackIn.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(entityIn.xRot));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityIn.yRot));
+        BlockRendererDispatcher blockrendererdispatcher = this.mc.getBlockRenderer();
+        ModelManager modelmanager = blockrendererdispatcher.getBlockModelShaper().getModelManager();
+        ModelResourceLocation modelresourcelocation = entityIn.getItem().getItem() instanceof FilledMapItem ? LOCATION_MODEL_MAP : LOCATION_MODEL;
+        matrixStackIn.pushPose();
         matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
-        blockrendererdispatcher.getBlockModelRenderer().renderModelBrightnessColor(matrixStackIn.getLast(), bufferIn.getBuffer(Atlases.getSolidBlockType()), null, modelmanager.getModel(modelresourcelocation), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
-        matrixStackIn.pop();
-        ItemStack itemstack = entityIn.getDisplayedItem();
+        blockrendererdispatcher.getModelRenderer().renderModel(matrixStackIn.last(), bufferIn.getBuffer(Atlases.solidBlockSheet()), null, modelmanager.getModel(modelresourcelocation), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+        matrixStackIn.popPose();
+        ItemStack itemstack = entityIn.getItem();
         if (!itemstack.isEmpty()) {
-            MapData mapdata = FilledMapItem.getMapData(itemstack, entityIn.world);
+            MapData mapdata = FilledMapItem.getOrCreateSavedData(itemstack, entityIn.level);
             matrixStackIn.translate(0.0D, 0.0D, 0.4375D);
             int i = mapdata != null ? entityIn.getRotation() % 4 * 2 : entityIn.getRotation();
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees((float)i * 360.0F / 8.0F));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees((float)i * 360.0F / 8.0F));
             if (mapdata != null) {
-                matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(180.0F));
+                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
                 float f = 0.0078125F;
                 matrixStackIn.scale(0.0078125F, 0.0078125F, 0.0078125F);
                 matrixStackIn.translate(-64.0D, -64.0D, 0.0D);
                 matrixStackIn.translate(0.0D, 0.0D, -1.0D);
                 if (mapdata != null) {
-                    this.mc.gameRenderer.getMapItemRenderer().renderMap(matrixStackIn, bufferIn, mapdata, true, packedLightIn);
+                    this.mc.gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, mapdata, true, packedLightIn);
                 }
             } else {
                 matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-                this.itemRenderer.renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+                this.itemRenderer.renderStatic(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             }
         }
 
-        matrixStackIn.pop();
+        matrixStackIn.popPose();
     }
 
     @Override
     public Vector3d getRenderOffset(BambooItemFrame entityIn, float partialTicks) {
-        return new Vector3d((float)entityIn.getHorizontalFacing().getXOffset() * 0.3F, -0.25D, (float)entityIn.getHorizontalFacing().getZOffset() * 0.3F);
+        return new Vector3d((float)entityIn.getDirection().getStepX() * 0.3F, -0.25D, (float)entityIn.getDirection().getStepZ() * 0.3F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(BambooItemFrame entity) {
-        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+    public ResourceLocation getTextureLocation(BambooItemFrame entity) {
+        return AtlasTexture.LOCATION_BLOCKS;
     }
 
     @Override
-    protected boolean canRenderName(BambooItemFrame entity) {
-        if (Minecraft.isGuiEnabled() && !entity.getDisplayedItem().isEmpty() && entity.getDisplayedItem().hasDisplayName() && renderManager.pointedEntity == entity) {
-            double dist = renderManager.squareDistanceTo(entity);
+    protected boolean shouldShowName(BambooItemFrame entity) {
+        if (Minecraft.renderNames() && !entity.getItem().isEmpty() && entity.getItem().hasCustomHoverName() && entityRenderDispatcher.crosshairPickEntity == entity) {
+            double dist = entityRenderDispatcher.distanceToSqr(entity);
             float f = entity.isDiscrete() ? 32.0F : 64.0F;
             return dist < (double)(f * f);
         } else {
@@ -98,7 +98,7 @@ public class BambooItemFrameRenderer extends EntityRenderer<BambooItemFrame> {
     }
 
     @Override
-    protected void renderName(BambooItemFrame entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        super.renderName(entityIn, entityIn.getDisplayedItem().getDisplayName(), matrixStackIn, bufferIn, packedLightIn);
+    protected void renderNameTag(BambooItemFrame entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        super.renderNameTag(entityIn, entityIn.getItem().getHoverName(), matrixStackIn, bufferIn, packedLightIn);
     }
 }

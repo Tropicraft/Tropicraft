@@ -26,9 +26,9 @@ public class SeaUrchinRenderer extends MobRenderer<SeaUrchinEntity, SeaUrchinMod
 	}
 
 	@Override
-	protected void preRenderCallback(final SeaUrchinEntity urchin, final MatrixStack stack, final float partialTickTime) {
-		shadowSize = 0.15f;
-		shadowOpaque = 0.5f;
+	protected void scale(final SeaUrchinEntity urchin, final MatrixStack stack, final float partialTickTime) {
+		shadowRadius = 0.15f;
+		shadowStrength = 0.5f;
 		float growthProgress = urchin.getGrowthProgress();
 		final float scale = BABY_RENDER_SCALE + growthProgress * (ADULT_RENDER_SCALE - BABY_RENDER_SCALE);
 		final float scaleAmt = 0.5f * scale;
@@ -37,7 +37,7 @@ public class SeaUrchinRenderer extends MobRenderer<SeaUrchinEntity, SeaUrchinMod
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(final SeaUrchinEntity entity) {
+	public ResourceLocation getTextureLocation(final SeaUrchinEntity entity) {
 		return SEA_URCHIN_TEXTURE;
 	}
 }

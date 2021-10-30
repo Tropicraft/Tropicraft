@@ -18,17 +18,17 @@ public class CuberaRenderer extends MobRenderer<CuberaEntity, CuberaModel<Cubera
 
     @Override
     public void render(CuberaEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight) {
-        getEntityModel().inWater = entity.isInWater();
+        getModel().inWater = entity.isInWater();
         super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
     }
 
     @Override
-    protected void preRenderCallback(CuberaEntity entity, MatrixStack matrixStack, float partialTicks) {
+    protected void scale(CuberaEntity entity, MatrixStack matrixStack, float partialTicks) {
         matrixStack.scale(1.25F, 1.25F, 1.25F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(CuberaEntity entity) {
+    public ResourceLocation getTextureLocation(CuberaEntity entity) {
         return TEXTURE;
     }
 }

@@ -15,6 +15,8 @@ import net.tropicraft.Constants;
 
 import java.util.UUID;
 
+import net.minecraft.item.Item.Properties;
+
 public class ScubaFlippersItem extends ScubaArmorItem {
 
     private static final AttributeModifier SWIM_SPEED_BOOST = new AttributeModifier(UUID.fromString("d0b3c58b-ff33-41f2-beaa-3ffa15e8342b"), Constants.MODID + ".scuba", 0.25, Operation.MULTIPLY_TOTAL);
@@ -34,8 +36,8 @@ public class ScubaFlippersItem extends ScubaArmorItem {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-        if (slot == EquipmentSlotType.FEET && EnchantmentHelper.getEnchantmentLevel(Enchantments.DEPTH_STRIDER, stack) == 0) {
-            return boostedModifiers.getValue();
+        if (slot == EquipmentSlotType.FEET && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.DEPTH_STRIDER, stack) == 0) {
+            return boostedModifiers.get();
         } else {
             return super.getAttributeModifiers(slot, stack);
         }

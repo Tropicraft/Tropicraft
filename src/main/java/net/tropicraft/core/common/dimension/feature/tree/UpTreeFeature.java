@@ -19,8 +19,8 @@ public class UpTreeFeature extends RainforestTreeFeature {
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        pos = pos.toImmutable();
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+        pos = pos.immutable();
         final int height = rand.nextInt(4) + 6;
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
 
@@ -32,11 +32,11 @@ public class UpTreeFeature extends RainforestTreeFeature {
             return false;
         }
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
+        if (!getSapling().canSurvive(getSapling().defaultBlockState(), world, pos)) {
             return false;
         }
 
-        world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
+        world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
 
         for (int y = j; y < j + height; y++) {
             placeLog(world, i, y, k);

@@ -22,13 +22,13 @@ public class VMonkeyHeldItemLayer<T extends VMonkeyEntity, M extends EntityModel
 
     @Override
     public void render(MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, T monkey, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (monkey.isQueuedToSit() && !monkey.getHeldItemMainhand().isEmpty()) {
-            stack.push();
+        if (monkey.isOrderedToSit() && !monkey.getMainHandItem().isEmpty()) {
+            stack.pushPose();
             stack.translate(0.0F, 1.30F, -0.425F);
-            stack.rotate(Vector3f.ZP.rotationDegrees(180));
+            stack.mulPose(Vector3f.ZP.rotationDegrees(180));
             stack.scale(0.5F, 0.5F, 0.5F);
-            Minecraft.getInstance().getItemRenderer().renderItem(monkey.getHeldItemMainhand(), ItemCameraTransforms.TransformType.NONE, packedLightIn, LivingRenderer.getPackedOverlay(monkey, 0.0F), stack, buffer);
-            stack.pop();
+            Minecraft.getInstance().getItemRenderer().renderStatic(monkey.getMainHandItem(), ItemCameraTransforms.TransformType.NONE, packedLightIn, LivingRenderer.getOverlayCoords(monkey, 0.0F), stack, buffer);
+            stack.popPose();
         }
     }
 }

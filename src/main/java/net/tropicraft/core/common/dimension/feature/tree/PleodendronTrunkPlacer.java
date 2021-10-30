@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class PleodendronTrunkPlacer extends AbstractTrunkPlacer {
     public static final Codec<PleodendronTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
-        return getAbstractTrunkCodec(instance)
+        return trunkPlacerParts(instance)
                 .apply(instance, PleodendronTrunkPlacer::new);
     });
 
@@ -29,24 +29,24 @@ public class PleodendronTrunkPlacer extends AbstractTrunkPlacer {
     }
 
     @Override
-    protected TrunkPlacerType<?> getPlacerType() {
+    protected TrunkPlacerType<?> type() {
         return TropicraftTrunkPlacers.PLEODENDRON;
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
-        func_236909_a_(world, origin.down());
+    public List<FoliagePlacer.Foliage> placeTrunk(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
+        setDirtAt(world, origin.below());
         List<FoliagePlacer.Foliage> leafNodes = new ArrayList<>();
 
         for (int i = 0; i < height; ++i) {
-            func_236911_a_(world, random, origin.up(i), logs, bounds, config);
+            placeLog(world, random, origin.above(i), logs, bounds, config);
         }
 
-        leafNodes.add(new FoliagePlacer.Foliage(origin.up(height + 1), -1, false));
+        leafNodes.add(new FoliagePlacer.Foliage(origin.above(height + 1), -1, false));
 
         for (int i = 5; i < height - 4; ++i) {
             if (random.nextInt(4) == 0) {
-                growBranches(world, random, origin.up(i), logs, bounds, config, leafNodes);
+                growBranches(world, random, origin.above(i), logs, bounds, config, leafNodes);
             }
         }
 
@@ -71,18 +71,18 @@ public class PleodendronTrunkPlacer extends AbstractTrunkPlacer {
             for (int j = 1; j <= dist; j++) {
                 int x = (int) (Math.cos(theta) * j);
                 int z = (int) (Math.sin(theta) * j);
-                BlockPos local = origin.add(x, 0, z);
+                BlockPos local = origin.offset(x, 0, z);
 
                 // Get axis based on position
                 Direction.Axis axis = Util.getAxisBetween(origin, local);
 
                 // Place branch and add to logs
-                func_236913_a_(world, local, config.trunkProvider.getBlockState(random, local).with(RotatedPillarBlock.AXIS, axis), bounds);
+                setBlock(world, local, config.trunkProvider.getState(random, local).setValue(RotatedPillarBlock.AXIS, axis), bounds);
                 logs.add(local);
 
                 // Add leaves around the branch
                 if (j == dist) {
-                    leafNodes.add(new FoliagePlacer.Foliage(local.up(1), -2, false));
+                    leafNodes.add(new FoliagePlacer.Foliage(local.above(1), -2, false));
                 }
             }
         }

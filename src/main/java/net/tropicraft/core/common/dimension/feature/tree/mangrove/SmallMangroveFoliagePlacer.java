@@ -14,9 +14,11 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftFoliagePlacer
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.world.gen.foliageplacer.FoliagePlacer.Foliage;
+
 public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
     public static final Codec<SmallMangroveFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
-        return func_242830_b(instance).apply(instance, SmallMangroveFoliagePlacer::new);
+        return foliagePlacerParts(instance).apply(instance, SmallMangroveFoliagePlacer::new);
     });
 
     public SmallMangroveFoliagePlacer(FeatureSpread radius, FeatureSpread offset) {
@@ -24,23 +26,23 @@ public final class SmallMangroveFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected FoliagePlacerType<?> getPlacerType() {
+    protected FoliagePlacerType<?> type() {
         return TropicraftFoliagePlacers.SMALL_MANGROVE.get();
     }
 
     @Override
-    protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, MutableBoundingBox p_230372_10_) {
-        this.func_236753_a_(world, random, config, node.func_236763_a_(), node.func_236764_b_(), leaves, 1, node.func_236765_c_(), p_230372_10_);
-        this.func_236753_a_(world, random, config, node.func_236763_a_(), node.func_236764_b_(), leaves, 0, node.func_236765_c_(), p_230372_10_);
+    protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, MutableBoundingBox p_230372_10_) {
+        this.placeLeavesRow(world, random, config, node.foliagePos(), node.radiusOffset(), leaves, 1, node.doubleTrunk(), p_230372_10_);
+        this.placeLeavesRow(world, random, config, node.foliagePos(), node.radiusOffset(), leaves, 0, node.doubleTrunk(), p_230372_10_);
     }
 
     @Override
-    public int func_230374_a_(Random random, int p_230374_2_, BaseTreeFeatureConfig config) {
+    public int foliageHeight(Random random, int p_230374_2_, BaseTreeFeatureConfig config) {
         return 0;
     }
 
     @Override
-    protected boolean func_230373_a_(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
+    protected boolean shouldSkipLocation(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
         if (y == 0) {
             return radius != 0 && dx == radius && dz == radius && random.nextInt(2) == 0;
         }

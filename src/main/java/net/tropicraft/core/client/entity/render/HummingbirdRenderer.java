@@ -18,7 +18,7 @@ public class HummingbirdRenderer extends MobRenderer<HummingbirdEntity, Hummingb
     }
 
     @Override
-    public ResourceLocation getEntityTexture(HummingbirdEntity entity) {
+    public ResourceLocation getTextureLocation(HummingbirdEntity entity) {
         return TEXTURE;
     }
 }

@@ -17,11 +17,11 @@ import java.util.function.Supplier;
 
 public class SingleNoAirJigsawPiece extends SingleJigsawPiece {
     public static final Codec<SingleNoAirJigsawPiece> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(func_236846_c_(), func_236844_b_(), func_236848_d_())
+        return instance.group(templateCodec(), processorsCodec(), projectionCodec())
                 .apply(instance, SingleNoAirJigsawPiece::new);
     });
 
-    private static final IJigsawDeserializer<SingleNoAirJigsawPiece> TYPE = IJigsawDeserializer.func_236851_a_(Constants.MODID + ":single_no_air", CODEC);
+    private static final IJigsawDeserializer<SingleNoAirJigsawPiece> TYPE = IJigsawDeserializer.register(Constants.MODID + ":single_no_air", CODEC);
 
     public SingleNoAirJigsawPiece(Either<ResourceLocation, Template> template, Supplier<StructureProcessorList> processors, JigsawPattern.PlacementBehaviour placementBehaviour) {
         super(template, processors, placementBehaviour);
@@ -45,10 +45,10 @@ public class SingleNoAirJigsawPiece extends SingleJigsawPiece {
     }
 
     @Override
-    protected PlacementSettings func_230379_a_(Rotation rotation, MutableBoundingBox box, boolean b) {
-        PlacementSettings settings = super.func_230379_a_(rotation, box, b);
-        settings.removeProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
-        settings.addProcessor(BlockIgnoreStructureProcessor.AIR_AND_STRUCTURE_BLOCK);
+    protected PlacementSettings getSettings(Rotation rotation, MutableBoundingBox box, boolean b) {
+        PlacementSettings settings = super.getSettings(rotation, box, b);
+        settings.popProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
+        settings.addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_AND_AIR);
         return settings;
     }
 }

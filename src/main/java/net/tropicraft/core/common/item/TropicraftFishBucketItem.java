@@ -24,8 +24,8 @@ public class TropicraftFishBucketItem<T extends AbstractFishEntity> extends Fish
     }
 
     @Override
-    public void onLiquidPlaced(World world, ItemStack stack, BlockPos pos) {
-        if (!world.isRemote) {
+    public void checkExtraContent(World world, ItemStack stack, BlockPos pos) {
+        if (!world.isClientSide) {
             this.placeFish((ServerWorld) world, stack, pos);
         }
     }

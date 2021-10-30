@@ -7,6 +7,6 @@ public interface WorldgenDataConsumer<T> {
     T register(ResourceLocation id, T entry);
 
     default T register(RegistryKey<T> id, T entry) {
-        return this.register(id.getLocation(), entry);
+        return this.register(id.location(), entry);
     }
 }

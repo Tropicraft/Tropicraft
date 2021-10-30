@@ -34,15 +34,15 @@ import java.util.List;
 import net.minecraft.block.AbstractBlock.Properties;
 
 public class DrinkMixerBlock extends Block implements ITileEntityProvider {
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
     public DrinkMixerBlock(final Properties properties) {
         super(properties);
-        setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
+        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(final StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }
 
@@ -51,20 +51,20 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
      */
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-        super.addInformation(stack, world, tooltip, flag);
-        tooltip.add(new TranslationTextComponent(getTranslationKey() + ".desc").mergeStyle(TextFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, @Nullable IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+        super.appendHoverText(stack, world, tooltip, flag);
+        tooltip.add(new TranslationTextComponent(getDescriptionId() + ".desc").withStyle(TextFormatting.GRAY));
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-        if (world.isRemote) {
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+        if (world.isClientSide) {
             return ActionResultType.SUCCESS;
         }
 
-        ItemStack stack = player.getHeldItemMainhand();
+        ItemStack stack = player.getMainHandItem();
 
-        DrinkMixerTileEntity mixer = (DrinkMixerTileEntity) world.getTileEntity(pos);
+        DrinkMixerTileEntity mixer = (DrinkMixerTileEntity) world.getBlockEntity(pos);
         if (mixer == null) {
             return ActionResultType.FAIL;
         }
@@ -84,14 +84,14 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
 
         if (mixer.addToMixer(ingredientStack)) {
             if (!player.isCreative()) {
-                player.inventory.decrStackSize(player.inventory.currentItem, 1);
+                player.inventory.removeItem(player.inventory.selected, 1);
             }
         }
 
         if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && mixer.canMix()) {
             mixer.startMixing();
             if (!player.isCreative()) {
-                player.inventory.decrStackSize(player.inventory.currentItem, 1);
+                player.inventory.removeItem(player.inventory.selected, 1);
             }
 
             Drink craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
@@ -108,12 +108,12 @@ public class DrinkMixerBlock extends Block implements ITileEntityProvider {
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState ret = super.getStateForPlacement(context);
-        return ret.with(FACING, context.getPlayer().getHorizontalFacing());
+        return ret.setValue(FACING, context.getPlayer().getDirection());
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader world) {
+    public TileEntity newBlockEntity(IBlockReader world) {
         return new DrinkMixerTileEntity();
     }
 }

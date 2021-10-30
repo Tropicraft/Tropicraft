@@ -51,7 +51,7 @@ public enum TropicraftFlower implements Supplier<Block> {
         this.effect = effect;
         this.effectDuration = effectDuration;
         float halfW = w / 2f;
-        this.shape = Block.makeCuboidShape(8 - halfW, 0, 8 - halfW, 8 + halfW, h, 8 + halfW);
+        this.shape = Block.box(8 - halfW, 0, 8 - halfW, 8 + halfW, h, 8 + halfW);
     }
 
     public Effect getEffect() {

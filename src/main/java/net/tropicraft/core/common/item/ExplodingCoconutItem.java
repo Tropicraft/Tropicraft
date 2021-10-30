@@ -19,15 +19,15 @@ public class ExplodingCoconutItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         // TODO config option
-        final boolean canPlayerThrow = player.isCreative() || player.canUseCommandBlock();
+        final boolean canPlayerThrow = player.isCreative() || player.canUseGameMasterBlocks();
         //allow to use anywhere but in the main area of the server
-        final boolean ltOverride = world.getDimensionKey() != TropicraftDimension.WORLD;
-        ItemStack itemstack = player.getHeldItem(hand);
+        final boolean ltOverride = world.dimension() != TropicraftDimension.WORLD;
+        ItemStack itemstack = player.getItemInHand(hand);
         if (!canPlayerThrow && !ltOverride) {
-            if (!world.isRemote) {
-                player.sendStatusMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"), false);
+            if (!world.isClientSide) {
+                player.displayClientMessage(new TranslationTextComponent("tropicraft.coconutBombWarning"), false);
             }
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         }
@@ -35,15 +35,15 @@ public class ExplodingCoconutItem extends Item {
         if (!player.isCreative()) {
             itemstack.shrink(1);
         }
-        world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-        if (!world.isRemote) {
+        world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        if (!world.isClientSide) {
             ExplodingCoconutEntity snowballentity = new ExplodingCoconutEntity(world, player);
             snowballentity.setItem(itemstack);
-            snowballentity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
-            world.addEntity(snowballentity);
+            snowballentity.shootFromRotation(player, player.xRot, player.yRot, 0.0F, 1.5F, 1.0F);
+            world.addFreshEntity(snowballentity);
         }
 
-        player.addStat(Stats.ITEM_USED.get(this));
+        player.awardStat(Stats.ITEM_USED.get(this));
         return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
     }
 }

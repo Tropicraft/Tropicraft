@@ -30,7 +30,7 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
     @Override
     public BlockInfo process(IWorldReader worldReaderIn, BlockPos seedPos, BlockPos p, BlockInfo p_215194_3_, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
         if (seedPos.getY() < base) {
-            return new BlockInfo(blockInfo.pos.up(), blockInfo.state, blockInfo.nbt);
+            return new BlockInfo(blockInfo.pos.above(), blockInfo.state, blockInfo.nbt);
         }
         return blockInfo;
     }
@@ -38,7 +38,7 @@ public class AdjustBuildingHeightProcessor extends CheatyStructureProcessor {
     @Override
     public EntityInfo processEntity(IWorldReader world, BlockPos seedPos, EntityInfo rawEntityInfo, EntityInfo entityInfo, PlacementSettings placementSettings, Template template) {
         if (seedPos.getY() < base) {
-            return new EntityInfo(entityInfo.pos.add(0, 1, 0), entityInfo.blockPos.up(), entityInfo.nbt);
+            return new EntityInfo(entityInfo.pos.add(0, 1, 0), entityInfo.blockPos.above(), entityInfo.nbt);
         }
         return entityInfo;
     }

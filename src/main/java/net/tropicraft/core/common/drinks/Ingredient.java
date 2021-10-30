@@ -37,7 +37,7 @@ public class Ingredient implements Comparable<Ingredient> {
     public static final Ingredient coconut = new Ingredient(11, TropicraftBlocks.COCONUT, false, 0xefefef).addAction(new DrinkActionFood(1, 0.1f));
     public static final Ingredient coconutChunk = new Ingredient(12, TropicraftItems.COCONUT_CHUNK, false, 0xefefef/*, 0.1f*/).addAction(new DrinkActionFood(1, 0.1f));
     public static final Ingredient sugarcane = new Ingredient(13, Items.SUGAR_CANE.delegate, false, 0xb1ff6b, 0.1f);
-    public static final Ingredient roastedCoffeeBean = new Ingredient(14, TropicraftItems.ROASTED_COFFEE_BEAN, false, 0x68442c, 0.95f).addAction(new DrinkActionFood(4, 0.2f)).addAction(new DrinkActionPotion(Effects.SPEED, 5, 1));
+    public static final Ingredient roastedCoffeeBean = new Ingredient(14, TropicraftItems.ROASTED_COFFEE_BEAN, false, 0x68442c, 0.95f).addAction(new DrinkActionFood(4, 0.2f)).addAction(new DrinkActionPotion(Effects.MOVEMENT_SPEED, 5, 1));
     public static final Ingredient waterBucket = new Ingredient(15, Items.WATER_BUCKET.delegate, false, 0xffffff);
     public static final Ingredient milkBucket = new Ingredient(16, Items.MILK_BUCKET.delegate, false, 0xffffff, 0.1f).addAction(new DrinkActionFood(2, 0.2f));
     public static final Ingredient cocoaBean = new Ingredient(17, Items.COCOA_BEANS.delegate, false, 0x805A3E, 0.95f).addAction(new DrinkActionFood(4, 0.2f));
@@ -167,7 +167,7 @@ public class Ingredient implements Comparable<Ingredient> {
     }
 
     public ITextComponent getDisplayName() {
-        return new ItemStack(getIngredientItem()).getDisplayName();
+        return new ItemStack(getIngredientItem()).getHoverName();
     }
 
 }

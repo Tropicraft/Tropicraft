@@ -13,7 +13,7 @@ public class TropicsCaveCarver extends CaveWorldCarver {
 
     public TropicsCaveCarver(Codec<ProbabilityConfig> codec) {
         super(codec, 256);
-        this.carvableBlocks = ImmutableSet.<Block> builder().addAll(this.carvableBlocks)
+        this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())
                 .add(TropicraftBlocks.FOAMY_SAND.get())
                 .add(TropicraftBlocks.MINERAL_SAND.get())
@@ -25,7 +25,7 @@ public class TropicsCaveCarver extends CaveWorldCarver {
     }
 
     @Override
-    protected int func_230361_b_(Random rand) {
+    protected int getCaveY(Random rand) {
         if (rand.nextInt(5) == 0) {
             return rand.nextInt(240 + 8); // Add some evenly distributed caves in, in addition to the ones biased towards lower Y
         }

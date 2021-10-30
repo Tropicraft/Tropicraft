@@ -29,8 +29,8 @@ public class AIAshenHunt extends Goal {
     }
 
     @Override
-    public boolean shouldExecute() {
-        LivingEntity entitylivingbase = ashen.getAttackTarget();
+    public boolean canUse() {
+        LivingEntity entitylivingbase = ashen.getTarget();
 
         if (entitylivingbase == null) {
             return false;
@@ -41,12 +41,12 @@ public class AIAshenHunt extends Goal {
     }
     
     @Override
-    public boolean shouldContinueExecuting() {
-        return this.shouldExecute() || !this.ashen.getNavigator().noPath();
+    public boolean canContinueToUse() {
+        return this.canUse() || !this.ashen.getNavigation().isDone();
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         this.target = null;
     }
 }

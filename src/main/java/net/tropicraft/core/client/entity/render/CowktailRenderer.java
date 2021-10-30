@@ -30,7 +30,7 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
 	/**
 	 * Returns the location of an entity's texture.
 	 */
-	public ResourceLocation getEntityTexture(CowktailEntity entity) {
+	public ResourceLocation getTextureLocation(CowktailEntity entity) {
 		return textures.get(entity.getCowktailType());
 	}
 }

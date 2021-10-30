@@ -19,7 +19,7 @@ import java.util.Random;
 public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     public static final Codec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                ITag.getTagCodec(() -> TagCollectionManager.getManager().getBlockTags()).fieldOf("tag").forGetter(c -> c.tag)
+                ITag.codec(() -> TagCollectionManager.getInstance().getBlocks()).fieldOf("tag").forGetter(c -> c.tag)
         ).apply(instance, NoiseFromTagBlockStateProvider::new);
     });
 
@@ -30,21 +30,21 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     }
 
     @Override
-    protected BlockStateProviderType<?> getProviderType() {
+    protected BlockStateProviderType<?> type() {
         return TropicraftBlockStateProviders.NOISE_FROM_TAG.get();
     }
 
     @Override
-    public BlockState getBlockState(Random random, BlockPos pos) {
-        List<Block> blocks = this.tag.getAllElements();
+    public BlockState getState(Random random, BlockPos pos) {
+        List<Block> blocks = this.tag.getValues();
         if (blocks.isEmpty()) {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.AIR.defaultBlockState();
         }
 
-        double noise = Biome.INFO_NOISE.noiseAt(pos.getX() / 48.0, pos.getZ() / 48.0, false);
+        double noise = Biome.BIOME_INFO_NOISE.getValue(pos.getX() / 48.0, pos.getZ() / 48.0, false);
         noise = MathHelper.clamp((1.0 + noise) / 2.0, 0.0, 0.9999);
 
         Block block = blocks.get(MathHelper.floor(noise * blocks.size()));
-        return block.getDefaultState();
+        return block.defaultBlockState();
     }
 }

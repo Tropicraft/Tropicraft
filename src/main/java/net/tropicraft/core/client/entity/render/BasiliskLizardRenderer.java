@@ -27,7 +27,7 @@ public class BasiliskLizardRenderer extends MobRenderer<BasiliskLizardEntity, Ba
     }
 
     @Override
-    public ResourceLocation getEntityTexture(BasiliskLizardEntity entity) {
+    public ResourceLocation getTextureLocation(BasiliskLizardEntity entity) {
         return texture;
     }
 }

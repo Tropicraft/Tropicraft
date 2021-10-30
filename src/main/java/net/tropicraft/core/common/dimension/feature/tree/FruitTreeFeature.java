@@ -24,8 +24,8 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 	}
 
 	@Override
-	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FruitTreeConfig config) {
-		pos = pos.toImmutable();
+	public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, FruitTreeConfig config) {
+		pos = pos.immutable();
 		int height = rand.nextInt(3) + 4;
 
 		if (goesBeyondWorldSize(world, pos.getY(), height)) {
@@ -37,11 +37,11 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 		}
 
 		BlockState sapling = config.sapling;
-		if (!sapling.isValidPosition(world, pos)) {
+		if (!sapling.canSurvive(world, pos)) {
 			return false;
 		}
 
-		setDirtAt(world, pos.down());
+		setDirtAt(world, pos.below());
 
 		for (int y = (pos.getY() - 3) + height; y <= pos.getY() + height; y++) {
 			int presizeMod = y - (pos.getY() + height);
@@ -50,14 +50,14 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 				int localX = x - pos.getX();
 				for (int z = pos.getZ() - size; z <= pos.getZ() + size; z++) {
 					int localZ = z - pos.getZ();
-					if ((Math.abs(localX) != size || Math.abs(localZ) != size || rand.nextInt(2) != 0 && presizeMod != 0) && TreeFeature.isAirOrLeavesAt(world, new BlockPos(x, y, z))) {
+					if ((Math.abs(localX) != size || Math.abs(localZ) != size || rand.nextInt(2) != 0 && presizeMod != 0) && TreeFeature.isAirOrLeaves(world, new BlockPos(x, y, z))) {
 						BlockPos leafPos = new BlockPos(x, y, z);
 						if (rand.nextBoolean()) {
 							// Set fruit-bearing leaves here
-							setBlockState(world, leafPos, config.fruitLeaves);
+							setBlock(world, leafPos, config.fruitLeaves);
 						} else {
 							// Set plain fruit tree leaves here
-							setBlockState(world, leafPos, config.leaves);
+							setBlock(world, leafPos, config.leaves);
 						}
 					}
 				}
@@ -66,9 +66,9 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 
 		// Tree stem
 		for (int y = 0; y < height; y++) {
-			BlockPos logPos = pos.up(y);
-			if (TreeFeature.isReplaceableAt(world, logPos)) {
-				setBlockState(world, logPos, config.wood);
+			BlockPos logPos = pos.above(y);
+			if (TreeFeature.validTreePos(world, logPos)) {
+				setBlock(world, logPos, config.wood);
 			}
 		}
 
@@ -76,7 +76,7 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 	}
 
 	protected static boolean isDirt(IWorldGenerationBaseReader world, BlockPos pos) {
-		return world.hasBlockState(pos, (state) -> {
+		return world.isStateAtPosition(pos, (state) -> {
 			Block block = state.getBlock();
 			return isDirt(block) && block != Blocks.GRASS_BLOCK && block != Blocks.MYCELIUM;
 		});
@@ -84,7 +84,7 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 
 	protected void setDirt(IWorldGenerationReader world, BlockPos pos) {
 		if (!isDirt(world, pos)) {
-			setBlockState(world, pos, Blocks.DIRT.getDefaultState());
+			setBlock(world, pos, Blocks.DIRT.defaultBlockState());
 		}
 	}
 

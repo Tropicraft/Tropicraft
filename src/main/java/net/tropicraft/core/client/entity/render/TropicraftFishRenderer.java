@@ -33,21 +33,21 @@ public class TropicraftFishRenderer<T extends AbstractFishEntity, M extends Abst
      */
     @Override
     public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        boolean isVisible = this.isVisible(entity);
-        boolean shouldRender = !isVisible && !entity.isInvisibleToPlayer(Minecraft.getInstance().player);
+        boolean isVisible = this.isBodyVisible(entity);
+        boolean shouldRender = !isVisible && !entity.isInvisibleTo(Minecraft.getInstance().player);
         if (isVisible || shouldRender) {
-            boolean glowing = Minecraft.getInstance().isEntityGlowing(entity);
-            renderFishy(entity, partialTicks, matrixStackIn, bufferIn.getBuffer(func_230496_a_(entity, isVisible, shouldRender, glowing)), packedLightIn, getPackedOverlay(entity, getOverlayProgress(entity, partialTicks)));
+            boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);
+            renderFishy(entity, partialTicks, matrixStackIn, bufferIn.getBuffer(getRenderType(entity, isVisible, shouldRender, glowing)), packedLightIn, getOverlayCoords(entity, getWhiteOverlayProgress(entity, partialTicks)));
         }
         super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     protected void renderFishy(T entity, float partialTicks, MatrixStack stack, IVertexBuilder buffer, int light, int overlay) {
-        stack.push();
+        stack.pushPose();
 
-        stack.rotate(Vector3f.YP.rotationDegrees(-90));
-        stack.rotate(Vector3f.YP.rotationDegrees(-(MathHelper.lerp(partialTicks, entity.prevRotationYawHead, entity.rotationYawHead))));
-        stack.rotate(Vector3f.XP.rotationDegrees(180));
+        stack.mulPose(Vector3f.YP.rotationDegrees(-90));
+        stack.mulPose(Vector3f.YP.rotationDegrees(-(MathHelper.lerp(partialTicks, entity.yHeadRotO, entity.yHeadRot))));
+        stack.mulPose(Vector3f.XP.rotationDegrees(180));
         stack.scale(0.3f, 0.3f, 0.5f);
         stack.translate(.85F, -0.3F, 0.0F);
 
@@ -60,20 +60,20 @@ public class TropicraftFishRenderer<T extends AbstractFishEntity, M extends Abst
 
         stack.translate(-1.7f, 0, 0);
         stack.translate(.85f, 0, 0.025f);
-        stack.rotate(Vector3f.YP.rotation(entityModel.tail.rotateAngleY));
+        stack.mulPose(Vector3f.YP.rotation(model.tail.yRot));
         stack.translate(-.85f, 0, -0.025f);
         renderHelper.renderFish(stack, buffer, fishTex + 1, light, overlay);
 
-        stack.pop();
+        stack.popPose();
     }
 
     @Override
-    protected void preRenderCallback(T entity, MatrixStack stack, float partialTickTime) {
+    protected void scale(T entity, MatrixStack stack, float partialTickTime) {
         stack.scale(.75F, .20F, .20F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(T entity) {
+    public ResourceLocation getTextureLocation(T entity) {
         return TropicraftRenderUtils.getTextureEntity("tropical_fish");
     }
 }

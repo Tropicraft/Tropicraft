@@ -16,6 +16,6 @@ public final class TropicraftTrunkPlacers {
     public static final TrunkPlacerType<PleodendronTrunkPlacer> PLEODENDRON = register("pleodendron", PleodendronTrunkPlacer.CODEC);
 
     private static <T extends AbstractTrunkPlacer> TrunkPlacerType<T> register(String name, Codec<T> codec) {
-        return Registry.register(Registry.TRUNK_REPLACER, new ResourceLocation(Constants.MODID, name), new TrunkPlacerType<>(codec));
+        return Registry.register(Registry.TRUNK_PLACER_TYPES, new ResourceLocation(Constants.MODID, name), new TrunkPlacerType<>(codec));
     }
 }

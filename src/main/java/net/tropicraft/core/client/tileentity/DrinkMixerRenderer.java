@@ -23,7 +23,7 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
 public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
-    private final BambooMugModel modelBambooMug = new BambooMugModel(RenderType::getEntityCutout);
+    private final BambooMugModel modelBambooMug = new BambooMugModel(RenderType::entityCutout);
     private final ItemRenderer renderItem;
     private ItemEntity dummyEntityItem;
 
@@ -40,7 +40,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     };
 
     public DrinkMixerRenderer(final TileEntityRendererDispatcher rendererDispatcher) {
-        super(rendererDispatcher, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(RenderType::getEntitySolid));
+        super(rendererDispatcher, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(RenderType::entitySolid));
         this.renderItem = Minecraft.getInstance().getItemRenderer();
     }
 
@@ -52,7 +52,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     @Override
     public void renderIngredients(final DrinkMixerTileEntity te, final MatrixStack stack, final IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
         if (dummyEntityItem == null) {
-             dummyEntityItem = new ItemEntity(Minecraft.getInstance().world, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
+             dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
         }
         final NonNullList<ItemStack> ingredients = te.getIngredients();
 
@@ -66,7 +66,7 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
         }
 
         if (te.isMixing() || !te.result.isEmpty()) {
-            stack.push();
+            stack.pushPose();
             stack.translate(-0.2f, -0.25f, 0.0f);
             if (te.isDoneMixing()) {
                 modelBambooMug.renderLiquid = true;
@@ -74,24 +74,24 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
             } else {
                 modelBambooMug.renderLiquid = false;
             }
-            IVertexBuilder ivertexbuilder = buffer.getBuffer(modelBambooMug.getRenderType(TropicraftRenderUtils.getTextureTE("bamboo_mug")));
-            modelBambooMug.render(stack, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
-            stack.pop();
+            IVertexBuilder ivertexbuilder = buffer.getBuffer(modelBambooMug.renderType(TropicraftRenderUtils.getTextureTE("bamboo_mug")));
+            modelBambooMug.renderToBuffer(stack, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
+            stack.popPose();
         }
     }
 
     private void renderIngredient(final MatrixStack stack, final IRenderTypeBuffer buffer, final int combinedOverlayIn, final int combinedLight, final ItemStack ingredient, final int ingredientIndex) {
-        stack.push();
-        stack.rotate(Vector3f.XP.rotationDegrees(90));
-        stack.rotate(Vector3f.YP.rotationDegrees(90));
-        stack.rotate(Vector3f.ZP.rotationDegrees(90));
+        stack.pushPose();
+        stack.mulPose(Vector3f.XP.rotationDegrees(90));
+        stack.mulPose(Vector3f.YP.rotationDegrees(90));
+        stack.mulPose(Vector3f.ZP.rotationDegrees(90));
         final float[] offsets = INGREDIENT_OFFSETS[ingredientIndex];
         final float[] scales = INGREDIENT_SCALES[ingredientIndex];
         stack.translate(offsets[0], offsets[1], offsets[2]);
         stack.scale(scales[0], scales[1], scales[2]);
         dummyEntityItem.setItem(ingredient);
         final IBakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, ingredient);
-        renderItem.renderItem(ingredient, ItemCameraTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
-        stack.pop();
+        renderItem.render(ingredient, ItemCameraTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
+        stack.popPose();
     }
 }

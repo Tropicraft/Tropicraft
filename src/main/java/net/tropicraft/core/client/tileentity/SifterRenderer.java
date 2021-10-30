@@ -21,30 +21,30 @@ public class SifterRenderer extends TileEntityRenderer<SifterTileEntity> {
 
 	@Override
 	public void render(SifterTileEntity sifter, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 		matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 
 		if (!sifter.isSifting()) {
 			item = null;
 		} else if (!sifter.getSiftItem().isEmpty()) {
-			final World world = sifter.getWorld();
+			final World world = sifter.getLevel();
 			final float itemRenderSize = 0.4375F;
 
 			if (item == null) {
 				item = new ItemEntity(EntityType.ITEM, world);
 				item.setItem(sifter.getSiftItem().copy());
-				item.setWorld(world);
+				item.setLevel(world);
 			}
 
 			matrixStackIn.translate(0.0D, 0.4F, 0.0D);
-			matrixStackIn.rotate(Vector3f.YP.rotationDegrees((float)(sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double)partialTicks) * 10.0F));
+			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((float)(sifter.yaw2 + (sifter.yaw - sifter.yaw2) * (double)partialTicks) * 10.0F));
 			matrixStackIn.translate(0.0D, -0.4F, 0.0D);
-			matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-20.0F));
+			matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-20.0F));
 			matrixStackIn.scale(itemRenderSize * 3, itemRenderSize * 3, itemRenderSize * 3);
-			final int light = WorldRenderer.getCombinedLight(world, sifter.getPos().up());
-			Minecraft.getInstance().getRenderManager().renderEntityStatic(item, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, matrixStackIn, bufferIn, light);
+			final int light = WorldRenderer.getLightColor(world, sifter.getBlockPos().above());
+			Minecraft.getInstance().getEntityRenderDispatcher().render(item, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, matrixStackIn, bufferIn, light);
 		}
 
-		matrixStackIn.pop();
+		matrixStackIn.popPose();
 	}
 }

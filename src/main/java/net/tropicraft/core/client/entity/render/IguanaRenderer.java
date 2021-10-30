@@ -15,11 +15,11 @@ public class IguanaRenderer extends MobRenderer<IguanaEntity, IguanaModel> {
 
     public IguanaRenderer(final EntityRendererManager rendererManager) {
         super(rendererManager, new IguanaModel(), 0.5F);
-        this.shadowOpaque = 0.5f;
+        this.shadowStrength = 0.5f;
     }
 
     @Override
-    public ResourceLocation getEntityTexture(final IguanaEntity entity) {
+    public ResourceLocation getTextureLocation(final IguanaEntity entity) {
         if (entity.getName().getString().equalsIgnoreCase(IGOR)) {
             return IGOR_TEXTURE;
         }

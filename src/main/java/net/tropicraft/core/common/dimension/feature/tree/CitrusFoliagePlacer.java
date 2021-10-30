@@ -13,9 +13,11 @@ import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.world.gen.foliageplacer.FoliagePlacer.Foliage;
+
 public final class CitrusFoliagePlacer extends FoliagePlacer {
     public static final Codec<CitrusFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
-        return func_242830_b(instance).apply(instance, CitrusFoliagePlacer::new);
+        return foliagePlacerParts(instance).apply(instance, CitrusFoliagePlacer::new);
     });
 
     public CitrusFoliagePlacer(FeatureSpread radius, FeatureSpread offset) {
@@ -23,28 +25,28 @@ public final class CitrusFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected FoliagePlacerType<?> getPlacerType() {
+    protected FoliagePlacerType<?> type() {
         return TropicraftFoliagePlacers.CITRUS.get();
     }
 
     @Override
-    protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, MutableBoundingBox p_230372_10_) {
-        this.func_236753_a_(world, random, config, node.func_236763_a_(), 1, leaves, 1, node.func_236765_c_(), p_230372_10_);
-        this.func_236753_a_(world, random, config, node.func_236763_a_(), 2, leaves, 0, node.func_236765_c_(), p_230372_10_);
+    protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, MutableBoundingBox p_230372_10_) {
+        this.placeLeavesRow(world, random, config, node.foliagePos(), 1, leaves, 1, node.doubleTrunk(), p_230372_10_);
+        this.placeLeavesRow(world, random, config, node.foliagePos(), 2, leaves, 0, node.doubleTrunk(), p_230372_10_);
 
-        if (node.func_236764_b_() == 1) {
+        if (node.radiusOffset() == 1) {
             // Center leaf cluster, add another layer at the bottom
-            this.func_236753_a_(world, random, config, node.func_236763_a_(), 3, leaves, -1, node.func_236765_c_(), p_230372_10_);
+            this.placeLeavesRow(world, random, config, node.foliagePos(), 3, leaves, -1, node.doubleTrunk(), p_230372_10_);
         }
     }
 
     @Override
-    public int func_230374_a_(Random p_230374_1_, int p_230374_2_, BaseTreeFeatureConfig p_230374_3_) {
+    public int foliageHeight(Random p_230374_1_, int p_230374_2_, BaseTreeFeatureConfig p_230374_3_) {
         return 0;
     }
 
     @Override
-    protected boolean func_230373_a_(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
+    protected boolean shouldSkipLocation(Random random, int dx, int y, int dz, int radius, boolean giantTrunk) {
         return radius != 0 && dx == radius && dz == radius && random.nextInt(2) == 0;
     }
 }

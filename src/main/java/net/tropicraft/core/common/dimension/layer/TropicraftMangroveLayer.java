@@ -16,7 +16,7 @@ public final class TropicraftMangroveLayer implements IBishopTransformer {
     public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
         TropicraftBiomeIds ids = this.biomeIds;
         if (!ids.isOcean(center) && (ids.isOcean(ne) || ids.isOcean(se) || ids.isOcean(sw) || ids.isOcean(nw))) {
-            if (random.random(this.chance) == 0) {
+            if (random.nextRandom(this.chance) == 0) {
                 return ids.mangroves;
             }
         }

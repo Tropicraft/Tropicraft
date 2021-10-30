@@ -24,20 +24,22 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.Random;
 
+import net.minecraft.entity.ai.controller.MovementController.Action;
+
 public final class FiddlerCrabEntity extends AnimalEntity {
     public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, World world) {
         super(type, world);
-        this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
 
-        this.moveController = new CrabMoveController(this);
-        this.stepHeight = 1.0F;
+        this.moveControl = new CrabMoveController(this);
+        this.maxUpStep = 1.0F;
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6.0)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
     @Override
@@ -56,11 +58,11 @@ public final class FiddlerCrabEntity extends AnimalEntity {
     }
 
     private void tickLimbSwing() {
-        prevLimbSwingAmount = limbSwingAmount;
+        animationSpeedOld = animationSpeed;
 
-        double deltaX = getPosX() - prevPosX;
-        double deltaZ = getPosZ() - prevPosZ;
-        float deltaYaw = MathHelper.wrapDegrees(renderYawOffset - prevRenderYawOffset);
+        double deltaX = getX() - xo;
+        double deltaZ = getZ() - zo;
+        float deltaYaw = MathHelper.wrapDegrees(yBodyRot - yBodyRotO);
 
         float move = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
         float rotate = Math.abs(deltaYaw);
@@ -68,22 +70,22 @@ public final class FiddlerCrabEntity extends AnimalEntity {
         float targetAmount = move * 4.0F + rotate * 0.25F;
         targetAmount = Math.min(targetAmount, 0.25F);
 
-        limbSwingAmount += (targetAmount - limbSwingAmount) * 0.4F;
-        limbSwing += limbSwingAmount;
+        animationSpeed += (targetAmount - animationSpeed) * 0.4F;
+        animationPosition += animationSpeed;
     }
 
     @Override
-    public void func_233629_a_(LivingEntity entity, boolean flying) {
+    public void calculateEntityAnimation(LivingEntity entity, boolean flying) {
         // limb swing logic replicated to consider rotation
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
 
     @Override
-    public FiddlerCrabEntity createChild(ServerWorld world, AgeableEntity mate) {
+    public FiddlerCrabEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
         return null;
     }
 
@@ -98,23 +100,23 @@ public final class FiddlerCrabEntity extends AnimalEntity {
     }
 
     @Override
-    public boolean isPushedByWater() {
+    public boolean isPushedByFluid() {
         return false;
     }
 
     @Override
-    protected boolean func_241208_cS_() {
+    protected boolean isAffectedByFluids() {
         // avoid being affected by water while on the ground
         return !onGround;
     }
 
     @Override
-    public int getHorizontalFaceSpeed() {
+    public int getMaxHeadYRot() {
         return 30;
     }
 
     public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
-        BlockPos groundPos = pos.down();
+        BlockPos groundPos = pos.below();
         BlockState groundBlock = world.getBlockState(groundPos);
         if (groundBlock.getMaterial() != Material.SAND) {
             return false;
@@ -126,8 +128,8 @@ public final class FiddlerCrabEntity extends AnimalEntity {
 
         BlockState block = world.getBlockState(pos);
         FluidState fluid = world.getFluidState(pos);
-        return !block.hasOpaqueCollisionShape(world, pos) && !block.canProvidePower() && !block.isIn(BlockTags.PREVENT_MOB_SPAWNING_INSIDE)
-                && (fluid.isEmpty() || fluid.isTagged(FluidTags.WATER));
+        return !block.isCollisionShapeFullBlock(world, pos) && !block.isSignalSource() && !block.is(BlockTags.PREVENT_MOB_SPAWNING_INSIDE)
+                && (fluid.isEmpty() || fluid.is(FluidTags.WATER));
     }
 
     static final class CrabMoveController extends MovementController {
@@ -139,23 +141,23 @@ public final class FiddlerCrabEntity extends AnimalEntity {
 
         @Override
         public void tick() {
-            if (this.action == MovementController.Action.MOVE_TO) {
-                this.action = MovementController.Action.WAIT;
+            if (this.operation == MovementController.Action.MOVE_TO) {
+                this.operation = MovementController.Action.WAIT;
                 this.tickMoveTo();
-            } else if (this.action == Action.WAIT) {
-                this.mob.setMoveForward(0.0F);
-                this.mob.setMoveStrafing(0.0F);
+            } else if (this.operation == Action.WAIT) {
+                this.mob.setZza(0.0F);
+                this.mob.setXxa(0.0F);
             }
         }
 
         private void tickMoveTo() {
-            double dx = this.posX - this.mob.getPosX();
-            double dz = this.posZ - this.mob.getPosZ();
-            double dy = this.posY - this.mob.getPosY();
+            double dx = this.wantedX - this.mob.getX();
+            double dz = this.wantedZ - this.mob.getZ();
+            double dy = this.wantedY - this.mob.getY();
             double distance2 = dx * dx + dy * dy + dz * dz;
             if (distance2 < 5e-4 * 5e-4) {
-                this.mob.setMoveForward(0.0F);
-                this.mob.setMoveStrafing(0.0F);
+                this.mob.setZza(0.0F);
+                this.mob.setXxa(0.0F);
                 return;
             }
 
@@ -163,17 +165,17 @@ public final class FiddlerCrabEntity extends AnimalEntity {
             float leftTarget = forward - 90.0F;
             float rightTarget = forward + 90.0F;
 
-            float yaw = this.mob.rotationYaw;
+            float yaw = this.mob.yRot;
             float targetYaw = closerAngle(yaw, leftTarget, rightTarget);
 
-            float speed = (float) (this.speed * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            float speed = (float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
             float strafe = targetYaw < forward ? -1.0F : 1.0F;
 
-            this.mob.rotationYaw = this.limitAngle(yaw, targetYaw, 10.0F);
+            this.mob.yRot = this.rotlerp(yaw, targetYaw, 10.0F);
 
-            this.mob.setAIMoveSpeed(speed);
-            this.mob.setMoveForward(0.0F);
-            this.mob.setMoveStrafing(strafe * speed);
+            this.mob.setSpeed(speed);
+            this.mob.setZza(0.0F);
+            this.mob.setXxa(strafe * speed);
         }
 
         private static float closerAngle(float reference, float left, float right) {

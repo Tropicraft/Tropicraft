@@ -35,6 +35,8 @@ import net.tropicraft.core.client.data.TropicraftLangKeys;
 
 import java.util.UUID;
 
+import net.minecraft.item.Item.Properties;
+
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class ScubaGogglesItem extends ScubaArmorItem {
 
@@ -74,17 +76,17 @@ public class ScubaGogglesItem extends ScubaArmorItem {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.disableAlphaTest();
         Minecraft mc = Minecraft.getInstance();
-        double scaledWidth = mc.getMainWindow().getScaledWidth();
-        double scaledHeight = mc.getMainWindow().getScaledHeight();
-        mc.getTextureManager().bindTexture(GOGGLES_OVERLAY_TEX_PATH);
+        double scaledWidth = mc.getWindow().getGuiScaledWidth();
+        double scaledHeight = mc.getWindow().getGuiScaledHeight();
+        mc.getTextureManager().bind(GOGGLES_OVERLAY_TEX_PATH);
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(0.0D, scaledHeight, -90.0D).tex(0.0f, 1.0f).endVertex();
-        bufferbuilder.pos(scaledWidth, scaledHeight, -90.0D).tex(1.0f, 1.0f).endVertex();
-        bufferbuilder.pos(scaledWidth, 0.0D, -90.0D).tex(1.0f, 0.0f).endVertex();
-        bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0f, 0.0f).endVertex();
-        tessellator.draw();
+        bufferbuilder.vertex(0.0D, scaledHeight, -90.0D).uv(0.0f, 1.0f).endVertex();
+        bufferbuilder.vertex(scaledWidth, scaledHeight, -90.0D).uv(1.0f, 1.0f).endVertex();
+        bufferbuilder.vertex(scaledWidth, 0.0D, -90.0D).uv(1.0f, 0.0f).endVertex();
+        bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0f, 0.0f).endVertex();
+        tessellator.end();
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.enableAlphaTest();
@@ -95,13 +97,13 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     @OnlyIn(Dist.CLIENT)
     public static void renderWaterFog(FogDensity event) {
         ActiveRenderInfo info = event.getInfo();
-        FluidState fluid = info.getFluidState();
-        if (fluid.isTagged(FluidTags.WATER) && info.getRenderViewEntity() instanceof ClientPlayerEntity) {
-            ClientPlayerEntity player = (ClientPlayerEntity) info.getRenderViewEntity();
-            if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() instanceof ScubaGogglesItem) {
+        FluidState fluid = info.getFluidInCamera();
+        if (fluid.is(FluidTags.WATER) && info.getEntity() instanceof ClientPlayerEntity) {
+            ClientPlayerEntity player = (ClientPlayerEntity) info.getEntity();
+            if (player.getItemBySlot(EquipmentSlotType.HEAD).getItem() instanceof ScubaGogglesItem) {
                 // Taken from FogRenderer#setupFog in the case where the player is in fluid
                 RenderSystem.fogMode(GlStateManager.FogMode.EXP2);
-                float f = 0.05F - player.getWaterBrightness() * player.getWaterBrightness() * 0.03F;
+                float f = 0.05F - player.getWaterVision() * player.getWaterVision() * 0.03F;
 
                 // Reduce fog slightly
                 f *= 0.75F;
@@ -115,7 +117,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
         if (slot == EquipmentSlotType.HEAD) {
-            return boostedModifiers.getValue();
+            return boostedModifiers.get();
         } else {
             return super.getAttributeModifiers(slot, stack);
         }

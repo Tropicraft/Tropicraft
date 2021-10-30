@@ -28,7 +28,7 @@ import java.util.EnumSet;
 
 public class SharkEntity extends TropicraftFishEntity {
 
-    private static final DataParameter<Boolean> IS_BOSS = EntityDataManager.createKey(SharkEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_BOSS = EntityDataManager.defineId(SharkEntity.class, DataSerializers.BOOLEAN);
 
     private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
     private ArrayList<ServerPlayerEntity> bossTargets = new ArrayList<>();
@@ -36,7 +36,7 @@ public class SharkEntity extends TropicraftFishEntity {
 
     public SharkEntity(EntityType<? extends WaterMobEntity> type, World world) {
         super(type, world);
-        experienceValue = 20;
+        xpReward = 20;
         this.setApproachesPlayers(true);
         // TODO - this.setDropStack(ItemRegistry.fertilizer, 3);
     }
@@ -54,23 +54,23 @@ public class SharkEntity extends TropicraftFishEntity {
     }
 
     @Override
-    public void registerData() {
-        super.registerData();
-        getDataManager().register(IS_BOSS, false);
+    public void defineSynchedData() {
+        super.defineSynchedData();
+        getEntityData().define(IS_BOSS, false);
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return WaterMobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0);
+        return WaterMobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0)
+                .add(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
     public void setBoss() {
-        getDataManager().set(IS_BOSS, true);
+        getEntityData().set(IS_BOSS, true);
     }
 
     public boolean isBoss() {
-        return this.getDataManager().get(IS_BOSS);
+        return this.getEntityData().get(IS_BOSS);
     }
 
     private void setBossTraits() {
@@ -81,7 +81,7 @@ public class SharkEntity extends TropicraftFishEntity {
         setSwimSpeeds(1.1f, 2.2f, 1.5f, 3f, 5f);
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(20);
         // TODO in renderer - this.setTexture("hammerhead4");
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             bossInfo.setName(new StringTextComponent("Elder Hammerhead"));
         }
         hasSetBoss = true;
@@ -96,13 +96,13 @@ public class SharkEntity extends TropicraftFishEntity {
                 setBossTraits();
             }
 
-            if (!world.isRemote) {
+            if (!level.isClientSide) {
                 // Search for suitable target
-                PlayerEntity nearest = world.getClosestPlayer(this, 64D);
+                PlayerEntity nearest = level.getNearestPlayer(this, 64D);
                 if (nearest != null) {
-                    if (canEntityBeSeen(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
+                    if (canSee(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
                         aggressTarget = nearest;
-                        setTargetHeading(aggressTarget.getPosX(), aggressTarget.getPosY() + 1, aggressTarget.getPosZ(), true);
+                        setTargetHeading(aggressTarget.getX(), aggressTarget.getY() + 1, aggressTarget.getZ(), true);
                         // Show health bar to target player
                         if (nearest instanceof ServerPlayerEntity) {
                             if (!bossInfo.getPlayers().contains(nearest)) {
@@ -118,9 +118,9 @@ public class SharkEntity extends TropicraftFishEntity {
                 }
 
                 // Heal if no target
-                if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 80 == 0 && this.aggressTarget == null) {
+                if (this.getHealth() < this.getMaxHealth() && this.tickCount % 80 == 0 && this.aggressTarget == null) {
                     this.heal(1f);
-                    this.spawnExplosionParticle();
+                    this.spawnAnim();
                 }
                 // Update health bar
                 this.bossInfo.setPercent(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
@@ -138,22 +138,22 @@ public class SharkEntity extends TropicraftFishEntity {
     }
 
     @Override
-    public void writeAdditional(CompoundNBT n) {
+    public void addAdditionalSaveData(CompoundNBT n) {
         n.putBoolean("isBoss", isBoss());
-        super.writeAdditional(n);
+        super.addAdditionalSaveData(n);
     }
 
     @Override
-    public void readAdditional(CompoundNBT n) {
+    public void readAdditionalSaveData(CompoundNBT n) {
         if (n.getBoolean("isBoss")) {
             setBoss();
         }
-        super.readAdditional(n);
+        super.readAdditionalSaveData(n);
     }
 
     @Override
-    public boolean canDespawn(double p) {
-        return !isBoss() && super.canDespawn(p);
+    public boolean removeWhenFarAway(double p) {
+        return !isBoss() && super.removeWhenFarAway(p);
     }
 
     @Override

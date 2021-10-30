@@ -36,9 +36,9 @@ public final class TropicraftAddWeightedSubBiomesLayer implements IC0Transformer
     public int apply(INoiseRandom random, int center) {
         if (center == baseID) {
             if (biomeLookup.size() > 0) {
-                return biomeLookup.getInt(WeightedRandom.getRandomItem(biomeWeights, random.random(totalWeight)));
+                return biomeLookup.getInt(WeightedRandom.getWeightedItem(biomeWeights, random.nextRandom(totalWeight)));
             }
-            return subBiomeIDs[random.random(subBiomeIDs.length)];
+            return subBiomeIDs[random.nextRandom(subBiomeIDs.length)];
         } else {
             return center;
         }

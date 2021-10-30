@@ -7,6 +7,8 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class EntityAIWanderNotLazy extends Goal {
 
     private final CreatureEntity entity;
@@ -27,14 +29,14 @@ public class EntityAIWanderNotLazy extends Goal {
         this.entity = creatureIn;
         this.speed = speedIn;
         this.executionChance = chance;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
         if (!this.mustUpdate)
         {
@@ -43,13 +45,13 @@ public class EntityAIWanderNotLazy extends Goal {
                 return false;
             }*/
 
-            if (this.entity.getRNG().nextInt(this.executionChance) != 0)
+            if (this.entity.getRandom().nextInt(this.executionChance) != 0)
             {
                 return false;
             }
         }
 
-        Vector3d vec = RandomPositionGenerator.findRandomTarget(this.entity, 10, 7);
+        Vector3d vec = RandomPositionGenerator.getPos(this.entity, 10, 7);
         if (vec == null)
         {
             return false;
@@ -68,18 +70,18 @@ public class EntityAIWanderNotLazy extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
-        return !this.entity.getNavigator().noPath();
+        return !this.entity.getNavigation().isDone();
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting()
+    public void start()
     {
-        this.entity.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+        this.entity.getNavigation().moveTo(this.xPosition, this.yPosition, this.zPosition, this.speed);
     }
 
     /**

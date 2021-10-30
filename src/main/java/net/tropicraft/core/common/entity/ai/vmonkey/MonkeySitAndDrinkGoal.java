@@ -22,35 +22,35 @@ public class MonkeySitAndDrinkGoal extends Goal {
     public MonkeySitAndDrinkGoal(VMonkeyEntity monkey) {
         this.entity = monkey;
         waitCounter = DEFAULT_WAIT;
-        setMutexFlags(EnumSet.of(Goal.Flag.LOOK, Flag.MOVE));
+        setFlags(EnumSet.of(Goal.Flag.LOOK, Flag.MOVE));
     }
 
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
     @Override
-    public void resetTask() {
-        entity.setQueuedToSit(false);
-        entity.entityDropItem(new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
-        entity.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+    public void stop() {
+        entity.setInSittingPose(false);
+        entity.spawnAtLocation(new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
+        entity.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
         waitCounter = DEFAULT_WAIT;
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         return entity.selfHoldingDrink(Drink.PINA_COLADA);
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         return entity.selfHoldingDrink(Drink.PINA_COLADA);
     }
 
     @Override
-    public void startExecuting() {
-        entity.setQueuedToSit(true);
-        entity.setAggroed(false);
-        entity.setAttackTarget(null);
+    public void start() {
+        entity.setInSittingPose(true);
+        entity.setAggressive(false);
+        entity.setTarget(null);
         entity.setFollowing(null);
     }
 
@@ -59,13 +59,13 @@ public class MonkeySitAndDrinkGoal extends Goal {
         waitCounter--;
 
         if (waitCounter <= 0) {
-            entity.setActiveHand(Hand.MAIN_HAND);
+            entity.startUsingItem(Hand.MAIN_HAND);
         }
 
         // If drinking complete
-        ItemStack heldStack = entity.getHeldItemMainhand();
+        ItemStack heldStack = entity.getMainHandItem();
         if (heldStack.getItem() == TropicraftItems.BAMBOO_MUG.get()) {
-            entity.addPotionEffect(new EffectInstance(Effects.NAUSEA, 10 * 20, 2));
+            entity.addEffect(new EffectInstance(Effects.CONFUSION, 10 * 20, 2));
         }
     }
 }

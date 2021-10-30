@@ -17,18 +17,18 @@ import javax.annotation.Nullable;
 public class MarlinRenderer extends MobRenderer<MarlinEntity, MarlinModel> {
     public MarlinRenderer(EntityRendererManager renderManager) {
         super(renderManager, new MarlinModel(), 0.5F);
-        shadowOpaque = 0.5f;
+        shadowStrength = 0.5f;
     }
 
     @Override
     public void render(MarlinEntity marlin, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        getEntityModel().inWater = marlin.isInWater();
+        getModel().inWater = marlin.isInWater();
         super.render(marlin, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(MarlinEntity marlin) {
+    public ResourceLocation getTextureLocation(MarlinEntity marlin) {
         return TropicraftRenderUtils.getTextureEntity(marlin.getTexture());
     }
 }

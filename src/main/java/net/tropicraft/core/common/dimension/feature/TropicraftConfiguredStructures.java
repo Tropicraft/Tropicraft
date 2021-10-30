@@ -35,7 +35,7 @@ public final class TropicraftConfiguredStructures {
         }
 
         public <S extends Structure<VillageConfig>> StructureFeature<?, ?> register(String id, RegistryObject<S> structure, JigsawPattern templatePool, int maxDepth) {
-            return this.register(id, structure, s -> s.withConfiguration(new VillageConfig(() -> templatePool, maxDepth)));
+            return this.register(id, structure, s -> s.configured(new VillageConfig(() -> templatePool, maxDepth)));
         }
     }
 }

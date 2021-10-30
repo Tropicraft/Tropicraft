@@ -26,17 +26,17 @@ public class SifterBlock extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        final ItemStack stack = player.getHeldItem(hand);
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        final ItemStack stack = player.getItemInHand(hand);
 
         // TODO use item tag
-        final boolean isSandInHand = Block.getBlockFromItem(stack.getItem()).getDefaultState().getMaterial() == Material.SAND;
+        final boolean isSandInHand = Block.byItem(stack.getItem()).defaultBlockState().getMaterial() == Material.SAND;
         if (!isSandInHand) {
             return ActionResultType.PASS;
         }
 
-        if (!world.isRemote) {
-            final SifterTileEntity sifter = (SifterTileEntity) world.getTileEntity(pos);
+        if (!world.isClientSide) {
+            final SifterTileEntity sifter = (SifterTileEntity) world.getBlockEntity(pos);
             if (sifter != null && !stack.isEmpty() && !sifter.isSifting()) {
                 final ItemStack addItem;
                 if (!player.isCreative()) {
@@ -56,7 +56,7 @@ public class SifterBlock extends Block implements ITileEntityProvider {
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(final IBlockReader world) {
+    public TileEntity newBlockEntity(final IBlockReader world) {
         return new SifterTileEntity();
     }
 }

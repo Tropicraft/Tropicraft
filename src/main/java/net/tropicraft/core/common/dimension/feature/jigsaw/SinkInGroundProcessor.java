@@ -36,14 +36,14 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         }
         
         // Get height of the ground at this spot
-        BlockPos groundCheck = world.getHeight(Heightmap.Type.WORLD_SURFACE_WG, worldPos);
+        BlockPos groundCheck = world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, worldPos);
         // y == 2, we're above the path, remove fence blocks that are above sea level or next to some other block
         if (sourceInfo.pos.getY() == 2 && sourceInfo.state.getBlock() == TropicraftBlocks.BAMBOO_FENCE.get()) {
-            if (groundCheck.getY() > 127 || !isAirOrWater(world, worldPos.down(2))) {
+            if (groundCheck.getY() > 127 || !isAirOrWater(world, worldPos.below(2))) {
                 return null;
             }
             for (int i = 0; i < 4; i++) {
-                if (!world.isAirBlock(worldPos.offset(Direction.byHorizontalIndex(i)))) {
+                if (!world.isEmptyBlock(worldPos.relative(Direction.from2DDataValue(i)))) {
                     return null;
                 }
             }
@@ -52,18 +52,18 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         // If above sea level, sink into the ground by one block
         if (groundCheck.getY() > 127) {
             // Convert slabs to bundles when they are over land
-            if (!isAirOrWater(world, worldPos.down()) && sourceInfo.state.getBlock() == TropicraftBlocks.THATCH_SLAB.get()) {
-                worldInfo = new BlockInfo(worldPos, TropicraftBlocks.THATCH_BUNDLE.get().getDefaultState(), null);
+            if (!isAirOrWater(world, worldPos.below()) && sourceInfo.state.getBlock() == TropicraftBlocks.THATCH_SLAB.get()) {
+                worldInfo = new BlockInfo(worldPos, TropicraftBlocks.THATCH_BUNDLE.get().defaultBlockState(), null);
             }
             
             // Only sink solid blocks, or blocks that are above air/water -- delete all others
-            if (Block.isOpaque(worldInfo.state.getShape(world, worldPos.down())) || isAirOrWater(world, worldPos.down())) {
-                return new BlockInfo(worldPos.down(), worldInfo.state, worldInfo.nbt);
+            if (Block.isShapeFullBlock(worldInfo.state.getShape(world, worldPos.below())) || isAirOrWater(world, worldPos.below())) {
+                return new BlockInfo(worldPos.below(), worldInfo.state, worldInfo.nbt);
             }
             return null;
         }
         
-        removeObstructions(world, worldPos.up(), worldPos.up(2));
+        removeObstructions(world, worldPos.above(), worldPos.above(2));
 
         return worldInfo;
     }
@@ -71,8 +71,8 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
     private void removeObstructions(IWorldReader world, BlockPos... positions) {
         for (BlockPos pos : positions) {
             BlockState current = world.getBlockState(pos);
-            if (current.isIn(BlockTags.LEAVES) || current.isIn(BlockTags.LOGS)) {
-                setBlockState(world, pos, Blocks.AIR.getDefaultState());
+            if (current.is(BlockTags.LEAVES) || current.is(BlockTags.LOGS)) {
+                setBlockState(world, pos, Blocks.AIR.defaultBlockState());
             }
         }
     }

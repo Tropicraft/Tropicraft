@@ -29,11 +29,11 @@ import java.util.function.Supplier;
 public class NoRotateSingleJigsawPiece extends SingleJigsawPiece {
 
     public static final Codec<NoRotateSingleJigsawPiece> CODEC = RecordCodecBuilder.create(instance -> {
-        return instance.group(func_236846_c_(), func_236844_b_(), func_236848_d_())
+        return instance.group(templateCodec(), processorsCodec(), projectionCodec())
                 .apply(instance, NoRotateSingleJigsawPiece::new);
     });
 
-    private static final IJigsawDeserializer<NoRotateSingleJigsawPiece> TYPE = IJigsawDeserializer.func_236851_a_(Constants.MODID + ":single_no_rotate", CODEC);
+    private static final IJigsawDeserializer<NoRotateSingleJigsawPiece> TYPE = IJigsawDeserializer.register(Constants.MODID + ":single_no_rotate", CODEC);
 
     public NoRotateSingleJigsawPiece(Either<ResourceLocation, Template> template, Supplier<StructureProcessorList> processors, JigsawPattern.PlacementBehaviour placementBehaviour) {
         super(template, processors, placementBehaviour);
@@ -53,8 +53,8 @@ public class NoRotateSingleJigsawPiece extends SingleJigsawPiece {
     }
 
     @Override
-    protected PlacementSettings func_230379_a_(Rotation rotation, MutableBoundingBox box, boolean b) {
-        return super.func_230379_a_(Rotation.NONE, box, b);
+    protected PlacementSettings getSettings(Rotation rotation, MutableBoundingBox box, boolean b) {
+        return super.getSettings(Rotation.NONE, box, b);
     }
 
     @Override
@@ -73,12 +73,12 @@ public class NoRotateSingleJigsawPiece extends SingleJigsawPiece {
     }
 
     @Override
-    public List<BlockInfo> getJigsawBlocks(TemplateManager templateManager, BlockPos pos, Rotation rotation, Random random) {
-        return super.getJigsawBlocks(templateManager, pos, Rotation.NONE, random);
+    public List<BlockInfo> getShuffledJigsawBlocks(TemplateManager templateManager, BlockPos pos, Rotation rotation, Random random) {
+        return super.getShuffledJigsawBlocks(templateManager, pos, Rotation.NONE, random);
     }
 
     @Override
-    public boolean func_230378_a_(TemplateManager templates, ISeedReader world, StructureManager structures, ChunkGenerator generator, BlockPos pos, BlockPos pos2, Rotation rotation, MutableBoundingBox box, Random random, boolean b) {
-        return super.func_230378_a_(templates, world, structures, generator, pos, pos2, Rotation.NONE, box, random, b);
+    public boolean place(TemplateManager templates, ISeedReader world, StructureManager structures, ChunkGenerator generator, BlockPos pos, BlockPos pos2, Rotation rotation, MutableBoundingBox box, Random random, boolean b) {
+        return super.place(templates, world, structures, generator, pos, pos2, Rotation.NONE, box, random, b);
     }
 }

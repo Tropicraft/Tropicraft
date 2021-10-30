@@ -33,30 +33,30 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(AshenEntity entityIn) {
+    protected ResourceLocation getTextureLocation(AshenEntity entityIn) {
         return TropicraftRenderUtils.getTextureEntity("ashen/ashen");
     }
 
     @Override
     public void render(MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        final ItemStack blowGunHand = ashen.getHeldItemMainhand();
-        final ItemStack daggerHand = ashen.getHeldItemOffhand();
+        final ItemStack blowGunHand = ashen.getMainHandItem();
+        final ItemStack daggerHand = ashen.getOffhandItem();
 
         if (!blowGunHand.isEmpty() || !daggerHand.isEmpty()) {
-            stack.push();
+            stack.pushPose();
 
-            if (model.isChild) {
+            if (model.young) {
                 stack.translate(0.0F, 0.625F, 0.0F);
-                stack.rotate(Vector3f.XN.rotationDegrees(-20));
+                stack.mulPose(Vector3f.XN.rotationDegrees(-20));
                 stack.scale(0.5f, 0.5f, 0.5f);
             }
 
-            HandSide side = ashen.getPrimaryHand();
+            HandSide side = ashen.getMainArm();
             renderHeldItem(ashen, blowGunHand, side, stack, buffer, packedLightIn);
-            side = side.opposite();
+            side = side.getOpposite();
             renderHeldItem(ashen, daggerHand, side, stack, buffer, packedLightIn);
 
-            stack.pop();
+            stack.popPose();
         }
     }
 
@@ -68,27 +68,27 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
         if (entity.getActionState() == AshenEntity.AshenState.HOSTILE) {
             float scale = 0.5F;
             if (handSide == HandSide.LEFT) {
-                stack.push();
-                model.leftArm.translateRotate(stack);
+                stack.pushPose();
+                model.leftArm.translateAndRotate(stack);
 
                 stack.translate(0.3F, -0.30F, -0.045F);
-                stack.rotate(Vector3f.XP.rotationDegrees(180F));
-                stack.rotate(Vector3f.YP.rotationDegrees(180F));
-                stack.rotate(Vector3f.ZP.rotationDegrees(10F));
+                stack.mulPose(Vector3f.XP.rotationDegrees(180F));
+                stack.mulPose(Vector3f.YP.rotationDegrees(180F));
+                stack.mulPose(Vector3f.ZP.rotationDegrees(10F));
 
                 stack.scale(scale, scale, scale);
-                Minecraft.getInstance().getItemRenderer().renderItem(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.world, combinedLightIn, OverlayTexture.NO_OVERLAY);
-                stack.pop();
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                stack.popPose();
             } else {
-                stack.push();
-                model.rightArm.translateRotate(stack);
+                stack.pushPose();
+                model.rightArm.translateAndRotate(stack);
                 
                 stack.translate(-0.375F, -0.35F, -0.125F);
-                stack.rotate(Vector3f.YP.rotationDegrees(90F));
+                stack.mulPose(Vector3f.YP.rotationDegrees(90F));
                 stack.scale(scale, scale, scale);
                 
-                Minecraft.getInstance().getItemRenderer().renderItem(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.world, combinedLightIn, OverlayTexture.NO_OVERLAY);
-                stack.pop();
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                stack.popPose();
             }
         }
     }

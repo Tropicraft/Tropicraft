@@ -20,12 +20,12 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
     }
 
     @Override
-    protected void preRenderCallback(TapirEntity entity, MatrixStack matrixStack, float partialTicks) {
+    protected void scale(TapirEntity entity, MatrixStack matrixStack, float partialTicks) {
         matrixStack.scale(0.8F, 0.8F, 0.8F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(TapirEntity entity) {
-        return entity.isChild() ? BABY_TEXTURE : TEXTURE;
+    public ResourceLocation getTextureLocation(TapirEntity entity) {
+        return entity.isBaby() ? BABY_TEXTURE : TEXTURE;
     }
 }

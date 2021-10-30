@@ -11,21 +11,21 @@ public abstract class AbstractFishModel<T extends AbstractFishEntity> extends Se
 
     public AbstractFishModel() {
         body = new ModelRenderer(this);
-        body.setRotationPoint(0F, 16F, 0F);
+        body.setPos(0F, 16F, 0F);
         body.addBox(0, 0, 0, 0, 1, 1);
         tail = new ModelRenderer(this);
-        tail.setRotationPoint(0, 0, -1);
+        tail.setPos(0, 0, -1);
         tail.addBox(0, 0, 0, 0, 1, 1);
         body.addChild(tail);
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelRenderer> parts() {
         return ImmutableList.of(body);
     }
 
     @Override
-    public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        tail.rotateAngleY = (float) (Math.sin(ageInTicks * .25F)) * .25F;
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        tail.yRot = (float) (Math.sin(ageInTicks * .25F)) * .25F;
     }
 }

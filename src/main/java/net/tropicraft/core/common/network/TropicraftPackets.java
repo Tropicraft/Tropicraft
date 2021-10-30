@@ -38,8 +38,8 @@ public class TropicraftPackets {
     }
 
     public static void sendToDimension(final TropicraftMessage msg, final World world) {
-        RegistryKey<World> dimension = world.getDimensionKey();
-        if (world.isRemote()) {
+        RegistryKey<World> dimension = world.dimension();
+        if (world.isClientSide()) {
             LOGGER.warn("Attempted to send packet to dimension on client world", new RuntimeException());
             return;
         }

@@ -19,29 +19,29 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 	private ModelRenderer body;
 
 	public EagleRayModel() {
-		textureWidth = 128;
-		textureHeight = 64;
+		texWidth = 128;
+		texHeight = 64;
 
 		body = new ModelRenderer(this, 32, 0);
 		body.addBox(-2F, 0F, 0F, 5, 3, 32);
-		body.setRotationPoint(0F, 0F, -8F);
-		body.setTextureSize(128, 64);
+		body.setPos(0F, 0F, -8F);
+		body.setTexSize(128, 64);
 		body.mirror = true;
 	}
 
 	@Override
-	public void setRotationAngles(EagleRayEntity eagleRay, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EagleRayEntity eagleRay, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelRenderer> parts() {
 		return ImmutableList.of(body);
 	}
 
 	@Override
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+	public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		renderWings(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		renderTailSimple(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
@@ -52,23 +52,23 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 		float minV = 0.0f;
 		float maxV = 0.5f;
 
-		stack.push();
+		stack.pushPose();
 		stack.translate(0.55f, 0f, 1.5f);
-		stack.rotate(Vector3f.YP.rotationDegrees(-90f));
+		stack.mulPose(Vector3f.YP.rotationDegrees(-90f));
 		stack.scale(1.5f, 1f, 1f);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 0, red, green, blue, alpha, minU, minV, packedLightIn, packedOverlayIn);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 0, 0, 1, red, green, blue, alpha, minU, maxV, packedLightIn, packedOverlayIn);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 1, 0, 1, red, green, blue, alpha, maxU, maxV, packedLightIn, packedOverlayIn);
-		vertex(buffer, stack.getLast().getMatrix(), stack.getLast().getNormal(), 1, 0, 0, red, green, blue, alpha, maxU, minV, packedLightIn, packedOverlayIn);
-		stack.pop();
+		vertex(buffer, stack.last().pose(), stack.last().normal(), 0, 0, 0, red, green, blue, alpha, minU, minV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.last().pose(), stack.last().normal(), 0, 0, 1, red, green, blue, alpha, minU, maxV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.last().pose(), stack.last().normal(), 1, 0, 1, red, green, blue, alpha, maxU, maxV, packedLightIn, packedOverlayIn);
+		vertex(buffer, stack.last().pose(), stack.last().normal(), 1, 0, 0, red, green, blue, alpha, maxU, minV, packedLightIn, packedOverlayIn);
+		stack.popPose();
 	}
 
 	private static void vertex(IVertexBuilder bufferIn, Matrix4f matrixIn, Matrix3f matrixNormalIn, float x, float y, float z, float red, float green, float blue, float alpha, float texU, float texV, int packedLight, int packedOverlay) {
-		bufferIn.pos(matrixIn, x, y, z).color(red, green, blue, alpha).tex(texU, texV).overlay(packedOverlay).lightmap(packedLight).normal(matrixNormalIn, 0.0F, -1.0F, 0.0F).endVertex();
+		bufferIn.vertex(matrixIn, x, y, z).color(red, green, blue, alpha).uv(texU, texV).overlayCoords(packedOverlay).uv2(packedLight).normal(matrixNormalIn, 0.0F, -1.0F, 0.0F).endVertex();
 	}
 
 	private void renderWings(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 		matrixStackIn.translate(0.5f / 16f, 0, -0.5f); // Center on body
 		matrixStackIn.scale(2f, 0.5f, 2f); // Scale to correct size
 		
@@ -76,12 +76,12 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 		
 		// Rotate around center
 		matrixStackIn.translate(0, 0, 0.5f);
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180f));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180f));
 		matrixStackIn.translate(0, 0, -0.5f);
 		
 		renderWing(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha, true);
 		
-		matrixStackIn.pop();
+		matrixStackIn.popPose();
 	}
 
 	private void renderWing(MatrixStack stack, IVertexBuilder buffer, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean reverse) {
@@ -95,7 +95,7 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 		float minVBack = 0.5f;
 		float maxVBack = 1f;
 		
-		stack.push();
+		stack.pushPose();
 		stack.translate(1.25f / 16f, 0, 0); // Translate out to body edge
 
 		for (int i = 1; i < EagleRayEntity.WING_JOINTS; i++) {
@@ -112,8 +112,8 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 
 			float offset = -0.001f;
 			// Bottom
-			final Matrix4f matrix = stack.getLast().getMatrix();
-			final Matrix3f normal = stack.getLast().getNormal();
+			final Matrix4f matrix = stack.last().pose();
+			final Matrix3f normal = stack.last().normal();
 
 			vertex(buffer, matrix, normal, x, amplitude-offset, 0, red, green, blue, alpha, uBack, reverse ? maxVBack : minVBack, packedLightIn, packedOverlayIn);
 			vertex(buffer, matrix, normal, x, amplitude-offset, 1, red, green, blue, alpha, uBack, reverse ? minVBack : maxVBack, packedLightIn, packedOverlayIn);
@@ -127,11 +127,11 @@ public class EagleRayModel extends SegmentedModel<EagleRayEntity> {
 			vertex(buffer, matrix, normal, x, amplitude, 0, red, green, blue, alpha, uFront, reverse ? maxVFront : minVFront, packedLightIn, packedOverlayIn);
 		}
 		
-		stack.pop();
+		stack.popPose();
 	}
 
 	@Override
-	public void setLivingAnimations(EagleRayEntity ray, float par2, float par3, float partialTicks) {
+	public void prepareMobModel(EagleRayEntity ray, float par2, float par3, float partialTicks) {
 		final float[] prevWingAmplitudes = ray.getPrevWingAmplitudes();
 		final float[] wingAmplitudes = ray.getWingAmplitudes();
 

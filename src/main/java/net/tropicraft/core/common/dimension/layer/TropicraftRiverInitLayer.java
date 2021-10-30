@@ -12,7 +12,7 @@ public final class TropicraftRiverInitLayer implements IC0Transformer {
 
     @Override
     public int apply(INoiseRandom random, int center) {
-        return biomeIds.isOcean(center) ? center : random.random(4) + 1;
+        return biomeIds.isOcean(center) ? center : random.nextRandom(4) + 1;
     }
 /*
     @Override

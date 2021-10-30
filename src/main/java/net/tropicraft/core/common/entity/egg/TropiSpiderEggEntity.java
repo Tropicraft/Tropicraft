@@ -21,30 +21,30 @@ import java.util.UUID;
 
 public class TropiSpiderEggEntity extends EggEntity {
 
-	protected static final DataParameter<Optional<UUID>> MOTHER_UNIQUE_ID = EntityDataManager.createKey(TropiSpiderEggEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	protected static final DataParameter<Optional<UUID>> MOTHER_UNIQUE_ID = EntityDataManager.defineId(TropiSpiderEggEntity.class, DataSerializers.OPTIONAL_UUID);
 
 	public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, World world) {
 		super(type, world);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(MOTHER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(MOTHER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Nullable
 	public UUID getMotherId() {
-		return dataManager.get(MOTHER_UNIQUE_ID).orElse(null);
+		return entityData.get(MOTHER_UNIQUE_ID).orElse(null);
 	}
 
 	public void setMotherId(@Nullable UUID uuid) {
-		dataManager.set(MOTHER_UNIQUE_ID, Optional.ofNullable(uuid));
+		entityData.set(MOTHER_UNIQUE_ID, Optional.ofNullable(uuid));
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT nbt) {
-		super.writeAdditional(nbt);
+	public void addAdditionalSaveData(CompoundNBT nbt) {
+		super.addAdditionalSaveData(nbt);
 		if (getMotherId() == null) {
 			nbt.putString("MotherUUID", "");
 		} else {
@@ -53,8 +53,8 @@ public class TropiSpiderEggEntity extends EggEntity {
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT nbt) {
-		super.readAdditional(nbt);
+	public void readAdditionalSaveData(CompoundNBT nbt) {
+		super.readAdditionalSaveData(nbt);
 		String motherUUID = "";
 		if (nbt.contains("MotherUUID", 8)) {
 			motherUUID = nbt.getString("MotherUUID");
@@ -77,15 +77,15 @@ public class TropiSpiderEggEntity extends EggEntity {
 
 	@Override
 	public Entity onHatch() {
-		if (world instanceof ServerWorld && getMotherId() != null) {
-			final ServerWorld serverWorld = (ServerWorld) world;
-			final Entity e = serverWorld.getEntityByUuid(getMotherId());
+		if (level instanceof ServerWorld && getMotherId() != null) {
+			final ServerWorld serverWorld = (ServerWorld) level;
+			final Entity e = serverWorld.getEntity(getMotherId());
 
 			if (e instanceof TropiSpiderEntity) {
 				return TropiSpiderEntity.haveBaby((TropiSpiderEntity) e);
 			}
 		}
-		return TropicraftEntities.TROPI_SPIDER.get().create(world);
+		return TropicraftEntities.TROPI_SPIDER.get().create(level);
 	}
 
 	@Override

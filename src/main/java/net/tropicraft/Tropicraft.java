@@ -71,7 +71,7 @@ import java.util.regex.Pattern;
 public class Tropicraft {
     public static final ItemGroup TROPICRAFT_ITEM_GROUP = (new ItemGroup("tropicraft") {
         @OnlyIn(Dist.CLIENT)
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(TropicraftFlower.RED_ANTHURIUM.get());
         }
     });
@@ -114,10 +114,10 @@ public class Tropicraft {
 
         // Hack in our item frame models the way vanilla does
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            StateContainer<Block, BlockState> frameState = new StateContainer.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).createStateContainer(Block::getDefaultState, BlockState::new);
+            StateContainer<Block, BlockState> frameState = new StateContainer.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(Block::defaultBlockState, BlockState::new);
 
-            ModelBakery.STATE_CONTAINER_OVERRIDES = ImmutableMap.<ResourceLocation, StateContainer<Block, BlockState>>builder()
-                    .putAll(ModelBakery.STATE_CONTAINER_OVERRIDES)
+            ModelBakery.STATIC_DEFINITIONS = ImmutableMap.<ResourceLocation, StateContainer<Block, BlockState>>builder()
+                    .putAll(ModelBakery.STATIC_DEFINITIONS)
                     .put(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), frameState)
                     .build();
         });
@@ -177,7 +177,7 @@ public class Tropicraft {
     }
 
     private void onServerStarting(final FMLServerStartingEvent event) {
-        CommandTropicsTeleport.register(event.getServer().getCommandManager().getDispatcher());
+        CommandTropicsTeleport.register(event.getServer().getCommands().getDispatcher());
     }
 
     private void gatherData(GatherDataEvent event) {

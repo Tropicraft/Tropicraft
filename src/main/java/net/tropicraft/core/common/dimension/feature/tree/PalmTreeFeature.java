@@ -27,11 +27,11 @@ public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
     }
     
     protected final BlockState getLeaf() {
-        return TropicraftBlocks.PALM_LEAVES.get().getDefaultState();
+        return TropicraftBlocks.PALM_LEAVES.get().defaultBlockState();
     }
     
     protected final BlockState getLog() {
-        return TropicraftBlocks.PALM_LOG.get().getDefaultState();
+        return TropicraftBlocks.PALM_LOG.get().defaultBlockState();
     }
 
     protected void placeLeaf(final IWorldGenerationReader world, int x, int y, int z) {
@@ -40,8 +40,8 @@ public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
 
     protected void placeLeaf(final IWorldGenerationReader world, BlockPos pos) {
         // From FoliagePlacer
-        if (TreeFeature.isReplaceableAt(world, pos)) {
-            setBlockState(world, pos, getLeaf());
+        if (TreeFeature.validTreePos(world, pos)) {
+            setBlock(world, pos, getLeaf());
         }
     }
 
@@ -50,18 +50,18 @@ public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
     }
 
     protected void placeLog(final IWorldGenerationReader world, BlockPos pos) {
-        if (TreeFeature.isLogsAt(world, pos)) {
-            setBlockState(world, pos, getLog());
+        if (TreeFeature.isFree(world, pos)) {
+            setBlock(world, pos, getLog());
         }
     }
 
     private static final Direction[] DIRECTIONS = ArrayUtils.removeElement(Direction.values(), Direction.UP);
     public static void spawnCoconuts(IWorldGenerationReader world, BlockPos pos, Random random, int chance, BlockState leaf) {
-        final BlockState coconut = TropicraftBlocks.COCONUT.get().getDefaultState();
+        final BlockState coconut = TropicraftBlocks.COCONUT.get().defaultBlockState();
         for (Direction d : DIRECTIONS) {
-            BlockPos pos2 = pos.offset(d);
-            if (random.nextInt(chance) == 0 && TreeFeature.isAirOrLeavesAt(world, pos2)) {
-                world.setBlockState(pos2, coconut.with(CoconutBlock.FACING, d.getOpposite()), Constants.BlockFlags.DEFAULT);
+            BlockPos pos2 = pos.relative(d);
+            if (random.nextInt(chance) == 0 && TreeFeature.isAirOrLeaves(world, pos2)) {
+                world.setBlock(pos2, coconut.setValue(CoconutBlock.FACING, d.getOpposite()), Constants.BlockFlags.DEFAULT);
             }
         }
     }

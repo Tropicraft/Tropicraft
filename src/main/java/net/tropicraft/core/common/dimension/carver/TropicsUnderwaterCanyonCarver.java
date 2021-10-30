@@ -11,7 +11,7 @@ public class TropicsUnderwaterCanyonCarver extends UnderwaterCanyonWorldCarver {
 
     public TropicsUnderwaterCanyonCarver(Codec<ProbabilityConfig> codec) {
         super(codec);
-        this.carvableBlocks = ImmutableSet.<Block>builder().addAll(this.carvableBlocks)
+        this.replaceableBlocks = ImmutableSet.<Block>builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())
                 .add(TropicraftBlocks.FOAMY_SAND.get())
                 .add(TropicraftBlocks.MINERAL_SAND.get())

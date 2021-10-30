@@ -27,13 +27,13 @@ public final class TropicraftConfiguredCarvers {
     }
 
     public void addLand(BiomeGenerationSettings.Builder generation) {
-        generation.withCarver(GenerationStage.Carving.AIR, this.cave);
-        generation.withCarver(GenerationStage.Carving.AIR, this.canyon);
+        generation.addCarver(GenerationStage.Carving.AIR, this.cave);
+        generation.addCarver(GenerationStage.Carving.AIR, this.canyon);
     }
 
     public void addUnderwater(BiomeGenerationSettings.Builder generation) {
-        generation.withCarver(GenerationStage.Carving.LIQUID, this.underwaterCave);
-        generation.withCarver(GenerationStage.Carving.LIQUID, this.underwaterCanyon);
+        generation.addCarver(GenerationStage.Carving.LIQUID, this.underwaterCave);
+        generation.addCarver(GenerationStage.Carving.LIQUID, this.underwaterCanyon);
     }
 
     static final class Register {
@@ -45,7 +45,7 @@ public final class TropicraftConfiguredCarvers {
         }
 
         public <C extends ICarverConfig, WC extends WorldCarver<C>> ConfiguredCarver<?> register(String id, RegistryObject<WC> carver, C config) {
-            return this.worldgen.register(new ResourceLocation(Constants.MODID, id), carver.get().func_242761_a(config));
+            return this.worldgen.register(new ResourceLocation(Constants.MODID, id), carver.get().configured(config));
         }
     }
 }

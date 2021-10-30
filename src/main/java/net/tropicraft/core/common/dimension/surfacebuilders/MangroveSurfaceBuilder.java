@@ -16,7 +16,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> {
-    private static final SurfaceBuilderConfig MUD = new SurfaceBuilderConfig(TropicraftBlocks.MUD.get().getDefaultState(), Blocks.DIRT.getDefaultState(), TropicraftBlocks.MUD.get().getDefaultState());
+    private static final SurfaceBuilderConfig MUD = new SurfaceBuilderConfig(TropicraftBlocks.MUD.get().defaultBlockState(), Blocks.DIRT.defaultBlockState(), TropicraftBlocks.MUD.get().defaultBlockState());
 
     private PerlinNoiseGenerator mudNoise;
     private PerlinNoiseGenerator streamNoise;
@@ -27,9 +27,9 @@ public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     }
 
     @Override
-    public void buildSurface(Random random, IChunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
-        double streamNoise = this.streamNoise.noiseAt(x * 0.025, z * 0.025, false);
-        double mudNoise = this.mudNoise.noiseAt(x * 0.03125, z * 0.03125, false);
+    public void apply(Random random, IChunk chunk, Biome biome, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
+        double streamNoise = this.streamNoise.getValue(x * 0.025, z * 0.025, false);
+        double mudNoise = this.mudNoise.getValue(x * 0.03125, z * 0.03125, false);
         boolean muddy = mudNoise > -0.1;
 
         if (streamNoise > -0.1 && streamNoise < 0.1) {
@@ -41,7 +41,7 @@ public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
             muddy = random.nextDouble() > chance;
         }
 
-        SurfaceBuilder.DEFAULT.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, muddy ? MUD : config);
+        SurfaceBuilder.DEFAULT.apply(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, muddy ? MUD : config);
     }
 
     private void placeStream(IChunk chunk, int x, int z, int startHeight, BlockState defaultFluid, int seaLevel) {
@@ -50,9 +50,9 @@ public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
 
         BlockPos.Mutable mutablePos = new BlockPos.Mutable();
         for (int y = startHeight; y >= 0; y--) {
-            mutablePos.setPos(localX, y, localZ);
+            mutablePos.set(localX, y, localZ);
             if (!chunk.getBlockState(mutablePos).isAir()) {
-                if (y + 1 == seaLevel && !chunk.getBlockState(mutablePos).matchesBlock(defaultFluid.getBlock())) {
+                if (y + 1 == seaLevel && !chunk.getBlockState(mutablePos).is(defaultFluid.getBlock())) {
                     chunk.setBlockState(mutablePos, defaultFluid, false);
                 }
                 break;
@@ -61,7 +61,7 @@ public class MangroveSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig>
     }
 
     @Override
-    public void setSeed(long seed) {
+    public void initNoise(long seed) {
         if (this.seed != seed || this.mudNoise == null) {
             SharedSeedRandom random = new SharedSeedRandom(seed);
             this.mudNoise = new PerlinNoiseGenerator(random, IntStream.rangeClosed(0, 2));

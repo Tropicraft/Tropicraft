@@ -19,14 +19,14 @@ public class KoaRenderer extends BipedRenderer<EntityKoaBase, KoaModel> {
 
     public KoaRenderer(EntityRendererManager rendermanagerIn) {
         super(rendermanagerIn, new KoaModel(0), 0.5F);
-        this.shadowOpaque = 0.5f;
+        this.shadowStrength = 0.5f;
     }
 
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
     @Override
-    public ResourceLocation getEntityTexture(EntityKoaBase entity) {
+    public ResourceLocation getTextureLocation(EntityKoaBase entity) {
         if (entity.getGender() == EntityKoaBase.Genders.MALE) {
             if (entity.getRole() == EntityKoaBase.Roles.HUNTER) {
                 return MALE_HUNTER;
@@ -42,7 +42,7 @@ public class KoaRenderer extends BipedRenderer<EntityKoaBase, KoaModel> {
 
     @Nullable
     @Override
-    protected RenderType func_230496_a_(EntityKoaBase entity, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
-        return RenderType.getEntityCutout(getEntityTexture(entity));
+    protected RenderType getRenderType(EntityKoaBase entity, boolean p_230496_2_, boolean p_230496_3_, boolean p_230496_4_) {
+        return RenderType.entityCutout(getTextureLocation(entity));
     }
 }

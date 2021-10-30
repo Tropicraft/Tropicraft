@@ -19,7 +19,7 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(SharkEntity sharkEntity) {
+    public ResourceLocation getTextureLocation(SharkEntity sharkEntity) {
         if (sharkEntity.isBoss()) {
             return BOSS_SHARK_TEXTURE;
         }
@@ -28,14 +28,14 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
 
     @Override
     public void render(SharkEntity shark, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-        stack.push();
+        stack.pushPose();
         stack.translate(0, -1, 0);
         super.render(shark, yaw, partialTicks, stack, buffer, light);
-        stack.pop();
+        stack.popPose();
     }
 
     @Override
-    protected void preRenderCallback(SharkEntity shark, final MatrixStack stack, float partialTickTime) {
+    protected void scale(SharkEntity shark, final MatrixStack stack, float partialTickTime) {
         float scale = 1f;
 
         if (shark.isBoss()) {

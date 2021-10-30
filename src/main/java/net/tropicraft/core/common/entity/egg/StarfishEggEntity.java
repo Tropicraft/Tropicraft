@@ -27,7 +27,7 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdd
 
 	public StarfishEggEntity(final EntityType<? extends StarfishEggEntity> type, World world) {
 		super(type, world);
-		starfishType = StarfishType.values()[rand.nextInt(StarfishType.values().length)];
+		starfishType = StarfishType.values()[random.nextInt(StarfishType.values().length)];
 	}
 
 	public StarfishType getStarfishType() {
@@ -49,14 +49,14 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdd
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT nbt) {
-		super.writeAdditional(nbt);
+	public void addAdditionalSaveData(CompoundNBT nbt) {
+		super.addAdditionalSaveData(nbt);
 		nbt.putByte("StarfishType", (byte) getStarfishType().ordinal());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT nbt) {
-		super.readAdditional(nbt);
+	public void readAdditionalSaveData(CompoundNBT nbt) {
+		super.readAdditionalSaveData(nbt);
 		setStarfishType(StarfishType.values()[nbt.getByte("StarfishType")]);
 	}
 
@@ -67,7 +67,7 @@ public class StarfishEggEntity extends EchinodermEggEntity implements IEntityAdd
 
 	@Override
 	public Entity onHatch() {
-		StarfishEntity baby = new StarfishEntity(TropicraftEntities.STARFISH.get(), world);
+		StarfishEntity baby = new StarfishEntity(TropicraftEntities.STARFISH.get(), level);
 		baby.setBaby();
 		baby.setStarfishType(starfishType);
 		return baby;

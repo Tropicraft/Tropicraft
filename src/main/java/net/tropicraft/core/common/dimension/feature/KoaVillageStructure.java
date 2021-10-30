@@ -17,15 +17,15 @@ public class KoaVillageStructure extends JigsawStructure {
     }
 
     @Override
-    protected boolean func_230363_a_(ChunkGenerator generator, BiomeProvider biomes, long seed, SharedSeedRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos startChunkPos, VillageConfig config) {
+    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeProvider biomes, long seed, SharedSeedRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos startChunkPos, VillageConfig config) {
         BlockPos pos = new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8);
-        return isValid(generator, pos.add(-4, 0, -4)) &&
-                isValid(generator, pos.add(-4, 0, 4)) &&
-                isValid(generator, pos.add(4, 0, 4)) &&
-                isValid(generator, pos.add(4, 0, -4));
+        return isValid(generator, pos.offset(-4, 0, -4)) &&
+                isValid(generator, pos.offset(-4, 0, 4)) &&
+                isValid(generator, pos.offset(4, 0, 4)) &&
+                isValid(generator, pos.offset(4, 0, -4));
     }
 
     private boolean isValid(ChunkGenerator generator, BlockPos pos) {
-        return generator.getHeight(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) == generator.getSeaLevel();
+        return generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG) == generator.getSeaLevel();
     }
 }

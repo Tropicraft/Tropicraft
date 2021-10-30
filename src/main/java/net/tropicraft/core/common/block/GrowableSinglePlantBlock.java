@@ -13,8 +13,10 @@ import net.minecraftforge.fml.RegistryObject;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public final class GrowableSinglePlantBlock extends BushBlock implements IGrowable {
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
+    private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
 
     private final Supplier<RegistryObject<DoublePlantBlock>> growInto;
 
@@ -29,20 +31,20 @@ public final class GrowableSinglePlantBlock extends BushBlock implements IGrowab
     }
 
     @Override
-    public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
     @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(World world, Random random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerWorld world, Random random, BlockPos pos, BlockState state) {
         DoublePlantBlock growBlock = this.growInto.get().get();
-        BlockState growState = growBlock.getDefaultState();
-        if (growState.isValidPosition(world, pos) && world.isAirBlock(pos.up())) {
+        BlockState growState = growBlock.defaultBlockState();
+        if (growState.canSurvive(world, pos) && world.isEmptyBlock(pos.above())) {
             growBlock.placeAt(world, pos, Constants.BlockFlags.BLOCK_UPDATE);
         }
     }

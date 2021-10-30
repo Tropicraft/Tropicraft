@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import static net.minecraft.world.gen.feature.TreeFeature.isReplaceableAt;
+import static net.minecraft.world.gen.feature.TreeFeature.validTreePos;
 
 public class PneumatophoresTreeDecorator extends TreeDecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -40,12 +40,12 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<?> getDecoratorType() {
+    protected TreeDecoratorType<?> type() {
         return TropicraftTreeDecorators.PNEUMATOPHORES.get();
     }
 
     @Override
-    public void func_225576_a_(ISeedReader world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, MutableBoundingBox box) {
+    public void place(ISeedReader world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, MutableBoundingBox box) {
         BlockPos origin = Util.findLowestBlock(logs);
         if (origin == null) return;
 
@@ -54,7 +54,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
         int maxTopY = origin.getY() + 3;
         int minBottomY = origin.getY() - 6;
 
-        BlockPos.Mutable mutablePos = origin.toMutable();
+        BlockPos.Mutable mutablePos = origin.mutable();
         while (MangroveTrunkPlacer.isWaterAt(world, mutablePos) && mutablePos.getY() < maxTopY) {
             mutablePos.move(Direction.UP);
         }
@@ -65,7 +65,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int dx = random.nextInt(spread) - random.nextInt(spread);
             int dz = random.nextInt(spread) - random.nextInt(spread);
             if (dx == 0 && dz == 0) continue;
-            mutablePos.setAndOffset(origin, dx, 0, dz);
+            mutablePos.setWithOffset(origin, dx, 0, dz);
 
             // Don't generate pneumatophores if there isn't a solid block in the column to attach onto
             boolean canGenerate = false;
@@ -73,7 +73,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             for (int y = topY; y >= minBottomY; y--) {
                 mutablePos.setY(y);
 
-                if (!isReplaceableAt(world, mutablePos)) {
+                if (!validTreePos(world, mutablePos)) {
                     canGenerate = true;
                     minY = y;
                     break;

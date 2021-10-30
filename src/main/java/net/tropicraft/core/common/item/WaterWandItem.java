@@ -20,20 +20,20 @@ public class WaterWandItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         double inc = Math.PI / 12;
 
-        ItemStack itemstack = player.getHeldItem(hand);
+        ItemStack itemstack = player.getItemInHand(hand);
 
-        player.swingArm(Hand.MAIN_HAND);
-        if (!world.isRemote) {
+        player.swing(Hand.MAIN_HAND);
+        if (!world.isClientSide) {
             for (double lat = 0; lat < 2 * Math.PI; lat += inc) {
                 for (double lng = 0; lng < 2 * Math.PI; lng += inc) {
                     for (double len = 1; len < 3; len += 0.5D) {
                         int x1 = (int)(Math.cos(lat) * len);
                         int z1 = (int)(Math.sin(lat) * len);
                         int y1 = (int)(Math.sin(lng) * len);
-                        if (!removeWater(world, itemstack, player, new BlockPos(player.getPosition().add(x1, y1, z1)))) {
+                        if (!removeWater(world, itemstack, player, new BlockPos(player.blockPosition().offset(x1, y1, z1)))) {
                             break;
                         }
                     }
@@ -45,16 +45,16 @@ public class WaterWandItem extends Item {
     }
 
     private boolean removeWater(World world, ItemStack itemstack, PlayerEntity player, BlockPos pos) {
-        if (!world.isRemote) {
+        if (!world.isClientSide) {
             if (world.getBlockState(pos).getMaterial() == Material.WATER) {
-                itemstack.damageItem(1, player, (e) -> {
-                    e.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+                itemstack.hurtAndBreak(1, player, (e) -> {
+                    e.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
                 });
-                world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                 return true;
             }
 
-            return world.isAirBlock(pos);
+            return world.isEmptyBlock(pos);
         }
 
         return false;

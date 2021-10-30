@@ -18,29 +18,29 @@ public class VolcanicSandBlock extends BlockTropicraftSand {
 
 	public VolcanicSandBlock(Block.Properties properties) {
 		super(properties);
-		this.setDefaultState(getDefaultState().with(HOT, false));
+		this.registerDefaultState(defaultBlockState().setValue(HOT, false));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(HOT);
 	}
 
 	@Override
-	public void onEntityWalk(final World world, final BlockPos pos, final Entity entity) {
+	public void stepOn(final World world, final BlockPos pos, final Entity entity) {
 		final BlockState state = world.getBlockState(pos);
-		if (state.get(HOT)) {
+		if (state.getValue(HOT)) {
 			if (entity instanceof LivingEntity) {
 				final LivingEntity living = (LivingEntity) entity;
-				final ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.FEET);
+				final ItemStack stack = living.getItemBySlot(EquipmentSlotType.FEET);
 	
 				// If entity isn't wearing anything on their feetsies
 				if (stack.isEmpty()) {
-					living.attackEntityFrom(DamageSource.LAVA, 0.5F);
+					living.hurt(DamageSource.LAVA, 0.5F);
 				}
 			} else {
-				entity.attackEntityFrom(DamageSource.LAVA, 0.5F);
+				entity.hurt(DamageSource.LAVA, 0.5F);
 			}
 		}
 	}

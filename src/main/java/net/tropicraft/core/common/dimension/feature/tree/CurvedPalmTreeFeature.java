@@ -31,8 +31,8 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-        pos = pos.toImmutable();
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+        pos = pos.immutable();
 
         final int height = 9 + rand.nextInt(3);
 
@@ -44,12 +44,12 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
             return false;
         }
 
-        if (!getSapling().isValidPosition(getSapling().getDefaultState(), world, pos)) {
+        if (!getSapling().canSurvive(getSapling().defaultBlockState(), world, pos)) {
             return false;
         }
 
-        if (world.getBlockState(pos.down()).getBlock() == Blocks.GRASS_BLOCK) {
-            world.setBlockState(pos.down(), Blocks.DIRT.getDefaultState(), 3);
+        if (world.getBlockState(pos.below()).getBlock() == Blocks.GRASS_BLOCK) {
+            world.setBlock(pos.below(), Blocks.DIRT.defaultBlockState(), 3);
         }
 
         final int x = pos.getX(), y = pos.getY(), z = pos.getZ();
@@ -62,7 +62,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         for (int xx = 0; xx < 4; xx++) {
             for (int yy = 0; yy < height; yy++) {
                 final BlockPos posWithDir = getPosWithDir(xx, yy + y, 0);
-                if (!isAirAt(world, posWithDir)) {
+                if (!isAir(world, posWithDir)) {
                     return false;
                 }
             }
@@ -72,7 +72,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
         for (int xx = 0; xx < 9; xx++) {
             for (int zz = 0; zz < 9; zz++) {
                 for (int yy = height - 3; yy < height + 4; yy++) {
-                    if (!isAirAt(world, getPosWithDir(xx + TOP_OFFSET, yy + y, zz))) {
+                    if (!isAir(world, getPosWithDir(xx + TOP_OFFSET, yy + y, zz))) {
                         return false;
                     }
                 }
@@ -198,7 +198,7 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     }
 
     private static boolean isWater(IWorldGenerationReader world, BlockPos pos) {
-        return world.hasBlockState(pos, state -> state.matchesBlock(Blocks.WATER));
+        return world.isStateAtPosition(pos, state -> state.is(Blocks.WATER));
     }
 
     private int pickDirection(final IWorldGenerationReader world, final Random rand, int x, int z) {
@@ -241,16 +241,16 @@ public class CurvedPalmTreeFeature extends PalmTreeFeature {
     private void placeBlockWithDir(final IWorldWriter world, int x, int y, int z, BlockState state) {
         switch (dir) {
             case 2:
-                setBlockState(world, pos(this.originX + x, y, this.originZ + z), state);
+                setBlock(world, pos(this.originX + x, y, this.originZ + z), state);
                 return;
             case 0:
-                setBlockState(world, pos(this.originX + z, y, this.originZ - x), state);
+                setBlock(world, pos(this.originX + z, y, this.originZ - x), state);
                 return;
             case 3:
-                setBlockState(world, pos(this.originX - x, y, this.originZ - z), state);
+                setBlock(world, pos(this.originX - x, y, this.originZ - z), state);
                 return;
             case 1:
-                setBlockState(world, pos(this.originX - z, y, this.originZ + x), state);
+                setBlock(world, pos(this.originX - z, y, this.originZ + x), state);
         }
     }
 

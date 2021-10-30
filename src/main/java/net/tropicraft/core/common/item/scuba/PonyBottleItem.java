@@ -24,7 +24,7 @@ public class PonyBottleItem extends Item {
     }
     
     @Override
-    public UseAction getUseAction(ItemStack stack) {
+    public UseAction getUseAnimation(ItemStack stack) {
         return UseAction.DRINK;
     }
     
@@ -34,10 +34,10 @@ public class PonyBottleItem extends Item {
     }
     
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (player.getAir() < player.getMaxAir()) {
-            player.setActiveHand(hand);
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (player.getAirSupply() < player.getMaxAirSupply()) {
+            player.startUsingItem(hand);
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
         } else {
             return new ActionResult<>(ActionResultType.PASS, stack);
@@ -49,9 +49,9 @@ public class PonyBottleItem extends Item {
         super.onUsingTick(stack, player, count);
         int fillAmt = FILL_RATE + 1; // +1 to counteract the -1 per tick while underwater
         // Wait for drink sound to start, and don't add air that won't fit
-        if (player.getItemInUseCount() <= 25 && player.getAir() < player.getMaxAir() - fillAmt) {
-            player.setAir(player.getAir() + fillAmt);
-            stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
+        if (player.getUseItemRemainingTicks() <= 25 && player.getAirSupply() < player.getMaxAirSupply() - fillAmt) {
+            player.setAirSupply(player.getAirSupply() + fillAmt);
+            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
         }
     }
     

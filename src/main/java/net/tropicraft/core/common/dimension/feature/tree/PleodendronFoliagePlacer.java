@@ -14,7 +14,7 @@ import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
 
 public class PleodendronFoliagePlacer extends FoliagePlacer {
    public static final Codec<PleodendronFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
-      return func_242830_b(instance)
+      return foliagePlacerParts(instance)
               .and(Codec.intRange(0, 16).fieldOf("height").forGetter((placer) -> placer.height))
               .apply(instance, PleodendronFoliagePlacer::new);
    });
@@ -26,25 +26,25 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
       this.height = height;
    }
 
-   protected FoliagePlacerType<?> getPlacerType() {
+   protected FoliagePlacerType<?> type() {
       return TropicraftFoliagePlacers.PLEODENDRON.get();
    }
 
-   protected void func_230372_a_(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int height, FoliagePlacer.Foliage foliage, int offset, int y, Set<BlockPos> leaves, int start, MutableBoundingBox bounds) {
-      int i = foliage.func_236765_c_() ? offset : 2;
+   protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int height, FoliagePlacer.Foliage foliage, int offset, int y, Set<BlockPos> leaves, int start, MutableBoundingBox bounds) {
+      int i = foliage.doubleTrunk() ? offset : 2;
 
       for(int j = start; j >= start - i; --j) {
-         int k = y + foliage.func_236764_b_() + 1 - j;
-         this.func_236753_a_(world, random, config, foliage.func_236763_a_(), k, leaves, j, foliage.func_236765_c_(), bounds);
+         int k = y + foliage.radiusOffset() + 1 - j;
+         this.placeLeavesRow(world, random, config, foliage.foliagePos(), k, leaves, j, foliage.doubleTrunk(), bounds);
       }
 
    }
 
-   public int func_230374_a_(Random random, int height, BaseTreeFeatureConfig config) {
+   public int foliageHeight(Random random, int height, BaseTreeFeatureConfig config) {
       return this.height;
    }
 
-   protected boolean func_230373_a_(Random random, int dx, int y, int dz, int radius, boolean mega) {
+   protected boolean shouldSkipLocation(Random random, int dx, int y, int dz, int radius, boolean mega) {
       if (dx + dz >= 7) {
          return true;
       } else {

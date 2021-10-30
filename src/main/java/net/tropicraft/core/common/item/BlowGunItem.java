@@ -29,11 +29,11 @@ public class BlowGunItem extends ShootableItem {
     }
 
     @Override
-    public Predicate<ItemStack> getInventoryAmmoPredicate() {
+    public Predicate<ItemStack> getAllSupportedProjectiles() {
         return (itemStack) -> {
             if (itemStack.getItem() == Items.TIPPED_ARROW) {
-                for (final EffectInstance effectInstance : PotionUtils.getEffectsFromStack(itemStack)) {
-                    if (effectInstance.getPotion() == Effects.SLOWNESS) {
+                for (final EffectInstance effectInstance : PotionUtils.getMobEffects(itemStack)) {
+                    if (effectInstance.getEffect() == Effects.MOVEMENT_SLOWDOWN) {
                         return true;
                     }
                 }
@@ -43,16 +43,16 @@ public class BlowGunItem extends ShootableItem {
     }
 
     @Override
-    public int func_230305_d_() {
+    public int getDefaultProjectileRange() {
         return 8;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack heldStack = player.getHeldItem(hand);
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack heldStack = player.getItemInHand(hand);
         ItemStack ammo = getAmmo(player, heldStack);
         if (!ammo.isEmpty()) {
-            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.abilities.isCreativeMode, 10, 0);
+            fireProjectile(world, player, hand, heldStack, ammo, 1.0F, player.abilities.instabuild, 10, 0);
             return new ActionResult<>(ActionResultType.SUCCESS, heldStack);
         } else {
             return new ActionResult<>(ActionResultType.FAIL, heldStack);
@@ -60,8 +60,8 @@ public class BlowGunItem extends ShootableItem {
     }
 
     private static ItemStack getAmmo(LivingEntity entityIn, ItemStack stack) {
-        final boolean isCreativeMode = entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).abilities.isCreativeMode;
-        final ItemStack ammo = entityIn.findAmmo(stack);
+        final boolean isCreativeMode = entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).abilities.instabuild;
+        final ItemStack ammo = entityIn.getProjectile(stack);
         if (isCreativeMode) {
             return getProjectile();
         }
@@ -73,45 +73,45 @@ public class BlowGunItem extends ShootableItem {
 
     public static ItemStack getProjectile() {
         ItemStack itemStack = new ItemStack(Items.TIPPED_ARROW);
-        itemStack = PotionUtils.appendEffects(itemStack, ImmutableList.of(new EffectInstance(Effects.SLOWNESS, 3 * 20, 20)));
+        itemStack = PotionUtils.setCustomEffects(itemStack, ImmutableList.of(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 3 * 20, 20)));
         return itemStack;
     }
 
     public static void fireProjectile(World world, LivingEntity shooter, Hand hand, ItemStack heldItem, ItemStack projectile, float soundPitch, boolean isCreativeMode, float dmg, float pitch) {
-        if (!world.isRemote) {
+        if (!world.isClientSide) {
             AbstractArrowEntity arrowEntity = createArrow(world, shooter, projectile);
             if (isCreativeMode) {
-                arrowEntity.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+                arrowEntity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
             }
 
-            Vector3d lookVec = shooter.getLookVec();
+            Vector3d lookVec = shooter.getLookAngle();
             Quaternion quaternion = new Quaternion(new Vector3f(lookVec), 0, true);
-            Vector3d look = shooter.getLook(1.0F);
+            Vector3d look = shooter.getViewVector(1.0F);
             Vector3f look3f = new Vector3f(look);
             look3f.transform(quaternion);
-            arrowEntity.shoot(look3f.getX(), look3f.getY(), look3f.getZ(), dmg, pitch);
+            arrowEntity.shoot(look3f.x(), look3f.y(), look3f.z(), dmg, pitch);
 
-            heldItem.damageItem(1, shooter, (i) -> {
-                i.sendBreakAnimation(hand);
+            heldItem.hurtAndBreak(1, shooter, (i) -> {
+                i.broadcastBreakEvent(hand);
             });
 
             projectile.split(1);
             if (projectile.isEmpty() && shooter instanceof PlayerEntity) {
-                ((PlayerEntity) shooter).inventory.deleteStack(projectile);
+                ((PlayerEntity) shooter).inventory.removeItem(projectile);
             }
 
-            world.addEntity(arrowEntity);
-            world.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
+            world.addFreshEntity(arrowEntity);
+            world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
         }
     }
 
     public static ArrowEntity createArrow(World world, LivingEntity shooter, ItemStack projectile) {
         ArrowItem arrowItem = (ArrowItem) (projectile.getItem() instanceof ArrowItem ? projectile.getItem() : Items.ARROW);
         ArrowEntity arrowEntity = (ArrowEntity) arrowItem.createArrow(world, projectile, shooter);
-        arrowEntity.setDamage(0);
-        arrowEntity.setHitSound(SoundEvents.ITEM_CROSSBOW_HIT);
-        arrowEntity.setIsCritical(false);
-        arrowEntity.setPotionEffect(getProjectile());
+        arrowEntity.setBaseDamage(0);
+        arrowEntity.setSoundEvent(SoundEvents.CROSSBOW_HIT);
+        arrowEntity.setCritArrow(false);
+        arrowEntity.setEffectsFromItem(getProjectile());
         return arrowEntity;
     }
 

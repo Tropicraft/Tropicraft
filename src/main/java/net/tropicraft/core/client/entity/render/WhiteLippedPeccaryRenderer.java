@@ -16,12 +16,12 @@ public class WhiteLippedPeccaryRenderer extends MobRenderer<WhiteLippedPeccaryEn
     }
 
     @Override
-    protected void preRenderCallback(WhiteLippedPeccaryEntity entity, MatrixStack matrixStack, float partialTicks) {
+    protected void scale(WhiteLippedPeccaryEntity entity, MatrixStack matrixStack, float partialTicks) {
         matrixStack.scale(0.9F, 0.9F, 0.9F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(WhiteLippedPeccaryEntity entity) {
+    public ResourceLocation getTextureLocation(WhiteLippedPeccaryEntity entity) {
         return TEXTURE;
     }
 }

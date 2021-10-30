@@ -11,14 +11,14 @@ import net.minecraft.world.gen.feature.TreeFeature;
 public class TropicraftFeatureUtil {
 
     public static boolean goesBeyondWorldSize(final ISeedReader world, final int y, final int height) {
-        return y < 1 || y + height + 1 > world.func_234938_ad_();
+        return y < 1 || y + height + 1 > world.getHeight();
     }
 
     public static boolean isBBAvailable(final ISeedReader world, final BlockPos pos, final int height) {
         for (int y = 0; y <= 1 + height; y++) {
-            BlockPos checkPos = pos.up(y);
+            BlockPos checkPos = pos.above(y);
             int size = 1;
-            if (checkPos.getY() < 0 || checkPos.getY() >= world.func_234938_ad_()) {
+            if (checkPos.getY() < 0 || checkPos.getY() >= world.getHeight()) {
                 return false;
             }
 
@@ -30,7 +30,7 @@ public class TropicraftFeatureUtil {
                 size = 2;
             }
 
-            if (BlockPos.getAllInBox(checkPos.add(-size, 0, -size), checkPos.add(size, 0, size)).anyMatch(p -> !TreeFeature.isAirOrLeavesAt(world, p))) {
+            if (BlockPos.betweenClosedStream(checkPos.offset(-size, 0, -size), checkPos.offset(size, 0, size)).anyMatch(p -> !TreeFeature.isAirOrLeaves(world, p))) {
                 return false;
             }
         }

@@ -15,7 +15,7 @@ public class FiddlerCrabRenderer extends MobRenderer<FiddlerCrabEntity, FiddlerC
     }
 
     @Override
-    public ResourceLocation getEntityTexture(FiddlerCrabEntity entity) {
+    public ResourceLocation getTextureLocation(FiddlerCrabEntity entity) {
         return TEXTURE;
     }
 }

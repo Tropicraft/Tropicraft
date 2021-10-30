@@ -27,15 +27,17 @@ import net.minecraftforge.common.Tags;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public final class ReedsBlock extends Block implements IWaterLoggable, IPlantable {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
+    private static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
 
     public ReedsBlock(Properties properties) {
         super(properties);
-        this.setDefaultState(this.getStateContainer().getBaseState().with(TYPE, Type.SINGLE).with(WATERLOGGED, false));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(TYPE, Type.SINGLE).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -45,43 +47,43 @@ public final class ReedsBlock extends Block implements IWaterLoggable, IPlantabl
 
     @Override
     public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-        if (!state.isValidPosition(world, pos)) {
+        if (!state.canSurvive(world, pos)) {
             world.destroyBlock(pos, true);
         }
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        World world = context.getWorld();
-        FluidState fluid = world.getFluidState(context.getPos());
-        return this.getDefaultState()
-                .with(TYPE, this.getAppropriateTypeAt(world, context.getPos()))
-                .with(WATERLOGGED, fluid.getFluid() == Fluids.WATER);
+        World world = context.getLevel();
+        FluidState fluid = world.getFluidState(context.getClickedPos());
+        return this.defaultBlockState()
+                .setValue(TYPE, this.getAppropriateTypeAt(world, context.getClickedPos()))
+                .setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-        if (!state.isValidPosition(world, currentPos)) {
-            return Blocks.AIR.getDefaultState();
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+        if (!state.canSurvive(world, currentPos)) {
+            return Blocks.AIR.defaultBlockState();
         }
 
-        if (state.get(WATERLOGGED)) {
-            world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        if (state.getValue(WATERLOGGED)) {
+            world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
-        return state.with(TYPE, this.getAppropriateTypeAt(world, currentPos));
+        return state.setValue(TYPE, this.getAppropriateTypeAt(world, currentPos));
     }
 
     private Type getAppropriateTypeAt(IWorld world, BlockPos pos) {
-        if (world.getBlockState(pos.up()).matchesBlock(this)) {
+        if (world.getBlockState(pos.above()).is(this)) {
             return Type.BOTTOM;
         }
-        return world.getBlockState(pos.down()).matchesBlock(this) ? Type.TOP : Type.SINGLE;
+        return world.getBlockState(pos.below()).is(this) ? Type.TOP : Type.SINGLE;
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
-        BlockPos groundPos = pos.down();
+    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+        BlockPos groundPos = pos.below();
         BlockState growOn = world.getBlockState(groundPos);
         if (growOn.canSustainPlant(world, groundPos, Direction.UP, this)) {
             return true;
@@ -91,24 +93,24 @@ public final class ReedsBlock extends Block implements IWaterLoggable, IPlantabl
     }
 
     private boolean canGrowOn(BlockState state) {
-        return state.matchesBlock(Blocks.GRASS_BLOCK)
-                || state.isIn(BlockTags.SAND) || state.isIn(Tags.Blocks.DIRT) || state.isIn(Tags.Blocks.GRAVEL)
-                || state.matchesBlock(Blocks.CLAY);
+        return state.is(Blocks.GRASS_BLOCK)
+                || state.is(BlockTags.SAND) || state.is(Tags.Blocks.DIRT) || state.is(Tags.Blocks.GRAVEL)
+                || state.is(Blocks.CLAY);
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED, TYPE);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
     public BlockState getPlant(IBlockReader world, BlockPos pos) {
-        return this.getDefaultState();
+        return this.defaultBlockState();
     }
 
     public enum Type implements IStringSerializable {
@@ -129,7 +131,7 @@ public final class ReedsBlock extends Block implements IWaterLoggable, IPlantabl
         }
 
         @Override
-        public String getString() {
+        public String getSerializedName() {
             return this.key;
         }
     }

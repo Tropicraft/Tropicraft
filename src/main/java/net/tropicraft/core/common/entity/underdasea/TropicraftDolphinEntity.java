@@ -21,61 +21,61 @@ import javax.annotation.Nullable;
 
 public class TropicraftDolphinEntity extends DolphinEntity {
 
-    private static final DataParameter<Boolean> MOUTH_OPEN = EntityDataManager.createKey(TropicraftDolphinEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.createKey(TropicraftDolphinEntity.class, DataSerializers.STRING);
+    private static final DataParameter<Boolean> MOUTH_OPEN = EntityDataManager.defineId(TropicraftDolphinEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.defineId(TropicraftDolphinEntity.class, DataSerializers.STRING);
 
     public TropicraftDolphinEntity(EntityType<? extends TropicraftDolphinEntity> type, World world) {
         super(type, world);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        dataManager.register(MOUTH_OPEN, false);
-        dataManager.register(TEXTURE_NAME, "dolphin");
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(MOUTH_OPEN, false);
+        entityData.define(TEXTURE_NAME, "dolphin");
     }
 
     @Override
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
-        setTexture(rand.nextInt(50) == 0 ? "special_dolphin" : "dolphin");
-        return super.onInitialSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
+    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+        setTexture(random.nextInt(50) == 0 ? "special_dolphin" : "dolphin");
+        return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
     }
 
     public void setTexture(final String textureName) {
-        getDataManager().set(TEXTURE_NAME, textureName);
+        getEntityData().set(TEXTURE_NAME, textureName);
     }
 
     public String getTexture() {
-        return getDataManager().get(TEXTURE_NAME);
+        return getEntityData().get(TEXTURE_NAME);
     }
 
     public void setMouthOpen(boolean b) {
-        getDataManager().set(MOUTH_OPEN, b);
+        getEntityData().set(MOUTH_OPEN, b);
     }
 
     public boolean getMouthOpen() {
-        return getDataManager().get(MOUTH_OPEN);
+        return getEntityData().get(MOUTH_OPEN);
     }
 
     @Override
-    public void writeAdditional(CompoundNBT nbt) {
-        super.writeAdditional(nbt);
+    public void addAdditionalSaveData(CompoundNBT nbt) {
+        super.addAdditionalSaveData(nbt);
         nbt.putString("Texture", getTexture());
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbt) {
-        super.readAdditional(nbt);
+    public void readAdditionalSaveData(CompoundNBT nbt) {
+        super.readAdditionalSaveData(nbt);
         setTexture(nbt.getString("Texture"));
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!world.isRemote) {
-            if (livingSoundTime < -(getTalkInterval() - 20)) {
-                if (ticksExisted % 3 > 1) {
+        if (!level.isClientSide) {
+            if (ambientSoundTime < -(getAmbientSoundInterval() - 20)) {
+                if (tickCount % 3 > 1) {
                     if (!getMouthOpen()) {
                         setMouthOpen(true);
                     }
@@ -89,7 +89,7 @@ public class TropicraftDolphinEntity extends DolphinEntity {
     }
 
     @Override
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 300;
     }
 

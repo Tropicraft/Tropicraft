@@ -25,19 +25,19 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 	}
 
 	@Override
-	public void render(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		stack.push();
+	public void renderToBuffer(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		stack.pushPose();
 
-		if (isSneak) {
+		if (crouching) {
 			stack.translate(0, 0.25f, 0);
 		}
 
 		// Set head rotation to mask
-		stack.rotate(Vector3f.YP.rotation(bipedHead.rotateAngleY));
-		stack.rotate(Vector3f.XP.rotation(bipedHead.rotateAngleX));
+		stack.mulPose(Vector3f.YP.rotation(head.yRot));
+		stack.mulPose(Vector3f.XP.rotation(head.xRot));
 
 		// Flip mask to face away from the player
-		stack.rotate(Vector3f.YP.rotationDegrees(180));
+		stack.mulPose(Vector3f.YP.rotationDegrees(180));
 
 		// put it in the middle in front of the face
 		stack.translate(0.0F - xOffset, 0.112f + 0.0625f - yOffset, 0.2501F);
@@ -46,7 +46,7 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 		// Setting the texture is handled in the item class.
 		renderer.renderMask(stack, bufferIn, this.textureIndex, packedLightIn, packedOverlayIn);
 		
-		stack.pop();
+		stack.popPose();
 	}
 	
 	

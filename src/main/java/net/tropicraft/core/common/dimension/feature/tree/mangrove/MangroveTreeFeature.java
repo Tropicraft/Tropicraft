@@ -27,35 +27,35 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BaseTreeFeatureConfig config) {
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BaseTreeFeatureConfig config) {
         BlockPos placePos = this.findPlacePos(world, pos, config);
         if (placePos == null) return false;
 
-        BlockPos soilPos = placePos.down();
+        BlockPos soilPos = placePos.below();
         BlockState soilState = world.getBlockState(soilPos);
 
         // Force placement: put dirt under the current position so that the tree always places
-        boolean replaceSoil = soilState.isIn(TropicraftTags.Blocks.MUD) ||
-                soilState.getFluidState().isTagged(FluidTags.WATER) ||
-                soilState.isIn(Tags.Blocks.SAND) ||
-                (world.getBlockState(soilPos.down()).getFluidState().isTagged(FluidTags.WATER));
+        boolean replaceSoil = soilState.is(TropicraftTags.Blocks.MUD) ||
+                soilState.getFluidState().is(FluidTags.WATER) ||
+                soilState.is(Tags.Blocks.SAND) ||
+                (world.getBlockState(soilPos.below()).getFluidState().is(FluidTags.WATER));
 
         try {
-            if (replaceSoil) world.setBlockState(soilPos, Blocks.DIRT.getDefaultState(), Constants.BlockFlags.DEFAULT);
-            return this.backing.generate(world, generator, random, pos, config);
+            if (replaceSoil) world.setBlock(soilPos, Blocks.DIRT.defaultBlockState(), Constants.BlockFlags.DEFAULT);
+            return this.backing.place(world, generator, random, pos, config);
         } finally {
-            if (replaceSoil) world.setBlockState(soilPos, soilState, Constants.BlockFlags.DEFAULT);
+            if (replaceSoil) world.setBlock(soilPos, soilState, Constants.BlockFlags.DEFAULT);
         }
     }
 
     @Nullable
     private BlockPos findPlacePos(ISeedReader world, BlockPos pos, BaseTreeFeatureConfig config) {
-        if (config.forcePlacement) {
+        if (config.fromSapling) {
             return pos;
         }
 
-        int floorY = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos).getY();
-        int surfaceY = world.getHeight(Heightmap.Type.WORLD_SURFACE, pos).getY();
+        int floorY = world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, pos).getY();
+        int surfaceY = world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, pos).getY();
         int waterDepth = surfaceY - floorY; // Water depth is the distance from the surface to the floor
 
         // If we're in water and we're not allowed to be, cancel placement
@@ -76,7 +76,7 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
         } else if (config.heightmap == Heightmap.Type.WORLD_SURFACE) {
             y = surfaceY;
         } else {
-            y = world.getHeight(config.heightmap, pos).getY();
+            y = world.getHeightmapPos(config.heightmap, pos).getY();
         }
 
         return new BlockPos(pos.getX(), y, pos.getZ());

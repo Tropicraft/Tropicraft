@@ -13,6 +13,6 @@ public class DrinkActionFood extends DrinkAction {
 
     @Override
     public void onDrink(PlayerEntity player) {
-        player.getFoodStats().addStats(healAmount, saturationModifier);
+        player.getFoodData().eat(healAmount, saturationModifier);
     }
 }

@@ -15,17 +15,17 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import java.util.Random;
 
 public class CoffeePlantFeature extends Feature<NoFeatureConfig> {
-    public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.getDefaultState();
-    public static final BlockState COFE = TropicraftBlocks.COFFEE_BUSH.get().withAge(6);
-    public static final BlockState FARMLAND = Blocks.FARMLAND.getDefaultState();
-    public static final BlockState WATER = Blocks.WATER.getDefaultState();
+    public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.defaultBlockState();
+    public static final BlockState COFE = TropicraftBlocks.COFFEE_BUSH.get().getStateForAge(6);
+    public static final BlockState FARMLAND = Blocks.FARMLAND.defaultBlockState();
+    public static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
     public CoffeePlantFeature(Codec<NoFeatureConfig> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
         final BlockPos genPos = new BlockPos(
                 (pos.getX() + random.nextInt(8)) - random.nextInt(8),
                 pos.getY(),
@@ -33,7 +33,7 @@ public class CoffeePlantFeature extends Feature<NoFeatureConfig> {
         );
 
         // Find a suitable place to generate
-        if (!world.isAirBlock(genPos) || world.getBlockState(genPos.down()).getBlock() != GRASS_BLOCK.getBlock() || world.isAirBlock(genPos.down(2))) {
+        if (!world.isEmptyBlock(genPos) || world.getBlockState(genPos.below()).getBlock() != GRASS_BLOCK.getBlock() || world.isEmptyBlock(genPos.below(2))) {
             return false;
         }
 
@@ -41,10 +41,10 @@ public class CoffeePlantFeature extends Feature<NoFeatureConfig> {
 
         // Scan for potential water spot
         for (final Direction dir : Direction.Plane.HORIZONTAL) {
-            final int neighborx = genPos.getX() + dir.getXOffset();
-            final int neighborz = genPos.getZ() + dir.getZOffset();
+            final int neighborx = genPos.getX() + dir.getStepX();
+            final int neighborz = genPos.getZ() + dir.getStepZ();
 
-            if (!world.isAirBlock(new BlockPos(neighborx, pos.getY() - 1, neighborz))) {
+            if (!world.isEmptyBlock(new BlockPos(neighborx, pos.getY() - 1, neighborz))) {
                 viableDirection = dir;
                 break;
             }
@@ -54,18 +54,18 @@ public class CoffeePlantFeature extends Feature<NoFeatureConfig> {
             return false;
         }
 
-        final BlockPos waterPos = new BlockPos(genPos.getX() + viableDirection.getXOffset(), pos.getY() - 1, genPos.getZ() + viableDirection.getZOffset());
-        world.setBlockState(waterPos, WATER, Constants.BlockFlags.DEFAULT);
-        world.setBlockState(genPos.down(), FARMLAND, Constants.BlockFlags.DEFAULT);
+        final BlockPos waterPos = new BlockPos(genPos.getX() + viableDirection.getStepX(), pos.getY() - 1, genPos.getZ() + viableDirection.getStepZ());
+        world.setBlock(waterPos, WATER, Constants.BlockFlags.DEFAULT);
+        world.setBlock(genPos.below(), FARMLAND, Constants.BlockFlags.DEFAULT);
 
         for (final Direction dir : Direction.Plane.HORIZONTAL) {
-            world.setBlockState(waterPos.offset(dir), GRASS_BLOCK, Constants.BlockFlags.DEFAULT);
+            world.setBlock(waterPos.relative(dir), GRASS_BLOCK, Constants.BlockFlags.DEFAULT);
         }
 
         for (int i = 0; i < 3; ++i) {
-            final BlockPos upPos = genPos.up(i);
-            if (world.isAirBlock(upPos)) {
-                world.setBlockState(upPos, COFE, Constants.BlockFlags.DEFAULT);
+            final BlockPos upPos = genPos.above(i);
+            if (world.isEmptyBlock(upPos)) {
+                world.setBlock(upPos, COFE, Constants.BlockFlags.DEFAULT);
             } else {
                 break;
             }

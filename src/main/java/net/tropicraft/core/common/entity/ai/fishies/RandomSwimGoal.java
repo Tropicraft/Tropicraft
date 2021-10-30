@@ -14,13 +14,13 @@ public class RandomSwimGoal extends Goal {
 
     public RandomSwimGoal(EnumSet<Flag> flags, TropicraftFishEntity entityObjIn) {
         this.entity = entityObjIn;
-        rand = this.entity.getRNG();
-        setMutexFlags(flags);
+        rand = this.entity.getRandom();
+        setFlags(flags);
     }
 
     @Override
-    public boolean shouldExecute() {
-        return entity.isInWater() && entity.ticksExisted % 10+rand.nextInt(20) == 0;
+    public boolean canUse() {
+        return entity.isInWater() && entity.tickCount % 10+rand.nextInt(20) == 0;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RandomSwimGoal extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         return entity.targetVector == null;
     }
 }

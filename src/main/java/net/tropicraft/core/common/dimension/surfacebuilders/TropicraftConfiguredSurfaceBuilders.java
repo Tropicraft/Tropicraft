@@ -15,8 +15,8 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.data.WorldgenDataConsumer;
 
 public final class TropicraftConfiguredSurfaceBuilders {
-    private static final LazyValue<BlockState> PURIFIED_SAND = new LazyValue<>(() -> TropicraftBlocks.PURIFIED_SAND.get().getDefaultState());
-    private static final LazyValue<BlockState> UNDERWATER_PURIFIED_SAND = new LazyValue<>(() -> PURIFIED_SAND.getValue().with(BlockTropicraftSand.UNDERWATER, true));
+    private static final LazyValue<BlockState> PURIFIED_SAND = new LazyValue<>(() -> TropicraftBlocks.PURIFIED_SAND.get().defaultBlockState());
+    private static final LazyValue<BlockState> UNDERWATER_PURIFIED_SAND = new LazyValue<>(() -> PURIFIED_SAND.get().setValue(BlockTropicraftSand.UNDERWATER, true));
 
     public final ConfiguredSurfaceBuilder<?> tropics;
     public final ConfiguredSurfaceBuilder<?> sandy;
@@ -26,13 +26,13 @@ public final class TropicraftConfiguredSurfaceBuilders {
     public TropicraftConfiguredSurfaceBuilders(WorldgenDataConsumer<? extends ConfiguredSurfaceBuilder<?>> worldgen) {
         Register surfaceBuilders = new Register(worldgen);
 
-        BlockState grass = Blocks.GRASS_BLOCK.getDefaultState();
-        BlockState dirt = Blocks.DIRT.getDefaultState();
-        BlockState stone = Blocks.STONE.getDefaultState();
+        BlockState grass = Blocks.GRASS_BLOCK.defaultBlockState();
+        BlockState dirt = Blocks.DIRT.defaultBlockState();
+        BlockState stone = Blocks.STONE.defaultBlockState();
 
         SurfaceBuilderConfig landConfig = new SurfaceBuilderConfig(grass, dirt, stone);
-        SurfaceBuilderConfig sandyConfig = new SurfaceBuilderConfig(PURIFIED_SAND.getValue(), PURIFIED_SAND.getValue(), UNDERWATER_PURIFIED_SAND.getValue());
-        SurfaceBuilderConfig sandyUnderwaterConfig = new SurfaceBuilderConfig(UNDERWATER_PURIFIED_SAND.getValue(), UNDERWATER_PURIFIED_SAND.getValue(), UNDERWATER_PURIFIED_SAND.getValue());
+        SurfaceBuilderConfig sandyConfig = new SurfaceBuilderConfig(PURIFIED_SAND.get(), PURIFIED_SAND.get(), UNDERWATER_PURIFIED_SAND.get());
+        SurfaceBuilderConfig sandyUnderwaterConfig = new SurfaceBuilderConfig(UNDERWATER_PURIFIED_SAND.get(), UNDERWATER_PURIFIED_SAND.get(), UNDERWATER_PURIFIED_SAND.get());
 
         TropicsSurfaceBuilder.Config tropicsConfig = new TropicsSurfaceBuilder.Config(landConfig, sandyConfig, sandyUnderwaterConfig);
 
@@ -57,7 +57,7 @@ public final class TropicraftConfiguredSurfaceBuilders {
         }
 
         public <C extends ISurfaceBuilderConfig, S extends SurfaceBuilder<C>> ConfiguredSurfaceBuilder<?> register(String id, S surfaceBuilder, C config) {
-            return this.worldgen.register(new ResourceLocation(Constants.MODID, id), surfaceBuilder.func_242929_a(config));
+            return this.worldgen.register(new ResourceLocation(Constants.MODID, id), surfaceBuilder.configured(config));
         }
     }
 }

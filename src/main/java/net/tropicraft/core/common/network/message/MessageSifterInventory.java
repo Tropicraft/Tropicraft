@@ -22,13 +22,13 @@ public class MessageSifterInventory extends MessageTileEntity<SifterTileEntity> 
 
 	public static void encode(final MessageSifterInventory message, final PacketBuffer buf) {
 		MessageTileEntity.encode(message, buf);
-		buf.writeItemStack(message.siftItem);
+		buf.writeItem(message.siftItem);
 	}
 
 	public static MessageSifterInventory decode(final PacketBuffer buf) {
 		final MessageSifterInventory message = new MessageSifterInventory();
 		MessageTileEntity.decode(message, buf);
-		message.siftItem = buf.readItemStack();
+		message.siftItem = buf.readItem();
 		return message;
 	}
 

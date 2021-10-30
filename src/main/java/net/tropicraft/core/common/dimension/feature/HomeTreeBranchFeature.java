@@ -31,7 +31,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
         SharedSeedRandom rand = new SharedSeedRandom();
         rand.setDecorationSeed(world.getSeed(), pos.getX(), pos.getZ());
         final int branchLength = rand.nextInt(10) + 15;
@@ -45,8 +45,8 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         int branchZ2 = (int)((branchLength * Math.cos(angle)) + branchZ1);
         int branchY2 = rand.nextInt(4) + 4;
 
-        BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().getDefaultState();
-        final BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().getDefaultState();
+        BlockState wood = TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
+        final BlockState leaf = TropicraftBlocks.MAHOGANY_LEAVES.get().defaultBlockState();
         final int leafCircleSizeConstant = 3;
         final int y2 = pos.getY() + branchY2;
 
@@ -61,7 +61,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         genLeafCircle(world, branchX2, y2, branchZ2, leafCircleSizeConstant + 6, 0, leaf, true);
         genLeafCircle(world, branchX2, y2 + 1, branchZ2, leafCircleSizeConstant + 10, 0, leaf, true);
         genLeafCircle(world, branchX2, y2 + 2, branchZ2, leafCircleSizeConstant + 9, 0, leaf, true);
-        this.vinesFeature.generate(world, generator, rand, new BlockPos(branchX2, y2 - 1, branchZ2));
+        this.vinesFeature.place(world, generator, rand, new BlockPos(branchX2, y2 - 1, branchZ2));
 
         return false;
     }
@@ -76,9 +76,9 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
             for (int k = -outerRadius + z; k <= outerRadius + z; k++) {
                 double d = (x - i) * (x - i) + (z - k) * (z - k);
                 if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
-                    pos.setPos(i, y, k);
-                    if (world.isAirBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
-                        world.setBlockState(pos, state, Constants.BlockFlags.DEFAULT);
+                    pos.set(i, y, k);
+                    if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
+                        world.setBlock(pos, state, Constants.BlockFlags.DEFAULT);
                     }
                 }
             }
@@ -119,7 +119,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
             ai3[j] = MathHelper.floor(ai[j] + k + 0.5D);
             ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
             ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
-            world.setBlockState(new BlockPos(ai3[0], ai3[1], ai3[2]), state, 3);
+            world.setBlock(new BlockPos(ai3[0], ai3[1], ai3[2]), state, 3);
         }
     }
 }

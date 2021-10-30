@@ -16,12 +16,12 @@ public class SpiderMonkeyRenderer extends MobRenderer<SpiderMonkeyEntity, Spider
     }
 
     @Override
-    protected void preRenderCallback(SpiderMonkeyEntity entity, MatrixStack matrixStack, float partialTicks) {
+    protected void scale(SpiderMonkeyEntity entity, MatrixStack matrixStack, float partialTicks) {
         matrixStack.scale(0.7F, 0.7F, 0.7F);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(SpiderMonkeyEntity entity) {
+    public ResourceLocation getTextureLocation(SpiderMonkeyEntity entity) {
         return TEXTURE;
     }
 }

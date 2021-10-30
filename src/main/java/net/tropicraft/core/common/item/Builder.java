@@ -67,7 +67,7 @@ public class Builder {
     }
 
     public static <T extends AbstractFishEntity> Supplier<Item> fishBucket(final Supplier<EntityType<T>> type) {
-        return item(p -> new TropicraftFishBucketItem<>(type, Fluids.WATER, getDefaultProperties().maxStackSize(1)));
+        return item(p -> new TropicraftFishBucketItem<>(type, Fluids.WATER, getDefaultProperties().stacksTo(1)));
     }
 
     public static Supplier<Item> shell() {
@@ -83,7 +83,7 @@ public class Builder {
             CocktailItem ret = new CocktailItem(drink, p);
             MixerRecipes.setDrinkItem(drink, ret);
             return ret;
-        }, () -> getDefaultProperties().maxDamage(0).maxStackSize(1).containerItem(TropicraftItems.BAMBOO_MUG.get()));
+        }, () -> getDefaultProperties().durability(0).stacksTo(1).craftRemainder(TropicraftItems.BAMBOO_MUG.get()));
     }
 
     public static Supplier<AshenMaskItem> mask(final AshenMasks mask) {
@@ -119,15 +119,15 @@ public class Builder {
     }
 
     public static Item.Properties getDefaultProperties() {
-        return new Item.Properties().group(Tropicraft.TROPICRAFT_ITEM_GROUP);
+        return new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP);
     }
 
     public static Supplier<Item> fireArmor(EquipmentSlotType slotType) {
-        return item(p -> new FireArmorItem(slotType, getDefaultProperties().maxStackSize(1).maxDamage(300)));
+        return item(p -> new FireArmorItem(slotType, getDefaultProperties().stacksTo(1).durability(300)));
     }
 
     public static Supplier<Item> scaleArmor(EquipmentSlotType slotType) {
-        return item(p -> new ScaleArmorItem(slotType, getDefaultProperties().maxStackSize(1)));
+        return item(p -> new ScaleArmorItem(slotType, getDefaultProperties().stacksTo(1)));
     }
 
     public static Supplier<ScubaGogglesItem> scubaGoggles(ScubaType type) {

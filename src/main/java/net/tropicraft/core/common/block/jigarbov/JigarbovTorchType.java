@@ -32,7 +32,7 @@ public enum JigarbovTorchType implements IStringSerializable {
 
     @Nullable
     public static JigarbovTorchType byBlock(Block block) {
-        if (block.isIn(BlockTags.LOGS)) {
+        if (block.is(BlockTags.LOGS)) {
             for (JigarbovTorchType type : VALUES) {
                 if (type.matchesLog(block)) {
                     return type;
@@ -52,7 +52,7 @@ public enum JigarbovTorchType implements IStringSerializable {
     }
 
     @Override
-    public String getString() {
+    public String getSerializedName() {
         return name;
     }
 }

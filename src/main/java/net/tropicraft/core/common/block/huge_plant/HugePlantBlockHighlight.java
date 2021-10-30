@@ -21,10 +21,10 @@ public final class HugePlantBlockHighlight {
 
     @SubscribeEvent
     public static void onHighlightBlock(DrawHighlightEvent.HighlightBlock event) {
-        ClientWorld world = CLIENT.world;
+        ClientWorld world = CLIENT.level;
         if (world == null) return;
 
-        BlockPos pos = event.getTarget().getPos();
+        BlockPos pos = event.getTarget().getBlockPos();
         BlockState state = world.getBlockState(pos);
         if (state.getBlock() instanceof HugePlantBlock) {
             renderHugePlantHighlight(event, world, pos, state);
@@ -35,11 +35,11 @@ public final class HugePlantBlockHighlight {
         HugePlantBlock.Shape shape = HugePlantBlock.Shape.matchIncomplete(state.getBlock(), world, pos);
         if (shape == null) return;
 
-        IVertexBuilder builder = event.getBuffers().getBuffer(RenderType.getLines());
+        IVertexBuilder builder = event.getBuffers().getBuffer(RenderType.lines());
 
-        Vector3d view = event.getInfo().getProjectedView();
-        AxisAlignedBB aabb = shape.asAabb().offset(-view.x, -view.y, -view.z);
-        WorldRenderer.drawBoundingBox(event.getMatrix(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
+        Vector3d view = event.getInfo().getPosition();
+        AxisAlignedBB aabb = shape.asAabb().move(-view.x, -view.y, -view.z);
+        WorldRenderer.renderLineBox(event.getMatrix(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
 
         event.setCanceled(true);
     }

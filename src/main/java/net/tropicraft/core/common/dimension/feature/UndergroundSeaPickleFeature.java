@@ -19,20 +19,20 @@ public class UndergroundSeaPickleFeature extends Feature<NoFeatureConfig> {
     }
 
     @Override
-    public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
-        BlockState surface = world.getBlockState(pos.down());
-        if (!surface.matchesBlock(Blocks.STONE) && !surface.matchesBlock(Blocks.DIRT)) {
+    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+        BlockState surface = world.getBlockState(pos.below());
+        if (!surface.is(Blocks.STONE) && !surface.is(Blocks.DIRT)) {
             return false;
         }
 
-        if (world.getBlockState(pos).matchesBlock(Blocks.WATER) && world.getBlockState(pos.up()).matchesBlock(Blocks.WATER)) {
+        if (world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER)) {
             int count = random.nextInt(random.nextInt(4) + 1) + 1;
-            if (surface.matchesBlock(Blocks.DIRT)) {
+            if (surface.is(Blocks.DIRT)) {
                 count = Math.min(count + random.nextInt(2), 4);
             }
 
-            BlockState pickle = Blocks.SEA_PICKLE.getDefaultState().with(SeaPickleBlock.PICKLES, count);
-            world.setBlockState(pos, pickle, Constants.BlockFlags.BLOCK_UPDATE);
+            BlockState pickle = Blocks.SEA_PICKLE.defaultBlockState().setValue(SeaPickleBlock.PICKLES, count);
+            world.setBlock(pos, pickle, Constants.BlockFlags.BLOCK_UPDATE);
             return true;
         }
 

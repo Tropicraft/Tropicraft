@@ -13,9 +13,9 @@ public final class TropicraftRiverMixLayer implements IAreaTransformer2, IDimOff
     }
 
     @Override
-    public int apply(INoiseRandom random, IArea parent1, IArea parent2, int x, int y) {
-        final int biome = parent1.getValue(getOffsetX(x), getOffsetZ(y));
-        final int river = parent2.getValue(getOffsetX(x), getOffsetZ(y));
+    public int applyPixel(INoiseRandom random, IArea parent1, IArea parent2, int x, int y) {
+        final int biome = parent1.get(getParentX(x), getParentY(y));
+        final int river = parent2.get(getParentX(x), getParentY(y));
 
         if (!biomeIds.isOcean(biome)) {
             if (biomeIds.isRiver(river)) {

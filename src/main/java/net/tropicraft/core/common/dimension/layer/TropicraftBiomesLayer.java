@@ -15,7 +15,7 @@ public final class TropicraftBiomesLayer implements IC0Transformer {
     @Override
     public int apply(INoiseRandom iNoiseRandom, int center) {
         if (biomeIds.isLand(center)) {
-            return landIds[iNoiseRandom.random(landIds.length)];
+            return landIds[iNoiseRandom.nextRandom(landIds.length)];
         }
 
         return center;

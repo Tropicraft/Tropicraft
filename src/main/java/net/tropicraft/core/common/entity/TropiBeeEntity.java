@@ -15,8 +15,8 @@ public class TropiBeeEntity extends BeeEntity {
     }
 
     @Override
-    public BeeEntity createChild(ServerWorld world, AgeableEntity partner) {
-        return TropicraftEntities.TROPI_BEE.get().create(this.world);
+    public BeeEntity getBreedOffspring(ServerWorld world, AgeableEntity partner) {
+        return TropicraftEntities.TROPI_BEE.get().create(this.level);
     }
 
     @Override

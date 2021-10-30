@@ -19,7 +19,7 @@ public final class TropicraftAddSubBiomesLayer implements IC0Transformer {
 	@Override
 	public int apply(INoiseRandom random, int center) {
 		if (center == baseID) {
-			return subBiomeIDs[random.random(subBiomeIDs.length)];
+			return subBiomeIDs[random.nextRandom(subBiomeIDs.length)];
 		} else {
 			return center;
 		}

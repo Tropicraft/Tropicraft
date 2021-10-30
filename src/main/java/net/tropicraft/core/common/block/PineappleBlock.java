@@ -31,106 +31,106 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     /** Number of total random ticks it takes for this pineapple to grow */
     public static final int TOTAL_GROW_TICKS = 7;
 
-    public static final IntegerProperty STAGE = BlockStateProperties.AGE_0_7;
+    public static final IntegerProperty STAGE = BlockStateProperties.AGE_7;
 
     public PineappleBlock(final Properties properties) {
         super(properties);
-        this.setDefaultState(super.getDefaultState().with(STAGE, 0));
+        this.registerDefaultState(super.defaultBlockState().setValue(STAGE, 0));
     }
 
     @Override
-    protected void fillStateContainer(final StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(final StateContainer.Builder<Block, BlockState> builder) {
         builder.add(HALF, STAGE);
     }
 
     @Override
-    public boolean canGrow(IBlockReader world, BlockPos pos, BlockState blockState, boolean b) {
-        return blockState.getBlock() == TropicraftBlocks.PINEAPPLE.get() && blockState.get(PineappleBlock.HALF) == DoubleBlockHalf.LOWER && world.getBlockState(pos.up()).isAir();
+    public boolean isValidBonemealTarget(IBlockReader world, BlockPos pos, BlockState blockState, boolean b) {
+        return blockState.getBlock() == TropicraftBlocks.PINEAPPLE.get() && blockState.getValue(PineappleBlock.HALF) == DoubleBlockHalf.LOWER && world.getBlockState(pos.above()).isAir();
     }
 
     @Override
-    public boolean canUseBonemeal(World world, Random random, BlockPos blockPos, BlockState blockState) {
+    public boolean isBonemealSuccess(World world, Random random, BlockPos blockPos, BlockState blockState) {
         return true;
     }
 
     @Override
-    public void grow(final ServerWorld world, final Random random, final BlockPos pos, final BlockState state) {
-        final int currentStage = state.get(STAGE);
+    public void performBonemeal(final ServerWorld world, final Random random, final BlockPos pos, final BlockState state) {
+        final int currentStage = state.getValue(STAGE);
         if (currentStage < TOTAL_GROW_TICKS) {
-            final BlockState growthState = state.with(STAGE, currentStage + 1);
-            world.setBlockState(pos, growthState, 4);
+            final BlockState growthState = state.setValue(STAGE, currentStage + 1);
+            world.setBlock(pos, growthState, 4);
         } else {
-            final BlockState above = world.getBlockState(pos.up());
+            final BlockState above = world.getBlockState(pos.above());
 
             // Don't bother placing if it's already there
             if (above.getBlock() == this) return;
-            if (state.get(HALF) == DoubleBlockHalf.UPPER) return;
+            if (state.getValue(HALF) == DoubleBlockHalf.UPPER) return;
 
             // Place actual pineapple plant above stem
-            final BlockState fullGrowth = state.with(HALF, DoubleBlockHalf.UPPER);
-            world.setBlockState(pos.up(), fullGrowth, 3);
+            final BlockState fullGrowth = state.setValue(HALF, DoubleBlockHalf.UPPER);
+            world.setBlock(pos.above(), fullGrowth, 3);
         }
     }
 
     @Override
     public void tick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random) {
-        if (pos.getY() > world.getHeight() - 2) {
+        if (pos.getY() > world.getMaxBuildHeight() - 2) {
             return;
         }
 
         // Current metadata
-        int growth = state.get(STAGE);
+        int growth = state.getValue(STAGE);
 
-        if (state.getBlock() == this && growth <= TOTAL_GROW_TICKS && world.isAirBlock(pos.up()) && state.get(HALF) == DoubleBlockHalf.LOWER) {
+        if (state.getBlock() == this && growth <= TOTAL_GROW_TICKS && world.isEmptyBlock(pos.above()) && state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             if (growth >= TOTAL_GROW_TICKS - 1) {
                 // Set current state
-                BlockState growthState = state.with(STAGE, TOTAL_GROW_TICKS);
-                world.setBlockState(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
+                BlockState growthState = state.setValue(STAGE, TOTAL_GROW_TICKS);
+                world.setBlock(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
 
                 // Place actual pineapple plant above stem
-                BlockState fullGrowth = growthState.with(HALF, DoubleBlockHalf.UPPER);
-                world.setBlockState(pos.up(), fullGrowth, Constants.BlockFlags.DEFAULT);
+                BlockState fullGrowth = growthState.setValue(HALF, DoubleBlockHalf.UPPER);
+                world.setBlock(pos.above(), fullGrowth, Constants.BlockFlags.DEFAULT);
             } else {
-                BlockState growthState = state.with(STAGE, growth + 1);
-                world.setBlockState(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
+                BlockState growthState = state.setValue(STAGE, growth + 1);
+                world.setBlock(pos, growthState, Constants.BlockFlags.DEFAULT | Constants.BlockFlags.NO_RERENDER);
             }
         }
     }
     
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-            super.onBlockHarvested(worldIn, pos, state, player);
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+            super.playerWillDestroy(worldIn, pos, state, player);
         } else {
-            worldIn.playEvent(player, 2001, pos, getStateId(state));
-            spawnDrops(state, worldIn, pos, null, player, player.getHeldItemMainhand());
+            worldIn.levelEvent(player, 2001, pos, getId(state));
+            dropResources(state, worldIn, pos, null, player, player.getMainHandItem());
         }
     }
     
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (isValidPosition(stateIn, worldIn, currentPos)) {
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (canSurvive(stateIn, worldIn, currentPos)) {
             return stateIn;
         }
-        return Blocks.AIR.getDefaultState();
+        return Blocks.AIR.defaultBlockState();
     }
     
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        if (state.get(HALF) == DoubleBlockHalf.UPPER) {
-            return worldIn.getBlockState(pos.down()).getBlock() == TropicraftBlocks.PINEAPPLE.get();
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+            return worldIn.getBlockState(pos.below()).getBlock() == TropicraftBlocks.PINEAPPLE.get();
         } else {
             return canPlaceBlockAt(worldIn, pos);
         }
     }
 
     private boolean canPlaceBlockAt(IWorldReader worldIn, BlockPos pos) {
-        final BlockState belowState = worldIn.getBlockState(pos.down());
-        return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.down(), Direction.UP, this);
+        final BlockState belowState = worldIn.getBlockState(pos.below());
+        return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.below(), Direction.UP, this);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         // override super behavior of placing top half of double flower by default
     }
 }

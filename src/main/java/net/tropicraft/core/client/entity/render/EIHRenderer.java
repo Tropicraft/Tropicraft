@@ -22,13 +22,13 @@ public class EIHRenderer extends MobRenderer<EIHEntity, EIHModel> {
     }
 
     @Override
-    protected void preRenderCallback(EIHEntity eih, MatrixStack stack, float partialTickTime) {
+    protected void scale(EIHEntity eih, MatrixStack stack, float partialTickTime) {
         stack.scale(2.0F, 1.75F, 2.0F);
     }
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(final EIHEntity eih) {
+    public ResourceLocation getTextureLocation(final EIHEntity eih) {
         if (eih.isAware()) {
             return TEXTURE_AWARE;
         } else if (eih.isAngry()) {

@@ -32,25 +32,25 @@ public class EntityAIChillAtFire extends Goal
     public EntityAIChillAtFire(EntityKoaBase entityObjIn)
     {
         this.entityObj = entityObjIn;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute()
+    public boolean canUse()
     {
 
         if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && entityObj.listPosDrums.size() > 0) {
             return false;
         }
 
-        BlockPos blockpos = this.entityObj.getPosition();
+        BlockPos blockpos = this.entityObj.blockPosition();
 
-        if (!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN) {
+        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN) {
             if (!isTooClose()) {
-                return entityObj.world.rand.nextInt(20) == 0;
+                return entityObj.level.random.nextInt(20) == 0;
             } else {
                 return false;
             }
@@ -65,21 +65,21 @@ public class EntityAIChillAtFire extends Goal
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting()
+    public boolean canContinueToUse()
     {
 
         if ((entityObj.getWantsToParty() || this.entityObj.druggedTime > 0) && entityObj.listPosDrums.size() > 0) {
             return false;
         }
 
-        BlockPos blockpos = this.entityObj.getPosition();
+        BlockPos blockpos = this.entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if (!this.entityObj.world.isDaytime() || this.entityObj.world.isRaining() && this.entityObj.world.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN)
+        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN)
         {
             return !isTooClose();
 
         } else {
-            return entityObj.world.rand.nextInt(60) != 0;
+            return entityObj.level.random.nextInt(60) != 0;
         }
     }
 
@@ -92,53 +92,53 @@ public class EntityAIChillAtFire extends Goal
         BlockPos blockposGoal = null;
         if (this.entityObj.posLastFireplaceFound != null) {
             //path to base of fire
-            blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
+            blockposGoal = this.entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getHomePosition();
+            blockposGoal = this.entityObj.getRestrictCenter();
         }
 
         if (blockposGoal == null) {
-            resetTask();
+            stop();
             return;
         }
 
         //prevent walking into the fire
-        double dist = entityObj.getPositionVec().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        double dist = entityObj.position().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
         if (dist < 4D && entityObj.isOnGround()) {
             entityObj.setSitting(true);
-            entityObj.getNavigator().clearPath();
+            entityObj.getNavigation().stop();
             isClose = true;
             if (lookUpdateTimer <= 0) {
-                lookUpdateTimer = 200 + entityObj.world.rand.nextInt(100);
+                lookUpdateTimer = 200 + entityObj.level.random.nextInt(100);
                 int range = 2;
-                randXPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
+                randXPos = entityObj.level.random.nextInt(range) - entityObj.level.random.nextInt(range);
                 //stargaze
-                if (entityObj.world.rand.nextInt(3) == 0) {
-                    randYPos = 5+entityObj.world.rand.nextInt(5);
+                if (entityObj.level.random.nextInt(3) == 0) {
+                    randYPos = 5+entityObj.level.random.nextInt(5);
                 } else {
                     randYPos = 0;
                 }
-                randZPos = entityObj.world.rand.nextInt(range) - entityObj.world.rand.nextInt(range);
+                randZPos = entityObj.level.random.nextInt(range) - entityObj.level.random.nextInt(range);
 
-                if (entityObj.getEntityId() % 3 == 0) {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
-                } else if (entityObj.getEntityId() % 5 == 0) {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.COOKED_FROG_LEG.get()));
+                if (entityObj.getId() % 3 == 0) {
+                    entityObj.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
+                } else if (entityObj.getId() % 5 == 0) {
+                    entityObj.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.COOKED_FROG_LEG.get()));
                 } else {
-                    entityObj.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.ORANGE.get()));
+                    entityObj.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.ORANGE.get()));
                 }
 
                 entityObj.heal(1);
 
             }
-            this.entityObj.getLookController().setLookPosition(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
+            this.entityObj.getLookControl().setLookAt(blockposGoal.getX() + randXPos, blockposGoal.getY() + randYPos + 1D, blockposGoal.getZ() + randZPos,
                     8F, 8F);
         } else {
             entityObj.setSitting(false);
         }
 
         if (!isClose) {
-            if ((this.entityObj.getNavigator().noPath() || walkingTimeout <= 0) && repathPentalty <= 0) {
+            if ((this.entityObj.getNavigation().isDone() || walkingTimeout <= 0) && repathPentalty <= 0) {
 
                 int i = blockposGoal.getX();
                 int j = blockposGoal.getY();
@@ -146,16 +146,16 @@ public class EntityAIChillAtFire extends Goal
 
                 boolean success = false;
 
-                if (this.entityObj.getDistanceSq(Vector3d.copyCentered(blockposGoal)) > 256.0D) {
-                    Vector3d Vector3d = RandomPositionGenerator.func_234133_a_(this.entityObj, 14, 3, new Vector3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
+                if (this.entityObj.distanceToSqr(Vector3d.atCenterOf(blockposGoal)) > 256.0D) {
+                    Vector3d Vector3d = RandomPositionGenerator.getLandPosTowards(this.entityObj, 14, 3, new Vector3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                     if (Vector3d != null) {
-                        success = this.entityObj.getNavigator().tryMoveToXYZ(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
+                        success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
                     } else {
                         success = Util.tryMoveToXYZLongDist(this.entityObj, new BlockPos(i, j, k), 1);
                     }
                 } else {
-                    success = this.entityObj.getNavigator().tryMoveToXYZ((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
+                    success = this.entityObj.getNavigation().moveTo((double) i + 0.5D, (double) j, (double) k + 0.5D, 1.0D);
                 }
 
                 if (!success) {
@@ -185,21 +185,21 @@ public class EntityAIChillAtFire extends Goal
      * Execute a one shot task or start executing a continuous task
      */
     @Override
-    public void startExecuting()
+    public void start()
     {
-        super.startExecuting();
+        super.start();
         //this.insidePosX = -1;
         //reset any previous path so tick can start with a fresh path
-        this.entityObj.getNavigator().clearPath();
+        this.entityObj.getNavigation().stop();
     }
 
     /**
      * Resets the task
      */
     @Override
-    public void resetTask()
+    public void stop()
     {
-        super.resetTask();
+        super.stop();
         entityObj.setSitting(false);
         walkingTimeout = 0;
         /*this.insidePosX = this.doorInfo.getInsideBlockPos().getX();
@@ -211,9 +211,9 @@ public class EntityAIChillAtFire extends Goal
         BlockPos blockposGoal = null;
         if (this.entityObj.posLastFireplaceFound != null) {
             //path to base of fire
-            blockposGoal = this.entityObj.posLastFireplaceFound.add(0, -1, 0);
+            blockposGoal = this.entityObj.posLastFireplaceFound.offset(0, -1, 0);
         } else {
-            blockposGoal = this.entityObj.getHomePosition();
+            blockposGoal = this.entityObj.getRestrictCenter();
         }
 
         if (blockposGoal == null) {
@@ -221,7 +221,7 @@ public class EntityAIChillAtFire extends Goal
         }
 
         //prevent walking into the fire
-        double dist = entityObj.getPositionVec().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        double dist = entityObj.position().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
         return dist <= 3D;
     }
 }

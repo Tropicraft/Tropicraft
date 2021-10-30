@@ -26,11 +26,11 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import java.util.function.Supplier;
 
 public class SpiderMonkeyEntity extends AnimalEntity {
-    private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.fromTag(TropicraftTags.Items.FRUITS));
+    private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.of(TropicraftTags.Items.FRUITS));
 
     private static final int STAND_ANIMATION_LENGTH = 15;
 
-    private static final DataParameter<Boolean> STANDING = EntityDataManager.createKey(SpiderMonkeyEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> STANDING = EntityDataManager.defineId(SpiderMonkeyEntity.class, DataSerializers.BOOLEAN);
 
     private int standAnimation;
 
@@ -51,22 +51,22 @@ public class SpiderMonkeyEntity extends AnimalEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(STANDING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(STANDING, false);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             this.tickStandingState();
         } else {
             this.tickStandingAnimation();
@@ -74,13 +74,13 @@ public class SpiderMonkeyEntity extends AnimalEntity {
     }
 
     private void tickStandingState() {
-        if (this.getRevengeTarget() != null) {
+        if (this.getLastHurtByMob() != null) {
             this.setStanding(false);
             return;
         }
 
-        if (this.world.rand.nextInt(200) == 0) {
-            boolean standing = this.world.rand.nextInt(3) == 0;
+        if (this.level.random.nextInt(200) == 0) {
+            boolean standing = this.level.random.nextInt(3) == 0;
             this.setStanding(standing);
         }
     }
@@ -98,12 +98,12 @@ public class SpiderMonkeyEntity extends AnimalEntity {
     }
 
     public void setStanding(boolean standing) {
-        this.dataManager.set(STANDING, standing);
+        this.entityData.set(STANDING, standing);
         this.standAnimation = standing ? STAND_ANIMATION_LENGTH : 0;
     }
 
     public boolean isStanding() {
-        return this.dataManager.get(STANDING);
+        return this.entityData.get(STANDING);
     }
 
     public float getStandAnimation(float partialTicks) {
@@ -112,24 +112,24 @@ public class SpiderMonkeyEntity extends AnimalEntity {
     }
 
     @Override
-    public void readAdditional(CompoundNBT nbt) {
-        super.readAdditional(nbt);
+    public void readAdditionalSaveData(CompoundNBT nbt) {
+        super.readAdditionalSaveData(nbt);
         this.setStanding(nbt.getBoolean("standing"));
     }
 
     @Override
-    public void writeAdditional(final CompoundNBT nbt) {
-        super.writeAdditional(nbt);
+    public void addAdditionalSaveData(final CompoundNBT nbt) {
+        super.addAdditionalSaveData(nbt);
         nbt.putBoolean("standing", this.isStanding());
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
 
     @Override
-    public SpiderMonkeyEntity createChild(ServerWorld world, AgeableEntity mate) {
+    public SpiderMonkeyEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
         return null;
     }
 
@@ -139,7 +139,7 @@ public class SpiderMonkeyEntity extends AnimalEntity {
     }
 
     @Override
-    public int getMaxFallHeight() {
+    public int getMaxFallDistance() {
         return 5;
     }
 

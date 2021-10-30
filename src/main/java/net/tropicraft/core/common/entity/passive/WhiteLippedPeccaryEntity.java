@@ -21,7 +21,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import java.util.function.Supplier;
 
 public class WhiteLippedPeccaryEntity extends AnimalEntity {
-    private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.fromTag(TropicraftTags.Items.FRUITS));
+    private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.of(TropicraftTags.Items.FRUITS));
 
     public WhiteLippedPeccaryEntity(EntityType<? extends WhiteLippedPeccaryEntity> type, World world) {
         super(type, world);
@@ -40,19 +40,19 @@ public class WhiteLippedPeccaryEntity extends AnimalEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return BREEDING_ITEMS.get().test(stack);
     }
 
     @Override
-    public WhiteLippedPeccaryEntity createChild(ServerWorld world, AgeableEntity mate) {
-        return TropicraftEntities.WHITE_LIPPED_PECCARY.get().create(this.world);
+    public WhiteLippedPeccaryEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
+        return TropicraftEntities.WHITE_LIPPED_PECCARY.get().create(this.level);
     }
 
     @Override

@@ -51,12 +51,12 @@ public class EagleRayEntity extends AbstractFishEntity {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return AbstractFishEntity.func_234176_m_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0);
+		return AbstractFishEntity.createAttributes()
+				.add(Attributes.MAX_HEALTH, 10.0);
 	}
 
 	@Override
-	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+	protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 		return ActionResultType.PASS;
 	}
 
@@ -65,7 +65,7 @@ public class EagleRayEntity extends AbstractFishEntity {
 		super.tick();
 		//this.setSwimSpeeds(1f, 0.2f, 0.2f);
 
-		if (world.isRemote) {
+		if (level.isClientSide) {
 			if (animationTicks < WING_CYCLE_TICKS) {
 				animationTicks++;
 			} else {
@@ -109,13 +109,13 @@ public class EagleRayEntity extends AbstractFishEntity {
 	}
 
 	@Override
-	protected ItemStack getFishBucket() {
+	protected ItemStack getBucketItemStack() {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
 	protected SoundEvent getFlopSound() {
-		return SoundEvents.ENTITY_SALMON_FLOP;
+		return SoundEvents.SALMON_FLOP;
 	}
 
 	@Override

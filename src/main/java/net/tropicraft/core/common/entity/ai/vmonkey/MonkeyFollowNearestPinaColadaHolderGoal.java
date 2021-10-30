@@ -26,19 +26,19 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
         this.stopDistance = stopDistance;
         this.areaSize = areaSize;
 
-        navigation = monkey.getNavigator();
+        navigation = monkey.getNavigation();
     }
 
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute() {
-        if (monkey.isQueuedToSit()) return false;
-        if (monkey.isTamed()) return false;
+    public boolean canUse() {
+        if (monkey.isOrderedToSit()) return false;
+        if (monkey.isTame()) return false;
         if (monkey.selfHoldingDrink(Drink.PINA_COLADA)) return false;
 
-        List<PlayerEntity> list = monkey.world.getEntitiesWithinAABB(PlayerEntity.class, monkey.getBoundingBox().grow(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
+        List<PlayerEntity> list = monkey.level.getEntitiesOfClass(PlayerEntity.class, monkey.getBoundingBox().inflate(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
 
         if (!list.isEmpty()) {
             for (PlayerEntity entityliving : list) {
@@ -56,46 +56,46 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         if (monkey.getFollowing() == null) {
             return false;
         }
-        return VMonkeyEntity.FOLLOW_PREDICATE.test(monkey.getFollowing()) && shouldExecute()
-                && !navigation.noPath() && monkey.getDistanceSq(monkey.getFollowing()) > (double)(stopDistance * stopDistance);
+        return VMonkeyEntity.FOLLOW_PREDICATE.test(monkey.getFollowing()) && canUse()
+                && !navigation.isDone() && monkey.distanceToSqr(monkey.getFollowing()) > (double)(stopDistance * stopDistance);
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         timeToRecalcPath = 0;
-        oldWaterCost = monkey.getPathPriority(PathNodeType.WATER);
-        monkey.setPathPriority(PathNodeType.WATER, 0.0F);
+        oldWaterCost = monkey.getPathfindingMalus(PathNodeType.WATER);
+        monkey.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         monkey.setFollowing(null);
-        navigation.clearPath();
-        monkey.setPathPriority(PathNodeType.WATER, oldWaterCost);
+        navigation.stop();
+        monkey.setPathfindingMalus(PathNodeType.WATER, oldWaterCost);
     }
 
     public void tick() {
         LivingEntity following = monkey.getFollowing();
-        if (following != null && !monkey.getLeashed()) {
-            monkey.getLookController().setLookPositionWithEntity(following, 10.0F, (float) monkey.getVerticalFaceSpeed());
+        if (following != null && !monkey.isLeashed()) {
+            monkey.getLookControl().setLookAt(following, 10.0F, (float) monkey.getMaxHeadXRot());
             if (--timeToRecalcPath <= 0) {
                 timeToRecalcPath = 10;
-                double xDist = monkey.getPosX() - following.getPosX();
-                double yDist = monkey.getPosY() - following.getPosY();
-                double zDist = monkey.getPosZ() - following.getPosZ();
+                double xDist = monkey.getX() - following.getX();
+                double yDist = monkey.getY() - following.getY();
+                double zDist = monkey.getZ() - following.getZ();
                 double sqrDist = xDist * xDist + yDist * yDist + zDist * zDist;
                 if (sqrDist > (double)(stopDistance * stopDistance)) {
-                    navigation.tryMoveToEntityLiving(following, speedModifier);
+                    navigation.moveTo(following, speedModifier);
                 } else {
-                    navigation.clearPath();
+                    navigation.stop();
                     if (sqrDist <= (double)stopDistance) {
-                        double xDist2 = following.getPosX() - monkey.getPosX();
-                        double zDist2 = following.getPosZ() - monkey.getPosZ();
-                        navigation.tryMoveToXYZ(monkey.getPosX() - xDist2, monkey.getPosY(), monkey.getPosZ() - zDist2, speedModifier);
+                        double xDist2 = following.getX() - monkey.getX();
+                        double zDist2 = following.getZ() - monkey.getZ();
+                        navigation.moveTo(monkey.getX() - xDist2, monkey.getY(), monkey.getZ() - zDist2, speedModifier);
                     }
 
                 }

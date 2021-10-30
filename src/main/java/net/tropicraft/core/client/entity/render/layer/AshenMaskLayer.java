@@ -27,15 +27,15 @@ public class AshenMaskLayer extends LayerRenderer<AshenEntity, AshenModel> {
     @Override
     public void render(MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn, AshenEntity ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (ashen.hasMask()) {
-            stack.push();
-            modelAshen.setRotationAngles(ashen, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            modelAshen.head.translateRotate(stack);
+            stack.pushPose();
+            modelAshen.setupAnim(ashen, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            modelAshen.head.translateAndRotate(stack);
 
             stack.translate(-0.03125F, 0.0625f * 3, .18F);
             stack.scale(0.75f, 0.75f, 0.75f);
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("ashen/mask")));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("ashen/mask")));
             mask.renderMask(stack, ivertexbuilder, ashen.getMaskType(), packedLightIn, OverlayTexture.NO_OVERLAY);
-            stack.pop();
+            stack.popPose();
         }
     }
 }

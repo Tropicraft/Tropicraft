@@ -25,10 +25,10 @@ public class BambooChestRenderer extends ChestTileEntityRenderer<BambooChestTile
 
     @SubscribeEvent
     public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-        if (event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) {
-            event.addSprite(BAMBOO_CHEST_MATERIAL.getTextureLocation());
-            event.addSprite(BAMBOO_CHEST_LEFT_MATERIAL.getTextureLocation());
-            event.addSprite(BAMBOO_CHEST_RIGHT_MATERIAL.getTextureLocation());
+        if (event.getMap().location().equals(Atlases.CHEST_SHEET)) {
+            event.addSprite(BAMBOO_CHEST_MATERIAL.texture());
+            event.addSprite(BAMBOO_CHEST_LEFT_MATERIAL.texture());
+            event.addSprite(BAMBOO_CHEST_RIGHT_MATERIAL.texture());
         }
     }
 
@@ -45,7 +45,7 @@ public class BambooChestRenderer extends ChestTileEntityRenderer<BambooChestTile
     }
 
     private static RenderMaterial getChestMaterial(String chestName) {
-        return new RenderMaterial(Atlases.CHEST_ATLAS, new ResourceLocation(Constants.MODID, "block/te/" + chestName));
+        return new RenderMaterial(Atlases.CHEST_SHEET, new ResourceLocation(Constants.MODID, "block/te/" + chestName));
     }
 
     public BambooChestRenderer(TileEntityRendererDispatcher renderDispatcher) {

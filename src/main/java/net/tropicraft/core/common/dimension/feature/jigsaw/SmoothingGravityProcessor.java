@@ -46,8 +46,8 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
             pathDir = Axis.X; // Better than nothing
         }
         BlockPos pos = blockInfo.pos;
-        BlockPos posForward = pos.offset(Direction.getFacingFromAxis(AxisDirection.POSITIVE, pathDir));
-        BlockPos posBackward = pos.offset(Direction.getFacingFromAxis(AxisDirection.NEGATIVE, pathDir));
+        BlockPos posForward = pos.relative(Direction.get(AxisDirection.POSITIVE, pathDir));
+        BlockPos posBackward = pos.relative(Direction.get(AxisDirection.NEGATIVE, pathDir));
         int heightForward = world.getHeight(heightmap, posForward.getX(), posForward.getZ()) + offset;
         int heightBackward = world.getHeight(heightmap, posBackward.getX(), posBackward.getZ()) + offset;
         int height = world.getHeight(heightmap, pos.getX(), pos.getZ()) + offset;

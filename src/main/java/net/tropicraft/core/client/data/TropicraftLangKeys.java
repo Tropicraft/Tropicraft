@@ -24,7 +24,7 @@ public enum TropicraftLangKeys {
     }
 
     private TropicraftLangKeys(String type, String key, String value) {
-        this.key = net.minecraft.util.Util.makeTranslationKey(type, new ResourceLocation(Constants.MODID, key));
+        this.key = net.minecraft.util.Util.makeDescriptionId(type, new ResourceLocation(Constants.MODID, key));
         this.value = value;
         this.component = new TranslationTextComponent(this.key);
     }

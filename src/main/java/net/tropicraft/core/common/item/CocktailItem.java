@@ -45,7 +45,7 @@ public class CocktailItem extends Item implements IColoredItem {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
         Drink drink = getDrink(stack);
 
         if (drink == Drink.COCKTAIL && stack.hasTag() && stack.getTag().contains("Ingredients")) {
@@ -183,12 +183,12 @@ public class CocktailItem extends Item implements IColoredItem {
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
+    public UseAction getUseAnimation(ItemStack stack) {
         return UseAction.DRINK;
     }
 
     public ItemStack onFoodEaten(ItemStack itemstack, World world, PlayerEntity player) {
-        world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
+        world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
 
         for (Ingredient ingredient: getIngredients(itemstack)) {
             ingredient.onDrink(player);
@@ -208,14 +208,14 @@ public class CocktailItem extends Item implements IColoredItem {
      * the Item before the action is complete.
      */
     @Override
-    public ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull LivingEntity entityLiving) {
+    public ItemStack finishUsingItem(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull LivingEntity entityLiving) {
         if (entityLiving instanceof PlayerEntity) {
             final PlayerEntity player = (PlayerEntity) entityLiving;
             onFoodEaten(stack, worldIn, player);
 
             Drink drink = getDrink(stack);
 
-            if (worldIn.isRainingAt(player.getPosition()) && drink == Drink.PINA_COLADA) {
+            if (worldIn.isRainingAt(player.blockPosition()) && drink == Drink.PINA_COLADA) {
                 // TODO advancements player.addStat(AchievementRegistry.drinkPinaColada);
             }
         }
@@ -224,15 +224,15 @@ public class CocktailItem extends Item implements IColoredItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
-        ItemStack stack = playerIn.getHeldItem(hand);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand hand) {
+        ItemStack stack = playerIn.getItemInHand(hand);
         Drink drink = getDrink(stack);
 
         if (drink == null) {
             return new ActionResult<>(ActionResultType.FAIL, stack);
         }
 
-        playerIn.setActiveHand(hand);
+        playerIn.startUsingItem(hand);
 
         return new ActionResult<>(ActionResultType.SUCCESS, stack);
     }
@@ -244,12 +244,12 @@ public class CocktailItem extends Item implements IColoredItem {
     }
     
     @Override
-    public ITextComponent getDisplayName(ItemStack stack) {
+    public ITextComponent getName(ItemStack stack) {
         Drink drink = getDrink(stack);
         if (drink != null) {
-            return super.getDisplayName(stack).deepCopy().mergeStyle(drink.textFormatting).mergeStyle(TextFormatting.BOLD);
+            return super.getName(stack).copy().withStyle(drink.textFormatting).withStyle(TextFormatting.BOLD);
         }
-        return super.getDisplayName(stack);
+        return super.getName(stack);
     }
 
     public Drink getDrink() {

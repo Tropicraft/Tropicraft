@@ -21,18 +21,18 @@ public class SpearItem extends TridentItem {
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
 	public SpearItem(IItemTier tier, int attackDamage, float attackSpeed, Properties properties) {
-		super(properties.defaultMaxDamage(tier.getMaxUses()));
+		super(properties.defaultDurability(tier.getUses()));
 		this.tier = tier;
 
 		this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
 				.putAll(super.getAttributeModifiers(EquipmentSlotType.MAINHAND, new ItemStack(this)))
-				.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION))
-				.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", attackSpeed, AttributeModifier.Operation.ADDITION))
+				.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", attackDamage, AttributeModifier.Operation.ADDITION))
+				.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", attackSpeed, AttributeModifier.Operation.ADDITION))
 				.build();
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+	public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
 		// TODO
 	}
 
@@ -43,11 +43,11 @@ public class SpearItem extends TridentItem {
 
 	@Override
 	public int getItemEnchantability(ItemStack stack) {
-		return this.tier.getEnchantability();
+		return this.tier.getEnchantmentValue();
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		return this.tier.getRepairMaterial().test(repair) || super.getIsRepairable(toRepair, repair);
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
+		return this.tier.getRepairIngredient().test(repair) || super.isValidRepairItem(toRepair, repair);
 	}
 }

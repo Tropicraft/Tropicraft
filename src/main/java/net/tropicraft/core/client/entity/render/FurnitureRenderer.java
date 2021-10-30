@@ -34,16 +34,16 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
 
     @Override
     public void render(T furniture, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn) {
-        stack.push();
+        stack.pushPose();
         stack.translate(0, getYOffset(), 0);
-        stack.rotate(Vector3f.YP.rotationDegrees(180 - entityYaw));
+        stack.mulPose(Vector3f.YP.rotationDegrees(180 - entityYaw));
         // it used to scale by 0.25, but for some reason this gets it to be around the proper size again?
         stack.scale(scale, scale, scale);
         setupTransforms(stack);
 
         final float rockingAngle = getRockingAngle(furniture, partialTicks);;
-        if (!MathHelper.epsilonEquals(rockingAngle, 0.0F)) {
-            stack.rotate(new Quaternion(getRockingAxis(), rockingAngle, true));
+        if (!MathHelper.equal(rockingAngle, 0.0F)) {
+            stack.mulPose(new Quaternion(getRockingAxis(), rockingAngle, true));
         }
 
         final int color = furniture.getColor().getColorValue();
@@ -52,16 +52,16 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         blue = ColorHelper.getBlue(color);
 
         // Draw uncolored layer
-        IVertexBuilder ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
+        IVertexBuilder ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
         stack.scale(-1.0F, -1.0F, 1.0F);
-        model.render(stack, ivertexbuilder, getPackedLight(furniture, partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         // Draw the colored part
-        ivertexbuilder = buffer.getBuffer(model.getRenderType(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer")));
-        model.render(stack, ivertexbuilder, getPackedLight(furniture, partialTicks), OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_color_layer")));
+        model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 
         super.render(furniture, entityYaw, partialTicks, stack, buffer, packedLightIn);
-        stack.pop();
+        stack.popPose();
     }
     
     protected double getYOffset() {
@@ -93,7 +93,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     }
 
     @Override
-    public ResourceLocation getEntityTexture(final T furniture) {
+    public ResourceLocation getTextureLocation(final T furniture) {
         return null;
     }
 }

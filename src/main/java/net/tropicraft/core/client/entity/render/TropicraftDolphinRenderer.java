@@ -16,12 +16,12 @@ public class TropicraftDolphinRenderer extends MobRenderer<TropicraftDolphinEnti
 
     public TropicraftDolphinRenderer(EntityRendererManager renderManager) {
         super(renderManager, new TropicraftDolphinModel(), 0.5F);
-        shadowOpaque = 0.5f;
+        shadowStrength = 0.5f;
     }
 
     @Nullable
     @Override
-    public ResourceLocation getEntityTexture(TropicraftDolphinEntity dolphin) {
+    public ResourceLocation getTextureLocation(TropicraftDolphinEntity dolphin) {
         return TropicraftRenderUtils.getTextureEntity(dolphin.getTexture());
     }
 }

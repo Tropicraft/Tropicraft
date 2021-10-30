@@ -32,16 +32,16 @@ public class ScubaHUD {
     
     @SubscribeEvent
     public static void renderHUD(RenderGameOverlayEvent event) {
-        Entity renderViewEntity = Minecraft.getInstance().renderViewEntity;
+        Entity renderViewEntity = Minecraft.getInstance().cameraEntity;
         if (event.getType() == ElementType.TEXT && renderViewEntity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) renderViewEntity;
             // TODO support other slots than chest?
-            ItemStack chestStack = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
+            ItemStack chestStack = player.getItemBySlot(EquipmentSlotType.CHEST);
             Item chestItem = chestStack.getItem();
             if (chestItem instanceof ScubaArmorItem) {
                 LazyOptional<ScubaData> data = player.getCapability(ScubaData.CAPABILITY);
                 int airRemaining = ((ScubaArmorItem)chestItem).getRemainingAir(chestStack);
-                TextFormatting airColor = getAirTimeColor(airRemaining, player.world);
+                TextFormatting airColor = getAirTimeColor(airRemaining, player.level);
                 double depth = ScubaData.getDepth(player);
                 String depthStr;
                 if (depth > 0) {
@@ -75,16 +75,16 @@ public class ScubaHUD {
     }
     
     private static void drawHUDStrings(MatrixStack matrixStack, ITextComponent... components) {
-        FontRenderer fr = Minecraft.getInstance().fontRenderer;
-        MainWindow mw = Minecraft.getInstance().getMainWindow();
+        FontRenderer fr = Minecraft.getInstance().font;
+        MainWindow mw = Minecraft.getInstance().getWindow();
 
-        int startY = mw.getScaledHeight() - 5 - (fr.FONT_HEIGHT * components.length);
-        int startX = mw.getScaledWidth() - 5;
+        int startY = mw.getGuiScaledHeight() - 5 - (fr.lineHeight * components.length);
+        int startX = mw.getGuiScaledWidth() - 5;
         
         for (ITextComponent text : components) {
             String s = text.getString();
-            fr.drawStringWithShadow(matrixStack, s, startX - fr.getStringWidth(s), startY, -1);
-            startY += fr.FONT_HEIGHT;
+            fr.drawShadow(matrixStack, s, startX - fr.width(s), startY, -1);
+            startY += fr.lineHeight;
         }
     }
 }

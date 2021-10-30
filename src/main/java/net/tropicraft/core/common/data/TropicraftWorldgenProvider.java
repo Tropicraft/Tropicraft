@@ -43,21 +43,21 @@ public final class TropicraftWorldgenProvider implements IDataProvider {
 
     private static final LazyValue<DynamicRegistries.Impl> DYNAMIC_REGISTRIES = new LazyValue<>(() -> {
         DynamicRegistries.Impl dynamicRegistries = new DynamicRegistries.Impl();
-        for (Registry<?> registry : WorldGenRegistries.ROOT_REGISTRIES) {
+        for (Registry<?> registry : WorldGenRegistries.REGISTRY) {
             copyAllToDynamicRegistry(registry, dynamicRegistries);
         }
         return dynamicRegistries;
     });
 
     private static <T> void copyAllToDynamicRegistry(Registry<T> from, DynamicRegistries dynamicRegistries) {
-        dynamicRegistries.func_230521_a_(from.getRegistryKey()).ifPresent(dynamicRegistry -> {
+        dynamicRegistries.registry(from.key()).ifPresent(dynamicRegistry -> {
             copyAllToRegistry(from, dynamicRegistry);
         });
     }
 
     private static <T> void copyAllToRegistry(Registry<T> from, Registry<T> to) {
-        for (Map.Entry<RegistryKey<T>, T> entry : from.getEntries()) {
-            Registry.register(to, entry.getKey().getLocation(), entry.getValue());
+        for (Map.Entry<RegistryKey<T>, T> entry : from.entrySet()) {
+            Registry.register(to, entry.getKey().location(), entry.getValue());
         }
     }
 
@@ -70,8 +70,8 @@ public final class TropicraftWorldgenProvider implements IDataProvider {
     }
 
     @Override
-    public void act(DirectoryCache cache) {
-        DynamicRegistries.Impl dynamicRegistries = DYNAMIC_REGISTRIES.getValue();
+    public void run(DirectoryCache cache) {
+        DynamicRegistries.Impl dynamicRegistries = DYNAMIC_REGISTRIES.get();
         DynamicOps<JsonElement> ops = WorldGenSettingsExport.create(JsonOps.INSTANCE, dynamicRegistries);
 
         Generator generator = new Generator(root, cache, dynamicRegistries, ops);
@@ -98,49 +98,49 @@ public final class TropicraftWorldgenProvider implements IDataProvider {
 
         public <R> R addConfiguredFeatures(EntryGenerator<ConfiguredFeature<?, ?>, R> entryGenerator) {
             return add(
-                    "worldgen/configured_feature", WorldGenRegistries.CONFIGURED_FEATURE, ConfiguredFeature.field_236264_b_,
+                    "worldgen/configured_feature", WorldGenRegistries.CONFIGURED_FEATURE, ConfiguredFeature.CODEC,
                     entryGenerator
             );
         }
 
         public <R> R addConfiguredSurfaceBuilders(EntryGenerator<ConfiguredSurfaceBuilder<?>, R> entryGenerator) {
             return add(
-                    "worldgen/configured_surface_builder", WorldGenRegistries.CONFIGURED_SURFACE_BUILDER, ConfiguredSurfaceBuilder.field_244393_b_,
+                    "worldgen/configured_surface_builder", WorldGenRegistries.CONFIGURED_SURFACE_BUILDER, ConfiguredSurfaceBuilder.CODEC,
                     entryGenerator
             );
         }
 
         public <R> R addConfiguredCarvers(EntryGenerator<ConfiguredCarver<?>, R> entryGenerator) {
             return add(
-                    "worldgen/configured_carver", WorldGenRegistries.CONFIGURED_CARVER, ConfiguredCarver.field_244390_b_,
+                    "worldgen/configured_carver", WorldGenRegistries.CONFIGURED_CARVER, ConfiguredCarver.CODEC,
                     entryGenerator
             );
         }
 
         public <R> R addProcessorLists(EntryGenerator<StructureProcessorList, R> entryGenerator) {
             return add(
-                    "worldgen/processor_list", WorldGenRegistries.STRUCTURE_PROCESSOR_LIST, IStructureProcessorType.PROCESSOR_LIST_CODEC,
+                    "worldgen/processor_list", WorldGenRegistries.PROCESSOR_LIST, IStructureProcessorType.LIST_CODEC,
                     entryGenerator
             );
         }
 
         public <R> R addTemplatePools(EntryGenerator<JigsawPattern, R> entryGenerator) {
             return add(
-                    "worldgen/template_pool", WorldGenRegistries.JIGSAW_POOL, JigsawPattern.field_244392_b_,
+                    "worldgen/template_pool", WorldGenRegistries.TEMPLATE_POOL, JigsawPattern.CODEC,
                     entryGenerator
             );
         }
 
         public <R> R addConfiguredStructures(EntryGenerator<StructureFeature<?, ?>, R> entryGenerator) {
             return add(
-                    "worldgen/configured_structure_feature", WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, StructureFeature.field_244391_b_,
+                    "worldgen/configured_structure_feature", WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE, StructureFeature.CODEC,
                     entryGenerator
             );
         }
 
         public <R> R addBiomes(EntryGenerator<Biome, R> entryGenerator) {
             return add(
-                    "worldgen/biome", null, Biome.BIOME_CODEC,
+                    "worldgen/biome", null, Biome.CODEC,
                     entryGenerator
             );
         }
@@ -167,7 +167,7 @@ public final class TropicraftWorldgenProvider implements IDataProvider {
 
                 if (registry != null) {
                     Registry.register(registry, id, entry);
-                    dynamicRegistries.func_230521_a_(registry.getRegistryKey()).ifPresent(dynamicRegistry -> {
+                    dynamicRegistries.registry(registry.key()).ifPresent(dynamicRegistry -> {
                         Registry.register(dynamicRegistry, id, entry);
                     });
                 }

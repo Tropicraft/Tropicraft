@@ -22,7 +22,7 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import java.util.function.Supplier;
 
 public class JaguarEntity extends AnimalEntity {
-    private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.fromTag(TropicraftTags.Items.MEATS));
+    private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.of(TropicraftTags.Items.MEATS));
 
     public JaguarEntity(EntityType<? extends JaguarEntity> type, World world) {
         super(type, world);
@@ -43,20 +43,20 @@ public class JaguarEntity extends AnimalEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 10.0)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.3F)
+                .add(Attributes.ATTACK_DAMAGE, 3.0);
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return BREEDING_ITEMS.get().test(stack);
     }
 
     @Override
-    public JaguarEntity createChild(ServerWorld world, AgeableEntity mate) {
-        return TropicraftEntities.JAGUAR.get().create(this.world);
+    public JaguarEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
+        return TropicraftEntities.JAGUAR.get().create(this.level);
     }
 
     @Override

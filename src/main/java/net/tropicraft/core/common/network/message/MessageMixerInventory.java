@@ -27,10 +27,10 @@ public class MessageMixerInventory extends MessageTileEntity<DrinkMixerTileEntit
 
 		buf.writeByte(message.inventory.size());
 		for (final ItemStack i : message.inventory) {
-			buf.writeItemStack(i);
+			buf.writeItem(i);
 		}
 
-		buf.writeItemStack(message.result);
+		buf.writeItem(message.result);
 	}
 
 	public static MessageMixerInventory decode(final PacketBuffer buf) {
@@ -38,10 +38,10 @@ public class MessageMixerInventory extends MessageTileEntity<DrinkMixerTileEntit
 		MessageTileEntity.decode(message, buf);
 		message.inventory = NonNullList.withSize(buf.readByte(), ItemStack.EMPTY);
 		for (int i = 0; i < message.inventory.size(); i++) {
-			message.inventory.set(i, buf.readItemStack());
+			message.inventory.set(i, buf.readItem());
 		}
 
-		message.result = buf.readItemStack();
+		message.result = buf.readItem();
 
 		return message;
 	}

@@ -29,32 +29,32 @@ import java.util.function.Supplier;
 public class BambooChestBlock extends ChestBlock {
     private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>> CHEST_COMBINER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>>() {
         @Override
-        public Optional<IInventory> func_225539_a_(ChestTileEntity p_225539_1_, ChestTileEntity p_225539_2_) {
+        public Optional<IInventory> acceptDouble(ChestTileEntity p_225539_1_, ChestTileEntity p_225539_2_) {
             return Optional.of(new DoubleSidedInventory(p_225539_1_, p_225539_2_));
         }
 
         @Override
-        public Optional<IInventory> func_225538_a_(ChestTileEntity p_225538_1_) {
+        public Optional<IInventory> acceptSingle(ChestTileEntity p_225538_1_) {
             return Optional.of(p_225538_1_);
         }
 
         @Override
-        public Optional<IInventory> func_225537_b_() {
+        public Optional<IInventory> acceptNone() {
             return Optional.empty();
         }
     };
     public static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> MENU_PROVIDER_COMBINER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
         @Override
-        public Optional<INamedContainerProvider> func_225539_a_(final ChestTileEntity left, final ChestTileEntity right) {
+        public Optional<INamedContainerProvider> acceptDouble(final ChestTileEntity left, final ChestTileEntity right) {
             final IInventory inventory = new DoubleSidedInventory(left, right);
             return Optional.of(new INamedContainerProvider() {
                 @Override
                 @Nullable
                 public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
                     if (left.canOpen(player) && right.canOpen(player)) {
-                        left.fillWithLoot(playerInventory.player);
-                        right.fillWithLoot(playerInventory.player);
-                        return ChestContainer.createGeneric9X6(id, playerInventory, inventory);
+                        left.unpackLootTable(playerInventory.player);
+                        right.unpackLootTable(playerInventory.player);
+                        return ChestContainer.sixRows(id, playerInventory, inventory);
                     } else {
                         return null;
                     }
@@ -72,12 +72,12 @@ public class BambooChestBlock extends ChestBlock {
         }
 
         @Override
-        public Optional<INamedContainerProvider> func_225538_a_(ChestTileEntity chest) {
+        public Optional<INamedContainerProvider> acceptSingle(ChestTileEntity chest) {
             return Optional.of(chest);
         }
 
         @Override
-        public Optional<INamedContainerProvider> func_225537_b_() {
+        public Optional<INamedContainerProvider> acceptNone() {
             return Optional.empty();
         }
     };
@@ -90,13 +90,13 @@ public class BambooChestBlock extends ChestBlock {
     }
 
     @Override
-    public TileEntity createNewTileEntity(IBlockReader world) {
+    public TileEntity newBlockEntity(IBlockReader world) {
         return new BambooChestTileEntity();
     }
 
     @Override
     @Nullable
-    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
+    public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
         return combine(state, worldIn, pos, false).apply(MENU_PROVIDER_COMBINER).orElse(null);
     }
 
@@ -107,12 +107,12 @@ public class BambooChestBlock extends ChestBlock {
      */
     @Override
     @Deprecated
-    public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
-        final BambooChestTileEntity tileEntity = (BambooChestTileEntity) world.getTileEntity(pos);
+    public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
+        final BambooChestTileEntity tileEntity = (BambooChestTileEntity) world.getBlockEntity(pos);
         if (tileEntity != null && tileEntity.isUnbreakable()) {
             return 0.0f;
         }
-        return super.getPlayerRelativeBlockHardness(state, player, world, pos);
+        return super.getDestroyProgress(state, player, world, pos);
     }
 
     // private static final MethodHandle _upperChest, _lowerChest;

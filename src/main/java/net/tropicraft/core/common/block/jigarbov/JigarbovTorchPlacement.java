@@ -24,10 +24,10 @@ public final class JigarbovTorchPlacement {
         if (placedBlock == Blocks.REDSTONE_WALL_TORCH) {
             RegistryObject<RedstoneWallTorchBlock> jigarbovTorchBlock = getJigarbovTorchFor(event.getPlacedAgainst().getBlock());
             if (jigarbovTorchBlock != null) {
-                BlockState jigarbovTorch = jigarbovTorchBlock.get().getDefaultState();
+                BlockState jigarbovTorch = jigarbovTorchBlock.get().defaultBlockState();
                 jigarbovTorch = copyPropertiesTo(jigarbovTorch, placedState);
 
-                event.getWorld().setBlockState(event.getPos(), jigarbovTorch, BlockFlags.DEFAULT);
+                event.getWorld().setBlock(event.getPos(), jigarbovTorch, BlockFlags.DEFAULT);
             }
         }
     }
@@ -47,7 +47,7 @@ public final class JigarbovTorchPlacement {
 
     private static <T extends Comparable<T>> BlockState copyPropertyTo(BlockState to, BlockState from, Property<T> property) {
         if (to.hasProperty(property)) {
-            return to.with(property, from.get(property));
+            return to.setValue(property, from.getValue(property));
         } else {
             return to;
         }

@@ -53,26 +53,26 @@ public class CoffeeBushBlock extends CropsBlock {
     }
 
     @Override
-    protected IItemProvider getSeedsItem() {
+    protected IItemProvider getBaseSeedId() {
         return TropicraftItems.RAW_COFFEE_BEAN.get();
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(AGE);
     }
 
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         // Try to grow up
-        if (worldIn.isAirBlock(pos.up())) {
+        if (worldIn.isEmptyBlock(pos.above())) {
             int height;
             BlockPos ground = pos;
-            for (height = 1; worldIn.getBlockState(ground = ground.down()).getBlock() == this; ++height);
+            for (height = 1; worldIn.getBlockState(ground = ground.below()).getBlock() == this; ++height);
 
             final BlockState blockState = worldIn.getBlockState(ground);
-            if (height < MAX_HEIGHT && worldIn.rand.nextInt(blockState.getBlock().isFertile(blockState, worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
-                worldIn.setBlockState(pos.up(), getDefaultState());
+            if (height < MAX_HEIGHT && worldIn.random.nextInt(blockState.getBlock().isFertile(blockState, worldIn, ground) ? GROWTH_RATE_FERTILE : GROWTH_RATE_INFERTILE) == 0) {
+                worldIn.setBlockAndUpdate(pos.above(), defaultBlockState());
             }
         }
 
@@ -80,24 +80,24 @@ public class CoffeeBushBlock extends CropsBlock {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        if (state.get(AGE) == getMaxAge()) {
-            world.setBlockState(pos, state.with(AGE, 0));
-            final int count = 1 + player.getRNG().nextInt(3);
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        if (state.getValue(AGE) == getMaxAge()) {
+            world.setBlockAndUpdate(pos, state.setValue(AGE, 0));
+            final int count = 1 + player.getRandom().nextInt(3);
             ItemStack stack = new ItemStack(TropicraftItems.RAW_COFFEE_BEAN.get(), count);
-            spawnAsEntity(world, pos, stack);
-            return world.isRemote ? ActionResultType.SUCCESS : ActionResultType.CONSUME;
+            popResource(world, pos, stack);
+            return world.isClientSide ? ActionResultType.SUCCESS : ActionResultType.CONSUME;
         }
         return ActionResultType.PASS;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return VoxelShapes.fullCube();
+        return VoxelShapes.block();
     }
 
     @Override
-    protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
         return state.getBlock() == Blocks.GRASS_BLOCK || net.minecraftforge.common.Tags.Blocks.DIRT.contains(this) || state.getBlock() == Blocks.FARMLAND || state.getBlock() == this;
     }
 }

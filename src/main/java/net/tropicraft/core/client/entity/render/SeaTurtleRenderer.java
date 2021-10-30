@@ -14,18 +14,18 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
 
     public SeaTurtleRenderer(EntityRendererManager renderManager) {
         super(renderManager, new SeaTurtleModel(), 0.7F);
-        shadowSize = 0.5f;
-        shadowOpaque = 0.5f;
+        shadowRadius = 0.5f;
+        shadowStrength = 0.5f;
     }
 
     public void render(SeaTurtleEntity turtle, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
         float scale = 0.3f;
-        final float existingTime = (float) turtle.ticksExisted / 4000;
-        if (turtle.ticksExisted < 30) {
-            shadowOpaque = 0.5f;
-            shadowSize = 0.2f + existingTime;
-            if (shadowSize > 0.5f) {
-                shadowSize = 0.5f;
+        final float existingTime = (float) turtle.tickCount / 4000;
+        if (turtle.tickCount < 30) {
+            shadowStrength = 0.5f;
+            shadowRadius = 0.2f + existingTime;
+            if (shadowRadius > 0.5f) {
+                shadowRadius = 0.5f;
             }
         } else {
             scale = 0.3f + existingTime;
@@ -36,16 +36,16 @@ public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleMod
         if (turtle.isMature()) {
             scale = 1f;
         }
-        stack.push();
+        stack.pushPose();
         stack.scale(scale, scale, scale);
 
         super.render(turtle, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
 
-        stack.pop();
+        stack.popPose();
     }
 
     @Override
-    public ResourceLocation getEntityTexture(SeaTurtleEntity seaTurtleEntity) {
+    public ResourceLocation getTextureLocation(SeaTurtleEntity seaTurtleEntity) {
         return TropicraftRenderUtils.getTextureEntity(String.format("turtle/sea_turtle%s", seaTurtleEntity.getTurtleType()));
     }
 }

@@ -41,27 +41,27 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
     public HummingbirdEntity(EntityType<? extends HummingbirdEntity> type, World world) {
         super(type, world);
 
-        this.moveController = new FlyingMovementController(this, 20, true);
-        this.setPathPriority(PathNodeType.DANGER_FIRE, -1.0F);
-        this.setPathPriority(PathNodeType.DAMAGE_FIRE, -1.0F);
-        this.setPathPriority(PathNodeType.COCOA, -1.0F);
-        this.setPathPriority(PathNodeType.WATER, -1.0F);
-        this.setPathPriority(PathNodeType.FENCE, -1.0F);
+        this.moveControl = new FlyingMovementController(this, 20, true);
+        this.setPathfindingMalus(PathNodeType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathNodeType.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingMalus(PathNodeType.COCOA, -1.0F);
+        this.setPathfindingMalus(PathNodeType.WATER, -1.0F);
+        this.setPathfindingMalus(PathNodeType.FENCE, -1.0F);
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6.0)
-                .createMutableAttribute(Attributes.FLYING_SPEED, 0.4)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 6.0)
+                .add(Attributes.FLYING_SPEED, 0.4)
+                .add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
     @Override
-    protected PathNavigator createNavigator(World world) {
+    protected PathNavigator createNavigation(World world) {
         FlyingPathNavigator navigator = new FlyingPathNavigator(this, world);
         navigator.setCanOpenDoors(false);
-        navigator.setCanSwim(true);
-        navigator.setCanEnterDoors(true);
+        navigator.setCanFloat(true);
+        navigator.setCanPassDoors(true);
         return navigator;
     }
 
@@ -69,34 +69,34 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new FlyAwayInPanicGoal());
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.fromItems(Items.SUGAR), false));
+        this.goalSelector.addGoal(2, new TemptGoal(this, 1.25, Ingredient.of(Items.SUGAR), false));
         this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(4, new FeedFromPlantsGoal());
         this.goalSelector.addGoal(5, new FlyAroundRandomlyGoal());
     }
 
     public static boolean canHummingbirdSpawnOn(EntityType<HummingbirdEntity> type, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
-        BlockState groundState = world.getBlockState(pos.down());
-        return (groundState.isIn(BlockTags.LEAVES) || groundState.matchesBlock(Blocks.GRASS_BLOCK) || groundState.isAir())
-                && world.getLightSubtracted(pos, 0) > 8;
+        BlockState groundState = world.getBlockState(pos.below());
+        return (groundState.is(BlockTags.LEAVES) || groundState.is(Blocks.GRASS_BLOCK) || groundState.isAir())
+                && world.getRawBrightness(pos, 0) > 8;
     }
 
     @Override
-    public boolean onLivingFall(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
         return false;
     }
 
     @Override
-    protected void updateFallState(double y, boolean onGround, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
 
     @Override
-    public HummingbirdEntity createChild(ServerWorld world, AgeableEntity mate) {
+    public HummingbirdEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
         return null;
     }
 
@@ -120,19 +120,19 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
         }
 
         @Override
-        public boolean shouldExecute() {
+        public boolean canUse() {
             HummingbirdEntity bird = HummingbirdEntity.this;
-            return bird.navigator.noPath() && bird.rand.nextInt(20) == 0;
+            return bird.navigation.isDone() && bird.random.nextInt(20) == 0;
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
-            return this.feedingTicks > 0 || HummingbirdEntity.this.hasPath();
+        public boolean canContinueToUse() {
+            return this.feedingTicks > 0 || HummingbirdEntity.this.isPathFinding();
         }
 
         @Override
-        public void resetTask() {
-            super.resetTask();
+        public void stop() {
+            super.stop();
             this.feedingTicks = 0;
             this.foundFood = false;
         }
@@ -153,13 +153,13 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
 
         private void tickFoundFood(Vector3d target) {
             if (this.feedingTicks > 0) {
-                HummingbirdEntity.this.getLookController().setLookPosition(target);
+                HummingbirdEntity.this.getLookControl().setLookAt(target);
                 this.feedingTicks--;
             }
         }
 
         private void tickFindingFood(Vector3d target) {
-            if (HummingbirdEntity.this.getDistanceSq(target) <= 1.5 * 1.5) {
+            if (HummingbirdEntity.this.distanceToSqr(target) <= 1.5 * 1.5) {
                 this.feedingTicks = FEEDING_TICKS;
                 this.foundFood = true;
             }
@@ -169,13 +169,13 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
         @Override
         Vector3d generateTarget() {
             HummingbirdEntity bird = HummingbirdEntity.this;
-            World world = bird.world;
-            Random random = bird.rand;
+            World world = bird.level;
+            Random random = bird.random;
 
             BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
             for (int i = 0; i < SEARCH_TRIES; i++) {
-                mutablePos.setAndOffset(bird.getPosition(),
+                mutablePos.setWithOffset(bird.blockPosition(),
                         random.nextInt(SEARCH_RADIUS) - random.nextInt(SEARCH_RADIUS),
                         random.nextInt(SEARCH_RADIUS_Y) - random.nextInt(SEARCH_RADIUS_Y),
                         random.nextInt(SEARCH_RADIUS) - random.nextInt(SEARCH_RADIUS)
@@ -183,7 +183,7 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
 
                 BlockState state = world.getBlockState(mutablePos);
                 if (this.canFeedFrom(world, mutablePos, state)) {
-                    return Vector3d.copyCentered(mutablePos);
+                    return Vector3d.atCenterOf(mutablePos);
                 }
             }
 
@@ -194,8 +194,8 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
             if (this.canFeedFrom(state)) {
                 BlockPos.Mutable mutablePos = new BlockPos.Mutable();
                 for (Direction direction : HORIZONTALS) {
-                    mutablePos.setAndMove(pos, direction);
-                    if (world.isAirBlock(mutablePos)) {
+                    mutablePos.setWithOffset(pos, direction);
+                    if (world.isEmptyBlock(mutablePos)) {
                         return true;
                     }
                 }
@@ -207,7 +207,7 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
 
         private boolean canFeedFrom(BlockState state) {
             if (state.isAir()) return false;
-            return state.isIn(BlockTags.LEAVES) || state.isIn(BlockTags.FLOWERS);
+            return state.is(BlockTags.LEAVES) || state.is(BlockTags.FLOWERS);
         }
     }
 
@@ -217,19 +217,19 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
         }
 
         @Override
-        public boolean shouldExecute() {
-            return HummingbirdEntity.this.getRevengeTarget() != null;
+        public boolean canUse() {
+            return HummingbirdEntity.this.getLastHurtByMob() != null;
         }
 
         @Nullable
         @Override
         Vector3d generateTarget() {
-            LivingEntity target = HummingbirdEntity.this.getRevengeTarget();
+            LivingEntity target = HummingbirdEntity.this.getLastHurtByMob();
             if (target == null) {
                 return null;
             }
 
-            Vector3d direction = HummingbirdEntity.this.getPositionVec().subtract(target.getPositionVec())
+            Vector3d direction = HummingbirdEntity.this.position().subtract(target.position())
                     .normalize();
             return this.generateTargetInDirection(direction, Math.PI / 2.0);
         }
@@ -241,15 +241,15 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
         }
 
         @Override
-        public boolean shouldExecute() {
+        public boolean canUse() {
             HummingbirdEntity bird = HummingbirdEntity.this;
-            return bird.navigator.noPath() && bird.rand.nextInt(10) == 0;
+            return bird.navigation.isDone() && bird.random.nextInt(10) == 0;
         }
 
         @Nullable
         @Override
         Vector3d generateTarget() {
-            Vector3d direction = HummingbirdEntity.this.getLook(1.0F);
+            Vector3d direction = HummingbirdEntity.this.getViewVector(1.0F);
             return this.generateTargetInDirection(direction, Math.PI / 2.0);
         }
     }
@@ -260,30 +260,30 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
 
         FlyingGoal(float speed) {
             this.speed = speed;
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
         }
 
         @Override
-        public boolean shouldExecute() {
-            return HummingbirdEntity.this.navigator.noPath();
+        public boolean canUse() {
+            return HummingbirdEntity.this.navigation.isDone();
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
-            return HummingbirdEntity.this.navigator.hasPath();
+        public boolean canContinueToUse() {
+            return HummingbirdEntity.this.navigation.isInProgress();
         }
 
         @Override
-        public void startExecuting() {
+        public void start() {
             this.target = this.generateTarget();
             if (this.target != null) {
-                Path path = HummingbirdEntity.this.navigator.getPathToPos(new BlockPos(this.target), 1);
-                HummingbirdEntity.this.navigator.setPath(path, this.speed);
+                Path path = HummingbirdEntity.this.navigation.createPath(new BlockPos(this.target), 1);
+                HummingbirdEntity.this.navigation.moveTo(path, this.speed);
             }
         }
 
         @Override
-        public void resetTask() {
+        public void stop() {
             this.target = null;
         }
 
@@ -292,9 +292,9 @@ public class HummingbirdEntity extends AnimalEntity implements IFlyingAnimal {
 
         @Nullable
         final Vector3d generateTargetInDirection(Vector3d direction, double maxAngle) {
-            Vector3d target = RandomPositionGenerator.findAirTarget(HummingbirdEntity.this, 8, 7, direction, (float) maxAngle, 2, 1);
+            Vector3d target = RandomPositionGenerator.getAboveLandPos(HummingbirdEntity.this, 8, 7, direction, (float) maxAngle, 2, 1);
             if (target == null) {
-                target = RandomPositionGenerator.findGroundTarget(HummingbirdEntity.this, 8, 4, -2, direction, (float) maxAngle);
+                target = RandomPositionGenerator.getAirPos(HummingbirdEntity.this, 8, 4, -2, direction, (float) maxAngle);
             }
 
             return target;

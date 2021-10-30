@@ -40,34 +40,34 @@ public class TropicraftSpawnEgg<T extends Entity> extends Item {
         this.typeIn = type;
     }
 
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
-        if (world.isRemote) {
+    public ActionResultType useOn(ItemUseContext context) {
+        World world = context.getLevel();
+        if (world.isClientSide) {
             return ActionResultType.SUCCESS;
         } else {
-            ItemStack itemStack = context.getItem();
-            BlockPos pos = context.getPos();
-            Direction dir = context.getFace();
+            ItemStack itemStack = context.getItemInHand();
+            BlockPos pos = context.getClickedPos();
+            Direction dir = context.getClickedFace();
             BlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
             if (block == Blocks.SPAWNER) {
-                TileEntity te = world.getTileEntity(pos);
+                TileEntity te = world.getBlockEntity(pos);
                 if (te instanceof MobSpawnerTileEntity) {
-                    AbstractSpawner spawner = ((MobSpawnerTileEntity)te).getSpawnerBaseLogic();
+                    AbstractSpawner spawner = ((MobSpawnerTileEntity)te).getSpawner();
                     EntityType<?> spawnType = typeIn.get();
-                    spawner.setEntityType(spawnType);
-                    te.markDirty();
-                    world.notifyBlockUpdate(pos, state, state, 3);
+                    spawner.setEntityId(spawnType);
+                    te.setChanged();
+                    world.sendBlockUpdated(pos, state, state, 3);
                     itemStack.shrink(1);
                     return ActionResultType.SUCCESS;
                 }
             }
 
             BlockPos spawnPos;
-            if (state.getCollisionShapeUncached(world, pos).isEmpty()) {
+            if (state.getCollisionShape(world, pos).isEmpty()) {
                 spawnPos = pos;
             } else {
-                spawnPos = pos.offset(dir);
+                spawnPos = pos.relative(dir);
             }
 
             EntityType<?> type3 = typeIn.get();
@@ -79,33 +79,33 @@ public class TropicraftSpawnEgg<T extends Entity> extends Item {
         }
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack heldItem = player.getHeldItem(hand);
-        if (world.isRemote) {
-            return ActionResult.resultPass(heldItem);
+    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack heldItem = player.getItemInHand(hand);
+        if (world.isClientSide) {
+            return ActionResult.pass(heldItem);
         } else {
-            RayTraceResult rayTraceResult = rayTrace(world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
+            RayTraceResult rayTraceResult = getPlayerPOVHitResult(world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
             if (rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
-                return ActionResult.resultPass(heldItem);
+                return ActionResult.pass(heldItem);
             } else {
                 BlockRayTraceResult traceResult = (BlockRayTraceResult) rayTraceResult;
-                BlockPos tracePos = traceResult.getPos();
+                BlockPos tracePos = traceResult.getBlockPos();
                 if (!(world.getBlockState(tracePos).getBlock() instanceof FlowingFluidBlock)) {
-                    return ActionResult.resultPass(heldItem);
-                } else if (world.isBlockModifiable(player, tracePos) && player.canPlayerEdit(tracePos, traceResult.getFace(), heldItem)) {
+                    return ActionResult.pass(heldItem);
+                } else if (world.mayInteract(player, tracePos) && player.mayUseItemAt(tracePos, traceResult.getDirection(), heldItem)) {
                     EntityType<?> type = typeIn.get();
                     if (type.spawn((ServerWorld) world, heldItem, player, tracePos, SpawnReason.SPAWN_EGG, false, false) == null) {
-                        return ActionResult.resultPass(heldItem);
+                        return ActionResult.pass(heldItem);
                     } else {
-                        if (!player.abilities.isCreativeMode) {
+                        if (!player.abilities.instabuild) {
                             heldItem.shrink(1);
                         }
 
-                        player.addStat(Stats.ITEM_USED.get(this));
-                        return ActionResult.resultSuccess(heldItem);
+                        player.awardStat(Stats.ITEM_USED.get(this));
+                        return ActionResult.success(heldItem);
                     }
                 } else {
-                    return ActionResult.resultFail(heldItem);
+                    return ActionResult.fail(heldItem);
                 }
             }
         }

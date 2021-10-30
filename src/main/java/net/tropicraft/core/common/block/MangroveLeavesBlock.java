@@ -8,6 +8,8 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class MangroveLeavesBlock extends LeavesBlock {
     private static final int PROPAGULE_GROW_CHANCE = 200;
     private static final int SPACING = 2;
@@ -20,8 +22,8 @@ public class MangroveLeavesBlock extends LeavesBlock {
     }
 
     @Override
-    public boolean ticksRandomly(BlockState state) {
-        return this.canGrowPropagules(state) || super.ticksRandomly(state);
+    public boolean isRandomlyTicking(BlockState state) {
+        return this.canGrowPropagules(state) || super.isRandomlyTicking(state);
     }
 
     @Override
@@ -34,21 +36,21 @@ public class MangroveLeavesBlock extends LeavesBlock {
     }
 
     private void tryGrowPropagule(ServerWorld world, BlockPos pos) {
-        BlockPos growPos = pos.down();
-        if (world.isAirBlock(growPos) && world.isAirBlock(growPos.down()) && !this.hasNearPropagule(world, pos)) {
-            BlockState propagule = this.propaguleBlock.get().getDefaultState().with(PropaguleBlock.PLANTED, false);
-            world.setBlockState(growPos, propagule);
+        BlockPos growPos = pos.below();
+        if (world.isEmptyBlock(growPos) && world.isEmptyBlock(growPos.below()) && !this.hasNearPropagule(world, pos)) {
+            BlockState propagule = this.propaguleBlock.get().defaultBlockState().setValue(PropaguleBlock.PLANTED, false);
+            world.setBlockAndUpdate(growPos, propagule);
         }
     }
 
     private boolean canGrowPropagules(BlockState state) {
-        return state.get(DISTANCE) <= 3;
+        return state.getValue(DISTANCE) <= 3;
     }
 
     private boolean hasNearPropagule(ServerWorld world, BlockPos source) {
         PropaguleBlock propagule = this.propaguleBlock.get();
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(source.add(-SPACING, -SPACING, -SPACING), source.add(SPACING, 0, SPACING))) {
-            if (world.getBlockState(pos).matchesBlock(propagule)) {
+        for (BlockPos pos : BlockPos.betweenClosed(source.offset(-SPACING, -SPACING, -SPACING), source.offset(SPACING, 0, SPACING))) {
+            if (world.getBlockState(pos).is(propagule)) {
                 return true;
             }
         }

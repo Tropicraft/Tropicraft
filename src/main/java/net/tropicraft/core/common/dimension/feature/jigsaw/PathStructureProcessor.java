@@ -31,18 +31,18 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
         PathVector(BlockPos start, Direction dir) {
             Preconditions.checkArgument(dir.getAxis().isHorizontal(), "Invalid direction for path vector at " + start);
             this.dir = dir;
-            Vector3d ortho = Vector3d.copy(dir.rotateY().getDirectionVec());
+            Vector3d ortho = Vector3d.atLowerCornerOf(dir.getClockWise().getNormal());
             bb = toMutable(new AxisAlignedBB(start)
                     // Expand 16 blocks in front of the vector
-                    .expand(Vector3d.copy(dir.getDirectionVec()).scale(16))
+                    .expandTowards(Vector3d.atLowerCornerOf(dir.getNormal()).scale(16))
                     // Add 1 block to each side
-                    .expand(ortho).expand(ortho.inverse())
+                    .expandTowards(ortho).expandTowards(ortho.reverse())
                     // Cover a good amount of vertical space
-                    .grow(0, 3, 0));
+                    .inflate(0, 3, 0));
         }
 
         boolean contains(BlockPos pos, PlacementSettings settings) {
-            return bb.isVecInside(Template.transformedBlockPos(settings, pos));
+            return bb.isInside(Template.calculateRelativePosition(settings, pos));
         }
 
         private MutableBoundingBox toMutable(AxisAlignedBB bb) {
@@ -63,9 +63,9 @@ public abstract class PathStructureProcessor extends CheatyStructureProcessor {
          *  either side.
          */
         return VECTOR_CACHE.computeIfAbsent(settings, s ->
-                template.func_215381_a(seedPos, settings, Blocks.JIGSAW).stream() // Find all jigsaw blocks
+                template.filterBlocks(seedPos, settings, Blocks.JIGSAW).stream() // Find all jigsaw blocks
                         .filter(b -> b.nbt.getString("attachement_type").equals(Constants.MODID + ":path_center")) // Filter for vector markers
-                        .map(bi -> new PathVector(bi.pos.subtract(seedPos), JigsawBlock.getConnectingDirection(bi.state))) // Convert pos to structure local, extract facing
+                        .map(bi -> new PathVector(bi.pos.subtract(seedPos), JigsawBlock.getFrontFacing(bi.state))) // Convert pos to structure local, extract facing
                         .collect(Collectors.toList()))
                 .stream()
                 .filter(pv -> pv.contains(current.pos, settings)) // Find vectors that contain this block

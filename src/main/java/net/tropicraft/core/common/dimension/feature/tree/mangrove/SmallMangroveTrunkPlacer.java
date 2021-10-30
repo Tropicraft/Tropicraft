@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class SmallMangroveTrunkPlacer extends AbstractTrunkPlacer {
     public static final Codec<SmallMangroveTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
-        return getAbstractTrunkCodec(instance)
+        return trunkPlacerParts(instance)
                 .and(Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock))
                 .apply(instance, SmallMangroveTrunkPlacer::new);
     });
@@ -36,30 +36,30 @@ public class SmallMangroveTrunkPlacer extends AbstractTrunkPlacer {
     }
 
     @Override
-    protected TrunkPlacerType<?> getPlacerType() {
+    protected TrunkPlacerType<?> type() {
         return TropicraftTrunkPlacers.SMALL_MANGROVE;
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> getFoliages(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
-        func_236909_a_(world, origin.down());
+    public List<FoliagePlacer.Foliage> placeTrunk(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
+        setDirtAt(world, origin.below());
 
         for (int i = 0; i < height; ++i) {
-            func_236911_a_(world, random, origin.up(i), logs, bounds, config);
+            placeLog(world, random, origin.above(i), logs, bounds, config);
         }
 
         generateRoots(world, random, origin, 0);
 
-        return ImmutableList.of(new FoliagePlacer.Foliage(origin.up(height - 1), 1, false));
+        return ImmutableList.of(new FoliagePlacer.Foliage(origin.above(height - 1), 1, false));
     }
 
     private void generateRoots(IWorldGenerationReader world, Random random, BlockPos origin, int depth) {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            BlockPos offset = origin.offset(direction);
+            BlockPos offset = origin.relative(direction);
 
-            if (world.hasBlockState(offset, AbstractBlock.AbstractBlockState::isAir)) {
-                if (world.hasBlockState(offset.down(), state -> state.getMaterial().isOpaque())) {
-                    TreeFeature.setBlockStateWithoutUpdate(world, offset, this.rootsBlock.getDefaultState());
+            if (world.isStateAtPosition(offset, AbstractBlock.AbstractBlockState::isAir)) {
+                if (world.isStateAtPosition(offset.below(), state -> state.getMaterial().isSolidBlocking())) {
+                    TreeFeature.setBlockKnownShape(world, offset, this.rootsBlock.defaultBlockState());
 
                     if (depth < 2 && random.nextInt(depth + 2) == 0) {
                         generateRoots(world, random, offset, depth + 1);

@@ -33,12 +33,12 @@ public class ScubaAmbienceTicker {
     public static void onClientTick(ClientTickEvent event) {
         if (event.phase != Phase.START) return;
         Minecraft mc = Minecraft.getInstance();
-        if (mc.world != null && mc.player != null) {
-            ActiveRenderInfo renderInfo = mc.getRenderManager().info;
-            Entity renderViewEntity = mc.getRenderViewEntity();
+        if (mc.level != null && mc.player != null) {
+            ActiveRenderInfo renderInfo = mc.getEntityRenderDispatcher().camera;
+            Entity renderViewEntity = mc.getCameraEntity();
             if (renderInfo != null && renderViewEntity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) renderViewEntity;
-                if (renderInfo.getFluidState().isTagged(FluidTags.WATER) && player.getItemStackFromSlot(EquipmentSlotType.CHEST).getItem() instanceof ScubaArmorItem) {
+                if (renderInfo.getFluidInCamera().is(FluidTags.WATER) && player.getItemBySlot(EquipmentSlotType.CHEST).getItem() instanceof ScubaArmorItem) {
                     if (ScubaData.getDepth(player) < 60) {
                         play(SHALLOW_SCUBA);
                         return;
@@ -56,13 +56,13 @@ public class ScubaAmbienceTicker {
         if (currentSound != sound) {
             stop();
             currentSound = sound;
-            Minecraft.getInstance().getSoundHandler().play(new SimpleSound(sound.getName(), SoundCategory.AMBIENT, 0.4f, 1.0f, true, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F, true));
+            Minecraft.getInstance().getSoundManager().play(new SimpleSound(sound.getLocation(), SoundCategory.AMBIENT, 0.4f, 1.0f, true, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F, true));
         }
     }
     
     private static void stop() {
         if (currentSound != null) {
-            Minecraft.getInstance().getSoundHandler().stop(currentSound.getName(), SoundCategory.AMBIENT);
+            Minecraft.getInstance().getSoundManager().stop(currentSound.getLocation(), SoundCategory.AMBIENT);
             currentSound = null;
         }
     }

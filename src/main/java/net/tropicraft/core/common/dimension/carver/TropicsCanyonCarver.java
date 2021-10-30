@@ -20,7 +20,7 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
 
     public TropicsCanyonCarver(Codec<ProbabilityConfig> codec) {
         super(codec);
-        this.carvableBlocks = ImmutableSet.<Block> builder().addAll(this.carvableBlocks)
+        this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())
                 .add(TropicraftBlocks.FOAMY_SAND.get())
                 .add(TropicraftBlocks.MINERAL_SAND.get())
@@ -32,8 +32,8 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
     }
     
     @Override
-    public boolean carveRegion(IChunk chunk, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig config) {
-        int i = (this.func_222704_c() * 2 - 1) * 16;
+    public boolean carve(IChunk chunk, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int chunkXOffset, int chunkZOffset, int chunkX, int chunkZ, BitSet carvingMask, ProbabilityConfig config) {
+        int i = (this.getRange() * 2 - 1) * 16;
         double d0 = chunkXOffset * 16 + rand.nextInt(16);
         double d1 = rand.nextInt(rand.nextInt(80) + 8) + 20;
         double d2 = chunkZOffset * 16 + rand.nextInt(16);
@@ -79,11 +79,11 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
             f1 = f1 + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
             f4 = f4 + (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
             if (random.nextInt(4) != 0) {
-                if (!this.func_222702_a(p_227204_6_, p_227204_7_, p_227204_8_, p_227204_12_, j, p_227204_18_, p_227204_14_)) {
+                if (!this.canReach(p_227204_6_, p_227204_7_, p_227204_8_, p_227204_12_, j, p_227204_18_, p_227204_14_)) {
                     return;
                 }
 
-                this.func_227208_a_(p_227204_1_, p_227204_2_, p_227204_3_, p_227204_5_, p_227204_6_, p_227204_7_, p_227204_8_, p_227204_10_, p_227204_12_, d0, d1, p_227204_21_);
+                this.carveSphere(p_227204_1_, p_227204_2_, p_227204_3_, p_227204_5_, p_227204_6_, p_227204_7_, p_227204_8_, p_227204_10_, p_227204_12_, d0, d1, p_227204_21_);
             }
         }
 
@@ -91,7 +91,7 @@ public class TropicsCanyonCarver extends CanyonWorldCarver {
 
     // Copied from super
     @Override
-    protected boolean func_222708_a(double p_222708_1_, double p_222708_3_, double p_222708_5_, int p_222708_7_) {
+    protected boolean skip(double p_222708_1_, double p_222708_3_, double p_222708_5_, int p_222708_7_) {
         return (p_222708_1_ * p_222708_1_ + p_222708_5_ * p_222708_5_) * (double)this.rs[p_222708_7_ - 1] + p_222708_3_ * p_222708_3_ / 6.0D >= 1.0D;
     }
 }

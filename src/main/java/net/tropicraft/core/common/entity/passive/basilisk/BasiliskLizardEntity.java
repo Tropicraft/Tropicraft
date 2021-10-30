@@ -31,7 +31,7 @@ import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 public final class BasiliskLizardEntity extends AnimalEntity {
-    private static final DataParameter<Boolean> RUNNING = EntityDataManager.createKey(BasiliskLizardEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> RUNNING = EntityDataManager.defineId(BasiliskLizardEntity.class, DataSerializers.BOOLEAN);
 
     private static final float WATER_WALK_SPEED_BOOST = 1.6F;
     private static final int WATER_WALK_TIME = 10;
@@ -46,18 +46,18 @@ public final class BasiliskLizardEntity extends AnimalEntity {
 
     public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, World world) {
         super(type, world);
-        this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6.0)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+        return MobEntity.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     @Override
-    protected PathNavigator createNavigator(World world) {
+    protected PathNavigator createNavigation(World world) {
         return new WaterWalking.Navigator(this, world);
     }
 
@@ -70,18 +70,18 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(RUNNING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RUNNING, false);
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return false;
     }
 
     @Override
-    public BasiliskLizardEntity createChild(ServerWorld world, AgeableEntity mate) {
+    public BasiliskLizardEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
         return null;
     }
 
@@ -98,11 +98,11 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     public void tick() {
         super.tick();
 
-        if (!this.world.isRemote()) {
+        if (!this.level.isClientSide()) {
             this.tickMovementTimer();
             this.tickSwimming();
 
-            this.dataManager.set(RUNNING, this.onWaterSurface);
+            this.entityData.set(RUNNING, this.onWaterSurface);
         } else {
             this.tickRunningAnimation();
         }
@@ -111,7 +111,7 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     private void tickRunningAnimation() {
         this.prevRunningAnimation = this.runningAnimation;
 
-        if (this.dataManager.get(RUNNING)) {
+        if (this.entityData.get(RUNNING)) {
             if (this.runningAnimation < RUNNING_ANIMATION_LENGTH) {
                 this.runningAnimation++;
             }
@@ -123,7 +123,7 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     private void tickMovementTimer() {
-        if (this.moveForward != 0.0F) {
+        if (this.zza != 0.0F) {
             this.movingTimer = WATER_WALK_TIME;
         } else {
             if (this.movingTimer > 0) {
@@ -133,10 +133,10 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     private void tickSwimming() {
-        if (!this.onWaterSurface && this.isInWater() && this.func_233571_b_(FluidTags.WATER) > this.getFluidJumpHeight()) {
+        if (!this.onWaterSurface && this.isInWater() && this.getFluidHeight(FluidTags.WATER) > this.getFluidJumpThreshold()) {
             boolean shouldWaterWalk = this.shouldWaterWalk();
-            if (shouldWaterWalk || this.rand.nextFloat() < 0.8F) {
-                this.setMotion(this.getMotion().scale(0.5).add(0.0, 0.1, 0.0));
+            if (shouldWaterWalk || this.random.nextFloat() < 0.8F) {
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.5).add(0.0, 0.1, 0.0));
             }
         }
     }
@@ -144,7 +144,7 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     @Override
     protected Vector3d maybeBackOffFromEdge(Vector3d offset, MoverType mover) {
         if (this.shouldWaterWalk()) {
-            Vector3d result = WaterWalking.collide(this.world, this.getBoundingBox(), offset);
+            Vector3d result = WaterWalking.collide(this.level, this.getBoundingBox(), offset);
             this.onWaterSurface = offset.y < 0.0 && result.y != offset.y;
             return result;
         } else {
@@ -154,19 +154,19 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     @Override
-    protected void updateFallState(double y, boolean onGround, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
         this.onGround |= this.onWaterSurface;
-        super.updateFallState(y, this.onGround, state, pos);
+        super.checkFallDamage(y, this.onGround, state, pos);
     }
 
     @Override
-    public float getAIMoveSpeed() {
-        float speed = super.getAIMoveSpeed();
+    public float getSpeed() {
+        float speed = super.getSpeed();
         return this.onWaterSurface ? speed * WATER_WALK_SPEED_BOOST : speed;
     }
 
     @Override
-    public boolean func_230285_a_(Fluid fluid) {
+    public boolean canStandOnFluid(Fluid fluid) {
         return WaterWalking.canWalkOn(fluid);
     }
 
