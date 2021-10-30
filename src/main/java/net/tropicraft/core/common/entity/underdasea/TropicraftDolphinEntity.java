@@ -1,30 +1,30 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.passive.DolphinEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
 
-public class TropicraftDolphinEntity extends DolphinEntity {
+public class TropicraftDolphinEntity extends Dolphin {
 
-    private static final DataParameter<Boolean> MOUTH_OPEN = EntityDataManager.defineId(TropicraftDolphinEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.defineId(TropicraftDolphinEntity.class, DataSerializers.STRING);
+    private static final EntityDataAccessor<Boolean> MOUTH_OPEN = SynchedEntityData.defineId(TropicraftDolphinEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<String> TEXTURE_NAME = SynchedEntityData.defineId(TropicraftDolphinEntity.class, EntityDataSerializers.STRING);
 
-    public TropicraftDolphinEntity(EntityType<? extends TropicraftDolphinEntity> type, World world) {
+    public TropicraftDolphinEntity(EntityType<? extends TropicraftDolphinEntity> type, Level world) {
         super(type, world);
     }
 
@@ -37,7 +37,7 @@ public class TropicraftDolphinEntity extends DolphinEntity {
 
     @Override
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
         setTexture(random.nextInt(50) == 0 ? "special_dolphin" : "dolphin");
         return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
     }
@@ -59,13 +59,13 @@ public class TropicraftDolphinEntity extends DolphinEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putString("Texture", getTexture());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT nbt) {
+    public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         setTexture(nbt.getString("Texture"));
     }
@@ -99,7 +99,7 @@ public class TropicraftDolphinEntity extends DolphinEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.DOLPHIN_SPAWN_EGG.get());
     }
 }

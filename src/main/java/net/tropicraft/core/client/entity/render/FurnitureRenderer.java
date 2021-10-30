@@ -1,16 +1,16 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.ColorHelper;
 import net.tropicraft.core.common.entity.placeable.FurnitureEntity;
@@ -21,11 +21,11 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     private final float scale;
     private float red = 0.0F, green = 0.0F, blue = 0.0F;
 
-    public FurnitureRenderer(EntityRendererManager renderManager, String textureName, EntityModel<T> model) {
+    public FurnitureRenderer(EntityRenderDispatcher renderManager, String textureName, EntityModel<T> model) {
         this(renderManager, textureName, model, 1);
     }
     
-    public FurnitureRenderer(EntityRendererManager renderManager, String textureName, EntityModel<T> model, float scale) {
+    public FurnitureRenderer(EntityRenderDispatcher renderManager, String textureName, EntityModel<T> model, float scale) {
         super(renderManager);
         this.textureName = textureName;
         this.model = model;
@@ -33,7 +33,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     }
 
     @Override
-    public void render(T furniture, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn) {
+    public void render(T furniture, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLightIn) {
         stack.pushPose();
         stack.translate(0, getYOffset(), 0);
         stack.mulPose(Vector3f.YP.rotationDegrees(180 - entityYaw));
@@ -42,7 +42,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         setupTransforms(stack);
 
         final float rockingAngle = getRockingAngle(furniture, partialTicks);;
-        if (!MathHelper.equal(rockingAngle, 0.0F)) {
+        if (!Mth.equal(rockingAngle, 0.0F)) {
             stack.mulPose(new Quaternion(getRockingAxis(), rockingAngle, true));
         }
 
@@ -52,7 +52,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         blue = ColorHelper.getBlue(color);
 
         // Draw uncolored layer
-        IVertexBuilder ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
+        VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));
         stack.scale(-1.0F, -1.0F, 1.0F);
         model.renderToBuffer(stack, ivertexbuilder, getPackedLightCoords(furniture, partialTicks), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -68,7 +68,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
         return 0.3125;
     }
     
-    protected void setupTransforms(MatrixStack stack) {
+    protected void setupTransforms(PoseStack stack) {
 
     }
     
@@ -79,7 +79,7 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
             f3 = 0.0F;
         }
         if (f2 > 0.0F) {
-            return ((MathHelper.sin(f2) * f2 * f3) / getRockAmount()) * (float) entity.getForwardDirection();
+            return ((Mth.sin(f2) * f2 * f3) / getRockAmount()) * (float) entity.getForwardDirection();
         }
         return 0;
     }

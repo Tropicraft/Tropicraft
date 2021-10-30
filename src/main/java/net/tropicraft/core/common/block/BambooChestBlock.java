@@ -1,24 +1,24 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.DoubleSidedInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.ChestContainer;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityMerger;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.CompoundContainer;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.DoubleBlockCombiner;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.tileentity.BambooChestTileEntity;
 
@@ -27,57 +27,57 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class BambooChestBlock extends ChestBlock {
-    private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>> CHEST_COMBINER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<IInventory>>() {
+    private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<Container>> CHEST_COMBINER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<Container>>() {
         @Override
-        public Optional<IInventory> acceptDouble(ChestTileEntity p_225539_1_, ChestTileEntity p_225539_2_) {
-            return Optional.of(new DoubleSidedInventory(p_225539_1_, p_225539_2_));
+        public Optional<Container> acceptDouble(ChestBlockEntity p_225539_1_, ChestBlockEntity p_225539_2_) {
+            return Optional.of(new CompoundContainer(p_225539_1_, p_225539_2_));
         }
 
         @Override
-        public Optional<IInventory> acceptSingle(ChestTileEntity p_225538_1_) {
+        public Optional<Container> acceptSingle(ChestBlockEntity p_225538_1_) {
             return Optional.of(p_225538_1_);
         }
 
         @Override
-        public Optional<IInventory> acceptNone() {
+        public Optional<Container> acceptNone() {
             return Optional.empty();
         }
     };
-    public static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> MENU_PROVIDER_COMBINER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
+    public static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> MENU_PROVIDER_COMBINER = new DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>>() {
         @Override
-        public Optional<INamedContainerProvider> acceptDouble(final ChestTileEntity left, final ChestTileEntity right) {
-            final IInventory inventory = new DoubleSidedInventory(left, right);
-            return Optional.of(new INamedContainerProvider() {
+        public Optional<MenuProvider> acceptDouble(final ChestBlockEntity left, final ChestBlockEntity right) {
+            final Container inventory = new CompoundContainer(left, right);
+            return Optional.of(new MenuProvider() {
                 @Override
                 @Nullable
-                public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity player) {
+                public AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player player) {
                     if (left.canOpen(player) && right.canOpen(player)) {
                         left.unpackLootTable(playerInventory.player);
                         right.unpackLootTable(playerInventory.player);
-                        return ChestContainer.sixRows(id, playerInventory, inventory);
+                        return ChestMenu.sixRows(id, playerInventory, inventory);
                     } else {
                         return null;
                     }
                 }
 
                 @Override
-                public ITextComponent getDisplayName() {
+                public Component getDisplayName() {
                     if (left.hasCustomName()) {
                         return left.getDisplayName();
                     } else {
-                        return right.hasCustomName() ? right.getDisplayName() : new TranslationTextComponent(Constants.MODID + ".container.bambooChestDouble");
+                        return right.hasCustomName() ? right.getDisplayName() : new TranslatableComponent(Constants.MODID + ".container.bambooChestDouble");
                     }
                 }
             });
         }
 
         @Override
-        public Optional<INamedContainerProvider> acceptSingle(ChestTileEntity chest) {
+        public Optional<MenuProvider> acceptSingle(ChestBlockEntity chest) {
             return Optional.of(chest);
         }
 
         @Override
-        public Optional<INamedContainerProvider> acceptNone() {
+        public Optional<MenuProvider> acceptNone() {
             return Optional.empty();
         }
     };
@@ -85,18 +85,18 @@ public class BambooChestBlock extends ChestBlock {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-    protected BambooChestBlock(Block.Properties props, Supplier<TileEntityType<? extends ChestTileEntity>> tileEntityTypeIn) {
+    protected BambooChestBlock(Block.Properties props, Supplier<BlockEntityType<? extends ChestBlockEntity>> tileEntityTypeIn) {
         super(props, tileEntityTypeIn);
     }
 
     @Override
-    public TileEntity newBlockEntity(IBlockReader world) {
+    public BlockEntity newBlockEntity(BlockGetter world) {
         return new BambooChestTileEntity();
     }
 
     @Override
     @Nullable
-    public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
+    public MenuProvider getMenuProvider(BlockState state, Level worldIn, BlockPos pos) {
         return combine(state, worldIn, pos, false).apply(MENU_PROVIDER_COMBINER).orElse(null);
     }
 
@@ -107,7 +107,7 @@ public class BambooChestBlock extends ChestBlock {
      */
     @Override
     @Deprecated
-    public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter world, BlockPos pos) {
         final BambooChestTileEntity tileEntity = (BambooChestTileEntity) world.getBlockEntity(pos);
         if (tileEntity != null && tileEntity.isUnbreakable()) {
             return 0.0f;

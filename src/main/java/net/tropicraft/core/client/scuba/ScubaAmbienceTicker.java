@@ -1,16 +1,16 @@
 package net.tropicraft.core.client.scuba;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.Camera;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -34,11 +34,11 @@ public class ScubaAmbienceTicker {
         if (event.phase != Phase.START) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && mc.player != null) {
-            ActiveRenderInfo renderInfo = mc.getEntityRenderDispatcher().camera;
+            Camera renderInfo = mc.getEntityRenderDispatcher().camera;
             Entity renderViewEntity = mc.getCameraEntity();
-            if (renderInfo != null && renderViewEntity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) renderViewEntity;
-                if (renderInfo.getFluidInCamera().is(FluidTags.WATER) && player.getItemBySlot(EquipmentSlotType.CHEST).getItem() instanceof ScubaArmorItem) {
+            if (renderInfo != null && renderViewEntity instanceof Player) {
+                Player player = (Player) renderViewEntity;
+                if (renderInfo.getFluidInCamera().is(FluidTags.WATER) && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScubaArmorItem) {
                     if (ScubaData.getDepth(player) < 60) {
                         play(SHALLOW_SCUBA);
                         return;
@@ -56,13 +56,13 @@ public class ScubaAmbienceTicker {
         if (currentSound != sound) {
             stop();
             currentSound = sound;
-            Minecraft.getInstance().getSoundManager().play(new SimpleSound(sound.getLocation(), SoundCategory.AMBIENT, 0.4f, 1.0f, true, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F, true));
+            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(sound.getLocation(), SoundSource.AMBIENT, 0.4f, 1.0f, true, 0, SoundInstance.Attenuation.NONE, 0.0F, 0.0F, 0.0F, true));
         }
     }
     
     private static void stop() {
         if (currentSound != null) {
-            Minecraft.getInstance().getSoundManager().stop(currentSound.getLocation(), SoundCategory.AMBIENT);
+            Minecraft.getInstance().getSoundManager().stop(currentSound.getLocation(), SoundSource.AMBIENT);
             currentSound = null;
         }
     }

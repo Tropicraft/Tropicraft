@@ -1,24 +1,24 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     private final Predicate<Entity> canBeSeenSelector;
     /** The entity we are attached to */
-    protected CreatureEntity theEntity;
+    protected PathfinderMob theEntity;
     private final double farSpeed;
     private final double nearSpeed;
     protected T closestLivingEntity;
@@ -26,18 +26,18 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
     /** The PathEntity of our entity */
     private Path entityPathEntity;
     /** The PathNavigate of our entity */
-    private final PathNavigator entityPathNavigate;
+    private final PathNavigation entityPathNavigate;
     /** Class of entity this behavior seeks to avoid */
     private final Class<T> classToAvoid;
     private final Predicate<Entity> avoidTargetSelector;
     private float healthToAvoid = 0F;
 
-    public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
+    public EntityAIAvoidEntityOnLowHealth(PathfinderMob theEntityIn, Class<T> classToAvoidIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
     {
         this(theEntityIn, classToAvoidIn, (entity) -> true, avoidDistanceIn, farSpeedIn, nearSpeedIn, healthToAvoid);
     }
 
-    public EntityAIAvoidEntityOnLowHealth(CreatureEntity theEntityIn, Class<T> classToAvoidIn, Predicate<Entity> avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
+    public EntityAIAvoidEntityOnLowHealth(PathfinderMob theEntityIn, Class<T> classToAvoidIn, Predicate<Entity> avoidTargetSelectorIn, float avoidDistanceIn, double farSpeedIn, double nearSpeedIn, float healthToAvoid)
     {
         this.canBeSeenSelector = entity -> entity.isAlive() && theEntity.getSensing().canSee(entity);
         this.theEntity = theEntityIn;
@@ -62,14 +62,14 @@ public class EntityAIAvoidEntityOnLowHealth<T extends Entity> extends Goal {
 
         List<T> list = this.theEntity.level.getEntitiesOfClass(this.classToAvoid,
                 this.theEntity.getBoundingBox().expandTowards((double)this.avoidDistance, 3.0D, (double)this.avoidDistance),
-                EntityPredicates.NO_CREATIVE_OR_SPECTATOR.and(this.canBeSeenSelector).and(this.avoidTargetSelector)
+                EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(this.canBeSeenSelector).and(this.avoidTargetSelector)
         );
 
         if (list.isEmpty()) {
             return false;
         } else {
             this.closestLivingEntity = list.get(0);
-            Vector3d Vector3d = RandomPositionGenerator.getPosAvoid(this.theEntity, 16, 7, new Vector3d(this.closestLivingEntity.getX(), this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
+            Vec3 Vector3d = RandomPos.getPosAvoid(this.theEntity, 16, 7, new Vec3(this.closestLivingEntity.getX(), this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
 
             if (Vector3d == null) {
                 return false;

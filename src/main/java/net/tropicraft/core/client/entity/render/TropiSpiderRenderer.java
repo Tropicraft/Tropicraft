@@ -1,21 +1,21 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 
 public class TropiSpiderRenderer extends SpiderRenderer<TropiSpiderEntity> {
-	public TropiSpiderRenderer(final EntityRendererManager manager) {
+	public TropiSpiderRenderer(final EntityRenderDispatcher manager) {
 		super(manager);
 		shadowStrength = 0.5f;
 	}
 
 	@Override
-	public void render(TropiSpiderEntity spider, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+	public void render(TropiSpiderEntity spider, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
 		stack.pushPose();
 		final float scale = getScale(spider);
 		shadowRadius = scale;

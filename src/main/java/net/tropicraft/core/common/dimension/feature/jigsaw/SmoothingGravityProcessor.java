@@ -2,45 +2,45 @@ package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.Direction.AxisDirection;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.Heightmap.Type;
-import net.minecraft.world.gen.feature.template.GravityStructureProcessor;
-import net.minecraft.world.gen.feature.template.IStructureProcessorType;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.Template.BlockInfo;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.tropicraft.Constants;
 
 public class SmoothingGravityProcessor extends PathStructureProcessor {
 
     public static final Codec<SmoothingGravityProcessor> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                Heightmap.Type.CODEC.fieldOf("heightmap").forGetter(p -> p.heightmap),
+                Heightmap.Types.CODEC.fieldOf("heightmap").forGetter(p -> p.heightmap),
                 Codec.INT.fieldOf("offset").forGetter(p -> p.offset)
         ).apply(instance, SmoothingGravityProcessor::new);
     });
 
-    static final IStructureProcessorType<SmoothingGravityProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":smooth_gravity", () -> CODEC);
+    static final StructureProcessorType<SmoothingGravityProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":smooth_gravity", () -> CODEC);
 
-    private final Heightmap.Type heightmap;
+    private final Heightmap.Types heightmap;
     private final int offset;
-    private final GravityStructureProcessor baseline;
+    private final GravityProcessor baseline;
 
-    public SmoothingGravityProcessor(Type heightmap, int offset) {
+    public SmoothingGravityProcessor(Types heightmap, int offset) {
         super();
         this.heightmap = heightmap;
         this.offset = offset;
-        this.baseline = new GravityStructureProcessor(heightmap, offset);
+        this.baseline = new GravityProcessor(heightmap, offset);
     }
 
     @Override
-    public BlockInfo process(IWorldReader world, BlockPos seedPos, BlockPos pos2, BlockInfo originalBlockInfo, BlockInfo blockInfo, PlacementSettings placementSettingsIn, Template template) {
+    public StructureBlockInfo process(LevelReader world, BlockPos seedPos, BlockPos pos2, StructureBlockInfo originalBlockInfo, StructureBlockInfo blockInfo, StructurePlaceSettings placementSettingsIn, StructureTemplate template) {
         Axis pathDir = getPathDirection(seedPos, blockInfo, placementSettingsIn, template);
         if (pathDir == null) {
             pathDir = Axis.X; // Better than nothing
@@ -52,13 +52,13 @@ public class SmoothingGravityProcessor extends PathStructureProcessor {
         int heightBackward = world.getHeight(heightmap, posBackward.getX(), posBackward.getZ()) + offset;
         int height = world.getHeight(heightmap, pos.getX(), pos.getZ()) + offset;
         if (heightForward > height && heightBackward > height) {
-            return new BlockInfo(new BlockPos(pos.getX(), Math.min(heightForward, heightBackward), pos.getZ()), blockInfo.state, blockInfo.nbt);
+            return new StructureBlockInfo(new BlockPos(pos.getX(), Math.min(heightForward, heightBackward), pos.getZ()), blockInfo.state, blockInfo.nbt);
         }
         return baseline.process(world, seedPos, pos2, originalBlockInfo, blockInfo, placementSettingsIn, template);
     }
 
     @Override
-    protected IStructureProcessorType<?> getType() {
+    protected StructureProcessorType<?> getType() {
         return TYPE;
     }
 }

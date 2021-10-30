@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.entity.passive.FishingBobberEntity;
@@ -17,7 +17,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIGoneFishin extends Goal {
 
@@ -94,7 +94,7 @@ public class EntityAIGoneFishin extends Goal {
 
         BlockPos blockpos = this.entity.blockPosition();
 
-        if ((!this.entity.level.isDay() || this.entity.level.isRaining() && this.entity.level.getBiome(blockpos).getPrecipitation() == Biome.RainType.RAIN)) {
+        if ((!this.entity.level.isDay() || this.entity.level.isRaining() && this.entity.level.getBiome(blockpos).getPrecipitation() == Biome.Precipitation.RAIN)) {
             return false;
         }
 
@@ -417,7 +417,7 @@ public class EntityAIGoneFishin extends Goal {
         //System.out.println("cast line");
         fishingTimeout = fishingTimeoutMax;
         retractLine();
-        entity.swing(Hand.MAIN_HAND);
+        entity.swing(InteractionHand.MAIN_HAND);
         FishingBobberEntity lure = new FishingBobberEntity(entity, entity.level, 0, 0);
         entity.level.addFreshEntity(lure);
     }
@@ -436,7 +436,7 @@ public class EntityAIGoneFishin extends Goal {
         double d1;
         d1 = y+0.5F - (entity.getY() + (double)entity.getEyeHeight());
 
-        double d3 = MathHelper.sqrt(d * d + d2 * d2);
+        double d3 = Mth.sqrt(d * d + d2 * d2);
         float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
         float f3 = (float)(-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
         entity.xRot = -updateRotation(entity.xRot, f3, maxDeltaPitch);

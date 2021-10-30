@@ -1,24 +1,24 @@
 package net.tropicraft.core.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.model.IHasArm;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.math.MathHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
-public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
-    public ModelRenderer rightLeg;
-    public ModelRenderer leftLeg;
-    public ModelRenderer body;
-    public ModelRenderer head;
-    public ModelRenderer mask;
-    public ModelRenderer rightArm;
-    public ModelRenderer leftArm;
-    public ModelRenderer rightArmSub;
-    public ModelRenderer leftArmSub;
+public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
+    public ModelPart rightLeg;
+    public ModelPart leftLeg;
+    public ModelPart body;
+    public ModelPart head;
+    public ModelPart mask;
+    public ModelPart rightArm;
+    public ModelPart leftArm;
+    public ModelPart rightArmSub;
+    public ModelPart leftArmSub;
     public float headAngle;
     public boolean swinging;
     public AshenEntity.AshenState actionState;
@@ -30,25 +30,25 @@ public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
         texWidth = 64;
         texHeight = 32;
 
-        rightLeg = new ModelRenderer(this, 25, 0);
+        rightLeg = new ModelPart(this, 25, 0);
         rightLeg.addBox(0F, 0F, 0F, 1, 7, 1);
         rightLeg.setPos(1F, 17F, 0F);
         rightLeg.setTexSize(64, 32);
         rightLeg.mirror = true;
         setRotation(rightLeg, 0F, 0F, 0F);
-        leftLeg = new ModelRenderer(this, 25, 0);
+        leftLeg = new ModelPart(this, 25, 0);
         leftLeg.addBox(-1F, 0F, 0F, 1, 7, 1);
         leftLeg.setPos(-1F, 17F, 0F);
         leftLeg.setTexSize(64, 32);
         leftLeg.mirror = true;
         setRotation(leftLeg, 0F, 0F, 0F);
-        body = new ModelRenderer(this, 24, 8);
+        body = new ModelPart(this, 24, 8);
         body.addBox(-2F, -3F, 0F, 4, 7, 3);
         body.setPos(0F, 13F, 2F);
         body.setTexSize(64, 32);
         body.mirror = true;
         setRotation(body, 0F, 3.141593F, 0F);
-        head = new ModelRenderer(this, 24, 18);
+        head = new ModelPart(this, 24, 18);
         head.addBox(-2F, -3F, -1F, 4, 3, 4);
         head.setPos(0F, 10F, 1F);
         head.setTexSize(64, 32);
@@ -62,23 +62,23 @@ public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
         //mask.mirror = true;
         //setRotation(mask, 0F, 3.141593F, 0F);
 
-        rightArm = new ModelRenderer(this);
+        rightArm = new ModelPart(this);
         rightArm.setPos(-2F, 10.5F, 0.5F);
         setRotation(rightArm, 0F, 0F, 0F);
         rightArm.mirror = true;
         rightArm.texOffs(0, 24).addBox(-6F, -0.5F, -0.5F, 6, 1, 1);
-        rightArmSub = new ModelRenderer(this);
+        rightArmSub = new ModelPart(this);
         rightArmSub.setPos(-5.5F, 0F, 0F);
         setRotation(rightArmSub, 0F, 0F, 0F);
         rightArmSub.mirror = true;
         rightArmSub.texOffs(31, 0).addBox(-0.5F, -6F, -0.5F, 1, 6, 1);
         rightArm.addChild(rightArmSub);
-        leftArm = new ModelRenderer(this);
+        leftArm = new ModelPart(this);
         leftArm.setPos(2F, 10.46667F, 0.5F);
         setRotation(leftArm, 0F, 0F, 0F);
         leftArm.mirror = true;
         leftArm.texOffs(0, 24).addBox(0F, -0.5F, -0.5F, 6, 1, 1);
-        leftArmSub = new ModelRenderer(this);
+        leftArmSub = new ModelPart(this);
         leftArmSub.setPos(5.5F, 0F, 0F);
         setRotation(leftArmSub, 0F, 0F, 0F);
         leftArmSub.mirror = true;
@@ -112,12 +112,12 @@ public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
                 leftArm.yRot = .9F + limbSwingAmount / 125F;
                 leftArm.zRot = armRotater;
                 leftArmSub.zRot = 6.2F;
-                rightArm.zRot = 0.0F - MathHelper.sin(limbSwingAmount * 0.75F) * 0.0220F;
+                rightArm.zRot = 0.0F - Mth.sin(limbSwingAmount * 0.75F) * 0.0220F;
                 rightArm.yRot = 0.0F;
                 rightArmSub.zRot = 0.0F;
 
                 if (swinging) {
-                    rightArm.xRot += MathHelper.sin(limbSwingAmount * 0.75F) * 0.0520F;
+                    rightArm.xRot += Mth.sin(limbSwingAmount * 0.75F) * 0.0520F;
                 } else {
                     rightArm.xRot = 0.0F;
                 }
@@ -133,15 +133,15 @@ public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
                 break;
         }
 
-        leftArm.zRot += MathHelper.sin(ageInTicks * 0.25F) * 0.020F;
-        rightArm.zRot -= MathHelper.sin(ageInTicks * 0.25F) * 0.020F;
+        leftArm.zRot += Mth.sin(ageInTicks * 0.25F) * 0.020F;
+        rightArm.zRot -= Mth.sin(ageInTicks * 0.25F) * 0.020F;
     }
 
-    public Iterable<ModelRenderer> parts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(body, head, rightArm, leftArm, leftLeg, rightLeg);
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
+    private void setRotation(ModelPart model, float x, float y, float z) {
         model.xRot = x;
         model.yRot = y;
         model.zRot = z;
@@ -149,12 +149,12 @@ public class AshenModel extends SegmentedModel<AshenEntity> implements IHasArm {
 
     @Override
     public void prepareMobModel(final AshenEntity entity, float f, float f1, float f2) {
-        rightLeg.xRot = MathHelper.cos(f * 0.6662F) * 1.25F * f1;
-        leftLeg.xRot = MathHelper.cos(f * 0.6662F + 3.141593F) * 1.25F * f1;
+        rightLeg.xRot = Mth.cos(f * 0.6662F) * 1.25F * f1;
+        leftLeg.xRot = Mth.cos(f * 0.6662F + 3.141593F) * 1.25F * f1;
     }
 
     @Override
-    public void translateToHand(HandSide side, MatrixStack stack) {
+    public void translateToHand(HumanoidArm side, PoseStack stack) {
         stack.translate(0.09375F, 0.1875F, 0.0F);
     }
 }

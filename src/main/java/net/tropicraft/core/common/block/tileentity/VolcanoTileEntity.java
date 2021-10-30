@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.chunk.VolcanoGenerator;
@@ -22,7 +22,7 @@ import net.tropicraft.core.common.volcano.VolcanoState;
 
 import javax.annotation.Nullable;
 
-public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
+public class VolcanoTileEntity extends BlockEntity implements TickableBlockEntity
 {
 
 	private static final int RAND_DORMANT_DURATION = 4000;
@@ -116,7 +116,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 					raiseLavaLevels();	
 				} else {
 					ticksUntilEruption = 0;
-					getLevel().playLocalSound(this.worldPosition.getX(), 73, this.worldPosition.getY(), SoundEvents.GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
+					getLevel().playLocalSound(this.worldPosition.getX(), 73, this.worldPosition.getY(), SoundEvents.GENERIC_EXPLODE, SoundSource.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
 					int balls = getLevel().random.nextInt(25) + 15;
 
 					for (int i = 0; i < balls; i++) {
@@ -158,11 +158,11 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 
 	public void throwLavaFromCaldera(double force) {
 		// Create vector at center facing in the +x direction
-		Vector3d pos = new Vector3d(((getLevel().random.nextDouble() / 2) + 0.3) * radius, lavaLevel + 2, 0);
+		Vec3 pos = new Vec3(((getLevel().random.nextDouble() / 2) + 0.3) * radius, lavaLevel + 2, 0);
 		// Get a random angle from 0 to 2PI (radians)
 		float angle = getLevel().random.nextFloat() * (float) Math.PI * 2;
 		// Rotate the center vector to this angle, and offset it to the volcano's position
-		pos = pos.yRot(angle).add(Vector3d.atCenterOf(getBlockPos()));
+		pos = pos.yRot(angle).add(Vec3.atCenterOf(getBlockPos()));
 		// Compute x/y components of angle
 		double motX = force * Math.cos(angle);
 		double motZ = force * Math.sin(-angle);
@@ -316,7 +316,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	@Override
-	public void load(BlockState blockState, CompoundNBT nbt) {
+	public void load(BlockState blockState, CompoundTag nbt) {
 		super.load(blockState, nbt);
 		state = VolcanoState.valueOf(nbt.getString("state"));
 		ticksUntilDormant = nbt.getInt("ticksUntilDormant");
@@ -329,7 +329,7 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT nbt) {
+	public CompoundTag save(CompoundTag nbt) {
 		super.save(nbt);
 		nbt.putString("state", state.name());
 		nbt.putInt("ticksUntilDormant", ticksUntilDormant);
@@ -344,18 +344,18 @@ public class VolcanoTileEntity extends TileEntity implements ITickableTileEntity
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		load(getBlockState(), pkt.getTag());
 	}
 
 	@Override
 	@Nullable
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(this.worldPosition, 1, this.getUpdateTag());
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, this.getUpdateTag());
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag() {
-		return this.save(new CompoundNBT());
+	public CompoundTag getUpdateTag() {
+		return this.save(new CompoundTag());
 	}
 }

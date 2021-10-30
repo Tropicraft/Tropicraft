@@ -1,37 +1,37 @@
 package net.tropicraft.core.common.entity.passive.basilisk;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.entity.ai.goal.RandomWalkingGoal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public final class BasiliskLizardEntity extends AnimalEntity {
-    private static final DataParameter<Boolean> RUNNING = EntityDataManager.defineId(BasiliskLizardEntity.class, DataSerializers.BOOLEAN);
+public final class BasiliskLizardEntity extends Animal {
+    private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(BasiliskLizardEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final float WATER_WALK_SPEED_BOOST = 1.6F;
     private static final int WATER_WALK_TIME = 10;
@@ -44,29 +44,29 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     private int runningAnimation;
     private int prevRunningAnimation;
 
-    public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, World world) {
+    public BasiliskLizardEntity(EntityType<? extends BasiliskLizardEntity> type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
-        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     @Override
-    protected PathNavigator createNavigation(World world) {
+    protected PathNavigation createNavigation(Level world) {
         return new WaterWalking.Navigator(this, world);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
-        this.goalSelector.addGoal(1, new RandomWalkingGoal(this, 1.0));
-        this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -81,12 +81,12 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     @Override
-    public BasiliskLizardEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
+    public BasiliskLizardEntity getBreedOffspring(ServerLevel world, AgableMob mate) {
         return null;
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         if (getType() == TropicraftEntities.BROWN_BASILISK_LIZARD.get()) {
             return new ItemStack(TropicraftItems.BROWN_BASILISK_LIZARD_SPAWN_EGG.get());
         } else {
@@ -142,9 +142,9 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     @Override
-    protected Vector3d maybeBackOffFromEdge(Vector3d offset, MoverType mover) {
+    protected Vec3 maybeBackOffFromEdge(Vec3 offset, MoverType mover) {
         if (this.shouldWaterWalk()) {
-            Vector3d result = WaterWalking.collide(this.level, this.getBoundingBox(), offset);
+            Vec3 result = WaterWalking.collide(this.level, this.getBoundingBox(), offset);
             this.onWaterSurface = offset.y < 0.0 && result.y != offset.y;
             return result;
         } else {
@@ -175,7 +175,7 @@ public final class BasiliskLizardEntity extends AnimalEntity {
     }
 
     public float getRunningAnimation(float partialTicks) {
-        float animation = MathHelper.lerp(partialTicks, prevRunningAnimation, runningAnimation);
+        float animation = Mth.lerp(partialTicks, prevRunningAnimation, runningAnimation);
         return animation / RUNNING_ANIMATION_LENGTH;
     }
 }

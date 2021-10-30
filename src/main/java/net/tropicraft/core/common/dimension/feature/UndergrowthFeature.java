@@ -1,29 +1,29 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
 import static net.tropicraft.core.common.dimension.feature.TropicraftFeatureUtil.goesBeyondWorldSize;
 
-public class UndergrowthFeature extends Feature<NoFeatureConfig> {
+public class UndergrowthFeature extends Feature<NoneFeatureConfiguration> {
     private static final int LARGE_BUSH_CHANCE = 5;
 
-    public UndergrowthFeature(Codec<NoFeatureConfig> codec) {
+    public UndergrowthFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
     
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
         int size = 2;
         if (rand.nextInt(LARGE_BUSH_CHANCE) == 0) {
             size = 3;
@@ -69,7 +69,7 @@ public class UndergrowthFeature extends Feature<NoFeatureConfig> {
         return count > 0;
     }
     
-    protected boolean isValidPosition(IWorldGenerationReader world, BlockPos pos) {
+    protected boolean isValidPosition(LevelSimulatedRW world, BlockPos pos) {
         return TreeFeature.isAirOrLeaves(world, pos) && !world.isStateAtPosition(pos, Blocks.CAVE_AIR.defaultBlockState()::equals);
     }
 }

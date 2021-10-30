@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.CoconutBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -16,9 +16,9 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Random;
 
-public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
+public abstract class PalmTreeFeature extends Feature<NoneFeatureConfiguration> {
 
-    public PalmTreeFeature(Codec<NoFeatureConfig> codec) {
+    public PalmTreeFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
@@ -34,29 +34,29 @@ public abstract class PalmTreeFeature extends Feature<NoFeatureConfig> {
         return TropicraftBlocks.PALM_LOG.get().defaultBlockState();
     }
 
-    protected void placeLeaf(final IWorldGenerationReader world, int x, int y, int z) {
+    protected void placeLeaf(final LevelSimulatedRW world, int x, int y, int z) {
         this.placeLeaf(world, new BlockPos(x, y, z));
     }
 
-    protected void placeLeaf(final IWorldGenerationReader world, BlockPos pos) {
+    protected void placeLeaf(final LevelSimulatedRW world, BlockPos pos) {
         // From FoliagePlacer
         if (TreeFeature.validTreePos(world, pos)) {
             setBlock(world, pos, getLeaf());
         }
     }
 
-    protected void placeLog(final IWorldGenerationReader world, int x, int y, int z) {
+    protected void placeLog(final LevelSimulatedRW world, int x, int y, int z) {
         this.placeLog(world, new BlockPos(x, y, z));
     }
 
-    protected void placeLog(final IWorldGenerationReader world, BlockPos pos) {
+    protected void placeLog(final LevelSimulatedRW world, BlockPos pos) {
         if (TreeFeature.isFree(world, pos)) {
             setBlock(world, pos, getLog());
         }
     }
 
     private static final Direction[] DIRECTIONS = ArrayUtils.removeElement(Direction.values(), Direction.UP);
-    public static void spawnCoconuts(IWorldGenerationReader world, BlockPos pos, Random random, int chance, BlockState leaf) {
+    public static void spawnCoconuts(LevelSimulatedRW world, BlockPos pos, Random random, int chance, BlockState leaf) {
         final BlockState coconut = TropicraftBlocks.COCONUT.get().defaultBlockState();
         for (Direction d : DIRECTIONS) {
             BlockPos pos2 = pos.relative(d);

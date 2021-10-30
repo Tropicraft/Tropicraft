@@ -1,25 +1,25 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMaskItem;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIMeleeAndRangedAttack extends Goal
 {
     /** The entity the AI instance has been applied to */
     private final AshenEntity entityHost;
     /** The entity (as a RangedAttackMob) the AI instance has been applied to. */
-    private final IRangedAttackMob rangedAttackEntityHost;
+    private final RangedAttackMob rangedAttackEntityHost;
     private LivingEntity attackTarget;
     /**
      * A decrementing tick that spawns a ranged attack once this value reaches 0. It is then set back to the
@@ -91,7 +91,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
     @Override
     public void tick() {
         if (attackTarget != null) {
-            ItemStack headGear = attackTarget.getItemBySlot(EquipmentSlotType.HEAD);
+            ItemStack headGear = attackTarget.getItemBySlot(EquipmentSlot.HEAD);
             if (headGear.getItem() instanceof AshenMaskItem) {
                 return;
             }
@@ -121,7 +121,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
         //System.out.println(rangedAttackTime);
 
         if (--rangedAttackTime <= 0) {
-            f = MathHelper.sqrt(d0) / shootCutoffRange;
+            f = Mth.sqrt(d0) / shootCutoffRange;
             float f1 = f;
 
             if (f < 0.1F) {
@@ -137,7 +137,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
                 rangedAttackTime = maxRangedAttackTime;
             } else if (d0 <= meleeHitRange * meleeHitRange) {
                 entityHost.doHurtTarget(attackTarget);
-                entityHost.swing(Hand.MAIN_HAND);
+                entityHost.swing(InteractionHand.MAIN_HAND);
                 rangedAttackTime = maxMeleeAttackTime;
             }
         }

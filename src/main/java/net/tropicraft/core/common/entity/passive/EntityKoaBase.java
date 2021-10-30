@@ -5,46 +5,46 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.merchant.villager.VillagerData;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.Inventory;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.npc.VillagerData;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
@@ -56,7 +56,38 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class EntityKoaBase extends VillagerEntity {
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
+import net.minecraft.world.entity.ai.goal.TradeWithPlayerGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.ItemLike;
+
+public class EntityKoaBase extends Villager {
 
     //TODO: consider serializing found water sources to prevent them refinding each time, which old AI did
     public long lastTimeFished = 0;
@@ -65,14 +96,14 @@ public class EntityKoaBase extends VillagerEntity {
     public List<BlockPos> listPosDrums = new ArrayList<>();
     public static int MAX_DRUMS = 12;
 
-    public Inventory inventory;
+    public SimpleContainer inventory;
 
-    private static final DataParameter<Integer> ROLE = EntityDataManager.defineId(EntityKoaBase.class, DataSerializers.INT);
-    private static final DataParameter<Integer> GENDER = EntityDataManager.defineId(EntityKoaBase.class, DataSerializers.INT);
-    private static final DataParameter<Integer> ORIENTATION = EntityDataManager.defineId(EntityKoaBase.class, DataSerializers.INT);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.defineId(EntityKoaBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DANCING = EntityDataManager.defineId(EntityKoaBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> LURE_ID = EntityDataManager.defineId(EntityKoaBase.class, DataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ROLE = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ORIENTATION = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> LURE_ID = SynchedEntityData.defineId(EntityKoaBase.class, EntityDataSerializers.INT);
 
     private final Goal taskFishing = new EntityAIGoneFishin(this);
 
@@ -82,7 +113,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     private int villageID = -1;
 
-    private RegistryKey<World> villageDimension;
+    private ResourceKey<Level> villageDimension;
 
     private FishingBobberEntity lure;
 
@@ -113,7 +144,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     public static Predicate<Entity> ENEMY_PREDICATE =
             //TODO: 1.14 fix
-            input -> (input instanceof MonsterEntity/* && !(input instanceof CreeperEntity)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen*/);
+            input -> (input instanceof Monster/* && !(input instanceof CreeperEntity)) || input instanceof EntityTropiSkeleton || input instanceof EntityIguana || input instanceof EntityAshen*/);
 
 
 
@@ -144,12 +175,12 @@ public class EntityKoaBase extends VillagerEntity {
         public static Orientations get(int intValue) { return lookup.get(intValue); }
     }
 
-    public EntityKoaBase(EntityType<? extends EntityKoaBase> type, World worldIn) {
+    public EntityKoaBase(EntityType<? extends EntityKoaBase> type, Level worldIn) {
         super(type, worldIn);
         this.setPersistenceRequired();
 
 
-        inventory = new Inventory(9);
+        inventory = new SimpleContainer(9);
     }
 
     @Override
@@ -209,7 +240,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public void onSyncedDataUpdated(DataParameter<?> key) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
 
         if (!level.isClientSide) return;
@@ -249,14 +280,14 @@ public class EntityKoaBase extends VillagerEntity {
         //TODO: old 1.12 style tasks go here
     }
 
-    static class KoaTradeForPearls implements VillagerTrades.ITrade {
+    static class KoaTradeForPearls implements VillagerTrades.ItemListing {
         private final Item item;
         private final int count;
         private final int maxUses;
         private final int givenXP;
         private final float priceMultiplier;
 
-        public KoaTradeForPearls(IItemProvider item, int count, int maxUses, int givenXP) {
+        public KoaTradeForPearls(ItemLike item, int count, int maxUses, int givenXP) {
             this.item = item.asItem();
             this.count = count;
             this.maxUses = maxUses;
@@ -271,16 +302,16 @@ public class EntityKoaBase extends VillagerEntity {
         }
     }
 
-    public Int2ObjectMap<VillagerTrades.ITrade[]> getOfferMap() {
+    public Int2ObjectMap<VillagerTrades.ItemListing[]> getOfferMap() {
 
         //TODO: 1.14 fix missing tropical and river fish entries from tropicrafts fix
         //- consider adding vanillas ones too now
 
-        Int2ObjectMap<VillagerTrades.ITrade[]> offers = null;
+        Int2ObjectMap<VillagerTrades.ItemListing[]> offers = null;
 
         if (getRole() == Roles.FISHERMAN) {
             offers = toIntMap(ImmutableMap.of(1,
-                    new VillagerTrades.ITrade[]{
+                    new VillagerTrades.ItemListing[]{
                             new KoaTradeForPearls(Items.TROPICAL_FISH, 20, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.FISHING_NET.get(), 1, 8, 2),
                             new KoaTradeForPearls(Items.FISHING_ROD, 1, 8, 2),
@@ -291,7 +322,7 @@ public class EntityKoaBase extends VillagerEntity {
                     }));
         } else if (getRole() == Roles.HUNTER) {
             offers = toIntMap(ImmutableMap.of(1,
-                    new VillagerTrades.ITrade[]{
+                    new VillagerTrades.ItemListing[]{
                             new KoaTradeForPearls(TropicraftItems.FROG_LEG.get(), 5, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.IGUANA_LEATHER.get(), 2, 8, 2),
                             new KoaTradeForPearls(TropicraftItems.SCALE.get(), 5, 8, 2)
@@ -332,7 +363,7 @@ public class EntityKoaBase extends VillagerEntity {
                         new VillagerTrades.ItemsForEmeraldsTrade(Items.GLISTERING_MELON_SLICE, 4, 3, 30)}));*/
     }
 
-    private static Int2ObjectMap<VillagerTrades.ITrade[]> toIntMap(ImmutableMap<Integer, VillagerTrades.ITrade[]> p_221238_0_) {
+    private static Int2ObjectMap<VillagerTrades.ItemListing[]> toIntMap(ImmutableMap<Integer, VillagerTrades.ItemListing[]> p_221238_0_) {
         return new Int2ObjectOpenHashMap<>(p_221238_0_);
     }
 
@@ -343,9 +374,9 @@ public class EntityKoaBase extends VillagerEntity {
     @Override
     protected void updateTrades() {
         VillagerData villagerdata = this.getVillagerData();
-        Int2ObjectMap<VillagerTrades.ITrade[]> int2objectmap = getOfferMap();
+        Int2ObjectMap<VillagerTrades.ItemListing[]> int2objectmap = getOfferMap();
         if (int2objectmap != null && !int2objectmap.isEmpty()) {
-            VillagerTrades.ITrade[] avillagertrades$itrade = int2objectmap.get(villagerdata.getLevel());
+            VillagerTrades.ItemListing[] avillagertrades$itrade = int2objectmap.get(villagerdata.getLevel());
             if (avillagertrades$itrade != null) {
                 MerchantOffers merchantoffers = this.getOffers();
                 this.addOffersFromItemListings(merchantoffers, avillagertrades$itrade, 2);
@@ -437,14 +468,14 @@ public class EntityKoaBase extends VillagerEntity {
         /*this.goalSelector.taskEntries.clear();
         this.targetSelector.taskEntries.clear();*/
 
-        this.goalSelector.getRunningGoals().forEach(PrioritizedGoal::stop);
-        this.targetSelector.getRunningGoals().forEach(PrioritizedGoal::stop);
+        this.goalSelector.getRunningGoals().forEach(WrappedGoal::stop);
+        this.targetSelector.getRunningGoals().forEach(WrappedGoal::stop);
 
 
 
         int curPri = 0;
 
-        this.goalSelector.addGoal(curPri++, new SwimGoal(this));
+        this.goalSelector.addGoal(curPri++, new FloatGoal(this));
 
         this.goalSelector.addGoal(curPri++, new EntityAIAvoidEntityOnLowHealth(this, LivingEntity.class, ENEMY_PREDICATE,
                 12.0F, 1.4D, 1.4D, 15F));
@@ -483,9 +514,9 @@ public class EntityKoaBase extends VillagerEntity {
             this.goalSelector.addGoal(curPri++, new EntityAIPlayKoa(this, 1.2D));
         }
 
-        this.goalSelector.addGoal(curPri, new LookAtGoal(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(curPri, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(curPri++, new EntityAIWanderNotLazy(this, 1D, 40));
-        this.goalSelector.addGoal(curPri++, new LookAtGoal(this, MobEntity.class, 8.0F));
+        this.goalSelector.addGoal(curPri++, new LookAtPlayerGoal(this, Mob.class, 8.0F));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         //i dont think this one works, change to predicate
@@ -497,9 +528,9 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public VillagerEntity getBreedOffspring(ServerWorld world, AgeableEntity ageable) {
+    public Villager getBreedOffspring(ServerLevel world, AgableMob ageable) {
         EntityKoaHunter child = new EntityKoaHunter(TropicraftEntities.KOA_HUNTER.get(), this.level);
-        child.finalizeSpawn(world, world.getCurrentDifficultyAt(child.blockPosition()), SpawnReason.BREEDING, null, null);
+        child.finalizeSpawn(world, world.getCurrentDifficultyAt(child.blockPosition()), MobSpawnType.BREEDING, null, null);
         return child;
     }
 
@@ -557,8 +588,8 @@ public class EntityKoaBase extends VillagerEntity {
 
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return VillagerEntity.createAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return Villager.createAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.ATTACK_DAMAGE, 5.0)
@@ -589,7 +620,7 @@ public class EntityKoaBase extends VillagerEntity {
         {
             if (knockback > 0 && entityIn instanceof LivingEntity)
             {
-                ((LivingEntity)entityIn).knockback(knockback * 0.5F, MathHelper.sin(this.yRot * 0.017453292F), -MathHelper.cos(this.yRot * 0.017453292F));
+                ((LivingEntity)entityIn).knockback(knockback * 0.5F, Mth.sin(this.yRot * 0.017453292F), -Mth.cos(this.yRot * 0.017453292F));
                 this.setDeltaMovement(this.getDeltaMovement().x * 0.6D, this.getDeltaMovement().y, this.getDeltaMovement().z * 0.6D);
                 /*this.motionX *= 0.6D;
                 this.motionZ *= 0.6D;*/
@@ -602,9 +633,9 @@ public class EntityKoaBase extends VillagerEntity {
                 entityIn.setSecondsOnFire(j * 4);
             }
 
-            if (entityIn instanceof PlayerEntity)
+            if (entityIn instanceof Player)
             {
-                PlayerEntity entityplayer = (PlayerEntity)entityIn;
+                Player entityplayer = (Player)entityIn;
                 ItemStack itemstack = this.getMainHandItem();
                 ItemStack itemstack1 = entityplayer.isUsingItem() ? entityplayer.getUseItem() : ItemStack.EMPTY;
 
@@ -630,15 +661,15 @@ public class EntityKoaBase extends VillagerEntity {
     private static final Field _buyingList = Util.findField(VillagerEntity.class, "field_70963_i", "buyingList");*/
     
     @Override
-    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-        if (hand != Hand.MAIN_HAND) return ActionResultType.PASS;
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
 
-        ActionResultType ret = ActionResultType.PASS;
+        InteractionResult ret = InteractionResult.PASS;
         try {
             boolean doTrade = true;
             if (!this.level.isClientSide) {
 
-                ItemStack stack = player.getItemInHand(Hand.MAIN_HAND);
+                ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
                 if (!stack.isEmpty() && stack.getItem() == TropicraftItems.POISON_FROG_SKIN.get()) {
                     doTrade = false;
 
@@ -650,7 +681,7 @@ public class EntityKoaBase extends VillagerEntity {
                     zapMemory();
 
                     druggedTime += 20*60*2;
-                    addEffect(new EffectInstance(Effects.CONFUSION, druggedTime));
+                    addEffect(new MobEffectInstance(MobEffects.CONFUSION, druggedTime));
                     findAndSetDrums(true);
 
                 }
@@ -723,7 +754,7 @@ public class EntityKoaBase extends VillagerEntity {
 
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.restrictTo(this.blockPosition(), MAX_HOME_DISTANCE);
 
         rollDiceChild();
@@ -775,7 +806,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("home_X", getRestrictCenter().getX());
         compound.putInt("home_Y", getRestrictCenter().getY());
@@ -789,7 +820,7 @@ public class EntityKoaBase extends VillagerEntity {
 
         compound.putLong("lastTimeFished", lastTimeFished);
 
-        ListNBT nbttaglist = new ListNBT();
+        ListTag nbttaglist = new ListTag();
 
         for (int i = 0; i < this.inventory.getContainerSize(); ++i)
         {
@@ -797,7 +828,7 @@ public class EntityKoaBase extends VillagerEntity {
 
             if (!itemstack.isEmpty())
             {
-                CompoundNBT nbttagcompound = new CompoundNBT();
+                CompoundTag nbttagcompound = new CompoundTag();
                 nbttagcompound.putByte("Slot", (byte)i);
                 itemstack.save(nbttagcompound);
                 nbttaglist.add(nbttagcompound);
@@ -828,7 +859,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("home_X")) {
             this.restrictTo(new BlockPos(compound.getInt("home_X"), compound.getInt("home_Y"), compound.getInt("home_Z")), MAX_HOME_DISTANCE);
@@ -841,11 +872,11 @@ public class EntityKoaBase extends VillagerEntity {
         lastTimeFished = compound.getLong("lastTimeFished");
 
         if (compound.contains("koa_inventory", 9)) {
-            ListNBT nbttaglist = compound.getList("koa_inventory", 10);
+            ListTag nbttaglist = compound.getList("koa_inventory", 10);
             //this.initHorseChest();
 
             for (int i = 0; i < nbttaglist.size(); ++i) {
-                CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
+                CompoundTag nbttagcompound = nbttaglist.getCompound(i);
                 int j = nbttagcompound.getByte("Slot") & 255;
 
                 this.inventory.setItem(j, ItemStack.of(nbttagcompound));
@@ -858,7 +889,7 @@ public class EntityKoaBase extends VillagerEntity {
         if (!compound.contains("village_dimension")) {
             this.villageDimension = level.dimension();
         } else {
-            this.villageDimension = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(compound.getString("village_dim_id")));
+            this.villageDimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(compound.getString("village_dim_id")));
         }
 
         if (compound.contains("role_id")) {
@@ -893,11 +924,11 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     public void setFishingItem() {
-        this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.FISHING_ROD));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.FISHING_ROD));
     }
 
     public void setFightingItem() {
-        this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.DAGGER.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TropicraftItems.DAGGER.get()));
     }
 
     public void monitorHomeVillage() {
@@ -908,7 +939,7 @@ public class EntityKoaBase extends VillagerEntity {
                 if (this.level.dimension() != villageDimension) {
                     dbg("koa detected different dimension, zapping memory");
                     zapMemory();
-                    addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 5));
+                    addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5));
                 }
             //}
         }
@@ -984,8 +1015,8 @@ public class EntityKoaBase extends VillagerEntity {
         if (getRestrictCenter() == null) {
             tryFind = true;
         } else {
-            TileEntity tile = level.getBlockEntity(getRestrictCenter());
-            if (!(tile instanceof ChestTileEntity)) {
+            BlockEntity tile = level.getBlockEntity(getRestrictCenter());
+            if (!(tile instanceof ChestBlockEntity)) {
                 //home position isnt a chest, keep current position but find better one
                 tryFind = true;
             }
@@ -997,8 +1028,8 @@ public class EntityKoaBase extends VillagerEntity {
                 for (int y = -range / 2; y <= range / 2; y++) {
                     for (int z = -range; z <= range; z++) {
                         BlockPos pos = this.blockPosition().offset(x, y, z);
-                        TileEntity tile = level.getBlockEntity(pos);
-                        if (tile instanceof ChestTileEntity) {
+                        BlockEntity tile = level.getBlockEntity(pos);
+                        if (tile instanceof ChestBlockEntity) {
                             //System.out.println("found chest, updating home position to " + pos);
                             dbg("found chest, updating home position to " + pos);
                             restrictTo(pos, MAX_HOME_DISTANCE);
@@ -1022,7 +1053,7 @@ public class EntityKoaBase extends VillagerEntity {
         }
 
         if (tryFind) {
-            List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AxisAlignedBB(this.blockPosition()).inflate(20, 20, 20));
+            List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AABB(this.blockPosition()).inflate(20, 20, 20));
             Collections.shuffle(listEnts);
             for (EntityKoaBase ent : listEnts) {
                 if (ent.villageID != -1 && ent.villageDimension != null) {
@@ -1070,7 +1101,7 @@ public class EntityKoaBase extends VillagerEntity {
                 }
             }
 
-            List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AxisAlignedBB(this.blockPosition()).inflate(20, 20, 20));
+            List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AABB(this.blockPosition()).inflate(20, 20, 20));
             Collections.shuffle(listEnts);
             for (EntityKoaBase ent : listEnts) {
                 if (ent.posLastFireplaceFound != null) {
@@ -1089,7 +1120,7 @@ public class EntityKoaBase extends VillagerEntity {
     public void syncBPM() {
         if ((level.getGameTime()+this.getId()) % (20) != 0) return;
 
-        List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AxisAlignedBB(this.blockPosition()).inflate(10, 5, 10));
+        List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AABB(this.blockPosition()).inflate(10, 5, 10));
         //Collections.shuffle(listEnts);
         for (EntityKoaBase ent : listEnts) {
             if (hitDelay != ent.hitDelay) {
@@ -1126,7 +1157,7 @@ public class EntityKoaBase extends VillagerEntity {
             return;
         }
 
-        List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AxisAlignedBB(this.blockPosition()).inflate(20, 20, 20));
+        List<EntityKoaBase> listEnts = level.getEntitiesOfClass(EntityKoaBase.class, new AABB(this.blockPosition()).inflate(20, 20, 20));
         Collections.shuffle(listEnts);
         for (EntityKoaBase ent : listEnts) {
             if (listPosDrums.size() >= MAX_DRUMS) {
@@ -1208,9 +1239,9 @@ public class EntityKoaBase extends VillagerEntity {
     }*/
 
     public boolean tryDumpInventoryIntoHomeChest() {
-        TileEntity tile = level.getBlockEntity(getRestrictCenter());
-        if (tile instanceof ChestTileEntity) {
-            ChestTileEntity chest = (ChestTileEntity)tile;
+        BlockEntity tile = level.getBlockEntity(getRestrictCenter());
+        if (tile instanceof ChestBlockEntity) {
+            ChestBlockEntity chest = (ChestBlockEntity)tile;
 
             for (int i = 0; i < this.inventory.getContainerSize(); ++i) {
                 ItemStack itemstack = this.inventory.getItem(i);
@@ -1225,7 +1256,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Nullable
-    public ItemStack addItem(ChestTileEntity chest, ItemStack stack)
+    public ItemStack addItem(ChestBlockEntity chest, ItemStack stack)
     {
         ItemStack itemstack = stack.copy();
 
@@ -1322,11 +1353,11 @@ public class EntityKoaBase extends VillagerEntity {
             }
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.60D);
 
-            this.setPathfindingMalus(PathNodeType.WATER, 8);
+            this.setPathfindingMalus(BlockPathTypes.WATER, 8);
         } else {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 
-            this.setPathfindingMalus(PathNodeType.WATER, -1);
+            this.setPathfindingMalus(BlockPathTypes.WATER, -1);
         }
 
         wasInWater = isInWater();
@@ -1408,12 +1439,12 @@ public class EntityKoaBase extends VillagerEntity {
         this.villageID = villageID;
     }*/
 
-    public void setVillageAndDimID(int villageID, RegistryKey<World> villageDimID) {
+    public void setVillageAndDimID(int villageID, ResourceKey<Level> villageDimID) {
         this.villageID = villageID;
         this.villageDimension = villageDimID;
     }
 
-    public RegistryKey<World> getVillageDimension() {
+    public ResourceKey<Level> getVillageDimension() {
         return villageDimension;
     }
 
@@ -1583,15 +1614,15 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("entity.tropicraft.koa." +
+    public Component getDisplayName() {
+        return new TranslatableComponent("entity.tropicraft.koa." +
                 getGender().toString().toLowerCase(Locale.ROOT) + "." +
                 getRole().toString().toLowerCase(Locale.ROOT) + ".name"
         );
     }
 
     @Override
-    public void thunderHit(ServerWorld world, LightningBoltEntity lightning) {
+    public void thunderHit(ServerLevel world, LightningBolt lightning) {
     }
 
     public void zapMemory() {
@@ -1631,7 +1662,7 @@ public class EntityKoaBase extends VillagerEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.KOA_SPAWN_EGG.get());
     }
 }

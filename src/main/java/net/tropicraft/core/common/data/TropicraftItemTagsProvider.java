@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.data;
 
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.data.BlockTagsProvider;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.ItemTagsProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.tags.Tag.Named;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
@@ -106,16 +106,16 @@ public class TropicraftItemTagsProvider extends ItemTagsProvider {
     }
 
     @SafeVarargs
-    private final void addItemsToTag(INamedTag<Item> tag, Supplier<? extends IItemProvider>... items) {
-        tag(tag).add(Arrays.stream(items).map(Supplier::get).map(IItemProvider::asItem).toArray(Item[]::new));
+    private final void addItemsToTag(Named<Item> tag, Supplier<? extends ItemLike>... items) {
+        tag(tag).add(Arrays.stream(items).map(Supplier::get).map(ItemLike::asItem).toArray(Item[]::new));
     }
 
-    private void addItemsToTag(INamedTag<Item> tag, IItemProvider... items) {
-        tag(tag).add(Arrays.stream(items).map(IItemProvider::asItem).toArray(Item[]::new));
+    private void addItemsToTag(Named<Item> tag, ItemLike... items) {
+        tag(tag).add(Arrays.stream(items).map(ItemLike::asItem).toArray(Item[]::new));
     }
     
     @SafeVarargs
-    private final void appendToTag(INamedTag<Item> tag, INamedTag<Item>... toAppend) {
+    private final void appendToTag(Named<Item> tag, Named<Item>... toAppend) {
         tag(tag).addTags(toAppend);
     }
 

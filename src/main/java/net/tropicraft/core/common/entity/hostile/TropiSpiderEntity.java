@@ -1,32 +1,32 @@
 package net.tropicraft.core.common.entity.hostile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.ai.EntityAIWanderNotLazy;
 import net.tropicraft.core.common.entity.egg.TropiSpiderEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public class TropiSpiderEntity extends SpiderEntity {
+public class TropiSpiderEntity extends Spider {
 
     public enum Type {
         ADULT, MOTHER, CHILD;
@@ -34,7 +34,7 @@ public class TropiSpiderEntity extends SpiderEntity {
         private static final Type[] VALUES = values();
     }
 
-    private static final DataParameter<Byte> TYPE = EntityDataManager.<Byte>defineId(TropiSpiderEntity.class, DataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> TYPE = SynchedEntityData.<Byte>defineId(TropiSpiderEntity.class, EntityDataSerializers.BYTE);
     private static final int SPIDER_MATURE_AGE = 20 * 60 * 10; // From child to adult in 10 real minutes
     private static final int SPIDER_MAX_EGGS = 10;
     private static final long SPIDER_MIN_EGG_DELAY = 12000; // Once per half minecraft day minimum
@@ -45,7 +45,7 @@ public class TropiSpiderEntity extends SpiderEntity {
     private long ticksSinceLastEgg = 0L;
     public byte initialType = 0;
 
-    public TropiSpiderEntity(final EntityType<? extends SpiderEntity> type, World world) {
+    public TropiSpiderEntity(final EntityType<? extends Spider> type, Level world) {
         super(type, world);
         tickCount = SPIDER_MATURE_AGE;
         ticksSinceLastEgg = tickCount;
@@ -67,11 +67,11 @@ public class TropiSpiderEntity extends SpiderEntity {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(0, new SwimGoal(this));
+        goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(2, new MeleeAttackGoal(this, 0.8D, false));
         goalSelector.addGoal(7, new EntityAIWanderNotLazy(this, 0.8D, 40));
-        goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        goalSelector.addGoal(8, new LookRandomlyGoal(this));
+        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
     
     @Override
@@ -217,7 +217,7 @@ public class TropiSpiderEntity extends SpiderEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT n) {
+    public void addAdditionalSaveData(CompoundTag n) {
         n.putInt("ticks", tickCount);
         n.putByte("spiderType", (byte) getSpiderType().ordinal());
         n.putLong("timeSinceLastEgg", ticksSinceLastEgg);
@@ -225,7 +225,7 @@ public class TropiSpiderEntity extends SpiderEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT n) {
+    public void readAdditionalSaveData(CompoundTag n) {
         tickCount = n.getInt("ticks");
         setSpiderType(n.getByte("spiderType"));
         ticksSinceLastEgg = n.getLong("timeSinceLastEgg");
@@ -247,7 +247,7 @@ public class TropiSpiderEntity extends SpiderEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
     }
 }

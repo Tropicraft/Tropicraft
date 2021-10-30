@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.InteractionHand;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MonkeySitAndDrinkGoal extends Goal {
     private static final int DEFAULT_WAIT = 40;
@@ -32,7 +32,7 @@ public class MonkeySitAndDrinkGoal extends Goal {
     public void stop() {
         entity.setInSittingPose(false);
         entity.spawnAtLocation(new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
-        entity.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+        entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
         waitCounter = DEFAULT_WAIT;
     }
 
@@ -59,13 +59,13 @@ public class MonkeySitAndDrinkGoal extends Goal {
         waitCounter--;
 
         if (waitCounter <= 0) {
-            entity.startUsingItem(Hand.MAIN_HAND);
+            entity.startUsingItem(InteractionHand.MAIN_HAND);
         }
 
         // If drinking complete
         ItemStack heldStack = entity.getMainHandItem();
         if (heldStack.getItem() == TropicraftItems.BAMBOO_MUG.get()) {
-            entity.addEffect(new EffectInstance(Effects.CONFUSION, 10 * 20, 2));
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 10 * 20, 2));
         }
     }
 }

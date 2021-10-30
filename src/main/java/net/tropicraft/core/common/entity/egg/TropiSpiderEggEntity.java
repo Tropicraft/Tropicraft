@@ -1,15 +1,15 @@
 package net.tropicraft.core.common.entity.egg;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropiSpiderEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -21,9 +21,9 @@ import java.util.UUID;
 
 public class TropiSpiderEggEntity extends EggEntity {
 
-	protected static final DataParameter<Optional<UUID>> MOTHER_UNIQUE_ID = EntityDataManager.defineId(TropiSpiderEggEntity.class, DataSerializers.OPTIONAL_UUID);
+	protected static final EntityDataAccessor<Optional<UUID>> MOTHER_UNIQUE_ID = SynchedEntityData.defineId(TropiSpiderEggEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-	public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, World world) {
+	public TropiSpiderEggEntity(final EntityType<? extends EggEntity> type, Level world) {
 		super(type, world);
 	}
 
@@ -43,7 +43,7 @@ public class TropiSpiderEggEntity extends EggEntity {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT nbt) {
+	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		if (getMotherId() == null) {
 			nbt.putString("MotherUUID", "");
@@ -53,7 +53,7 @@ public class TropiSpiderEggEntity extends EggEntity {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT nbt) {
+	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		String motherUUID = "";
 		if (nbt.contains("MotherUUID", 8)) {
@@ -77,8 +77,8 @@ public class TropiSpiderEggEntity extends EggEntity {
 
 	@Override
 	public Entity onHatch() {
-		if (level instanceof ServerWorld && getMotherId() != null) {
-			final ServerWorld serverWorld = (ServerWorld) level;
+		if (level instanceof ServerLevel && getMotherId() != null) {
+			final ServerLevel serverWorld = (ServerLevel) level;
 			final Entity e = serverWorld.getEntity(getMotherId());
 
 			if (e instanceof TropiSpiderEntity) {
@@ -99,7 +99,7 @@ public class TropiSpiderEggEntity extends EggEntity {
 	}
 
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target) {
+	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(TropicraftItems.TROPI_SPIDER_SPAWN_EGG.get());
 	}
 }

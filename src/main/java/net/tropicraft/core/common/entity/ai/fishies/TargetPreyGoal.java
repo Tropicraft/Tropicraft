@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.entity.ai.fishies;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.AABB;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class TargetPreyGoal extends Goal {
     public TropicraftFishEntity entity;
@@ -34,7 +34,7 @@ public class TargetPreyGoal extends Goal {
         super.tick();
         
         // Target selection
-        AxisAlignedBB entityBB = entity.getBoundingBox();
+        AABB entityBB = entity.getBoundingBox();
         if (entity.tickCount % 80 == 0 && entity.aggressTarget == null || entity.getCommandSenderWorld().getEntity(entity.aggressTarget.getId()) == null) {
                 List<Entity> list = entity.level.getEntities(entity, entityBB.inflate(20D, 20D, 20D).move(0.0D, -8.0D, 0.0D), e -> e.isAlive());
                 if(list.size() > 0) {
@@ -79,7 +79,7 @@ public class TargetPreyGoal extends Goal {
                 }
                 if(entity.aggressTarget instanceof TropicraftFishEntity) {
                     // Was eaten, cancel smoke
-                    AxisAlignedBB aggressBB = entity.aggressTarget.getBoundingBox();
+                    AABB aggressBB = entity.aggressTarget.getBoundingBox();
                     if(entityBB.maxY - entityBB.minY > aggressBB.maxY - aggressBB.minY) {
                         entity.aggressTarget.remove();
                         entity.heal(1);

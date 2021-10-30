@@ -1,13 +1,13 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
@@ -16,12 +16,12 @@ import javax.annotation.Nullable;
 
 public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
 
-    public WallItemRenderer(final EntityRendererManager entityRendererManager) {
+    public WallItemRenderer(final EntityRenderDispatcher entityRendererManager) {
         super(entityRendererManager);
     }
     
     @Override
-    public void render(final WallItemEntity entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(final WallItemEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource bufferIn, int packedLightIn) {
         stack.pushPose();
         stack.mulPose(Vector3f.XP.rotationDegrees(entity.xRot));
         stack.mulPose(Vector3f.YP.rotationDegrees(180.0F - entity.yRot));
@@ -34,6 +34,6 @@ public class WallItemRenderer extends EntityRenderer<WallItemEntity> {
     @Nullable
     @Override
     public ResourceLocation getTextureLocation(WallItemEntity wallItemEntity) {
-        return AtlasTexture.LOCATION_BLOCKS;
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 }

@@ -1,32 +1,32 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.TallFlowerBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.TallFlowerBlock;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlantable {
+public class PineappleBlock extends TallFlowerBlock implements BonemealableBlock, IPlantable {
 
     /** Number of total random ticks it takes for this pineapple to grow */
     public static final int TOTAL_GROW_TICKS = 7;
@@ -39,22 +39,22 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
 
     @Override
-    protected void createBlockStateDefinition(final StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HALF, STAGE);
     }
 
     @Override
-    public boolean isValidBonemealTarget(IBlockReader world, BlockPos pos, BlockState blockState, boolean b) {
+    public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState blockState, boolean b) {
         return blockState.getBlock() == TropicraftBlocks.PINEAPPLE.get() && blockState.getValue(PineappleBlock.HALF) == DoubleBlockHalf.LOWER && world.getBlockState(pos.above()).isAir();
     }
 
     @Override
-    public boolean isBonemealSuccess(World world, Random random, BlockPos blockPos, BlockState blockState) {
+    public boolean isBonemealSuccess(Level world, Random random, BlockPos blockPos, BlockState blockState) {
         return true;
     }
 
     @Override
-    public void performBonemeal(final ServerWorld world, final Random random, final BlockPos pos, final BlockState state) {
+    public void performBonemeal(final ServerLevel world, final Random random, final BlockPos pos, final BlockState state) {
         final int currentStage = state.getValue(STAGE);
         if (currentStage < TOTAL_GROW_TICKS) {
             final BlockState growthState = state.setValue(STAGE, currentStage + 1);
@@ -73,7 +73,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
 
     @Override
-    public void tick(final BlockState state, final ServerWorld world, final BlockPos pos, final Random random) {
+    public void tick(final BlockState state, final ServerLevel world, final BlockPos pos, final Random random) {
         if (pos.getY() > world.getMaxBuildHeight() - 2) {
             return;
         }
@@ -98,7 +98,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
     
     @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             super.playerWillDestroy(worldIn, pos, state, player);
         } else {
@@ -108,7 +108,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
     
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
         if (canSurvive(stateIn, worldIn, currentPos)) {
             return stateIn;
         }
@@ -116,7 +116,7 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
     }
     
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
             return worldIn.getBlockState(pos.below()).getBlock() == TropicraftBlocks.PINEAPPLE.get();
         } else {
@@ -124,13 +124,13 @@ public class PineappleBlock extends TallFlowerBlock implements IGrowable, IPlant
         }
     }
 
-    private boolean canPlaceBlockAt(IWorldReader worldIn, BlockPos pos) {
+    private boolean canPlaceBlockAt(LevelReader worldIn, BlockPos pos) {
         final BlockState belowState = worldIn.getBlockState(pos.below());
         return belowState.getBlock().canSustainPlant(belowState, worldIn, pos.below(), Direction.UP, this);
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         // override super behavior of placing top half of double flower by default
     }
 }

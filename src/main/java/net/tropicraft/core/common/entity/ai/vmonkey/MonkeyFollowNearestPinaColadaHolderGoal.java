@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 
@@ -15,7 +15,7 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     private final float areaSize;
 
     private final double speedModifier;
-    private final PathNavigator navigation;
+    private final PathNavigation navigation;
     private int timeToRecalcPath;
     private final float stopDistance;
     private float oldWaterCost;
@@ -38,10 +38,10 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
         if (monkey.isTame()) return false;
         if (monkey.selfHoldingDrink(Drink.PINA_COLADA)) return false;
 
-        List<PlayerEntity> list = monkey.level.getEntitiesOfClass(PlayerEntity.class, monkey.getBoundingBox().inflate(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
+        List<Player> list = monkey.level.getEntitiesOfClass(Player.class, monkey.getBoundingBox().inflate(areaSize), VMonkeyEntity.FOLLOW_PREDICATE);
 
         if (!list.isEmpty()) {
-            for (PlayerEntity entityliving : list) {
+            for (Player entityliving : list) {
                 if (!entityliving.isInvisible()) {
                     monkey.setFollowing(entityliving);
                     return true;
@@ -67,15 +67,15 @@ public class MonkeyFollowNearestPinaColadaHolderGoal extends Goal {
     @Override
     public void start() {
         timeToRecalcPath = 0;
-        oldWaterCost = monkey.getPathfindingMalus(PathNodeType.WATER);
-        monkey.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        oldWaterCost = monkey.getPathfindingMalus(BlockPathTypes.WATER);
+        monkey.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     @Override
     public void stop() {
         monkey.setFollowing(null);
         navigation.stop();
-        monkey.setPathfindingMalus(PathNodeType.WATER, oldWaterCost);
+        monkey.setPathfindingMalus(BlockPathTypes.WATER, oldWaterCost);
     }
 
     public void tick() {

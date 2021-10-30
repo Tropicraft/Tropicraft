@@ -1,13 +1,14 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
@@ -23,6 +24,18 @@ import net.tropicraft.core.common.item.scuba.ScubaType;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 
 public class Builder {
     
@@ -46,8 +59,8 @@ public class Builder {
         return () -> ctor.apply(properties.get());
     }
 
-    public static Supplier<BlockNamedItem> blockNamedItem(Supplier<? extends Block> block) {
-        return item(p -> new BlockNamedItem(block.get(), p));
+    public static Supplier<ItemNameBlockItem> blockNamedItem(Supplier<? extends Block> block) {
+        return item(p -> new ItemNameBlockItem(block.get(), p));
     }
 
     private static <T extends FurnitureEntity> Supplier<FurnitureItem<T>> furniture(Supplier<EntityType<T>> type, DyeColor color) {
@@ -66,7 +79,7 @@ public class Builder {
         return furniture(TropicraftEntities.BEACH_FLOAT, color);
     }
 
-    public static <T extends AbstractFishEntity> Supplier<Item> fishBucket(final Supplier<EntityType<T>> type) {
+    public static <T extends AbstractFish> Supplier<Item> fishBucket(final Supplier<EntityType<T>> type) {
         return item(p -> new TropicraftFishBucketItem<>(type, Fluids.WATER, getDefaultProperties().stacksTo(1)));
     }
 
@@ -74,7 +87,7 @@ public class Builder {
         return item(ShellItem::new);
     }
 
-    public static Supplier<Item> food(final Food food) {
+    public static Supplier<Item> food(final FoodProperties food) {
         return item(getDefaultProperties().food(food));
     }
 
@@ -98,23 +111,23 @@ public class Builder {
         return item(p -> new TropicraftSpawnEgg<>(type, p), Builder::getDefaultProperties);
     }
 
-    public static Supplier<Item> hoe(final IItemTier tier) {
+    public static Supplier<Item> hoe(final Tier tier) {
         return item(p -> new HoeItem(tier, 0, -2.0f, getDefaultProperties()));
     }
 
-    public static Supplier<Item> shovel(final IItemTier tier) {
+    public static Supplier<Item> shovel(final Tier tier) {
         return item(p -> new ShovelItem(tier, 2.0f, -3.0f, getDefaultProperties()));
     }
 
-    public static Supplier<Item> pickaxe(final IItemTier tier) {
+    public static Supplier<Item> pickaxe(final Tier tier) {
         return item(p -> new PickaxeItem(tier, 2, -2.0f, getDefaultProperties()));
     }
 
-    public static Supplier<Item> axe(final IItemTier tier) {
+    public static Supplier<Item> axe(final Tier tier) {
         return item(p -> new AxeItem(tier, 5.0f, -2.0f, getDefaultProperties()));
     }
 
-    public static Supplier<Item> sword(final IItemTier tier) {
+    public static Supplier<Item> sword(final Tier tier) {
         return item(p -> new SwordItem(tier, 3, -3.0f, getDefaultProperties()));
     }
 
@@ -122,11 +135,11 @@ public class Builder {
         return new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP);
     }
 
-    public static Supplier<Item> fireArmor(EquipmentSlotType slotType) {
+    public static Supplier<Item> fireArmor(EquipmentSlot slotType) {
         return item(p -> new FireArmorItem(slotType, getDefaultProperties().stacksTo(1).durability(300)));
     }
 
-    public static Supplier<Item> scaleArmor(EquipmentSlotType slotType) {
+    public static Supplier<Item> scaleArmor(EquipmentSlot slotType) {
         return item(p -> new ScaleArmorItem(slotType, getDefaultProperties().stacksTo(1)));
     }
 

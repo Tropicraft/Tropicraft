@@ -1,21 +1,21 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -25,10 +25,10 @@ import java.util.function.Function;
 
 public abstract class FurnitureEntity extends Entity {
 
-    private static final DataParameter<Integer> COLOR = EntityDataManager.defineId(FurnitureEntity.class, DataSerializers.INT);
-    private static final DataParameter<Float> DAMAGE = EntityDataManager.defineId(FurnitureEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.defineId(FurnitureEntity.class, DataSerializers.INT);
-    private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.defineId(FurnitureEntity.class, DataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> FORWARD_DIRECTION = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TIME_SINCE_HIT = SynchedEntityData.defineId(FurnitureEntity.class, EntityDataSerializers.INT);
     
     private static final int DAMAGE_THRESHOLD = 40;
     
@@ -41,11 +41,11 @@ public abstract class FurnitureEntity extends Entity {
     protected double lerpYaw = Double.NaN; // Force first-time sync even if packet is incomplete
     protected double lerpPitch;
     
-    protected FurnitureEntity(EntityType<?> entityTypeIn, World worldIn, Map<DyeColor, ? extends RegistryObject<? extends Item>> items) {
+    protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Map<DyeColor, ? extends RegistryObject<? extends Item>> items) {
         this(entityTypeIn, worldIn, c -> items.get(c).get());        
     }
 
-    protected FurnitureEntity(EntityType<?> entityTypeIn, World worldIn, Function<DyeColor, Item> itemLookup) {
+    protected FurnitureEntity(EntityType<?> entityTypeIn, Level worldIn, Function<DyeColor, Item> itemLookup) {
         super(entityTypeIn, worldIn);
         this.itemLookup = itemLookup;
         this.noCulling = true;
@@ -54,11 +54,11 @@ public abstract class FurnitureEntity extends Entity {
     }
     
     public void setRotation(float yaw) {
-        this.lerpYaw = this.yRot = MathHelper.wrapDegrees(yaw);
+        this.lerpYaw = this.yRot = Mth.wrapDegrees(yaw);
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -82,7 +82,7 @@ public abstract class FurnitureEntity extends Entity {
             setDamage(damage - 1);
         }
 
-        final Vector3d currentPos = position();
+        final Vec3 currentPos = position();
         xo = currentPos.x;
         yo = currentPos.y;
         zo = currentPos.z;
@@ -92,13 +92,13 @@ public abstract class FurnitureEntity extends Entity {
         tickLerp();
     
         if (preventMotion()) {
-            setDeltaMovement(Vector3d.ZERO);
+            setDeltaMovement(Vec3.ZERO);
         }
     
         //updateRocking();
     
         this.checkInsideBlocks();
-        List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate((double)0.2F, (double)-0.01F, (double)0.2F), EntityPredicates.pushableBy(this));
+        List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate((double)0.2F, (double)-0.01F, (double)0.2F), EntitySelector.pushableBy(this));
         if (!list.isEmpty()) {
             for (Entity entity : list) {
                 if (!entity.hasPassenger(this)) {
@@ -123,7 +123,7 @@ public abstract class FurnitureEntity extends Entity {
             this.lerpZ = z;
             // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
             if (yaw != yRot || Double.isNaN(lerpYaw)) {
-                this.lerpYaw = MathHelper.wrapDegrees((double) yaw);
+                this.lerpYaw = Mth.wrapDegrees((double) yaw);
             }
             this.lerpSteps = 10;
             this.xRot = pitch;
@@ -135,7 +135,7 @@ public abstract class FurnitureEntity extends Entity {
             double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
             double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
             double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
-            double d3 = MathHelper.wrapDegrees(this.lerpYaw - (double)this.yRot);
+            double d3 = Mth.wrapDegrees(this.lerpYaw - (double)this.yRot);
             this.yRot = (float)((double)this.yRot + d3 / (double)this.lerpSteps);
             this.xRot = (float)((double)this.xRot + (this.lerpPitch - (double)this.xRot) / (double)this.lerpSteps);
             --this.lerpSteps;
@@ -154,7 +154,7 @@ public abstract class FurnitureEntity extends Entity {
             this.setTimeSinceHit(10);
             this.setDamage(this.getDamage() + amount * 10.0F);
             this.markHurt();
-            boolean flag = damageSource.getEntity() instanceof PlayerEntity && ((PlayerEntity)damageSource.getEntity()).abilities.instabuild;
+            boolean flag = damageSource.getEntity() instanceof Player && ((Player)damageSource.getEntity()).abilities.instabuild;
     
             if (flag || this.getDamage() > DAMAGE_THRESHOLD) {
                 Entity rider = this.getControllingPassenger();
@@ -205,12 +205,12 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
         setColor(DyeColor.byId(nbt.getInt("Color")));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putInt("Color", getColor().ordinal());
     }
 

@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.entity.projectile;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -28,7 +28,7 @@ public class LavaBallEntity extends Entity
     public double accelerationY;
     public double accelerationZ;
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, World world) {
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world) {
         super(type, world);
         setFire = false;
         held = false;
@@ -36,7 +36,7 @@ public class LavaBallEntity extends Entity
         lifeTimer = 0;
     }
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type,World world, double i, double j, double k, double motX, double motY, double motZ) {
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type,Level world, double i, double j, double k, double motX, double motY, double motZ) {
         super(type, world);
         setFire = false;
         moveTo(i, j, k, 0, 0);
@@ -48,7 +48,7 @@ public class LavaBallEntity extends Entity
         lifeTimer = 0;
     }
 
-    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, World world, float startSize) {
+    public LavaBallEntity(EntityType<? extends LavaBallEntity> type, Level world, float startSize) {
         super(type, world);
         size = startSize;
         setFire = false;
@@ -163,7 +163,7 @@ public class LavaBallEntity extends Entity
             }
         }
 
-        Vector3d motion = new Vector3d(motionX + this.accelerationX, motionY + this.accelerationY, motionZ + this.accelerationZ);
+        Vec3 motion = new Vec3(motionX + this.accelerationX, motionY + this.accelerationY, motionZ + this.accelerationZ);
         this.setDeltaMovement(motion);
 
         this.move(MoverType.SELF, motion);
@@ -176,17 +176,17 @@ public class LavaBallEntity extends Entity
     }*/
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
         this.lifeTimer = nbt.getInt("lifeTimer");
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putInt("lifeTimer", this.lifeTimer);
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

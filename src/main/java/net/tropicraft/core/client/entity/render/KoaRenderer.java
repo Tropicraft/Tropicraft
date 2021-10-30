@@ -1,23 +1,23 @@
 package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.BipedRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.entity.model.KoaModel;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import javax.annotation.Nullable;
 
-public class KoaRenderer extends BipedRenderer<EntityKoaBase, KoaModel> {
+public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaModel> {
 
     private static final ResourceLocation MALE_FISHER = new ResourceLocation(Constants.MODID, "textures/entity/koa/koa_man_fisher.png");
     private static final ResourceLocation FEMALE_FISHER = new ResourceLocation(Constants.MODID, "textures/entity/koa/koa_woman_fisher.png");
     private static final ResourceLocation MALE_HUNTER = new ResourceLocation(Constants.MODID, "textures/entity/koa/koa_man_hunter.png");
     private static final ResourceLocation FEMALE_HUNTER = new ResourceLocation(Constants.MODID, "textures/entity/koa/koa_woman_hunter.png");
 
-    public KoaRenderer(EntityRendererManager rendermanagerIn) {
+    public KoaRenderer(EntityRenderDispatcher rendermanagerIn) {
         super(rendermanagerIn, new KoaModel(0), 0.5F);
         this.shadowStrength = 0.5f;
     }

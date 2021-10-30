@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.tropicraft.Constants;
 
-public class BambooChestTileEntity extends ChestTileEntity {
+public class BambooChestTileEntity extends ChestBlockEntity {
 
     /** Is this chest unbreakble (Koa chest) */
     private boolean unbreakable = false;
@@ -17,23 +17,23 @@ public class BambooChestTileEntity extends ChestTileEntity {
     }
 
     @Override
-    public ITextComponent getName() {
-        return new TranslationTextComponent(Constants.MODID + ".container.bambooChest");
+    public Component getName() {
+        return new TranslatableComponent(Constants.MODID + ".container.bambooChest");
     }
 
     @Override
-    protected ITextComponent getDefaultName() {
+    protected Component getDefaultName() {
         return getName();
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT compound) {
+    public void load(BlockState blockState, CompoundTag compound) {
         super.load(blockState, compound);
         unbreakable = compound.getBoolean("unbreakable");
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.putBoolean("unbreakable", unbreakable);
 

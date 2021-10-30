@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.network.message;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 
@@ -22,7 +22,7 @@ public class MessageMixerInventory extends MessageTileEntity<DrinkMixerTileEntit
 		result = mixer.result;
 	}
 
-	public static void encode(final MessageMixerInventory message, final PacketBuffer buf) {
+	public static void encode(final MessageMixerInventory message, final FriendlyByteBuf buf) {
 		MessageTileEntity.encode(message, buf);
 
 		buf.writeByte(message.inventory.size());
@@ -33,7 +33,7 @@ public class MessageMixerInventory extends MessageTileEntity<DrinkMixerTileEntit
 		buf.writeItem(message.result);
 	}
 
-	public static MessageMixerInventory decode(final PacketBuffer buf) {
+	public static MessageMixerInventory decode(final FriendlyByteBuf buf) {
 		final MessageMixerInventory message = new MessageMixerInventory();
 		MessageTileEntity.decode(message, buf);
 		message.inventory = NonNullList.withSize(buf.readByte(), ItemStack.EMPTY);

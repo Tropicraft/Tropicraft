@@ -3,7 +3,7 @@ package net.tropicraft.core.common.network.message;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.tropicraft.core.common.item.scuba.ScubaData;
@@ -18,11 +18,11 @@ public class MessageUpdateScubaData implements TropicraftMessage {
         this.data = data;
     }
 
-    public static void encode(final MessageUpdateScubaData message, final PacketBuffer buf) {
+    public static void encode(final MessageUpdateScubaData message, final FriendlyByteBuf buf) {
         message.data.serializeBuffer(buf);
     }
 
-    public static MessageUpdateScubaData decode(final PacketBuffer buf) {
+    public static MessageUpdateScubaData decode(final FriendlyByteBuf buf) {
         ScubaData data = new ScubaData();
         data.deserializeBuffer(buf);
         return new MessageUpdateScubaData(data);

@@ -2,8 +2,8 @@ package net.tropicraft.core.common.network.message;
 
 import java.util.function.Supplier;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
 
@@ -20,12 +20,12 @@ public class MessageAirCompressorInventory extends MessageTileEntity<AirCompress
         this.tank = airCompressor.getTankStack();
     }
     
-    public static void encode(final MessageAirCompressorInventory message, final PacketBuffer buf) {
+    public static void encode(final MessageAirCompressorInventory message, final FriendlyByteBuf buf) {
         MessageTileEntity.encode(message, buf);
         buf.writeItem(message.tank);
     }
 
-    public static MessageAirCompressorInventory decode(final PacketBuffer buf) {
+    public static MessageAirCompressorInventory decode(final FriendlyByteBuf buf) {
         final MessageAirCompressorInventory message = new MessageAirCompressorInventory();
         MessageTileEntity.decode(message, buf);
         message.tank = buf.readItem();

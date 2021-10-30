@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 
@@ -9,7 +9,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MonkeySitInChairGoal extends Goal {
     private VMonkeyEntity entity;

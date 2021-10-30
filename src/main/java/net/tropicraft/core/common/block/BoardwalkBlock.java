@@ -1,32 +1,32 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public final class BoardwalkBlock extends Block implements IWaterLoggable {
+public final class BoardwalkBlock extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
@@ -41,18 +41,18 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Type type = state.getValue(TYPE);
         if (type.isTall()) {
-            return type.hasPost() ? VoxelShapes.block() : TOP_SHAPE;
+            return type.hasPost() ? Shapes.block() : TOP_SHAPE;
         } else {
             return BOTTOM_SHAPE;
         }
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        World world = context.getLevel();
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         boolean tall = context.getClickLocation().y - pos.getY() > 0.5;
 
@@ -66,7 +66,7 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
             world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
@@ -78,7 +78,7 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
         }
     }
 
-    private BlockState applyConnections(BlockState state, IWorld world, BlockPos pos) {
+    private BlockState applyConnections(BlockState state, LevelAccessor world, BlockPos pos) {
         Direction.Axis axis = state.getValue(AXIS);
         boolean tall = state.getValue(TYPE).isTall();
 
@@ -97,7 +97,7 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
         }
     }
 
-    private boolean connectsTo(IWorld world, BlockPos pos, Direction.Axis axis, Direction.AxisDirection direction) {
+    private boolean connectsTo(LevelAccessor world, BlockPos pos, Direction.Axis axis, Direction.AxisDirection direction) {
         BlockPos connectPos = pos.relative(Direction.fromAxisAndDirection(axis, direction));
         BlockState connectState = world.getBlockState(connectPos);
         return connectState.is(this) && connectState.getValue(TYPE).isShort();
@@ -122,27 +122,27 @@ public final class BoardwalkBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AXIS, TYPE, WATERLOGGED);
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader world, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos pos) {
         return true;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter world, BlockPos pos) {
         return 1.0F;
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
+    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
         return false;
     }
 
-    public enum Type implements IStringSerializable {
+    public enum Type implements StringRepresentable {
         TALL("tall"),
         TALL_POST("tall_post"),
         TALL_POST_FRONT("tall_post_front"),

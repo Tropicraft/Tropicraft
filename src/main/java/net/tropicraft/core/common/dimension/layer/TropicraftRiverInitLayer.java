@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.dimension.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.IC0Transformer;
+import net.minecraft.world.level.newbiome.context.Context;
+import net.minecraft.world.level.newbiome.layer.traits.C0Transformer;
 
-public final class TropicraftRiverInitLayer implements IC0Transformer {
+public final class TropicraftRiverInitLayer implements C0Transformer {
     public final TropicraftBiomeIds biomeIds;
 
     public TropicraftRiverInitLayer(TropicraftBiomeIds biomeIds) {
@@ -11,7 +11,7 @@ public final class TropicraftRiverInitLayer implements IC0Transformer {
     }
 
     @Override
-    public int apply(INoiseRandom random, int center) {
+    public int apply(Context random, int center) {
         return biomeIds.isOcean(center) ? center : random.nextRandom(4) + 1;
     }
 /*

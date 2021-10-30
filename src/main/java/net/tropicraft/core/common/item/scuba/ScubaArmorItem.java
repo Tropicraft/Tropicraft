@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.item.scuba;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
@@ -21,7 +21,7 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     
     private final ScubaType type;
 
-    public ScubaArmorItem(ScubaType type, EquipmentSlotType slotType, Item.Properties properties) {
+    public ScubaArmorItem(ScubaType type, EquipmentSlot slotType, Item.Properties properties) {
         super(ArmorMaterials.SCUBA, slotType, properties);
         this.type = type;
     }
@@ -34,7 +34,7 @@ public class ScubaArmorItem extends TropicraftArmorItem {
         return false;
     }
     
-    public void tickAir(PlayerEntity player, EquipmentSlotType slot, ItemStack stack) {
+    public void tickAir(Player player, EquipmentSlot slot, ItemStack stack) {
     }
 
     public int addAir(int air, ItemStack stack) {
@@ -50,7 +50,7 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     }
     
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return getArmorTexture(this.type).toString();
     }
     
@@ -61,12 +61,12 @@ public class ScubaArmorItem extends TropicraftArmorItem {
     @Override
     @Nullable
     @OnlyIn(Dist.CLIENT)
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemstack, EquipmentSlotType armorSlot, A _default) {
+    public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemstack, EquipmentSlot armorSlot, A _default) {
         if (itemstack.isEmpty()) {
             return null;
         }
 
-        BipedModel<?> armorModel;
+        HumanoidModel<?> armorModel;
         switch (armorSlot) {
         case HEAD:
             armorModel = ModelScubaGear.HEAD;
@@ -81,11 +81,11 @@ public class ScubaArmorItem extends TropicraftArmorItem {
             return null;
         }
 
-        ((BipedModel) armorModel).prepareMobModel(entityLiving, 0.0F, 0.0F, 1.0F);
+        ((HumanoidModel) armorModel).prepareMobModel(entityLiving, 0.0F, 0.0F, 1.0F);
 
         armorModel.crouching = entityLiving.isShiftKeyDown();
         armorModel.young = entityLiving.isBaby();
-        armorModel.rightArmPose = entityLiving.getMainHandItem() != null ? BipedModel.ArmPose.BLOCK : BipedModel.ArmPose.EMPTY;
+        armorModel.rightArmPose = entityLiving.getMainHandItem() != null ? HumanoidModel.ArmPose.BLOCK : HumanoidModel.ArmPose.EMPTY;
         return (A) armorModel;
     }
 }

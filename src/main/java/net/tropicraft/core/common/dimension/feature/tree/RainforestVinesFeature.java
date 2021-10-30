@@ -1,15 +1,15 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.VineBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
@@ -24,8 +24,8 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, RainforestVinesConfig config) {
-        BlockPos.Mutable mutablePos = pos.mutable();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, RainforestVinesConfig config) {
+        BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
         int maxY = Math.min(pos.getY() + config.height, world.getHeight());
         for (int y = pos.getY(); y < maxY; ++y) {

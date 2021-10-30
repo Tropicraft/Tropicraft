@@ -1,23 +1,23 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,7 +25,7 @@ import net.tropicraft.core.common.sound.Sounds;
 
 import java.util.function.Supplier;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 @Mod.EventBusSubscriber
 public class BongoDrumBlock extends Block {
@@ -60,32 +60,32 @@ public class BongoDrumBlock extends Block {
     }
 
     @Override
-    public VoxelShape getShape(final BlockState state, final IBlockReader worldIn, final BlockPos pos, final ISelectionContext context) {
+    public VoxelShape getShape(final BlockState state, final BlockGetter worldIn, final BlockPos pos, final CollisionContext context) {
         return size.shape;
     }
 
     @Override
-    public VoxelShape getCollisionShape(final BlockState state, final IBlockReader worldIn, final BlockPos pos, final ISelectionContext context) {
+    public VoxelShape getCollisionShape(final BlockState state, final BlockGetter worldIn, final BlockPos pos, final CollisionContext context) {
         return getShape(state, worldIn, pos, context);
     }
 
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         // Only play drum sound if player hits the top
         if (result.getDirection() != Direction.UP) {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
 
         if (world.isClientSide) {
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         playBongoSound(world, pos, state, getAdjustedPitch(result));
-        return ActionResultType.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (worldIn.isClientSide) {
             return;
         }
@@ -101,7 +101,7 @@ public class BongoDrumBlock extends Block {
 
     @SubscribeEvent
     public static void onBlockLeftClick(PlayerInteractEvent.LeftClickBlock event) {
-        final World world = event.getWorld();
+        final Level world = event.getWorld();
         final BlockState state = world.getBlockState(event.getPos());
         final Block block = state.getBlock();
         if (state.getBlock() instanceof BongoDrumBlock && event.getFace() == Direction.UP) {
@@ -109,23 +109,23 @@ public class BongoDrumBlock extends Block {
         }
     }
 
-    public void playBongoSound(World world, BlockPos pos, BlockState state) {
+    public void playBongoSound(Level world, BlockPos pos, BlockState state) {
         playBongoSound(world, pos, state, 1F);
     }
 
     /**
      * Play the bongo sound in game. Sound played determined by the size
      */
-    public void playBongoSound(World world, BlockPos pos, BlockState state, float pitch) {
-        world.playSound(null, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, size.soundEvent.get(), SoundCategory.BLOCKS, 1.0F, pitch);
+    public void playBongoSound(Level world, BlockPos pos, BlockState state, float pitch) {
+        world.playSound(null, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, size.soundEvent.get(), SoundSource.BLOCKS, 1.0F, pitch);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
     }
 
-    public float getAdjustedPitch(RayTraceResult hitVec) {
+    public float getAdjustedPitch(HitResult hitVec) {
         if (hitVec == null || hitVec.getLocation() == null) return 1F;
         double distX = Math.abs(hitVec.getLocation().x - (int)hitVec.getLocation().x - 0.5);
         double distZ = Math.abs(hitVec.getLocation().z - (int)hitVec.getLocation().z - 0.5);

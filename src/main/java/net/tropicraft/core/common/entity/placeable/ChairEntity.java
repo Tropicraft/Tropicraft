@@ -1,27 +1,27 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
@@ -30,7 +30,7 @@ import java.util.List;
 public class ChairEntity extends FurnitureEntity {
     // TODO add drips after being wet
     // TODO make it so monkies can sit in the chair ouo
-    private static final DataParameter<Byte> COMESAILAWAY = EntityDataManager.defineId(ChairEntity.class, DataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> COMESAILAWAY = SynchedEntityData.defineId(ChairEntity.class, EntityDataSerializers.BYTE);
     
     /** Is any entity sitting in the chair? */
     public boolean isChairEmpty = true;
@@ -38,7 +38,7 @@ public class ChairEntity extends FurnitureEntity {
     /** Acceleration */
     private double speedMultiplier = 0.1;
 
-    public ChairEntity(EntityType<ChairEntity> type, World world) {
+    public ChairEntity(EntityType<ChairEntity> type, Level world) {
         super(type, world, TropicraftItems.CHAIRS);
     }
 
@@ -55,7 +55,7 @@ public class ChairEntity extends FurnitureEntity {
             for (int i = 0; i < b0; ++i) {
                 double d1 = this.getBoundingBox().minY + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double)(i + 0) / (double)b0 - 0.125D;
                 double d3 = this.getBoundingBox().minY + (this.getBoundingBox().maxY - this.getBoundingBox().minY) * (double)(i + 1) / (double)b0 - 0.125D;
-                AxisAlignedBB axisalignedbb = new AxisAlignedBB(this.getBoundingBox().minX, d1, this.getBoundingBox().minZ, this.getBoundingBox().maxX, d3, this.getBoundingBox().maxZ);
+                AABB axisalignedbb = new AABB(this.getBoundingBox().minX, d1, this.getBoundingBox().minZ, this.getBoundingBox().maxX, d3, this.getBoundingBox().maxZ);
 
                 if (this.level.containsAnyLiquid(axisalignedbb)) {
                     d0 += 1.0D / (double)b0;
@@ -139,11 +139,11 @@ public class ChairEntity extends FurnitureEntity {
 
             if (this.getComeSailAway())
                 for (l = 0; l < 4; ++l) {
-                    int i1 = MathHelper.floor(this.getX() + ((double)(l % 2) - 0.5D) * 0.8D);
-                    j = MathHelper.floor(this.getZ() + ((double)(l / 2) - 0.5D) * 0.8D);
+                    int i1 = Mth.floor(this.getX() + ((double)(l % 2) - 0.5D) * 0.8D);
+                    j = Mth.floor(this.getZ() + ((double)(l / 2) - 0.5D) * 0.8D);
 
                     for (int j1 = 0; j1 < 2; ++j1) {
-                        int k = MathHelper.floor(this.getY()) + j1;
+                        int k = Mth.floor(this.getY()) + j1;
                         BlockPos pos = new BlockPos(i1, k, j);
                         Block block = this.level.getBlockState(pos).getBlock();
                         
@@ -160,7 +160,7 @@ public class ChairEntity extends FurnitureEntity {
             if (this.getComeSailAway() && this.onGround) {
                 setDeltaMovement(getDeltaMovement().multiply(0.5, 0.5, 0.5));
             } else if (this.onGround) {
-                setDeltaMovement(Vector3d.ZERO);
+                setDeltaMovement(Vec3.ZERO);
             }
 
             this.move(MoverType.SELF, getDeltaMovement());
@@ -180,7 +180,7 @@ public class ChairEntity extends FurnitureEntity {
                 d4 = (double)((float)(Math.atan2(d12, d11) * 180.0D / Math.PI));
             }
 
-            double d7 = MathHelper.wrapDegrees(d4 - (double)this.yRot);
+            double d7 = Mth.wrapDegrees(d4 - (double)this.yRot);
 
             if (d7 > 20.0D) {
                 d7 = 20.0D;
@@ -227,25 +227,25 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         this.setComeSailAway(Boolean.valueOf(nbt.getBoolean("COME_SAIL_AWAY")));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putBoolean("COME_SAIL_AWAY", getComeSailAway());
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         if (!level.isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return !player.isPassengerOfSameVehicle(this) ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return !player.isPassengerOfSameVehicle(this) ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     /**
@@ -271,7 +271,7 @@ public class ChairEntity extends FurnitureEntity {
     @Override
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
-            Vector3d xzOffset = new Vector3d(0, 0, -0.125).yRot((float) Math.toRadians(-yRot));
+            Vec3 xzOffset = new Vec3(0, 0, -0.125).yRot((float) Math.toRadians(-yRot));
             passenger.setPos(getX() + xzOffset.x, getY() + getPassengersRidingOffset() + passenger.getMyRidingOffset(), getZ() + xzOffset.z);
         }
     }
@@ -285,7 +285,7 @@ public class ChairEntity extends FurnitureEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.CHAIRS.get(DyeColor.byId(getColor().getId())).get());
     }
 }

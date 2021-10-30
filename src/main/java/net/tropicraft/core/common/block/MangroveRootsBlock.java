@@ -2,30 +2,35 @@ package net.tropicraft.core.common.block;
 
 import it.unimi.dsi.fastutil.objects.Reference2ByteMap;
 import it.unimi.dsi.fastutil.objects.Reference2ByteOpenHashMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceBlock;
-import net.minecraft.block.IWaterLoggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.server.level.ServerLevel;
 
 import java.util.Random;
 
-public final class MangroveRootsBlock extends Block implements IWaterLoggable {
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SupportType;
+
+public final class MangroveRootsBlock extends Block implements SimpleWaterloggedBlock {
     private static final Reference2ByteMap<BlockState> STATE_TO_KEY = new Reference2ByteOpenHashMap<>();
     private static final VoxelShape[] SHAPE_TABLE = buildShapeTable();
 
@@ -76,10 +81,10 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         double height = tall ? 16.0 : 10.0;
 
         VoxelShape shape = Block.box(6.0, 0.0, 6.0, 10.0, height, 10.0);
-        if (north) shape = VoxelShapes.or(shape, Block.box(6.0, 0.0, 0.0, 10.0, height, 6.0));
-        if (east) shape = VoxelShapes.or(shape, Block.box(10.0, 0.0, 6.0, 16.0, height, 10.0));
-        if (south) shape = VoxelShapes.or(shape, Block.box(6.0, 0.0, 10.0, 10.0, height, 16.0));
-        if (west) shape = VoxelShapes.or(shape, Block.box(0.0, 0.0, 6.0, 6.0, height, 10.0));
+        if (north) shape = Shapes.or(shape, Block.box(6.0, 0.0, 0.0, 10.0, height, 6.0));
+        if (east) shape = Shapes.or(shape, Block.box(10.0, 0.0, 6.0, 16.0, height, 10.0));
+        if (south) shape = Shapes.or(shape, Block.box(6.0, 0.0, 10.0, 10.0, height, 16.0));
+        if (west) shape = Shapes.or(shape, Block.box(0.0, 0.0, 6.0, 6.0, height, 10.0));
 
         return shape;
     }
@@ -93,23 +98,23 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         byte key = STATE_TO_KEY.computeByteIfAbsent(state, MangroveRootsBlock::shapeKey);
         return SHAPE_TABLE[key];
     }
 
     @Override
-    public VoxelShape getBlockSupportShape(BlockState state, IBlockReader reader, BlockPos pos) {
+    public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
         return super.getBlockSupportShape(state, reader, pos);
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.getConnectedState(context.getLevel(), context.getClickedPos());
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
             world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
@@ -117,7 +122,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return this.getConnectedState(world, currentPos);
     }
 
-    private BlockState getConnectedState(IBlockReader world, BlockPos pos) {
+    private BlockState getConnectedState(BlockGetter world, BlockPos pos) {
         BlockState state = this.defaultBlockState()
                 .setValue(WATERLOGGED, world.getFluidState(pos).getType() == Fluids.WATER)
                 .setValue(GROUNDED, this.isGrounded(world, pos));
@@ -139,7 +144,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return state;
     }
 
-    private Connection getConnectionFor(IBlockReader world, BlockPos pos, Direction direction) {
+    private Connection getConnectionFor(BlockGetter world, BlockPos pos, Direction direction) {
         BlockPos adjacentPos = pos.relative(direction);
         BlockState adjacentState = world.getBlockState(adjacentPos);
 
@@ -160,9 +165,9 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return Connection.NONE;
     }
 
-    private boolean isAdjacentTall(IBlockReader world, BlockPos pos, Direction sourceDirection) {
+    private boolean isAdjacentTall(BlockGetter world, BlockPos pos, Direction sourceDirection) {
         BlockState aboveState = world.getBlockState(pos.above());
-        if (aboveState.is(this) || aboveState.isFaceSturdy(world, pos, Direction.DOWN, BlockVoxelShape.CENTER)) {
+        if (aboveState.is(this) || aboveState.isFaceSturdy(world, pos, Direction.DOWN, SupportType.CENTER)) {
             return true;
         }
 
@@ -184,21 +189,21 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return count > 1;
     }
 
-    private boolean canConnectTo(IBlockReader world, BlockPos pos, Direction direction) {
+    private boolean canConnectTo(BlockGetter world, BlockPos pos, Direction direction) {
         return this.canConnectTo(world.getBlockState(pos), world, pos, direction);
     }
 
-    private boolean canConnectTo(BlockState state, IBlockReader world, BlockPos pos, Direction direction) {
+    private boolean canConnectTo(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
         return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state.getBlock());
     }
 
-    private boolean isGrounded(IBlockReader world, BlockPos pos) {
+    private boolean isGrounded(BlockGetter world, BlockPos pos) {
         BlockPos groundPos = pos.below();
         return world.getBlockState(groundPos).isFaceSturdy(world, groundPos, Direction.UP);
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
         return !state.getValue(WATERLOGGED);
     }
 
@@ -239,12 +244,12 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(TALL, GROUNDED, NORTH, EAST, SOUTH, WEST, WATERLOGGED);
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+    public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
         return false;
     }
 
@@ -254,13 +259,13 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
     }
 
     @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random) {
         if (random.nextInt(PIANGUA_GROW_CHANCE) == 0) {
             this.tryGrowPianguas(world, pos, random);
         }
     }
 
-    private void tryGrowPianguas(ServerWorld world, BlockPos pos, Random random) {
+    private void tryGrowPianguas(ServerLevel world, BlockPos pos, Random random) {
         BlockPos soilPos = pos.below();
         if (!world.getBlockState(soilPos).is(TropicraftBlocks.MUD.get())) {
             return;
@@ -280,7 +285,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         }
     }
 
-    private boolean hasNearPianguas(ServerWorld world, BlockPos source) {
+    private boolean hasNearPianguas(ServerLevel world, BlockPos source) {
         Block mudWithPianguas = TropicraftBlocks.MUD_WITH_PIANGUAS.get();
         BlockPos minSpacingPos = source.offset(-PIANGUA_RADIUS, -PIANGUA_RADIUS, -PIANGUA_RADIUS);
         BlockPos maxSpacingPos = source.offset(PIANGUA_RADIUS, 0, PIANGUA_RADIUS);
@@ -294,7 +299,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return false;
     }
 
-    public enum Connection implements IStringSerializable {
+    public enum Connection implements StringRepresentable {
         NONE("none"),
         HIGH("high"),
         LOW("low");

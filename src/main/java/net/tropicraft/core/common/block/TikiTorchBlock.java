@@ -1,30 +1,30 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
@@ -33,7 +33,7 @@ import java.util.Random;
 
 public class TikiTorchBlock extends Block {
 
-    public enum TorchSection implements IStringSerializable {
+    public enum TorchSection implements StringRepresentable {
         UPPER(2), MIDDLE(1), LOWER(0);
         
         final int height;
@@ -55,8 +55,8 @@ public class TikiTorchBlock extends Block {
 
     public static final EnumProperty<TorchSection> SECTION = EnumProperty.create("section", TorchSection.class);
 
-    protected static final VoxelShape BASE_SHAPE = VoxelShapes.create(new AxisAlignedBB(0.4, 0.0D, 0.4, 0.6, 0.999999, 0.6));
-    protected static final VoxelShape TOP_SHAPE = VoxelShapes.create(new AxisAlignedBB(0.4, 0.0D, 0.4, 0.6, 0.6, 0.6));
+    protected static final VoxelShape BASE_SHAPE = Shapes.create(new AABB(0.4, 0.0D, 0.4, 0.6, 0.999999, 0.6));
+    protected static final VoxelShape TOP_SHAPE = Shapes.create(new AABB(0.4, 0.0D, 0.4, 0.6, 0.6, 0.6));
 
     public TikiTorchBlock(Block.Properties properties) {
         super(properties);
@@ -70,7 +70,7 @@ public class TikiTorchBlock extends Block {
     }
     
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         TorchSection section = state.getValue(SECTION);
 
         if (section == TorchSection.UPPER) {
@@ -82,7 +82,7 @@ public class TikiTorchBlock extends Block {
 
     @Override
     @Deprecated
-    public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
         if (canSupportCenter(world, pos.below(), Direction.UP)) { // can block underneath support torch
             return true;
         } else { // if not, is the block underneath a lower 2/3 tiki torch segment?
@@ -92,7 +92,7 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockPos blockpos = context.getClickedPos();
         if (placeShortTorchOn(context.getLevel().getBlockState(blockpos.below()))) {
             return defaultBlockState().setValue(SECTION, TorchSection.UPPER);
@@ -105,12 +105,12 @@ public class TikiTorchBlock extends Block {
     
     @Override
     @Deprecated
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
         return facing.getAxis() == Axis.Y && !this.canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         TorchSection section = state.getValue(SECTION);
 
         if (section == TorchSection.UPPER) return;
@@ -125,7 +125,7 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
-    public void playerDestroy(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+    public void playerDestroy(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
         TorchSection section = state.getValue(SECTION);
         BlockPos base = pos.below(section.height);
         for (TorchSection otherSection : TorchSection.values()) {
@@ -139,7 +139,7 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
-    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
+    public boolean removedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         boolean ret = false;
         TorchSection section = state.getValue(SECTION);
         BlockPos base = pos.below(section.height);
@@ -159,7 +159,7 @@ public class TikiTorchBlock extends Block {
     }
 
     @Override
-    public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
         boolean isTop = state.getValue(SECTION) == TorchSection.UPPER;
         if (isTop) {
             double d = pos.getX() + 0.5F;

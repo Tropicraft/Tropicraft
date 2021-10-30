@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.dimension.feature.block_placer;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.blockplacer.BlockPlacer;
-import net.minecraft.world.gen.blockplacer.BlockPlacerType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacer;
+import net.minecraft.world.level.levelgen.feature.blockplacers.BlockPlacerType;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 
@@ -16,7 +16,7 @@ public final class HugePlantBlockPlacer extends BlockPlacer {
     public static final Codec<HugePlantBlockPlacer> CODEC = Codec.unit(() -> INSTANCE);
 
     @Override
-    public void place(IWorld world, BlockPos pos, BlockState state, Random random) {
+    public void place(LevelAccessor world, BlockPos pos, BlockState state, Random random) {
         HugePlantBlock block = (HugePlantBlock) state.getBlock();
         block.placeAt(world, pos, Constants.BlockFlags.BLOCK_UPDATE);
     }

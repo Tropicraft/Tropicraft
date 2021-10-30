@@ -1,21 +1,21 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.FishBucketItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.item.FishBucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import java.util.function.Supplier;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
-public class TropicraftFishBucketItem<T extends AbstractFishEntity> extends FishBucketItem {
+public class TropicraftFishBucketItem<T extends AbstractFish> extends FishBucketItem {
     private final Supplier<? extends EntityType<T>> fishType;
 
     public TropicraftFishBucketItem(final Supplier<? extends EntityType<T>> type, Fluid fluid, Properties props) {
@@ -24,16 +24,16 @@ public class TropicraftFishBucketItem<T extends AbstractFishEntity> extends Fish
     }
 
     @Override
-    public void checkExtraContent(World world, ItemStack stack, BlockPos pos) {
+    public void checkExtraContent(Level world, ItemStack stack, BlockPos pos) {
         if (!world.isClientSide) {
-            this.placeFish((ServerWorld) world, stack, pos);
+            this.placeFish((ServerLevel) world, stack, pos);
         }
     }
 
-    private void placeFish(ServerWorld world, ItemStack stack, BlockPos pos) {
-        Entity fishy = fishType.get().spawn(world, stack, null, pos, SpawnReason.BUCKET, true, false);
+    private void placeFish(ServerLevel world, ItemStack stack, BlockPos pos) {
+        Entity fishy = fishType.get().spawn(world, stack, null, pos, MobSpawnType.BUCKET, true, false);
         if (fishy != null) {
-            ((AbstractFishEntity) fishy).setFromBucket(true);
+            ((AbstractFish) fishy).setFromBucket(true);
         }
 
     }

@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIWanderNotLazy extends Goal {
 
-    private final CreatureEntity entity;
+    private final PathfinderMob entity;
     private double xPosition;
     private double yPosition;
     private double zPosition;
@@ -19,12 +19,12 @@ public class EntityAIWanderNotLazy extends Goal {
     private int executionChance;
     private boolean mustUpdate;
 
-    public EntityAIWanderNotLazy(CreatureEntity creatureIn, double speedIn)
+    public EntityAIWanderNotLazy(PathfinderMob creatureIn, double speedIn)
     {
         this(creatureIn, speedIn, 120);
     }
 
-    public EntityAIWanderNotLazy(CreatureEntity creatureIn, double speedIn, int chance)
+    public EntityAIWanderNotLazy(PathfinderMob creatureIn, double speedIn, int chance)
     {
         this.entity = creatureIn;
         this.speed = speedIn;
@@ -51,7 +51,7 @@ public class EntityAIWanderNotLazy extends Goal {
             }
         }
 
-        Vector3d vec = RandomPositionGenerator.getPos(this.entity, 10, 7);
+        Vec3 vec = RandomPos.getPos(this.entity, 10, 7);
         if (vec == null)
         {
             return false;

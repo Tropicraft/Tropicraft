@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class TropiCreeperSwellGoal extends Goal {
     private final TropiCreeperEntity creeper;

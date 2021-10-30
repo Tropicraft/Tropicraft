@@ -1,57 +1,66 @@
 package net.tropicraft.core.common.entity.passive.monkey;
 
 import com.google.common.base.Suppliers;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.Easings;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.function.Supplier;
 
-public class SpiderMonkeyEntity extends AnimalEntity {
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+
+public class SpiderMonkeyEntity extends Animal {
     private static final Supplier<Ingredient> BREEDING_ITEMS = Suppliers.memoize(() -> Ingredient.of(TropicraftTags.Items.FRUITS));
 
     private static final int STAND_ANIMATION_LENGTH = 15;
 
-    private static final DataParameter<Boolean> STANDING = EntityDataManager.defineId(SpiderMonkeyEntity.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(SpiderMonkeyEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int standAnimation;
 
-    public SpiderMonkeyEntity(EntityType<? extends SpiderMonkeyEntity> type, World world) {
+    public SpiderMonkeyEntity(EntityType<? extends SpiderMonkeyEntity> type, Level world) {
         super(type, world);
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 2.0));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, BREEDING_ITEMS.get(), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
@@ -108,17 +117,17 @@ public class SpiderMonkeyEntity extends AnimalEntity {
 
     public float getStandAnimation(float partialTicks) {
         float animation = (this.standAnimation + (this.isStanding() ? partialTicks : -partialTicks)) / STAND_ANIMATION_LENGTH;
-        return Easings.inOutSine(MathHelper.clamp(animation, 0.0F, 1.0F));
+        return Easings.inOutSine(Mth.clamp(animation, 0.0F, 1.0F));
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT nbt) {
+    public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         this.setStanding(nbt.getBoolean("standing"));
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundNBT nbt) {
+    public void addAdditionalSaveData(final CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putBoolean("standing", this.isStanding());
     }
@@ -129,12 +138,12 @@ public class SpiderMonkeyEntity extends AnimalEntity {
     }
 
     @Override
-    public SpiderMonkeyEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
+    public SpiderMonkeyEntity getBreedOffspring(ServerLevel world, AgableMob mate) {
         return null;
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.SPIDER_MONKEY_SPAWN_EGG.get());
     }
 

@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.block.huge_plant;
 
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.block.BlockState;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,7 +21,7 @@ public final class HugePlantBlockHighlight {
 
     @SubscribeEvent
     public static void onHighlightBlock(DrawHighlightEvent.HighlightBlock event) {
-        ClientWorld world = CLIENT.level;
+        ClientLevel world = CLIENT.level;
         if (world == null) return;
 
         BlockPos pos = event.getTarget().getBlockPos();
@@ -31,15 +31,15 @@ public final class HugePlantBlockHighlight {
         }
     }
 
-    private static void renderHugePlantHighlight(DrawHighlightEvent.HighlightBlock event, ClientWorld world, BlockPos pos, BlockState state) {
+    private static void renderHugePlantHighlight(DrawHighlightEvent.HighlightBlock event, ClientLevel world, BlockPos pos, BlockState state) {
         HugePlantBlock.Shape shape = HugePlantBlock.Shape.matchIncomplete(state.getBlock(), world, pos);
         if (shape == null) return;
 
-        IVertexBuilder builder = event.getBuffers().getBuffer(RenderType.lines());
+        VertexConsumer builder = event.getBuffers().getBuffer(RenderType.lines());
 
-        Vector3d view = event.getInfo().getPosition();
-        AxisAlignedBB aabb = shape.asAabb().move(-view.x, -view.y, -view.z);
-        WorldRenderer.renderLineBox(event.getMatrix(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
+        Vec3 view = event.getInfo().getPosition();
+        AABB aabb = shape.asAabb().move(-view.x, -view.y, -view.z);
+        LevelRenderer.renderLineBox(event.getMatrix(), builder, aabb, 0.0F, 0.0F, 0.0F, 0.4F);
 
         event.setCanceled(true);
     }

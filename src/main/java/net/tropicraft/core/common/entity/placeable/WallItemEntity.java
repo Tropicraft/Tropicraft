@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.BambooItemFrame;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -14,11 +14,11 @@ import javax.annotation.Nullable;
 
 public class WallItemEntity extends BambooItemFrame {
 
-    public WallItemEntity(EntityType<? extends WallItemEntity> entityType, World world) {
+    public WallItemEntity(EntityType<? extends WallItemEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    public WallItemEntity(World worldIn, BlockPos pos, Direction on) {
+    public WallItemEntity(Level worldIn, BlockPos pos, Direction on) {
         super(TropicraftEntities.WALL_ITEM.get(), worldIn, pos, on);
     }
 
@@ -43,7 +43,7 @@ public class WallItemEntity extends BambooItemFrame {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return getItem();
     }
 }

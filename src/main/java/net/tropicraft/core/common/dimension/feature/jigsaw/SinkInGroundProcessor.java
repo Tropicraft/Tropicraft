@@ -1,19 +1,19 @@
 package net.tropicraft.core.common.dimension.feature.jigsaw;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.template.IStructureProcessorType;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.Template.BlockInfo;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
@@ -22,10 +22,10 @@ import javax.annotation.Nullable;
 public class SinkInGroundProcessor extends CheatyStructureProcessor {
     public static final Codec<SinkInGroundProcessor> CODEC = Codec.unit(new SinkInGroundProcessor());
 
-    static final IStructureProcessorType<SinkInGroundProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":sink_in_ground", () -> CODEC);
+    static final StructureProcessorType<SinkInGroundProcessor> TYPE = Registry.register(Registry.STRUCTURE_PROCESSOR, Constants.MODID + ":sink_in_ground", () -> CODEC);
 
     @Override
-    public BlockInfo process(IWorldReader world, BlockPos worldPos, BlockPos sourcePos, BlockInfo sourceInfo, BlockInfo worldInfo, PlacementSettings placement, @Nullable Template template) {
+    public StructureBlockInfo process(LevelReader world, BlockPos worldPos, BlockPos sourcePos, StructureBlockInfo sourceInfo, StructureBlockInfo worldInfo, StructurePlaceSettings placement, @Nullable StructureTemplate template) {
         worldPos = worldInfo.pos;
 
         if (sourceInfo.pos.getY() == 0) {
@@ -36,7 +36,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         }
         
         // Get height of the ground at this spot
-        BlockPos groundCheck = world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE_WG, worldPos);
+        BlockPos groundCheck = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, worldPos);
         // y == 2, we're above the path, remove fence blocks that are above sea level or next to some other block
         if (sourceInfo.pos.getY() == 2 && sourceInfo.state.getBlock() == TropicraftBlocks.BAMBOO_FENCE.get()) {
             if (groundCheck.getY() > 127 || !isAirOrWater(world, worldPos.below(2))) {
@@ -53,12 +53,12 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         if (groundCheck.getY() > 127) {
             // Convert slabs to bundles when they are over land
             if (!isAirOrWater(world, worldPos.below()) && sourceInfo.state.getBlock() == TropicraftBlocks.THATCH_SLAB.get()) {
-                worldInfo = new BlockInfo(worldPos, TropicraftBlocks.THATCH_BUNDLE.get().defaultBlockState(), null);
+                worldInfo = new StructureBlockInfo(worldPos, TropicraftBlocks.THATCH_BUNDLE.get().defaultBlockState(), null);
             }
             
             // Only sink solid blocks, or blocks that are above air/water -- delete all others
             if (Block.isShapeFullBlock(worldInfo.state.getShape(world, worldPos.below())) || isAirOrWater(world, worldPos.below())) {
-                return new BlockInfo(worldPos.below(), worldInfo.state, worldInfo.nbt);
+                return new StructureBlockInfo(worldPos.below(), worldInfo.state, worldInfo.nbt);
             }
             return null;
         }
@@ -68,7 +68,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
         return worldInfo;
     }
     
-    private void removeObstructions(IWorldReader world, BlockPos... positions) {
+    private void removeObstructions(LevelReader world, BlockPos... positions) {
         for (BlockPos pos : positions) {
             BlockState current = world.getBlockState(pos);
             if (current.is(BlockTags.LEAVES) || current.is(BlockTags.LOGS)) {
@@ -78,7 +78,7 @@ public class SinkInGroundProcessor extends CheatyStructureProcessor {
     }
 
     @Override
-    protected IStructureProcessorType<?> getType() {
+    protected StructureProcessorType<?> getType() {
         return TYPE;
     }
 }

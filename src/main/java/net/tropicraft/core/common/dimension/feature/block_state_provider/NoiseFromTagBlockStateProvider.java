@@ -2,16 +2,16 @@ package net.tropicraft.core.common.dimension.feature.block_state_provider;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.TagCollectionManager;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProviderType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.SerializationTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
 
 import java.util.List;
 import java.util.Random;
@@ -19,13 +19,13 @@ import java.util.Random;
 public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     public static final Codec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                ITag.codec(() -> TagCollectionManager.getInstance().getBlocks()).fieldOf("tag").forGetter(c -> c.tag)
+                Tag.codec(() -> SerializationTags.getInstance().getBlocks()).fieldOf("tag").forGetter(c -> c.tag)
         ).apply(instance, NoiseFromTagBlockStateProvider::new);
     });
 
-    public final ITag<Block> tag;
+    public final Tag<Block> tag;
 
-    public NoiseFromTagBlockStateProvider(ITag<Block> tag) {
+    public NoiseFromTagBlockStateProvider(Tag<Block> tag) {
         this.tag = tag;
     }
 
@@ -42,9 +42,9 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
         }
 
         double noise = Biome.BIOME_INFO_NOISE.getValue(pos.getX() / 48.0, pos.getZ() / 48.0, false);
-        noise = MathHelper.clamp((1.0 + noise) / 2.0, 0.0, 0.9999);
+        noise = Mth.clamp((1.0 + noise) / 2.0, 0.0, 0.9999);
 
-        Block block = blocks.get(MathHelper.floor(noise * blocks.size()));
+        Block block = blocks.get(Mth.floor(noise * blocks.size()));
         return block.defaultBlockState();
     }
 }

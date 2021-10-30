@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 
-public abstract class EchinodermEntity extends WaterMobEntity {
+public abstract class EchinodermEntity extends WaterAnimal {
     /**
      * How many ticks it takes for a baby to grow into an adult.
      */
@@ -57,14 +57,14 @@ public abstract class EchinodermEntity extends WaterMobEntity {
     /**
      * Growing Age. Replaced old data watcher DW_GROWING_AGE
      */
-    private static final DataParameter<Integer> GROWING_AGE = EntityDataManager.defineId(EchinodermEntity.class, DataSerializers.INT);
+    private static final EntityDataAccessor<Integer> GROWING_AGE = SynchedEntityData.defineId(EchinodermEntity.class, EntityDataSerializers.INT);
 
     /**
      * Custom yOffset variable
      */
     private double yOffset = -1;
 
-    public EchinodermEntity(final EntityType<? extends WaterMobEntity> type, final World world) {
+    public EchinodermEntity(final EntityType<? extends WaterAnimal> type, final Level world) {
         super(type, world);
         setEchinodermSize();
     }
@@ -83,13 +83,13 @@ public abstract class EchinodermEntity extends WaterMobEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setGrowingAge(compound.getInt("Age"));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Age", getGrowingAge());
     }
@@ -112,7 +112,7 @@ public abstract class EchinodermEntity extends WaterMobEntity {
         EchinodermEntity closestMate = null;
         double closestSqDist = -1f;
 
-        AxisAlignedBB aabb = getBoundingBox().inflate(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
+        AABB aabb = getBoundingBox().inflate(NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE, NEIGHBORHOOD_SIZE);
         for (Object obj : level.getEntitiesOfClass(getClass(), aabb)) {
             // don't masturbate
             if (obj == this) {

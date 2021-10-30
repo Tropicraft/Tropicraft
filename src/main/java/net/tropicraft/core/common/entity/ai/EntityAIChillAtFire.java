@@ -1,19 +1,19 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.biome.Biome;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIChillAtFire extends Goal
 {
@@ -48,7 +48,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = this.entityObj.blockPosition();
 
-        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN) {
+        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN) {
             if (!isTooClose()) {
                 return entityObj.level.random.nextInt(20) == 0;
             } else {
@@ -74,7 +74,7 @@ public class EntityAIChillAtFire extends Goal
 
         BlockPos blockpos = this.entityObj.blockPosition();
         //return !this.entityObj.getNavigation().noPath();
-        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.RainType.RAIN)
+        if (!this.entityObj.level.isDay() || this.entityObj.level.isRaining() && this.entityObj.level.getBiome(blockpos).getPrecipitation() != Biome.Precipitation.RAIN)
         {
             return !isTooClose();
 
@@ -103,7 +103,7 @@ public class EntityAIChillAtFire extends Goal
         }
 
         //prevent walking into the fire
-        double dist = entityObj.position().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        double dist = entityObj.position().distanceTo(new Vec3(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
         if (dist < 4D && entityObj.isOnGround()) {
             entityObj.setSitting(true);
             entityObj.getNavigation().stop();
@@ -121,11 +121,11 @@ public class EntityAIChillAtFire extends Goal
                 randZPos = entityObj.level.random.nextInt(range) - entityObj.level.random.nextInt(range);
 
                 if (entityObj.getId() % 3 == 0) {
-                    entityObj.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
+                    entityObj.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TropicraftItems.BAMBOO_MUG.get()));
                 } else if (entityObj.getId() % 5 == 0) {
-                    entityObj.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.COOKED_FROG_LEG.get()));
+                    entityObj.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TropicraftItems.COOKED_FROG_LEG.get()));
                 } else {
-                    entityObj.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(TropicraftItems.ORANGE.get()));
+                    entityObj.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TropicraftItems.ORANGE.get()));
                 }
 
                 entityObj.heal(1);
@@ -146,8 +146,8 @@ public class EntityAIChillAtFire extends Goal
 
                 boolean success = false;
 
-                if (this.entityObj.distanceToSqr(Vector3d.atCenterOf(blockposGoal)) > 256.0D) {
-                    Vector3d Vector3d = RandomPositionGenerator.getLandPosTowards(this.entityObj, 14, 3, new Vector3d((double) i + 0.5D, (double) j, (double) k + 0.5D));
+                if (this.entityObj.distanceToSqr(Vec3.atCenterOf(blockposGoal)) > 256.0D) {
+                    Vec3 Vector3d = RandomPos.getLandPosTowards(this.entityObj, 14, 3, new Vec3((double) i + 0.5D, (double) j, (double) k + 0.5D));
 
                     if (Vector3d != null) {
                         success = this.entityObj.getNavigation().moveTo(Vector3d.x, Vector3d.y, Vector3d.z, 1.0D);
@@ -221,7 +221,7 @@ public class EntityAIChillAtFire extends Goal
         }
 
         //prevent walking into the fire
-        double dist = entityObj.position().distanceTo(new Vector3d(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
+        double dist = entityObj.position().distanceTo(new Vec3(blockposGoal.getX(), blockposGoal.getY(), blockposGoal.getZ()));
         return dist <= 3D;
     }
 }

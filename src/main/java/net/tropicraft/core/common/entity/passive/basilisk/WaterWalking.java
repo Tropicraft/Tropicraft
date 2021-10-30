@@ -1,24 +1,24 @@
 package net.tropicraft.core.common.entity.passive.basilisk;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.WalkNodeProcessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.CubeCoordinateIterator;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Cursor3D;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -38,39 +38,39 @@ public final class WaterWalking {
         return fluid.is(FluidTags.WATER);
     }
 
-    public static Vector3d collide(IBlockReader world, AxisAlignedBB box, Vector3d offset) {
+    public static Vec3 collide(BlockGetter world, AABB box, Vec3 offset) {
         if (offset.lengthSqr() == 0.0 || offset.y >= 0.0) {
             return offset;
         }
 
         Stream<VoxelShape> collisions = WaterWalking.collisions(world, box.expandTowards(offset));
 
-        double dy = VoxelShapes.collide(Direction.Axis.Y, box, collisions, offset.y);
-        return new Vector3d(offset.x, dy, offset.z);
+        double dy = Shapes.collide(Direction.Axis.Y, box, collisions, offset.y);
+        return new Vec3(offset.x, dy, offset.z);
     }
 
-    public static Stream<VoxelShape> collisions(IBlockReader world, AxisAlignedBB box) {
-        int x0 = MathHelper.floor(box.minX);
-        int x1 = MathHelper.floor(box.maxX);
-        int y0 = MathHelper.floor(box.minY);
-        int y1 = MathHelper.floor(box.maxY);
-        int z0 = MathHelper.floor(box.minZ);
-        int z1 = MathHelper.floor(box.maxZ);
+    public static Stream<VoxelShape> collisions(BlockGetter world, AABB box) {
+        int x0 = Mth.floor(box.minX);
+        int x1 = Mth.floor(box.maxX);
+        int y0 = Mth.floor(box.minY);
+        int y1 = Mth.floor(box.maxY);
+        int z0 = Mth.floor(box.minZ);
+        int z1 = Mth.floor(box.maxZ);
 
-        CubeCoordinateIterator iterator = new CubeCoordinateIterator(x0, y0, z0, x1, y1, z1);
+        Cursor3D iterator = new Cursor3D(x0, y0, z0, x1, y1, z1);
         CollisionSpliterator spliterator = new CollisionSpliterator(world, box, iterator);
 
         return StreamSupport.stream(spliterator, false);
     }
 
     public static final class CollisionSpliterator extends Spliterators.AbstractSpliterator<VoxelShape> {
-        private final IBlockReader world;
-        private final AxisAlignedBB box;
+        private final BlockGetter world;
+        private final AABB box;
 
-        private final CubeCoordinateIterator iterator;
-        private final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+        private final Cursor3D iterator;
+        private final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        CollisionSpliterator(IBlockReader world, AxisAlignedBB box, CubeCoordinateIterator iterator) {
+        CollisionSpliterator(BlockGetter world, AABB box, Cursor3D iterator) {
             super(Long.MAX_VALUE, Spliterator.NONNULL | Spliterator.IMMUTABLE);
             this.world = world;
             this.box = box;
@@ -79,9 +79,9 @@ public final class WaterWalking {
 
         @Override
         public boolean tryAdvance(Consumer<? super VoxelShape> action) {
-            IBlockReader world = this.world;
-            CubeCoordinateIterator iterator = this.iterator;
-            BlockPos.Mutable mutablePos = this.mutablePos;
+            BlockGetter world = this.world;
+            Cursor3D iterator = this.iterator;
+            BlockPos.MutableBlockPos mutablePos = this.mutablePos;
 
             while (iterator.advance()) {
                 int x = iterator.nextX();
@@ -100,21 +100,21 @@ public final class WaterWalking {
         }
     }
 
-    public static final class Navigator extends GroundPathNavigator {
-        public Navigator(MobEntity entity, World world) {
+    public static final class Navigator extends GroundPathNavigation {
+        public Navigator(Mob entity, Level world) {
             super(entity, world);
             this.setCanFloat(true);
         }
 
         @Override
         protected PathFinder createPathFinder(int depth) {
-            this.nodeEvaluator = new WalkNodeProcessor();
+            this.nodeEvaluator = new WalkNodeEvaluator();
             return new PathFinder(this.nodeEvaluator, depth);
         }
 
         @Override
-        protected boolean hasValidPathType(PathNodeType type) {
-            return type == PathNodeType.WATER || type == PathNodeType.WATER_BORDER || super.hasValidPathType(type);
+        protected boolean hasValidPathType(BlockPathTypes type) {
+            return type == BlockPathTypes.WATER || type == BlockPathTypes.WATER_BORDER || super.hasValidPathType(type);
         }
 
         @Override

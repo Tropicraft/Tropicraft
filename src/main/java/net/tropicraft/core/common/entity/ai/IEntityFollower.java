@@ -1,6 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface IEntityFollower {
     public LivingEntity getFollowingEntity();

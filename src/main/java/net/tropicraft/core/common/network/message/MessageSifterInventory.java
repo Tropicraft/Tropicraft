@@ -1,7 +1,7 @@
 package net.tropicraft.core.common.network.message;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 
@@ -20,12 +20,12 @@ public class MessageSifterInventory extends MessageTileEntity<SifterTileEntity> 
 		siftItem = sifter.getSiftItem();
 	}
 
-	public static void encode(final MessageSifterInventory message, final PacketBuffer buf) {
+	public static void encode(final MessageSifterInventory message, final FriendlyByteBuf buf) {
 		MessageTileEntity.encode(message, buf);
 		buf.writeItem(message.siftItem);
 	}
 
-	public static MessageSifterInventory decode(final PacketBuffer buf) {
+	public static MessageSifterInventory decode(final FriendlyByteBuf buf) {
 		final MessageSifterInventory message = new MessageSifterInventory();
 		MessageTileEntity.decode(message, buf);
 		message.siftItem = buf.readItem();

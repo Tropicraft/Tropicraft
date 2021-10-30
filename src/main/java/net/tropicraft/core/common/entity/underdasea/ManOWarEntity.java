@@ -1,26 +1,26 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -28,7 +28,13 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.List;
 
-public class ManOWarEntity extends WaterMobEntity {
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
+
+public class ManOWarEntity extends WaterAnimal {
     public float squidPitch;
     public float prevSquidPitch;
     public float squidYaw;
@@ -45,7 +51,7 @@ public class ManOWarEntity extends WaterMobEntity {
     private float randomMotionVecZ;
     private int attackTimer = 0;
 
-    public ManOWarEntity(final EntityType<? extends ManOWarEntity> type, World world){
+    public ManOWarEntity(final EntityType<? extends ManOWarEntity> type, Level world){
         super(type, world);
         this.random.setSeed(this.getId());
         this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
@@ -58,14 +64,14 @@ public class ManOWarEntity extends WaterMobEntity {
         this.goalSelector.addGoal(1, new FleeGoal());
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return WaterMobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return WaterAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.ATTACK_DAMAGE, 3.0);
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntitySize size) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
         return size.height * 0.5F;
     }
 
@@ -116,7 +122,7 @@ public class ManOWarEntity extends WaterMobEntity {
 
         if (isInWaterOrBubble()) {
             if (random.nextInt(5) == 0 && attackTimer <= 0) {
-                List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0D, -2.0D, 0.0D), EntityPredicates.NO_CREATIVE_OR_SPECTATOR);
+                List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2D, 4D, 2D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
                 for (LivingEntity ent : list) {
                     if (ent.getType() != TropicraftEntities.MAN_O_WAR.get()) {
                         if (ent.isInWater()) {
@@ -130,7 +136,7 @@ public class ManOWarEntity extends WaterMobEntity {
 
             if (this.squidRotation < 3.1415927F) {
                 float lvt_1_1_ = this.squidRotation / 3.1415927F;
-                this.tentacleAngle = MathHelper.sin(lvt_1_1_ * lvt_1_1_ * 3.1415927F) * 3.1415927F * 0.25F;
+                this.tentacleAngle = Mth.sin(lvt_1_1_ * lvt_1_1_ * 3.1415927F) * 3.1415927F * 0.25F;
                 if ((double)lvt_1_1_ > 0.75D) {
                     this.randomMotionSpeed = 1.0F;
                     this.rotateSpeed = 1.0F;
@@ -147,18 +153,18 @@ public class ManOWarEntity extends WaterMobEntity {
                 this.setDeltaMovement(this.randomMotionVecX * this.randomMotionSpeed, this.randomMotionVecY * this.randomMotionSpeed, this.randomMotionVecZ * this.randomMotionSpeed);
             }
 
-            Vector3d motion = this.getDeltaMovement();
-            float lvt_2_1_ = MathHelper.sqrt(getHorizontalDistanceSqr(motion));
-            this.yBodyRot += (-((float)MathHelper.atan2(motion.x, motion.z)) * 57.295776F - this.yBodyRot) * 0.1F;
+            Vec3 motion = this.getDeltaMovement();
+            float lvt_2_1_ = Mth.sqrt(getHorizontalDistanceSqr(motion));
+            this.yBodyRot += (-((float)Mth.atan2(motion.x, motion.z)) * 57.295776F - this.yBodyRot) * 0.1F;
             this.yRot = this.yBodyRot;
             this.squidYaw = (float)((double)this.squidYaw + 3.141592653589793D * (double)this.rotateSpeed * 1.5D);
-            this.squidPitch += (-((float)MathHelper.atan2(lvt_2_1_, motion.y)) * 57.295776F - this.squidPitch) * 0.1F;
+            this.squidPitch += (-((float)Mth.atan2(lvt_2_1_, motion.y)) * 57.295776F - this.squidPitch) * 0.1F;
         } else {
-            this.tentacleAngle = MathHelper.abs(MathHelper.sin(this.squidRotation)) * 3.1415927F * 0.25F;
+            this.tentacleAngle = Mth.abs(Mth.sin(this.squidRotation)) * 3.1415927F * 0.25F;
             if (!this.level.isClientSide) {
                 double lvt_1_3_ = this.getDeltaMovement().y;
-                if (this.hasEffect(Effects.LEVITATION)) {
-                    lvt_1_3_ = 0.05D * (double)(this.getEffect(Effects.LEVITATION).getAmplifier() + 1);
+                if (this.hasEffect(MobEffects.LEVITATION)) {
+                    lvt_1_3_ = 0.05D * (double)(this.getEffect(MobEffects.LEVITATION).getAmplifier() + 1);
                 } else if (!this.isNoGravity()) {
                     lvt_1_3_ -= 0.08D;
                 }
@@ -204,7 +210,7 @@ public class ManOWarEntity extends WaterMobEntity {
     }
 
     @Override
-    public void travel(Vector3d vector) {
+    public void travel(Vec3 vector) {
         this.move(MoverType.SELF, this.getDeltaMovement());
     }
 
@@ -229,7 +235,7 @@ public class ManOWarEntity extends WaterMobEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.MAN_O_WAR_SPAWN_EGG.get());
     }
 
@@ -259,7 +265,7 @@ public class ManOWarEntity extends WaterMobEntity {
             ++this.tickCounter;
             LivingEntity target = ManOWarEntity.this.getLastHurtByMob();
             if (target != null) {
-                Vector3d lvt_2_1_ = new Vector3d(ManOWarEntity.this.getX() - target.getX(), ManOWarEntity.this.getY() - target.getY(), ManOWarEntity.this.getZ() - target.getZ());
+                Vec3 lvt_2_1_ = new Vec3(ManOWarEntity.this.getX() - target.getX(), ManOWarEntity.this.getY() - target.getY(), ManOWarEntity.this.getZ() - target.getZ());
                 BlockState block = ManOWarEntity.this.level.getBlockState(new BlockPos(ManOWarEntity.this.getX() + lvt_2_1_.x, ManOWarEntity.this.getY() + lvt_2_1_.y, ManOWarEntity.this.getZ() + lvt_2_1_.z));
                 FluidState fluid = ManOWarEntity.this.level.getFluidState(new BlockPos(ManOWarEntity.this.getX() + lvt_2_1_.x, ManOWarEntity.this.getY() + lvt_2_1_.y, ManOWarEntity.this.getZ() + lvt_2_1_.z));
                 if (fluid.is(FluidTags.WATER) || block.isAir()) {
@@ -310,9 +316,9 @@ public class ManOWarEntity extends WaterMobEntity {
                 this.manOWarEntity.setMovementVector(0.0F, 0.0F, 0.0F);
             } else if (this.manOWarEntity.getRandom().nextInt(50) == 0 || !this.manOWarEntity.isInWater() || !this.manOWarEntity.hasMovementVector()) {
                 float lvt_2_1_ = this.manOWarEntity.getRandom().nextFloat() * 6.2831855F;
-                float lvt_3_1_ = MathHelper.cos(lvt_2_1_) * 0.2F;
+                float lvt_3_1_ = Mth.cos(lvt_2_1_) * 0.2F;
                 float lvt_4_1_ = -0.1F + this.manOWarEntity.getRandom().nextFloat() * 0.2F;
-                float lvt_5_1_ = MathHelper.sin(lvt_2_1_) * 0.2F;
+                float lvt_5_1_ = Mth.sin(lvt_2_1_) * 0.2F;
                 this.manOWarEntity.setMovementVector(lvt_3_1_, lvt_4_1_, lvt_5_1_);
             }
 

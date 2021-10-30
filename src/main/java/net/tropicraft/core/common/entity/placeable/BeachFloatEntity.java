@@ -1,30 +1,30 @@
 package net.tropicraft.core.common.entity.placeable;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.PointOfView;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.client.CameraType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.PerlinNoiseGenerator;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -38,7 +38,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Nonnull
     private static final Random rand = new Random(298457L);
     @Nonnull
-    private static final PerlinNoiseGenerator windNoise = new PerlinNoiseGenerator(new SharedSeedRandom(298457L), ImmutableList.of(0));
+    private static final PerlinSimplexNoise windNoise = new PerlinSimplexNoise(new WorldgenRandom(298457L), ImmutableList.of(0));
 
     /* Wind */
     private double windModifier = 0;
@@ -52,7 +52,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     /* Water checks */
     private double prevMotionY;
 
-    public BeachFloatEntity(EntityType<BeachFloatEntity> type, World worldIn) {
+    public BeachFloatEntity(EntityType<BeachFloatEntity> type, Level worldIn) {
         super(type, worldIn, TropicraftItems.BEACH_FLOATS);
         this.noCulling = true;
         this.isEmpty = true;
@@ -71,15 +71,15 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Override
     public void tick() {
         Entity rider = getControllingPassenger();
-        if (level.isClientSide && rider instanceof PlayerEntity) {
-            PlayerEntity controller = (PlayerEntity) rider;
+        if (level.isClientSide && rider instanceof Player) {
+            Player controller = (Player) rider;
             float move = controller.zza;
             float rot = -controller.xxa;
             rotationSpeed += rot * 0.25f;
 
             float ang = yRot;
-            float moveX = MathHelper.sin(-ang * 0.017453292F) * move * 0.0035f;
-            float moveZ = MathHelper.cos(ang * 0.017453292F) * move * 0.0035f;
+            float moveX = Mth.sin(-ang * 0.017453292F) * move * 0.0035f;
+            float moveZ = Mth.cos(ang * 0.017453292F) * move * 0.0035f;
             setDeltaMovement(getDeltaMovement().add(moveX, 0, moveZ));
         }
 
@@ -90,7 +90,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
             setDeltaMovement(getDeltaMovement().add(windX, 0, windZ));
             // Rotate towards a target yaw with some random perturbance
             double targetYaw = Math.toDegrees(windAng) + ((windModifier - 1) * 45);
-            double yaw = (MathHelper.wrapDegrees(this.yRot) + 180 - 35) % 360;
+            double yaw = (Mth.wrapDegrees(this.yRot) + 180 - 35) % 360;
             double angleDiff = targetYaw - yaw;
             if (angleDiff > 0) {
                 this.rotationSpeed += Math.min(0.005 * windModifier, angleDiff);
@@ -103,9 +103,9 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         double center = getCenterY();
         double eps = 1 / 16D;
         if (water < center - eps) { // Gravity
-            setDeltaMovement(getDeltaMovement().add(0, -MathHelper.clamp(center - water, 0, 0.04), 0));
+            setDeltaMovement(getDeltaMovement().add(0, -Mth.clamp(center - water, 0, 0.04), 0));
         } else if (water > center + eps) {
-            double floatpush = MathHelper.clamp(water - center, 0, 0.02);
+            double floatpush = Mth.clamp(water - center, 0, 0.02);
             setDeltaMovement(getDeltaMovement().add(0, floatpush, 0));
         } else if (Math.abs(getDeltaMovement().y) < 0.02) { // Close enough, just force to the correct spot
             if (getDeltaMovement().y != 0) {
@@ -143,7 +143,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
     
     private double getCenterY() {
-        AxisAlignedBB bb = getBoundingBox();
+        AABB bb = getBoundingBox();
         return bb.minY + (bb.maxY - bb.minY) * 0.5D;
     }
 
@@ -162,7 +162,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     void updateWaterState() {
-        AxisAlignedBB temp = getBoundingBox();
+        AABB temp = getBoundingBox();
         setBoundingBox(temp.contract(1, 0, 1).contract(-1, 0.125, -1));
 
         try {
@@ -183,13 +183,13 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         if (!this.level.isClientSide && !player.isShiftKeyDown()) {
             player.startRiding(this);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return !player.isPassengerOfSameVehicle(this) ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return !player.isPassengerOfSameVehicle(this) ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     /* Following three methods copied from EntityBoat for passenger updates */
@@ -219,8 +219,8 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
             }
 
             float len = 0.6f;
-            double x = this.getX() + (-MathHelper.sin(-this.yRot * 0.017453292F) * len);
-            double z = this.getZ() + (-MathHelper.cos(this.yRot * 0.017453292F) * len);
+            double x = this.getX() + (-Mth.sin(-this.yRot * 0.017453292F) * len);
+            double z = this.getZ() + (-Mth.cos(this.yRot * 0.017453292F) * len);
             passenger.setPos(x, this.getY() + (double) f1, z);
             passenger.yRot += this.rotationSpeed;
             passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationSpeed);
@@ -232,8 +232,8 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
                 passenger.setYHeadRot(passenger.getYHeadRot() + (float) j);
             }
 
-            if (passenger instanceof PlayerEntity) {
-                ((PlayerEntity) passenger).setBoundingBox(getBoundingBox().expandTowards(0, 0.3, 0).contract(0, -0.1875, 0));
+            if (passenger instanceof Player) {
+                ((Player) passenger).setBoundingBox(getBoundingBox().expandTowards(0, 0.3, 0).contract(0, -0.1875, 0));
             }
         }
     }
@@ -241,7 +241,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     @Override
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
-        if (passenger instanceof PlayerEntity) {
+        if (passenger instanceof Player) {
             passenger.refreshDimensions();
         }
     }
@@ -249,10 +249,10 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     protected void applyYawToEntity(Entity entityToUpdate) {
         if (!entityToUpdate.level.isClientSide || isClientFirstPerson(entityToUpdate)) {
             entityToUpdate.setYBodyRot(this.yRot);
-            float yaw = MathHelper.wrapDegrees(entityToUpdate.yRot - this.yRot);
-            float pitch = MathHelper.wrapDegrees(entityToUpdate.xRot - this.xRot);
-            float clampedYaw = MathHelper.clamp(yaw, -105.0F, 105.0F);
-            float clampedPitch = MathHelper.clamp(pitch, -100F, -10F);
+            float yaw = Mth.wrapDegrees(entityToUpdate.yRot - this.yRot);
+            float pitch = Mth.wrapDegrees(entityToUpdate.xRot - this.xRot);
+            float clampedYaw = Mth.clamp(yaw, -105.0F, 105.0F);
+            float clampedPitch = Mth.clamp(pitch, -100F, -10F);
             entityToUpdate.yRotO += clampedYaw - yaw;
             entityToUpdate.yRot += clampedYaw - yaw;
             entityToUpdate.xRotO += clampedPitch - pitch;
@@ -268,21 +268,21 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
 
     private static boolean isClientFirstPerson(Entity entity) {
         Minecraft client = Minecraft.getInstance();
-        return client.cameraEntity == entity && client.options.getCameraType() == PointOfView.FIRST_PERSON;
+        return client.cameraEntity == entity && client.options.getCameraType() == CameraType.FIRST_PERSON;
     }
 
     /* Again, from entity boat, for water checks */
 
     private float getWaterLevel() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        int minX = MathHelper.floor(axisalignedbb.minX);
-        int maxX = MathHelper.ceil(axisalignedbb.maxX);
-        int minY = MathHelper.floor(axisalignedbb.minY - prevMotionY);
+        AABB axisalignedbb = this.getBoundingBox();
+        int minX = Mth.floor(axisalignedbb.minX);
+        int maxX = Mth.ceil(axisalignedbb.maxX);
+        int minY = Mth.floor(axisalignedbb.minY - prevMotionY);
         int maxY = minY + 1;
-        int minZ = MathHelper.floor(axisalignedbb.minZ);
-        int maxZ = MathHelper.ceil(axisalignedbb.maxZ);
+        int minZ = Mth.floor(axisalignedbb.minZ);
+        int maxZ = Mth.ceil(axisalignedbb.maxZ);
 
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         float waterHeight = minY - 1;
 
         for (int y = maxY; y >= minY; --y) {
@@ -349,17 +349,17 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
     }
 
     @Override
-    public void writeSpawnData(PacketBuffer buffer) {
+    public void writeSpawnData(FriendlyByteBuf buffer) {
         buffer.writeDouble(this.lerpYaw);
     }
 
     @Override
-    public void readSpawnData(PacketBuffer additionalData) {
-        this.lerpYaw = MathHelper.wrapDegrees(additionalData.readDouble());
+    public void readSpawnData(FriendlyByteBuf additionalData) {
+        this.lerpYaw = Mth.wrapDegrees(additionalData.readDouble());
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.BEACH_FLOATS.get(DyeColor.byId(getColor().getId())).get());
     }
 }

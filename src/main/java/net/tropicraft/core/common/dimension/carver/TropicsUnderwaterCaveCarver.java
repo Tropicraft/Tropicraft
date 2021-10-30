@@ -2,17 +2,17 @@ package net.tropicraft.core.common.dimension.carver;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.carver.UnderwaterCaveWorldCarver;
-import net.minecraft.world.gen.feature.ProbabilityConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.carver.UnderwaterCaveWorldCarver;
+import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
 public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
 
-    public TropicsUnderwaterCaveCarver(Codec<ProbabilityConfig> codec) {
+    public TropicsUnderwaterCaveCarver(Codec<ProbabilityFeatureConfiguration> codec) {
         super(codec);
         this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())
@@ -26,7 +26,7 @@ public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
     }
 
     @Override
-    protected boolean hasWater(IChunk chunkIn, int chunkX, int chunkZ, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+    protected boolean hasWater(ChunkAccess chunkIn, int chunkX, int chunkZ, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
         return false;
     }
     

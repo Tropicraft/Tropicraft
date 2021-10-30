@@ -1,23 +1,23 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractTexturedFishEntity extends AbstractFishEntity {
-    private static final DataParameter<String> TEXTURE_NAME = EntityDataManager.defineId(AbstractTexturedFishEntity.class, DataSerializers.STRING);
+public abstract class AbstractTexturedFishEntity extends AbstractFish {
+    private static final EntityDataAccessor<String> TEXTURE_NAME = SynchedEntityData.defineId(AbstractTexturedFishEntity.class, EntityDataSerializers.STRING);
 
-    public AbstractTexturedFishEntity(EntityType<? extends AbstractFishEntity> type, World world) {
+    public AbstractTexturedFishEntity(EntityType<? extends AbstractFish> type, Level world) {
         super(type, world);
     }
 
@@ -32,19 +32,19 @@ public abstract class AbstractTexturedFishEntity extends AbstractFishEntity {
 
     @Override
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
         setTexture(getRandomTexture());
         return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putString("Texture", getTexture());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT nbt) {
+    public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         setTexture(nbt.getString("Texture"));
     }

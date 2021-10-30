@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.data;
 
-import net.minecraft.block.Block;
-import net.minecraft.data.BlockTagsProvider;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.tags.Tag.Named;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.Constants;
@@ -105,28 +105,28 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
     }
 
     @SafeVarargs
-    private final void createTag(INamedTag<Block> tag, Supplier<? extends Block>... blocks) {
+    private final void createTag(Named<Block> tag, Supplier<? extends Block>... blocks) {
         tag(tag).add(resolveAll(Block[]::new, blocks));
     }
     
     @SafeVarargs
-    private final void appendToTag(INamedTag<Block> tag, INamedTag<Block>... toAppend) {
+    private final void appendToTag(Named<Block> tag, Named<Block>... toAppend) {
         tag(tag).addTags(toAppend);
     }
     
     @SafeVarargs
-    private final void extendTag(INamedTag<Block> tag, INamedTag<Block> toExtend, Supplier<? extends Block>... blocks) {
+    private final void extendTag(Named<Block> tag, Named<Block> toExtend, Supplier<? extends Block>... blocks) {
         tag(tag).addTag(toExtend).add(resolveAll(Block[]::new, blocks));
     }
     
     @SafeVarargs
-    private final void createAndAppend(INamedTag<Block> tag, INamedTag<Block> to, Supplier<? extends Block>... blocks) {
+    private final void createAndAppend(Named<Block> tag, Named<Block> to, Supplier<? extends Block>... blocks) {
         createTag(tag, blocks);
         appendToTag(to, tag);
     }
 
     @SafeVarargs
-    private final void extendAndAppend(INamedTag<Block> tag, INamedTag<Block> toExtend, INamedTag<Block> to, Supplier<? extends Block>... blocks) {
+    private final void extendAndAppend(Named<Block> tag, Named<Block> toExtend, Named<Block> to, Supplier<? extends Block>... blocks) {
         extendTag(tag, toExtend, blocks);
         appendToTag(to, tag);
     }

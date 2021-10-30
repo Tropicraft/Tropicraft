@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.entity.ai.vmonkey;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.InteractionHand;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
@@ -13,14 +13,14 @@ import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
 import java.util.EnumSet;
 import java.util.List;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MonkeyPickUpPinaColadaGoal extends Goal {
 
     private VMonkeyEntity entity;
     private ItemEntity drinkEntity;
     private final double speedModifier;
-    private final PathNavigator navigation;
+    private final PathNavigation navigation;
     private int timeToRecalcPath;
     private final float stopDistance;
     private float oldWaterCost;
@@ -51,14 +51,14 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
     @Override
     public void stop() {
         navigation.stop();
-        entity.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
+        entity.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
     }
 
     @Override
     public void start() {
         timeToRecalcPath = 0;
-        oldWaterCost = entity.getPathfindingMalus(PathNodeType.WATER);
-        entity.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        oldWaterCost = entity.getPathfindingMalus(BlockPathTypes.WATER);
+        entity.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     private boolean hasNearbyDrink(final Drink drink) {
@@ -115,7 +115,7 @@ public class MonkeyPickUpPinaColadaGoal extends Goal {
                     }
                 }
             } else {
-                entity.setItemInHand(Hand.MAIN_HAND, drinkEntity.getItem());
+                entity.setItemInHand(InteractionHand.MAIN_HAND, drinkEntity.getItem());
                 drinkEntity.remove();
             }
         }

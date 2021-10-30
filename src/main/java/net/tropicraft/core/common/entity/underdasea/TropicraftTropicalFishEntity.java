@@ -1,30 +1,37 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.*;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implements IAtlasFish {
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+
+public class TropicraftTropicalFishEntity extends AbstractSchoolingFish implements IAtlasFish {
 
     enum FishType {
         CLOWNFISH(0),
@@ -57,14 +64,14 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
         }
     }
 
-    private static final DataParameter<Byte> DATA_FISH_TYPE = EntityDataManager.defineId(TropicraftTropicalFishEntity.class, DataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> DATA_FISH_TYPE = SynchedEntityData.defineId(TropicraftTropicalFishEntity.class, EntityDataSerializers.BYTE);
 
-    public TropicraftTropicalFishEntity(EntityType<? extends AbstractGroupFishEntity> type, World world) {
+    public TropicraftTropicalFishEntity(EntityType<? extends AbstractSchoolingFish> type, Level world) {
         super(type, world);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return AbstractGroupFishEntity.createAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return AbstractSchoolingFish.createAttributes()
                 .add(Attributes.MAX_HEALTH, 5.0);
     }
 
@@ -76,7 +83,7 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
 
     @Override
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
         entityData = super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
         if (nbt != null && nbt.contains("BucketVariantTag", 3)) {
             setFishType(FishType.getById(nbt.getInt("BucketVariantTag")));
@@ -130,17 +137,17 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.TROPICAL_FISH_SPAWN_EGG.get());
     }
 
     @Override
-    protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.isEmpty() && stack.getItem() == TropicraftItems.FISHING_NET.get()) {
             final int firstHotbarSlot = 0;
             int bucketSlot = -1;
-            for (int i = 0; i < PlayerInventory.getSelectionSize(); i++) {
+            for (int i = 0; i < Inventory.getSelectionSize(); i++) {
                 ItemStack s = player.inventory.getItem(firstHotbarSlot + i);
                 if (isFishHolder(s)) {
                     bucketSlot = firstHotbarSlot + i;
@@ -160,9 +167,9 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
                 }
                 saveToBucketTag(fishHolder);
                 player.swing(hand);
-                level.playSound(player, blockPosition(), SoundEvents.GENERIC_SWIM, SoundCategory.PLAYERS, 0.25f, 1f + (random.nextFloat() * 0.4f));
+                level.playSound(player, blockPosition(), SoundEvents.GENERIC_SWIM, SoundSource.PLAYERS, 0.25f, 1f + (random.nextFloat() * 0.4f));
                 remove();
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -170,13 +177,13 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundNBT compound) {
+    public void addAdditionalSaveData(final CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("FishType", getFishType().id);
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundNBT compound) {
+    public void readAdditionalSaveData(final CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setFishType(FishType.getById(compound.getInt("FishType")));
     }
@@ -187,7 +194,7 @@ public class TropicraftTropicalFishEntity extends AbstractGroupFishEntity implem
     @Override
     protected void saveToBucketTag(final ItemStack bucket) {
         super.saveToBucketTag(bucket);
-        CompoundNBT compoundnbt = bucket.getOrCreateTag();
+        CompoundTag compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putInt("BucketVariantTag", getFishType().id);
     }
 

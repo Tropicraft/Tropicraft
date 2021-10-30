@@ -1,21 +1,21 @@
 package net.tropicraft.core.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 
-public class EggModel extends SegmentedModel<EggEntity> {
-    public ModelRenderer body;
+public class EggModel extends ListModel<EggEntity> {
+    public ModelPart body;
 
     public EggModel() {
         texWidth = 64;
         texHeight = 32;
 
-        body = new ModelRenderer(this);
+        body = new ModelPart(this);
         body.setPos(0F, 24F, 0F);
         body.mirror = true;
         body.texOffs(0, 16).addBox(-3F, -10F, -3F, 6, 10, 6);
@@ -32,7 +32,7 @@ public class EggModel extends SegmentedModel<EggEntity> {
     }
 
     @Override
-    public Iterable<ModelRenderer> parts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(body);
     }
 
@@ -52,7 +52,7 @@ public class EggModel extends SegmentedModel<EggEntity> {
     }
     
     @Override
-    public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn,
             float red, float green, float blue, float alpha) {
         super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }

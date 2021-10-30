@@ -1,19 +1,19 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.HangingEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.item.PaintingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.HangingEntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HangingEntityItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.BambooItemFrame;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
@@ -24,19 +24,19 @@ public class BambooItemFrameItem extends HangingEntityItem {
     }
     
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         BlockPos blockpos = context.getClickedPos();
         Direction direction = context.getClickedFace();
         BlockPos blockpos1 = blockpos.relative(direction);
-        PlayerEntity playerentity = context.getPlayer();
+        Player playerentity = context.getPlayer();
         ItemStack itemstack = context.getItemInHand();
         if (playerentity != null && !this.mayPlace(playerentity, direction, itemstack, blockpos1)) {
-           return ActionResultType.FAIL;
+           return InteractionResult.FAIL;
         } else {
-           World world = context.getLevel();
+           Level world = context.getLevel();
            HangingEntity hangingentity = new BambooItemFrame(world, blockpos1, direction);
 
-           CompoundNBT compoundnbt = itemstack.getTag();
+           CompoundTag compoundnbt = itemstack.getTag();
            if (compoundnbt != null) {
               EntityType.updateCustomEntityTag(world, playerentity, hangingentity, compoundnbt);
            }
@@ -50,11 +50,11 @@ public class BambooItemFrameItem extends HangingEntityItem {
               itemstack.shrink(1);
            }
 
-           return ActionResultType.SUCCESS;
+           return InteractionResult.SUCCESS;
         }
      }
 
-    protected boolean mayPlace(PlayerEntity player, Direction direction, ItemStack itemStack, BlockPos pos) {
-        return !World.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, itemStack);
+    protected boolean mayPlace(Player player, Direction direction, ItemStack itemStack, BlockPos pos) {
+        return !Level.isOutsideBuildHeight(pos) && player.mayUseItemAt(pos, direction, itemStack);
     }
 }

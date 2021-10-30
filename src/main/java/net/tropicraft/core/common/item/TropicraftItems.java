@@ -2,17 +2,18 @@ package net.tropicraft.core.common.item;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BlockNamedItem;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
@@ -71,7 +72,7 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ORANGE = register("orange", Builder.food(Foods.ORANGE));
     public static final RegistryObject<Item> PINEAPPLE_CUBES = register("pineapple_cubes", Builder.food(Foods.PINEAPPLE_CUBES));
     public static final RegistryObject<Item> COCONUT_CHUNK = register("coconut_chunk", Builder.food(Foods.COCONUT_CHUNK));
-    public static final RegistryObject<BlockNamedItem> RAW_COFFEE_BEAN = register("raw_coffee_bean", Builder.blockNamedItem(TropicraftBlocks.COFFEE_BUSH));
+    public static final RegistryObject<ItemNameBlockItem> RAW_COFFEE_BEAN = register("raw_coffee_bean", Builder.blockNamedItem(TropicraftBlocks.COFFEE_BUSH));
     public static final RegistryObject<Item> ROASTED_COFFEE_BEAN = register("roasted_coffee_bean", Builder.item());
     public static final RegistryObject<Item> COFFEE_BERRY = register("coffee_berry", Builder.item());
     public static final RegistryObject<Item> BAMBOO_MUG = register("bamboo_mug", Builder.item());
@@ -176,15 +177,15 @@ public class TropicraftItems {
     public static final RegistryObject<Item> ZIRCONIUM_SWORD = register("zirconium_sword", Builder.sword(TropicraftToolTiers.ZIRCONIUM));
     public static final RegistryObject<Item> EUDIALYTE_SWORD = register("eudialyte_sword", Builder.sword(TropicraftToolTiers.EUDIALYTE));
 
-    public static final RegistryObject<Item> FIRE_BOOTS = register("fire_boots", Builder.fireArmor(EquipmentSlotType.FEET));
-    public static final RegistryObject<Item> FIRE_LEGGINGS = register("fire_leggings", Builder.fireArmor(EquipmentSlotType.LEGS));
-    public static final RegistryObject<Item> FIRE_CHESTPLATE = register("fire_chestplate", Builder.fireArmor(EquipmentSlotType.CHEST));
-    public static final RegistryObject<Item> FIRE_HELMET = register("fire_helmet", Builder.fireArmor(EquipmentSlotType.HEAD));
+    public static final RegistryObject<Item> FIRE_BOOTS = register("fire_boots", Builder.fireArmor(EquipmentSlot.FEET));
+    public static final RegistryObject<Item> FIRE_LEGGINGS = register("fire_leggings", Builder.fireArmor(EquipmentSlot.LEGS));
+    public static final RegistryObject<Item> FIRE_CHESTPLATE = register("fire_chestplate", Builder.fireArmor(EquipmentSlot.CHEST));
+    public static final RegistryObject<Item> FIRE_HELMET = register("fire_helmet", Builder.fireArmor(EquipmentSlot.HEAD));
 
-    public static final RegistryObject<Item> SCALE_BOOTS = register("scale_boots", Builder.scaleArmor(EquipmentSlotType.FEET));
-    public static final RegistryObject<Item> SCALE_LEGGINGS = register("scale_leggings", Builder.scaleArmor(EquipmentSlotType.LEGS));
-    public static final RegistryObject<Item> SCALE_CHESTPLATE = register("scale_chestplate", Builder.scaleArmor(EquipmentSlotType.CHEST));
-    public static final RegistryObject<Item> SCALE_HELMET = register("scale_helmet", Builder.scaleArmor(EquipmentSlotType.HEAD));
+    public static final RegistryObject<Item> SCALE_BOOTS = register("scale_boots", Builder.scaleArmor(EquipmentSlot.FEET));
+    public static final RegistryObject<Item> SCALE_LEGGINGS = register("scale_leggings", Builder.scaleArmor(EquipmentSlot.LEGS));
+    public static final RegistryObject<Item> SCALE_CHESTPLATE = register("scale_chestplate", Builder.scaleArmor(EquipmentSlot.CHEST));
+    public static final RegistryObject<Item> SCALE_HELMET = register("scale_helmet", Builder.scaleArmor(EquipmentSlot.HEAD));
     
     public static final RegistryObject<ScubaGogglesItem> YELLOW_SCUBA_GOGGLES = register("yellow_scuba_goggles", Builder.scubaGoggles(ScubaType.YELLOW));
     public static final RegistryObject<ScubaHarnessItem> YELLOW_SCUBA_HARNESS = register("yellow_scuba_harness", Builder.scubaHarness(ScubaType.YELLOW));

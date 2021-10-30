@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -18,16 +18,16 @@ import net.tropicraft.core.common.TropicraftTags;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
+public class MangroveTreeFeature extends Feature<TreeConfiguration> {
     private final TreeFeature backing;
 
-    public MangroveTreeFeature(TreeFeature backing, Codec<BaseTreeFeatureConfig> codec) {
+    public MangroveTreeFeature(TreeFeature backing, Codec<TreeConfiguration> codec) {
         super(codec);
         this.backing = backing;
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, BaseTreeFeatureConfig config) {
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, TreeConfiguration config) {
         BlockPos placePos = this.findPlacePos(world, pos, config);
         if (placePos == null) return false;
 
@@ -49,13 +49,13 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
     }
 
     @Nullable
-    private BlockPos findPlacePos(ISeedReader world, BlockPos pos, BaseTreeFeatureConfig config) {
+    private BlockPos findPlacePos(WorldGenLevel world, BlockPos pos, TreeConfiguration config) {
         if (config.fromSapling) {
             return pos;
         }
 
-        int floorY = world.getHeightmapPos(Heightmap.Type.OCEAN_FLOOR, pos).getY();
-        int surfaceY = world.getHeightmapPos(Heightmap.Type.WORLD_SURFACE, pos).getY();
+        int floorY = world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, pos).getY();
+        int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
         int waterDepth = surfaceY - floorY; // Water depth is the distance from the surface to the floor
 
         // If we're in water and we're not allowed to be, cancel placement
@@ -71,9 +71,9 @@ public class MangroveTreeFeature extends Feature<BaseTreeFeatureConfig> {
         }
 
         int y;
-        if (config.heightmap == Heightmap.Type.OCEAN_FLOOR) {
+        if (config.heightmap == Heightmap.Types.OCEAN_FLOOR) {
             y = floorY;
-        } else if (config.heightmap == Heightmap.Type.WORLD_SURFACE) {
+        } else if (config.heightmap == Heightmap.Types.WORLD_SURFACE) {
             y = surfaceY;
         } else {
             y = world.getHeightmapPos(config.heightmap, pos).getY();

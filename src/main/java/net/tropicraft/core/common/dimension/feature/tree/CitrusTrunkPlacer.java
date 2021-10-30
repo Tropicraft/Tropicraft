@@ -2,15 +2,15 @@ package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
-import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.tropicraft.core.common.Util;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
+public final class CitrusTrunkPlacer extends TrunkPlacer {
     public static final Codec<CitrusTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> {
         return trunkPlacerParts(instance)
                 .apply(instance, CitrusTrunkPlacer::new);
@@ -34,8 +34,8 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
     }
 
     @Override
-    public List<FoliagePlacer.Foliage> placeTrunk(IWorldGenerationReader world, Random random, int height, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config) {
-        ArrayList<FoliagePlacer.Foliage> leafNodes = new ArrayList<>();
+    public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedRW world, Random random, int height, BlockPos origin, Set<BlockPos> logs, BoundingBox bounds, TreeConfiguration config) {
+        ArrayList<FoliagePlacer.FoliageAttachment> leafNodes = new ArrayList<>();
 
         // Set grass to dirt
         setDirtAt(world, origin.below());
@@ -46,14 +46,14 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
         }
 
         // Add center leaf cluster
-        leafNodes.add(new FoliagePlacer.Foliage(origin.above(height - 1), 1, false));
+        leafNodes.add(new FoliagePlacer.FoliageAttachment(origin.above(height - 1), 1, false));
 
         growBranches(world, random, origin.above(height - 4), logs, bounds, config, leafNodes);
 
         return leafNodes;
     }
 
-    private void growBranches(IWorldGenerationReader world, Random random, BlockPos origin, Set<BlockPos> logs, MutableBoundingBox bounds, BaseTreeFeatureConfig config, List<FoliagePlacer.Foliage> leafNodes) {
+    private void growBranches(LevelSimulatedRW world, Random random, BlockPos origin, Set<BlockPos> logs, BoundingBox bounds, TreeConfiguration config, List<FoliagePlacer.FoliageAttachment> leafNodes) {
         int count = random.nextInt(3) + 1;
         double thetaOffset = random.nextDouble() * 2 * Math.PI;
 
@@ -83,7 +83,7 @@ public final class CitrusTrunkPlacer extends AbstractTrunkPlacer {
 
                 // Add leaves around the branch
                 if (j == dist) {
-                    leafNodes.add(new FoliagePlacer.Foliage(local, 0, false));
+                    leafNodes.add(new FoliagePlacer.FoliageAttachment(local, 0, false));
                 }
             }
         }

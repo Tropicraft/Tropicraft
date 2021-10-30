@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 import net.tropicraft.Constants;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class TropicraftArmorItem extends ArmorItem {
-    public TropicraftArmorItem(IArmorMaterial armorMaterial, EquipmentSlotType slotType, Properties properties) {
+    public TropicraftArmorItem(ArmorMaterial armorMaterial, EquipmentSlot slotType, Properties properties) {
         super(armorMaterial, slotType, properties);
     }
 
@@ -19,7 +19,7 @@ public class TropicraftArmorItem extends ArmorItem {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
-        return getTexturePath(String.format("%s_layer_" + (slot == EquipmentSlotType.LEGS ? 2 : 1) + ".png", getMaterial().getName()));
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+        return getTexturePath(String.format("%s_layer_" + (slot == EquipmentSlot.LEGS ? 2 : 1) + ".png", getMaterial().getName()));
     }
 }

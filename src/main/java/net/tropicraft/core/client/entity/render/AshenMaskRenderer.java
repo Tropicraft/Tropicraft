@@ -1,14 +1,14 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
@@ -16,7 +16,7 @@ import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
 public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 	protected TropicraftSpecialRenderHelper mask;
 
-	public AshenMaskRenderer(final EntityRendererManager manager) {
+	public AshenMaskRenderer(final EntityRenderDispatcher manager) {
 		super(manager);
 		shadowRadius = 0.5F;
 		shadowStrength  = 0.5f;
@@ -29,10 +29,10 @@ public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 	}
 
 	@Override
-	public void render(AshenMaskEntity entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn) {
+	public void render(AshenMaskEntity entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLightIn) {
 		stack.pushPose();
 
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
+		VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(getTextureLocation(entity)));
 	//	mask.render(stack, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 //		GlStateManager.pushMatrix();
 	//	bindEntityTexture(entity);

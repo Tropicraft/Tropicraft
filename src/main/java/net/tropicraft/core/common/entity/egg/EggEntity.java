@@ -1,27 +1,27 @@
 package net.tropicraft.core.common.entity.egg;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.HandSide;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.level.Level;
 
 public abstract class EggEntity extends LivingEntity {
 
-    private static final DataParameter<Integer> HATCH_DELAY = EntityDataManager.defineId(EggEntity.class, DataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HATCH_DELAY = SynchedEntityData.defineId(EggEntity.class, EntityDataSerializers.INT);
 
     public double rotationRand;
    
-    public EggEntity(final EntityType<? extends EggEntity> type, World w) {
+    public EggEntity(final EntityType<? extends EggEntity> type, Level w) {
         super(type, w);
         rotationRand = 0;
         noCulling = true;
@@ -29,19 +29,19 @@ public abstract class EggEntity extends LivingEntity {
         yRot = random.nextInt(360);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return LivingEntity.createLivingAttributes().add(Attributes.MAX_HEALTH, 2.0);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         tickCount = compound.getInt("ticks");
         setHatchDelay(compound.getInt("hatchDelay"));
         super.readAdditionalSaveData(compound);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         compound.putInt("ticks", tickCount);
         compound.putInt("hatchDelay", getHatchDelay());
         super.addAdditionalSaveData(compound);
@@ -122,16 +122,16 @@ public abstract class EggEntity extends LivingEntity {
     }
 
     @Override
-    public ItemStack getItemBySlot(EquipmentSlotType slotIn) {
+    public ItemStack getItemBySlot(EquipmentSlot slotIn) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public void setItemSlot(EquipmentSlotType slotIn, ItemStack stack) {
+    public void setItemSlot(EquipmentSlot slotIn, ItemStack stack) {
     }
 
     @Override
-    public HandSide getMainArm() {
-        return HandSide.LEFT;
+    public HumanoidArm getMainArm() {
+        return HumanoidArm.LEFT;
     }
 }

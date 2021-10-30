@@ -1,22 +1,22 @@
 package net.tropicraft.core.common.item.scuba;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -47,7 +47,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 @EventBusSubscriber(modid = Constants.MODID, bus = Bus.FORGE)
-public class ScubaData implements INBTSerializable<CompoundNBT> {
+public class ScubaData implements INBTSerializable<CompoundTag> {
     
     @CapabilityInject(ScubaData.class)
     public static final Capability<ScubaData> CAPABILITY = null;
@@ -57,13 +57,13 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
 
             @Override
             @Nullable
-            public INBT writeNBT(Capability<ScubaData> capability, ScubaData instance, Direction side) {
+            public Tag writeNBT(Capability<ScubaData> capability, ScubaData instance, Direction side) {
                 return instance.serializeNBT();
             }
 
             @Override
-            public void readNBT(Capability<ScubaData> capability, ScubaData instance, Direction side, INBT nbt) {
-                instance.deserializeNBT((CompoundNBT) nbt);
+            public void readNBT(Capability<ScubaData> capability, ScubaData instance, Direction side, Tag nbt) {
+                instance.deserializeNBT((CompoundTag) nbt);
             }
             
         }, ScubaData::new);
@@ -71,8 +71,8 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     
     @SubscribeEvent
     public static void onCapabilityAttach(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof PlayerEntity) {
-            event.addCapability(new ResourceLocation(Constants.MODID, "scuba_data"), new ICapabilitySerializable<CompoundNBT>() {
+        if (event.getObject() instanceof Player) {
+            event.addCapability(new ResourceLocation(Constants.MODID, "scuba_data"), new ICapabilitySerializable<CompoundTag>() {
                 
                 LazyOptional<ScubaData> data = LazyOptional.of(ScubaData::new);
                 
@@ -83,52 +83,52 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
                 }
                 
                 @Override
-                public CompoundNBT serializeNBT() {
+                public CompoundTag serializeNBT() {
                     return data.orElseThrow(IllegalStateException::new).serializeNBT();
                 }
                 
                 @Override
-                public void deserializeNBT(CompoundNBT nbt) {
+                public void deserializeNBT(CompoundTag nbt) {
                     data.orElseThrow(IllegalStateException::new).deserializeNBT(nbt);
                 }
             });
         }
     }
     
-    private static final Set<ServerPlayerEntity> underwaterPlayers = Collections.newSetFromMap(new WeakHashMap<>());
+    private static final Set<ServerPlayer> underwaterPlayers = Collections.newSetFromMap(new WeakHashMap<>());
     
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent event) {
-        World world = event.player.level;
+        Level world = event.player.level;
         if (event.phase == Phase.END) {
             // TODO support more than chest slot?
-            ItemStack chestStack = event.player.getItemBySlot(EquipmentSlotType.CHEST);
+            ItemStack chestStack = event.player.getItemBySlot(EquipmentSlot.CHEST);
             Item chestItem = chestStack.getItem();
             if (chestItem instanceof ScubaArmorItem) {
                 LazyOptional<ScubaData> data = event.player.getCapability(CAPABILITY);
                 if (!world.isClientSide) {
-                    underwaterPlayers.add((ServerPlayerEntity) event.player);
+                    underwaterPlayers.add((ServerPlayer) event.player);
                 }
                 if (isUnderWater(event.player)) {
                     data.ifPresent(d -> {
                         d.tick(event.player);
                         if (!world.isClientSide) {
-                            d.updateClient((ServerPlayerEntity) event.player, false);
+                            d.updateClient((ServerPlayer) event.player, false);
                         }
                     });
-                    ((ScubaArmorItem)chestItem).tickAir(event.player, EquipmentSlotType.CHEST, chestStack);
+                    ((ScubaArmorItem)chestItem).tickAir(event.player, EquipmentSlot.CHEST, chestStack);
                     if (!world.isClientSide && world.getGameTime() % 60 == 0) {
                         // TODO this effect could be better, custom packet?
-                        Vector3d eyePos = event.player.getEyePosition(0);
-                        Vector3d motion = event.player.getDeltaMovement();
-                        Vector3d particlePos = eyePos.add(motion.reverse());
-                        ((ServerWorld) world).sendParticles(ParticleTypes.BUBBLE,
+                        Vec3 eyePos = event.player.getEyePosition(0);
+                        Vec3 motion = event.player.getDeltaMovement();
+                        Vec3 particlePos = eyePos.add(motion.reverse());
+                        ((ServerLevel) world).sendParticles(ParticleTypes.BUBBLE,
                                 particlePos.x(), particlePos.y(), particlePos.z(),
                                 4 + world.random.nextInt(3),
                                 0.25, 0.25, 0.25, motion.length());
                     }
                 } else if (!world.isClientSide && underwaterPlayers.remove(event.player)) { // Update client state as they leave the water
-                    data.ifPresent(d -> d.updateClient((ServerPlayerEntity) event.player, false));
+                    data.ifPresent(d -> d.updateClient((ServerPlayer) event.player, false));
                 }
             }
         }
@@ -160,7 +160,7 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     
     private static void updateClient(PlayerEvent event) {
         if (!event.getPlayer().level.isClientSide) {
-            event.getPlayer().getCapability(CAPABILITY).ifPresent(d -> d.updateClient((ServerPlayerEntity) event.getPlayer(), true));
+            event.getPlayer().getCapability(CAPABILITY).ifPresent(d -> d.updateClient((ServerPlayer) event.getPlayer(), true));
         }
     }
 
@@ -169,12 +169,12 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     
     private boolean dirty;
     
-    public static boolean isUnderWater(PlayerEntity player) {
+    public static boolean isUnderWater(Player player) {
         BlockPos headPos = new BlockPos(player.getEyePosition(0));
         return player.level.getFluidState(headPos).is(FluidTags.WATER);
     }
     
-    public static double getDepth(PlayerEntity player) {
+    public static double getDepth(Player player) {
         if (isUnderWater(player)) {
             int surface = TropicraftDimension.getSeaLevel(player.level);
             double depth = surface - (player.getEyePosition(0).y());
@@ -183,7 +183,7 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
         return 0;
     }
     
-    void tick(PlayerEntity player) {
+    void tick(Player player) {
         this.diveTime++;
         if (player.level.getGameTime() % 100 == 0) {
             dirty = true;
@@ -205,7 +205,7 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
         return maxDepth;
     }
     
-    void updateClient(ServerPlayerEntity target, boolean force) {
+    void updateClient(ServerPlayer target, boolean force) {
         if (dirty || force) {
             TropicraftPackets.INSTANCE.send(PacketDistributor.PLAYER.with(() -> target), new MessageUpdateScubaData(this));
         }
@@ -217,25 +217,25 @@ public class ScubaData implements INBTSerializable<CompoundNBT> {
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT ret = new CompoundNBT();
+    public CompoundTag serializeNBT() {
+        CompoundTag ret = new CompoundTag();
         ret.putLong("diveTime", diveTime);
         ret.putDouble("maxDepth", maxDepth);
         return ret;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         this.diveTime = nbt.getLong("diveTime");
         this.maxDepth = nbt.getDouble("maxDepth");
     }
 
-    public void serializeBuffer(PacketBuffer buf) {
+    public void serializeBuffer(FriendlyByteBuf buf) {
         buf.writeLong(diveTime);
         buf.writeDouble(maxDepth);
     }
     
-    public void deserializeBuffer(PacketBuffer buf) {
+    public void deserializeBuffer(FriendlyByteBuf buf) {
         this.diveTime = buf.readLong();
         this.maxDepth = buf.readDouble();
     }

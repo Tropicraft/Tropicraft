@@ -1,15 +1,15 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
@@ -31,8 +31,8 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
-        SharedSeedRandom rand = new SharedSeedRandom();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
+        WorldgenRandom rand = new WorldgenRandom();
         rand.setDecorationSeed(world.getSeed(), pos.getX(), pos.getZ());
         final int branchLength = rand.nextInt(10) + 15;
         // TODO make configurable
@@ -66,11 +66,11 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         return false;
     }
 
-    public void genLeafCircle(final IWorld world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, boolean vines) {
+    public void genLeafCircle(final LevelAccessor world, final int x, final int y, final int z, int outerRadius, int innerRadius, BlockState state, boolean vines) {
         int outerRadiusSquared = outerRadius * outerRadius;
         int innerRadiusSquared = innerRadius * innerRadius;
 
-        BlockPos.Mutable pos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         for (int i = -outerRadius + x; i <= outerRadius + x; i++) {
             for (int k = -outerRadius + z; k <= outerRadius + z; k++) {
@@ -85,7 +85,7 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         }
     }
 
-    private void placeBlockLine(final IWorld world, int[] ai, int[] ai1, BlockState state) {
+    private void placeBlockLine(final LevelAccessor world, int[] ai, int[] ai1, BlockState state) {
         int[] ai2 = {
             0, 0, 0
         };
@@ -116,9 +116,9 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         };
         int k = 0;
         for (int l = ai2[j] + byte3; k != l; k += byte3) {
-            ai3[j] = MathHelper.floor(ai[j] + k + 0.5D);
-            ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
+            ai3[j] = Mth.floor(ai[j] + k + 0.5D);
+            ai3[byte1] = Mth.floor(ai[byte1] + k * d + 0.5D);
+            ai3[byte2] = Mth.floor(ai[byte2] + k * d1 + 0.5D);
             world.setBlock(new BlockPos(ai3[0], ai3[1], ai3[2]), state, 3);
         }
     }

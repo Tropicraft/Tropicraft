@@ -1,9 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.entity.model.WhiteLippedPeccaryModel;
 import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
@@ -11,12 +11,12 @@ import net.tropicraft.core.common.entity.passive.WhiteLippedPeccaryEntity;
 public class WhiteLippedPeccaryRenderer extends MobRenderer<WhiteLippedPeccaryEntity, WhiteLippedPeccaryModel<WhiteLippedPeccaryEntity>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/white_lipped_peccary.png");
 
-    public WhiteLippedPeccaryRenderer(EntityRendererManager manager) {
+    public WhiteLippedPeccaryRenderer(EntityRenderDispatcher manager) {
         super(manager, new WhiteLippedPeccaryModel<>(), 0.5F);
     }
 
     @Override
-    protected void scale(WhiteLippedPeccaryEntity entity, MatrixStack matrixStack, float partialTicks) {
+    protected void scale(WhiteLippedPeccaryEntity entity, PoseStack matrixStack, float partialTicks) {
         matrixStack.scale(0.9F, 0.9F, 0.9F);
     }
 

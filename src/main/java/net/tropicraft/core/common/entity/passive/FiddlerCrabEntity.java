@@ -1,43 +1,55 @@
 package net.tropicraft.core.common.entity.passive;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import java.util.Random;
 
-import net.minecraft.entity.ai.controller.MovementController.Action;
+import net.minecraft.world.entity.ai.control.MoveControl.Operation;
 
-public final class FiddlerCrabEntity extends AnimalEntity {
-    public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, World world) {
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+
+public final class FiddlerCrabEntity extends Animal {
+    public FiddlerCrabEntity(EntityType<? extends FiddlerCrabEntity> type, Level world) {
         super(type, world);
-        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
-        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
 
         this.moveControl = new CrabMoveController(this);
         this.maxUpStep = 1.0F;
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.15F);
     }
@@ -45,10 +57,10 @@ public final class FiddlerCrabEntity extends AnimalEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, PlayerEntity.class, 6.0F, 1.0, 1.2));
-        this.goalSelector.addGoal(2, new RandomWalkingGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0, 1.2));
+        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -62,9 +74,9 @@ public final class FiddlerCrabEntity extends AnimalEntity {
 
         double deltaX = getX() - xo;
         double deltaZ = getZ() - zo;
-        float deltaYaw = MathHelper.wrapDegrees(yBodyRot - yBodyRotO);
+        float deltaYaw = Mth.wrapDegrees(yBodyRot - yBodyRotO);
 
-        float move = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+        float move = Mth.sqrt(deltaX * deltaX + deltaZ * deltaZ);
         float rotate = Math.abs(deltaYaw);
 
         float targetAmount = move * 4.0F + rotate * 0.25F;
@@ -85,12 +97,12 @@ public final class FiddlerCrabEntity extends AnimalEntity {
     }
 
     @Override
-    public FiddlerCrabEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
+    public FiddlerCrabEntity getBreedOffspring(ServerLevel world, AgableMob mate) {
         return null;
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.FIDDLER_CRAB_SPAWN_EGG.get());
     }
 
@@ -115,14 +127,14 @@ public final class FiddlerCrabEntity extends AnimalEntity {
         return 30;
     }
 
-    public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
+    public static boolean canCrabSpawn(EntityType<? extends FiddlerCrabEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random) {
         BlockPos groundPos = pos.below();
         BlockState groundBlock = world.getBlockState(groundPos);
         if (groundBlock.getMaterial() != Material.SAND) {
             return false;
         }
 
-        if (!groundBlock.canCreatureSpawn(world, groundPos, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, type)) {
+        if (!groundBlock.canCreatureSpawn(world, groundPos, SpawnPlacements.Type.NO_RESTRICTIONS, type)) {
             return false;
         }
 
@@ -132,19 +144,19 @@ public final class FiddlerCrabEntity extends AnimalEntity {
                 && (fluid.isEmpty() || fluid.is(FluidTags.WATER));
     }
 
-    static final class CrabMoveController extends MovementController {
+    static final class CrabMoveController extends MoveControl {
         private static final double RAD_TO_DEG = 180.0 / Math.PI;
 
-        CrabMoveController(MobEntity mob) {
+        CrabMoveController(Mob mob) {
             super(mob);
         }
 
         @Override
         public void tick() {
-            if (this.operation == MovementController.Action.MOVE_TO) {
-                this.operation = MovementController.Action.WAIT;
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                this.operation = MoveControl.Operation.WAIT;
                 this.tickMoveTo();
-            } else if (this.operation == Action.WAIT) {
+            } else if (this.operation == Operation.WAIT) {
                 this.mob.setZza(0.0F);
                 this.mob.setXxa(0.0F);
             }
@@ -161,7 +173,7 @@ public final class FiddlerCrabEntity extends AnimalEntity {
                 return;
             }
 
-            float forward = (float) (MathHelper.atan2(dz, dx) * RAD_TO_DEG) - 90.0F;
+            float forward = (float) (Mth.atan2(dz, dx) * RAD_TO_DEG) - 90.0F;
             float leftTarget = forward - 90.0F;
             float rightTarget = forward + 90.0F;
 
@@ -179,8 +191,8 @@ public final class FiddlerCrabEntity extends AnimalEntity {
         }
 
         private static float closerAngle(float reference, float left, float right) {
-            float deltaLeft = Math.abs(MathHelper.wrapDegrees(reference - left));
-            float deltaRight = Math.abs(MathHelper.wrapDegrees(reference - right));
+            float deltaLeft = Math.abs(Mth.wrapDegrees(reference - left));
+            float deltaRight = Math.abs(Mth.wrapDegrees(reference - right));
             if (deltaLeft < deltaRight) {
                 return left;
             } else {

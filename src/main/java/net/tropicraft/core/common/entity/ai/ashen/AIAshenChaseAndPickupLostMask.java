@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 import java.util.EnumSet;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class AIAshenChaseAndPickupLostMask extends Goal {
     public AshenEntity ashen;
@@ -39,7 +39,7 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
             panicTime--;
 
             if (ashen.level.getGameTime() % 10 == 0) {
-                Vector3d vec3 = RandomPositionGenerator.getPos(ashen, 10, 7);
+                Vec3 vec3 = RandomPos.getPos(ashen, 10, 7);
 
                 if (vec3 != null) {
                     ashen.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, speed);

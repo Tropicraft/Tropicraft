@@ -2,16 +2,16 @@ package net.tropicraft.core.common.dimension.carver;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.world.gen.carver.CaveWorldCarver;
-import net.minecraft.world.gen.feature.ProbabilityConfig;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
+import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
 public class TropicsCaveCarver extends CaveWorldCarver {
 
-    public TropicsCaveCarver(Codec<ProbabilityConfig> codec) {
+    public TropicsCaveCarver(Codec<ProbabilityFeatureConfiguration> codec) {
         super(codec, 256);
         this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())

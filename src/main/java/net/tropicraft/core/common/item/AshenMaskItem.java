@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -22,13 +22,13 @@ import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class AshenMaskItem extends ArmorItem {
     private final AshenMasks maskType;
 
-    public AshenMaskItem(IArmorMaterial armorMaterial, AshenMasks maskType, Properties properties) {
-        super(armorMaterial, EquipmentSlotType.HEAD, properties);
+    public AshenMaskItem(ArmorMaterial armorMaterial, AshenMasks maskType, Properties properties) {
+        super(armorMaterial, EquipmentSlot.HEAD, properties);
         this.maskType = maskType;
     }
 
@@ -39,16 +39,16 @@ public class AshenMaskItem extends ArmorItem {
     /**
      * Called when this item is used when targetting a Block
      */
-    public ActionResultType useOn(ItemUseContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         BlockPos pos = context.getClickedPos();
         Direction direction = context.getClickedFace();
         BlockPos offsetPos = pos.relative(direction);
-        PlayerEntity player = context.getPlayer();
+        Player player = context.getPlayer();
         ItemStack itemStack = context.getItemInHand();
         if (player != null && !this.canPlace(player, direction, itemStack, offsetPos)) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         } else {
-            World world = context.getLevel();
+            Level world = context.getLevel();
             WallItemEntity wallItem = new WallItemEntity(world, offsetPos, direction);
             wallItem.setItem(itemStack);
 
@@ -61,23 +61,23 @@ public class AshenMaskItem extends ArmorItem {
                 itemStack.shrink(1);
             }
 
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
     }
 
-    private boolean canPlace(PlayerEntity player, Direction direction, ItemStack heldStack, BlockPos pos) {
+    private boolean canPlace(Player player, Direction direction, ItemStack heldStack, BlockPos pos) {
         return player.mayUseItemAt(pos, direction, heldStack);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
-    public BipedModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlotType armorSlot, final BipedModel model) {
-        return armorSlot == EquipmentSlotType.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
+    public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
+        return armorSlot == EquipmentSlot.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return TropicraftRenderUtils.getTextureEntity("ashen/mask").toString();
     }
 }

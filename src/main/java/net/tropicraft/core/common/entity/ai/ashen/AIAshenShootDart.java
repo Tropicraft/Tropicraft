@@ -1,10 +1,10 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMaskItem;
 
@@ -37,7 +37,7 @@ public class AIAshenShootDart extends Goal {
     @Override
     public boolean canUse() {
         if (entity.getTarget() != null) {
-            ItemStack headGear = entity.getTarget().getItemBySlot(EquipmentSlotType.HEAD);
+            ItemStack headGear = entity.getTarget().getItemBySlot(EquipmentSlot.HEAD);
             if (headGear.getItem() instanceof AshenMaskItem) {
                 return false;
             }
@@ -69,7 +69,7 @@ public class AIAshenShootDart extends Goal {
         LivingEntity target = entity.getTarget();
 
         if (target != null) {
-            ItemStack headGear = target.getItemBySlot(EquipmentSlotType.HEAD);
+            ItemStack headGear = target.getItemBySlot(EquipmentSlot.HEAD);
             if (headGear.getItem() instanceof AshenMaskItem) {
                 return;
             }
@@ -134,7 +134,7 @@ public class AIAshenShootDart extends Goal {
                     }
                 }
             } else if (--attackTime <= 0 && seeTime >= -60) {
-                entity.startUsingItem(Hand.MAIN_HAND);
+                entity.startUsingItem(InteractionHand.MAIN_HAND);
             }
         }
     }

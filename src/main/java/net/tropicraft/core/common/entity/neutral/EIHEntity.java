@@ -1,43 +1,51 @@
 package net.tropicraft.core.common.entity.neutral;
 
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ToolType;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+
 public class EIHEntity extends TropicraftCreatureEntity {
 
-    private static final DataParameter<Byte> STATE = EntityDataManager.defineId(EIHEntity.class, DataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> STATE = SynchedEntityData.defineId(EIHEntity.class, EntityDataSerializers.BYTE);
     public int FLAG_SLEEP = 1 << 0;
     public int FLAG_AWARE = 1 << 1;
     public int FLAG_ANGRY = 1 << 2;
 
-    public EIHEntity(EntityType<? extends CreatureEntity> type, World world) {
+    public EIHEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
         xpReward = 10;
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.EIH_SPAWN_EGG.get());
     }
 
@@ -55,8 +63,8 @@ public class EIHEntity extends TropicraftCreatureEntity {
         getEntityData().set(STATE, state);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return CreatureEntity.createMobAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 40.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100.0)
@@ -65,7 +73,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
 
     @Override
     public void registerGoals() {
-        goalSelector.addGoal(0, new SwimGoal(this));
+        goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false) {
             @Override
             public boolean canUse() {
@@ -78,7 +86,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         //leap.setMutexFlags();
         goalSelector.addGoal(3, leap);
 
-        goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8D) {
+        goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D) {
             @Override
             public boolean canUse() {
                 if (!isAngry()) return false;
@@ -87,20 +95,20 @@ public class EIHEntity extends TropicraftCreatureEntity {
         });
 
 
-        goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 //        goalSelector.addGoal(8, new LookRandomlyGoal(this));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new TargetAggressorGoal(this));
     }
 
     @Override
-    public void addAdditionalSaveData(final CompoundNBT compound) {
+    public void addAdditionalSaveData(final CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putByte("State", getState());
     }
 
     @Override
-    public void readAdditionalSaveData(final CompoundNBT compound) {
+    public void readAdditionalSaveData(final CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         setState(compound.getByte("State"));
     }
@@ -115,7 +123,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         super.baseTick();
 
         if (isAsleep()) {
-            setDeltaMovement(Vector3d.ZERO);
+            setDeltaMovement(Vec3.ZERO);
         }
 
         if (!isAsleep()) {
@@ -126,7 +134,7 @@ public class EIHEntity extends TropicraftCreatureEntity {
         if (tickCount % 20 == 0) {
             final LivingEntity attackTarget = getTarget();
             if (attackTarget == null) {
-                final PlayerEntity closestPlayer = level.getNearestPlayer(this, 10);
+                final Player closestPlayer = level.getNearestPlayer(this, 10);
                 if (closestPlayer != null && !closestPlayer.abilities.instabuild && !closestPlayer.isSpectator()) {
                     setTarget(closestPlayer);
                 }
@@ -138,8 +146,8 @@ public class EIHEntity extends TropicraftCreatureEntity {
             }
 
             if (attackTarget != null && !isPathFinding() && !isAngry()) {
-                if (attackTarget instanceof PlayerEntity) {
-                    final PlayerEntity player = (PlayerEntity) attackTarget;
+                if (attackTarget instanceof Player) {
+                    final Player player = (Player) attackTarget;
                     if (!player.abilities.instabuild && !player.isSpectator()) {
                         final float distance = distanceTo(player);
                         if (distance < 10F) {
@@ -245,8 +253,8 @@ public class EIHEntity extends TropicraftCreatureEntity {
             return super.hurt(source, amount);
         }
 
-        if (source.getDirectEntity() instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) source.getDirectEntity();
+        if (source.getDirectEntity() instanceof Player) {
+            Player player = (Player) source.getDirectEntity();
             if (player.abilities.instabuild || player.isSpectator()) {
                 return super.hurt(source, amount);
             }
@@ -265,9 +273,9 @@ public class EIHEntity extends TropicraftCreatureEntity {
         return true;
     }
 
-    private static class TargetAggressorGoal extends NearestAttackableTargetGoal<PlayerEntity> {
+    private static class TargetAggressorGoal extends NearestAttackableTargetGoal<Player> {
         public TargetAggressorGoal(EIHEntity eih) {
-            super(eih, PlayerEntity.class, true);
+            super(eih, Player.class, true);
         }
 
         public boolean canUse() {

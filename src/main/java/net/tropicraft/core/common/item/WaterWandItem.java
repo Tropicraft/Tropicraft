@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class WaterWandItem extends Item {
     public WaterWandItem(Properties properties) {
@@ -20,12 +20,12 @@ public class WaterWandItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         double inc = Math.PI / 12;
 
         ItemStack itemstack = player.getItemInHand(hand);
 
-        player.swing(Hand.MAIN_HAND);
+        player.swing(InteractionHand.MAIN_HAND);
         if (!world.isClientSide) {
             for (double lat = 0; lat < 2 * Math.PI; lat += inc) {
                 for (double lng = 0; lng < 2 * Math.PI; lng += inc) {
@@ -41,14 +41,14 @@ public class WaterWandItem extends Item {
             }
         }
 
-        return new ActionResult<>(ActionResultType.PASS, itemstack);
+        return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
     }
 
-    private boolean removeWater(World world, ItemStack itemstack, PlayerEntity player, BlockPos pos) {
+    private boolean removeWater(Level world, ItemStack itemstack, Player player, BlockPos pos) {
         if (!world.isClientSide) {
             if (world.getBlockState(pos).getMaterial() == Material.WATER) {
                 itemstack.hurtAndBreak(1, player, (e) -> {
-                    e.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                    e.broadcastBreakEvent(EquipmentSlot.MAINHAND);
                 });
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                 return true;

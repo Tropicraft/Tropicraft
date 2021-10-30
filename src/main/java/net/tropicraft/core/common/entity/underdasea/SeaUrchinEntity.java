@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.play.server.SSpawnMobPacket;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.egg.EggEntity;
 import net.tropicraft.core.common.entity.egg.SeaUrchinEggEntity;
@@ -39,12 +39,12 @@ public class SeaUrchinEntity extends EchinodermEntity {
      */
     public static final float ADULT_YOFFSET = 0.25f;
 
-    public SeaUrchinEntity(EntityType<? extends EchinodermEntity> entityTypeIn, World worldIn) {
+    public SeaUrchinEntity(EntityType<? extends EchinodermEntity> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return WaterMobEntity.createMobAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return WaterAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0);
     }
 
@@ -53,8 +53,8 @@ public class SeaUrchinEntity extends EchinodermEntity {
         if (source.getMsgId().equals("player")) {
             Entity ent = source.getEntity();
 
-            if (ent instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) ent;
+            if (ent instanceof Player) {
+                Player player = (Player) ent;
 
                 if (player.getMainHandItem().isEmpty()) {
                     player.hurt(DamageSource.mobAttack(this), 2);
@@ -112,12 +112,12 @@ public class SeaUrchinEntity extends EchinodermEntity {
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
-        return new SSpawnMobPacket(this);
+    public Packet<?> getAddEntityPacket() {
+        return new ClientboundAddMobPacket(this);
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.SEA_URCHIN_SPAWN_EGG.get());
     }
 }

@@ -1,45 +1,45 @@
 package net.tropicraft.core.common.entity;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.passive.TurtleEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -53,21 +53,27 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
-public class SeaTurtleEntity extends TurtleEntity {
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 
-    private static final DataParameter<Boolean> IS_MATURE = EntityDataManager.defineId(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> TURTLE_TYPE = EntityDataManager.defineId(SeaTurtleEntity.class, DataSerializers.INT);
-    private static final DataParameter<Boolean> NO_BRAKES = EntityDataManager.defineId(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> CAN_FLY = EntityDataManager.defineId(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IS_DIGGING = EntityDataManager.defineId(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_EGG = EntityDataManager.defineId(SeaTurtleEntity.class, DataSerializers.BOOLEAN);
+public class SeaTurtleEntity extends Turtle {
+
+    private static final EntityDataAccessor<Boolean> IS_MATURE = SynchedEntityData.defineId(SeaTurtleEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> TURTLE_TYPE = SynchedEntityData.defineId(SeaTurtleEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> NO_BRAKES = SynchedEntityData.defineId(SeaTurtleEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CAN_FLY = SynchedEntityData.defineId(SeaTurtleEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_DIGGING = SynchedEntityData.defineId(SeaTurtleEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_EGG = SynchedEntityData.defineId(SeaTurtleEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final int NUM_TYPES = 6;
     
     private double lastPosY;
     private int digCounter;
 
-    public SeaTurtleEntity(EntityType<? extends TurtleEntity> type, World world) {
+    public SeaTurtleEntity(EntityType<? extends Turtle> type, Level world) {
         super(type, world);
     }
 
@@ -82,8 +88,8 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     @Override
-    public CreatureAttribute getMobType() {
-        return CreatureAttribute.WATER;
+    public MobType getMobType() {
+        return MobType.WATER;
     }
 
     @Override
@@ -92,7 +98,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag nbt) {
         setRandomTurtleType();
         this.lastPosY = getY();
         return super.finalizeSpawn(world, difficultyInstance, spawnReason, data, nbt);
@@ -102,17 +108,17 @@ public class SeaTurtleEntity extends TurtleEntity {
     protected void registerGoals() {
         super.registerGoals();
         // goalSelector
-        GoalSelector goalSelector = ObfuscationReflectionHelper.getPrivateValue(MobEntity.class, this, "goalSelector");
+        GoalSelector goalSelector = ObfuscationReflectionHelper.getPrivateValue(Mob.class, this, "goalSelector");
         // goals
-        Set<PrioritizedGoal> goalSet = ObfuscationReflectionHelper.getPrivateValue(GoalSelector.class, goalSelector, "availableGoals");
+        Set<WrappedGoal> goalSet = ObfuscationReflectionHelper.getPrivateValue(GoalSelector.class, goalSelector, "availableGoals");
 
-        final Optional<PrioritizedGoal> eggGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Egg")).findFirst();
+        final Optional<WrappedGoal> eggGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Egg")).findFirst();
         if (eggGoal.isPresent()) {
             goalSelector.removeGoal(eggGoal.get().getGoal());
             goalSelector.addGoal(1, new BetterLayEggGoal(this, 1.0));
         }
 
-        final Optional<PrioritizedGoal> mateGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Mate")).findFirst();
+        final Optional<WrappedGoal> mateGoal = goalSet.stream().filter(p -> p.getGoal().toString().contains("Mate")).findFirst();
         if (mateGoal.isPresent()) {
             goalSelector.removeGoal(mateGoal.get().getGoal());
             goalSelector.addGoal(1, new BetterMateGoal(this, 1.0));
@@ -131,7 +137,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT nbt) {
+    public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("TurtleType", getTurtleType());
         nbt.putBoolean("IsMature", isMature());
@@ -141,7 +147,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT nbt) {
+    public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         if (nbt.contains("TurtleType")) {
             setTurtleType(nbt.getInt("TurtleType"));
@@ -177,7 +183,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     public SeaTurtleEntity setTurtleType(final int type) {
-        getEntityData().set(TURTLE_TYPE, MathHelper.clamp(type, 1, NUM_TYPES));
+        getEntityData().set(TURTLE_TYPE, Mth.clamp(type, 1, NUM_TYPES));
         return this;
     }
     
@@ -206,7 +212,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         return passengers.isEmpty() ? null : passengers.get(0);
     }
 
-    public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+    public static boolean canSpawnOnLand(EntityType<SeaTurtleEntity> turtle, LevelAccessor world, MobSpawnType reason, BlockPos pos, Random rand) {
         return pos.getY() < TropicraftDimension.getSeaLevel(world) + 4 && world.getBlockState(pos.below()).getBlock() == Blocks.SAND && world.getRawBrightness(pos, 0) > 8;
     }
 
@@ -222,7 +228,7 @@ public class SeaTurtleEntity extends TurtleEntity {
 
     @Nullable
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld world, AgeableEntity partner) {
+    public AgableMob getBreedOffspring(ServerLevel world, AgableMob partner) {
         return TropicraftEntities.SEA_TURTLE.get().create(this.level)
                 .setTurtleType(random.nextBoolean() && partner instanceof SeaTurtleEntity ? ((SeaTurtleEntity)partner).getTurtleType() : getTurtleType())
                 .setIsMature(false);
@@ -230,9 +236,9 @@ public class SeaTurtleEntity extends TurtleEntity {
 
 
     @Override
-    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-        ActionResultType result = super.mobInteract(player, hand);
-        if (result != ActionResultType.PASS) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        InteractionResult result = super.mobInteract(player, hand);
+        if (result != InteractionResult.PASS) {
             return result;
         }
 
@@ -240,7 +246,7 @@ public class SeaTurtleEntity extends TurtleEntity {
             player.startRiding(this);
         }
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
     
     @Override
@@ -271,15 +277,15 @@ public class SeaTurtleEntity extends TurtleEntity {
         if (this.level.isClientSide) {
             if (isVehicle() && canBeControlledByRider()) {
                 if (isInWater() || getCanFly()) {
-                    Vector3d movement = new Vector3d(getX(), getY(), getZ()).subtract(xo, yo, zo);
+                    Vec3 movement = new Vec3(getX(), getY(), getZ()).subtract(xo, yo, zo);
                     double speed = movement.length();
-                    Vector3d particleOffset = movement.reverse().scale(2);
+                    Vec3 particleOffset = movement.reverse().scale(2);
                     if (speed > 0.05) {
-                        int maxParticles = MathHelper.ceil(speed * 5);
+                        int maxParticles = Mth.ceil(speed * 5);
                         int particlesToSpawn = random.nextInt(1 + maxParticles);
-                        IParticleData particle = isInWater() ? ParticleTypes.BUBBLE : ParticleTypes.END_ROD;
+                        ParticleOptions particle = isInWater() ? ParticleTypes.BUBBLE : ParticleTypes.END_ROD;
                         for (int i = 0; i < particlesToSpawn; i++) {
-                            Vector3d particleMotion = movement.scale(1);
+                            Vec3 particleMotion = movement.scale(1);
                             level.addParticle(particle, true,
                                     particleOffset.x() + getX() - 0.25 + random.nextDouble() * 0.5,
                                     particleOffset.y() + getY() + 0.1 + random.nextDouble() * 0.1,
@@ -292,7 +298,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     public float lerp(float x1, float x2, float t) {
-        return x1 + (t*0.03f) * MathHelper.wrapDegrees(x2 - x1);
+        return x1 + (t*0.03f) * Mth.wrapDegrees(x2 - x1);
     }
 
     private float swimSpeedCurrent;
@@ -301,8 +307,8 @@ public class SeaTurtleEntity extends TurtleEntity {
     public void positionRider(Entity passenger) {
         super.positionRider(passenger);
         if (this.hasPassenger(passenger)) {
-            if(passenger instanceof PlayerEntity) {
-                PlayerEntity p = (PlayerEntity)passenger;
+            if(passenger instanceof Player) {
+                Player p = (Player)passenger;
                 if(this.isInWater()) {
                     if(p.zza > 0f) {
                         this.xRot = this.lerp(xRot, -(passenger.xRot*0.5f), 6f);
@@ -339,8 +345,8 @@ public class SeaTurtleEntity extends TurtleEntity {
                 }
                 //p.rotationYaw = this.rotationYaw;
             } else
-            if (passenger instanceof MobEntity) {
-                MobEntity mobentity = (MobEntity)passenger;
+            if (passenger instanceof Mob) {
+                Mob mobentity = (Mob)passenger;
                 this.yBodyRot = mobentity.yBodyRot;
                 this.yHeadRotO = mobentity.yHeadRotO;
             }
@@ -353,7 +359,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     @Override
-    public void travel(Vector3d input) {
+    public void travel(Vec3 input) {
         if (isAlive()) {
             if (isVehicle() && canBeControlledByRider()) {
                 final Entity controllingPassenger = getControllingPassenger();
@@ -378,7 +384,7 @@ public class SeaTurtleEntity extends TurtleEntity {
                 float vertical = controllingEntity.yya; // Players never use this?
 
                 double verticalFromPitch = -Math.sin(Math.toRadians(xRot)) * forward;
-                forward *= MathHelper.clamp(1 - (Math.abs(xRot) / 90), 0.01f, 1);
+                forward *= Mth.clamp(1 - (Math.abs(xRot) / 90), 0.01f, 1);
 
                 if (!isInWater()) {
                     if (getCanFly()) {
@@ -390,7 +396,7 @@ public class SeaTurtleEntity extends TurtleEntity {
                 }
 
                 if (this.isControlledByLocalInstance()) {
-                    Vector3d travel = new Vector3d(strafe, verticalFromPitch + vertical, forward)
+                    Vec3 travel = new Vec3(strafe, verticalFromPitch + vertical, forward)
                             .scale(this.getAttribute(Attributes.MOVEMENT_SPEED).getValue())
                             // This scale controls max speed. We reduce it significantly here so that the range of speed is higher
                             // This is compensated for by the high value passed to moveRelative
@@ -402,12 +408,12 @@ public class SeaTurtleEntity extends TurtleEntity {
                     this.setDeltaMovement(this.getDeltaMovement().scale(forward > 0 || !isInWater() ? 0.975 : 0.9));
                 } else {
                     this.fallDistance = (float) Math.max(0, (getY() - lastPosY) * -8);
-                    this.setDeltaMovement(Vector3d.ZERO);
+                    this.setDeltaMovement(Vec3.ZERO);
                 }
                 this.animationSpeedOld = this.animationSpeed;
                 double d1 = this.getX() - this.xo;
                 double d0 = this.getZ() - this.zo;
-                float swinger = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+                float swinger = Mth.sqrt(d1 * d1 + d0 * d0) * 4.0F;
                 if (swinger > 1.0F) {
                     swinger = 1.0F;
                 }
@@ -422,7 +428,7 @@ public class SeaTurtleEntity extends TurtleEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.SEA_TURTLE_SPAWN_EGG.get());
     }
 
@@ -467,8 +473,8 @@ public class SeaTurtleEntity extends TurtleEntity {
                 if (!this.turtle.isLayingEgg()) {
                     this.turtle.setDigging(true);
                 } else if (this.turtle.digCounter > 200) {
-                    World world = this.turtle.level;
-                    world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundCategory.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
+                    Level world = this.turtle.level;
+                    world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
                     //world.setBlockState(this.destinationBlock.up(), Blocks.TURTLE_EGG.defaultBlockState().with(TurtleEggBlock.EGGS, Integer.valueOf(this.turtle.rand.nextInt(4) + 1)), 3);
                     final SeaTurtleEggEntity egg = TropicraftEntities.SEA_TURTLE_EGG.get().create(world);
                     final BlockPos spawnPos = blockPos.above();
@@ -486,7 +492,7 @@ public class SeaTurtleEntity extends TurtleEntity {
         }
 
         @Override
-        protected boolean isValidTarget(IWorldReader worldIn, BlockPos pos) {
+        protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
             if (!worldIn.isEmptyBlock(pos.above())) {
                 return false;
             } else {
@@ -517,7 +523,7 @@ public class SeaTurtleEntity extends TurtleEntity {
          */
         @Override
         protected void breed() {
-            ServerPlayerEntity serverplayerentity = this.animal.getLoveCause();
+            ServerPlayer serverplayerentity = this.animal.getLoveCause();
             if (serverplayerentity == null && this.partner.getLoveCause() != null) {
                 serverplayerentity = this.partner.getLoveCause();
             }
@@ -532,7 +538,7 @@ public class SeaTurtleEntity extends TurtleEntity {
             this.partner.resetLove();
             Random random = this.animal.getRandom();
             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                this.level.addFreshEntity(new ExperienceOrbEntity(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
+                this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
             }
 
         }

@@ -1,31 +1,31 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.Random;
 
-public class CoffeePlantFeature extends Feature<NoFeatureConfig> {
+public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
     public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.defaultBlockState();
     public static final BlockState COFE = TropicraftBlocks.COFFEE_BUSH.get().getStateForAge(6);
     public static final BlockState FARMLAND = Blocks.FARMLAND.defaultBlockState();
     public static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
-    public CoffeePlantFeature(Codec<NoFeatureConfig> codec) {
+    public CoffeePlantFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
         final BlockPos genPos = new BlockPos(
                 (pos.getX() + random.nextInt(8)) - random.nextInt(8),
                 pos.getY(),

@@ -2,17 +2,17 @@ package net.tropicraft;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.Reflection;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.renderer.model.ModelBakery;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -69,7 +69,7 @@ import java.util.regex.Pattern;
 
 @Mod(Constants.MODID)
 public class Tropicraft {
-    public static final ItemGroup TROPICRAFT_ITEM_GROUP = (new ItemGroup("tropicraft") {
+    public static final CreativeModeTab TROPICRAFT_ITEM_GROUP = (new CreativeModeTab("tropicraft") {
         @OnlyIn(Dist.CLIENT)
         public ItemStack makeIcon() {
             return new ItemStack(TropicraftFlower.RED_ANTHURIUM.get());
@@ -114,9 +114,9 @@ public class Tropicraft {
 
         // Hack in our item frame models the way vanilla does
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-            StateContainer<Block, BlockState> frameState = new StateContainer.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(Block::defaultBlockState, BlockState::new);
+            StateDefinition<Block, BlockState> frameState = new StateDefinition.Builder<Block, BlockState>(Blocks.AIR).add(BooleanProperty.create("map")).create(Block::defaultBlockState, BlockState::new);
 
-            ModelBakery.STATIC_DEFINITIONS = ImmutableMap.<ResourceLocation, StateContainer<Block, BlockState>>builder()
+            ModelBakery.STATIC_DEFINITIONS = ImmutableMap.<ResourceLocation, StateDefinition<Block, BlockState>>builder()
                     .putAll(ModelBakery.STATIC_DEFINITIONS)
                     .put(TropicraftItems.BAMBOO_ITEM_FRAME.getId(), frameState)
                     .build();

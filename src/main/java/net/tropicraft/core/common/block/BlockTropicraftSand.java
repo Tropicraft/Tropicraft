@@ -1,24 +1,24 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.Constants;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class BlockTropicraftSand extends FallingBlock {
     public static final BooleanProperty UNDERWATER = BooleanProperty.create("underwater");
@@ -32,17 +32,17 @@ public class BlockTropicraftSand extends FallingBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(UNDERWATER);
     }
     
     @Override
-    public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
+    public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
         return Blocks.SAND.canSustainPlant(state, world, pos, facing, plantable);
     }
 
     @Override
-    public BlockState getStateForPlacement(final BlockItemUseContext context) {
+    public BlockState getStateForPlacement(final BlockPlaceContext context) {
         final FluidState upState = context.getLevel().getFluidState(context.getClickedPos().above());
         boolean waterAbove = false;
         if (!upState.isEmpty()) {
@@ -53,7 +53,7 @@ public class BlockTropicraftSand extends FallingBlock {
 
     @Override
     @Deprecated
-    public void neighborChanged(final BlockState state, final World world, final BlockPos pos, final Block block, final BlockPos pos2, boolean isMoving) {
+    public void neighborChanged(final BlockState state, final Level world, final BlockPos pos, final Block block, final BlockPos pos2, boolean isMoving) {
         final FluidState upState = world.getFluidState(pos.above());
         boolean underwater = upState.getType().isSame(Fluids.WATER);
         if (underwater != state.getValue(UNDERWATER)) {
@@ -64,7 +64,7 @@ public class BlockTropicraftSand extends FallingBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public int getDustColor(BlockState state, IBlockReader reader, BlockPos pos) {
+    public int getDustColor(BlockState state, BlockGetter reader, BlockPos pos) {
         return this.dustColor;
     }
 }

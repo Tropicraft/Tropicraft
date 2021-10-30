@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.tropicraft.core.common.block.AirCompressorBlock;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
@@ -18,7 +18,7 @@ import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class AirCompressorTileEntity extends TileEntity implements ITickableTileEntity, IMachineTile {
+public class AirCompressorTileEntity extends BlockEntity implements TickableBlockEntity, IMachineTile {
 
     /** Is the compressor currently giving air */
     private boolean compressing;
@@ -41,7 +41,7 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
     }
 
     @Override
-    public void load(BlockState blockState, CompoundNBT nbt) {
+    public void load(BlockState blockState, CompoundTag nbt) {
         super.load(blockState, nbt);
         this.compressing = nbt.getBoolean("Compressing");
 
@@ -53,11 +53,11 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
     }
 
     @Override
-    public @Nonnull CompoundNBT save(@Nonnull CompoundNBT nbt) {
+    public @Nonnull CompoundTag save(@Nonnull CompoundTag nbt) {
         super.save(nbt);
         nbt.putBoolean("Compressing", compressing);
 
-        CompoundNBT var4 = new CompoundNBT();
+        CompoundTag var4 = new CompoundTag();
         this.stack.save(var4);
         nbt.put("Tank", var4);
         
@@ -181,7 +181,7 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
      * @param pkt The data packet
      */
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         this.load(getBlockState(), pkt.getTag());
     }
 
@@ -193,13 +193,13 @@ public class AirCompressorTileEntity extends TileEntity implements ITickableTile
 
     @Override
     @Nullable
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.worldPosition, 1, this.getUpdateTag());
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, this.getUpdateTag());
     }
 
     @Override
-    public @Nonnull CompoundNBT getUpdateTag() {
-        CompoundNBT nbttagcompound = this.save(new CompoundNBT());
+    public @Nonnull CompoundTag getUpdateTag() {
+        CompoundTag nbttagcompound = this.save(new CompoundTag());
         return nbttagcompound;
     }
 }

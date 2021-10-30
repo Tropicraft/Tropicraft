@@ -1,7 +1,7 @@
 package net.tropicraft.core.client.entity.model;
 
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 
 public final class ModelAnimator {
     static final float PI = (float) Math.PI;
@@ -10,7 +10,7 @@ public final class ModelAnimator {
 
     static Cycle cycle;
 
-    public static void look(ModelRenderer part, float yaw, float pitch) {
+    public static void look(ModelPart part, float yaw, float pitch) {
         part.xRot = pitch * DEG_TO_RAD;
         part.yRot = yaw * DEG_TO_RAD;
     }
@@ -40,7 +40,7 @@ public final class ModelAnimator {
 
         public float eval(float speed, float scale, float delay, float offset) {
             float x = this.time * speed - delay;
-            return (MathHelper.sin(TAU * x) * scale + offset) * this.scale;
+            return (Mth.sin(TAU * x) * scale + offset) * this.scale;
         }
 
         @Override

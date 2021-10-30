@@ -2,9 +2,9 @@ package net.tropicraft.core.common.dimension.feature.config;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class HomeTreeBranchConfig implements IFeatureConfig {
+public class HomeTreeBranchConfig implements FeatureConfiguration {
     public static final Codec<HomeTreeBranchConfig> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 Codec.FLOAT.fieldOf("min_angle").forGetter(c -> c.minAngle),

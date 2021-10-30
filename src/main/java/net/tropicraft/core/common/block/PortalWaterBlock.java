@@ -1,35 +1,35 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
 import java.util.Random;
 
-import net.minecraft.block.AbstractBlock.Properties;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class PortalWaterBlock extends FlowingFluidBlock {
+public class PortalWaterBlock extends LiquidBlock {
 
     public PortalWaterBlock(Properties builder) {
         super(() -> Fluids.WATER, builder);
     }
     
     @Override
-    public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         super.entityInside(state, worldIn, pos, entityIn);
-        if (!worldIn.isClientSide && entityIn instanceof ServerPlayerEntity && entityIn.getPortalWaitTime() <= 0 && !entityIn.isPassenger() && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
-            TropicraftDimension.teleportPlayer((ServerPlayerEntity) entityIn, TropicraftDimension.WORLD);
+        if (!worldIn.isClientSide && entityIn instanceof ServerPlayer && entityIn.getPortalWaitTime() <= 0 && !entityIn.isPassenger() && !entityIn.isPassenger() && entityIn.canChangeDimensions()) {
+            TropicraftDimension.teleportPlayer((ServerPlayer) entityIn, TropicraftDimension.WORLD);
         }
     }
 
     @Override
-    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {
         if (rand.nextInt(2) == 0) {
             double d0 = pos.getX();
             double d1 = pos.getY();

@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.Random;
 
@@ -19,16 +19,16 @@ public class TallRainforestTreeFeature extends RainforestTreeFeature {
     private static final int SMALL_LEAF_CHANCE = 3;
     private static final int SECOND_CANOPY_CHANCE = 3;
 
-    public TallRainforestTreeFeature(Codec<NoFeatureConfig> codec) {
+    public TallRainforestTreeFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
-    private boolean isSoil(IWorld world, BlockPos pos) {
+    private boolean isSoil(LevelAccessor world, BlockPos pos) {
         return getSapling().canSurvive(getSapling().defaultBlockState(), world, pos);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
         pos = pos.immutable();
         int i = pos.getX(); int j = pos.getY(); int k = pos.getZ();
         final int height = rand.nextInt(15) + 15;

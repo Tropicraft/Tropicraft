@@ -1,31 +1,37 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.*;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public class SardineEntity extends AbstractGroupFishEntity implements IAtlasFish {
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 
-    public SardineEntity(EntityType<? extends AbstractGroupFishEntity> type, World world) {
+public class SardineEntity extends AbstractSchoolingFish implements IAtlasFish {
+
+    public SardineEntity(EntityType<? extends AbstractSchoolingFish> type, Level world) {
         super(type, world);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return AbstractFishEntity.createAttributes()
+    public static AttributeSupplier.Builder createAttributes() {
+        return AbstractFish.createAttributes()
                 .add(Attributes.MAX_HEALTH, 5.0);
     }
 
     @Override
-    protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
-        return ActionResultType.PASS;
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -64,7 +70,7 @@ public class SardineEntity extends AbstractGroupFishEntity implements IAtlasFish
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.SARDINE_SPAWN_EGG.get());
     }
 }

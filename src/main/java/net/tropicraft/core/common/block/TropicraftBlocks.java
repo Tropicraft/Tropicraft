@@ -3,16 +3,17 @@ package net.tropicraft.core.common.block;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
@@ -32,6 +33,28 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.RedstoneWallTorchBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TallFlowerBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class TropicraftBlocks {
     
@@ -83,7 +106,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> MUD_WITH_PIANGUAS = register("mud_with_pianguas", Builder.mud());
 
     public static final RegistryObject<RotatedPillarBlock> BAMBOO_BUNDLE = register(
-            "bamboo_bundle", Builder.bundle(AbstractBlock.Properties.of(Material.BAMBOO, MaterialColor.PLANT).sound(SoundType.BAMBOO).strength(0.2F, 5.0F)));
+            "bamboo_bundle", Builder.bundle(BlockBehaviour.Properties.of(Material.BAMBOO, MaterialColor.PLANT).sound(SoundType.BAMBOO).strength(0.2F, 5.0F)));
     public static final RegistryObject<RotatedPillarBlock> THATCH_BUNDLE = register(
             "thatch_bundle", Builder.bundle(Block.Properties.of(Material.GRASS, MaterialColor.WOOD).sound(SoundType.GRASS).strength(0.2F, 5.0F)));
 
@@ -94,17 +117,17 @@ public class TropicraftBlocks {
     public static final RegistryObject<RotatedPillarBlock> MAHOGANY_WOOD = register("mohogany_wood", Builder.wood(MaterialColor.WOOD));
     public static final RegistryObject<RotatedPillarBlock> PALM_WOOD = register("palm_wood", Builder.wood(MaterialColor.COLOR_GRAY));
 
-    public static final RegistryObject<StairsBlock> PALM_STAIRS = register(
+    public static final RegistryObject<StairBlock> PALM_STAIRS = register(
             "palm_stairs", Builder.stairs(PALM_PLANKS));
-    public static final RegistryObject<StairsBlock> MAHOGANY_STAIRS = register(
+    public static final RegistryObject<StairBlock> MAHOGANY_STAIRS = register(
             "mahogany_stairs", Builder.stairs(MAHOGANY_PLANKS));
-    public static final RegistryObject<StairsBlock> THATCH_STAIRS = register(
+    public static final RegistryObject<StairBlock> THATCH_STAIRS = register(
             "thatch_stairs", Builder.stairs(THATCH_BUNDLE));
-    public static final RegistryObject<StairsBlock> THATCH_STAIRS_FUZZY = register(
+    public static final RegistryObject<StairBlock> THATCH_STAIRS_FUZZY = register(
             "thatch_stairs_fuzzy", Builder.stairs(THATCH_BUNDLE));
-    public static final RegistryObject<StairsBlock> BAMBOO_STAIRS = register(
+    public static final RegistryObject<StairBlock> BAMBOO_STAIRS = register(
             "bamboo_stairs", Builder.stairs(BAMBOO_BUNDLE));
-    public static final RegistryObject<StairsBlock> CHUNK_STAIRS = register(
+    public static final RegistryObject<StairBlock> CHUNK_STAIRS = register(
             "chunk_stairs", Builder.stairs(CHUNK));
 
     public static final RegistryObject<Block> COCONUT = register(
@@ -162,7 +185,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_LOG = register("stripped_mangrove_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN));
     public static final RegistryObject<RotatedPillarBlock> STRIPPED_MANGROVE_WOOD = register("stripped_mangrove_wood", Builder.wood(MaterialColor.COLOR_GRAY));
     public static final RegistryObject<Block> MANGROVE_PLANKS = register("mangrove_planks", Builder.plank(MaterialColor.WOOD));
-    public static final RegistryObject<StairsBlock> MANGROVE_STAIRS = register("mangrove_stairs", Builder.stairs(MANGROVE_PLANKS));
+    public static final RegistryObject<StairBlock> MANGROVE_STAIRS = register("mangrove_stairs", Builder.stairs(MANGROVE_PLANKS));
     public static final RegistryObject<SlabBlock> MANGROVE_SLAB = register("mangrove_slab", Builder.slab(MANGROVE_PLANKS));
     public static final RegistryObject<FenceBlock> MANGROVE_FENCE = register("mangrove_fence", Builder.fence(MANGROVE_PLANKS));
     public static final RegistryObject<FenceGateBlock> MANGROVE_FENCE_GATE = register("mangrove_fence_gate", Builder.fenceGate(MANGROVE_PLANKS));
@@ -301,11 +324,11 @@ public class TropicraftBlocks {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
     
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Supplier<Callable<BlockEntityWithoutLevelRenderer>> renderMethod) {
         return register(name, sup, block -> item(block, renderMethod));
     }
     
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, ItemGroup tab) {
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, CreativeModeTab tab) {
         return register(name, sup, block -> item(block, tab));
     }
     
@@ -323,26 +346,26 @@ public class TropicraftBlocks {
         return item(block, Tropicraft.TROPICRAFT_ITEM_GROUP);
     }
 
-    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final Supplier<Callable<ItemStackTileEntityRenderer>> renderMethod) {
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final Supplier<Callable<BlockEntityWithoutLevelRenderer>> renderMethod) {
         return () -> new BlockItem(block.get(), new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).setISTER(renderMethod));
     }
 
-    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final ItemGroup itemGroup) {
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, final CreativeModeTab itemGroup) {
         return () -> new BlockItem(block.get(), new Item.Properties().tab(itemGroup));
     }
     
     @OnlyIn(Dist.CLIENT)
-    private static Callable<ItemStackTileEntityRenderer> chestRenderer() {
+    private static Callable<BlockEntityWithoutLevelRenderer> chestRenderer() {
         return () -> new SimpleItemStackRenderer<>(BambooChestTileEntity::new);
     }
     
     @OnlyIn(Dist.CLIENT)
-    private static Callable<ItemStackTileEntityRenderer> drinkMixerRenderer() {
+    private static Callable<BlockEntityWithoutLevelRenderer> drinkMixerRenderer() {
         return () -> new SimpleItemStackRenderer<>(DrinkMixerTileEntity::new);
     }
     
     @OnlyIn(Dist.CLIENT)
-    private static Callable<ItemStackTileEntityRenderer> airCompressorRenderer() {
+    private static Callable<BlockEntityWithoutLevelRenderer> airCompressorRenderer() {
         return () -> new SimpleItemStackRenderer<>(AirCompressorTileEntity::new);
     }
 }

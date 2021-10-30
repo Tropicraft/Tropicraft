@@ -1,28 +1,28 @@
 package net.tropicraft.core.common.entity.passive;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DoublePlantBlock;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.passive.CowEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IForgeShearable;
@@ -40,15 +40,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CowktailEntity extends CowEntity implements IForgeShearable {
-	private static final DataParameter<String> COWKTAIL_TYPE = EntityDataManager.defineId(CowktailEntity.class, DataSerializers.STRING);
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
 
-	public CowktailEntity(EntityType<? extends CowktailEntity> type, World worldIn) {
+public class CowktailEntity extends Cow implements IForgeShearable {
+	private static final EntityDataAccessor<String> COWKTAIL_TYPE = SynchedEntityData.defineId(CowktailEntity.class, EntityDataSerializers.STRING);
+
+	public CowktailEntity(EntityType<? extends CowktailEntity> type, Level worldIn) {
 		super(type, worldIn);
 	}
 
 	@Override
-	public float getWalkTargetValue(BlockPos pos, IWorldReader worldIn) {
+	public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
 		return worldIn.getBlockState(pos.below()).getBlock() == Blocks.MYCELIUM ? 10.0F : worldIn.getBrightness(pos) - 0.5F;
 	}
 
@@ -59,7 +63,7 @@ public class CowktailEntity extends CowEntity implements IForgeShearable {
 	}
 
 	@Override
-	public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (itemstack.getItem() == TropicraftItems.BAMBOO_MUG.get() && !this.isBaby()) {
 			if (player.abilities.instabuild) {
@@ -78,14 +82,14 @@ public class CowktailEntity extends CowEntity implements IForgeShearable {
 			}
 
 			this.playSound(SoundEvents.MOOSHROOM_MILK_SUSPICIOUSLY, 1.0F, 1.0F);
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		return super.mobInteract(player, hand);
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT compound) {
+	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putString("Type", this.getCowktailType().name);
 	}
@@ -94,7 +98,7 @@ public class CowktailEntity extends CowEntity implements IForgeShearable {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	public void readAdditionalSaveData(CompoundNBT compound) {
+	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
 		this.setCowktailType(CowktailEntity.Type.getTypeByName(compound.getString("Type")));
 	}
@@ -108,7 +112,7 @@ public class CowktailEntity extends CowEntity implements IForgeShearable {
 	}
 
 	@Override
-	public CowktailEntity getBreedOffspring(ServerWorld world, AgeableEntity ageable) {
+	public CowktailEntity getBreedOffspring(ServerLevel world, AgableMob ageable) {
 		CowktailEntity child = TropicraftEntities.COWKTAIL.get().create(this.level);
 		child.setCowktailType(this.getOffspringType((CowktailEntity)ageable));
 		return child;
@@ -128,18 +132,18 @@ public class CowktailEntity extends CowEntity implements IForgeShearable {
 	}
 
 	@Override
-	public boolean isShearable(@Nonnull ItemStack item, World world, BlockPos pos) {
+	public boolean isShearable(@Nonnull ItemStack item, Level world, BlockPos pos) {
 		return !this.isBaby();
 	}
 
 	@Nonnull
 	@Override
-	public List<ItemStack> onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune) {
+	public List<ItemStack> onSheared(@Nullable Player player, @Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
 		java.util.List<ItemStack> ret = new java.util.ArrayList<>();
 		this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5D), this.getZ(), 0.0D, 0.0D, 0.0D);
 		if (!this.level.isClientSide) {
 			this.remove();
-			CowEntity cowentity = EntityType.COW.create(this.level);
+			Cow cowentity = EntityType.COW.create(this.level);
 			cowentity.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
 			cowentity.setHealth(this.getHealth());
 			cowentity.yBodyRot = this.yBodyRot;
@@ -157,13 +161,13 @@ public class CowktailEntity extends CowEntity implements IForgeShearable {
 	}
 
 	@Nullable
-	public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData data, @Nullable CompoundNBT nbt) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag nbt) {
 		setCowktailType(Type.getRandomType(random));
 		return super.finalizeSpawn(world, difficultyInstance, spawnReason, data, nbt);
 	}
 
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target) {
+	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(TropicraftItems.COWKTAIL_SPAWN_EGG.get());
 	}
 

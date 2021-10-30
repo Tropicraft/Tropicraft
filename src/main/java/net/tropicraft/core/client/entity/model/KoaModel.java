@@ -1,67 +1,67 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
-public class KoaModel extends BipedModel<EntityKoaBase> {
+public class KoaModel extends HumanoidModel<EntityKoaBase> {
     
-    private static class ModelRendererCull extends ModelRenderer {
+    private static class ModelRendererCull extends ModelPart {
         
         public ModelRendererCull(Model model, int texOffX, int texOffY) {
             super(model, texOffX, texOffY);
         }
 
         @Override
-        public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn) {
+        public void render(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn) {
 //            RenderSystem.enableCull();
             super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 //            RenderSystem.disableCull();
         }
     }
 
-    public ModelRenderer headband;
-    public ModelRenderer armbandR;
-    public ModelRenderer leaf;
-    public ModelRenderer leaf3;
-    public ModelRenderer leaf2;
-    public ModelRenderer leaf4;
-    public ModelRenderer leaf5;
-    public ModelRenderer leaf6;
-    public ModelRenderer leaf7;
-    public ModelRenderer leaf8;
-    public ModelRenderer leaf9;
-    public ModelRenderer leaf10;
-    public ModelRenderer armbandL;
+    public ModelPart headband;
+    public ModelPart armbandR;
+    public ModelPart leaf;
+    public ModelPart leaf3;
+    public ModelPart leaf2;
+    public ModelPart leaf4;
+    public ModelPart leaf5;
+    public ModelPart leaf6;
+    public ModelPart leaf7;
+    public ModelPart leaf8;
+    public ModelPart leaf9;
+    public ModelPart leaf10;
+    public ModelPart armbandL;
 
     public KoaModel(float modelSize) {
         super(modelSize);
-        head = new ModelRenderer(this, 0, 2);
+        head = new ModelPart(this, 0, 2);
         head.addBox(-4F, -8F, -4F, 8, 8, 8);
         head.setPos(0F, 0F, 0F);
         head.setTexSize(64, 32);
         head.mirror = true;
         setRotation(head, 0F, 0F, 0F);
-        headband = new ModelRenderer(this, 24, 1);
+        headband = new ModelPart(this, 24, 1);
         headband.addBox(-5F, 0F, -5F, 10, 2, 10);
         headband.setPos(0F, -7F, 0F);        //0,-7,0 before
         headband.setTexSize(64, 32);
         headband.mirror = true;
         head.addChild(headband);
         setRotation(headband, 0F, 0F, 0F);
-        armbandR = new ModelRenderer(this, 35, 6);
+        armbandR = new ModelPart(this, 35, 6);
         armbandR.addBox(2.5F, -2F, -2.5F, 5, 1, 5);    //offset, dimensions
         armbandR.setPos(-6F, 3F, 0F);    //position
         armbandR.setTexSize(64, 32);
         rightArm.addChild(armbandR);
         setRotation(armbandR, 0F, 0F, 0F);
-        armbandL = new ModelRenderer(this, 34, 1);
+        armbandL = new ModelPart(this, 34, 1);
         armbandL.addBox(-7.5F, -2F, -2.5F, 5, 1, 5);        //offset, dimensions
         armbandL.setPos(6F, 3F, 0F);        //position
         armbandL.setTexSize(64, 32);
@@ -143,7 +143,7 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
     }
 
     @Override
-    public void renderToBuffer(MatrixStack ms, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn,
+    public void renderToBuffer(PoseStack ms, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn,
             float red, float green, float blue, float alpha) {
 
         ms.pushPose();
@@ -230,7 +230,7 @@ public class KoaModel extends BipedModel<EntityKoaBase> {
         }
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
+    private void setRotation(ModelPart model, float x, float y, float z) {
         model.xRot = x;
         model.yRot = y;
         model.zRot = z;

@@ -1,20 +1,20 @@
 package net.tropicraft.core.client.tileentity;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.RenderMaterial;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.NonNullList;
+import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.BambooMugModel;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
@@ -39,18 +39,18 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
         {0.8f, 0.8f, 0.8f}
     };
 
-    public DrinkMixerRenderer(final TileEntityRendererDispatcher rendererDispatcher) {
+    public DrinkMixerRenderer(final BlockEntityRenderDispatcher rendererDispatcher) {
         super(rendererDispatcher, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(RenderType::entitySolid));
         this.renderItem = Minecraft.getInstance().getItemRenderer();
     }
 
     @Override
-    protected RenderMaterial getMaterial() {
+    protected Material getMaterial() {
         return TropicraftRenderUtils.getTEMaterial("drink_mixer");
     }
 
     @Override
-    public void renderIngredients(final DrinkMixerTileEntity te, final MatrixStack stack, final IRenderTypeBuffer buffer, int combinedLightIn, int combinedOverlayIn) {
+    public void renderIngredients(final DrinkMixerTileEntity te, final PoseStack stack, final MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
         if (dummyEntityItem == null) {
              dummyEntityItem = new ItemEntity(Minecraft.getInstance().level, 0.0, 0.0, 0.0, new ItemStack(Items.SUGAR));
         }
@@ -74,13 +74,13 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
             } else {
                 modelBambooMug.renderLiquid = false;
             }
-            IVertexBuilder ivertexbuilder = buffer.getBuffer(modelBambooMug.renderType(TropicraftRenderUtils.getTextureTE("bamboo_mug")));
+            VertexConsumer ivertexbuilder = buffer.getBuffer(modelBambooMug.renderType(TropicraftRenderUtils.getTextureTE("bamboo_mug")));
             modelBambooMug.renderToBuffer(stack, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);
             stack.popPose();
         }
     }
 
-    private void renderIngredient(final MatrixStack stack, final IRenderTypeBuffer buffer, final int combinedOverlayIn, final int combinedLight, final ItemStack ingredient, final int ingredientIndex) {
+    private void renderIngredient(final PoseStack stack, final MultiBufferSource buffer, final int combinedOverlayIn, final int combinedLight, final ItemStack ingredient, final int ingredientIndex) {
         stack.pushPose();
         stack.mulPose(Vector3f.XP.rotationDegrees(90));
         stack.mulPose(Vector3f.YP.rotationDegrees(90));
@@ -90,8 +90,8 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
         stack.translate(offsets[0], offsets[1], offsets[2]);
         stack.scale(scales[0], scales[1], scales[2]);
         dummyEntityItem.setItem(ingredient);
-        final IBakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, ingredient);
-        renderItem.render(ingredient, ItemCameraTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
+        final BakedModel bakedModel = TropicraftRenderUtils.getBakedModel(renderItem, ingredient);
+        renderItem.render(ingredient, ItemTransforms.TransformType.FIXED, false, stack, buffer, combinedLight, combinedOverlayIn, bakedModel);
         stack.popPose();
     }
 }

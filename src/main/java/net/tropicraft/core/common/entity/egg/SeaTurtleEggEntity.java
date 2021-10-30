@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.entity.egg;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 
 public class SeaTurtleEggEntity extends EggEntity {
 
-    public SeaTurtleEggEntity(final EntityType<? extends SeaTurtleEggEntity> type, World world) {
+    public SeaTurtleEggEntity(final EntityType<? extends SeaTurtleEggEntity> type, Level world) {
         super(type, world);
     }
 

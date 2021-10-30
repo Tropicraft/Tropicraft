@@ -1,18 +1,18 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 import net.tropicraft.core.common.item.AshenMasks;
@@ -20,10 +20,10 @@ import net.tropicraft.core.common.item.TropicraftItems;
 
 public class AshenMaskEntity extends Entity {
 
-    private static final DataParameter<Byte> MASK_TYPE = EntityDataManager.defineId(AshenEntity.class, DataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> MASK_TYPE = SynchedEntityData.defineId(AshenEntity.class, EntityDataSerializers.BYTE);
     public static final int MAX_TICKS_ALIVE = 24000;
 
-    public AshenMaskEntity(EntityType<?> type, World world) {
+    public AshenMaskEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
@@ -47,12 +47,12 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT nbt) {
+    protected void readAdditionalSaveData(CompoundTag nbt) {
         setMaskType(nbt.getByte("MaskType"));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT nbt) {
+    protected void addAdditionalSaveData(CompoundTag nbt) {
         nbt.putByte("MaskType", getMaskType());
     }
 
@@ -73,7 +73,7 @@ public class AshenMaskEntity extends Entity {
             }
         }
 
-        final Vector3d motion = getDeltaMovement();
+        final Vec3 motion = getDeltaMovement();
 
         if (onGround) {
             setDeltaMovement(motion.multiply(0.5, 0, 0.5));
@@ -104,12 +104,12 @@ public class AshenMaskEntity extends Entity {
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.ASHEN_MASKS.get(AshenMasks.VALUES[getMaskType()]).get());
     }
 }

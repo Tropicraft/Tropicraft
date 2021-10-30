@@ -1,24 +1,24 @@
 package net.tropicraft.core.common.entity.ai;
 
 import com.google.common.collect.Sets;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraftforge.fml.RegistryObject;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
 import java.util.Set;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAITemptHelmet extends Goal
 {
     /** The entity using this AI that is tempted by the player. */
-    private final CreatureEntity temptedEntity;
+    private final PathfinderMob temptedEntity;
     private final double speed;
     /** X position of player tempting this mob */
     private double targetX;
@@ -31,7 +31,7 @@ public class EntityAITemptHelmet extends Goal
     /** Tempting player's yaw */
     private double yaw;
     /** The player that is tempting the entity that is using this AI. */
-    private PlayerEntity temptingPlayer;
+    private Player temptingPlayer;
     /**
      * A counter that is decremented each time the shouldExecute method is called. The shouldExecute method will always
      * return false if delayTemptCounter is greater than 0.
@@ -43,18 +43,18 @@ public class EntityAITemptHelmet extends Goal
     /** Whether the entity using this AI will be scared by the tempter's sudden movement. */
     private final boolean scaredByPlayerMovement;
 
-    public EntityAITemptHelmet(CreatureEntity temptedEntityIn, double speedIn, RegistryObject<Item> temptItemIn, boolean scaredByPlayerMovementIn) {
+    public EntityAITemptHelmet(PathfinderMob temptedEntityIn, double speedIn, RegistryObject<Item> temptItemIn, boolean scaredByPlayerMovementIn) {
         this(temptedEntityIn, speedIn, scaredByPlayerMovementIn, Sets.newHashSet(temptItemIn));
     }
 
-    public EntityAITemptHelmet(CreatureEntity temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<RegistryObject<Item>> temptItemIn) {
+    public EntityAITemptHelmet(PathfinderMob temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<RegistryObject<Item>> temptItemIn) {
         this.temptedEntity = temptedEntityIn;
         this.speed = speedIn;
         this.temptItem = temptItemIn;
         this.scaredByPlayerMovement = scaredByPlayerMovementIn;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 
-        if (!(temptedEntityIn.getNavigation() instanceof GroundPathNavigator))
+        if (!(temptedEntityIn.getNavigation() instanceof GroundPathNavigation))
         {
             throw new IllegalArgumentException("Unsupported mob type for TemptGoal");
         }

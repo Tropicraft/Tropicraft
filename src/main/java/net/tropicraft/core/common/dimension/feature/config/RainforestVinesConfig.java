@@ -2,9 +2,9 @@ package net.tropicraft.core.common.dimension.feature.config;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class RainforestVinesConfig implements IFeatureConfig {
+public class RainforestVinesConfig implements FeatureConfiguration {
     public static final Codec<RainforestVinesConfig> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 Codec.INT.fieldOf("height").forGetter(c -> c.height),

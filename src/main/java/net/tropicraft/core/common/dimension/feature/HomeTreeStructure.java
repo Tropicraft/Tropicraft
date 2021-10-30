@@ -1,36 +1,42 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.registry.DynamicRegistries;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.jigsaw.FeatureJigsawPiece;
-import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.structures.FeaturePoolElement;
+import net.minecraft.world.level.levelgen.feature.structures.JigsawPlacement;
+import net.minecraft.world.level.levelgen.feature.structures.StructurePoolElement;
 import net.minecraft.world.gen.feature.structure.*;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.dimension.feature.jigsaw.piece.NoRotateSingleJigsawPiece;
 
-import net.minecraft.world.gen.feature.structure.Structure.IStartFactory;
+import net.minecraft.world.level.levelgen.feature.StructureFeature.StructureStartFactory;
 
-public class HomeTreeStructure extends Structure<VillageConfig> {
-    public HomeTreeStructure(Codec<VillageConfig> codec) {
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
+import net.minecraft.world.level.levelgen.feature.StructurePieceType;
+import net.minecraft.world.level.levelgen.feature.configurations.JigsawConfiguration;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
+
+public class HomeTreeStructure extends StructureFeature<JigsawConfiguration> {
+    public HomeTreeStructure(Codec<JigsawConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeProvider biomes, long seed, SharedSeedRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos startChunkPos, VillageConfig config) {
+    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource biomes, long seed, WorldgenRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos startChunkPos, JigsawConfiguration config) {
         BlockPos pos = new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8);
-        int centerY = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
+        int centerY = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG);
         return isValid(generator, pos.offset(-4, 0, -4), centerY) &&
                 isValid(generator, pos.offset(-4, 0, 4), centerY) &&
                 isValid(generator, pos.offset(4, 0, 4), centerY) &&
@@ -38,7 +44,7 @@ public class HomeTreeStructure extends Structure<VillageConfig> {
     }
 
     private boolean isValid(ChunkGenerator generator, BlockPos pos, int startY) {
-        int y = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Type.WORLD_SURFACE_WG);
+        int y = generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG);
         return y >= generator.getSeaLevel()
                 && Math.abs(y - startY) < 10
                 && y < 150
@@ -46,21 +52,21 @@ public class HomeTreeStructure extends Structure<VillageConfig> {
     }
 
     @Override
-    public IStartFactory<VillageConfig> getStartFactory() {
+    public StructureStartFactory<JigsawConfiguration> getStartFactory() {
         return Start::new;
     }
 
-    private static final IStructurePieceType TYPE = IStructurePieceType.setPieceId(Piece::new, Constants.MODID + ":home_tree");
+    private static final StructurePieceType TYPE = StructurePieceType.setPieceId(Piece::new, Constants.MODID + ":home_tree");
 
-    public static class Start extends StructureStart<VillageConfig> {
-        public Start(Structure<VillageConfig> structure, int chunkX, int chunkZ, MutableBoundingBox boundingBox, int references, long seed) {
+    public static class Start extends StructureStart<JigsawConfiguration> {
+        public Start(StructureFeature<JigsawConfiguration> structure, int chunkX, int chunkZ, BoundingBox boundingBox, int references, long seed) {
             super(structure, chunkX, chunkZ, boundingBox, references, seed);
         }
 
         @Override
-        public void generatePieces(DynamicRegistries registries, ChunkGenerator generator, TemplateManager templates, int chunkX, int chunkZ, Biome biome, VillageConfig config) {
+        public void generatePieces(RegistryAccess registries, ChunkGenerator generator, StructureManager templates, int chunkX, int chunkZ, Biome biome, JigsawConfiguration config) {
             BlockPos pos = new BlockPos(chunkX << 4, 0, chunkZ << 4);
-            JigsawManager.addPieces(registries, config, Piece::new, generator, templates, pos, this.pieces, this.random, true, true);
+            JigsawPlacement.addPieces(registries, config, Piece::new, generator, templates, pos, this.pieces, this.random, true, true);
             this.calculateBoundingBox();
         }
 
@@ -77,20 +83,20 @@ public class HomeTreeStructure extends Structure<VillageConfig> {
         }
     }
 
-    public static class Piece extends AbstractVillagePiece {
-        public Piece(TemplateManager templates, JigsawPiece piece, BlockPos pos, int groundLevelDelta, Rotation rotation, MutableBoundingBox bounds) {
+    public static class Piece extends PoolElementStructurePiece {
+        public Piece(StructureManager templates, StructurePoolElement piece, BlockPos pos, int groundLevelDelta, Rotation rotation, BoundingBox bounds) {
             super(templates, piece, pos, groundLevelDelta, rotation, bounds);
         }
 
-        public Piece(TemplateManager templates, CompoundNBT data) {
+        public Piece(StructureManager templates, CompoundTag data) {
             super(templates, data);
         }
 
         @Override
-        public MutableBoundingBox getBoundingBox() {
-            if (this.element instanceof FeatureJigsawPiece) {
-                MutableBoundingBox ret = super.getBoundingBox();
-                ret = new MutableBoundingBox(ret);
+        public BoundingBox getBoundingBox() {
+            if (this.element instanceof FeaturePoolElement) {
+                BoundingBox ret = super.getBoundingBox();
+                ret = new BoundingBox(ret);
                 ret.x0 -= 32;
                 ret.y0 -= 32;
                 ret.z0 -= 32;
@@ -110,7 +116,7 @@ public class HomeTreeStructure extends Structure<VillageConfig> {
         }
 
         @Override
-        public IStructurePieceType getType() {
+        public StructurePieceType getType() {
             return TYPE;
         }
     }

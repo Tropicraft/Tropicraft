@@ -1,9 +1,9 @@
 package net.tropicraft.core.common.dimension.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.layer.traits.IBishopTransformer;
+import net.minecraft.world.level.newbiome.context.Context;
+import net.minecraft.world.level.newbiome.layer.traits.BishopTransformer;
 
-public final class TropicraftBeachLayer implements IBishopTransformer {
+public final class TropicraftBeachLayer implements BishopTransformer {
     private final TropicraftBiomeIds biomeIds;
 
     public TropicraftBeachLayer(TropicraftBiomeIds biomeIds) {
@@ -11,7 +11,7 @@ public final class TropicraftBeachLayer implements IBishopTransformer {
     }
 
     @Override
-    public int apply(INoiseRandom random, int ne, int se, int sw, int nw, int center) {
+    public int apply(Context random, int ne, int se, int sw, int nw, int center) {
         TropicraftBiomeIds ids = this.biomeIds;
 
         if (ids.isOcean(center) && (!ids.isOcean(ne) || !ids.isOcean(se) || !ids.isOcean(sw) || !ids.isOcean(nw))) {

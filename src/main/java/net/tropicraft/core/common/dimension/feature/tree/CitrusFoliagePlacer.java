@@ -2,25 +2,25 @@ package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.FeatureSpread;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.util.UniformInt;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer.Foliage;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer.FoliageAttachment;
 
 public final class CitrusFoliagePlacer extends FoliagePlacer {
     public static final Codec<CitrusFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
         return foliagePlacerParts(instance).apply(instance, CitrusFoliagePlacer::new);
     });
 
-    public CitrusFoliagePlacer(FeatureSpread radius, FeatureSpread offset) {
+    public CitrusFoliagePlacer(UniformInt radius, UniformInt offset) {
         super(radius, offset);
     }
 
@@ -30,7 +30,7 @@ public final class CitrusFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int p_230372_4_, Foliage node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, MutableBoundingBox p_230372_10_) {
+    protected void createFoliage(LevelSimulatedRW world, Random random, TreeConfiguration config, int p_230372_4_, FoliageAttachment node, int p_230372_6_, int radius, Set<BlockPos> leaves, int p_230372_9_, BoundingBox p_230372_10_) {
         this.placeLeavesRow(world, random, config, node.foliagePos(), 1, leaves, 1, node.doubleTrunk(), p_230372_10_);
         this.placeLeavesRow(world, random, config, node.foliagePos(), 2, leaves, 0, node.doubleTrunk(), p_230372_10_);
 
@@ -41,7 +41,7 @@ public final class CitrusFoliagePlacer extends FoliagePlacer {
     }
 
     @Override
-    public int foliageHeight(Random p_230374_1_, int p_230374_2_, BaseTreeFeatureConfig p_230374_3_) {
+    public int foliageHeight(Random p_230374_1_, int p_230374_2_, TreeConfiguration p_230374_3_) {
         return 0;
     }
 

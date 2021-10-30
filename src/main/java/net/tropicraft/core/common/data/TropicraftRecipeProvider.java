@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.data;
 
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.*;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.Tag.Named;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.tropicraft.Constants;
@@ -29,6 +29,13 @@ import static net.tropicraft.core.common.block.TropicraftBlocks.*;
 import static net.tropicraft.core.common.block.TropicraftFlower.*;
 import static net.tropicraft.core.common.item.TropicraftItems.*;
 
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+
 public class TropicraftRecipeProvider extends RecipeProvider {
 
     public TropicraftRecipeProvider(DataGenerator generatorIn) {
@@ -36,7 +43,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+    protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
         ore(TropicraftTags.Items.AZURITE_ORE, AZURITE, 0.3F, consumer);
         ore(TropicraftTags.Items.EUDIALYTE_ORE, EUDIALYTE, 0.5F, consumer);
         ore(TropicraftTags.Items.ZIRCON_ORE, ZIRCON, 0.5F, consumer);
@@ -76,7 +83,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         boots(SCALE, SCALE_BOOTS, consumer);
 
         for (DyeColor color : DyeColor.values()) {
-            IItemProvider wool = SheepEntity.ITEM_BY_DYE.get(color);
+            ItemLike wool = Sheep.ITEM_BY_DYE.get(color);
             ShapedRecipeBuilder.shaped(UMBRELLAS.get(color).get())
                 .pattern("WWW").pattern(" B ").pattern(" B ")
                 .group(Constants.MODID + ":umbrellas")
@@ -380,28 +387,28 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         return safeName(registryEntry.getRegistryName());
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void ore(INamedTag<Item> source, Supplier<T> result, float xp, Consumer<IFinishedRecipe> consumer) {
-        CookingRecipeBuilder.smelting(Ingredient.of(source), result.get(), xp, 100)
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void ore(Named<Item> source, Supplier<T> result, float xp, Consumer<FinishedRecipe> consumer) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(source), result.get(), xp, 100)
             .unlockedBy("has_" + safeName(source.getName()), this.has(source))
             .save(consumer);
-        CookingRecipeBuilder.blasting(Ingredient.of(source), result.get(), xp, 100)
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(source), result.get(), xp, 100)
             .unlockedBy("has_" + safeName(source.getName()), this.has(source))
             .save(consumer, safeId(result.get()) + "_from_blasting");
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void food(Supplier<? extends T> source, Supplier<? extends T> result, float xp, Consumer<IFinishedRecipe> consumer) {
-        CookingRecipeBuilder.smelting(Ingredient.of(source.get()), result.get(), xp, 100)
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void food(Supplier<? extends T> source, Supplier<? extends T> result, float xp, Consumer<FinishedRecipe> consumer) {
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(source.get()), result.get(), xp, 100)
             .unlockedBy("has_" + safeName(source.get().getRegistryName()), this.has(source.get()))
             .save(consumer);
-        CookingRecipeBuilder.cooking(Ingredient.of(source.get()), result.get(), xp, 100, IRecipeSerializer.SMOKING_RECIPE)
+        SimpleCookingRecipeBuilder.cooking(Ingredient.of(source.get()), result.get(), xp, 100, RecipeSerializer.SMOKING_RECIPE)
             .unlockedBy("has_" + safeName(source.get().getRegistryName()), this.has(source.get()))
             .save(consumer, safeId(result.get()) + "_from_smoking");
-        CookingRecipeBuilder.cooking(Ingredient.of(source.get()), result.get(), xp, 100, IRecipeSerializer.CAMPFIRE_COOKING_RECIPE)
+        SimpleCookingRecipeBuilder.cooking(Ingredient.of(source.get()), result.get(), xp, 100, RecipeSerializer.CAMPFIRE_COOKING_RECIPE)
             .unlockedBy("has_" + safeName(source.get().getRegistryName()), this.has(source.get()))
             .save(consumer, safeId(result.get()) + "_from_campfire");
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void storage(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void storage(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         // TODO probably not ported correctly
         ShapedRecipeBuilder.shaped(output.get())
             .pattern("XXX").pattern("XXX").pattern("XXX")
@@ -415,7 +422,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer, safeId(input.get()) + "_from_" + safeName(output.get()));
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void pickaxe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void pickaxe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern("XXX")
                 .pattern(" B ")
@@ -427,7 +434,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void shovel(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void shovel(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern(" X ")
                 .pattern(" B ")
@@ -439,7 +446,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void axe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void axe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern("XX ")
                 .pattern("XB ")
@@ -451,7 +458,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void hoe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void hoe(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern("XX ")
                 .pattern(" B ")
@@ -463,7 +470,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void sword(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void sword(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern(" X ")
                 .pattern(" X ")
@@ -475,7 +482,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void helmet(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void helmet(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern("XXX")
                 .pattern("X X")
@@ -484,7 +491,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void chestplate(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void chestplate(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern("X X")
                 .pattern("XXX")
@@ -494,7 +501,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void leggings(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void leggings(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern("XXX")
                 .pattern("X X")
@@ -504,7 +511,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void boots(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void boots(Supplier<? extends T> input, Supplier<? extends T> output, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(output.get())
                 .pattern("X X")
                 .pattern("X X")
@@ -514,27 +521,27 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     }
 
     @CheckReturnValue
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> ShapelessRecipeBuilder singleItemUnfinished(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> ShapelessRecipeBuilder singleItemUnfinished(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount) {
         return ShapelessRecipeBuilder.shapeless(result.get(), amount)
             .requires(source.get(), required)
             .unlockedBy("has_" + safeName(source.get()), this.has(source.get()));
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void dye(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void dye(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<FinishedRecipe> consumer) {
         singleItemUnfinished(source, result, required, amount).save(consumer, new ResourceLocation(Constants.MODID, result.get().getRegistryName().getPath()));
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void singleItem(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void singleItem(Supplier<? extends T> source, Supplier<? extends T> result, int required, int amount, Consumer<FinishedRecipe> consumer) {
         singleItemUnfinished(source, result, required, amount).save(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void planks(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void planks(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<FinishedRecipe> consumer) {
         singleItemUnfinished(source, result, 1, 4)
             .group("planks")
             .save(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void bark(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void bark(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 3)
             .pattern("##").pattern("##")
             .define('#', source.get())
@@ -543,7 +550,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void stairs(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, boolean stone, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void stairs(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, boolean stone, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 4)
             .pattern("X  ").pattern("XX ").pattern("XXX")
             .define('X', source.get())
@@ -557,7 +564,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         }
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void slab(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, boolean stone, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void slab(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, boolean stone, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 6)
             .pattern("XXX")
             .define('X', source.get())
@@ -571,7 +578,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
         }
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void boardwalk(Supplier<? extends T> slab, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void boardwalk(Supplier<? extends T> slab, Supplier<? extends T> result, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 3)
                 .pattern("XXX")
                 .pattern("S S")
@@ -582,7 +589,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void fence(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void fence(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 3)
             .pattern("W#W").pattern("W#W")
             .define('W', source.get())
@@ -592,7 +599,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void fenceGate(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void fenceGate(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get())
             .pattern("#W#").pattern("#W#")
             .define('W', source.get())
@@ -602,7 +609,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void wall(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void wall(Supplier<? extends T> source, Supplier<? extends T> result, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 6)
             .pattern("XXX").pattern("XXX")
             .define('X', source.get())
@@ -613,7 +620,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void door(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void door(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 3)
             .pattern("XX").pattern("XX").pattern("XX")
             .define('X', source.get())
@@ -622,7 +629,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void trapDoor(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void trapDoor(Supplier<? extends T> source, Supplier<? extends T> result, @Nullable String group, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 2)
             .pattern("XXX").pattern("XXX")
             .define('X', source.get())
@@ -631,7 +638,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
     
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void bongo(Supplier<? extends T> top, Supplier<? extends T> bottom, int size, Supplier<? extends T> result, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void bongo(Supplier<? extends T> top, Supplier<? extends T> bottom, int size, Supplier<? extends T> result, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get())
             .pattern(StringUtils.repeat('T', size))
             .pattern(StringUtils.repeat('B', size))
@@ -643,7 +650,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void goggles(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void goggles(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 1)
             .pattern("YYY")
             .pattern("X X")
@@ -656,7 +663,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void flippers(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void flippers(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 1)
             .pattern("XX")
             .pattern("YY")
@@ -668,7 +675,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void ponyBottle(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void ponyBottle(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 1)
             .pattern("Y")
             .pattern("X")
@@ -678,7 +685,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
     }
 
-    private <T extends IItemProvider & IForgeRegistryEntry<?>> void harness(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<IFinishedRecipe> consumer) {
+    private <T extends ItemLike & IForgeRegistryEntry<?>> void harness(Supplier<? extends T> result, Supplier<? extends T> source, Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(result.get(), 1)
             .pattern("Y Y")
             .pattern("YXY")

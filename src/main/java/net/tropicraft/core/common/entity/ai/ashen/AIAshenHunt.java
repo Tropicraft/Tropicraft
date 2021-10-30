@@ -1,8 +1,8 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class AIAshenHunt extends Goal {
@@ -17,7 +17,7 @@ public class AIAshenHunt extends Goal {
     public int useMeleeCountdown = 0;
     public int useMeleeCountdownMax = 80;
     
-    public Vector3d targetLastPos = null;
+    public Vec3 targetLastPos = null;
     public int targetNoMoveTicks = 0;
     public int targetNoMoveTicksMax = 4;
     public int panicTicks = 0;

@@ -1,18 +1,18 @@
 package net.tropicraft.core.client.entity.render.layer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.IHasArm;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.client.TropicraftRenderUtils;
@@ -20,11 +20,11 @@ import net.tropicraft.core.client.entity.model.AshenModel;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 @OnlyIn(Dist.CLIENT)
-public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> & IHasArm> extends HeldItemLayer<T, M> {
+public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> & ArmedModel> extends ItemInHandLayer<T, M> {
 
     private AshenModel model;
 
-    public AshenHeldItemLayer(IEntityRenderer<T, M> renderer) {
+    public AshenHeldItemLayer(RenderLayerParent<T, M> renderer) {
         super(renderer);
     }
 
@@ -38,7 +38,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
     }
 
     @Override
-    public void render(MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack stack, MultiBufferSource buffer, int packedLightIn, T ashen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         final ItemStack blowGunHand = ashen.getMainHandItem();
         final ItemStack daggerHand = ashen.getOffhandItem();
 
@@ -51,7 +51,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.scale(0.5f, 0.5f, 0.5f);
             }
 
-            HandSide side = ashen.getMainArm();
+            HumanoidArm side = ashen.getMainArm();
             renderHeldItem(ashen, blowGunHand, side, stack, buffer, packedLightIn);
             side = side.getOpposite();
             renderHeldItem(ashen, daggerHand, side, stack, buffer, packedLightIn);
@@ -60,14 +60,14 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
         }
     }
 
-    private void renderHeldItem(AshenEntity entity, ItemStack itemstack, HandSide handSide, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLightIn) {
+    private void renderHeldItem(AshenEntity entity, ItemStack itemstack, HumanoidArm handSide, PoseStack stack, MultiBufferSource buffer, int combinedLightIn) {
         if (itemstack.isEmpty()) {
             return;
         }
 
         if (entity.getActionState() == AshenEntity.AshenState.HOSTILE) {
             float scale = 0.5F;
-            if (handSide == HandSide.LEFT) {
+            if (handSide == HumanoidArm.LEFT) {
                 stack.pushPose();
                 model.leftArm.translateAndRotate(stack);
 
@@ -77,7 +77,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.mulPose(Vector3f.ZP.rotationDegrees(10F));
 
                 stack.scale(scale, scale, scale);
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
                 stack.popPose();
             } else {
                 stack.pushPose();
@@ -87,7 +87,7 @@ public class AshenHeldItemLayer<T extends AshenEntity, M extends EntityModel<T> 
                 stack.mulPose(Vector3f.YP.rotationDegrees(90F));
                 stack.scale(scale, scale, scale);
                 
-                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
+                Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND, false, stack, buffer, entity.level, combinedLightIn, OverlayTexture.NO_OVERLAY);
                 stack.popPose();
             }
         }

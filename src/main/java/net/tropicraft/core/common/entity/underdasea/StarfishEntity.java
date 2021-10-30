@@ -1,22 +1,22 @@
 package net.tropicraft.core.common.entity.underdasea;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.egg.EggEntity;
@@ -33,16 +33,16 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	public static final float BABY_YOFFSET = 0.03125f;
 	public static final float ADULT_YOFFSET = 0.03125f;
 
-	private static final DataParameter<Byte> DATA_STARFISH_TYPE = EntityDataManager.defineId(StarfishEntity.class, DataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> DATA_STARFISH_TYPE = SynchedEntityData.defineId(StarfishEntity.class, EntityDataSerializers.BYTE);
 
-	public StarfishEntity(final EntityType<? extends StarfishEntity> type, World world) {
+	public StarfishEntity(final EntityType<? extends StarfishEntity> type, Level world) {
 		super(type, world);
 		xpReward = 5;
 	}
 
 	@Override
 	@Nullable
-	public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData entityData, @Nullable CompoundNBT nbt) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData, @Nullable CompoundTag nbt) {
 		setStarfishType(StarfishType.values()[random.nextInt(StarfishType.values().length)]);
 		return super.finalizeSpawn(world, difficultyInstance, spawnReason, entityData, nbt);
 	}
@@ -53,8 +53,8 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 		getEntityData().define(DATA_STARFISH_TYPE, (byte) 0);
 	}
 
-	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return WaterMobEntity.createMobAttributes()
+	public static AttributeSupplier.Builder createAttributes() {
+		return WaterAnimal.createMobAttributes()
 				.add(Attributes.MAX_HEALTH, 10.0);
 	}
 	
@@ -67,13 +67,13 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundNBT nbt) {
+	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		nbt.putByte("StarfishType", (byte) getStarfishType().ordinal());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT nbt) {
+	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		if (nbt.contains("StarfishType")) {
 			setStarfishType(StarfishType.values()[nbt.getByte("StarfishType")]);
@@ -83,12 +83,12 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer buffer) {
+	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeByte(getStarfishType().ordinal());
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
+	public void readSpawnData(FriendlyByteBuf additionalData) {
 		setStarfishType(StarfishType.values()[additionalData.readByte()]);
 	}
 
@@ -144,7 +144,7 @@ public class StarfishEntity extends EchinodermEntity implements IEntityAdditiona
 	}
 
 	@Override
-	public ItemStack getPickedResult(RayTraceResult target) {
+	public ItemStack getPickedResult(HitResult target) {
 		return new ItemStack(TropicraftItems.STARFISH.get());
 	}
 }

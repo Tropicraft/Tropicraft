@@ -1,35 +1,35 @@
 package net.tropicraft.core.common.dimension.feature.tree;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SaplingBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorldWriter;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.LevelWriter;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
+public abstract class RainforestTreeFeature extends Feature<NoneFeatureConfiguration> {
 
     /**Used in placeBlockLine*/
     protected static final byte otherCoordPairs[] = {2, 0, 0, 1, 2, 1};
 
-    public RainforestTreeFeature(Codec<NoFeatureConfig> codec) {
+    public RainforestTreeFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
-    protected void setState(IWorldWriter world, BlockPos pos, BlockState state) {
+    protected void setState(LevelWriter world, BlockPos pos, BlockState state) {
         setBlockStateInternally(world, pos, state);
     }
 
-    private void setBlockStateInternally(IWorldWriter world, BlockPos pos, BlockState state) {
+    private void setBlockStateInternally(LevelWriter world, BlockPos pos, BlockState state) {
         world.setBlock(pos, state, 19);
     }
 
@@ -45,19 +45,19 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
         return TropicraftBlocks.MAHOGANY_LOG.get().defaultBlockState();
     }
 
-    protected void placeLeaf(final IWorldGenerationReader world, int x, int y, int z) {
+    protected void placeLeaf(final LevelSimulatedRW world, int x, int y, int z) {
         setState(world, new BlockPos(x, y, z), getLeaf());
     }
 
-    protected void placeLog(final IWorldGenerationReader world, int x, int y, int z) {
+    protected void placeLog(final LevelSimulatedRW world, int x, int y, int z) {
         setState(world, new BlockPos(x, y, z), getLog());
     }
 
-    protected boolean genCircle(IWorldGenerationReader world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
+    protected boolean genCircle(LevelSimulatedRW world, int x, int y, int z, double outerRadius, double innerRadius, BlockState state, boolean solid) {
         return genCircle(world, new BlockPos(x, y, z), outerRadius, innerRadius, state, solid);
     }
 
-    protected boolean genVines(final IWorldGenerationReader world, final Random rand, int i, int j, int k) {
+    protected boolean genVines(final LevelSimulatedRW world, final Random rand, int i, int j, int k) {
         int m = 2;
 
         do {
@@ -95,7 +95,7 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
      * @param state IBlockState to place
      * @return The coords that blocks were placed on
      */
-    public ArrayList<int[]> placeBlockLine(IWorldGenerationReader world, int ai[], int ai1[], BlockState state) {
+    public ArrayList<int[]> placeBlockLine(LevelSimulatedRW world, int ai[], int ai1[], BlockState state) {
         ArrayList<int[]> places = new ArrayList<>();
         int[] ai2 = {0, 0, 0};
         byte byte0 = 0;
@@ -126,9 +126,9 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
         int[] ai3 = {0, 0, 0};
         int k = 0;
         for (int l = ai2[j] + byte3; k != l; k += byte3) {
-            ai3[j] = MathHelper.floor((double)(ai[j] + k) + 0.5D);
-            ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)k * d + 0.5D);
-            ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
+            ai3[j] = Mth.floor((double)(ai[j] + k) + 0.5D);
+            ai3[byte1] = Mth.floor((double)ai[byte1] + (double)k * d + 0.5D);
+            ai3[byte2] = Mth.floor((double)ai[byte2] + (double)k * d1 + 0.5D);
             BlockPos pos = new BlockPos(ai3[0], ai3[1], ai3[2]);
             setState(world, pos, state);
             places.add(new int[] { ai3[0], ai3[1], ai3[2] });
@@ -145,7 +145,7 @@ public abstract class RainforestTreeFeature extends Feature<NoFeatureConfig> {
      * @param state BlockState to generate
      * @param solid Whether it should place the block if another block is already occupying that space
      */
-    public boolean genCircle(IWorldGenerationReader world, BlockPos pos, double outerRadius, double innerRadius, BlockState state, boolean solid) {
+    public boolean genCircle(LevelSimulatedRW world, BlockPos pos, double outerRadius, double innerRadius, BlockState state, boolean solid) {
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();

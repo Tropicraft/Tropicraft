@@ -1,26 +1,26 @@
 package net.tropicraft.core.common.entity;
 
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.item.TropicraftItems;
 
-public class TropiBeeEntity extends BeeEntity {
-    public TropiBeeEntity(EntityType<? extends BeeEntity> type, World world) {
+public class TropiBeeEntity extends Bee {
+    public TropiBeeEntity(EntityType<? extends Bee> type, Level world) {
         super(type, world);
     }
 
     @Override
-    public BeeEntity getBreedOffspring(ServerWorld world, AgeableEntity partner) {
+    public Bee getBreedOffspring(ServerLevel world, AgableMob partner) {
         return TropicraftEntities.TROPI_BEE.get().create(this.level);
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.TROPIBEE_SPAWN_EGG.get());
     }
 }

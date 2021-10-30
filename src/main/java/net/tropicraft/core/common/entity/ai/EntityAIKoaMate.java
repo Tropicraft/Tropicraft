@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
 import java.util.List;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIKoaMate extends Goal
 {
@@ -24,7 +24,7 @@ public class EntityAIKoaMate extends Goal
 
     private final EntityKoaBase villagerObj;
     private EntityKoaBase mate;
-    private final World world;
+    private final Level world;
 
     //counts down from 300 when mating starts, on 0 mate completes
     private int matingTimeout;
@@ -190,7 +190,7 @@ public class EntityAIKoaMate extends Goal
     //TODO: 1.14 readd
     private void giveBirth()
     {
-        AgeableEntity entityvillager = this.villagerObj.getBreedOffspring((ServerWorld) world, this.mate);
+        AgableMob entityvillager = this.villagerObj.getBreedOffspring((ServerLevel) world, this.mate);
         this.mate.setAge(6000);
         this.villagerObj.setAge(6000);
         this.mate.setIsWillingToMate(false);
@@ -215,7 +215,7 @@ public class EntityAIKoaMate extends Goal
 
             ((EntityKoaBase) entityvillager).updateUniqueEntityAI();
 
-            entityvillager.level.playSound(null, entityvillager.blockPosition(), SoundEvents.CHICKEN_EGG, SoundCategory.AMBIENT, 1, 1);
+            entityvillager.level.playSound(null, entityvillager.blockPosition(), SoundEvents.CHICKEN_EGG, SoundSource.AMBIENT, 1, 1);
         }
 
 

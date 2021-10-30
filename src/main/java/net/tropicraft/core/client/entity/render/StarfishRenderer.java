@@ -1,14 +1,14 @@
 package net.tropicraft.core.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 import net.tropicraft.core.common.entity.underdasea.StarfishEntity;
@@ -28,12 +28,12 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
 	 */
 	public static final float ADULT_RENDER_SCALE = 1f;
 
-	public StarfishRenderer(EntityRendererManager renderManager) {
+	public StarfishRenderer(EntityRenderDispatcher renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void render(StarfishEntity starfish, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn) {
+	public void render(StarfishEntity starfish, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int packedLightIn) {
 		StarfishType type = starfish.getStarfishType();
 
 		float f = 0f;
@@ -51,13 +51,13 @@ public class StarfishRenderer extends EntityRenderer<StarfishEntity> {
 		stack.scale(scale, scale, scale);
 
 		for (int i = 0; i < type.getLayerCount(); i++) {
-			final IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(TropicraftRenderUtils.getTextureEntity(type.getTexturePaths().get(i))));
+			final VertexConsumer ivertexbuilder = buffer.getBuffer(RenderType.entityCutout(TropicraftRenderUtils.getTextureEntity(type.getTexturePaths().get(i))));
 			final float red = 1;
 			final float green = starfish.hurtTime > 0 ? 0 : 1;
 			final float blue = starfish.hurtTime > 0 ? 0 : 1;
 			final float alpha = 1;
 			final float layerHeight = type.getLayerHeights()[i];
-			TropicraftSpecialRenderHelper.popper(f1, f2, f, f3, f1shifted, f3shifted, layerHeight, stack, ivertexbuilder, packedLightIn, LivingRenderer.getOverlayCoords(starfish, 0), red, green, blue, alpha);
+			TropicraftSpecialRenderHelper.popper(f1, f2, f, f3, f1shifted, f3shifted, layerHeight, stack, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(starfish, 0), red, green, blue, alpha);
 			stack.translate(0f, 0f, -layerHeight);
 		}
 

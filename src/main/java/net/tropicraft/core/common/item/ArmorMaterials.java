@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.item;
 
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.tropicraft.core.common.TropicraftTags;
 
 import javax.annotation.Nullable;
@@ -19,9 +19,9 @@ public class ArmorMaterials {
         }
     };
 
-    public static final IArmorMaterial ASHEN_MASK = new AshenMask();
-    public static final IArmorMaterial NIGEL_STACHE = new NigelStache();
-    public static final IArmorMaterial SCALE_ARMOR = createArmorMaterial(
+    public static final ArmorMaterial ASHEN_MASK = new AshenMask();
+    public static final ArmorMaterial NIGEL_STACHE = new NigelStache();
+    public static final ArmorMaterial SCALE_ARMOR = createArmorMaterial(
             18,
             new int[] {2, 5, 6, 2},
             9,
@@ -31,7 +31,7 @@ public class ArmorMaterials {
             0.5f,
             0.0F
     );
-    public static final IArmorMaterial FIRE_ARMOR = createArmorMaterial(
+    public static final ArmorMaterial FIRE_ARMOR = createArmorMaterial(
             12,
             new int[] {2, 4, 5, 2},
             9,
@@ -41,7 +41,7 @@ public class ArmorMaterials {
             0.1f,
             0.0F
     );
-    public static final IArmorMaterial SCUBA = createArmorMaterial(
+    public static final ArmorMaterial SCUBA = createArmorMaterial(
             10, 
             new int[] {0, 0, 0, 0},
             0,
@@ -52,15 +52,15 @@ public class ArmorMaterials {
             0.0F
     );
 
-    private static class AshenMask implements IArmorMaterial {
+    private static class AshenMask implements ArmorMaterial {
         @Override
-        public int getDurabilityForSlot(EquipmentSlotType slotIn) {
+        public int getDurabilityForSlot(EquipmentSlot slotIn) {
             return 10;
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlotType slotIn) {
-            return slotIn == EquipmentSlotType.HEAD ? 1 : 0;
+        public int getDefenseForSlot(EquipmentSlot slotIn) {
+            return slotIn == EquipmentSlot.HEAD ? 1 : 0;
         }
 
         @Override
@@ -94,16 +94,16 @@ public class ArmorMaterials {
         }
     }
 
-    private static class NigelStache implements IArmorMaterial {
+    private static class NigelStache implements ArmorMaterial {
 
         @Override
-        public int getDurabilityForSlot(EquipmentSlotType slotIn) {
+        public int getDurabilityForSlot(EquipmentSlot slotIn) {
             return 10;
         }
 
         @Override
-        public int getDefenseForSlot(EquipmentSlotType slotIn) {
-            return slotIn == EquipmentSlotType.HEAD ? 1 : 0;
+        public int getDefenseForSlot(EquipmentSlot slotIn) {
+            return slotIn == EquipmentSlot.HEAD ? 1 : 0;
         }
 
         @Override
@@ -137,16 +137,16 @@ public class ArmorMaterials {
         }
     }
 
-    public static IArmorMaterial createArmorMaterial(final int durability, final int[] dmgReduction, final int enchantability, final SoundEvent soundEvent,
+    public static ArmorMaterial createArmorMaterial(final int durability, final int[] dmgReduction, final int enchantability, final SoundEvent soundEvent,
                                                      final Ingredient repairMaterial, final String name, final float toughness, float knockbackResistance) {
-        return new IArmorMaterial() {
+        return new ArmorMaterial() {
             @Override
-            public int getDurabilityForSlot(EquipmentSlotType equipmentSlotType) {
+            public int getDurabilityForSlot(EquipmentSlot equipmentSlotType) {
                 return durability;
             }
 
             @Override
-            public int getDefenseForSlot(EquipmentSlotType equipmentSlotType) {
+            public int getDefenseForSlot(EquipmentSlot equipmentSlotType) {
                 return dmgReduction[equipmentSlotType.getIndex()];
             }
 

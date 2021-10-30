@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.entity.egg;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 
 public abstract class EchinodermEggEntity extends EggEntity {
 
-    public EchinodermEggEntity(final EntityType<? extends EchinodermEggEntity> type, World world) {
+    public EchinodermEggEntity(final EntityType<? extends EchinodermEggEntity> type, Level world) {
         super(type, world);
     }
 

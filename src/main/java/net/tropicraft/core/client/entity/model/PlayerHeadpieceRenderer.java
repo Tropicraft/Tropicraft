@@ -1,13 +1,13 @@
 package net.tropicraft.core.client.entity.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.vector.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.entity.LivingEntity;
+import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
 
-public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
+public class PlayerHeadpieceRenderer extends HumanoidModel<LivingEntity> {
 	private int textureIndex;
 	private final double xOffset, yOffset;
 	protected TropicraftSpecialRenderHelper renderer;
@@ -25,7 +25,7 @@ public class PlayerHeadpieceRenderer extends BipedModel<LivingEntity> {
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		stack.pushPose();
 
 		if (crouching) {

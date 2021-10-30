@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.dimension.layer;
 
-import net.minecraft.world.gen.IExtendedNoiseRandom;
-import net.minecraft.world.gen.area.IArea;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
+import net.minecraft.world.level.newbiome.context.BigContext;
+import net.minecraft.world.level.newbiome.area.Area;
+import net.minecraft.world.level.newbiome.layer.traits.AreaTransformer1;
 
-public enum TropicraftVoronoiZoomLayer implements IAreaTransformer1 {
+public enum TropicraftVoronoiZoomLayer implements AreaTransformer1 {
     INSTANCE;
 
     private static final int ZOOM_BITS = 2;
 
     @Override
-    public int applyPixel(IExtendedNoiseRandom<?> random, IArea area, int x, int y) {
+    public int applyPixel(BigContext<?> random, Area area, int x, int y) {
         int absx = x - 2;
         int absy = y - 2;
         int shiftedAbsX = absx >> 2;

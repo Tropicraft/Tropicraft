@@ -4,13 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Random;
 import java.util.Set;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.FeatureSpread;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
-import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.LevelSimulatedRW;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.util.UniformInt;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public class PleodendronFoliagePlacer extends FoliagePlacer {
    public static final Codec<PleodendronFoliagePlacer> CODEC = RecordCodecBuilder.create((instance) -> {
@@ -21,7 +21,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
    protected final int height;
 
-   public PleodendronFoliagePlacer(FeatureSpread radius, FeatureSpread offset, int height) {
+   public PleodendronFoliagePlacer(UniformInt radius, UniformInt offset, int height) {
       super(radius, offset);
       this.height = height;
    }
@@ -30,7 +30,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
       return TropicraftFoliagePlacers.PLEODENDRON.get();
    }
 
-   protected void createFoliage(IWorldGenerationReader world, Random random, BaseTreeFeatureConfig config, int height, FoliagePlacer.Foliage foliage, int offset, int y, Set<BlockPos> leaves, int start, MutableBoundingBox bounds) {
+   protected void createFoliage(LevelSimulatedRW world, Random random, TreeConfiguration config, int height, FoliagePlacer.FoliageAttachment foliage, int offset, int y, Set<BlockPos> leaves, int start, BoundingBox bounds) {
       int i = foliage.doubleTrunk() ? offset : 2;
 
       for(int j = start; j >= start - i; --j) {
@@ -40,7 +40,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
    }
 
-   public int foliageHeight(Random random, int height, BaseTreeFeatureConfig config) {
+   public int foliageHeight(Random random, int height, TreeConfiguration config) {
       return this.height;
    }
 

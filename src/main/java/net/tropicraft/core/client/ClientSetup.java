@@ -1,15 +1,17 @@
 package net.tropicraft.core.client;
 
-import net.minecraft.block.RedstoneWallTorchBlock;
+import net.minecraft.world.level.block.RedstoneWallTorchBlock;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.AirCompressorRenderer;
 import net.tropicraft.core.client.tileentity.BambooChestRenderer;
@@ -24,51 +26,51 @@ public class ClientSetup {
 
     public static void setupBlockRenderLayers() {
         RenderType cutout = RenderType.cutout();
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.AIR_COMPRESSOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.COCONUT.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.DRINK_MIXER.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.SIFTER.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.TIKI_TORCH.get(), cutout);
-        TropicraftBlocks.FLOWERS.forEach((key, value) -> RenderTypeLookup.setRenderLayer(value.get(), RenderType.cutout()));
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.PINEAPPLE.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.IRIS.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.COFFEE_BUSH.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.GOLDEN_LEATHER_FERN.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.GRAPEFRUIT_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.LEMON_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.LIME_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.ORANGE_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.MAHOGANY_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.PALM_SAPLING.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.PALM_TRAPDOOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.PALM_DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.AIR_COMPRESSOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.COCONUT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.DRINK_MIXER.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.SIFTER.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TIKI_TORCH.get(), cutout);
+        TropicraftBlocks.FLOWERS.forEach((key, value) -> ItemBlockRenderTypes.setRenderLayer(value.get(), RenderType.cutout()));
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PINEAPPLE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.IRIS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.COFFEE_BUSH.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.GOLDEN_LEATHER_FERN.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.GRAPEFRUIT_SAPLING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.LEMON_SAPLING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.LIME_SAPLING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.ORANGE_SAPLING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.MAHOGANY_SAPLING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PALM_SAPLING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PALM_TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PALM_DOOR.get(), cutout);
 
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.MANGROVE_TRAPDOOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.MANGROVE_DOOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_TRAPDOOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_DOOR.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_LADDER.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), cutout);
-        TropicraftBlocks.BAMBOO_POTTED_TROPICS_PLANTS.forEach(value -> RenderTypeLookup.setRenderLayer(value.get(), RenderType.cutout()));
-        TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS.forEach(value -> RenderTypeLookup.setRenderLayer(value.get(), RenderType.cutout()));
-        TropicraftBlocks.VANILLA_POTTED_TROPICS_PLANTS.forEach(value -> RenderTypeLookup.setRenderLayer(value.get(), RenderType.cutout()));
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.REEDS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.MANGROVE_TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.MANGROVE_DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.BAMBOO_TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.BAMBOO_DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.BAMBOO_LADDER.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.BAMBOO_FLOWER_POT.get(), cutout);
+        TropicraftBlocks.BAMBOO_POTTED_TROPICS_PLANTS.forEach(value -> ItemBlockRenderTypes.setRenderLayer(value.get(), RenderType.cutout()));
+        TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS.forEach(value -> ItemBlockRenderTypes.setRenderLayer(value.get(), RenderType.cutout()));
+        TropicraftBlocks.VANILLA_POTTED_TROPICS_PLANTS.forEach(value -> ItemBlockRenderTypes.setRenderLayer(value.get(), RenderType.cutout()));
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.REEDS.get(), cutout);
 
         RenderType cutoutMipped = RenderType.cutoutMipped();
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), cutoutMipped);
 
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.RED_MANGROVE_PROPAGULE.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.TALL_MANGROVE_PROPAGULE.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.TEA_MANGROVE_PROPAGULE.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE.get(), cutout);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.RED_MANGROVE_ROOTS.get(), cutoutMipped);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.LIGHT_MANGROVE_ROOTS.get(), cutoutMipped);
-        RenderTypeLookup.setRenderLayer(TropicraftBlocks.BLACK_MANGROVE_ROOTS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.RED_MANGROVE_PROPAGULE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TALL_MANGROVE_PROPAGULE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.TEA_MANGROVE_PROPAGULE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.BLACK_MANGROVE_PROPAGULE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.RED_MANGROVE_ROOTS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.LIGHT_MANGROVE_ROOTS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.BLACK_MANGROVE_ROOTS.get(), cutoutMipped);
 
         for (RegistryObject<RedstoneWallTorchBlock> block : TropicraftBlocks.JIGARBOV_WALL_TORCHES.values()) {
-            RenderTypeLookup.setRenderLayer(block.get(), cutoutMipped);
+            ItemBlockRenderTypes.setRenderLayer(block.get(), cutoutMipped);
         }
     }
 
@@ -103,7 +105,7 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_SPIDER_EGG.get(), EggRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.ASHEN.get(), AshenRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.ASHEN_MASK.get(), AshenMaskRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EXPLODING_COCONUT.get(), manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));
+        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EXPLODING_COCONUT.get(), manager -> new ThrownItemRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HAMMERHEAD.get(), SharkRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEA_TURTLE_EGG.get(), EggRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_BEE.get(), TropiBeeRenderer::new);
@@ -128,9 +130,9 @@ public class ClientSetup {
     }
 
     public static void setupDimensionRenderInfo() {
-        DimensionRenderInfo.EFFECTS.put(TropicraftDimension.WORLD.location(), new DimensionRenderInfo(192.0F, true, DimensionRenderInfo.FogType.NORMAL, false, false) {
+        DimensionSpecialEffects.EFFECTS.put(TropicraftDimension.WORLD.location(), new DimensionSpecialEffects(192.0F, true, DimensionSpecialEffects.SkyType.NORMAL, false, false) {
             @Override
-            public Vector3d getBrightnessDependentFogColor(Vector3d color, float brightness) {
+            public Vec3 getBrightnessDependentFogColor(Vec3 color, float brightness) {
                 return color.multiply(brightness * 0.94F + 0.06F, brightness * 0.94F + 0.06F, brightness * 0.91F + 0.09F);
             }
 

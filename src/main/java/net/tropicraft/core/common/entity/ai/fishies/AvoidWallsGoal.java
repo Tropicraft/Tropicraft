@@ -1,14 +1,14 @@
 package net.tropicraft.core.common.entity.ai.fishies;
 
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.underdasea.TropicraftFishEntity;
 
 import java.util.EnumSet;
 import java.util.Random;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class AvoidWallsGoal extends Goal {
     public TropicraftFishEntity entity;
@@ -29,10 +29,10 @@ public class AvoidWallsGoal extends Goal {
     public void tick() {
         super.tick();
         // Wall correction
-        Vector3d angle = entity.getHeading();
+        Vec3 angle = entity.getHeading();
         double frontDist = 1 + rand.nextInt(4);
         
-        Vector3d diff = new Vector3d(entity.getX() + (angle.x * frontDist), entity.getY() + angle.y, entity.getZ() + (angle.z * frontDist));
+        Vec3 diff = new Vec3(entity.getX() + (angle.x * frontDist), entity.getY() + angle.y, entity.getZ() + (angle.z * frontDist));
 
         BlockPos bp = new BlockPos((int) diff.x, (int) entity.getY(), (int) diff.z);
 

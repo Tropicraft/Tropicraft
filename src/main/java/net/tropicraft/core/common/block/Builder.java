@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.trees.Tree;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -14,6 +14,21 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
 @SuppressWarnings("unused")
 public class Builder {
@@ -63,7 +78,7 @@ public class Builder {
     }
 
     public static Supplier<MudBlock> mud() {
-        AbstractBlock.Properties properties = Block.Properties.copy(Blocks.DIRT).speedFactor(0.5F)
+        BlockBehaviour.Properties properties = Block.Properties.copy(Blocks.DIRT).speedFactor(0.5F)
                 .harvestTool(ToolType.SHOVEL)
                 .isValidSpawn((s, w, p, e) -> true).isRedstoneConductor((s, w, p) -> true)
                 .isViewBlocking((s, w, p) -> true).isSuffocating((s, w, p) -> true);
@@ -86,7 +101,7 @@ public class Builder {
         return block(properties -> new TropicraftLogBlock(properties, () -> stripped.get().get()), logProperties(topColor, sideColor));
     }
 
-    private static AbstractBlock.Properties logProperties(MaterialColor topColor, MaterialColor sideColor) {
+    private static BlockBehaviour.Properties logProperties(MaterialColor topColor, MaterialColor sideColor) {
         return prop(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).strength(2.0F).sound(SoundType.WOOD);
     }
 
@@ -98,12 +113,12 @@ public class Builder {
         return block(properties -> new TropicraftLogBlock(properties, () -> stripped.get().get()), woodProperties(color));
     }
 
-    private static AbstractBlock.Properties woodProperties(MaterialColor color) {
+    private static BlockBehaviour.Properties woodProperties(MaterialColor color) {
         return prop(Material.WOOD, color).strength(2.0F).sound(SoundType.WOOD);
     }
 
-    public static Supplier<StairsBlock> stairs(final RegistryObject<? extends Block> source) {
-        return block(p -> new StairsBlock(source.lazyMap(Block::defaultBlockState), p), lazyProp(source));
+    public static Supplier<StairBlock> stairs(final RegistryObject<? extends Block> source) {
+        return block(p -> new StairBlock(source.lazyMap(Block::defaultBlockState), p), lazyProp(source));
     }
 
     public static Supplier<SlabBlock> slab(final Supplier<? extends Block> source) {
@@ -131,9 +146,9 @@ public class Builder {
     }
 
     @SafeVarargs
-    public static Supplier<SaplingBlock> sapling(final Tree tree, final Supplier<? extends Block>... validPlantBlocks) {
+    public static Supplier<SaplingBlock> sapling(final AbstractTreeGrower tree, final Supplier<? extends Block>... validPlantBlocks) {
         return block(p -> new SaplingBlock(tree, p) {
-            protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+            protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
                 final Block block = state.getBlock();
                 if (validPlantBlocks == null || validPlantBlocks.length == 0) {
                     return block == Blocks.GRASS_BLOCK || block == Blocks.DIRT || block == Blocks.COARSE_DIRT || block == Blocks.PODZOL || block == Blocks.FARMLAND;
@@ -144,11 +159,11 @@ public class Builder {
         }, lazyProp(Blocks.OAK_SAPLING.delegate));
     }
 
-    public static Supplier<SaplingBlock> waterloggableSapling(final Tree tree) {
+    public static Supplier<SaplingBlock> waterloggableSapling(final AbstractTreeGrower tree) {
         return block(p -> new WaterloggableSaplingBlock(tree, p), lazyProp(Blocks.OAK_SAPLING.delegate));
     }
 
-    public static Supplier<PropaguleBlock> propagule(final Tree tree) {
+    public static Supplier<PropaguleBlock> propagule(final AbstractTreeGrower tree) {
         return block(p -> new PropaguleBlock(tree, p), lazyProp(Blocks.OAK_SAPLING.delegate));
     }
 

@@ -28,10 +28,10 @@ ext.buildnumber = 0
 project.buildnumber = System.getenv('BUILD_NUMBER') ?: 'custom'
 version = "${mod_version}-${release_type}+${buildnumber}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '16' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'official', version: '1.17.1'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -151,4 +151,5 @@ if (System.getProperty("idea.sync.active") == "true") {
         }
     }
 }
+
 
