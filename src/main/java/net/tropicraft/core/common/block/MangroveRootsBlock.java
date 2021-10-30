@@ -194,7 +194,7 @@ public final class MangroveRootsBlock extends Block implements SimpleWaterlogged
     }
 
     private boolean canConnectTo(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
-        return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state.getBlock());
+        return (state.is(this) || state.isFaceSturdy(world, pos, direction)) && !FenceBlock.isExceptionForConnection(state);
     }
 
     private boolean isGrounded(BlockGetter world, BlockPos pos) {

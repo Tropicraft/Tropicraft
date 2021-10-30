@@ -28,13 +28,12 @@ public class VolcanicSandBlock extends BlockTropicraftSand {
 	}
 
 	@Override
-	public void stepOn(final Level world, final BlockPos pos, final Entity entity) {
-		final BlockState state = world.getBlockState(pos);
+	public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
 		if (state.getValue(HOT)) {
 			if (entity instanceof LivingEntity) {
 				final LivingEntity living = (LivingEntity) entity;
 				final ItemStack stack = living.getItemBySlot(EquipmentSlot.FEET);
-	
+
 				// If entity isn't wearing anything on their feetsies
 				if (stack.isEmpty()) {
 					living.hurt(DamageSource.LAVA, 0.5F);

@@ -43,6 +43,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.entity.egg.SeaTurtleEggEntity;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -311,8 +312,8 @@ public class SeaTurtleEntity extends Turtle {
                 Player p = (Player)passenger;
                 if(this.isInWater()) {
                     if(p.zza > 0f) {
-                        this.xRot = this.lerp(xRot, -(passenger.xRot*0.5f), 6f);
-                        this.yRot = this.lerp(yRot, -passenger.yRot, 6f);
+                        this.setXRot(this.lerp(getXRot(), -(passenger.getXRot()*0.5f), 6f));
+                        this.setYRot(this.lerp(getYRot(), -passenger.getYRot(), 6f));
 //                        this.targetVector = null;
 //                        this.targetVectorHeading = null;
                         this.swimSpeedCurrent += 0.05f;
@@ -370,12 +371,12 @@ public class SeaTurtleEntity extends Turtle {
 
                 final LivingEntity controllingEntity = (LivingEntity) controllingPassenger;
 
-                this.yRot = controllingPassenger.yRot;
-                this.yRotO = this.yRot;
-                this.xRot = controllingPassenger.xRot;
-                this.setRot(this.yRot, this.xRot);
-                this.yBodyRot = this.yRot;
-                this.yHeadRot = this.yRot;
+                this.setYRot(controllingPassenger.getYRot());
+                this.yRotO = this.getYRot();
+                this.setXRot(controllingPassenger.getXRot());
+                this.setRot(this.getYRot(), this.getXRot());
+                this.yBodyRot = this.getYRot();
+                this.yHeadRot = this.getYRot();
                 this.maxUpStep = 1.0F;
                 this.flyingSpeed = this.getSpeed() * 0.1F;
 
@@ -383,8 +384,8 @@ public class SeaTurtleEntity extends Turtle {
                 float forward = getNoBrakes() ? 1 : controllingEntity.zza;
                 float vertical = controllingEntity.yya; // Players never use this?
 
-                double verticalFromPitch = -Math.sin(Math.toRadians(xRot)) * forward;
-                forward *= Mth.clamp(1 - (Math.abs(xRot) / 90), 0.01f, 1);
+                double verticalFromPitch = -Math.sin(Math.toRadians(getXRot())) * forward;
+                forward *= Mth.clamp(1 - (Math.abs(getXRot()) / 90), 0.01f, 1);
 
                 if (!isInWater()) {
                     if (getCanFly()) {
@@ -413,7 +414,7 @@ public class SeaTurtleEntity extends Turtle {
                 this.animationSpeedOld = this.animationSpeed;
                 double d1 = this.getX() - this.xo;
                 double d0 = this.getZ() - this.zo;
-                float swinger = Mth.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+                float swinger = Mth.sqrt((float) (d1 * d1 + d0 * d0)) * 4.0F;
                 if (swinger > 1.0F) {
                     swinger = 1.0F;
                 }
