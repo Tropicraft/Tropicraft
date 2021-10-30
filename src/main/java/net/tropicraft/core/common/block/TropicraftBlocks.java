@@ -6,9 +6,11 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
@@ -293,7 +295,12 @@ public class TropicraftBlocks {
     public static final Map<JigarbovTorchType, RegistryObject<RedstoneWallTorchBlock>> JIGARBOV_WALL_TORCHES = Arrays.stream(JigarbovTorchType.values())
             .collect(Collectors.toMap(Function.identity(),
                     type -> registerNoItem("jigarbov_" + type.getName() + "_wall_torch", () -> {
-                        return new RedstoneWallTorchBlock(Block.Properties.from(Blocks.REDSTONE_WALL_TORCH).lootFrom(() -> Blocks.REDSTONE_TORCH));
+                        return new RedstoneWallTorchBlock(Block.Properties.from(Blocks.REDSTONE_WALL_TORCH).lootFrom(() -> Blocks.REDSTONE_TORCH)) {
+                            @Override
+                            public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+                                return new ItemStack(Items.REDSTONE_TORCH);
+                            }
+                        };
                     })
             ));
 
