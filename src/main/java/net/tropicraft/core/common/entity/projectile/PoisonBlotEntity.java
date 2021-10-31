@@ -29,7 +29,7 @@ public class PoisonBlotEntity extends ThrowableProjectile {
             if (entity instanceof Player) {
                 Player player = (Player) entity;
                 player.addEffect(new MobEffectInstance(MobEffects.POISON, 12 * 20, 0));
-                remove();
+                remove(RemovalReason.DISCARDED);
             }
         }
     }

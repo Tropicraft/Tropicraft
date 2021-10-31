@@ -40,7 +40,7 @@ public class SardineEntity extends AbstractSchoolingFish implements IAtlasFish {
     }
 
     @Override
-    protected ItemStack getBucketItemStack() {
+    public ItemStack getBucketItemStack() {
         return ItemStack.EMPTY;
     }
 

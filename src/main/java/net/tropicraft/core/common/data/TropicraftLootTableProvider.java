@@ -4,22 +4,27 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.BlockLoot;
-import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.loot.*;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.storage.loot.*;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
-import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.block.TikiTorchBlock;
@@ -32,22 +37,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.SaplingBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.storage.loot.ConstantIntValue;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.RandomValueBounds;
-import net.minecraft.world.level.storage.loot.ValidationContext;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
 public class TropicraftLootTableProvider extends LootTableProvider {
 
@@ -291,21 +280,21 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         }
         
         protected static LootTable.Builder onlyWithSilkTouchOrShears(Block block) {
-            return LootTable.lootTable().withPool(LootPool.lootPool().when(HAS_SHEARS_OR_SILK_TOUCH).setRolls(ConstantIntValue.exactly(1)).add(LootItem.lootTableItem(block)));
+            return LootTable.lootTable().withPool(LootPool.lootPool().when(HAS_SHEARS_OR_SILK_TOUCH).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block)));
         }
         
         protected static LootTable.Builder droppingWithSticks(Block block) {
             return onlyWithSilkTouchOrShears(block).withPool(LootPool.lootPool()
-                        .setRolls(ConstantIntValue.exactly(1))
+                        .setRolls(ConstantValue.exactly(1))
                         .when(HAS_NO_SHEARS_OR_SILK_TOUCH)
                         .add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK)
-                                .apply(SetItemCountFunction.setCount(RandomValueBounds.between(1.0F, 2.0F))))
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
                                 .when(BonusLevelTableCondition.bonusLevelFlatChance(Enchantments.BLOCK_FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
         }
         
         protected static LootTable.Builder droppingWithChancesSticksAndFruit(Block block, Block sapling, ItemLike fruit, float[] chances) {
             return createLeavesDrops(block, sapling, chances)
-                    .withPool(LootPool.lootPool().setRolls(ConstantIntValue.exactly(1))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                             .when(HAS_NO_SHEARS_OR_SILK_TOUCH)
                             .add(applyExplosionDecay(block, LootItem.lootTableItem(fruit))));
         }
@@ -317,17 +306,17 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         // Same as droppingAndFlowerPot but with variable flower pot item
         protected static LootTable.Builder droppingFlowerPotAndFlower(FlowerPotBlock fullPot) {
             return LootTable.lootTable().withPool(applyExplosionCondition(fullPot.getEmptyPot(), LootPool.lootPool()
-                            .setRolls(ConstantIntValue.exactly(1))
+                            .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(fullPot.getEmptyPot()))))
                     .withPool(applyExplosionCondition(fullPot.getContent(), LootPool.lootPool()
-                            .setRolls(ConstantIntValue.exactly(1))
+                            .setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(fullPot.getContent()))));
         }
         
         private static LootPool.Builder droppingChunksPool(Block block, Supplier<? extends ItemLike> chunk) {
             return LootPool.lootPool().add(LootItem.lootTableItem(chunk.get())
                     .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(TropicraftTags.Items.SWORDS)))
-                    .apply(SetItemCountFunction.setCount(RandomValueBounds.between(1.0F, 4.0F)))
+                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
                     .otherwise(applyExplosionCondition(block, LootItem.lootTableItem(block))));
         }
         
@@ -342,7 +331,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
         private static LootTable.Builder dropNumberOfItems(Block block, Supplier<? extends ItemLike> drop, final int minDrops, final int maxDrops) {
             return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool()
                     .add(LootItem.lootTableItem(drop.get()))
-                        .apply(SetItemCountFunction.setCount(RandomValueBounds.between(minDrops, maxDrops)))));
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(minDrops, maxDrops)))));
         }
         
         @Override

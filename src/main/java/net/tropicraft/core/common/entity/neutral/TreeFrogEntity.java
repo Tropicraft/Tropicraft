@@ -1,27 +1,28 @@
 package net.tropicraft.core.common.entity.neutral;
 
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.entity.hostile.TropicraftCreatureEntity;
 import net.tropicraft.core.common.entity.projectile.PoisonBlotEntity;
@@ -29,13 +30,6 @@ import net.tropicraft.core.common.item.TropicraftItems;
 import net.tropicraft.core.common.sound.Sounds;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.monster.RangedAttackMob;
 
 public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, RangedAttackMob {
 
@@ -65,7 +59,7 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
 
     public TreeFrogEntity(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
-        pushthrough = 0.8F;
+        //pushthrough = 0.8F;
         xpReward = 5;
     }
 
@@ -164,12 +158,12 @@ public class TreeFrogEntity extends TropicraftCreatureEntity implements Enemy, R
             final PoisonBlotEntity poison = new PoisonBlotEntity(TropicraftEntities.POISON_BLOT.get(), this, level);
             poison.setPos(poison.getX(), poison.getY() + 1.3999999761581421D, poison.getZ());
             final double shotHeight = (entity.getY() + (double) entity.getEyeHeight()) - 0.20000000298023224D - poison.getY();
-            float f1 = Mth.sqrt(d * d + d1 * d1) * 0.2F;
+            float f1 = Mth.sqrt((float) (d * d + d1 * d1)) * 0.2F;
             entity.getCommandSenderWorld().playSound(null, entity.blockPosition(), Sounds.FROG_SPIT, SoundSource.HOSTILE, 1, 1);
             level.addFreshEntity(poison);
             poison.shoot(d, shotHeight + (double) f1, d1, 0.6F, 12F);
             attackTime = 50;
-            yRot = (float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
+            setYRot((float) ((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F);
         }
     }
 

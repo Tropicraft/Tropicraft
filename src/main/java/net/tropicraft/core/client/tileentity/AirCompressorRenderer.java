@@ -22,7 +22,7 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEnti
     private final ModelScubaGear tankModel = new ModelScubaGear(0, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
     public AirCompressorRenderer(final BlockEntityRenderDispatcher rendererDispatcher) {
-        super(rendererDispatcher, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(RenderType::entitySolid));
+        super(rendererDispatcher, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(, RenderType::entitySolid));
     }
 
     @Override

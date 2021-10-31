@@ -55,7 +55,7 @@ public class TargetPreyGoal extends Goal {
 //                        }
 //                    }
                     if(!ent.isInWater()) skip = true;                
-                    if(!entity.canSee(ent)) skip = true;
+                    if(!entity.hasLineOfSight(ent)) skip = true;
                     
                     if(!skip) {
                         if (ent instanceof LivingEntity){
@@ -81,19 +81,19 @@ public class TargetPreyGoal extends Goal {
                     // Was eaten, cancel smoke
                     AABB aggressBB = entity.aggressTarget.getBoundingBox();
                     if(entityBB.maxY - entityBB.minY > aggressBB.maxY - aggressBB.minY) {
-                        entity.aggressTarget.remove();
+                        entity.aggressTarget.remove(Entity.RemovalReason.KILLED);
                         entity.heal(1);
                         entity.eatenFishAmount++;
                     }
                 }
                 entity.setRandomTargetHeading();
             }else {
-                if(entity.canSee(entity.aggressTarget) && entity.tickCount % 20 == 0) {
+                if(entity.hasLineOfSight(entity.aggressTarget) && entity.tickCount % 20 == 0) {
                     entity.setTargetHeading(entity.aggressTarget.getX(), entity.aggressTarget.getY(), entity.aggressTarget.getZ(), true);
                 }
             }
             if(entity.aggressTarget != null) {
-                if(!entity.canSee(entity.aggressTarget) || !entity.aggressTarget.isInWater()) {
+                if(!entity.hasLineOfSight(entity.aggressTarget) || !entity.aggressTarget.isInWater()) {
                     entity.aggressTarget = null;
                     entity.setRandomTargetHeading();
                 }

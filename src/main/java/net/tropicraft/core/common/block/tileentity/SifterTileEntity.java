@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class SifterTileEntity extends BlockEntity implements TickableBlockEntity {
+public class SifterTileEntity extends BlockEntity {
 
     /** Number of seconds to sift multiplied by the number of ticks per second */
     private static final int SIFT_TIME = 4 * 20;
@@ -42,8 +42,8 @@ public class SifterTileEntity extends BlockEntity implements TickableBlockEntity
     @Nonnull
     private ItemStack siftItem = ItemStack.EMPTY;
 
-    public SifterTileEntity() {
-        super(TropicraftTileEntityTypes.SIFTER.get());
+    public SifterTileEntity(BlockPos pos, BlockState blockState) {
+        super(TropicraftTileEntityTypes.SIFTER.get(), pos, blockState);
         rand = new Random();
         currentSiftTime = SIFT_TIME;
     }
@@ -53,22 +53,22 @@ public class SifterTileEntity extends BlockEntity implements TickableBlockEntity
         return siftItem;
     }
 
-    @Override
-    public void tick() {
+
+    public static void tick(Level world, BlockPos pos, BlockState state, SifterTileEntity blockEntity) {
         // If sifter is sifting, decrement sift time
-        if (currentSiftTime > 0 && isSifting) {
-            currentSiftTime--;
+        if (blockEntity.currentSiftTime > 0 && blockEntity.isSifting) {
+            blockEntity.currentSiftTime--;
         }
 
         // Rotation animation
-        if (level.isClientSide) {
-            yaw2 = yaw % 360.0D;
-            yaw += 4.545454502105713D;
+        if (blockEntity.level.isClientSide) {
+            blockEntity.yaw2 = blockEntity.yaw % 360.0D;
+            blockEntity.yaw += 4.545454502105713D;
         }
 
         // Done sifting
-        if (isSifting && currentSiftTime <= 0) {
-            stopSifting();
+        if (blockEntity.isSifting && blockEntity.currentSiftTime <= 0) {
+            blockEntity.stopSifting();
         }
     }
 
@@ -186,8 +186,8 @@ public class SifterTileEntity extends BlockEntity implements TickableBlockEntity
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag nbt) {
-        super.load(blockState, nbt);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         isSifting = nbt.getBoolean("isSifting");
         currentSiftTime = nbt.getInt("currentSiftTime");
 
@@ -216,7 +216,7 @@ public class SifterTileEntity extends BlockEntity implements TickableBlockEntity
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        load(getBlockState(), pkt.getTag());
+        load(pkt.getTag());
     }
 
     protected void syncInventory() {

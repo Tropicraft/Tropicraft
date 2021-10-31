@@ -8,6 +8,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceRenderer;
 
@@ -15,7 +16,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.world.item.Item.Properties;
 
-public class NigelStacheItem extends ArmorItem {
+public class NigelStacheItem extends ArmorItem implements IItemRenderProperties {
 
     public NigelStacheItem(final Properties properties) {
         super(ArmorMaterials.NIGEL_STACHE, EquipmentSlot.HEAD, properties);

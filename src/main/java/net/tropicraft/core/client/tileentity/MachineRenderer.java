@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.tileentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -15,12 +16,12 @@ import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.MachineModel;
 import net.tropicraft.core.common.block.tileentity.IMachineTile;
 
-public abstract class MachineRenderer<T extends BlockEntity & IMachineTile> extends BlockEntityRenderer<T> {
+public abstract class MachineRenderer<T extends BlockEntity & IMachineTile> implements BlockEntityRenderer<T> {
     private final Block block;
     protected final MachineModel<T> model;
 
-    public MachineRenderer(final BlockEntityRenderDispatcher rendererDispatcher, final Block block, final MachineModel<T> model) {
-        super(rendererDispatcher);
+    public MachineRenderer(BlockEntityRendererProvider.Context context, final Block block, final MachineModel<T> model) {
+        //super(renderer);
         this.block = block;
         this.model = model;
     }

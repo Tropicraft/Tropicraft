@@ -1,6 +1,9 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,12 +26,14 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
+import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.block.tileentity.VolcanoTileEntity;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class AirCompressorBlock extends Block {
+public class AirCompressorBlock extends Block implements EntityBlock {
 
     @Nonnull
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
@@ -78,7 +83,7 @@ public class AirCompressorBlock extends Block {
         ingredientStack.setCount(1);
 
         if (mixer.addTank(ingredientStack)) {
-            player.inventory.removeItem(player.inventory.selected, 1);
+            player.getInventory().removeItem(player.getInventory().selected, 1);
         }
 
         return InteractionResult.CONSUME;
@@ -93,16 +98,9 @@ public class AirCompressorBlock extends Block {
 
         super.onRemove(state, world, pos, newState, isMoving);
     }
-    
-    @Override
+
     public boolean hasTileEntity(BlockState state) {
         return true;
-    }
-
-    @Override
-    @Nullable
-    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-        return new AirCompressorTileEntity();
     }
 
     @Override
@@ -110,5 +108,17 @@ public class AirCompressorBlock extends Block {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState ret = super.getStateForPlacement(context);
         return ret.setValue(FACING, context.getHorizontalDirection());
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new AirCompressorTileEntity(pPos, pState);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return pBlockEntityType == TropicraftTileEntityTypes.AIR_COMPRESSOR.get() ? (world1, pos, state1, be) -> AirCompressorTileEntity.tick(world1, pos, state1, (AirCompressorTileEntity) be) : null;
     }
 }

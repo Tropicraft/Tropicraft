@@ -95,7 +95,7 @@ public abstract class EchinodermEntity extends WaterAnimal {
     }
 
     @Override
-    public void knockback(float strength, double ratioX, double ratioZ) {
+    public void knockback(double strength, double ratioX, double ratioZ) {
     }
 
     @Override

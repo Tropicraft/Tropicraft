@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.PlayerHeadpieceRenderer;
 import net.tropicraft.core.common.entity.TropicraftEntities;
@@ -24,7 +25,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.world.item.Item.Properties;
 
-public class AshenMaskItem extends ArmorItem {
+public class AshenMaskItem extends ArmorItem implements IItemRenderProperties{
     private final AshenMasks maskType;
 
     public AshenMaskItem(ArmorMaterial armorMaterial, AshenMasks maskType, Properties properties) {
@@ -69,12 +70,15 @@ public class AshenMaskItem extends ArmorItem {
         return player.mayUseItemAt(pos, direction, heldStack);
     }
 
+
+
     @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
     public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
         return armorSlot == EquipmentSlot.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
     }
+
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {

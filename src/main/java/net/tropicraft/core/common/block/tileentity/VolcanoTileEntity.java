@@ -1,17 +1,17 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.tropicraft.core.common.TropicsConfigs;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -22,7 +22,7 @@ import net.tropicraft.core.common.volcano.VolcanoState;
 
 import javax.annotation.Nullable;
 
-public class VolcanoTileEntity extends BlockEntity implements TickableBlockEntity
+public class VolcanoTileEntity extends BlockEntity
 {
 
 	private static final int RAND_DORMANT_DURATION = 4000;
@@ -46,81 +46,80 @@ public class VolcanoTileEntity extends BlockEntity implements TickableBlockEntit
 	private VolcanoState state = VolcanoState.DORMANT;
 	private int heightOffset = Integer.MIN_VALUE;
 
-	public VolcanoTileEntity() {
-		super(TropicraftTileEntityTypes.VOLCANO.get());
+	public VolcanoTileEntity(BlockPos pos, BlockState state) {
+		super(TropicraftTileEntityTypes.VOLCANO.get(), pos, state);
 	}
 
-	@Override
-	public void tick() {
+	public static void tick(Level world, BlockPos pos, BlockState state, VolcanoTileEntity blockEntity) {
 		if (!TropicsConfigs.allowVolcanoEruption)
 		{
 			return;
 		}
 
-		if (this.heightOffset == Integer.MIN_VALUE) {
-			this.heightOffset = VolcanoGenerator.getHeightOffsetForBiome(this.getBlockPos().getY());
+		if (blockEntity.heightOffset == Integer.MIN_VALUE) {
+			blockEntity.heightOffset = VolcanoGenerator.getHeightOffsetForBiome(blockEntity.getBlockPos().getY());
 		}
 
-		if (!getLevel().isClientSide) {
+		if (!world.isClientSide) {
 			//System.out.println(radius + " Volcano Update: " + pos.getX() + " " + pos.getZ() + " State:" + state + " lvl: " + lavaLevel);
 			//System.out.println("smoking: " + ticksUntilSmoking + " rising: " + ticksUntilRising + " eruption: " + ticksUntilEruption + " retreating: " + ticksUntilRetreating + " dormant: " + ticksUntilDormant);	
 		}
 
 		// If radius needs to be initialized
-		if (radius == -1) {
-			radius = findRadius();
+		if (blockEntity.radius == -1) {
+			blockEntity.radius = blockEntity.findRadius();
 		}
 
-		if (lavaLevel == -1) {
-			setLavaLevel();
+		if (blockEntity.lavaLevel == -1) {
+			blockEntity.setLavaLevel();
 		}
 
-		if (radius == -1 || lavaLevel == -1) {
+		if (blockEntity.radius == -1 || blockEntity.lavaLevel == -1) {
 			return;
 		}
 
-		updateStates();
+		blockEntity.updateStates();
 
-		switch(state) {
+		switch(blockEntity.state) {
 		case DORMANT:
 			break;
 		case ERUPTING:
-			if (!getLevel().isClientSide) {
+			if (!world.isClientSide) {
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0)/* && time > 800 && !falling*/) {
-				if (getLevel().random.nextInt(15) == 0)
+				if (world.random.nextInt(15) == 0)
 				{
-					throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > 90 ? LAVA_ERUPT_LEVEL + this.heightOffset : 0.75));
+					blockEntity.throwLavaFromCaldera(0.05 + Math.abs(world.random.nextGaussian()) * (blockEntity.lavaLevel > 90 ? LAVA_ERUPT_LEVEL + blockEntity.heightOffset : 0.75));
 				}
 				//	}
 
 				//	if ((ticksUntilRetreating % (getWorld().rand.nextInt(40) + 10) == 0) && lavaLevel > 90) {
-				if (getLevel().random.nextInt(15) == 0)
+				if (world.random.nextInt(15) == 0)
 				{
-					throwLavaFromCaldera(0.05 + Math.abs(getLevel().random.nextGaussian()) * (lavaLevel > LAVA_ERUPT_LEVEL + this.heightOffset ? 1 : 0.75));
+					blockEntity.throwLavaFromCaldera(0.05 + Math.abs(world.random.nextGaussian()) * (blockEntity.lavaLevel > LAVA_ERUPT_LEVEL + blockEntity.heightOffset ? 1 : 0.75));
 				}
 				//	}
 			}
 			break;
 		case RETREATING:
-			if (ticksUntilDormant % 30 == 0) {
-				lowerLavaLevels();
+			if (blockEntity.ticksUntilDormant % 30 == 0) {
+				blockEntity.lowerLavaLevels();
 			}
 			break;
 		case RISING:
-			if (getLevel().isClientSide) {
-				spewSmoke();
+			if (world.isClientSide) {
+				blockEntity.spewSmoke();
 			}
 
-			if (ticksUntilEruption % 20 == 0) {
-				if (lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + this.heightOffset) {
-					raiseLavaLevels();	
+			if (blockEntity.ticksUntilEruption % 20 == 0) {
+				if (blockEntity.lavaLevel < MAX_LAVA_LEVEL_DURING_ERUPTION + blockEntity.heightOffset) {
+					blockEntity.raiseLavaLevels();
 				} else {
-					ticksUntilEruption = 0;
-					getLevel().playLocalSound(this.worldPosition.getX(), 73, this.worldPosition.getY(), SoundEvents.GENERIC_EXPLODE, SoundSource.NEUTRAL, 1.0F, getLevel().random.nextFloat() / 4 + 0.825F, false);
-					int balls = getLevel().random.nextInt(25) + 15;
+					blockEntity.ticksUntilEruption = 0;
+					world.playLocalSound(blockEntity.worldPosition.getX(), 73, blockEntity.worldPosition.getY(), SoundEvents.GENERIC_EXPLODE, SoundSource.NEUTRAL, 1.0F, world.random.nextFloat() / 4 + 0.825F, false);
+					int balls = world.random.nextInt(25) + 15;
 
 					for (int i = 0; i < balls; i++) {
-						throwLavaFromCaldera((getLevel().random.nextDouble() * 0.5) + 1.25);
+						blockEntity.throwLavaFromCaldera((world.random.nextDouble() * 0.5) + 1.25);
 					}
 					break;
 				}
@@ -128,10 +127,10 @@ public class VolcanoTileEntity extends BlockEntity implements TickableBlockEntit
 			break;
 		case SMOKING:
 			// TODO: Client only in the future if this is particles
-			if (getLevel().isClientSide) {
+			if (world.isClientSide) {
 				//if (ticksUntilRising % 100 == 0) {
 				//if (getWorld().rand.nextInt(10) == 0)
-				spewSmoke();
+				blockEntity.spewSmoke();
 				//}
 			}
 			break;
@@ -316,8 +315,8 @@ public class VolcanoTileEntity extends BlockEntity implements TickableBlockEntit
 	}
 
 	@Override
-	public void load(BlockState blockState, CompoundTag nbt) {
-		super.load(blockState, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		state = VolcanoState.valueOf(nbt.getString("state"));
 		ticksUntilDormant = nbt.getInt("ticksUntilDormant");
 		ticksUntilSmoking = nbt.getInt("ticksUntilSmoking");
@@ -345,7 +344,7 @@ public class VolcanoTileEntity extends BlockEntity implements TickableBlockEntit
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		load(getBlockState(), pkt.getTag());
+		load(pkt.getTag());
 	}
 
 	@Override

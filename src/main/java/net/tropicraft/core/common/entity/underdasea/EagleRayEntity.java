@@ -109,7 +109,7 @@ public class EagleRayEntity extends AbstractFish {
 	}
 
 	@Override
-	protected ItemStack getBucketItemStack() {
+	public ItemStack getBucketItemStack() {
 		return ItemStack.EMPTY;
 	}
 

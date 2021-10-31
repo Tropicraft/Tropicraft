@@ -97,7 +97,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
             }
         }
         double d0 = entityHost.distanceToSqr(attackTarget.getX(), attackTarget.getBoundingBox().minY, attackTarget.getZ());
-        boolean flag = entityHost.getSensing().canSee(attackTarget);
+        boolean flag = entityHost.getSensing().hasLineOfSight(attackTarget);
 
         if (flag) {
             ++seeTime;
@@ -121,7 +121,7 @@ public class EntityAIMeleeAndRangedAttack extends Goal
         //System.out.println(rangedAttackTime);
 
         if (--rangedAttackTime <= 0) {
-            f = Mth.sqrt(d0) / shootCutoffRange;
+            f = Mth.sqrt((float) d0) / shootCutoffRange;
             float f1 = f;
 
             if (f < 0.1F) {

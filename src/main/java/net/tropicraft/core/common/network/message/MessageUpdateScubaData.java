@@ -1,13 +1,13 @@
 package net.tropicraft.core.common.network.message;
 
-import java.util.function.Supplier;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.tropicraft.core.common.item.scuba.ScubaData;
 import net.tropicraft.core.common.network.TropicraftMessage;
+
+import java.util.function.Supplier;
 
 
 public class MessageUpdateScubaData implements TropicraftMessage {

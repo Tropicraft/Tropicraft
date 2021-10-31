@@ -1,23 +1,23 @@
 package net.tropicraft.core.common.entity.placeable;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import java.util.List;
 import java.util.Map;
@@ -50,11 +50,12 @@ public abstract class FurnitureEntity extends Entity {
         this.itemLookup = itemLookup;
         this.noCulling = true;
         this.blocksBuilding = true;
-        this.pushthrough = .95F;
+        //this.pushthrough = .95F;
     }
     
     public void setRotation(float yaw) {
-        this.lerpYaw = this.yRot = Mth.wrapDegrees(yaw);
+        this.lerpYaw = Mth.wrapDegrees(yaw);
+        this.setYRot((float) this.lerpYaw);
     }
 
     @Override
@@ -122,11 +123,11 @@ public abstract class FurnitureEntity extends Entity {
             this.lerpY = y;
             this.lerpZ = z;
             // Avoid "jumping" back to the client's rotation due to vanilla's dumb incomplete packets
-            if (yaw != yRot || Double.isNaN(lerpYaw)) {
+            if (yaw != getYRot() || Double.isNaN(lerpYaw)) {
                 this.lerpYaw = Mth.wrapDegrees((double) yaw);
             }
             this.lerpSteps = 10;
-            this.xRot = pitch;
+            this.setXRot(pitch);
         }
     }
 
@@ -135,12 +136,12 @@ public abstract class FurnitureEntity extends Entity {
             double d0 = this.getX() + (this.lerpX - this.getX()) / (double)this.lerpSteps;
             double d1 = this.getY() + (this.lerpY - this.getY()) / (double)this.lerpSteps;
             double d2 = this.getZ() + (this.lerpZ - this.getZ()) / (double)this.lerpSteps;
-            double d3 = Mth.wrapDegrees(this.lerpYaw - (double)this.yRot);
-            this.yRot = (float)((double)this.yRot + d3 / (double)this.lerpSteps);
-            this.xRot = (float)((double)this.xRot + (this.lerpPitch - (double)this.xRot) / (double)this.lerpSteps);
+            double d3 = Mth.wrapDegrees(this.lerpYaw - (double)this.getYRot());
+            this.setYRot((float)((double)this.getYRot() + d3 / (double)this.lerpSteps));
+            this.setXRot((float)((double)this.getXRot() + (this.lerpPitch - (double)this.getXRot()) / (double)this.lerpSteps));
             --this.lerpSteps;
             this.setPos(d0, d1, d2);
-            this.setRot(this.yRot, this.xRot);
+            this.setRot(this.getYRot(), this.getXRot());
         }
     }
 
@@ -154,7 +155,7 @@ public abstract class FurnitureEntity extends Entity {
             this.setTimeSinceHit(10);
             this.setDamage(this.getDamage() + amount * 10.0F);
             this.markHurt();
-            boolean flag = damageSource.getEntity() instanceof Player && ((Player)damageSource.getEntity()).abilities.instabuild;
+            boolean flag = damageSource.getEntity() instanceof Player && ((Player)damageSource.getEntity()).getAbilities().instabuild;
     
             if (flag || this.getDamage() > DAMAGE_THRESHOLD) {
                 Entity rider = this.getControllingPassenger();
@@ -166,7 +167,7 @@ public abstract class FurnitureEntity extends Entity {
                     this.spawnAtLocation(getItemStack(), 0.0F);
                 }
     
-                this.remove();
+                this.remove(RemovalReason.KILLED);
             }
         }
     
@@ -190,8 +191,8 @@ public abstract class FurnitureEntity extends Entity {
     }
 
     @Override
-    protected boolean isMovementNoisy() {
-        return false;
+    protected MovementEmission getMovementEmission() {
+        return MovementEmission.NONE;
     }
 
     @Override

@@ -1,12 +1,12 @@
 package net.tropicraft.core.common.data;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag.Named;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
 
@@ -27,6 +27,7 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
     @SuppressWarnings("unchecked")
     @Override
     protected void addTags() {
+
         // Filling vanilla tags
         
         createAndAppend(TropicraftTags.Blocks.SAND, BlockTags.SAND,
@@ -97,6 +98,25 @@ public class TropicraftBlockTagsProvider extends BlockTagsProvider {
                         .toArray(RegistryObject[]::new));
 
         createTag(TropicraftTags.Blocks.BONGOS, SMALL_BONGO_DRUM, MEDIUM_BONGO_DRUM, LARGE_BONGO_DRUM);
+
+        //Tool Tags
+
+        createAndAppend(TropicraftTags.Blocks.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_AXE,
+                COCONUT, RED_MANGROVE_ROOTS, LIGHT_MANGROVE_ROOTS, BLACK_MANGROVE_ROOTS);
+
+        createAndAppend(TropicraftTags.Blocks.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_PICKAXE,
+                AZURITE_ORE, EUDIALYTE_ORE, MANGANESE_ORE, SHAKA_ORE, ZIRCON_ORE,
+                AZURITE_BLOCK, EUDIALYTE_BLOCK, MANGANESE_BLOCK, SHAKA_BLOCK, ZIRCON_BLOCK, ZIRCONIUM_BLOCK,
+                CHUNK);
+
+        extendAndAppend(TropicraftTags.Blocks.MINEABLE_WITH_HOE, TropicraftTags.Blocks.LEAVES, BlockTags.MINEABLE_WITH_HOE);
+
+        extendAndAppend(TropicraftTags.Blocks.MINEABLE_WITH_SHOVEL, TropicraftTags.Blocks.MUD, BlockTags.MINEABLE_WITH_SHOVEL);
+
+        createAndAppend(TropicraftTags.Blocks.NEEDS_IRON_TOOL, BlockTags.NEEDS_IRON_TOOL,
+                AZURITE_ORE, EUDIALYTE_ORE, MANGANESE_ORE, SHAKA_ORE, ZIRCON_ORE,
+                AZURITE_BLOCK, EUDIALYTE_BLOCK, MANGANESE_BLOCK, SHAKA_BLOCK, ZIRCON_BLOCK, ZIRCONIUM_BLOCK);
+
     }
     
     @SafeVarargs

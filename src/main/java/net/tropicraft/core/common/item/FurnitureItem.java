@@ -28,17 +28,26 @@ import net.minecraft.world.item.Item.Properties;
 public class FurnitureItem<T extends FurnitureEntity> extends Item implements IColoredItem {
 
     private final Supplier<? extends EntityType<T>> entityType;
-    private final DyeColor color;
+    private final DyeColor dyeColor;
+    private final int color;
 
     public FurnitureItem(final Properties properties, final Supplier<? extends EntityType<T>> entityType, final DyeColor color) {
         super(properties);
         this.entityType = entityType;
-        this.color = color;
+        this.dyeColor = color;
+
+        float[] colorComponents = dyeColor.getTextureDiffuseColors();
+
+        int R = (Math.round(colorComponents[0] * 255.0F) << 16) & 0x00FF0000;
+        int G = (Math.round(colorComponents[1] * 255.0F) << 8) & 0x0000FF00;
+        int B = Math.round(colorComponents[2] * 255.0F) & 0x000000FF;
+
+        this.color = 0xFF000000 | R | G | B;
     }
 
     @Override
     public int getColor(ItemStack stack, int pass) {
-        return (pass == 0 ? 16777215 : color.getColorValue());
+        return (pass == 0 ? 16777215 : color);
     }
 
     @Override
@@ -69,8 +78,8 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
                 final T entity = this.entityType.get().create(world);
                 entity.moveTo(new BlockPos(hitVec.x, hitVec.y, hitVec.z), 0, 0);
                 entity.setDeltaMovement(Vec3.ZERO);
-                entity.setRotation(placer.yRot + 180);
-                entity.setColor(this.color);
+                entity.setRotation(placer.getYRot() + 180);
+                entity.setColor(this.dyeColor);
 
                 if (!world.noCollision(entity, entity.getBoundingBox().inflate(-0.1D))) {
                     return new InteractionResultHolder<>(InteractionResult.FAIL, heldItem);
@@ -79,7 +88,7 @@ public class FurnitureItem<T extends FurnitureEntity> extends Item implements IC
                         world.addFreshEntity(entity);
                     }
 
-                    if (!placer.abilities.instabuild) {
+                    if (!placer.getAbilities().instabuild) {
                         heldItem.shrink(1);
                     }
 

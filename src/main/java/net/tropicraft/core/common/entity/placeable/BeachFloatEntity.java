@@ -1,31 +1,31 @@
 package net.tropicraft.core.common.entity.placeable;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nonnull;
@@ -57,7 +57,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         this.noCulling = true;
         this.isEmpty = true;
         this.blocksBuilding = true;
-        this.pushthrough = .95F;
+        //this.pushthrough = .95F;
         setId(this.getId());
     }
     
@@ -77,7 +77,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
             float rot = -controller.xxa;
             rotationSpeed += rot * 0.25f;
 
-            float ang = yRot;
+            float ang = getYRot();
             float moveX = Mth.sin(-ang * 0.017453292F) * move * 0.0035f;
             float moveZ = Mth.cos(ang * 0.017453292F) * move * 0.0035f;
             setDeltaMovement(getDeltaMovement().add(moveX, 0, moveZ));
@@ -90,7 +90,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
             setDeltaMovement(getDeltaMovement().add(windX, 0, windZ));
             // Rotate towards a target yaw with some random perturbance
             double targetYaw = Math.toDegrees(windAng) + ((windModifier - 1) * 45);
-            double yaw = (Mth.wrapDegrees(this.yRot) + 180 - 35) % 360;
+            double yaw = (Mth.wrapDegrees(this.getYRot()) + 180 - 35) % 360;
             double angleDiff = targetYaw - yaw;
             if (angleDiff > 0) {
                 this.rotationSpeed += Math.min(0.005 * windModifier, angleDiff);
@@ -117,7 +117,7 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
         
         super.tick();
 
-        yRot += rotationSpeed;
+        this.setYRot(this.getYRot() + rotationSpeed);
         move(MoverType.PLAYER, getDeltaMovement());
 
         setDeltaMovement(getDeltaMovement().multiply(0.9, 0.9, 0.9));
@@ -219,10 +219,10 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
             }
 
             float len = 0.6f;
-            double x = this.getX() + (-Mth.sin(-this.yRot * 0.017453292F) * len);
-            double z = this.getZ() + (-Mth.cos(this.yRot * 0.017453292F) * len);
+            double x = this.getX() + (-Mth.sin(-this.getYRot() * 0.017453292F) * len);
+            double z = this.getZ() + (-Mth.cos(this.getYRot() * 0.017453292F) * len);
             passenger.setPos(x, this.getY() + (double) f1, z);
-            passenger.yRot += this.rotationSpeed;
+            passenger.setYRot(this.getYRot() + this.rotationSpeed);
             passenger.setYHeadRot(passenger.getYHeadRot() + this.rotationSpeed);
             this.applyYawToEntity(passenger);
 
@@ -248,16 +248,16 @@ public class BeachFloatEntity extends FurnitureEntity implements IEntityAddition
 
     protected void applyYawToEntity(Entity entityToUpdate) {
         if (!entityToUpdate.level.isClientSide || isClientFirstPerson(entityToUpdate)) {
-            entityToUpdate.setYBodyRot(this.yRot);
-            float yaw = Mth.wrapDegrees(entityToUpdate.yRot - this.yRot);
-            float pitch = Mth.wrapDegrees(entityToUpdate.xRot - this.xRot);
+            entityToUpdate.setYBodyRot(this.getYRot());
+            float yaw = Mth.wrapDegrees(entityToUpdate.getYRot() - this.getYRot());
+            float pitch = Mth.wrapDegrees(entityToUpdate.getXRot() - this.getXRot());
             float clampedYaw = Mth.clamp(yaw, -105.0F, 105.0F);
             float clampedPitch = Mth.clamp(pitch, -100F, -10F);
             entityToUpdate.yRotO += clampedYaw - yaw;
-            entityToUpdate.yRot += clampedYaw - yaw;
+            entityToUpdate.setYRot(entityToUpdate.getYRot() + (clampedYaw - yaw));
             entityToUpdate.xRotO += clampedPitch - pitch;
-            entityToUpdate.xRot += clampedPitch - pitch;
-            entityToUpdate.setYHeadRot(entityToUpdate.yRot);
+            entityToUpdate.setXRot(entityToUpdate.getXRot() + (clampedPitch - pitch));
+            entityToUpdate.setYHeadRot(entityToUpdate.getYRot());
         }
     }
 

@@ -40,7 +40,7 @@ public class MonkeyStealDrinkGoal extends Goal {
 
         double d0 = leapTarget.getX() - entity.getX();
         double d1 = leapTarget.getZ() - entity.getZ();
-        float f = Mth.sqrt(d0 * d0 + d1 * d1);
+        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1));
         final Vec3 motion = entity.getDeltaMovement();
 
         if ((double)f >= 1.0E-4D) {

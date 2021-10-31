@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.entity.ai;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -60,8 +62,8 @@ public class EntityAIPlayKoa extends Goal
 
             if (this.targetVillager == null)
             {
-                Vec3 vec = RandomPos.getPos(this.villagerObj, 16, 3);
-                return vec != null;
+                BlockPos blockPos = RandomPos.generateRandomDirection(this.villagerObj.getRandom(), 16, 3);
+                return blockPos != null;
             }
 
             return true;
@@ -122,13 +124,13 @@ public class EntityAIPlayKoa extends Goal
         }
         else if (this.villagerObj.getNavigation().isDone())
         {
-            Vec3 vec = RandomPos.getPos(this.villagerObj, 16, 3);
-            if (vec == null)
+            Vec3 vec3 = DefaultRandomPos.getPos(this.villagerObj, 16, 3);
+            if (vec3 == null)
             {
                 return;
             }
 
-            this.villagerObj.getNavigation().moveTo(vec.x, vec.y, vec.z, this.speed);
+            this.villagerObj.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, this.speed);
         }
     }
 }

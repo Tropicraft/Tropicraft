@@ -5,12 +5,14 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.entity.model.*;
 import net.tropicraft.core.client.item.MaskArmorProvider;
 import net.tropicraft.core.client.item.StacheArmorProvider;
 import net.tropicraft.core.client.tileentity.BambooChestBlockEntityRenderer;
+import net.tropicraft.core.client.tileentity.BambooChestRenderer;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.registry.TropicraftItems;
 import shadow.fabric.api.client.rendering.v1.ArmorRenderingRegistry;
@@ -94,15 +96,15 @@ public class TropicraftRenderLayers {
     public static void setupBlockEntityLayers(){
         BAMBOO_MUG = registerMain("bamboo_mug", () -> BambooMugModel.getTexturedModelData());
 
-        BAMBOO_CHEST = registerMain("bamboo_chest", () -> BambooChestBlockEntityRenderer.getSingleTexturedModelData());
-        BAMBOO_DOUBLE_CHEST_LEFT = registerMain("bamboo_double_chest_left", () -> BambooChestBlockEntityRenderer.getLeftDoubleTexturedModelData());
-        BAMBOO_DOUBLE_CHEST_RIGHT = registerMain("bamboo_double_chest_right", () -> BambooChestBlockEntityRenderer.getRightDoubleTexturedModelData());
+        //BAMBOO_CHEST = registerMain("bamboo_chest", BambooChestRenderer);
+        //BAMBOO_DOUBLE_CHEST_LEFT = registerMain("bamboo_double_chest_left", () -> BambooChestBlockEntityRenderer.getLeftDoubleTexturedModelData());
+        //BAMBOO_DOUBLE_CHEST_RIGHT = registerMain("bamboo_double_chest_right", () -> BambooChestBlockEntityRenderer.getRightDoubleTexturedModelData());
         EIHMACHINE_LAYER = registerMain("drink_mixer", ()-> EIHMachineModel.getTexturedModelData());
         AIRCOMPRESSOR_LAYER = registerMain("air_compressor", ()-> EIHMachineModel.getTexturedModelData());
     }
 
 
-    private static ModelLayerLocation registerMain(String id, EntityModelLayerRegistry.TexturedModelDataProvider textureModelData) {
+    private static ModelLayerLocation registerMain(String id, LayerDefinition textureModelData) {
         ModelLayerLocation modelLayer = new ModelLayerLocation(new ResourceLocation(Constants.MODID, id), "main");
         EntityModelLayerRegistry.registerModelLayer(modelLayer, textureModelData);
         return modelLayer;

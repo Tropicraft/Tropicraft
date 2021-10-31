@@ -1,26 +1,22 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.RegistryObject;
-
-import java.util.Random;
-import java.util.function.Supplier;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fmllegacy.RegistryObject;
+
+import java.util.Random;
+import java.util.function.Supplier;
 
 public final class GrowableSinglePlantBlock extends BushBlock implements BonemealableBlock {
     private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 13.0, 14.0);
@@ -52,7 +48,7 @@ public final class GrowableSinglePlantBlock extends BushBlock implements Bonemea
         DoublePlantBlock growBlock = this.growInto.get().get();
         BlockState growState = growBlock.defaultBlockState();
         if (growState.canSurvive(world, pos) && world.isEmptyBlock(pos.above())) {
-            growBlock.placeAt(world, pos, Constants.BlockFlags.BLOCK_UPDATE);
+            growBlock.placeAt(world, state, pos, Constants.BlockFlags.BLOCK_UPDATE);
         }
     }
 

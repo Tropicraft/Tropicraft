@@ -43,7 +43,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
         ore(TropicraftTags.Items.AZURITE_ORE, AZURITE, 0.3F, consumer);
         ore(TropicraftTags.Items.EUDIALYTE_ORE, EUDIALYTE, 0.5F, consumer);
         ore(TropicraftTags.Items.ZIRCON_ORE, ZIRCON, 0.5F, consumer);
@@ -559,7 +559,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
         if (stone) {
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(source.get()), result.get())
-                .unlocks("has_" + safeName(source.get()), this.has(source.get()))
+                .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
                 .save(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
         }
     }
@@ -573,7 +573,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .save(consumer);
         if (stone) {
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(source.get()), result.get(), 2)
-                .unlocks("has_" + safeName(source.get()), this.has(source.get()))
+                .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
                 .save(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
         }
     }
@@ -616,7 +616,7 @@ public class TropicraftRecipeProvider extends RecipeProvider {
             .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
             .save(consumer);
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(source.get()), result.get())
-            .unlocks("has_" + safeName(source.get()), this.has(source.get()))
+            .unlockedBy("has_" + safeName(source.get()), this.has(source.get()))
             .save(consumer, safeId(result.get()) + "_from_" + safeName(source.get()) + "_stonecutting");
     }
     

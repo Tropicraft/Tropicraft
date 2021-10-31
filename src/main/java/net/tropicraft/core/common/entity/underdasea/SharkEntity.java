@@ -100,7 +100,7 @@ public class SharkEntity extends TropicraftFishEntity {
                 // Search for suitable target
                 Player nearest = level.getNearestPlayer(this, 64D);
                 if (nearest != null) {
-                    if (canSee(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
+                    if (this.hasLineOfSight(nearest) && nearest.isInWater() && !nearest.isCreative() && nearest.isAlive()) {
                         aggressTarget = nearest;
                         setTargetHeading(aggressTarget.getX(), aggressTarget.getY() + 1, aggressTarget.getZ(), true);
                         // Show health bar to target player
@@ -123,7 +123,7 @@ public class SharkEntity extends TropicraftFishEntity {
                     this.spawnAnim();
                 }
                 // Update health bar
-                this.bossInfo.setPercent(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
+                this.bossInfo.setProgress(this.rangeMap(this.getHealth(), 0, this.getMaxHealth(), 0, 1));
             }
         }
     }

@@ -48,7 +48,7 @@ public class TropicalFertilizerItem extends BoneMealItem {
                                 }
                             }
 
-                            if (!blockstate2.isAir(world, blockpos1)) {
+                            if (!blockstate2.isAir()) {
                                 break;
                             }
 

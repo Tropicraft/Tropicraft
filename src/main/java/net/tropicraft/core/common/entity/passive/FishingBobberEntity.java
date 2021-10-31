@@ -65,8 +65,8 @@ public class FishingBobberEntity extends Entity {
 
    public FishingBobberEntity(EntityKoaBase p_i50220_1_, Level p_i50220_2_, int p_i50220_3_, int p_i50220_4_) {
       this(p_i50220_2_, p_i50220_1_, p_i50220_3_, p_i50220_4_);
-      float f = this.angler.xRot;
-      float f1 = this.angler.yRot;
+      float f = this.angler.getXRot();
+      float f1 = this.angler.getYRot();
       float f2 = Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
       float f3 = Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
       float f4 = -Mth.cos(-f * ((float)Math.PI / 180F));
@@ -79,10 +79,10 @@ public class FishingBobberEntity extends Entity {
       double d3 = Vector3d.length();
       Vector3d = Vector3d.multiply(0.6D / d3 + 0.5D + this.random.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.random.nextGaussian() * 0.0045D, 0.6D / d3 + 0.5D + this.random.nextGaussian() * 0.0045D);
       this.setDeltaMovement(Vector3d);
-      this.yRot = (float)(Mth.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI));
-      this.xRot = (float)(Mth.atan2(Vector3d.y, Mth.sqrt(distanceToSqr(Vector3d))) * (double)(180F / (float)Math.PI));
-      this.yRotO = this.yRot;
-      this.xRotO = this.xRot;
+      this.setYRot((float)(Mth.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI)));
+      this.setXRot((float)(Mth.atan2(Vector3d.y, Mth.sqrt((float) distanceToSqr(Vector3d))) * (double)(180F / (float)Math.PI)));
+      this.yRotO = this.getYRot();
+      this.xRotO = this.getXRot();
    }
 
    @Override
@@ -118,18 +118,18 @@ public class FishingBobberEntity extends Entity {
 
       if (this.angler == null) {
          if (this.tickCount > 40) {
-            remove();
+            remove(RemovalReason.DISCARDED);
          }
          return;
       }
 
       if (this.angler == null) {
-         this.remove();
+         this.remove(RemovalReason.DISCARDED);
       } else if (this.level.isClientSide || !this.shouldStopFishing()) {
          if (this.inGround) {
             ++this.ticksInGround;
             if (this.ticksInGround >= 1200) {
-               this.remove();
+               this.remove(RemovalReason.DISCARDED);
                return;
             }
          }
@@ -167,7 +167,7 @@ public class FishingBobberEntity extends Entity {
          } else {
             if (this.currentState == FishingBobberEntity.State.HOOKED_IN_ENTITY) {
                if (this.caughtEntity != null) {
-                  if (this.caughtEntity.removed) {
+                  if (this.caughtEntity.isRemoved()) {
                      this.caughtEntity = null;
                      this.currentState = FishingBobberEntity.State.FLYING;
                   } else {
@@ -210,36 +210,36 @@ public class FishingBobberEntity extends Entity {
       ItemStack itemstack1 = this.angler.getOffhandItem();
       boolean flag = itemstack.getItem() instanceof net.minecraft.world.item.FishingRodItem;
       boolean flag1 = itemstack1.getItem() instanceof net.minecraft.world.item.FishingRodItem;
-      if (!this.angler.removed && this.angler.isAlive() && (flag || flag1) && !(this.distanceToSqr(this.angler) > 1024.0D)) {
+      if (!this.angler.isRemoved() && this.angler.isAlive() && (flag || flag1) && !(this.distanceToSqr(this.angler) > 1024.0D)) {
          return false;
       } else {
-         this.remove();
+         this.remove(RemovalReason.DISCARDED);
          return true;
       }
    }
 
    private void updateRotation() {
       Vec3 Vector3d = this.getDeltaMovement();
-      float f = Mth.sqrt(distanceToSqr(Vector3d));
-      this.yRot = (float)(Mth.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI));
+      float f = Mth.sqrt((float) distanceToSqr(Vector3d));
+      this.setYRot((float)(Mth.atan2(Vector3d.x, Vector3d.z) * (double)(180F / (float)Math.PI)));
 
-      for(this.xRot = (float)(Mth.atan2(Vector3d.y, (double)f) * (double)(180F / (float)Math.PI)); this.xRot - this.xRotO < -180.0F; this.xRotO -= 360.0F) {
+      for(this.setYRot((float)(Mth.atan2(Vector3d.y, (double)f) * (double)(180F / (float)Math.PI))); this.getXRot() - this.xRotO < -180.0F; this.xRotO -= 360.0F) {
       }
 
-      while(this.xRot - this.xRotO >= 180.0F) {
+      while(this.getXRot() - this.xRotO >= 180.0F) {
          this.xRotO += 360.0F;
       }
 
-      while(this.yRot - this.yRotO < -180.0F) {
+      while(this.getYRot() - this.yRotO < -180.0F) {
          this.yRotO -= 360.0F;
       }
 
-      while(this.yRot - this.yRotO >= 180.0F) {
+      while(this.getYRot() - this.yRotO >= 180.0F) {
          this.yRotO += 360.0F;
       }
 
-      this.xRot = Mth.lerp(0.2F, this.xRotO, this.xRot);
-      this.yRot = Mth.lerp(0.2F, this.yRotO, this.yRot);
+      this.setXRot(Mth.lerp(0.2F, this.xRotO, this.getXRot()));
+      this.setYRot(Mth.lerp(0.2F, this.yRotO, this.getYRot()));
    }
 
    private void checkCollision() {
@@ -356,8 +356,9 @@ public class FishingBobberEntity extends Entity {
    public void readAdditionalSaveData(CompoundTag compound) {
    }
 
+   //World#setEntityState
    /**
-    * Handler for {@link World#setEntityState}
+    * Handler for {@link }
     */
    @Override
    @OnlyIn(Dist.CLIENT)
@@ -381,16 +382,16 @@ public class FishingBobberEntity extends Entity {
     * prevent them from trampling crops
     */
    @Override
-   protected boolean isMovementNoisy() {
-      return false;
+   protected MovementEmission getMovementEmission() {
+      return MovementEmission.NONE;
    }
 
    /**
     * Queues the entity for removal from the world on the next tick.
     */
    @Override
-   public void remove() {
-      super.remove();
+   public void remove(RemovalReason reason) {
+      super.remove(reason);
       if (this.angler != null) {
          this.angler.setLure(null);
       }

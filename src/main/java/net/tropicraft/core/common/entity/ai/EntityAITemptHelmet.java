@@ -3,17 +3,15 @@ package net.tropicraft.core.common.entity.ai;
 import com.google.common.collect.Sets;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
 import java.util.Set;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAITemptHelmet extends Goal
 {
@@ -85,7 +83,7 @@ public class EntityAITemptHelmet extends Goal
             }
             else
             {
-                return isTempting(this.temptingPlayer.inventory.armor.get(3));
+                return isTempting(this.temptingPlayer.getInventory().armor.get(3));
                 //return this.isTempting(this.temptingPlayer.getHeldItemMainhand()) || this.isTempting(this.temptingPlayer.getHeldItemOffhand());
             }
         }
@@ -93,7 +91,7 @@ public class EntityAITemptHelmet extends Goal
 
     protected boolean isTempting(ItemStack stack) {
         for (RegistryObject<Item> items : temptItem) {
-            if (items.isPresent() && items.get().getItem() == stack.getItem()) {
+            if (items.isPresent() && items.get().asItem() == stack.getItem()) {
                 return true;
             }
         }
@@ -110,7 +108,7 @@ public class EntityAITemptHelmet extends Goal
                     return false;
                 }
 
-                if (Math.abs((double)this.temptingPlayer.xRot - this.pitch) > 5.0D || Math.abs((double)this.temptingPlayer.yRot - this.yaw) > 5.0D) {
+                if (Math.abs((double)this.temptingPlayer.getXRot() - this.pitch) > 5.0D || Math.abs((double)this.temptingPlayer.getYRot() - this.yaw) > 5.0D) {
                     return false;
                 }
             } else {
@@ -119,8 +117,8 @@ public class EntityAITemptHelmet extends Goal
                 this.targetZ = this.temptingPlayer.getZ();
             }
 
-            pitch = temptingPlayer.xRot;
-            yaw = temptingPlayer.yRot;
+            pitch = temptingPlayer.getXRot();
+            yaw = temptingPlayer.getYRot();
         }
 
         return this.canUse();

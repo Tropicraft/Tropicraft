@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.material.Material;
@@ -18,6 +20,8 @@ import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.block.tileentity.VolcanoTileEntity;
 
 public class SifterBlock extends Block implements EntityBlock {
 
@@ -56,7 +60,12 @@ public class SifterBlock extends Block implements EntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(final BlockGetter world) {
-        return new SifterTileEntity();
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new SifterTileEntity(pPos, pState);
+    }
+
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return pBlockEntityType == TropicraftTileEntityTypes.SIFTER.get() ? (world1, pos, state1, be) -> SifterTileEntity.tick(world1, pos, state1, (SifterTileEntity) be) : null;
     }
 }

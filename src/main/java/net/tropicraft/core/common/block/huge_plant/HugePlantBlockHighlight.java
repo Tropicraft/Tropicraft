@@ -1,16 +1,16 @@
 package net.tropicraft.core.common.block.huge_plant;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.DrawHighlightEvent;
+import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.tropicraft.Constants;
@@ -20,7 +20,7 @@ public final class HugePlantBlockHighlight {
     private static final Minecraft CLIENT = Minecraft.getInstance();
 
     @SubscribeEvent
-    public static void onHighlightBlock(DrawHighlightEvent.HighlightBlock event) {
+    public static void onHighlightBlock(DrawSelectionEvent.HighlightBlock event) {
         ClientLevel world = CLIENT.level;
         if (world == null) return;
 
@@ -31,7 +31,7 @@ public final class HugePlantBlockHighlight {
         }
     }
 
-    private static void renderHugePlantHighlight(DrawHighlightEvent.HighlightBlock event, ClientLevel world, BlockPos pos, BlockState state) {
+    private static void renderHugePlantHighlight(DrawSelectionEvent.HighlightBlock event, ClientLevel world, BlockPos pos, BlockState state) {
         HugePlantBlock.Shape shape = HugePlantBlock.Shape.matchIncomplete(state.getBlock(), world, pos);
         if (shape == null) return;
 

@@ -1,11 +1,11 @@
 package net.tropicraft.core.common.network.message;
 
-import java.util.function.Supplier;
-
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import net.tropicraft.core.common.block.tileentity.AirCompressorTileEntity;
+
+import java.util.function.Supplier;
 
 public class MessageAirCompressorInventory extends MessageTileEntity<AirCompressorTileEntity> {
 

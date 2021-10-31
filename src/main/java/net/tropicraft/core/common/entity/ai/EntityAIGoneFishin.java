@@ -1,5 +1,6 @@
 package net.tropicraft.core.common.entity.ai;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -423,7 +424,7 @@ public class EntityAIGoneFishin extends Goal {
     }
 
     private void retractLine() {
-        if (entity.getLure() != null) entity.getLure().remove();
+        if (entity.getLure() != null) entity.getLure().remove(Entity.RemovalReason.DISCARDED);
     }
 
     public void faceCoord(BlockPos coord, float maxDeltaYaw, float maxDeltaPitch) {
@@ -436,11 +437,11 @@ public class EntityAIGoneFishin extends Goal {
         double d1;
         d1 = y+0.5F - (entity.getY() + (double)entity.getEyeHeight());
 
-        double d3 = Mth.sqrt(d * d + d2 * d2);
+        double d3 = Mth.sqrt((float) (d * d + d2 * d2));
         float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
         float f3 = (float)(-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
-        entity.xRot = -updateRotation(entity.xRot, f3, maxDeltaPitch);
-        entity.yRot = updateRotation(entity.yRot, f2, maxDeltaYaw);
+        entity.setXRot(-updateRotation(entity.getXRot(), f3, maxDeltaPitch));
+        entity.setYRot(updateRotation(entity.getYRot(), f2, maxDeltaYaw));
     }
 
     public float updateRotation(float curRotation, float targetRotation, float maxDeltaRotation) {

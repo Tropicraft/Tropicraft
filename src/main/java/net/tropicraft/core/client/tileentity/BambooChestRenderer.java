@@ -1,6 +1,7 @@
 package net.tropicraft.core.client.tileentity;
 
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -48,8 +49,8 @@ public class BambooChestRenderer extends ChestRenderer<BambooChestTileEntity> {
         return new Material(Sheets.CHEST_SHEET, new ResourceLocation(Constants.MODID, "block/te/" + chestName));
     }
 
-    public BambooChestRenderer(BlockEntityRenderDispatcher renderDispatcher) {
-        super(renderDispatcher);
+    public BambooChestRenderer(BlockEntityRendererProvider.Context ctx) {
+        super(ctx);
     }
 
     @Override

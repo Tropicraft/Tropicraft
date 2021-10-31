@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
 import net.tropicraft.core.common.item.ArmorMaterials;
@@ -17,7 +18,7 @@ import net.tropicraft.core.common.item.TropicraftArmorItem;
 
 import javax.annotation.Nullable;
 
-public class ScubaArmorItem extends TropicraftArmorItem {
+public class ScubaArmorItem extends TropicraftArmorItem implements IItemRenderProperties {
     
     private final ScubaType type;
 

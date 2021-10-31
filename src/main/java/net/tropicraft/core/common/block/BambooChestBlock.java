@@ -90,8 +90,8 @@ public class BambooChestBlock extends ChestBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockGetter world) {
-        return new BambooChestTileEntity();
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new BambooChestTileEntity(pPos, pState);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class BambooChestBlock extends ChestBlock {
     /**
      * Get the hardness of this Block relative to the ability of the given player
      * 
-     * @deprecated call via {@link BlockState#getPlayerRelativeBlockHardness(PlayerEntity, IBlockReader, BlockPos)} whenever possible. Implementing/overriding is fine.
+     * @deprecated call via {@link BlockState#getDestroyProgress(Player, BlockGetter, BlockPos)} whenever possible. Implementing/overriding is fine.
      */
     @Override
     @Deprecated

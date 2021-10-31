@@ -1,34 +1,20 @@
 package net.tropicraft.core.common.block;
 
-import net.minecraft.block.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SaplingBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 
 @SuppressWarnings("unused")
 public class Builder {
@@ -50,11 +36,11 @@ public class Builder {
     }
     
     public static Supplier<Block> ore(MaterialColor color) {
-        return block(prop(Material.STONE, color).strength(3.0F, 3.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2));
+        return block(prop(Material.STONE, color).strength(3.0F, 3.0F).requiresCorrectToolForDrops());
     }
     
     public static Supplier<Block> oreBlock(MaterialColor color) {
-        return block(prop(Material.METAL, color).sound(SoundType.METAL).strength(5.0F, 6.0F).harvestTool(ToolType.PICKAXE).harvestLevel(2));
+        return block(prop(Material.METAL, color).sound(SoundType.METAL).strength(5.0F, 6.0F).requiresCorrectToolForDrops());
     }
     
     public static Supplier<TropicsFlowerBlock> flower(TropicraftFlower type) {
@@ -74,12 +60,11 @@ public class Builder {
     }
 
     public static <T extends BlockTropicraftSand> Supplier<T> sand(Function<Block.Properties, T> ctor, final MaterialColor color, final float hardness, final float resistance) {
-        return block(ctor, prop(Material.SAND, color).sound(SoundType.SAND).harvestTool(ToolType.SHOVEL).strength(hardness, resistance));
+        return block(ctor, prop(Material.SAND, color).sound(SoundType.SAND).strength(hardness, resistance));
     }
 
     public static Supplier<MudBlock> mud() {
         BlockBehaviour.Properties properties = Block.Properties.copy(Blocks.DIRT).speedFactor(0.5F)
-                .harvestTool(ToolType.SHOVEL)
                 .isValidSpawn((s, w, p, e) -> true).isRedstoneConductor((s, w, p) -> true)
                 .isViewBlocking((s, w, p) -> true).isSuffocating((s, w, p) -> true);
         return block(MudBlock::new, properties);
@@ -137,7 +122,6 @@ public class Builder {
         return () -> new MangroveRootsBlock(
                 Block.Properties.of(Material.WOOD)
                         .strength(2.0f)
-                        .harvestTool(ToolType.AXE)
                         .sound(SoundType.WOOD)
                         .noOcclusion()
                         .isRedstoneConductor((state, world, pos) -> false)

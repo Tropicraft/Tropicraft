@@ -69,7 +69,7 @@ public class MonkeyAngryThrowGoal extends Goal {
 
   @Override
   public void tick() {
-    if (this.trackedMug != null && this.entity.getMainHandItem().getItem() == TropicraftItems.BAMBOO_MUG.get().getItem()) {
+    if (this.trackedMug != null && this.entity.getMainHandItem().getItem() == TropicraftItems.BAMBOO_MUG.get()) {
       this.trackedPlayer = nearbyPlayer();
 
       if (this.trackedPlayer != null) {
@@ -94,7 +94,7 @@ public class MonkeyAngryThrowGoal extends Goal {
         moveTowardsEntity(this.trackedMug);
       } else {
         entity.setItemInHand(InteractionHand.MAIN_HAND, this.trackedMug.getItem());
-        this.trackedMug.remove();
+        this.trackedMug.remove(Entity.RemovalReason.DISCARDED);
       }
       return;
     }
@@ -147,7 +147,7 @@ public class MonkeyAngryThrowGoal extends Goal {
 
     double d0 = leapTarget.getX() - entity.getX();
     double d1 = leapTarget.getZ() - entity.getZ();
-    float f = Mth.sqrt(d0 * d0 + d1 * d1);
+    float f = Mth.sqrt((float) (d0 * d0 + d1 * d1));
     final Vec3 motion = entity.getDeltaMovement();
 
     if ((double)f >= 1.0E-4D) {

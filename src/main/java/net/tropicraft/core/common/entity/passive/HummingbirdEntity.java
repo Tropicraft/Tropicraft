@@ -1,45 +1,41 @@
 package net.tropicraft.core.common.entity.passive;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
-
-import net.minecraft.world.entity.AgableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 
 public class HummingbirdEntity extends Animal implements FlyingAnimal {
     private static final Direction[] HORIZONTALS = new Direction[] { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
@@ -88,7 +84,7 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         return false;
     }
 
@@ -102,13 +98,18 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public HummingbirdEntity getBreedOffspring(ServerLevel world, AgableMob mate) {
+    public HummingbirdEntity getBreedOffspring(ServerLevel world, AgeableMob mate) {
         return null;
     }
 
     @Override
     public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(TropicraftItems.HUMMINGBIRD_SPAWN_EGG.get());
+    }
+
+    @Override
+    public boolean isFlying() {
+        return !this.onGround;
     }
 
     final class FeedFromPlantsGoal extends FlyingGoal {
@@ -298,9 +299,9 @@ public class HummingbirdEntity extends Animal implements FlyingAnimal {
 
         @Nullable
         final Vec3 generateTargetInDirection(Vec3 direction, double maxAngle) {
-            Vec3 target = RandomPos.getAboveLandPos(HummingbirdEntity.this, 8, 7, direction, (float) maxAngle, 2, 1);
+            Vec3 target = HoverRandomPos.getPos(HummingbirdEntity.this, 8, 7, direction.x(), direction.z(), (float) maxAngle, 2, 1);
             if (target == null) {
-                target = RandomPos.getAirPos(HummingbirdEntity.this, 8, 4, -2, direction, (float) maxAngle);
+                target = AirAndWaterRandomPos.getPos(HummingbirdEntity.this, 8, 4, -2, direction.x(), direction.z(), (float) maxAngle);
             }
 
             return target;

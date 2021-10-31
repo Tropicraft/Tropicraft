@@ -37,7 +37,7 @@ public final class CuberaEntity extends AbstractFish {
     }
 
     @Override
-    protected ItemStack getBucketItemStack() {
+    public ItemStack getBucketItemStack() {
         return ItemStack.EMPTY;
     }
 

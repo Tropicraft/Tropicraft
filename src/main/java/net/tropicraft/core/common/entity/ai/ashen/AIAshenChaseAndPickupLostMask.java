@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.entity.ai.ashen;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -39,7 +40,7 @@ public class AIAshenChaseAndPickupLostMask extends Goal {
             panicTime--;
 
             if (ashen.level.getGameTime() % 10 == 0) {
-                Vec3 vec3 = RandomPos.getPos(ashen, 10, 7);
+                Vec3 vec3 = DefaultRandomPos.getPos(ashen, 10, 7);
 
                 if (vec3 != null) {
                     ashen.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, speed);

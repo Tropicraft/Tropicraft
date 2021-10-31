@@ -1,6 +1,8 @@
 package net.tropicraft.core.common.block;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.EntityBlock;
@@ -24,6 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
+import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
+import net.tropicraft.core.common.block.tileentity.VolcanoTileEntity;
 import net.tropicraft.core.common.drinks.Drink;
 import net.tropicraft.core.common.drinks.MixerRecipes;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -84,14 +88,14 @@ public class DrinkMixerBlock extends Block implements EntityBlock {
 
         if (mixer.addToMixer(ingredientStack)) {
             if (!player.isCreative()) {
-                player.inventory.removeItem(player.inventory.selected, 1);
+                player.getInventory().removeItem(player.getInventory().selected, 1);
             }
         }
 
         if (ingredientStack.getItem() == TropicraftItems.BAMBOO_MUG.get() && mixer.canMix()) {
             mixer.startMixing();
             if (!player.isCreative()) {
-                player.inventory.removeItem(player.inventory.selected, 1);
+                player.getInventory().removeItem(player.getInventory().selected, 1);
             }
 
             Drink craftedDrink = MixerRecipes.getDrink(mixer.ingredients);
@@ -113,7 +117,12 @@ public class DrinkMixerBlock extends Block implements EntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockGetter world) {
-        return new DrinkMixerTileEntity();
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new DrinkMixerTileEntity(pPos, pState);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return pBlockEntityType == TropicraftTileEntityTypes.DRINK_MIXER.get() ? (world1, pos, state1, be) -> DrinkMixerTileEntity.tick(world1, pos, state1, (DrinkMixerTileEntity) be) : null;
     }
 }

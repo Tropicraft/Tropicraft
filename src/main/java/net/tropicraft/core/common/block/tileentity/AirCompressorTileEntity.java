@@ -1,15 +1,16 @@
 package net.tropicraft.core.common.block.tileentity;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.tropicraft.core.common.block.AirCompressorBlock;
 import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 import net.tropicraft.core.common.network.TropicraftPackets;
@@ -18,7 +19,7 @@ import net.tropicraft.core.common.network.message.MessageAirCompressorInventory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class AirCompressorTileEntity extends BlockEntity implements TickableBlockEntity, IMachineTile {
+public class AirCompressorTileEntity extends BlockEntity implements IMachineTile {
 
     /** Is the compressor currently giving air */
     private boolean compressing;
@@ -35,14 +36,14 @@ public class AirCompressorTileEntity extends BlockEntity implements TickableBloc
     
     private ScubaArmorItem tank;
 
-    public AirCompressorTileEntity() {
-        super(TropicraftTileEntityTypes.AIR_COMPRESSOR.get());
+    public AirCompressorTileEntity(BlockPos pos, BlockState blockState) {
+        super(TropicraftTileEntityTypes.AIR_COMPRESSOR.get(), pos, blockState);
         this.stack = ItemStack.EMPTY;
     }
 
     @Override
-    public void load(BlockState blockState, CompoundTag nbt) {
-        super.load(blockState, nbt);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         this.compressing = nbt.getBoolean("Compressing");
 
         if (nbt.contains("Tank")) {
@@ -79,19 +80,18 @@ public class AirCompressorTileEntity extends BlockEntity implements TickableBloc
         return tank;
     }
 
-    @Override
-    public void tick() {
-        if (tank == null)
+    public static void tick(Level world, BlockPos pos, BlockState state, AirCompressorTileEntity blockEntity) {
+        if (blockEntity.tank == null)
             return;
 
-        int airContained = tank.getRemainingAir(getTankStack());
-        int maxAir = tank.getMaxAir(getTankStack());
+        int airContained = blockEntity.tank.getRemainingAir(blockEntity.getTankStack());
+        int maxAir = blockEntity.tank.getMaxAir(blockEntity.getTankStack());
 
-        if (compressing) {
-            int overflow = tank.addAir(fillRate, getTankStack());
-            ticks++;
+        if (blockEntity.compressing) {
+            int overflow = blockEntity.tank.addAir(fillRate, blockEntity.getTankStack());
+            blockEntity.ticks++;
             if (overflow > 0) {
-                finishCompressing();
+                blockEntity.finishCompressing();
             }
         }
     }
@@ -182,7 +182,7 @@ public class AirCompressorTileEntity extends BlockEntity implements TickableBloc
      */
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(getBlockState(), pkt.getTag());
+        this.load(pkt.getTag());
     }
 
     protected void syncInventory() {

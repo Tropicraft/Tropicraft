@@ -1,15 +1,17 @@
 package net.tropicraft.core.common.command;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.TextComponent;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 
-import static net.minecraft.command.Commands.literal;
+import static net.minecraft.commands.Commands.literal;
 
-public clasnet.minecraft.commands.Commands    public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
+public class CommandTropicsTeleport{
+    public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 literal("tropics")
                         .requires(s -> s.hasPermission(2))

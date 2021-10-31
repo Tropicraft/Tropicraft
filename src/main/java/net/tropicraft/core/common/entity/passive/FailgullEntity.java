@@ -1,44 +1,38 @@
 package net.tropicraft.core.common.entity.passive;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.ai.util.RandomPos;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.projectile.Snowball;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.projectile.Snowball;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.TropicraftItems;
 
 import javax.annotation.Nullable;
 import java.util.*;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
-import net.minecraft.world.entity.AgableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 
 public class FailgullEntity extends Animal implements FlyingAnimal {
 
@@ -109,7 +103,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 	}
 
 	@Override
-	protected boolean makeFlySound() {
+	public boolean isFlying() {
 		return false;
 	}
 
@@ -151,7 +145,7 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 	@Nullable
 	@Override
-	public AgableMob getBreedOffspring(ServerLevel world, AgableMob partner) {
+	public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob partner) {
 		return null;
 	}
 
@@ -195,8 +189,8 @@ public class FailgullEntity extends Animal implements FlyingAnimal {
 
 		Vec3 Vector3d = getViewVector(0.0F);
 
-		Vec3 Vector3d2 = RandomPos.getAboveLandPos(FailgullEntity.this, 40, 3, Vector3d, ((float)Math.PI / 2F), 2, 1);
-		final Vec3 groundTarget = RandomPos.getAirPos(FailgullEntity.this, 40, 4, -2, Vector3d, (double) ((float) Math.PI / 2F));
+		Vec3 Vector3d2 = HoverRandomPos.getPos(FailgullEntity.this, 40, 3, Vector3d.x(), Vector3d.z(), ((float)Math.PI / 2F), 2, 1);
+		final Vec3 groundTarget = AirAndWaterRandomPos.getPos(FailgullEntity.this, 40, 4, -2, Vector3d.x(), Vector3d.z(), (double) ((float) Math.PI / 2F));
 		return Vector3d2 != null ? new BlockPos(Vector3d2) : groundTarget != null ? new BlockPos(groundTarget) : null;
 	}
 

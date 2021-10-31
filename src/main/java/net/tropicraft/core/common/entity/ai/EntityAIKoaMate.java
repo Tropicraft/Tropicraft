@@ -1,17 +1,15 @@
 package net.tropicraft.core.common.entity.ai;
 
-import net.minecraft.world.entity.AgableMob;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class EntityAIKoaMate extends Goal
 {
@@ -190,7 +188,7 @@ public class EntityAIKoaMate extends Goal
     //TODO: 1.14 readd
     private void giveBirth()
     {
-        AgableMob entityvillager = this.villagerObj.getBreedOffspring((ServerLevel) world, this.mate);
+        AgeableMob entityvillager = this.villagerObj.getBreedOffspring((ServerLevel) world, this.mate);
         this.mate.setAge(6000);
         this.villagerObj.setAge(6000);
         this.mate.setIsWillingToMate(false);
