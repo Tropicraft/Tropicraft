@@ -19,7 +19,7 @@ public abstract class AbstractFishModel<T extends AbstractFish> extends ListMode
         this.tail = this.body.getChild("tail");
     }
 
-    public static LayerDefinition getTexturedModelData() {
+    public static LayerDefinition create() {
         MeshDefinition modelData = new MeshDefinition();
         PartDefinition modelPartData = modelData.getRoot();
 

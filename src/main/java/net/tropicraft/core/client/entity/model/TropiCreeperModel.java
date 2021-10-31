@@ -3,6 +3,11 @@ package net.tropicraft.core.client.entity.model;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.passive.TropiCreeperEntity;
 
@@ -17,45 +22,120 @@ public class TropiCreeperModel extends ListModel<TropiCreeperEntity> {
     private final ModelPart hat2;
     private final ModelPart hat3;
 
-    public TropiCreeperModel() {
+    public TropiCreeperModel(ModelPart root) {
+
+        head = root.getChild("head");
+        body = root.getChild("body");
+        leg3 = root.getChild("leg3");
+        leg4 = root.getChild("leg4");
+        leg1 = root.getChild("leg1");
+        leg2 = root.getChild("leg2");
+        hat1 = head.getChild("hat1");
+        hat2 = head.getChild("hat2");
+        hat3 = head.getChild("hat3");
+
+        /*
         int i = 4;
         head = new ModelPart(this, 0, 0);
-        head.addBox(-4F, -8F, -4F, 8, 8, 8);
-        head.setPos(0F, 6F, 0F);
-        head.xRot = 0F;
-        head.yRot = 0F;
-        head.zRot = 0F;
+        head.addCuboid(-4F, -8F, -4F, 8, 8, 8);
+        head.setPivot(0F, 6F, 0F);
+        head.pitch = 0F;
+        head.yaw = 0F;
+        head.roll = 0F;
         head.mirror = false;
+
         body = new ModelPart(this, 16, 16);
-        body.addBox(-4F, 0F, -2F, 8, 12, 4);
-        body.setPos(0F, 6F, 0F);
+        body.addCuboid(-4F, 0F, -2F, 8, 12, 4);
+        body.setPivot(0F, 6F, 0F);
+
         leg3 = new ModelPart(this, 0, 16);
-        leg3.addBox(-2F, 0.0F, -2F, 4, 6, 4, 0);
-        leg3.setPos(-2F, 12 + i, -4F);
+        leg3.addCuboid(-2F, 0.0F, -2F, 4, 6, 4, 0);
+        leg3.setPivot(-2F, 12 + i, -4F);
+
         leg4 = new ModelPart(this, 0, 16);
-        leg4.addBox(-2F, 0.0F, -2F, 4, 6, 4, 0);
-        leg4.setPos(2.0F, 12 + i, -4F);
+        leg4.addCuboid(-2F, 0.0F, -2F, 4, 6, 4, 0);
+        leg4.setPivot(2.0F, 12 + i, -4F);
+
         leg1 = new ModelPart(this, 0, 16);
-        leg1.addBox(-2F, 0.0F, -2F, 4, 6, 4, 0);
-        leg1.setPos(-2F, 12 + i, 4F);
+        leg1.addCuboid(-2F, 0.0F, -2F, 4, 6, 4, 0);
+        leg1.setPivot(-2F, 12 + i, 4F);
+
         leg2 = new ModelPart(this, 0, 16);
-        leg2.addBox(-2F, 0.0F, -2F, 4, 6, 4, 0);
-        leg2.setPos(2.0F, 12 + i, 4F);
+        leg2.addCuboid(-2F, 0.0F, -2F, 4, 6, 4, 0);
+        leg2.setPivot(2.0F, 12 + i, 4F);
+
         hat1 = new ModelPart(this, 24, 0);
-        hat1.addBox(-5F, -6F, -5F, 12, 1, 6);
-        hat1.setPos(-1F, -3F, -1F);
+        hat1.addCuboid(-5F, -6F, -5F, 12, 1, 6);
+        hat1.setPivot(-1F, -3F, -1F);
         hat1.mirror = true;
         head.addChild(hat1);
+
         hat2 = new ModelPart(this, 40, 24);
-        hat2.addBox(0F, -6F, 0F, 6, 2, 6);
-        hat2.setPos(-3F, -5F, -3F);
+        hat2.addCuboid(0F, -6F, 0F, 6, 2, 6);
+        hat2.setPivot(-3F, -5F, -3F);
         hat2.mirror = false;
         head.addChild(hat2);
+
         hat3 = new ModelPart(this, 24, 0);
-        hat3.addBox(-5F, -6F, 0F, 12, 1, 6);
-        hat3.setPos(-1F, -3F, 0F);
+        hat3.addCuboid(-5F, -6F, 0F, 12, 1, 6);
+        hat3.setPivot(-1F, -3F, 0F);
         hat3.mirror = false;
         head.addChild(hat3);
+         */
+    }
+
+    public static LayerDefinition create() {
+        int i = 4;
+
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
+
+        PartDefinition modelPartHead = modelPartData.addOrReplaceChild("head",
+                CubeListBuilder.create().texOffs(0, 0)
+                        .addBox(-4F, -8F, -4F, 8, 8, 8),
+                PartPose.offsetAndRotation(0F, 6F, 0F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("body",
+                CubeListBuilder.create().texOffs(16, 16)
+                        .addBox(-4F, 0F, -2F, 8, 12, 4),
+                PartPose.offset(0F, 6F, 0F));
+
+        modelPartData.addOrReplaceChild("leg3",
+                CubeListBuilder.create().texOffs(0, 16)
+                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                PartPose.offset(-2F, 12 + i, -4F));
+
+        modelPartData.addOrReplaceChild("leg4",
+                CubeListBuilder.create().texOffs(0, 16)
+                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                PartPose.offset(2.0F, 12 + i, -4F));
+
+        modelPartData.addOrReplaceChild("leg1",
+                CubeListBuilder.create().texOffs(0, 16)
+                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                PartPose.offset(-2F, 12 + i, 4F));
+
+        modelPartData.addOrReplaceChild("leg2",
+                CubeListBuilder.create().texOffs(0, 16)
+                        .addBox(-2F, 0.0F, -2F, 4, 6, 4),
+                PartPose.offset(2.0F, 12 + i, 4F));
+
+        modelPartHead.addOrReplaceChild("hat1",
+                CubeListBuilder.create().texOffs(24, 0).mirror()
+                        .addBox(-5F, -6F, -5F, 12, 1, 6),
+                PartPose.offset(-1F, -3F, -1F));
+
+        modelPartHead.addOrReplaceChild("hat2",
+                CubeListBuilder.create().texOffs(40, 24)
+                        .addBox(0F, -6F, 0F, 6, 2, 6),
+                PartPose.offset(-3F, -5F, -3F));
+
+        modelPartHead.addOrReplaceChild("hat3",
+                CubeListBuilder.create().texOffs(24, 0)
+                        .addBox(-5F, -6F, 0F, 12, 1, 6),
+                PartPose.offset(-1F, -3F, 0F));
+
+        return LayerDefinition.create(modelData, 64, 32);
     }
 
     @Override

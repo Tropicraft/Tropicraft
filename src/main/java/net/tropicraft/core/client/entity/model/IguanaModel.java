@@ -3,6 +3,11 @@ package net.tropicraft.core.client.entity.model;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.neutral.IguanaEntity;
 
@@ -24,67 +29,191 @@ public class IguanaModel extends ListModel<IguanaEntity> {
     public ModelPart tailMid;
     public ModelPart miscPart;
 
-    public IguanaModel() {
+    public IguanaModel(ModelPart root) {
+        head = root.getChild("head");
+        headTop1 = root.getChild("headTop1");
+        headTop2 = root.getChild("headTop2");
+        body = root.getChild("body");
+        frontLeftLeg = root.getChild("frontLeftLeg");
+        rearLeftLeg = root.getChild("rearLeftLeg");
+        frontRightLeg = root.getChild("frontRightLeg");
+        rearRightLeg = root.getChild("rearRightLeg");
+        back1 = root.getChild("back1");
+        back2 = root.getChild("back2");
+        back3 = root.getChild("back3");
+        jaw = root.getChild("jaw");
+        dewLap = root.getChild("dewLap");
+        tailBase = root.getChild("tailBase");
+        tailMid = root.getChild("tailMid");
+        miscPart = root.getChild("miscPart");
+
+
+        /*
         head = new ModelPart(this, 36, 23);
-        head.addBox(-2.5F, -2F, -6F, 5, 3, 6);
-        head.setPos(0F, 20F, -6F);
+        head.addCuboid(-2.5F, -2F, -6F, 5, 3, 6);
+        head.setPivot(0F, 20F, -6F);
 
         body = new ModelPart(this, 0, 16);
-        body.addBox(-2.5F, -1.5F, -7.5F, 5, 3, 13);
-        body.setPos(0F, 21.5F, 1F);
+        body.addCuboid(-2.5F, -1.5F, -7.5F, 5, 3, 13);
+        body.setPivot(0F, 21.5F, 1F);
 
         frontLeftLeg = new ModelPart(this, 24, 21);
-        frontLeftLeg.addBox(0F, 0F, -1.5F, 2, 3, 3);
-        frontLeftLeg.setPos(2.5F, 21F, -4F);
+        frontLeftLeg.addCuboid(0F, 0F, -1.5F, 2, 3, 3);
+        frontLeftLeg.setPivot(2.5F, 21F, -4F);
 
         rearLeftLeg = new ModelPart(this, 24, 21);
-        rearLeftLeg.addBox(0F, 0F, -1.5F, 2, 3, 3);
-        rearLeftLeg.setPos(2.5F, 21F, 4F);
+        rearLeftLeg.addCuboid(0F, 0F, -1.5F, 2, 3, 3);
+        rearLeftLeg.setPivot(2.5F, 21F, 4F);
 
         frontRightLeg = new ModelPart(this, 0, 21);
-        frontRightLeg.addBox(-2F, 0F, -1.5F, 2, 3, 3);
-        frontRightLeg.setPos(-2.5F, 21F, -4F);
+        frontRightLeg.addCuboid(-2F, 0F, -1.5F, 2, 3, 3);
+        frontRightLeg.setPivot(-2.5F, 21F, -4F);
 
         rearRightLeg = new ModelPart(this, 0, 21);
-        rearRightLeg.addBox(-2F, 0F, -1.5F, 2, 3, 3);
-        rearRightLeg.setPos(-2.5F, 21F, 4F);
+        rearRightLeg.addCuboid(-2F, 0F, -1.5F, 2, 3, 3);
+        rearRightLeg.setPivot(-2.5F, 21F, 4F);
 
         back1 = new ModelPart(this, 0, 0);
-        back1.addBox(-1.5F, -1F, 0F, 3, 1, 10);
-        back1.setPos(0F, 20F, -5F);
+        back1.addCuboid(-1.5F, -1F, 0F, 3, 1, 10);
+        back1.setPivot(0F, 20F, -5F);
 
         back2 = new ModelPart(this, 32, 0);
-        back2.addBox(-0.5F, -1F, -3F, 1, 1, 6);
-        back2.setPos(0F, 19F, 0F);
+        back2.addCuboid(-0.5F, -1F, -3F, 1, 1, 6);
+        back2.setPivot(0F, 19F, 0F);
 
         headTop2 = new ModelPart(this, 0, 0);
-        headTop2.addBox(-0.5F, -4F, -4F, 1, 1, 2);
-        headTop2.setPos(0F, 20F, -6F);
+        headTop2.addCuboid(-0.5F, -4F, -4F, 1, 1, 2);
+        headTop2.setPivot(0F, 20F, -6F);
 
         headTop1 = new ModelPart(this, 32, 7);
-        headTop1.addBox(-0.5F, -3F, -5F, 1, 1, 4);
-        headTop1.setPos(0F, 20F, -6F);
+        headTop1.addCuboid(-0.5F, -3F, -5F, 1, 1, 4);
+        headTop1.setPivot(0F, 20F, -6F);
 
         jaw = new ModelPart(this, 0, 11);
-        jaw.addBox(-1F, 1F, -4F, 2, 1, 4);
-        jaw.setPos(0F, 20F, -6F);
+        jaw.addCuboid(-1F, 1F, -4F, 2, 1, 4);
+        jaw.setPivot(0F, 20F, -6F);
 
         back3 = new ModelPart(this, 32, 7);
-        back3.addBox(-0.5F, 0F, -2F, 1, 1, 4);
-        back3.setPos(0F, 17F, 0F);
+        back3.addCuboid(-0.5F, 0F, -2F, 1, 1, 4);
+        back3.setPivot(0F, 17F, 0F);
 
         dewLap = new ModelPart(this, 0, 4);
-        dewLap.addBox(-0.5F, 2F, -3F, 1, 1, 3);
-        dewLap.setPos(0F, 20F, -6F);
+        dewLap.addCuboid(-0.5F, 2F, -3F, 1, 1, 3);
+        dewLap.setPivot(0F, 20F, -6F);
 
         tailBase = new ModelPart(this, 46, 0);
-        tailBase.addBox(-1.5F, -0.5F, 0F, 3, 1, 6);
-        tailBase.setPos(0F, 21.5F, 6F);
+        tailBase.addCuboid(-1.5F, -0.5F, 0F, 3, 1, 6);
+        tailBase.setPivot(0F, 21.5F, 6F);
 
         tailMid = new ModelPart(this, 48, 7);
-        tailMid.addBox(-1F, -0.5F, 0F, 2, 1, 6);
+        tailMid.addCuboid(-1F, -0.5F, 0F, 2, 1, 6);
         miscPart = new ModelPart(this, 52, 14);
-        miscPart.addBox(-0.5F, -0.5F, 0F, 1, 1, 5);
+        miscPart.addCuboid(-0.5F, -0.5F, 0F, 1, 1, 5);
+         */
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
+
+        modelPartData.addOrReplaceChild("head",
+                CubeListBuilder.create()
+                        .texOffs(36, 23)
+                        .addBox(-2.5F, -2F, -6F, 5, 3, 6),
+                PartPose.offset(0F, 20F, -6F));
+
+        modelPartData.addOrReplaceChild("body",
+                CubeListBuilder.create()
+                        .texOffs(0, 16)
+                        .addBox(-2.5F, -1.5F, -7.5F, 5, 3, 13),
+                PartPose.offset(0F, 21.5F, 1F));
+
+        modelPartData.addOrReplaceChild("frontLeftLeg",
+                CubeListBuilder.create()
+                        .texOffs(24, 21)
+                        .addBox(0F, 0F, -1.5F, 2, 3, 3),
+                PartPose.offset(2.5F, 21F, -4F));
+
+        modelPartData.addOrReplaceChild("rearLeftLeg",
+                CubeListBuilder.create()
+                        .texOffs(24, 21)
+                        .addBox(0F, 0F, -1.5F, 2, 3, 3),
+                PartPose.offset(2.5F, 21F, 4F));
+
+        modelPartData.addOrReplaceChild("frontRightLeg",
+                CubeListBuilder.create()
+                        .texOffs(0, 21)
+                        .addBox(-2F, 0F, -1.5F, 2, 3, 3),
+                PartPose.offset(-2.5F, 21F, -4F));
+
+        modelPartData.addOrReplaceChild("rearRightLeg",
+                CubeListBuilder.create()
+                        .texOffs(0, 21)
+                        .addBox(-2F, 0F, -1.5F, 2, 3, 3),
+                PartPose.offset(-2.5F, 21F, 4F));
+
+        modelPartData.addOrReplaceChild("back1",
+                CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-1.5F, -1F, 0F, 3, 1, 10),
+                PartPose.offset(0F, 20F, -5F));
+
+        modelPartData.addOrReplaceChild("back2",
+                CubeListBuilder.create()
+                        .texOffs(32, 0)
+                        .addBox(-0.5F, -1F, -3F, 1, 1, 6),
+                PartPose.offset(0F, 19F, 0F));
+
+        modelPartData.addOrReplaceChild("headTop2",
+                CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-0.5F, -4F, -4F, 1, 1, 2),
+                PartPose.offset(0F, 20F, -6F));
+
+        modelPartData.addOrReplaceChild("headTop1",
+                CubeListBuilder.create()
+                        .texOffs(32, 7)
+                        .addBox(-0.5F, -3F, -5F, 1, 1, 4),
+                PartPose.offset(0F, 20F, -6F));
+
+        modelPartData.addOrReplaceChild("jaw",
+                CubeListBuilder.create()
+                        .texOffs(0, 11)
+                        .addBox(-1F, 1F, -4F, 2, 1, 4),
+                PartPose.offset(0F, 20F, -6F));
+
+        modelPartData.addOrReplaceChild("back3",
+                CubeListBuilder.create()
+                        .texOffs(32, 7)
+                        .addBox(-0.5F, 0F, -2F, 1, 1, 4),
+                PartPose.offset(0F, 17F, 0F));
+
+        modelPartData.addOrReplaceChild("dewLap",
+                CubeListBuilder.create()
+                        .texOffs(0, 4)
+                        .addBox(-0.5F, 2F, -3F, 1, 1, 3),
+                PartPose.offset(0F, 20F, -6F));
+
+        modelPartData.addOrReplaceChild("tailBase",
+                CubeListBuilder.create()
+                        .texOffs(46, 0)
+                        .addBox(-1.5F, -0.5F, 0F, 3, 1, 6),
+                PartPose.offset(0F, 21.5F, 6F));
+
+        modelPartData.addOrReplaceChild("tailMid",
+                CubeListBuilder.create()
+                        .texOffs(48, 7)
+                        .addBox(-1F, -0.5F, 0F, 2, 1, 6),
+                PartPose.ZERO);
+
+        modelPartData.addOrReplaceChild("miscPart",
+                CubeListBuilder.create()
+                        .texOffs(52, 14)
+                        .addBox(-0.5F, -0.5F, 0F, 1, 1, 5),
+                PartPose.ZERO);
+
+
+        return LayerDefinition.create(modelData, 64, 32);
     }
 
     @Override

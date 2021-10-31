@@ -8,6 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.tropicraft.core.common.entity.underdasea.EagleRayEntity;
 
 public class EagleRayModel extends ListModel<EagleRayEntity> {
@@ -18,15 +23,27 @@ public class EagleRayModel extends ListModel<EagleRayEntity> {
 
 	private ModelPart body;
 
-	public EagleRayModel() {
-		texWidth = 128;
-		texHeight = 64;
+	public EagleRayModel(ModelPart root) {
+		this.body = root.getChild("body");
 
-		body = new ModelPart(this, 32, 0);
-		body.addBox(-2F, 0F, 0F, 5, 3, 32);
-		body.setPos(0F, 0F, -8F);
-		body.setTexSize(128, 64);
-		body.mirror = true;
+		//textureWidth = 128;
+		//textureHeight = 64;
+
+		//body = new ModelPart(this, 32, 0);
+		//body.addCuboid(-2F, 0F, 0F, 5, 3, 32);
+		//body.setPivot(0F, 0F, -8F);
+		//body.setTextureSize(128, 64);
+		//body.mirror = true;
+
+	}
+
+	public static LayerDefinition create() {
+		MeshDefinition modelData = new MeshDefinition();
+		PartDefinition modelPartData = modelData.getRoot();
+
+		modelPartData.addOrReplaceChild("body", CubeListBuilder.create().texOffs(32, 0).mirror().addBox(-2F, 0F, 0F, 5, 3, 32), PartPose.offset(0F,0F,-8F));
+
+		return LayerDefinition.create(modelData,128,64);
 	}
 
 	@Override

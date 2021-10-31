@@ -3,6 +3,11 @@ package net.tropicraft.core.client.entity.model;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
 
@@ -16,53 +21,115 @@ public class SeaTurtleModel extends ListModel<SeaTurtleEntity> {
     public ModelPart rrFlipper;
     public boolean inWater;
 
-    public SeaTurtleModel() {
+    public SeaTurtleModel(ModelPart root) {
         inWater = false;
-        texWidth = 64;
-        texHeight = 64;
+        //textureWidth = 64;
+        //textureHeight = 64;
 
+        body = root.getChild("body");
+        frFlipper = body.getChild("frFlipper");
+        flFlipper = body.getChild("flFlipper");
+        head = body.getChild("head");
+        rlFlipper = body.getChild("rlFlipper");
+        rrFlipper = body.getChild("rrFlipper");
+
+        /*
         body = new ModelPart(this);
-        body.setPos(0F, 19F, 0F);
+        body.setPivot(0F, 19F, 0F);
         setRotation(body, 0F, 0F, 0F);
         body.mirror = true;
+
         frFlipper = new ModelPart(this);
-        frFlipper.setPos(-7F, 2F, -6F);
+        frFlipper.setPivot(-7F, 2F, -6F);
         setRotation(frFlipper, 0F, 0F, 0F);
         frFlipper.mirror = true;
-        frFlipper.texOffs(0, 20).addBox(-10F, 0F, -3F, 10, 1, 4);
+        frFlipper.setTextureOffset(0, 20).addCuboid(-10F, 0F, -3F, 10, 1, 4);
         body.addChild(frFlipper);
+
         flFlipper = new ModelPart(this);
-        flFlipper.setPos(7F, 2F, -6F);
+        flFlipper.setPivot(7F, 2F, -6F);
         setRotation(flFlipper, 0F, 0F, 0F);
         flFlipper.mirror = true;
-        flFlipper.texOffs(0, 20).addBox(0F, 0F, -3F, 10, 1, 4);
+        flFlipper.setTextureOffset(0, 20).addCuboid(0F, 0F, -3F, 10, 1, 4);
         body.addChild(flFlipper);
-        body.texOffs(0, 29).addBox(-4.5F, -1F, -9F, 9, 2, 1);
-        body.texOffs(43, 40).addBox(-3F, -2F, 1F, 6, 1, 4);
-        body.texOffs(0, 52).addBox(-7F, -2F, -8F, 14, 4, 8);
-        body.texOffs(0, 41).addBox(-5F, -1F, 0F, 10, 3, 8);
-        body.texOffs(0, 32).addBox(-4F, -2.5F, -6F, 8, 2, 7);
-        body.texOffs(44, 55).addBox(-6F, -0.5F, 0F, 1, 2, 7);
-        body.texOffs(44, 55).addBox(5F, -0.5F, 0F, 1, 2, 7);
-        body.texOffs(0, 25).addBox(-4F, -0.5F, 8F, 8, 2, 2);
+
+        body.setTextureOffset(0, 29).addCuboid(-4.5F, -1F, -9F, 9, 2, 1);
+        body.setTextureOffset(43, 40).addCuboid(-3F, -2F, 1F, 6, 1, 4);
+        body.setTextureOffset(0, 52).addCuboid(-7F, -2F, -8F, 14, 4, 8);
+        body.setTextureOffset(0, 41).addCuboid(-5F, -1F, 0F, 10, 3, 8);
+        body.setTextureOffset(0, 32).addCuboid(-4F, -2.5F, -6F, 8, 2, 7);
+        body.setTextureOffset(44, 55).addCuboid(-6F, -0.5F, 0F, 1, 2, 7);
+        body.setTextureOffset(44, 55).addCuboid(5F, -0.5F, 0F, 1, 2, 7);
+        body.setTextureOffset(0, 25).addCuboid(-4F, -0.5F, 8F, 8, 2, 2);
+
         head = new ModelPart(this);
-        head.setPos(0F, 1F, -8F);
+        head.setPivot(0F, 1F, -8F);
         setRotation(head, 0F, 0F, 0F);
         head.mirror = true;
-        head.texOffs(0, 0).addBox(-1.5F, -1.5F, -6F, 3, 3, 6);
+        head.setTextureOffset(0, 0).addCuboid(-1.5F, -1.5F, -6F, 3, 3, 6);
         body.addChild(head);
+
         rlFlipper = new ModelPart(this);
-        rlFlipper.setPos(-4F, 2F, 7F);
+        rlFlipper.setPivot(-4F, 2F, 7F);
         setRotation(rlFlipper, 0F, 0F, 0F);
         rlFlipper.mirror = true;
-        rlFlipper.texOffs(0, 16).addBox(-7F, 0F, -1F, 7, 1, 3);
+        rlFlipper.setTextureOffset(0, 16).addCuboid(-7F, 0F, -1F, 7, 1, 3);
         body.addChild(rlFlipper);
+
         rrFlipper = new ModelPart(this);
-        rrFlipper.setPos(4F, 2F, 7F);
+        rrFlipper.setPivot(4F, 2F, 7F);
         setRotation(rrFlipper, 0F, 0F, 0F);
         rrFlipper.mirror = true;
-        rrFlipper.texOffs(0, 16).addBox(-1F, 0F, -1F, 7, 1, 3);
+        rrFlipper.setTextureOffset(0, 16).addCuboid(-1F, 0F, -1F, 7, 1, 3);
         body.addChild(rrFlipper);
+
+         */
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
+
+        PartDefinition modelPartBody = modelPartData.addOrReplaceChild("body",
+                CubeListBuilder.create().mirror()
+                        .addBox("bodypart1", -4.5F, -1F, -9F, 9, 2, 1, 0,29)
+                        .addBox("bodypart2", -3F, -2F, 1F, 6, 1, 4, 43,40)
+                        .addBox("bodypart3", -7F, -2F, -8F, 14, 4, 8, 0,52)
+                        .addBox("bodypart4", -5F, -1F, 0F, 10, 3, 8, 0,41)
+                        .addBox("bodypart5", -4F, -2.5F, -6F, 8, 2, 7, 0,32)
+                        .addBox("bodypart6", -6F, -0.5F, 0F, 1, 2, 7, 44,55)
+                        .addBox("bodypart7", 5F, -0.5F, 0F, 1, 2, 7, 44,55)
+                        .addBox("bodypart8", -4F, -0.5F, 8F, 8, 2, 2, 0,25)
+                , PartPose.offset(0F, 19F, 0F));
+
+        modelPartBody.addOrReplaceChild("frFlipper",
+                CubeListBuilder.create().mirror()
+                        .texOffs(0,20).addBox(-10F, 0F, -3F, 10, 1, 4),
+                PartPose.offset(-7F, 2F, -6F));
+
+        modelPartBody.addOrReplaceChild("flFlipper",
+                CubeListBuilder.create().mirror()
+                        .texOffs(0,20).addBox(0F, 0F, -3F, 10, 1, 4),
+                PartPose.offset(7F, 2F, -6F));
+
+        modelPartBody.addOrReplaceChild("head",
+                CubeListBuilder.create().mirror()
+                        .texOffs(0,0).addBox(-1.5F, -1.5F, -6F, 3, 3, 6),
+                PartPose.offset(0F, 1F, -8F));
+
+        modelPartBody.addOrReplaceChild("rlFlipper",
+                CubeListBuilder.create().mirror()
+                        .texOffs(0,16).addBox(-7F, 0F, -1F, 7, 1, 3),
+                PartPose.offset(-4F, 2F, 7F));
+
+        modelPartBody.addOrReplaceChild("rrFlipper",
+                CubeListBuilder.create().mirror()
+                        .texOffs(0,16).addBox(-1F, 0F, -1F, 7, 1, 3),
+                PartPose.offset(4F, 2F, 7F));
+
+
+
+        return LayerDefinition.create(modelData, 64, 64);
     }
 
     @Override

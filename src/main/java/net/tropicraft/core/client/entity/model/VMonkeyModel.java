@@ -5,6 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
@@ -29,105 +34,215 @@ public class VMonkeyModel extends ListModel<VMonkeyEntity> implements ArmedModel
     protected Random rand;
     public float herps;
 
-    public VMonkeyModel() {
+    public VMonkeyModel(ModelPart root) {
+
+
+        body = root.getChild("body");
+        lLegUpper = root.getChild("lLegUpper");
+        rLegUpper = root.getChild("rLegUpper");
+        rArmUpper = root.getChild("rArmUpper");
+        lArmUpper = root.getChild("lArmUpper");
+        tailBase = root.getChild("tailBase");
+        tailMid = root.getChild("tailMid");
+        tailTop = root.getChild("tailTop");
+        rArmLower = root.getChild("rArmLower");
+        lArmLower = root.getChild("lArmLower");
+        lLegLower = root.getChild("lLegLower");
+        rLegLower = root.getChild("rLegLower");
+        face = root.getChild("face");
+        head = root.getChild("head");
+
+        /*
         body = new ModelPart(this, 0, 8);
-        body.addBox(-1F, -2F, -4F, 2, 4, 9, 0F);
-        body.setPos(0F, 16F, 0F);
-        body.xRot = 0F;
-        body.yRot = 3.141593F;
-        body.zRot = 0F;
+        body.addCuboid(-1F, -2F, -4F, 2, 4, 9, 0F);
+        body.setPivot(0F, 16F, 0F);
+        body.pitch = 0F;
+        body.yaw = 3.141593F;
+        body.roll = 0F;
         body.mirror = false;
+
         lLegUpper = new ModelPart(this, 7, 0);
-        lLegUpper.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
-        lLegUpper.setPos(-1F, 14F, -3.5F);
-        lLegUpper.xRot = 0F;
-        lLegUpper.yRot = 0F;
-        lLegUpper.zRot = 0F;
+        lLegUpper.addCuboid(-1F, 0F, -0.5F, 1, 5, 1, 0F);
+        lLegUpper.setPivot(-1F, 14F, -3.5F);
+        lLegUpper.pitch = 0F;
+        lLegUpper.yaw = 0F;
+        lLegUpper.roll = 0F;
         lLegUpper.mirror = false;
+
         rLegUpper = new ModelPart(this, 0, 0);
-        rLegUpper.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
-        rLegUpper.setPos(1F, 14F, -3.5F);
-        rLegUpper.xRot = 0F;
-        rLegUpper.yRot = 0F;
-        rLegUpper.zRot = 0F;
+        rLegUpper.addCuboid(0F, 0F, -0.5F, 1, 5, 1, 0F);
+        rLegUpper.setPivot(1F, 14F, -3.5F);
+        rLegUpper.pitch = 0F;
+        rLegUpper.yaw = 0F;
+        rLegUpper.roll = 0F;
         rLegUpper.mirror = false;
+
         rArmUpper = new ModelPart(this, 0, 0);
-        rArmUpper.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
-        rArmUpper.setPos(1F, 14F, 3.5F);
-        rArmUpper.xRot = 0F;
-        rArmUpper.yRot = 0F;
-        rArmUpper.zRot = 0F;
+        rArmUpper.addCuboid(0F, 0F, -0.5F, 1, 5, 1, 0F);
+        rArmUpper.setPivot(1F, 14F, 3.5F);
+        rArmUpper.pitch = 0F;
+        rArmUpper.yaw = 0F;
+        rArmUpper.roll = 0F;
         rArmUpper.mirror = false;
+
         lArmUpper = new ModelPart(this, 7, 0);
-        lArmUpper.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
-        lArmUpper.setPos(-1F, 14F, 3.5F);
-        lArmUpper.xRot = 0F;
-        lArmUpper.yRot = 0F;
-        lArmUpper.zRot = 0F;
+        lArmUpper.addCuboid(-1F, 0F, -0.5F, 1, 5, 1, 0F);
+        lArmUpper.setPivot(-1F, 14F, 3.5F);
+        lArmUpper.pitch = 0F;
+        lArmUpper.yaw = 0F;
+        lArmUpper.roll = 0F;
         lArmUpper.mirror = false;
+
         tailBase = new ModelPart(this, 20, 27);
-        tailBase.addBox(-0.5F, -4F, -0.5F, 1, 3, 1, 0F);
-        tailBase.setPos(0F, 15F, 3.5F);
-        tailBase.xRot = 0F;
-        tailBase.yRot = 3.141593F;
-        tailBase.zRot = 0F;
+        tailBase.addCuboid(-0.5F, -4F, -0.5F, 1, 3, 1, 0F);
+        tailBase.setPivot(0F, 15F, 3.5F);
+        tailBase.pitch = 0F;
+        tailBase.yaw = 3.141593F;
+        tailBase.roll = 0F;
         tailBase.mirror = false;
+
         tailMid = new ModelPart(this, 20, 24);
-        tailMid.addBox(-0.5F, -2F, -0.5F, 1, 2, 1, 0F);
-        tailMid.setPos(0F, 11F, 3.5F);
-        tailMid.xRot = 0F;
-        tailMid.yRot = 3.141593F;
-        tailMid.zRot = 0F;
+        tailMid.addCuboid(-0.5F, -2F, -0.5F, 1, 2, 1, 0F);
+        tailMid.setPivot(0F, 11F, 3.5F);
+        tailMid.pitch = 0F;
+        tailMid.yaw = 3.141593F;
+        tailMid.roll = 0F;
         tailMid.mirror = false;
+
         tailTop = new ModelPart(this, 20, 21);
-        tailTop.addBox(-0.5F, -2F, -0.5F, 1, 2, 1, 0F);
-        tailTop.setPos(0F, 9F, 3.5F);
-        tailTop.xRot = 0F;
-        tailTop.yRot = 3.141593F;
-        tailTop.zRot = 0F;
+        tailTop.addCuboid(-0.5F, -2F, -0.5F, 1, 2, 1, 0F);
+        tailTop.setPivot(0F, 9F, 3.5F);
+        tailTop.pitch = 0F;
+        tailTop.yaw = 3.141593F;
+        tailTop.roll = 0F;
         tailTop.mirror = false;
+
         rArmLower = new ModelPart(this, 0, 7);
-        rArmLower.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
-        rArmLower.setPos(1F, 19F, 3.5F);
-        rArmLower.xRot = 0F;
-        rArmLower.yRot = 0F;
-        rArmLower.zRot = 0F;
+        rArmLower.addCuboid(0F, 0F, -0.5F, 1, 5, 1, 0F);
+        rArmLower.setPivot(1F, 19F, 3.5F);
+        rArmLower.pitch = 0F;
+        rArmLower.yaw = 0F;
+        rArmLower.roll = 0F;
         rArmLower.mirror = false;
+
         lArmLower = new ModelPart(this, 12, 0);
-        lArmLower.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
-        lArmLower.setPos(-1F, 19F, 3.5F);
-        lArmLower.xRot = 0F;
-        lArmLower.yRot = 0F;
-        lArmLower.zRot = 0F;
+        lArmLower.addCuboid(-1F, 0F, -0.5F, 1, 5, 1, 0F);
+        lArmLower.setPivot(-1F, 19F, 3.5F);
+        lArmLower.pitch = 0F;
+        lArmLower.yaw = 0F;
+        lArmLower.roll = 0F;
         lArmLower.mirror = false;
+
         lLegLower = new ModelPart(this, 12, 0);
-        lLegLower.addBox(-1F, 0F, -0.5F, 1, 5, 1, 0F);
-        lLegLower.setPos(-1F, 19F, -3.5F);
-        lLegLower.xRot = 0F;
-        lLegLower.yRot = 0F;
-        lLegLower.zRot = 0F;
+        lLegLower.addCuboid(-1F, 0F, -0.5F, 1, 5, 1, 0F);
+        lLegLower.setPivot(-1F, 19F, -3.5F);
+        lLegLower.pitch = 0F;
+        lLegLower.yaw = 0F;
+        lLegLower.roll = 0F;
         lLegLower.mirror = false;
+
         rLegLower = new ModelPart(this, 0, 7);
-        rLegLower.addBox(0F, 0F, -0.5F, 1, 5, 1, 0F);
-        rLegLower.setPos(1F, 19F, -3.5F);
-        rLegLower.xRot = 0F;
-        rLegLower.yRot = 0F;
-        rLegLower.zRot = 0F;
+        rLegLower.addCuboid(0F, 0F, -0.5F, 1, 5, 1, 0F);
+        rLegLower.setPivot(1F, 19F, -3.5F);
+        rLegLower.pitch = 0F;
+        rLegLower.yaw = 0F;
+        rLegLower.roll = 0F;
         rLegLower.mirror = false;
+
         face = new ModelPart(this, 0, 25);
-        face.addBox(-2F, -1F, 0F, 4, 4, 3, 0F);
-        face.setPos(0F, 15F, -5F);
-        face.xRot = 0F;
-        face.yRot = 3.141593F;
-        face.zRot = 0F;
+        face.addCuboid(-2F, -1F, 0F, 4, 4, 3, 0F);
+        face.setPivot(0F, 15F, -5F);
+        face.pitch = 0F;
+        face.yaw = 3.141593F;
+        face.roll = 0F;
         face.mirror = false;
+
         head = new ModelPart(this, 25, 25);
-        head.addBox(-3F, -2F, 0F, 6, 5, 2, 0F);
-        head.setPos(0F, 15F, -5F);
-        head.xRot = 0F;
-        head.yRot = 3.141593F;
-        head.zRot = 0F;
+        head.addCuboid(-3F, -2F, 0F, 6, 5, 2, 0F);
+        head.setPivot(0F, 15F, -5F);
+        head.pitch = 0F;
+        head.yaw = 3.141593F;
+        head.roll = 0F;
         head.mirror = false;
+
+         */
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
+
+        modelPartData.addOrReplaceChild("body",
+                CubeListBuilder.create().texOffs(0, 8)
+                        .addBox(-1F, -2F, -4F, 2, 4, 9),
+                PartPose.offsetAndRotation(0F, 16F, 0F, 0F, 3.141593F, 0F));
+
+        modelPartData.addOrReplaceChild("lLegUpper",
+                CubeListBuilder.create().texOffs(7, 0)
+                        .addBox(-1F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(-1F, 14F, -3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("rLegUpper",
+                CubeListBuilder.create().texOffs(0, 0)
+                        .addBox(0F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(1F, 14F, -3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("rArmUpper",
+                CubeListBuilder.create().texOffs(0, 0)
+                        .addBox(0F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(1F, 14F, 3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("lArmUpper",
+                CubeListBuilder.create().texOffs(7, 0)
+                        .addBox(-1F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(-1F, 14F, 3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("tailBase",
+                CubeListBuilder.create().texOffs(20, 27)
+                        .addBox(-0.5F, -4F, -0.5F, 1, 3, 1),
+                PartPose.offsetAndRotation(0F, 15F, 3.5F, 0F, 3.141593F, 0F));
+
+        modelPartData.addOrReplaceChild("tailMid",
+                CubeListBuilder.create().texOffs(20, 24)
+                        .addBox(-0.5F, -2F, -0.5F, 1, 2, 1),
+                PartPose.offsetAndRotation(0F, 11F, 3.5F, 0F, 3.141593F, 0F));
+
+        modelPartData.addOrReplaceChild("tailTop",
+                CubeListBuilder.create().texOffs(20, 21)
+                        .addBox(-0.5F, -2F, -0.5F, 1, 2, 1),
+                PartPose.offsetAndRotation(0F, 9F, 3.5F, 0F, 3.141593F, 0F));
+
+        modelPartData.addOrReplaceChild("rArmLower",
+                CubeListBuilder.create().texOffs(0, 7)
+                        .addBox(0F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(1F, 19F, 3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("lArmLower",
+                CubeListBuilder.create().texOffs(12, 0)
+                        .addBox(-1F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(-1F, 19F, 3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("lLegLower",
+                CubeListBuilder.create().texOffs(12, 0)
+                        .addBox(-1F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(-1F, 19F, -3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("rLegLower",
+                CubeListBuilder.create().texOffs(0, 7)
+                        .addBox(0F, 0F, -0.5F, 1, 5, 1),
+                PartPose.offsetAndRotation(1F, 19F, -3.5F, 0F, 0F, 0F));
+
+        modelPartData.addOrReplaceChild("face",
+                CubeListBuilder.create().texOffs(0, 25)
+                        .addBox(-2F, -1F, 0F, 4, 4, 3),
+                PartPose.offsetAndRotation(0F, 15F, -5F, 0F, 3.141593F, 0F));
+
+        modelPartData.addOrReplaceChild("head",
+                CubeListBuilder.create().texOffs(25, 25)
+                        .addBox(-3F, -2F, 0F, 6, 5, 2),
+                PartPose.offsetAndRotation(0F, 15F, -5F, 0F, 3.141593F, 0F));
+
+        return LayerDefinition.create(modelData, 64, 32);
     }
 
     @Override

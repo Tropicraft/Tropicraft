@@ -1,5 +1,6 @@
 package net.tropicraft.core.client.entity.render;
 
+import net.tropicraft.core.client.entity.model.AbstractFishModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

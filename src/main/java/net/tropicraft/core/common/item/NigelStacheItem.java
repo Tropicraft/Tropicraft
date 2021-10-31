@@ -9,12 +9,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.TropicraftRenderUtils;
-import net.tropicraft.core.client.entity.model.PlayerHeadpieceRenderer;
+import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class NigelStacheItem extends ArmorItem implements IItemRenderProperties {
 
@@ -26,7 +25,7 @@ public class NigelStacheItem extends ArmorItem implements IItemRenderProperties 
     @Nullable
     @Override
     public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
-        return armorSlot == EquipmentSlot.HEAD ? new PlayerHeadpieceRenderer(0) : null;
+        return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.STACHE_LAYER, null, 0, 0, 0) : null;
     }
     
     @Override

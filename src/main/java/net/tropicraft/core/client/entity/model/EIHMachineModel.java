@@ -146,7 +146,7 @@ public class EIHMachineModel<T extends BlockEntity & IMachineTile> extends Machi
          */
     }
 
-    public static LayerDefinition getTexturedModelData() {
+    public static LayerDefinition create() {
         MeshDefinition modelData = new MeshDefinition();
         PartDefinition modelPartData = modelData.getRoot();
 

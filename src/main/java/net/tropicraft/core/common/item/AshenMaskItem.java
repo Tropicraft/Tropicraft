@@ -16,14 +16,12 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.TropicraftRenderUtils;
-import net.tropicraft.core.client.entity.model.PlayerHeadpieceRenderer;
-import net.tropicraft.core.common.entity.TropicraftEntities;
+import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 import net.tropicraft.core.common.entity.placeable.WallItemEntity;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.world.item.Item.Properties;
 
 public class AshenMaskItem extends ArmorItem implements IItemRenderProperties{
     private final AshenMasks maskType;
@@ -76,7 +74,7 @@ public class AshenMaskItem extends ArmorItem implements IItemRenderProperties{
     @Nullable
     @Override
     public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
-        return armorSlot == EquipmentSlot.HEAD ? new PlayerHeadpieceRenderer(maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
+        return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(TropicraftRenderLayers.ASHEN_MASK_LAYERS.get(maskType.ordinal()), null, maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
     }
 
 

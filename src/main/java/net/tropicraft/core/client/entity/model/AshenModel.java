@@ -5,11 +5,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
 import net.tropicraft.core.common.entity.hostile.AshenEntity;
 
 public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
+
     public ModelPart rightLeg;
     public ModelPart leftLeg;
     public ModelPart body;
@@ -22,39 +28,63 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
     public float headAngle;
     public boolean swinging;
     public AshenEntity.AshenState actionState;
+    public static int textureWidth;
+    public static int textureHeight;
 
-    public AshenModel() {
+    public AshenModel(ModelPart root) {
+        //this.root = root;
+        this.rightLeg = root.getChild("right_leg");
+        this.leftLeg = root.getChild("left_leg");
+        this.body = root.getChild("body");
+        this.head = root.getChild("head");
+        //this.mask = root.getChild("mask");
+        this.rightArm = root.getChild("right_arm");
+        this.leftArm = root.getChild("left_arm");
+        this.rightArmSub = this.rightArm.getChild("right_arm_sub");
+        this.leftArmSub = this.leftArm.getChild("left_arm_sub");
+
+        textureWidth = 64;
+        textureHeight = 32;
+
+        boolean swinging = false;
+        AshenEntity.AshenState actionState = AshenEntity.AshenState.PEACEFUL;
+        float headAngle = 0;
+
+        /*
         swinging = false;
         actionState = AshenEntity.AshenState.PEACEFUL;
         headAngle = 0;
-        texWidth = 64;
-        texHeight = 32;
+        textureWidth = 64;
+        textureHeight = 32;
 
         rightLeg = new ModelPart(this, 25, 0);
-        rightLeg.addBox(0F, 0F, 0F, 1, 7, 1);
-        rightLeg.setPos(1F, 17F, 0F);
-        rightLeg.setTexSize(64, 32);
+        rightLeg.addCuboid(0F, 0F, 0F, 1, 7, 1);
+        rightLeg.setPivot(1F, 17F, 0F);
+        rightLeg.setTextureSize(64, 32);
         rightLeg.mirror = true;
         setRotation(rightLeg, 0F, 0F, 0F);
+
         leftLeg = new ModelPart(this, 25, 0);
-        leftLeg.addBox(-1F, 0F, 0F, 1, 7, 1);
-        leftLeg.setPos(-1F, 17F, 0F);
-        leftLeg.setTexSize(64, 32);
+        leftLeg.addCuboid(-1F, 0F, 0F, 1, 7, 1);
+        leftLeg.setPivot(-1F, 17F, 0F);
+        leftLeg.setTextureSize(64, 32);
         leftLeg.mirror = true;
         setRotation(leftLeg, 0F, 0F, 0F);
+
         body = new ModelPart(this, 24, 8);
-        body.addBox(-2F, -3F, 0F, 4, 7, 3);
-        body.setPos(0F, 13F, 2F);
-        body.setTexSize(64, 32);
+        body.addCuboid(-2F, -3F, 0F, 4, 7, 3);
+        body.setPivot(0F, 13F, 2F);
+        body.setTextureSize(64, 32);
         body.mirror = true;
         setRotation(body, 0F, 3.141593F, 0F);
+
         head = new ModelPart(this, 24, 18);
-        head.addBox(-2F, -3F, -1F, 4, 3, 4);
-        head.setPos(0F, 10F, 1F);
-        head.setTexSize(64, 32);
+        head.addCuboid(-2F, -3F, -1F, 4, 3, 4);
+        head.setPivot(0F, 10F, 1F);
+        head.setTextureSize(64, 32);
         head.mirror = true;
         setRotation(head, 0F, 3.141593F, 0F);
-        
+
         //mask = new ModelRenderer(this, 0, 0);
         //mask.addBox(-5.5F, -10F, 3F, 11, 22, 1);
         //mask.setRotationPoint(0F, 10F, 1F);
@@ -63,27 +93,52 @@ public class AshenModel extends ListModel<AshenEntity> implements ArmedModel {
         //setRotation(mask, 0F, 3.141593F, 0F);
 
         rightArm = new ModelPart(this);
-        rightArm.setPos(-2F, 10.5F, 0.5F);
+        rightArm.setPivot(-2F, 10.5F, 0.5F);
         setRotation(rightArm, 0F, 0F, 0F);
         rightArm.mirror = true;
-        rightArm.texOffs(0, 24).addBox(-6F, -0.5F, -0.5F, 6, 1, 1);
+        rightArm.setTextureOffset(0, 24).addCuboid(-6F, -0.5F, -0.5F, 6, 1, 1);
+
         rightArmSub = new ModelPart(this);
-        rightArmSub.setPos(-5.5F, 0F, 0F);
+        rightArmSub.setPivot(-5.5F, 0F, 0F);
         setRotation(rightArmSub, 0F, 0F, 0F);
         rightArmSub.mirror = true;
-        rightArmSub.texOffs(31, 0).addBox(-0.5F, -6F, -0.5F, 1, 6, 1);
+        rightArmSub.setTextureOffset(31, 0).addCuboid(-0.5F, -6F, -0.5F, 1, 6, 1);
         rightArm.addChild(rightArmSub);
+
         leftArm = new ModelPart(this);
-        leftArm.setPos(2F, 10.46667F, 0.5F);
+        leftArm.setPivot(2F, 10.46667F, 0.5F);
         setRotation(leftArm, 0F, 0F, 0F);
         leftArm.mirror = true;
-        leftArm.texOffs(0, 24).addBox(0F, -0.5F, -0.5F, 6, 1, 1);
+        leftArm.setTextureOffset(0, 24).addCuboid(0F, -0.5F, -0.5F, 6, 1, 1);
+
         leftArmSub = new ModelPart(this);
-        leftArmSub.setPos(5.5F, 0F, 0F);
+        leftArmSub.setPivot(5.5F, 0F, 0F);
         setRotation(leftArmSub, 0F, 0F, 0F);
         leftArmSub.mirror = true;
-        leftArmSub.texOffs(31, 0).addBox(-0.5F, -6F, -0.5F, 1, 6, 1);
+        leftArmSub.setTextureOffset(31, 0).addCuboid(-0.5F, -6F, -0.5F, 1, 6, 1);
         leftArm.addChild(leftArmSub);
+         */
+    }
+
+    public static LayerDefinition create() {
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
+
+        //boolean swinging = false;
+        //AshenEntity.AshenState actionState = AshenEntity.AshenState.PEACEFUL;
+        //float headAngle = 0;
+
+        modelPartData.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(0F, 0F, 0F, 1, 7, 1), PartPose.offsetAndRotation(1F, 17F, 0F, 0F, 0F, 0F));
+        modelPartData.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(25, 0).mirror().addBox(-1F, 0F, 0F, 1, 7, 1), PartPose.offsetAndRotation(-1F, 17F, 0F, 0F, 0F, 0F));
+        modelPartData.addOrReplaceChild("body", CubeListBuilder.create().texOffs(24, 8).mirror().addBox(-2F, -3F, 0F, 4, 7, 3), PartPose.offsetAndRotation(0F, 13F, 2F, 0F, 3.141593F, 0F));
+        modelPartData.addOrReplaceChild("head", CubeListBuilder.create().texOffs(24, 18).mirror().addBox(-2F, -3F, -1F, 4, 3, 4), PartPose.offsetAndRotation(0F, 10F, 1F,0F, 3.141593F, 0F));
+
+        PartDefinition modelPartDataRightArm = modelPartData.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(-6F, -0.5F, -0.5F, 6, 1, 1), PartPose.offsetAndRotation(-2F, 10.5F, 0.5F, 0F, 0F, 0F));
+        modelPartDataRightArm.addOrReplaceChild("right_arm_sub", CubeListBuilder.create().texOffs(31, 0).mirror().addBox(-0.5F, -6F, -0.5F, 1, 6, 1), PartPose.offsetAndRotation(-5.5F, 0F, 0F, 0F, 0F, 0F));
+
+        PartDefinition modelPartDataLeftArm = modelPartData.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 24).mirror().addBox(0F, -0.5F, -0.5F, 6, 1, 1), PartPose.offsetAndRotation(2F, 10.46667F, 0.5F, 0F, 0F, 0F));
+        modelPartDataLeftArm.addOrReplaceChild("left_arm_sub", CubeListBuilder.create().mirror(true).texOffs(31, 0).addBox(-0.5F, -6F, -0.5F, 1, 6, 1), PartPose.offsetAndRotation(5.5F, 0F, 0F, 0F, 0F, 0F));
+        return LayerDefinition.create(modelData,64,32);
     }
 
     @Override
