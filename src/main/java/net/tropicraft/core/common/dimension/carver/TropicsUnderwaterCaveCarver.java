@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.UnderwaterCaveWorldCarver;
 import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -12,7 +13,7 @@ import java.util.Random;
 
 public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
 
-    public TropicsUnderwaterCaveCarver(Codec<ProbabilityFeatureConfiguration> codec) {
+    public TropicsUnderwaterCaveCarver(Codec<CaveCarverConfiguration> codec) {
         super(codec);
         this.replaceableBlocks = ImmutableSet.<Block> builder().addAll(this.replaceableBlocks)
                 .add(TropicraftBlocks.CORAL_SAND.get())
@@ -25,10 +26,10 @@ public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
                 .build();
     }
 
-    @Override
-    protected boolean hasWater(ChunkAccess chunkIn, int chunkX, int chunkZ, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-        return false;
-    }
+//    @Override
+//    protected boolean hasWater(ChunkAccess chunkIn, int chunkX, int chunkZ, int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
+//        return false;
+//    }
     
     @Override
     protected float getThickness(Random rand) {
@@ -40,8 +41,8 @@ public class TropicsUnderwaterCaveCarver extends UnderwaterCaveWorldCarver {
         return f;
     }
     
-    @Override
-    protected int getCaveY(Random random) {
-        return random.nextInt(random.nextInt(240) + 8);
-    }
+//    @Override
+//    protected int getCaveY(Random random) {
+//        return random.nextInt(random.nextInt(240) + 8);
+//    }
 }

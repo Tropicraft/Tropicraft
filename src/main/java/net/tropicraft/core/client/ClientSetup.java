@@ -1,18 +1,15 @@
 package net.tropicraft.core.client;
 
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.world.level.block.RedstoneWallTorchBlock;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.level.block.RedstoneWallTorchBlock;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.core.client.entity.render.*;
 import net.tropicraft.core.client.tileentity.AirCompressorRenderer;
@@ -76,60 +73,63 @@ public class ClientSetup {
         }
     }
 
-    public static void setupEntityRenderers(final FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.KOA_HUNTER.get(), KoaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_CREEPER.get(), TropiCreeperRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.IGUANA.get(), IguanaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.UMBRELLA.get(), UmbrellaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.CHAIR.get(), ChairRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.BEACH_FLOAT.get(), BeachFloatRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_SKELLY.get(), TropiSkellyRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EIH.get(), EIHRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.WALL_ITEM.get(), WallItemRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), BambooItemFrameRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEA_TURTLE.get(), SeaTurtleRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.MARLIN.get(), MarlinRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.FAILGULL.get(), FailgullRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.DOLPHIN.get(), TropicraftDolphinRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEAHORSE.get(), SeahorseRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TREE_FROG.get(), TreeFrogRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.POISON_BLOT.get(), PoisonBlotRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEA_URCHIN.get(), SeaUrchinRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEA_URCHIN_EGG_ENTITY.get(), EggRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.STARFISH.get(), StarfishRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.STARFISH_EGG.get(), EggRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.V_MONKEY.get(), VMonkeyRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.PIRANHA.get(), PiranhaRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.RIVER_SARDINE.get(), SardineRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPICAL_FISH.get(), TropicraftTropicalFishRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EAGLE_RAY.get(), EagleRayRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_SPIDER.get(), TropiSpiderRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_SPIDER_EGG.get(), EggRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.ASHEN.get(), AshenRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.ASHEN_MASK.get(), AshenMaskRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.EXPLODING_COCONUT.get(), manager -> new ThrownItemRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer()));
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HAMMERHEAD.get(), SharkRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SEA_TURTLE_EGG.get(), EggRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TROPI_BEE.get(), TropiBeeRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.COWKTAIL.get(), CowktailRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.MAN_O_WAR.get(), ManOWarRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.TAPIR.get(), TapirRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.JAGUAR.get(), JaguarRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.BROWN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::brown);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.GREEN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::green);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.HUMMINGBIRD.get(), HummingbirdRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.FIDDLER_CRAB.get(), FiddlerCrabRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.SPIDER_MONKEY.get(), SpiderMonkeyRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), WhiteLippedPeccaryRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(TropicraftEntities.CUBERA.get(), CuberaRenderer::new);
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void setupEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(TropicraftEntities.KOA_HUNTER.get(), KoaRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.TROPI_CREEPER.get(), TropiCreeperRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.IGUANA.get(), IguanaRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.UMBRELLA.get(), UmbrellaRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.CHAIR.get(), ChairRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.BEACH_FLOAT.get(), BeachFloatRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.TROPI_SKELLY.get(), TropiSkellyRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.EIH.get(), EIHRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.WALL_ITEM.get(), WallItemRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.BAMBOO_ITEM_FRAME.get(), BambooItemFrameRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.SEA_TURTLE.get(), SeaTurtleRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.MARLIN.get(), MarlinRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.FAILGULL.get(), FailgullRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.DOLPHIN.get(), TropicraftDolphinRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.SEAHORSE.get(), SeahorseRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.TREE_FROG.get(), TreeFrogRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.POISON_BLOT.get(), PoisonBlotRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.SEA_URCHIN.get(), SeaUrchinRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.SEA_URCHIN_EGG_ENTITY.get(), (context) -> new EggRenderer(context, TropicraftRenderLayers.SEA_URCHIN_EGG_ENTITY_LAYER));
+        event.registerEntityRenderer(TropicraftEntities.STARFISH.get(), StarfishRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.STARFISH_EGG.get(), (context) -> new EggRenderer(context, TropicraftRenderLayers.STARFISH_EGG_LAYER));
+        event.registerEntityRenderer(TropicraftEntities.V_MONKEY.get(), VMonkeyRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.PIRANHA.get(), PiranhaRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.RIVER_SARDINE.get(), SardineRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.TROPICAL_FISH.get(), TropicraftTropicalFishRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.EAGLE_RAY.get(), EagleRayRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.TROPI_SPIDER.get(), TropiSpiderRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.TROPI_SPIDER_EGG.get(), (context) -> new EggRenderer(context, TropicraftRenderLayers.TROPI_SPIDER_EGG_LAYER));
+        event.registerEntityRenderer(TropicraftEntities.ASHEN.get(), AshenRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.ASHEN_MASK.get(), AshenMaskRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.EXPLODING_COCONUT.get(), (context) -> new ThrownItemRenderer<>(context));
+        event.registerEntityRenderer(TropicraftEntities.HAMMERHEAD.get(), SharkRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.SEA_TURTLE_EGG.get(), (context) -> new EggRenderer(context, TropicraftRenderLayers.SEA_TURTLE_EGG_LAYER));
+        event.registerEntityRenderer(TropicraftEntities.TROPI_BEE.get(), TropiBeeRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.COWKTAIL.get(), CowktailRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.MAN_O_WAR.get(), ManOWarRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.TAPIR.get(), TapirRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.JAGUAR.get(), JaguarRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.BROWN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::brown);
+        event.registerEntityRenderer(TropicraftEntities.GREEN_BASILISK_LIZARD.get(), BasiliskLizardRenderer::green);
+        event.registerEntityRenderer(TropicraftEntities.HUMMINGBIRD.get(), HummingbirdRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.FIDDLER_CRAB.get(), FiddlerCrabRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.SPIDER_MONKEY.get(), SpiderMonkeyRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), WhiteLippedPeccaryRenderer::new);
+        event.registerEntityRenderer(TropicraftEntities.CUBERA.get(), CuberaRenderer::new);
+
+        setupTileEntityRenderers(event);
     }
 
-    public static void setupTileEntityRenderers() {
-        BlockEntityRenderers.register(TropicraftTileEntityTypes.BAMBOO_CHEST.get(), BambooChestRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.BAMBOO_CHEST.get(), BambooChestRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.SIFTER.get(), SifterRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.DRINK_MIXER.get(), DrinkMixerRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(TropicraftTileEntityTypes.AIR_COMPRESSOR.get(), AirCompressorRenderer::new);
+    public static void setupTileEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.BAMBOO_CHEST.get(), BambooChestRenderer::new);
+        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.SIFTER.get(), SifterRenderer::new);
+        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.DRINK_MIXER.get(), DrinkMixerRenderer::new);
+        event.registerBlockEntityRenderer(TropicraftTileEntityTypes.AIR_COMPRESSOR.get(), AirCompressorRenderer::new);
     }
 
     public static void setupDimensionRenderInfo() {

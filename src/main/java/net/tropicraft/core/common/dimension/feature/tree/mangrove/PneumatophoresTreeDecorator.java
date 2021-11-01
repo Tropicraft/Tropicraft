@@ -2,14 +2,14 @@ package net.tropicraft.core.common.dimension.feature.tree.mangrove;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.tropicraft.core.common.Util;
 import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorators;
 
@@ -19,7 +19,7 @@ import java.util.Set;
 
 import static net.minecraft.world.gen.feature.TreeFeature.validTreePos;
 
-public clasnet.minecraft.world.level.levelgen.feature.TreeFeatureecorator {
+public class PneumatophoresTreeDecorator extends TreeDecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Registry.BLOCK.fieldOf("roots_block").forGetter(c -> c.rootsBlock),
             Codec.INT.fieldOf("min_count").forGetter(c -> c.minCount),

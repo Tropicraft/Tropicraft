@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 
@@ -19,16 +20,20 @@ public class UndergroundSeaPickleFeature extends Feature<NoneFeatureConfiguratio
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        Random rand = context.random();
+        BlockPos pos = context.origin();
+
         BlockState surface = world.getBlockState(pos.below());
         if (!surface.is(Blocks.STONE) && !surface.is(Blocks.DIRT)) {
             return false;
         }
 
         if (world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER)) {
-            int count = random.nextInt(random.nextInt(4) + 1) + 1;
+            int count = rand.nextInt(rand.nextInt(4) + 1) + 1;
             if (surface.is(Blocks.DIRT)) {
-                count = Math.min(count + random.nextInt(2), 4);
+                count = Math.min(count + rand.nextInt(2), 4);
             }
 
             BlockState pickle = Blocks.SEA_PICKLE.defaultBlockState().setValue(SeaPickleBlock.PICKLES, count);

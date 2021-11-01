@@ -7,16 +7,17 @@ import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.tropicraft.core.common.block.tileentity.SifterTileEntity;
 
-public class SifterRenderer extends BlockEntityRenderer<SifterTileEntity> {
+public class SifterRenderer implements BlockEntityRenderer<SifterTileEntity> {
 	private ItemEntity item;
 
-	public SifterRenderer(final BlockEntityRenderDispatcher rendererDispatcher) {
-		super(rendererDispatcher);
+	public SifterRenderer(final BlockEntityRendererProvider.Context ctx) {
+		//super(ctx);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class SifterRenderer extends BlockEntityRenderer<SifterTileEntity> {
 			if (item == null) {
 				item = new ItemEntity(EntityType.ITEM, world);
 				item.setItem(sifter.getSiftItem().copy());
-				item.setLevel(world);
+				//item.setLevel(world);
 			}
 
 			matrixStackIn.translate(0.0D, 0.4F, 0.0D);

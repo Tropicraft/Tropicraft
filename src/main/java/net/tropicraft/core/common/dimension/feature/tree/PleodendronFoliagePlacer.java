@@ -4,7 +4,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -21,7 +26,7 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
 
    protected final int height;
 
-   public PleodendronFoliagePlacer(UniformInt radius, UniformInt offset, int height) {
+   public PleodendronFoliagePlacer(IntProvider radius, IntProvider offset, int height) {
       super(radius, offset);
       this.height = height;
    }
@@ -30,14 +35,18 @@ public class PleodendronFoliagePlacer extends FoliagePlacer {
       return TropicraftFoliagePlacers.PLEODENDRON.get();
    }
 
-   protected void createFoliage(LevelSimulatedRW world, Random random, TreeConfiguration config, int height, FoliagePlacer.FoliageAttachment foliage, int offset, int y, Set<BlockPos> leaves, int start, BoundingBox bounds) {
-      int i = foliage.doubleTrunk() ? offset : 2;
+   @Override
+   protected void createFoliage(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, TreeConfiguration pConfig, int pMaxFreeTreeHeight, FoliageAttachment pAttachment, int pFoliageHeight, int pFoliageRadius, int pOffset) {
+      int i = pAttachment.doubleTrunk() ? offset.getMaxValue() : 2;
 
-      for(int j = start; j >= start - i; --j) {
-         int k = y + foliage.radiusOffset() + 1 - j;
-         this.placeLeavesRow(world, random, config, foliage.foliagePos(), k, leaves, j, foliage.doubleTrunk(), bounds);
+      for(int j = pFoliageRadius; j >= pFoliageRadius - i; --j) {
+         int k = pFoliageHeight + pAttachment.radiusOffset() + 1 - j;
+         this.placeLeavesRow(pLevel, pBlockSetter, pRandom, pConfig, pAttachment.pos(), k, j, pAttachment.doubleTrunk());
       }
 
+
+      this.placeLeavesRow(pLevel, pBlockSetter, pRandom, pConfig, pAttachment.pos(), pAttachment.radiusOffset(), 1, pAttachment.doubleTrunk());
+      this.placeLeavesRow(pLevel, pBlockSetter, pRandom, pConfig, pAttachment.pos(), pAttachment.radiusOffset(), 0, pAttachment.doubleTrunk());
    }
 
    public int foliageHeight(Random random, int height, TreeConfiguration config) {

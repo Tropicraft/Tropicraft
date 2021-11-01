@@ -143,9 +143,9 @@ public class Tropicraft {
     private void setupClient(final FMLClientSetupEvent event) {
         ClientSetup.setupBlockRenderLayers();
 
-        ClientSetup.setupEntityRenderers(event);
+        //ClientSetup.setupEntityRenderers(event);
 
-        ClientSetup.setupTileEntityRenderers();
+        //ClientSetup.setupTileEntityRenderers();
 
         ClientSetup.setupDimensionRenderInfo();
     }

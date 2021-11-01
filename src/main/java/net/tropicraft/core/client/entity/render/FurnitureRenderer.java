@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -21,12 +22,12 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
     private final float scale;
     private float red = 0.0F, green = 0.0F, blue = 0.0F;
 
-    public FurnitureRenderer(EntityRenderDispatcher renderManager, String textureName, EntityModel<T> model) {
-        this(renderManager, textureName, model, 1);
+    public FurnitureRenderer(EntityRendererProvider.Context context, String textureName, EntityModel<T> model) {
+        this(context, textureName, model, 1);
     }
     
-    public FurnitureRenderer(EntityRenderDispatcher renderManager, String textureName, EntityModel<T> model, float scale) {
-        super(renderManager);
+    public FurnitureRenderer(EntityRendererProvider.Context context, String textureName, EntityModel<T> model, float scale) {
+        super(context);
         this.textureName = textureName;
         this.model = model;
         this.scale = scale;
@@ -46,10 +47,10 @@ public class FurnitureRenderer<T extends FurnitureEntity> extends EntityRenderer
             stack.mulPose(new Quaternion(getRockingAxis(), rockingAngle, true));
         }
 
-        final int color = furniture.getColor().getColorValue();
-        red = ColorHelper.getRed(color);
-        green = ColorHelper.getGreen(color);
-        blue = ColorHelper.getBlue(color);
+        final float[] colorComponents = furniture.getColor().getTextureDiffuseColors();
+        red = colorComponents[0];
+        green = colorComponents[1];
+        blue = colorComponents[2];
 
         // Draw uncolored layer
         VertexConsumer ivertexbuilder = buffer.getBuffer(model.renderType(TropicraftRenderUtils.getTextureEntity(textureName + "_base_layer")));

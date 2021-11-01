@@ -133,7 +133,7 @@ public class TropicraftTrees {
         };
     }
 
-    static SimpleWeightedRandomList.Builder<BlockState> weightedBlockStateBuilder() {
+    public static SimpleWeightedRandomList.Builder<BlockState> weightedBlockStateBuilder() {
         return SimpleWeightedRandomList.builder();
     }
 

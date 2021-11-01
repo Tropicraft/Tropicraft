@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Vector3f;
@@ -16,8 +17,8 @@ import net.tropicraft.core.common.entity.placeable.AshenMaskEntity;
 public class AshenMaskRenderer extends EntityRenderer<AshenMaskEntity> {
 	protected TropicraftSpecialRenderHelper mask;
 
-	public AshenMaskRenderer(final EntityRenderDispatcher manager) {
-		super(manager);
+	public AshenMaskRenderer(EntityRendererProvider.Context context) {
+		super(context);
 		shadowRadius = 0.5F;
 		shadowStrength  = 0.5f;
 		mask = new TropicraftSpecialRenderHelper();

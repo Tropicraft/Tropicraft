@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import com.mojang.math.Vector3f;
@@ -18,9 +19,9 @@ public class SunglassesLayer extends RenderLayer<TropiBeeEntity, TropiBeeModel> 
     private TropicraftSpecialRenderHelper mask;
     private TropiBeeModel beeModel;
 
-    public SunglassesLayer(TropiBeeRenderer renderer) {
-        super(renderer);
-        beeModel = new TropiBeeModel();
+    public SunglassesLayer(RenderLayerParent<TropiBeeEntity, TropiBeeModel> featureRendererContext) {
+        super(featureRendererContext);
+        beeModel = featureRendererContext.getModel();
         mask = new TropicraftSpecialRenderHelper();
     }
 

@@ -10,7 +10,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.LevelSimulatedRW;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.tropicraft.core.common.dimension.feature.config.FruitTreeConfig;
 
 import java.util.Random;
@@ -24,7 +26,12 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 	}
 
 	@Override
-	public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, FruitTreeConfig config) {
+	public boolean place(FeaturePlaceContext<FruitTreeConfig> context) {
+		WorldGenLevel world = context.level();
+		Random rand = context.random();
+		BlockPos pos = context.origin();
+		FruitTreeConfig config = context.config();
+
 		pos = pos.immutable();
 		int height = rand.nextInt(3) + 4;
 
@@ -78,7 +85,7 @@ public class FruitTreeFeature extends Feature<FruitTreeConfig> {
 	protected static boolean isDirt(LevelSimulatedReader world, BlockPos pos) {
 		return world.isStateAtPosition(pos, (state) -> {
 			Block block = state.getBlock();
-			return isDirt(block) && block != Blocks.GRASS_BLOCK && block != Blocks.MYCELIUM;
+			return isDirt(block.defaultBlockState()) && block != Blocks.GRASS_BLOCK && block != Blocks.MYCELIUM;
 		});
 	}
 

@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +12,7 @@ import net.minecraft.Util;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.render.layer.CowktailLayer;
 import net.tropicraft.core.common.entity.passive.CowktailEntity;
 
@@ -22,8 +24,8 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
 		map.put(CowktailEntity.Type.ANEMONE, new ResourceLocation(Constants.MODID, "textures/entity/cowktail/anemone_cowktail.png"));
 	});
 
-	public CowktailRenderer(EntityRenderDispatcher renderManagerIn) {
-		super(renderManagerIn, new CowModel<>(), 0.7F);
+	public CowktailRenderer(EntityRendererProvider.Context context) {
+		super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7F);
 		this.addLayer(new CowktailLayer<>(this));
 	}
 

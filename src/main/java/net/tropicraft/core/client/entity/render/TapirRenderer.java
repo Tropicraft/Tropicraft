@@ -2,11 +2,13 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.TapirModel;
 import net.tropicraft.core.common.entity.passive.TapirEntity;
 
@@ -15,8 +17,8 @@ public class TapirRenderer extends MobRenderer<TapirEntity, TapirModel<TapirEnti
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/tapir.png");
     private static final ResourceLocation BABY_TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/tapir_baby.png");
 
-    public TapirRenderer(EntityRenderDispatcher manager) {
-        super(manager, new TapirModel<>(), 0.6F);
+    public TapirRenderer(EntityRendererProvider.Context context) {
+        super(context, new TapirModel<>(context.bakeLayer(TropicraftRenderLayers.TAPIR_LAYER)), 0.6F);
     }
 
     @Override

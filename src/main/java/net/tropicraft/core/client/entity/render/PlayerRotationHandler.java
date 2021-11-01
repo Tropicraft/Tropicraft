@@ -37,7 +37,7 @@ public class PlayerRotationHandler {
             FurnitureEntity floaty = (FurnitureEntity) riding;
 
             stack.pushPose();
-            stack.mulPose(Vector3f.YP.rotationDegrees(-(floaty.yRotO + (event.getPartialRenderTick() * (floaty.yRot - floaty.yRotO)))));
+            stack.mulPose(Vector3f.YP.rotationDegrees(-(floaty.yRotO + (event.getPartialRenderTick() * (floaty.getYRot() - floaty.yRotO)))));
             stack.translate(0, 1.55, 1.55);
             stack.mulPose(Vector3f.XN.rotationDegrees(90));
 
@@ -50,9 +50,9 @@ public class PlayerRotationHandler {
             prevRotationYawHead = p.yHeadRotO;
             p.yHeadRot = p.yBodyRot;
             p.yHeadRotO = p.yBodyRotO;
-            rotationPitch = p.xRot;
+            rotationPitch = p.getXRot();
             prevRotationPitch = p.xRotO;
-            p.xRot = 10f;
+            p.setXRot(10f);
             p.xRotO = 10f;
             
             // Cancel limb swing
@@ -65,7 +65,7 @@ public class PlayerRotationHandler {
             stack.pushPose();
 
             // Cancel out player camera rotation
-            float pitch = interpolateAndWrap(turtle.xRot, turtle.xRotO, event.getPartialRenderTick());
+            float pitch = interpolateAndWrap(turtle.getXRot(), turtle.xRotO, event.getPartialRenderTick());
             float yaw = interpolateAndWrap(turtle.yHeadRot, turtle.yHeadRotO, event.getPartialRenderTick());
 
             stack.translate(0, turtle.getPassengersRidingOffset() - p.getMyRidingOffset(), 0);
@@ -80,9 +80,9 @@ public class PlayerRotationHandler {
             stack.translate(passengerOffset.x(), 0, passengerOffset.z());
 
             // Lock in head
-            rotationPitch = p.xRot;
+            rotationPitch = p.getXRot();
             prevRotationPitch = p.xRotO;
-            p.xRot = 10f;
+            p.setXRot(10f);
             p.xRotO = 10f;
         }
     }
@@ -92,7 +92,7 @@ public class PlayerRotationHandler {
         Player p = event.getPlayer();
         if (p.getVehicle() instanceof BeachFloatEntity || p.getVehicle() instanceof SeaTurtleEntity) {
             event.getMatrixStack().popPose();
-            p.xRot = rotationPitch;
+            p.setXRot(rotationPitch);
             p.xRotO = prevRotationPitch;
         }
         if (p.getVehicle() instanceof BeachFloatEntity) {

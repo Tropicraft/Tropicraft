@@ -4,25 +4,25 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.commands.LocateCommand;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.commands.LocateCommand;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.VolcanicSandBlock;
@@ -206,7 +206,7 @@ public class VolcanoGenerator {
      * The latter is actually beneficial to the main use, village gen, because otherwise
      * village pieces may generate directly on top of a hole (and thus inside the volcano).
      * <p>
-     * It also duplicates a significant amount of logic from {@link #generate(int, int, IChunk, SharedSeedRandom)},
+     * It also duplicates a significant amount of logic from {@link #generate(int, int, ChunkAccess, WorldgenRandom)},
      * but I have yet to find a nice way to deduplicate that logic. This whole class could use
      * a rewrite at some point with these goals in mind.
      * <p>

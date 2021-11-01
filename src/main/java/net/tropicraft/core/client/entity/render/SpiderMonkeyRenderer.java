@@ -2,17 +2,19 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.SpiderMonkeyModel;
 import net.tropicraft.core.common.entity.passive.monkey.SpiderMonkeyEntity;
 
 public class SpiderMonkeyRenderer extends MobRenderer<SpiderMonkeyEntity, SpiderMonkeyModel<SpiderMonkeyEntity>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/spider_monkey.png");
 
-    public SpiderMonkeyRenderer(EntityRenderDispatcher manager) {
-        super(manager, new SpiderMonkeyModel<>(), 0.4F);
+    public SpiderMonkeyRenderer(EntityRendererProvider.Context context) {
+        super(context, new SpiderMonkeyModel<>(context.bakeLayer(TropicraftRenderLayers.SPIDER_MONKEY_LAYER)), 0.4F);
     }
 
     @Override

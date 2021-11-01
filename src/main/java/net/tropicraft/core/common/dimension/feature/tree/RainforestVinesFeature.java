@@ -10,6 +10,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.config.RainforestVinesConfig;
 
@@ -24,7 +26,12 @@ public class RainforestVinesFeature extends Feature<RainforestVinesConfig> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, RainforestVinesConfig config) {
+    public boolean place(FeaturePlaceContext<RainforestVinesConfig> context) {
+        WorldGenLevel world = context.level();
+        Random rand = context.random();
+        BlockPos pos = context.origin();
+        RainforestVinesConfig config = context.config();
+
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
 
         int maxY = Math.min(pos.getY() + config.height, world.getHeight());

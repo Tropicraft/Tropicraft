@@ -1,10 +1,12 @@
 package net.tropicraft.core.client.entity.render;
 
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.entity.model.KoaModel;
 import net.tropicraft.core.common.entity.passive.EntityKoaBase;
 
@@ -17,8 +19,8 @@ public class KoaRenderer extends HumanoidMobRenderer<EntityKoaBase, KoaModel> {
     private static final ResourceLocation MALE_HUNTER = new ResourceLocation(Constants.MODID, "textures/entity/koa/koa_man_hunter.png");
     private static final ResourceLocation FEMALE_HUNTER = new ResourceLocation(Constants.MODID, "textures/entity/koa/koa_woman_hunter.png");
 
-    public KoaRenderer(EntityRenderDispatcher rendermanagerIn) {
-        super(rendermanagerIn, new KoaModel(0), 0.5F);
+    public KoaRenderer(EntityRendererProvider.Context context) {
+        super(context, new KoaModel(context.bakeLayer(TropicraftRenderLayers.KOA_HUNTER_LAYER)), 0.5F);
         this.shadowStrength = 0.5f;
     }
 

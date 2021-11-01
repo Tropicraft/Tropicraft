@@ -9,6 +9,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.client.entity.model.*;
+import net.tropicraft.core.client.entity.render.*;
+import net.tropicraft.core.client.scuba.ModelScubaGear;
+import net.tropicraft.core.common.entity.TropicraftEntities;
 import net.tropicraft.core.common.item.AshenMaskItem;
 import net.tropicraft.core.common.item.TropicraftItems;
 
@@ -48,14 +51,34 @@ public class TropicraftRenderLayers {
     public static ModelLayerLocation TROPI_BEE_LAYER;
     public static ModelLayerLocation COWKTAIL_LAYER;
     public static ModelLayerLocation MAN_O_WAR_LAYER;
+    public static ModelLayerLocation TAPIR_LAYER;
+    public static ModelLayerLocation JAGUAR_LAYER;
+    public static ModelLayerLocation BROWN_BASILISK_LIZARD_LAYER;
+    public static ModelLayerLocation GREEN_BASILISK_LIZARD_LAYER;
+    public static ModelLayerLocation HUMMINGBIRD_LAYER;
+    public static ModelLayerLocation FIDDLER_CRAB_LAYER;
+    public static ModelLayerLocation SPIDER_MONKEY_LAYER;
+    public static ModelLayerLocation WHITE_LIPPED_PECCARY_LAYER;
+    public static ModelLayerLocation CUBERA_LAYER;
+
     public static ModelLayerLocation BAMBOO_MUG;
-    public static ArrayList<ModelLayerLocation> ASHEN_MASK_LAYERS = new ArrayList<>();//= registerMain("mask", PlayerHeadpieceModel::getTexturedModelData);
-    public static ModelLayerLocation STACHE_LAYER;
-    public static ModelLayerLocation BAMBOO_CHEST;
-    public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_LEFT;
-    public static ModelLayerLocation BAMBOO_DOUBLE_CHEST_RIGHT;
+
     public static ModelLayerLocation EIHMACHINE_LAYER;
     public static ModelLayerLocation AIRCOMPRESSOR_LAYER;
+
+    public static ArrayList<ModelLayerLocation> ASHEN_MASK_LAYERS = new ArrayList<>();//= registerMain("mask", PlayerHeadpieceModel::getTexturedModelData);
+    public static ModelLayerLocation STACHE_LAYER;
+
+    public static ModelLayerLocation CHEST_SCUBA_LAYER;
+    public static ModelLayerLocation FEET_SCUBA_LAYER;
+    public static ModelLayerLocation HEAD_SCUBA_LAYER;
+
+    public static ModelLayerLocation TANK_SCUBA_LAYER;
+
+
+
+
+
 
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -88,30 +111,36 @@ public class TropicraftRenderLayers {
         TROPI_BEE_LAYER = registerMain("tropi_bee", () -> TropiBeeModel.createBodyLayer(), event);
         COWKTAIL_LAYER = registerMain("cowktail", () -> CowModel.createBodyLayer(), event);
         MAN_O_WAR_LAYER = registerMain("man_o_war", () -> ManOWarModel.create(), event);
+        TAPIR_LAYER = registerMain("tapir", () -> TapirModel.create(), event);
+        JAGUAR_LAYER = registerMain("jaguar", () -> JaguarModel.create(), event);
+        BROWN_BASILISK_LIZARD_LAYER = registerMain("brown_basilisk_lizard", () -> BasiliskLizardModel.create(), event);
+        GREEN_BASILISK_LIZARD_LAYER = registerMain("green_basilisk_lizard", () -> BasiliskLizardModel.create(), event);
+        HUMMINGBIRD_LAYER = registerMain("hummingbird", () -> HummingbirdModel.create(), event);
+        FIDDLER_CRAB_LAYER = registerMain("fiddler_crab", () -> FiddlerCrabModel.create(), event);
+        SPIDER_MONKEY_LAYER = registerMain("spider_monkey", () -> SpiderMonkeyModel.create(), event);
+        WHITE_LIPPED_PECCARY_LAYER = registerMain("white_lipped_peccary", () -> WhiteLippedPeccaryModel.create(), event);
+        CUBERA_LAYER = registerMain("cubera", () -> CuberaModel.create(), event);
 
+        //Misc Layers
         BAMBOO_MUG = registerMain("bamboo_mug", () -> BambooMugModel.create(), event);
 
-        //BAMBOO_CHEST = registerMain("bamboo_chest", BambooChestRenderer);
-        //BAMBOO_DOUBLE_CHEST_LEFT = registerMain("bamboo_double_chest_left", () -> BambooChestBlockEntityRenderer.getLeftDoubleTexturedModelData());
-        //BAMBOO_DOUBLE_CHEST_RIGHT = registerMain("bamboo_double_chest_right", () -> BambooChestBlockEntityRenderer.getRightDoubleTexturedModelData());
+        //Block Entity's Layers
         EIHMACHINE_LAYER = registerMain("drink_mixer", () -> EIHMachineModel.create(), event);
         AIRCOMPRESSOR_LAYER = registerMain("air_compressor", () -> EIHMachineModel.create(), event);
 
-        //ArrayList<MaskArmorProvider> MASK_PROVIDER = new ArrayList<>();
-        final List<RegistryObject<AshenMaskItem>> values = TropicraftItems.ASHEN_MASKS.values().asList();
-        final int size = values.size();
-
-        for (int i = 0; i < size; i++) {
-            RegistryObject<AshenMaskItem> maskItem = values.get(i);
+        //Armor Layers
+        for(RegistryObject<AshenMaskItem> maskItem : TropicraftItems.ASHEN_MASKS.values().asList()){
             ModelLayerLocation ashen_mask_layer = registerMain("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), () -> PlayerHeadpieceModel.create(), event);
             ASHEN_MASK_LAYERS.add(ashen_mask_layer);
         }
-
         STACHE_LAYER = registerMain("nigel_stache", () -> PlayerHeadpieceModel.create(), event);
 
+        HEAD_SCUBA_LAYER = registerMain("scuba_goggles", () -> ModelScubaGear.create(), event);
+        CHEST_SCUBA_LAYER = registerMain("scuba_harness", () -> ModelScubaGear.create(), event);
+        FEET_SCUBA_LAYER = registerMain("scuba_flippers", () -> ModelScubaGear.create(), event);
 
+        TANK_SCUBA_LAYER = registerMain("pony_bottle", () -> ModelScubaGear.create(), event);
     }
-
 
     private static ModelLayerLocation registerMain(String id, Supplier<LayerDefinition> layerDefinition, EntityRenderersEvent.RegisterLayerDefinitions event) {
         ModelLayerLocation modelLayer = new ModelLayerLocation(new ResourceLocation(Constants.MODID, id), "main");

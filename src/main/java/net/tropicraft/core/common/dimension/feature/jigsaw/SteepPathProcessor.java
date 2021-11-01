@@ -76,7 +76,7 @@ public class SteepPathProcessor extends PathStructureProcessor {
     private BlockState canPlaceLadderAt(LevelReader worldReaderIn, BlockPos pos, Direction dir) {
         BlockPos check = pos.relative(dir);
         BlockState state = worldReaderIn.getBlockState(check);
-        if (!state.isAir(worldReaderIn, check)) {
+        if (!state.isAir()) {
             BlockState ladderState = getLadderState(dir);
             if (ladderState.canSurvive(worldReaderIn, pos)) {
                 return ladderState;

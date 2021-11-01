@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.NonNullList;
 import com.mojang.math.Vector3f;
+import net.tropicraft.core.client.TropicraftRenderLayers;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.BambooMugModel;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
@@ -23,7 +25,7 @@ import net.tropicraft.core.common.block.tileentity.DrinkMixerTileEntity;
 import net.tropicraft.core.common.item.CocktailItem;
 
 public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
-    private final BambooMugModel modelBambooMug = new BambooMugModel(RenderType::entityCutout);
+    private final BambooMugModel modelBambooMug; //= new BambooMugModel(RenderType::entityCutout);
     private final ItemRenderer renderItem;
     private ItemEntity dummyEntityItem;
 
@@ -39,8 +41,9 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
         {0.8f, 0.8f, 0.8f}
     };
 
-    public DrinkMixerRenderer(final BlockEntityRenderDispatcher rendererDispatcher) {
-        super(rendererDispatcher, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(RenderType::entitySolid));
+    public DrinkMixerRenderer(final BlockEntityRendererProvider.Context ctx) {
+        super(ctx, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(ctx.bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER),RenderType::entitySolid));
+        modelBambooMug = new BambooMugModel(ctx.bakeLayer(TropicraftRenderLayers.BAMBOO_MUG), RenderType::entityCutout);
         this.renderItem = Minecraft.getInstance().getItemRenderer();
     }
 
