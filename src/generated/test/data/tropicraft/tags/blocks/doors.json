@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#tropicraft:wooden_doors",
+    "tropicraft:bamboo_door",
+    "tropicraft:thatch_door"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:raw_coffee_bean"
+    ]
+  },
+  "criteria": {
+    "has_coffee_bean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:coffee_berry"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:raw_coffee_bean"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_coffee_bean",
+      "has_the_recipe"
+    ]
+  ]
+}

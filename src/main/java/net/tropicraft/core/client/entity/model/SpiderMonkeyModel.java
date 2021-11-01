@@ -23,21 +23,21 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel
 
     public SpiderMonkeyModel(ModelPart root) {
         body_base = root.getChild("body_base");
-        head_base = root.getChild("head_base");
-        monke = root.getChild("monke");
+        head_base = body_base.getChild("head_base");
+        monke = head_base.getChild("monke");
 
-        tail_a = root.getChild("tail_a");
-        tail_b = root.getChild("tail_b");
+        tail_a = body_base.getChild("tail_a");
+        tail_b = tail_a.getChild("tail_b");
 
-        arm_left_a = root.getChild("arm_left_a");
+        arm_left_a = body_base.getChild("arm_left_a");
 
-        leg_left_a = root.getChild("leg_left_a");
-        leg_left_a_r1 = root.getChild("leg_left_a_r1");
+        leg_left_a = body_base.getChild("leg_left_a");
+        leg_left_a_r1 = leg_left_a.getChild("leg_left_a_r1");
 
-        arm_right_a = root.getChild("arm_right_a");
+        arm_right_a = body_base.getChild("arm_right_a");
 
-        leg_right_a = root.getChild("leg_right_a");
-        leg_right_a_r1 = root.getChild("leg_right_a_r1");
+        leg_right_a = body_base.getChild("leg_right_a");
+        leg_right_a_r1 = leg_right_a.getChild("leg_right_a_r1");
 
 //        texWidth = 64;
 //        texHeight = 64;
@@ -133,11 +133,11 @@ public class SpiderMonkeyModel<T extends SpiderMonkeyEntity> extends EntityModel
                         .addBox(-1.0F, -0.5F, -1.0F, 2.0F, 8.0F, 2.0F, false),
                 PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 65.0F, 0.0F, 0.0F));
 
-        modelPartBody.addOrReplaceChild("tail_b",
+        modelPartTail.addOrReplaceChild("tail_b",
                 CubeListBuilder.create()
                         .texOffs(0, 39)
                         .addBox(-0.99F, 0.0F, -2.0F, 2.0F, 6.0F, 2.0F, false),
-                PartPose.offsetAndRotation(0.0F, 1.0F, 0.0F, 65.0F, 0.0F, 0.0F));
+                PartPose.offsetAndRotation(0.0F, 7.5F, 1.0F, -35.0F, 0.0F, 0.0F));
 
         modelPartBody.addOrReplaceChild("arm_left_a",
                 CubeListBuilder.create()

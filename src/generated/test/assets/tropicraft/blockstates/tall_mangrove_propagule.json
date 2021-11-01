@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "planted=false": {
+      "model": "tropicraft:block/tall_mangrove_propagule_hanging"
+    },
+    "planted=true": {
+      "model": "tropicraft:block/tall_mangrove_propagule_planted"
+    }
+  }
+}

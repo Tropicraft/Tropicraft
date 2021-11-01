@@ -6,22 +6,33 @@
           "config": {
             "feature": {
               "config": {
-                "target": {
-                  "tag": "minecraft:base_stone_overworld",
-                  "predicate_type": "minecraft:tag_match"
-                },
-                "state": {
-                  "Name": "tropicraft:manganese_ore"
-                },
-                "size": 10
+                "targets": [
+                  {
+                    "target": {
+                      "tag": "minecraft:base_stone_overworld",
+                      "predicate_type": "minecraft:tag_match"
+                    },
+                    "state": {
+                      "Name": "tropicraft:manganese_ore"
+                    }
+                  }
+                ],
+                "size": 10,
+                "discard_chance_on_air_exposure": 0.0
               },
               "type": "minecraft:ore"
             },
             "decorator": {
               "config": {
-                "bottom_offset": 32,
-                "top_offset": 0,
-                "maximum": 32
+                "height": {
+                  "min_inclusive": {
+                    "absolute": 32
+                  },
+                  "max_inclusive": {
+                    "absolute": 32
+                  },
+                  "type": "minecraft:uniform"
+                }
               },
               "type": "minecraft:range"
             }

@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "type=single": {
+      "model": "tropicraft:block/reeds_top_short"
+    },
+    "type=bottom": {
+      "model": "tropicraft:block/reeds_bottom"
+    },
+    "type=top": [
+      {
+        "model": "tropicraft:block/reeds_top_tall"
+      },
+      {
+        "model": "tropicraft:block/reeds_top_short"
+      }
+    ]
+  }
+}

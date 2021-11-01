@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tropicraft:zircon_block"
+    }
+  ],
+  "result": {
+    "item": "tropicraft:zircon_gem",
+    "count": 9
+  }
+}

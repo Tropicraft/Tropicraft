@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=upper": {
+      "model": "tropicraft:block/tall_golden_leather_fern_top"
+    },
+    "half=lower": {
+      "model": "tropicraft:block/tall_golden_leather_fern_bottom"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tropicraft:magic_mushroom"
+    },
+    {
+      "item": "tropicraft:croton"
+    }
+  ],
+  "result": {
+    "item": "tropicraft:tropical_fertilizer"
+  }
+}

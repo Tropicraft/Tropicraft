@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:palm_log",
+    "tropicraft:mahogany_log",
+    "tropicraft:light_mangrove_log",
+    "tropicraft:red_mangrove_log",
+    "tropicraft:black_mangrove_log",
+    "tropicraft:stripped_mangrove_log"
+  ]
+}

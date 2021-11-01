@@ -2,11 +2,10 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SharkModel;
 import net.tropicraft.core.common.entity.underdasea.SharkEntity;
@@ -17,7 +16,7 @@ public class SharkRenderer extends MobRenderer<SharkEntity, SharkModel> {
     public static final ResourceLocation BOSS_SHARK_TEXTURE = TropicraftRenderUtils.getTextureEntity("shark/hammerhead4");
 
     public SharkRenderer(EntityRendererProvider.Context context) {
-        super(context, new SharkModel(context.bakeLayer(TropicraftRenderLayers.HAMMERHEAD_LAYER)), 1);
+        super(context, new SharkModel(context.bakeLayer(ClientSetup.HAMMERHEAD_LAYER)), 1);
     }
 
     @Override

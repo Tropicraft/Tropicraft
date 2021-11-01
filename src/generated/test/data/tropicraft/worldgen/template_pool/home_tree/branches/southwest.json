@@ -1,0 +1,22 @@
+{
+  "name": "tropicraft:home_tree/branches/southwest",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 4,
+      "element": {
+        "feature": "tropicraft:home_tree/branch/southwest",
+        "projection": "rigid",
+        "element_type": "minecraft:feature_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "feature": "tropicraft:home_tree/branch/southwest_exact",
+        "projection": "rigid",
+        "element_type": "minecraft:feature_pool_element"
+      }
+    }
+  ]
+}

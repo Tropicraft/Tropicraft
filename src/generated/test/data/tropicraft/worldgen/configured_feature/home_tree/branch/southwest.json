@@ -1,0 +1,7 @@
+{
+  "config": {
+    "min_angle": 300.0,
+    "max_angle": 330.0
+  },
+  "type": "tropicraft:home_tree_branch"
+}

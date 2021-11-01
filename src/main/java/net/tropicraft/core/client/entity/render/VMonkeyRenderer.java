@@ -1,11 +1,10 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.entity.model.VMonkeyModel;
 import net.tropicraft.core.client.entity.render.layer.VMonkeyHeldItemLayer;
 import net.tropicraft.core.common.entity.neutral.VMonkeyEntity;
@@ -15,7 +14,7 @@ public class VMonkeyRenderer extends MobRenderer<VMonkeyEntity, VMonkeyModel> {
     private static final ResourceLocation ANGRY_TEXTURE = new ResourceLocation(Constants.MODID + ":textures/entity/monkey_angrytext.png");
 
     public VMonkeyRenderer(EntityRendererProvider.Context context) {
-        super(context, new VMonkeyModel(context.bakeLayer(TropicraftRenderLayers.V_MONKEY_LAYER)), 0.5F);
+        super(context, new VMonkeyModel(context.bakeLayer(ClientSetup.V_MONKEY_LAYER)), 0.5F);
         shadowRadius = 0.3f;
         shadowStrength = 0.5f;
         addLayer(new VMonkeyHeldItemLayer<>(this));

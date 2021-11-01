@@ -27,15 +27,22 @@
       "minecraft:ore_redstone",
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
+      "minecraft:ore_copper",
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
       "minecraft:ore_granite",
       "minecraft:ore_diorite",
       "minecraft:ore_andesite",
+      "minecraft:ore_tuff",
+      "minecraft:ore_deepslate",
       "tropicraft:mud_disk"
     ],
-    [],
     [
+      "minecraft:rare_dripstone_cluster",
+      "minecraft:rare_small_dripstone"
+    ],
+    [
+      "minecraft:glow_lichen",
       "tropicraft:mangrove_vegetation",
       "tropicraft:small_golden_leather_fern",
       "tropicraft:tall_golden_leather_fern",
@@ -163,6 +170,7 @@
         "maxCount": 15
       }
     ],
+    "underground_water_creature": [],
     "water_creature": [
       {
         "type": "tropicraft:piranha",

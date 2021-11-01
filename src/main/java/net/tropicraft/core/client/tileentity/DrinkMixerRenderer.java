@@ -10,13 +10,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.NonNullList;
 import com.mojang.math.Vector3f;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.BambooMugModel;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
@@ -42,8 +41,8 @@ public class DrinkMixerRenderer extends MachineRenderer<DrinkMixerTileEntity> {
     };
 
     public DrinkMixerRenderer(final BlockEntityRendererProvider.Context ctx) {
-        super(ctx, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(ctx.bakeLayer(TropicraftRenderLayers.EIHMACHINE_LAYER),RenderType::entitySolid));
-        modelBambooMug = new BambooMugModel(ctx.bakeLayer(TropicraftRenderLayers.BAMBOO_MUG), RenderType::entityCutout);
+        super(ctx, TropicraftBlocks.DRINK_MIXER.get(), new EIHMachineModel<>(ctx.bakeLayer(ClientSetup.EIHMACHINE_LAYER),RenderType::entitySolid));
+        modelBambooMug = new BambooMugModel(ctx.bakeLayer(ClientSetup.BAMBOO_MUG), RenderType::entityCutout);
         this.renderItem = Minecraft.getInstance().getItemRenderer();
     }
 

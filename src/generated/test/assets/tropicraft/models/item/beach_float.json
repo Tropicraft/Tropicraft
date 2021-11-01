@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "tropicraft:item/beach_float",
+    "layer1": "tropicraft:item/beach_float_inverted"
+  }
+}

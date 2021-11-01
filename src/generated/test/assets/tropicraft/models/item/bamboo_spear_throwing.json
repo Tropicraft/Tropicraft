@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:item/spear_throwing",
+  "textures": {
+    "layer0": "tropicraft:item/bamboo_spear"
+  }
+}

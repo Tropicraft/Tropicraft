@@ -169,7 +169,7 @@ public class JaguarModel<T extends Entity> extends TropicraftAgeableModel<T> {
                         .addBox(-2.0F, -2.0F, -1.0F, 3.0F, 15.0F, 4.0F, false),
                 PartPose.offset(4.0F, 2.0F, -8.0F));
 
-        PartDefinition modelPartHead = modelPartBody.addOrReplaceChild("head_base",
+        PartDefinition modelPartHead = modelPartData.addOrReplaceChild("head_base",
                 CubeListBuilder.create()
                         .texOffs(0, 20)
                         .addBox(-3.5F, -2.0F, -7.0F, 7.0F, 7.0F, 7.0F, false),
@@ -195,7 +195,7 @@ public class JaguarModel<T extends Entity> extends TropicraftAgeableModel<T> {
                 CubeListBuilder.create(),
                 PartPose.offsetAndRotation(-2.0F, -2.0F, -3.0F, 0.0F, 0.5672F, -0.3927F));
 
-        modelPartEarLeft.addOrReplaceChild("ear_right_r1",
+        modelPartEarRight.addOrReplaceChild("ear_right_r1",
                 CubeListBuilder.create()
                         .texOffs(15, 66)
                         .addBox(-3.0F, -2.0F, 0.0F, 3.0F, 3.0F, 1.0F, false),

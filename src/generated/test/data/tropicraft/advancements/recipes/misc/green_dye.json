@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:green_dye"
+    ]
+  },
+  "criteria": {
+    "has_dracaena": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:dracaena"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:green_dye"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dracaena",
+      "has_the_recipe"
+    ]
+  ]
+}

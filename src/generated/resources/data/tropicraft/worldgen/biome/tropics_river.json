@@ -26,14 +26,21 @@
       "minecraft:ore_redstone",
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
+      "minecraft:ore_copper",
       "minecraft:ore_dirt",
       "minecraft:ore_gravel",
       "minecraft:ore_granite",
       "minecraft:ore_diorite",
-      "minecraft:ore_andesite"
+      "minecraft:ore_andesite",
+      "minecraft:ore_tuff",
+      "minecraft:ore_deepslate"
     ],
-    [],
     [
+      "minecraft:rare_dripstone_cluster",
+      "minecraft:rare_small_dripstone"
+    ],
+    [
+      "minecraft:glow_lichen",
       "tropicraft:tropics_flowers",
       "tropicraft:iris_flowers"
     ]
@@ -97,6 +104,7 @@
     ],
     "creature": [],
     "ambient": [],
+    "underground_water_creature": [],
     "water_creature": [
       {
         "type": "tropicraft:piranha",

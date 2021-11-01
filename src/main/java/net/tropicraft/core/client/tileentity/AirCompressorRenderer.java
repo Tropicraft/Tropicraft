@@ -7,11 +7,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.EIHMachineModel;
 import net.tropicraft.core.client.scuba.ModelScubaGear;
@@ -21,10 +19,10 @@ import net.tropicraft.core.common.item.scuba.ScubaArmorItem;
 
 public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEntity> {
     
-    private final ModelScubaGear tankModel = ModelScubaGear.createModel(TropicraftRenderLayers.TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
+    //private final ModelScubaGear tankModel = ModelScubaGear.createModel(TropicraftRenderLayers.TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
     public AirCompressorRenderer(final BlockEntityRendererProvider.Context ctx) {
-        super(ctx, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(ctx.bakeLayer(TropicraftRenderLayers.AIRCOMPRESSOR_LAYER), RenderType::entitySolid));
+        super(ctx, TropicraftBlocks.AIR_COMPRESSOR.get(), new EIHMachineModel<>(ctx.bakeLayer(ClientSetup.AIRCOMPRESSOR_LAYER), RenderType::entitySolid));
     }
 
     @Override
@@ -54,8 +52,8 @@ public class AirCompressorRenderer extends MachineRenderer<AirCompressorTileEnti
             stack.mulPose(Vector3f.YP.rotationDegrees(90));
             // TODO this is likely wrong
             VertexConsumer builder = ItemRenderer.getFoilBuffer(buffer, RenderType.entityCutoutNoCull(ScubaArmorItem.getArmorTexture(te.getTank().getType())), true, false);
-            tankModel.showChest = true;
-            tankModel.renderScubaGear(stack, builder, combinedLightIn, combinedOverlayIn, false);
+            ModelScubaGear.tankModel.showChest = true;
+            ModelScubaGear.tankModel.renderScubaGear(stack, builder, combinedLightIn, combinedOverlayIn, false);
             stack.popPose();
         }
     }

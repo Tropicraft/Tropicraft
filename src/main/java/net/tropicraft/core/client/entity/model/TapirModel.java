@@ -22,18 +22,18 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
 
     public TapirModel(ModelPart root) {
         body_base = root.getChild("body_base");
-        head_base = root.getChild("body_base");
-        tail_base = body_base.getChild("body_base");
-        trunk_base = head_base.getChild("body_base");
-        trunk_tip = trunk_base.getChild("body_base");
-        ear_left = head_base.getChild("body_base");
-        ear_left_r1 = ear_left.getChild("body_base");
-        ear_right = head_base.getChild("body_base");
-        ear_right_r1 = ear_right.getChild("body_base");
-        leg_front_left = body_base.getChild("body_base");
-        leg_front_right = body_base.getChild("body_base");
-        leg_back_left = body_base.getChild("body_base");
-        leg_back_right = body_base.getChild("body_base");
+        head_base = root.getChild("head_base");
+        tail_base = body_base.getChild("tail_base");
+        trunk_base = head_base.getChild("trunk_base");
+        trunk_tip = trunk_base.getChild("trunk_tip");
+        ear_left = head_base.getChild("ear_left");
+        ear_left_r1 = ear_left.getChild("ear_left_r1");
+        ear_right = head_base.getChild("ear_right");
+        ear_right_r1 = ear_right.getChild("ear_right_r1");
+        leg_front_left = body_base.getChild("leg_front_left");
+        leg_front_right = body_base.getChild("leg_front_right");
+        leg_back_left = body_base.getChild("leg_back_left");
+        leg_back_right = body_base.getChild("leg_back_right");
 
 //        texWidth = 128;
 //        texHeight = 128;
@@ -180,7 +180,7 @@ public class TapirModel<T extends Entity> extends TropicraftAgeableModel<T> {
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 10.0F, 4.0F, false),
                 PartPose.offset(3.0F, 7.0F, 4.0F));
 
-        modelPartBody.addOrReplaceChild("leg_back_left",
+        modelPartBody.addOrReplaceChild("leg_back_right",
                 CubeListBuilder.create()
                         .texOffs(0, 48)
                         .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 10.0F, 4.0F, false),

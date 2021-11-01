@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "forge:ores/azurite"
+  },
+  "result": "tropicraft:azurite_gem",
+  "experience": 0.3,
+  "cookingtime": 100
+}

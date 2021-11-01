@@ -1,0 +1,22 @@
+{
+  "name": "tropicraft:home_tree/branches/northeast",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 4,
+      "element": {
+        "feature": "tropicraft:home_tree/branch/northeast",
+        "projection": "rigid",
+        "element_type": "minecraft:feature_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "feature": "tropicraft:home_tree/branch/northeast_exact",
+        "projection": "rigid",
+        "element_type": "minecraft:feature_pool_element"
+      }
+    }
+  ]
+}

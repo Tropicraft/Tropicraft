@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ores/azurite",
+    "#forge:ores/eudialyte",
+    "#forge:ores/zircon",
+    "#forge:ores/manganese",
+    "#forge:ores/shaka"
+  ]
+}

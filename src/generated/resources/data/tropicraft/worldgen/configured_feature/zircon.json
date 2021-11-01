@@ -6,22 +6,33 @@
           "config": {
             "feature": {
               "config": {
-                "target": {
-                  "tag": "minecraft:base_stone_overworld",
-                  "predicate_type": "minecraft:tag_match"
-                },
-                "state": {
-                  "Name": "tropicraft:zircon_ore"
-                },
-                "size": 14
+                "targets": [
+                  {
+                    "target": {
+                      "tag": "minecraft:base_stone_overworld",
+                      "predicate_type": "minecraft:tag_match"
+                    },
+                    "state": {
+                      "Name": "tropicraft:zircon_ore"
+                    }
+                  }
+                ],
+                "size": 14,
+                "discard_chance_on_air_exposure": 0.0
               },
               "type": "minecraft:ore"
             },
             "decorator": {
               "config": {
-                "bottom_offset": 100,
-                "top_offset": 0,
-                "maximum": 128
+                "height": {
+                  "min_inclusive": {
+                    "absolute": 100
+                  },
+                  "max_inclusive": {
+                    "absolute": 128
+                  },
+                  "type": "minecraft:uniform"
+                }
               },
               "type": "minecraft:range"
             }

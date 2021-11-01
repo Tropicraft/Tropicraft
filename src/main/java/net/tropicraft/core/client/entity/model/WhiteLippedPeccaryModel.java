@@ -24,22 +24,22 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
     public WhiteLippedPeccaryModel(ModelPart root) {
 
         body_base = root.getChild("body_base");
-        head_base = root.getChild("body_base");
+        head_base = body_base.getChild("head_base");
 
-        head_connection = head_base.getChild("body_base");
-        ear_right = head_base.getChild("body_base");
-        ear_left = head_base.getChild("body_base");
+        head_connection = head_base.getChild("head_connection");
+        ear_right = head_base.getChild("ear_right");
+        ear_left = head_base.getChild("ear_left");
 
-        head_snout_bridge = head_base.getChild("body_base");
-        head_snout = head_snout_bridge.getChild("body_base");
-        head_snout_r1 = head_snout.getChild("body_base");
+        head_snout_bridge = head_base.getChild("head_snout_bridge");
+        head_snout = head_snout_bridge.getChild("head_snout");
+        head_snout_r1 = head_snout.getChild("head_snout_r1");
 
-        hair_base_right = body_base.getChild("body_base");
-        hair_base_left = body_base.getChild("body_base");
-        leg_left_ba = body_base.getChild("body_base");
-        leg_right_ba = body_base.getChild("body_base");
-        leg_left_fr = body_base.getChild("body_base");
-        leg_right_fr = body_base.getChild("body_base");
+        hair_base_right = body_base.getChild("hair_base_right");
+        hair_base_left = body_base.getChild("hair_base_left");
+        leg_left_ba = body_base.getChild("leg_left_ba");
+        leg_right_ba = body_base.getChild("leg_right_ba");
+        leg_left_fr = body_base.getChild("leg_left_fr");
+        leg_right_fr = body_base.getChild("leg_right_fr");
 
 //        texWidth = 64;
 //        texHeight = 64;
@@ -160,7 +160,7 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
                         .addBox(-1.5F, 0.0F, -6.0F, 3.0F, 4.0F, 6.0F, false),
                 PartPose.offsetAndRotation(0.0F, -3.0F, -3.0F, 0.48F, 0.0F, 0.0F));
 
-        PartDefinition modelPartHeadSnout = modelPartHead.addOrReplaceChild("head_snout",
+        PartDefinition modelPartHeadSnout = modelPartHeadSnoutBridge.addOrReplaceChild("head_snout",
                 CubeListBuilder.create(),
                 PartPose.offsetAndRotation(0.0F, 0.0F, -6.0F, -0.1309F, 0.0F, 0.0F));
 
@@ -205,7 +205,7 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
                         .texOffs(0, 41).addBox(-0.995F, 0.1F, -1.0F, 2.0F, 6.0F, 2.0F, false),
                 PartPose.offset(-2.0F, 5.9F, -8.0F));
 
-        return LayerDefinition.create(modelData, 32, 32);
+        return LayerDefinition.create(modelData, 64, 64);
     }
 
 	@Override

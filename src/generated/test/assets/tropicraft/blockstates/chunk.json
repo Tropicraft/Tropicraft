@@ -1,0 +1,78 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "tropicraft:block/chunk"
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "y": 270
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 90
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 180
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 270
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/chunk",
+        "x": 270,
+        "y": 270
+      }
+    ]
+  }
+}

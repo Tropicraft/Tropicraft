@@ -2,16 +2,15 @@ package net.tropicraft.core.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.entity.model.ChairModel;
 import net.tropicraft.core.common.entity.placeable.ChairEntity;
 
 public class ChairRenderer extends FurnitureRenderer<ChairEntity> {
 
     public ChairRenderer(EntityRendererProvider.Context context) {
-        super(context, "chair", new ChairModel(context.bakeLayer(TropicraftRenderLayers.CHAIR_LAYER)));
+        super(context, "chair", new ChairModel(context.bakeLayer(ClientSetup.CHAIR_LAYER)));
         shadowRadius = 0.65f;
     }
     

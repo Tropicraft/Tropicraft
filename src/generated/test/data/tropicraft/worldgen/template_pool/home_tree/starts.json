@@ -1,0 +1,24 @@
+{
+  "name": "tropicraft:home_tree/starts",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "tropicraft:home_tree/trunks/bottom/trunk_0",
+        "processors": "tropicraft:home_tree/start",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "tropicraft:home_tree/trunks/bottom/trunk_1",
+        "processors": "tropicraft:home_tree/start",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

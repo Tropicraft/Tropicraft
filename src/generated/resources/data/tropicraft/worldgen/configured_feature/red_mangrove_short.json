@@ -1,15 +1,5 @@
 {
   "config": {
-    "max_water_depth": 1,
-    "ignore_vines": false,
-    "heightmap": "OCEAN_FLOOR",
-    "minimum_size": {
-      "limit": 0,
-      "lower_size": 0,
-      "upper_size": 0,
-      "min_clipped_height": 4,
-      "type": "minecraft:two_layers_feature_size"
-    },
     "decorators": [
       {
         "probability": 0.02,
@@ -21,16 +11,22 @@
         "type": "tropicraft:pianguas"
       }
     ],
-    "trunk_provider": {
+    "ignore_vines": false,
+    "force_dirt": false,
+    "dirt_provider": {
       "state": {
-        "Properties": {
-          "axis": "y"
-        },
-        "Name": "tropicraft:red_mangrove_log"
+        "Name": "minecraft:dirt"
       },
       "type": "minecraft:simple_state_provider"
     },
-    "leaves_provider": {
+    "minimum_size": {
+      "limit": 0,
+      "lower_size": 0,
+      "upper_size": 0,
+      "min_clipped_height": 4,
+      "type": "minecraft:two_layers_feature_size"
+    },
+    "foliage_provider": {
       "state": {
         "Properties": {
           "persistent": "false",
@@ -40,10 +36,25 @@
       },
       "type": "minecraft:simple_state_provider"
     },
+    "sapling_provider": {
+      "state": {
+        "Name": "minecraft:air"
+      },
+      "type": "minecraft:simple_state_provider"
+    },
     "foliage_placer": {
       "radius": 0,
       "offset": 0,
       "type": "tropicraft:mangrove"
+    },
+    "trunk_provider": {
+      "state": {
+        "Properties": {
+          "axis": "y"
+        },
+        "Name": "tropicraft:red_mangrove_log"
+      },
+      "type": "minecraft:simple_state_provider"
     },
     "trunk_placer": {
       "roots_block": "tropicraft:red_mangrove_roots",

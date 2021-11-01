@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "I"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:chunk"
+    },
+    "I": {
+      "item": "tropicraft:bamboo_stick"
+    }
+  },
+  "result": {
+    "item": "tropicraft:dagger"
+  }
+}

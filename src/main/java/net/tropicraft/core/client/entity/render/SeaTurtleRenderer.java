@@ -3,11 +3,10 @@ package net.tropicraft.core.client.entity.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.SeaTurtleModel;
 import net.tropicraft.core.common.entity.SeaTurtleEntity;
@@ -15,7 +14,7 @@ import net.tropicraft.core.common.entity.SeaTurtleEntity;
 public class SeaTurtleRenderer extends MobRenderer<SeaTurtleEntity, SeaTurtleModel> {
 
     public SeaTurtleRenderer(EntityRendererProvider.Context context) {
-        super(context, new SeaTurtleModel(context.bakeLayer(TropicraftRenderLayers.SEA_TURTLE_LAYER)), 0.7F);
+        super(context, new SeaTurtleModel(context.bakeLayer(ClientSetup.SEA_TURTLE_LAYER)), 0.7F);
         shadowRadius = 0.5f;
         shadowStrength = 0.5f;
     }

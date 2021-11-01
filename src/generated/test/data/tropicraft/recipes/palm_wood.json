@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "tropicraft:palm_log"
+    }
+  },
+  "result": {
+    "item": "tropicraft:palm_wood",
+    "count": 3
+  }
+}

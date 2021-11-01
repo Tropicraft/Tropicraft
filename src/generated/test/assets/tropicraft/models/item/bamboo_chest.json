@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/chest",
+  "textures": {
+    "particle": "tropicraft:block/bamboo_side"
+  }
+}

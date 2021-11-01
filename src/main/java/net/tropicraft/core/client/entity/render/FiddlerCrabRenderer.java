@@ -1,11 +1,10 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.tropicraft.Constants;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.entity.model.FiddlerCrabModel;
 import net.tropicraft.core.common.entity.passive.FiddlerCrabEntity;
 
@@ -13,7 +12,7 @@ public class FiddlerCrabRenderer extends MobRenderer<FiddlerCrabEntity, FiddlerC
     private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MODID, "textures/entity/fiddler_crab.png");
 
     public FiddlerCrabRenderer(EntityRendererProvider.Context context) {
-        super(context, new FiddlerCrabModel<>(context.bakeLayer(TropicraftRenderLayers.FIDDLER_CRAB_LAYER)), 0.3F);
+        super(context, new FiddlerCrabModel<>(context.bakeLayer(ClientSetup.FIDDLER_CRAB_LAYER)), 0.3F);
     }
 
     @Override

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "forge:ores/zircon"
+  },
+  "result": "tropicraft:zircon_gem",
+  "experience": 0.5,
+  "cookingtime": 100
+}

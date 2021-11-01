@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:bamboo_boardwalk"
+    ]
+  },
+  "criteria": {
+    "has_bamboo_slab": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:bamboo_slab"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:bamboo_boardwalk"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bamboo_slab",
+      "has_the_recipe"
+    ]
+  ]
+}

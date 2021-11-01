@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:palm_sapling",
+    "tropicraft:mahogany_sapling",
+    "tropicraft:grapefruit_sapling",
+    "tropicraft:lemon_sapling",
+    "tropicraft:lime_sapling",
+    "tropicraft:orange_sapling",
+    "tropicraft:red_mangrove_propagule",
+    "tropicraft:tall_mangrove_propagule",
+    "tropicraft:tea_mangrove_propagule",
+    "tropicraft:black_mangrove_propagule"
+  ]
+}

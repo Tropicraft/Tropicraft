@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:purified_sand",
+    "tropicraft:coral_sand",
+    "tropicraft:foamy_sand",
+    "tropicraft:mineral_sand",
+    "tropicraft:volcanic_sand"
+  ]
+}

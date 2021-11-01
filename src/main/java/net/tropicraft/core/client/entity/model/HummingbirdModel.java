@@ -18,11 +18,11 @@ public class HummingbirdModel<T extends Entity> extends EntityModel<T> {
 
     public HummingbirdModel(ModelPart root) {
         body_base = root.getChild("body_base");
-        tail_base = body_base.getChild("body_base");
-        wing_left = body_base.getChild("body_base");
-        head_base = body_base.getChild("body_base");
-        beak_base = head_base.getChild("body_base");
-        wing_right = body_base.getChild("body_base");
+        tail_base = body_base.getChild("tail_base");
+        wing_left = body_base.getChild("wing_left");
+        head_base = body_base.getChild("head_base");
+        beak_base = head_base.getChild("beak_base");
+        wing_right = body_base.getChild("wing_right");
 
 //        texWidth = 32;
 //        texHeight = 32;

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "YY",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:yellow_dye"
+    },
+    "Y": {
+      "item": "tropicraft:zircon_gem"
+    }
+  },
+  "result": {
+    "item": "tropicraft:yellow_scuba_flippers"
+  }
+}

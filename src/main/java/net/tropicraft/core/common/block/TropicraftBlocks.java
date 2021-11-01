@@ -227,16 +227,16 @@ public class TropicraftBlocks {
     public static final RegistryObject<Block> MANGROVE_BOARDWALK = register("mangrove_boardwalk", () -> new BoardwalkBlock(Block.Properties.copy(MANGROVE_SLAB.get()).noOcclusion()));
 
     public static final RegistryObject<BambooChestBlock> BAMBOO_CHEST = register(
-            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()), TropicraftTileEntityTypes.BAMBOO_CHEST.getId());
+            "bamboo_chest", () -> new BambooChestBlock(Block.Properties.copy(BAMBOO_BUNDLE.get()).strength(1), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get()), () -> TropicraftTileEntityTypes.BAMBOO_CHEST.get());
 
     public static final RegistryObject<SifterBlock> SIFTER = register(
             "sifter", () -> new SifterBlock(Block.Properties.copy(Blocks.OAK_PLANKS).noOcclusion()));
 
     public static final RegistryObject<DrinkMixerBlock> DRINK_MIXER = register(
-            "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()), TropicraftTileEntityTypes.DRINK_MIXER.getId());
+            "drink_mixer", () -> new DrinkMixerBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()), () -> TropicraftTileEntityTypes.DRINK_MIXER.get());
 
     public static final RegistryObject<AirCompressorBlock> AIR_COMPRESSOR = register(
-            "air_compressor", () -> new AirCompressorBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()), TropicraftTileEntityTypes.AIR_COMPRESSOR.getId());
+            "air_compressor", () -> new AirCompressorBlock(Block.Properties.of(Material.STONE).strength(2, 30).noOcclusion()), () -> TropicraftTileEntityTypes.AIR_COMPRESSOR.get());
 
     public static final RegistryObject<VolcanoBlock> VOLCANO = registerNoItem(
             "volcano", () -> new VolcanoBlock(Block.Properties.copy(Blocks.BEDROCK).noDrops()));
@@ -308,8 +308,8 @@ public class TropicraftBlocks {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
     
-    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, ResourceLocation location) {
-        return register(name, sup, block -> item(block, location));
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Supplier<? extends BlockEntityType> supBE) {
+        return register(name, sup, block -> item(block, supBE));
     }
     
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, CreativeModeTab tab) {
@@ -330,14 +330,14 @@ public class TropicraftBlocks {
         return item(block, Tropicraft.TROPICRAFT_ITEM_GROUP);
     }
 
-    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, ResourceLocation location) {
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, Supplier<? extends BlockEntityType> supBE) {
         return () -> new BlockItem(block.get(), new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP)){
             @Override
             public void initializeClient(Consumer<IItemRenderProperties> consumer) {
                 consumer.accept(new IItemRenderProperties() {
                     @Override
                     public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-                        return new SimpleItemStackRenderer<>(location);
+                        return new SimpleItemStackRenderer(supBE);
                     }
                 });
             }

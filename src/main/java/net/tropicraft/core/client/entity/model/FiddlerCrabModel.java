@@ -225,7 +225,7 @@ public class FiddlerCrabModel<T extends Entity> extends EntityModel<T> {
                         .addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 1.0F, false),
                 PartPose.offsetAndRotation(2.0F, -0.5F, -2.0F, 0.0F, -17.5F, -7.5F));
 
-        PartDefinition modelPartClawLeftC = modelPartClawLeftA.addOrReplaceChild("claw_right_a",
+        PartDefinition modelPartClawLeftC = modelPartClawLeftA.addOrReplaceChild("claw_left_c",
                 CubeListBuilder.create(),
                 PartPose.offset(-1.0F, 0.0F, 0.0F));
 

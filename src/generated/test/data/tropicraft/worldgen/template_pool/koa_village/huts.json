@@ -1,0 +1,69 @@
+{
+  "name": "tropicraft:koa_village/huts",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 5,
+      "element": {
+        "location": "tropicraft:koa_village/huts/hut_01",
+        "processors": "tropicraft:koa_village/buildings",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "tropicraft:koa_village/huts/hut_02",
+        "processors": "tropicraft:koa_village/buildings",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "tropicraft:koa_village/huts/hut_03",
+        "processors": "tropicraft:koa_village/buildings",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    },
+    {
+      "weight": 4,
+      "element": {
+        "location": "tropicraft:koa_village/huts/hut_04",
+        "processors": "tropicraft:koa_village/buildings",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    },
+    {
+      "weight": 10,
+      "element": {
+        "location": "tropicraft:koa_village/huts/hut_05",
+        "processors": "tropicraft:koa_village/buildings",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "tropicraft:koa_village/huts/bongo_hut_01",
+        "processors": "tropicraft:koa_village/buildings",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "location": "tropicraft:koa_village/huts/trade_hut_01",
+        "processors": "tropicraft:koa_village/buildings",
+        "projection": "rigid",
+        "element_type": "tropicraft:single_no_air"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "tropicraft:item/tall_machine",
+  "textures": {
+    "particle": "tropicraft:block/chunk"
+  }
+}

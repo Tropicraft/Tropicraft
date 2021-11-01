@@ -3,7 +3,6 @@ package net.tropicraft.core.client.entity.render;
 import com.google.common.collect.Maps;
 import java.util.Map;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.CowModel;
@@ -12,7 +11,7 @@ import net.minecraft.Util;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.tropicraft.Constants;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.entity.render.layer.CowktailLayer;
 import net.tropicraft.core.common.entity.passive.CowktailEntity;
 
@@ -25,7 +24,7 @@ public class CowktailRenderer extends MobRenderer<CowktailEntity, CowModel<Cowkt
 	});
 
 	public CowktailRenderer(EntityRendererProvider.Context context) {
-		super(context, new CowModel<>(context.bakeLayer(TropicraftRenderLayers.COWKTAIL_LAYER)), 0.7F);
+		super(context, new CowModel<>(context.bakeLayer(ClientSetup.COWKTAIL_LAYER)), 0.7F);
 		this.addLayer(new CowktailLayer<>(this));
 	}
 

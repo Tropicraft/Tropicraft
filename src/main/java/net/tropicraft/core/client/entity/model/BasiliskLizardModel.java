@@ -117,8 +117,8 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
         PartDefinition modelPartBody = modelPartData.addOrReplaceChild("body_base",
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(0.0F, 22.5F, 0.0F, 2.0F, 2.0F, 6.0F, false),
-                PartPose.offsetAndRotation(0.0F, -1.0F, -5.0F, -15.0F * ModelAnimator.DEG_TO_RAD, 0.0F, 0.0F));
+                        .addBox(-1.0F, -1.0F, -5.0F, 2.0F, 2.0F, 6.0F, false),
+                PartPose.offsetAndRotation(0.0F, 22.5F, 0.0F, -15.0F * ModelAnimator.DEG_TO_RAD, 0.0F, 0.0F));
 
         modelPartBody.addOrReplaceChild("sail_back",
                 CubeListBuilder.create()
@@ -135,7 +135,7 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
         modelPartBody.addOrReplaceChild("leg_front_left",
                 CubeListBuilder.create()
                         .texOffs(15, 25)
-                        .addBox(-1.0F, -1.0F, -3.0F, 2.0F, 2.0F, 3.0F, false),
+                        .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 3.0F, 1.0F, false),
                 PartPose.offsetAndRotation(1.0F, 0.5F, -4.0F, FRONT_LEG_ANGLE, 40.0F * ModelAnimator.DEG_TO_RAD, -57.5F * ModelAnimator.DEG_TO_RAD));
 
         PartDefinition modelPartHead = modelPartBody.addOrReplaceChild("head_base",

@@ -24,9 +24,11 @@ import net.tropicraft.core.client.entity.model.PlayerHeadpieceModel;
 
 public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 
-    public static final ModelScubaGear HEAD = ModelScubaGear.createModel(TropicraftRenderLayers.HEAD_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-    public static final ModelScubaGear CHEST = ModelScubaGear.createModel(TropicraftRenderLayers.CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
-    public static final ModelScubaGear FEET = ModelScubaGear.createModel(TropicraftRenderLayers.FEET_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    public static ModelScubaGear HEAD; //= ModelScubaGear.createModel(TropicraftRenderLayers.HEAD_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    public static ModelScubaGear CHEST; //= ModelScubaGear.createModel(TropicraftRenderLayers.CHEST_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+    public static ModelScubaGear FEET; //= ModelScubaGear.createModel(TropicraftRenderLayers.FEET_SCUBA_LAYER, null, EquipmentSlot.CHEST);
+
+    public static ModelScubaGear tankModel; //= ModelScubaGear.createModel(TropicraftRenderLayers.TANK_SCUBA_LAYER, null, EquipmentSlot.CHEST); // Can't reuse the main one with a different scale
 
     private boolean showHead;
     public boolean showChest;
@@ -166,7 +168,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
         hose4 = Head.getChild("hose4");
         hose5 = Head.getChild("hose5");
 
-        hose6 = root.getChild("horse6"); //Head.getChild("hose6");
+        hose6 = root.getChild("hose6"); //Head.getChild("hose6");
 
 //        body = new ModelPart( this, 32, 16 );
 //        body.setTexSize( 128, 64 );
@@ -541,13 +543,13 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
                         .addBox(-4F, -6F, -2F, 8, 12, 4),
                 PartPose.offset(0F, 6F, 0F));
 
-        modelPartData.addOrReplaceChild("rightArm",
+        modelPartData.addOrReplaceChild("right_arm",
                 CubeListBuilder.create()
                         .texOffs(56, 16)
                         .addBox(-4F, 0F, -2F, 4, 12, 4),
                 PartPose.offset(-4F, 0F, 0F));
 
-        modelPartData.addOrReplaceChild("leftArm",
+        modelPartData.addOrReplaceChild("left_arm",
                 CubeListBuilder.create()
                         .texOffs(72, 16)
                         .addBox(0F, 0F, -2F, 4, 12, 4),
@@ -555,7 +557,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        PartDefinition modelPartLegRight = modelPartData.addOrReplaceChild("rightLeg",
+        PartDefinition modelPartLegRight = modelPartData.addOrReplaceChild("right_leg",
                 CubeListBuilder.create()
                         .texOffs(0, 16)
                         .addBox(-2F, -6F, -2F, 4, 12, 4),
@@ -593,7 +595,7 @@ public class ModelScubaGear extends HumanoidModel<LivingEntity> {
 
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        PartDefinition modelPartLegLeft = modelPartData.addOrReplaceChild("leftLeg",
+        PartDefinition modelPartLegLeft = modelPartData.addOrReplaceChild("left_leg",
                 CubeListBuilder.create()
                         .texOffs(16, 16)
                         .addBox(-2F, -6F, -2F, 4, 12, 4),

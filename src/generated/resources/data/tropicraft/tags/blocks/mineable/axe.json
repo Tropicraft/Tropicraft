@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:coconut",
+    "tropicraft:red_mangrove_roots",
+    "tropicraft:light_mangrove_roots",
+    "tropicraft:black_mangrove_roots"
+  ]
+}

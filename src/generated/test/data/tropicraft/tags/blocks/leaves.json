@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "tropicraft:mahogany_leaves",
+    "tropicraft:palm_leaves",
+    "tropicraft:kapok_leaves",
+    "tropicraft:fruit_leaves",
+    "tropicraft:grapefruit_leaves",
+    "tropicraft:lemon_leaves",
+    "tropicraft:lime_leaves",
+    "tropicraft:orange_leaves",
+    "tropicraft:red_mangrove_leaves",
+    "tropicraft:tall_mangrove_leaves",
+    "tropicraft:tea_mangrove_leaves",
+    "tropicraft:black_mangrove_leaves"
+  ]
+}

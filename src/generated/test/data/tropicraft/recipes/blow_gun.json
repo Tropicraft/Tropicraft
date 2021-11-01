@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    " I ",
+    "  X"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_stick"
+    },
+    "I": {
+      "item": "tropicraft:zircon_gem"
+    }
+  },
+  "result": {
+    "item": "tropicraft:blow_gun"
+  }
+}

@@ -1,10 +1,9 @@
 package net.tropicraft.core.client.entity.render;
 
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.tropicraft.core.client.TropicraftRenderLayers;
+import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.TropicraftRenderUtils;
 import net.tropicraft.core.client.entity.model.ManOWarModel;
 import net.tropicraft.core.client.entity.render.layer.ManOWarGelLayer;
@@ -13,7 +12,7 @@ import net.tropicraft.core.common.entity.underdasea.ManOWarEntity;
 public class ManOWarRenderer extends MobRenderer<ManOWarEntity, ManOWarModel> {
 
     public ManOWarRenderer(EntityRendererProvider.Context context) {
-        super(context, new ManOWarModel(context.bakeLayer(TropicraftRenderLayers.MAN_O_WAR_LAYER)), 0.35f);
+        super(context, new ManOWarModel(context.bakeLayer(ClientSetup.MAN_O_WAR_LAYER)), 0.35f);
         addLayer(new ManOWarGelLayer(this));
     }
 

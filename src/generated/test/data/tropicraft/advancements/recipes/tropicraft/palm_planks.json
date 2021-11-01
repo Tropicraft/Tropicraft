@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:palm_planks"
+    ]
+  },
+  "criteria": {
+    "has_palm_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:palm_log"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:palm_planks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_palm_log",
+      "has_the_recipe"
+    ]
+  ]
+}

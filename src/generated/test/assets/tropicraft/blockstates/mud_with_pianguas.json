@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "tropicraft:block/mud_with_pianguas"
+      },
+      {
+        "model": "tropicraft:block/mud_with_pianguas",
+        "y": 90
+      },
+      {
+        "model": "tropicraft:block/mud_with_pianguas",
+        "y": 180
+      },
+      {
+        "model": "tropicraft:block/mud_with_pianguas",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tropicraft:azurite_block"
+            "items": [
+              "tropicraft:azurite_block"
+            ]
           }
         ]
       }

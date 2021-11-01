@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:manganese_block"
+    ]
+  },
+  "criteria": {
+    "has_at_least_9_manganese_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:manganese_ingot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:manganese_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_at_least_9_manganese_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

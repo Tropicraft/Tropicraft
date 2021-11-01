@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tropicraft:zirconium_gem"
+    ]
+  },
+  "criteria": {
+    "has_zircon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:zircon_gem"
+          }
+        ]
+      }
+    },
+    "has_azurite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tropicraft:azurite_gem"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tropicraft:zirconium_gem"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_zircon",
+      "has_azurite",
+      "has_the_recipe"
+    ]
+  ]
+}

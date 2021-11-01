@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "tropicraft:boardwalk",
+  "pattern": [
+    "XXX",
+    "S S"
+  ],
+  "key": {
+    "X": {
+      "item": "tropicraft:bamboo_slab"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "tropicraft:bamboo_boardwalk",
+    "count": 3
+  }
+}
