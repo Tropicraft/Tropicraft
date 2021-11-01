@@ -5,8 +5,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -16,8 +18,9 @@ import net.tropicraft.core.common.dimension.feature.tree.TropicraftTreeDecorator
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
-import static net.minecraft.world.gen.feature.TreeFeature.validTreePos;
+import static net.minecraft.world.level.levelgen.feature.TreeFeature.validTreePos;
 
 public class PneumatophoresTreeDecorator extends TreeDecorator {
     public static final Codec<PneumatophoresTreeDecorator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -45,25 +48,25 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
     }
 
     @Override
-    public void place(WorldGenLevel world, Random random, List<BlockPos> logs, List<BlockPos> leaves, Set<BlockPos> placed, BoundingBox box) {
-        BlockPos origin = Util.findLowestBlock(logs);
+    public void place(LevelSimulatedReader pLevel, BiConsumer<BlockPos, BlockState> pBlockSetter, Random pRandom, List<BlockPos> pLogPositions, List<BlockPos> pLeafPositions) {
+        BlockPos origin = Util.findLowestBlock(pLogPositions);
         if (origin == null) return;
 
         int spread = this.spread;
-        int count = random.nextInt(this.maxCount - this.minCount + 1) + this.minCount;
+        int count = pRandom.nextInt(this.maxCount - this.minCount + 1) + this.minCount;
         int maxTopY = origin.getY() + 3;
         int minBottomY = origin.getY() - 6;
 
         BlockPos.MutableBlockPos mutablePos = origin.mutable();
-        while (MangroveTrunkPlacer.isWaterAt(world, mutablePos) && mutablePos.getY() < maxTopY) {
+        while (MangroveTrunkPlacer.isWaterAt(pLevel, mutablePos) && mutablePos.getY() < maxTopY) {
             mutablePos.move(Direction.UP);
         }
 
         int topY = mutablePos.getY();
 
         for (int i = 0; i < count; i++) {
-            int dx = random.nextInt(spread) - random.nextInt(spread);
-            int dz = random.nextInt(spread) - random.nextInt(spread);
+            int dx = pRandom.nextInt(spread) - pRandom.nextInt(spread);
+            int dz = pRandom.nextInt(spread) - pRandom.nextInt(spread);
             if (dx == 0 && dz == 0) continue;
             mutablePos.setWithOffset(origin, dx, 0, dz);
 
@@ -73,7 +76,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             for (int y = topY; y >= minBottomY; y--) {
                 mutablePos.setY(y);
 
-                if (!validTreePos(world, mutablePos)) {
+                if (!validTreePos(pLevel, mutablePos)) {
                     canGenerate = true;
                     minY = y;
                     break;
@@ -87,7 +90,7 @@ public class PneumatophoresTreeDecorator extends TreeDecorator {
             int y = topY;
             while (y >= minY) {
                 mutablePos.setY(y--);
-                MangroveTrunkPlacer.setRootsAt(world, mutablePos, this.rootsBlock);
+                MangroveTrunkPlacer.setRootsAt(pLevel, pBlockSetter, mutablePos, this.rootsBlock);
             }
         }
     }

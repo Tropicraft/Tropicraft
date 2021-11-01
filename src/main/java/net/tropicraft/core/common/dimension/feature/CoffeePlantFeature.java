@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
@@ -25,7 +26,11 @@ public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+        WorldGenLevel world = pContext.level();
+        Random random = pContext.random();
+        BlockPos pos = pContext.origin();
+
         final BlockPos genPos = new BlockPos(
                 (pos.getX() + random.nextInt(8)) - random.nextInt(8),
                 pos.getY(),
@@ -72,5 +77,6 @@ public class CoffeePlantFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         return true;
+
     }
 }

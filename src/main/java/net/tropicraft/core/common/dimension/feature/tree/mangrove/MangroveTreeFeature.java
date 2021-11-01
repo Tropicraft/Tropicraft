@@ -40,10 +40,10 @@ public class MangroveTreeFeature extends Feature<TreeConfiguration> {
         BlockPos pos = context.origin();
         TreeConfiguration config = context.config();;
 
-        BlockPos placePos = this.findPlacePos(world, pos, config);
-        if (placePos == null) return false;
+        //BlockPos placePos = this.findPlacePos(world, pos, config);
+        //if (placePos == null) return false;
 
-        BlockPos soilPos = placePos.below();
+        BlockPos soilPos = pos.below();
         BlockState soilState = world.getBlockState(soilPos);
 
         // Force placement: put dirt under the current position so that the tree always places
@@ -60,39 +60,39 @@ public class MangroveTreeFeature extends Feature<TreeConfiguration> {
         }
     }
 
-    @Nullable
-    private BlockPos findPlacePos(WorldGenLevel world, BlockPos pos, TreeConfiguration config) {
-        //TODO [PORT]: It seems that this dosn't exist within 1.17
-
-        if (config.fromSapling) {
-            return pos;
-        }
-
-        int floorY = world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, pos).getY();
-        int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
-        int waterDepth = surfaceY - floorY; // Water depth is the distance from the surface to the floor
-
-        // If we're in water and we're not allowed to be, cancel placement
-        if (config.maxWaterDepth == 0 && waterDepth > 0) {
-            return null;
-        }
-
-        if (waterDepth > 3) { // If we're more than 3 blocks deep, cancel placement
-            return null;
-        } else if (waterDepth > config.maxWaterDepth) { // If we're more than our max water depth (but not more than 3 blocks deep!) suspend the tree underwater
-            // Calculated by getting the surface of the water and going down the max water water depth, so there's water below the tree and roots can generate connecting it.
-            return new BlockPos(pos.getX(), surfaceY - config.maxWaterDepth, pos.getZ());
-        }
-
-        int y;
-        if (config.heightmap == Heightmap.Types.OCEAN_FLOOR) {
-            y = floorY;
-        } else if (config.heightmap == Heightmap.Types.WORLD_SURFACE) {
-            y = surfaceY;
-        } else {
-            y = world.getHeightmapPos(config.heightmap, pos).getY();
-        }
-
-        return new BlockPos(pos.getX(), y, pos.getZ());
-    }
+//    @Nullable
+//    private BlockPos findPlacePos(WorldGenLevel world, BlockPos pos, TreeConfiguration config) {
+//        //TODO [PORT]: It seems that this dosn't exist within 1.17
+//
+//        if (config.fromSapling) {
+//            return pos;
+//        }
+//
+//        int floorY = world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, pos).getY();
+//        int surfaceY = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE, pos).getY();
+//        int waterDepth = surfaceY - floorY; // Water depth is the distance from the surface to the floor
+//
+//        // If we're in water and we're not allowed to be, cancel placement
+//        if (config.maxWaterDepth == 0 && waterDepth > 0) {
+//            return null;
+//        }
+//
+//        if (waterDepth > 3) { // If we're more than 3 blocks deep, cancel placement
+//            return null;
+//        } else if (waterDepth > config.maxWaterDepth) { // If we're more than our max water depth (but not more than 3 blocks deep!) suspend the tree underwater
+//            // Calculated by getting the surface of the water and going down the max water water depth, so there's water below the tree and roots can generate connecting it.
+//            return new BlockPos(pos.getX(), surfaceY - config.maxWaterDepth, pos.getZ());
+//        }
+//
+//        int y;
+//        if (config.heightmap == Heightmap.Types.OCEAN_FLOOR) {
+//            y = floorY;
+//        } else if (config.heightmap == Heightmap.Types.WORLD_SURFACE) {
+//            y = surfaceY;
+//        } else {
+//            y = world.getHeightmapPos(config.heightmap, pos).getY();
+//        }
+//
+//        return new BlockPos(pos.getX(), y, pos.getZ());
+//    }
 }

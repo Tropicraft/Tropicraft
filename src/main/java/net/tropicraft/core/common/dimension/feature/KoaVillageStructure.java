@@ -1,6 +1,7 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -16,16 +17,17 @@ public class KoaVillageStructure extends JigsawFeature {
         super(codec, 0, true, true);
     }
 
+
     @Override
-    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource biomes, long seed, WorldgenRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos startChunkPos, JigsawConfiguration config) {
-        BlockPos pos = new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8);
-        return isValid(generator, pos.offset(-4, 0, -4)) &&
-                isValid(generator, pos.offset(-4, 0, 4)) &&
-                isValid(generator, pos.offset(4, 0, 4)) &&
-                isValid(generator, pos.offset(4, 0, -4));
+    protected boolean isFeatureChunk(ChunkGenerator generator, BiomeSource biomes, long seed, WorldgenRandom random, ChunkPos pChunkPos, Biome biome, ChunkPos startChunkPos, JigsawConfiguration config, LevelHeightAccessor pLevel) {
+        BlockPos pos = new BlockPos((pChunkPos.x << 4) + 8, 0, (pChunkPos.z  << 4) + 8);
+        return isValid(generator, pos.offset(-4, 0, -4), pLevel) &&
+                isValid(generator, pos.offset(-4, 0, 4), pLevel) &&
+                isValid(generator, pos.offset(4, 0, 4), pLevel) &&
+                isValid(generator, pos.offset(4, 0, -4), pLevel);
     }
 
-    private boolean isValid(ChunkGenerator generator, BlockPos pos) {
-        return generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG) == generator.getSeaLevel();
+    private boolean isValid(ChunkGenerator generator, BlockPos pos, LevelHeightAccessor pLevel) {
+        return generator.getBaseHeight(pos.getX(), pos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, pLevel) == generator.getSeaLevel();
     }
 }

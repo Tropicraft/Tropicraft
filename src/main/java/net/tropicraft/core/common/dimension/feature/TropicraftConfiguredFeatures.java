@@ -1,25 +1,26 @@
 package net.tropicraft.core.common.dimension.feature;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.data.worldgen.Features;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.blockplacers.DoublePlantPlacer;
 import net.minecraft.world.level.levelgen.feature.blockplacers.SimpleBlockPlacer;
+import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
-import net.minecraft.world.gen.placement.*;
-import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.placement.*;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
@@ -42,23 +43,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-
-import net.minecraft.data.worldgen.Features;
-import net.minecraft.util.UniformInt;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomBooleanFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RangeDecoratorConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 
 public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> grapefruitTree;
@@ -183,9 +167,10 @@ public final class TropicraftConfiguredFeatures {
         this.pleodendron = features.tree("pleodendron",
                 new TreeConfiguration.TreeConfigurationBuilder(
                         new SimpleStateProvider(Blocks.JUNGLE_LOG.defaultBlockState()),
-                        new SimpleStateProvider(Blocks.JUNGLE_LEAVES.defaultBlockState()),
-                        new PleodendronFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 1),
                         new PleodendronTrunkPlacer(10, 8, 0),
+                        new SimpleStateProvider(Blocks.JUNGLE_LEAVES.defaultBlockState()),
+                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        new PleodendronFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 1),
                         new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                 ).build(),
                 0, 0.05f, 1);
@@ -207,10 +192,17 @@ public final class TropicraftConfiguredFeatures {
 
         MangroveTrunkPlacer redMangroveTrunk = new MangroveTrunkPlacer(3, 3, 0, redMangroveRoots, true, false);
         this.redMangroveShort = features.mangrove("red_mangrove_short",
-                new TreeConfiguration.TreeConfigurationBuilder(redMangroveLog, redMangroveLeaves, mangroveFoliage, redMangroveTrunk, mangroveMinimumSize)
-                        .decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR))
-                        .maxWaterDepth(1).build()
-        );
+                new TreeConfiguration.TreeConfigurationBuilder(
+                        redMangroveLog,
+                        redMangroveTrunk,
+                        redMangroveLeaves,
+                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        mangroveFoliage,
+                        mangroveMinimumSize)
+                        .decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR)).build()
+        ).decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR).decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(1))).squared()
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.1F, 1)));
+
         this.redMangroveSmall = features.mangrove("red_mangrove_small",
                 new TreeConfiguration.TreeConfigurationBuilder(
                         redMangroveLog,
@@ -220,7 +212,9 @@ public final class TropicraftConfiguredFeatures {
                         new SmallMangroveFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                         mangroveMinimumSize
                 ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.SMALL)).build()
-        );
+        ).decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR).squared()
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.1F, 1)));
+
         this.redMangrove = features.random("red_mangrove", this.redMangroveShort, this.redMangroveSmall);
 
         this.tallMangrove = features.mangrove("tall_mangrove",
@@ -231,37 +225,36 @@ public final class TropicraftConfiguredFeatures {
                         new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
                         mangroveFoliage,
                         mangroveMinimumSize
-                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR)).maxWaterDepth(2).build()
-        ).decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(2)));
-
-        public static final ConfiguredFeature<?, ?> TREES_SWAMP =
-                register("trees_swamp", SWAMP_OAK
-                        .decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR)
-                        .decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD
-                                .configured(new WaterDepthThresholdConfiguration(1)))
-                        .squared()
-                        .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.1F, 1)))
-                );
+                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR)).build()
+        ).decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR).decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(2))).squared()
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.1F, 1)));
 
         PneumatophoresTreeDecorator teaMangrovePneumatophores = new PneumatophoresTreeDecorator(lightMangroveRoots, 2, 6, 4);
         this.teaMangrove = features.mangrove("tea_mangrove",
                 new TreeConfiguration.TreeConfigurationBuilder(
-                        lightMangroveLog, teaMangroveLeaves,
-                        mangroveFoliage,
+                        lightMangroveLog,
                         new MangroveTrunkPlacer(5, 3, 0, lightMangroveRoots, false, true),
+                        teaMangroveLeaves,
+                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        mangroveFoliage,
                         mangroveMinimumSize
-                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, teaMangrovePneumatophores)).maxWaterDepth(1).build()
-        );
+                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, teaMangrovePneumatophores)).build()
+        ).decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR).decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(1))).squared()
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.1F, 1)));
 
         PneumatophoresTreeDecorator blackMangrovePneumatophores = new PneumatophoresTreeDecorator(blackMangroveRoots, 8, 16, 6);
         this.blackMangrove = features.mangrove("black_mangrove",
                 new TreeConfiguration.TreeConfigurationBuilder(
-                        blackMangroveLog, blackMangroveLeaves,
-                        mangroveFoliage,
+                        blackMangroveLog,
                         new MangroveTrunkPlacer(4, 3, 0, blackMangroveRoots, true, false),
+                        blackMangroveLeaves,
+                        new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                        mangroveFoliage,
                         mangroveMinimumSize
-                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).maxWaterDepth(1).build()
-        );
+                ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_002, PianguasTreeDecorator.REGULAR, blackMangrovePneumatophores)).build()
+        ).decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR).decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(1))).squared()
+                .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(2, 0.1F, 1)));
+
         this.lightMangroves = features.random("light_mangroves", this.tallMangrove, this.teaMangrove, this.blackMangrove);
 
         this.mangroves = features.random("mangroves", this.redMangrove, this.lightMangroves);

@@ -3,6 +3,7 @@ package net.tropicraft.core.common.dimension.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -28,7 +29,10 @@ public class EIHFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random rand, BlockPos pos, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+        WorldGenLevel world = pContext.level();
+        BlockPos pos = pContext.origin();
+
         byte height = 5;
         int i = pos.getX();
         int j = pos.getY() + 1;

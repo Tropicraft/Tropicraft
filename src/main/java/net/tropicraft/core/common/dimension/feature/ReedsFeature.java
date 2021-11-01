@@ -9,6 +9,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.ReedsBlock;
@@ -29,7 +30,11 @@ public final class ReedsFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos origin, NoneFeatureConfiguration config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+        WorldGenLevel world = pContext.level();
+        Random random = pContext.level().getRandom();
+        BlockPos origin = pContext.origin();
+
         if (!world.getBlockState(origin).is(Blocks.WATER) || !world.isEmptyBlock(origin.above())) {
             return false;
         }

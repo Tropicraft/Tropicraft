@@ -2,6 +2,8 @@ package net.tropicraft.core.common.dimension.feature.block_state_provider;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.commands.arguments.blocks.BlockPredicateArgument;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -12,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProviderType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
 import java.util.List;
 import java.util.Random;
@@ -19,7 +22,7 @@ import java.util.Random;
 public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
     public static final Codec<NoiseFromTagBlockStateProvider> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
-                Tag.codec(() -> SerializationTags.getInstance().getBlocks()).fieldOf("tag").forGetter(c -> c.tag)
+                Tag.codec(() -> SerializationTags.getInstance().getOrEmpty(Registry.BLOCK_REGISTRY)).fieldOf("tag").forGetter(c -> c.tag)
         ).apply(instance, NoiseFromTagBlockStateProvider::new);
     });
 
@@ -36,6 +39,7 @@ public final class NoiseFromTagBlockStateProvider extends BlockStateProvider {
 
     @Override
     public BlockState getState(Random random, BlockPos pos) {
+
         List<Block> blocks = this.tag.getValues();
         if (blocks.isEmpty()) {
             return Blocks.AIR.defaultBlockState();

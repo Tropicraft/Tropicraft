@@ -10,6 +10,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.dimension.feature.config.HomeTreeBranchConfig;
@@ -31,7 +32,12 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
     }
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, Random random, BlockPos pos, T config) {
+    public boolean place(FeaturePlaceContext<T> pContext) {
+        WorldGenLevel world = pContext.level();
+        ChunkGenerator generator = pContext.chunkGenerator();
+        BlockPos pos = pContext.origin();
+        T config = pContext.config();
+
         WorldgenRandom rand = new WorldgenRandom();
         rand.setDecorationSeed(world.getSeed(), pos.getX(), pos.getZ());
         final int branchLength = rand.nextInt(10) + 15;
