@@ -30,8 +30,8 @@ import java.util.function.Supplier;
 public class TropicraftTrees {
     public static final Tree GRAPEFRUIT = createFruit(TropicraftBlocks.GRAPEFRUIT_LEAVES);
     public static final Tree LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES);
-    public static final Tree LIME = createFruit(TropicraftBlocks.LIME_SAPLING);
-    public static final Tree ORANGE = createFruit(TropicraftBlocks.ORANGE_SAPLING);
+    public static final Tree LIME = createFruit(TropicraftBlocks.LIME_LEAVES);
+    public static final Tree ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES);
 
     public static final Tree RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
@@ -64,9 +64,13 @@ public class TropicraftTrees {
 
     private static Tree createFruit(Supplier<? extends Block> fruitLeaves) {
         return create((server, random, beehive) -> {
+            WeightedBlockStateProvider leaves = new WeightedBlockStateProvider()
+                    .addWeightedBlockstate(TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), 1)
+                    .addWeightedBlockstate(fruitLeaves.get().getDefaultState(), 1);
+
             BaseTreeFeatureConfig config = new BaseTreeFeatureConfig.Builder(
                     new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()),
-                    new WeightedBlockStateProvider().addWeightedBlockstate(TropicraftBlocks.FRUIT_LEAVES.get().getDefaultState(), 1).addWeightedBlockstate(fruitLeaves.get().getDefaultState(), 1),
+                    leaves,
                     new CitrusFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
                     new CitrusTrunkPlacer(6, 3, 0),
                     new TwoLayerFeature(1, 0, 2)
