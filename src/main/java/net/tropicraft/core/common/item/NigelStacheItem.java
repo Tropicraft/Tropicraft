@@ -21,11 +21,17 @@ public class NigelStacheItem extends ArmorItem implements IItemRenderProperties 
         super(ArmorMaterials.NIGEL_STACHE, EquipmentSlot.HEAD, properties);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @Nullable
     @Override
-    public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
-        return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(ClientSetup.STACHE_LAYER, null, 0, 0, 0) : null;
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties()
+        {
+            @OnlyIn(Dist.CLIENT)
+            @Nullable
+            @Override
+            public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
+                return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(ClientSetup.STACHE_LAYER, null, 0, 0, 0) : null;
+            }
+        });
     }
     
     @Override

@@ -186,7 +186,7 @@ public class ClientSetup {
 
         //Armor Layers
         for(RegistryObject<AshenMaskItem> maskItem : TropicraftItems.ASHEN_MASKS.values().asList()){
-            ModelLayerLocation ashen_mask_layer = registerLayer("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), () -> PlayerHeadpieceModel.create(), event);
+            ModelLayerLocation ashen_mask_layer = registerLayer("ashen_mask_" + maskItem.get().getMaskType().name().toLowerCase(Locale.ROOT), PlayerHeadpieceModel::create, event);
             ASHEN_MASK_LAYERS.add(ashen_mask_layer);
         }
         STACHE_LAYER = registerLayer("nigel_stache", () -> PlayerHeadpieceModel.create(), event);

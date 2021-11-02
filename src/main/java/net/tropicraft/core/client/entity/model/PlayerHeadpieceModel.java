@@ -2,10 +2,12 @@ package net.tropicraft.core.client.entity.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.*;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import com.mojang.math.Vector3f;
 import net.tropicraft.core.client.entity.TropicraftSpecialRenderHelper;
@@ -94,6 +96,4 @@ public class PlayerHeadpieceModel extends HumanoidModel<LivingEntity> {
 		
 		stack.popPose();
 	}
-	
-	
 }

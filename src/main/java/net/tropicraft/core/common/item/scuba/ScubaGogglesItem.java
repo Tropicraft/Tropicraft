@@ -11,6 +11,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -92,6 +93,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
 
     }
 
+    //TODO [PORT]: It is just solid blue so... something must be fixed for such
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void renderWaterFog(FogDensity event) {
@@ -106,7 +108,7 @@ public class ScubaGogglesItem extends ScubaArmorItem {
 
                 // Reduce fog slightly
                 f *= 0.75F;
-    
+
                 event.setDensity(f);
                 event.setCanceled(true);
             }

@@ -68,15 +68,18 @@ public class AshenMaskItem extends ArmorItem implements IItemRenderProperties{
         return player.mayUseItemAt(pos, direction, heldStack);
     }
 
-
-
-    @OnlyIn(Dist.CLIENT)
-    @Nullable
     @Override
-    public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
-        return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(ClientSetup.ASHEN_MASK_LAYERS.get(maskType.ordinal()), null, maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+        consumer.accept(new IItemRenderProperties()
+        {
+            @OnlyIn(Dist.CLIENT)
+            @Nullable
+            @Override
+            public HumanoidModel getArmorModel(final LivingEntity entityLiving, final ItemStack itemStack, final EquipmentSlot armorSlot, final HumanoidModel model) {
+                return slot == EquipmentSlot.HEAD ? PlayerHeadpieceModel.createModel(ClientSetup.ASHEN_MASK_LAYERS.get(maskType.ordinal()), null, maskType.ordinal(), maskType.getXOffset(), maskType.getYOffset()) : null;
+            }
+        });
     }
-
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
