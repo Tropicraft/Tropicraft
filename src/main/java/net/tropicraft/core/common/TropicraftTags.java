@@ -20,9 +20,9 @@ public class TropicraftTags {
         public static final Named<Block> MINEABLE_WITH_PICKAXE = modTag("mineable/pickaxe");
         public static final Named<Block> MINEABLE_WITH_SHOVEL = modTag("mineable/shovel");
 
-        public static final Named<Block> NEEDS_DIAMOND_TOOL = modTag("needs_diamond_tool");
+        //public static final Named<Block> NEEDS_DIAMOND_TOOL = modTag("needs_diamond_tool");
         public static final Named<Block> NEEDS_IRON_TOOL = modTag("needs_iron_tool");
-        public static final Named<Block> NEEDS_STONE_TOOL = modTag("needs_stone_tool");
+        //public static final Named<Block> NEEDS_STONE_TOOL = modTag("needs_stone_tool");
 
         public static final Named<Block> SAND = modTag("sand");
         public static final Named<Block> MUD = modTag("mud");
