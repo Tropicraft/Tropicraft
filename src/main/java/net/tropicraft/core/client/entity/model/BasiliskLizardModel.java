@@ -152,15 +152,15 @@ public class BasiliskLizardModel<T extends BasiliskLizardEntity> extends EntityM
 
         PartDefinition modelPartTail = modelPartBody.addOrReplaceChild("tail_base",
                 CubeListBuilder.create()
-                        .texOffs(11, 18)
-                        .addBox(0.0F, -2.0F, 0.0F, 0.0F, 2.0F, 4.0F, false),
-                PartPose.offsetAndRotation(0.0F, -2.0F, 0.0F, -2.5F * ModelAnimator.DEG_TO_RAD, 0.0F, 0.0F));
+                        .texOffs(13, 9)
+                        .addBox(-0.5F, -2.0F, 0.0F, 1.0F, 2F, 4.0F, false),
+                PartPose.offsetAndRotation(0.0F, 1.0F, 1.0F, 5.0F * ModelAnimator.DEG_TO_RAD, 0.0F, 0.0F));
 
         modelPartTail.addOrReplaceChild("sail_tail",
                 CubeListBuilder.create()
-                        .texOffs(20, 18)
-                        .addBox(0.0F, -3.0F, 0.0F, 0.0F, 3.0F, 3.0F, false),
-                PartPose.offsetAndRotation(0.0F, -1.0F, -2.0F, -20.0F * ModelAnimator.DEG_TO_RAD, 0.0F, 0.0F));
+                        .texOffs(11, 18)
+                        .addBox(0.0F, -2.0F, 0.0F, 0.0F, 2.0F, 4.0F, false),
+                PartPose.offsetAndRotation(0.0F, -2.0F, 0.0F, -2.5F * ModelAnimator.DEG_TO_RAD, 0.0F, 0.0F));
 
         modelPartTail.addOrReplaceChild("tail_tip",
                 CubeListBuilder.create()
