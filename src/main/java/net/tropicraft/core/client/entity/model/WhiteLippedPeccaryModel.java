@@ -24,7 +24,7 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
     public WhiteLippedPeccaryModel(ModelPart root) {
 
         body_base = root.getChild("body_base");
-        head_base = body_base.getChild("head_base");
+        head_base = root.getChild("head_base");
 
         head_connection = head_base.getChild("head_connection");
         ear_right = head_base.getChild("ear_right");
@@ -130,7 +130,7 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
                         .addBox(-3.0F, -1.0F, -9.0F, 6.0F, 7.0F, 12.0F, false),
                 PartPose.offset(0.0F, 12.0F, 4.0F));
 
-        PartDefinition modelPartHead = modelPartBody.addOrReplaceChild("head_base",
+        PartDefinition modelPartHead = modelPartData.addOrReplaceChild("head_base",
                 CubeListBuilder.create()
                         .texOffs(0, 20)
                         .addBox(-2.5F, -3.0F, -3.0F, 5.0F, 7.0F, 4.0F, false),
@@ -210,7 +210,7 @@ public class WhiteLippedPeccaryModel<T extends Entity> extends TropicraftAgeable
 
 	@Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch) {
-		ModelAnimator.look(head_base, headYaw, headPitch);
+		ModelAnimator.look(getHead(), headYaw, headPitch);
 
 		try (ModelAnimator.Cycle walk = ModelAnimator.cycle(limbSwing * 0.2F, limbSwingAmount)) {
 			leg_left_fr.xRot = walk.eval(1.0F, 1.0F);
