@@ -32,9 +32,10 @@ public class SunglassesLayer extends RenderLayer<TropiBeeEntity, TropiBeeModel> 
         beeModel.getBody().translateAndRotate(stack);
 
         if (!bee.isBaby()) {
-            stack.translate(0.03125F, 0.175, -.313F);
+            stack.translate(0.03125F, 1.350F, -.313F); 
         } else {
-            stack.translate(0.03125F, 0.295, -.163F);
+            stack.translate(0.025F, 1.450F, -.163F);
+            stack.scale(0.55F, 0.55F, 0.55F);
         }
         stack.mulPose(Vector3f.YP.rotationDegrees(180));
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TropicraftRenderUtils.getTextureEntity("sunglasses")));

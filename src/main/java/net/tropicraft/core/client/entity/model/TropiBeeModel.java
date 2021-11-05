@@ -40,8 +40,30 @@ public class TropiBeeModel extends BeeModel<TropiBeeEntity> {
     }
 
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition modelData = new MeshDefinition();
+        MeshDefinition modelData = createBeeMesh();
+        PartDefinition modelPartDataBody = modelData.getRoot().getChild("bone").getChild("body");
 
+        modelPartDataBody.addOrReplaceChild("hat1",
+                CubeListBuilder.create().texOffs(0, 32).mirror()
+                        .addBox(-5F, -6F, -5F, 12, 1, 6),
+                PartPose.offset(-1F, 1F, -1F));
+
+        modelPartDataBody.addOrReplaceChild("hat2",
+                CubeListBuilder.create().texOffs(0, 48)
+                        .addBox(0F, -6F, 0F, 6, 2, 6),
+                PartPose.offset(-3F, -1F, -3F));
+
+        modelPartDataBody.addOrReplaceChild("hat3",
+                CubeListBuilder.create().texOffs(0, 32)
+                        .addBox(-5F, -6F, 0F, 12, 1, 6),
+                PartPose.offset(-1F, 1F, 0F));
+
+        return LayerDefinition.create(modelData, 64, 64);
+    }
+
+    public static MeshDefinition createBeeMesh() {
+        //Vanilla Copy of the Code for creating a bee model
+        MeshDefinition modelData = new MeshDefinition();
         PartDefinition modelPartData = modelData.getRoot();
 
         PartDefinition modelPartData2 = modelPartData.addOrReplaceChild("bone", CubeListBuilder.create(), PartPose.offset(0.0F, 19.0F, 0.0F));
@@ -56,22 +78,7 @@ public class TropiBeeModel extends BeeModel<TropiBeeEntity> {
         modelPartData2.addOrReplaceChild("middle_legs", CubeListBuilder.create().addBox("middle_legs", -5.0F, 0.0F, 0.0F, 7, 2, 0, 26, 3), PartPose.offset(1.5F, 3.0F, 0.0F));
         modelPartData2.addOrReplaceChild("back_legs", CubeListBuilder.create().addBox("back_legs", -5.0F, 0.0F, 0.0F, 7, 2, 0, 26, 5), PartPose.offset(1.5F, 3.0F, 2.0F));
 
-        modelPartData3.addOrReplaceChild("hat1",
-                CubeListBuilder.create().texOffs(0, 32).mirror()
-                        .addBox(-5F, -6F, -5F, 12, 1, 6),
-                PartPose.offset(-1F, 1F, -1F));
-
-        modelPartData3.addOrReplaceChild("hat2",
-                CubeListBuilder.create().texOffs(0, 48)
-                        .addBox(0F, -6F, 0F, 6, 2, 6),
-                PartPose.offset(-3F, -1F, -3F));
-
-        modelPartData3.addOrReplaceChild("hat3",
-                CubeListBuilder.create().texOffs(0, 32)
-                        .addBox(-5F, -6F, 0F, 12, 1, 6),
-                PartPose.offset(-1F, 1F, 0F));
-
-        return LayerDefinition.create(modelData, 64, 64);
+        return modelData;
     }
 
     //TODO: CHECK IF THIS IS WORKING PROPERLY AS BEFORE IT MAY HAVE BEEN CORRECT
