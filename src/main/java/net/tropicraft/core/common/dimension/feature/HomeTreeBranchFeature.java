@@ -78,17 +78,22 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
 
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
-        for (int i = -outerRadius + x; i <= outerRadius + x; i++) {
-            for (int k = -outerRadius + z; k <= outerRadius + z; k++) {
-                double d = (x - i) * (x - i) + (z - k) * (z - k);
-                if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
-                    pos.set(i, y, k);
-                    if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
-                        world.setBlock(pos, state, Constants.BlockFlags.DEFAULT);
+        //TODO [PORT]: This must be fixed but this will allow for testing other features while this is getting a fix {Error: We are asking a region for a chunk out of bound}
+        try {
+
+            for (int i = -outerRadius + x; i <= outerRadius + x; i++) {
+                for (int k = -outerRadius + z; k <= outerRadius + z; k++) {
+                    double d = (x - i) * (x - i) + (z - k) * (z - k);
+                    if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
+                        pos.set(i, y, k);
+                        if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
+                            world.setBlock(pos, state, Constants.BlockFlags.DEFAULT);
+                        }
                     }
                 }
             }
-        }
+
+        } catch(Exception ignored) {}
     }
 
     private void placeBlockLine(final LevelAccessor world, int[] ai, int[] ai1, BlockState state) {
