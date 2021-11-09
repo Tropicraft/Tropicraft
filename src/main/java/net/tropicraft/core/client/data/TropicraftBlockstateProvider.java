@@ -164,13 +164,13 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
 
         // Saplings
-        sapling(TropicraftBlocks.MAHOGANY_SAPLING);
-        sapling(TropicraftBlocks.PALM_SAPLING);
-        sapling(TropicraftBlocks.GRAPEFRUIT_SAPLING);
-        sapling(TropicraftBlocks.LEMON_SAPLING);
-        sapling(TropicraftBlocks.LIME_SAPLING);
-        sapling(TropicraftBlocks.ORANGE_SAPLING);
-        sapling(TropicraftBlocks.PAPAYA_SAPLING);
+        plant(TropicraftBlocks.MAHOGANY_SAPLING);
+        plant(TropicraftBlocks.PALM_SAPLING);
+        plant(TropicraftBlocks.GRAPEFRUIT_SAPLING);
+        plant(TropicraftBlocks.LEMON_SAPLING);
+        plant(TropicraftBlocks.LIME_SAPLING);
+        plant(TropicraftBlocks.ORANGE_SAPLING);
+        plant(TropicraftBlocks.PAPAYA_SAPLING);
 
         propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
         propagule(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
