@@ -461,6 +461,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBiome(TropicraftBiomes.TROPICS_RIVER);
         addBiome(TropicraftBiomes.TROPICS_BEACH);
         addBiome(TropicraftBiomes.MANGROVES);
+        addBiome(TropicraftBiomes.OVERGROWN_MANGROVES);
 
         // MISC
         

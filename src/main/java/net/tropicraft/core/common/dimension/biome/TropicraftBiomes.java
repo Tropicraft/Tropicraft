@@ -50,6 +50,7 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> TROPICS_RIVER = key("tropics_river");
     public static final RegistryKey<Biome> TROPICS_BEACH = key("tropics_beach");
     public static final RegistryKey<Biome> MANGROVES = key("mangroves");
+    public static final RegistryKey<Biome> OVERGROWN_MANGROVES = key("overgrown_mangroves");
 
     private static RegistryKey<Biome> key(String id) {
         return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, new ResourceLocation(Constants.MODID, id));
@@ -69,6 +70,7 @@ public final class TropicraftBiomes {
     public final Biome tropicsRiver;
 
     public final Biome mangroves;
+    public final Biome overgrownMangroves;
 
     private final TropicraftConfiguredFeatures features;
     private final TropicraftConfiguredStructures structures;
@@ -94,7 +96,8 @@ public final class TropicraftBiomes {
 
         this.tropicsRiver = worldgen.register(TROPICS_RIVER, createTropicsRiver());
 
-        this.mangroves = worldgen.register(MANGROVES, createMangroves());
+        this.mangroves = worldgen.register(MANGROVES, createMangroves(false));
+        this.overgrownMangroves = worldgen.register(OVERGROWN_MANGROVES, createMangroves(true));
     }
 
     @SubscribeEvent
@@ -336,15 +339,18 @@ public final class TropicraftBiomes {
     }
 
     // TODO: rebalance all spawns
-    private Biome createMangroves() {
+    private Biome createMangroves(boolean overgrown) {
         BiomeGenerationSettings.Builder generation = defaultGeneration()
                 .withSurfaceBuilder(surfaces.mangrove);
 
         carvers.addLand(generation);
 
         features.addMudDisks(generation);
-        features.addMangroveVegetation(generation);
+        if (overgrown) {
+            features.addOvergrownGoldenLeatherFern(generation);
+        }
         features.addGoldenLeatherFern(generation);
+        features.addMangroveVegetation(generation, overgrown);
         features.addTropicsFlowers(generation);
 
         generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SEAGRASS_DEEP_WARM);

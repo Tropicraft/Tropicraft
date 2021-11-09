@@ -45,8 +45,11 @@ public class TropicraftLayerUtil {
         riverLayer = magnify(2007, ZoomLayer.NORMAL, riverLayer, 5, context);
         riverLayer = new TropicraftRiverLayer(biomeIds).apply(context.apply(13), riverLayer);
         riverLayer = SmoothLayer.INSTANCE.apply(context.apply(2008L), riverLayer);
-
-        IAreaFactory<T> magnifyLayer = magnify(2007L, ZoomLayer.NORMAL, zoomLayer, 3, context);
+        
+        IAreaFactory<T> magnifyLayer = magnify(2007L, ZoomLayer.NORMAL, zoomLayer, 2, context);
+        // Add very small mangrove sub biomes
+        magnifyLayer = TropicraftAddSubBiomesLayer.mangroves(biomeIds).apply(context.apply(12), magnifyLayer);
+        magnifyLayer = magnify(3007L, ZoomLayer.NORMAL, magnifyLayer, 1, context);
         IAreaFactory<T> biomeLayer = new TropicraftBeachLayer(biomeIds).apply(context.apply(20), magnifyLayer);
         biomeLayer = magnify(20, ZoomLayer.NORMAL, biomeLayer, 2, context);
 

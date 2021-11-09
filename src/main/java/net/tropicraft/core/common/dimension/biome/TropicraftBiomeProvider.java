@@ -37,7 +37,8 @@ public class TropicraftBiomeProvider extends BiomeProvider {
             TropicraftBiomes.BAMBOO_RAINFOREST,
             TropicraftBiomes.RAINFOREST_ISLAND_MOUNTAINS,
             TropicraftBiomes.KELP_FOREST,
-            TropicraftBiomes.MANGROVES
+            TropicraftBiomes.MANGROVES,
+            TropicraftBiomes.OVERGROWN_MANGROVES
     );
 
     private final long seed;
