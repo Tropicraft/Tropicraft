@@ -1,9 +1,10 @@
 package net.tropicraft.core.common.block.huge_plant;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.BushBlock;
+import net.minecraft.block.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.DiggingParticle;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -14,15 +15,19 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.RegistryObject;
+import net.tropicraft.core.client.ParticleEffects;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -126,19 +131,30 @@ public final class HugePlantBlock extends BushBlock {
 
     @Override
     public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isRemote) {
-            Shape shape = Shape.match(this, world, pos);
-            if (shape == null) return;
+        Shape shape = Shape.match(this, world, pos);
+        if (shape == null) {
+            return;
+        }
 
+        if (!world.isRemote) {
             if (!player.isCreative()) {
                 spawnDrops(state, world, shape.seed(), null, player, player.getHeldItemMainhand());
             }
 
             int flags = Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS | Constants.BlockFlags.NO_NEIGHBOR_DROPS;
 
+            // Play break sound
+            SoundType soundtype = state.getSoundType(world, pos, null);
+            world.playSound(null, pos, soundtype.getBreakSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+
             for (BlockPos plantPos : shape) {
                 world.setBlockState(plantPos, Blocks.AIR.getDefaultState(), flags);
-                world.playEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, plantPos, Block.getStateId(state));
+            }
+        } else {
+            // We need to manually play the breaking particles to prevent vanilla logic from creating too many
+
+            for (BlockPos plantPos : shape) {
+                ParticleEffects.breakBlockWithFewerParticles(world, state, plantPos);
             }
         }
     }
@@ -165,7 +181,7 @@ public final class HugePlantBlock extends BushBlock {
         builder.add(TYPE);
     }
 
-    static boolean isSeedBlock(Block block, BlockState state) {
+    private static boolean isSeedBlock(Block block, BlockState state) {
         return state.matchesBlock(block) && state.get(TYPE) == Type.SEED;
     }
 
