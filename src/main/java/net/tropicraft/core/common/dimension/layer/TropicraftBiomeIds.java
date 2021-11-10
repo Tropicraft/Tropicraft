@@ -18,6 +18,7 @@ public final class TropicraftBiomeIds {
     public final int bambooRainforest;
     public final int mangroves;
     public final int overgrownMangroves;
+    public final int osaRainforest;
 
     public TropicraftBiomeIds(Registry<Biome> biomes) {
         this.ocean = getId(biomes, TropicraftBiomes.TROPICS_OCEAN);
@@ -32,6 +33,7 @@ public final class TropicraftBiomeIds {
         this.bambooRainforest = getId(biomes, TropicraftBiomes.BAMBOO_RAINFOREST);
         this.mangroves = getId(biomes, TropicraftBiomes.MANGROVES);
         this.overgrownMangroves = getId(biomes, TropicraftBiomes.OVERGROWN_MANGROVES);
+        this.osaRainforest = getId(biomes, TropicraftBiomes.OSA_RAINFOREST);
     }
 
     private static int getId(Registry<Biome> biomes, RegistryKey<Biome> key) {

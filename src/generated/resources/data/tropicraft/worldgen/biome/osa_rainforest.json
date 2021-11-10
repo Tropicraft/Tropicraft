@@ -5,7 +5,7 @@
     "water_color": 5172447,
     "water_fog_color": 270131
   },
-  "surface_builder": "minecraft:grass",
+  "surface_builder": "tropicraft:osa_rainforest",
   "carvers": {
     "air": [
       "tropicraft:cave",
@@ -37,17 +37,24 @@
     ],
     [],
     [
+      "tropicraft:small_golden_leather_fern",
+      "tropicraft:tall_golden_leather_fern",
+      "tropicraft:huge_golden_leather_fern",
+      "tropicraft:pleodendron",
       "tropicraft:rainforest_up_tree",
       "tropicraft:rainforest_small_tualung",
       "tropicraft:rainforest_large_tualung",
       "tropicraft:rainforest_tall_tree",
       "tropicraft:seagrass",
       "tropicraft:papaya",
-      "tropicraft:rainforest_flowers",
+      "tropicraft:tropics_flowers",
+      "tropicraft:iris_flowers",
+      "tropicraft:pineapple_patch",
+      "tropicraft:tropics_grass",
+      "minecraft:patch_large_fern",
+      "minecraft:patch_tall_grass",
       "tropicraft:coffee_bush",
-      "tropicraft:undergrowth",
-      "minecraft:patch_grass_jungle",
-      "minecraft:bamboo_light",
+      "tropicraft:single_undergrowth",
       "minecraft:patch_melon",
       "tropicraft:rainforest_vines"
     ]
@@ -56,8 +63,7 @@
     "minecraft:mineshaft",
     "minecraft:stronghold",
     "tropicraft:home_tree",
-    "tropicraft:koa_village",
-    "tropicraft:home_tree"
+    "tropicraft:koa_village"
   ],
   "spawners": {
     "monster": [
@@ -112,8 +118,8 @@
       {
         "type": "tropicraft:white_lipped_peccary",
         "weight": 15,
-        "minCount": 2,
-        "maxCount": 4
+        "minCount": 6,
+        "maxCount": 12
       },
       {
         "type": "tropicraft:jaguar",
@@ -130,7 +136,7 @@
       {
         "type": "tropicraft:spider_monkey",
         "weight": 15,
-        "minCount": 5,
+        "minCount": 6,
         "maxCount": 8
       }
     ],

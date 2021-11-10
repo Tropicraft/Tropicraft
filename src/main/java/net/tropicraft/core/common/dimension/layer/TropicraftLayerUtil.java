@@ -38,6 +38,7 @@ public class TropicraftLayerUtil {
         IAreaFactory<T> oceanLayerGen = TropicraftAddWeightedSubBiomesLayer.ocean(biomeIds).apply(context.apply(16), biomeLayerGen);
         IAreaFactory<T> hillsLayerGen = TropicraftAddSubBiomesLayer.rainforest(biomeIds).apply(context.apply(17), oceanLayerGen);
         IAreaFactory<T> mangroveLayer = new TropicraftMangroveLayer(biomeIds, 4).apply(context.apply(18), hillsLayerGen);
+        mangroveLayer = new TropicraftApplyOsaLayer(biomeIds).apply(context.apply(53), mangroveLayer);
         zoomLayer = ZoomLayer.NORMAL.apply(context.apply(2002), mangroveLayer);
 
         IAreaFactory<T> riverLayer = zoomLayer;
@@ -45,7 +46,7 @@ public class TropicraftLayerUtil {
         riverLayer = magnify(2007, ZoomLayer.NORMAL, riverLayer, 5, context);
         riverLayer = new TropicraftRiverLayer(biomeIds).apply(context.apply(13), riverLayer);
         riverLayer = SmoothLayer.INSTANCE.apply(context.apply(2008L), riverLayer);
-        
+
         IAreaFactory<T> magnifyLayer = magnify(2007L, ZoomLayer.NORMAL, zoomLayer, 2, context);
         // Add very small mangrove sub biomes
         magnifyLayer = TropicraftAddSubBiomesLayer.mangroves(biomeIds).apply(context.apply(12), magnifyLayer);

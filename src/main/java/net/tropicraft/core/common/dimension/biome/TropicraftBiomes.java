@@ -51,6 +51,7 @@ public final class TropicraftBiomes {
     public static final RegistryKey<Biome> TROPICS_BEACH = key("tropics_beach");
     public static final RegistryKey<Biome> MANGROVES = key("mangroves");
     public static final RegistryKey<Biome> OVERGROWN_MANGROVES = key("overgrown_mangroves");
+    public static final RegistryKey<Biome> OSA_RAINFOREST = key("osa_rainforest");
 
     private static RegistryKey<Biome> key(String id) {
         return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, new ResourceLocation(Constants.MODID, id));
@@ -71,6 +72,7 @@ public final class TropicraftBiomes {
 
     public final Biome mangroves;
     public final Biome overgrownMangroves;
+    public final Biome osaRainforest;
 
     private final TropicraftConfiguredFeatures features;
     private final TropicraftConfiguredStructures structures;
@@ -98,6 +100,7 @@ public final class TropicraftBiomes {
 
         this.mangroves = worldgen.register(MANGROVES, createMangroves(false));
         this.overgrownMangroves = worldgen.register(OVERGROWN_MANGROVES, createMangroves(true));
+        this.osaRainforest = worldgen.register(OSA_RAINFOREST, createOsaRainforest(0.25F, 0.1F));
     }
 
     @SubscribeEvent
@@ -205,6 +208,55 @@ public final class TropicraftBiomes {
                 .build();
     }
 
+    private Biome createOsaRainforest(float depth, float scale) {
+        BiomeGenerationSettings.Builder generation = defaultGeneration()
+                .withSurfaceBuilder(surfaces.osaRainforest);
+
+        carvers.addLand(generation);
+
+        features.addGoldenLeatherFern(generation);
+
+        features.addTropicsGems(generation);
+        features.addPleodendron(generation);
+        features.addRainforestTrees(generation);
+        features.addRegularSeagrass(generation);
+        features.addPapaya(generation);
+
+        features.addTropicsFlowers(generation);
+        features.addPineapples(generation);
+
+        features.addTropicsGrass(generation);
+        DefaultBiomeFeatures.withLargeFern(generation);
+        DefaultBiomeFeatures.withTallGrass(generation);
+
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, features.coffeeBush);
+        generation.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, features.singleUndergrowth);
+
+        features.addRainforestPlants(generation);
+
+        MobSpawnInfo.Builder spawns = defaultSpawns();
+        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.OCELOT, 10, 1, 1));
+        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.PARROT, 10, 1, 2));
+        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TropicraftEntities.TREE_FROG.get(), 25, 2, 5));
+        spawns.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TropicraftEntities.TROPI_SPIDER.get(), 30, 1, 1));
+
+        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TropicraftEntities.TAPIR.get(), 15, 2, 4));
+        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), 15, 6, 12));
+        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TropicraftEntities.JAGUAR.get(), 5, 1, 2));
+        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TropicraftEntities.HUMMINGBIRD.get(), 10, 3, 5));
+        spawns.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TropicraftEntities.SPIDER_MONKEY.get(), 15, 6, 8));
+
+        return new Biome.Builder()
+                .precipitation(Biome.RainType.RAIN)
+                .depth(depth).scale(scale)
+                .temperature(1.5F).downfall(2.0F)
+                .category(Biome.Category.JUNGLE)
+                .withGenerationSettings(generation.build())
+                .withMobSpawnSettings(spawns.build())
+                .setEffects(defaultAmbience(true).build())
+                .build();
+    }
+
     private Biome createRainforest(float depth, float scale) {
         return createRainforest(depth, scale, false);
     }
@@ -216,7 +268,6 @@ public final class TropicraftBiomes {
         carvers.addLand(generation);
 
         features.addTropicsGems(generation);
-        features.addPleodendron(generation);
         features.addRainforestTrees(generation);
         features.addRegularSeagrass(generation);
         features.addPapaya(generation);

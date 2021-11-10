@@ -2,10 +2,12 @@ package net.tropicraft;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.Reflection;
+import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.model.ModelBakery;
+import net.minecraft.command.CommandSource;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -26,6 +28,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.tropicraft.core.client.BasicColorHandler;
 import net.tropicraft.core.client.ClientSetup;
 import net.tropicraft.core.client.data.TropicraftBlockstateProvider;
@@ -35,6 +38,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
+import net.tropicraft.core.common.command.debug.MapBiomesCommand;
 import net.tropicraft.core.common.data.*;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
@@ -177,7 +181,13 @@ public class Tropicraft {
     }
 
     private void onServerStarting(final FMLServerStartingEvent event) {
-        CommandTropicsTeleport.register(event.getServer().getCommandManager().getDispatcher());
+        CommandDispatcher<CommandSource> dispatcher = event.getServer().getCommandManager().getDispatcher();
+        CommandTropicsTeleport.register(dispatcher);
+
+        // Dev only debug!
+        if (!FMLEnvironment.production) {
+            MapBiomesCommand.register(dispatcher);
+        }
     }
 
     private void gatherData(GatherDataEvent event) {

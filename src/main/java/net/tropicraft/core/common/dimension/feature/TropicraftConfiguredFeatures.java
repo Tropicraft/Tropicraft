@@ -84,6 +84,7 @@ public final class TropicraftConfiguredFeatures {
 
     public final ConfiguredFeature<?, ?> coffeeBush;
     public final ConfiguredFeature<?, ?> undergrowth;
+    public final ConfiguredFeature<?, ?> singleUndergrowth;
 
     public final ConfiguredFeature<?, ?> seagrass;
     public final ConfiguredFeature<?, ?> undergroundSeagrassOnStone;
@@ -191,7 +192,7 @@ public final class TropicraftConfiguredFeatures {
                         new PleodendronTrunkPlacer(10, 8, 0),
                         new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
                 ).build(),
-                0, 0.05f, 1);
+                0, 0.08f, 1);
 
         this.papaya = features.tree("papaya",
                 new BaseTreeFeatureConfig.Builder(
@@ -200,7 +201,7 @@ public final class TropicraftConfiguredFeatures {
                         new PapayaFoliagePlacer(FeatureSpread.create(0), FeatureSpread.create(0)),
                         new StraightTrunkPlacer(5, 2, 3),
                         new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
-                ).setDecorators(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new PapayaTreeDecorator())).setMaxWaterDepth(1).build(),
+                ).setDecorators(ImmutableList.of(Features.Placements.BEES_005_PLACEMENT, new PapayaTreeDecorator())).build(),
                 0, 0.2f, 1
         );
 
@@ -331,6 +332,9 @@ public final class TropicraftConfiguredFeatures {
         });
         this.undergrowth = features.noConfig("undergrowth", TropicraftFeatures.UNDERGROWTH, feature -> {
             return feature.withPlacement(Features.Placements.VEGETATION_PLACEMENT.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).count(100));
+        });
+        this.singleUndergrowth = features.noConfig("single_undergrowth", TropicraftFeatures.SINGLE_UNDERGROWTH, feature -> {
+            return feature.withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT.count(2));
         });
 
         this.seagrass = features.register("seagrass", Feature.SEAGRASS, feature -> {

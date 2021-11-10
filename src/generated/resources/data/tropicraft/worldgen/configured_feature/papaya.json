@@ -4,7 +4,7 @@
       "config": {
         "feature": {
           "config": {
-            "max_water_depth": 1,
+            "max_water_depth": 0,
             "ignore_vines": false,
             "heightmap": "OCEAN_FLOOR",
             "minimum_size": {
