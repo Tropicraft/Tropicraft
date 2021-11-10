@@ -1,6 +1,7 @@
 package net.tropicraft.core.client;
 
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -105,7 +106,7 @@ public class TropicraftRenderUtils {
     }
 
     public static ResourceLocation bindTexture(ResourceLocation resource) {
-        Minecraft.getInstance().getTextureManager().bindForSetup(resource);
+        RenderSystem.setShaderTexture(0, resource);
         return resource;
     }
 

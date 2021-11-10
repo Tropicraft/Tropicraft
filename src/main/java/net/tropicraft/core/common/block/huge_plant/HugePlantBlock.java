@@ -2,6 +2,7 @@ package net.tropicraft.core.common.block.huge_plant;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -19,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fmllegacy.RegistryObject;
+import net.tropicraft.core.client.ParticleEffects;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -122,19 +125,26 @@ public final class HugePlantBlock extends BushBlock {
 
     @Override
     public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-        if (!world.isClientSide) {
-            Shape shape = Shape.match(this, world, pos);
-            if (shape == null) return;
+        Shape shape = Shape.match(this, world, pos);
+        if (shape == null) return;
 
+        if (!world.isClientSide) {
             if (!player.isCreative()) {
                 dropResources(state, world, shape.seed(), null, player, player.getMainHandItem());
             }
 
             int flags = Constants.BlockFlags.BLOCK_UPDATE | Constants.BlockFlags.UPDATE_NEIGHBORS | Constants.BlockFlags.NO_NEIGHBOR_DROPS;
 
+            // Play break sound
+            SoundType soundtype = state.getSoundType(world, pos, null);
+            world.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+
             for (BlockPos plantPos : shape) {
                 world.setBlock(plantPos, Blocks.AIR.defaultBlockState(), flags);
-                world.levelEvent(Constants.WorldEvents.BREAK_BLOCK_EFFECTS, plantPos, Block.getId(state));
+            }
+        } else {
+            for (BlockPos plantPos : shape) {
+                ParticleEffects.breakBlockWithFewerParticles(world, state, plantPos);
             }
         }
     }
@@ -161,7 +171,7 @@ public final class HugePlantBlock extends BushBlock {
         builder.add(TYPE);
     }
 
-    static boolean isSeedBlock(Block block, BlockState state) {
+    private static boolean isSeedBlock(Block block, BlockState state) {
         return state.is(block) && state.getValue(TYPE) == Type.SEED;
     }
 
