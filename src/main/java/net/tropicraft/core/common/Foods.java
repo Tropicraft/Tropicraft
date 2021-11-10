@@ -7,6 +7,7 @@ public class Foods {
     public static final FoodProperties LIME = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
     public static final FoodProperties GRAPEFRUIT = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
     public static final FoodProperties ORANGE = new FoodProperties.Builder().nutrition(2).saturationMod(0.2f).fast().build();
+    public static final FoodProperties PAPAYA = new FoodProperties.Builder().nutrition(6).saturationMod(0.5f).build();
     public static final FoodProperties PINEAPPLE_CUBES = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
     public static final FoodProperties COCONUT_CHUNK = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
 

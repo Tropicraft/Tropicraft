@@ -124,6 +124,9 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         logBlock(TropicraftBlocks.STRIPPED_MANGROVE_LOG.get());
         woodBlock(TropicraftBlocks.STRIPPED_MANGROVE_WOOD, TropicraftBlocks.STRIPPED_MANGROVE_LOG);
 
+        logBlock(TropicraftBlocks.PAPAYA_LOG.get());
+        woodBlock(TropicraftBlocks.PAPAYA_WOOD, TropicraftBlocks.PAPAYA_LOG);
+
         // Stairs & Slabs
         stairsBlock(TropicraftBlocks.BAMBOO_STAIRS, "bamboo_side", "bamboo_end");
         stairsBlock(TropicraftBlocks.THATCH_STAIRS, "thatch_side", "thatch_end");
@@ -152,6 +155,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         simpleBlock(TropicraftBlocks.LEMON_LEAVES);
         simpleBlock(TropicraftBlocks.LIME_LEAVES);
         simpleBlock(TropicraftBlocks.ORANGE_LEAVES);
+        simpleBlock(TropicraftBlocks.PAPAYA_LEAVES);
 
         simpleBlock(TropicraftBlocks.RED_MANGROVE_LEAVES);
         simpleBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES);
@@ -165,6 +169,7 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
         plant(TropicraftBlocks.LEMON_SAPLING);
         plant(TropicraftBlocks.LIME_SAPLING);
         plant(TropicraftBlocks.ORANGE_SAPLING);
+        plant(TropicraftBlocks.PAPAYA_SAPLING);
 
         propagule(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
         propagule(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
@@ -270,6 +275,10 @@ public class TropicraftBlockstateProvider extends BlockStateProvider {
             .texture("wood", modBlockLoc("bamboo_side"));
 
         TropicraftBlocks.JIGARBOV_WALL_TORCHES.forEach((type, block) -> jigarbovTorch(block, type));
+
+        models.withExistingParent("papaya_stage0", "cocoa_stage2")
+                .texture("particle", modBlockLoc("papaya_stage0"))
+                .texture("cocoa", modBlockLoc("papaya_stage0"));
     }
 
     private static Function<ModelFile, ConfiguredModel[]> applyRotations() {

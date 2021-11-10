@@ -1,0 +1,27 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "tropicraft:block/papaya_stage1",
+    "papaya": "tropicraft:block/papaya_stage1"
+  },
+  "elements": [
+    {   "from": [ 4, 3, 7 ],
+      "to": [ 12, 12, 15 ],
+      "faces": {
+        "down":  { "uv": [ 0, 0,  7,  7 ], "texture": "#papaya" },
+        "up":    { "uv": [ 0, 7,  7, 14 ], "texture": "#papaya" },
+        "north": { "uv": [ 7, 4, 15, 13 ], "texture": "#papaya" },
+        "south": { "uv": [ 7, 4, 15, 13 ], "texture": "#papaya" },
+        "west":  { "uv": [ 7, 4, 15, 13 ], "texture": "#papaya" },
+        "east":  { "uv": [ 7, 4, 15, 13 ], "texture": "#papaya" }
+      }
+    },
+    {   "from": [ 8, 12, 12 ],
+      "to": [ 8, 16, 16 ],
+      "faces": {
+        "west": { "uv": [ 12, 0, 16, 4 ], "texture": "#papaya" },
+        "east": { "uv": [ 16, 0, 12, 4 ], "texture": "#papaya" }
+      }
+    }
+  ]
+}

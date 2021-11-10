@@ -83,6 +83,9 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.MAHOGANY_WOOD);
         blockItem(TropicraftBlocks.PALM_WOOD);
 
+        blockItem(TropicraftBlocks.PAPAYA_LOG);
+        blockItem(TropicraftBlocks.PAPAYA_WOOD);
+
         blockItem(TropicraftBlocks.RED_MANGROVE_LOG);
         blockItem(TropicraftBlocks.RED_MANGROVE_WOOD);
 
@@ -126,6 +129,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockItem(TropicraftBlocks.LEMON_LEAVES);
         blockItem(TropicraftBlocks.LIME_LEAVES);
         blockItem(TropicraftBlocks.ORANGE_LEAVES);
+        blockItem(TropicraftBlocks.PAPAYA_LEAVES);
 
         blockItem(TropicraftBlocks.RED_MANGROVE_LEAVES);
         blockItem(TropicraftBlocks.TALL_MANGROVE_LEAVES);
@@ -139,6 +143,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         blockSprite(TropicraftBlocks.LEMON_SAPLING);
         blockSprite(TropicraftBlocks.LIME_SAPLING);
         blockSprite(TropicraftBlocks.ORANGE_SAPLING);
+        blockSprite(TropicraftBlocks.PAPAYA_SAPLING);
 
         blockSprite(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
         blockSprite(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
@@ -178,6 +183,7 @@ public class TropicraftItemModelProvider extends ItemModelProvider {
         // Misc remaining blocks
         blockSprite(TropicraftBlocks.IRIS, modLoc("block/iris_top"));
         blockSprite(TropicraftBlocks.PINEAPPLE, modLoc("block/pineapple_top"));
+        blockSprite(TropicraftBlocks.PAPAYA, modLoc("item/papaya"));
         
         blockItem(TropicraftBlocks.SMALL_BONGO_DRUM);
         blockItem(TropicraftBlocks.MEDIUM_BONGO_DRUM);

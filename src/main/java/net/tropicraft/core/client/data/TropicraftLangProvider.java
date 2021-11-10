@@ -98,6 +98,9 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.MAHOGANY_WOOD);
         addBlock(TropicraftBlocks.PALM_WOOD);
 
+        addBlock(TropicraftBlocks.PAPAYA_LOG);
+        addBlock(TropicraftBlocks.PAPAYA_WOOD);
+
         addBlock(TropicraftBlocks.RED_MANGROVE_LOG);
         addBlock(TropicraftBlocks.RED_MANGROVE_WOOD);
         addBlock(TropicraftBlocks.RED_MANGROVE_ROOTS);
@@ -143,6 +146,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.TALL_MANGROVE_LEAVES);
         addBlock(TropicraftBlocks.TEA_MANGROVE_LEAVES);
         addBlock(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
+        addBlock(TropicraftBlocks.PAPAYA_LEAVES);
 
         // Saplings
         addBlock(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -151,6 +155,7 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.LEMON_SAPLING);
         addBlock(TropicraftBlocks.LIME_SAPLING);
         addBlock(TropicraftBlocks.ORANGE_SAPLING);
+        addBlock(TropicraftBlocks.PAPAYA_SAPLING);
         addBlockWithTooltip(TropicraftBlocks.RED_MANGROVE_PROPAGULE, "Rhizophora mangle");
         addBlockWithTooltip(TropicraftBlocks.TALL_MANGROVE_PROPAGULE, "Rhizophora racemosa");
         addBlockWithTooltip(TropicraftBlocks.TEA_MANGROVE_PROPAGULE, "Pelliciera rhizophorae");
@@ -213,6 +218,8 @@ public class TropicraftLangProvider extends LanguageProvider {
         addBlock(TropicraftBlocks.TIKI_TORCH);
 
         addBlock(TropicraftBlocks.COCONUT);
+
+        addBlock(TropicraftBlocks.PAPAYA);
 
         addBlock(TropicraftBlocks.BAMBOO_FLOWER_POT);
         TropicraftBlocks.ALL_POTTED_PLANTS.forEach(this::addBlock);

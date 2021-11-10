@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:jungle_log"
+    ]
+  },
+  "criteria": {
+    "has_papaya_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tropicraft:papaya_log"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:jungle_log"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_papaya_log",
+      "has_the_recipe"
+    ]
+  ]
+}

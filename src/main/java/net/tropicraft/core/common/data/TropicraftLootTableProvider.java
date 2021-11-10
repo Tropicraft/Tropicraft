@@ -8,6 +8,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.tropicraft.Constants;
 import net.tropicraft.core.common.TropicraftTags;
+import net.tropicraft.core.common.block.PapayaBlock;
 import net.tropicraft.core.common.block.TikiTorchBlock;
 import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.item.TropicraftItems;
@@ -124,6 +126,9 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.MAHOGANY_WOOD);
             dropsSelf(TropicraftBlocks.PALM_WOOD);
 
+            dropsSelf(TropicraftBlocks.PAPAYA_LOG);
+            dropsSelf(TropicraftBlocks.PAPAYA_WOOD);
+
             dropsSelf(TropicraftBlocks.RED_MANGROVE_LOG);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_WOOD);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_ROOTS);
@@ -169,6 +174,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             leavesNoSapling(TropicraftBlocks.TALL_MANGROVE_LEAVES);
             leavesNoSapling(TropicraftBlocks.TEA_MANGROVE_LEAVES);
             leavesNoSapling(TropicraftBlocks.BLACK_MANGROVE_LEAVES);
+            leaves(TropicraftBlocks.PAPAYA_LEAVES, TropicraftBlocks.PAPAYA_SAPLING, SAPLING_RATES);
 
             // Saplings
             dropsSelf(TropicraftBlocks.MAHOGANY_SAPLING);
@@ -177,6 +183,7 @@ public class TropicraftLootTableProvider extends LootTableProvider {
             dropsSelf(TropicraftBlocks.LEMON_SAPLING);
             dropsSelf(TropicraftBlocks.LIME_SAPLING);
             dropsSelf(TropicraftBlocks.ORANGE_SAPLING);
+            dropsSelf(TropicraftBlocks.PAPAYA_SAPLING);
             dropsSelf(TropicraftBlocks.RED_MANGROVE_PROPAGULE);
             dropsSelf(TropicraftBlocks.TALL_MANGROVE_PROPAGULE);
             dropsSelf(TropicraftBlocks.TEA_MANGROVE_PROPAGULE);
@@ -220,6 +227,31 @@ public class TropicraftLootTableProvider extends LootTableProvider {
                                 DoublePlantBlock.HALF, DoubleBlockHalf.UPPER))));
 
             dropsSelf(TropicraftBlocks.REEDS);
+
+
+            add(TropicraftBlocks.MUD_WITH_PIANGUAS.get(), applyExplosionDecay(TropicraftBlocks.MUD_WITH_PIANGUAS.get(),
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .add(LootItem.lootTableItem(TropicraftBlocks.MUD_WITH_PIANGUAS.get())
+                                            .when(HAS_SILK_TOUCH)
+                                            .otherwise(LootItem.lootTableItem(TropicraftBlocks.MUD.get()))
+                                    )
+                            )
+                            .withPool(LootPool.lootPool()
+                                    .when(HAS_NO_SILK_TOUCH)
+                                    .add(LootItem.lootTableItem(TropicraftItems.PIANGUAS.get())
+                                            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
+                                    )
+                            )
+            ));
+
+            add(TropicraftBlocks.PAPAYA.get(), b -> {
+                    return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                                    .add(applyExplosionCondition(b, LootItem.lootTableItem(TropicraftBlocks.PAPAYA.get().asItem())
+                                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))
+                                                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TropicraftBlocks.PAPAYA.get()).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(PapayaBlock.AGE, 1))))
+                                    ));
+                });
 
             dropsSelf(TropicraftBlocks.SMALL_BONGO_DRUM);
             dropsSelf(TropicraftBlocks.MEDIUM_BONGO_DRUM);

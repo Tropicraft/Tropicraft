@@ -104,6 +104,7 @@ public class ClientSetup {
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.LEMON_SAPLING.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.LIME_SAPLING.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.ORANGE_SAPLING.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PAPAYA_SAPLING.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.MAHOGANY_SAPLING.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PALM_SAPLING.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PALM_TRAPDOOR.get(), cutout);
@@ -119,6 +120,7 @@ public class ClientSetup {
         TropicraftBlocks.BAMBOO_POTTED_VANILLA_PLANTS.forEach(value -> ItemBlockRenderTypes.setRenderLayer(value.get(), RenderType.cutout()));
         TropicraftBlocks.VANILLA_POTTED_TROPICS_PLANTS.forEach(value -> ItemBlockRenderTypes.setRenderLayer(value.get(), RenderType.cutout()));
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.REEDS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.PAPAYA.get(), cutout);
 
         RenderType cutoutMipped = RenderType.cutoutMipped();
         ItemBlockRenderTypes.setRenderLayer(TropicraftBlocks.THATCH_STAIRS_FUZZY.get(), cutoutMipped);

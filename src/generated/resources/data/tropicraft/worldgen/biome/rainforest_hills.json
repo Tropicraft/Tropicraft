@@ -50,6 +50,29 @@
       "tropicraft:rainforest_large_tualung",
       "tropicraft:rainforest_tall_tree",
       "tropicraft:seagrass",
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": "tropicraft:papaya",
+              "decorator": {
+                "config": {
+                  "heightmap": "OCEAN_FLOOR"
+                },
+                "type": "minecraft:heightmap"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "max_water_depth": 1
+            },
+            "type": "minecraft:water_depth_threshold"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
       "tropicraft:rainforest_flowers",
       "tropicraft:coffee_bush",
       "tropicraft:undergrowth",

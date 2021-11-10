@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -23,6 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.tropicraft.Constants;
 import net.tropicraft.Tropicraft;
 import net.tropicraft.core.client.tileentity.SimpleItemStackRenderer;
+import net.tropicraft.core.common.Foods;
 import net.tropicraft.core.common.block.TikiTorchBlock.TorchSection;
 import net.tropicraft.core.common.block.huge_plant.HugePlantBlock;
 import net.tropicraft.core.common.block.jigarbov.JigarbovTorchType;
@@ -135,14 +137,19 @@ public class TropicraftBlocks {
     public static final RegistryObject<LeavesBlock> LEMON_LEAVES = register("lemon_leaves", Builder.leaves(true));
     public static final RegistryObject<LeavesBlock> LIME_LEAVES = register("lime_leaves", Builder.leaves(true));
     public static final RegistryObject<LeavesBlock> ORANGE_LEAVES = register("orange_leaves", Builder.leaves(true));
+    public static final RegistryObject<LeavesBlock> PAPAYA_LEAVES = register("papaya_leaves", Builder.leaves(false));
 
     public static final RegistryObject<SaplingBlock> GRAPEFRUIT_SAPLING = register("grapefruit_sapling", Builder.sapling(TropicraftTrees.GRAPEFRUIT));
     public static final RegistryObject<SaplingBlock> LEMON_SAPLING = register("lemon_sapling", Builder.sapling(TropicraftTrees.LEMON));
     public static final RegistryObject<SaplingBlock> LIME_SAPLING = register("lime_sapling", Builder.sapling(TropicraftTrees.LIME));
     public static final RegistryObject<SaplingBlock> ORANGE_SAPLING = register("orange_sapling", Builder.sapling(TropicraftTrees.ORANGE));
+    public static final RegistryObject<SaplingBlock> PAPAYA_SAPLING = register("papaya_sapling", Builder.sapling(TropicraftTrees.PAPAYA));
     public static final RegistryObject<SaplingBlock> MAHOGANY_SAPLING = register("mahogany_sapling", Builder.sapling(TropicraftTrees.RAINFOREST));
     public static final RegistryObject<SaplingBlock> PALM_SAPLING = register(
             "palm_sapling", Builder.sapling(TropicraftTrees.PALM, () -> Blocks.SAND, CORAL_SAND, FOAMY_SAND, VOLCANIC_SAND, PURIFIED_SAND, MINERAL_SAND));
+
+    public static final RegistryObject<RotatedPillarBlock> PAPAYA_LOG = register("papaya_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN));
+    public static final RegistryObject<RotatedPillarBlock> PAPAYA_WOOD = register("papaya_wood", Builder.wood(MaterialColor.COLOR_GRAY));
 
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_LOG = register("red_mangrove_log", Builder.log(MaterialColor.COLOR_GRAY, MaterialColor.COLOR_BROWN, () -> TropicraftBlocks.STRIPPED_MANGROVE_LOG));
     public static final RegistryObject<RotatedPillarBlock> RED_MANGROVE_WOOD = register("red_mangrove_wood", Builder.wood(MaterialColor.COLOR_GRAY, () -> TropicraftBlocks.STRIPPED_MANGROVE_WOOD));
@@ -176,6 +183,7 @@ public class TropicraftBlocks {
     public static final RegistryObject<TrapDoorBlock> MANGROVE_TRAPDOOR = register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.copy(MANGROVE_DOOR.get())) {});
 
     public static final RegistryObject<ReedsBlock> REEDS = register("reeds", () -> new ReedsBlock(Block.Properties.copy(Blocks.SUGAR_CANE)));
+    public static final RegistryObject<PapayaBlock> PAPAYA = registerWithFood("papaya", () -> new PapayaBlock(BlockBehaviour.Properties.of(Material.PLANT).randomTicks().strength(0.2F, 3.0F).sound(SoundType.WOOD).noOcclusion()), Foods.PAPAYA);
 
     public static final RegistryObject<FenceBlock> BAMBOO_FENCE = register("bamboo_fence", Builder.fence(BAMBOO_BUNDLE));
     public static final RegistryObject<FenceBlock> THATCH_FENCE = register("thatch_fence", Builder.fence(THATCH_BUNDLE));
@@ -307,7 +315,11 @@ public class TropicraftBlocks {
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
         return register(name, sup, TropicraftBlocks::itemDefault);
     }
-    
+
+    private static <T extends Block> RegistryObject<T> registerWithFood(String name, Supplier<? extends T> sup, FoodProperties foo) {
+        return register(name, sup, TropicraftBlocks::itemDefault);
+    }
+
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup, Supplier<? extends BlockEntityType> supBE) {
         return register(name, sup, block -> item(block, supBE));
     }
@@ -328,6 +340,10 @@ public class TropicraftBlocks {
 
     private static Supplier<BlockItem> itemDefault(final RegistryObject<? extends Block> block) {
         return item(block, Tropicraft.TROPICRAFT_ITEM_GROUP);
+    }
+
+    private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, FoodProperties food) {
+        return () -> new BlockItem(block.get(), new Item.Properties().tab(Tropicraft.TROPICRAFT_ITEM_GROUP).food(food));
     }
 
     private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block, Supplier<? extends BlockEntityType> supBE) {

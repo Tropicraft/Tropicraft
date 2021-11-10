@@ -1,9 +1,11 @@
 package net.tropicraft.core.common.block;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.WritableRegistry;
+import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -24,12 +26,18 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
+import net.minecraft.world.level.levelgen.placement.WaterDepthThresholdConfiguration;
 import net.minecraftforge.common.util.Constants;
 import net.tropicraft.core.common.dimension.feature.TropicraftFeatures;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusFoliagePlacer;
 import net.tropicraft.core.common.dimension.feature.tree.CitrusTrunkPlacer;
+import net.tropicraft.core.common.dimension.feature.tree.PapayaFoliagePlacer;
+import net.tropicraft.core.common.dimension.feature.tree.PapayaTreeDecorator;
 
 import javax.annotation.Nullable;
+import java.util.OptionalInt;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -38,6 +46,19 @@ public class TropicraftTrees {
     public static final AbstractTreeGrower LEMON = createFruit(TropicraftBlocks.LEMON_LEAVES);
     public static final AbstractTreeGrower LIME = createFruit(TropicraftBlocks.LIME_LEAVES);
     public static final AbstractTreeGrower ORANGE = createFruit(TropicraftBlocks.ORANGE_LEAVES);
+
+    public static final AbstractTreeGrower PAPAYA = create((server, random, beehive) -> {
+        TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
+                new SimpleStateProvider(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
+                new StraightTrunkPlacer(5, 2, 3),
+                new SimpleStateProvider(TropicraftBlocks.PAPAYA_LEAVES.get().defaultBlockState()),
+                new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
+                new PapayaFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
+                new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
+        ).decorators(ImmutableList.of(Features.Decorators.BEEHIVE_005, new PapayaTreeDecorator())).build();
+
+        return Feature.TREE.configured(config).decorated(Features.Decorators.HEIGHTMAP_OCEAN_FLOOR).decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(1)));
+    });
 
     public static final AbstractTreeGrower RAINFOREST = create((server, random, beehive) -> {
         final int treeType = random.nextInt(4);
@@ -76,7 +97,7 @@ public class TropicraftTrees {
                     new WeightedStateProvider(weightedBlockStateBuilder().add(TropicraftBlocks.FRUIT_LEAVES.get().defaultBlockState(), 1).add(fruitLeaves.get().defaultBlockState(), 1)),
                     new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
                     new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
-                    new TwoLayersFeatureSize(1, 0, 2)
+                    new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
             ).build();
 
            return Feature.TREE.configured(config);
