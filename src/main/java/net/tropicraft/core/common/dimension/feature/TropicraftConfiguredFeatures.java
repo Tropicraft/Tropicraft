@@ -72,12 +72,16 @@ public final class TropicraftConfiguredFeatures {
     public final ConfiguredFeature<?, ?> papaya;
 
     public final ConfiguredFeature<?, ?> mangroveVegetation;
+    public final ConfiguredFeature<?, ?> sparseMangroveVegetation;
 
     public final ConfiguredFeature<?, ?> mudDisk;
 
     public final ConfiguredFeature<?, ?> smallGoldenLeatherFern;
     public final ConfiguredFeature<?, ?> tallGoldenLeatherFern;
     public final ConfiguredFeature<?, ?> hugeGoldenLeatherFern;
+    public final ConfiguredFeature<?, ?> overgrownSmallGoldenLeatherFern;
+    public final ConfiguredFeature<?, ?> overgrownTallGoldenLeatherFern;
+    public final ConfiguredFeature<?, ?> overgrownHugeGoldenLeatherFern;
 
     public final ConfiguredFeature<?, ?> pleodendron;
 
@@ -161,6 +165,30 @@ public final class TropicraftConfiguredFeatures {
                     .tries(3)
                     .build()
             ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE);
+        });
+
+        this.overgrownSmallGoldenLeatherFern = features.register("overgrown_small_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
+            SimpleStateProvider state = new SimpleStateProvider(TropicraftBlocks.GOLDEN_LEATHER_FERN.get().defaultBlockState());
+            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, SimpleBlockPlacer.INSTANCE)
+                    .tries(28)
+                    .build()
+            ).decorated(Features.Decorators.HEIGHTMAP_DOUBLE_SQUARE).count(10);
+        });
+
+        this.overgrownTallGoldenLeatherFern = features.register("overgrown_tall_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
+            SimpleStateProvider state = new SimpleStateProvider(TropicraftBlocks.TALL_GOLDEN_LEATHER_FERN.get().defaultBlockState());
+            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, DoublePlantPlacer.INSTANCE)
+                    .tries(16)
+                    .build()
+            ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(8);
+        });
+
+        this.overgrownHugeGoldenLeatherFern = features.register("overgrown_huge_golden_leather_fern", Feature.RANDOM_PATCH, feature -> {
+            SimpleStateProvider state = new SimpleStateProvider(TropicraftBlocks.LARGE_GOLDEN_LEATHER_FERN.get().defaultBlockState());
+            return feature.configured(new RandomPatchConfiguration.GrassConfigurationBuilder(state, HugePlantBlockPlacer.INSTANCE)
+                    .tries(8)
+                    .build()
+            ).decorated(Features.Decorators.ADD_32).decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(6);
         });
 
         this.pleodendron = features.tree("pleodendron",
@@ -273,6 +301,11 @@ public final class TropicraftConfiguredFeatures {
         this.mangroveVegetation = features.register("mangrove_vegetation", this.mangroves
                     .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
                     .decorated(FeatureDecorator.COUNT_NOISE_BIASED.configured(new NoiseCountFactorDecoratorConfiguration(7, 200.0, 1.5)))
+        );
+
+        this.sparseMangroveVegetation = features.register("sparse_mangrove_vegetation", this.mangroves
+                .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
+                .decorated(FeatureDecorator.COUNT_NOISE_BIASED.configured(new NoiseCountFactorDecoratorConfiguration(3, 200.0, 1.5)))
         );
 
         this.mudDisk = features.register("mud_disk", Feature.DISK, feature -> feature
@@ -441,8 +474,14 @@ public final class TropicraftConfiguredFeatures {
         generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.rainforestVines);
     }
 
-    public void addMangroveVegetation(BiomeGenerationSettings.Builder generation) {
-        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.mangroveVegetation);
+    public void addMangroveVegetation(BiomeGenerationSettings.Builder generation, boolean sparse) {
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, sparse ? this.sparseMangroveVegetation : this.mangroveVegetation);
+    }
+
+    public void addOvergrownGoldenLeatherFern(BiomeGenerationSettings.Builder generation) {
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.overgrownSmallGoldenLeatherFern);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.overgrownTallGoldenLeatherFern);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, this.overgrownHugeGoldenLeatherFern);
     }
 
     public void addGoldenLeatherFern(BiomeGenerationSettings.Builder generation) {

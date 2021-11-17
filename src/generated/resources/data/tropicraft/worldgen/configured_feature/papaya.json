@@ -76,7 +76,7 @@
                 },
                 "decorator": {
                   "config": {
-                    "heightmap": "OCEAN_FLOOR"
+                    "heightmap": "WORLD_SURFACE_WG"
                   },
                   "type": "minecraft:heightmap"
                 }

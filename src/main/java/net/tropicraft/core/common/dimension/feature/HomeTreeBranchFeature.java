@@ -67,7 +67,10 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
         genLeafCircle(world, branchX2, y2, branchZ2, leafCircleSizeConstant + 6, 0, leaf, true);
         genLeafCircle(world, branchX2, y2 + 1, branchZ2, leafCircleSizeConstant + 10, 0, leaf, true);
         genLeafCircle(world, branchX2, y2 + 2, branchZ2, leafCircleSizeConstant + 9, 0, leaf, true);
-        this.vinesFeature.place(world, generator, rand, new BlockPos(branchX2, y2 - 1, branchZ2));
+        if(world.isAreaLoaded(new BlockPos(branchX2, y2 - 1, branchZ2), 0)) {
+            this.vinesFeature.place(world, generator, rand, new BlockPos(branchX2, y2 - 1, branchZ2));
+        }
+
 
         return false;
     }
@@ -80,14 +83,15 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
 
         //TODO [PORT]: This must be fixed but this will allow for testing other features while this is getting a fix {Error: We are asking a region for a chunk out of bound}
         try {
-
             for (int i = -outerRadius + x; i <= outerRadius + x; i++) {
                 for (int k = -outerRadius + z; k <= outerRadius + z; k++) {
                     double d = (x - i) * (x - i) + (z - k) * (z - k);
                     if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
                         pos.set(i, y, k);
-                        if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
-                            world.setBlock(pos, state, Constants.BlockFlags.DEFAULT);
+                        if(world.isAreaLoaded(pos, 0)) {
+                            if (world.isEmptyBlock(pos) || world.getBlockState(pos).getBlock() == state.getBlock()) {
+                                world.setBlock(pos, state, Constants.BlockFlags.DEFAULT);
+                            }
                         }
                     }
                 }
@@ -130,7 +134,13 @@ public class HomeTreeBranchFeature<T extends HomeTreeBranchConfig> extends Featu
             ai3[j] = Mth.floor(ai[j] + k + 0.5D);
             ai3[byte1] = Mth.floor(ai[byte1] + k * d + 0.5D);
             ai3[byte2] = Mth.floor(ai[byte2] + k * d1 + 0.5D);
+
+            //TODO [PORT]: This must be fixed but this will allow for testing other features while this is getting a fix {Error: We are asking a region for a chunk out of bound}
+            try {
             world.setBlock(new BlockPos(ai3[0], ai3[1], ai3[2]), state, 3);
+            } catch(Exception ignored) {}
+
+
         }
     }
 }

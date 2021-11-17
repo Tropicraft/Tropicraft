@@ -1,0 +1,66 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {
+            "feature": {
+              "config": {
+                "can_replace": false,
+                "project": true,
+                "need_water": false,
+                "xspread": 7,
+                "yspread": 3,
+                "zspread": 7,
+                "whitelist": [],
+                "blacklist": [],
+                "tries": 8,
+                "state_provider": {
+                  "state": {
+                    "Properties": {
+                      "type": "seed"
+                    },
+                    "Name": "tropicraft:golden_leather_fern"
+                  },
+                  "type": "minecraft:simple_state_provider"
+                },
+                "block_placer": {
+                  "type": "tropicraft:huge_plant"
+                }
+              },
+              "type": "minecraft:random_patch"
+            },
+            "decorator": {
+              "config": {},
+              "type": "minecraft:spread_32_above"
+            }
+          },
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {
+                "heightmap": "MOTION_BLOCKING"
+              },
+              "type": "minecraft:heightmap"
+            }
+          },
+          "type": "minecraft:decorated"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 6
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}
