@@ -2,7 +2,10 @@ package net.tropicraft;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.Reflection;
+import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,6 +30,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -39,6 +43,7 @@ import net.tropicraft.core.common.block.TropicraftBlocks;
 import net.tropicraft.core.common.block.TropicraftFlower;
 import net.tropicraft.core.common.block.tileentity.TropicraftTileEntityTypes;
 import net.tropicraft.core.common.command.CommandTropicsTeleport;
+import net.tropicraft.core.common.command.MapBiomesCommand;
 import net.tropicraft.core.common.data.*;
 import net.tropicraft.core.common.dimension.TropicraftDimension;
 import net.tropicraft.core.common.dimension.biome.TropicraftBiomeProvider;
@@ -179,7 +184,13 @@ public class Tropicraft {
     }
 
     private void onServerStarting(final FMLServerStartingEvent event) {
-        CommandTropicsTeleport.register(event.getServer().getCommands().getDispatcher());
+        CommandDispatcher<CommandSourceStack> dispatcher = event.getServer().getCommands().getDispatcher();
+        CommandTropicsTeleport.register(dispatcher);
+
+        // Dev only debug!
+        if (!FMLEnvironment.production) {
+            MapBiomesCommand.register(dispatcher);
+        }
     }
 
     private void gatherData(GatherDataEvent event) {

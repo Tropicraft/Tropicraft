@@ -92,6 +92,7 @@ public final class TropicraftConfiguredFeatures {
 
     public final ConfiguredFeature<?, ?> coffeeBush;
     public final ConfiguredFeature<?, ?> undergrowth;
+    public final ConfiguredFeature<?, ?> singleUndergrowth;
 
     public final ConfiguredFeature<?, ?> seagrass;
     public final ConfiguredFeature<?, ?> undergroundSeagrassOnStone;
@@ -200,9 +201,9 @@ public final class TropicraftConfiguredFeatures {
                         new PleodendronFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 1),
                         new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                 ).build(),
-                0, 0.05f, 1);
+                0, 0.08f, 1);
 
-        this.papaya = features.papaya("papaya",
+        this.papaya = features.tree("papaya",
                 new TreeConfiguration.TreeConfigurationBuilder(
                         new SimpleStateProvider(TropicraftBlocks.PAPAYA_LOG.get().defaultBlockState()),
                         new StraightTrunkPlacer(5, 2, 3),
@@ -362,6 +363,9 @@ public final class TropicraftConfiguredFeatures {
         });
         this.undergrowth = features.noConfig("undergrowth", TropicraftFeatures.UNDERGROWTH, feature -> {
             return feature.decorated(Features.Decorators.ADD_32.decorated(Features.Decorators.HEIGHTMAP_SQUARE).count(100));
+        });
+        this.singleUndergrowth = features.noConfig("single_undergrowth", TropicraftFeatures.SINGLE_UNDERGROWTH, feature -> {
+            return feature.decorated(Features.Decorators.HEIGHTMAP_SQUARE.count(2));
         });
 
         this.seagrass = features.register("seagrass", Feature.SEAGRASS, feature -> {
@@ -599,15 +603,6 @@ public final class TropicraftConfiguredFeatures {
             return this.register(id, Feature.TREE, feature -> {
                 return feature.configured(config)
                         .decorated(Features.Decorators.HEIGHTMAP_SQUARE)
-                        .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(count, extraChance, extraCount)));
-            });
-        }
-
-        public <F extends Feature<?>> ConfiguredFeature<?, ?> papaya(String id, TreeConfiguration config, int count, float extraChance, int extraCount) {
-            return this.register(id, Feature.TREE, feature -> {
-                return feature.configured(config)
-                        .decorated(Features.Decorators.HEIGHTMAP_WORLD_SURFACE)
-                        .decorated(FeatureDecorator.WATER_DEPTH_THRESHOLD.configured(new WaterDepthThresholdConfiguration(1))).squared()
                         .decorated(FeatureDecorator.COUNT_EXTRA.configured(new FrequencyWithExtraChanceDecoratorConfiguration(count, extraChance, extraCount)));
             });
         }

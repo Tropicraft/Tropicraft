@@ -38,6 +38,7 @@ public class TropicraftLayerUtil {
         AreaFactory<T> oceanLayerGen = TropicraftAddWeightedSubBiomesLayer.ocean(biomeIds).run(context.apply(16), biomeLayerGen);
         AreaFactory<T> hillsLayerGen = TropicraftAddSubBiomesLayer.rainforest(biomeIds).run(context.apply(17), oceanLayerGen);
         AreaFactory<T> mangroveLayer = new TropicraftMangroveLayer(biomeIds, 4).run(context.apply(18), hillsLayerGen);
+        mangroveLayer = new TropicraftApplyOsaLayer(biomeIds).run(context.apply(53), mangroveLayer);
         zoomLayer = ZoomLayer.NORMAL.run(context.apply(2002), mangroveLayer);
 
         AreaFactory<T> riverLayer = zoomLayer;

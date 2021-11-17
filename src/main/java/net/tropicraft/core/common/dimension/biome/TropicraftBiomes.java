@@ -55,6 +55,7 @@ public final class TropicraftBiomes {
     public static final ResourceKey<Biome> TROPICS_BEACH = key("tropics_beach");
     public static final ResourceKey<Biome> MANGROVES = key("mangroves");
     public static final ResourceKey<Biome> OVERGROWN_MANGROVES = key("overgrown_mangroves");
+    public static final ResourceKey<Biome> OSA_RAINFOREST = key("osa_rainforest");
 
     private static ResourceKey<Biome> key(String id) {
         return ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Constants.MODID, id));
@@ -75,6 +76,7 @@ public final class TropicraftBiomes {
 
     public final Biome mangroves;
     public final Biome overgrownMangroves;
+    public final Biome osaRainforest;
 
     private final TropicraftConfiguredFeatures features;
     private final TropicraftConfiguredStructures structures;
@@ -102,6 +104,7 @@ public final class TropicraftBiomes {
 
         this.mangroves = worldgen.register(MANGROVES, createMangroves(false));
         this.overgrownMangroves = worldgen.register(OVERGROWN_MANGROVES, createMangroves(true));
+        this.osaRainforest = worldgen.register(OSA_RAINFOREST, createOsaRainforest(0.25F, 0.1F));
     }
 
     @SubscribeEvent
@@ -206,6 +209,55 @@ public final class TropicraftBiomes {
                 .generationSettings(generation.build())
                 .mobSpawnSettings(spawns.build())
                 .specialEffects(defaultAmbience(false).build())
+                .build();
+    }
+
+    private Biome createOsaRainforest(float depth, float scale) {
+        BiomeGenerationSettings.Builder generation = defaultGeneration()
+                .surfaceBuilder(surfaces.osaRainforest);
+
+        carvers.addLand(generation);
+
+        features.addGoldenLeatherFern(generation);
+
+        features.addTropicsGems(generation);
+        features.addPleodendron(generation);
+        features.addRainforestTrees(generation);
+        features.addRegularSeagrass(generation);
+        features.addPapaya(generation);
+
+        features.addTropicsFlowers(generation);
+        features.addPineapples(generation);
+
+        features.addTropicsGrass(generation);
+        BiomeDefaultFeatures.addFerns(generation);
+        BiomeDefaultFeatures.addSavannaGrass(generation);
+
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.coffeeBush);
+        generation.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, features.singleUndergrowth);
+
+        features.addRainforestPlants(generation);
+
+        MobSpawnSettings.Builder spawns = defaultSpawns();
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.OCELOT, 10, 1, 1));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.PARROT, 10, 1, 2));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.TREE_FROG.get(), 25, 2, 5));
+        spawns.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(TropicraftEntities.TROPI_SPIDER.get(), 30, 1, 1));
+
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.TAPIR.get(), 15, 2, 4));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.WHITE_LIPPED_PECCARY.get(), 15, 6, 12));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.JAGUAR.get(), 5, 1, 2));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.HUMMINGBIRD.get(), 10, 3, 5));
+        spawns.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TropicraftEntities.SPIDER_MONKEY.get(), 15, 6, 8));
+
+        return new Biome.BiomeBuilder()
+                .precipitation(Biome.Precipitation.RAIN)
+                .depth(depth).scale(scale)
+                .temperature(1.5F).downfall(2.0F)
+                .biomeCategory(Biome.BiomeCategory.JUNGLE)
+                .generationSettings(generation.build())
+                .mobSpawnSettings(spawns.build())
+                .specialEffects(defaultAmbience(true).build())
                 .build();
     }
 

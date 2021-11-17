@@ -22,6 +22,7 @@ public final class TropicraftConfiguredSurfaceBuilders {
     public final ConfiguredSurfaceBuilder<?> sandy;
 
     public final ConfiguredSurfaceBuilder<?> mangrove;
+    public final ConfiguredSurfaceBuilder<?> osaRainforest;
 
     public TropicraftConfiguredSurfaceBuilders(WorldgenDataConsumer<? extends ConfiguredSurfaceBuilder<?>> worldgen) {
         Register surfaceBuilders = new Register(worldgen);
@@ -42,6 +43,7 @@ public final class TropicraftConfiguredSurfaceBuilders {
         );
 
         this.mangrove = surfaceBuilders.register("mangrove", TropicraftSurfaceBuilders.MANGROVE, new SurfaceBuilderBaseConfiguration(grass, dirt, dirt));
+        this.osaRainforest = surfaceBuilders.register("osa_rainforest", TropicraftSurfaceBuilders.OSA_RAINFOREST, new SurfaceBuilderBaseConfiguration(grass, dirt, dirt));
     }
 
     static final class Register {
