@@ -91,10 +91,15 @@ public class TropicraftTrees {
 
     private static AbstractTreeGrower createFruit(Supplier<? extends Block> fruitLeaves) {
         return create((server, random, beehive) -> {
+            WeightedStateProvider leaves = new WeightedStateProvider(
+                    weightedBlockStateBuilder()
+                            .add(TropicraftBlocks.FRUIT_LEAVES.get().defaultBlockState(), 1)
+                            .add(fruitLeaves.get().defaultBlockState(), 1));
+
             TreeConfiguration config = new TreeConfiguration.TreeConfigurationBuilder(
                     new SimpleStateProvider(Blocks.OAK_LOG.defaultBlockState()),
                     new CitrusTrunkPlacer(6, 3, 0),
-                    new WeightedStateProvider(weightedBlockStateBuilder().add(TropicraftBlocks.FRUIT_LEAVES.get().defaultBlockState(), 1).add(fruitLeaves.get().defaultBlockState(), 1)),
+                    leaves,
                     new SimpleStateProvider(Blocks.AIR.defaultBlockState()),
                     new CitrusFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0)),
                     new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
