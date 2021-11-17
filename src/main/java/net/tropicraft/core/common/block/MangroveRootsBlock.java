@@ -21,6 +21,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
@@ -117,7 +118,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return this.getConnectedState(world, currentPos);
     }
 
-    private BlockState getConnectedState(IBlockReader world, BlockPos pos) {
+    private BlockState getConnectedState(IWorldReader world, BlockPos pos) {
         BlockState state = this.getDefaultState()
                 .with(WATERLOGGED, world.getFluidState(pos).getFluid() == Fluids.WATER)
                 .with(GROUNDED, this.isGrounded(world, pos));
@@ -128,7 +129,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
                 .with(SOUTH, this.getConnectionFor(world, pos, Direction.SOUTH))
                 .with(WEST, this.getConnectionFor(world, pos, Direction.WEST));
 
-        if (!this.isTall(state) && !world.getBlockState(pos.up()).matchesBlock(this)) {
+        if (!this.isTall(state) && !this.canConnectUp(world, pos.up())) {
             state = state.with(TALL, false)
                     .with(NORTH, state.get(NORTH).shorten())
                     .with(EAST, state.get(EAST).shorten())
@@ -139,7 +140,7 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return state;
     }
 
-    private Connection getConnectionFor(IBlockReader world, BlockPos pos, Direction direction) {
+    private Connection getConnectionFor(IWorldReader world, BlockPos pos, Direction direction) {
         BlockPos adjacentPos = pos.offset(direction);
         BlockState adjacentState = world.getBlockState(adjacentPos);
 
@@ -160,9 +161,8 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
         return Connection.NONE;
     }
 
-    private boolean isAdjacentTall(IBlockReader world, BlockPos pos, Direction sourceDirection) {
-        BlockState aboveState = world.getBlockState(pos.up());
-        if (aboveState.matchesBlock(this) || aboveState.func_242698_a(world, pos, Direction.DOWN, BlockVoxelShape.CENTER)) {
+    private boolean isAdjacentTall(IWorldReader world, BlockPos pos, Direction sourceDirection) {
+        if (this.canConnectUp(world, pos.up())) {
             return true;
         }
 
@@ -190,6 +190,11 @@ public final class MangroveRootsBlock extends Block implements IWaterLoggable {
 
     private boolean canConnectTo(BlockState state, IBlockReader world, BlockPos pos, Direction direction) {
         return (state.matchesBlock(this) || state.isSolidSide(world, pos, direction)) && !FenceBlock.cannotAttach(state.getBlock());
+    }
+
+    private boolean canConnectUp(IWorldReader world, BlockPos pos) {
+        BlockState state = world.getBlockState(pos);
+        return state.matchesBlock(this) || Block.hasEnoughSolidSide(world, pos, Direction.DOWN);
     }
 
     private boolean isGrounded(IBlockReader world, BlockPos pos) {
