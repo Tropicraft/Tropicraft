@@ -40,9 +40,7 @@
   ],
   "starts": [
     "minecraft:mineshaft",
-    "minecraft:stronghold",
-    "tropicraft:home_tree",
-    "tropicraft:koa_village"
+    "minecraft:stronghold"
   ],
   "spawners": {
     "monster": [
